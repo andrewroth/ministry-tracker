@@ -49,9 +49,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :ministry_roles
 
   map.resources :campuses, :member => {:details => :any},
-                           :collection => { :change_country => :post,
-                                            :change_county => :post,
-                                            :change_state => :post}
+                           :collection => { :change_country => :any,
+                                            :change_county => :any,
+                                            :change_state => :any}
 
   map.resources :ministries, :member => { :switch_to => :any,
                                           :parent_form => :any,

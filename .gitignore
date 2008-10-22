@@ -8,3 +8,4 @@ doc/api
 doc/app
 coverage
 config/deploy.rb
+public/imports
