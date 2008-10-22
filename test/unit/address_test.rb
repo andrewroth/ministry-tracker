@@ -16,8 +16,8 @@ class AddressTest < Test::Unit::TestCase
   end
   
   def test_address_types
-    assert_equal('current', CurrentAddress.create(:person_id => '50000').address_type)
-    assert_equal('emergency1', EmergencyAddress.create(:person_id => '50000').address_type)
-    assert_equal('permanent', PermanentAddress.create(:person_id => '50000').address_type)
+    assert_equal('current', CurrentAddress.create(:person_id => '50000', :email => 'example@example.com').address_type)
+    assert_equal('emergency1', EmergencyAddress.create(:person_id => '50000', :email => 'example@example.com').address_type)
+    assert_equal('permanent', PermanentAddress.create(:person_id => '50000', :email => 'example@example.com').address_type)
   end
 end

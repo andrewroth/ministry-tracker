@@ -11,8 +11,7 @@ module ActionView #:nodoc:
         layout = layout.include?('/') ? layout : "layouts/#{layout}"
         @template.instance_variable_set('@content_for_layout', capture(&block))
         concat(
-          @template.render( :file => layout, :use_full_path => true ),
-          block.binding
+          @template.render( :file => layout)
         )
       end
 
