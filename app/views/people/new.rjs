@@ -1,0 +1,11 @@
+if params[:modalbox]
+  page['addStudent'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
+  # page['addStudent' ].show
+  page.call("show_add_student")
+  # page.call('Modalbox.resizeToContent')
+else
+  page[:add_person_link].hide
+  page[:person].replace_html :partial => 'new', :locals => {:person => @person}
+  page[:person].show
+  page[:spinner].hide
+end

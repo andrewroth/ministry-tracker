@@ -1,0 +1,17 @@
+<%- @training_category = training_category -%>
+  <li id="<%= dom_id(training_category) %>">
+    
+      <span class="drag_me"><%= image_tag('/images/silk/move.png') %></span>
+      <%- if @ministry.id == training_category.ministry_id -%>
+        &nbsp;&nbsp;&nbsp;
+      	<%= link_to_remote image_tag('delete.png'), 
+      						:url => training_category_path(training_category), 
+      						:method => :delete,
+      						:confirm => "Are you sure you want to delete this category?\nOnce you do, it'll be gone, along with all the questions associated with it.\n YOU'VE BEEN WARNED!",
+      						:before => "$('##{dom_id(training_category)}').hide()" %>
+      <%- end -%>
+      &nbsp;&nbsp;&nbsp;
+      <%= image_tag('edit.png', :id => "edit_#{dom_id(training_category)}") %>
+      <%= in_place_editor_field(:training_category, :name, {}, {:url => url_for({:action => 'set_training_category_name', :controller => 'training_categories', :id => training_category.id}),
+                                                            :external_control => "edit_#{dom_id(training_category)}"}) %>
+  </li>

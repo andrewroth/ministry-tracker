@@ -1,0 +1,6 @@
+<div id="permissions_select">
+<%- form_remote_tag(:url => user_group_permissions_url(:user_group_id => @user_group))  do -%>
+	<%= select_tag('permissions[]', options_for_select(@permissions.map {|p| [p.name, p.id]}), :multiple => true, :size => 8) %>
+	<%= submit_tag('>>') %> &nbsp;
+<%- end -%>
+</div>

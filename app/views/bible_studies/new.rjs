@@ -1,0 +1,3 @@
+page[:bible_study].replace_html(:partial => 'form')
+page[:bible_study].show
+page[:spinner].hide

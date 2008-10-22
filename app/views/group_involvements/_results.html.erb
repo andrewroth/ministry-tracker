@@ -1,0 +1,17 @@
+<%- if people.length > 0 -%>
+	Click on the name of the person you'd like to add:<br />
+	<%- people.each do |person| -%>
+		<%- form_tag search_people_url, :id => "person#{person.id}" do -%>
+			<%= hidden_field_tag :group_id, group_id %>
+			<%= hidden_field_tag :person_id, person.id %>
+			<%= hidden_field_tag :type, type %>
+			<%= link_to_remote(person.full_name, :url => group_involvements_url(), 
+												 :method => :post,
+												 :submit => "person#{person.id}") %><br />
+		<%- end -%>
+	<%- end -%>
+<%- else -%>
+	<br />
+	<strong>Sorry, I couldn't find anyone by that name. If you are sure the person you're looking for is not in the system yet,
+	  <%= link_to "click here to add a student", new_student_path() %> or <%= link_to "click here to add a staff person", new_staff_path() %></strong>
+<%- end -%>

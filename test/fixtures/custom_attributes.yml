@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  name: foo bar
+  ministry_id: 1
+  type: ProfileQuestion
+two:
+  id: 2
+  name: bar
+  ministry_id: 1
+  type: InvolvementQuestion

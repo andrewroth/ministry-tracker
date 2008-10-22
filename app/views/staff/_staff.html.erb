@@ -1,0 +1,7 @@
+<li id="staff<%= staff.id %>">
+  <%= link_to staff.full_name, person_url(staff) %> | 
+  <%= link_to_remote 'demote to student', :url => "/staff/demote_form/#{staff.id}",
+                                          :before => "$('#spinner#{staff.id}').show()" %> 
+  <%= spinner(staff.id) %>
+  <div id="campus_form<%= staff.id %>"></div>
+</li>

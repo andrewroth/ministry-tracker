@@ -1,0 +1,10 @@
+<li id="<%= dom_id(bible_study) %>">
+  <%#= link_to_remote(bible_study.name, :url => bible_study_url(bible_study), :method => :get) %> 
+  <%= link_to(bible_study.name, bible_study_url(bible_study), :method => :get) %> 
+  <%- if (@ministry.is_a?(Campus) && @ministry.id == bible_study.campus_id) || @ministry.id = bible_study.ministry_id -%>
+  	&nbsp; <%= link_to_remote image_tag('delete.png'), 
+  						:url => {:action => :destroy, :id => bible_study}, 
+  						:method => :delete,
+  						:confirm => "Are you sure you want to delete this bible study?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!" %>
+  <%- end -%>
+</li>

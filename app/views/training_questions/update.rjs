@@ -1,0 +1,5 @@
+update_flash(page, flash[:notice])
+page["training_question_#{@training_question.id}"].replace :partial => 'training_questions/training_question', :object => @training_question
+page[:training_question].visual_effect(:fade)
+page[:spinnertq].hide
+page[:new_training_question_link].show

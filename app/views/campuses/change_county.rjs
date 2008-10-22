@@ -1,0 +1,2 @@
+page[:high_schools].replace_html :partial => 'choose_high_school'
+hide_spinner(page, 3)

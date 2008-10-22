@@ -1,0 +1,64 @@
+<br />
+<h4 class="title">
+	<%= @team.name %>&nbsp;&nbsp;
+	<%= link_to_remote "edit", {:url => edit_team_url(@team), 
+								:method => :get,
+								:before => "$('#address').slideUp()"}, 
+								{:class => "small"}  if team_admin %>
+</h4>
+<div id="address">
+	<%= render :partial => 'teams/address' %>
+</div>
+<div id="address_form"></div>
+<div id="members">
+	<br />
+	<%- ['leader','member','interested'].each do |level| -%>
+		<div id="<%= level %>">
+		<table width="70%" border="0" cellspacing="0" cellpadding="5">
+		<tr>
+			<td colspan="5"><h4 class="title"><%= level.titleize %>&nbsp;&nbsp;
+				<%- if team_admin -%>
+					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
+					<%= link_to_function 'transfer', "$('#transfer_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
+					<%= link_to_remote 'remove', {:url => group_involvement_url(@group.id), :method => :delete, 
+												  :with => "$('#transfer_form_#{level}').serialize()", :confirm => "Are you sure you want to remove these people?",
+												  :condition => "$('#transfer_form_#{level} :checked').length > 0"},
+												 {:class => 'small'} %>
+				<%- end -%>
+				</h4>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<div id="add_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/new', :locals => {:type => level} %></div>
+			</td>
+		</tr>
+		</table>
+		<%- form_remote_tag({:url => "/group_involvements/transfer/#{@team.id}", 
+							 :html => {:id => 'transfer_form_'+level}}) do -%>
+		
+			<div id="transfer_<%= level %>"  style="display:none">
+				Pick a team to transfer the selected people to:<br />
+				<%= select_tag('transfer_to', options_for_select(@ministry.teams.collect {|bs| [bs.name, bs.id]})) %>
+				<%= hidden_field_tag('level', level) %>
+				<%= submit_tag "go" %><br /><br />
+			</div>
+		<table width="70%" border="0" cellspacing="0" cellpadding="5">
+		<tr>
+			<th><input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/></th>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Cell</th>
+			<th>Email</th>
+		</tr>
+			<%- @team.group_involvements.each do |gi| 
+				if gi.level == level
+					person = gi.person -%>
+					<%= render :partial => 'teams/member', :locals => {:person => person} %>
+				<%- end -%>
+			<%- end -%>
+		</table>	
+		<%- end -%>
+		</div>
+	<%- end -%>
+</div>

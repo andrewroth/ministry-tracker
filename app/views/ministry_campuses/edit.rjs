@@ -1,0 +1,3 @@
+page[:ministry].replace_html(:partial => 'form')
+page[:ministry].show
+page[:ministry].visual_effect(:highlight)

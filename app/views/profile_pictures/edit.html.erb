@@ -1,0 +1,12 @@
+<h1>Editing profile_picture</h1>
+
+<%= error_messages_for :profile_picture %>
+
+<% form_for(@profile_picture) do |f| %>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @profile_picture %> |
+<%= link_to 'Back', profile_pictures_path %>

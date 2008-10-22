@@ -1,0 +1,13 @@
+<%- if is_staff -%>
+	<%= render :partial => 'teams' %>
+<%- else -%>
+  Only <strong><%= @ministry.name %></strong> staff can make changes in the teams sections.
+	<%- ministry = nil -%>
+	<%- @teams.each do |team| -%>
+		<%- if team.ministry != ministry 
+				ministry = team.ministry-%>
+			<h4 class="title"><%= team.ministry.name %></h4>
+		<%- end -%>
+		<%= link_to(team.name, team_url(team)) %><br />
+	<%- end -%>
+<%- end -%>

@@ -1,0 +1,5 @@
+<li id="<%= dom_id(user_group) %>"><%= user_group.name %> 
+	| <%= link_to_remote 'delete', 
+						:url => user_group_url(user_group), 
+						:method => :delete,
+						:confirm => "Are you sure you want to delete this user group?\nOnce you do, it'll be gone, along with all the permissions you've assigned to it.\n YOU'VE BEEN WARNED!" %><li>

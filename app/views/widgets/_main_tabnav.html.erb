@@ -1,0 +1,86 @@
+<%  
+# this partial renders a tabnav, you can call it in your views with:
+#   <%= tabnav :main % > (just the tabnav) 
+# or, if you want a boxed tabnav:
+#   <% tabnav :main do % >
+#     your html here
+#   <% end % >
+# (remove the space between % and >, we don't want to mess up your brand new tabnav :-))
+#
+# you can pass render_tabnav a few options:
+#   :generate_css => true|false #=> generates a default inline css for the tabnav, defaults to false
+#   :html => aHash #=> sets html options for the tabnav's div (es :html => {:class=> 'myCssClass', :id=>'myCssId'}) 
+#     
+render_tabnav :main, 
+              :html => {:class => 'tablist', :id => 'tablist' } do 
+  
+  add_tab do |t|
+   t.named 'Manage'
+   t.titled 'Manage your world'
+   t.links_to :controller => 'manage'
+  end if is_staff_somewhere 
+  
+  add_tab do |t|
+    if @personal_bible_studies.size == 1
+      t.named  'My Bible Study'
+      t.links_to bible_study_path(@personal_bible_studies.first)
+    else
+      t.named  'My Bible Studies'
+      t.links_to bible_studies_path
+    end
+    t.highlights_on :controller => "bible_studies"
+    t.titled 'Where you should be right now'
+  end if @personal_bible_studies.size > 0
+  
+  add_tab do |t|
+   t.named 'My Profile'
+   t.titled "You're special"
+   t.links_to person_path(@me)
+   t.highlights_on :controller => "people", :action => "show", :id => @me.id
+  end 
+  
+  add_tab do |t|
+   t.named 'Directory'
+   t.titled 'Directory for ' + @ministry.name
+   t.links_to formatted_directory_people_path(:html)
+   t.highlights_on :controller => "people", :action => "directory"
+  end if session[:ministry_id]
+  
+  add_tab do |t|
+   t.named 'Welcome'
+   t.titled 'This is your Dashboard'
+   t.links_to :controller => 'dashboard'
+  end 
+  #  
+  # you can use restful routes with:
+  #
+  #add_tab do |t|
+  #  t.named 'Users'
+  #  t.links_to hash_for_users_path
+  #end
+  #
+  #add_tab do |t|
+  #  t.named 'Customers'
+  #  t.links_to :controller => 'customers'
+  #end
+  #  
+  # # A tab can be initialized with a Hash like this:
+  # 
+  # add_tab :name => 'welcome', :link => {:controller=>'welcome'}
+  #
+  # # You can have a dynamic name or link 
+  # # (this partial is evaluated in the page context, so it sees every helper or instance variable)
+  #  
+  # add_tab do |t|
+  #   t.named "#{current_user} details"
+  #   t.links_to :controller => 'users', :action => 'show', :id => current_user.id
+  # end
+  #
+  # # You can have an image inside 
+  #
+  # add_tab do |t|
+  #   t.named image_tag('test')
+  #   t.links_to :controller => 'users', :action => 'show', :id => current_user.id
+  # end
+end 
+%>

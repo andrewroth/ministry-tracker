@@ -1,0 +1,16 @@
+<div class="profileImage">
+<%- if @person.profile_picture.nil? -%>
+	<%= image_tag 'no_photo.png', :size => '200x200' %>
+	<div id="profileCaption">
+	  <%= link_to_function image_tag("add.png") + 'Add Picture', "show_upload_picture()"  %>
+	</div>
+<%- else -%>
+  <%= image_tag(@person.profile_picture.public_filename(:medium)) %>
+	<%#= image_tag(url_for_file_column('person', 'image', 'medium')) %>
+	<div id="profileCaption">
+	  <%= link_to_function image_tag("pencil.png") + 'Change', "show_upload_picture()"  %>
+  	<%= link_to_remote(image_tag("delete.png") + 'Delete', :url => profile_picture_url(@person.profile_picture), :method => :delete,
+  	                                                       :before => "$('#spinner').show()") %>
+	</div>
+<%- end -%>
+</div>

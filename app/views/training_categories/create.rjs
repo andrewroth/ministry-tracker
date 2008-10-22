@@ -1,0 +1,6 @@
+update_flash(page, flash[:notice])
+page.insert_html(:bottom, 'training_categories_list', :partial => 'training_categories/training_category', :object => @training_category)
+page.insert_html(:bottom, 'current_training_questions', :partial => 'customize/training_category', :object => @training_category)
+page[:new_training_category_link].show
+page[:training_category].visual_effect(:fade)
+page[:spinnertc].hide

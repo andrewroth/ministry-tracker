@@ -1,0 +1,11 @@
+<li id="<%= dom_id(team) %>">
+  
+<%= link_to(team.name, team_url(team), :method => :get) %> 
+<%#= link_to_remote(team.name, :url => edit_team_url(team), :method => :get) %>
+<%- if (@ministry.is_a?(Campus) && @ministry.id == team.campus_id) || @ministry.id == team.ministry_id -%>
+ <%= link_to_remote image_tag("delete.png"), 
+	:url => {:action => :destroy, :id => team}, 
+	:method => :delete,
+	:confirm => "Are you sure you want to delete this team?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!" %>
+</li>
+<%- end -%>

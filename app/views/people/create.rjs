@@ -1,0 +1,10 @@
+update_flash(page)
+if params[:modalbox]
+  page.call("close_thickbox")
+  page['addStudent'].hide
+elsif params[:staff]
+  @staff = @ministry.staff
+  page['left-body'].replace_html(:partial => 'staff/index')
+elsif params[:student]
+  page['left-body'].replace_html(:partial => 'students/index')
+end

@@ -1,0 +1,12 @@
+<h1>Editing view_column</h1>
+
+<%= error_messages_for :view_column %>
+
+<% form_for(:view_column, :url => view_column_path(@view_column), :html => { :method => :put }) do |f| %>
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', view_column_path(@view_column) %> |
+<%= link_to 'Back', view_columns_path %>

@@ -1,0 +1,4 @@
+page[:address_form].slide_up
+page[:address].replace_html(:partial => 'address')
+page[:address].show
+page[:address].visual_effect("highlight")

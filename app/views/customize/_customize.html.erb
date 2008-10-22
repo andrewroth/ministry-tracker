@@ -1,0 +1,50 @@
+<div id="customizebody">
+		<div class="title">Directory Views</div>
+		<%= render :partial => 'views/views' %>
+		
+		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.profile_questions,
+		                                                                          :attrib_type => 'ProfileQuestion'} %>
+		
+		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.involvement_questions, 
+		                                                                          :attrib_type => 'InvolvementQuestion'} %>
+		<div class="title">Training Categories specific to <%= @ministry.name %></div>
+		<div id="training_categories">
+    	<div id="current_training_categories" class="right_list">
+    		<ul id="training_categories_list"> 
+    		  <%= render :partial => 'training_categories/training_category', :collection => @training_categories %>
+        </ul>
+    		<%= sortable_element( 'training_categories_list',
+        	:url => { :action => "reorder_training_categories", :id => @ministry },
+        	:complete => visual_effect(:highlight, 'training_categories_list' ),
+        	:handle => 'drag_me')
+        %>
+    	</div>
+    	<div>
+    	  <div id="new_training_category_link">
+      		<div class="butAdd" ><%= link_to_remote('Add a training category', :url => new_training_category_url,
+      											 	 :before => "$('#new_training_category_link').hide();$('#spinnertc').show()")%></div>
+      	</div><%= spinner('tc') %>
+    	</div>
+    	<div>
+    		<div id="training_category" style="display:none">
+    		</div>
+    	</div>
+    </div>
+		<div class="title">Training Questions <%= spinner('tq') %></div>
+		<div id="training_questions">
+    	<div id="current_training_questions" class="right_list">
+    	  <%= render :partial =>'customize/training_category', :collection => @ministry.all_training_categories %>
+    	</div>
+    	<div>
+    	  <div id="new_training_question_link">
+      		<div class="butAdd" ><%= link_to_remote('Add a training question', :url => new_training_question_url,
+      											 	 :before => "$('#new_training_question_link').hide();$('#spinnertq').show()")%></div>
+      	</div>
+    	</div>
+    	<div>
+    		<div id="training_question" style="display:none">
+    		</div>
+    	</div>
+    </div>
+		
+</div>

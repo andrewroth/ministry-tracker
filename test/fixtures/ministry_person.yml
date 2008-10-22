@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+josh:
+  personID: 50000
+  fk_ssmUserID: 1
+  firstName: Josh
+  lastName: Starcher
+  middleName: Lee
+  preferredName: Josh
+  yearInSchool: Alumni
+  level_of_school: Undergrad
+  graduation_date: 2004-06-15
+  major: Philosophy
+  minor: Computer Science
+  birth_date: 1982-07-07
+  bio: "I\'m an MK"
+  image: 
+  gender: Male
+  
+# Create over 1000 records to test the search pagination
+<% 1.upto(1001) do |i| %>
+person_<%= i %>:
+  personID: <%= i %>
+  firstName: A
+  lastName: A<%= i %>
+<% end %>
+ 

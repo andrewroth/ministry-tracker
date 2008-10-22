@@ -1,0 +1,1 @@
+page[:manage].replace_html(:partial => 'ministries')

@@ -1,0 +1,50 @@
+.leftColumn {
+    width:auto;
+    float:left;
+	background:#F5F5F5; padding:5px 10px 10px 10px;
+}
+
+.leftColumn .title{
+font-size:1.2em;
+}
+
+.rightColumn {
+    margin-left:250px;
+}
+
+#profileImageBox {
+    border:0px solid #E9E9E9;
+    background-color:#F5F5F5;
+    padding:0px;
+    text-align:center;
+		width: 210px;
+		height: 220px;
+}
+
+.schoolHistoryBox {
+    background-color:#f5f5f5;
+    padding:8px;
+    border-bottom:1px solid #67A03B;
+    text-align:center;
+    margin:auto;
+
+}
+
+.schoolHistoryBox th {
+    font-weight:normal;
+    color:#539030;
+    text-align:left;
+}
+
+.schoolHistoryBox .highlight {
+    background-color:#fcfcfc;
+}
+
+.schoolHistoryBox td, .schoolHistoryBox th {
+    padding:8px;
+}
+
+.address td {
+		padding-right:0px;
+		padding-top:2px;
+}

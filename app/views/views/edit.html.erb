@@ -1,0 +1,18 @@
+<h1><%= in_place_editor_field :view, :title %> </h1>
+<p>(click the title to change it)</p>
+<h4>Columns in this view  <%= spinner %></h4>
+<ul id="column_list">
+  <%= render :partial => 'view_column', :collection => @view.view_columns, :locals => {:view => @view} %>
+</ul>
+<%= sortable_element 'column_list' ,
+	:url => { :action => "reorder", :id => @view },
+	:complete => visual_effect(:highlight, 'column_list' ),
+	:update => 'errors'
+%>
+<br />
+<h4>Unused Columns</h4>
+<ul id="unused_columns">
+  <%= render :partial => 'unused_column', :collection => @columns, :locals => {:view => @view} %>
+</ul>
+<br />
+<%= link_to 'Back (saves automatically)', customize_path(@ministry) %>

@@ -1,0 +1,23 @@
+<div id="user_group"></div>
+<div id="permissions">
+	<div class="right_list">
+		<div class="title"><%= @ministry.name %> User Groups</div>
+		<ul id="user_group_list">
+		<%= render :partial => @ministry.user_groups %>
+		</ul>
+	</div>
+<%- if @ministry.user_groups.empty? -%>
+	Before you can assign permissions you must create a user group. Permissions are assigned to groups. Users are put in groups. 
+	If you put a user in more than one group, the user will have all the permissions from the combined groups. <br />
+	<%= link_to_remote "Click here to create your first group.", :url => new_user_group_url %>
+<%- else -%>
+	Would you like to:<br />
+	<%#= link_to_remote "Give people login accounts" %><br /><br />
+	
+	<%= link_to_remote "Add users to a group", :url => user_memberships_url, :method => :get %><br /><br />
+	
+	<%= link_to_remote "Add permissions to a group", :url => user_group_permissions_url, :method => :get %><br /><br />
+	
+	<%= link_to_remote "Create a new group", :url => new_user_group_url %>
+<%- end -%>
+</div>

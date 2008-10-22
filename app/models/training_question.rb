@@ -1,0 +1,12 @@
+class TrainingQuestion < ActiveRecord::Base
+  load_mappings
+  has_many :training_answers, :dependent => :destroy
+  has_many :people, :through => :training_answers
+  
+  belongs_to :ministry, :class_name => "Ministry", :foreign_key => _('ministry_id')
+  belongs_to :training_category, :class_name => "TrainingCategory", :foreign_key => _("training_category_id")
+  
+  def safe_name
+    activity.downcase.gsub(' ', '_')
+  end
+end

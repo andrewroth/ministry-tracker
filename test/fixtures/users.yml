@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+josh:
+  id: 1
+  username: josh.starcher@uscm.org
+  password: <%= User.encrypt('test') %>
+  guid: F167605D-94A4-7121-2A58-8D0F2CA6E026
+  
+fred:
+  id: 2
+  username: fred@uscm.org
+  password: test
+sue:
+  id: 3
+  username: bob
+  password: bob

@@ -1,0 +1,4 @@
+Search for a person to add to the <strong><%= @user_group.name %></strong> group:<br />
+<%- form_remote_tag( :url => {:action => :search}) do -%>
+	<%= text_field_tag :search %>
+<%- end -%>

@@ -1,0 +1,6 @@
+Choose which group you'd like to add permissions to from the list below:<br />
+<ul>
+	<%- @user_groups.each do |group| -%>
+	<li><%= link_to_remote(group.name, :url => edit_user_group_url(group), :method => :get) %></li>
+	<%- end -%>
+</ul>

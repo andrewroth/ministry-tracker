@@ -1,0 +1,12 @@
+<%- form_remote_tag(:id => 'search_form', :onsubmit => 'return false', 
+					:url => search_people_url, :update => type+'_results') do -%>
+ 	Search for a person to add:&nbsp;&nbsp;
+	<%= hidden_field_tag :group_id, @group.id %>
+	<%= text_field_tag :search %> &nbsp;
+	<%= submit_tag('Search') %> &nbsp;
+	<%= link_to_function 'cancel', "$('#add_#{type}').fadeOut()",
+	 								:class => 'cancel'%>
+	<%= hidden_field_tag :type, type %>
+	<%= hidden_field_tag :context, 'group_involvements' %>
+<%- end -%>
+<div id="<%= type %>_results"></div>

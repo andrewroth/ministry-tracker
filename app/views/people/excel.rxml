@@ -1,0 +1,37 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8" 
+xml.Workbook({
+  'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet", 
+  'xmlns:o'    => "urn:schemas-microsoft-com:office:office",
+  'xmlns:x'    => "urn:schemas-microsoft-com:office:excel",    
+  'xmlns:html' => "http://www.w3.org/TR/REC-html40",
+  'xmlns:ss'   => "urn:schemas-microsoft-com:office:spreadsheet" 
+  }) do
+
+  xml.Worksheet 'ss:Name' => 'Directory Listing' do
+    xml.Table do
+      # Header
+      xml.Row do
+        @view.columns.each do |column|
+          xml.Cell {xml.Data column.title, 'ss:Type' => 'String'}
+        end
+      end
+
+      # Rows
+      for person in @people
+        xml.Row do
+          @view.columns.each do |column|
+            value = case column.column_type
+  	          			when 'date'
+            				  date_format(person[column.safe_name])
+            				when 'gender'
+            				  @person.human_gender(person[column.safe_name])
+            				else
+              				person[column.safe_name] 
+              			end
+            xml.Cell {xml.Data value, 'ss:Type' => 'String'}
+          end
+        end
+      end
+    end
+  end
+end

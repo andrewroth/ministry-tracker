@@ -1,0 +1,4 @@
+<strong>New Student</strong><br/>
+<%- form_for @person do |f| -%>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<%- end -%>

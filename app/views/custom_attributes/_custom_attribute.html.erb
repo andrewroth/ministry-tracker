@@ -1,0 +1,10 @@
+<li id="<%= dom_id(custom_attribute) %>">
+<%= link_to_remote(custom_attribute.name, :url => edit_custom_attribute_url(custom_attribute), :method => :get) %> 
+<%- if @ministry.id = custom_attribute.ministry_id -%>
+	| <%= link_to_remote 'delete', 
+						:url => custom_attribute_url(custom_attribute), 
+						:method => :delete,
+						:confirm => "Are you sure you want to delete this question?\nOnce you do, it'll be gone, along with all the answers associated with it.\n YOU'VE BEEN WARNED!",
+						:before => "$('##{dom_id(custom_attribute)}').hide()" %>
+<%- end -%> <span class="small">(added by <%= custom_attribute.ministry.name %>)</span>
+</li>

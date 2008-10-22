@@ -1,0 +1,44 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+yfc:
+  id: 1
+  name: YFC
+  address: 108 E. Burlington Ave
+  city: Westmont
+  state: IL
+  zip: 60559
+  country: United States
+  phone: 555
+  email: asdf
+chicago:
+  id: 2
+  name: Chicago Metro
+  address: 108 E. Burlington Ave
+  city: Westmont
+  state: IL
+  zip: 60559
+  country: United States
+  phone: 555
+  email: asdf
+  parent_id: 1
+  ministries_count: 1
+dg:
+  id: 3
+  name: DG
+  address: 108 E. Burlington Ave
+  city: Westmont
+  state: IL
+  zip: 60559
+  country: United States
+  phone: 555
+  email: asdf
+  parent_id: 2
+top:
+  id: 4
+  name: top
+  address: asdf
+  city: asdf
+  state: IL
+  zip: asdf
+  country: USA
+  phone: 124098
+  email: asdf

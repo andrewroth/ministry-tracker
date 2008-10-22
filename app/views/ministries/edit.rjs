@@ -1,0 +1,6 @@
+page.call('tree.setWidth', '45%')
+page[:ministry].replace_html(:partial => 'form')
+page[:ministry].visual_effect(:appear)
+page[:ministry].visual_effect(:highlight)
+page[:title].replace_html(@ministry.name)
+page[:instructions].replace_html(:partial => 'instructions')

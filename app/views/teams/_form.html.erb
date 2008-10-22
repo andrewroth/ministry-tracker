@@ -1,0 +1,22 @@
+<%= error_messages_for 'team' %>
+<%- remote_form_for @team do |f| -%>
+	<table border="0" cellspacing="5" cellpadding="5">
+		<tr><th colspan="2"><%= @team.new_record? ? 'New Team' : @team.name %></th></tr>
+		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
+    <!-- <tr>
+      <td>Campus: <%= @team.campus_id %> </td>
+      <td>
+        <%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
+      </td>
+    </tr> -->
+		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
+		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
+		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
+		<tr><td>Zip: </td><td><%= f.text_field :zip %></td></tr>
+		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
+		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
+		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
+	</table>
+	<%= submit_tag 'Save' %> or <%= link_to_function 'cancel', "$('#team').fadeOut();$('#new_team_link').show()",
+	 															:class => 'cancel'%>
+<%- end -%>

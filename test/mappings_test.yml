@@ -1,0 +1,19 @@
+tables:
+  test_table: test_table
+relationships:
+  person:
+    has_many:
+      addresses: 
+        key: person_id
+    has_one:
+      current_address: 
+        key: person_id
+        conditions: address_type = 'current'
+      permanent_address:
+        key: person_id
+        conditions: address_type = 'permanent'
+      emergency_address: 
+        key: person_id
+        conditions: address_type = 'emergency'
+test_table:
+  id: test_id

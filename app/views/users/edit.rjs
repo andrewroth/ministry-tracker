@@ -1,0 +1,3 @@
+page['changePassword'].replace(render(:partial => 'change_password', :locals => {:user => @user}))
+page['changePassword'].show
+# page.call('Modalbox.resizeToContent')

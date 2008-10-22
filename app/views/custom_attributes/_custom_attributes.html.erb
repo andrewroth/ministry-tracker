@@ -1,0 +1,26 @@
+<div id="custom_attributes_<%= attrib_type %>">
+	<div id="current_custom_attributes_<%= attrib_type %>" class="right_list">
+		<%#- if attributes.count > 0 -%>
+		<div class="title"><%= attrib_type.to_s.underscore.pluralize.humanize.titleize %></div>
+		<ul id="direct_custom_attribute_<%= attrib_type %>">
+		<%= render :partial => 'custom_attributes/custom_attribute', :collection => attributes %>
+		</ul>
+		<%#- end -%>
+	</div>
+	<!-- div id="instructions_<%= attrib_type %>" -->
+		<!--This screen serves as a launching area for managing <%= @ministry.name %> custom questions. -->
+	<!-- </div><br /> -->
+	<div>
+	<div id="new_custom_attribute_link_<%= attrib_type %>">
+		<%- if attributes.empty? -%>
+			<!--You haven't added any <%= attrib_type.to_s.underscore.pluralize.humanize.downcase %> to your ministry yet. Please click the '<strong>Add a custom question</strong>' link below.<br /><br />-->
+		<%- end -%>
+		<div class="butAdd" ><%= link_to_remote('Add a ' + attrib_type.to_s.underscore.humanize.downcase, :url => new_custom_attribute_url(:type => attrib_type),
+											 	 :before => "$('#new_custom_attribute_link_#{attrib_type}').slideUp();$('#spinner#{attrib_type}').show()")%></div>
+	</div><%= spinner(attrib_type) %>
+	</div>
+	<div>
+		<div id="<%= attrib_type %>">
+		</div>
+	</div>
+</div>

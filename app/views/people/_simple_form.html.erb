@@ -1,0 +1,32 @@
+<table>
+<tr>
+	<td>First Name: </td>
+	<td><%= f.text_field :first_name %></td>
+</tr>
+<tr>
+	<td>Last Name: </td>
+	<td><%= f.text_field :last_name %></td>
+</tr>
+<tr>
+	<td>Gender: </td>
+	<td><%= f.select :gender, [[' -- Choose -- ', ''], ["Male", 1], ['Female', 0]] %></td>
+</tr>
+<%- if params[:student] -%>
+<tr>
+	<td>Main School: </td>
+	<td>
+		<%= select_tag :campus, options_for_select(@ministry.campuses.sort.collect {|c| [c.name, c.id]})%>
+	</td>
+</tr>
+<%- end -%>
+<tr>
+	<td>Email: </td>
+	<td><%= text_field :current_address, :email %></td>
+</tr>
+</table>
+<%- if params[:staff] -%>
+	<%= hidden_field_tag :staff, true %>
+<%- else -%>
+		<%= hidden_field_tag :student, true %>
+<%- end -%>
+

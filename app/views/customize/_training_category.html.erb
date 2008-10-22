@@ -1,0 +1,9 @@
+<h5 ><%= training_category.name %> Questions <span class="small">(added by <%= training_category.ministry.name %>)</span>
+
+<table id="direct_training_questions_<%= training_category.name %>">
+  <th>Activate</th>
+  <th>Mandate</th>
+  <th>Question</th>
+  <%= render :partial => 'training_questions/training_question', :collection => @ministry.all_training_questions.select {|tq| tq.training_category_id == training_category.id} %>
+</table>
+<br/>

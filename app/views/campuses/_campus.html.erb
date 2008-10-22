@@ -1,0 +1,11 @@
+<h4>Campus Details</h4>
+<ul>
+  <li>Enrollment Size: <%= number_with_delimiter(campus.enrollment) %></li>
+</ul>
+<br/>
+<h4>Parent Ministries</h4>
+<ul id="campus-ministry-list">
+  <%- campus.ministries.each do |ministry| -%>
+    <li><%= ministry.name %></li>
+  <%- end -%>
+</ul>

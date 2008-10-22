@@ -1,0 +1,2 @@
+page["view_#{@view.id}"].fade
+page.hide('spinnerview')

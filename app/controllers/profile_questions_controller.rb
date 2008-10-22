@@ -1,0 +1,2 @@
+class ProfileQuestionsController < CustomAttributesController
+end

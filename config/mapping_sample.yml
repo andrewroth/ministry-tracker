@@ -1,0 +1,25 @@
+tables:
+  user: simplesecuritymanager_user
+  person: ministry_person
+  address: ministry_newaddress
+
+# Column Mappings
+user:
+  id: userID
+person:
+  id: personID
+  user_id: fk_ssmUserId
+  first_name: firstName
+  last_name: lastName
+  middle_name: middleName
+  preferred_name: preferredName
+  year_in_school: yearInSchool
+  primary_campus: campus
+address:
+  id: addressID
+  person_id: fk_personID
+  phone: homePhone
+  alternate_phone: cellPhone
+  address_type: addressType
+  dorm: address2
+  room: address3

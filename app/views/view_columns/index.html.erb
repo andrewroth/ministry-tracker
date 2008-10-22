@@ -1,0 +1,16 @@
+<h1>Listing view_columns</h1>
+
+<table>
+  
+<% for view_column in @view_columns %>
+  <tr>
+    <td><%= link_to 'Show', view_column_path(view_column) %></td>
+    <td><%= link_to 'Edit', edit_view_column_path(view_column) %></td>
+    <td><%= link_to 'Destroy', view_column_path(view_column), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New view_column', new_view_column_path %>

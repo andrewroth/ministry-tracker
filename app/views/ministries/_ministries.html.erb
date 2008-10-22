@@ -1,0 +1,154 @@
+<div id="ministries">
+  <h3>Ministries</h3>
+  <div id="instructions">
+  <%- unless @ministry_involvements.empty? -%>
+  	<%= render :partial => 'ministries/instructions' %>
+  <%- else -%>
+		You don't currently have any ministries you're involved in. This usually indicates that something went wrong. 
+		Please contact <%= mail_to 'support@studentnetwork.com' %> to have them add you to the correct ministry.
+	<%- end -%>	
+	  <br />
+	</div>
+	<div id="new_ministry_link">
+	  <br />
+    <%= link_to_remote 'Add a new ministry', {:url => new_ministry_url,
+											 	 :before => "$('#spinner').show()"},
+												 {:class => "action-button"} %>
+		<%= spinner %>
+		<br />
+	</div>
+ 	<div id="two_col">
+    <script type="text/javascript">
+      // * tree - The TreePanel
+      // * target - The node being targeted for the drop
+      // * data - The drag data from the drag source
+      // * point - The point of the drop - append, above or below
+      // * source - The drag source
+      // * rawEvent - Raw mouse event
+      // * dropNode - Drop node(s) provided by the source OR you can supply node(s) to be inserted by setting them on this object.
+      // * cancel - Set this to true to cancel the drop
+   
+
+      // Build tree
+      var Tree = Ext.tree;
+        
+        var tree = new Tree.TreePanel({
+            el:'tree-div',
+            region:'west',
+            width:300,
+            split:true,
+            autoScroll:true,
+            animate:true,
+            enableDD:true,
+            containerScroll: true,
+            loader: new Tree.TreeLoader({
+                dataUrl:'/ministries/list'
+            }),
+        });
+        
+        var root = new Tree.AsyncTreeNode({
+            text: '<%= @root_ministry.name %>',
+            draggable:false,
+            id:'<%= @root_ministry.id %>'
+        });
+        
+        
+        var ajax = new Ext.data.Connection();
+        
+        var tabs = new Ext.TabPanel({
+          // renderTo: 'campus-panel',
+          // width:'%',
+          activeTab: 0,
+          defaults:{autoHeight:true, autoScroll:true},
+          region:'center',
+          split:true,
+          collapsible:false,
+           autoScroll:true,
+          items: [{
+            title: 'Campuses',
+            contentEl: 'campuses'
+          },{
+            title: 'Ministry Details',
+            contentEl: 'ministry'
+          },{
+            title: 'Campus Details',
+            contentEl: 'campus-details'
+          }]
+        });
+        
+        
+        Ext.onReady(function(){
+         
+          // // set the root node
+          
+          tree.setRootNode(root);
+                
+          // what to do on drag/drop
+          tree.on('beforenodedrop', function(e){
+            ajax.request({
+              url:'/ministries/set_parent',
+              method: 'POST',
+              params:{parent_id:e.target.id, id:e.dropNode.id}
+            })
+          });
+          //       
+          // // // What to do when a ministry is clicked
+          tree.on('click', function(e){
+            $.ajax({dataType:'script', type:'get', url:'/ministries/edit/' + e.id});
+            $.ajax({data:'ministry_id='+e.id, dataType:'script', type:'post', url:'/ministry_campuses/list'});
+            // ajax.request({
+            //   url:'/ministry_campuses/list',
+            //   params:{ministry_id:e.id},
+            //   method: 'POST'
+            // });
+          });
+          //       
+          // // render the tree
+          // tree.render();
+          root.expand();
+          // 
+          
+        
+          var main = new Ext.Panel({
+            title: 'Ministries',
+            // collapsible: true,
+            width:680,
+            height:500,
+            plain:true,
+            layout: 'border',
+            renderTo:'main-panel',
+            items: [tree, tabs]
+          });
+        });
+      
+      function addMinistry(name, id, parent) {
+        parent_node = tree.getNodeById(parent);
+        parent_node.appendChild(new Tree.TreeNode({"id":id,"text":name,"cls":"file","expanded":true}));
+      }
+      function removeMinistry(id, parent) {
+        parent_node = tree.getNodeById(parent)
+        child = tree.getNodeById(id);
+        parent_node.removeChild(child);
+      }
+      
+      function updateMinistryName(name, id) {
+        node = tree.getNodeById(id);
+        node.setText(name);
+      }
+    </script>
+    <div id="main-panel"></div>
+    <div id="tree-div"></div>
+    <div id="campus-panel"></div>
+    <div id="edit-ministry" style="display:none">
+    	<div id="ministry"><%= render :partial => 'ministries/form' %></div>
+    	<div id="campus-details"><%= render :partial => 'campuses/campus', :locals => {:campus => @ministry.unique_campuses.first.campus} unless @ministry.unique_campuses.empty? %></div>
+    </div>
+	</div>
+	<div id="campuses">
+	  <ul id="campus_list"><%= render :partial => @ministry.unique_campuses.sort %></ul><br/>
+	    		<%= link_to_remote('Add a campus', :url => new_ministry_campus_url,
+  											 	 :before => "$('#spinnerministry').show()")%><%= spinner('ministry') %>
+  	<div id="new_campus" style="display:none">	</div>
+	</div>
+	
+</div>

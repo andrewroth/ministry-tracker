@@ -1,0 +1,12 @@
+<%- campus = ministry_campus.campus -%>
+<li id="<%= dom_id(ministry_campus) %>">
+<%#= link_to_remote(campus.name, :url => campus_url(campus), :method => :get) %> 
+<%= link_to_remote(h(campus.name), :url => details_campus_path(campus),
+  											 	 :before => "$('#spinner').show()") %>
+<%- if @ministry.id == ministry_campus.ministry_id -%>
+	<%= link_to_remote image_tag('delete.png'), 
+						:url => ministry_campus_path(ministry_campus), 
+						:method => :delete,
+						:confirm => "Are you sure you want to delete this campus?\nOnce you do, it'll be gone, along with all the people on it.\n YOU'VE BEEN WARNED!" %>
+<%- end -%>
+</li>

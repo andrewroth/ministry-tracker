@@ -1,0 +1,3 @@
+page['campus-details'].replace_html :partial => 'campus', :locals => {:campus => @campus}
+page.call('tabs.setActiveTab', 2)
+page['spinner'].hide

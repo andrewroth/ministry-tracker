@@ -1,0 +1,4 @@
+<br /><strong>Add a High School</strong><br />
+Pick a county: <%= select_tag( :county, options_for_select(@counties.collect {|c| c.name}.insert(0,['-- Choose County --','']), params[:country])) %>
+<%= observe_field(:county, {:url => change_county_campuses_url, :with => 'county', :loading => "$('#spinner3').show()"}) %>
+<%= spinner(3) %>

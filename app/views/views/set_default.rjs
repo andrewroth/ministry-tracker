@@ -1,0 +1,7 @@
+@ministry.views.each do |view|
+  page["devault_view_image_#{view.id}"].replace_html(link_to_remote(image_tag('silk/check_no.png'), :url => set_default_view_path(:id => view, 'view[default_view]' => 1), 
+                                                                                                    :method => :put,
+                                                                                                    :before => "$('#spinnerview').show()"))
+end 
+page["devault_view_image_#{@view.id}"].replace_html(image_tag('silk/check_yes.png'))
+page['spinnerview'].hide

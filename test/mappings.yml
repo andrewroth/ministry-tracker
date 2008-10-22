@@ -1,0 +1,47 @@
+# tables:
+#   user: simplesecuritymanager_user
+#   person: ministry_person
+#   address: ministry_newaddress
+#   group: sn_groups
+#   campus_involvement: sn_campus_involvements
+#   campus: ministry_targetarea
+#   custom_attribute: sn_custom_attributes
+#   custom_value: sn_custom_values
+#   dorm: sn_dorms
+#   group_involvement: sn_group_involvements
+#   ministry_campus: sn_ministry_campuses
+#   ministry_involvement: sn_ministry_involvements
+#   ministry_role: sn_ministry_roles
+#   ministry: sn_ministries
+#   permission: sn_permissions
+#   staff: ministry_staff
+#   user_group: sn_user_groups
+#   user_group_permission: sn_user_group_permissions
+#   user_membership: sn_user_memberships
+#   user: simplesecuritymanager_user
+# 
+# # Column Mappings
+# user:
+#   id: userID
+#   guid: globallyUniqueID
+# person:
+#   id: personID
+#   user_id: fk_ssmUserId
+#   first_name: firstName
+#   last_name: lastName
+#   middle_name: middleName
+#   preferred_name: preferredName
+#   year_in_school: yearInSchool
+#   primary_campus: campus
+# address:
+#   id: addressID
+#   person_id: fk_personID
+#   phone: homePhone
+#   alternate_phone: cellPhone
+#   address_type: addressType
+#   dorm: address2
+#   room: address3
+# campus:
+#   id: targetAreaID
+# country:
+#   is_closed: closed

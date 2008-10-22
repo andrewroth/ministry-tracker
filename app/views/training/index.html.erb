@@ -1,0 +1,19 @@
+<h1><%= @person.full_name %></h1> 
+<div class="divider" style="margin-bottom:0;">&nbsp;</div>
+<%- remote_form_for @person do |f| -%>
+    <%= hidden_field_tag :no_profile, true %>
+    <%- @ministry.all_training_categories.each do |category| -%>
+      <h3 class="title"><%= category.name %></h3>
+  		<table width="100%">
+  		<%- @ministry.all_training_questions.select {|q| q.training_category_id == category.id}.each do |q| 
+  		  if q.activated? -%>
+    		<tr>
+    			<td width="20%" nowrap="nowrap"><%= q.activity %>: </td>
+    			<td> <%= training_question_field(q, @person) %></td>
+    		</tr>
+    		<%- end -%>
+  	  <%- end -%>
+  		</table>
+  	<%- end -%>
+		<%= submit_tag %>
+<%- end -%>

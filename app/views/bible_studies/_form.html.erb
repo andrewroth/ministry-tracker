@@ -1,0 +1,31 @@
+<%= error_messages_for 'bible_study' %>
+<%- remote_form_for @bible_study do |f| -%>
+	<table border="0" cellspacing="5" cellpadding="5">
+		<tr><th colspan="2"><%= @bible_study.new_record? ? 'New Bible Study' : @bible_study.name %></th></tr>
+		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
+		<tr>
+			<td>Campus: </td>
+			<td>
+				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
+				<%= observe_field(:bible_study_campus_id, :url => list_dorms_url(), :update => 'bible_study_dorm_id', :with => "campus_id") %>
+			</td>
+		</tr>
+		<%- dorms =  @campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : [] -%>
+		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
+		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
+		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
+		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
+		<tr><td>Zip: </td><td><%= f.text_field :zip %></td></tr>
+		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
+		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
+		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
+	</table>
+	<%= submit_tag 'Save' %> or 
+	<%- if params[:action] == 'new' -%>
+		<%= link_to_function 'cancel', "$('#bible_study').fadeOut();$('#new_bible_study_link').show()",
+	 															:class => 'cancel'%>
+	<%- else -%>
+		<%= link_to_function 'cancel', "$('#address_form')fadeOut();$('#address').show()",
+	 															:class => 'cancel'%>
+	<%- end -%>
+<%- end -%>

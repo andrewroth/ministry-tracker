@@ -1,0 +1,2 @@
+page.call('addMinistry', @new_ministry.name, @new_ministry.id, @new_ministry.parent_id)
+page.call('tabs.setActiveTab', 0)

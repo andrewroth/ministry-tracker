@@ -1,0 +1,5 @@
+if @ministry.unique_campuses.empty?
+  page['campus_list'].replace_html ''
+else
+  page['campus_list'].replace_html :partial => @ministry.unique_campuses.sort
+end

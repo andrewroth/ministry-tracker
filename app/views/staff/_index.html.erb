@@ -1,0 +1,15 @@
+<div id="staff">
+	<div id="current_campuses" class="right_list">
+		<div class="title"><%= @ministry.name %> Staff</div>
+		<ul id="staff_list">
+		<%= render :partial => 'staff/staff', :collection => @staff %>
+		</ul>
+	</div>
+	<div id="instructions">
+		This screen serves as a launching area for managing the staff people in your ministry. 
+	</div><br />
+	<div id="add_person_link">
+		<%= link_to_remote("Add a staff member", :url => new_person_url(:staff => true), :before => "$('#spinner').show()") %><%= spinner %><br />
+	</div>
+	<div id="person" style="display:none"></div>
+</div>

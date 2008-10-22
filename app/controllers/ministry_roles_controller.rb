@@ -1,0 +1,2 @@
+class MinistryRolesController < ApplicationController
+end

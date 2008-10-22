@@ -1,0 +1,4 @@
+page.insert_html :top, 'unused_columns', :partial => 'views/unused_column', 
+                  :locals => {:unused_column => @view_column.column, :view => @view}
+page["item_#{@view_column.id}"].hide
+page[:spinner].hide

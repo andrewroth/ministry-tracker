@@ -1,0 +1,3 @@
+class College < Campus
+  
+end

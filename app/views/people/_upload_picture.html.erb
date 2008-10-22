@@ -1,0 +1,14 @@
+<div style="display:none" id="uploadPicture" class="passwordbox">
+<div><h3 class="lbtitle">Change profile picture</h3></div>
+  <%- @upid = Time.now.to_i.to_s -%>
+  <%- form_for(@profile_picture, :html => {:multipart => true}) do |f|  -%>
+    <div class="popupfield">
+		  <h3>New Picture:</h3> 
+    	
+		<%= f.file_field :uploaded_data, :size => '18px' %>
+		<%= f.hidden_field :person_id%>
+		<%= submit_tag :Upload, :id => 'upload', :onclick => "tb_remove()" %>
+	  </div><br>
+	  <%= link_to_function("cancel", "tb_remove()") %>
+  <%- end -%>
+</div>

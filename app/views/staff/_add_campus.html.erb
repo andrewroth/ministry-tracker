@@ -1,0 +1,11 @@
+<%- remote_form_for :staff, :url => demote_staff_url(@staff) do |f| -%>
+  <table>
+  <tr>
+  	<td>Main School: </td>
+  	<td>
+  		<%= select_tag :campus, options_for_select(@ministry.unique_campuses.collect {|c| [c.campus.name, c.campus.id]})%>
+  	</td>
+  </tr>
+  <table>
+  <%= f.submit "Submit" %> or <%= link_to_function 'cancel', "$('#campus_form#{@staff.id}').hide()" %>
+<%- end -%>

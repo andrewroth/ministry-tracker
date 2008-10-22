@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
+		<%= stylesheet_link_tag "style", :media => "all" %>
+    <%= stylesheet_link_tag "thickbox", :media => "screen" %>
+		<%= stylesheet_link_tag "ext/ext-all", :media => "screen" %>
+		<%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag 'thickbox-compressed' %>
+		<%= javascript_include_tag 'alternate' %>
+		<%= javascript_include_tag 'ext-jquery-adapter' %>
+		<%= javascript_include_tag 'ext-all' %>
+		<script type="text/javascript" src="/javascripts/calendar.js"></script>
+		<script type="text/javascript" src="/javascripts/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="/javascripts/calendar-setup.js"></script>
+		<style type="text/css">@import url(/stylesheets/calendar/calendar-win2k-1.css);</style>
+	</head>
+	<body>
+		<div id="outer">
+		<div id="wrapper">
+			<div id="logout">
+				<%= link_to("logout", session_url, :method => :delete) %>&nbsp;&nbsp;&nbsp;
+			</div>
+			<%- if @ministry && is_staff -%>
+			
+			<!--
+			<div id="addStudentLink">
+				<%= link_to_function(image_tag("add_student.png"), "show_add_student()") %>&nbsp;&nbsp;&nbsp;
+			</div>
+			-->
+			
+			<% end %>
+			<div id="header">
+				
+				<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
+			</div>
+			<%= tabnav :main %>
+			<div class="clear">&nbsp;</div>
+			<div class="flash notice" id="flash_notice"><%= flash[:notice] if flash[:notice] %></div>
+			<div class="flash warning" id="flash_warning"><%= flash[:warning] if flash[:warning] %></div>
+			<div id="content">
+				<%= yield %>
+				<div class="clear">&nbsp;</div>
+				<br />
+			</div>
+		</div> <!-- Wrapper -->
+		
+		<div id="footer"><table width="100%"><tr><td width="18%">
+		<%= image_tag("logo.png") %></td><td style="font-size:11px;"> <!-- <a href="">Help</a> &nbsp;&nbsp;
+		    <br>  -->
+		Student Network is part of the <a href="http://www.ministryhacks.com/">MinistryHacks Toolbox</a>
+		</td><td align="right">
+		<a href="http://www.ministryhacks.com/" target="_new"><%= image_tag("mh_logo.png") %></a>
+		</td></tr></table>
+		</div>
+		
+		</div> <!-- Center -->
+		<script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+      var pageTracker = _gat._getTracker("UA-79392-17");
+      pageTracker._initData();
+      pageTracker._trackPageview();
+    </script>
+	</body>
+</html>

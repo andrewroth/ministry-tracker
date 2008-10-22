@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+josh_current:
+  addressid: 1
+  addressType: current
+  fk_personID: 50000
+  title: Home
+  address1: 108 E. Burlington Ave.
+  address2:
+  city: Westmont
+  state: IL
+  zip: 60559
+  homephone: 847-980-1420
+  cellphone:
+  dorm:
+  room:
+  start_date: 2006-12-15
+  end_date:
+  email: josh.starcher@uscm.org
+josh_emergency:
+  addressid: 2
+  addressType: emergency1
+  fk_personID: 1
+  title: Emergency

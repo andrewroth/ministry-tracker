@@ -1,0 +1,3 @@
+page[params[:type]].replace_html(:partial => 'form', :locals => {:type => params[:type]})
+page[params[:type]].show
+page['spinner' + params[:type]].hide

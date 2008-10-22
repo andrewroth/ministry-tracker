@@ -1,0 +1,7 @@
+<%= error_messages_for :user_group %>
+<%- remote_form_for @user_group do |f| -%>
+	Name: <%= f.text_field :name %><br /><br />
+	<%= submit_tag 'Save' %> or
+	<%= link_to_function 'cancel', "$('#user_group').slideUp();$('#permissions').show()",
+	 															:class => 'cancel'%>
+<%- end -%>

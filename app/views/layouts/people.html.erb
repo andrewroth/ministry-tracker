@@ -1,0 +1,10 @@
+<%- inside_layout 'application' do -%>
+  <div id="subtabs">
+  <ul class="subtabs-menu">
+  <li><%= link_to('Profile', person_path(@person), :class => params[:controller] == 'people' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+  <li><%= link_to('Involvement', person_involvement_index_path(@person), :class => params[:controller] == 'involvement' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+  <li><%= link_to('Training', person_training_index_path(@person), :class => params[:controller] == 'training' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+  </ul>
+  </div>
+  <%= yield %>
+<%- end -%>

@@ -1,0 +1,2 @@
+class InvolvementQuestionsController < CustomAttributesController
+end

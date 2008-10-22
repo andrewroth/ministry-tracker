@@ -1,0 +1,26 @@
+<div id="bible_studies">
+	<div id="current_bible_studies" class="right_list">
+		<%- if @ministry.bible_studies.count > 0 -%>
+		<div class="title"><%= @ministry.name %> Bible Studies</div>
+		<ul id="direct_bible_study">
+		<%= render :partial => @ministry.bible_studies %>
+		</ul>
+		<%- end -%>
+	</div>
+	<div id="instructions">
+		This screen serves as a launching area for managing <%= @ministry.name %> bible studies. 
+	</div><br />
+	<div>
+	<div id="new_bible_study_link">
+		<%- if @ministry.bible_studies.empty? -%>
+			You haven't added any bible studies to your ministry yet. Please click the '<strong>Add a bible study</strong>' link below.<br /><br />
+		<%- end -%>
+		<%= link_to_remote('Add a bible study', :url => {:action => :new},
+											 	 :before => "$('#new_bible_study_link').slideUp();$('#spinner').show()")%>
+	</div><%= spinner %>
+	</div>
+	<div>
+		<div id="bible_study">
+		</div>
+	</div>
+</div>

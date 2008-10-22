@@ -1,0 +1,29 @@
+<table id="views">
+<% for view in @views %>
+  <tr id="view_<%= view.id %>">
+    <td width="90%"><%= view.title %>&nbsp;&nbsp;</td>
+    <td><%= link_to image_tag('edit.png'), edit_view_path(view) %>&nbsp;&nbsp;&nbsp;</td>
+    <td class="devault_view_image" id="devault_view_image_<%= view.id %>">
+      <%- if view.default_view? -%>
+        <%= image_tag('silk/check_yes.png') %><!-- default view -->
+      <%- else -%>
+        <%= link_to_remote image_tag('silk/check_no.png'), :url => set_default_view_path(:id => view, 'view[default_view]' => 1), 
+                                                           :method => :put,
+                                                           :before => "$('#spinnerview').show()" %>
+      <%- end -%>
+      &nbsp;&nbsp;&nbsp;
+    </td>
+    <td>
+      <%= link_to_remote(image_tag('delete.png'), :url => view_path(view), 
+                                                  :confirm => 'Are you sure you want to delete this view?', 
+                                                  :method => :delete,
+                                                  :before => "$('#spinnerview').show()")  unless @views.size == 1 %>
+      &nbsp;&nbsp;&nbsp;
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= spinner('view') %>
+<br />
+
+<div class="butAdd" ><%= link_to 'New view', new_view_path %></div>

@@ -1,0 +1,12 @@
+<h1>Editing column</h1>
+
+<%= error_messages_for :column %>
+
+<% form_for(:column, :url => column_path(@column), :html => { :method => :put }) do |f| %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', columns_path %>

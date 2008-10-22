@@ -1,0 +1,2 @@
+Pick a school: <%= select_tag( :campus_id, options_for_select(@high_schools.collect() {|hs| [hs.name, hs.id]}.insert(0,['-- Choose School --',''])), :id => 'hs', :style => 'width:300px') %>
+<%= observe_field(:hs, {:function => "$('#add_high_school').show()"}) %>

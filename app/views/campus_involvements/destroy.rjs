@@ -1,0 +1,2 @@
+page["ci_#{@campus_involvement.id}"].fade
+page.hide('spinner')

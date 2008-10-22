@@ -1,0 +1,2 @@
+update_flash(page, flash[:notice])
+page[:manage].replace_html(:partial => 'teams')

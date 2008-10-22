@@ -1,0 +1,3 @@
+class HighSchool < Campus
+  
+end

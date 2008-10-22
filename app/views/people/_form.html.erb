@@ -1,0 +1,14 @@
+<% @person = person %>
+<%= render :partial => 'people/simple_form', :locals => {:f => f} %>
+<br />
+<div id="contact_info">
+	<div id="contact_info_link">
+		<%= link_to_function "Add contact information", "$('#contact_info_link').hide();$('#contact_info_form').show()" %> 
+		-- You can do this later
+	</div>
+	<div id="contact_info_form" style="display:none"><%= render :partial => "people/contact_form" %></div>
+</div>
+<br />
+<%= submit_tag "Save", {:id => 'save', :onclick => "$('#save').hide();$('#spinnerform').show()"} %> <%= spinner('form') %> 
+<% if request.xhr? %>or <%= link_to_function 'cancel', "$('#person').fadeOut();$('#add_person_link').show()",
+ 															:class => 'cancel'%><% end %>

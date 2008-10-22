@@ -1,0 +1,22 @@
+<div id="teams">
+	<div id="current_teams" class="right_list">
+		<%- if @ministry.teams.count > 0 -%>
+		<div class="title"><%= @ministry.name %> Teams</div>
+		<ul id="direct_team">
+		<%= render :partial => @ministry.teams %>
+		</ul>
+		<%- end -%>
+	</div>
+	<div id="instructions">
+		This screen serves as a launching area for managing <%= @ministry.name %> teams. 
+	</div><br />
+	<div id="team" style="display:none">
+	</div>
+	<div id="new_team_link">
+		<%- if @ministry.teams.empty? -%>
+			You haven't added any teams to your ministry yet. Please click the '<strong>Add a team</strong>' link below.<br /><br />
+		<%- end -%>
+		<%= link_to_remote('Add a team', :url => {:action => :new},
+											 	 :before => "$('#new_team_link').slideUp();$('#spinner').show()")%>
+	</div><%= spinner %>
+</div>

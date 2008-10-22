@@ -1,0 +1,117 @@
+<% @site_title = 'Directory' -%>
+<script language="JavaScript" type="text/javascript">
+	function switchCheck(form) {
+		if(form["select_all"].checked == true) {
+			checkAll(form)
+		} else {
+			uncheckAll(form)
+		}
+	}
+	function checkAll(form) {
+		for(i=0; i< form.length; i++)
+			form[i].checked = true;
+	}
+	// Uncheck all the options option
+	function uncheckAll(form) {
+		for(i=0; i< form.length; i++)
+			form[i].checked = false;
+	}
+</script>
+<div class="sectionHeader">
+	<h2><%= @campus ? @campus.name : @ministry.name %> Directory</h2>
+</div>
+<div id="searchBox">
+	<%- form_tag directory_people_url do -%>
+		Search by name or email: <%= text_field_tag "search"%> <%= submit_tag "Go"%> &nbsp;&nbsp;
+    <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->
+		<div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#ministry').show()") %></div>
+		<%= select_tag("ministry", options_for_select(@me.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+		<%= observe_field(:ministry, {:url => change_ministry_people_url, :with => 'ministry'} ) -%>
+		View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
+		<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
+		<div class="butDExcel" ><%= link_to "", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search => params[:search]) %></div>
+<!--	
+		<%= link_to "Advanced Search"%> &nbsp;&nbsp;
+		<%= link_to "More actions..."%>
+-->
+	<%- end -%>
+	
+<%- if @count > 2000 -%><br />
+	| 
+	<%- ('A'..'Z').each do |l| -%>
+		<%= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search => params[:search]) %> | 
+		<%- finish = (l == 'Z') ? '' : l.next -%>
+		<%= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search => params[:search]) %> | 
+	<%- end -%>
+<%- elsif @count > 500 
+	# set the default start value to A
+	params[:start] ||= 'A'
+	-%><br />
+	<%- ('A'..'Z').each do |l| 
+		finish = (l == 'Z') ? '' : l.next-%>
+		<%= link_to l, directory_people_url(:start => l, :finish => finish, :search => params[:search]) %> | 
+	<%- end -%>
+<%- end -%>
+</div>
+<%- if @conditions -%>
+<div class="yoursearch">Search Results for: <strong><%= params[:search] || 'Everybody' %></strong></div>
+<%- unless params[:start].to_s.empty? -%>
+	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
+<% end %>
+<div id="people">
+	<%= form_tag({}, :name => 'people_form', :id => 'people_form') %>
+	<table cellpadding="0" cellspacing="0" class="directorytable">
+		<thead class="center">
+<!--
+			<th>
+				<%= check_box_tag 'select_all', 1, false, :onClick => "switchCheck($('#people_form'));" %>
+				<%= image_tag "button_edit_grey_tiny.gif", :size => '13x13', :border => '0', :style => "visibility:hidden"%>
+			</th>
+-->
+  <%- @view.columns.each do |column| -%>
+			<th><%= column.title %></th>
+	<%- end -%>
+			<th>&nbsp;</th>
+		</thead>
+		<tbody>
+		<%- @people.each_with_index do |person, i|  -%>
+			<tr <%= i.even? ? 'class="highlight"' : 'class="nohighlight"' %> onclick="javascript:document.location = '<%= person_path(person['person_id']) %>'">
+<!--
+				<td>
+					<%= i+1 %>.
+					<%= check_box_tag 'person[]'%>
+					<%= image_tag "button_edit_grey_tiny.gif", :size => '13x13', :border => '0'%>
+				</td>
+-->
+      <%- @view.columns.each do |column| -%>
+				<td><%= 
+				case column.column_type
+				when 'image'
+				  if person[column.safe_name]
+				    file_id, filename = person[column.safe_name].split('|')
+            filename = filename.split('.')
+            filename = filename[0] + '_mini.' + filename[1]
+  				  image_tag("http://s3.amazonaws.com/ccc_profile_pictures/profile_pictures/#{file_id}/#{filename}") 
+				  end
+				when 'date'
+				  date_format(person[column.safe_name])
+				when 'gender'
+				  @person.human_gender(person[column.safe_name])
+				when 'url'
+				  unless person[column.safe_name].blank?
+  				  desc, url = parse_url(person[column.safe_name])
+  				  link_to(desc, url, :target => '_blank')
+  			  end
+				else
+  				person[column.safe_name] 
+  			end %></td>
+	    <%- end -%>
+				<td><span class="butProfile"><%= link_to 'Profile', person_url(person['person_id']) %></span></td>
+			</tr>
+			<%- end -%>
+			
+		</tbody>
+	</table>
+  (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found
+</div>
+  <%- end -%>

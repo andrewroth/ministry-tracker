@@ -1,0 +1,12 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+josh:
+  userid: 1
+  username: josh.starcher@uscm.org
+  password: test
+  globallyUniqueID: F167605D-94A4-7121-2A58-8D0F2CA6E026
+  
+fred:
+  userid: 2
+  username: fred@uscm.org
+  password: test
+  

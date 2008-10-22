@@ -1,0 +1,6 @@
+page.insert_html :bottom, 'column_list', :partial => 'views/view_column', 
+                  :locals => {:view_column => @view_column}
+page["column_#{@view_column.column.id}"].hide
+page[:spinner].hide
+page.sortable('column_list', :url => { :action => "reorder", :id => @view_column.view },
+	                           :complete => visual_effect(:highlight, 'column_list' ))

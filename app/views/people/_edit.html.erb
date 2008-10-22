@@ -1,0 +1,72 @@
+<%= error_messages_for :person, :current_address, :perm_address %>
+<% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
+	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address">
+	<tr>	
+	
+	<td colspan=2 valign=top>
+	<table>
+	<tr><td>First Name</td><td><%= text_field :person, :first_name %></td></tr>
+	<tr><td>Last Name</td><td><%= text_field :person, :last_name %></td></tr>
+	<tr><td>Email</td><td><%= text_field :current_address, :email %></td></tr>
+	<tr><td>Date of Birth</td><td class="date"><%= f.date_select :birth_date, date_options(1920) %></td></tr>
+	<tr><td>Gender</td><td><%= f.select :gender, [['Male', 1],['Female', 0]], {}, :selected => @person.gender %></td></tr>
+	</table>
+	</td>
+
+	<td colspan=2 valign=top>
+	<table>	
+  	<tr><td>Year in School</td><td><%= f.text_field :year_in_school %></td></tr>
+  	<tr><td>Graduation Date</td><td class="date"><%= f.date_select :graduation_date, date_options(1950) %></td></tr>
+  	<tr><td>Major</td><td><%= f.text_field :major %></td></tr>
+  	<tr><td>Minor</td><td><%= f.text_field :minor %></td></tr>
+  	<tr><td>Website</td><td><%= f.text_field :url %></td></tr>
+	</table>
+	</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2"><h4 class="title">Current Address</h4></td>
+		<td colspan="2"><h4 class="title">Permanent Address</h4></td>
+	</tr>
+	
+
+	<tr>
+	<td colspan=2 valign=top>
+		<table>
+		<tr><td>Phone</td><td><%= text_field :current_address, :phone %></td></tr>
+		<tr><td>Alternate Phone</td><td><%= text_field :current_address, :alternate_phone %></td></tr>
+		<tr><td>Address 1:</Td><td><%= text_field :current_address, :address1 %></td></tr>
+		<tr><td>Address 2:</td> <td><%= text_field :current_address, :address2 %></td></tr>
+		<tr><td>City: </td><td><%= text_field :current_address, :city %></td></tr>
+		<tr><td>State:</td> <td><%= text_field :current_address, :state %></td></tr>
+		<tr><td>Zip:</td> <Td><%= text_field :current_address, :zip %></td></tr>
+		<tr><td>Dorm:</td> <Td><%= text_field :current_address, :dorm %></td></tr>
+		<tr><td>Room:</td><td><%= text_field :current_address, :room %></td></tr>
+		</table>
+		</td>
+		
+	<td colspan=2 valign=top>
+	
+		<table>
+		<tr><td>Phone</td><td><%= text_field :perm_address, :phone %></td></tr>
+		<tr><td>Address 1:</Td><td><%= text_field :perm_address, :address1 %></td></tr>
+		<tr><td>Address 2:</td> <td><%= text_field :perm_address, :address2 %></td></tr>
+		<tr><td>City: </td><td><%= text_field :perm_address, :city %></td></tr>
+		<tr><td>State:</td> <td><%= text_field :perm_address, :state %></td></tr>
+		<tr><td>Zip:</td> <Td><%= text_field :perm_address, :zip %></td></tr>
+		</table>
+		</td>
+
+	</tr>
+
+	<tr>
+		<td colspan="4" class="date"><br />
+			Valid from <strong><%= date_select :current_address, :start_date, date_options %></strong> 
+			through <strong><%= date_select :current_address, :end_date, date_options %></strong>
+		</td>
+	</tr>
+	</table>
+	<br />
+	<%= submit_tag "Save" %> or <%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()",
+	 															:class => 'cancel'%>
+<%- end -%>

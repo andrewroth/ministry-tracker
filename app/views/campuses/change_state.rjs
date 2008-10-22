@@ -1,0 +1,7 @@
+page[:colleges].replace_html :partial => 'choose_college'
+# page[:counties].replace_html :partial => 'choose_county'
+# page[:high_schools].replace_html ''
+page[:colleges].show
+page[:add_college].hide
+# page[:add_high_school].hide
+hide_spinner(page, 2)

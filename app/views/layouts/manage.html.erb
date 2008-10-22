@@ -1,0 +1,66 @@
+<%- inside_layout 'application' do -%>
+
+<div id="manage">
+
+	<div id="addStudentLink">
+		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
+		                                                 :loading => "$('#spinneradd_student').show();",
+		                                                 :complete => "$('#spinneradd_student').hide();
+		                                                                show_add_student()") %>
+		<%= spinner('add_student') %>
+		or <%= link_to('import a bunch of students', new_import_path) %>
+    <!-- <ul id="boo">
+      <li>UC Davis Cru</li>
+      <li>Arizona State University</li>
+      <li>Destino Latino</li>     
+      <li>Chinese are on the move</li>
+      <li>Chuck Norris Approved</li>
+      <li>Kimchi</li>     
+      <li>Happy Feet, Smell Em</li> 
+      <li>Berkley</li>
+    </ul>  -->		
+	</div>
+
+  <div id="left-body">
+    <%= yield %>
+  </div>
+
+</div>
+
+<div id="right-menu" class="right-menu">
+	<ul class="right-menu-list">
+		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
+		<%= link_to 'Ministries', ministries_url %></li>
+    <!-- <li<%= ' class="highlighted"' if params[:controller] == "ministry_campuses" %>>
+    <%= link_to 'Campuses', ministry_campuses_url %></li> -->
+		<li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
+		<%= link_to 'Staff', {:controller => :staff} %></li>
+		<!-- <li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
+		    <%= link_to 'Permissions', permissions_url %></li> -->
+		<li<%= ' class="highlighted"' if params[:controller] == "bible_studies" %>>
+		<%= link_to 'Bible Studies', bible_studies_url %></li>
+		<li<%= ' class="highlighted"' if params[:controller] == "teams" %>>
+		<%= link_to 'Teams', teams_url %></li>
+		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
+		<%= link_to 'Customize', customize_url(@ministry) %></li>
+		
+		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
+		    <%= link_to 'Custom Attributes', custom_attributes_url %></li> 
+		    
+		    <li<%= ' class="highlighted"' if params[:controller] == "views" %>>
+    		<%= link_to 'Directory Views', views_url %></li>
+		-->
+    <!-- <li<%= ' class="highlighted"' if params[:controller] == "training_categories" %>>
+    <%= link_to 'Training Categories', training_categories_url %></li> -->
+		
+	<%# BAAAAAAD Josh %>
+		
+		<%- if current_user.username == 'josh.starcher@uscm.org' -%>
+  		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
+  		<%= link_to 'Columns', columns_url %></li>
+		<%- end -%>
+		<%# BAAAAAAD Josh %>
+	</ul>
+</div>
+<%= render :partial => 'students/ajax_form', :locals => {:person => Person.new} %>
+<%- end -%>

@@ -1,0 +1,41 @@
+<tr id="<%= dom_id(training_question) %>">
+  <td>
+    <%- unless training_question.mandated? -%>
+      <%- if training_question.activated? -%>
+        <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, 'training_question[activated]' => 0), 
+                                                           :method => :put,
+                                                           :before => "$('#spinnertq').show()" %>
+      <%- else -%>
+        <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, 'training_question[activated]' => 1), 
+                                                           :method => :put,
+                                                           :before => "$('#spinnertq').show()" %>
+      <%- end -%>
+    <%- end -%>
+  </td>
+  <td>
+    <%- if training_question.ministry_id == @ministry.id -%>
+      <%- if training_question.mandated? -%>
+          <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, 'training_question[mandated]' => 0), 
+                                                             :method => :put,
+                                                             :before => "$('#spinnertq').show()" %>
+      <%- else -%>
+        <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, 'training_question[mandated]' => 1), 
+                                                           :method => :put,
+                                                           :before => "$('#spinnertq').show()" %>
+      <%- end -%>
+    <%- else -%>                                                    
+      &nbsp;
+    <%- end -%>
+  </td>
+  <td>
+    <%= link_to_remote(training_question.activity, :url => edit_training_question_url(training_question), :method => :get) %> 
+    <%- if @ministry.id == training_question.ministry_id -%>
+    	| <%= link_to_remote image_tag('delete.png'), 
+    						:url => training_question_url(training_question), 
+    						:method => :delete,
+    						:confirm => "Are you sure you want to delete this question?\nOnce you do, it'll be gone, along with all the answers associated with it.\n YOU'VE BEEN WARNED!",
+    						:before => "$('##{dom_id(training_question)}').hide()" %>
+    <%- end -%>
+    <span class="small">(added by <%= training_question.ministry.name %>)</span>
+  </td>
+</tr>

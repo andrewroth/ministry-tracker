@@ -1,0 +1,4 @@
+# page[:ministry].hide
+update_flash(page)
+page.call('tree.setWidth', '80%')
+page.call('updateMinistryName', @ministry.name, @ministry.id)

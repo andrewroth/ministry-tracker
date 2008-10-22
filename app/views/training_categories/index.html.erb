@@ -1,0 +1,18 @@
+<div class="title">Training Categories</div>
+<div id="training_categories">
+	<div id="current_training_categories" class="right_list">
+		<table id="training_categories_list">
+		<%= render :partial => 'training_categories/training_category', :collection => @training_categories %>
+		</table>
+	</div>
+	<div>
+	  <div id="new_training_category_link">
+  		<div class="butAdd" ><%= link_to_remote('Add a training category', :url => new_training_category_url,
+  											 	 :before => "$('#new_training_category_link').hid();$('#spinnertc').show()")%></div>
+  	</div><%= spinner('tc') %>
+	</div>
+	<div>
+		<div id="training_category">
+		</div>
+	</div>
+</div>

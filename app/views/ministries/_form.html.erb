@@ -1,0 +1,30 @@
+<%= error_messages_for 'ministry' %>
+<%- remote_form_for @ministry do |f| -%>
+	<table border="0" cellspacing="5" cellpadding="5">
+		<tr><td>Ministry Name: </td><td><%= f.text_field :name %></td></tr>
+		<tr>
+			<td>Your Role: </td>
+			<%- ministry_roles =  !@ministry.ministry_roles.empty? ? @ministry.ministry_roles.collect {|r| [r.name] } : ['Director','Staff']-%>
+			<td><%= select(:ministry_involvement, :ministry_role, ministry_roles) %></td>
+		</tr>
+		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
+		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
+		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
+		<tr><td>Zip: </td><td><%= f.text_field :zip %></td></tr>
+		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
+		<tr><td>Phone: </td><td><%= f.text_field :phone %></td></tr>
+		<tr><td>Fax: </td><td><%= f.text_field :fax %></td></tr>
+		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
+		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
+	</table>
+	<p>
+  	<%= submit_tag 'Save' %>
+  	<%- unless @ministry.new_record? -%>
+  	 or <%= link_to_remote 'delete', {:url => ministry_url(@ministry),
+  	                                  :method => :delete,
+  	                                  :before => "$('#ministry').fadeOut();$('#new_ministry_link').show()",
+  	                                  :confirm => "Are you sure you want to delete this ministry?\nOnce you do, it'll be gone, along with all the people on it.\n YOU'VE BEEN WARNED!"},
+  	 															   {:class => 'cancel'}%>
+  	<%- end -%>
+  </p>
+<%- end -%>

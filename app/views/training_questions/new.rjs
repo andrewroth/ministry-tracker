@@ -1,0 +1,3 @@
+page['training_question'].replace_html(:partial => 'form')
+page['training_question'].show
+page['spinnertq'].hide

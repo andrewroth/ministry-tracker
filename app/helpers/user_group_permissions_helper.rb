@@ -1,0 +1,2 @@
+module UserGroupPermissionsHelper
+end

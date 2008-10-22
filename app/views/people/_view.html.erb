@@ -1,0 +1,109 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="address">
+<tr>
+<tr>
+
+	<td colspan="1"><Table>
+	<tr><td width="150">Email</td><td><%= @current_address.email %></td></tr>
+	<tr><td>Date of Birth</td><td><%= date_format(@person.birth_date) %></td></tr>
+	<tr><tD>Gender</td><td><%= @person.human_gender %></td></tr>
+	</table></td>
+	
+	<td></td>
+	
+	<td colspan="1"><table>
+	<tr><td width="150">Year in School</td><td><%= @person.year_in_school %></td></tr>
+	<tr><td>Graduation Date</tD><td><%= date_format(@person.graduation_date) %></td></tr>
+	<tr><td>Major</td><td><%= @person.major %></td></tr>
+	<tr><td>Minor</td><td><%= @person.minor %></td></tr>
+	<%- if !@person.url.blank?
+	      desc, url = parse_url(@person.url) -%>
+	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
+	<%- end -%>
+	</table></td>
+
+</tr>
+
+<tr>
+	<td colspan="1"><h4 class="title">Current Address</h4></td>
+	<td>&nbsp;</td>
+	<td colspan="1"><h4 class="title">Permanent Address</h4></td>
+</tr>
+
+<tr>
+<td>
+	
+	<table>
+	<tr><td width="150">Phone</td><td><%= @current_address.phone %></td></tr>
+	<tr><td>Alternate Phone</td><td><%= @current_address.alternate_phone %></td></tr>
+	<tr><td>Address</td><td><%= @current_address.mailing %></td></tr>
+	<tr><td></td><td><%= @current_address.dorm %> <%= "Room " + @current_address.room unless @current_address.room.to_s.empty? %></td></tr>
+	</table>
+
+</td>
+<td>&nbsp;</td>
+<td>
+	<table>
+		<tr><td width="150">Phone</td><td><%= @perm_address.phone %></td></tr>
+		<tr><td>Address</td><td><%= @perm_address.mailing %></td></tr>
+	</table>
+</td>
+</tr>
+<%- unless @current_address.start_date.to_s.empty? -%>
+<tr><td colspan="3"> Valid from <strong><%= date_format(@current_address.start_date) %></strong> <% unless @perm_address.start_date.to_s.empty? %>through <strong><%= date_format(@current_address.end_date) %></strong><% end  %></td></tr>
+<%- end -%>
+
+
+
+<!--
+<tr>
+	<td></td>
+	<td><%#= link_to "&raquo; Privacy Settings" %>&nbsp;</td>
+	<td colspan="3"><%#= link_to "&raquo; Why should I keep this up to date?" %>&nbsp;</td>
+</tr>
+-->
+</table>
+<br />
+<%- if is_staff -%>
+	<%- remote_form_for @person do |f| -%>
+	<div id="staffArea">
+		<span class="notice">(everything below this is only seen by staff)</span><br />
+		<% i = 0 %>
+		<table width="100%">
+		<tr>
+		<%- @ministry.profile_questions.each do |ca| -%>
+			<td width="15%"><%= ca.name %>: </td><td> <%= custom_field(ca, @person) %></td>
+			<% i +=1 %>
+			<%- if i%2 == 0 then i = 0 -%></tr><tr><%- end -%>
+		<%- end -%>
+		<%- while i < 2 do 
+				i +=1-%>
+				<td width="25%">&nbsp;</td><td>&nbsp;</td>
+		<%- end unless i == 0 -%>
+		</tr>
+		</table>
+		Staff notes: <br />
+		<%= f.text_area :staff_notes, :rows => 4, :cols => 40 %>
+    <%= submit_tag %>
+	</div>
+	<%- end -%>
+<%- end -%>
+<!--
+	<h4 class="title">Interested in a Ministry Team?</h4>
+	<table width="100%" border="0" cellspacing="2px" cellpadding="5px">
+		<tr>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
+		</tr>
+		<tr>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
+		</tr>
+		<tr>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
+			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
+		</tr>
+	</table>
+-->

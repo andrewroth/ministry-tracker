@@ -1,0 +1,25 @@
+Use the arrows between the boxes to move permissions in and out of the group.<br />
+<br />
+<table>
+	<tr>
+		<th>Permissions</th>
+		<th align="right"><%= @user_group.name %> Group</th>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td valign="top" nowrap="true">
+			<%= render :partial => 'user_group_permissions/permissions_select' %>
+		</td>
+		<td valign="top" nowrap="true">
+			<%= render :partial => 'user_group_permissions/user_group_select' %>
+		</td>
+			
+		<td><div style="margin:-5px 10px;border:1px solid grey;padding:3px">
+			<span class="title">Permission Descriptions</span><br /><br />
+			<%- @permissions.each do |p| -%>
+				<strong><%= p.name %></strong><br />
+				&nbsp;&nbsp;&nbsp;&nbsp;<%= p.description %><br />
+			<%- end -%></div>
+		</td>
+	</tr>
+</table><br />

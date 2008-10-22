@@ -1,0 +1,10 @@
+<% remote_form_for(person || Person.new) do |f| %>
+<div id="addStudent" style="display:none">
+  <%= hidden_field_tag :modalbox, true %>
+  <%= render :partial => 'students/form', :locals => {:f => f} %>
+
+  <p>
+  <%= submit_tag "Save", {:id => 'save', :onclick => "close_thickbox()"} %> <%= spinner('form') %>
+  or <a id="TB_closeWindowButton" href="#">cancel</a></p>
+</div>
+<% end %>
