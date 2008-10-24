@@ -117,10 +117,7 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.xml
   def show
-    @person = Person.find(params[:id] || session[:person_id])
-    @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
-    @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
-    @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+    setup_vars
     respond_to do |format|
       format.html { render :action => :show }# show.rhtml
       format.xml  { render :xml => @person.to_xml }
@@ -139,9 +136,7 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
-    @person = Person.find(params[:id])
-    @current_address = @person.current_address
-    @perm_address = @person.permanent_address
+    setup_vars
     render :update do |page|
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit'
@@ -363,5 +358,13 @@ class PeopleController < ApplicationController
       format.html { render :action => "new", :layout => 'manage' }
       format.js  {render :action => 'new'}
       format.xml  { render :xml => @person.errors.to_xml }
+    end
+    
+    def setup_vars
+      @person = Person.find(params[:id] || session[:person_id])
+      @dorms = @person.campuses.collect(&:dorms).flatten
+      @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
+      @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
+      @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
     end
 end

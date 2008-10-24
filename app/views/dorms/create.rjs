@@ -1,0 +1,3 @@
+page.insert_html :bottom, :dorms, :partial => 'dorm', :object => @dorm
+page[dom_id(@dorm)].highlight
+page << "$('#dorm_name').val('')"

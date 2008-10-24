@@ -1,0 +1,4 @@
+<li id="<%= dom_id(dorm) %>">
+  <%= link_to_remote(image_tag('delete.png'), :url => dorm_path(dorm), :method => :delete) %> 
+  <%= dorm.name %>
+</li>

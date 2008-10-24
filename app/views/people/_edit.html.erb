@@ -40,7 +40,8 @@
 		<tr><td>City: </td><td><%= text_field :current_address, :city %></td></tr>
 		<tr><td>State:</td> <td><%= text_field :current_address, :state %></td></tr>
 		<tr><td>Zip:</td> <Td><%= text_field :current_address, :zip %></td></tr>
-		<tr><td>Dorm:</td> <Td><%= text_field :current_address, :dorm %></td></tr>
+		<%- dorms = @dorms.empty? ? [] : @dorms.collect {|d| d.name }.insert(0, '') -%>
+		<tr><td>Dorm: </td><td><%= select :current_address, :dorm, dorms %></td></tr>
 		<tr><td>Room:</td><td><%= text_field :current_address, :room %></td></tr>
 		</table>
 		</td>

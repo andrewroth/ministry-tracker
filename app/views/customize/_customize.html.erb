@@ -1,7 +1,24 @@
 <div id="customizebody">
 		<div class="title">Directory Views</div>
 		<%= render :partial => 'views/views' %>
-		
+		<div class="title">Dorms</div>
+		<div id="dorm_box">
+		  <%- @ministry.campuses.each do |campus| -%>
+		    <h5><%= campus.name %></h5>
+		    <ul id="dorms">
+		      <%= render :partial => 'dorms/dorm', :collection => campus.dorms %>
+		    </ul>
+		  <%- end -%>
+		  <br/>
+		  <p>
+		    Add new dorms
+		  <%- remote_form_for Dorm.new do |f| -%>
+		    <%= f.collection_select :campus_id, @ministry.campuses, :id, :name %> 
+		    <%= f.text_field :name, :size => 20 %>
+		    <%= f.submit 'Add Dorm' %>
+		  <%- end -%>
+  	  </p>
+		</div>
 		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.profile_questions,
 		                                                                          :attrib_type => 'ProfileQuestion'} %>
 		
