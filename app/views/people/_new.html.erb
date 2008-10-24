@@ -1,4 +1,4 @@
-<strong>New <%= params[:staff] ? 'Staff Person' : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
+<strong>New <%= params[:staff] ? 'Staff Person or Leader' : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
 <%= error_messages_for :person, :current_address %>
 <% form_for(@person) do |f| %>
 	<%= render :partial => 'people/form', :locals => {:f => f, :person => @person} %>

@@ -19,6 +19,12 @@
 	</td>
 </tr>
 <%- end -%>
+<%- if params[:staff] -%>
+<tr>
+	<td>Role: </td>
+	<td><%= select_tag :ministry_role, options_for_select(['Director','Staff','Student Leader']) %></td>
+</tr>
+<%- end -%>
 <tr>
 	<td>Email: </td>
 	<td><%= text_field :current_address, :email %></td>
