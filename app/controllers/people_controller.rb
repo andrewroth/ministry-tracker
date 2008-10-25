@@ -244,6 +244,7 @@ class PeopleController < ApplicationController
         end
         format.xml  { head :ok }
       else
+        setup_dorms
         # @current_address = @person.current_address
         #       @perm_address = @person.permanent_address
         format.html { render :action => "edit" }
@@ -366,6 +367,7 @@ class PeopleController < ApplicationController
     end
     
     def render_new_from_create(format)
+      setup_dorms
       format.html { render :action => "new", :layout => 'manage' }
       format.js  {render :action => 'new'}
       format.xml  { render :xml => @person.errors.to_xml }
@@ -373,9 +375,13 @@ class PeopleController < ApplicationController
     
     def setup_vars
       @person = Person.find(params[:id] || session[:person_id])
-      @dorms = @person.campuses.collect(&:dorms).flatten
+      setup_dorms
       @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+    end
+    
+    def setup_dorms
+      @dorms = @person.campuses.collect(&:dorms).flatten
     end
 end
