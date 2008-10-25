@@ -5,7 +5,7 @@
 	<table border="0" cellspacing="5" cellpadding="5">
 		<tr><th colspan="2"><%= @custom_attribute.new_record? ? 'New Custom Attribute' : @custom_attribute.name %></th></tr>
 		<tr><td>Name: </td><td><%= f.text_field :name, :class => "customform" %></td></tr>
-		<tr><td>Type: </td><td><%= f.select :value_type, [['Short Text', 'text_field'], ['Long Text','text_area'], 
+		<tr><td>Type: </td><td><%= f.select :value_type, [['Short Text (<200 Characters)', 'text_field'], ['Long Text (>200 Characters)','text_area'], 
 														  ['Date','date_select'], ['Yes/No','check_box']], {:selected => @custom_attribute.new_record? ? 'check_box' : @custom_attribute.value_type} %></td></tr>
 		<tr><td>Description: </td><td><%= f.text_field :description, :class => "customform" %></td></tr>
 	</table>
