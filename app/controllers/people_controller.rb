@@ -271,15 +271,25 @@ class PeopleController < ApplicationController
   
   def change_ministry
     session[:ministry_id] = params[:ministry]
-    render :update do |page|
-      page.redirect_to(directory_people_url)
+    respond_to do |wants|
+      wants.html { redirect_to(directory_people_url) }
+      wants.js do
+        render :update do |page|
+          page.redirect_to(directory_people_url)
+        end
+      end
     end
   end
   
   def change_view
     session[:view_id] = params[:view]
-    render :update do |page|
-      page.redirect_to(directory_people_url)
+    respond_to do |wants|
+      wants.html { redirect_to(directory_people_url) }
+      wants.js do
+        render :update do |page|
+          page.redirect_to(directory_people_url)
+        end
+      end
     end
   end
   
