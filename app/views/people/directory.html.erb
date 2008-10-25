@@ -84,7 +84,7 @@
 				</td>
 -->
       <%- @view.columns.each do |column| -%>
-				<td><%= 
+				<td style="white-space: nowrap;"><%= 
 				case column.column_type
 				when 'image'
 				  if person[column.safe_name]
