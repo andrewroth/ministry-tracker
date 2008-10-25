@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
 
   # Pick a unique cookie name to distinguish our session data from others'
-  helper_method :date_format, :_, :receipt, :is_staff, :is_staff_somewhere, :bible_study_admin, :team_admin, :get_ministry, :current_user
+  helper_method :date_format, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, :get_ministry, :current_user
   before_filter :login_required, :get_person, :get_ministry
   
   skip_before_filter CAS::Filter  
@@ -55,8 +55,9 @@ class ApplicationController < ActionController::Base
     
     def get_ministry
       @person ||= get_person
-      if @person
-        @ministry ||= session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
+      raise "no person" unless @person
+      unless @ministry
+        @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
         # If we still don't have a ministry, this person hasn't been assigned a campus. Give them the 
@@ -71,8 +72,6 @@ class ApplicationController < ActionController::Base
         end
         session[:ministry_id] ||= @ministry.id if @ministry
         session[:root_ministry_id] ||= @root_ministry.id if @root_ministry
-      else
-        raise "no person"
       end
       @ministry
     end
@@ -97,23 +96,21 @@ class ApplicationController < ActionController::Base
       @receipt || session[:casfilterreceipt]
     end
     
-    def is_staff( ministry = nil, person = nil)
-      ministry ||= @ministry
+    def is_ministry_leader( ministry = nil, person = nil)
+      ministry ||= get_ministry
       if person
         return ministry.staff.include?(person)
       else
-        @is_staff ||= ministry.staff.include?(@me)
-        # @is_staff ||= MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @person.id])
-        return @is_staff
+        return ministry.staff.include?(@me)
       end
     end
     
-    def is_staff_somewhere
-      !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
+    def is_ministry_leader_somewhere
+      @is_ministry_leader ||= !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
     end
     
     def bible_study_admin
-      @bible_study_admin ||= true if is_staff
+      is_ministry_leader ? true : false
     end
     
     def team_admin

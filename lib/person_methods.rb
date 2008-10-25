@@ -31,7 +31,7 @@ module PersonMethods
       current_address.save!
     end
     person.user ||= User.new(:username => current_address.email) 
-    
+    person.user.save(false)
     return person, current_address
   end
 end

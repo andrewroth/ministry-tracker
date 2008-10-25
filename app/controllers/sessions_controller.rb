@@ -52,8 +52,15 @@ class SessionsController < ApplicationController
         end
         # make sure we have a person
         unless u.person
-          u.person = Person.new(:first_name => details.firstName, :last_name => details.lastName)
-          u.person.current_address = CurrentAddress.new(:email => details.email)
+          # Try to find a person with the same email address who doesn't already have a user account
+          address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
+          person = address.person if address && address.person.user.nil?
+          
+          # Attache the found person to the user, or create a new person
+          u.person = person || Person.new(:first_name => details.firstName, :last_name => details.lastName)
+          
+          # Create a current address record if we don't already have one.
+          u.person.current_address ||= CurrentAddress.new(:email => details.email)
           u.person.save(false)
         end
         self.current_user = u || :false

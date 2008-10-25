@@ -12,7 +12,7 @@ class DormsController < ApplicationController
     @dorm = Dorm.find(params[:id])
     # Make sure this dorm is in their realm of power
     @dorms = @ministry.campuses.collect(&:dorms).flatten
-    if @dorms.include?(@dorm) && is_staff
+    if @dorms.include?(@dorm) && is_ministry_leader
       @dorm.destroy
     end
   end

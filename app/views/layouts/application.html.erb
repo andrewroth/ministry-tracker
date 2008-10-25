@@ -24,7 +24,7 @@
 			<div id="logout">
 				<%= link_to("logout", session_url, :method => :delete) %>&nbsp;&nbsp;&nbsp;
 			</div>
-			<%- if @ministry && is_staff -%>
+			<%- if @ministry && is_ministry_leader -%>
 			
 			<!--
 			<div id="addStudentLink">

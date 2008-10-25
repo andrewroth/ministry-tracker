@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        layout = is_staff ? 'manage' : 'application'
+        layout = is_ministry_leader ? 'manage' : 'application'
         render :layout => layout
       end
       format.js
