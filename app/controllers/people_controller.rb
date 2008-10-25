@@ -164,7 +164,7 @@ class PeopleController < ApplicationController
             if @ci
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
-              @person.campus_involvements << CampusInvolvement.new(:campus_id => params[:campus], :ministry_id => @ministry.id, :ministry_role => 'Student', :start_date => Time.now()) 
+              @person.campus_involvements << CampusInvolvement.new(:campus_id => params[:campus], :ministry_id => @ministry.id, :ministry_role => params[:ministry_role], :added_by_id => @me.id, :start_date => Time.now()) 
             end
           else
             # create ministry involvement if it doesn't already exist

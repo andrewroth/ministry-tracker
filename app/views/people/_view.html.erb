@@ -5,14 +5,14 @@
 	<td colspan="1"><Table>
 	<tr><td width="150">Email</td><td><%= @current_address.email %></td></tr>
 	<tr><td>Date of Birth</td><td><%= date_format(@person.birth_date) %></td></tr>
-	<tr><tD>Gender</td><td><%= @person.human_gender %></td></tr>
+	<tr><td>Gender</td><td><%= @person.human_gender %></td></tr>
 	</table></td>
 	
 	<td></td>
 	
 	<td colspan="1"><table>
 	<tr><td width="150">Year in School</td><td><%= @person.year_in_school %></td></tr>
-	<tr><td>Graduation Date</tD><td><%= date_format(@person.graduation_date) %></td></tr>
+	<tr><td>Graduation Date</td><td><%= date_format(@person.graduation_date) %></td></tr>
 	<tr><td>Major</td><td><%= @person.major %></td></tr>
 	<tr><td>Minor</td><td><%= @person.minor %></td></tr>
 	<%- if !@person.url.blank?
@@ -66,7 +66,7 @@
 <%- if is_ministry_leader -%>
 	<%- remote_form_for @person do |f| -%>
 	<div id="staffArea">
-		<span class="notice">(everything below this is only seen by staff)</span><br />
+		<span class="notice">(everything below this is only seen by those designated as leaders of this ministry)</span><br />
 		<% i = 0 %>
 		<table width="100%">
 		<tr>

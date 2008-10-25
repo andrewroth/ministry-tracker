@@ -18,6 +18,12 @@
 		<%= select_tag :campus, options_for_select(@ministry.campuses.sort.collect {|c| [c.name, c.id]})%>
 	</td>
 </tr>
+<tr>
+	<td>Involvement Level: </td>
+	<td>
+		<%= select_tag :ministry_role, options_for_select(CampusInvolvement::ROLES)%>
+	</td>
+</tr>
 <%- end -%>
 <%- if params[:staff] -%>
 <tr>

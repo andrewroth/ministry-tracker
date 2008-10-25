@@ -20,6 +20,12 @@
   	</td>
   </tr>
   <tr>
+  	<td>Involvement Level: </td>
+  	<td>
+  		<%= select_tag :ministry_role, options_for_select(CampusInvolvement::ROLES)%>
+  	</td>
+  </tr>
+  <tr>
   	<td>Email: </td>
   	<td><%= text_field :current_address, :email %></td>
   </tr>
