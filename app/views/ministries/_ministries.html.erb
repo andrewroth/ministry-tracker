@@ -41,14 +41,12 @@
             animate:true,
             enableDD:true,
             containerScroll: true,
-            loader: new Tree.TreeLoader({
-                dataUrl:'/ministries/list'
-            }),
+            loader: new Tree.TreeLoader({dataUrl: '/ministries/list'})
         });
         
         var root = new Tree.AsyncTreeNode({
             text: '<%= @root_ministry.name %>',
-            draggable:false,
+            draggable: false,
             id:'<%= @root_ministry.id %>'
         });
         
@@ -59,11 +57,11 @@
           // renderTo: 'campus-panel',
           // width:'%',
           activeTab: 0,
-          defaults:{autoHeight:true, autoScroll:true},
-          region:'center',
-          split:true,
-          collapsible:false,
-           autoScroll:true,
+          defaults: {autoHeight:true, autoScroll:true},
+          region: 'center',
+          split: true,
+          collapsible: false,
+          autoScroll: true,
           items: [{
             title: 'Campuses',
             contentEl: 'campuses'
@@ -94,8 +92,8 @@
           //       
           // // // What to do when a ministry is clicked
           tree.on('click', function(e){
-            $.ajax({dataType:'script', type:'get', url:'/ministries/edit/' + e.id});
-            $.ajax({data:'ministry_id='+e.id, dataType:'script', type:'post', url:'/ministry_campuses/list'});
+            $.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + e.id});
+            $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '/ministry_campuses/list'});
             // ajax.request({
             //   url:'/ministry_campuses/list',
             //   params:{ministry_id:e.id},
@@ -123,10 +121,10 @@
       
       function addMinistry(name, id, parent) {
         parent_node = tree.getNodeById(parent);
-        parent_node.appendChild(new Tree.TreeNode({"id":id,"text":name,"cls":"file","expanded":true}));
+        parent_node.appendChild(new Tree.TreeNode({"id": id,"text": name,"cls":"file","expanded":true}));
       }
       function removeMinistry(id, parent) {
-        parent_node = tree.getNodeById(parent)
+        parent_node = tree.getNodeById(parent);x
         child = tree.getNodeById(id);
         parent_node.removeChild(child);
       }
