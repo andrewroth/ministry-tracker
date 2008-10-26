@@ -74,6 +74,7 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :ministry_involvements
     person.resources :involvement
     person.resources :training
+    person.resources :profile_pictures
   end                             
                                           
   map.resources :customize
