@@ -41,8 +41,10 @@
 		<%= link_to 'Bible Studies', bible_studies_url %></li>
 		<li<%= ' class="highlighted"' if params[:controller] == "teams" %>>
 		<%= link_to 'Teams', teams_url %></li>
-		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
-		<%= link_to 'Customize', customize_url(@ministry) %></li>
+		<%- if is_ministry_admin -%>
+  		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
+  		<%= link_to 'Customize', customize_url(@ministry) %></li>
+  	<%- end -%>
 		
 		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
 		    <%= link_to 'Custom Attributes', custom_attributes_url %></li> 

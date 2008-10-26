@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
 
   # Pick a unique cookie name to distinguish our session data from others'
-  helper_method :date_format, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, :get_ministry, :current_user
+  helper_method :date_format, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
+                :get_ministry, :current_user, :is_ministry_admin
   before_filter :login_required, :get_person, :get_ministry
   
   skip_before_filter CAS::Filter  
@@ -97,7 +98,7 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_leader( ministry = nil, person = nil)
-      ministry ||= get_ministry
+      ministry ||= @ministry || get_ministry
       if person
         return ministry.staff.include?(person)
       else
@@ -112,6 +113,25 @@ class ApplicationController < ActionController::Base
     def is_involved_somewhere(person = nil)
       person ||= @me
       return CampusInvolvement.find(:first, :conditions => ["#{_(:person_id, :campus_involvement)} = ? AND #{_(:ministry_role, :campus_involvement)} IN (?)", person.id, CampusInvolvement::INVOLVED_ROLES])
+    end
+    
+    def is_ministry_admin(ministry = nil, person = nil)
+      @admins ||= {}
+      ministry ||= @ministry || get_minsitry
+      person ||= @person
+      unless @admins[:ministry_id]
+        mi = MinistryInvolvement.find_by_person_id_and_ministry_id(person.id, ministry.id)
+        @admins[:ministry_id] = mi.admin?
+      end
+      logger.debug("Admin: #{@admins[:ministry_id]}")
+      return @admins[:ministry_id]
+    end
+    
+    def ministry_admin_filter
+      unless is_ministry_admin
+        render :nothing => true 
+        return false
+       end
     end
     
     def bible_study_admin

@@ -1,4 +1,5 @@
 class MinistryInvolvementsController < ApplicationController
+  before_filter :ministry_admin_filter
   def destroy
     if @person.all_ministries.size > 1
       @ministry_involvement = MinistryInvolvement.find(params[:id])
@@ -18,6 +19,26 @@ class MinistryInvolvementsController < ApplicationController
           end
         end
       end
+    end
+  end
+  
+  def edit
+    if params[:person_id] && params[:ministry_id]
+      @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
+      @staff = Person.find(params[:person_id])
+    else
+      raise "Missing parameters"
+    end
+  end
+  
+  def update
+    @ministry_involvement = MinistryInvolvement.find(params[:id])
+    # We don't want someone screwing themselves over by accidentally removing admin privs
+    params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me
+    @ministry_involvement.update_attributes(params[:ministry_involvement])
+    @staff = @ministry_involvement.person
+    respond_to do |wants|
+      wants.js {  }
     end
   end
 end

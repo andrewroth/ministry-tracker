@@ -1,0 +1,2 @@
+page["campus_form#{@staff.id}"].hide
+page["staff#{@staff.id}"].highlight

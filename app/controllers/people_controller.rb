@@ -173,8 +173,11 @@ class PeopleController < ApplicationController
           else
             # create ministry involvement if it doesn't already exist
             @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            role = params[:ministry_role] || 'Staff'
-            @person.ministry_involvements << MinistryInvolvement.new(:ministry_id => @ministry.id, :ministry_role => role) unless @mi
+            if @mi
+              @mi.update_attributes(params[:ministry_involvement])
+            else
+              @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
+            end
           end
 
           # if we don't have a good username, Raise an error

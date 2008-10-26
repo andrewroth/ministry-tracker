@@ -26,10 +26,21 @@
 </tr>
 <%- end -%>
 <%- if params[:staff] -%>
-<tr>
-	<td>Role: </td>
-	<td><%= select_tag :ministry_role, options_for_select(['Director','Staff','Student Leader']) %></td>
-</tr>
+  <%- fields_for :ministry_involvement do |mf| -%>
+  <tr>
+  	<td>Role: </td>
+  	<td>
+  	  <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
+  	  <%= mf.select :ministry_role, MinistryInvolvement::ROLES %>
+  	</td>
+  </tr>
+    <%- if is_ministry_admin(@ministry, @me) -%>
+    <tr>
+    	<td>&nbsp; </td>
+    	<td><%= mf.check_box :admin %> Admin</td>
+    </tr>
+    <%- end -%>
+  <%- end -%>
 <%- end -%>
 <tr>
 	<td>Email: </td>

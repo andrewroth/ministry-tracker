@@ -1,0 +1,6 @@
+<%- remote_form_for @ministry_involvement do |f| -%>
+  	<p>Role: 
+  	<%= f.select :ministry_role, MinistryInvolvement::ROLES %></p>
+    <p><%= f.check_box :admin %> Admin</p>
+    <p><%= f.submit %></p>
+<%- end -%>

@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     respond_to do |wants|
-      wants.html 
+      wants.html { render :partial => 'change_password', :locals => {:user => @user }}
       wants.js { render :partial => 'change_password', :locals => {:user => @user }}
     end
   end
