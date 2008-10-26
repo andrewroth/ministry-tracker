@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
       person ||= @person
       unless @admins[:ministry_id]
         mi = MinistryInvolvement.find_by_person_id_and_ministry_id(person.id, ministry.id)
-        @admins[:ministry_id] = mi.admin?
+        mi ? @admins[:ministry_id] = mi.admin? : false
       end
       logger.debug("Admin: #{@admins[:ministry_id]}")
       return @admins[:ministry_id]

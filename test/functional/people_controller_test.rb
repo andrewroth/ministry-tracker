@@ -6,6 +6,7 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < Test::Unit::TestCase
   fixtures Person.table_name, Ministry.table_name, MinistryCampus.table_name,
+          MinistryInvolvement.table_name,
           CampusInvolvement.table_name, Address.table_name, Group.table_name,
           View.table_name, ViewColumn.table_name, Column.table_name, ProfilePicture.table_name
 
