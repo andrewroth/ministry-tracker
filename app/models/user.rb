@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   
   # Make sure password and confirm_password are the same on update
   def validate_on_update
-    unless plain_password.nil? || plain_password.empty?
+    unless plain_password.blank?
       unless plain_password == password_confirmation
         errors.add_to_base("Passwords don't match")
       end
@@ -79,12 +79,23 @@ class User < ActiveRecord::Base
   protected
     # before filter 
     def encrypt_password
+      # If the record doesn't have a password at all, assign one
+      assign_random_password if password.blank?
+      
+      # If the password isn't being provided at this time, there's nothing to encrypt
       return if plain_password.blank?
       self.password = encrypt(plain_password)
     end
   	
   	def stamp_created_on
   	  self.created_at = Time.now
+  	end
+  	
+  	def assign_random_password(len = 8)
+      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+      newpass = ""
+      1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
+  	  self.plain_password = self.password_confirmation = newpass
   	end
     
     

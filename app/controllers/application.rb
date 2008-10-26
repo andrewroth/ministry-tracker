@@ -109,6 +109,11 @@ class ApplicationController < ActionController::Base
       @is_ministry_leader ||= !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
     end
     
+    def is_involved_somewhere(person = nil)
+      person ||= @me
+      return CampusInvolvement.find(:first, :conditions => ["#{_(:person_id, :campus_involvement)} = ? AND #{_(:ministry_role, :campus_involvement)} IN (?)", person.id, CampusInvolvement::INVOLVED_ROLES])
+    end
+    
     def bible_study_admin
       is_ministry_leader ? true : false
     end

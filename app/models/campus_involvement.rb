@@ -2,6 +2,7 @@ class CampusInvolvement < ActiveRecord::Base
   load_mappings
   
   ROLES = ['Involved Student', 'Contact']
+  INVOLVED_ROLES = ['Involved Student']
   
   validates_presence_of :campus_id, :person_id, :ministry_id
   validates_presence_of :ministry_role, :on => :create, :message => "can't be blank"

@@ -1,37 +1,47 @@
 <h1><%= @person.full_name %></h1> 
 <div class="divider" style="margin-bottom:0;">&nbsp;</div>
-<h3 class="title">Conferences Attended</h3>
-<ul id="conferences">
-<%- @conferences.each do |conference| -%>
-  <li><%= conference.name %></li>
-<%- end -%>
-</ul>
 
-<h3 class="title">Summer Projects Attended</h3>
-<ul id="projects">
-<%- @projects.each do |project| -%>
-  <li><%= project.name %></li>
+<%- unless @conferences.empty? -%>
+  <h3 class="title">Conferences Attended</h3>
+  <ul id="conferences">
+  <%- @conferences.each do |conference| -%>
+    <li><%= conference.name %></li>
+  <%- end -%>
+  </ul>
 <%- end -%>
-</ul>
 
-<h3 class="title">STINTs Attended</h3>
-<ul id="stints">
-<%- @stints.each do |stint| -%>
-  <li><%= stint.name %></li>
+<%- unless @projects.empty? -%>
+  <h3 class="title">Summer Projects Attended</h3>
+  <ul id="projects">
+  <%- @projects.each do |project| -%>
+    <li><%= project.name %></li>
+  <%- end -%>
+  </ul>
 <%- end -%>
-</ul>
 
-<h3 class="title">Questions (these are the custom questions)</h3>
-<%- remote_form_for @person do |f| -%>
-    <%= hidden_field_tag :no_profile, true %>
-		<table width="100%">
-		<%- @ministry.involvement_questions.each do |ca| -%>
-		<tr>
-			<td width="20%" nowrap="nowrap"><%= ca.name %>: </td>
-			<td> <%= custom_field(ca, @person) %></td>
-		</tr>
-	  <%- end -%>
-		</table>
-		<%= submit_tag %>
+
+<%- unless @projects.empty? -%>
+  <h3 class="title">STINTs Attended</h3>
+  <ul id="stints">
+  <%- @stints.each do |stint| -%>
+    <li><%= stint.name %></li>
+  <%- end -%>
+  </ul>
+<%- end -%>
+
+<%- unless @ministry.involvement_questions.empty? -%>
+  <h3 class="title">Questions for you to answer</h3>
+  <%- remote_form_for @person do |f| -%>
+      <%= hidden_field_tag :no_profile, true %>
+  		<table width="100%">
+  		<%- @ministry.involvement_questions.each do |ca| -%>
+  		<tr>
+  			<td width="20%" nowrap="nowrap"><%= ca.name %>: </td>
+  			<td> <%= custom_field(ca, @person) %></td>
+  		</tr>
+  	  <%- end -%>
+  		</table>
+  		<%= submit_tag %>
 	
+  <%- end -%>
 <%- end -%>

@@ -63,7 +63,7 @@
         <%= link_to_remote(image_tag('delete.png'), :url => person_campus_involvement_path(@person, ci), 
                                                     :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
                                                     :method => :delete,
-                                                    :before => "$('#spinner').show()")  unless is_ministry_leader %>
+                                                    :before => "$('#spinner').show()")  if is_ministry_leader %>
     	  <%= link_to_remote(ci.campus.short_name, :url => change_ministry_people_url(:ministry => ci.ministry.id)) %>
     	</li>
   	<%- end -%>
