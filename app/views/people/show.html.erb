@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag "profile", :media => "all" %>
 
 <div id="profiletitle">
-  <div class="butUpdate" ><%= link_to_function "Change Password", "show_change_password()" %></div> 
+  <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'})  %></div> 
   <div class="butUpdate" style="margin-right:5px;"><%= link_to_function "Update Information", "$('#edit_info').fadeIn();$('#info').hide()" %></div>
 	<h1><%= @person.full_name %></h1> 
 	<div class="divider" style="margin-bottom:0;">&nbsp;</div>
@@ -161,5 +161,9 @@
 	<div><div id="edit_info" style="display:none"><%= render :partial => 'edit' %></div></div>
 </div>
 
-<%= render :partial => 'users/change_password', :locals => {:user => @person.user} %>
+<%- if @person.user -%>
+<div style="display:none" id="changePassword" class="passwordbox">
+  <%= render :partial => 'users/change_password', :locals => {:user => @person.user} %>
+</div>
+<%- end -%>
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>

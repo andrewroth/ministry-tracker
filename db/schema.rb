@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081005163735) do
+ActiveRecord::Schema.define(:version => 20081025172521) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20081005163735) do
     t.date    "end_date"
     t.string  "ministry_role", :default => "Involved Student"
     t.integer "ministry_id"
+    t.integer "added_by_id"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "campus_id"
@@ -244,6 +245,19 @@ ActiveRecord::Schema.define(:version => 20081005163735) do
   add_index "groups", ["ministry_id"], :name => "index_posses_on_ministry_id"
   add_index "groups", ["campus_id"], :name => "index_posses_on_campus_id"
   add_index "groups", ["dorm_id"], :name => "index_posses_on_dorm_id"
+
+  create_table "imports", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "parent_id"
+    t.integer  "size"
+    t.integer  "height"
+    t.integer  "width"
+    t.string   "content_type"
+    t.string   "filename"
+    t.string   "thumbnail"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "ministries", :force => true do |t|
     t.integer "parent_id"

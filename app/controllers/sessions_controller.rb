@@ -4,12 +4,12 @@ require 'soap/mapping'
 require 'defaultDriver'
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry
+  filter_parameter_logging :password
   # render new.rhtml
   def new
     if logged_in?
       redirect_back_or_default(person_url(self.current_user.person))
     end
-    # raise cookies[:auth_token].inspect
   end
 
   def create
@@ -35,21 +35,20 @@ class SessionsController < ApplicationController
         u = User.find(:first, :conditions => _(:guid, :user) + " = '#{details.userID}'")
         # if we have a user by this method, great! update the email address if it doesn't match
         if u
-          if u.username != details.email
-            u.username = details.email
-            u.save
-          end
+          u.username = details.email if u.username != details.email
         else
           # If we didn't find a user with the guid, do it by email address and stamp the guid
           u = User.find(:first, :conditions => _(:username, :user) + " = '#{details.email}'")
           if u
             u.guid = details.userID
-            u.save
           else
             # If we still don't have a user in SSM, we need to create one.
-            u = User.create!(:username => details.email, :guid => details.userID)
+            u = User.create!(:username => details.email, :guid => details.userID, :plain_password => params[:plain_password])
           end
-        end
+        end            
+        # Update the password to match their gcx password too. This will save a round-trip later
+        u.plain_password = params[:plain_password]
+        u.save(false)
         # make sure we have a person
         unless u.person
           # Try to find a person with the same email address who doesn't already have a user account

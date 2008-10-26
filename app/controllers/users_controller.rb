@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  filter_parameter_logging :password
   # GET /users
   # GET /users.xml
   def index
@@ -29,6 +30,10 @@ class UsersController < ApplicationController
   # GET /users/1;edit
   def edit
     @user = User.find(params[:id])
+    respond_to do |wants|
+      wants.html 
+      wants.js { render :partial => 'change_password', :locals => {:user => @user }}
+    end
   end
 
   # POST /users
@@ -66,7 +71,7 @@ class UsersController < ApplicationController
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @user.errors.to_xml }
-        format.js   { render :action => "edit.rjs" } # Changing password
+        format.js   { render :action => :edit } # Changing password
       end
     end
   end
