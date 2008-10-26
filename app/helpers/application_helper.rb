@@ -49,18 +49,6 @@ module ApplicationHelper
   end
 end
 
-def training_question_field(question, person)
-  answer = person.get_training_answer(question.id) ? person.get_training_answer(question.id) : TrainingAnswer.new
-  date = fancy_date_field(question.safe_name + '_date', answer.completed_at)
-  if is_ministry_leader || @me == person
-    approver = send('text_field_tag', question.safe_name + '_approver', answer.approved_by )
-    approver += '&nbsp;&nbsp;' + link_to_function('approve', "$('#{question.safe_name}_approver').value = '#{@my.full_name}'")
-  else
-    approver = answer.approved_by
-  end
-  date + '&nbsp;&nbsp; Approved By: ' + approver.to_s
-end
-
 def fancy_date_field(name, value)
   value = value.is_a?(Date) ? value.strftime("%m/%d/%Y") : value
   field = %| 
@@ -71,7 +59,7 @@ def fancy_date_field(name, value)
                 $(item).val('');
             }
         </script>
-        <a class="button" href="#" id="pick_date_#{name}">pick</a> \|
+        <a class="button" href="#" id="pick_date_#{name}">pick date</a> \|
         <a class="button" href="javascript:clear_date('#{name}');">clear</a>
         <script type="text/javascript">
           Calendar.setup(

@@ -164,7 +164,7 @@ class PeopleController < ApplicationController
             if @ci
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
-              @person.campus_involvements << CampusInvolvement.new(:campus_id => params[:campus], :ministry_id => @ministry.id, :ministry_role => params[:ministry_role], :added_by_id => @me.id, :start_date => Time.now()) 
+              @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role])
               # If this is an Involved Student record that a plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
                 UserMailer.deliver_created_student(@person.user, @ministry, @me)

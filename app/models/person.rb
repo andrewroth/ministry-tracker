@@ -182,10 +182,11 @@ class Person < ActiveRecord::Base
     self.emergency_address ||= EmergencyAddress.new
   end
   
-  def add_campus(campus_id, ministry_id)
+  def add_campus(campus_id, ministry_id, added_by, role = nil)
+    role ||= CampusInvolvement::INVOLVED_ROLES.first
     # Make sure they're not already on this campus
     campus_involvement = CampusInvolvement.find_by_campus_id_and_person_id(campus_id, self.id)
-    self.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry_id, :ministry_role => 'Student', :start_date => Time.now()) unless campus_involvement
+    self.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry_id, :ministry_role => role, :added_by_id => added_by, :start_date => Time.now()) unless campus_involvement
   end
   
   def self.find_exact(person, address)

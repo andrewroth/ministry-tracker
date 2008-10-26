@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081025172521) do
+ActiveRecord::Schema.define(:version => 20081026195816) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -289,6 +289,7 @@ ActiveRecord::Schema.define(:version => 20081025172521) do
     t.date    "start_date"
     t.date    "end_date"
     t.string  "ministry_role", :null => false
+    t.boolean "admin"
   end
 
   add_index "ministry_involvements", ["ministry_id"], :name => "ministry_id"

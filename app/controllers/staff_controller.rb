@@ -18,7 +18,7 @@ class StaffController < PeopleController
       @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) 
       @mi.destroy if @mi
       # create campus involvement
-      @person.add_campus(params[:campus], @ministry.id)
+      @person.add_campus(params[:campus], @ministry.id, @me.id)
     end
   end
   
