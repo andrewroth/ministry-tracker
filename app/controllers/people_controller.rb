@@ -10,7 +10,7 @@ require 'person_methods'
 class PeopleController < ApplicationController
   include PersonMethods
   skip_before_filter    :get_ministry, :only => [:change_ministry]
-  append_before_filter  :get_profile_person
+  append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   # GET /people
   # GET /people.xml
@@ -269,15 +269,15 @@ class PeopleController < ApplicationController
 
   # DELETE /people/1
   # DELETE /people/1.xml
-  def destroy
-    @person = Person.find(params[:id])
-    @person.destroy
-
-    respond_to do |format|
-      format.html { redirect_to directory_people_path }
-      format.xml  { head :ok }
-    end
-  end
+  # def destroy
+  #   @person = Person.find(params[:id])
+  #   @person.destroy
+  # 
+  #   respond_to do |format|
+  #     format.html { redirect_to directory_people_path }
+  #     format.xml  { head :ok }
+  #   end
+  # end
   
   def change_ministry
     session[:ministry_id] = params[:ministry]

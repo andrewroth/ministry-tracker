@@ -52,6 +52,7 @@
 <node CREATED="1225073506190" ID="Freemind_Link_1964955755" MODIFIED="1225073510409" TEXT="Extra Attributes">
 <node CREATED="1225073511328" ID="Freemind_Link_619358073" MODIFIED="1225073545021" TEXT="Each ministry is able to define extra profile attributes that only show up for people in their ministries. This allows the tool to stay &quot;General&quot;, while still catering to specific needs"/>
 </node>
+<node CREATED="1225077203512" ID="Freemind_Link_1869510106" MODIFIED="1225077214017" TEXT="Profile Picture (everyone loves pretty faces)"/>
 </node>
 <node CREATED="1225075369050" ID="Freemind_Link_827647244" MODIFIED="1225075383961" POSITION="left" TEXT="Heiarchical">
 <node CREATED="1225075430913" ID="Freemind_Link_1602369645" MODIFIED="1225075457644" TEXT="Each ministry is under a parent level, with CCCI at the top of everything."/>

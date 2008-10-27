@@ -136,13 +136,13 @@ class PeopleControllerTest < Test::Unit::TestCase
     assert_template '_edit'
   end
   
-  def test_should_destroy_person
-    old_count = Person.count
-    delete :destroy, :id => 50000
-    assert_equal old_count-1, Person.count
-    
-    assert_redirected_to people_path
-  end
+  # def test_should_destroy_person
+  #   old_count = Person.count
+  #   delete :destroy, :id => 50000
+  #   assert_equal old_count-1, Person.count
+  #   
+  #   assert_redirected_to people_path
+  # end
   
   def test_change_ministry
     xhr :post, :change_ministry, :ministry => 1

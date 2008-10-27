@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-# Create over 1000 records to test the search pagination
-<% 1.upto(1001) do |i| %>
-person_campus_<%= i %>:
-  id: <%= i %>
-  person_id: <%= i %>
-  campus_id: 1
-  ministry_id: 1
-<% end %>
