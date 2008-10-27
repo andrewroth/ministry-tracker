@@ -9,7 +9,9 @@ require 'person_methods'
 
 class PeopleController < ApplicationController
   include PersonMethods
-  skip_before_filter :get_ministry, :only => [:change_ministry]
+  skip_before_filter    :get_ministry, :only => [:change_ministry]
+  append_before_filter  :get_profile_person
+  append_before_filter  :can_edit_profile, :only => [:edit, :update]
   # GET /people
   # GET /people.xml
   def index
@@ -195,9 +197,9 @@ class PeopleController < ApplicationController
         
         # The person MUST have a user record
         if @person.user && @person.user.save
-          format.html { redirect_to person_url(@person) }
+          format.html { redirect_to person_path(@person) }
           format.js
-          format.xml  { head :created, :location => person_url(@person) }
+          format.xml  { head :created, :location => person_path(@person) }
         else
           @user = @person.user
           render_new_from_create(format)
@@ -238,7 +240,7 @@ class PeopleController < ApplicationController
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
         flash[:notice] = 'Profile was successfully updated.'
-        format.html { redirect_to person_url(@person) }
+        format.html { redirect_to person_path(@person) }
         format.js do 
           render :update do |page|
             update_flash(page, flash[:notice])
@@ -257,7 +259,7 @@ class PeopleController < ApplicationController
         format.html { render :action => "edit" }
         format.js do 
           render :update do |page|
-            page[:info].replace_html :partial => 'edit'
+            page[:edit_info].replace_html :partial => 'edit'
           end
         end
         format.xml  { render :xml => @person.errors.to_xml }
@@ -272,7 +274,7 @@ class PeopleController < ApplicationController
     @person.destroy
 
     respond_to do |format|
-      format.html { redirect_to people_url }
+      format.html { redirect_to directory_people_path }
       format.xml  { head :ok }
     end
   end
@@ -280,10 +282,10 @@ class PeopleController < ApplicationController
   def change_ministry
     session[:ministry_id] = params[:ministry]
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_url) }
+      wants.html { redirect_to(directory_people_path) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_url)
+          page.redirect_to(directory_people_path)
         end
       end
     end
@@ -292,10 +294,10 @@ class PeopleController < ApplicationController
   def change_view
     session[:view_id] = params[:view]
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_url) }
+      wants.html { redirect_to(directory_people_path) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_url)
+          page.redirect_to(directory_people_path)
         end
       end
     end
@@ -381,7 +383,6 @@ class PeopleController < ApplicationController
     end
     
     def setup_vars
-      @person = Person.find(params[:id] || session[:person_id])
       setup_dorms
       @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
@@ -390,5 +391,26 @@ class PeopleController < ApplicationController
     
     def setup_dorms
       @dorms = @person.campuses.collect(&:dorms).flatten
+    end
+    
+    def can_edit_profile
+      if @person == @me || is_ministry_leader
+        return true
+      else 
+        respond_to do |wants|
+          wants.html { redirect_to @person }
+          wants.js  do
+            render :update do |page|
+              page.redirect_to(@person)
+            end
+          end
+        end
+        
+        return false
+      end
+    end
+    
+    def get_profile_person
+      @person = Person.find(params[:id] || session[:person_id])
     end
 end

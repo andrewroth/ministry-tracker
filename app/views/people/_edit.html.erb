@@ -1,5 +1,6 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
+Primary Campus: <%= f.select :primary_campus, @person.ministries.collect(&:campuses).flatten.collect(&:name) %>
 	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address">
 	<tr>	
 	
