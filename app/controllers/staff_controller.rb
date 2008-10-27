@@ -1,4 +1,6 @@
 class StaffController < PeopleController
+  before_filter :ministry_admin_filter, :only => [:demote, :demote_form]
+  
   layout 'manage'
   
   def index

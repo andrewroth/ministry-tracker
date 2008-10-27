@@ -9,6 +9,7 @@ two:
   person_id: 50000
   ministry_id: 2
   ministry_role: Staff
+  admin: 1
 three:
   id: 3
   person_id: 3000
