@@ -10,15 +10,14 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :get_person, :get_ministry
   
   skip_before_filter CAS::Filter  
-  # prepend_before_filter :local_auth_bypass
-  #   
+
   def boom
     raise 'testing error notification'
   end
   
   protected
     # =============================================================================
-    # = See lib/load_mappings.rb                                                  =
+    # = See vendor/plugins/mappings/load_mappings.rb                              =
     # =============================================================================
     def _(column, table)
       ActiveRecord::Base._(column, table)
@@ -128,7 +127,17 @@ class ApplicationController < ActionController::Base
     end
     
     def ministry_admin_filter
-      unless is_ministry_admin
+      if params[:ministry_id]
+        @ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
+      end
+      unless is_ministry_admin(@ministry, @me)
+        render :nothing => true 
+        return false
+       end
+    end
+    
+    def ministry_leader_filter
+      unless is_ministry_leader
         render :nothing => true 
         return false
        end
@@ -167,11 +176,5 @@ class ApplicationController < ActionController::Base
         else "\\"+$1
         end
       end
-    end
-    
-    def local_auth_bypass
-      session[CAS::Filter::session_username] = 'josh.starcher@uscm.org'
-      receipt = Object.new()
-      receipt.class.class_eval "def guid() '4327987'; end"
     end
 end

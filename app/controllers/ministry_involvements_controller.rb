@@ -1,6 +1,7 @@
 class MinistryInvolvementsController < ApplicationController
-  before_filter :ministry_admin_filter
+  before_filter :ministry_leader_filter
   def destroy
+    @person = Person.find(params[:person_id])
     if @person.all_ministries.size > 1
       @ministry_involvement = MinistryInvolvement.find(params[:id])
       @ministry_involvement.destroy

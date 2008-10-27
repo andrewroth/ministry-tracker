@@ -100,7 +100,7 @@ class ViewsController < ApplicationController
   # DELETE /views/1.xml
   def destroy
     @view = View.find(params[:id])
-    if @ministry.views.count > 1
+    if @view.ministry.views.count > 1
       @view.destroy
 
       respond_to do |format|

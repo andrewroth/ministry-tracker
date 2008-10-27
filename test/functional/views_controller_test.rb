@@ -60,10 +60,10 @@ class ViewsControllerTest < Test::Unit::TestCase
   
   def test_should_destroy_view
     # add a second view
-    test_should_create_view
-    old_count = View.count
-    delete :destroy, :id => 1
-    assert_equal old_count-1, View.count
+    3.times do |i| View.create!(:ministry_id => 1, :title => 'hi mom') end # make sure ther's more than one view
+    assert_difference 'View.count', -1 do
+      delete :destroy, :id => 1
+    end
     
     assert_redirected_to views_path
   end

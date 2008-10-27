@@ -1,5 +1,6 @@
 class ImportsController < ApplicationController
-    
+  before_filter :ministry_leader_filter
+  
   def new
     @import = Import.new
   end

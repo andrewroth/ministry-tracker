@@ -11,10 +11,18 @@ class MinistryInvolvementsControllerTest < Test::Unit::TestCase
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_destroy
+    xhr :delete, :destroy, :id => 1, :person_id => 50000
+    assert assigns(:ministry_involvement)
+    assert_response :success
+  end
+  
+  def test_destroy_only_one_ministry
+    xhr :delete, :destroy, :id => 1, :person_id => 3000
+    assert_nil assigns(:ministry_involvement)
+    assert_response :success
   end
 end

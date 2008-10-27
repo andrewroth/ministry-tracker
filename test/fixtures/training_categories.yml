@@ -4,6 +4,7 @@ one:
   id: 1
   name: For Laws
   position: 1
+  ministry_id: 1
 #
 # two:
 #   column: value

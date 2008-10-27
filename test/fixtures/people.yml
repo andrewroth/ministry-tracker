@@ -15,9 +15,14 @@ josh:
   bio: "I\'m an MK"
   image: 
   gender: 1
+fred: 
+  id: 3000
+  first_name: fred
+  user_id: 2
+  gender: M
 sue:
   id: 2000
-  first_name: bob
+  first_name: sue
   user_id: 3
   gender: F
   

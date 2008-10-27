@@ -19,4 +19,17 @@ class DormsControllerTest < Test::Unit::TestCase
     assert assigns(:dorms)
     assert_response :success
   end
+  
+  def test_create
+    xhr :post, :create, :dorm => {:campus_id => 2, :name => 'Primero Grove'}
+    assert assigns(:dorm)
+    assert_response :success
+  end
+  
+  def test_destroy
+    assert_difference 'Dorm.count', -1 do
+      xhr :delete, :destroy, :id => '1'
+    end
+    assert_response :success
+  end
 end

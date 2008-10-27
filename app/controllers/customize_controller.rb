@@ -7,12 +7,11 @@ class CustomizeController < ApplicationController
   end
   
   def reorder_training_categories
-    @view = Ministry.find(params[:id], :include => :training_categories)
-    @view.training_categories.each do |category|
+    @ministry = Ministry.find(params[:id], :include => :training_categories)
+    @ministry.training_categories.each do |category|
       category.position = params['training_categories_list'].index(category.id.to_s) + 1
       category.save
     end
-    # delete_cache(@view.id)
     render :nothing => true
   end
 end

@@ -1,8 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class InvolvementControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def setup
+    login
+  end
+  
+  test "index" do
+    get :index
+    assert_response :success
   end
 end

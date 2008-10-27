@@ -4,3 +4,13 @@ one:
   person_id: 50000
   ministry_id: 1
   ministry_role: Staff
+two:
+  id: 2
+  person_id: 50000
+  ministry_id: 2
+  ministry_role: Staff
+three:
+  id: 3
+  person_id: 3000
+  ministry_id: 2
+  ministry_role: Staff

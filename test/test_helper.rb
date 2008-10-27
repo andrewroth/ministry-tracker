@@ -26,7 +26,8 @@ class Test::Unit::TestCase
   self.use_instantiated_fixtures  = false
 
   # Add more helper methods to be used by all tests here...
-  def login
-    @request.session[:user] = User.find(:first, :conditions => {:username => 'josh.starcher@uscm.org'}).id
+  def login(username = 'josh.starcher@example.com')
+    @request.session[:user] = User.find(:first, :conditions => {:username => username}).id
+    @request.session[:ministry_id] = 1
   end
 end

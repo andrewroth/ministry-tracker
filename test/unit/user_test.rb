@@ -7,7 +7,7 @@ class UserTest < Test::Unit::TestCase
     @user = User.find(:first)
   end
   def test_authenticate
-    u = User.authenticate('josh.starcher@uscm.org', 'test')
+    u = User.authenticate('josh.starcher@example.com', 'test')
     assert u.is_a?(User)
   end
   
