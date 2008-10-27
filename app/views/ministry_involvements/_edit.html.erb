@@ -2,5 +2,6 @@
   	<p>Role: 
   	<%= f.select :ministry_role, MinistryInvolvement::ROLES %></p>
     <p><%= f.check_box :admin %> Admin</p>
-    <p><%= f.submit %></p>
+    <p><%= f.submit %> or <%= link_to_function 'cancel', "$('#campus_form#{@staff.id}').blindUp();",
+ 															:class => 'cancel' %></p>
 <%- end -%>
