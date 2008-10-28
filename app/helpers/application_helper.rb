@@ -50,7 +50,6 @@ module ApplicationHelper
 end
 
 def fancy_date_field(name, value)
-  date = value.is_a?(Date) ? value : Date.parse(value)
   value = value.is_a?(Date) ? value.to_s : value
   field = %| 
         <input type="text" name="#{name}" id="#{name}" 
