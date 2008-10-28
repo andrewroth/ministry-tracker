@@ -75,6 +75,7 @@ ActionMailer::Base.smtp_settings = {
   :address   => "smtp1.ccci.org",
   :domain   => "ccci.org"
 }
+require 'exception_notifier'
 ExceptionNotifier.sender_address = %("MinistryTrack Error" <error@ministrytrack.org>)
 ExceptionNotifier.email_prefix = "[MinistryTrack] "
 # FILTER_KEYS = %w(password)
