@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
 
   # Pick a unique cookie name to distinguish our session data from others'
-  helper_method :date_format, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
+  helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin
   before_filter :login_required, :get_person, :get_ministry
   
@@ -23,12 +23,12 @@ class ApplicationController < ActionController::Base
       ActiveRecord::Base._(column, table)
     end
     
-    def date_format(value)
-      return '' if value.to_s.empty?
-      value = value.to_s
-      time = value.class == Time ? value : Time.parse(value)
-      time.strftime('%m/%d/%Y')
+    def format_date(value, format = '%m/%d/%Y')
+      return '' if value.blank?
+      time = Time.parse(value.to_s)
+      time.strftime(format)
     end
+
     
     def get_person
       @person = params[:person_id] ? Person.find(params[:person_id]) : nil

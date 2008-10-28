@@ -74,8 +74,4 @@ def fancy_date_field(name, value)
         </script>|
 end
 
-def format_date(value=nil)
-  return '' if value.to_s.empty?
-  time = value.class == Time ? value : Time.parse(value)
-  time.strftime('%m/%d/%Y')
-end
+

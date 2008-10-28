@@ -22,7 +22,7 @@ xml.Workbook({
           @view.columns.each do |column|
             value = case column.column_type
   	          			when 'date'
-            				  date_format(person[column.safe_name])
+            				  format_date(person[column.safe_name])
             				when 'gender'
             				  @person.human_gender(person[column.safe_name])
             				else
