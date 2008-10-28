@@ -1,2 +1,0 @@
-Time::DATE_FORMATS[:default] = Date::DATE_FORMATS[:default] = '%m/%d/%Y'
-Time::DATE_FORMATS[:short_ordinal] = Date::DATE_FORMATS[:short_ordinal] = lambda { |date| date.strftime("%B #{date.day.ordinalize}") }

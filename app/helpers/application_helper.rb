@@ -50,7 +50,8 @@ module ApplicationHelper
 end
 
 def fancy_date_field(name, value)
-  value = value.is_a?(Date) ? value.strftime("%m/%d/%Y") : value
+  date = value.is_a?(Date) ? value : Date.parse(value)
+  value = value.is_a?(Date) ? value.to_s : value
   field = %| 
         <input type="text" name="#{name}" id="#{name}" 
                 value="#{value}" size="13" />
@@ -65,7 +66,7 @@ def fancy_date_field(name, value)
           Calendar.setup(
             {
               inputField  : "#{name}", // ID of the input field
-              ifFormat    : "%m/%d/%Y",    													// the date format
+              ifFormat    : "#{I18n.t('date.formats.default', :count => '%d')}",    													// the date format
               button      : "pick_date_#{name}",       		// ID of the button
               showsTime		: false,
               showOthers	: true

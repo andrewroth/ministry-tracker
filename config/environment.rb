@@ -50,6 +50,7 @@ Rails::Initializer.run do |config|
   #                  end.flatten.map{|p| p.name.to_sym}
   # 
   # config.plugins -= [:query_trace]
+  config.action_controller.use_accept_header = true
 end
 # Add new inflection rules using the following format 
 # (all these examples are active by default):
