@@ -6,8 +6,8 @@
 	<td colspan="1"><Table>
 	<tr><td width="150">Email</td><td><%= @current_address.email %></td></tr>
 	<%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
-	  format = @person.birth_date < 21.years.ago.to_date ? '%B %e' : '%B %e, %Y' -%>
-	<tr><td>Date of Birth</td><td><%= format_date(@person.birth_date, format) %></td></tr>
+	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal -%>
+	<tr><td>Birth Day</td><td><%= format_date(@person.birth_date, format) %></td></tr>
 	<tr><td>Gender</td><td><%= @person.human_gender %></td></tr>
 	</table></td>
 	

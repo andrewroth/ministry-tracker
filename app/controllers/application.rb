@@ -23,10 +23,10 @@ class ApplicationController < ActionController::Base
       ActiveRecord::Base._(column, table)
     end
     
-    def format_date(value, format = '%m/%d/%Y')
+    def format_date(value, format = :default)
       return '' if value.blank?
       time = Time.parse(value.to_s)
-      time.strftime(format)
+      time.to_formatted_s(format)
     end
 
     
