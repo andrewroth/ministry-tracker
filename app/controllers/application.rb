@@ -118,6 +118,7 @@ class ApplicationController < ActionController::Base
     # = Filters =
     # ===========
     def set_locale
+      locales = ['en-US', 'en-AU']
       begin
         # Try to auto-detect it
         if request.headers['Accept-Language']
@@ -127,7 +128,7 @@ class ApplicationController < ActionController::Base
         end
         session[:locale] = params[:locale] if params[:locale]
         session[:locale] = 'en-AU' if session[:locale] == 'en-GB'
-        I18n.locale = session[:locale] 
+        I18n.locale = locales.include?(session[:locale]) ? session[:locale] : I18n.default_locale
       rescue
         I18n.locale = I18n.default_locale
       end
