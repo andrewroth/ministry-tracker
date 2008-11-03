@@ -1,0 +1,2 @@
+page.insert_html :bottom, :developers, :partial => 'developer', :locals => {:developer => @user}
+page[:email].val ''

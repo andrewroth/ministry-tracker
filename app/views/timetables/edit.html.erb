@@ -1,0 +1,12 @@
+<h1>Editing timetable</h1>
+
+<% form_for(@timetable) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @timetable %> |
+<%= link_to 'Back', timetables_path %>

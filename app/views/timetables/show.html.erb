@@ -1,0 +1,111 @@
+<script type="text/javascript" charset="utf-8">
+  // Loop over the table cells and collect the ones that are checked
+  // 61 td cells per column
+  // busy_times[0] == Sunday
+  // busy_times[0][0][0] = First Start Time on Sunday
+  // busy_times[0][0][1] = First End Time on Sunday
+  function set_times_field() {
+    var busy = false;
+    var blocks = 0;
+    var been_busy = false;
+    var current_day;
+    busy_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
+    for(i=0; i<7; i++) {
+      // Go down each column
+      $('table#schedule td.day_' + i).each(function(index) {
+        if($(this).hasClass('busy')) {
+          if(!busy) {
+            day = i;
+            busy = true;
+            been_busy = true;
+            if(day != current_day) {
+              current_day = day;
+              blocks = 0;
+            }
+            // alert($(this).find('input').val())
+            // busy_times[day] = new Array;
+            // alert(blocks);
+            busy_times[day][blocks] = new Array;
+            busy_times[day][blocks][0] = Number($(this).find('input').val());
+            // alert(busy_times[day][blocks][0]);
+            // Set End Time 15 mins later
+            busy_times[day][blocks][1] = Number($(this).find('input').val()) + (15 * 60);
+          } else {
+            // Set End Time 15 mins later
+            busy_times[day][blocks][1] = Number($(this).find('input').val()) + (15 * 60);
+            // alert(busy_times[day][blocks][1]);
+          }
+        } else {
+          if(been_busy) {
+             blocks++;
+             been_busy = false;
+             // alert(blocks);
+          }
+          busy = false;
+        }
+      })
+    }
+    $('#times').val($.toJSON(busy_times))
+  }
+</script>
+<%- remote_form_for [@person, @timetable], :before => "set_times_field()" do |f| -%>
+  <%= hidden_field_tag :times %>
+  <%= f.submit 'Update Timetable' %>
+<%- end -%><br/>
+<table id="schedule" width="250px" cellspacing="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+    <%- 7.times do |i| -%>
+      <th><%= Date::DAYNAMES[i] %></th>
+    <%- end -%>
+  </thead>
+  <tbody>
+    <!-- 6 am to 10 pm in 15 minute intervals -->
+    <%- midnight = Time.today.beginning_of_day
+        time = midnight + 6.hours 
+        stop = time + 16.hours -%>
+    <%- while time <= stop 
+        time_in_seconds = time.to_i - midnight.to_i -%>
+      <tr>
+        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+        <%- 7.times do |i| -%>
+          <%- busy_index = @busy_times[i].detect {|bt|} -%>
+        <td width="50px" height="10px" class="day_<%= i %> <%= 'busy' if @busy_times[i].include?(time_in_seconds)  %>">&nbsp;
+          <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
+        </td>
+        <%- end -%>
+      </tr>
+      <%- time += 15.minutes -%>
+    <%- end -%>
+  <tbody>
+</table>    
+<style>
+  .busy {background:blue;}
+</style>
+<script>
+  down = false;
+  direction = 'on';
+  $('table#schedule td').mousedown(function() {
+    down = true;
+    if($(this).hasClass('busy')) {
+      direction = 'off';
+      $(this).removeClass('busy')
+    } else {
+      direction = 'on';
+      $(this).addClass('busy')
+    }
+  })
+  $('table#schedule td').mouseover(function() {
+    if(down) {
+      if(direction == 'off') {
+        $(this).removeClass('busy')
+      } else {
+        $(this).addClass('busy')
+      }
+    }
+  })
+  $('table#schedule td').mouseup(function() {
+    down = false;
+  })
+</script>

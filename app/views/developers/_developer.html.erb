@@ -1,0 +1,2 @@
+<li id="<%= dom_id(developer) %>"><%= developer.username %> | 
+    <%= link_to_remote 'Not anymore!', :url => developer_path(developer.id), :confirm => 'Are you sure?', :method => :delete unless developer == current_user %></li>
