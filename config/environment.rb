@@ -53,6 +53,7 @@ Rails::Initializer.run do |config|
   # config.plugins -= [:query_trace]
   config.action_controller.use_accept_header = true
 end
+require 'json'
 # Add new inflection rules using the following format 
 # (all these examples are active by default):
 ActiveSupport::Inflector.inflections do |inflect|
