@@ -58,8 +58,10 @@ class ApplicationController < ActionController::Base
       end
     end
     
-    def is_ministry_leader_somewhere
-      @is_ministry_leader ||= !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
+    def is_ministry_leader_somewhere(person = nil)
+      person ||= @me
+      @is_ministry_leader ||= {}
+      @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
     end
     
     def is_involved_somewhere(person = nil)

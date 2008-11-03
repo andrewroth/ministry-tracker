@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  # map.resources :timetables
+
+  map.resources :developers
+
   map.resources :imports
   
   map.resources :profile_pictures
@@ -69,7 +73,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :change_ministry => :any,
                                           :change_view => :any,
                                           :search => :any,
-                                          :add_student => :any} do |person|
+                                          :add_student => :any},
+                         :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements
     person.resources :involvement

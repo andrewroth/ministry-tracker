@@ -52,29 +52,3 @@ a:hover { color: #fff; background-color:#000; }
   list-style: square;
 }
 
-#progress-bar {
-  width:500px;
-  height:25px;
-  margin:15px;
-  border:solid 1px #000;
-  position:relative;
-}
-
-#progress-bar #status-bar {
-  display:block;
-  height:25px;
-  width:0;
-  background-color:#00f;
-  border-right:solid 1px #000;
-  position:absolute;
-  top:0; left:0;
-}
-
-#progress-bar #status-text {
-  display:block;
-  padding: 0 15px;
-  line-height:25px;
-  position:absolute;
-  top:0; left:0;
-}
-

@@ -18,7 +18,7 @@ render_tabnav :main,
    t.named 'Manage'
    t.titled 'Manage your world'
    t.links_to :controller => 'manage'
-  end if is_ministry_leader_somewhere 
+  end if is_ministry_leader_somewhere(@me)
   
   add_tab do |t|
     if @personal_bible_studies.size == 1

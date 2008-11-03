@@ -718,3 +718,11 @@ line-height:28px;
 }
 #outer {
 	padding-left:10%;
+}
+table#schedule {
+	
+}
+table#schedule td, table#schedule th {
+	padding:2px;
+	border:1px solid black;
+}

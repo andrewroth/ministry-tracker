@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081026195816) do
+ActiveRecord::Schema.define(:version => 20081103180722) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(:version => 20081026195816) do
 
   add_index "addresses", ["person_id"], :name => "person_id"
   add_index "addresses", ["email"], :name => "index_addresses_on_email"
+
+  create_table "busy_times", :force => true do |t|
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "day_of_week"
+    t.integer  "timetable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "campus_involvements", :force => true do |t|
     t.integer "person_id"
@@ -321,7 +330,7 @@ ActiveRecord::Schema.define(:version => 20081026195816) do
     t.date    "updated_at"
     t.integer "old_id"
     t.string  "staff_notes"
-    t.integer "updated_by"
+    t.string  "updated_by",      :limit => 11
     t.integer "created_by"
     t.string  "url",             :limit => 2000
   end
@@ -711,6 +720,12 @@ ActiveRecord::Schema.define(:version => 20081026195816) do
   add_index "summer_projects", ["primary_partner"], :name => "primary_partner"
   add_index "summer_projects", ["secondary_partner"], :name => "secondary_partner"
 
+  create_table "timetables", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "training_answers", :force => true do |t|
     t.integer  "training_question_id"
     t.integer  "person_id"
@@ -767,6 +782,7 @@ ActiveRecord::Schema.define(:version => 20081026195816) do
     t.string   "updated_at"
     t.string   "guid"
     t.boolean  "email_validated"
+    t.boolean  "developer"
   end
 
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true

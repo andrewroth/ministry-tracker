@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
     self.remember_token            = nil
     save(false)
   end
-
+  
   protected
     # before filter 
     def encrypt_password
