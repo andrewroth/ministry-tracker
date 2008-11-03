@@ -67,7 +67,7 @@ class TimetablesController < ApplicationController
   def update
     # Clear out all other blocks
     @timetable.busy_times.destroy_all
-    times = JSON::Pure::Parser.new(params[:times]).parse
+    times = JSON::Parser.new(params[:times]).parse
     # There's an array for each day of the week
     times.each_with_index do |day, i|
       # Each day of the week then has a list of blocks
