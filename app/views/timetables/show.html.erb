@@ -86,7 +86,7 @@
 <script>
   down = false;
   direction = 'on';
-  $('table#schedule td').mousedown(function() {
+  $('table#schedule td:not(.time)').mousedown(function() {
     down = true;
     if($(this).hasClass('busy')) {
       direction = 'off';
@@ -96,7 +96,7 @@
       $(this).addClass('busy')
     }
   })
-  $('table#schedule td').mouseover(function() {
+  $('table#schedule td:not(.time)').mouseover(function() {
     if(down) {
       if(direction == 'off') {
         $(this).removeClass('busy')
@@ -105,7 +105,7 @@
       }
     }
   })
-  $('table#schedule td').mouseup(function() {
+  $('body').mouseup(function() {
     down = false;
   })
 </script>
