@@ -64,7 +64,7 @@ class MinistriesController < ApplicationController
   def update
     @ministry = Ministry.find(params[:id])
     get_ministry_involvement(@ministry)
-    @ministry_involvement.update_attributes(params[:ministry_involvement])
+    @ministry_involvement.update_attributes(params[:ministry_involvement]) if @ministry_involvement
     respond_to do |format|
       if @ministry.update_attributes(params[:ministry])
         setup_ministries
