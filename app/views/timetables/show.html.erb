@@ -1,51 +1,52 @@
 <script type="text/javascript" charset="utf-8">
   // Loop over the table cells and collect the ones that are checked
   // 61 td cells per column
-  // busy_times[0] == Sunday
-  // busy_times[0][0][0] = First Start Time on Sunday
-  // busy_times[0][0][1] = First End Time on Sunday
+  // free_times[0] == Sunday
+  // free_times[0][0][0] = First Start Time on Sunday
+  // free_times[0][0][1] = First End Time on Sunday
   function set_times_field() {
-    var busy = false;
+    var free = false;
     var blocks = 0;
-    var been_busy = false;
+    var been_free = false;
     var current_day;
-    busy_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
+    free_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
     for(i=0; i<7; i++) {
       // Go down each column
       $('table#schedule td.day_' + i).each(function(index) {
         if($(this).hasClass('busy')) {
-          if(!busy) {
+          if(!free) {
             day = i;
-            busy = true;
-            been_busy = true;
+            // alert(day);
+            free = true;
+            been_free = true;
             if(day != current_day) {
               current_day = day;
               blocks = 0;
             }
             // alert($(this).find('input').val())
-            // busy_times[day] = new Array;
+            // free_times[day] = new Array;
             // alert(blocks);
-            busy_times[day][blocks] = new Array;
-            busy_times[day][blocks][0] = Number($(this).find('input').val());
-            // alert(busy_times[day][blocks][0]);
+            free_times[day][blocks] = new Array;
+            free_times[day][blocks][0] = Number($(this).find('input').val());
+            // alert(free_times[day][blocks][0]);
             // Set End Time 15 mins later
-            busy_times[day][blocks][1] = Number($(this).find('input').val()) + (15 * 60);
+            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
           } else {
             // Set End Time 15 mins later
-            busy_times[day][blocks][1] = Number($(this).find('input').val()) + (15 * 60);
-            // alert(busy_times[day][blocks][1]);
+            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+            // alert(free_times[day][blocks][1]);
           }
         } else {
-          if(been_busy) {
+          if(been_free) {
              blocks++;
-             been_busy = false;
+             been_free = false;
              // alert(blocks);
           }
-          busy = false;
+          free = false;
         }
       })
     }
-    $('#times').val($.toJSON(busy_times))
+    $('#times').val($.toJSON(free_times))
   }
 </script>
 <%- remote_form_for [@person, @timetable], :before => "set_times_field()" do |f| -%>
@@ -63,20 +64,22 @@
   <tbody>
     <!-- 6 am to 10 pm in 15 minute intervals -->
     <%- midnight = Time.today.beginning_of_day
-        time = midnight + 6.hours 
-        stop = time + 16.hours -%>
-    <%- while time <= stop 
+        time = midnight + Timetable::EARLIEST 
+        stop = midnight + Timetable::LATEST -%>
+    <%- while time < stop 
         time_in_seconds = time.to_i - midnight.to_i -%>
       <tr>
         <td width="10px" class="time"><%= time.to_s(:time) %></td>
         <%- 7.times do |i| -%>
-          <%- busy_index = @busy_times[i].detect {|bt|} -%>
-        <td width="50px" height="10px" class="day_<%= i %> <%= 'busy' if @busy_times[i].include?(time_in_seconds)  %>">&nbsp;
+        <%#= logger.debug(@free_times[i].inspect) %>
+        <%#- free_index = @free_times[i].detect {|bt|} -%>
+        <td width="50px" height="10px" class="day_<%= i %> <%= 'busy' if @free_times[i].present? && !@free_times[i].include?(time_in_seconds) %>">
+          &nbsp;
           <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
         </td>
         <%- end -%>
       </tr>
-      <%- time += 15.minutes -%>
+      <%- time += Timetable::INTERVAL -%>
     <%- end -%>
   <tbody>
 </table>    

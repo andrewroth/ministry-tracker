@@ -26,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :group_involvements
 
-  map.resources :groups
+  map.resources :groups, :member => {:find_times => :post}
 
   map.resources :bible_studies, :member => {:transfer => :post}
   

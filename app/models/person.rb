@@ -59,7 +59,7 @@ class Person < ActiveRecord::Base
   has_many :imports
   
   has_one :timetable, :class_name => "Timetable", :foreign_key => _(:person_id, :timetable)
-  has_many :busy_times, :through => :timetable
+  has_many :free_times, :through => :timetable
     
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name)

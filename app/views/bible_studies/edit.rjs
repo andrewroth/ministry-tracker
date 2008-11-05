@@ -1,3 +1,4 @@
 page[:address_form].replace_html(:partial => 'form')
 page[:address_form].show
+page[:address].hide
 page[:address_form].visual_effect("highlight")

@@ -1,5 +1,16 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  
+  def times(start_time, end_time)
+    midnight = Time.today.beginning_of_day
+    # start_time = midnight + start_time.hours
+    # end_time = midnight.beginning_of_day + end_time.hours
+    time_options = []
+    start_time.to_i.step(end_time.to_i, 900) do |time|
+      time_options << [(midnight + time).to_s(:time), time]
+    end
+    time_options
+  end
     
   def update_flash(page, msg = nil, level='notice')
     unless msg

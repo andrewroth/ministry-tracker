@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081103180722) do
+ActiveRecord::Schema.define(:version => 20081104222308) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -35,15 +35,6 @@ ActiveRecord::Schema.define(:version => 20081103180722) do
 
   add_index "addresses", ["person_id"], :name => "person_id"
   add_index "addresses", ["email"], :name => "index_addresses_on_email"
-
-  create_table "busy_times", :force => true do |t|
-    t.integer  "start_time"
-    t.integer  "end_time"
-    t.integer  "day_of_week"
-    t.integer  "timetable_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "campus_involvements", :force => true do |t|
     t.integer "person_id"
@@ -227,6 +218,15 @@ ActiveRecord::Schema.define(:version => 20081103180722) do
     t.date    "created_at"
   end
 
+  create_table "free_times", :force => true do |t|
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "day_of_week"
+    t.integer  "timetable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "group_involvements", :force => true do |t|
     t.integer "person_id"
     t.integer "group_id"
@@ -236,19 +236,22 @@ ActiveRecord::Schema.define(:version => 20081103180722) do
   add_index "group_involvements", ["person_id", "group_id"], :name => "person_id_group_id", :unique => true
 
   create_table "groups", :force => true do |t|
-    t.string "name"
-    t.string "address"
-    t.string "address_2"
-    t.string "city"
-    t.string "state"
-    t.string "zip"
-    t.string "country"
-    t.string "dorm_id"
-    t.string "ministry_id"
-    t.string "campus_id"
-    t.string "email"
-    t.string "url"
-    t.string "type"
+    t.string  "name"
+    t.string  "address"
+    t.string  "address_2"
+    t.string  "city"
+    t.string  "state"
+    t.string  "zip"
+    t.string  "country"
+    t.string  "dorm_id"
+    t.string  "ministry_id"
+    t.string  "campus_id"
+    t.string  "email"
+    t.string  "url"
+    t.string  "type"
+    t.integer "start_time"
+    t.integer "end_time"
+    t.integer "day"
   end
 
   add_index "groups", ["ministry_id"], :name => "index_posses_on_ministry_id"
