@@ -88,4 +88,8 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(new_session_path)
   end
+  
+  def boom
+    raise 'testing error notification'
+  end
 end

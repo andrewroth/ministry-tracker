@@ -2,7 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
-  include ExceptionNotifiable
+  include HoptoadNotifier::Catcher
 
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
@@ -11,10 +11,6 @@ class ApplicationController < ActionController::Base
 
   skip_before_filter CAS::Filter  
 
-  def boom
-    raise 'testing error notification'
-  end
-  
   protected
     # =============================================================================
     # = See vendor/plugins/mappings/load_mappings.rb                              =
