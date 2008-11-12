@@ -10,8 +10,10 @@ RAILS_GEM_VERSION = '2.2.0' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 gem 'soap4r' 
+gem 'json'
 gem 'fastercsv'
 gem 'roo'
+gem 'aws-s3'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
