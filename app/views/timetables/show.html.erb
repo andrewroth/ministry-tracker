@@ -48,6 +48,8 @@
     }
     $('#times').val($.toJSON(free_times))
   }
+  
+
 </script>
 <%- remote_form_for [@person, @timetable], :before => "set_times_field()" do |f| -%>
   <%= hidden_field_tag :times %>
@@ -98,7 +100,7 @@
       direction = 'on';
       $(this).addClass('busy')
     }
-  })
+  });
   $('table#schedule td:not(.time)').mouseover(function() {
     if(down) {
       if(direction == 'off') {
@@ -107,8 +109,9 @@
         $(this).addClass('busy')
       }
     }
-  })
+  });
   $('body').mouseup(function() {
     down = false;
-  })
+  });
+   $('table#schedule td').disableTextSelect();
 </script>

@@ -53,7 +53,7 @@ Rails::Initializer.run do |config|
   # config.plugins -= [:query_trace]
   config.action_controller.use_accept_header = true
 end
-require 'json'
+# require 'json'
 # Add new inflection rules using the following format 
 # (all these examples are active by default):
 ActiveSupport::Inflector.inflections do |inflect|
@@ -77,10 +77,10 @@ ActionMailer::Base.smtp_settings = {
   :address   => "smtp1.ccci.org",
   :domain   => "ccci.org"
 }
-require 'exception_notifier'
-ExceptionNotifier.sender_address = %("MinistryTrack Error" <error@ministrytrack.org>)
-ExceptionNotifier.email_prefix = "[MinistryTrack] "
-# FILTER_KEYS = %w(password)
-# ExceptionNotifier.filter_keys = FILTER_KEYS
-
-ExceptionNotifier.exception_recipients = %w(josh.starcher@gmail.com)
+# require 'exception_notifier'
+# ExceptionNotifier.sender_address = %("MinistryTrack Error" <error@ministrytrack.org>)
+# ExceptionNotifier.email_prefix = "[MinistryTrack] "
+# # FILTER_KEYS = %w(password)
+# # ExceptionNotifier.filter_keys = FILTER_KEYS
+# 
+# ExceptionNotifier.exception_recipients = %w(josh.starcher@gmail.com)

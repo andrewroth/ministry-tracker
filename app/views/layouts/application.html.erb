@@ -8,11 +8,7 @@
 		<%= stylesheet_link_tag "style", :media => "all" %>
     <%= stylesheet_link_tag "thickbox", :media => "screen" %>
 		<%= stylesheet_link_tag "ext/ext-all", :media => "screen" %>
-		<%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag 'thickbox-compressed' %>
-		<%= javascript_include_tag 'alternate' %>
-		<%= javascript_include_tag 'ext-jquery-adapter' %>
-		<%= javascript_include_tag 'ext-all', 'json' %>
+		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 'jquery.disable.text.select.pack' %>
 		<script type="text/javascript" src="/javascripts/calendar.js"></script>
 		<script type="text/javascript" src="/javascripts/lang/calendar-en.js"></script>
 		<script type="text/javascript" src="/javascripts/calendar-setup.js"></script>

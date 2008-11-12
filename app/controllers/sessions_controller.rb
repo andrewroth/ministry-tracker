@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       log = ''
       cas.wiredump_dev = log
       begin
-        ticket = cas.getServiceTicketFromUserNamePassword(args).getServiceTicketFromUserNamePasswordResult
+        ticket = cas.getServiceTicketFromUserNamePassword(args).getServiceTicketFromUserNamePasswordResult 
       rescue
         # Auth failed
       end
@@ -90,6 +90,6 @@ class SessionsController < ApplicationController
   end
   
   def boom
-    raise 'testing error notification'
+    raise StandardError, 'hi toad'
   end
 end
