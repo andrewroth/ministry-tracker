@@ -36,8 +36,8 @@ class ProfilePicturesController < ApplicationController
         format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity }
       end
     end
-  # rescue
-  #   redirect_to(@profile_picture.person)
+  rescue Errno::ECONNREFUSED
+    redirect_to(@profile_picture.person)
   end
   
     

@@ -155,6 +155,12 @@ class PeopleController < ApplicationController
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid?
         @person, @current_address = add_person(@person, @current_address, params)
+        # if we don't have a good username, Raise an error
+        # Since we require a unique email address, we should never get here. 
+        unless @person.user 
+          raise "Duplicate email address error. Couldn't create a user for:" + @person.inspect
+        end
+        
         if @ministry
           # add the person to this ministry if they aren't already
           if params[:student]
@@ -167,9 +173,9 @@ class PeopleController < ApplicationController
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
               @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role])
-              # If this is an Involved Student record that a plain_password value, this is a new user who should be notified of the account creation
+              # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
-                UserMailer.deliver_created_student(@person.user, @ministry, @me)
+                UserMailer.deliver_created_student(@person, @ministry, @me)
               end
             end
           else
@@ -182,11 +188,6 @@ class PeopleController < ApplicationController
             end
           end
 
-          # if we don't have a good username, Raise an error
-          # Since we require a unique email address, we should never get here. 
-          unless @person.user
-            raise "Duplicate email address error. Couldn't create a user for:" + @person.inspect
-          end
           # If they tried to add a staff as a student, smack them around a little
           # if params[:student] && @mi
           #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."

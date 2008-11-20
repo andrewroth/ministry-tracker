@@ -333,7 +333,7 @@ ActiveRecord::Schema.define(:version => 20081104222308) do
     t.date    "updated_at"
     t.integer "old_id"
     t.string  "staff_notes"
-    t.string  "updated_by",      :limit => 11
+    t.integer "updated_by"
     t.integer "created_by"
     t.string  "url",             :limit => 2000
   end
@@ -516,7 +516,7 @@ ActiveRecord::Schema.define(:version => 20081104222308) do
     t.integer  "fk_ssmUserID"
     t.integer  "person_id"
     t.boolean  "isPaid"
-    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
+    t.integer  "appFee"
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
@@ -588,7 +588,7 @@ ActiveRecord::Schema.define(:version => 20081104222308) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 8
+    t.binary   "lastChangedDate",               :limit => 255
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"
