@@ -1,0 +1,41 @@
+#!/bin/sh
+# Defaults
+MINLEN=2
+DIRTY=false
+
+# Check if we have any untracked files
+if git status | grep -q "modified:"	
+then
+DIRTY=true
+fi
+	
+	# Make sure there is a message with the commit 
+	if [ -z "$1" ] && (test $DIRTY == true)
+	then
+	echo "You must specify a message with your commit"
+	return
+	elif [ ${#1} -lt $MINLEN ] && (test $DIRTY == true)
+	then
+	echo "Your message must have at least $MINLEN letters."
+	return
+	fi
+		
+		# Commit all the changes by default
+		if (test $DIRTY == true)
+		then
+		echo "Adding new files to Git repository"
+		git add .
+			
+			echo "Commiting to local Git repository"
+			git commit -a -m "$1"
+					
+					# Push changes if a remote repository exists
+					if git remote | grep -q "origin"	
+					then
+					echo "Pushing changes to remote repository"
+					git push
+					fi
+					fi
+						
+					
+
