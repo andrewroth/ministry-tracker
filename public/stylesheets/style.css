@@ -1,11 +1,13 @@
 /*
 Codename: Ministry Track
-Author: David Sudarma, Caleb Wright, Josh Starcher
+Author: David T Sudarma (Follower), Caleb Wright (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
-  Green Block:      #67A03B
-  Green Text:       #539030
+Green Block:      #67A03B
+Green Text:       #539030
 */
+
+
 img {border:0px;}
 
 #campus, #person, #training_question, #training_category {
@@ -311,7 +313,7 @@ h1 {
 /* LAYOUT */
 
 #wrapper {
-    margin: 20px 20px 0px 20px;
+    margin: 20px auto 20px auto;
     width:auto;
     border:1px solid #CCCCCC;
     border-width:5px 5px 5px 5px;
@@ -325,7 +327,8 @@ h1 {
 	min-width:900px;
 	max-width:900px;
 	height:120px;
-	margin-top:10px;
+margin:auto;
+margin-top:10px;
 }
 
 #header {
@@ -510,6 +513,7 @@ margin:10px 0 10px;
 background:#edf3fe;
 }
 .flash {
+
 	margin-left: 10px;
 }
 .notice {
