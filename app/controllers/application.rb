@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin
   before_filter :login_required, :get_person, :get_ministry, :set_locale
 
-  skip_before_filter CAS::Filter  
+  skip_before_filter CAS::Filter
 
   protected
     # =============================================================================
@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
     def get_person
       @person = params[:person_id] ? Person.find(params[:person_id]) : nil
       # Initialize the logged in person
-      @me = @my = @current_user.person
+      @me = @my = current_user.person
       
       # if we didn't get a person in the params, set it now
       @person ||= @me

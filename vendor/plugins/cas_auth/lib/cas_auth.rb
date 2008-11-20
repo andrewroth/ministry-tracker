@@ -208,8 +208,8 @@ module CAS
       parms = controller.params.dup
       parms.delete("ticket")
       query = (parms.collect {|key, val| "#{key}=#{val}"}).join("&")
-      query = "?" + query unless query.empty?
-      "#{req.protocol}#{@@server_name}#{req.request_uri.split(/\?/)[0]}#{query}"
+      query = "?fromcas=true&" + query #unless query.empty?
+      "#{req.protocol}#{@@server_name}:#{req.port}#{req.request_uri.split(/\?/)[0]}#{query}"
     end
   end
 end

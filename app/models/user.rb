@@ -76,6 +76,40 @@ class User < ActiveRecord::Base
     save(false)
   end
   
+  def self.find_or_create_from_cas(receipt)
+    # Look for a user with this guid
+    u = User.find(:first, :conditions => _(:guid, :user) + " = '#{receipt.guid}'")
+    # if we have a user by this method, great! update the email address if it doesn't match
+    if u
+      u.username = receipt.user_name
+    else
+      # If we didn't find a user with the guid, do it by email address and stamp the guid
+      u = User.find(:first, :conditions => _(:username, :user) + " = '#{receipt.user_name}'")
+      if u
+        u.guid = receipt.guid
+      else
+        # If we still don't have a user in SSM, we need to create one.
+        u = User.create!(:username => receipt.user_name, :guid => receipt.guid)
+      end
+    end            
+    # Update the password to match their gcx password too. This will save a round-trip later
+    # u.plain_password = params[:plain_password]
+    u.save(false)
+    # make sure we have a person
+    unless u.person
+      # Try to find a person with the same email address who doesn't already have a user account
+      address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
+      person = address.person if address && address.person.user.nil?
+      
+      # Attache the found person to the user, or create a new person
+      u.person = person || Person.new(:first_name => receipt.first_name, :last_name => receipt.last_name)
+      
+      # Create a current address record if we don't already have one.
+      u.person.current_address ||= CurrentAddress.new(:email => receipt.user_name)
+      u.person.save(false)
+    end
+    u
+  end
   protected
     # before filter 
     def encrypt_password

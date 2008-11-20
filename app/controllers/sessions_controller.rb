@@ -4,6 +4,8 @@ require 'soap/mapping'
 require 'defaultDriver'
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry
+  before_filter :try_cas, :only => :new
+  
   filter_parameter_logging :password
   # render new.rhtml
   def new
@@ -29,40 +31,7 @@ class SessionsController < ApplicationController
         # Auth failed
       end
       unless ticket.to_s.empty?
-        args = GetSsoUserFromServiceTicket.new(session[:return_to], ticket)
-        details = cas.getSsoUserFromServiceTicket(args).getSsoUserFromServiceTicketResult
-        # Look for a user with this guid
-        u = User.find(:first, :conditions => _(:guid, :user) + " = '#{details.userID}'")
-        # if we have a user by this method, great! update the email address if it doesn't match
-        if u
-          u.username = details.email if u.username != details.email
-        else
-          # If we didn't find a user with the guid, do it by email address and stamp the guid
-          u = User.find(:first, :conditions => _(:username, :user) + " = '#{details.email}'")
-          if u
-            u.guid = details.userID
-          else
-            # If we still don't have a user in SSM, we need to create one.
-            u = User.create!(:username => details.email, :guid => details.userID, :plain_password => params[:plain_password])
-          end
-        end            
-        # Update the password to match their gcx password too. This will save a round-trip later
-        u.plain_password = params[:plain_password]
-        u.save(false)
-        # make sure we have a person
-        unless u.person
-          # Try to find a person with the same email address who doesn't already have a user account
-          address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
-          person = address.person if address && address.person.user.nil?
-          
-          # Attache the found person to the user, or create a new person
-          u.person = person || Person.new(:first_name => details.firstName, :last_name => details.lastName)
-          
-          # Create a current address record if we don't already have one.
-          u.person.current_address ||= CurrentAddress.new(:email => details.email)
-          u.person.save(false)
-        end
-        self.current_user = u || :false
+        
       end
     end
     if logged_in?
@@ -84,9 +53,14 @@ class SessionsController < ApplicationController
   def destroy
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
-    reset_session
+    # reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(new_session_path)
+    # Log out of SSO if we're in it
+    # if session[:casfilterreceipt]
+      # redirect_to CAS::Filter.logout_url(self)
+    # else
+      redirect_back_or_default(new_session_path)
+    # end
   end
   
   def boom

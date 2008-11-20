@@ -9,7 +9,7 @@ module AuthenticatedSystem
     # Accesses the current user from the session.  Set it to :false if login fails
     # so that future calls do not hit the database.
     def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || :false)
+      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || :false)
     end
     
     # Store the given user in the session.
@@ -49,6 +49,7 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
+      return false unless try_cas
       authorized? || access_denied
     end
 
@@ -114,6 +115,23 @@ module AuthenticatedSystem
         cookies[:auth_token] = { :value => user.remember_token, :expires => user.remember_token_expires_at }
         self.current_user = user
       end
+    end
+    
+    def login_from_cas
+      receipt = session[:casfilterreceipt]
+      u = false
+      if receipt
+        u = User.find_or_create_from_cas(receipt)
+      end
+      u
+    end
+    
+    def try_cas
+      ret_val = CAS::Filter.filter(self)
+      unless params[:fromcas]
+        return false
+      end
+      return ret_val
     end
 
   private

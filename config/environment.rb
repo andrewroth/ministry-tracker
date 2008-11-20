@@ -72,6 +72,7 @@ Mime::Type.register "application/vnd.ms-excel", :xls
 CAS::Filter.login_url = "https://signin.mygcx.org/cas/login"
 CAS::Filter.logout_url = "https://signin.mygcx.org/cas/logout"
 CAS::Filter.validate_url = "https://signin.mygcx.org/cas/serviceValidate"
+CAS::Filter.gateway = true
 
 ActionMailer::Base.smtp_settings = {
   :address   => "smtp1.ccci.org",
