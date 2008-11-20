@@ -9,7 +9,13 @@ RAILS_GEM_VERSION = '2.2.0' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'defaultDriver'
+gem 'httpclient' # Need this for soap4r
 gem 'soap4r' 
+gem 'json'
+gem 'fastercsv'
+gem 'roo'
+gem 'aws-s3'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
@@ -85,3 +91,5 @@ ActionMailer::Base.smtp_settings = {
 # # ExceptionNotifier.filter_keys = FILTER_KEYS
 # 
 # ExceptionNotifier.exception_recipients = %w(josh.starcher@gmail.com)
+
+
