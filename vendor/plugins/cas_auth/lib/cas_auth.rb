@@ -210,7 +210,7 @@ module CAS
       query = (parms.collect {|key, val| "#{key}=#{val}"}).join("&")
       query = "?fromcas=true&" + query #unless query.empty?
       server_name = @@server_name || req.host
-      "#{req.protocol}#{@@server_name}:#{req.port}#{req.request_uri.split(/\?/)[0]}#{query}"
+      "#{req.protocol}#{server_name}:#{req.port}#{req.request_uri.split(/\?/)[0]}#{query}"
     end
   end
 end
