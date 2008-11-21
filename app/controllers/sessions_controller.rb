@@ -51,16 +51,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    self.current_user.forget_me if logged_in?
-    cookies.delete :auth_token
-    # reset_session
+    logout_keeping_session!
     flash[:notice] = "You have been logged out."
-    # Log out of SSO if we're in it
-    # if session[:casfilterreceipt]
-      # redirect_to CAS::Filter.logout_url(self)
-    # else
-      redirect_back_or_default(new_session_path)
-    # end
   end
   
   def boom

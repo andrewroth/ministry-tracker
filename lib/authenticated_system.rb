@@ -49,8 +49,7 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
-      return false unless try_cas
-      authorized? || access_denied
+      try_cas || authorized? || access_denied
     end
 
     # Redirect as appropriate when an access request fails.
@@ -127,11 +126,36 @@ module AuthenticatedSystem
     end
     
     def try_cas
-      ret_val = CAS::Filter.filter(self)
+      ret_val = Rails.env.test? ? false : CAS::Filter.filter(self)
       unless params[:fromcas]
         return false
       end
       return ret_val
+    end
+    
+    def logout_keeping_session!
+      # Kill server-side auth cookie
+      @current_user.forget_me if @current_user.is_a? User
+      @current_user = false     # not logged in, and don't do it for me
+      kill_remember_cookie!     # Kill client-side auth cookie
+      session[:user] = nil   # keeps the session but kill our variable
+      # explicitly kill any other session variables you set
+      need_cas_logout = false
+      if session[:casfilterreceipt]
+        need_cas_logout = true
+      end
+      session[:casfilterreceipt] = nil
+      # Log out of SSO if we're in it
+      if need_cas_logout
+        CAS::Filter.service_url = new_session_path
+        redirect_to CAS::Filter.logout_url(self)
+      else
+        redirect_back_or_default(new_session_path)
+      end
+    end
+  
+    def kill_remember_cookie!
+      cookies.delete :auth_token
     end
 
   private

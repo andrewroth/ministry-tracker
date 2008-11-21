@@ -5,7 +5,7 @@ require 'dorms_controller'
 class DormsController; def rescue_action(e) raise e end; end
 
 class DormsControllerTest < Test::Unit::TestCase
-  fixtures Dorm.table_name, Group.table_name
+  fixtures Dorm.table_name, Group.table_name, Campus.table_name, MinistryCampus.table_name
 
   def setup
     @controller = DormsController.new

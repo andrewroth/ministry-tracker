@@ -163,8 +163,10 @@ module CAS
             end
           end
         end
-        logger.info("will send redirect #{redirect_url(controller)}") if !valid
-        controller.send :redirect_to,redirect_url(controller) if !valid
+        if !valid && controller.params[:fromcas].nil?
+          logger.info("will send redirect #{redirect_url(controller)}") 
+          controller.send :redirect_to,redirect_url(controller) 
+        end
         return valid
       end
       alias :filter :filter_r
