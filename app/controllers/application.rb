@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   protected    
     def get_bar
       unless @bar
-        service_uri = "https://www.mygcx.org/CampusStaff/module/omnibar/omnibar"
+        service_uri = "https://www.mygcx.org/Public/module/omnibar/omnibar"
         proxy_granting_ticket = session[:cas_pgt]
         unless proxy_granting_ticket.nil?
           # raise proxy_granting_ticket.inspect
