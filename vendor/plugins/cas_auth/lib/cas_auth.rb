@@ -166,6 +166,7 @@ module CAS
         if !valid && controller.params[:fromcas].nil?
           logger.info("will send redirect #{redirect_url(controller)}") 
           controller.send :redirect_to,redirect_url(controller) 
+          return false
         end
         return valid
       end
@@ -207,10 +208,12 @@ module CAS
     end
     def self.guess_service(controller)
       req = controller.request
-      parms = controller.params.dup
-      parms.delete("ticket")
-      query = (parms.collect {|key, val| "#{key}=#{val}"}).join("&")
-      query = "?fromcas=true&" + query #unless query.empty?
+      params = controller.params.dup
+      params.delete("ticket")
+      params['fromcas'] = true 
+      params['ccci.org'] = true 
+      query = (params.collect {|key, val| "#{key}=#{val}"}).join("&")
+      query = "?" + query #unless query.empty?
       server_name = @@server_name || req.host
       "#{req.protocol}#{server_name}:#{req.port}#{req.request_uri.split(/\?/)[0]}#{query}"
     end
