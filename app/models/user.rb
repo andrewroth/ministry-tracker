@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
       person = address.person if address && address.person.user.nil?
       
       # Attache the found person to the user, or create a new person
-      u.person = person || Person.new(:first_name => receipt.first_name, :last_name => receipt.last_name)
+      u.person = person || Person.new() #:first_name => receipt.first_name, :last_name => receipt.last_name
       
       # Create a current address record if we don't already have one.
       u.person.current_address ||= CurrentAddress.new(:email => receipt.user)
