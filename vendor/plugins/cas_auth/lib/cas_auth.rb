@@ -210,6 +210,8 @@ module CAS
       req = controller.request
       params = controller.params.dup
       params.delete("ticket")
+      params.delete("action")
+      params.delete("controller")
       params['fromcas'] = true 
       params['ccci.org'] = true 
       query = (params.collect {|key, val| "#{key}=#{val}"}).join("&")

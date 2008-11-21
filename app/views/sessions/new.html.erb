@@ -1,12 +1,14 @@
-<% form_tag session_path do -%>
-<p><label for="login">Login</label><br/>
-<%= text_field_tag 'login' %></p>
+<% form_tag "https://signin.mygcx.org/cas/login?service=#{new_session_url(:fromcas => true)}", 
+            :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
+<p><label for="username">Username</label><br/>
+<%= text_field_tag 'username' %></p>
 
-<p><label for="plain_password">Password</label><br/>
-<%= password_field_tag 'plain_password' %></p>
+<p><label for="password">Password</label><br/>
+<%= password_field_tag 'password' %></p>
 
 <p><label for="remember_me">Remember me:</label>
 <%= check_box_tag 'remember_me' %></p>
 
-<p><%= submit_tag 'Log in' %></p>
+<p><%= submit_to_remote 'log_in', 'Log in', :url => session_path, :method => :post,
+                                            :before => "$('#spinner').show();"%> <%= spinner %></p>
 <% end -%>

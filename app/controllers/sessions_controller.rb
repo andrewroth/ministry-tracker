@@ -12,41 +12,51 @@ class SessionsController < ApplicationController
     if logged_in?
       redirect_back_or_default(person_url(self.current_user.person))
     end
+    if params[:errorKey] == 'BadPassword'
+      flash[:warning] = "Invalid username or password"
+    end
   end
 
   def create
     # First try SSM
-    self.current_user = User.authenticate(params[:login], params[:plain_password])
-    # Then try CAS
-    unless logged_in?
-      # session[:return_to] = request.protocol + request.host_with_port
-      cas = TntWareSSOProviderSoap.new
-      args = GetServiceTicketFromUserNamePassword.new(session[:return_to], params[:login], params[:plain_password], request.remote_ip)
-      # A little debug code can save the day
-      log = ''
-      cas.wiredump_dev = log
-      begin
-        ticket = cas.getServiceTicketFromUserNamePassword(args).getServiceTicketFromUserNamePasswordResult 
-      rescue
-        # Auth failed
+    respond_to do |wants|
+      if params[:username].blank? || params[:password].blank?
+        flash[:warning] = "Invalid username or password"
+        wants.js {}
+      else
+        self.current_user = User.authenticate(params[:username], params[:password])
+        if logged_in?
+          if params[:remember_me] == "1"
+            self.current_user.remember_me
+            cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
+          end
+          flash[:notice] = "Logged in successfully"
+          wants.js do
+            render :update do |page| 
+              page.redirect_to(session[:return_to] || person_path(self.current_user.person)) 
+            end
+          end
+        else
+          # If regular auth didn't work, see if they used CAS credentials
+          cas = TntWareSSOProviderSoap.new
+          logger.debug([new_session_url, params[:username], params[:password], request.remote_ip].join(', '))
+          args = GetServiceTicketFromUserNamePassword.new(new_session_url, params[:username], params[:password], request.remote_ip)
+          begin
+            ticket = cas.getServiceTicketFromUserNamePassword(args).getServiceTicketFromUserNamePasswordResult 
+          rescue Timeout::Error
+          rescue
+            # Auth failed
+          end
+          unless ticket.to_s.empty?
+            # Valid CAS user. do the redirect for SSO
+            wants.js {render :action => 'post_to_cas'}
+          else
+            # No luck. tell them they're a screwup
+            flash[:warning] = "Invalid username or password"
+            wants.js {}
+          end
+        end
       end
-      unless ticket.to_s.empty?
-        
-      end
-    end
-    if logged_in?
-      if params[:remember_me] == "1"
-        self.current_user.remember_me
-        cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-      end
-      # put the person in the session
-      # person = self.current_user.person || self.current_user.person.create
-      session[:person_id] = self.current_user.person.id
-      redirect_back_or_default(person_path(self.current_user.person))
-      flash[:notice] = "Logged in successfully"
-    else
-      flash[:warning] = "Invalid username or password"
-      render :action => 'new'
     end
   end
 
