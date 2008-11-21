@@ -6,11 +6,6 @@ COLORS:
 Green Block:      #67A03B
 Green Text:       #539030
 */
-.action-button {
-background:#67A03B;
-border:1px solid black;
-color:white;
-}
 
 img {border:0px;}
 
@@ -20,7 +15,6 @@ img {border:0px;}
 }
 
 #addStudentLink {
-
 margin:15px 0 10px 0;
 }
 
@@ -514,6 +508,7 @@ div.sectionHeader h2 {
 margin:10px 0 10px;
 	padding: 10px 10px 10px 10px;
 	border: 1px solid #ccc;
+
 background:#edf3fe;
 }
 .flash {
@@ -733,4 +728,14 @@ table#schedule {
 table#schedule td, table#schedule th {
 	padding:2px;
 	border:1px solid black;
+}
+
+a.action-button {
+background:#67A03B;
+border:1px solid black;
+color:white;
+padding:4px;
+display:inline-block;
+font-weight:bold;
+margin:0px 0 5px 0;
 }
