@@ -1,14 +1,32 @@
+<script type="text/javascript" charset="utf-8">
+  function log_in() {
+    $('#spinner').show(); 
+    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'/session'});
+  }
+  $(function() {
+    $('#password').keydown(function(event){
+      if (event.keyCode == 13) {
+        log_in();
+      }
+    });
+    $('#username').keydown(function(event){
+      if (event.keyCode == 13) {
+        $('#password').focus();
+      }
+    });
+  })
+</script>
 <% form_tag "https://signin.mygcx.org/cas/login?service=#{new_session_url}", 
             :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
 <p><label for="username">Username</label><br/>
 <%= text_field_tag 'username' %></p>
 
 <p><label for="password">Password</label><br/>
-<%= password_field_tag 'password' %></p>
+<%= password_field_tag 'password' %>
+</p>
 
 <p><label for="remember_me">Remember me:</label>
 <%= check_box_tag 'remember_me' %></p>
 
-<p><%= submit_to_remote 'log_in', 'Log in', :url => session_path, :method => :post,
-                                            :before => "$('#spinner').show();"%> <%= spinner %></p>
+<p><%= button_to_function 'Log in', :onclick => "log_in()"%> <%= spinner %></p>
 <% end -%>

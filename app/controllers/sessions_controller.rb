@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
     # First try SSM
     respond_to do |wants|
       if params[:username].blank? || params[:password].blank?
-        flash[:warning] = "Invalid username or password"
+        flash[:warning] = "Username and password can't be blank"
         wants.js {}
       else
         self.current_user = User.authenticate(params[:username], params[:password])
