@@ -22,4 +22,4 @@ config.action_controller.perform_caching             = true
 # config.action_mailer.raise_delivery_errors = false
 config.threadsafe!
 
-# CGI::Session::ActiveRecordStore::Session.table_name = 'sn_sessions'
+CGI::Session::ActiveRecordStore::Session.table_name = 'sn_sessions'
