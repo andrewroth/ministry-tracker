@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'rubygems'
+gem 'soap4r'
 require 'defaultDriver.rb'
 
 endpoint_url = ARGV.shift

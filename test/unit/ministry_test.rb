@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MinistryTest < Test::Unit::TestCase
-  fixtures Ministry.table_name, MinistryCampus.table_name, View.table_name
+  fixtures Ministry.table_name, MinistryCampus.table_name, View.table_name, Campus.table_name
 
   def test_unique_campuses
     assert_not_equal 0, Ministry.find(1).unique_campuses.length

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :get_person, :get_ministry, :set_locale
 
   skip_before_filter CAS::Filter
-
+  
   protected
     # =============================================================================
     # = See vendor/plugins/mappings/load_mappings.rb                              =

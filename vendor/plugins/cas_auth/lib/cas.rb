@@ -102,7 +102,6 @@ module CAS
 
     protected
     def parse_successful(elm)
-      
 #      puts "successful"
       @user = elm.elements["cas:user"] && elm.elements["cas:user"].text.strip
       @attributes = elm.elements["cas:attributes"]
