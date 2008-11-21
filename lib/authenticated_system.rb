@@ -1,3 +1,4 @@
+require 'hpricot'
 module AuthenticatedSystem
   protected
     # Returns true or false if the user is logged in.
@@ -49,9 +50,6 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
-      unless session[:user] || params[:fromcas]
-        return try_cas
-      end
       authorized? || access_denied
     end
 
@@ -120,17 +118,12 @@ module AuthenticatedSystem
     end
     
     def login_from_cas
-      receipt = session[:casfilterreceipt]
+      cas_user = session[:cas_user]
       u = false
-      if receipt
-        u = User.find_or_create_from_cas(receipt)
+      if cas_user
+        u = User.find_or_create_from_cas(session[:cas_last_valid_ticket])
       end
       u
-    end
-    
-    def try_cas
-      ret_val = Rails.env.test? ? false : CAS::Filter.filter(self)
-      return ret_val
     end
     
     def logout_keeping_session!
@@ -139,17 +132,14 @@ module AuthenticatedSystem
       @current_user = false     # not logged in, and don't do it for me
       kill_remember_cookie!     # Kill client-side auth cookie
       session[:user] = nil   # keeps the session but kill our variable
-      session[:casfilteruser] = nil
       # explicitly kill any other session variables you set
       need_cas_logout = false
-      if session[:casfilterreceipt]
+      if session[:cas_user]
         need_cas_logout = true
       end
-      session[:casfilterreceipt] = nil
       # Log out of SSO if we're in it
       if need_cas_logout
-        CAS::Filter.service_url = new_session_url(:fromcas => true)
-        redirect_to CAS::Filter.logout_url(self)
+        CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
       else
         redirect_back_or_default(new_session_path)
       end

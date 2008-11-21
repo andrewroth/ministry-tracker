@@ -4,7 +4,6 @@ require 'soap/mapping'
 require 'defaultDriver'
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry
-  before_filter :try_cas, :only => :new
   
   filter_parameter_logging :password
   # render new.rhtml
@@ -48,6 +47,7 @@ class SessionsController < ApplicationController
           end
           unless ticket.to_s.empty?
             # Valid CAS user. do the redirect for SSO
+            
             wants.js {render :action => 'post_to_cas'}
           else
             # No luck. tell them they're a screwup
@@ -60,8 +60,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    logout_keeping_session!
     flash[:notice] = "You have been logged out."
+    logout_keeping_session!
   end
   
   def boom

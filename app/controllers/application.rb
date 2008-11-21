@@ -1,18 +1,41 @@
 require 'hoptoad_notifier'
+require 'cgi'
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include HoptoadNotifier::Catcher
+  
+  self.allow_forgery_protection = false
 
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin
-  before_filter :login_required, :get_person, :get_ministry, :set_locale
+                :get_ministry, :current_user, :is_ministry_admin, :get_bar
+  before_filter CASClient::Frameworks::Rails::GatewayFilter
+  before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
 
-  skip_before_filter CAS::Filter
-  
-  protected
+  protected    
+    def get_bar
+      unless @bar
+        service_uri = "https://www.mygcx.org/CampusStaff/module/omnibar/omnibar"
+        proxy_granting_ticket = session[:cas_pgt]
+        unless proxy_granting_ticket.nil?
+          # raise proxy_granting_ticket.inspect
+          proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).ticket
+          ticket = CASClient::ServiceTicket.new(proxy_ticket, service_uri)
+          uri = "#{service_uri}?ticket=#{proxy_ticket}"
+          logger.debug('URI: ' + uri)
+          uri = URI.parse(uri) unless uri.kind_of? URI
+          https = Net::HTTP.new(uri.host, uri.port)
+          https.use_ssl = (uri.scheme == 'https')
+          raw_res = https.start do |conn|
+            conn.get("#{uri}")
+          end
+          @bar = (Hpricot(raw_res.body)/'reportdata').to_s
+        end
+      end
+      return @bar
+    end
     # =============================================================================
     # = See vendor/plugins/mappings/load_mappings.rb                              =
     # =============================================================================

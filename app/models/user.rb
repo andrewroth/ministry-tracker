@@ -76,20 +76,22 @@ class User < ActiveRecord::Base
     save(false)
   end
   
-  def self.find_or_create_from_cas(receipt)
+  def self.find_or_create_from_cas(ticket)
     # Look for a user with this guid
-    u = User.find(:first, :conditions => _(:guid, :user) + " = '#{receipt.guid}'")
+    receipt = ticket.response
+    guid = receipt.extra_attributes['ssoGuid']
+    u = User.find(:first, :conditions => _(:guid, :user) + " = '#{guid}'")
     # if we have a user by this method, great! update the email address if it doesn't match
     if u
-      u.username = receipt.user_name
+      u.username = receipt.user
     else
       # If we didn't find a user with the guid, do it by email address and stamp the guid
-      u = User.find(:first, :conditions => _(:username, :user) + " = '#{receipt.user_name}'")
+      u = User.find(:first, :conditions => _(:username, :user) + " = '#{receipt.user}'")
       if u
-        u.guid = receipt.guid
+        u.guid = guid
       else
         # If we still don't have a user in SSM, we need to create one.
-        u = User.create!(:username => receipt.user_name, :guid => receipt.guid)
+        u = User.create!(:username => receipt.user, :guid => guid)
       end
     end            
     # Update the password to match their gcx password too. This will save a round-trip later
@@ -105,7 +107,7 @@ class User < ActiveRecord::Base
       u.person = person || Person.new(:first_name => receipt.first_name, :last_name => receipt.last_name)
       
       # Create a current address record if we don't already have one.
-      u.person.current_address ||= CurrentAddress.new(:email => receipt.user_name)
+      u.person.current_address ||= CurrentAddress.new(:email => receipt.user)
       u.person.save(false)
     end
     u

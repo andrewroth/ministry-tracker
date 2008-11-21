@@ -98,6 +98,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed by hooking up '' 
   # -- just remember to delete public/index.html.
+  map.cas_proxy_callback 'cas_proxy_callback/:action', :controller => 'cas_proxy_callback'
+  
   map.connect '', :controller => "dashboard"
 
   # Install the default route as the lowest priority.

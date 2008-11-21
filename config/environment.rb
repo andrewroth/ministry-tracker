@@ -9,12 +9,14 @@ RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-gem 'httpclient' # Need this for soap4r
-gem 'soap4r' 
-gem 'json'
-gem 'fastercsv'
-gem 'roo'
-gem 'aws-s3'
+gem  'httpclient' # Need this for soap4r
+gem 'soap4r'
+gem  'aws-s3'
+gem  'json'
+gem  'fastercsv'
+gem  'roo'
+gem  'hpricot'
+# gem  'rubycas-client'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
@@ -31,10 +33,16 @@ Rails::Initializer.run do |config|
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
 #  config.gem "json"
+  config.gem  'httpclient' # Need this for soap4r
+  config.gem  'json'
+  config.gem  'fastercsv'
+  config.gem  'roo'
+  config.gem  'hpricot'
+  # config.gem  'rubycas-client'
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
-  # config.action_controller.session_store = :active_record_store
+  config.action_controller.session_store = :active_record_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
@@ -64,7 +72,7 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-# require 'json'
+
 # Add new inflection rules using the following format 
 # (all these examples are active by default):
 ActiveSupport::Inflector.inflections do |inflect|
@@ -78,12 +86,6 @@ Mime::Type.register "application/vnd.ms-excel", :xls
 # Mime::Type.register "application/x-mobile", :mobile
 
 # Include your application configuration below
-
-
-CAS::Filter.login_url = "https://signin.mygcx.org/cas/login"
-CAS::Filter.logout_url = "https://signin.mygcx.org/cas/logout"
-CAS::Filter.validate_url = "https://signin.mygcx.org/cas/serviceValidate"
-CAS::Filter.gateway = true
 
 ActionMailer::Base.smtp_settings = {
   :address   => "smtp1.ccci.org",
