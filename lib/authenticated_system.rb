@@ -49,7 +49,7 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
-      unless params[:fromcas]
+      unless session[:user] || params[:fromcas]
         return try_cas
       end
       authorized? || access_denied

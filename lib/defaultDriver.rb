@@ -53,6 +53,7 @@ class TntWareSSOProviderSoap < ::SOAP::RPC::Driver
     super(endpoint_url, nil)
     self.mapping_registry = DefaultMappingRegistry::EncodedRegistry
     self.literal_mapping_registry = DefaultMappingRegistry::LiteralRegistry
+    self.streamhandler.client.receive_timeout = 3
     init_methods
   end
 

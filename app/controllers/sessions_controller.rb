@@ -39,7 +39,6 @@ class SessionsController < ApplicationController
         else
           # If regular auth didn't work, see if they used CAS credentials
           cas = TntWareSSOProviderSoap.new
-          logger.debug([new_session_url, params[:username], params[:password], request.remote_ip].join(', '))
           args = GetServiceTicketFromUserNamePassword.new(new_session_url, params[:username], params[:password], request.remote_ip)
           begin
             ticket = cas.getServiceTicketFromUserNamePassword(args).getServiceTicketFromUserNamePasswordResult 
