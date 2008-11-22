@@ -58,31 +58,30 @@ module ApplicationHelper
       return fancy_date_field(attrib.safe_name, format_date(person.get_value(attrib.id)))
     end
   end
+
+  def fancy_date_field(name, value)
+    value = value.is_a?(Date) ? value.to_s : value
+    field = %| 
+          <input type="text" name="#{name}" id="#{name}" 
+                  value="#{value}" size="13" />
+          <script language="javascript">
+              function clear_date(item) {
+                  $(item).val('');
+              }
+          </script>
+          <a class="button" href="#" id="pick_date_#{name}">pick date</a> \|
+          <a class="button" href="javascript:clear_date('#{name}');">clear</a>
+          <script type="text/javascript">
+            Calendar.setup(
+              {
+                inputField  : "#{name}", // ID of the input field
+                ifFormat    : "#{I18n.t('date.formats.default', :count => '%d')}",    													// the date format
+                button      : "pick_date_#{name}",       		// ID of the button
+                showsTime		: false,
+                showOthers	: true
+              }
+            );
+          </script>|
+  end
+
 end
-
-def fancy_date_field(name, value)
-  value = value.is_a?(Date) ? value.to_s : value
-  field = %| 
-        <input type="text" name="#{name}" id="#{name}" 
-                value="#{value}" size="13" />
-        <script language="javascript">
-            function clear_date(item) {
-                $(item).val('');
-            }
-        </script>
-        <a class="button" href="#" id="pick_date_#{name}">pick date</a> \|
-        <a class="button" href="javascript:clear_date('#{name}');">clear</a>
-        <script type="text/javascript">
-          Calendar.setup(
-            {
-              inputField  : "#{name}", // ID of the input field
-              ifFormat    : "#{I18n.t('date.formats.default', :count => '%d')}",    													// the date format
-              button      : "pick_date_#{name}",       		// ID of the button
-              showsTime		: false,
-              showOthers	: true
-            }
-          );
-        </script>|
-end
-
-

@@ -67,6 +67,7 @@ module CASClient
         uri = URI.parse(url)
         h = uri.query ? query_to_hash(uri.query) : {}
         h['destination'] = destination_url if destination_url
+        h['service'] = destination_url if destination_url
         h['url'] = follow_url if follow_url
         uri.query = hash_to_query(h)
         uri.to_s

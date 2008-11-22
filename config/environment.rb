@@ -38,6 +38,7 @@ Rails::Initializer.run do |config|
   config.gem  'fastercsv'
   config.gem  'roo'
   config.gem  'hpricot'
+  config.gem  'mechanize'
   # config.gem  'rubycas-client'
 
   # Use the database for sessions instead of the file system

@@ -1,1 +1,0 @@
-client.protocol.http.ssl_config.verify_mode=OpenSSL::SSL::VERIFY_NONE

@@ -80,6 +80,8 @@ class User < ActiveRecord::Base
     # Look for a user with this guid
     receipt = ticket.response
     guid = receipt.extra_attributes['ssoGuid']
+    first_name = receipt.extra_attributes['firstName']
+    last_name = receipt.extra_attributes['lastName']
     u = User.find(:first, :conditions => _(:guid, :user) + " = '#{guid}'")
     # if we have a user by this method, great! update the email address if it doesn't match
     if u
@@ -104,7 +106,8 @@ class User < ActiveRecord::Base
       person = address.person if address && address.person.user.nil?
       
       # Attache the found person to the user, or create a new person
-      u.person = person || Person.new() #:first_name => receipt.first_name, :last_name => receipt.last_name
+      new_person = first_name ? Person.new(:first_name => first_name, :last_name => last_name) : Person.new
+      u.person = person || new_person
       
       # Create a current address record if we don't already have one.
       u.person.current_address ||= CurrentAddress.new(:email => receipt.user)
