@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin
-  before_filter CASClient::Frameworks::Rails::GatewayFilter
+  before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
 
   protected    
