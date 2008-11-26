@@ -1,15 +1,3 @@
 == Ministry Tracker
-
-This is a forked repository. Have a look at
-        "twinge's ministry-tracker"
-        for more information.
-
-Expirmenting with a Facebook bridge concept to link students/staff from Facebook more seamlessly into the tracker application.
-
-* Automatic creation of events/groups on facebook based on admin actions in tracker.
-
-* Seamless "estimations" of turn out to events based on Facebook "Attending" responses to events.
-
-* Posting messages from tracker admin to facebook groups/events.  (Using Facebook as an alternate medium for communication, perhaps - users can configure this to receive only certain kinds of messages via certain mediums)
-
+Description can wait for later...
 
