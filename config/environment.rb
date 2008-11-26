@@ -12,7 +12,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 gem  'httpclient' # Need this for soap4r
 gem 'soap4r'
 gem  'aws-s3'
-gem  'json'
+# gem  'json'
 gem  'fastercsv'
 gem  'roo'
 gem  'hpricot'
@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
   # config.log_level = :debug
 #  config.gem "json"
   config.gem  'httpclient' # Need this for soap4r
-  config.gem  'json'
+  # config.gem  'json'
   config.gem  'fastercsv'
   config.gem  'roo'
   config.gem  'hpricot'
