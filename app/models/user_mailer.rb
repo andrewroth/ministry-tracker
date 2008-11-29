@@ -1,5 +1,10 @@
 class UserMailer < ActionMailer::Base
   def created_student(person, ministry, added_by, password = nil)
+    password ||= person.user.plain_password
+    if password.empty?
+      # We need a password
+      raise StandardError, 'No password for email'
+    end
     created(person, ministry, added_by, password)
   end
   

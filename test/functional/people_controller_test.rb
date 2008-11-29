@@ -77,16 +77,16 @@ class PeopleControllerTest < Test::Unit::TestCase
   end
   
   def test_should_create_student
-    ActionMailer::Base.deliveries = []
-    old_count = Person.count
-    post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
-                  :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
-                  :modalbox => 'true', :ministry_role => 'Involved Student',  :campus => Campus.find(:first).id
-    assert person = assigns(:person)
-    assert_not_nil person.user.id
-    assert_equal old_count+1, Person.count
-    assert_redirected_to person_path(assigns(:person))
-    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_difference "Delayed::Job.count" do
+      old_count = Person.count
+      post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
+                    :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
+                    :modalbox => 'true', :ministry_role => 'Involved Student',  :campus => Campus.find(:first).id
+      assert person = assigns(:person)
+      assert_not_nil person.user.id
+      assert_equal old_count+1, Person.count
+      assert_redirected_to person_path(assigns(:person))
+    end
   end
   
   # def test_should_create_student_with_username_conflict # Not likely to ever happen

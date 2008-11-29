@@ -175,7 +175,7 @@ class PeopleController < ApplicationController
               @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
-                UserMailer.deliver_created_student(@person, @ministry, @me)
+                UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)
               end
             end
           else
