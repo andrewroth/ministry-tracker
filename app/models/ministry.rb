@@ -5,24 +5,23 @@ class Ministry < ActiveRecord::Base
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
-  has_many :ministry_roles
+  has_many :ministry_roles, :dependent => :destroy
   has_many :campus_involvements, :through => :ministry_roles
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
-  has_many :staff, :through => :ministry_involvements, :source => :person, :conditions => "#{_(:ministry_role, :ministry_involvement)} IN ('Staff','Director')"
-  has_many :ministry_campuses, :include => :campus #, :order => _(:name, 'campus')
+  has_many :ministry_campuses, :include => :campus, :dependent => :destroy
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
-  has_many :ministry_involvements, :dependent => :destroy
-  has_many :user_groups, :order => _(:name, 'user_group')
-  has_many :groups
-  has_many :bible_studies
-  has_many :teams
-  has_many :custom_attributes
-  has_many :profile_questions
-  has_many :involvement_questions
-  has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(:position, :training_category)
-  has_many :training_questions, :order => "activated, activity"
-  has_many :views, :order => View.table_name + '.' + _(:title, 'view')
+  has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
+  has_many :user_groups, :order => _(:name, 'user_group'), :dependent => :destroy
+  has_many :groups, :dependent => :destroy
+  has_many :bible_studies, :dependent => :destroy
+  has_many :teams, :dependent => :destroy
+  has_many :custom_attributes, :dependent => :destroy
+  has_many :profile_questions, :dependent => :destroy
+  has_many :involvement_questions, :dependent => :destroy
+  has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(_(:position, :ministry_role), :training_category), :dependent => :destroy
+  has_many :training_questions, :order => "activated, activity", :dependent => :destroy
+  has_many :views, :order => View.table_name + '.' + _(:title, 'view'), :dependent => :destroy
   
   
   validates_presence_of _(:name)
@@ -35,7 +34,17 @@ class Ministry < ActiveRecord::Base
   
   validates_uniqueness_of _(:name)
   
-  after_create :create_first_view
+  after_create :create_first_view, :create_default_roles
+  
+  alias_method :root_ministry_roles, :ministry_roles
+  
+  def staff
+    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?)", staff_role_ids], :joins => :ministry_involvements)
+  end
+  
+  def ministry_roles
+    self.root? ? root_ministry_roles : self.root.root_ministry_roles
+  end
   
   def subministry_campuses(top = true)
     unless @subministry_campuses
@@ -88,6 +97,38 @@ class Ministry < ActiveRecord::Base
     self.parent_id.nil?
   end
   
+  def leader_roles
+    @leader_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} < 5")
+  end
+  
+  def leader_roles_ids
+    @leader_roles_ids ||= leader_roles.collect(&:id)
+  end
+  
+  def staff_roles
+    @staff_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} < 4")
+  end
+  
+  def staff_role_ids
+    @staff_role_ids ||= staff_roles.collect(&:id)
+  end
+  
+  def student_roles
+    @student_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} >= 4")
+  end
+  
+  def student_role_ids
+    @student_role_ids ||= student_roles.collect(&:id)
+  end
+  
+  def involved_student_roles
+    @involved_student_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} >= 4 AND #{_(:position, :ministry_role)} < 11")
+  end
+  
+  def involved_student_role_ids
+    @involved_student_role_ids ||= involved_student_roles.collect(&:id)
+  end
+  
   def all_ministries
     (self.descendants + [self]).sort
   end
@@ -103,7 +144,7 @@ class Ministry < ActiveRecord::Base
   # Create a default view for this ministry
   def create_first_view
     # For now just copy the first view in the system if there is one
-    view = View.find(:first)
+    view = View.find(:first, :order => _(:ministry_id, :view))
     new_view = view.clone
     views << view
     view.view_columns.each do |view_column|
@@ -124,5 +165,21 @@ class Ministry < ActiveRecord::Base
   def all_training_questions
     @all_training_questions ||= [training_questions + ancestors.collect(&:training_questions)].flatten.uniq
     return @all_training_questions
+  end
+  
+  protected
+  def create_default_roles
+    if self.root?
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Campus Coordinator', _(:position, :ministry_role) => 2)
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Ministry Leader', _(:position, :ministry_role) => 4, :description => 'a student who oversees a campus, eg LINC leader')
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Missionary', _(:position, :ministry_role) => 3)
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Student Leader', _(:position, :ministry_role) => 5)
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Involved Student', _(:position, :ministry_role) => 6, :description => 'we are saying has been attending events for at least 6 months')
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Student', _(:position, :ministry_role) => 7)
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Registration Incomplete', _(:position, :ministry_role) => 8, :description => 'A leader has registered them, but user has not completed rego and signed the privacy policy')
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Approval Pending', _(:position, :ministry_role) => 9, :description => 'They have applied, but a leader has not verified their application yet')
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Honourary Member', _(:position, :ministry_role) => 10, :description => 'not a valid student or missionary, but we are giving them limited access anyway')
+      self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Admin', _(:position, :ministry_role) => 1)
+    end
   end
 end

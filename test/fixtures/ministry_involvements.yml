@@ -4,14 +4,17 @@ one:
   person_id: 50000
   ministry_id: 1
   ministry_role: Staff
+  ministry_role_id: 1
 two:
   id: 2
   person_id: 50000
   ministry_id: 2
   ministry_role: Staff
+  ministry_role_id: 1
   admin: 1
 three:
   id: 3
   person_id: 3000
   ministry_id: 2
   ministry_role: Staff
+  ministry_role_id: 1

@@ -81,7 +81,7 @@ class PeopleControllerTest < Test::Unit::TestCase
       old_count = Person.count
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
                     :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
-                    :modalbox => 'true', :ministry_role => 'Involved Student',  :campus => Campus.find(:first).id
+                    :modalbox => 'true', :ministry_role_id => 4,  :campus => Campus.find(:first).id
       assert person = assigns(:person)
       assert_not_nil person.user.id
       assert_equal old_count+1, Person.count

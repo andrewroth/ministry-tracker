@@ -50,22 +50,22 @@ class ApplicationController < ActionController::Base
     
     def is_ministry_leader( ministry = nil, person = nil)
       ministry ||= @ministry || get_ministry
-      if person
-        return ministry.staff.include?(person)
-      else
-        return ministry.staff.include?(@me)
-      end
+      person ||= @me
+      involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
+      return ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
     
     def is_ministry_leader_somewhere(person = nil)
       person ||= @me
       @is_ministry_leader ||= {}
-      @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role, :ministry_involvement)} IN ('Director','Staff')", @my.id]).nil?
+      @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
+                                          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
+                                            @my.id, get_ministry.root.leader_roles_ids]).nil?
     end
     
     def is_involved_somewhere(person = nil)
       person ||= @me
-      return CampusInvolvement.find(:first, :conditions => ["#{_(:person_id, :campus_involvement)} = ? AND #{_(:ministry_role, :campus_involvement)} IN (?)", person.id, CampusInvolvement::INVOLVED_ROLES])
+      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
     end
     
     def is_ministry_admin(ministry = nil, person = nil)
@@ -182,8 +182,8 @@ class ApplicationController < ActionController::Base
         @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
-        # If we still don't have a ministry, this person hasn't been assigned a campus. Give them the 
-        # default ministry
+        # If we still don't have a ministry, this person hasn't been assigned a campus. 
+        # Give them the default ministry
         @ministry ||= Ministry.find_or_create_by_name("No Ministry")
         
         # if we currently have the top level ministry, great. If not, get it.

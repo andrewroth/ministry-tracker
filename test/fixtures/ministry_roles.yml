@@ -2,4 +2,21 @@
 one:
   id: 1
   ministry_id: 1
-  name: Director
+  name: Admin
+  position: 1
+two: 
+  id: 2
+  name: Campus Coordinator
+  ministry_id: 1
+  position: 2
+four:
+  id: 4
+  ministry_id: 1
+  name: Ministry Leader
+  position: 4
+  description: a student who oversees a campus, eg LINC leader
+five:
+  id: 5
+  ministry_id: 1
+  name: Student Leader
+  position: 5

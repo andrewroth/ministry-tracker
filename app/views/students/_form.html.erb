@@ -22,7 +22,7 @@
   <tr>
   	<td>Involvement Level: </td>
   	<td>
-  		<%= select_tag :ministry_role, options_for_select(CampusInvolvement::ROLES)%>
+  		<%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
   	</td>
   </tr>
   <tr>

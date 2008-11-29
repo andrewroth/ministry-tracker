@@ -5,7 +5,7 @@ require 'campus_involvements_controller'
 class CampusInvolvementsController; def rescue_action(e) raise e end; end
 
 class CampusInvolvementsControllerTest < Test::Unit::TestCase
-  fixtures CampusInvolvement.table_name, MinistryInvolvement.table_name, Person.table_name
+  fixtures CampusInvolvement.table_name, MinistryInvolvement.table_name, Person.table_name, MinistryRole.table_name
 
   def setup
     @controller = CampusInvolvementsController.new

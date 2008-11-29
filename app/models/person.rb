@@ -101,7 +101,7 @@ class Person < ActiveRecord::Base
   end
   
   def full_name
-    first_name + ' ' + last_name
+    first_name.to_s + ' ' + last_name.to_s
   end
   
   def custom_value_hash
@@ -186,10 +186,20 @@ class Person < ActiveRecord::Base
   end
   
   def add_campus(campus_id, ministry_id, added_by, role = nil)
-    role ||= CampusInvolvement::INVOLVED_ROLES.first
+    unless role
+      ministry = Ministry.find(ministry_id)
+      student_roles = ministry.student_roles
+      role = student_roles.first.id
+    end
     # Make sure they're not already on this campus
     campus_involvement = CampusInvolvement.find_by_campus_id_and_person_id(campus_id, self.id)
-    self.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry_id, :ministry_role => role, :added_by_id => added_by, :start_date => Time.now()) unless campus_involvement
+    self.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry_id, :added_by_id => added_by, :start_date => Time.now()) unless campus_involvement
+    
+    # Add the person to the ministry
+    mi = MinistryInvolvement.find_by_ministry_id_and_person_id(ministry_id, self.id)
+    unless mi
+      self.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry_id, :ministry_role_id => role, :start_date => Time.now()) 
+    end
   end
   
   def self.find_exact(person, address)

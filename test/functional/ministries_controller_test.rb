@@ -30,7 +30,7 @@ class MinistriesControllerTest < Test::Unit::TestCase
     post :create, :ministry => {:name => 'CCC', :address => 'here', :city => 'there', 
                                 :state => 'IL', :country => 'United States', :phone => '555',
                                 :email => 'asdf' },
-                  :ministry_involvement => {:ministry_role => 'Staff'}
+                  :ministry_involvement => {:ministry_role_id => 1}
     assert_equal old_count+1, Ministry.count
     assert_redirected_to ministries_path
   end

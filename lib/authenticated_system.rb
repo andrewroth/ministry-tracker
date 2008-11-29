@@ -131,12 +131,14 @@ module AuthenticatedSystem
       @current_user.forget_me if @current_user.is_a? User
       @current_user = false     # not logged in, and don't do it for me
       kill_remember_cookie!     # Kill client-side auth cookie
-      session[:user] = nil   # keeps the session but kill our variable
       # explicitly kill any other session variables you set
       need_cas_logout = false
       if session[:cas_user]
         need_cas_logout = true
       end
+      session[:cas_user] = nil
+      session[:user] = nil   # keeps the session but kill our variable
+      session[:ministry_id] = nil
       # Log out of SSO if we're in it
       if need_cas_logout
         CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)

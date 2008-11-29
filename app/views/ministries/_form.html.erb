@@ -2,11 +2,6 @@
 <%- remote_form_for @ministry do |f| -%>
 	<table border="0" cellspacing="5" cellpadding="5">
 		<tr><td>Ministry Name: </td><td><%= f.text_field :name %></td></tr>
-		<tr>
-			<td>Your Role: </td>
-			<%- ministry_roles =  !@ministry.ministry_roles.empty? ? @ministry.ministry_roles.collect {|r| [r.name] } : ['Director','Staff']-%>
-			<td><%= select(:ministry_involvement, :ministry_role, ministry_roles) %></td>
-		</tr>
 		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
 		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
 		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>

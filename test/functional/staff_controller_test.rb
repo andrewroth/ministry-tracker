@@ -5,7 +5,7 @@ require 'staff_controller'
 class StaffController; def rescue_action(e) raise e end; end
 
 class StaffControllerTest < Test::Unit::TestCase
-  fixtures Staff.table_name
+  fixtures Person.table_name, MinistryInvolvement.table_name, Ministry.table_name, MinistryRole.table_name
 
   def setup
     @controller = StaffController.new

@@ -44,7 +44,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   
   test "update role" do
     old_mi = MinistryInvolvement.find(1)
-    xhr :put, :update, :id => 1, :ministry_involvement => {:ministry_role => 'Student Leader'}
+    xhr :put, :update, :id => old_mi.id, :ministry_involvement => {:ministry_role_id => 4}
     assert mi = assigns(:ministry_involvement)
     assert_not_equal old_mi.ministry_role, mi.ministry_role
   end

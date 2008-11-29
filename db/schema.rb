@@ -313,8 +313,9 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
     t.integer "ministry_id"
     t.date    "start_date"
     t.date    "end_date"
-    t.string  "ministry_role", :null => false
+    t.string  "ministry_role",    :null => false
     t.boolean "admin"
+    t.integer "ministry_role_id"
   end
 
   add_index "ministry_involvements", ["ministry_id"], :name => "ministry_id"
@@ -324,6 +325,8 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
     t.integer "ministry_id"
     t.string  "name"
     t.date    "created_at"
+    t.integer "position"
+    t.string  "description"
   end
 
   create_table "people", :force => true do |t|
@@ -539,7 +542,7 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
     t.integer  "fk_ssmUserID"
     t.integer  "person_id"
     t.boolean  "isPaid"
-    t.integer  "appFee"
+    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
@@ -611,7 +614,7 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 255
+    t.binary   "lastChangedDate",               :limit => 8
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"

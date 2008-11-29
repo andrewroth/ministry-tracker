@@ -45,7 +45,12 @@ class Import < ActiveRecord::Base
               # Add the person to this campus
               ci = CampusInvolvement.find_by_campus_id_and_person_id(campus_id, person.id)
               unless ci
-                person.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry.id, :ministry_role => 'Student', :start_date => Time.now()) 
+                person.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry.id, :start_date => Time.now()) 
+              end
+              # Add the person to a ministry
+              mi = MinistryInvolvement.find_by_ministry_id_and_person_id(ministry.id, person.id)
+              unless mi
+                person.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry.id, :ministry_role_id => minstry.involved_student_roles.first.id, :start_date => Time.now()) 
               end
             end
             successful += 1

@@ -21,7 +21,7 @@
 <tr>
 	<td>Involvement Level: </td>
 	<td>
-		<%= select_tag :ministry_role, options_for_select(CampusInvolvement::ROLES)%>
+		<%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
 	</td>
 </tr>
 <%- end -%>
@@ -31,7 +31,7 @@
   	<td>Role: </td>
   	<td>
   	  <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
-  	  <%= mf.select :ministry_role, MinistryInvolvement::ROLES %>
+  	  <%= mf.select :ministry_role_id, @ministry.staff_roles.collect {|role| [role.name, role.id]} %>
   	</td>
   </tr>
     <%- if is_ministry_admin(@ministry, @me) -%>

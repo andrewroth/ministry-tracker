@@ -34,15 +34,9 @@ class MinistriesController < ApplicationController
 
     respond_to do |format|
       if params[:ministry_involvement] && @new_ministry.save
-        # # set this as the current ministry
-        # session[:ministry_id] = @new_ministry.id
-        
-        # create some default roles for the ministry
-        @new_ministry.ministry_roles.create(:name => 'Director')
-        @new_ministry.ministry_roles.create(:name => 'Staff')
-        
+        top_role = @new_ministry.ministry_roles.find(:first, :order => Ministry._(:position))
         # add the current user to the new ministry as a 
-        @person.ministry_involvements.create(:ministry_id => @new_ministry.id, :ministry_role => params[:ministry_involvement][:ministry_role])
+        @person.ministry_involvements.create(_(:ministry_id, :ministry_involvement) => @new_ministry.id, _(:ministry_role_id, :ministry_involvement) => top_role.id)
         flash[:notice] = 'Ministry was successfully created.'
         format.html { redirect_to ministries_url }
         format.js   { index }

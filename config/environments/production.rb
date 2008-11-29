@@ -6,7 +6,7 @@ end
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
-config.cache_classes = true
+config.cache_classes = false #true
 
 # Use a different logger for distributed setups
 # config.logger = SyslogLogger.new
@@ -23,3 +23,4 @@ config.action_controller.perform_caching             = true
 config.threadsafe!
 
 CGI::Session::ActiveRecordStore::Session.table_name = 'sn_sessions'
+Delayed::Job.table_name = 'sn_delayed_jobs'

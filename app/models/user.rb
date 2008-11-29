@@ -119,7 +119,7 @@ class User < ActiveRecord::Base
     # before filter 
     def encrypt_password
       # If the record doesn't have a password at all, assign one
-      assign_random_password if password.blank?
+      assign_random_password if password.blank? && plain_password.blank?
       
       # If the password isn't being provided at this time, there's nothing to encrypt
       return if plain_password.blank?
