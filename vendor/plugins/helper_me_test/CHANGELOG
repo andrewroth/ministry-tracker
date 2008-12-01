@@ -1,0 +1,10 @@
+== 1.0 / June 24, 2008
+
+* Initial Release
+* Features:
+    * Tag assertions using HTML-Scanner
+    * Hpricot assertions
+    * css selector assertion using HTML-Scanner
+    * Helper test generator for existing Helpers
+    * Helper generator that creates tests for helpers
+

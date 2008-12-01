@@ -5,7 +5,7 @@ require 'bible_studies_controller'
 class BibleStudiesController; def rescue_action(e) raise e end; end
 
 class BibleStudiesControllerTest < Test::Unit::TestCase
-  fixtures Group.table_name
+  fixtures Group.table_name, Ministry.table_name
 
   def setup
     @controller = BibleStudiesController.new
@@ -15,6 +15,11 @@ class BibleStudiesControllerTest < Test::Unit::TestCase
   end
 
   def test_index
+    get :index
+    assert_response :success
+  end
+
+  def test_index_xhr
     xhr :get, :index
     assert_response :success
   end

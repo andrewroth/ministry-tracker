@@ -1,0 +1,3 @@
+class StaffRole < MinistryRole
+  
+end

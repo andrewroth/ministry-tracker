@@ -7,10 +7,10 @@ class UserMailer < ActionMailer::Base
     end
     created(person, ministry, added_by, password)
   end
-  
-  def created_staff
-    created(person, ministry, added_by, password)
-  end
+  # 
+  # def created_staff(person, ministry, added_by, password = nil)
+  #   created(person, ministry, added_by, password)
+  # end
   
   protected
   def created(person, ministry, added_by, password)

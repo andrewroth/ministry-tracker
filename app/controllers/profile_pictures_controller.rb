@@ -6,16 +6,12 @@ class ProfilePicturesController < ApplicationController
     @profile_picture.person = @me
     respond_to do |format|
       if @profile_picture.save!
-        flash[:notice] = 'Profile Picture was successfully created.'
-        format.html { redirect_to(@profile_picture.person) }
-        format.xml  { render :xml => @profile_picture, :status => :created, :location => @profile_picture }
-      else
-        format.html { redirect_to(@profile_picture.person) }
-        format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity }
+        format.html do
+          flash[:notice] = 'Profile Picture was successfully created.'
+          redirect_to(@profile_picture.person) 
+        end
       end
     end
-  # rescue
-  #   redirect_to(@profile_picture.person)
   end
 
   # PUT /profile_pictures/1

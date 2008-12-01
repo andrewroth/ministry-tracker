@@ -6,13 +6,15 @@ class Ministry < ActiveRecord::Base
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
   has_many :ministry_roles, :dependent => :destroy
+  has_many :student_roles, :dependent => :destroy
+  has_many :staff_roles, :dependent => :destroy
+  has_many :other_roles, :dependent => :destroy
   has_many :campus_involvements, :through => :ministry_roles
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
   has_many :ministry_campuses, :include => :campus, :dependent => :destroy
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
-  has_many :user_groups, :order => _(:name, 'user_group'), :dependent => :destroy
   has_many :groups, :dependent => :destroy
   has_many :bible_studies, :dependent => :destroy
   has_many :teams, :dependent => :destroy
@@ -37,13 +39,28 @@ class Ministry < ActiveRecord::Base
   after_create :create_first_view, :create_default_roles
   
   alias_method :root_ministry_roles, :ministry_roles
+  alias_method :root_staff_roles, :staff_roles
+  alias_method :root_student_roles, :student_roles
+  alias_method :root_other_roles, :other_roles
   
   def staff
-    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?)", staff_role_ids], :joins => :ministry_involvements)
+    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", staff_role_ids, self.id], :joins => :ministry_involvements)
   end
   
   def ministry_roles
     self.root? ? root_ministry_roles : self.root.root_ministry_roles
+  end
+  
+  def staff_roles
+    self.root? ? root_staff_roles : self.root.root_staff_roles
+  end
+  
+  def student_roles
+    self.root? ? root_student_roles : self.root.root_student_roles
+  end
+  
+  def other_roles
+    self.root? ? root_other_roles : self.root.root_other_roles
   end
   
   def subministry_campuses(top = true)
@@ -68,6 +85,18 @@ class Ministry < ActiveRecord::Base
     return @unique_ministry_campuses
   end
   
+  def ancestors
+    unless @ancestors
+      @ancestors = parent ? [self, parent.ancestors] : [self]
+      @ancestors.flatten!
+    end
+    @ancestors
+  end
+  
+  def ancestor_ids
+    @ancestor_ids ||= ancestors.collect(&:id)
+  end
+  
   def campus_ids
     unique_campuses.collect {|mc| mc.campus.id}
   end
@@ -87,10 +116,7 @@ class Ministry < ActiveRecord::Base
   # end
   
   def root
-    unless @root
-      @root = self.parent ? self.parent.root : self
-    end
-    return @root
+    @root ||= self.parent_id ? self.parent.root : self
   end
   
   def root?
@@ -98,23 +124,15 @@ class Ministry < ActiveRecord::Base
   end
   
   def leader_roles
-    @leader_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} < 5")
+    @leader_roles ||= staff_roles
   end
   
   def leader_roles_ids
     @leader_roles_ids ||= leader_roles.collect(&:id)
   end
   
-  def staff_roles
-    @staff_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} < 4")
-  end
-  
   def staff_role_ids
     @staff_role_ids ||= staff_roles.collect(&:id)
-  end
-  
-  def student_roles
-    @student_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} >= 4")
   end
   
   def student_role_ids

@@ -1,0 +1,21 @@
+Description:
+    Creates helper tests for each helper you currently have,
+    creating one test for each public method in the module.
+    If you instead pass it a space separated set of helper
+    module names you'll only generate tests for those.
+
+Example:
+    ./script/generate helper_tests
+
+    This will create tests for all helpers that currently exist:
+        test/helpers/foo_helper_test.rb
+        test/helpers/bar_helper_test.rb
+        test/helpers/admin/posts_helper_test.rb
+        ...
+        
+Example with parameter:
+   ./script/generate helper_tests BarHelper
+
+   This will create only one test:
+       test/helpers/bar_helper_test.rb
+   

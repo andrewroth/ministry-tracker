@@ -16,16 +16,32 @@ class ProfilePicturesControllerTest < Test::Unit::TestCase
     login
   end
 
-  # def test_should_create_profile_picture
-  #   assert_difference('ProfilePicture.count') do
-  #     post :create, :profile_picture => { }
-  #   end
-  # 
-  #   assert_redirected_to profile_picture_path(assigns(:profile_picture))
-  # end
+  def test_should_create_profile_picture
+    image = fixture_file_upload('/files/rails.png', 'image/png')
+    assert_difference('ProfilePicture.count', 4) do
+      post :create, :profile_picture => {:uploaded_data => image },  :html => { :multipart => true }
+    end
+  
+    assert_redirected_to person_path(assigns(:profile_picture).person)
+  end
 
   def test_should_update_profile_picture
-    put :update, :id => profile_pictures(:one).id, :profile_picture => { }
+    image = fixture_file_upload('/files/rails.png', 'image/png')
+    put :update, :id => profile_pictures(:one).id, :profile_picture => {:uploaded_data => image  }
+    assert picture = assigns(:profile_picture)
+    assert_equal([], picture.errors.full_messages)
     assert_redirected_to person_path(assigns(:profile_picture).person)
+  end
+
+  def test_should_NOT_update_profile_picture
+    put :update, :id => profile_pictures(:one).id, :profile_picture => { }
+    assert picture = assigns(:profile_picture)
+    assert_equal(5, picture.errors.length)
+    assert_redirected_to person_path(assigns(:profile_picture).person)
+  end
+
+  def test_should_delete_profile_picture
+    xhr :post, :destroy, :id => profile_pictures(:one).id
+    assert_response :success, @response.body
   end
 end

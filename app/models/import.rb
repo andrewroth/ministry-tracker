@@ -50,7 +50,7 @@ class Import < ActiveRecord::Base
               # Add the person to a ministry
               mi = MinistryInvolvement.find_by_ministry_id_and_person_id(ministry.id, person.id)
               unless mi
-                person.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry.id, :ministry_role_id => minstry.involved_student_roles.first.id, :start_date => Time.now()) 
+                person.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry.id, :ministry_role_id => ministry.involved_student_roles.first.id, :start_date => Time.now()) 
               end
             end
             successful += 1

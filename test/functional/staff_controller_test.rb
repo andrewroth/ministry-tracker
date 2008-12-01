@@ -23,18 +23,18 @@ class StaffControllerTest < Test::Unit::TestCase
     get :new
     assert_response :success
   end
-  
-  def test_should_get_demote_form
-    @request.session[:ministry_id] = 2
-    get :demote_form, :id => 3000
-    assert_response :success
-    assert_template 'demote_form'
-  end
-  
-  def test_should_demote_a_person
-    @request.session[:ministry_id] = 2
-    post :demote, :id => 3000, :campus => 1
-    assert_response :success
-    assert_template 'demote'
-  end
+  # 
+  # def test_should_get_demote_form
+  #   @request.session[:ministry_id] = 2
+  #   get :demote_form, :id => 3000
+  #   assert_response :success
+  #   assert_template 'demote_form'
+  # end
+  # 
+  # def test_should_demote_a_person
+  #   @request.session[:ministry_id] = 2
+  #   post :demote, :id => 3000, :campus => 1
+  #   assert_response :success
+  #   assert_template 'demote'
+  # end
 end

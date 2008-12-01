@@ -11,5 +11,4 @@ class ProfilePicture < ActiveRecord::Base
                                  :medium => '200x200>' }
                                  
   validates_as_attachment
-  validates_presence_of _(:filename)
 end

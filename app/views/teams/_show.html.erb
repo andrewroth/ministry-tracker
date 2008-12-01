@@ -39,7 +39,7 @@
 		
 			<div id="transfer_<%= level %>"  style="display:none">
 				Pick a team to transfer the selected people to:<br />
-				<%= select_tag('transfer_to', options_for_select(@ministry.teams.collect {|bs| [bs.name, bs.id]})) %>
+				<%= select_tag('transfer_to', options_for_select(@ministry.teams.collect {|team| [team.name, team.id]})) %>
 				<%= hidden_field_tag('level', level) %>
 				<%= submit_tag "go" %><br /><br />
 			</div>

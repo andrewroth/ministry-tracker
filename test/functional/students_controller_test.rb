@@ -16,4 +16,9 @@ class StudentsControllerTest < Test::Unit::TestCase
     get :index
     assert_response :success
   end
+
+  def test_should_get_new
+    get :new
+    assert_response :success
+  end
 end

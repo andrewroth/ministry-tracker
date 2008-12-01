@@ -1,6 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 team:
   id: 1
+  type: Team
+  ministry_id: 1
 bible_study:
   id: 2
   type: BibleStudy
+  ministry_id: 1

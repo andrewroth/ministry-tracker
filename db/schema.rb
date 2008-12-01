@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081128204123) do
+ActiveRecord::Schema.define(:version => 20081130220230) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -321,12 +321,19 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
   add_index "ministry_involvements", ["ministry_id"], :name => "ministry_id"
   add_index "ministry_involvements", ["person_id"], :name => "person_id"
 
+  create_table "ministry_role_permissions", :force => true do |t|
+    t.integer "permission_id"
+    t.integer "user_group_id"
+    t.string  "created_at"
+  end
+
   create_table "ministry_roles", :force => true do |t|
     t.integer "ministry_id"
     t.string  "name"
     t.date    "created_at"
     t.integer "position"
     t.string  "description"
+    t.string  "type"
   end
 
   create_table "people", :force => true do |t|
@@ -355,8 +362,9 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
   end
 
   create_table "permissions", :force => true do |t|
-    t.string "name"
     t.string "description"
+    t.string "controller"
+    t.string "action"
   end
 
   create_table "profile_pictures", :force => true do |t|
@@ -780,24 +788,6 @@ ActiveRecord::Schema.define(:version => 20081128204123) do
     t.integer  "training_category_id"
     t.boolean  "activated",            :default => true
     t.boolean  "mandated"
-  end
-
-  create_table "user_group_permissions", :force => true do |t|
-    t.integer "permission_id"
-    t.integer "user_group_id"
-    t.string  "created_at"
-  end
-
-  create_table "user_groups", :force => true do |t|
-    t.string  "name"
-    t.date    "created_at"
-    t.integer "ministry_id"
-  end
-
-  create_table "user_memberships", :force => true do |t|
-    t.integer "user_id"
-    t.integer "user_group_id"
-    t.date    "created_at"
   end
 
   create_table "users", :force => true do |t|

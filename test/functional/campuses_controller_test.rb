@@ -33,4 +33,9 @@ class CampusesControllerTest < Test::Unit::TestCase
     xhr :post, :change_county, :county => 'DuPage'
     assert_response :success
   end
+
+  def test_details
+    xhr :post, :details, :id => 1
+    assert_response :success
+  end
 end

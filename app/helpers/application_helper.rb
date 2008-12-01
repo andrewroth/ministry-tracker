@@ -55,7 +55,7 @@ module ApplicationHelper
     when 'text_area'
       return send('text_area_tag', attrib.safe_name, person.get_value(attrib.id))
     when 'date_select'
-      return fancy_date_field(attrib.safe_name, format_date(person.get_value(attrib.id)))
+      return fancy_date_field(attrib.safe_name, person.get_value(attrib.id))
     end
   end
 

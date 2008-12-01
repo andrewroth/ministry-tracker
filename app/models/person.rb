@@ -1,4 +1,5 @@
 class Person < ActiveRecord::Base
+  include ActiveRecord::ConnectionAdapters::Quoting
   load_mappings
   
   # Campus Relationships
@@ -123,6 +124,13 @@ class Person < ActiveRecord::Base
     (self.ministries + self.campus_ministries).uniq.sort
   end
   
+  def admin?(ministry)
+    mi = MinistryInvolvement.find(:first, :conditions => "#{_(:person_id, :ministry_involvement)} = #{self.id} AND
+                                                          #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids}) AND
+                                                          #{_(:admin, :ministry_id)} = 1")
+    return !mi.nil?
+  end
+  
   alias_method :get_custom_value_hash, :custom_value_hash
   alias_method :get_training_answer_hash, :training_answer_hash
   
@@ -144,7 +152,7 @@ class Person < ActiveRecord::Base
       create_value(attribute_id, value)
     else
       if value && @custom_value_hash[attribute_id] != value
-        sql = "UPDATE #{CustomValue.table_name} SET   #{Person::_(:value, :custom_value)} = '#{ApplicationController::escape_string(value)}' 
+        sql = "UPDATE #{CustomValue.table_name} SET   #{Person::_(:value, :custom_value)} = '#{quote_string(value)}' 
                                                 WHERE #{Person::_(:person_id, :custom_value)} = #{id} 
                                                 AND   #{Person::_(:custom_attribute_id, :custom_value)} = #{attribute_id}"
         CustomValue.connection.execute(sql)
@@ -159,7 +167,7 @@ class Person < ActiveRecord::Base
     get_custom_value_hash
     sql = "INSERT INTO    #{CustomValue.table_name} (#{Person::_(:person_id, :custom_value)}, #{Person::_(:custom_attribute_id, :custom_value)}, 
                                                     #{Person::_(:value, :custom_value)})
-                  VALUES  (#{id}, #{attribute_id}, '#{ApplicationController::escape_string(value)}')"
+                  VALUES  (#{id}, #{attribute_id}, '#{quote_string(value)}')"
     CustomValue.connection.execute(sql)
     @custom_value_hash[attribute_id] = value
   end

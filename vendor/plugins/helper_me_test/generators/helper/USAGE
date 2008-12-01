@@ -1,0 +1,12 @@
+Description:
+    Creates a helper based on a camelcased or underscored name, and a 
+    test file for it. It will also accept a list of method names and
+    create methods for each of them and a test for each of the methods.
+
+Example:
+    ./script/generate helper Dates [method_name ...]
+
+    This will create:
+        app/helpers/dates_helper.rb
+        test/helpers/dates_helper_test.rb
+    

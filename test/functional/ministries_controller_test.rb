@@ -20,6 +20,11 @@ class MinistriesControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_should_list_ministries
+    get :list
+    assert_response :success
+  end
+
   def test_should_get_new
     xhr(:get, :new)
     assert_response :success

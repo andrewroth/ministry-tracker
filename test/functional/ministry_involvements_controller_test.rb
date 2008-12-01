@@ -19,6 +19,14 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert assigns(:ministry_involvement)
     assert_response :success
   end
+
+  test "try destroying without access" do
+    login('fred@uscm.org')
+    xhr :delete, :destroy, :id => 1, :person_id => 50000
+    assert_nil assigns(:ministry_involvement)
+    assert_equal(' ', @response.body)
+    assert_response :success
+  end
   
   test "destroy only one ministry" do
     xhr :delete, :destroy, :id => 1, :person_id => 3000

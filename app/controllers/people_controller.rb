@@ -50,11 +50,11 @@ class PeopleController < ApplicationController
       names = search.split(' ')
       first = names[0].strip
   		last = names[1].strip
-    	conditions << "#{last_name_col} LIKE '#{e(last)}%' AND #{first_name_col} LIKE '#{e(first)}%'"
+    	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
     when !search.scan('@').empty?
-      conditions << "CurrentAddress.#{email} = '#{e(search)}'"
+      conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
     else
-      conditions << "(#{last_name_col} LIKE '#{e(search)}%' OR #{first_name_col} LIKE '#{e(search)}%')"
+      conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
     end
     if params[:campus_id]
       @campus = Campus.find(params[:campus_id])

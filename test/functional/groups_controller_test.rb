@@ -11,10 +11,11 @@ class GroupsControllerTest < Test::Unit::TestCase
     @controller = GroupsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login
   end
 
   # Replace this with your real tests.
-  def test_truth
+  def test_index
     assert true
   end
 end

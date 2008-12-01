@@ -6,7 +6,7 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < Test::Unit::TestCase
   fixtures Person.table_name, Ministry.table_name, MinistryCampus.table_name,
-          MinistryInvolvement.table_name,
+          MinistryInvolvement.table_name, MinistryRole.table_name,
           CampusInvolvement.table_name, Address.table_name, Group.table_name,
           View.table_name, ViewColumn.table_name, Column.table_name, ProfilePicture.table_name
 
@@ -22,6 +22,14 @@ class PeopleControllerTest < Test::Unit::TestCase
     assert_response :success
     assert assigns(:people)
   end
+  
+  # def test_directory_download
+  #   @request.env["HTTP_ACCEPT"] = "text/html"
+  #   get :directory, :format => :xls
+  #   assert_equal "text/html", @response.content_type
+  #   assert_response 406
+  #   assert assigns(:people)
+  # end
   
   def test_directory_pagination
     post :directory, :search => 'all'
@@ -84,7 +92,7 @@ class PeopleControllerTest < Test::Unit::TestCase
                     :modalbox => 'true', :ministry_role_id => 4,  :campus => Campus.find(:first).id
       assert person = assigns(:person)
       assert_not_nil person.user.id
-      assert_equal old_count+1, Person.count
+      assert_equal old_count + 1, Person.count
       assert_redirected_to person_path(assigns(:person))
     end
   end

@@ -4,6 +4,7 @@ require 'cgi'
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
+  include ActiveRecord::ConnectionAdapters::Quoting
   include HoptoadNotifier::Catcher
   
   self.allow_forgery_protection = false
@@ -42,11 +43,7 @@ class ApplicationController < ActionController::Base
     def get_countries
       @countries = Country.find(:all, :conditions => "#{_(:is_closed, :country)} = 0", :order => _(:country, 'country'))
     end
-    
-    # cas receipt
-    def receipt
-      @receipt || session[:casfilterreceipt]
-    end
+
     
     def is_ministry_leader( ministry = nil, person = nil)
       ministry ||= @ministry || get_ministry
@@ -70,14 +67,13 @@ class ApplicationController < ActionController::Base
     
     def is_ministry_admin(ministry = nil, person = nil)
       @admins ||= {}
-      ministry ||= @ministry || get_minsitry
-      person ||= @person
-      unless @admins[:ministry_id]
-        mi = MinistryInvolvement.find_by_person_id_and_ministry_id(person.id, ministry.id)
-        mi ? @admins[:ministry_id] = mi.admin? : false
+      ministry ||= get_ministry
+      @admins[ministry.id] ||= {}
+      person ||= @me
+      unless @admins[ministry.id][person.id]
+        @admins[ministry.id][person.id] = person.admin?(ministry)
       end
-      logger.debug("Admin: #{@admins[:ministry_id]}")
-      return @admins[:ministry_id]
+      return @admins[ministry.id][person.id]
     end
     
     def bible_study_admin
@@ -93,26 +89,6 @@ class ApplicationController < ActionController::Base
       @group = Group.find(params[:id], :include => {:group_involvements => {:person => :current_address}}, 
                                        :order => Person.table_name + '.' + _(:last_name, :person) + ',' + 
                                        Person.table_name + '.' + _(:first_name, :person))
-    end
-    
-    def e(str)
-      ApplicationController::escape_string(str)
-    end
-      
-    def escape_string(str)
-      ApplicationController::escape_string(str)
-    end
-    
-    def self.escape_string(str)
-      str.gsub(/([\0\n\r\032\'\"\\])/) do
-        case $1
-        when "\0" then "\\0"
-        when "\n" then "\\n"
-        when "\r" then "\\r"
-        when "\032" then "\\Z"
-        else "\\"+$1
-        end
-      end
     end
     
     # ===========
@@ -135,15 +111,15 @@ class ApplicationController < ActionController::Base
       end
     end
     
-    def ministry_admin_filter
-      if params[:ministry_id]
-        @ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
-      end
-      unless is_ministry_admin(@ministry, @me)
-        render :nothing => true 
-        return false
-       end
-    end
+    # def ministry_admin_filter
+    #   if params[:ministry_id]
+    #     @ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
+    #   end
+    #   unless is_ministry_admin(@ministry, @me)
+    #     render :nothing => true 
+    #     return false
+    #    end
+    # end
     
     def ministry_leader_filter
       unless is_ministry_leader

@@ -1,8 +1,53 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TrainingQuestionsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  fixtures TrainingQuestion.table_name, Ministry.table_name, TrainingCategory.table_name
+  def setup
+    login
+  end
+
+  def test_should_get_new
+    get :new
+    assert_response :success
+  end
+
+  def test_should_create_training_question
+    assert_difference('TrainingQuestion.count') do
+      xhr :post, :create, :training_question => {:activity => 'test' }, :ministry_id => 1, :training_category_id => 1
+    end
+    assert_response :success, @response.body
+  end
+
+  def test_should_NOT_create_training_question
+    assert_no_difference('TrainingQuestion.count') do
+      post :create, :training_question => {:activity => '' } # name is required
+    end
+
+    assert_response :success
+    assert_template 'new'
+  end
+
+  def test_should_get_edit
+    get :edit, :id => TrainingQuestion.find(:first).id
+    assert_response :success
+  end
+
+  def test_should_update_training_question
+    put :update, :id => TrainingQuestion.find(:first).id, :training_question => {:activity => 'new value' }
+    assert_response :success, @response.body
+  end
+
+  def test_should_NOT_update_training_question
+    put :update, :id => TrainingQuestion.find(:first).id, :training_question => {:activity => '' }
+    assert_response :success
+    assert_template 'edit'
+  end
+
+  def test_should_destroy_training_question
+    assert_difference('TrainingQuestion.count', -1) do
+      delete :destroy, :id => TrainingQuestion.find(:first).id
+    end
+
+    assert_response :success, @response.body
   end
 end

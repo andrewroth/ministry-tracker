@@ -1,5 +1,5 @@
 module TrainingHelper
-  
+    
   def training_question_field(question, person)
     answer = person.get_training_answer(question.id) ? person.get_training_answer(question.id) : TrainingAnswer.new
     date = fancy_date_field(question.safe_name + '_date', answer.completed_at)

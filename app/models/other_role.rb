@@ -1,0 +1,3 @@
+class OtherRole < MinistryRole
+  
+end

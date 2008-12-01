@@ -18,6 +18,11 @@ class MinistryCampusesControllerTest < Test::Unit::TestCase
     xhr :get, :index, :ministry_id => 1 #yfc
     assert_response :success
   end
+  
+  def test_list
+    xhr :get, :list, :ministry_id => 1 #yfc
+    assert_response :success
+  end
 
   def test_new
     xhr :get, :new

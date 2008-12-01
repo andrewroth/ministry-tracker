@@ -39,13 +39,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :ministry_campuses, :collection => { :list => :any }
 
-  map.resources :user_group_permissions
-
   map.resources :permissions
 
   map.resources :user_memberships, :collection => { :group => :any }
-
-  map.resources :user_groups
 
   map.resources :staff, :member => { :demote => :post }
   

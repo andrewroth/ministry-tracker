@@ -8,14 +8,14 @@ class ImportsController < ApplicationController
   def create
     @import = @person.imports.new(params[:import])
     respond_to do |format|
-      if @import.valid? && !params[:campus_id].empty?
+      if @import.valid? && !params[:campus_id].blank?
         @import.save!
-        successful, unsuccessful = @import.process!(params[:campus_id], @ministry)
+        @successful, @unsuccessful = @import.process!(params[:campus_id], @ministry)
       end
-      if successful > 0
-        flash[:notice] = "Successfully imported #{successful} #{successful > 1 ? 'people' : 'person'}"
-        if unsuccessful > 0
-          flash[:warning] = "Failed to import #{unsuccessful} #{unsuccessful > 1 ? 'people' : 'person'}"
+      if @successful && @successful > 0
+        flash[:notice] = "Successfully imported #{@successful} #{@successful > 1 ? 'people' : 'person'}"
+        if @unsuccessful > 0
+          flash[:warning] = "Failed to import #{@unsuccessful} #{@unsuccessful > 1 ? 'people' : 'person'}"
         end
         format.html { redirect_to(directory_people_path) }
         format.xml  { render :xml => @import, :status => :created, :location => @import  }

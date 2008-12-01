@@ -2,6 +2,8 @@
 
 one:
   activity: Fall Retreat
+  ministry_id: 1
+  training_category_id: 1
 
 # two:
 #   column: value
