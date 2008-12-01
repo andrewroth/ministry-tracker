@@ -75,6 +75,11 @@ class PeopleControllerTest < Test::Unit::TestCase
     get :new
     assert_response :success
   end
+
+  def test_should_change_view
+    post :change_view, :view => 1
+    assert_redirected_to directory_people_path
+  end
   
   def test_should_re_create_staff
     old_count = Person.count

@@ -13,7 +13,9 @@ class TrainingQuestionsControllerTest < ActionController::TestCase
 
   def test_should_create_training_question
     assert_difference('TrainingQuestion.count') do
-      xhr :post, :create, :training_question => {:activity => 'test' }, :ministry_id => 1, :training_category_id => 1
+      xhr :post, :create, :training_question => {:activity => 'test' , :ministry_id => 1, :training_category_id => 1}
+      assert q = assigns(:training_question)
+      assert_equal([], q.errors.full_messages)
     end
     assert_response :success, @response.body
   end
@@ -40,7 +42,7 @@ class TrainingQuestionsControllerTest < ActionController::TestCase
   def test_should_NOT_update_training_question
     put :update, :id => TrainingQuestion.find(:first).id, :training_question => {:activity => '' }
     assert_response :success
-    assert_template 'edit'
+    assert_template 'update'
   end
 
   def test_should_destroy_training_question
