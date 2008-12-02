@@ -68,6 +68,23 @@ class ViewsControllerTest < Test::Unit::TestCase
     assert_redirected_to views_path
   end
   
+  def test_should_NOT_destroy_LAST_view
+    view = View.find(:first)
+    while View.count > 1
+      View.first.destroy
+    end
+    assert_no_difference "View.count" do
+      xhr :delete, :destroy, :id => View.first.id
+    end
+  
+    assert_response :success
+  end
+  
+  def test_set_default
+    post :set_default, :id => 1, 'view[default_view]' => 1
+    assert_response :success, @response.body
+  end
+  
   def test_reorder
     old_order = View.find(1).view_columns.collect(&:id).map(&:to_s)
     new_order = ["2", "3", "1"]

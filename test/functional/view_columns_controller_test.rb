@@ -35,10 +35,9 @@ class ViewColumnsControllerTest < Test::Unit::TestCase
   
   def test_should_destroy_view_column
     view = View.find(:first)
-    old_count = ViewColumn.count
-    xhr :delete, :destroy, :id => 1, :view_id => view.id
-    assert_equal old_count-1, ViewColumn.count
-    
+    assert_difference "ViewColumn.count", -1 do
+      xhr :delete, :destroy, :id => 1, :view_id => view.id
+    end
     assert_response :success
   end
 end
