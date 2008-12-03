@@ -18,20 +18,20 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
     # Add some roles to all top level ministries
     Ministry.find(:all, :conditions => {:parent_id => nil} ).each do |ministry|
       if ministry.student_roles.empty?
-        ministry.student_roles << StudentRole.new(:name => 'Ministry Leader', :description => 'a student who oversees a campus, eg LINC leader')
-        ministry.student_roles << StudentRole.new(:name => 'Student Leader')
-        ministry.student_roles << StudentRole.new(:name => 'Involved Student', :description => 'we are saying has been attending events for at least 6 months')
-        ministry.student_roles << StudentRole.new(:name => 'Student')
+        ministry.student_roles << StudentRole.new(:name => 'Ministry Leader', :description => 'a student who oversees a campus, eg LINC leader') unless ministry.ministry_roles.find_by_name('Ministry Leader')
+        ministry.student_roles << StudentRole.new(:name => 'Student Leader') unless ministry.ministry_roles.find_by_name('Student Leader')
+        ministry.student_roles << StudentRole.new(:name => 'Involved Student', :description => 'we are saying has been attending events for at least 6 months') unless ministry.ministry_roles.find_by_name('Involved Student')
+        ministry.student_roles << StudentRole.new(:name => 'Student') unless ministry.ministry_roles.find_by_name('')
       end
       if ministry.staff_roles.empty?
-        ministry.staff_roles << StaffRole.new(:name => 'Campus Coordinator', :position => 2)
-        ministry.staff_roles << StaffRole.new(:name => 'Missionary', :position => 3)
-        ministry.staff_roles << StaffRole.new(:name => 'Admin', :position => 1)
+        ministry.staff_roles << StaffRole.new(:name => 'Campus Coordinator', :position => 2) unless ministry.ministry_roles.find_by_name('Campus Coordinator')
+        ministry.staff_roles << StaffRole.new(:name => 'Missionary', :position => 3) unless ministry.ministry_roles.find_by_name('Missionary')
+        ministry.staff_roles << StaffRole.new(:name => 'Admin', :position => 1) unless ministry.ministry_roles.find_by_name('Admin')
       end
       if ministry.other_roles.empty?
-        ministry.other_roles << OtherRole.new(:name => 'Registration Incomplete', :position => 8, :description => 'A leader has registered them, but user has not completed rego and signed the privacy policy')
-        ministry.other_roles << OtherRole.new(:name => 'Approval Pending', :position => 9, :description => 'They have applied, but a leader has not verified their application yet')
-        ministry.other_roles << OtherRole.new(:name => 'Honourary Member', :position => 10, :description => 'not a valid student or missionary, but we are giving them limited access anyway')
+        ministry.other_roles << OtherRole.new(:name => 'Registration Incomplete', :position => 8, :description => 'A leader has registered them, but user has not completed rego and signed the privacy policy') unless ministry.ministry_roles.find_by_name('Registration Incomplete')
+        ministry.other_roles << OtherRole.new(:name => 'Approval Pending', :position => 9, :description => 'They have applied, but a leader has not verified their application yet') unless ministry.ministry_roles.find_by_name('Approval Pending')
+        ministry.other_roles << OtherRole.new(:name => 'Honourary Member', :position => 10, :description => 'not a valid student or missionary, but we are giving them limited access anyway') unless ministry.ministry_roles.find_by_name('Honourary Member')
       end
     end
     # Remove roles from non root level ministries
