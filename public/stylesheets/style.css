@@ -739,3 +739,5 @@ display:inline-block;
 font-weight:bold;
 margin:0px 0 5px 0;
 }
+
+.drag_me {cursor:pointer;}

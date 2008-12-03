@@ -11,7 +11,7 @@
       						:before => "$('##{dom_id(training_category)}').hide()" %>
       <%- end -%>
       &nbsp;&nbsp;&nbsp;
-      <%= image_tag('edit.png', :id => "edit_#{dom_id(training_category)}") %>
+      <%#= image_tag('edit.png', :id => "edit_#{dom_id(training_category)}") %>
       <%= in_place_editor_field(:training_category, :name, {}, {:url => url_for({:action => 'set_training_category_name', :controller => 'training_categories', :id => training_category.id}),
                                                             :external_control => "edit_#{dom_id(training_category)}"}) %>
   </li>

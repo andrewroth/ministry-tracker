@@ -1,0 +1,32 @@
+<li id="<%= dom_id(ministry_role) %>">
+  <span class="drag_me"><%- tooltip image_tag('/images/silk/move.png') do -%>Click and drag to change the position of this role.<%- end -%></span>
+  &nbsp;&nbsp;&nbsp;
+  <%-  if ministry_role.ministry_involvements.empty? -%>
+    <%= link_to_remote image_tag('delete.png', :alt => "Delete this role", :title => "Delete this role"), 
+    						:url => ministry_role_path(ministry_role), 
+    						:method => :delete,
+    						:confirm => "Are you sure you want to delete this role?\nOnce you do, it'll be gone, along with all the permissions associated with it.\n YOU'VE BEEN WARNED!",
+    						:before => "$('##{dom_id(ministry_role)}').hide()" %>&nbsp;
+  <%- else -%>
+    <%- tooltip image_tag('silk/lock_delete_gray.png', :id => "#{dom_id(ministry_role)}_delete") do -%>
+      You can't delete a role that already has people assigned to it.
+    <%- end -%>
+  <%- end -%>
+  &nbsp;&nbsp;&nbsp;
+  <%- tooltip(link_to_remote(image_tag('edit.png'), :url => edit_ministry_role_path(ministry_role),
+                                            :before => "$('#spinner#{dom_id(ministry_role)}').show()",
+                                            :html => {
+                                              :id => "edit_#{dom_id(ministry_role)}",
+                                              :rel => "#tooltip_content_#{dom_id(ministry_role)}"}), 
+                                            :id => dom_id(ministry_role),
+                                            :link_id => "edit_#{dom_id(ministry_role)}") do -%>Edit this role<%- end -%>
+                                            
+  &nbsp;&nbsp;&nbsp;
+  <%= image_tag('silk/key.png') %>&nbsp;&nbsp;&nbsp;
+  <%= ministry_role.name %>&nbsp;&nbsp;&nbsp;
+  <%- unless ministry_role.description.blank? -%>
+    <%- tooltip do -%><%= ministry_role.description %><%- end -%>
+  <%- end -%>
+  <%= spinner(dom_id(ministry_role)) %>
+  <div id="<%= dom_id(ministry_role) %>_actions" style="display:none"></div>
+</li>

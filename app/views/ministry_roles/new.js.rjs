@@ -1,0 +1,4 @@
+page[:ministry_role].replace_html :partial => 'form'
+page[:ministry_role].blind_down
+page[:spinner].hide
+page[:add_link].hide

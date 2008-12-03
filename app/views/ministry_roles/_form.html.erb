@@ -1,0 +1,17 @@
+<div id="form_div">
+  <%- if @ministry_role.new_record? 
+    path = ministry_roles_path
+    method = :post -%>
+  <h4>New Role</h4>
+  <%- else 
+    path = ministry_role_path(@ministry_role)
+    method = :put -%>
+  <h4>Editing <%= @ministry_role.name %></h4>
+  <%- end -%>
+<%- remote_form_for :ministry_role, @ministry_role, :url => path, :method => method do |f| -%>
+  <p><%= f.label :name %> <%= f.text_field :name %></p>
+  <p><%= f.label :description %> <%= f.text_field :description, :size => 80 %></p>
+  <p><%= f.label :type %> <%= f.select :type, [[t(:Staff, :default => 'Staff'),'StaffRole'],['Student','StudentRole'],['Other','OtherRole']] %></p>
+  <p><%= submit_tag 'Save' %> or <%= link_to_function('cancel', "$('#form_div').parent().hide();$('#add_link').show()", :class => 'cancel') %>
+<%- end -%>
+</div>

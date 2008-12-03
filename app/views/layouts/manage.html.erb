@@ -30,20 +30,24 @@
 <div id="right-menu" class="right-menu">
 	<ul class="right-menu-list">
 		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
-		<%= link_to 'Ministries', ministries_url %></li>
+		<%= link_to 'Ministries', ministries_path %></li>
     <!-- <li<%= ' class="highlighted"' if params[:controller] == "ministry_campuses" %>>
     <%= link_to 'Campuses', ministry_campuses_url %></li> -->
 		<li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
-		<%= link_to 'Leaders/Staff', {:controller => :staff} %></li>
+		<%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
 		<!-- <li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
 		    <%= link_to 'Permissions', permissions_url %></li> -->
 		<li<%= ' class="highlighted"' if params[:controller] == "bible_studies" %>>
-		<%= link_to 'Bible Studies', bible_studies_url %></li>
+		<%= link_to 'Bible Studies', bible_studies_path %></li>
 		<li<%= ' class="highlighted"' if params[:controller] == "teams" %>>
-		<%= link_to 'Teams', teams_url %></li>
+		<%= link_to 'Teams', teams_path %></li>
 		<%- if is_ministry_admin -%>
   		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
-  		<%= link_to 'Customize', customize_url(@ministry) %></li>
+  		<%= link_to 'Customize', customize_path(@ministry) %></li>
+  	<%- end -%>
+		<%- if is_ministry_admin(@ministry.root) -%>
+  		<li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
+  		<%= link_to 'Permissions', permissions_path %></li>
   	<%- end -%>
 		
 		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
@@ -58,7 +62,7 @@
 		
 		<%- if current_user.developer? -%>
   		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
-  		<%= link_to 'Columns', columns_url %></li>
+  		<%= link_to 'Columns', columns_path %></li>
 		<%- end -%>
 	</ul>
 </div>

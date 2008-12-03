@@ -1,5 +1,11 @@
 {
   :'en-AU' => {
+    # General stuff
+    :staff => 'missionary',
+    :staff_plural => 'missionaries',
+    :Staff => 'Missionary',
+    :Staff_plural => 'Missionaries',
+    # Date and Time Formats
     :date => {
       :formats => {
         :default      => "%d/%m/%Y",

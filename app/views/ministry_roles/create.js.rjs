@@ -1,0 +1,8 @@
+page.insert_html :bottom, "#{@ministry_role.type.underscore}_list", :partial => 'ministry_role', :locals => {:ministry_role => @ministry_role}
+page[dom_id(@ministry_role)].highlight
+page[:ministry_role].hide
+page[:add_link].show
+sortable_element( "#{@ministry_role.type.underscore}_list",
+	:url => { :action => "reorder_ministry_roles" },
+	:complete => visual_effect(:highlight, 'student_role_list' ),
+	:handle => 'drag_me')

@@ -111,15 +111,17 @@ class ApplicationController < ActionController::Base
       end
     end
     
-    # def ministry_admin_filter
-    #   if params[:ministry_id]
-    #     @ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
-    #   end
-    #   unless is_ministry_admin(@ministry, @me)
-    #     render :nothing => true 
-    #     return false
-    #    end
-    # end
+    def ministry_admin_filter
+      if params[:ministry_id]
+        ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
+      else
+        ministry = get_ministry.root
+      end
+      unless is_ministry_admin(ministry, @me)
+        render :nothing => true 
+        return false
+       end
+    end
     
     def ministry_leader_filter
       unless is_ministry_leader

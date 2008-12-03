@@ -1,0 +1,2 @@
+page[dom_id(@ministry_role)].replace :partial => 'ministry_role', :locals => {:ministry_role => @ministry_role}
+page[dom_id(@ministry_role)].highlight
