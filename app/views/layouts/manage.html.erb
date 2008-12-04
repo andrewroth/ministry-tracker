@@ -9,16 +9,6 @@
 		                                                                show_add_student()") %>
 		<%= spinner('add_student') %>
 		or <%= link_to('import a bunch of students', new_import_path) %>
-    <!-- <ul id="boo">
-      <li>UC Davis Cru</li>
-      <li>Arizona State University</li>
-      <li>Destino Latino</li>     
-      <li>Chinese are on the move</li>
-      <li>Chuck Norris Approved</li>
-      <li>Kimchi</li>     
-      <li>Happy Feet, Smell Em</li> 
-      <li>Berkley</li>
-    </ul>  -->		
 	</div>
 
   <div id="left-body">
@@ -46,8 +36,8 @@
   		<%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
 		<%- if is_ministry_admin(@ministry.root) -%>
-  		<li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
-  		<%= link_to 'Permissions', permissions_path %></li>
+  		<li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
+  		<%= link_to 'Permissions', ministry_roles_path %></li>
   	<%- end -%>
 		
 		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
@@ -63,6 +53,8 @@
 		<%- if current_user.developer? -%>
   		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
   		<%= link_to 'Columns', columns_path %></li>
+  		<li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
+  		<%= link_to 'ACL Permissions', permissions_path %></li>
 		<%- end -%>
 	</ul>
 </div>

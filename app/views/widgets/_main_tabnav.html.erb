@@ -21,16 +21,16 @@ render_tabnav :main,
   end if is_ministry_leader_somewhere(@me)
   
   add_tab do |t|
-    if @personal_bible_studies.size == 1
+    if @my.bible_studies.size == 1
       t.named  'My Bible Study'
-      t.links_to bible_study_path(@personal_bible_studies.first)
+      t.links_to bible_study_path(@my.bible_studies.first)
     else
       t.named  'My Bible Studies'
       t.links_to bible_studies_path
     end
     t.highlights_on :controller => "bible_studies"
     t.titled 'Where you should be right now'
-  end if @personal_bible_studies.size > 0
+  end if @my.bible_studies.size > 0
   
   add_tab do |t|
    t.named 'My Profile'

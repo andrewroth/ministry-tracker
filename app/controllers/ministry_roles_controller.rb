@@ -1,6 +1,11 @@
 class MinistryRolesController < ApplicationController
+  layout 'manage'
   before_filter :ministry_admin_filter
   before_filter :find_ministry_role, :only => [:edit, :update, :destroy]
+  def index
+    
+  end
+  
   def new
     @ministry_role = MinistryRole.new
   end

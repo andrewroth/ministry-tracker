@@ -1,4 +1,4 @@
-<%- if is_ministry_leader -%>
+<%- if authorized?(:edit) -%>
 	<%= render :partial => 'bible_studies' %>
 <%- else -%>
 	<%- ministry = nil -%>

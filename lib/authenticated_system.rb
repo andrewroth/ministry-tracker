@@ -31,9 +31,9 @@ module AuthenticatedSystem
     #  def authorized?
     #    current_user.login != "bob"
     #  end
-    def authorized?
-      logged_in?
-    end
+    # def authorized?
+    #   logged_in?
+    # end
 
     # Filter method to enforce a login requirement.
     #
@@ -50,7 +50,7 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
-      authorized? || access_denied
+      logged_in? || access_denied
     end
 
     # Redirect as appropriate when an access request fails.

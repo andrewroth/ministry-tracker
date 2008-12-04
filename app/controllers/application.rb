@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   self.allow_forgery_protection = false
 
   # Pick a unique cookie name to distinguish our session data from others'
-  helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :bible_study_admin, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin
+  helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
+                :get_ministry, :current_user, :is_ministry_admin, :authorized?
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
 
@@ -76,8 +76,22 @@ class ApplicationController < ActionController::Base
       return @admins[ministry.id][person.id]
     end
     
-    def bible_study_admin
-      is_ministry_leader ? true : false
+    def authorized?(action = nil, controller = nil)
+      return true if is_ministry_admin
+      action ||= action_name == 'create' ? 'new' : action_name
+      controller ||= controller_name
+      # First see if this is restricted in the permissions table
+      permission = Permission.find(:first, :conditions => {_(:action, :permission) => action})
+      if permission
+        # If it is, see if they have access to it for this ministry
+        # Find the highest level of access they have at or above the level of the current ministry
+        role = @my.ministry_involvements.find(:first, :conditions => ["ministry_id IN (?)", get_ministry.ancestor_ids], :join => :ministry_role, :order => _(:position, :ministry_role))
+        role.permissions.find(:first, :conditions => {:controller => controller.to_s, :action => action.to_s})
+        unless role
+          redirect_to '/'
+          return false 
+        end
+      end
     end
     
     def team_admin
@@ -123,6 +137,10 @@ class ApplicationController < ActionController::Base
        end
     end
     
+    def developer_filter
+      return current_user.developer?
+    end
+    
     def ministry_leader_filter
       unless is_ministry_leader
         render :nothing => true 
@@ -142,15 +160,7 @@ class ApplicationController < ActionController::Base
         redirect_to '/sessions/new'
         return false 
       end
-      # Get my bible study involvements
-      @personal_bible_studies = @my.bible_studies
-      # if get_ministry
-      #   @personal_bible_studies = BibleStudy.find(:all, :conditions => ["#{_(:ministry_id, :group)} = ? AND #{_(:person_id, :group_involvement)} = ?",
-      #                                                                 @ministry.id, @person.id],
-      #                                                   :include => :group_involvements)
-      # else
-      #   @personal_bible_studies = []
-      # end
+      @person
     end
     
     def get_ministry
