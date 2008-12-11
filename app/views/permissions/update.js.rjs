@@ -1,0 +1,5 @@
+page[:permission].hide
+page[dom_id(@permission)].replace :partial => 'permission', :locals => {:permission => @permission}
+page[dom_id(@permission)].highlight
+page[:spinner].hide
+page[:add_link].show

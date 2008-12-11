@@ -1,8 +1,9 @@
 class GroupsController < ApplicationController
+  before_filter :authorization_filter, :only => [:create, :update, :destroy]
   def index
     respond_to do |format|
       format.html do
-        layout = authorized?(:edit) ? 'manage' : 'application'
+        layout = authorized?(:new, :people) ? 'manage' : 'application'
         render :layout => layout
       end
       format.js

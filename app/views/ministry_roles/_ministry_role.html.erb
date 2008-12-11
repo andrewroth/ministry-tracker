@@ -14,15 +14,21 @@
   <%- end -%>
   &nbsp;&nbsp;&nbsp;
   <%- tooltip(link_to_remote(image_tag('edit.png'), :url => edit_ministry_role_path(ministry_role),
-                                            :before => "$('#spinner#{dom_id(ministry_role)}').show()",
-                                            :html => {
-                                              :id => "edit_#{dom_id(ministry_role)}",
-                                              :rel => "#tooltip_content_#{dom_id(ministry_role)}"}), 
-                                            :id => dom_id(ministry_role),
-                                            :link_id => "edit_#{dom_id(ministry_role)}") do -%>Edit this role<%- end -%>
+                                                    :before => "$('#spinner#{dom_id(ministry_role)}').show()",
+                                                    :html => {
+                                                    :id => "edit_#{dom_id(ministry_role)}",
+                                                    :rel => "#tooltip_content_#{dom_id(ministry_role)}"}), 
+                                                    :id => dom_id(ministry_role),
+                                                    :link_id => "edit_#{dom_id(ministry_role)}") do -%>Edit this role<%- end -%>
                                             
   &nbsp;&nbsp;&nbsp;
-  <%- tooltip image_tag('silk/key.png') do -%>Set permissions for this role<%- end -%>&nbsp;&nbsp;&nbsp;
+  <%- tooltip(link_to_remote(image_tag('silk/key.png'), :url => permissions_ministry_role_path(ministry_role),
+                                                        :before => "$('#spinner#{dom_id(ministry_role)}').show()",
+                                                        :html => {
+                                                        :id => "permissions_#{dom_id(ministry_role)}",
+                                                        :rel => "#tooltip_content_#{dom_id(ministry_role)}_p"}), 
+                                                        :id => "#{dom_id(ministry_role)}_p",
+                                                        :link_id => "permissions_#{dom_id(ministry_role)}") do -%>Set permissions for this role<%- end -%>&nbsp;&nbsp;&nbsp;
   <%= ministry_role.name %>&nbsp;&nbsp;&nbsp;
   <%- unless ministry_role.description.blank? -%>
     <%- tooltip do -%><%= ministry_role.description %><%- end -%>

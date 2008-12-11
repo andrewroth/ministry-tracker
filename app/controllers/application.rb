@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
+  before_filter :authorization_filter
 
   protected    
     # =============================================================================
@@ -44,6 +45,10 @@ class ApplicationController < ActionController::Base
       @countries = Country.find(:all, :conditions => "#{_(:is_closed, :country)} = 0", :order => _(:country, 'country'))
     end
 
+    def is_group_leader(group, person = nil)
+      person ||= @me
+      return group.leaders.include?(person) || authorized?(:edit, :bible_studies)
+    end
     
     def is_ministry_leader( ministry = nil, person = nil)
       ministry ||= @ministry || get_ministry
@@ -78,19 +83,32 @@ class ApplicationController < ActionController::Base
     
     def authorized?(action = nil, controller = nil)
       return true if is_ministry_admin
-      action ||= action_name == 'create' ? 'new' : action_name
-      controller ||= controller_name
-      # First see if this is restricted in the permissions table
-      permission = Permission.find(:first, :conditions => {_(:action, :permission) => action})
-      if permission
-        # If it is, see if they have access to it for this ministry
+      unless @user_permissions
+        @user_permissions = {}
         # Find the highest level of access they have at or above the level of the current ministry
-        role = @my.ministry_involvements.find(:first, :conditions => ["ministry_id IN (?)", get_ministry.ancestor_ids], :join => :ministry_role, :order => _(:position, :ministry_role))
-        role.permissions.find(:first, :conditions => {:controller => controller.to_s, :action => action.to_s})
-        unless role
-          redirect_to '/'
+        role = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", get_ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role)).ministry_role
+        role.permissions.each do |perm|
+          @user_permissions[perm.controller] ||= []
+          @user_permissions[perm.controller] << perm.action
+        end
+      end
+      action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
+      action = action == 'update' ? 'edit' : action
+      controller ||= controller_name.to_s
+      # First see if this is restricted in the permissions table
+      permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
+      if permission
+        unless @user_permissions[permission.controller] && @user_permissions[permission.controller].include?(permission.action)
           return false 
         end
+      end
+      return true
+    end
+    
+    def authorization_filter
+      unless authorized?
+        redirect_to '/'
+        return false
       end
     end
     

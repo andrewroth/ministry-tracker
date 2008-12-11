@@ -19,25 +19,38 @@
 
 <div id="right-menu" class="right-menu">
 	<ul class="right-menu-list">
+	  <%- if authorized?(:new, :ministries) || authorized?(:edit, :ministries) -%>
 		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
 		<%= link_to 'Ministries', ministries_path %></li>
+		<%- end -%>
+		
     <!-- <li<%= ' class="highlighted"' if params[:controller] == "ministry_campuses" %>>
     <%= link_to 'Campuses', ministry_campuses_url %></li> -->
+    
+	  <%- if authorized?(:new, :people) -%>
 		<li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
 		<%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
-		<!-- <li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
-		    <%= link_to 'Permissions', permissions_url %></li> -->
+	  <%- end -%>
+	  
+	  <%- if authorized?(:new, :groups) -%>
 		<li<%= ' class="highlighted"' if params[:controller] == "bible_studies" %>>
 		<%= link_to 'Bible Studies', bible_studies_path %></li>
+		<%- end -%>
+		
+	  <%- if authorized?(:new, :groups) -%>
 		<li<%= ' class="highlighted"' if params[:controller] == "teams" %>>
 		<%= link_to 'Teams', teams_path %></li>
-		<%- if is_ministry_admin -%>
+		<%- end -%>
+		
+		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
+		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) -%>
   		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		<%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
-		<%- if is_ministry_admin(@ministry.root) -%>
+  	
+		<%- if authorized?(:edit, :ministry_roles) -%>
   		<li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
-  		<%= link_to 'Permissions', ministry_roles_path %></li>
+  		<%= link_to 'Roles/Permissions', ministry_roles_path %></li>
   	<%- end -%>
 		
 		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>

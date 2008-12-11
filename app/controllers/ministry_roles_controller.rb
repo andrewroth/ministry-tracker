@@ -1,7 +1,7 @@
 class MinistryRolesController < ApplicationController
   layout 'manage'
-  before_filter :ministry_admin_filter
-  before_filter :find_ministry_role, :only => [:edit, :update, :destroy]
+  before_filter :find_ministry_role, :only => [:edit, :update, :destroy, :permissions]
+  
   def index
     
   end
@@ -38,6 +38,10 @@ class MinistryRolesController < ApplicationController
   def destroy
     @ministry_role.destroy if @ministry_role.ministry_involvements.empty?
     render :nothing => true
+  end
+  
+  def permissions
+    @permissions = Permission.find(:all, :order => 'controller, action')
   end
   
   protected

@@ -1,0 +1,3 @@
+page.insert_html :bottom, :permissions, :partial => 'permission', :locals => {:permission => @permission}
+page[:new_permission].reset
+page[:spinner].hide

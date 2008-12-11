@@ -3,7 +3,7 @@
 	<%= @bible_study.name %>&nbsp;&nbsp;
 	<%= link_to_remote "edit", {:url => edit_bible_study_url(@bible_study), 
 								:method => :get}, 
-								{:class => "small"}  if authorized?(:edit) %>
+								{:class => "small"}  if is_group_leader(@bible_study) %>
 </h4>
 <div id="address">
 	<%= render :partial => 'bible_studies/address' %>
@@ -16,7 +16,7 @@
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<td colspan="5"><h4 class="title"><%= level.titleize %>&nbsp;&nbsp;
-				<%- if authorized?(:edit) -%>
+				<%- if is_group_leader(@bible_study) -%>
 					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
 					<%= link_to_function 'transfer', "$('#transfer_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
 					<%= link_to_remote 'remove', {:url => group_involvement_url(@group.id), :method => :delete, 

@@ -51,7 +51,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :dorms, :collection => {:list => :post}
 
-  map.resources :ministry_roles
+  map.resources :ministry_roles, :member => {:permissions => :any}
 
   map.resources :campuses, :member => {:details => :any},
                            :collection => { :change_country => :any,

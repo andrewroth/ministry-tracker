@@ -27,6 +27,8 @@ class MinistryInvolvementsController < ApplicationController
     if params[:person_id] && params[:ministry_id]
       @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
       @staff = Person.find(params[:person_id])
+      @ministry_involvement.admin = @staff.admin?(@ministry_involvement.ministry)
+      @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_roles)} >= #{@my.role(get_ministry).position}")
     else
       raise "Missing parameters"
     end

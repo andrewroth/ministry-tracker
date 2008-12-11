@@ -1,6 +1,5 @@
 class BibleStudiesController < GroupsController
   before_filter :get_bible_study, :only => [:show, :edit, :destroy, :update]
-  before_filter :authorized?, :only => [:create, :update, :destroy]
   def index
     @bible_studies = @person.bible_studies.find(:all, :group => _(:ministry_id, :group_involvement), 
                                                       :order => Ministry.table_name + '.' + _(:name, :ministry),

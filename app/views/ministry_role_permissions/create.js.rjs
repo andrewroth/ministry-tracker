@@ -1,0 +1,2 @@
+page["mrp_#{@ministry_role_permission.ministry_role_id}_#{@ministry_role_permission.permission_id}"].replace :partial => 'ministry_role_permission',
+                    :locals => {:permission => @ministry_role_permission.permission, :ministry_role => @ministry_role_permission.ministry_role}

@@ -1,0 +1,14 @@
+<h4>Permission Form</h4>
+<%- remote_form_for @permission do |f| -%>
+<%= error_messages_for :permission %>
+  <p>
+    <%= f.label :controller %> <%= f.select :controller, ActionController::Routing.possible_controllers %>
+  </p>
+  <p>
+    <%= f.label :action %> <%= f.text_field :action %>
+  </p>
+  <p>
+    <%= f.label :description %> <%= f.text_field :description, :size => 80 %>
+  </p>
+  <p><%= submit_tag 'Save' %> or <%= link_to_function('cancel', "$('#permission').hide();$('#add_link').show()", :class => 'cancel') %>
+<%- end -%>

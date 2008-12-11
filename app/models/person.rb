@@ -124,9 +124,19 @@ class Person < ActiveRecord::Base
     (self.ministries + self.campus_ministries).uniq.sort
   end
   
+  def role(ministry)
+    @roles ||= {}
+    unless @roles[ministry]
+      mi = ministry_involvements.find(:first, :conditions => "#{_(:person_id, :ministry_involvement)} = #{self.id} AND
+                                                            #{_(:ministry_id, :ministry_involvement)} = #{ministry.id}")
+      @roles[ministry] = mi ? mi.ministry_role : nil
+    end
+    @roles[ministry]
+  end
+  
   def admin?(ministry)
     mi = MinistryInvolvement.find(:first, :conditions => "#{_(:person_id, :ministry_involvement)} = #{self.id} AND
-                                                          #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids}) AND
+                                                          #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids.join(',')}) AND
                                                           #{_(:admin, :ministry_id)} = 1")
     return !mi.nil?
   end

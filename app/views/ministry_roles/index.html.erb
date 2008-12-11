@@ -1,0 +1,42 @@
+<div id="permissions">
+	<div class="right_list">
+		<div class="title"><%= @ministry.name %> Roles</div>
+		<h4><%= t(:Staff, :default => 'Staff') %> Roles</h4>
+		<ul id="staff_role_list">
+		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.staff_roles %>
+		</ul>
+		<h4>Student Roles</h4>
+		<ul id="student_role_list">
+		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.student_roles %>
+		</ul>
+		<h4>Other Roles <%- tooltip do -%><p>These people aren't <%= t(:staff_plural, :default => 'staff') %>, but they aren't students either.</p><%- end -%></h4>
+		<ul id="other_role_list">
+		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.other_roles %>
+		</ul>
+    <%- if @ministry.ministry_roles.empty? -%>
+    	<p id="no_ministries">There are currently no roles set up for your ministry.</p>
+    <%- end -%>
+    <div class="butAdd" id="add_link"><%= link_to_remote('Add a new role', :url => new_ministry_role_path,
+      											 	 :before => "$('#spinner').show()")%> <%= spinner %></div>
+    <br/>
+    <div id="ministry_role" style="display:none"></div>
+	</div>
+</div>
+
+<%= sortable_element( 'staff_role_list',
+	:url => { :action => "reorder_ministry_roles" },
+	:complete => visual_effect(:highlight, 'staff_role_list' ),
+	:handle => 'drag_me')
+%>
+
+<%= sortable_element( 'student_role_list',
+	:url => { :action => "reorder_ministry_roles" },
+	:complete => visual_effect(:highlight, 'student_role_list' ),
+	:handle => 'drag_me')
+%>
+
+<%= sortable_element( 'other_role_list',
+	:url => { :action => "reorder_ministry_roles" },
+	:complete => visual_effect(:highlight, 'other_role_list' ),
+	:handle => 'drag_me')
+%>

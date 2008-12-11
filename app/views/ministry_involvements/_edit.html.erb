@@ -1,7 +1,9 @@
 <%- remote_form_for @ministry_involvement do |f| -%>
   	<p>Role: 
-  	<%= f.select :ministry_role_id, get_ministry.ministry_roles.collect {|role| [role.name, role.id]} %></p>
+  	<%= f.select :ministry_role_id, @possible_roles.collect {|role| [role.name, role.id]} %></p>
+  	<%- if @me.admin?(@ministry_involvement.ministry) # You have to be an admin to make an admin -%>
     <p><%= f.check_box :admin %> Admin</p>
+    <%- end -%>
     <p><%= f.submit %> or <%= link_to_function 'cancel', "$('#campus_form#{@staff.id}').blindUp();",
  															:class => 'cancel' %></p>
 <%- end -%>

@@ -18,14 +18,14 @@ class PermissionsController < ApplicationController
   end
   
   def update
-    
+    unless @permission.update_attributes(params[:permission])
+      render :action => :edit
+    end
   end
   
   def create
     @permission = Permission.new(params[:permission])
-    if @permission.save
-      render
-    else
+    unless @permission.save
       render :action => :new
     end
   end

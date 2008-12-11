@@ -1,0 +1,4 @@
+page[:permission].replace_html :partial => 'form'
+page[:permission].blind_down
+page[:spinner].hide
+page[:add_link].hide

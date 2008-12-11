@@ -1,0 +1,17 @@
+  <tr id="<%= "mrp_#{ministry_role.id}_#{permission.id}" %>">
+    <td>
+      <%- if mrp = ministry_role.ministry_role_permissions.detect {|rp| rp.permission_id == permission.id} -%>
+        <%= link_to_remote(image_tag('silk/check_yes.png'), :url => ministry_role_permission_path(mrp),
+                                                            :method => :delete,
+                                                            :before => "$('#spinner#{ministry_role.id}_#{permission.id}').show()") %>
+      <%- else -%>
+        <%= link_to_remote(image_tag('silk/check_no.png'), :url => ministry_role_permissions_path(:ministry_role_permission => {:ministry_role_id => ministry_role.id, :permission_id => permission.id}),
+                                                           :method => :post,
+                                                           :before => "$('#spinner#{ministry_role.id}_#{permission.id}').show()") %>
+      <%- end -%>
+
+    </td>
+    <td><%= permission.controller %></td>
+    <td><%= permission.action %></td>
+    <td><%= permission.description %><%= spinner("#{ministry_role.id}_#{permission.id}") %></td>
+  </tr>
