@@ -3,7 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
 class Test::Unit::TestCase
-  fixtures Person.table_name, Ministry.table_name, MinistryInvolvement.table_name, User.table_name
+  fixtures Person.table_name, Ministry.table_name, MinistryInvolvement.table_name, User.table_name, MinistryRole.table_name,
+           Permission.table_name
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
   # test database remains unchanged so your fixtures don't have to be reloaded

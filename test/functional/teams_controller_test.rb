@@ -5,7 +5,7 @@ require 'teams_controller'
 class TeamsController; def rescue_action(e) raise e end; end
 
 class TeamsControllerTest < Test::Unit::TestCase
-  fixtures Group.table_name
+  fixtures Group.table_name, MinistryInvolvement.table_name
 
   def setup
     @controller = TeamsController.new

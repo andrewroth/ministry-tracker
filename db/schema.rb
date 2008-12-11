@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081130220230) do
+ActiveRecord::Schema.define(:version => 20081211175127) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -313,7 +313,6 @@ ActiveRecord::Schema.define(:version => 20081130220230) do
     t.integer "ministry_id"
     t.date    "start_date"
     t.date    "end_date"
-    t.string  "ministry_role",    :null => false
     t.boolean "admin"
     t.integer "ministry_role_id"
   end
@@ -323,7 +322,7 @@ ActiveRecord::Schema.define(:version => 20081130220230) do
 
   create_table "ministry_role_permissions", :force => true do |t|
     t.integer "permission_id"
-    t.integer "user_group_id"
+    t.integer "ministry_role_id"
     t.string  "created_at"
   end
 
@@ -550,7 +549,7 @@ ActiveRecord::Schema.define(:version => 20081130220230) do
     t.integer  "fk_ssmUserID"
     t.integer  "person_id"
     t.boolean  "isPaid"
-    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
+    t.integer  "appFee"
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
@@ -622,7 +621,7 @@ ActiveRecord::Schema.define(:version => 20081130220230) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 8
+    t.binary   "lastChangedDate",               :limit => 255
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin, :authorized?
+                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
@@ -86,7 +86,9 @@ class ApplicationController < ActionController::Base
       unless @user_permissions
         @user_permissions = {}
         # Find the highest level of access they have at or above the level of the current ministry
-        role = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", get_ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role)).ministry_role
+        mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", get_ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+        return false unless mi
+        role = mi.ministry_role
         role.permissions.each do |perm|
           @user_permissions[perm.controller] ||= []
           @user_permissions[perm.controller] << perm.action
@@ -107,7 +109,10 @@ class ApplicationController < ActionController::Base
     
     def authorization_filter
       unless authorized?
-        redirect_to '/'
+        respond_to do |wants|
+          wants.html { redirect_to '/' }
+          wants.js   { render :nothing => true}
+        end
         return false
       end
     end
