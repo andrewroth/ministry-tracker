@@ -24,19 +24,19 @@
 </div>
 
 <%= sortable_element( 'staff_role_list',
-	:url => { :action => "reorder_ministry_roles" },
+	:url => { :action => "reorder" },
 	:complete => visual_effect(:highlight, 'staff_role_list' ),
 	:handle => 'drag_me')
 %>
 
 <%= sortable_element( 'student_role_list',
-	:url => { :action => "reorder_ministry_roles" },
+	:url => { :action => "reorder" },
 	:complete => visual_effect(:highlight, 'student_role_list' ),
 	:handle => 'drag_me')
 %>
 
 <%= sortable_element( 'other_role_list',
-	:url => { :action => "reorder_ministry_roles" },
+	:url => { :action => "reorder" },
 	:complete => visual_effect(:highlight, 'other_role_list' ),
 	:handle => 'drag_me')
 %>

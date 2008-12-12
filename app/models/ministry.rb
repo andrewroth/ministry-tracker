@@ -5,11 +5,11 @@ class Ministry < ActiveRecord::Base
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
-  has_many :ministry_roles, :dependent => :destroy
+  has_many :ministry_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
   has_many :permissions, :through => :ministry_roles, :source => :ministry_role_permissions
-  has_many :student_roles, :dependent => :destroy
-  has_many :staff_roles, :dependent => :destroy
-  has_many :other_roles, :dependent => :destroy
+  has_many :student_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
+  has_many :staff_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
+  has_many :other_roles, :dependent => :destroy, :order => _(:position, :ministry_role)   
   has_many :campus_involvements, :through => :ministry_roles
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
@@ -22,7 +22,7 @@ class Ministry < ActiveRecord::Base
   has_many :custom_attributes, :dependent => :destroy
   has_many :profile_questions, :dependent => :destroy
   has_many :involvement_questions, :dependent => :destroy
-  has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(_(:position, :ministry_role), :training_category), :dependent => :destroy
+  has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(:position, :training_category), :dependent => :destroy
   has_many :training_questions, :order => "activated, activity", :dependent => :destroy
   has_many :views, :order => View.table_name + '.' + _(:title, 'view'), :dependent => :destroy
   

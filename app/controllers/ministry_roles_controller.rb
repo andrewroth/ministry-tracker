@@ -13,7 +13,7 @@ class MinistryRolesController < ApplicationController
   def create
     type = params[:ministry_role].delete(:type)
     @ministry_role = type.constantize.new(params[:ministry_role])
-    @ministry_role.ministry = get_ministry
+    @ministry_role.ministry = get_ministry.root
     if @ministry_role.save
       render
     else
@@ -42,6 +42,29 @@ class MinistryRolesController < ApplicationController
   
   def permissions
     @permissions = Permission.find(:all, :order => 'controller, action')
+  end
+  
+  def reorder
+    offset = 0
+    if roles = params['student_role_list']
+      @ministry_roles = get_ministry.student_roles
+      offset += get_ministry.staff_roles.count 
+    elsif roles = params['other_role_list']
+      offset += get_ministry.student_roles.length + get_ministry.staff_roles.count
+      @ministry_roles = get_ministry.other_roles
+    else
+      roles = params['staff_role_list']
+      @ministry_roles = get_ministry.staff_roles
+    end
+    if roles
+      @ministry_roles.each do |role|
+        if roles.include?(role.id.to_s)
+          role.position = roles.index(role.id.to_s) + 1 + offset
+          role.save
+        end
+      end
+    end
+    render :nothing => true
   end
   
   protected
