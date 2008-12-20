@@ -3,7 +3,7 @@
 
 <div id="profiletitle">
   <%- if @person == @me || is_ministry_leader -%>
-    <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'})  %></div> 
+    <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person.user  %></div> 
     <div class="butUpdate" style="margin-right:5px;"><%= link_to_remote "Update Information", :url => edit_person_path(@person), :loading => "$('#edit_info').fadeIn();$('#info').hide()" %></div>
   	<h1><%= @person.full_name %></h1> 
   	<div class="divider" style="margin-bottom:0;">&nbsp;</div>

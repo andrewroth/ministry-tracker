@@ -1,7 +1,7 @@
 <li id="staff<%= staff.id %>">
   <%= link_to staff.full_name, person_url(staff) %>
   <%- # If this user can add people, they can change roles up to the level of their role -%> 
-  <%- if authorized?(:new, :people) -%> 
+  <%- if is_ministry_leader -%>
     | 
     <%= link_to_remote 'change role', :url => "/ministry_involvements/edit/0?person_id=#{staff.id}&ministry_id=#{@ministry.id}",
                                             :before => "$('#spinner#{staff.id}').show()" %> <!-- | 
