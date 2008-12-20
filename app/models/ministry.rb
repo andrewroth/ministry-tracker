@@ -28,12 +28,6 @@ class Ministry < ActiveRecord::Base
   
   
   validates_presence_of _(:name)
-  # validates_presence_of _(:address), :message => "can't be blank"
-  # validates_presence_of _(:city), :message => "can't be blank"
-  # validates_presence_of _(:state), :message => "can't be blank"
-  # validates_presence_of _(:country), :message => "can't be blank"
-  # validates_presence_of _(:phone)
-  # validates_presence_of _(:email)
   
   validates_uniqueness_of _(:name)
   
@@ -45,7 +39,7 @@ class Ministry < ActiveRecord::Base
   alias_method :root_other_roles, :other_roles
   
   def staff
-    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", staff_role_ids, self.id], :joins => :ministry_involvements)
+    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)", staff_role_ids, ancestor_ids], :joins => :ministry_involvements)
   end
   
   def ministry_roles
