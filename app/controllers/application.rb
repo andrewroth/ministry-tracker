@@ -46,19 +46,20 @@ class ApplicationController < ActionController::Base
     end
 
     def is_group_leader(group, person = nil)
-      person ||= @me
+      person ||= (@me || get_person)
       return group.leaders.include?(person) || authorized?(:edit, :bible_studies)
     end
     
     def is_ministry_leader( ministry = nil, person = nil)
       ministry ||= @ministry || get_ministry
-      person ||= @me
+      person ||= (@me || get_person)
       involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
       return ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
     
     def is_ministry_leader_somewhere(person = nil)
-      person ||= @me
+      person ||= (@me || get_person)
+      return false unless person
       @is_ministry_leader ||= {}
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
                                           ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
@@ -66,7 +67,7 @@ class ApplicationController < ActionController::Base
     end
     
     def is_involved_somewhere(person = nil)
-      person ||= @me
+      person ||= (@me || get_person)
       return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
     end
     
@@ -74,7 +75,7 @@ class ApplicationController < ActionController::Base
       @admins ||= {}
       ministry ||= get_ministry
       @admins[ministry.id] ||= {}
-      person ||= @me
+      person ||= (@me || get_person)
       unless @admins[ministry.id][person.id]
         @admins[ministry.id][person.id] = person.admin?(ministry)
       end
