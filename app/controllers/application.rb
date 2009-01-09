@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
     def get_person
       @person = params[:person_id] ? Person.find(params[:person_id]) : nil
       # Initialize the logged in person
-      @me = @my = current_user.person
+      @me = @my = current_user.person unless current_user == :false
       
       # if we didn't get a person in the params, set it now
       @person ||= @me
