@@ -21,9 +21,3 @@ config.action_controller.perform_caching             = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
-
-ActiveSupport::Inflector.inflections do |inflect|
-   inflect.plural /(campus|address)$/i, '\1es'
-   inflect.singular /(campus|address)es$/i, '\1'
-   inflect.uncountable %w( staff )
-end
