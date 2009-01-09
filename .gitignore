@@ -12,3 +12,4 @@ config/deploy.rb
 public/imports
 public/javascripts/all.js
 public/stylesheets/all.css
+config/initializers/uscm_prod.rb

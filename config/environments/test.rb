@@ -1,7 +1,7 @@
-$map_hash = {}
-if File.exists?( RAILS_ROOT + '/test/mappings.yml' )
-  $map_hash = File.open( RAILS_ROOT + '/test/mappings.yml' ) { |file| YAML::load(file) }
-end
+# $map_hash = {}
+# if File.exists?( RAILS_ROOT + '/test/mappings.yml' )
+#   $map_hash = File.open( RAILS_ROOT + '/test/mappings.yml' ) { |file| YAML::load(file) }
+# end
 # Settings specified here will take precedence over those in config/environment.rb
 
 # The test environment is used exclusively to run your application's

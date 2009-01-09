@@ -1,7 +1,7 @@
-$map_hash = {}
-if File.exists?( RAILS_ROOT + '/config/mappings.yml' )
-  $map_hash = File.open( RAILS_ROOT + '/config/mappings.yml' ) { |file| YAML::load(file) }
-end
+# $map_hash = {}
+# if File.exists?( RAILS_ROOT + '/config/mappings.yml' )
+#   $map_hash = File.open( RAILS_ROOT + '/config/mappings.yml' ) { |file| YAML::load(file) }
+# end
 # Settings specified here will take precedence over those in config/environment.rb
 
 # The production environment is meant for finished, "live" apps.
@@ -22,5 +22,3 @@ config.action_controller.perform_caching             = true
 # config.action_mailer.raise_delivery_errors = false
 config.threadsafe!
 
-CGI::Session::ActiveRecordStore::Session.table_name = 'sn_sessions'
-Delayed::Job.table_name = 'sn_delayed_jobs'
