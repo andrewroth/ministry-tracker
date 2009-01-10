@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
     end
     
     def authorization_filter
-      unless authorized?
+      unless controller_name == 'dashboard' || authorized?
         respond_to do |wants|
           wants.html { redirect_to '/' }
           wants.js   { render :nothing => true}
