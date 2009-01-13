@@ -19,12 +19,12 @@ class MinistriesControllerTest < Test::Unit::TestCase
     get :index
     assert_response :success
   end
-
+  
   def test_should_list_ministries
     get :list
     assert_response :success
   end
-
+  
   def test_should_get_new
     xhr(:get, :new)
     assert_response :success
@@ -81,19 +81,19 @@ class MinistriesControllerTest < Test::Unit::TestCase
   
   def test_set_parent
     @request.session[:ministry_id] = 3 #dg
-    xhr :post, :set_parent, :id => 1 #yfc
+    xhr :post, :set_parent, :id => 3, :parent_id => 1 #yfc
     assert_response :success
   end
   
   def test_set_parent_nil
     @request.session[:ministry_id] = 3 #dg
-    xhr :post, :set_parent, :id => 0
+    xhr :post, :set_parent, :parent_id => 0, :id => 3
     assert_response :success
   end
   
   def test_set_parent_creating_loop_BAD
     @request.session[:ministry_id] = 1 #yfc
-    xhr :post, :set_parent, :id => 2 #chicago
+    xhr :post, :set_parent, :id => 1, :parent_id => 2 #chicago
     assert_response :success
   end
 end

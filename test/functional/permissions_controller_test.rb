@@ -15,7 +15,52 @@ class PermissionsControllerTest < Test::Unit::TestCase
   end
 
   def test_index
-    xhr :get, :index
+    get :index
     assert_response :success
+  end  
+  
+  def test_new
+    xhr :get, :new
+    assert_response :success, @response.body
   end
+
+  def test_edit
+    xhr :get, :edit, :id => 1
+    assert_response :success, @response.body
+  end
+
+  def test_create_good
+    assert_difference("Permission.count") do
+      xhr :post, :create, :permission => {:description => 'Test Perm', :controller => 'foo', :action => 'bar'}
+    end
+    assert_response :success, @response.body
+  end
+
+  def test_create_bad
+    assert_no_difference("Permission.count") do
+      xhr :post, :create, :permission => {:description => ''}
+    end
+    assert_response :success, @response.body
+  end
+
+  def test_update_good
+    xhr :put, :update, :permission => {:description => 'Admin'}, :id => 1
+    assert mr = assigns(:permission)
+    assert_equal([], mr.errors.full_messages)
+    assert_response :success, @response.body
+  end
+
+  def test_update_bad
+    xhr :put, :update, :permission => {:description => ''}, :id => 1
+    assert mr = assigns(:permission)
+    assert_equal(["Description can't be blank"], mr.errors.full_messages)
+    assert_response :success, @response.body
+  end
+  
+  def test_destroy
+    assert_difference("Permission.count", -1) do
+      xhr :delete, :destroy, :id => 2
+    end
+  end
+
 end

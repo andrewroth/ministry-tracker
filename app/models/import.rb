@@ -16,14 +16,14 @@ class Import < ActiveRecord::Base
     fake_person = Person.new
     fake_address = Address.new
     Import.transaction do
-      if File.extname(filename) == '.xls'
+      if File.extname(filename).downcase == '.xls'
         oo = Excel.new(full_filename)
         oo.to_csv(File.join(RAILS_ROOT, 'public', public_filename.sub('.xls','.csv')))
-        self.filename = filename.sub('.xls','.csv')
-        save!
+        @csv_filename = full_filename.sub('.xls','.csv')
       end
+      @csv_filename ||= full_filename
       row_number = 0
-      FasterCSV.foreach(full_filename) do |row|
+      FasterCSV.foreach(@csv_filename) do |row|
         row_number += 1
         # header row
         if 1 == row_number
@@ -60,6 +60,8 @@ class Import < ActiveRecord::Base
         end
       end
     end
+    self.destroy
+    begin File.unlink(@csv_filename); rescue; end # In case we created an extra csv file
     return successful, unsuccessful
   end
 end

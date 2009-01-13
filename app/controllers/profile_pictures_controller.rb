@@ -32,7 +32,8 @@ class ProfilePicturesController < ApplicationController
         format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity }
       end
     end
-  rescue Errno::ECONNREFUSED
+  rescue Errno::ECONNREFUSED # Catch an S3 error
+    flash[:warning] = 'There was a problem updating your profile picture. Pleasee try again.'
     redirect_to(@profile_picture.person)
   end
   
