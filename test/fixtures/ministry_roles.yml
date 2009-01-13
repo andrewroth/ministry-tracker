@@ -24,3 +24,9 @@ five:
   name: Student Leader
   position: 5
   type: StudentRole
+six:
+  id: 6
+  ministry_id: 1
+  name: Random Person
+  position: 6
+  type: OtherRole

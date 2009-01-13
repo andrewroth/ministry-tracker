@@ -3,3 +3,7 @@ one:
   id: 1
   action: foo
   controller: bar
+two:
+  id: 2
+  action: new
+  controller: campus_involvements

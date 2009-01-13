@@ -50,7 +50,4 @@ class SessionsController < ApplicationController
     logout_keeping_session!
   end
   
-  def boom
-    raise StandardError, 'hi toad'
-  end
 end

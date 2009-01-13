@@ -7,15 +7,5 @@ class MinistryInvolvement < ActiveRecord::Base
   has_many :permissions, :through => :ministry_role, :source => :ministry_role_permissions
   
   validates_presence_of _(:ministry_role_id), :on => :create, :message => "can't be blank"
-  
-  before_validation :set_ministry_role
-  
-  private
-  def set_ministry_role
-    if self.ministry_role_id
-      begin
-        self.ministry_role = MinistryRole.find(self.ministry_role_id).name
-      rescue; end
-    end
-  end
+
 end

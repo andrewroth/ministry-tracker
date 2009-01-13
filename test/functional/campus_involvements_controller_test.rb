@@ -13,17 +13,20 @@ class CampusInvolvementsControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  # Replace this with your real tests.
   def test_destroy_with_permission
     login
-    xhr :delete, :destroy, :id => 1
+    assert_difference "CampusInvolvement.count", -1 do
+      xhr :delete, :destroy, :id => 1
+    end
     assert_response :success
     assert_template 'destroy'
   end
   
   def test_destroy_WITHOUT_permission
     login('sue@uscm.org')
-    xhr :delete, :destroy, :id => 1
+    assert_no_difference "CampusInvolvement.count" do
+      xhr :delete, :destroy, :id => 1
+    end
     assert_response :success
     assert_template ''
   end
