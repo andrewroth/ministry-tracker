@@ -1,0 +1,30 @@
+<table id="schedule" width="250px" cellspacing="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+    <%- 7.times do |i| -%>
+      <th><%= Date::DAYNAMES[i] %></th>
+    <%- end -%>
+  </thead>
+  <tbody>
+    <!-- 6 am to 10 pm in 15 minute intervals -->
+    <%- midnight = Time.today.beginning_of_day
+        time = midnight + Timetable::EARLIEST 
+        stop = midnight + Timetable::LATEST -%>
+    <%- while time < stop 
+        time_in_seconds = time.to_i - midnight.to_i -%>
+      <tr>
+        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+        <%- 7.times do |i| -%>
+        <%#= logger.debug(@free_times[i].inspect) %>
+        <%#- free_index = @free_times[i].detect {|bt|} -%>
+        <td width="50px" height="10px" class="day_<%= i %> <%= 'busy' if @free_times[i].present? && !@free_times[i].include?(time_in_seconds) %>">
+          &nbsp;
+          <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
+        </td>
+        <%- end -%>
+      </tr>
+      <%- time += Timetable::INTERVAL -%>
+    <%- end -%>
+  <tbody>
+</table>    

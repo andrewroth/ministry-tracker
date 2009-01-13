@@ -1,12 +1,85 @@
-<h1>Editing timetable</h1>
+<script type="text/javascript" charset="utf-8">
+  // Loop over the table cells and collect the ones that are checked
+  // 61 td cells per column
+  // free_times[0] == Sunday
+  // free_times[0][0][0] = First Start Time on Sunday
+  // free_times[0][0][1] = First End Time on Sunday
+  function set_times_field() {
+    var free = false;
+    var blocks = 0;
+    var been_free = false;
+    var current_day;
+    free_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
+    for(i=0; i<7; i++) {
+      // Go down each column
+      $('table#schedule td.day_' + i).each(function(index) {
+        if($(this).hasClass('busy')) {
+          if(!free) {
+            day = i;
+            // alert(day);
+            free = true;
+            been_free = true;
+            if(day != current_day) {
+              current_day = day;
+              blocks = 0;
+            }
+            // alert($(this).find('input').val())
+            // free_times[day] = new Array;
+            // alert(blocks);
+            free_times[day][blocks] = new Array;
+            free_times[day][blocks][0] = Number($(this).find('input').val());
+            // alert(free_times[day][blocks][0]);
+            // Set End Time 15 mins later
+            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+          } else {
+            // Set End Time 15 mins later
+            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+            // alert(free_times[day][blocks][1]);
+          }
+        } else {
+          if(been_free) {
+             blocks++;
+             been_free = false;
+             // alert(blocks);
+          }
+          free = false;
+        }
+      })
+    }
+    $('#times').val($.toJSON(free_times))
+  }
+  
 
-<% form_for(@timetable) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @timetable %> |
-<%= link_to 'Back', timetables_path %>
+</script>
+<%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
+  <%= hidden_field_tag :times %>
+  <%= f.submit 'Save Timetable' %>
+<%- end -%><br/>
+<%= render :partial => 'timetable' %>
+<script>
+  down = false;
+  direction = 'on';
+  $('table#schedule td:not(.time)').mousedown(function() {
+    down = true;
+    if($(this).hasClass('busy')) {
+      direction = 'off';
+      $(this).removeClass('busy')
+    } else {
+      direction = 'on';
+      $(this).addClass('busy')
+    }
+  });
+  $('table#schedule td:not(.time)').mouseover(function() {
+    if(down) {
+      if(direction == 'off') {
+        $(this).removeClass('busy')
+      } else {
+        $(this).addClass('busy')
+      }
+    }
+  });
+  $('body').mouseup(function() {
+    down = false;
+  });
+   $('table#schedule td').disableTextSelect();
+</script>

@@ -1,7 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
+one:
+  id: 1
+  start_time: 21600
+  end_time: 23400
+  day_of_week: 1
+  timetable_id: 1
 #
 # two:
 #   column: value

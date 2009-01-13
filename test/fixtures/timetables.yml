@@ -2,7 +2,7 @@
 
 one:
   id: 1
-  person: josh
+  person_id: 50000
 #
 # two:
 #   column: value

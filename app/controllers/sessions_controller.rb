@@ -16,6 +16,7 @@ class SessionsController < ApplicationController
   def create
     if params[:username].blank? || params[:password].blank?
       flash[:warning] = "Username and password can't be blank"
+      render :action => :new
     else
       # First try SSM
       self.current_user = User.authenticate(params[:username], params[:password])

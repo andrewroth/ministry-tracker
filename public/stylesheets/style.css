@@ -716,9 +716,6 @@ line-height:28px;
 	margin: 5px;
 }
 
-.drag_me {
-	
-}
 #outer {
 	padding-left:10%;
 }
@@ -741,3 +738,5 @@ margin:0px 0 5px 0;
 }
 
 .drag_me {cursor:pointer;}
+
+.busy {background:blue;}
