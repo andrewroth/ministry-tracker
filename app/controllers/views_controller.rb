@@ -19,7 +19,7 @@ class ViewsController < ApplicationController
 
   # GET /views/1;edit
   def edit
-    @view = View.find(params[:id], :joins => {:view_columns => :column}, :order => _(:position, :view_column))
+    @view = View.find(params[:id])
     column_ids = @view.view_columns.collect(&:column_id)
     column_ids << 0
     @columns = Column.find(:all, :conditions => _(:id, :column) + " NOT IN (" + column_ids.join(',') + ")", :order => 'title')
