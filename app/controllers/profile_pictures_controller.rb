@@ -3,7 +3,7 @@ class ProfilePicturesController < ApplicationController
   # POST /profile_pictures.xml
   def create
     @profile_picture = ProfilePicture.new(params[:profile_picture])
-    @profile_picture.person = @me
+    @profile_picture.person = @person
     respond_to do |format|
       if @profile_picture.save!
         format.html do
@@ -54,6 +54,14 @@ class ProfilePicturesController < ApplicationController
         end
       end
     end
+  rescue Errno::ECONNREFUSED # Catch an S3 error
+    respond_to do |format|
+      format.js do
+	      render :update do |page|
+	        page.alert('There was a problem updating your profile picture. Pleasee try again.')
+  	      hide_spinner(page)
+        end
+      end
+    end
   end
-
 end
