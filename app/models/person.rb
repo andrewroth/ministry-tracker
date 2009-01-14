@@ -28,10 +28,6 @@ class Person < ActiveRecord::Base
   has_many :team_interests, :through => :group_involvements, :source => :team, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
                             
-  # Summer Projects
-  has_many :summer_project_applications, :class_name => "SummerProjectApplication", :foreign_key => _(:person_id, :summer_project_application)
-  has_many :summer_projects, :through => :summer_project_applications
-  
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
   has_many :conferences, :through => :conference_registrations
@@ -46,13 +42,9 @@ class Person < ActiveRecord::Base
               
   belongs_to :user, :class_name => "User", :foreign_key => _(:user_id)
   
-  # Conferences
-  has_many :conference_registrations, :class_name => 'ConferenceRegistration', :foreign_key => _(:person_id, :conference_registration)
-  has_many :conferences, :through => :conference_registrations, :order => Conference.table_name + '.' + _(:name, :conference)
-  # 
   # Summer Projects
-  has_many :summer_project_applications
-  has_many :summer_projects, :through => :summer_project_applications, :order => SummerProject.table_name + '.' + _(:name, :summer_project), :conditions => SummerProjectApplication.table_name + '.' + _(:status, :summer_project_application) + " = 'accepted'"
+  has_many :summer_project_applications, :order =>  "#{SummerProjectApplication.table_name}.#{_(:year, :summer_project)}"
+  has_many :summer_projects, :through => :summer_project_applications, :order => "#{SummerProject.table_name}.#{_(:year, :summer_project)} desc, #{SummerProject.table_name}.#{_(:name, :summer_project)}"
   
   # Custom Values
   has_many :custom_values, :class_name => "CustomValue", :foreign_key => _(:person_id, :custom_value)
