@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :username, :plain_password, :password_confirmation, :guid
+  attr_accessible :username, :plain_password, :password_confirmation, :guid, :facebook_username
   
   # Make sure password and confirm_password are the same on update
   def validate_on_update
@@ -83,6 +83,7 @@ class User < ActiveRecord::Base
     first_name = fuser.first_name
     last_name = fuser.last_name
     facebook_hash = fuser.email_hashes.email_hashes_elt
+    return nil if facebook_hash.blank?
     u = User.find(:first, :conditions => _(:facebook_hash, :user) + " = '#{facebook_hash}'")
     return nil unless u
 
@@ -180,8 +181,9 @@ class User < ActiveRecord::Base
     end
     
     def create_facebook_hash
-      crc = Zlib.crc32(self.username.downcase)
-      md5 = Digest::MD5.hexdigest(self.username.downcase)
+      email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
+      crc = Zlib.crc32(email)
+      md5 = Digest::MD5.hexdigest(email)
       hash = "#{crc}_#{md5}"
       if self.facebook_hash != hash
         register_facebook_hash(hash)

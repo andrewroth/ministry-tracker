@@ -224,6 +224,9 @@ class PeopleController < ApplicationController
       @person.permanent_address ||= PermanentAddress.new(:email => params[:perm_address][:email]) 
       @person.permanent_address.update_attributes(params[:perm_address]) 
     end
+    if params[:user] && @person.user
+      @person.user.update_attributes(params[:user])
+    end
     @perm_address = @person.permanent_address
     @person.updated_by = 'MT'
     @person.updated_at = Time.now

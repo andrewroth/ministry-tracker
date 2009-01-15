@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090115054530) do
+ActiveRecord::Schema.define(:version => 20090115210516) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -802,6 +802,7 @@ ActiveRecord::Schema.define(:version => 20090115054530) do
     t.boolean  "email_validated"
     t.boolean  "developer"
     t.string   "facebook_hash"
+    t.string   "facebook_username"
   end
 
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true

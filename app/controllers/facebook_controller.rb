@@ -1,12 +1,16 @@
 class FacebookController < ApplicationController
   skip_before_filter CASClient::Frameworks::Rails::GatewayFilter, :login_required, :authorization_filter, :get_person, :get_ministry
-  before_filter :require_facebook_login
-  before_filter :authenticate_facebook_user, :except => [:no_access]
+  before_filter :require_facebook_login, :except => [:no_access, :login]
+  before_filter :authenticate_facebook_user, :except => [:no_access, :login]
   layout 'facebook'
   
   def index
     # @person = @user.person
-    setup_involvement_vars
+    unless params[:next].blank?
+      redirect_to(params[:next])
+    else
+      setup_involvement_vars
+    end
   end
   
   
@@ -15,23 +19,35 @@ class FacebookController < ApplicationController
   end
   
   def no_access
-    
+    render :layout => 'sessions'
+  end
+  
+  def login
+    # finish_facebook_login
+    # if @user
+    return unless require_facebook_login(:next => url_for(:controller => '/'))
+    return authenticate_facebook_user
+    redirect_to person_path(@person)
+    # else
+      # redirect_to '/'
   end
 
   def finish_facebook_login
     # redirect to whatever your want your after-login landing page to be
     @user = User.find_from_facebook(fbsession)
-    session[:user_id] = @user.id if @user
+    session[:user] = @user.id if @user
+    self.current_user = user
   end
   
   def authenticate_facebook_user
-    user = session[:user_id] ? User.find(session[:user_id]) : User.find_from_facebook(fbsession)
-    unless user
+    @user = User.find(session[:user]) if session[:user]
+    @user ||= User.find_from_facebook(fbsession) 
+    unless @user
       redirect_to :action => 'no_access'
       return false
     else
-      self.current_user = user
-      session[:user] = user.id
+      self.current_user = @user
+      session[:user] = @user.id
       get_person
       get_ministry
     end

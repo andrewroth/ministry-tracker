@@ -10,7 +10,7 @@ module AuthenticatedSystem
     # Accesses the current user from the session.  Set it to :false if login fails
     # so that future calls do not hit the database.
     def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || :false)
+      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_facebook || :false)
     end
     
     # Store the given user in the session.
@@ -122,8 +122,15 @@ module AuthenticatedSystem
       u = false
       if cas_user
         u = User.find_or_create_from_cas(session[:cas_last_valid_ticket])
+        self.current_user = u
       end
-      u
+    end
+    
+    def login_from_facebook
+      if fbsession.ready?
+        u = User.find_from_facebook(fbsession)
+        self.current_user = u
+      end
     end
     
     def logout_keeping_session!

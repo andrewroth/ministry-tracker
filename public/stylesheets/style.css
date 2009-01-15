@@ -740,3 +740,69 @@ margin:0px 0 5px 0;
 .drag_me {cursor:pointer;}
 
 .busy {background:blue;}
+
+.inputtext {
+  border: 1px solid #bdc768;
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-size: 11px;
+  padding: 3px;
+  width: 180px;
+}
+
+.inputcheck {
+	margin-top:6px;
+}
+
+#signin .inputsubmit {
+  border: 0pt none;
+  cursor: pointer;
+  background: #9999EE;
+  font-size: 11px;
+}
+
+#signin .fbconnect {
+  vertical-align: bottom;
+}
+#loginbox {
+  padding: 20px 8px;
+}
+
+
+.login_prompt {
+  padding: 10px 0px 15px;
+}
+
+.login_sector {
+  width: 300px;
+  float: left;
+  border-right: solid 1px #839553;
+}
+
+.login_sector_fb {
+  float: left;
+  padding-left: 10px;
+}
+
+label {
+  width: 90px;
+  display: block;
+  float: left;
+  padding: 5px 8px 5px 0px;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0; }
+
+.clearfix {
+    display: inline-block; }
+
+html[xmlns] .clearfix {
+    display: block; }
+
+* html .clearfix {
+    height: 1%; }

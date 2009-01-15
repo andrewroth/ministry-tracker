@@ -22,6 +22,9 @@
 	      desc, url = parse_url(@person.url) -%>
 	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
 	<%- end -%>
+	<%- if @person.user && @person.user.facebook_username.present? -%>
+  	<tr><td>Facebook Username</td><td><%= @person.user.facebook_username %></td></tr>
+  <%- end -%>
 	</table></td>
 
 </tr>
