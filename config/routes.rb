@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  # map.resources :facebook, :collection => {:profile => :any}
+  
   map.resources :ministry_role_permissions
 
   # map.resources :timetables

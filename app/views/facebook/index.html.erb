@@ -1,0 +1,37 @@
+
+<%- unless @conferences.empty? -%>
+  <h3 class="title">Conferences Attended</h3>
+  <ul id="conferences">
+  <%- @conferences.each do |conference| -%>
+    <li><%= conference.name %></li>
+  <%- end -%>
+  </ul>
+<%- end -%>
+<%- unless @projects.empty? -%>
+  <h3 class="title">Summer Projects Attended</h3>
+  <ul id="projects">
+  <%- @projects.each do |project| -%>
+    <li><%= project.name %> - <%= project.year %></li>
+  <%- end -%>
+  </ul>
+<%- end -%>
+
+<%- unless @prefs.empty? -%>
+  <h3 class="title">Summer Projects Applied To</h3>
+  <ul id="projects">
+    <%- @prefs.each do |project| -%>
+      <li><%= project.name %> - <%= project.year %></li>
+    <%- end -%>
+  </ul>
+<%- end -%>
+
+
+<%- unless @stints.empty? -%>
+  <h3 class="title">STINTs Attended</h3>
+  <ul id="stints">
+  <%- @stints.each do |stint| -%>
+    <li><%= stint.name %></li>
+  <%- end -%>
+  </ul>
+<%- end -%>
+

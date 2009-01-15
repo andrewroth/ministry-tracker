@@ -1,0 +1,11 @@
+		<%= stylesheet_link_tag "http://mt.ministryhacks.com:8888/stylesheets/facebook.css", :media => "all" %>
+<fb:header decoration="no_padding">
+  Your CCC Involvement Portal
+</fb:header>
+<br/>
+<fb:tabs>
+<fb:tab-item href="/ccc-involvement/" title="Involvement" <%= 'selected="true"' if request.path == '/facebook/' %>></fb:tab-item>
+<fb:tab-item href="/ccc-involvement/bible_studies" title="Bible Studies (Not Implemented)" <%= 'selected="true"' if request.path == '/facebook/bible_studies' %>></fb:tab-item>
+</fb:tabs>
+<br/>
+<%= yield %>

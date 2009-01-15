@@ -1,0 +1,742 @@
+/*
+Codename: Ministry Track
+Author: David T Sudarma (Follower), Caleb Wright (Follower), Josh Starcher (Cult Leader)
+Use whatever you want
+COLORS:
+Green Block:      #3B5998
+Green Text:       #3B5998
+*/
+
+img {border:0px;}
+
+#campus, #person, #training_question, #training_category {
+	border:1px dotted silver;
+	padding:8px;
+}
+
+#addStudentLink {
+margin:15px 0 10px 0;
+}
+
+
+#left-body {width:650px; float:left;}
+
+#staffArea {
+padding:0px;
+border: 0px dotted #CCCCCC;
+}
+
+#manage {clear:both;}
+
+#customizebody {float:left;
+width:675px;}
+
+#custom_attributes_ProfileQuestion, 
+#instructions_ProfileQuestion,
+#instructions_TrainingQuestion {
+display:block;margin-bottom:30px; }
+
+div.yoursearch {
+padding:0 10px 10px 10px;
+}
+
+#staffArea:hover{
+
+}
+
+#footer img {border:0;}
+
+h3.lbtitle  {
+font-weight:bold; 
+font-size:14px;
+background:black;
+padding:5px;
+color:white;
+}
+
+input.lbbutton {
+background:green;
+color:white;
+font-size:10px;
+border: 2px solid white;
+}
+
+.lbbutton:hover {
+background:green;
+color:white;
+border: 2px solid white;
+}
+
+
+.passwordbox h3.title{
+padding-bottom:5px;
+}
+
+.passwordbox input {
+font-size:16px;
+}
+
+.popupfield h3 {
+margin-top:5px;
+}
+
+#person_staff_notes {
+width:98%;
+height:200px;
+margin:5px 0 0 0;
+}
+
+td {vertical-align:top;}
+table {width:100%;
+	font-size:1em;}
+
+
+/* OVERALL STUFF */
+
+.directorytable tr:hover  {
+    background-color:#fff193;
+}
+
+#profileCaption {
+margin:3px 0 0 0;
+text-align:center;
+}
+
+* {
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#747474;
+}
+
+body {
+    font-size:75%;
+    text-align:center;
+    background-color:#E6E6E6;
+}
+
+.directorytable {
+width:100%;
+}
+
+
+td {vertical-align:middle;}
+.profileImage {
+padding:8px 0 0 0;
+}
+
+.profileImage img{
+border:0px solid #333333;
+}
+
+#profileCaption img{
+border:0px solid black;
+padding-right:5px;
+vertical-align:bottom;
+}
+
+#profileCaption a{
+border:1px solid #f5f5f5;
+height:18px;
+padding:2px;
+margin:1px;
+font-size:10px;
+font-weight:bold;
+}
+
+#profileCaption a:hover {
+text-decoration:none;
+border:1px solid green;
+background: #ffffcc;
+}
+
+
+
+
+.butProfile a {
+padding-left:20px;
+border:0px solid black;
+height:18px;
+background:url(../images/zoom.png) top left no-repeat;
+}
+
+.butUpdate a {
+padding:5px 5px 5px 5px;
+padding-left:20px;
+border:1px solid #ccc;
+background: #fff url(../images/edit.png) 3px 5px no-repeat;
+height:18px;
+}
+
+
+.butUpdate a:hover {
+text-decoration:none;
+border:1px solid green;
+background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+}
+
+.butUpdate {
+margin:5px 0 0 0;
+float:right;
+}
+
+.butDExcel {
+display:inline;
+margin:5px 0 0 0;
+}
+
+.butDExcel a {
+padding:5px 5px 5px 5px;
+padding-left:20px;
+border:1px solid #ccc;
+background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
+height:18px;
+}
+
+.butDExcel a:hover {
+text-decoration:none;
+border:1px solid green;
+background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
+}
+
+
+.butNormal {
+display:inline;
+margin:5px 0 0 0;
+}
+
+.butNormal a {
+padding:5px 5px 5px 5px;
+padding-left:20px;
+border:1px solid #ccc;
+background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
+height:18px;
+}
+
+.butNormal a:hover {
+text-decoration:none;
+border:1px solid green;
+background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
+}
+
+
+.butAdd {
+display:block;
+margin:10px 10px 10px 5px;
+}
+
+.butAdd a {
+padding:0;
+padding-left:20px;
+border:0px solid #ccc;
+background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
+height:18px;
+}
+
+
+
+
+/* EVERYDAY THINGS */
+
+h1 {font-size:2.0em;}
+h2 {font-size:1.5em;}
+h3 {font-size:1.25em; font-weight:normal;}
+h4 {font-size:1.12em;}
+h5, p {font-size:1em;}
+
+th {
+font-weight:normal;
+}
+
+input, textarea {
+font-size:1.1em;
+color: #000;
+font-family:Arial, Verdana, Helvetica;
+padding:2px 5px 2px 5px;
+border:1px solid #ddd;
+}
+
+input:focus, textarea:focus {
+background:#FFFFCC;
+}
+
+select {width:175px;}
+li {list-style: none; margin-top:3px;}
+p {margin-bottom:10px;}
+
+a:link, a:visited {
+	color: #3B5998;
+	text-decoration:none;
+}
+
+a:hover, a:active {
+    text-decoration:underline;
+    color:#3B5998;
+}
+a.norm {
+	color:#747474;
+	text-decoration: none;
+	padding: 1px;
+}
+a.norm:active, a.norm:hover {
+	 text-decoration: none;
+	 background: #FFE99B;
+	 padding: 1px;
+}
+.small, a.small {
+	padding: 3px 6px 3px 6px;
+	font-weight:normal;
+	font-size:.75em;
+}
+a.small {
+  color:#000;
+	background: #FFFFCC;
+	text-decoration: none;
+	border:1px solid #3B5998;
+	line-height:19px;
+	text-transform:uppercase;
+}
+a.small:active, a.small:hover {
+  background:#FFE99B;
+	text-decoration: none;
+	font-weight:normal;
+	font-size:.75em;
+}
+/* MORE (S)PACIFIC */
+h1 {
+    color:#3B5998;
+    font-weight:normal;
+}
+
+/* LAYOUT */
+
+#wrapper {
+    margin: 20px auto 20px auto;
+    width:auto;
+    border:1px solid #CCCCCC;
+    border-width:5px 5px 5px 5px;
+    text-align:left;
+	min-width:900px;
+	max-width:900px;
+	background:#FFFFFF;
+}
+
+#footer {
+	min-width:900px;
+	max-width:900px;
+	height:120px;
+margin:auto;
+margin-top:10px;
+}
+
+#header {
+    float:left;
+    position:relative;
+    top:33px;
+    left:10px;
+}
+
+#logout {
+	float:right;
+	padding:3px 1px 3px 10px;
+	border:1px solid #3B5998;
+	border-top:0px;
+	margin-right:5px;
+text-decoration:none;
+background:#FFFFCC;
+}
+
+#logout:hover, #logout a:hover {
+text-decoration:none;
+background:#FFE99B;
+}
+
+
+#content {
+    margin:10px;
+}
+.leftColumn {
+	max-width: 220px;
+}
+.leftColumn a.norm {
+    font-size:1.1em;
+}
+
+/* TABS */
+.tablist {
+    width:100%;
+    background:#3B5998 url("") repeat-x bottom;
+    float:right;
+    margin-bottom:0px;
+    border-bottom: #3B5998 solid 0px;
+}
+
+.tablist ul {
+    margin:0 5px;
+}
+
+.tablist li {
+    float:right;
+    background:url("../images/tab_l_off.gif") no-repeat left top;
+    margin-bottom:0px;
+}
+
+.tablist a {
+    float:right;
+    display:block;
+    background:url("../images/tab_r_off.gif") no-repeat right top;
+    color:green; font-weight:bold;
+    padding:8px 10px 7px 0;
+    margin-left:11px;
+}
+
+/* Commented Backslash Hack
+   hides rule from IE5-Mac \*/
+.tablist a {float:none;}
+/* End IE5-Mac hack */
+
+.tablist a:hover {
+}
+
+.tablist li.active {
+    background-image:url("../images/tab_l_on.gif");
+}
+ 
+.tablist li.active a {
+    background-image:url("../images/tab_r_on.gif");
+	color: green;
+}
+
+/* MISC LAYOUT */
+
+.message {
+    border:1px solid #E9E9E9;
+    background:#F3F3F3 url("../images/message_bg.gif") repeat-x top;
+    padding:8px;
+    margin-bottom:5px;
+}
+
+.title {
+    border:1px dotted silver;
+background:#e9e9e9;
+    color:#3B5998;
+    margin:15px 0 4px 0;
+padding:7px;
+}
+
+h1#title {color:white;}
+
+.clearDivider {
+    height:10px;
+}
+
+.divider {
+    height:1px;
+    background-color:#3B5998;
+    margin:2px 0 10px 0px;
+}
+
+.floatLeft {
+    float:left;
+    margin-right:15px;
+}
+
+
+/* LITTLE THINGS */
+
+.clear {
+	clear: both;
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+
+.alt {
+	display: none;
+}
+
+.box {
+	border: 1px solid #747474;
+	margin: 5px;
+	padding: 5px;
+}
+
+form .label {
+    float:left;
+    width:100px;
+    text-align:right;
+    margin-right:8px;
+}
+div.sectionHeader h2 {
+	border-bottom: 1px solid #000;
+	padding: 5px  0 2px 0;
+	font-size: 11pt;
+}
+.center {
+    text-align:center;
+}
+#people {
+    background-color:#f5f5f5;
+    padding:8px;
+    border-bottom:1px #3B5998 solid;
+}
+#people th, #people td {
+    padding:3px;
+    padding-right:6px;
+}
+#people th {
+    font-weight: normal;
+    color:#3B5998;
+
+    border-bottom: 1px solid #000;
+		text-align: left;
+}
+#people .highlight {
+    background-color:#fcfcfc;
+}
+
+#people .highlight:hover {
+    background-color:#fff193;
+}
+
+
+
+#people tr{vertical-align:middle; height:25px;}
+#people td{vertical-align:middle;}
+
+#searchBox {
+margin:10px 0 10px;
+	padding: 10px 10px 10px 10px;
+	border: 1px solid #ccc;
+
+background:#edf3fe;
+}
+.flash {
+
+	margin-left: 10px;
+}
+.notice {
+	color:green;
+}
+.warning {
+	color:red;
+}
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: #FFA6A6;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+
+#errorExplanation h2 {
+
+
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: none;
+}
+
+div.uploadStatus {
+  margin: 5px;
+}
+
+div.progressBar {
+  margin: 5px;
+}
+
+div.progressBar div.border {
+  background-color: #fff;
+  border: 1px solid grey;
+  width: 100%;
+}
+
+div.progressBar div.background {
+  background-color: #333;
+  height: 18px;
+  width: 0%;
+}
+
+div.right-menu {
+	float:right; 
+	text-align:left;
+	border: 0px solid grey;
+	padding: 0px;
+	margin: 0 5px 0 5px;
+	background-color: #fff;
+width:175px;
+}
+a.cancel {
+	color:red;
+}
+
+.right_list {
+float: none;
+margin: 0;
+display:block;
+clear:both;
+}
+
+.right_list ul {
+margin:7px;
+}
+
+.right_list li {
+border-bottom:1px solid silver;
+line-height:2em;
+}
+
+
+#right-menu li.highlighted {
+font-weight:bold;
+}
+
+#right-menu li:hover {
+background:#ebebeb;
+}
+
+#right-menu li.highlighted a {
+color: orange;
+}
+
+
+
+.date select {width:auto;}
+.date option {padding-right:10px;}
+
+.passwordbox {}
+
+ul.right-menu-list li{
+font-size:14px;
+line-height:1.0em;
+border-bottom:1px dashed silver;
+padding:5px;
+}
+
+#left-body h3{
+color:silver;
+font-size:2.0em;
+border-bottom:dotted 1px silver;
+margin-bottom:10px;
+}
+
+/*#two_col {
+	width:700px;
+	display:block;
+	margin: 10px 0px;
+}
+
+#tree-div {
+	width:80%; 
+	float:left;
+	overflow:auto; 
+	height:300px;
+	border:1px solid #c3daf9;
+}
+
+#edit-ministry {
+	width:50%;
+	float:right;
+}*/
+
+
+
+
+#subtabs {
+display:block;
+clear:both;
+background:#e7f7ff;
+padding:10px;
+margin: 0 0 10px 0;
+}
+
+.subtabs-menu {
+list-style-type:none;
+}
+
+ul.subtabs-menu li {
+display:inline;
+}
+
+a.subtabs-menu-active {
+text-decoration:none;
+background:white;
+padding:5px 10px 5px 10px;
+font-weight:bold;
+
+}
+
+a.subtabs-menu-inactive {
+text-decoration:underline;
+padding:5px 10px 5px 10px;
+font-weight:bold;
+}
+
+a.subtabs-menu-inactive:hover {
+text-decoration:none;
+background:white;
+}
+
+#profiletitle {
+margin-bottom:10px;
+}
+
+#profiletitle h1 {
+padding:0 0 0 10px;
+font-size:18px;
+font-weight:bold;
+line-height:28px;
+}
+
+#campuses, #campus-details {
+	margin: 5px;
+}
+
+#outer {
+	padding-left:10%;
+}
+table#schedule {
+	
+}
+table#schedule td, table#schedule th {
+	padding:2px;
+	border:1px solid black;
+}
+
+a.action-button {
+background:#3B5998;
+border:1px solid black;
+color:white;
+padding:4px;
+display:inline-block;
+font-weight:bold;
+margin:0px 0 5px 0;
+}
+
+.drag_me {cursor:pointer;}
+
+.busy {background:#3B5998;}

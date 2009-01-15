@@ -179,7 +179,6 @@ class ApplicationController < ActionController::Base
       
       # if we didn't get a person in the params, set it now
       @person ||= @me
-      
       if @person.nil?
         redirect_to '/sessions/new'
         return false 
@@ -208,6 +207,18 @@ class ApplicationController < ActionController::Base
         session[:root_ministry_id] ||= @root_ministry.id if @root_ministry
       end
       @ministry
+    end
+    
+      
+    def setup_involvement_vars
+      @projects = @person.summer_projects.find(:all, :conditions => "#{_(:status, :summer_project_application)} IN ('accepted_as_participant','accepted_as_intern')")
+      @prefs = []
+      @person.summer_project_applications.each do |app| 
+        @prefs << [app.preference1, app.preference2, app.preference3, app.preference4, app.preference5].compact 
+      end
+      @prefs = @prefs.flatten - @projects
+      @conferences = @person.conferences.uniq 
+      @stints = @person.stint_locations
     end
     
 end

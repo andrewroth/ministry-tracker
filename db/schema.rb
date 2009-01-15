@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081211175127) do
+ActiveRecord::Schema.define(:version => 20090115054530) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id",       :null => false
@@ -549,7 +549,7 @@ ActiveRecord::Schema.define(:version => 20081211175127) do
     t.integer  "fk_ssmUserID"
     t.integer  "person_id"
     t.boolean  "isPaid"
-    t.integer  "appFee"
+    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
@@ -621,7 +621,7 @@ ActiveRecord::Schema.define(:version => 20081211175127) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 255
+    t.binary   "lastChangedDate",               :limit => 8
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"
@@ -801,6 +801,7 @@ ActiveRecord::Schema.define(:version => 20081211175127) do
     t.string   "guid"
     t.boolean  "email_validated"
     t.boolean  "developer"
+    t.string   "facebook_hash"
   end
 
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true

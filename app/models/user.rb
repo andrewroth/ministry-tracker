@@ -1,3 +1,4 @@
+require 'zlib'
 require 'digest/md5'
 require 'base64'
 class User < ActiveRecord::Base
@@ -74,6 +75,36 @@ class User < ActiveRecord::Base
     self.remember_token_expires_at = nil
     self.remember_token            = nil
     save(false)
+  end
+  
+  def self.find_or_create_from_facebook(fbsession)
+    fuser = fbsession.users_getInfo(:uids => fbsession.session_user_id,
+                                     :fields => ["first_name","last_name", "email_hashes"])
+    first_name = fuser.first_name
+    last_name = fuser.last_name
+    facebook_hash = fuser.email_hashes.email_hashes_elt
+    u = User.find(:first, :conditions => _(:facebook_hash, :user) + " = '#{facebook_hash}'")
+    crc = Zlib.crc32('josh.starcher@uscm.org')
+    md5 = Digest::MD5.hexdigest('josh.starcher@uscm.org')
+    string = "#{crc}_#{md5}"
+    logger.debug(string)
+    return nil unless u
+
+    # make sure we have a person
+    unless u.person
+      # Try to find a person with the same email address who doesn't already have a user account
+      address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
+      person = address.person if address && address.person.user.nil?
+      
+      # Attache the found person to the user, or create a new person
+      new_person = first_name ? Person.new(:first_name => first_name, :last_name => last_name) : Person.new
+      u.person = person || new_person
+      
+      # Create a current address record if we don't already have one.
+      u.person.current_address ||= CurrentAddress.new(:email => receipt.user)
+      u.person.save(false)
+    end
+    u
   end
   
   def self.find_or_create_from_cas(ticket)
