@@ -22,7 +22,6 @@ class FacebookController < ApplicationController
     # redirect to whatever your want your after-login landing page to be
     @user = User.find_or_create_from_facebook(fbsession)
     session[:user_id] = @user.id if @user
-    redirect_to :action => "index"
   end
   
   def authenticate_facebook_user
