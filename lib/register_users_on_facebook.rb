@@ -11,6 +11,7 @@ groups.times do |i|
     crc = Zlib.crc32(user.username.downcase)
     md5 = Digest::MD5.hexdigest(user.username.downcase)
     string = "#{crc}_#{md5}"
+    email_hashes << {:email_hash => string}
   end
   res = fbsession.connect_registerUsers(:accounts => email_hashes.to_json)
   users[start..finish].each do |user|
