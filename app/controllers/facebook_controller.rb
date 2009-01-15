@@ -30,7 +30,8 @@ class FacebookController < ApplicationController
       redirect_to :action => 'no_access'
       return false
     else
-      self.current_user
+      self.current_user = user
+      session[:user] = user.id
       get_person
       get_ministry
     end

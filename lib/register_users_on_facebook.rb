@@ -22,6 +22,8 @@ groups.times do |i|
     email_hashes << {:email_hash => string}
   end
   hit_facebook(email_hashes, fbsession)
+  puts 'Sleeping between requests'
+  sleep(15) # Thottle the requests so facebook doesn't get angry
   # users[start..finish].each do |user|
   #   crc = Zlib.crc32(user.username.downcase)
   #   md5 = Digest::MD5.hexdigest(user.username.downcase)

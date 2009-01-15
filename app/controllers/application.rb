@@ -180,7 +180,6 @@ class ApplicationController < ActionController::Base
       # if we didn't get a person in the params, set it now
       @person ||= @me
       if @person.nil?
-        redirect_to '/sessions/new'
         return false 
       end
       @person
