@@ -20,7 +20,7 @@ class FacebookController < ApplicationController
 
   def finish_facebook_login
     # redirect to whatever your want your after-login landing page to be
-    @user = User.find_or_create_from_facebook(fbsession)
+    @user = User.find_from_facebook(fbsession)
     session[:user_id] = @user.id if @user
   end
   

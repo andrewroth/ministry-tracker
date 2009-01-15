@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
     save(false)
   end
   
-  def self.find_or_create_from_facebook(fbsession)
+  def self.find_from_facebook(fbsession)
     fuser = fbsession.users_getInfo(:uids => fbsession.session_user_id,
                                      :fields => ["first_name","last_name", "email_hashes"])
     first_name = fuser.first_name
