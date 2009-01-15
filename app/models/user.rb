@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of       :username,    :within => 6..40
   validates_uniqueness_of   :username, :case_sensitive => false, :on => :create
-  before_save :encrypt_password
+  before_save :encrypt_password, :create_facebook_hash
   before_create :stamp_created_on
   
   has_one :person, :class_name => 'Person', :foreign_key => _(:user_id, :person)
@@ -84,10 +84,6 @@ class User < ActiveRecord::Base
     last_name = fuser.last_name
     facebook_hash = fuser.email_hashes.email_hashes_elt
     u = User.find(:first, :conditions => _(:facebook_hash, :user) + " = '#{facebook_hash}'")
-    crc = Zlib.crc32('josh.starcher@uscm.org')
-    md5 = Digest::MD5.hexdigest('josh.starcher@uscm.org')
-    string = "#{crc}_#{md5}"
-    logger.debug(string)
     return nil unless u
 
     # make sure we have a person
@@ -146,27 +142,51 @@ class User < ActiveRecord::Base
     end
     u
   end
+  
   protected
     # before filter 
     def encrypt_password
       # If the record doesn't have a password at all, assign one
       assign_random_password if password.blank? && plain_password.blank?
-      
+  
       # If the password isn't being provided at this time, there's nothing to encrypt
       return if plain_password.blank?
       self.password = encrypt(plain_password)
     end
-  	
-  	def stamp_created_on
-  	  self.created_at = Time.now
-  	end
-  	
-  	def assign_random_password(len = 8)
+
+    def stamp_created_on
+      self.created_at = Time.now
+    end
+
+    def assign_random_password(len = 8)
       chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
       newpass = ""
       1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
-  	  self.plain_password = self.password_confirmation = newpass
-  	end
+      self.plain_password = self.password_confirmation = newpass
+    end
+
+    def register_facebook_hash(hash)
+      fbsession = RFacebook::FacebookWebSession.new(FACEBOOK["key"], FACEBOOK["secret"])
+      email_hashes = [{:email_hash => hash}]
+      hit_facebook(email_hashes, fbsession)
+    end
     
+    def hit_facebook(email_hashes, fbsession)
+      res = fbsession.connect_registerUsers(:accounts => email_hashes.to_json)
+    rescue Timeout::Error
+      puts 'Timed out. Sleeping...'
+      sleep(15) # Thottle the requests so facebook doesn't get angry
+      hit_facebook(email_hashes, fbsession)
+    end
+    
+    def create_facebook_hash
+      crc = Zlib.crc32(self.username.downcase)
+      md5 = Digest::MD5.hexdigest(self.username.downcase)
+      hash = "#{crc}_#{md5}"
+      if self.facebook_hash != hash
+        register_facebook_hash(hash)
+      end
+      self.facebook_hash = hash
+    end
     
 end
