@@ -25,10 +25,12 @@ class FacebookController < ApplicationController
   end
   
   def authenticate_facebook_user
-    self.current_user = session[:user_id] ? User.find(session[:user_id]) : User.find_or_create_from_facebook(fbsession)
-    unless current_user
+    user = session[:user_id] ? User.find(session[:user_id]) : User.find_from_facebook(fbsession)
+    unless user
       redirect_to :action => 'no_access'
+      return false
     else
+      self.current_user
       get_person
       get_ministry
     end
