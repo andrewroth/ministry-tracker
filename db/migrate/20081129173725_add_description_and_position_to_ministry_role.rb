@@ -5,6 +5,21 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
     add_column :ministry_involvements, :ministry_role_id, :integer
     add_column :ministry_roles, :type, :string
     
+    # Default View
+    view = View.create!(:title => 'Default', :default_view => true)
+    
+    # View Columns
+    view.columns << Column.create!(:title => 'First Name', :from_clause => 'Person', :select_clause => "first_name")
+    view.columns << Column.create!(:title => 'Last Name', :from_clause => 'Person', :select_clause => "last_name")
+    view.columns << Column.create!(:title => 'Street', :from_clause => 'CurrentAddress', :select_clause => "address1", :join_clause => "address_type = 'current'")
+    view.columns << Column.create!(:title => 'City', :from_clause => 'CurrentAddress', :select_clause => "city", :join_clause => "address_type = 'current'")
+    view.columns << Column.create!(:title => 'State', :from_clause => 'CurrentAddress', :select_clause => "state", :join_clause => "address_type = 'current'")
+    view.columns << Column.create!(:title => 'Zip', :from_clause => 'CurrentAddress', :select_clause => "zip", :join_clause => "address_type = 'current'")
+    view.columns << Column.create!(:title => 'Email', :from_clause => 'CurrentAddress', :select_clause => "email", :join_clause => "address_type = 'current'")
+    view.columns << Column.create!(:title => 'Picture', :from_clause => 'ProfilePicture', :select_clause => "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture", :column_type => 'image')
+    view.columns << Column.create!(:title => 'Website', :from_clause => 'Person', :select_clause => "url", :column_type => 'url')
+    
+    
     # Ministry
     ministry = Ministry.create!(:name => 'Top Level')
     

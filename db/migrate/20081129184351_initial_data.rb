@@ -4,21 +4,7 @@ end
 
 class InitialData < ActiveRecord::Migration
   def self.up
-    # Default View
-    view = View.create!(:title => 'Default', :default_view => true)
-    
-    # View Columns
-    view.columns << Column.create!(:title => 'First Name', :from_clause => 'Person', :select_clause => "first_name")
-    view.columns << Column.create!(:title => 'Last Name', :from_clause => 'Person', :select_clause => "last_name")
-    view.columns << Column.create!(:title => 'Street', :from_clause => 'CurrentAddress', :select_clause => "address1", :join_clause => "address_type = 'current'")
-    view.columns << Column.create!(:title => 'City', :from_clause => 'CurrentAddress', :select_clause => "city", :join_clause => "address_type = 'current'")
-    view.columns << Column.create!(:title => 'State', :from_clause => 'CurrentAddress', :select_clause => "state", :join_clause => "address_type = 'current'")
-    view.columns << Column.create!(:title => 'Zip', :from_clause => 'CurrentAddress', :select_clause => "zip", :join_clause => "address_type = 'current'")
-    view.columns << Column.create!(:title => 'Email', :from_clause => 'CurrentAddress', :select_clause => "email", :join_clause => "address_type = 'current'")
-    view.columns << Column.create!(:title => 'Picture', :from_clause => 'ProfilePicture', :select_clause => "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture", :column_type => 'image')
-    view.columns << Column.create!(:title => 'Website', :from_clause => 'Person', :select_clause => "url", :column_type => 'url')
-    
-    
+    ministry = Ministry.find_by_name('Top Level')
     top_role = ministry.ministry_roles.find(:first, :order => Ministry._(:position))
     # 12: Campus Coordinator
     # 9: Ministry Leader (a student who oversees a campus, eg LINC leader)

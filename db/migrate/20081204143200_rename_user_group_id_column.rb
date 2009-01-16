@@ -1,6 +1,5 @@
 class RenameUserGroupIdColumn < ActiveRecord::Migration
   def self.up
-    rename_column :ministry_role_permissions, :user_group_id, :ministry_role_id
     # Create default permission set
     Permission.create(:action => 'edit', :controller => 'groups', :description => 'Edit groups (bible studies, teams, etc)')
     Permission.create(:action => 'new', :controller => 'groups', :description => 'Create groups (bible studies, teams, etc)')
@@ -17,7 +16,6 @@ class RenameUserGroupIdColumn < ActiveRecord::Migration
   end
 
   def self.down
-    rename_column :ministry_role_permissions, :ministry_role_id, :user_group_id
     Permission.delete_all
   end
 end
