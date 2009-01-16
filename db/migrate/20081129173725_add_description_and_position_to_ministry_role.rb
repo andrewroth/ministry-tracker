@@ -5,6 +5,9 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
     add_column :ministry_involvements, :ministry_role_id, :integer
     add_column :ministry_roles, :type, :string
     
+    # Ministry
+    ministry = Ministry.create!(:name => 'Top Level')
+    
     MinistryRole.connection.execute("update ministry_roles set position = 1, type = 'StaffRole' where name = 'Director'")
     MinistryRole.connection.execute("update ministry_roles set position = 2, type = 'StaffRole' where name = 'Staff'")
     MinistryRole.connection.execute("update ministry_roles set position = 3, type = 'StudentRole' where name like 'Student%'")

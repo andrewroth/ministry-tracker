@@ -18,19 +18,7 @@ class InitialData < ActiveRecord::Migration
     view.columns << Column.create!(:title => 'Picture', :from_clause => 'ProfilePicture', :select_clause => "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture", :column_type => 'image')
     view.columns << Column.create!(:title => 'Website', :from_clause => 'Person', :select_clause => "url", :column_type => 'url')
     
-    # Ministry
-    ministry = Ministry.create!(:name => 'Top Level')
     
-    # Create roles
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Campus Coordinator', :position => 2)
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Ministry Leader', :position => 4, :description => 'a student who oversees a campus, eg LINC leader')
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Missionary', :position => 3)
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Student Leader', :position => 5)
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Involved Student', :position => 6, :description => 'we are saying has been attending events for at least 6 months')
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Student', :position => 7)
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Registration Incomplete', :position => 8, :description => 'A leader has registered them, but user has not completed rego and signed the privacy policy')
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Approval Pending', :position => 9, :description => 'They have applied, but a leader has not verified their application yet')
-    ministry.ministry_roles << MinistryRole.create!(:name => 'Honourary Member', :position => 10, :description => 'not a valid student or missionary, but we are giving them limited access anyway')
     top_role = ministry.ministry_roles.find(:first, :order => Ministry._(:position))
     # 12: Campus Coordinator
     # 9: Ministry Leader (a student who oversees a campus, eg LINC leader)
