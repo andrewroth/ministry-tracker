@@ -1,1 +1,53 @@
-Not Yet Implemented
+<%- if params[:id] -%>
+  <br />
+<h4 class="title">
+	<%= @bible_study.name %>&nbsp;&nbsp;
+</h4>
+<div id="address">
+	<%= render :partial => 'bible_studies/address' %>
+</div>
+<div id="address_form"></div>
+<div id="members">
+	<br />
+		<table width="70%" border="0" cellspacing="0" cellpadding="5">
+	<%- ['leader','member','interested'].each do |level| -%>
+		<div id="<%= level %>">
+		<tr>
+			<td colspan="5">
+			  <h4 class="title"><%= level.titleize %></h4>
+			</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Cell</th>
+			<th>Email</th>
+		</tr>
+			<%- @bible_study.group_involvements.sorted.each do |gi| 
+				if gi.level == level
+					person = gi.person
+					if person
+  					person.initialize_addresses(:current_address) if person.current_address.nil? -%>
+            <tr>
+              <td><%= link_to(person.full_name, person) %></td>
+              <td><%= person.current_address.phone %></td>
+            	<td><%= person.current_address.alternate_phone %></td>
+            	<td><%= person.current_address.email %></td>
+            </tr>
+  				<%- end -%>
+				<%- end -%>
+			<%- end -%>
+		<%- end -%>
+		</table>	
+		</div>
+</div>
+<%- else -%>
+	<%- ministry = nil -%>
+	<%- @person.bible_studies.each do |bs| -%>
+		<%- if bs.ministry != ministry 
+				ministry = bs.ministry-%>
+			<h4 class="title"><%= bs.ministry.name %></h4>
+		<%- end -%>
+		<%= link_to(bs.name, "#{controller.facebook_canvas_path}bible_studies/#{bs.id}") %><br />
+	<%- end -%>
+<%- end -%>

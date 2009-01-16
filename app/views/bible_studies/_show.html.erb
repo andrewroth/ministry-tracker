@@ -15,11 +15,12 @@
 		<div id="<%= level %>">
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
-			<td colspan="5"><h4 class="title"><%= level.titleize %>&nbsp;&nbsp;
+			<td colspan="5">
+			  <h4 class="title"><%= level.titleize %>&nbsp;&nbsp;
 				<%- if is_group_leader(@bible_study) -%>
 					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
 					<%= link_to_function 'transfer', "$('#transfer_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
-					<%= link_to_remote 'remove', {:url => group_involvement_url(@group.id), :method => :delete, 
+					<%= link_to_remote 'remove', {:url => group_involvement_url(@bible_study.id), :method => :delete, 
 												  :with => "$('#transfer_form_#{level}').serialize()", :confirm => "Are you sure you want to remove these people?",
 												  :condition => "$('#transfer_form_#{level} :checked').length > 0"},
 												 {:class => 'small'} %>

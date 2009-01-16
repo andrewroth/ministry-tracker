@@ -83,7 +83,10 @@ class User < ActiveRecord::Base
     first_name = fuser.first_name
     last_name = fuser.last_name
     facebook_hash = fuser.email_hashes.email_hashes_elt
-    return nil if facebook_hash.blank?
+    if facebook_hash.blank?
+      logger.debug('no facebook hash!')
+      return nil 
+    end
     u = User.find(:first, :conditions => _(:facebook_hash, :user) + " = '#{facebook_hash}'")
     return nil unless u
 
@@ -174,6 +177,7 @@ class User < ActiveRecord::Base
     
     def hit_facebook(email_hashes, fbsession)
       res = fbsession.connect_registerUsers(:accounts => email_hashes.to_json)
+      logger.debug('hash registered on facebook')
     rescue Timeout::Error
       puts 'Timed out. Sleeping...'
       sleep(15) # Thottle the requests so facebook doesn't get angry

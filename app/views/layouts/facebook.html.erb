@@ -1,11 +1,16 @@
-		<%= stylesheet_link_tag "http://mt.ministryhacks.com:8888/stylesheets/facebook.css", :media => "all" %>
+<%= stylesheet_link_tag url_for(:controller => "/stylesheets/facebook.css"), :media => "all" %>
 <fb:header decoration="no_padding">
   Your CCC Involvement Portal
 </fb:header>
 <br/>
 <fb:tabs>
-<fb:tab-item href="/ccc-involvement/" title="Involvement" <%= 'selected="true"' if request.path == '/facebook/' %>></fb:tab-item>
-<fb:tab-item href="/ccc-involvement/bible_studies" title="Bible Studies (Not Implemented)" <%= 'selected="true"' if request.path == '/facebook/bible_studies' %>></fb:tab-item>
+<fb:tab-item href="<%= controller.facebook_canvas_path %>" title="Involvement" <%= 'selected="true"' if request.path == '/facebook/' %>></fb:tab-item>
+<%- if @person.bible_studies.length == 1 -%>
+<fb:tab-item href="<%= controller.facebook_canvas_path %>bible_studies/<%= @person.bible_studies.first.id %>" title="Bible Study" <%= 'selected="true"' if request.path.include?('/facebook/bible_studies') %>></fb:tab-item>
+<%- end -%>
+<%- if @person.bible_studies.length > 1 -%>
+<fb:tab-item href="<%= controller.facebook_canvas_path %>bible_studies" title="Bible Studies" <%= 'selected="true"' if request.path.include?('/facebook/bible_studies') %>></fb:tab-item>
+<%- end -%>
 </fb:tabs>
 <br/>
 <%= yield %>

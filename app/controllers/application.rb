@@ -220,4 +220,8 @@ class ApplicationController < ActionController::Base
       @stints = @person.stint_locations
     end
     
+    def adjust_format_for_facebook
+      request.format = :facebook if iphone_request?
+    end
+    
 end

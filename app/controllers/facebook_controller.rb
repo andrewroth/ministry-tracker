@@ -13,6 +13,11 @@ class FacebookController < ApplicationController
     end
   end
   
+  def bible_studies
+    if params[:id]
+      @bible_study = BibleStudy.find(params[:id]) 
+    end
+  end
   
   def profile
     

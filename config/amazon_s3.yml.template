@@ -1,14 +1,14 @@
 development:
- bucket_name: vacumi_dev
+ bucket_name: fake
  access_key_id: 067B7PVTRAQ34ZTC4MG2
- secret_access_key: bNO9xZIx/v2+gHytdwZTCzT5RsNFxC7IkBDhN
+ secret_access_key: asfd/v2+gHytdwZTCzT5RsNFxC7IkBDhN
 
 test:
- bucket_name: vacumi_dev
- access_key_id: 067B7PVTRAQ34ZTC4MG2
- secret_access_key: bNO9xZIx+e55fnQ4z7G3nM+1TaaBGVQ3aq8U9pW8
+ bucket_name: fake
+ access_key_id: asdfasdf
+ secret_access_key: asdf+e55fnQ4z7G3nM+1TaaBGVQ3aq8U9pW8
 
 production:
- bucket_name: vacumi_dev
+ bucket_name: fake
  access_key_id: 067B7PVTRAQ34ZTC4MG2
- secret_access_key: bNO9xZIx/v2+gHytdwZTCzT5RsNFxC7IkBDhN
+ secret_access_key: asdf/v2+gHytdwZTCzT5RsNFxC7IkBDhN
