@@ -185,7 +185,8 @@ class User < ActiveRecord::Base
     end
     
     def create_facebook_hash
-      if respond_to?(:facebook_hash) && respond_to?(:facebook_username)
+      #not everyone will be using the facebook stuff, so wrap this is a rescue block
+      begin
         email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
         crc = Zlib.crc32(email)
         md5 = Digest::MD5.hexdigest(email)
@@ -194,7 +195,7 @@ class User < ActiveRecord::Base
           register_facebook_hash(hash)
         end
         self.facebook_hash = hash
-      end
+      rescue; end
     end
     
 end
