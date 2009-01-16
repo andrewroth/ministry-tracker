@@ -185,14 +185,16 @@ class User < ActiveRecord::Base
     end
     
     def create_facebook_hash
-      email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
-      crc = Zlib.crc32(email)
-      md5 = Digest::MD5.hexdigest(email)
-      hash = "#{crc}_#{md5}"
-      if self.facebook_hash != hash
-        register_facebook_hash(hash)
+      if respond_to?(:facebook_hash) && respond_to?(:facebook_username)
+        email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
+        crc = Zlib.crc32(email)
+        md5 = Digest::MD5.hexdigest(email)
+        hash = "#{crc}_#{md5}"
+        if self.facebook_hash != hash 
+          register_facebook_hash(hash)
+        end
+        self.facebook_hash = hash
       end
-      self.facebook_hash = hash
     end
     
 end

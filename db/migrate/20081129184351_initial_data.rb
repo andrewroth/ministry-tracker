@@ -1,6 +1,3 @@
-class User < ActiveRecord::Base
- attr_accessor :plain_password, :password_confirmation
-end
 
 class InitialData < ActiveRecord::Migration
   def self.up
