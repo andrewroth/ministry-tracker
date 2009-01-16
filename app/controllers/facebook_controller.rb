@@ -19,7 +19,11 @@ class FacebookController < ApplicationController
   end
   
   def no_access
-    render :layout => 'sessions'
+    if fbparams && fbparams['in_canvas'] == '1'
+      render :text => "Sorry, you don't have access to this app."
+    else
+      render :layout => 'sessions'
+    end
   end
   
   def login
