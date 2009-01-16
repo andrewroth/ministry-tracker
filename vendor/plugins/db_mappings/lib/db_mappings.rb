@@ -2,8 +2,8 @@ ActiveRecord::Base.class_eval do
   @mapping_filename = File.join(RAILS_ROOT, Rails.env.test? ? 'test' : 'config', 'mappings.yml')
   if File.exists?(  @mapping_filename )
     @@map_hash ||= YAML::load(ERB.new(File.read(@mapping_filename)).result)
-    if @@map_hash 
-      def self.load_mappings
+    def self.load_mappings
+      if @@map_hash 
         # Set the table name for the class, if defined
         set_table_name @@map_hash['tables'][self.name.underscore] if @@map_hash['tables'] && @@map_hash['tables'][self.name.underscore]   
         # Map non-standard column names to the names used in the code
@@ -20,10 +20,6 @@ ActiveRecord::Base.class_eval do
           end
         end
       end
-    else
-      def self.load_mappings
-        
-      end
     end
 
     # =============================================================================
@@ -38,6 +34,18 @@ ActiveRecord::Base.class_eval do
     def _(column, table)
       ActiveRecord::Base._(column, table)
     end
-  
+  else
+    
+    def self.load_mappings
+      
+    end
+    
+    def self._(column, table = self.name.underscore)
+      column
+    end
+    
+    def _(column, table)
+      ActiveRecord::Base._(column, table)
+    end
   end
 end
