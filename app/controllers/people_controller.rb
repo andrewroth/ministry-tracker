@@ -354,6 +354,13 @@ class PeopleController < ApplicationController
     end
   end
   
+  def import_gcx_profile
+    proxy_granting_ticket = session[:cas_pgt]
+    unless proxy_granting_ticket.nil?
+      @person.import_gcx_profile(proxy_granting_ticket)
+    end
+    redirect_to @person
+  end
   protected
     def add_involvement_conditions(conditions)
       # figure out which campuses to query based on the campuses listed for the current ministry

@@ -82,6 +82,7 @@ class Person < ActiveRecord::Base
     if ['M','F'].include? gender
       @gender = gender == 'F' ? 'Female' : 'Male'
     end
+    @gender = @gender.titlecase
     @gender || gender
   end
   
@@ -229,6 +230,39 @@ class Person < ActiveRecord::Base
       p.user ||= User.create!(_(:username, :user) => address.email) if p
     end
     return p
+  end
+  
+  def import_gcx_profile(proxy_granting_ticket)
+    service_uri = "http://dev.mygcx.org/system/report/profile/attributes"
+    # raise CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).inspect
+    proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).ticket
+    ticket = CASClient::ServiceTicket.new(proxy_ticket, service_uri)
+    uri = "#{service_uri}?ticket=#{proxy_ticket}"
+    logger.debug('URI: ' + uri)
+    uri = URI.parse(uri) unless uri.kind_of? URI
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = (uri.scheme == 'https')
+    raw_res = https.start do |conn|
+      conn.get("#{uri}")
+    end
+    doc = Hpricot(raw_res.body)
+    # raise.doc.search("//attribute[@displayname='emailAddress']").inspect
+    (doc/'attribute').each do |attrib|
+      if attrib['value'].present?
+        current_address.email = attrib['value'].downcase if attrib['displayname'] == 'emailAddress' && current_address
+        current_address.city = attrib['value'] if attrib['displayname'] == 'city' && current_address
+        current_address.phone = attrib['value'] if attrib['displayname'] == 'landPhone' && current_address
+        current_address.alternate_phone = attrib['value'] if attrib['displayname'] == 'mobilePhone' && current_address
+        current_address.zip = attrib['value'] if attrib['displayname'] == 'zip' && current_address
+        current_address.address1 = attrib['value'] if attrib['displayname'] == 'location' && current_address
+        first_name = attrib['value'] if attrib['displayname'] == 'firstName'
+        last_name = attrib['value'] if attrib['displayname'] == 'lastName'
+        birth_date = attrib['value'] if attrib['displayname'] == 'birthdate'
+        gender = attrib['value'] if attrib['displayname'] == 'gender'
+      end
+    end
+    current_address.save(false) if current_address
+    self.save(false)
   end
   
   protected

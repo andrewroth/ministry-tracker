@@ -72,7 +72,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource  :files
 
-  map.resources :people, :collection => { :directory => :any,
+  map.resources :people,  :member => {:import_gcx_profile => :any},
+                          :collection => { :directory => :any,
                                           :change_ministry => :any,
                                           :change_view => :any,
                                           :search => :any,
