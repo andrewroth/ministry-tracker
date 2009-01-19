@@ -40,6 +40,7 @@ Rails::Initializer.run do |config|
   config.gem  'hpricot'
   config.gem  'mechanize'
   # config.gem  'rubycas-client'
+  config.gem 'rfacebook'
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
