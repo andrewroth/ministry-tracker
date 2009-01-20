@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Person</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Person</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/app/models/person_rb.html">
+                app/models/person.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                ActiveRecord::Base
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000062">add_campus</a>&nbsp;&nbsp;
+      <a href="#M000053">admin?</a>&nbsp;&nbsp;
+      <a href="#M000051">all_ministries</a>&nbsp;&nbsp;
+      <a href="#M000066">create_stamp</a>&nbsp;&nbsp;
+      <a href="#M000059">create_value</a>&nbsp;&nbsp;
+      <a href="#M000049">custom_value_hash</a>&nbsp;&nbsp;
+      <a href="#M000063">find_exact</a>&nbsp;&nbsp;
+      <a href="#M000048">full_name</a>&nbsp;&nbsp;
+      <a href="#M000046">gender=</a>&nbsp;&nbsp;
+      <a href="#M000054">get_custom_value_hash</a>&nbsp;&nbsp;
+      <a href="#M000057">get_training_answer</a>&nbsp;&nbsp;
+      <a href="#M000055">get_training_answer_hash</a>&nbsp;&nbsp;
+      <a href="#M000056">get_value</a>&nbsp;&nbsp;
+      <a href="#M000045">human_gender</a>&nbsp;&nbsp;
+      <a href="#M000064">import_gcx_profile</a>&nbsp;&nbsp;
+      <a href="#M000061">initialize_addresses</a>&nbsp;&nbsp;
+      <a href="#M000047">male?</a>&nbsp;&nbsp;
+      <a href="#M000052">role</a>&nbsp;&nbsp;
+      <a href="#M000060">set_training_answer</a>&nbsp;&nbsp;
+      <a href="#M000058">set_value</a>&nbsp;&nbsp;
+      <a href="#M000050">training_answer_hash</a>&nbsp;&nbsp;
+      <a href="#M000065">update_stamp</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">ActiveRecord::ConnectionAdapters::Quoting</span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000063" class="method-detail">
+        <a name="M000063"></a>
+
+        <div class="method-heading">
+          <a href="#M000063" class="method-signature">
+          <span class="method-name">find_exact</span><span class="method-args">(person, address)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000063-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000063-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 216</span>
+216:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_exact</span>(<span class="ruby-identifier">person</span>, <span class="ruby-identifier">address</span>)
+217:     <span class="ruby-comment cmt"># check based on username first</span>
+218:     <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:username, :user)} = ?&quot;</span>, <span class="ruby-identifier">address</span>.<span class="ruby-identifier">email</span>])
+219:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">person</span>.<span class="ruby-identifier">nil?</span>
+220:       <span class="ruby-comment cmt"># If we have an orphaned user record, might as well use it...</span>
+221:       <span class="ruby-identifier">user</span>.<span class="ruby-identifier">person</span> = <span class="ruby-identifier">person</span>
+222:       <span class="ruby-identifier">person</span>.<span class="ruby-identifier">save</span>(<span class="ruby-keyword kw">false</span>)
+223:       <span class="ruby-identifier">p</span> = <span class="ruby-identifier">person</span>
+224:     <span class="ruby-keyword kw">else</span>
+225:       <span class="ruby-identifier">p</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">person</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>
+226:     <span class="ruby-keyword kw">end</span>
+227:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">p</span>
+228:       <span class="ruby-identifier">address</span> = <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:email, :address)} = ?&quot;</span>, <span class="ruby-identifier">address</span>.<span class="ruby-identifier">email</span>])
+229:       <span class="ruby-identifier">p</span> = <span class="ruby-identifier">address</span>.<span class="ruby-identifier">person</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">address</span>
+230:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:username</span>, <span class="ruby-identifier">:user</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">address</span>.<span class="ruby-identifier">email</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">p</span>
+231:     <span class="ruby-keyword kw">end</span>
+232:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">p</span>
+233:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000062" class="method-detail">
+        <a name="M000062"></a>
+
+        <div class="method-heading">
+          <a href="#M000062" class="method-signature">
+          <span class="method-name">add_campus</span><span class="method-args">(campus_id, ministry_id, added_by, role = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000062-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000062-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 199</span>
+199:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_campus</span>(<span class="ruby-identifier">campus_id</span>, <span class="ruby-identifier">ministry_id</span>, <span class="ruby-identifier">added_by</span>, <span class="ruby-identifier">role</span> = <span class="ruby-keyword kw">nil</span>)
+200:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">role</span>
+201:       <span class="ruby-identifier">ministry</span> = <span class="ruby-constant">Ministry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">ministry_id</span>)
+202:       <span class="ruby-identifier">student_roles</span> = <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">student_roles</span>
+203:       <span class="ruby-identifier">role</span> = <span class="ruby-identifier">student_roles</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>
+204:     <span class="ruby-keyword kw">end</span>
+205:     <span class="ruby-comment cmt"># Make sure they're not already on this campus</span>
+206:     <span class="ruby-identifier">campus_involvement</span> = <span class="ruby-constant">CampusInvolvement</span>.<span class="ruby-identifier">find_by_campus_id_and_person_id</span>(<span class="ruby-identifier">campus_id</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>)
+207:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">campus_involvements</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">CampusInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:campus_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">campus_id</span>, <span class="ruby-identifier">:ministry_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ministry_id</span>, <span class="ruby-identifier">:added_by_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">added_by</span>, <span class="ruby-identifier">:start_date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>()) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">campus_involvement</span>
+208:     
+209:     <span class="ruby-comment cmt"># Add the person to the ministry</span>
+210:     <span class="ruby-identifier">mi</span> = <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">find_by_ministry_id_and_person_id</span>(<span class="ruby-identifier">ministry_id</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>)
+211:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">mi</span>
+212:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_involvements</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:ministry_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ministry_id</span>, <span class="ruby-identifier">:ministry_role_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">role</span>, <span class="ruby-identifier">:start_date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>()) 
+213:     <span class="ruby-keyword kw">end</span>
+214:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
+
+        <div class="method-heading">
+          <a href="#M000053" class="method-signature">
+          <span class="method-name">admin?</span><span class="method-args">(ministry)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000053-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000053-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 130</span>
+130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admin?</span>(<span class="ruby-identifier">ministry</span>)
+131:     <span class="ruby-identifier">mi</span> = <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:person_id, :ministry_involvement)} = #{self.id} AND
+132:                                                           #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids.join(',')}) AND
+133:                                                           #{_(:admin, :ministry_id)} = 1&quot;</span>)
+134:     <span class="ruby-keyword kw">return</span> <span class="ruby-operator">!</span><span class="ruby-identifier">mi</span>.<span class="ruby-identifier">nil?</span>
+135:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
+
+        <div class="method-heading">
+          <a href="#M000051" class="method-signature">
+          <span class="method-name">all_ministries</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000051-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000051-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 116</span>
+116:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_ministries</span>
+117:     (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministries</span> <span class="ruby-operator">+</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">campus_ministries</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">sort</span>
+118:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="#M000059" class="method-signature">
+          <span class="method-name">create_value</span><span class="method-args">(attribute_id, value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Initialize the value of a custom_attribute
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000059-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000059-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 169</span>
+169:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_value</span>(<span class="ruby-identifier">attribute_id</span>, <span class="ruby-identifier">value</span>)
+170:     <span class="ruby-identifier">get_custom_value_hash</span>
+171:     <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO    #{CustomValue.table_name} (#{Person::_(:person_id, :custom_value)}, #{Person::_(:custom_attribute_id, :custom_value)}, 
+172:                                                     #{Person::_(:value, :custom_value)})
+173:                   VALUES  (#{id}, #{attribute_id}, '#{quote_string(value)}')&quot;</span>
+174:     <span class="ruby-constant">CustomValue</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>)
+175:     <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">attribute_id</span>] = <span class="ruby-identifier">value</span>
+176:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="#M000049" class="method-signature">
+          <span class="method-name">custom_value_hash</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000049-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000049-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 101</span>
+101:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">custom_value_hash</span>
+102:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@custom_value_hash</span>.<span class="ruby-identifier">nil?</span>
+103:       <span class="ruby-ivar">@custom_value_hash</span> = {}
+104:       <span class="ruby-identifier">custom_values</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">cv</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">cv</span>.<span class="ruby-identifier">custom_attribute_id</span>] = <span class="ruby-identifier">cv</span>.<span class="ruby-identifier">value</span> }
+105:     <span class="ruby-keyword kw">end</span>
+106:     <span class="ruby-ivar">@custom_value_hash</span>
+107:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="#M000048" class="method-signature">
+          <span class="method-name">full_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000048-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000048-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/person.rb, line 97</span>
+97:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
+98:     <span class="ruby-identifier">first_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-value str">' '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">last_name</span>.<span class="ruby-identifier">to_s</span>
+99:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000046" class="method-detail">
+        <a name="M000046"></a>
+
+        <div class="method-heading">
+          <a href="#M000046" class="method-signature">
+          <span class="method-name">gender=</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000046-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000046-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/person.rb, line 89</span>
+89:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">gender=</span>(<span class="ruby-identifier">value</span>)
+90:     <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">:gender</span>] = (<span class="ruby-identifier">male?</span>(<span class="ruby-identifier">value</span>) <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>)
+91:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
+
+        <div class="method-heading">
+          <span class="method-name">get_custom_value_hash</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Person.html#M000049">custom_value_hash</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <a href="#M000057" class="method-signature">
+          <span class="method-name">get_training_answer</span><span class="method-args">(question_id)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000057-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000057-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 146</span>
+146:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_training_answer</span>(<span class="ruby-identifier">question_id</span>)
+147:     <span class="ruby-identifier">get_training_answer_hash</span>
+148:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">question_id</span>]
+149:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
+
+        <div class="method-heading">
+          <span class="method-name">get_training_answer_hash</span><span class="method-args">()</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Person.html#M000050">training_answer_hash</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
+
+        <div class="method-heading">
+          <a href="#M000056" class="method-signature">
+          <span class="method-name">get_value</span><span class="method-args">(attribute_id)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Get the value of a custom_attribute
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000056-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000056-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 141</span>
+141:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_value</span>(<span class="ruby-identifier">attribute_id</span>)
+142:     <span class="ruby-identifier">get_custom_value_hash</span>
+143:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">attribute_id</span>]
+144:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
+
+        <div class="method-heading">
+          <a href="#M000045" class="method-signature">
+          <span class="method-name">human_gender</span><span class="method-args">(value = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+wrapper to make gender display nicely with crusade tables
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000045-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000045-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/person.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">human_gender</span>(<span class="ruby-identifier">value</span> = <span class="ruby-keyword kw">nil</span>)
+78:     <span class="ruby-identifier">gender</span> = <span class="ruby-identifier">value</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">gender</span>
+79:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value str">'0'</span>,<span class="ruby-value str">'1'</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">gender</span>
+80:       <span class="ruby-ivar">@gender</span> = ((<span class="ruby-identifier">gender</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'0'</span>) <span class="ruby-operator">?</span> <span class="ruby-value str">'Female'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'Male'</span>)
+81:     <span class="ruby-keyword kw">end</span>
+82:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value str">'M'</span>,<span class="ruby-value str">'F'</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">gender</span>
+83:       <span class="ruby-ivar">@gender</span> = <span class="ruby-identifier">gender</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'F'</span> <span class="ruby-operator">?</span> <span class="ruby-value str">'Female'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'Male'</span>
+84:     <span class="ruby-keyword kw">end</span>
+85:     <span class="ruby-ivar">@gender</span> = <span class="ruby-ivar">@gender</span>.<span class="ruby-identifier">titlecase</span>
+86:     <span class="ruby-ivar">@gender</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">gender</span>
+87:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000064" class="method-detail">
+        <a name="M000064"></a>
+
+        <div class="method-heading">
+          <a href="#M000064" class="method-signature">
+          <span class="method-name">import_gcx_profile</span><span class="method-args">(proxy_granting_ticket)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000064-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000064-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 235</span>
+235:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">import_gcx_profile</span>(<span class="ruby-identifier">proxy_granting_ticket</span>)
+236:     <span class="ruby-identifier">service_uri</span> = <span class="ruby-value str">&quot;http://dev.mygcx.org/system/report/profile/attributes&quot;</span>
+237:     <span class="ruby-comment cmt"># raise CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).inspect</span>
+238:     <span class="ruby-identifier">proxy_ticket</span> = <span class="ruby-constant">CASClient</span><span class="ruby-operator">::</span><span class="ruby-constant">Frameworks</span><span class="ruby-operator">::</span><span class="ruby-constant">Rails</span><span class="ruby-operator">::</span><span class="ruby-constant">Filter</span>.<span class="ruby-identifier">client</span>.<span class="ruby-identifier">request_proxy_ticket</span>(<span class="ruby-identifier">proxy_granting_ticket</span>, <span class="ruby-identifier">service_uri</span>).<span class="ruby-identifier">ticket</span>
+239:     <span class="ruby-identifier">ticket</span> = <span class="ruby-constant">CASClient</span><span class="ruby-operator">::</span><span class="ruby-constant">ServiceTicket</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">proxy_ticket</span>, <span class="ruby-identifier">service_uri</span>)
+240:     <span class="ruby-identifier">uri</span> = <span class="ruby-node">&quot;#{service_uri}?ticket=#{proxy_ticket}&quot;</span>
+241:     <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-value str">'URI: '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">uri</span>)
+242:     <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">uri</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">URI</span>
+243:     <span class="ruby-identifier">https</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+244:     <span class="ruby-identifier">https</span>.<span class="ruby-identifier">use_ssl</span> = (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'https'</span>)
+245:     <span class="ruby-identifier">raw_res</span> = <span class="ruby-identifier">https</span>.<span class="ruby-identifier">start</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+246:       <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;#{uri}&quot;</span>)
+247:     <span class="ruby-keyword kw">end</span>
+248:     <span class="ruby-identifier">doc</span> = <span class="ruby-constant">Hpricot</span>(<span class="ruby-identifier">raw_res</span>.<span class="ruby-identifier">body</span>)
+249:     <span class="ruby-comment cmt"># raise.doc.search(&quot;//attribute[@displayname='emailAddress']&quot;).inspect</span>
+250:     (<span class="ruby-identifier">doc</span><span class="ruby-operator">/</span><span class="ruby-value str">'attribute'</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attrib</span><span class="ruby-operator">|</span>
+251:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>].<span class="ruby-identifier">present?</span>
+252:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">email</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'emailAddress'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+253:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">city</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'city'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+254:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">phone</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'landPhone'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+255:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">alternate_phone</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'mobilePhone'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+256:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">zip</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'zip'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+257:         <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">address1</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'location'</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_address</span>
+258:         <span class="ruby-identifier">first_name</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'firstName'</span>
+259:         <span class="ruby-identifier">last_name</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'lastName'</span>
+260:         <span class="ruby-identifier">birth_date</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'birthdate'</span>
+261:         <span class="ruby-identifier">gender</span> = <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'value'</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrib</span>[<span class="ruby-value str">'displayname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'gender'</span>
+262:       <span class="ruby-keyword kw">end</span>
+263:     <span class="ruby-keyword kw">end</span>
+264:     <span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">save</span>(<span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_address</span>
+265:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>(<span class="ruby-keyword kw">false</span>)
+266:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000061" class="method-detail">
+        <a name="M000061"></a>
+
+        <div class="method-heading">
+          <a href="#M000061" class="method-signature">
+          <span class="method-name">initialize_addresses</span><span class="method-args">(types = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000061-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000061-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 193</span>
+193:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize_addresses</span>(<span class="ruby-identifier">types</span> = <span class="ruby-keyword kw">nil</span>)
+194:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">current_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>
+195:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">permanent_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">PermanentAddress</span>.<span class="ruby-identifier">new</span>
+196:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">emergency_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">EmergencyAddress</span>.<span class="ruby-identifier">new</span>
+197:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
+
+        <div class="method-heading">
+          <a href="#M000047" class="method-signature">
+          <span class="method-name">male?</span><span class="method-args">(value = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000047-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000047-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/person.rb, line 93</span>
+93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">male?</span>(<span class="ruby-identifier">value</span> = <span class="ruby-keyword kw">nil</span>)
+94:     <span class="ruby-identifier">human_gender</span>(<span class="ruby-identifier">value</span>) <span class="ruby-operator">==</span> <span class="ruby-value str">'Male'</span>
+95:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
+
+        <div class="method-heading">
+          <a href="#M000052" class="method-signature">
+          <span class="method-name">role</span><span class="method-args">(ministry)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000052-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000052-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 120</span>
+120:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">role</span>(<span class="ruby-identifier">ministry</span>)
+121:     <span class="ruby-ivar">@roles</span> <span class="ruby-operator">||=</span> {}
+122:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@roles</span>[<span class="ruby-identifier">ministry</span>]
+123:       <span class="ruby-identifier">mi</span> = <span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:person_id, :ministry_involvement)} = #{self.id} AND
+124:                                                             #{_(:ministry_id, :ministry_involvement)} = #{ministry.id}&quot;</span>)
+125:       <span class="ruby-ivar">@roles</span>[<span class="ruby-identifier">ministry</span>] = <span class="ruby-identifier">mi</span> <span class="ruby-value">? </span><span class="ruby-identifier">mi</span>.<span class="ruby-identifier">ministry_role</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>
+126:     <span class="ruby-keyword kw">end</span>
+127:     <span class="ruby-ivar">@roles</span>[<span class="ruby-identifier">ministry</span>]
+128:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000060" class="method-detail">
+        <a name="M000060"></a>
+
+        <div class="method-heading">
+          <a href="#M000060" class="method-signature">
+          <span class="method-name">set_training_answer</span><span class="method-args">(question_id, date, approver)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the value of a training_answer
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000060-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000060-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 179</span>
+179:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_training_answer</span>(<span class="ruby-identifier">question_id</span>, <span class="ruby-identifier">date</span>, <span class="ruby-identifier">approver</span>)
+180:     <span class="ruby-identifier">get_training_answer_hash</span>
+181:     <span class="ruby-identifier">date</span> = <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">date</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
+182:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">question_id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">date</span>
+183:       <span class="ruby-comment cmt"># Create a row for this answer</span>
+184:       <span class="ruby-identifier">answer</span> = <span class="ruby-constant">TrainingAnswer</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:person_id</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">id</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:training_question_id</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">question_id</span>, 
+185:                                       <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:completed_at</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">date</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:approved_by</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">approver</span>)
+186:       <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">question_id</span>] = <span class="ruby-identifier">answer</span>
+187:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">date</span>
+188:       <span class="ruby-identifier">approved_by</span> = <span class="ruby-identifier">approver</span> <span class="ruby-value">? </span><span class="ruby-identifier">approver</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">question_id</span>].<span class="ruby-identifier">approved_by</span>
+189:       <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">question_id</span>].<span class="ruby-identifier">update_attributes</span>({<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:completed_at</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">date</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:approved_by</span>, <span class="ruby-identifier">:training_answer</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">approver</span>})
+190:     <span class="ruby-keyword kw">end</span>
+191:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="#M000058" class="method-signature">
+          <span class="method-name">set_value</span><span class="method-args">(attribute_id, value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the value of a custom_attribute
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000058-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000058-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 152</span>
+152:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_value</span>(<span class="ruby-identifier">attribute_id</span>, <span class="ruby-identifier">value</span>)
+153:     <span class="ruby-identifier">get_custom_value_hash</span>
+154:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">attribute_id</span>].<span class="ruby-identifier">nil?</span>
+155:       <span class="ruby-identifier">create_value</span>(<span class="ruby-identifier">attribute_id</span>, <span class="ruby-identifier">value</span>)
+156:     <span class="ruby-keyword kw">else</span>
+157:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">attribute_id</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">value</span>
+158:         <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;UPDATE #{CustomValue.table_name} SET   #{Person::_(:value, :custom_value)} = '#{quote_string(value)}' 
+159:                                                 WHERE #{Person::_(:person_id, :custom_value)} = #{id} 
+160:                                                 AND   #{Person::_(:custom_attribute_id, :custom_value)} = #{attribute_id}&quot;</span>
+161:         <span class="ruby-constant">CustomValue</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>)
+162:         <span class="ruby-ivar">@custom_value_hash</span>[<span class="ruby-identifier">attribute_id</span>] = <span class="ruby-identifier">value</span>
+163:       <span class="ruby-keyword kw">end</span>
+164:     <span class="ruby-keyword kw">end</span>
+165:     <span class="ruby-identifier">value</span>
+166:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <a href="#M000050" class="method-signature">
+          <span class="method-name">training_answer_hash</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000050-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000050-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 109</span>
+109:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">training_answer_hash</span>
+110:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@training_answer_hash</span>.<span class="ruby-identifier">nil?</span>
+111:       <span class="ruby-ivar">@training_answer_hash</span> = {}
+112:       <span class="ruby-identifier">training_answers</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">ta</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@training_answer_hash</span>[<span class="ruby-identifier">ta</span>.<span class="ruby-identifier">training_question_id</span>] = <span class="ruby-identifier">ta</span> }
+113:     <span class="ruby-keyword kw">end</span>
+114:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Instance methods</h3>
+
+      <div id="method-M000066" class="method-detail">
+        <a name="M000066"></a>
+
+        <div class="method-heading">
+          <a href="#M000066" class="method-signature">
+          <span class="method-name">create_stamp</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000066-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000066-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 274</span>
+274:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_stamp</span>
+275:       <span class="ruby-identifier">update_stamp</span>
+276:       <span class="ruby-identifier">created_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+277:       <span class="ruby-identifier">created_by</span> = <span class="ruby-value str">'MT'</span>
+278:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000065" class="method-detail">
+        <a name="M000065"></a>
+
+        <div class="method-heading">
+          <a href="#M000065" class="method-signature">
+          <span class="method-name">update_stamp</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000065-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000065-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/person.rb, line 269</span>
+269:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_stamp</span>
+270:       <span class="ruby-identifier">updated_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+271:       <span class="ruby-identifier">updated_by</span> = <span class="ruby-value str">'MT'</span>
+272:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
