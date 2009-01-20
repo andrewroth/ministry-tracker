@@ -357,7 +357,11 @@ class PeopleController < ApplicationController
   def import_gcx_profile
     proxy_granting_ticket = session[:cas_pgt]
     unless proxy_granting_ticket.nil?
-      @person.import_gcx_profile(proxy_granting_ticket)
+      begin
+        @person.import_gcx_profile(proxy_granting_ticket)
+      rescue Errno::ETIMEDOUT
+        flash[:warning] = "There was a problem importing your GCX Profile. Please try again later."
+      end
     end
     redirect_to @person
   end
