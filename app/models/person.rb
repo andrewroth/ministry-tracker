@@ -82,7 +82,7 @@ class Person < ActiveRecord::Base
     if ['M','F'].include? gender
       @gender = gender == 'F' ? 'Female' : 'Male'
     end
-    @gender = @gender.titlecase
+    @gender = @gender.titlecase if @gender
     @gender || gender
   end
   
