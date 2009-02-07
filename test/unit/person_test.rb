@@ -20,6 +20,12 @@ class PersonTest < Test::Unit::TestCase
     assert_equal p.human_gender, 'Male'
   end
   
+  def test_set_gender_blank
+    p = Person.new
+    p.gender = ''
+    assert_equal nil, p.human_gender
+  end
+  
   def test_initiate_addresses
     p = Person.new
     p.initialize_addresses

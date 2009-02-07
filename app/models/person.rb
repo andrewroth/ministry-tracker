@@ -87,7 +87,9 @@ class Person < ActiveRecord::Base
   end
   
   def gender=(value)
-    self[:gender] = (male?(value) ? 1 : 0)
+    if value.present?
+      self[:gender] = (male?(value) ? 1 : 0)
+    end
   end
   
   def male?(value = nil)
