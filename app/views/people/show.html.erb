@@ -24,30 +24,19 @@
 	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
 
 	<h5 class="title">I'm Involved In</h5>
-	<% if @person.bible_studies.count > 0 %>
-    <h4>Bible Studies</h4>
+	<% if @person.groups.count > 0 %>
+    <h4>Groups</h4>
     <ul>
-  	<%- @person.bible_studies.each do |group| -%>
+  	<%- @person.groups.each do |group| -%>
   	  <li id="group_<%= group.id %>">
-  		  <%= link_to group.name, bible_study_url(group) %>
+  		  <%= link_to group.name, group_url(group) %>
   		</li>
   	<%- end -%>
   	</ul><br />
   <%- end -%>
 	
-	<%- if @person.team_involvements.count > 0 -%>
-  	<h4>Teams</h4>
-  	<ul>
-    <%- @person.team_involvements.each do |group| -%>
-    	<li id="group_<%= group.id %>">
-    		<%= link_to group.name, team_url(group) %>
-    	</li>
-    <%- end -%>	
-    </ul><br />
-	<%- end -%>
-	
 	<%- if @person.ministries.count > 0 -%>
-  	<h4>Ministries</h4>
+  	<h4>Assignments</h4>
   	<ul>
   	<%- @person.ministry_involvements.each do |mi| -%>
   	  <li id="mi_<%= mi.id %>">
@@ -75,7 +64,7 @@
   	</ul>
   <%- end -%>
 	<br />
-	<%# = link_to '&raquo; Find a Bible Study', find_bible_studies_url %><br />
+	<%# = link_to '&raquo; Find a Group', find_groups_url %><br />
 	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
  <!--
 	<br />
@@ -83,9 +72,9 @@
 	<%= link_to '&raquo; Past Conferences', :controller => 'conference', :action => 'list', :id => '2' %>
  
 	-->
-	<%- if @person.team_interests.count > 0 -%>
+	<%- if @person.group_interests.count > 0 -%>
 		<h5 class="title">I'm Interested In</h5>
-		<%- @person.team_interests.each do |group| -%>
+		<%- @person.group_interests.each do |group| -%>
 			<%= link_to group.name, team_url(group), :class => 'norm' %> ( team )<br />
 		<%- end -%>	
 	<%- end -%>	
@@ -144,7 +133,7 @@
 	</div>
  
 	<div class="message">
-		2 new messages have been posted in your <%= link_to "Bible Study", :controller => 'team' %>
+		2 new messages have been posted in your <%= link_to "Group", :controller => 'group' %>
 	</div>
 -->
  	<div id="info">

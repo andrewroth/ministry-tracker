@@ -20,6 +20,16 @@
 <div class="sectionHeader">
 	<h2><%= @campus ? @campus.name : @ministry.name %> Directory</h2>
 </div>
+<%- if authorized?(:new) -%>
+	<div id="addStudentLink">
+		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
+		                                                 :loading => "$('#spinneradd_student').show();",
+		                                                 :complete => "$('#spinneradd_student').hide();
+		                                                                show_add_student()") %>
+		<%= spinner('add_student') %>
+		or <%= link_to('import a bunch of students', new_import_path) %>
+	</div>
+<%- end -%>
 <div id="searchBox">
 	<%- form_tag directory_people_url do -%>
 		Search by name or email: <%= text_field_tag "search"%> <%= submit_tag "Go"%> &nbsp;&nbsp;

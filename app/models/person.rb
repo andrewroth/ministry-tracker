@@ -17,15 +17,9 @@ class Person < ActiveRecord::Base
   
   # Group Involvements  
   has_many :group_involvements
-  has_many :groups, :through => :group_involvements
+  has_many :groups, :through => :group_involvements, :conditions => _(:level, :group_involvement) + " IN ('leader', 'member')"
   
-  has_many :bible_studies, :through => :group_involvements, :conditions => _(:level, :group_involvement) + " IN ('leader', 'member')"
-  has_many :teams, :through => :group_involvements
-  
-  has_many :team_involvements, :through => :group_involvements, :source => :team,
-                               :conditions => _(:level, :group_involvement) + " IN ('leader', 'member')"
-  
-  has_many :team_interests, :through => :group_involvements, :source => :team, 
+  has_many :group_interests, :through => :group_involvements, :source => :group, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
                             
   # Conferences
@@ -52,7 +46,7 @@ class Person < ActiveRecord::Base
   has_many :imports
   
   has_one :timetable, :class_name => "Timetable", :foreign_key => _(:person_id, :timetable)
-  has_many :free_times, :through => :timetable
+  has_many :free_times, :through => :timetable, :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
     
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name)

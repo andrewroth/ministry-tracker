@@ -475,34 +475,34 @@ div.sectionHeader h2 {
 .center {
     text-align:center;
 }
-#people {
+.directorytable {
     background-color:#f5f5f5;
     padding:8px;
     border-bottom:1px #67A03B solid;
 }
-#people th, #people td {
+.directorytable th, .directorytable td {
     padding:3px;
     padding-right:6px;
 }
-#people th {
+.directorytable th {
     font-weight: normal;
     color:#539030;
 
     border-bottom: 1px solid #000;
 		text-align: left;
 }
-#people .highlight {
+.directorytable .highlight {
     background-color:#fcfcfc;
 }
 
-#people .highlight:hover {
+.directorytable .highlight:hover {
     background-color:#fff193;
 }
 
 
 
-#people tr{vertical-align:middle; height:25px;}
-#people td{vertical-align:middle;}
+.directorytable tr{vertical-align:middle; height:25px;}
+.directorytable td{vertical-align:middle;}
 
 #searchBox {
 margin:10px 0 10px;
@@ -739,7 +739,10 @@ margin:0px 0 5px 0;
 
 .drag_me {cursor:pointer;}
 
-.busy {background:blue;}
+.bad {background:red;}
+.poor {background:#ff6600;}
+.ok {background:#ff9966;}
+.good {background:white;}
 
 .inputtext {
   border: 1px solid #bdc768;

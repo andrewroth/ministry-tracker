@@ -1,15 +1,23 @@
 <%- if people.length > 0 -%>
 	Click on the name of the person you'd like to add:<br />
+	<table cellpadding="0" cellspacing="0" class="directorytable">
+	  <tr><th>Name</th><th>Email</th></tr>
 	<%- people.each do |person| -%>
-		<%- form_tag search_people_url, :id => "person#{person.id}" do -%>
-			<%= hidden_field_tag :group_id, group_id %>
-			<%= hidden_field_tag :person_id, person.id %>
-			<%= hidden_field_tag :type, type %>
-			<%= link_to_remote(person.full_name, :url => group_involvements_url(), 
-												 :method => :post,
-												 :submit => "person#{person.id}") %><br />
-		<%- end -%>
+	  <tr class="<%= cycle('nohighlight','highlight') %>">
+	    <td>
+  		<%- form_tag search_people_url, :id => "person#{person.id}" do -%>
+  			<%= hidden_field_tag :group_id, group_id %>
+  			<%= hidden_field_tag :person_id, person.id %>
+  			<%= hidden_field_tag :type, type %>
+  			<%= link_to_remote(person.full_name, :url => group_involvements_url(), 
+  												 :method => :post,
+  												 :submit => "person#{person.id}") %><br />
+  		<%- end -%>
+  		</td>
+  		<td><%= person.current_address.email %></td>
+		</tr>
 	<%- end -%>
+	</table>
 <%- else -%>
 	<br />
 	<strong>Sorry, I couldn't find anyone by that name. If you are sure the person you're looking for is not in the system yet,

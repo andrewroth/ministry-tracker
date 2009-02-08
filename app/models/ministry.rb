@@ -17,14 +17,16 @@ class Ministry < ActiveRecord::Base
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
   has_many :groups, :dependent => :destroy
-  has_many :bible_studies, :dependent => :destroy
-  has_many :teams, :dependent => :destroy
+  # has_many :bible_studies, :dependent => :destroy
+  # has_many :teams, :dependent => :destroy
   has_many :custom_attributes, :dependent => :destroy
   has_many :profile_questions, :dependent => :destroy
   has_many :involvement_questions, :dependent => :destroy
   has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(:position, :training_category), :dependent => :destroy
   has_many :training_questions, :order => "activated, activity", :dependent => :destroy
   has_many :views, :order => View.table_name + '.' + _(:title, 'view'), :dependent => :destroy
+  
+  has_many :group_types
   
   
   validates_presence_of _(:name)
@@ -37,6 +39,10 @@ class Ministry < ActiveRecord::Base
   alias_method :root_staff_roles, :staff_roles
   alias_method :root_student_roles, :student_roles
   alias_method :root_other_roles, :other_roles
+  
+  def all_group_types
+    @all_group_types ||= GroupType.find(:all, :conditions => ["ministry_id IN (?)", ancestor_ids], :order => _(:group_type, :group_type))
+  end 
   
   def staff
     @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)", staff_role_ids, ancestor_ids], :joins => :ministry_involvements)

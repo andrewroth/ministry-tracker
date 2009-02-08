@@ -2,29 +2,35 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-    <%- 7.times do |i| -%>
-      <th><%= Date::DAYNAMES[i] %></th>
+    <%- 7.times do |day| -%>
+      <th><%= Date::DAYNAMES[day] %></th>
     <%- end -%>
   </thead>
   <tbody>
     <!-- 6 am to 10 pm in 15 minute intervals -->
     <%- midnight = Time.today.beginning_of_day
         time = midnight + Timetable::EARLIEST 
-        stop = midnight + Timetable::LATEST -%>
+        stop = midnight + Timetable::LATEST 
+        time_block = 0 -%>
     <%- while time < stop 
         time_in_seconds = time.to_i - midnight.to_i -%>
       <tr>
         <td width="10px" class="time"><%= time.to_s(:time) %></td>
-        <%- 7.times do |i| -%>
-        <%#= logger.debug(@free_times[i].inspect) %>
-        <%#- free_index = @free_times[i].detect {|bt|} -%>
-        <td width="50px" height="10px" class="day_<%= i %> <%= 'busy' if @free_times[i].present? && !@free_times[i].include?(time_in_seconds) %>">
+        <%- 7.times do |day| -%>
+        <%#= logger.debug(@free_times[day].inspect) %>
+        <%#- free_index = @free_times[day].detect {|bt|} -%>
+        <%- css_class = (@free_times[day] && @free_times[day][time_block] && @free_times[day][time_block].include?(time_in_seconds)) ? @free_times[day][time_block][time_in_seconds] : '' -%>
+        <%# raise @free_times[day].inspect  if css_class == 'sux' -%>
+        <%# raise @free_times[day][time_block].inspect  if css_class == 'sux' -%>
+        <%# raise time_block.inspect  if css_class == 'sux' -%>
+        <td width="50px" height="10px" class="day_<%= day %> <%= css_class.present? ? css_class : 'good' %>">
           &nbsp;
           <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
         </td>
         <%- end -%>
       </tr>
-      <%- time += Timetable::INTERVAL -%>
+      <%- time += Timetable::INTERVAL 
+          time_block += 1 -%>
     <%- end -%>
   <tbody>
 </table>    

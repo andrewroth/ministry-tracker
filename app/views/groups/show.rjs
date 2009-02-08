@@ -1,0 +1,2 @@
+page[:group].replace_html(:partial => 'show')
+page[:group].show

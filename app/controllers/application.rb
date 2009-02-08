@@ -1,4 +1,3 @@
-require 'hoptoad_notifier'
 require 'cgi'
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
@@ -16,7 +15,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
 
-  protected    
+  protected
     # =============================================================================
     # = See vendor/plugins/mappings/load_mappings.rb                              =
     # =============================================================================
@@ -47,7 +46,7 @@ class ApplicationController < ActionController::Base
 
     def is_group_leader(group, person = nil)
       person ||= (@me || get_person)
-      return group.leaders.include?(person) || authorized?(:edit, :bible_studies)
+      return group.leaders.include?(person) || authorized?(:edit, :groups)
     end
     
     def is_ministry_leader( ministry = nil, person = nil)
@@ -88,11 +87,13 @@ class ApplicationController < ActionController::Base
         @user_permissions = {}
         # Find the highest level of access they have at or above the level of the current ministry
         mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", get_ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
-        return false unless mi
-        role = mi.ministry_role
-        role.permissions.each do |perm|
-          @user_permissions[perm.controller] ||= []
-          @user_permissions[perm.controller] << perm.action
+        # return false unless mi
+        if mi
+          role = mi.ministry_role
+          role.permissions.each do |perm|
+            @user_permissions[perm.controller] ||= []
+            @user_permissions[perm.controller] << perm.action
+          end
         end
       end
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s

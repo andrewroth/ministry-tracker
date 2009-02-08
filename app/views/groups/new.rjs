@@ -1,0 +1,3 @@
+page[:group].replace_html(:partial => 'form')
+page[:group].show
+page[:spinner].hide
