@@ -357,13 +357,21 @@ class PeopleController < ApplicationController
     proxy_granting_ticket = session[:cas_pgt]
     unless proxy_granting_ticket.nil?
       begin
-        @person.import_gcx_profile(proxy_granting_ticket)
+        success = @person.import_gcx_profile(proxy_granting_ticket)
+        if success
+          flash[:notice] = "Your GCX Profile has been imported successfully." 
+        else
+          flash[:warning] = "There was a problem importing your GCX Profile. Please try again later." 
+        end
       rescue Errno::ETIMEDOUT
         flash[:warning] = "There was a problem importing your GCX Profile. Please try again later."
       end
+    else
+      flash[:warning] = "There was a problem importing your GCX Profile. Please try again later."
     end
     redirect_to @person
   end
+  
   protected
     def add_involvement_conditions(conditions)
       # figure out which campuses to query based on the campuses listed for the current ministry
