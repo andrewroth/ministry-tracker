@@ -1,0 +1,27 @@
+<div id="groups">
+	<div id="current_groups" class="right_list">
+		<%- if @ministry.groups.count > 0 -%>
+		<div class="title"><%= @ministry.name %> Groups</div>
+		<ul id="direct_group">
+		<%= render :partial => @ministry.groups %>
+		</ul>
+		<%- end -%>
+	</div>
+	<div id="instructions">
+		This screen serves as a launching area for managing <%= @ministry.name %> groups. 
+	</div><br />
+	<div>
+	<div id="new_group_link">
+		<%- if @ministry.groups.empty? -%>
+			You haven't added any groups to your ministry yet. Please click the '<strong>Add a bible study</strong>' link below.<br /><br />
+		<%- end -%>
+		<%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
+											 	 :before => "$('#new_group_link').slideUp();$('#spinner').show()")%><br/>
+		<%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
+	</div><%= spinner %>
+	</div>
+	<div>
+		<div id="group">
+		</div>
+	</div>
+</div>

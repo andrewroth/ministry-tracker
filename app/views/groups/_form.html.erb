@@ -1,16 +1,16 @@
-<%= error_messages_for 'bible_study' %>
-<%- remote_form_for @bible_study do |f| -%>
+<%= error_messages_for 'group' %>
+<%- remote_form_for @group do |f| -%>
   <table border="0" cellspacing="5" cellpadding="5">
     <tr>
       <td style="vertical-align:top;">
     	<table border="0" cellspacing="5" cellpadding="5">
-    		<tr><th colspan="2"><%= @bible_study.new_record? ? 'New Bible Study' : @bible_study.name %></th></tr>
+    		<tr><th colspan="2"><%= @group.new_record? ? 'New Group' : @group.name %></th></tr>
     		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
     		<tr>
     			<td>Campus: </td>
     			<td>
     				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
-    				<%= observe_field(:bible_study_campus_id, :url => list_dorms_url(), :update => 'bible_study_dorm_id', :with => "campus_id") %>
+    				<%= observe_field(:group_campus_id, :url => list_dorms_url(), :update => 'group_dorm_id', :with => "campus_id") %>
     			</td>
     		</tr>
     		<%- dorms =  @campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : [] -%>
@@ -36,7 +36,7 @@
   </table>
 	<%= submit_tag 'Save' %> or 
 	<%- if params[:action] == 'new' -%>
-		<%= link_to_function 'cancel', "$('#bible_study').fadeOut();$('#new_bible_study_link').show()",
+		<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
 	 															:class => 'cancel'%>
 	<%- else -%>
 		<%= link_to_function 'cancel', "$('#address_form')fadeOut();$('#address').show()",
@@ -45,7 +45,7 @@
 <%- end -%>
 <div id="timePicker" class="thickbox" style="display:none">
   <p>
-  <%- form_remote_tag :url => find_times_group_path(@bible_study) do -%>
+  <%- form_remote_tag :url => find_times_group_path(@group) do -%>
     What days would you like to search? <br/>
     <%- 7.times do |i| -%>
       <%= Date::ABBR_DAYNAMES[i] %> <%= check_box_tag 'days[]', i, (1..5).to_a.include?(i) %> &nbsp;

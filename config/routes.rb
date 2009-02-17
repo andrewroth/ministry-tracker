@@ -1,9 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :group_types
+
   # map.resources :facebook, :collection => {:profile => :any}
   
   map.resources :ministry_role_permissions
 
-  # map.resources :timetables
+  map.resources :timetables, :collection => {:search => :post}
+  
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.resource :session

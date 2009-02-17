@@ -1,18 +1,88 @@
-<h1>Listing timetables</h1>
+<h1 class="title">Find Common Times</h1>
+<h2>Find common times between users for a group</h2>
+<p>Choose which users would be Leaders, Co-Leaders or Participants for this group.</p>
+<%- types = ['leader','co_leader', 'member']
+    types.each do |type| -%>
+<p>
+  <h4><%= type.titleize.pluralize %></h4>
+  <div id="<%= type %>"></div>
+  <%- form_remote_tag(:id => 'search_form', :before => types.collect {|t| "$('##{t}_results').hide();"}.to_s + "$('#spinner#{type}').show()", 
+  					:url => search_people_url, :update => type+'_results', :complete => "$('#spinner#{type}').hide();$('##{type}_results').show()") do -%>
+   	Search for <%= type.titleize.pluralize %>:&nbsp;&nbsp;
+  	<%= text_field_tag :search, '', :id => "search_#{type}" %> &nbsp;
+  	<%= submit_tag('Search') %> &nbsp;
+  	<%= hidden_field_tag :type, type %>
+  	<%= hidden_field_tag :context, 'timetables' %>
+  <%- end -%><%= spinner(type) %>
+  <div id="<%= type %>_results"></div>
+</p>
+<br/>
+<%- end -%>
+<%- form_remote_tag(:url => search_timetables_path, :before => types.collect {|t| "$('##{t}_results').hide();"}.join('') + "$('#spinnersubmit').show()") do -%>
+<div id="ids"></div>
+<%= link_to_function('More Options', "$('#more_options').toggle();") %><br/>
+<div id="more_options" style="display:none">
+<table border="1" cellspacing="0" cellpadding="4">
 
-<table>
   <tr>
+    <th width="25%"></th>
+    <th width="25%">Leaders</th>
+    <th width="25%">Co-Leaders</th>
+    <th width="25%">Participants</th>
   </tr>
 
-<% for timetable in @timetables %>
   <tr>
-    <td><%= link_to 'Show', timetable %></td>
-    <td><%= link_to 'Edit', edit_timetable_path(timetable) %></td>
-    <td><%= link_to 'Destroy', timetable, :confirm => 'Are you sure?', :method => :delete %></td>
+
+    <td width="25%">Minimum per group:</td>
+    <td width="25%"><input type="text" name="Min[Leader]" size="2" value="1"></td>
+    <td width="25%"><input type="text" name="Min[Co-Leader]" size="2" value="0"></td>
+    <td width="25%"><input type="text" name="Min[Participant]" size="2" value="1"></td>
   </tr>
-<% end %>
+  <tr>
+
+    <td width="25%">Maximum per group:</td>
+    <td width="25%"><input type="text" name="Max[Leader]" size="2" value="1"></td>
+    <td width="25%"><input type="text" name="Max[Co-Leader]" size="2" value="1"></td>
+    <td width="25%"><input type="text" name="Max[Participant]" size="4" value="none"></td>
+
+  </tr>
+
+
+  <tr>
+    <td width="20%">
+      Cutoff quality:
+      <%- tooltip  do -%>
+        Change this value to give preferential treatment<br/>to a leader, coleaders or participants when deciding group times.
+      <%- end -%>
+    </td>
+
+    <td>
+        <select name="Quality[Leader]">
+        <option value="1">Poor</option>
+        <option value="2">OK</option>
+        <option value="3">Good</option>
+      </select>
+    </td>
+    <td>
+      <select name="Quality[Co-Leader]">
+        <option value="1">Poor</option>
+        <option value="2">OK</option>
+        <option value="3">Good</option>
+      </select>
+    </td>
+    <td><select name="Quality[Participant]">
+      <option value="1">Poor</option>
+      <option value="2">OK</option>
+      <option value="3">Good</option></select>
+    </td>  
+  </tr>   
 </table>
-
+</div>
+<br/>
+<%= submit_tag('Submit') %>
+&nbsp;
+<%= spinner('submit') %>
+<%- end -%>
 <br />
+<div id="results"></div>
 
-<%= link_to 'New timetable', new_timetable_path %>

@@ -1,5 +1,6 @@
 class Group < ActiveRecord::Base
   load_mappings
+  self.inheritance_column = 'false'
   
   belongs_to :ministry
   belongs_to :campus

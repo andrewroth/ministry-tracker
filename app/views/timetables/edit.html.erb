@@ -5,48 +5,58 @@
   // free_times[0][0][0] = First Start Time on Sunday
   // free_times[0][0][1] = First End Time on Sunday
   function set_times_field() {
-    var free = false;
+    var current_class = '';
     var blocks = 0;
     var been_free = false;
     var current_day;
     free_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
-    for(i=0; i<7; i++) {
-      // Go down each column
-      $('table#schedule td.day_' + i).each(function(index) {
-        if($(this).hasClass('busy')) {
-          if(!free) {
-            day = i;
-            // alert(day);
-            free = true;
-            been_free = true;
-            if(day != current_day) {
-              current_day = day;
-              blocks = 0;
+    for(i = 0; i < 7; i++) {
+        // Go down each column
+      for(c_index = 0; c_index < possible_classes.length; c_index++) {
+        css_class = possible_classes[c_index];
+        // if(css_class == 'bad') {continue}
+        $('table#schedule td.day_' + i).each(function(index) {
+        // css = $(this).attr('class');
+          if($(this).hasClass(css_class)) {
+            if(current_class != css_class) {
+              day = i;
+              // alert(day);
+              current_class = css_class;
+              been_free = true;
+              if(day != current_day) {
+                current_day = day;
+                blocks = 0;
+              }
+              // alert($(this).find('input').val())
+              // free_times[day] = new Array;
+              // alert(blocks);
+              free_times[day][blocks] = new Array;
+              free_times[day][blocks][0] = Number($(this).find('input').val());
+              // alert(free_times[day][blocks][0]);
+              // Set End Time *INTERVAL* mins later
+              free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+              
+              free_times[day][blocks][2] = $('#' + css_class).val();
+              free_times[day][blocks][3] = css_class;
+            } else {
+              // alert(css_class)
+              // Set End Time *INTERVAL* mins later
+              free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+              // free_times[day][blocks][2] = $('#' + css_class).val();
+              // alert(free_times[day][blocks][1]);
             }
-            // alert($(this).find('input').val())
-            // free_times[day] = new Array;
-            // alert(blocks);
-            free_times[day][blocks] = new Array;
-            free_times[day][blocks][0] = Number($(this).find('input').val());
-            // alert(free_times[day][blocks][0]);
-            // Set End Time 15 mins later
-            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
           } else {
-            // Set End Time 15 mins later
-            free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
-            // alert(free_times[day][blocks][1]);
+            if(been_free) {
+               blocks++;
+               been_free = false;
+               // alert(blocks);
+            }
+            current_class = '';
           }
-        } else {
-          if(been_free) {
-             blocks++;
-             been_free = false;
-             // alert(blocks);
-          }
-          free = false;
-        }
-      })
+        });
+      }
     }
-    $('#times').val($.toJSON(free_times))
+    $('#times').val($.toJSON(free_times));
   }
   
 
@@ -54,28 +64,47 @@
 <%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
   <%= hidden_field_tag :times %>
   <%= f.submit 'Save Timetable' %>
+  <%#= button_to_function('test', "set_times_field()") %>
 <%- end -%><br/>
+<%= radio_button_tag 'paint', 0, true, :id => 'bad' %> Bad 
+<%= radio_button_tag 'paint', 0.3, false, :id => 'poor' %> Poor 
+<%= radio_button_tag 'paint', 0.7, false, :id => 'ok' %> OK 
+<%= radio_button_tag 'paint', 1, false, :id => 'good' %> Good
 <%= render :partial => 'timetable' %>
 <script>
-  down = false;
-  direction = 'on';
+  var down = false;
+  var css = 'bad';
+  var possible_classes = ['bad', 'poor', 'ok', 'good']
+  var direction = 'on';
+  
+  $("input[name='paint']").click(function() {
+    css = this.id;
+  });
+  
   $('table#schedule td:not(.time)').mousedown(function() {
     down = true;
-    if($(this).hasClass('busy')) {
-      direction = 'off';
-      $(this).removeClass('busy')
-    } else {
-      direction = 'on';
-      $(this).addClass('busy')
+    // direction = $(this).hasClass(css) ? 'off' : 'on';
+    // $(this).toggleClass(css);
+    // if($(this).hasClass(css)) {
+      // direction = 'off';
+    for(i=0; i < possible_classes.length; i++) {
+      $(this).removeClass(possible_classes[i]);
     }
+    // $(this).removeClass()
+    // } else {
+      // direction = 'on';
+    $(this).addClass(css)
   });
   $('table#schedule td:not(.time)').mouseover(function() {
     if(down) {
-      if(direction == 'off') {
-        $(this).removeClass('busy')
-      } else {
-        $(this).addClass('busy')
+      // if(direction == 'off') {
+      for(i=0; i < possible_classes.length; i++) {
+        $(this).removeClass(possible_classes[i]);
       }
+        // $(this).removeClass()
+      // } else {
+        $(this).addClass(css)
+      // }
     }
   });
   $('body').mouseup(function() {

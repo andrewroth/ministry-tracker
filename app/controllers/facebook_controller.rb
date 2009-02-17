@@ -13,9 +13,9 @@ class FacebookController < ApplicationController
     end
   end
   
-  def bible_studies
+  def groups
     if params[:id]
-      @bible_study = BibleStudy.find(params[:id]) 
+      @group = groups.find(params[:id]) 
     end
   end
   

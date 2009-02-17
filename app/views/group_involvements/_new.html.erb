@@ -1,5 +1,5 @@
-<%- form_remote_tag(:id => 'search_form', :onsubmit => 'return false', 
-					:url => search_people_url, :update => type+'_results') do -%>
+<%- form_remote_tag(:id => 'search_form', :before => "$('#spinner#{type}').show()", 
+					:url => search_people_url, :update => type+'_results', :complete => "$('#spinner#{type}').hide()") do -%>
  	Search for a person to add:&nbsp;&nbsp;
 	<%= hidden_field_tag :group_id, @group.id %>
 	<%= text_field_tag :search %> &nbsp;
@@ -8,5 +8,5 @@
 	 								:class => 'cancel'%>
 	<%= hidden_field_tag :type, type %>
 	<%= hidden_field_tag :context, 'group_involvements' %>
-<%- end -%>
+<%- end -%><%= spinner(type) %>
 <div id="<%= type %>_results"></div>

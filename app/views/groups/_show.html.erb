@@ -1,26 +1,27 @@
 <br />
 <h4 class="title">
-	<%= @bible_study.name %>&nbsp;&nbsp;
-	<%= link_to_remote "edit", {:url => edit_bible_study_url(@bible_study), 
+	<%= @group.name %>&nbsp;&nbsp;
+	<%= link_to_remote "edit", {:url => edit_group_url(@group), 
 								:method => :get}, 
-								{:class => "small"}  if is_group_leader(@bible_study) %>
+								{:class => "small"}  if is_group_leader(@group) %>
 </h4>
 <div id="address">
-	<%= render :partial => 'bible_studies/address' %>
+	<%= render :partial => 'groups/address' %>
 </div>
 <div id="address_form"></div>
 <div id="members">
 	<br />
-	<%- ['leader','member','interested'].each do |level| -%>
+	<%- types = ['leader','co_leader', 'member','interested']
+	  types.each do |level| -%>
 		<div id="<%= level %>">
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<td colspan="5">
-			  <h4 class="title"><%= level.titleize %>&nbsp;&nbsp;
-				<%- if is_group_leader(@bible_study) -%>
+			  <h4 class="title"><%= level.titleize.pluralize %>&nbsp;&nbsp;
+				<%- if is_group_leader(@group) -%>
 					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
 					<%= link_to_function 'transfer', "$('#transfer_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
-					<%= link_to_remote 'remove', {:url => group_involvement_url(@bible_study.id), :method => :delete, 
+					<%= link_to_remote 'remove', {:url => group_involvement_url(@group.id), :method => :delete, 
 												  :with => "$('#transfer_form_#{level}').serialize()", :confirm => "Are you sure you want to remove these people?",
 												  :condition => "$('#transfer_form_#{level} :checked').length > 0"},
 												 {:class => 'small'} %>
@@ -34,12 +35,12 @@
 			</td>
 		</tr>
 		</table>
-		<%- form_remote_tag({:url => "/group_involvements/transfer/#{@bible_study.id}", 
+		<%- form_remote_tag({:url => "/group_involvements/transfer/#{@group.id}", 
 							 :html => {:id => 'transfer_form_'+level}}) do -%>
 		
 			<div id="transfer_<%= level %>"  style="display:none">
-				Pick a bible study to transfer the selected people to:<br />
-				<%= select_tag('transfer_to', options_for_select(get_ministry.bible_studies.collect {|bs| [bs.name, bs.id]})) %>
+				Pick a group to transfer the selected people to:<br />
+				<%= select_tag('transfer_to', options_for_select(get_ministry.groups.collect {|bs| [bs.name, bs.id]})) %>
 				<%= hidden_field_tag('level', level) %>
 				<%= submit_tag "go" %><br /><br />
 			</div>
@@ -51,12 +52,12 @@
 			<th>Cell</th>
 			<th>Email</th>
 		</tr>
-			<%- @bible_study.group_involvements.sorted.each do |gi| 
+			<%- @group.group_involvements.sorted.each do |gi| 
 				if gi.level == level
 					person = gi.person
 					if person
   					person.initialize_addresses(:current_address) if person.current_address.nil? -%>
-  					<%= render :partial => 'bible_studies/member', :locals => {:person => person} %>
+  					<%= render :partial => 'groups/member', :locals => {:person => person} %>
   				<%- end -%>
 				<%- end -%>
 			<%- end -%>

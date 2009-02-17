@@ -2,15 +2,6 @@
 
 <div id="manage">
 
-	<div id="addStudentLink">
-		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
-		                                                 :loading => "$('#spinneradd_student').show();",
-		                                                 :complete => "$('#spinneradd_student').hide();
-		                                                                show_add_student()") %>
-		<%= spinner('add_student') %>
-		or <%= link_to('import a bunch of students', new_import_path) %>
-	</div>
-
   <div id="left-body">
     <%= yield %>
   </div>
@@ -33,13 +24,8 @@
 	  <%- end -%>
 	  
 	  <%- if authorized?(:new, :groups) -%>
-		<li<%= ' class="highlighted"' if params[:controller] == "bible_studies" %>>
-		<%= link_to 'Bible Studies', bible_studies_path %></li>
-		<%- end -%>
-		
-	  <%- if authorized?(:new, :groups) -%>
-		<li<%= ' class="highlighted"' if params[:controller] == "teams" %>>
-		<%= link_to 'Teams', teams_path %></li>
+		<li<%= ' class="highlighted"' if params[:controller] == "groups" %>>
+		<%= link_to(t(:groups, :default => 'Groups'), groups_path) %></li>
 		<%- end -%>
 		
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||

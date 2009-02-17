@@ -42,7 +42,7 @@ ActiveRecord::Base.class_eval do
     end
   
     def _(column, table)
-      ActiveRecord::Base._(column, table)
+      ActiveRecord::Base._(column, table).to_s
     end
   else
     
@@ -51,11 +51,11 @@ ActiveRecord::Base.class_eval do
     end
     
     def self._(column, table = self.name.underscore)
-      column
+      column.to_s
     end
     
     def _(column, table)
-      ActiveRecord::Base._(column, table)
+      ActiveRecord::Base._(column, table).to_s
     end
   end
 

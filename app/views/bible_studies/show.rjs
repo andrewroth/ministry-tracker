@@ -1,2 +1,0 @@
-page[:bible_study].replace_html(:partial => 'show')
-page[:bible_study].show

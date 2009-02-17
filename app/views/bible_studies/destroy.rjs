@@ -1,2 +1,0 @@
-update_flash(page, flash[:notice])
-page[:bible_studies].replace_html(:partial => 'bible_studies')

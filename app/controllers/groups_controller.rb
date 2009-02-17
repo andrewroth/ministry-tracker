@@ -1,6 +1,10 @@
 class GroupsController < ApplicationController
   before_filter :authorization_filter, :only => [:create, :update, :destroy]
+  before_filter :get_group, :only => [:show, :edit, :destroy, :update]
   def index
+    @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 
+                                                  :order => Ministry.table_name + '.' + _(:name, :ministry),
+                                                  :include => :ministry)
     respond_to do |format|
       format.html do
         layout = authorized?(:new, :people) ? 'manage' : 'application'
@@ -19,6 +23,7 @@ class GroupsController < ApplicationController
   end
 
   def new
+    @group = Group.new
     respond_to do |format|
       format.html { render :layout => false }
       format.js
@@ -26,6 +31,7 @@ class GroupsController < ApplicationController
   end
 
   def create
+    @group = Group.new(params[:group])
     @group.ministry = @ministry # Add bible study to current ministry
     respond_to do |format|
       if @group.save
@@ -48,6 +54,7 @@ class GroupsController < ApplicationController
   end
 
   def update
+    @group.update_attributes(params[:group])
     respond_to do |format|
       format.js
     end
@@ -105,4 +112,8 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
+  protected
+    def get_bible_study
+      @bible_study ||= get_group
+    end
 end

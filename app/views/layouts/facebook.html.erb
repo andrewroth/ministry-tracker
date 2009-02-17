@@ -5,11 +5,11 @@
 <br/>
 <fb:tabs>
 <fb:tab-item href="<%= controller.facebook_canvas_path %>" title="Involvement" <%= 'selected="true"' if request.path == '/facebook/' %>></fb:tab-item>
-<%- if @person.bible_studies.length == 1 -%>
-<fb:tab-item href="<%= controller.facebook_canvas_path %>bible_studies/<%= @person.bible_studies.first.id %>" title="Bible Study" <%= 'selected="true"' if request.path.include?('/facebook/bible_studies') %>></fb:tab-item>
+<%- if @person.groups.length == 1 -%>
+<fb:tab-item href="<%= controller.facebook_canvas_path %>groups/<%= @person.groups.first.id %>" title="Group" <%= 'selected="true"' if request.path.include?('/facebook/groups') %>></fb:tab-item>
 <%- end -%>
-<%- if @person.bible_studies.length > 1 -%>
-<fb:tab-item href="<%= controller.facebook_canvas_path %>bible_studies" title="Bible Studies" <%= 'selected="true"' if request.path.include?('/facebook/bible_studies') %>></fb:tab-item>
+<%- if @person.groups.length > 1 -%>
+<fb:tab-item href="<%= controller.facebook_canvas_path %>groups" title="Groups" <%= 'selected="true"' if request.path.include?('/facebook/groups') %>></fb:tab-item>
 <%- end -%>
 </fb:tabs>
 <br/>
