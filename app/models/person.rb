@@ -242,6 +242,7 @@ class Person < ActiveRecord::Base
       conn.get("#{uri}")
     end
     doc = Hpricot(raw_res.body)
+    return false if (doc/'attribute').empty?
     (doc/'attribute').each do |attrib|
       if attrib['value'].present?
         current_address.email = attrib['value'].downcase if attrib['displayname'] == 'emailAddress' && current_address

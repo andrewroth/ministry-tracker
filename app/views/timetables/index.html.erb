@@ -1,17 +1,21 @@
 <h1 class="title">Find Common Times</h1>
 <h2>Find common times between users for a group</h2>
 <p>Choose which users would be Leaders, Co-Leaders or Participants for this group.</p>
+<%= hidden_field_tag :filter_ids %>
 <%- types = ['leader','co_leader', 'member']
     types.each do |type| -%>
 <p>
   <h4><%= type.titleize.pluralize %></h4>
   <div id="<%= type %>"></div>
-  <%- form_remote_tag(:id => 'search_form', :before => types.collect {|t| "$('##{t}_results').hide();"}.to_s + "$('#spinner#{type}').show()", 
+  <%- form_remote_tag(:id => 'search_form', :before => types.collect {|t| "$('##{t}_results').hide();"}.to_s + 
+                                                       "$('#spinner#{type}').show();" +
+                                                       "$('#filter_ids#{type}').val($('#filter_ids').val());", 
   					:url => search_people_url, :update => type+'_results', :complete => "$('#spinner#{type}').hide();$('##{type}_results').show()") do -%>
    	Search for <%= type.titleize.pluralize %>:&nbsp;&nbsp;
   	<%= text_field_tag :search, '', :id => "search_#{type}" %> &nbsp;
   	<%= submit_tag('Search') %> &nbsp;
   	<%= hidden_field_tag :type, type %>
+  	<%= hidden_field_tag :filter_ids, '', :id => "filter_ids_#{type}" %>
   	<%= hidden_field_tag :context, 'timetables' %>
   <%- end -%><%= spinner(type) %>
   <div id="<%= type %>_results"></div>

@@ -60,7 +60,11 @@ class Timetable < ActiveRecord::Base
     (0..num_blocks).each do |block_offset|
       time = time_slot[:time] + (block_offset * Timetable::INTERVAL)
       unless time >= LATEST
-        time_score = timetables[people[person_index]][time_slot[:day]][time].weight.to_f
+        if timetables[people[person_index]][time_slot[:day]][time]
+          time_score = timetables[people[person_index]][time_slot[:day]][time].weight.to_f
+        else
+          time_score = 0
+        end
         user_score *= time_score #if time_score
       end
     end

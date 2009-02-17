@@ -17,7 +17,9 @@
 		<%- end -%>
 		<%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
 											 	 :before => "$('#new_group_link').slideUp();$('#spinner').show()")%><br/>
+		<%- if current_user.developer? -%>
 		<%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
+		<%- end -%>
 	</div><%= spinner %>
 	</div>
 	<div>

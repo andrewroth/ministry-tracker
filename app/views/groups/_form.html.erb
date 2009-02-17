@@ -30,7 +30,7 @@
       		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES, :include_blank => true %></td></tr>
   	    </table>
-  	    <%= link_to_function("Click here for a good time", "tb_show('Time Picker', '#TB_inline?width=450&height=300&inlineId=timePicker')", :class => 'thidckbox') %>
+  	    <%= link_to_function("Click here for a good time", "tb_show('Time Picker', '#TB_inline?width=450&height=300&inlineId=timePicker')", :class => 'thickbox') if current_user.developer? %>
   	  </td>
   	</tr>
   </table>
