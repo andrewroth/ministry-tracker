@@ -1,0 +1,8 @@
+window name "push_setup" already exists in parent
+window name "push_setup" already exists in parent
+    while executing
+"toplevel $w"
+    (procedure "do_push_anywhere" line 7)
+    invoked from within
+"do_push_anywhere"
+    (button invoke)
