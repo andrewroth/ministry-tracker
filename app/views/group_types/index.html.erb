@@ -1,0 +1,27 @@
+
+<div class="title"><%= @ministry.name %> Group Types</div>
+
+
+<table class="directorytable" id="groupTypeTable">
+    <tr>
+        <th rowspan="2">Group Type</th>
+        <th rowspan="2">Mentor Priority</th>
+        <th rowspan="2">Public Listed</th>
+        <th colspan="3" style="border: none; text-align: center;">Impact on timetable for</th>
+
+        <th  rowspan="2" colspan="4">Actions</th>
+    </tr>
+    <tr>
+    <th>Leader</th>
+            <th>Co-Leader</th>
+        <th>Participant</th>
+    </tr>
+    <%= render :partial => 'group_type', :collection => @group_types %>
+
+</table>
+
+<div class="butAdd" id="new_group_type_link"><%= link_to_remote('Add a new group type', :url => new_group_type_path,
+      											 	 :before => "$('#spinner').show()")%> <%= spinner %></div>
+    <br/>
+    <div id="group_type" style="display:none"></div>
+	</div>

@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @group_type.name %>
+</p>
+
+<p>
+  <b>Ministry:</b>
+  <%=h @group_type.ministry_id %>
+</p>
+
+<p>
+  <b>Mentor priority:</b>
+  <%=h @group_type.mentor_priority %>
+</p>
+
+<p>
+  <b>Public:</b>
+  <%=h @group_type.public %>
+</p>
+
+
+<%= link_to 'Edit', edit_group_type_path(@group_type) %> |
+<%= link_to 'Back', group_types_path %>

@@ -18,26 +18,31 @@
     <!-- <li<%= ' class="highlighted"' if params[:controller] == "ministry_campuses" %>>
     <%= link_to 'Campuses', ministry_campuses_url %></li> -->
     
-	  <%- if authorized?(:new, :people) -%>
-		<li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
-		<%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
-	  <%- end -%>
+	    <%- if authorized?(:new, :people) -%>
+		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
+		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
+	    <%- end -%>
 	  
-	  <%- if authorized?(:new, :groups) -%>
-		<li<%= ' class="highlighted"' if params[:controller] == "groups" %>>
-		<%= link_to(t(:groups, :default => 'Groups'), groups_path) %></li>
-		<%- end -%>
+	    <%- if authorized?(:new, :groups) -%>
+		    <li<%= ' class="highlighted"' if params[:controller] == "groups" %>>
+		    <%= link_to(t(:groups, :default => 'Groups'), groups_path) %></li>
+        <%- end -%>
 		
+        <%- if authorized?(:new, :group_types) -%>
+		    <li<%= ' class="highlighted"' if params[:controller] == "group_types" %>>
+		    <%= link_to(t(:group_types, :default => 'Group Types'), group_types_path) %></li>
+        <%- end -%>
+      
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) -%>
-  		<li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
-  		<%= link_to 'Customize', customize_path(@ministry) %></li>
-  	<%- end -%>
+  		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
+  		    <%= link_to 'Customize', customize_path(@ministry) %></li>
+  	    <%- end -%>
   	
 		<%- if authorized?(:edit, :ministry_roles) -%>
-  		<li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
-  		<%= link_to 'Roles/Permissions', ministry_roles_path %></li>
-  	<%- end -%>
+  		    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
+  		    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
+  	    <%- end -%>
 		
 		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
 		    <%= link_to 'Custom Attributes', custom_attributes_url %></li> 

@@ -1,0 +1,4 @@
+page[:group_type].replace_html :partial => 'remote_form'
+page[:group_type].blind_down
+page[:spinner].hide
+page[:new_group_type_link].hide

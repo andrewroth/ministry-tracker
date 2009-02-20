@@ -1,0 +1,5 @@
+<div class="title"><%= @ministry.name %>Group Types</div>
+
+<% form_for(@group_type) do |f| %>
+    <%= render :partial => "form", :locals => { :f => f, :group_type => @group_type, :button_label => "Update" } %>
+<% end %>
