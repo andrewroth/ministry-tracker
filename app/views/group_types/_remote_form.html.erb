@@ -1,0 +1,67 @@
+<%- if @group_type.new_record? 
+    path = group_types_path
+    method = :post -%>
+    <h4>New Group Type</h4>
+<%- else 
+    path = group_type_path(@group_type)
+    method = :put -%>
+  <h4>Editing <%= @group_type.group_type %></h4>
+<%- end -%>
+
+<%- remote_form_for @group_type, :url => path, :method => method do |f| -%>
+<%= f.error_messages %>
+
+<table border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td style="vertical-align:top;">
+    	<table border="0" cellspacing="5" cellpadding="5">
+    		<tr><th colspan="2"><%= @group_type.new_record? ? 'New Group Type' : @group_type.group_type %></th></tr>
+    		<tr><td><%= f.label :group_type %></td><td><%= f.text_field :group_type %></td></tr>
+    		<tr>
+    			<td><%= f.label :mentor_priority %><%- tooltip do -%><p>Should the leader of the group have mentor privileges over group members? (eg a prayer group would be No, the leader does not have the right to view and alter details of group members)</p><%- end -%></td>
+    			<td>
+    				<%= f.check_box :mentor_priority %>
+    			</td>
+    		</tr>
+    		<tr>
+    		    <td>
+    		        <%= f.label :public %><%- tooltip do -%><p>Is the group open for anyone to hear about and join (if Yes, it will be advertised on the website as a group people can come along to), if No, members can only be added by the Group leader or co-leader, or people with high enough status.</p><%- end -%>
+                </td>
+                <td>
+                    <%= f.check_box :public %>
+                </td>
+    		</tr>
+    		<tr>
+    		    <td>
+    		        <%= f.label :unsuitability_leader %> <%- tooltip do -%><p>How should this group impact a leader’s timetable?</p><%- end -%>
+    		    </td>
+    		    <td>
+    		        <%= f.select :unsuitability_leader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    </td>
+    		</tr>
+    		<tr>
+    		    <td>
+    		        <%= f.label :unsuitability_coleader %> <%- tooltip do -%><p>How should this group impact a co-leader’s timetable?</p><%- end -%>
+    		    </td>
+    		    <td>
+    		        <%= f.select :unsuitability_coleader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    </td>
+    		</tr>
+    		<tr>
+    		    <td>
+    		        <%= f.label :unsuitability_participant %> <%- tooltip do -%><p>How should this group impact a participant’s timetable?</p><%- end -%>
+    		    </td>
+    		    <td>
+    		        <%= f.select :unsuitability_participant, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    </td>
+    		</tr>
+    	</table>
+  	  </td>
+  	</tr>
+</table>
+<%= submit_tag 'Save' %> or 
+	<%- if params[:action] == 'new' -%>
+		<%= link_to_function 'cancel', "$('#group_type').fadeOut();$('#new_group_type_link').show()",
+	 															:class => 'cancel'%>
+	<%- end -%>
+<%- end -%>

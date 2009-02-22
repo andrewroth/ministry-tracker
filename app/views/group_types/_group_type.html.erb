@@ -1,0 +1,19 @@
+<tr id="<%= dom_id(group_type) %>">
+    <td><%=h group_type.group_type %></td>
+    <td style="text-align: center;">
+        <%- if group_type.mentor_priority? -%>
+        <%= image_tag('silk/accept.png') %>
+        <%- end %>
+    </td>
+    <td style="text-align: center;">
+        <%- if group_type.public? -%>
+        <%= image_tag('silk/accept.png') %>
+        <%- end %>
+    </td>
+    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_leader) %></td>
+    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_coleader) %></td>
+    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_participant) %></td>
+    <td><%= link_to image_tag('edit.png', :alt => "Edit this type", :title => "Edit this type"), edit_group_type_path(group_type) %></td>
+    <td><%= link_to image_tag('delete.png', :alt => "Delete this type", :title => "Delete this type"), group_type, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= spinner(dom_id(group_type)) %></td>
+ </tr>
