@@ -13,7 +13,7 @@
 	<div>
 	<div id="new_group_link">
 		<%- if @ministry.groups.empty? -%>
-			You haven't added any groups to your ministry yet. Please click the '<strong>Add a bible study</strong>' link below.<br /><br />
+			You haven't added any groups to your ministry yet. Please click the '<strong>Add a group</strong>' link below.<br /><br />
 		<%- end -%>
 		<%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
 											 	 :before => "$('#new_group_link').slideUp();$('#spinner').show()")%><br/>
