@@ -229,7 +229,7 @@ class Person < ActiveRecord::Base
   end
   
   def import_gcx_profile(proxy_granting_ticket)
-    service_uri = "http://www.mygcx.org/system/report/profile/attributes"
+    service_uri = "https://www.mygcx.org/system/report/profile/attributes"
     proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).ticket
     ticket = CASClient::ServiceTicket.new(proxy_ticket, service_uri)
     return false unless proxy_ticket
