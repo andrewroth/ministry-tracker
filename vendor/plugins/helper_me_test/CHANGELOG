@@ -1,3 +1,8 @@
+== 2.0 / June 24, 2008
+
+* Slim down assert_select_in based on http://gist.github.com/52976 by TJ Stankus
+
+
 == 1.0 / June 24, 2008
 
 * Initial Release

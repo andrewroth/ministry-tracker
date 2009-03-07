@@ -1,21 +1,21 @@
-<%- if @group_type.new_record? 
+<%- if group_type.new_record? 
     path = group_types_path
     method = :post -%>
     <h4>New Group Type</h4>
 <%- else 
-    path = group_type_path(@group_type)
+    path = group_type_path(group_type)
     method = :put -%>
-  <h4>Editing <%= @group_type.group_type %></h4>
+  <h4>Editing <%= group_type.group_type %></h4>
 <%- end -%>
 
-<%- remote_form_for @group_type, :url => path, :method => method do |f| -%>
+<%- remote_form_for group_type, :url => path, :method => method, :before => "$('#spinnergt').show()" do |f| -%>
 <%= f.error_messages %>
 
 <table border="0" cellspacing="5" cellpadding="5">
     <tr>
       <td style="vertical-align:top;">
     	<table border="0" cellspacing="5" cellpadding="5">
-    		<tr><th colspan="2"><%= @group_type.new_record? ? 'New Group Type' : @group_type.group_type %></th></tr>
+    		<tr><th colspan="2"><%= group_type.new_record? ? 'New Group Type' : group_type.group_type %></th></tr>
     		<tr><td><%= f.label :group_type %></td><td><%= f.text_field :group_type %></td></tr>
     		<tr>
     			<td><%= f.label :mentor_priority %><%- tooltip do -%><p>Should the leader of the group have mentor privileges over group members? (eg a prayer group would be No, the leader does not have the right to view and alter details of group members)</p><%- end -%></td>
@@ -60,8 +60,6 @@
   	</tr>
 </table>
 <%= submit_tag 'Save' %> or 
-	<%- if params[:action] == 'new' -%>
-		<%= link_to_function 'cancel', "$('#group_type').fadeOut();$('#new_group_type_link').show()",
+		<%= link_to_function 'cancel', "$('#group_type_form').fadeOut();$('#new_group_type_link').show()",
 	 															:class => 'cancel'%>
-	<%- end -%>
 <%- end -%>

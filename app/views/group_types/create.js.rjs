@@ -1,4 +1,4 @@
-page.insert_html :bottom, "#groupTypeTable", :partial => 'group_type', :locals => {:group_type => @group_type}
+page.insert_html :bottom, :group_types, :partial => 'group_type', :locals => {:group_type => @group_type}
 page[dom_id(@group_type)].highlight
-page[:group_type].hide
+page[:group_type_form].hide
 page[:new_group_type_link].show

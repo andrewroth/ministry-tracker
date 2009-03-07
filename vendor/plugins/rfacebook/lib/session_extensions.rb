@@ -76,7 +76,7 @@ module RFacebook::Rails::SessionExtensions # :nodoc:
   def self.included(base) # :nodoc:
     base.class_eval do
       alias_method_chain :initialize,   :rfacebook
-      alias_method_chain :new_session,  :rfacebook
+      # alias_method_chain :new_session,  :rfacebook
     end
   end
   

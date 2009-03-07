@@ -6,7 +6,7 @@ module HoptoadNotifier
   IGNORE_DEFAULT = []#['ActiveRecord::RecordNotFound',
                     # 'ActionController::RoutingError',
                     # 'ActionController::InvalidAuthenticityToken',
-                    # 'CGI::Session::CookieStore::TamperedWithCookie']
+                    # 'ActionController::Session::CookieStore::TamperedWithCookie']
 
   # Some of these don't exist for Rails 1.2.*, so we have to consider that.
   IGNORE_DEFAULT.map!{|e| eval(e) rescue nil }.compact!

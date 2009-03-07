@@ -8,7 +8,7 @@
 
 class GroupTypesController < ApplicationController
     layout 'manage'
-    before_filter :find_group_type, :only => [:edit, :update, :destroy, :permissions]
+    before_filter :find_group_type, :only => [:edit, :update, :destroy]
     
   # GET /group_types
   # GET /group_types.xml
@@ -29,12 +29,6 @@ class GroupTypesController < ApplicationController
   # GET /group_types/new.xml
   def new
     @group_type = GroupType.new
-    #@group_type.ministry_id = @ministry ? @ministry.id : 0
-    #respond_to do |format|
-    #  layout = 'manage'
-    #  format.html { render :layout => layout } # new.html.erb
-    #  format.xml  { render :xml => @group_type }
-    #end
   end
 
   # GET /group_types/1/edit
@@ -46,7 +40,7 @@ class GroupTypesController < ApplicationController
   # POST /group_types.xml
   def create
     @group_type = GroupType.new(params[:group_type])
-    @group_type.ministry = get_ministry.root
+    @group_type.ministry = get_ministry
     
     if @group_type.save
       render
@@ -60,16 +54,17 @@ class GroupTypesController < ApplicationController
   # PUT /group_types/1
   # PUT /group_types/1.xml
   def update
-    @group_type = GroupType.find(params[:id])
 
     respond_to do |format|
       if @group_type.update_attributes(params[:group_type])
         flash[:notice] = 'GroupType was successfully updated.'
         format.html { redirect_to(group_types_path) }
         format.xml  { head :ok }
+        format.js
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @group_type.errors, :status => :unprocessable_entity }
+        format.js   { render :action => 'edit'}
       end
     end
   end
@@ -77,12 +72,12 @@ class GroupTypesController < ApplicationController
   # DELETE /group_types/1
   # DELETE /group_types/1.xml
   def destroy
-    @group_type = GroupType.find(params[:id])
     @group_type.destroy
 
     respond_to do |format|
       format.html { redirect_to(group_types_url) }
       format.xml  { head :ok }
+      format.js
     end
   end
   

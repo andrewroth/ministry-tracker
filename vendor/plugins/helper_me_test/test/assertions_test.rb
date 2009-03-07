@@ -8,7 +8,7 @@ require 'active_support'
 require 'active_support/test_case'
 require File.join(PLUGIN_ROOT, 'lib/helper_me_test.rb')
 
-class TagAssertionsTest < ActiveSupport::TestCase
+class TagAssertionsTest < ActionView::TestCase
   include HelperMeTest::Assertions::TagAssertions
   
   context 'testing with assert_tag_* statements' do
@@ -40,7 +40,7 @@ class TagAssertionsTest < ActiveSupport::TestCase
 end
 
 
-class HpricotAssertionsTest < ActiveSupport::TestCase
+class HpricotAssertionsTest < ActionView::TestCase
   include HelperMeTest::Assertions::HpricotAssertions
   
   context 'hpricot assertions' do
@@ -54,7 +54,7 @@ class HpricotAssertionsTest < ActiveSupport::TestCase
 end
 
 
-class SelectorAssertionsTest < ActiveSupport::TestCase
+class SelectorAssertionsTest < ActionView::TestCase
   include HelperMeTest::Assertions::SelectorAssertions
   
   context 'selector assertions' do

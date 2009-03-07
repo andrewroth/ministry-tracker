@@ -448,7 +448,7 @@ Processing AdvancedExampleController#my_account (for 127.0.0.1 at 2008-11-20 12:
 Intercepted single-sign-out request for CAS session "ST-1227202292r61123E3CCB49081665".
 
 
-NameError (uninitialized constant CGI::Session::ActiveRecordStore):
+NameError (uninitialized constant ActionController::Session::ActiveRecordStore):
     /usr/lib/ruby/gems/1.8/gems/activesupport-2.1.2/lib/active_support/dependencies.rb:493:in `const_missing'
     /usr/lib/ruby/gems/1.8/gems/rubycas-client-2.0.99/lib/casclient/frameworks/rails/filter.rb:199:in `single_sign_out'
     /usr/lib/ruby/gems/1.8/gems/rubycas-client-2.0.99/lib/casclient/frameworks/rails/filter.rb:18:in `filter'

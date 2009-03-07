@@ -94,7 +94,7 @@ table {width:100%;
 /* OVERALL STUFF */
 
 .directorytable tr:hover  {
-    background-color:#fff193;
+/*    background-color:#fff193;*/
 }
 
 #profileCaption {
@@ -809,3 +809,7 @@ html[xmlns] .clearfix {
 
 * html .clearfix {
     height: 1%; }
+
+.accordion_instructions img{margin-bottom:-3px;}
+.ui-state-active .accordion_instructions {visibility: hidden;}
+.title{cursor:pointer;}
