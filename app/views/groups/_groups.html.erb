@@ -10,18 +10,29 @@
 	<div id="instructions">
 		This screen serves as a launching area for managing <%= @ministry.name %> groups. 
 	</div><br />
+	<%- if @ministry.all_group_types.empty? -%>
+	<p>
+	  <%- if authorized?(:new, :group_types) -%>
+	  You don't have any group types defined for your movement. Please <%= link_to('go to the customize area', customize_path(@ministry)) %>
+	  and create some.
+	  <%- else -%>
+	  No group types have been created for your movement. Please ask your leader to create some.
+	  <%- end -%>
+	</p>
+	<%- else -%>
 	<div>
-	<div id="new_group_link">
-		<%- if @ministry.groups.empty? -%>
-			You haven't added any groups to your ministry yet. Please click the '<strong>Add a group</strong>' link below.<br /><br />
-		<%- end -%>
-		<%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
-											 	 :before => "$('#new_group_link').slideUp();$('#spinner').show()")%><br/>
-		<%- if current_user.developer? -%>
-		<%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
-		<%- end -%>
-	</div><%= spinner %>
+  	<div id="new_group_link">
+  		<%- if @ministry.groups.empty? -%>
+  			You haven't added any groups to your ministry yet. Please click the '<strong>Add a group</strong>' link below.<br /><br />
+  		<%- end -%>
+  		<%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
+  											 	 :before => "$('#new_group_link').slideUp();$('#spinner').show()")%>
+    	<%- if current_user.developer? -%>
+    	 or	<%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
+    	<%- end -%>
+  	</div><%= spinner %>
 	</div>
+	<%- end -%>
 	<div>
 		<div id="group">
 		</div>

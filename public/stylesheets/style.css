@@ -812,4 +812,4 @@ html[xmlns] .clearfix {
 
 .accordion_instructions img{margin-bottom:-3px;}
 .ui-state-active .accordion_instructions {visibility: hidden;}
-.title{cursor:pointer;}
+.accordion .title{cursor:pointer;}

@@ -13,12 +13,15 @@
   </div>
 </div> -->
 <div id="customizebody" class="accordion">
+  <%- if authorized?(:new, :views) -%>
   <div>
 		<div class="title">Directory Views</div>
 		<div>
   		<%= render :partial => 'views/views' %>
 		</div>
 	</div>
+	<%- end -%>
+	<%- if authorized?(:new, :dorms) -%>
 	<div>
 		<div class="title">Dorms</div>
 		<div id="dorm_box">
@@ -39,6 +42,8 @@
   	  </p>
 		</div>
 	</div>
+	<%- end -%>
+  <%- if authorized?(:new, :group_types) -%>
   <div>
     <div class="title">Group Types <%= spinner('gt') %></div>
     <div>
@@ -52,9 +57,9 @@
           <th  rowspan="2" colspan="4">Actions</th>
       </tr>
       <tr>
-      <th>Leader</th>
-              <th>Co-Leader</th>
-          <th>Participant</th>
+        <th>Leader</th>
+        <th>Co-Leader</th>
+        <th>Participant</th>
       </tr>
       <%= render @ministry.group_types %>
     
@@ -66,23 +71,24 @@
     		                                        :before => "$('#new_group_type_link').hide();$('#spinnergt').show();")%></div>
     	</div>
 		  <div id="group_type_form" style="display:none">
-        <!-- <%- remote_form_for GroupType.new do |f| -%>
-          <%= f.text_field :group_type, :size => 20 %>
-          <%= f.submit 'Add Group Type' %>
-           or <%= link_to_function 'cancel', "$('#group_type_form').fadeOut();$('#new_group_type_link').show()",
-                                :class => 'cancel'%>
-        <%- end -%> -->
   	  </div>
     </div>
   </div>
+  <%- end -%>
+  <%- if authorized?(:new, :custom_attributes) -%>
 	<div>
 		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.profile_questions,
 		                                                                          :attrib_type => 'ProfileQuestion'} %>
 	</div>
+	<%- end -%>
+	<%- if authorized?(:new, :involvement_questions) -%>
 	<div>
 		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.involvement_questions, 
 		                                                                          :attrib_type => 'InvolvementQuestion'} %>
   </div>
+  <%- end -%>
+  
+	<%- if authorized?(:new, :involvement_questions) -%>
   <div>
 		<div class="title">Training Categories specific to <%= @ministry.name %></div>
 		<div id="training_categories">
@@ -126,6 +132,7 @@
     	</div>
     </div>
 	</div>
+	<%- end -%>
 </div>
 <script type="text/javascript" charset="utf-8">
     $(function(){

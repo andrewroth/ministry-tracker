@@ -1,3 +1,2 @@
 page[dom_id(@group_type)].fade
-page[:group_type_form].highlight
 page[:spinnergt].hide

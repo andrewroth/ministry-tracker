@@ -10,13 +10,10 @@
 <div id="right-menu" class="right-menu">
 	<ul class="right-menu-list">
 	  <%- if authorized?(:new, :ministries) || authorized?(:edit, :ministries) -%>
-		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
-		<%= link_to 'Ministries', ministries_path %></li>
+  		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
+  		<%= link_to 'Ministries', ministries_path %></li>
 		<%- end -%>
 		
-    <!-- <li<%= ' class="highlighted"' if params[:controller] == "ministry_campuses" %>>
-    <%= link_to 'Campuses', ministry_campuses_url %></li> -->
-    
 	    <%- if authorized?(:new, :people) -%>
 		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
 		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
@@ -26,14 +23,10 @@
 		    <li<%= ' class="highlighted"' if params[:controller] == "groups" %>>
 		    <%= link_to(t(:groups, :default => 'Groups'), groups_path) %></li>
         <%- end -%>
-		
-        <%- if authorized?(:new, :group_types) -%>
-		    <li<%= ' class="highlighted"' if params[:controller] == "group_types" %>>
-		    <%= link_to(t(:group_types, :default => 'Group Types'), group_types_path) %></li>
-        <%- end -%>
       
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
-		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) -%>
+		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
+		       authorized?(:new, :group_types) || authorized?(:new, :dorms) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
@@ -41,6 +34,7 @@
 		<%- if authorized?(:edit, :ministry_roles) -%>
 		<br/><br/>
 		  <h3>System Settings</h3>
+		  <h5>(These affect all ministries)</h5>
   		<ul class="right-menu-list">
 		    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
 		    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
