@@ -37,30 +37,23 @@
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
-  	    <%- end -%>
-  	
+  	<%- end -%>
+  	</ul>
 		<%- if authorized?(:edit, :ministry_roles) -%>
-  		    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
-  		    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
-  	    <%- end -%>
+		<br/><br/>
+		  <h3>System Settings</h3>
+  		<ul class="right-menu-list">
+		    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
+		    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
 		
-		<!--<li<%= ' class="highlighted"' if params[:controller] == "custom_attributes" %>>
-		    <%= link_to 'Custom Attributes', custom_attributes_url %></li> 
-		    
-		    <li<%= ' class="highlighted"' if params[:controller] == "views" %>>
-    		<%= link_to 'Directory Views', views_url %></li>
-		-->
-    <!-- <li<%= ' class="highlighted"' if params[:controller] == "training_categories" %>>
-    <%= link_to 'Training Categories', training_categories_url %></li> -->
-		
-		
-		<%- if current_user.developer? -%>
-  		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
-  		<%= link_to 'Columns', columns_path %></li>
-  		<li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
-  		<%= link_to 'ACL Permissions', permissions_path %></li>
-		<%- end -%>
-	</ul>
+  		<%- if current_user.developer? -%>
+    		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
+    		<%= link_to 'Columns', columns_path %></li>
+    		<li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
+    		<%= link_to 'ACL Permissions', permissions_path %></li>
+  		<%- end -%>
+  	</ul>
+	  <%- end -%>
 </div>
 <%= render :partial => 'students/ajax_form', :locals => {:person => Person.new} %>
 <%- end -%>
