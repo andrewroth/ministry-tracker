@@ -22,6 +22,10 @@
       :order => [:year, :month, :day]
     },
     :time => {
+      :day_names => Date::DAYNAMES,
+      :abbr_day_names => Date::ABBR_DAYNAMES,
+      :month_names => Date::MONTHNAMES,
+      :abbr_month_names => Date::ABBR_MONTHNAMES,
       :formats => {
         :default      => "%a %b %d %H:%M:%S %Z %Y",
         :time         => "%H:%M",
