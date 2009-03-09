@@ -16,7 +16,7 @@ class Post < ActiveRecord::Base
   end
 end
 
-class Widgets::ShowhideHelperTest < Test::Unit::TestCase
+class Widgets::ShowhideHelperTest < ActiveSupport::TestCase
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::UrlHelper

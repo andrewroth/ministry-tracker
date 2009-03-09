@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ViewTest < Test::Unit::TestCase
+class ViewTest < ActiveSupport::TestCase
   fixtures View.table_name, ViewColumn.table_name, Column.table_name
 
   def test_build_query_parts

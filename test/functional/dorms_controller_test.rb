@@ -4,7 +4,7 @@ require 'dorms_controller'
 # Re-raise errors caught by the controller.
 class DormsController; def rescue_action(e) raise e end; end
 
-class DormsControllerTest < Test::Unit::TestCase
+class DormsControllerTest < ActionController::TestCase
   fixtures Dorm.table_name, Group.table_name, Campus.table_name, MinistryCampus.table_name
 
   def setup

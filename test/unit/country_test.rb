@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CountryTest < Test::Unit::TestCase
+class CountryTest < ActiveSupport::TestCase
   fixtures Country.table_name
 
   # Replace this with your real tests.

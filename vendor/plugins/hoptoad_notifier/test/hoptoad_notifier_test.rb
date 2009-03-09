@@ -44,7 +44,7 @@ class HoptoadController < ActionController::Base
   end
 end
 
-class HoptoadNotifierTest < Test::Unit::TestCase
+class HoptoadNotifierTest < ActiveSupport::TestCase
   def request(action = nil, method = :get)
     @request = ActionController::TestRequest.new({
       "controller" => "hoptoad",

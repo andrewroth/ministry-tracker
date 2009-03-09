@@ -4,7 +4,7 @@ class MyHighlightingObject
   include Widgets::Highlightable
 end
 
-class HighlightableTest < Test::Unit::TestCase
+class HighlightableTest < ActiveSupport::TestCase
   
   EXPECTED_INSTANCE_METHODS = %w{highlights highlights= highlighted? highlights_on}
   

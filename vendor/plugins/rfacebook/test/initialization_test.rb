@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class InitializationTest < Test::Unit::TestCase
+class InitializationTest < ActiveSupport::TestCase
   
   def setup
     @controller = DummyController.new

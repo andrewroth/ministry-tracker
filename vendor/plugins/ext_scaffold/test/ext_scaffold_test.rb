@@ -7,7 +7,7 @@ require 'fileutils'
 # To run the full test suite, an EXTJS_LOCATION environment variable must be 
 # set to point to a filesystem path with the extracted Ext JS framework to be
 # tested against 
-class ExtScaffoldTest < Test::Unit::TestCase
+class ExtScaffoldTest < ActiveSupport::TestCase
 
   def test_project_creation_and_demo_scaffold
     # generate demo Rails project

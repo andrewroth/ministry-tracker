@@ -6,7 +6,7 @@ require 'active_record'
 $:.unshift File.dirname(__FILE__) + '/../lib'
 require File.dirname(__FILE__) + '/../init'
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   def assert_queries(num = 1)
     $query_count = 0
     yield
@@ -56,7 +56,7 @@ class RecursivelyCascadedTreeMixin < Mixin
   has_one :first_child, :class_name => 'RecursivelyCascadedTreeMixin', :foreign_key => :parent_id
 end
 
-class TreeTest < Test::Unit::TestCase
+class TreeTest < ActiveSupport::TestCase
   
   def setup
     setup_db
@@ -149,7 +149,7 @@ class TreeTest < Test::Unit::TestCase
   end           
 end
 
-class TreeTestWithEagerLoading < Test::Unit::TestCase
+class TreeTestWithEagerLoading < ActiveSupport::TestCase
   
   def setup 
     teardown_db
@@ -197,7 +197,7 @@ class TreeTestWithEagerLoading < Test::Unit::TestCase
   end 
 end
 
-class TreeTestWithoutOrder < Test::Unit::TestCase
+class TreeTestWithoutOrder < ActiveSupport::TestCase
   
   def setup                               
     setup_db

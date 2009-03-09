@@ -4,7 +4,7 @@ require 'training_categories_controller'
 # Re-raise errors caught by the controller.
 class TrainingCategoriesController; def rescue_action(e) raise e end; end
 
-class TrainingCategoriesControllerTest < Test::Unit::TestCase
+class TrainingCategoriesControllerTest < ActionController::TestCase
   fixtures TrainingCategory.table_name
 
   def setup

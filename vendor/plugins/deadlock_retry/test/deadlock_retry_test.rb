@@ -44,7 +44,7 @@ class MockModel
   include DeadlockRetry
 end
 
-class DeadlockRetryTest < Test::Unit::TestCase
+class DeadlockRetryTest < ActiveSupport::TestCase
   DEADLOCK_ERROR = "MySQL::Error: Deadlock found when trying to get lock"
   TIMEOUT_ERROR = "MySQL::Error: Lock wait timeout exceeded"
 

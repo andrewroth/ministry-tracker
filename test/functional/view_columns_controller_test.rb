@@ -4,7 +4,7 @@ require 'view_columns_controller'
 # Re-raise errors caught by the controller.
 class ViewColumnsController; def rescue_action(e) raise e end; end
 
-class ViewColumnsControllerTest < Test::Unit::TestCase
+class ViewColumnsControllerTest < ActionController::TestCase
   fixtures ViewColumn.table_name, View.table_name, Column.table_name
 
   def setup

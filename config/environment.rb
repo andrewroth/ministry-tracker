@@ -1,14 +1,11 @@
-# Be sure to restart your web server when you modify this file.
-
-# Uncomment below to force Rails into production mode when 
-# you don't control web/app server and can't set it the proper way
-# ENV['RAILS_ENV'] ||= 'production'
+# Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.1' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
@@ -33,6 +30,8 @@ Rails::Initializer.run do |config|
   config.gem  'mechanize'
   # config.gem  'rubycas-client'
   config.gem 'rfacebook'
+  
+  config.time_zone = 'UTC'
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
@@ -66,27 +65,5 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-
-# Add new inflection rules using the following format 
-# (all these examples are active by default):
-ActiveSupport::Inflector.inflections do |inflect|
-   inflect.plural /(campus|address)$/i, '\1es'
-   inflect.singular /(campus|address)es$/i, '\1'
-   inflect.uncountable %w( staff customize )
-end
-
-# Add new mime types for use in respond_to blocks:
-# Mime::Type.register "application/x-mobile", :mobile
-
-# Include your application configuration below
-
-
-# require 'exception_notifier'
-# ExceptionNotifier.sender_address = %("MinistryTrack Error" <error@ministrytrack.org>)
-# ExceptionNotifier.email_prefix = "[MinistryTrack] "
-# # FILTER_KEYS = %w(password)
-# # ExceptionNotifier.filter_keys = FILTER_KEYS
-# 
-# ExceptionNotifier.exception_recipients = %w(josh.starcher@gmail.com)
 
 

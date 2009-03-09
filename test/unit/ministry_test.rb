@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class MinistryTest < Test::Unit::TestCase
+class MinistryTest < ActiveSupport::TestCase
   fixtures Ministry.table_name, MinistryCampus.table_name, View.table_name, Campus.table_name
 
   def test_unique_campuses

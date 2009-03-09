@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class TableizeHelperTest < Test::Unit::TestCase
+class TableizeHelperTest < ActiveSupport::TestCase
   
   EXPECTED_INSTANCE_METHODS = %w{tableize}
   

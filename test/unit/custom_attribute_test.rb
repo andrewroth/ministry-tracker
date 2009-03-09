@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CustomAttributeTest < Test::Unit::TestCase
+class CustomAttributeTest < ActiveSupport::TestCase
   fixtures CustomAttribute.table_name
 
   def test_safe_name
