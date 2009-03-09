@@ -4,7 +4,7 @@ require 'developers_controller'
 # Re-raise errors caught by the controller.
 class DevelopersController; def rescue_action(e) raise e end; end
 
-class DevelopersControllerTest < Test::Unit::TestCase
+class DevelopersControllerTest < ActionController::TestCase
   fixtures User.table_name
   def setup
     @controller = DevelopersController.new

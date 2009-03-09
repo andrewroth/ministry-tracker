@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DormTest < Test::Unit::TestCase
+class DormTest < ActiveSupport::TestCase
   fixtures Dorm.table_name
 
   # Replace this with your real tests.

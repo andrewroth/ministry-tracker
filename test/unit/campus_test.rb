@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CampusTest < Test::Unit::TestCase
+class CampusTest < ActiveSupport::TestCase
   fixtures Campus.table_name
 
   def test_short_name

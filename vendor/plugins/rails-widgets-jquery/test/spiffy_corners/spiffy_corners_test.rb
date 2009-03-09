@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require File.dirname(__FILE__) + '/../test_helper'
 
-class SpiffyCornersHelperTest < Test::Unit::TestCase
+class SpiffyCornersHelperTest < ActiveSupport::TestCase
   attr_accessor :params
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper

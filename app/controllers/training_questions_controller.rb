@@ -9,7 +9,7 @@ class TrainingQuestionsController < ApplicationController
   
   def edit
     @training_question = TrainingQuestion.find(params[:id])
-    @type = @training_question.type.to_s
+    @type = @training_question.class.to_s
     respond_to do |format|
       format.js 
     end

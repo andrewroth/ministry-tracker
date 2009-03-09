@@ -4,7 +4,7 @@ require 'permissions_controller'
 # Re-raise errors caught by the controller.
 class PermissionsController; def rescue_action(e) raise e end; end
 
-class PermissionsControllerTest < Test::Unit::TestCase
+class PermissionsControllerTest < ActionController::TestCase
   fixtures Permission.table_name, Ministry.table_name
 
   def setup

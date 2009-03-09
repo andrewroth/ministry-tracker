@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class AddressTest < Test::Unit::TestCase
+class AddressTest < ActiveSupport::TestCase
   fixtures Address.table_name
 
   def test_mailing

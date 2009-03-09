@@ -1,6 +1,6 @@
 <%- campus = ministry_campus.campus -%>
 <li id="<%= dom_id(ministry_campus) %>">
-<%= link_to(h(campus.name), formatted_change_ministry_people_path(:ministry => ministry_campus.ministry_id, :format => :html), :method => :get) %> 
+<%= link_to(h(campus.name), change_ministry_people_path(:ministry => ministry_campus.ministry_id, :format => :html), :method => :get) %> 
 <%#= link_to_remote(h(campus.name), :url => details_campus_path(campus), :before => "$('#spinner').show()") %>
 <%- if @ministry.id == ministry_campus.ministry_id -%>
 	<%= link_to_remote image_tag('delete.png'), 

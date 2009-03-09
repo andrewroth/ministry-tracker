@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class PersonTest < Test::Unit::TestCase
+class PersonTest < ActiveSupport::TestCase
   fixtures Person.table_name, CustomValue.table_name, TrainingAnswer.table_name, Address.table_name, User.table_name
 
   def setup

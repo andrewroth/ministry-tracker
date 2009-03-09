@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class ViewTest < Test::Unit::TestCase
+class ViewTest < ActiveSupport::TestCase
   
   def test_extensions_are_present
     assert @view.respond_to?(:in_facebook_canvas?)

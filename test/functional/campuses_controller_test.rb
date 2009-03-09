@@ -4,7 +4,7 @@ require 'campuses_controller'
 # Re-raise errors caught by the controller.
 class CampusesController; def rescue_action(e) raise e end; end
 
-class CampusesControllerTest < Test::Unit::TestCase
+class CampusesControllerTest < ActionController::TestCase
   fixtures Campus.table_name
 
   def setup

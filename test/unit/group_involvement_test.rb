@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class GroupInvolvementTest < Test::Unit::TestCase
+class GroupInvolvementTest < ActiveSupport::TestCase
   fixtures GroupInvolvement.table_name
 
   # Replace this with your real tests.

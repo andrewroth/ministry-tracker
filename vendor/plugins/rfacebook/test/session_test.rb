@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class SessionTest < Test::Unit::TestCase
+class SessionTest < ActiveSupport::TestCase
   
   def setup
     @controller = DummyController.new

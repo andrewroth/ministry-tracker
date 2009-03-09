@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CountyTest < Test::Unit::TestCase
+class CountyTest < ActiveSupport::TestCase
   fixtures County.table_name
 
   # Replace this with your real tests.

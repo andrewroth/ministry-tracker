@@ -4,7 +4,7 @@ require 'ministries_controller'
 # Re-raise errors caught by the controller.
 class MinistriesController; def rescue_action(e) raise e end; end
 
-class MinistriesControllerTest < Test::Unit::TestCase
+class MinistriesControllerTest < ActionController::TestCase
   fixtures Ministry.table_name, MinistryInvolvement.table_name, MinistryRole.table_name, Person.table_name,
            View.table_name, Column.table_name, ViewColumn.table_name
 

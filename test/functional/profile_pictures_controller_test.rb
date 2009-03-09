@@ -4,7 +4,7 @@ require 'profile_pictures_controller'
 # Re-raise errors caught by the controller.
 class ProfilePicturesController; def rescue_action(e) raise e end; end
 
-class ProfilePicturesControllerTest < Test::Unit::TestCase
+class ProfilePicturesControllerTest < ActionController::TestCase
   fixtures Person.table_name, Ministry.table_name, MinistryCampus.table_name,
           CampusInvolvement.table_name, Address.table_name, Group.table_name,
           View.table_name, ViewColumn.table_name, Column.table_name, ProfilePicture.table_name

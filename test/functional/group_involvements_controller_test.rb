@@ -4,7 +4,7 @@ require 'group_involvements_controller'
 # Re-raise errors caught by the controller.
 class GroupInvolvementsController; def rescue_action(e) raise e end; end
 
-class GroupInvolvementsControllerTest < Test::Unit::TestCase
+class GroupInvolvementsControllerTest < ActionController::TestCase
   fixtures GroupInvolvement.table_name, Person.table_name, Group.table_name, Address.table_name
 
   def setup

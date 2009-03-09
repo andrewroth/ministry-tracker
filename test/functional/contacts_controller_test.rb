@@ -4,7 +4,7 @@ require 'contacts_controller'
 # Re-raise errors caught by the controller.
 class ContactsController; def rescue_action(e) raise e end; end
 
-class ContactsControllerTest < Test::Unit::TestCase
+class ContactsControllerTest < ActionController::TestCase
   def setup
     @controller = ContactsController.new
     @request    = ActionController::TestRequest.new

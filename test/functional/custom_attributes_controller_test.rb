@@ -4,7 +4,7 @@ require 'custom_attributes_controller'
 # Re-raise errors caught by the controller.
 class CustomAttributesController; def rescue_action(e) raise e end; end
 
-class CustomAttributesControllerTest < Test::Unit::TestCase
+class CustomAttributesControllerTest < ActionController::TestCase
   fixtures CustomAttribute.table_name
 
   def setup

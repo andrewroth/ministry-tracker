@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class MinistryCampusTest < Test::Unit::TestCase
+class MinistryCampusTest < ActiveSupport::TestCase
   fixtures MinistryCampus.table_name
 
   def test_comparison

@@ -5,7 +5,7 @@
 </ul>
 <br />
 
-<%- form_remote_tag :url => formatted_developers_path(:js), :method => :post do -%>
+<%- form_remote_tag :url => developers_path(:format => :js), :method => :post do -%>
   Email: <%= text_field_tag :email %>
   <%= submit_tag 'Add Developer' %>
 <%- end -%>

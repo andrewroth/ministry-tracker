@@ -3,7 +3,7 @@ require "action_controller/test_process"
 require "action_controller/integration"
 
 # helpers for all RFacebook unit tests
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   
   def assert_rfacebook_overrides_method(object, methodSymbol)
     # by convention, RFacebook uses the alias_method_chain on certain methods
