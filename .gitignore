@@ -4,6 +4,7 @@ tmp/**/*
 config/database.yml
 config/mappings.yml
 config/amazon_s3.yml
+config/memcached.yml
 .DS_Store
 doc/api
 coverage
@@ -12,5 +13,6 @@ public/imports
 public/javascripts/all.js
 public/stylesheets/all.css
 config/initializers/uscm_prod.rb
+config/initializers/cache_money.rb
 config/facebook.yml
 db/schema.rb

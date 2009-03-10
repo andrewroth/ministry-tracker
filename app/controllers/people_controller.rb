@@ -406,7 +406,8 @@ class PeopleController < ApplicationController
     
     def setup_vars
       setup_dorms
-      @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
+      @profile_picture = @person.profile_picture || ProfilePicture.new
+      @profile_picture.person_id = @person.id
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
     end

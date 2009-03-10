@@ -1,5 +1,6 @@
 class Ministry < ActiveRecord::Base
   load_mappings
+  index _(:id) if $cache
   
   acts_as_tree :order => _(:name), :counter_cache => true
   
