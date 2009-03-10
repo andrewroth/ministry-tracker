@@ -64,17 +64,16 @@
 <%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
   <%= hidden_field_tag :times %>
   <%= f.submit 'Save Timetable' %>
-  <%#= button_to_function('test', "set_times_field()") %>
 <%- end -%><br/>
-<%= radio_button_tag 'paint', 0, true, :id => 'bad' %> Bad 
-<%= radio_button_tag 'paint', 0.3, false, :id => 'poor' %> Poor 
-<%= radio_button_tag 'paint', 0.7, false, :id => 'ok' %> OK 
-<%= radio_button_tag 'paint', 1, false, :id => 'good' %> Good
+<%= radio_button_tag 'paint', Timetable::BAD_WEIGHT, true, :id => Timetable::BAD_CLASS %> Bad 
+<%= radio_button_tag 'paint', Timetable::POOR_WEIGHT, false, :id => Timetable::POOR_CLASS %> Poor 
+<%= radio_button_tag 'paint', Timetable::OK_WEIGHT, false, :id => Timetable::OK_CLASS %> OK 
+<%= radio_button_tag 'paint', Timetable::GOOD_WEIGHT, false, :id => Timetable::GOOD_CLASS %> Good
 <%= render :partial => 'timetable' %>
 <script>
   var down = false;
-  var css = 'bad';
-  var possible_classes = ['bad', 'poor', 'ok', 'good']
+  var css = '<%= Timetable::BAD_CLASS %>';
+  var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>']
   var direction = 'on';
   
   $("input[name='paint']").click(function() {
@@ -83,28 +82,17 @@
   
   $('table#schedule td:not(.time)').mousedown(function() {
     down = true;
-    // direction = $(this).hasClass(css) ? 'off' : 'on';
-    // $(this).toggleClass(css);
-    // if($(this).hasClass(css)) {
-      // direction = 'off';
     for(i=0; i < possible_classes.length; i++) {
       $(this).removeClass(possible_classes[i]);
     }
-    // $(this).removeClass()
-    // } else {
-      // direction = 'on';
     $(this).addClass(css)
   });
   $('table#schedule td:not(.time)').mouseover(function() {
     if(down) {
-      // if(direction == 'off') {
       for(i=0; i < possible_classes.length; i++) {
         $(this).removeClass(possible_classes[i]);
       }
-        // $(this).removeClass()
-      // } else {
-        $(this).addClass(css)
-      // }
+      $(this).addClass(css)
     }
   });
   $('body').mouseup(function() {

@@ -1,24 +1,26 @@
 <%- if people.length > 0 -%>
 	Click on the name of the person you'd like to add:<br />
-	<table cellpadding="0" cellspacing="0" class="directorytable">
-	  <tr><th>Name</th><th>Email</th></tr>
-	<%- people.each do |person| -%>
-	  <tr class="<%= cycle('nohighlight','highlight') %>">
-	    <td>
-	      <%- append = "<p id=\"person_type_#{person.id}\">#{person.full_name} | "
-            append += link_to_function('remove', "$(this).parent().remove();$(\\'##{type}_#{person.id}\\').remove();", :class => 'cancel') 
-            append += '</p>' 
-            id_append = hidden_field_tag("#{type}_ids[]", person.id, :id => "#{type}_#{person.id}") %>
-  			<%= link_to_function(person.full_name, "$('##{type}').append('#{append}');
-                                          			$('#ids').append('#{id_append}');
-  			                                        $('##{type}_results').hide();
-  			                                        $('#search_#{type}').val('');
-  			                                        $('#person_#{type}_#{person.id}').highlight()") %>
-  		</td>
-  		<td><%= person.current_address.email if person.current_address %></td>
-		</tr>
-	<%- end -%>
-	</table>
+	<div class="resultsbox">
+  	<table cellpadding="0" cellspacing="0" class="directorytable">
+  	  <tr><th>Name</th><th>Email</th></tr>
+  	<%- people.each do |person| -%>
+  	  <tr class="<%= cycle('nohighlight','highlight') %>">
+  	    <td>
+  	      <%- append = "<p id=\"person_type_#{person.id}\">#{person.full_name} | "
+              append += link_to_function('remove', "$(this).parent().remove();$(\\'##{type}_#{person.id}\\').remove();", :class => 'cancel') 
+              append += '</p>' 
+              id_append = hidden_field_tag("#{type}_ids[]", person.id, :id => "#{type}_#{person.id}") %>
+    			<%= link_to_function(person.full_name, "$('##{type}').append('#{append}');
+                                            			$('#ids').append('#{id_append}');
+    			                                        $('##{type}_results').hide();
+    			                                        $('#search_#{type}').val('');
+    			                                        $('#person_#{type}_#{person.id}').highlight()") %>
+    		</td>
+    		<td><%= person.current_address.email if person.current_address %></td>
+  		</tr>
+  	<%- end -%>
+  	</table>
+  </div>
 <%- else -%>
 	<br />
 	<strong>Sorry, I couldn't find anyone by that name. Please try again.</strong>

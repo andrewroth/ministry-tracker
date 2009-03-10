@@ -813,3 +813,6 @@ html[xmlns] .clearfix {
 .accordion_instructions img{margin-bottom:-3px;}
 .ui-state-active .accordion_instructions {visibility: hidden;}
 .accordion .title{cursor:pointer;}
+.u {text-decoration:underline}
+.b {font-weight:bold}
+.resultsbox {max-height:200px;overflow:auto;}

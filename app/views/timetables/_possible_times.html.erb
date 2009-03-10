@@ -1,0 +1,46 @@
+<%- unless @no_timetable.empty? -%>
+  <div style="border:1px solid black;padding:5px;margin-bottom:10px">
+    <h4 class="warning">Warning: we're missing timetables for the following people:</h4>
+    <ul>
+      <%- @no_timetable.each do |person| -%>
+        <li><%= person.full_name %></li>
+      <%- end -%>
+    </ul>
+  </div>
+<%- end -%>
+<%- @groups.each_with_index do |group, i| -%>
+<div style="width:400px">
+  Option <%= i + 1 %>
+  <table border="1">
+    <tbody>
+      <tr>
+        <td>&nbsp;</td>
+        <%- group.each do |time| -%>
+          <%- hours = time[:time] / 3600
+              mins = (time[:time] - (hours * 3600)) / 60 -%>
+          <td><%= Date::ABBR_DAYNAMES[time[:day]] %> <%= hours %>:<%= sprintf("%02d", mins) %></td>
+        <%- end -%>
+      </tr>
+      <%- @people.each do |person| 
+          free_times = Timetable.setup_timetable(person) -%>
+        <tr>
+          <td><%= person.full_name %></td>
+          <%- group.each do |time| -%>
+            <%- if free_times.empty? -%>
+              <td align="center" >OK</td>
+            <%- else -%>
+              <%- person_time = free_times[time[:day]][time[:time]] -%>
+              <%- css_class =  person_time ? person_time.css_class : 'ok' -%>
+              <%- css_class += ' u' if time[:members].include?(person.id) -%>
+              <%- css_class += ' b' if @leader_ids.include?(person.id) -%>
+              <td align="center" width="60px" class="<%= css_class %> "><%= person_time ? person_time.css_class.titleize : 'Ok' %></td>
+            <%- end -%>
+          <%- end -%>
+        </tr>
+      <%- end -%>
+    </tbody>
+  </table>
+</div>
+<br/>
+<%- end if @groups -%>
+<%= link_to_function("Go back and try again", "$('#results').fade();$('#timetable_search').appear()") %>
