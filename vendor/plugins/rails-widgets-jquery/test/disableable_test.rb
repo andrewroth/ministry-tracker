@@ -4,7 +4,7 @@ class MyDisablingObject
   include Widgets::Disableable
 end
 
-class DisableableTest < Test::Unit::TestCase
+class DisableableTest < ActiveSupport::TestCase
   
   EXPECTED_INSTANCE_METHODS = %w{disabled_condition disabled_condition= disabled? disabled_if}
   

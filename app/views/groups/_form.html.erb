@@ -1,16 +1,25 @@
 <%= error_messages_for 'group' %>
 <%- remote_form_for @group do |f| -%>
   <table border="0" cellspacing="5" cellpadding="5">
+    		<tr><th colspan="2" class="title"><%= @group.new_record? ? 'Create a New Group' : 'Editing ' + @group.name %></th></tr>
     <tr>
       <td style="vertical-align:top;">
     	<table border="0" cellspacing="5" cellpadding="5">
-    		<tr><th colspan="2"><%= @group.new_record? ? 'New Group' : @group.name %></th></tr>
+    	  <tr>
+    	    <td>Type: </td>
+          <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
+    	  </tr>
     		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
     		<tr>
     			<td>Campus: </td>
     			<td>
     				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
-    				<%= observe_field(:group_campus_id, :url => list_dorms_url(), :update => 'group_dorm_id', :with => "campus_id") %>
+    				<%= spinner('c') %>
+    				<%= observe_field(:group_campus_id, :url => list_dorms_url(), 
+    				                                    :update => 'group_dorm_id', 
+    				                                    :with => "campus_id",
+    				                                    :loading => "$('#spinnerc').show()",
+    				                                    :complete => "$('#spinnerc').hide()") %>
     			</td>
     		</tr>
     		<%- dorms =  @campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : [] -%>
@@ -18,11 +27,11 @@
     		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
     		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
     		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
-    		<tr><td>Zip: </td><td><%= f.text_field :zip %></td></tr>
     	</table>
   	  </td>
   	  <td style="vertical-align:top;">
   	    <table border="0" cellspacing="5" cellpadding="5">
+      		<tr><td><%= t(:zip, :default => 'Zip') %>: </td><td><%= f.text_field :zip %></td></tr>
       		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
       		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
       		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
@@ -30,7 +39,6 @@
       		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES, :include_blank => true %></td></tr>
   	    </table>
-  	    <%= link_to_function("Click here for a good time", "tb_show('Time Picker', '#TB_inline?width=450&height=300&inlineId=timePicker')", :class => 'thidckbox') %>
   	  </td>
   	</tr>
   </table>

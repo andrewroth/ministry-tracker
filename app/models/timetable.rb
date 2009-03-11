@@ -4,12 +4,22 @@ class Timetable < ActiveRecord::Base
   EARLIEST = 6.hours.to_i
   LATEST = 22.hours.to_i
   INTERVAL = 30.minutes.to_i
+  BAD_WEIGHT = 0.0
+  POOR_WEIGHT = 0.3
+  OK_WEIGHT = 0.7
+  GOOD_WEIGHT = 1.0
+  
+  BAD_CLASS = 'bad'
+  POOR_CLASS = 'poor'
+  OK_CLASS = 'ok'
+  GOOD_CLASS = 'good'
+  
   DISPLAY_TOP = 5
   
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   has_many :free_times, :class_name => "FreeTime", :foreign_key => _(:timetable_id, :free_time), :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
   
-  def self.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, people, iteration = 1, scored_times = [])
+  def self.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, people, leader_ids, assigned = [], iteration = 1, scored_times = [])
     # if scored_times.empty?
       possible_times.each_with_index do |time_slot, i|
         time_slot[:score] = calculate_score(time_slot, user_weights, timetables, num_blocks, people)
@@ -25,6 +35,39 @@ class Timetable < ActiveRecord::Base
       scored_times.each_with_index do |time_slot, i|
         break if i >= Timetable::DISPLAY_TOP
         time_slot[:user_weights] = adjust_weights(time_slot, user_weights, timetables, num_blocks, people)
+        people_weights = ActiveSupport::OrderedHash.new
+        time_slot[:user_weights].each_with_index do |uw, i|
+          people_weights[people[i].id] = uw
+        end
+        # time_slot[:user_weights] = people_weights
+        ordered_people = people_weights.sort {|x, y| x[1] <=> y[1]}.collect {|pw| pw[0]}
+        each_group = (people.length.to_f / needed_groups.to_f).floor
+        if iteration == 1
+          pick = each_group + (people.length % needed_groups)  # Subtract leader
+        else
+          pick = each_group # Subtract leader
+        end
+        members = []
+        # Pick a leader for this group
+        ordered_people.each do |person|
+          if leader_ids.include?(person) && !assigned.include?(person)
+            members << ordered_people.delete(person)
+            break
+          end
+        end
+        ordered_people.each do |person|
+          members << person unless leader_ids.include?(person) || assigned.include?(person) || members.include?(person)
+          break if members.length == pick
+        end
+        # members += ordered_people[0..(pick - 1)]
+        # Set the weight to 0 for all the members we just picked
+        time_slot[:user_weights].each_with_index do |uw, i|
+          time_slot[:user_weights][i] = members.include?(people[i].id) ? 0.0 : uw
+        end
+        # raise time_slot[:user_weights].inspect
+        # logger.debug(members.collect {|id| Person.find(id)}.collect(&:full_name).inspect)
+        time_slot[:members] = members
+        time_slot[:assigned] = members + assigned
         best_slots << time_slot
       end
     # else
@@ -36,13 +79,12 @@ class Timetable < ActiveRecord::Base
   def self.setup_timetable(person)
     # Create a hash of free times for outut rendering
     @free_times = [Hash.new, Hash.new, Hash.new, Hash.new, Hash.new, Hash.new, Hash.new]
-    person.free_times.each do |ft|
-      ft.start_time.step((ft.end_time + (ft.end_time % Timetable::INTERVAL)) - Timetable::INTERVAL, Timetable::INTERVAL) do |time|
-        # weight = ft.css_class.present? ? ft.weight : 1
-        @free_times[ft.day_of_week][time] =  ft
+    unless person.free_times.empty?
+      person.free_times.each do |ft|
+        ft.start_time.step((ft.end_time + (ft.end_time % Timetable::INTERVAL)) - Timetable::INTERVAL, Timetable::INTERVAL) do |time|
+          @free_times[ft.day_of_week][time] =  ft
+        end
       end
-      # We don't want the end time in the array
-      # @free_times[ft.day_of_week].pop
     end
     @free_times
   end
@@ -60,7 +102,11 @@ class Timetable < ActiveRecord::Base
     (0..num_blocks).each do |block_offset|
       time = time_slot[:time] + (block_offset * Timetable::INTERVAL)
       unless time >= LATEST
-        time_score = timetables[people[person_index]][time_slot[:day]][time].weight.to_f
+        if timetables[people[person_index]][time_slot[:day]][time]
+          time_score = timetables[people[person_index]][time_slot[:day]][time].weight.to_f
+        else
+          time_score = 0
+        end
         user_score *= time_score #if time_score
       end
     end
@@ -85,12 +131,24 @@ class Timetable < ActiveRecord::Base
     end
 
     # normalize weights so sum_of(uw) = 1
-    raise user_weights.inspect if user_weights.sum == 0
+    # if the weights are all zero (because all the members have been assigned), reset to default weights
+    if user_weights.sum == 0
+      user_weights.each_with_index do |user_weight, index|
+        user_weights[index] = 1.0 / people.length
+      end
+    end
     factor = 1 / user_weights.sum
     # puts factor
     # puts user_weights.sum
     user_weights.each_with_index do |w, i|
       user_weights[i] = w * factor
+    end
+  end
+  
+  def self.initialize_timetable(person)
+    person.timetable ||= Timetable.new
+    (0..6).each do |i|
+      person.timetable.free_times.create(:start_time => EARLIEST, :end_time => LATEST, :day_of_week => i, :weight => OK_WEIGHT, :css_class => OK_CLASS) 
     end
   end
 end

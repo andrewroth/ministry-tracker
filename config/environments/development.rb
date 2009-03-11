@@ -1,7 +1,3 @@
-# $map_hash = {}
-# if File.exists?( RAILS_ROOT + '/config/mappings.yml' )
-#   $map_hash = File.open( RAILS_ROOT + '/config/mappings.yml' ) { |file| YAML::load(file) }
-# end
 # Settings specified here will take precedence over those in config/environment.rb
 
 # In the development environment your application's code is reloaded on

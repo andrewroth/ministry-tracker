@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/:controller/:action'
 end
 
-class NestedLayoutsTest < Test::Unit::TestCase
+class NestedLayoutsTest < ActiveSupport::TestCase
   def setup
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

@@ -1,5 +1,6 @@
 class Ministry < ActiveRecord::Base
   load_mappings
+  index _(:id) if $cache
   
   acts_as_tree :order => _(:name), :counter_cache => true
   
@@ -17,8 +18,7 @@ class Ministry < ActiveRecord::Base
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
   has_many :groups, :dependent => :destroy
-  # has_many :bible_studies, :dependent => :destroy
-  # has_many :teams, :dependent => :destroy
+  has_many :group_types, :class_name => "GroupType", :foreign_key => _(:ministry_id, :group_type)
   has_many :custom_attributes, :dependent => :destroy
   has_many :profile_questions, :dependent => :destroy
   has_many :involvement_questions, :dependent => :destroy

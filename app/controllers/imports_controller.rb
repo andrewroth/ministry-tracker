@@ -1,5 +1,5 @@
 class ImportsController < ApplicationController
-  before_filter :ministry_leader_filter
+  before_filter :authorized?
   
   def new
     @import = Import.new

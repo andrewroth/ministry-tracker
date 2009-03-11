@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class TabnavHelperTest < Test::Unit::TestCase
+class TabnavHelperTest < ActiveSupport::TestCase
     
   EXPECTED_INSTANCE_METHODS = %w{tabnav render_tabnav add_tab}
   

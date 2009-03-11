@@ -15,7 +15,8 @@
 											 	 :before => "$('#spinner').show()"},
 												 {:class => "action-button"} %>
 		<%= spinner %>
-		<br />
+	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@ministry_involvements.collect(&:ministry).collect {|m| [m.name, m.id]}, @ministry.id)) %>
+	  <%= observe_field(:current_ministry, :function => "$.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + value})" ) %>
 	</div>
  	<div id="two_col">
     <script type="text/javascript">
@@ -92,7 +93,7 @@
           //       
           // // // What to do when a ministry is clicked
           tree.on('click', function(e){
-            $.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + e.id});
+            // $.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + e.id});
             $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '/ministry_campuses/list'});
             // ajax.request({
             //   url:'/ministry_campuses/list',

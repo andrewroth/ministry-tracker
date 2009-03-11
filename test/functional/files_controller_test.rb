@@ -5,7 +5,7 @@ require 'uploads'
 # Re-raise errors caught by the controller.
 class FilesController; def rescue_action(e) raise e end; end
 
-class FilesControllerTest < Test::Unit::TestCase
+class FilesControllerTest < ActionController::TestCase
   def setup
     @controller = FilesController.new
     @request    = ActionController::TestRequest.new

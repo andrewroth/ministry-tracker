@@ -1,0 +1,2 @@
+page[dom_id(@group_type)].fade
+page[:spinnergt].hide

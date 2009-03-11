@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class ModelTest < Test::Unit::TestCase
+class ModelTest < ActiveSupport::TestCase
     
   def test_acts_as_facebook_user_is_present
     assert @model.class.respond_to?(:acts_as_facebook_user)

@@ -1,0 +1,4 @@
+page[:group_type_form].replace_html :partial => 'remote_form', :locals => {:group_type => @group_type}
+page[:group_type_form].blind_down
+page[:spinnergt].hide
+page[:new_group_type_link].hide

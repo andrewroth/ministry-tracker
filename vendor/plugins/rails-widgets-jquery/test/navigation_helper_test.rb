@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class NavigationHelperTest < Test::Unit::TestCase
+class NavigationHelperTest < ActiveSupport::TestCase
   attr_accessor :params
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper

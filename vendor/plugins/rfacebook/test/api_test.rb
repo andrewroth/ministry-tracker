@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class APITest < Test::Unit::TestCase
+class APITest < ActiveSupport::TestCase
     
   def test_fbsession_methods_are_present
     assert @controller.fbsession.respond_to?(:session_user_id)

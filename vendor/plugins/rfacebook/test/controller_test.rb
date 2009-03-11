@@ -3,7 +3,7 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class ControllerTest < Test::Unit::TestCase
+class ControllerTest < ActiveSupport::TestCase
     
   def test_before_filters_are_present
     assert(@controller.respond_to?(:require_facebook_login))

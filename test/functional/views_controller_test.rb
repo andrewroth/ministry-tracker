@@ -4,7 +4,7 @@ require 'views_controller'
 # Re-raise errors caught by the controller.
 class ViewsController; def rescue_action(e) raise e end; end
 
-class ViewsControllerTest < Test::Unit::TestCase
+class ViewsControllerTest < ActionController::TestCase
   fixtures View.table_name, Ministry.table_name, ViewColumn.table_name
 
   def setup

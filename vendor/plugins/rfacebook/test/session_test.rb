@@ -3,28 +3,28 @@ require "test/unit"
 require "rubygems"
 require "mocha"
 
-class SessionTest < Test::Unit::TestCase
+class SessionTest < ActiveSupport::TestCase
   
   def setup
     @controller = DummyController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     
-    @cgi_session_placeholder = CGI::Session.allocate
+    @cgi_session_placeholder = ActionController::Session.allocate
     
     # RFacebook extends a certain subset of Rails session stores,
     # so we must test them each individually
     @sessionStoresToTest = [
-      CGI::Session::PStore,
-      CGI::Session::ActiveRecordStore,
-      CGI::Session::DRbStore,
-      CGI::Session::FileStore,
-      CGI::Session::MemoryStore
+      ActionController::Session::PStore,
+      ActionController::Session::ActiveRecordStore,
+      ActionController::Session::DRbStore,
+      ActionController::Session::FileStore,
+      ActionController::Session::MemoryStore
     ]
     
     begin
       # optionally check MemCacheStore (only if memcache-client is installed)
-      @sessionStoresToTest << CGI::Session::MemCacheStore
+      @sessionStoresToTest << ActionController::Session::MemCacheStore
     rescue Exception => e
     end
     

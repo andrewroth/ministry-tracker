@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090125143621) do
+ActiveRecord::Schema.define(:version => 20090307210953) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -254,6 +254,11 @@ ActiveRecord::Schema.define(:version => 20090125143621) do
     t.string   "group_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "mentor_priority"
+    t.boolean  "public"
+    t.integer  "unsuitability_leader"
+    t.integer  "unsuitability_coleader"
+    t.integer  "unsuitability_participant"
   end
 
   create_table "groups", :force => true do |t|
@@ -269,10 +274,10 @@ ActiveRecord::Schema.define(:version => 20090125143621) do
     t.integer "dorm_id"
     t.integer "ministry_id"
     t.integer "campus_id"
-    t.string  "type"
     t.integer "start_time"
     t.integer "end_time"
     t.integer "day"
+    t.integer "group_type_id"
   end
 
   add_index "groups", ["campus_id"], :name => "index_groups_on_campus_id"

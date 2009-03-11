@@ -1,9 +1,11 @@
 class Group < ActiveRecord::Base
   load_mappings
-  self.inheritance_column = 'false'
+  validates_presence_of :name
+  validates_presence_of :group_type
   
   belongs_to :ministry
   belongs_to :campus
+  belongs_to :group_type
   
   has_many :group_involvements
   has_many :people, :through => :group_involvements

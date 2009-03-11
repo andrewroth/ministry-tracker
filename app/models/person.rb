@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
   include ActiveRecord::ConnectionAdapters::Quoting
   load_mappings
+  index _(:id) if $cache
   
   # Campus Relationships
   has_many :campus_involvements, :include => [:ministry, :campus]
@@ -229,7 +230,7 @@ class Person < ActiveRecord::Base
   end
   
   def import_gcx_profile(proxy_granting_ticket)
-    service_uri = "http://www.mygcx.org/system/report/profile/attributes"
+    service_uri = "https://www.mygcx.org/system/report/profile/attributes"
     proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).ticket
     ticket = CASClient::ServiceTicket.new(proxy_ticket, service_uri)
     return false unless proxy_ticket
@@ -242,6 +243,7 @@ class Person < ActiveRecord::Base
       conn.get("#{uri}")
     end
     doc = Hpricot(raw_res.body)
+    return false if (doc/'attribute').empty?
     (doc/'attribute').each do |attrib|
       if attrib['value'].present?
         current_address.email = attrib['value'].downcase if attrib['displayname'] == 'emailAddress' && current_address

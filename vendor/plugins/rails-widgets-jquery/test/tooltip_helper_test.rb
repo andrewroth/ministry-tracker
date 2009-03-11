@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-class TooltipHelperTest < Test::Unit::TestCase
+class TooltipHelperTest < ActiveSupport::TestCase
   attr_accessor :params
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper

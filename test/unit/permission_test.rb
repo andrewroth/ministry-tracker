@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class PermissionTest < Test::Unit::TestCase
+class PermissionTest < ActiveSupport::TestCase
   fixtures Permission.table_name
 
   # Replace this with your real tests.

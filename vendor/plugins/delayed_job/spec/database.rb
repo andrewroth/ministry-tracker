@@ -3,6 +3,7 @@ $:.unshift(File.dirname(__FILE__) + '/../../rspec/lib')
 
 require 'rubygems'
 require 'active_record'
+gem 'sqlite3-ruby'
 
 require File.dirname(__FILE__) + '/../init'
 require 'spec'
@@ -34,5 +35,8 @@ end
 
 # Purely useful for test cases...
 class Story < ActiveRecord::Base
-  def tell; text; end
+  def tell; text; end       
+  def whatever(n, _); tell*n; end
+  
+  handle_asynchronously :whatever
 end

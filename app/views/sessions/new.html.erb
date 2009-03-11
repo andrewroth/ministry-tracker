@@ -1,7 +1,11 @@
 <div class="clearfix">
-  <% form_tag session_path, :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
+  <%# form_tag session_path, :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
+  <form enctype="application/x-www-form-urlencoded" method="post" action="https://signin.mygcx.org/cas/login?service=<%= new_session_url %>" class="right" id="form_login">
   <div class="login_sector">
-    <div class="login_prompt"><b>Login</b>:</div>
+    <!-- <div class="login_prompt"><b>Login</b>:</div> -->
+    <div class="clearfix">
+      <%= image_tag('gcx.png') %>
+    </div>
     <div class="clearfix">
       <label for="username">Username:</label>
       <%= text_field_tag('username', params[:username], :class => "inputtext") %>
@@ -18,19 +22,20 @@
 
     <%= submit_tag 'Log in' %>
   </div>
-  <% end -%>
+  </form>
+  <%# end -%>
 
-  <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+  <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
   <div class="login_sector_fb">
     <div class="login_prompt">Or <b>login</b> with Facebook:</div>
     <fb:login-button size="medium" background="light" length="long" onlogin="facebook_onlogin_ready();"></fb:login-button>
-  </div>
+  </div> -->
 </div>
 
-     <script src="/javascripts/fbconnect.js" type="text/javascript"></script>
+<!--      <script src="/javascripts/fbconnect.js" type="text/javascript"></script>
       <script type="text/javascript">
-       FB.init("<%= FACEBOOK["key"] %>", "/facebook/xd_receiver.htm");
+       FB.init("<%#= FACEBOOK["key"] %>", "/facebook/xd_receiver.htm");
      </script>
-     <script type="text/javascript">//window.onload = function() { facebook_onload(false); };</script> 
+     <script type="text/javascript">//window.onload = function() { facebook_onload(false); };</script>  -->
 
   </body></html>

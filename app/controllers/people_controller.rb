@@ -175,7 +175,7 @@ class PeopleController < ApplicationController
               @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role_id])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
-                UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
+                UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)
               end
             end
           else
@@ -406,7 +406,8 @@ class PeopleController < ApplicationController
     
     def setup_vars
       setup_dorms
-      @profile_picture = @person.profile_picture || ProfilePicture.new(:person_id => @person.id)
+      @profile_picture = @person.profile_picture || ProfilePicture.new
+      @profile_picture.person_id = @person.id
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
     end

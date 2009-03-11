@@ -1,6 +1,5 @@
 class FilesController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :only => :progress
-  session :off, :only => :progress
   
   # def progress
   #   render :update do |page|

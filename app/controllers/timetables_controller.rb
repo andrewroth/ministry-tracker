@@ -1,5 +1,7 @@
 require 'json'
+class BadParams < StandardError; end
 class TimetablesController < ApplicationController
+  include ActionView::Helpers::TextHelper
   layout 'people'
   before_filter :get_timetable, :except => [:create, :index]
   before_filter :setup_timetable, :only => [:show, :edit]
@@ -44,24 +46,41 @@ class TimetablesController < ApplicationController
   end
   
   def search
-    person_ids = []
-    person_ids += params[:member_ids] if params[:member_ids]
-    person_ids += params[:leader_ids] if params[:leader_ids]
-    person_ids += params[:co_leader_ids] if params[:co_leader_ids]
+    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : 1
+    params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
+    
+    # Check input parameters
+    if params[:member_ids].blank?
+      @error = 'You must choose at least one member to be in this group.'
+      raise BadParams
+    end
+    if params[:leader_ids].blank?
+      @error = 'You must choose at least one leader to lead this group.'
+      raise BadParams
+    end
+    if params[:max_groups] > params[:leader_ids].length * params[:groups_per_leader]
+      @error = "You don't have enough leaders to lead #{pluralize(params[:max_groups], 'group')}. Either add more leaders, or increase the number of groups per leader."
+      raise BadParams
+    end
+    @member_ids = params[:member_ids] ? Array.wrap(params[:member_ids]).map(&:to_i) : []
+    @co_leader_ids = params[:co_leader_ids] ? Array.wrap(params[:co_leader_ids]).map(&:to_i) : []
+    @leader_ids = params[:leader_ids] ? Array.wrap(params[:leader_ids]).map(&:to_i) : []
+    person_ids = @member_ids + @co_leader_ids + @leader_ids
     unless person_ids.empty?
       @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
       timetables = {}
       @no_timetable = []
       @people.each_with_index do |person, i|
-        if person.free_times == []
+        if person.free_times.empty?
           @no_timetable << person
-        else
-          timetables[person] = Timetable.setup_timetable(person)
+          Timetable.initialize_timetable(person)
         end
+        timetables[person] = Timetable.setup_timetable(person)
       end
-      @people -= @no_timetable
+      # @people -= @no_timetable
       unless @people.empty?
-        num_blocks = 1.hour / Timetable::INTERVAL
+        num_blocks = (params[:length].to_f.hours || 1.hour) / Timetable::INTERVAL
+        num_blocks = num_blocks > 0 ? num_blocks : 1
         user_weights = []
         midnight = Time.today.beginning_of_day
         stop_time = midnight + (Timetable::LATEST - (Timetable::INTERVAL * num_blocks))
@@ -80,49 +99,66 @@ class TimetablesController < ApplicationController
           user_weights[i] = 1.0 / @people.length
         end
 
-        logger.debug "Initial weights: \n#{user_weights.inspect}\n\n"
+        # logger.debug "Initial weights: \n#{user_weights.inspect}\n\n"
   
-        needed_groups = 3
+        needed_groups = params[:max_groups]
 
-        top_times = Timetable.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, @people)
+        top_times = Timetable.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, @people, @leader_ids)
 
-        if needed_groups > 1
-          groups = []
+        groups = []
+        # if needed_groups > 1
           top_times.each_with_index do |top_time, i|
             groups << [top_time]
             possible_times -= [top_time]
           end
-        end
+        # end
 
         # pp groups
 
         (2..needed_groups).each do |i|
           # Otherwise, just go with the top pick and recurse from there
           groups.each_with_index do |group, gi|
-            time = Timetable.get_top_times(group[i - 2][:user_weights], timetables, num_blocks, needed_groups, possible_times, @people, i)[0]
+            time = Timetable.get_top_times(group[i - 2][:user_weights], timetables, num_blocks, needed_groups, possible_times, @people, @leader_ids, group[i - 2][:assigned], i)[0]
             possible_times -= [time]
             groups[gi] << time
           end
         end
 
-        groups.each_with_index do |group, i|
-          logger.debug "Options #{i + 1}"
-          group.each do |time_slot|
-            logger.debug "#{time_slot[:day]} - #{time_slot[:time] / 60.0 / 60}: #{time_slot[:score]}"
-          end
-        end
+        # groups.each_with_index do |group, i|
+        #   logger.debug "Options #{i + 1}"
+        #   group.each do |time_slot|
+        #     logger.debug "#{time_slot[:day]} - #{time_slot[:time] / 60.0 / 60}: #{time_slot[:score]}"
+        #   end
+        # end
         @groups = groups
       end
     end
+    
     respond_to do |wants|
       wants.js  do
         render :update do |page|
           page[:results].replace_html :partial => 'possible_times'
           page[:results].show
           page[:spinnersubmit].hide
+          page[:timetable_search].hide
         end
       end
     end
+  rescue BadParams
+    respond_to do |wants|
+      wants.js do
+        render :update do |page|
+          page[:results].hide
+          page[:spinnersubmit].hide
+          page.alert(@error)
+        end
+      end
+    end
+  ensure
+    # Clear fake timetables
+    @no_timetable.each do |person|
+      person.timetable.free_times.destroy_all
+    end if @no_timetable
   end
   
   protected

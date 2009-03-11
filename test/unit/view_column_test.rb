@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ViewColumnTest < Test::Unit::TestCase
+class ViewColumnTest < ActiveSupport::TestCase
   fixtures ViewColumn.table_name, View.table_name, Column.table_name
 
   def test_create_view_column
