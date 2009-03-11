@@ -325,7 +325,7 @@ class PeopleController < ApplicationController
 	   		conditions[1] << name+'%'
 	   		conditions[1] << name+'%' 
 	   	end
-	   	if params[:filter_ids]
+	   	if params[:filter_ids].present?
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids].split(',')
    	  end

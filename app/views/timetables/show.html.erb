@@ -1,7 +1,12 @@
 <%- if @me == @timetable.person || authorized?('edit', 'timetables') -%>
-  <div class="butNormal">
+  <div class="butNormal" style="margin-top:20px;">
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
   </div>
 <%- end -%>
+<br/><br/>
+<a href="" class="badhead"></a>
+<a href="" class="poorhead"></a>
+<a href="" class="okayhead"></a>
+<a href="" class="goodhead"></a>
 <br/><br/>
 <%= render :partial => 'timetable' %>
