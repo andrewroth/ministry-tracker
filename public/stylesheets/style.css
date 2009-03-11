@@ -769,10 +769,10 @@ margin-bottom:10px;
 .goodhead {background:url(/images/status_good.png) 50% 50% #5CE40A;}
 
 .headselected,
-.badhead:hover,
-.poorhead:hover,
-.okayhead:hover,
-.goodhead:hover {border:2px solid gray;}
+a.badhead:hover,
+a.poorhead:hover,
+a.okayhead:hover,
+a.goodhead:hover {border:2px solid gray;}
 
 .statusheadwrap {height:24px; width:200px; background:none; display:block;margin:10px 0 10px 0; clear:both;}
 
