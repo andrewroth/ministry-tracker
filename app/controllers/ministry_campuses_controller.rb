@@ -4,7 +4,6 @@ class MinistryCampusesController < ApplicationController
   layout 'manage'
   
   def index
-    update_current_ministry
     @ministry = Ministry.find(session[:ministry_id])
     respond_to do |format|
       format.html
@@ -13,7 +12,6 @@ class MinistryCampusesController < ApplicationController
   end
   
   def list
-    update_current_ministry
     @ministry = Ministry.find(session[:ministry_id])
     respond_to do |wants|
       wants.js
@@ -67,10 +65,4 @@ class MinistryCampusesController < ApplicationController
   end
   
   protected
-  
-    def update_current_ministry
-      if params[:ministry_id]
-        session[:ministry_id] = params[:ministry_id]
-      end
-    end
 end

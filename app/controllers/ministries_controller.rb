@@ -1,5 +1,6 @@
 class MinistriesController < ApplicationController
   layout 'manage'
+  skip_before_filter :authorization_filter, :only => [:list]
 
   def index
     setup_ministries
@@ -11,7 +12,6 @@ class MinistriesController < ApplicationController
   end
   
   def list
-    setup_ministries
     @expand_ministry = Ministry.find(params[:node]) if params[:node]
     @expand_ministry ||= @root_ministry
     # session[:ministry_id] = @expand_ministry.id
