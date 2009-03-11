@@ -25,7 +25,7 @@
 
     <%= observe_form("search_form_#{type}", :before => before,
               :url => search_people_url, :update => type + '_results', :complete => complete, 
-              :method => :post, :frequency => 0.5,
+              :method => :post, :frequency => 0.75,
               :condition => "$('#search_#{type}').val().length > 3")  %>
 
     <div id="<%= type %>_results"></div>
