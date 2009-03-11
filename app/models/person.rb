@@ -52,15 +52,6 @@ class Person < ActiveRecord::Base
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name)
   # validates_presence_of _(:gender)
-  # 
-  # file_column _(:image), :fix_file_extensions => true,
-  #                         :magick => { :size => '400x400!', :crop => '1:1',
-  #                           :versions => {
-  #                             :mini   => {:crop => '1:1', :size => "50x50!"},
-  #                             :thumb  => {:crop => '1:1', :size => "100x100!"},
-  #                             :medium => {:crop => '1:1', :size => "200x200!"}
-  #                           }
-  #                         }
 
   has_one :profile_picture, :class_name => "ProfilePicture", :foreign_key => _("person_id", :profile_picture)
   
@@ -112,6 +103,10 @@ class Person < ActiveRecord::Base
   
   def all_ministries
     (self.ministries + self.campus_ministries).uniq.sort
+  end
+  
+  def ministry_tree
+    @ministry_tree ||= (self.ministries.collect(&:ancestors).flatten + self.ministries.collect(&:descendants).flatten).uniq
   end
   
   def role(ministry)

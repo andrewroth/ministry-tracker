@@ -2,7 +2,7 @@ module MinistriesHelper
   def ministry_to_json(expand)
     json = "["
     expand.children.each do |ministry| 
-      # if @my.ministries.include?(ministry)
+      if @my.ministry_tree.include?(ministry)
         json += '{"text":"' + ministry.name + '",' 
         json +=  '"id":"' + ministry.id.to_s + '",'
         json += '"singleClickExpand":true,'
@@ -17,7 +17,7 @@ module MinistriesHelper
         json += '}'
         json += ',' unless ministry == expand.children.last
       end 
-    # end
+    end
     json += ']'
     json
   end
