@@ -774,6 +774,8 @@ margin-bottom:10px;
 .okayhead:hover,
 .goodhead:hover {border:2px solid gray;}
 
+.statusheadwrap {height:24px; width:200px; background:none; display:block;margin:10px 0 10px 0; clear:both;}
+
 
 .inputtext {
   border: 1px solid #bdc768;
