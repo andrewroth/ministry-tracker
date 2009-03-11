@@ -1,15 +1,17 @@
 <tr id="<%= dom_id(training_question) %>">
   <td>
     <%- unless training_question.mandated? -%>
-      <%- if training_question.activated? -%>
-        <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, 'training_question[activated]' => 0), 
+      <%- if @ministry.active_training_questions.include?(training_question) -%>
+        <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, :activate => 0), 
                                                            :method => :put,
                                                            :before => "$('#spinnertq').show()" %>
       <%- else -%>
-        <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, 'training_question[activated]' => 1), 
+        <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, :activate => 1), 
                                                            :method => :put,
                                                            :before => "$('#spinnertq').show()" %>
       <%- end -%>
+    <%- else -%>
+      <%= image_tag('silk/check_yes_gray.png') %>
     <%- end -%>
   </td>
   <td>
@@ -23,8 +25,12 @@
                                                            :method => :put,
                                                            :before => "$('#spinnertq').show()" %>
       <%- end -%>
-    <%- else -%>                                                    
-      &nbsp;
+    <%- else -%> 
+      <%- if training_question.mandated? -%>
+        <%= image_tag('silk/check_yes_gray.png') %>
+      <%- else -%>
+        &nbsp;
+      <%- end -%>
     <%- end -%>
   </td>
   <td>

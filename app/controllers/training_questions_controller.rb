@@ -17,8 +17,8 @@ class TrainingQuestionsController < ApplicationController
   
   def create
     @training_question = TrainingQuestion.new(params[:training_question])
-    @training_question.ministry = @ministry # Add bible study to current ministry
-    # @attributes = @ministry.send(params[:type].underscore.pluralize)
+    @training_question.ministry = @ministry 
+    activate_question
     respond_to do |format|
       if @training_question.save
         flash[:notice] = @training_question.activity + ' was successfully created.'
@@ -34,7 +34,12 @@ class TrainingQuestionsController < ApplicationController
   end
   
   def update
-    @training_question.update_attributes(params[:training_question])
+    if params[:activate] && params[:activate] == '1'
+      activate_question
+    else
+      deactivate_question
+    end
+    @training_question.update_attributes(params[:training_question]) if params[:training_question]
     respond_to do |format|
       format.js { render :template => 'training_questions/update' }
     end
@@ -51,5 +56,20 @@ class TrainingQuestionsController < ApplicationController
   protected
     def get_training_question
       @training_question = TrainingQuestion.find(params[:id])
+    end
+    
+    def activate_question
+      unless @ministry.active_training_questions.include?(@training_question)
+        tqa = TrainingQuestionActivation.new
+        tqa.ministry = @ministry
+        tqa.training_question = @training_question
+        tqa.save!
+      end
+    end
+    
+    def deactivate_question
+      tqa = TrainingQuestionActivation.find(:first, :conditions => {_(:ministry_id, :training_question_activation) => @ministry.id, 
+                                                                    _(:training_question_id, :training_question_activation) => @training_question.id })
+      tqa.destroy if tqa
     end
 end
