@@ -65,10 +65,21 @@
   <%= hidden_field_tag :times %>
   <%= f.submit 'Save Timetable' %>
 <%- end -%><br/>
-<%= radio_button_tag 'paint', Timetable::BAD_WEIGHT, true, :id => Timetable::BAD_CLASS %> Bad 
+
+<div style="display:none;">
+<%= radio_button_tag 'paint', Timetable::BAD_WEIGHT, true, :id => Timetable::BAD_CLASS %> Bad
 <%= radio_button_tag 'paint', Timetable::POOR_WEIGHT, false, :id => Timetable::POOR_CLASS %> Poor 
 <%= radio_button_tag 'paint', Timetable::OK_WEIGHT, false, :id => Timetable::OK_CLASS %> OK 
 <%= radio_button_tag 'paint', Timetable::GOOD_WEIGHT, false, :id => Timetable::GOOD_CLASS %> Good
+</div>
+
+Select a status and select time blocks to apply that status to:<br/>
+
+<a href="" class="badhead"></a>
+<a href="" class="poorhead"></a>
+<a href="" class="okayhead"></a>
+<a href="" class="goodhead"></a>
+
 <%= render :partial => 'timetable' %>
 <script>
   var down = false;
