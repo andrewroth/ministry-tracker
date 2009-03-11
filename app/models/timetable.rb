@@ -22,7 +22,7 @@ class Timetable < ActiveRecord::Base
   def self.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, people, leader_ids, assigned = [], iteration = 1, scored_times = [])
     # if scored_times.empty?
       possible_times.each_with_index do |time_slot, i|
-        time_slot[:score] = calculate_score(time_slot, user_weights, timetables, num_blocks, people)
+        time_slot[:score] = calculate_score(time_slot, user_weights, timetables, num_blocks, people, leader_ids)
         scored_times[i] = time_slot
       end
     # end
@@ -34,7 +34,7 @@ class Timetable < ActiveRecord::Base
     # if iteration == 1
       scored_times.each_with_index do |time_slot, i|
         break if i >= Timetable::DISPLAY_TOP
-        time_slot[:user_weights] = adjust_weights(time_slot, user_weights, timetables, num_blocks, people)
+        time_slot[:user_weights] = adjust_weights(time_slot, user_weights, timetables, num_blocks, people, leader_ids)
         people_weights = ActiveSupport::OrderedHash.new
         time_slot[:user_weights].each_with_index do |uw, i|
           people_weights[people[i].id] = uw
@@ -43,9 +43,9 @@ class Timetable < ActiveRecord::Base
         ordered_people = people_weights.sort {|x, y| x[1] <=> y[1]}.collect {|pw| pw[0]}
         each_group = (people.length.to_f / needed_groups.to_f).floor
         if iteration == 1
-          pick = each_group + (people.length % needed_groups)  # Subtract leader
+          pick = each_group + (people.length % needed_groups) 
         else
-          pick = each_group # Subtract leader
+          pick = each_group 
         end
         members = []
         # Pick a leader for this group
@@ -89,15 +89,15 @@ class Timetable < ActiveRecord::Base
     @free_times
   end
 
-  def self.calculate_score(time_slot, user_weights, timetables, num_blocks, people)
+  def self.calculate_score(time_slot, user_weights, timetables, num_blocks, people, leader_ids)
     score = 0.0
     user_weights.each_with_index do |uw, person_index|
-      score += get_user_score(time_slot, uw, timetables, num_blocks, people, person_index) 
+      score += get_user_score(time_slot, uw, timetables, num_blocks, people, person_index, leader_ids) 
     end
     return score
   end
 
-  def self.get_user_score(time_slot, user_weight, timetables, num_blocks, people, person_index)
+  def self.get_user_score(time_slot, user_weight, timetables, num_blocks, people, person_index, leader_ids)
     user_score = user_weight
     (0..num_blocks).each do |block_offset|
       time = time_slot[:time] + (block_offset * Timetable::INTERVAL)
@@ -113,7 +113,7 @@ class Timetable < ActiveRecord::Base
     user_score
   end
 
-  def self.get_user_adjustment_score(time_slot, user_weight, timetables, num_blocks, people, person_index)
+  def self.get_user_adjustment_score(time_slot, user_weight, timetables, num_blocks, people, person_index, leader_ids)
     tmp_score = -1
     (0..num_blocks).each do |block_offset|
       time = time_slot[:time] + (block_offset * Timetable::INTERVAL)
@@ -125,9 +125,9 @@ class Timetable < ActiveRecord::Base
     user_weight * Math.exp(tmp_score)
   end
 
-  def self.adjust_weights(best_time, user_weights, timetables, num_blocks, people)
+  def self.adjust_weights(best_time, user_weights, timetables, num_blocks, people, leader_ids)
     user_weights.each_with_index do |user_weight, index|
-      user_weights[index] = get_user_adjustment_score(best_time, user_weight, timetables, num_blocks, people, index) 
+      user_weights[index] = get_user_adjustment_score(best_time, user_weight, timetables, num_blocks, people, index, leader_ids) 
     end
 
     # normalize weights so sum_of(uw) = 1

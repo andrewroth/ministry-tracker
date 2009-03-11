@@ -325,6 +325,10 @@ class PeopleController < ApplicationController
 	   		conditions[1] << name+'%'
 	   		conditions[1] << name+'%' 
 	   	end
+	   	if params[:filter_ids]
+	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
+	   	  conditions[1] << params[:filter_ids].split(',')
+   	  end
 	   	conditions = add_involvement_conditions(conditions)
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
