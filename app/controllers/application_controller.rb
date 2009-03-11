@@ -37,7 +37,6 @@ class ApplicationController < ActionController::Base
       @ministry_involvements = @person.ministry_involvements.find(:all, 
                                                                   :order => Ministry.table_name + '.' + _(:name, 'ministry'),
                                                                   :include => [:ministry])
-      #TODO: need to improve figuring out what ministries to list. 
     end
     
     def get_countries

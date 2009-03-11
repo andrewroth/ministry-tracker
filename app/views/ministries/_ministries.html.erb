@@ -15,8 +15,11 @@
 											 	 :before => "$('#spinner').show()"},
 												 {:class => "action-button"} %>
 		<%= spinner %>
-	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@ministry_involvements.collect(&:ministry).collect {|m| [m.name, m.id]}, @ministry.id)) %>
-	  <%= observe_field(:current_ministry, :function => "$.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + value})" ) %>
+		<% if @my.all_ministries.length > 1 %>
+  	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp;
+  	  <%= spinner('ministry') %>
+      <%= observe_field(:current_ministry, :function => "$('#spinnerministry').show();$.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + value})" ) %>
+    <% end %>
 	</div>
  	<div id="two_col">
     <script type="text/javascript">
