@@ -8,17 +8,26 @@
   <p>
     <h4><%= type.titleize.pluralize %></h4>
     <div id="<%= type %>"></div>
-    <%- form_remote_tag(:id => 'search_form', :before => types.collect {|t| "$('##{t}_results').hide();"}.to_s + 
-                                                         "$('#spinner#{type}').show();" +
-                                                         "$('#filter_ids#{type}').val($('#filter_ids').val());", 
-    					:url => search_people_url, :update => type+'_results', :complete => "$('#spinner#{type}').hide();$('##{type}_results').slideDown()") do -%>
+    <%- before = types.collect {|t| "$('##{t}_results').hide();" unless t == type}.to_s +
+                 "$('#spinner#{type}').show();" +
+                 "$('#filter_ids#{type}').val($('#filter_ids').val());" 
+        complete = "$('#spinner#{type}').hide();$('##{type}_results:hidden').slideDown()" 
+    -%>
+    <%- form_remote_tag(:html => {:id => "search_form_#{type}"}, :before => before, 
+    					          :url => search_people_url, :update => type + '_results', :complete => complete) do -%>
      	Search for <%= type.titleize.pluralize %>:&nbsp;&nbsp;
     	<%= text_field_tag :search, '', :id => "search_#{type}" %> &nbsp;
-    	<%= submit_tag('Search') %> &nbsp;
+    	<%= submit_tag('Search') %> &nbsp;<%= spinner(type) %>
     	<%= hidden_field_tag :type, type %>
     	<%= hidden_field_tag :filter_ids, '', :id => "filter_ids_#{type}" %>
     	<%= hidden_field_tag :context, 'timetables' %>
-    <%- end -%><%= spinner(type) %>
+    <%- end -%> 
+
+    <%= observe_form("search_form_#{type}", :before => before,
+              :url => search_people_url, :update => type + '_results', :complete => complete, 
+              :method => :post, :frequency => 0.5,
+              :condition => "$('#search_#{type}').val().length > 3")  %>
+
     <div id="<%= type %>_results"></div>
   </p>
   <br/>
