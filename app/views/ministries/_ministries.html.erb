@@ -43,7 +43,7 @@
             split:true,
             autoScroll:true,
             animate:true,
-            enableDD:true,
+            // enableDD:true,
             containerScroll: true,
             loader: new Tree.TreeLoader({dataUrl: '/ministries/list'})
         });
@@ -72,16 +72,18 @@
           },{
             title: 'Ministry Details',
             contentEl: 'ministry'
-          },{
-            title: 'Campus Details',
-            contentEl: 'campus-details'
-          }]
+          }
+          // ,{
+          //             title: 'Campus Details',
+          //             contentEl: 'campus-details'
+          //           }
+          ]
         });
         
         
         Ext.onReady(function(){
          
-          // // set the root node
+          // set the root node
           
           tree.setRootNode(root);
                 
@@ -96,24 +98,15 @@
           //       
           // // // What to do when a ministry is clicked
           tree.on('click', function(e){
-            // $.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + e.id});
             $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '/ministry_campuses/list'});
-            // ajax.request({
-            //   url:'/ministry_campuses/list',
-            //   params:{ministry_id:e.id},
-            //   method: 'POST'
-            // });
           });
           //       
-          // // render the tree
-          // tree.render();
+          // render the tree
           root.expand();
-          // 
           
         
           var main = new Ext.Panel({
             title: 'Ministries',
-            // collapsible: true,
             width:680,
             height:500,
             plain:true,
