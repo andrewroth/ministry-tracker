@@ -721,11 +721,16 @@ line-height:28px;
 	padding-left:2%;
 }
 table#schedule {
-	
+border-collapse:collapse;
+width:90%;
 }
 table#schedule td, table#schedule th {
-	padding:2px;
-	border:1px solid black;
+padding:2px;
+border:1px solid gray;
+}
+
+table#schedule th {
+font-weight:bold;
 }
 
 a.action-button {
@@ -740,10 +745,10 @@ margin:0px 0 5px 0;
 
 .drag_me {cursor:pointer;}
 
-.bad {background:red;}
-.poor {background:#ff6600;}
-.ok {background:#ff9966;}
-.good {background:white;}
+.bad {background:red url(/images/status_bad.png) 50% 50%;}
+.poor {background:#ff6600 url(/images/status_poor.png) 50% 50%;}
+.ok {background:#ff9966 url(/images/status_okay.png) 50% 50%;}
+.good {background:#e7f7ff url(/images/status_good.png) 50% 50%;}
 
 .inputtext {
   border: 1px solid #bdc768;

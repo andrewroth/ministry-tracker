@@ -15,7 +15,7 @@
     <%- while time < stop 
         time_in_seconds = time.to_i - midnight.to_i -%>
       <tr>
-        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+        <td width="10px" class="time">6:00 AM<%= time.to_s(:time) %></td>
         <%- 7.times do |day| -%>
         <%#= logger.debug(@free_times[day].inspect) %>
         <%#- free_index = @free_times[day].detect {|bt|} -%>

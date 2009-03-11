@@ -1,4 +1,4 @@
-#require 'json'
+#require 'json_pure'
 class BadParams < StandardError; end
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
