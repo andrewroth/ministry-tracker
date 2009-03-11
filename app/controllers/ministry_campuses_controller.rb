@@ -12,7 +12,7 @@ class MinistryCampusesController < ApplicationController
   end
   
   def list
-    @ministry = Ministry.find(session[:ministry_id])
+    @ministry = Ministry.find(params[:ministry_id])
     respond_to do |wants|
       wants.js
     end

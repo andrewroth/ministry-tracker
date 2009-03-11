@@ -147,10 +147,7 @@
     </div>
 	</div>
 	<div id="campuses">
-	  <ul id="campus_list"><%= render :partial => @ministry.unique_campuses.sort %></ul><br/>
-	    		<%= link_to_remote('Add a campus', :url => new_ministry_campus_url,
-  											 	 :before => "$('#spinnerministry').show()")%><%= spinner('ministry') %>
-  	<div id="new_campus" style="display:none">	</div>
+    <%= render 'ministry_campuses/campuses' %>
 	</div>
 	
 </div>

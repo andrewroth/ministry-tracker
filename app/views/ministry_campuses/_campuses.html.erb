@@ -1,4 +1,3 @@
-<div id="campuses">
 	<div id="current_campuses" class="current_campuses">
 		<div class="title"><%= @ministry.name %> Campuses</div>
 		<ul id="direct_campus_list">
@@ -6,23 +5,24 @@
 		</ul>
 		<%- unless @ministry.subministry_campuses.empty? -%>
 			<div class="title">Inferred Campuses (from sub-ministries)</div>
-			<ul id="inferred_campus_list" style="margin-left:+2em">
-			<%= render :partial => @ministry.children %>
+			<ul id="inferred_campus_list">
+			  <%- @subministry = @ministry.subministry_campuses.first.ministry -%>
+        <li><h4 class="u"><strong><%= @subministry.name %></strong></h4></li>
+  			<%= render :partial => @ministry.subministry_campuses %>
 			</ul>
 		<%- end -%>
 	</div>
-	<div id="instructions">
-		This screen serves as a launching area for managing the high school and/or college campuses you work with. 
-	</div><br />
+	<br/>
 	<div>
+	  <% if authorized?(:new, :ministry_campuses) %>
   	<div id="new_campus_link">
   		<%- if @ministry.campuses.empty? -%>
   			You haven't added any campuses to your ministry yet. Please click the '<strong>Add a campus</strong>' link below.<br /><br />
   		<%- end -%>
-  		<%= link_to_remote('Add a campus', :url => {:action => :new},
-  											 	 :before => "$('#new_campus_link').slideUp(); $('#spinner').show()")%><%= spinner %>
+  		<%= link_to_remote('Add a campus', :url => new_ministry_campus_url,
+  											 	 :before => "$('#new_campus_link').slideUp(); $('#spinnercampus').show()") %>
   	</div>
+  	 <%= spinner('campus') %>
+  	<% end %>
 	</div>
-		<div id="campus">
-		</div>
-</div>
+		<div id="new_campus" style="display:none">	</div>

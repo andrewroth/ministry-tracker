@@ -1,3 +1,3 @@
 page[:new_campus].replace_html(:partial => 'form')
 page[:new_campus].show
-page[:spinnerministry].hide
+page[:spinnercampus].hide

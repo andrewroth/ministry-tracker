@@ -80,18 +80,19 @@ class ApplicationController < ActionController::Base
       return @admins[ministry.id][person.id]
     end
     
-    def authorized?(action = nil, controller = nil)
+    def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
-      unless @user_permissions
-        @user_permissions = {}
+      ministry ||= get_ministry
+      unless @user_permissions && @user_permissions[ministry]
+        @user_permissions ||= {}
+        @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
-        mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", get_ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
-        # return false unless mi
+        mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
         if mi
           role = mi.ministry_role
           role.permissions.each do |perm|
-            @user_permissions[perm.controller] ||= []
-            @user_permissions[perm.controller] << perm.action
+            @user_permissions[ministry][perm.controller] ||= []
+            @user_permissions[ministry][perm.controller] << perm.action
           end
         end
       end
@@ -101,7 +102,7 @@ class ApplicationController < ActionController::Base
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
-        unless @user_permissions[permission.controller] && @user_permissions[permission.controller].include?(permission.action)
+        unless @user_permissions[ministry][permission.controller] && @user_permissions[ministry][permission.controller].include?(permission.action)
           return false 
         end
       end

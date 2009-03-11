@@ -52,7 +52,6 @@ class MinistriesController < ApplicationController
   def edit
     @ministry = Ministry.find(params[:id])
     get_ministry_involvement(@ministry)
-    session[:ministry_id] = @ministry.id
   end
   
   def update
