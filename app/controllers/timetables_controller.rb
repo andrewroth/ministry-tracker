@@ -1,4 +1,4 @@
-require 'json'
+#require 'json'
 class BadParams < StandardError; end
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
@@ -140,7 +140,7 @@ class TimetablesController < ApplicationController
           page[:results].replace_html :partial => 'possible_times'
           page[:results].show
           page[:spinnersubmit].hide
-          # page[:timetable_search].hide
+          page[:timetable_search].hide
         end
       end
     end
