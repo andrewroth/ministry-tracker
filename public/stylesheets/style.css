@@ -721,11 +721,19 @@ line-height:28px;
 	padding-left:2%;
 }
 table#schedule {
-	
+border-collapse:collapse;
+width:100%;
 }
 table#schedule td, table#schedule th {
-	padding:2px;
-	border:1px solid black;
+padding:2px;
+border:1px solid gray;
+width:12.5%;
+height:25px;
+}
+
+table#schedule th {
+font-weight:bold;
+text-align:center;
 }
 
 a.action-button {
@@ -740,10 +748,34 @@ margin:0px 0 5px 0;
 
 .drag_me {cursor:pointer;}
 
-.bad {background:red;}
-.poor {background:#ff6600;}
-.ok {background:#ff9966;}
-.good {background:white;}
+.bad {background:#bc0a0a;}
+.poor {background:#ffC000;}
+.ok {background:#61E6CB;}
+.good {background:#5CE40A;}
+
+.badhead, .poorhead, .okayhead, .goodhead {
+width:40px;
+height:20px;
+display:block;
+float:left;
+margin-right:2px;
+border:2px solid white;
+margin-bottom:10px;
+}
+
+.badhead {background:url(/images/status_bad.png) 50% 50% #bc0a0a;}
+.poorhead {background:url(/images/status_poor.png) 50% 50% #ffC000;}
+.okayhead {background:url(/images/status_okay.png) 50% 50% #61E6CB;}
+.goodhead {background:url(/images/status_good.png) 50% 50% #5CE40A;}
+
+.headselected,
+a.badhead:hover,
+a.poorhead:hover,
+a.okayhead:hover,
+a.goodhead:hover {border:2px solid gray;}
+
+.statusheadwrap {height:24px; width:200px; background:none; display:block;margin:10px 0 10px 0; clear:both;}
+
 
 .inputtext {
   border: 1px solid #bdc768;

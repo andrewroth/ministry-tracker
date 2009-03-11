@@ -2,7 +2,7 @@
   <h1 class="title">Find Common Times</h1>
   <h2>Find common times between users for a group</h2>
   <p>Choose which users would be Leaders, Co-Leaders or Participants for this group.</p>
-  <%= hidden_field_tag :filter_ids %>
+  <%= hidden_field_tag :all_filter_ids, '0' %>
   <%- types = ['leader','co_leader', 'member']
       types.each do |type| -%>
   <p>
@@ -10,7 +10,7 @@
     <div id="<%= type %>"></div>
     <%- before = types.collect {|t| "$('##{t}_results').hide();" unless t == type}.to_s +
                  "$('#spinner#{type}').show();" +
-                 "$('#filter_ids#{type}').val($('#filter_ids').val());" 
+                 "$('#filter_ids_#{type}').val($('#all_filter_ids').val());" 
         complete = "$('#spinner#{type}').hide();$('##{type}_results:hidden').slideDown()" 
     -%>
     <%- form_remote_tag(:html => {:id => "search_form_#{type}"}, :before => before, 
@@ -95,7 +95,7 @@
     <table border="0" cellspacing="5" cellpadding="5">
       <tr>
         <td>Maximum number of groups to be formed: </td>
-        <td><%= text_field_tag :max_groups, 1, :size => 2 %></td>
+        <td><%= text_field_tag :max_groups, '', :size => 2 %></td>
       </tr>
       <tr>
         <td>How long will the group meet for? </td>

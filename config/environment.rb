@@ -24,6 +24,7 @@ Rails::Initializer.run do |config|
 #  config.gem "json"
   config.gem  'httpclient' # Need this for soap4r
   # config.gem  'json'
+  config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
   config.gem  'roo'
   config.gem  'hpricot'

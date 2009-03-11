@@ -18,7 +18,9 @@
         <%- group.each do |time| -%>
           <%- hours = time[:time] / 3600
               mins = (time[:time] - (hours * 3600)) / 60 -%>
-          <td><%= Date::ABBR_DAYNAMES[time[:day]] %> <%= hours %>:<%= sprintf("%02d", mins) %></td>
+          <td>
+            <%= Date::ABBR_DAYNAMES[time[:day]] %> <%= hours %>:<%= sprintf("%02d", mins) %><br/>
+          </td>
         <%- end -%>
       </tr>
       <%- @people.each do |person| 
@@ -26,15 +28,13 @@
         <tr>
           <td><%= person.full_name %></td>
           <%- group.each do |time| -%>
-            <%- if free_times.empty? -%>
-              <td align="center" >OK</td>
-            <%- else -%>
-              <%- person_time = free_times[time[:day]][time[:time]] -%>
-              <%- css_class =  person_time ? person_time.css_class : 'ok' -%>
-              <%- css_class += ' u' if time[:members].include?(person.id) -%>
-              <%- css_class += ' b' if @leader_ids.include?(person.id) -%>
-              <td align="center" width="60px" class="<%= css_class %> "><%= person_time ? person_time.css_class.titleize : 'Ok' %></td>
-            <%- end -%>
+            <%- person_time = free_times[time[:day]][time[:time]] -%>
+            <%- css_class =  person_time ? person_time.css_class : 'ok' -%>
+            <%- css_class += ' b' if time[:members].include?(person.id) && @leader_ids.include?(person.id) -%>
+            <td width="60px" class="<%= css_class %> ">
+              <input type="checkbox" value="1" name="time_<%= time[:time] %>[][<%= person.id %>]" id="time_<%= time[:time] %>_<%= person.id %>" <%= time[:members].include?(person.id) ? 'checked="checked"' : '' %>/>
+              <%= person_time ? person_time.css_class.titleize : 'Ok' %>
+            </td>
           <%- end -%>
         </tr>
       <%- end -%>

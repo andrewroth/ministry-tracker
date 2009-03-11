@@ -1,4 +1,4 @@
-require 'json'
+#require 'json_pure'
 class BadParams < StandardError; end
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
@@ -46,7 +46,7 @@ class TimetablesController < ApplicationController
   end
   
   def search
-    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : 1
+    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : params[:leader_ids].length
     params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
     
     # Check input parameters
