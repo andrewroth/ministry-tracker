@@ -46,7 +46,7 @@ class TimetablesController < ApplicationController
   end
   
   def search
-    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : 1
+    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : params[:leader_ids].length
     params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
     
     # Check input parameters
@@ -140,7 +140,7 @@ class TimetablesController < ApplicationController
           page[:results].replace_html :partial => 'possible_times'
           page[:results].show
           page[:spinnersubmit].hide
-          page[:timetable_search].hide
+          # page[:timetable_search].hide
         end
       end
     end
