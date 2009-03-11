@@ -3,10 +3,11 @@
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
   </div>
 <%- end -%>
-<br/><br/>
+<div class="statusheadwrap">
 <a href="" class="badhead"></a>
 <a href="" class="poorhead"></a>
 <a href="" class="okayhead"></a>
 <a href="" class="goodhead"></a>
-<br/><br/>
+</div>
+
 <%= render :partial => 'timetable' %>
