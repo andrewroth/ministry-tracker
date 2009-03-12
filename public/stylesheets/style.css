@@ -872,4 +872,21 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 .moduletitle {background:#e8e8e8; height:30px;}
 .moduletitle h2 {float:left; color:#000; font-weight:normal; font-size:18px; padding:4px 4px 4px 5px;}
 .modulecontrols {float:right;}
-.modulecontent {min-height:200px;}
+.modulecontent {min-height:100px; padding:5px;}
+.modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; }
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; }
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;}
+
+.modulecontent h6 {font-size:13px;}
+.lightgray {background:#f0f0f0; padding:5px;}
+
+.modulesearchbox {margin-bottom:1em;}
+input.searchdash {font-size:16px; width:250px;}
+input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padding:3px 3px 2px 3px; position:absolute;}
+.modulesearchbox small {line-height:2em; font-size:11px; font-weight:bold;}
+
+.modulecontent ul {font-size:13px;}
+.modulecontent ul li {margin-bottom:6px;}
+ul.groupicon li{background:url(/images/silk/user_go.png) no-repeat 0% 50%; padding-left:22px;}
+ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px;}
