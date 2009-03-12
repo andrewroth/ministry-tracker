@@ -1,0 +1,2 @@
+page[dom_id(@school_year)].replace :partial => 'school_year', :object => @school_year
+page[:school_year].hide

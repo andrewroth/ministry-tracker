@@ -1,0 +1,8 @@
+<% remote_form_for @school_year, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();" do |f| %>
+<ul>
+  <li><%= f.label :name %>  <%= f.text_field :name %></li>
+  <li><%= f.label :level %>  <%= f.text_field :level %></li>
+</ul>
+<br/>
+  <%= f.submit %>
+<%- end -%>

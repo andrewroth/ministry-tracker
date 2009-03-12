@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090311222547) do
+ActiveRecord::Schema.define(:version => 20090312181338) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -39,12 +39,14 @@ ActiveRecord::Schema.define(:version => 20090311222547) do
   create_table "campus_involvements", :force => true do |t|
     t.integer "person_id"
     t.integer "campus_id"
-    t.integer "role_id"
     t.date    "start_date"
     t.date    "end_date"
-    t.string  "ministry_role", :default => "Involved Student"
     t.integer "ministry_id"
     t.integer "added_by_id"
+    t.date    "graduation_date"
+    t.integer "school_year_id"
+    t.integer "major_id"
+    t.integer "minor_id"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
@@ -365,14 +367,14 @@ ActiveRecord::Schema.define(:version => 20090311222547) do
     t.date    "birth_date"
     t.text    "bio"
     t.string  "image"
-    t.string  "primary_campus"
     t.date    "created_at"
     t.date    "updated_at"
     t.integer "old_id"
     t.string  "staff_notes"
     t.integer "updated_by"
     t.integer "created_by"
-    t.string  "url",             :limit => 2000
+    t.string  "url",                           :limit => 2000
+    t.integer "primary_campus_involvement_id"
   end
 
   create_table "permissions", :force => true do |t|
@@ -391,6 +393,14 @@ ActiveRecord::Schema.define(:version => 20090311222547) do
     t.string  "filename"
     t.string  "thumbnail"
     t.date    "uploaded_date"
+  end
+
+  create_table "school_years", :force => true do |t|
+    t.string   "name"
+    t.string   "level"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sessions", :force => true do |t|

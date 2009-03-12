@@ -1,0 +1,2 @@
+page.insert_html :bottom, :school_years, :partial => 'school_year', :object => @school_year
+page[:school_year].hide

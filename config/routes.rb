@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :school_years, :collection => {:reorder => :post}
+
   map.resources :group_types
 
   # map.resources :facebook, :collection => {:profile => :any}
@@ -81,7 +83,9 @@ ActionController::Routing::Routes.draw do |map|
                                           :change_ministry => :any,
                                           :change_view => :any,
                                           :search => :any,
-                                          :add_student => :any},
+                                          :add_student => :any,
+                                          :advanced => :get,
+                                          :advanced_search => :post},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

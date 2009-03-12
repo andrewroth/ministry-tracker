@@ -1,0 +1,29 @@
+<h1>Listing School Years <%= spinner %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th width="20px"></th>
+      <th width="100px">Name</th>
+      <th width="100px">Level</th>
+      <th width="50px"></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="school_years">
+    <%= render @school_years %>
+  </tbody>
+</table>
+
+<br />
+<%= link_to_remote('Add a new school year', :url => new_school_year_path, :before => "$('#spinner').show()") %> 
+<br/><br/>
+<div id="school_year">
+  
+</div>
+
+<%= sortable_element( 'school_years',
+	:url => { :action => "reorder" },
+	:complete => visual_effect(:highlight, 'school_years' ),
+	:handle => 'drag_me')
+%>
