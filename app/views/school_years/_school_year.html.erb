@@ -1,0 +1,7 @@
+  <tr id="<%= dom_id(school_year) %>">
+    <td><span class="drag_me"><%= image_tag('/images/silk/move.png') %></span></td>
+    <td><%= school_year.name %></td>
+    <td><%= school_year.level %></td>
+    <td><%= link_to_remote 'Edit', :url => edit_school_year_path(school_year), :method => :get, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();" %></td>
+    <td><%= link_to_remote 'Destroy', :url => school_year, :confirm => 'Are you sure?', :method => :delete, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();" %></td>
+  </tr>

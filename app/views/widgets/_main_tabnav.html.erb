@@ -22,7 +22,11 @@ render_tabnav :main,
   
   add_tab do |t|
     if @my.groups.size == 1
-      t.named  'My Group'
+      if @my.groups.first.group_type
+        t.named  "My #{@my.groups.first.group_type.group_type}"
+      else
+        t.named 'My Group'
+      end
       t.links_to group_path(@my.groups.first)
     else
       t.named  'My Groups'

@@ -17,6 +17,10 @@ class PeopleController < ApplicationController
   def index
   end
   
+  def advanced
+    
+  end
+  
   def directory
     # Get View
     view_id = session[:view_id]

@@ -38,7 +38,8 @@
   		<ul class="right-menu-list">
 		    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
 		    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
-		
+    		<li<%= ' class="highlighted"' if params[:controller] == "school_years" %>>
+    		<%= link_to 'School Years', school_years_path %></li>
   		<%- if current_user.developer? -%>
     		<li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
     		<%= link_to 'Columns', columns_path %></li>

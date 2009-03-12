@@ -18,7 +18,7 @@
 		
 		  <div id="userbar">
 		    <div class="floatleft">
-		    <div class="username">Username Lastname</div><a href=""><small>(edit my profile)</small></a>
+		    <div class="username"><%= @my.full_name %></div><a href=""><small>(<%= link_to('go to my profile', person_path(@me)) %>)</small></a>
 		    </div>
 		  
   			<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;

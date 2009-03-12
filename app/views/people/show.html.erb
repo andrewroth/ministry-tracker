@@ -4,7 +4,7 @@
 <div id="profiletitle">
   <%- if @person == @me || is_ministry_leader -%>
     <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person.user  %></div> 
-    <div class="butUpdate" style="margin-right:5px;"><%= link_to_remote "Edit Information", :url => edit_person_path(@person) %></div>
+    <div class="butUpdate" style="margin-right:5px;"><%= link_to_remote "Edit Information", :url => edit_person_path(@person), :method => :get %></div>
     <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
     <div class="butUpdate" style="margin-right:5px;"><%= link_to "Import GCX Profile", import_gcx_profile_person_path(@person) %></div>
     <%- end -%>
@@ -24,19 +24,24 @@
 	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
 
 	<h5 class="title">I'm Involved In</h5>
-	<% if @person.groups.count > 0 %>
-    <h4>Groups</h4>
-    <ul>
+	<% type = ''  %>
   	<%- @person.groups.each do |group| -%>
+  	  <%- unless type == group.group_type.group_type -%>
+            <h4><%= group.group_type.group_type.pluralize %></h4>
+            <ul>
+      <%- end -%>
   	  <li id="group_<%= group.id %>">
   		  <%= link_to group.name, group_url(group) %>
   		</li>
+  	  <%- unless type == group.group_type.group_type
+  	        type = group.group_type.group_type -%>
+  	        </ul><br />
+      <%- end -%>
   	<%- end -%>
-  	</ul><br />
-  <%- end -%>
+
 	
 	<%- if @person.ministries.count > 0 -%>
-  	<h4>Assignments</h4>
+  	<h4>Movements</h4>
   	<ul>
   	<%- @person.ministry_involvements.each do |mi| -%>
   	  <li id="mi_<%= mi.id %>">

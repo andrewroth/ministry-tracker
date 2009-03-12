@@ -17,7 +17,7 @@ Primary Campus: <%= f.select :primary_campus, @person.ministries.collect(&:campu
 
 	<td colspan=2 valign=top>
 	<table>	
-  	<tr><td>Year in School</td><td><%= f.text_field :year_in_school %></td></tr>
+  	<tr><td>Year in School</td><td><%= f.select :school_year, school_year_options, {:include_blank => true} %></td></tr>
   	<tr><td>Graduation Date</td><td class="date"><%= f.date_select :graduation_date, date_options(1950) %></td></tr>
   	<tr><td>Major</td><td><%= f.text_field :major %></td></tr>
   	<tr><td>Minor</td><td><%= f.text_field :minor %></td></tr>

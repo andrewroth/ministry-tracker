@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
+  
+  helper :all
 
   protected
     # =============================================================================
