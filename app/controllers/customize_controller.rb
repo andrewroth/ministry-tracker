@@ -14,13 +14,4 @@ class CustomizeController < ApplicationController
     end
     render :nothing => true
   end
-  
-  def reorder_training_questions
-    @category = TrainingCategory.find(params[:id], :include => :training_questions)
-    @category.training_questions.each do |question|
-      question.position = params["direct_training_questions_#{@category.id}"].index(question.id.to_s) + 1
-      question.save
-    end
-    render :nothing => true
-  end
 end

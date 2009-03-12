@@ -14,12 +14,10 @@ class GroupTypesController < ApplicationController
   # GET /group_types.xml
   def index
     # find all group types belonging to your ministry
-    ministry_id = @ministry ? @ministry.id : 0
-    @group_types = GroupType.find(:all, :conditions => "ministry_id = #{ministry_id}")
+    @group_types = @ministry.group_types
     pageTitle = "Group Type Editor"
     respond_to do |format|
       layout = 'manage'
-      format.html { render :layout => layout } # index.html.erb
       format.xml  { render :xml => @group_types }
     end
   end
@@ -83,6 +81,6 @@ class GroupTypesController < ApplicationController
   
   protected
   def find_group_type
-    @group_type = GroupType.find(params[:id])
+    @group_type = @ministry.group_types.find(params[:id])
   end
 end

@@ -1,8 +1,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 bible_study:
   id: 1
+  ministry_id: 1
   group_type: Bible Study
   
 team:
   id: 2
+  ministry_id: 1
   group_type: Team

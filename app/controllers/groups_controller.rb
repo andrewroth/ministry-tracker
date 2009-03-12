@@ -112,8 +112,4 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
-  protected
-    def get_bible_study
-      @bible_study ||= get_group
-    end
 end

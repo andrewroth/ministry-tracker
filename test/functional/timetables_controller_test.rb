@@ -23,5 +23,10 @@ class TimetablesControllerTest < ActionController::TestCase
     assert_equal([], t.errors.full_messages)
     assert_redirected_to person_timetable_path(t.person, t)
   end
+  
+  test "should search timetables for best matching time" do
+    xhr :post, :search, :leader_ids => [people(:josh).id], :member_ids => [people(:fred).id]
+    assert_response :success, @response.body
+  end
 
 end

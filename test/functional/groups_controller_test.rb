@@ -3,9 +3,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 class GroupsControllerTest < ActionController::TestCase
  
   def setup
-  #   @controller = CampusInvolvementsController.new
-  #   @request    = ActionController::TestRequest.new
-  #   @response   = ActionController::TestResponse.new
     login
   end
   
