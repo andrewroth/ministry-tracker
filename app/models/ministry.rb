@@ -114,10 +114,13 @@ class Ministry < ActiveRecord::Base
     return @descendants
   end
   
-  # def children
-  #     @children = self.children
-  #     @children.sort!
-  # end
+  def mandated_training_questions
+    @mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} IN(?)", ancestor_ids], :include => :training_question).collect(&:training_question)
+  end
+  
+  def self_mandated_training_questions
+    @self_mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} = ?", self.id], :include => :training_question).collect(&:training_question)
+  end
   
   def root
     @root ||= self.parent_id ? self.parent.root : self

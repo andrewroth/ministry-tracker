@@ -1,6 +1,6 @@
 <tr id="<%= dom_id(training_question) %>">
   <td>
-    <%- unless training_question.mandated? -%>
+    <%- unless @ministry.mandated_training_questions.include?(training_question) -%>
       <%- if @ministry.active_training_questions.include?(training_question) -%>
         <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, :activate => 0), 
                                                            :method => :put,
@@ -15,22 +15,16 @@
     <%- end -%>
   </td>
   <td>
-    <%- if training_question.ministry_id == @ministry.id -%>
-      <%- if training_question.mandated? -%>
-          <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, 'training_question[mandated]' => 0), 
-                                                             :method => :put,
-                                                             :before => "$('#spinnertq').show()" %>
-      <%- else -%>
-        <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, 'training_question[mandated]' => 1), 
+    <%- if @ministry.self_mandated_training_questions.include?(training_question) -%>
+        <%= link_to_remote image_tag('silk/check_yes.png'), :url => training_question_path(:id => training_question, :mandate => 0), 
                                                            :method => :put,
                                                            :before => "$('#spinnertq').show()" %>
-      <%- end -%>
-    <%- else -%> 
-      <%- if training_question.mandated? -%>
+    <%- elsif @ministry.mandated_training_questions.include?(training_question) -%>
         <%= image_tag('silk/check_yes_gray.png') %>
-      <%- else -%>
-        &nbsp;
-      <%- end -%>
+    <%- else -%>
+      <%= link_to_remote image_tag('silk/check_no.png'), :url => training_question_path(:id => training_question, :mandate => 1), 
+                                                         :method => :put,
+                                                         :before => "$('#spinnertq').show()" %>
     <%- end -%>
   </td>
   <td>
