@@ -4,7 +4,8 @@
 <%- remote_form_for @person do |f| -%>
     <%= hidden_field_tag :no_profile, true %>
     <%- @ministry.all_training_categories.each do |category| 
-        questions = @ministry.all_training_questions.select {|q| q.training_category_id == category.id && q.activated?} 
+        questions = @ministry.all_training_questions.select {|q| q.training_category_id == category.id && 
+                              (@ministry.active_training_questions.include?(q) || @ministry.mandated_training_questions.include?(q))} 
         unless questions.empty? 
           @all_questions += questions -%>
           <h3 class="title"><%= category.name %></h3>

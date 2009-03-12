@@ -17,10 +17,10 @@ class TrainingQuestionsController < ApplicationController
   
   def create
     @training_question = TrainingQuestion.new(params[:training_question])
-    @training_question.ministry = @ministry # Add bible study to current ministry
-    # @attributes = @ministry.send(params[:type].underscore.pluralize)
+    @training_question.ministry = @ministry 
     respond_to do |format|
       if @training_question.save
+        activate_question
         flash[:notice] = @training_question.activity + ' was successfully created.'
         format.html { redirect_to training_questions_url }
         format.js   
@@ -34,7 +34,21 @@ class TrainingQuestionsController < ApplicationController
   end
   
   def update
-    @training_question.update_attributes(params[:training_question])
+    if params[:activate]
+      if params[:activate] == '1'
+        activate_question
+      else
+        deactivate_question
+      end
+    end
+    if params[:mandate]
+      if params[:mandate] == '1'
+        activate_question(true)
+      else
+        activate_question(false)
+      end
+    end
+    @training_question.update_attributes(params[:training_question]) if params[:training_question]
     respond_to do |format|
       format.js { render :template => 'training_questions/update' }
     end
@@ -51,5 +65,25 @@ class TrainingQuestionsController < ApplicationController
   protected
     def get_training_question
       @training_question = TrainingQuestion.find(params[:id])
+    end
+    
+    def activate_question(mandate = false)
+      unless @ministry.active_training_questions.include?(@training_question)
+        tqa = TrainingQuestionActivation.new(:mandate => mandate)
+        tqa.ministry = @ministry
+        tqa.training_question = @training_question
+        tqa.save!
+      else
+        tqa = TrainingQuestionActivation.find(:first, :conditions => {_(:ministry_id, :training_question_activation) => @ministry.id, 
+                                                                    _(:training_question_id, :training_question_activation) => @training_question.id })
+        tqa.update_attribute(:mandate, mandate)
+      end
+      tqa
+    end
+    
+    def deactivate_question
+      tqa = TrainingQuestionActivation.find(:first, :conditions => {_(:ministry_id, :training_question_activation) => @ministry.id, 
+                                                                    _(:training_question_id, :training_question_activation) => @training_question.id })
+      tqa.destroy if tqa
     end
 end

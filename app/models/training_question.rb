@@ -3,6 +3,9 @@ class TrainingQuestion < ActiveRecord::Base
   has_many :training_answers, :dependent => :destroy
   has_many :people, :through => :training_answers
   
+  has_many :training_question_activations
+  has_many :active_ministries, :through => :training_question_activations, :source => :ministry
+  
   belongs_to :ministry, :class_name => "Ministry", :foreign_key => _('ministry_id')
   belongs_to :training_category, :class_name => "TrainingCategory", :foreign_key => _("training_category_id")
   

@@ -23,8 +23,11 @@ class Ministry < ActiveRecord::Base
   has_many :profile_questions, :dependent => :destroy
   has_many :involvement_questions, :dependent => :destroy
   has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(:position, :training_category), :dependent => :destroy
-  has_many :training_questions, :order => "activated, activity", :dependent => :destroy
+  has_many :training_questions, :order => "activity", :dependent => :destroy
   has_many :views, :order => View.table_name + '.' + _(:title, 'view'), :dependent => :destroy
+  
+  has_many :training_question_activations
+  has_many :active_training_questions, :through => :training_question_activations, :source => :training_question
   
   has_many :group_types
   
@@ -111,10 +114,13 @@ class Ministry < ActiveRecord::Base
     return @descendants
   end
   
-  # def children
-  #     @children = self.children
-  #     @children.sort!
-  # end
+  def mandated_training_questions
+    @mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} IN(?)", ancestor_ids], :include => :training_question).collect(&:training_question)
+  end
+  
+  def self_mandated_training_questions
+    @self_mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} = ?", self.id], :include => :training_question).collect(&:training_question)
+  end
   
   def root
     @root ||= self.parent_id ? self.parent.root : self
@@ -176,13 +182,13 @@ class Ministry < ActiveRecord::Base
   
   # Training categories including all the categories higher up on the tree
   def all_training_categories
-    @all_training_categories ||= [training_categories + ancestors.collect(&:training_categories)].flatten.uniq
+    @all_training_categories ||= Array.wrap(ancestors.collect(&:training_categories)).flatten.uniq
     return @all_training_categories
   end  
   
   # Training questions including all the questions higher up on the tree
   def all_training_questions
-    @all_training_questions ||= [training_questions + ancestors.collect(&:training_questions)].flatten.uniq
+    @all_training_questions ||= Array.wrap(ancestors.collect(&:training_questions)).flatten.uniq
     return @all_training_questions
   end
   

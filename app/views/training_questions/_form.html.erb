@@ -3,7 +3,7 @@
 	<%= f.hidden_field :ministry_id %>
 	<table border="0" cellspacing="5" cellpadding="5">
 		<tr><th colspan="2"><strong><%= @training_question.new_record? ? 'New Training Question' : @training_question.activity %></strong></th></tr>
-		<tr><td>Category: </td><td><%= f.select :training_category_id, @ministry.training_categories.collect {|c| [c.name, c.id] }, {}, {:class => "customform"} %></td></tr>
+		<tr><td>Category: </td><td><%= f.select :training_category_id, @ministry.all_training_categories.collect {|c| [c.name, c.id] }, {}, {:class => "customform"} %></td></tr>
 		<tr><td>Activity: </td><td><%= f.text_field :activity, :class => "customform" %></td></tr>
 	</table>
 	<%= submit_tag 'Save' %> or <%= link_to_function 'cancel', "$('#training_question').fadeOut();$('#new_training_question_link').show()",
