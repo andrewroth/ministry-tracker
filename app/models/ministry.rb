@@ -6,7 +6,7 @@ class Ministry < ActiveRecord::Base
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
-  has_many :ministry_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
+  has_many :ministry_roles, :order => _(:position, :ministry_role)
   has_many :permissions, :through => :ministry_roles, :source => :ministry_role_permissions
   has_many :student_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
   has_many :staff_roles, :dependent => :destroy, :order => _(:position, :ministry_role)

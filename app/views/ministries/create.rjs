@@ -1,2 +1,3 @@
-page.call('addMinistry', @new_ministry.name, @new_ministry.id, @new_ministry.parent_id)
+page.call('addMinistry', @ministry.name, @ministry.id, @ministry.parent_id)
 page.call('tabs.setActiveTab', 0)
+page['campuses'].replace_html :partial => 'ministry_campuses/campuses'

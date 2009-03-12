@@ -20,6 +20,7 @@ class MinistryCampusesController < ApplicationController
   
   def new
     @states = State::NAMES['USA']
+    @ministry = Ministry.find(params[:ministry_id])
   end
   
   def create
@@ -27,6 +28,7 @@ class MinistryCampusesController < ApplicationController
       begin
         @campus = Campus.find(params[:campus_id])
         # Add campus to ministry
+        @ministry = Ministry.find(params[:ministry_id])
         @ministry_campus = MinistryCampus.create(_(:campus_id, 'ministry_campus') => params[:campus_id],
                                               _(:ministry_id, 'ministry_campus') => @ministry.id)
                                               

@@ -65,7 +65,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :ministries, :member => { :switch_to => :any,
                                           :parent_form => :any,
-                                          :set_parent => :any}
+                                          :set_parent => :any},
+                             :has_many => [:ministry_campuses]
 
   map.resources :addresses
 

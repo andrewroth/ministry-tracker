@@ -31,19 +31,19 @@ class MinistriesControllerTest < ActionController::TestCase
   end
   
   def test_should_create_ministry
-    old_count = Ministry.count
-    post :create, :ministry => {:name => 'CCC', :address => 'here', :city => 'there', 
-                                :state => 'IL', :country => 'United States', :phone => '555',
-                                :email => 'asdf' },
-                  :ministry_involvement => {:ministry_role_id => 1}
-    assert_equal old_count+1, Ministry.count
+    assert_difference('Ministry.count') do
+      post :create, :ministry => {:name => 'CCC', :address => 'here', :city => 'there', 
+                                  :state => 'IL', :country => 'United States', :phone => '555',
+                                  :email => 'asdf' },
+                    :ministry_involvement => {:ministry_role_id => 1}
+    end
     assert_redirected_to ministries_path
   end
   
   def test_should_NOT_create_ministry
-    old_count = Ministry.count
-    post :create, :ministry => {:name => 'CCC' }
-    assert_equal old_count, Ministry.count
+    assert_no_difference('Ministry.count') do
+      post :create, :ministry => {:name => '' }
+    end
     assert_template 'new'
   end
   

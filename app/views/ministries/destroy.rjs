@@ -4,3 +4,4 @@ page[:title].replace_html(@ministry.name)
 page[:instructions].replace_html(:partial => 'ministries/instructions')
 page.call('tabs.setActiveTab', 0)
 page['campus_list'].replace_html :partial => @ministry.unique_campuses 
+page[:ministry].replace_html(:partial => 'form')

@@ -16,10 +16,10 @@
 	<div>
 	  <% if authorized?(:new, :ministry_campuses) %>
   	<div id="new_campus_link">
-  		<%- if @ministry.campuses.empty? -%>
+  		<%- if @ministry.ministry_campuses.empty? -%>
   			You haven't added any campuses to your ministry yet. Please click the '<strong>Add a campus</strong>' link below.<br /><br />
   		<%- end -%>
-  		<%= link_to_remote('Add a campus', :url => new_ministry_campus_url,
+  		<%= link_to_remote('Add a campus', :url => new_ministry_ministry_campus_path(@ministry),
   											 	 :before => "$('#new_campus_link').slideUp(); $('#spinnercampus').show()") %>
   	</div>
   	 <%= spinner('campus') %>

@@ -25,36 +25,32 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
 
   def test_new
-    xhr :get, :new
+    xhr :get, :new, :ministry_id => 1
     assert_response :success
   end
   
   def test_create
-    @request.session[:ministry_id] = 1 #yfc
-    @count = Ministry.find(1).ministry_campuses.size
-    xhr :post, :create, :campus_id => 2 #sac
+    assert_difference('MinistryCampus.count') do
+      xhr :post, :create, :campus_id => 2, :ministry_id => 1
+    end
     assert_response :success
-    # ministries(:yfc).reload
-    assert_equal @count+1, Ministry.find(1).ministry_campuses.size #yfc
   end
   
   def test_create_duplicate
-    @request.session[:ministry_id] = 1 #yfc
     assert_difference('MinistryCampus.count') do
-      xhr :post, :create, :campus_id => 2 #sac
+      xhr :post, :create, :campus_id => 2, :ministry_id => 1
     end
     assert_no_difference('MinistryCampus.count') do
-      xhr :post, :create, :campus_id => 2 #sac
+      xhr :post, :create, :campus_id => 2, :ministry_id => 1
     end
     assert_response :success
   end
   
   def test_destroy
     test_create
-    count = Ministry.find(1).ministry_campuses.size
-    xhr :delete, :destroy, :id => Ministry.find(1).ministry_campuses.first.id #yfc
+    assert_difference('MinistryCampus.count', -1) do
+      xhr :delete, :destroy, :id => Ministry.find(1).ministry_campuses.first.id #yfc
+    end
     assert_response :success
-    # ministries(:yfc).reload
-    assert_equal count-1, Ministry.find(1).ministry_campuses.size #yfc
   end
 end

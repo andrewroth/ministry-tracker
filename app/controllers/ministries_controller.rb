@@ -30,27 +30,27 @@ class MinistriesController < ApplicationController
   def create
     # set the parent of the current ministry as the parent
     params[:ministry][:parent_id] = @ministry.id || @root_ministry.id
-    @new_ministry = Ministry.new(params[:ministry])
-
+    @ministry = Ministry.new(params[:ministry])
     respond_to do |format|
-      if params[:ministry_involvement] && @new_ministry.save
-        top_role = @new_ministry.ministry_roles.find(:first, :order => Ministry._(:position))
+      top_role = @root_ministry.ministry_roles.find(:first)
+      if @ministry.save
         # add the current user to the new ministry as a 
-        @person.ministry_involvements.create(_(:ministry_id, :ministry_involvement) => @new_ministry.id, _(:ministry_role_id, :ministry_involvement) => top_role.id)
+        @person.ministry_involvements.create(_(:ministry_id, :ministry_involvement) => @ministry.id, _(:ministry_role_id, :ministry_involvement) => top_role.id)
         flash[:notice] = 'Ministry was successfully created.'
         format.html { redirect_to ministries_url }
         format.js   { index }
-        format.xml  { head :created, :location => ministry_url(@new_ministry) }
+        format.xml  { head :created, :location => ministry_url(@ministry) }
       else
         format.html { render :action => "new" }
         format.js   { render :action => "new" }
-        format.xml  { render :xml => @new_ministry.errors.to_xml }
+        format.xml  { render :xml => @ministry.errors.to_xml }
       end
     end
   end
   
   def edit
     @ministry = Ministry.find(params[:id])
+    session[:ministry_id] = @ministry.id
     get_ministry_involvement(@ministry)
   end
   
@@ -80,7 +80,6 @@ class MinistriesController < ApplicationController
     
     # We don't want users deleting ministries with children. The world already has enough orphans
     flash[:warning] = "You can't delete a ministry that has sub-ministries" unless @old_ministry.children.empty?
-    
     if @old_ministry.deleteable?
       # if the active ministry is the one being deleted, we need a new active ministry
       if session[:ministry_id].to_i == @old_ministry.id
@@ -96,7 +95,10 @@ class MinistriesController < ApplicationController
     else
       respond_to do |format|
         format.js do
-          render(:update) {|page| update_flash(page, flash[:warning], 'warning')}
+          render(:update) do |page| 
+            page.alert(flash[:warning])
+            update_flash(page, flash[:warning], 'warning')
+          end
         end
       end
     end

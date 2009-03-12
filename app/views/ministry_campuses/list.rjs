@@ -1,5 +1,2 @@
-if @ministry.unique_campuses.empty?
-  page['campuses'].replace_html ''
-else
-  page['campuses'].replace_html :partial => 'ministry_campuses/campuses'
-end
+page['campuses'].replace_html :partial => 'ministry_campuses/campuses'
+page[:ministry].replace_html(:partial => 'ministries/form')

@@ -11,9 +11,11 @@
 	</div>
 	<div id="new_ministry_link">
 	  <br />
+	  <% if authorized?(:new, :ministries)  %>
     <%= link_to_remote 'Add a new ministry', {:url => new_ministry_url,
 											 	 :before => "$('#spinner').show()"},
 												 {:class => "action-button"} %>
+		<% end %>
 		<%= spinner %>
 		<% if @my.all_ministries.length > 1 %>
   	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp;
@@ -121,7 +123,7 @@
         parent_node.appendChild(new Tree.TreeNode({"id": id,"text": name,"cls":"file","expanded":true}));
       }
       function removeMinistry(id, parent) {
-        parent_node = tree.getNodeById(parent);x
+        parent_node = tree.getNodeById(parent);
         child = tree.getNodeById(id);
         parent_node.removeChild(child);
       }
