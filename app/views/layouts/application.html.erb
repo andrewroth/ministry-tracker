@@ -15,23 +15,29 @@
 	<body>
 		<div id="outer">
 		<div id="wrapper">
-			<div id="logout">
-				<%= link_to("logout", session_url, :method => :delete) %>&nbsp;&nbsp;&nbsp;
+		
+		  <div id="userbar">
+		    <div class="floatleft">
+		    <div class="username">Username Lastname</div><a href=""><small>(edit my profile)</small></a>
+		    </div>
+		  
+  			<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;
+  			<div class="clear"></div>
 			</div>
+			
 			<%- if @ministry && is_ministry_leader -%>
-			
-			<!--
-			<div id="addStudentLink">
-				<%= link_to_function(image_tag("add_student.png"), "show_add_student()") %>&nbsp;&nbsp;&nbsp;
-			</div>
-			-->
-			
+  			<!--
+  			<div id="addStudentLink">
+  				<%= link_to_function(image_tag("add_student.png"), "show_add_student()") %>&nbsp;&nbsp;&nbsp;
+  			</div>
+  			-->
 			<% end %>
-			<div id="header">
-				
-				<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
-			</div>
+			
+			<div id="greenbar">	
+			<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
 			<%= tabnav :main %>
+			</div>
+			
 			<div class="clear">&nbsp;</div>
 			<div class="flash notice" id="flash_notice"><%= flash[:notice] if flash[:notice] %></div>
 			<div class="flash warning" id="flash_warning"><%= flash[:warning] if flash[:warning] %></div>
