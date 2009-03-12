@@ -850,3 +850,26 @@ html[xmlns] .clearfix {
 .u {text-decoration:underline}
 .b {font-weight:bold}
 .resultsbox {max-height:200px;overflow:auto;}
+
+/* PAGE SPICE */
+div.hidememessage {
+background:#eeeeee;
+padding:10px;
+}
+
+div.closebox a{
+background:#fff url(/images/silk/cross.png) no-repeat 2% 50%;
+font-weight:bold;
+padding:5px 5px 5px 25px;
+border:1px solid green;
+}
+
+div.closebox {padding-top:10px; padding-bottom:10px;}
+
+/* DASHBOARD */
+#dashwrap {padding:0;}
+.dashmodule {border:1px solid silver; float:left; width:49%; margin:3px;}
+.moduletitle {background:#e8e8e8; height:30px;}
+.moduletitle h2 {float:left; color:#000; font-weight:normal; font-size:18px; padding:4px 4px 4px 5px;}
+.modulecontrols {float:right;}
+.modulecontent {min-height:200px;}

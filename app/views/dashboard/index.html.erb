@@ -4,6 +4,8 @@
 	<h2>Welcome to the Ministry Tracker</h2>
 </div><br/>
 <%- if @ministry -%>
+
+<div class="hidememessage" style="display:none;">
 <p>The first thing you're probably going to want to check out is the "Directory"
 tab. The directory tab is the main data entry arena.</p>
 <p>The "Profile" tab is all about you. It's where you keep your personal information
@@ -11,9 +13,90 @@ up to date. It's also a launching point for managing the different areas of mini
 you're responsible for.</p>
 <p>This "Dashboard" area will keep you informed of new features we have added to 
 this system, along with any other information we think would be helpful to you.</p>
+<div class="closebox">
+  <a href="">Hide this message</a>
+</div>
+</div>
+
+
+<div id="dashwrap">
+
+
+  <div class="dashmodule">
+    <div class="moduletitle">
+      <h2>Module Title</h2>
+      <div class="modulecontrols">
+        <a href="" class="closemodule"></a>
+        <a href="" class="minmodule"></a>
+        <a href="" class="movemodule"></a>
+      </div>
+    </div>
+    <div class="modulecontent">
+    </div>
+  </div>
+  
+  <div class="dashmodule">
+    <div class="moduletitle">
+      <h2>Module Title</h2>
+      <div class="modulecontrols">
+        <a href="" class="closemodule"></a>
+        <a href="" class="minmodule"></a>
+        <a href="" class="movemodule"></a>
+      </div>
+    </div>
+    <div class="modulecontent">
+    </div>
+  </div>
+
+  <div class="dashmodule">
+    <div class="moduletitle">
+      <h2>Module Title</h2>
+      <div class="modulecontrols">
+        <a href="" class="closemodule"></a>
+        <a href="" class="minmodule"></a>
+        <a href="" class="movemodule"></a>
+      </div>
+    </div>
+    <div class="modulecontent">
+    </div>
+  </div>
+
+  <div class="dashmodule">
+    <div class="moduletitle">
+      <h2>Module Title</h2>
+      <div class="modulecontrols">
+        <a href="" class="closemodule"></a>
+        <a href="" class="minmodule"></a>
+        <a href="" class="movemodule"></a>
+      </div>
+    </div>
+    <div class="modulecontent">
+    </div>
+  </div>
+
+  <div class="dashmodule">
+    <div class="moduletitle">
+      <h2>Module Title</h2>
+      <div class="modulecontrols">
+        <a href="" class="closemodule"></a>
+        <a href="" class="minmodule"></a>
+        <a href="" class="movemodule"></a>
+      </div>
+    </div>
+    <div class="modulecontent">
+    </div>
+  </div>
+
+
+<div class="clear"></div>
+</div>
+
+
+
 <%- else -%>
 <p>You currently aren't associated with any ministry. This could be because the leader of your ministry hasn't put you in the system.
 	It could also be because the email address your leader has for you is different from the email address you used to log in.
 	If you think this is the case, please <%= link_to_remote "click here to try other email addresses." %></p>
+
 <%- end -%>
 </div>
