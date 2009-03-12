@@ -90,7 +90,7 @@
   
 	<%- if authorized?(:new, :involvement_questions) -%>
   <div>
-		<div class="title">Training Categories specific to <%= @ministry.name %></div>
+		<div class="title">Training Categories specific to <%= @ministry.name %> <%= spinner('tc') %></div>
 		<div id="training_categories">
     	<div id="current_training_categories" class="right_list">
     		<ul id="training_categories_list"> 
@@ -106,7 +106,7 @@
     	  <div id="new_training_category_link">
       		<div class="butAdd" ><%= link_to_remote('Add a training category', :url => new_training_category_url,
       											 	 :before => "$('#new_training_category_link').hide();$('#spinnertc').show()")%></div>
-      	</div><%= spinner('tc') %>
+      	</div>
     	</div>
     	<div>
     		<div id="training_category" style="display:none">

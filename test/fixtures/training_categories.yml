@@ -5,6 +5,9 @@ one:
   name: Four Laws
   position: 1
   ministry_id: 1
-#
-# two:
-#   column: value
+
+empty:
+  id: 2
+  position: 2
+  name: Empty Category
+  ministry_id: 1

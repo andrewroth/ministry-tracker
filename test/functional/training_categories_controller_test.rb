@@ -60,7 +60,7 @@ class TrainingCategoriesControllerTest < ActionController::TestCase
 
   def test_should_destroy_training_category
     assert_difference('TrainingCategory.count', -1) do
-      delete :destroy, :id => TrainingCategory.find(:first).id
+      delete :destroy, :id => training_categories(:empty).id
     end
 
     assert_redirected_to training_categories_path

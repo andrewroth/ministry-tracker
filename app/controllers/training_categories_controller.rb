@@ -70,13 +70,27 @@ class TrainingCategoriesController < ApplicationController
   # DELETE /training_categories/1.xml
   def destroy
     @training_category = TrainingCategory.find(params[:id])
-    @training_category.destroy
-    flash[:notice] = 'Training Category was successfully deleted.'
-
-    respond_to do |format|
-      format.html { redirect_to(training_categories_url) }
-      format.xml  { head :ok }
-      format.js
+    if authorized?(:new, :training_categories, @training_category.ministry)
+      if @training_category.training_questions.empty?
+        @training_category.destroy
+        flash[:notice] = 'Training Category was successfully deleted.'
+        respond_to do |format|
+          format.html { redirect_to(training_categories_url) }
+          format.xml  { head :ok }
+          format.js
+        end
+      else
+        respond_to do |format|
+          format.js   do 
+             render :update do |page|
+               page.alert("You can't delete a category that still has questions in it. Please remove the questions from this category before deleting it.")
+               page.hide('spinnertc')
+             end
+           end
+        end
+      end
+    else
+      render :nothing => true
     end
   end
 end

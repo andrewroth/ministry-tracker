@@ -1,5 +1,5 @@
 update_flash(page, flash[:notice])
-page.insert_html(:bottom, 'direct_training_questions_' + @training_question.training_category.name, :partial => 'training_questions/training_question', :object => @training_question)
+page.insert_html(:bottom, 'direct_training_questions_' + @training_question.training_category.id.to_s, :partial => 'training_questions/training_question', :object => @training_question)
 page[:training_question].visual_effect(:fade)
 page[:spinnertq].hide
 page[:new_training_question_link].show

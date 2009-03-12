@@ -29,6 +29,7 @@ module ApplicationHelper
         page.replace_html "flash_#{level}", ''
       end
     end
+    flash[:notice] = flash[:warning] = nil
   end
 
   def date_options(year = Time.now.year - 5)

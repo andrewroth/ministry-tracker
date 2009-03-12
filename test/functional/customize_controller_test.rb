@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class CustomizeControllerTest < ActionController::TestCase
-  fixtures TrainingCategory.table_name
   def setup
     login
   end
@@ -12,7 +11,7 @@ class CustomizeControllerTest < ActionController::TestCase
   end
   
   def test_reorder_training_categories
-    post :reorder_training_categories, :id => 1, 'training_categories_list' => ['1']
+    post :reorder_training_categories, :id => 1, 'training_categories_list' => ['2','1']
     assert_response :success
   end
 end

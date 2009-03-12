@@ -1,1 +1,3 @@
 update_flash(page, flash[:notice])
+page[dom_id(@training_category)].hide
+page[:spinnertc].hide

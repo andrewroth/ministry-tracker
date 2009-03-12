@@ -3,3 +3,6 @@ page["training_question_#{@training_question.id}"].replace :partial => 'training
 page[:training_question].visual_effect(:fade)
 page[:spinnertq].hide
 page[:new_training_question_link].show
+if flash[:warning]
+  page.alert(flash[:warning])
+end

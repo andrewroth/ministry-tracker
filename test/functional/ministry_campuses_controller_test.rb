@@ -40,10 +40,13 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   
   def test_create_duplicate
     @request.session[:ministry_id] = 1 #yfc
-    xhr :post, :create, :campus_id => 2 #sac
-    xhr :post, :create, :campus_id => 2 #sac
+    assert_difference('MinistryCampus.count') do
+      xhr :post, :create, :campus_id => 2 #sac
+    end
+    assert_no_difference('MinistryCampus.count') do
+      xhr :post, :create, :campus_id => 2 #sac
+    end
     assert_response :success
-    assert_not_nil flash[:warning]
   end
   
   def test_destroy

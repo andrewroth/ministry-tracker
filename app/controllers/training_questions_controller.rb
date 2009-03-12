@@ -55,10 +55,25 @@ class TrainingQuestionsController < ApplicationController
   end
 
   def destroy
-    @training_question.destroy 
-    flash[:notice] = @training_question.activity + ' was successfully DELETED.'
-    respond_to do |format|
-      format.js 
+    if authorized?(:new, :training_questions, @training_question.ministry)
+      deactivate_question
+      # Check to see if any other ministry is using this question before actually deleting it
+      if @training_question.training_question_activations.empty?
+        @training_question.destroy
+        flash[:notice] = @training_question.activity + ' was successfully DELETED.'
+        respond_to do |format|
+          format.js 
+        end
+      else
+        flash[:warning] = @training_question.activity + ' is in use by other ministries. It has been deactivated, but cannot be deleted as long as other people are using it.'
+        respond_to do |format|
+          format.js { render :action => :update }
+        end
+      end
+    else
+      respond_to do |format|
+        format.js { render :nothing => true}
+      end
     end
   end
   
