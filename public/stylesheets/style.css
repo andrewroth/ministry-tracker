@@ -496,8 +496,9 @@ div.sectionHeader h2 {
     background-color:#fcfcfc;
 }
 
-.directorytable .highlight:hover {
+.directorytable tr:hover {
     background-color:#fff193;
+		cursor:pointer;
 }
 
 

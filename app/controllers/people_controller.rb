@@ -68,7 +68,7 @@ class PeopleController < ApplicationController
       # Build range for pagination
       if @count > 500
         finish = params[:finish]
-        if (start = params[:start]).nil?
+        if (start = params[:start]).blank?
           start = ''
           if @count > 2000
             finish ||= 'am'
@@ -76,17 +76,23 @@ class PeopleController < ApplicationController
             finish ||= 'b'
           end
         end
-        if finish.to_s.empty?
+        if finish.blank?
           conditions << "#{last_name_col} >= '#{start}'"
         else
           conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
         end
         @conditions = conditions.join(' AND ')
       end
+      
+      # Add order if it's available
+      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      session[:order] = params[:order] if params[:order]
+      order = session[:order] 
+      order = order ? order + ',' + standard_order : standard_order
       sql =   'SELECT ' + @view.select_clause 
       sql += ' FROM ' + @view.tables_clause
       sql += ' WHERE ' + @conditions
-      sql += ' ORDER BY ' + _(:last_name, :person) + ', ' + _(:first_name, :person)
+      sql += ' ORDER BY ' + order
       @people = ActiveRecord::Base.connection.select_all(sql)
     else
       @people = []
