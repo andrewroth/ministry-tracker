@@ -1,7 +1,7 @@
 class Timetable < ActiveRecord::Base
   load_mappings
   
-  EARLIEST = 6.hours.to_i
+  EARLIEST = 8.hours.to_i
   LATEST = 22.hours.to_i
   INTERVAL = 30.minutes.to_i
   BAD_WEIGHT = 0.0
@@ -123,7 +123,7 @@ class Timetable < ActiveRecord::Base
         else
           time_score = timetables[people[person_index]][time_slot[:day]][time].weight.to_f
         end
-        tmp_score *= time_score #if time_score
+        tmp_score *= time_score 
       end
     end
     user_weight * Math.exp(tmp_score)

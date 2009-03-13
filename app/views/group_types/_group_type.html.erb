@@ -15,7 +15,8 @@
     <td><%=h group_type.unsuitability_metric(group_type.unsuitability_participant) %></td>
     <td><%= link_to_remote(image_tag('edit.png', :alt => "Edit this type", :title => "Edit this type"), 
                                                  :url => edit_group_type_path(group_type),
-                                                 :before => "$('#spinnergt').show()") %></td>
+                                                 :before => "$('#spinnergt').show()",
+                        											 	 :method => :get) %></td>
     <td><%= link_to_remote(image_tag('delete.png', :alt => "Delete this type", :title => "Delete this type"), 
                                                    :url => group_type, 
                                                    :confirm => "Are you sure you want to remove the #{group_type.group_type} group type?", 

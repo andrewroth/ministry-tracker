@@ -29,11 +29,11 @@
           <td><%= person.full_name %></td>
           <%- group.each do |time| -%>
             <%- person_time = free_times[time[:day]][time[:time]] -%>
-            <%- css_class =  person_time ? person_time.css_class : 'ok' -%>
+            <%- css_class =  person_time && person_time.css_class.present? ? person_time.css_class : 'ok' -%>
             <%- css_class += ' b' if time[:members].include?(person.id) && @leader_ids.include?(person.id) -%>
             <td width="60px" class="<%= css_class %> ">
               <input type="checkbox" value="1" name="time_<%= time[:time] %>[][<%= person.id %>]" id="time_<%= time[:time] %>_<%= person.id %>" <%= time[:members].include?(person.id) ? 'checked="checked"' : '' %>/>
-              <%= person_time ? person_time.css_class.titleize : 'Ok' %>
+              <%= person_time ? person_time.css_class.try(:titleize) : 'Ok' %>
             </td>
           <%- end -%>
         </tr>

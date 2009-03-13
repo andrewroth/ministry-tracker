@@ -4,11 +4,13 @@
 <div id="profiletitle">
   <%- if @person == @me || is_ministry_leader -%>
     <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person.user  %></div> 
-    <div class="butUpdate" style="margin-right:5px;"><%= link_to_remote "Edit Information", :url => edit_person_path(@person), :method => :get %></div>
+    <div class="butUpdate" style="margin-right:5px;">
+      <%= link_to_remote "Edit Information", :url => edit_person_path(@person), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
+    </div>
     <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
     <div class="butUpdate" style="margin-right:5px;"><%= link_to "Import GCX Profile", import_gcx_profile_person_path(@person) %></div>
     <%- end -%>
-  	<h1><%= @person.full_name %></h1> 
+  	<h1><%= @person.full_name %> <%= spinner('p') %></h1> 
   	<div class="divider" style="margin-bottom:0;">&nbsp;</div>
 	<%- end -%>
 </div>
@@ -49,7 +51,8 @@
                                                   :confirm => "Are you sure you want to remove #{@person.first_name} from #{mi.ministry.name}?", 
                                                   :method => :delete,
                                                   :before => "$('#spinner').show()")  if is_ministry_leader %>
-  	  <%= link_to_remote(mi.ministry.name, :url => change_ministry_people_url(:ministry => mi.ministry.id)) %>
+  	  <%= link_to_remote(mi.ministry.name, :url => change_ministry_people_url(:ministry => mi.ministry.id),
+                  											 	 :method => :get) %>
   	  </li>
   	<%- end -%>
   	</ul> <br />
@@ -57,15 +60,18 @@
 	<%- if @person.campus_involvements.count > 0 -%>
   	<h4>Campuses</h4>
   	<ul>
-  	<%- @person.campus_involvements.each do |ci| -%>
+  	<%- @person.campus_involvements.each do |ci| 
+  	  if ci.end_date.nil? -%>
   	  <li id="ci_<%= ci.id %>">
         <%= link_to_remote(image_tag('delete.png'), :url => person_campus_involvement_path(@person, ci), 
                                                     :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
                                                     :method => :delete,
                                                     :before => "$('#spinner').show()")  if is_ministry_leader %>
-    	  <%= link_to_remote(ci.campus.short_name, :url => change_ministry_people_url(:ministry => ci.ministry.id)) %>
+    	  <%= link_to_remote(ci.campus.short_name, :url => change_ministry_people_url(:ministry => ci.ministry.id),
+                        											 	 :method => :get) %>
     	</li>
-  	<%- end -%>
+  	<%- end
+  	  end-%>
   	</ul>
   <%- end -%>
 	<br />

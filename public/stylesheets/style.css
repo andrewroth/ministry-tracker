@@ -543,7 +543,8 @@ background:#edf3fe;
 
 #errorExplanation p {
   color: #333;
-  margin-bottom: 0;
+  margin-bottom: 0px;
+  margin-top: 5px;
   padding: 5px;
 }
 
@@ -905,4 +906,8 @@ padding:5px 10px 5px 10px;
 
 .floatleft {
 float:left;
+}
+
+.inline {
+	display:inline;
 }

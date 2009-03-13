@@ -68,7 +68,8 @@
       <div id="new_group_type_link">
     		<div class="butAdd" ><%= link_to_remote('Add a group type', 
     		                                        :url => new_group_type_path,
-    		                                        :before => "$('#new_group_type_link').hide();$('#spinnergt').show();")%></div>
+    		                                        :before => "$('#new_group_type_link').hide();$('#spinnergt').show();",
+    		                                        :method => :get)%></div>
     	</div>
 		  <div id="group_type_form" style="display:none">
   	  </div>
@@ -105,7 +106,8 @@
     	<div>
     	  <div id="new_training_category_link">
       		<div class="butAdd" ><%= link_to_remote('Add a training category', :url => new_training_category_url,
-      											 	 :before => "$('#new_training_category_link').hide();$('#spinnertc').show()")%></div>
+      											 	 :before => "$('#new_training_category_link').hide();$('#spinnertc').show()",
+      											 	 :method => :get)%></div>
       	</div>
     	</div>
     	<div>
@@ -123,7 +125,8 @@
     	<div>
     	  <div id="new_training_question_link">
       		<div class="butAdd" ><%= link_to_remote('Add a training question', :url => new_training_question_url,
-      											 	 :before => "$('#new_training_question_link').hide();$('#spinnertq').show()")%></div>
+      											 	 :before => "$('#new_training_question_link').hide();$('#spinnertq').show()",
+      											 	 :method => :get)%></div>
       	</div>
     	</div>
     	<div>

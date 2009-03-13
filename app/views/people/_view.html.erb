@@ -1,34 +1,37 @@
-<h3><%= @person.primary_campus %></h3>
+<h3><%= @person.primary_campus.try(:name) %></h3>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="address">
 <tr>
-<tr>
 
-	<td colspan="1"><Table>
-	<tr><td width="150">Email</td><td><%= @current_address.email %></td></tr>
-	<%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
-	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
-	<tr><td>Birth Day</td><td><%= format_date(@person.birth_date, format) %></td></tr>
-	<tr><td>Gender</td><td><%= @person.human_gender %></td></tr>
-	</table></td>
+	<td>
+	  <table>
+    	<tr><td width="120px">Email</td><td width="200px"><%= @current_address.email %></td></tr>
+    	<%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
+    	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
+    	<tr><td>Birth Day</td><td><%= format_date(@person.birth_date, format) %></td></tr>
+    	<tr><td>Gender</td><td><%= @person.human_gender %></td></tr>
+  		<%- if @person.user  -%>
+      	<tr>
+      	  <td>Facebook Username</td>
+      	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Edit Information" to link your Facebook Account' %></td>
+      	</tr>
+      <%- end -%>
+	  </table>
+	</td>
 	
-	<td></td>
+	<td>&nbsp;</td>
 	
-	<td colspan="1"><table>
-	<tr><td width="150">Year in School</td><td><%= @person.year_in_school %></td></tr>
-	<tr><td>Graduation Date</td><td><%= format_date(@person.graduation_date) %></td></tr>
-	<tr><td>Major</td><td><%= @person.major %></td></tr>
-	<tr><td>Minor</td><td><%= @person.minor %></td></tr>
-	<%- if !@person.url.blank?
-	      desc, url = parse_url(@person.url) -%>
-	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
-	<%- end -%>
-	<%- if @person.user  -%>
-  	<tr>
-  	  <td>Facebook Username (facebook email)</td>
-  	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Update Information" to link to your Facebook Account' %></td>
-  	</tr>
-  <%- end -%>
-	</table></td>
+	<td>
+	  <table>
+    	<tr><td width="100px">Year in School</td><td><%= @person.primary_campus_involvement.try(:school_year).try(:description) %></td></tr>
+    	<tr><td>Graduation Date</td><td><%= format_date(@person.primary_campus_involvement.try(:graduation_date)) %></td></tr>
+    	<tr><td>Major</td><td><%= @person.primary_campus_involvement.try(:major) %></td></tr>
+    	<tr><td>Minor</td><td><%= @person.primary_campus_involvement.try(:minor) %></td></tr>
+    	<%- if !@person.url.blank?
+    	      desc, url = parse_url(@person.url) -%>
+    	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
+    	<%- end -%>
+	  </table>
+	</td>
 
 </tr>
 

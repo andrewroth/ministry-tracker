@@ -15,6 +15,7 @@
   &nbsp;&nbsp;&nbsp;
   <%- tooltip(link_to_remote(image_tag('edit.png'), :url => edit_ministry_role_path(ministry_role),
                                                     :before => "$('#spinner#{dom_id(ministry_role)}').show()",
+                            											 	:method => :get,
                                                     :html => {
                                                     :id => "edit_#{dom_id(ministry_role)}",
                                                     :rel => "#tooltip_content_#{dom_id(ministry_role)}"}), 
@@ -24,6 +25,7 @@
   &nbsp;&nbsp;&nbsp;
   <%- tooltip(link_to_remote(image_tag('silk/key.png'), :url => permissions_ministry_role_path(ministry_role),
                                                         :before => "$('#spinner#{dom_id(ministry_role)}').show()",
+                                											 	:method => :get,
                                                         :html => {
                                                         :id => "permissions_#{dom_id(ministry_role)}",
                                                         :rel => "#tooltip_content_#{dom_id(ministry_role)}_p"}), 

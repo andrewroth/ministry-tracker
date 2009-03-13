@@ -2,7 +2,8 @@
 	Which group would you like to add people to?<br />
 	<ul>
 	<%- @user_groups.each do |group| -%>
-		<li><%= link_to_remote(group.name, :url => group_user_memberships_url(:user_group_id => group)) %></li>
+		<li><%= link_to_remote(group.name, :url => group_user_memberships_url(:user_group_id => group),
+              											 	 :method => :get) %></li>
 	<%- end -%>
 		
 	</ul>

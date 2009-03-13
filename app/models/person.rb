@@ -6,6 +6,9 @@ class Person < ActiveRecord::Base
   # Campus Relationships
   has_many :campus_involvements, :include => [:ministry, :campus]
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
+  belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
+  # accepts_nested_attributes_for :primary_campus_involvement
+  has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
   has_many :ministry_involvements, :include => :ministry, :order => Ministry.table_name+'.'+_(:name, :ministry), :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
   has_many :ministries, :through => :ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
@@ -50,7 +53,7 @@ class Person < ActiveRecord::Base
   has_many :free_times, :through => :timetable, :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
     
   validates_presence_of _(:first_name)
-  validates_presence_of _(:last_name)
+  validates_presence_of _(:last_name), :on => :update
   # validates_presence_of _(:gender)
 
   has_one :profile_picture, :class_name => "ProfilePicture", :foreign_key => _("person_id", :profile_picture)
@@ -259,13 +262,13 @@ class Person < ActiveRecord::Base
   
   protected
     def update_stamp
-      updated_at = Time.now
-      updated_by = 'MT'
+      self.updated_at = Time.now
+      self.updated_by = 'MT'
     end
     
     def create_stamp
       update_stamp
-      created_at = Time.now
-      created_by = 'MT'
+      self.created_at = Time.now
+      self.created_by = 'MT'
     end
 end  

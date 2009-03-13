@@ -85,7 +85,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :search => :any,
                                           :add_student => :any,
                                           :advanced => :get,
-                                          :advanced_search => :post},
+                                          :advanced_search => :post,
+                                          :get_campuses => :any},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

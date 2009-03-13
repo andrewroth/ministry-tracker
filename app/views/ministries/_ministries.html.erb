@@ -13,7 +13,8 @@
 	  <br />
 	  <% if authorized?(:new, :ministries)  %>
     <%= link_to_remote 'Add a new ministry', {:url => new_ministry_url,
-											 	 :before => "$('#spinner').show()"},
+											 	 :before => "$('#spinner').show()",
+											 	 :method => :get},
 												 {:class => "action-button"} %>
 		<% end %>
 		<%= spinner %>

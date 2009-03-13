@@ -15,5 +15,6 @@
   <%- else -%>
     <%= h campus.name %>
   <%- end -%>
-<%#= link_to_remote(h(campus.name), :url => details_campus_path(campus), :before => "$('#spinner').show()") %>
+<%#= link_to_remote(h(campus.name), :url => details_campus_path(campus), :before => "$('#spinner').show()",
+      											 	 :method => :get) %>
 </li>

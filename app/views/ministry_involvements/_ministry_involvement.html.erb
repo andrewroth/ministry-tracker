@@ -2,8 +2,10 @@
 <li><%= link_to(ministry.name, ministry_campuses_url(:ministry_id => ministry)) %>  | 
 	<%= link_to_remote('edit', :url => edit_ministry_url(ministry), 
 								   :method => :get,
-								   :before => "$('#new_ministry_link').slideUp()") %>  |  
-	<%= link_to_remote('set parent', :url => parent_form_ministry_url(ministry)) %> 
+								   :before => "$('#new_ministry_link').slideUp()",
+								 	 :method => :get) %>  |  
+	<%= link_to_remote('set parent', :url => parent_form_ministry_url(ministry),
+          											 	 :method => :get) %> 
 	<%- if ministry.deleteable? -%>
 		| 
 		<%= link_to_remote('delete', :url => ministry_url(ministry), 

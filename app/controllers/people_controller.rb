@@ -149,11 +149,16 @@ class PeopleController < ApplicationController
   # GET /people/1;edit
   def edit
     setup_vars
+    setup_campuses
     render :update do |page|
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit'
       page[:edit_info].show
     end
+  end
+  
+  def get_campuses
+    @campuses = College.find(:all, :conditions => {_(:state, :campus) => params[:state]})
   end
 
   # POST /people
@@ -237,14 +242,38 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
+    if params[:primary_campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_id].to_i != @person.primary_campus.id)
+      # if @person.primary_campus_involvement
+      #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
+      #   
+      #   # @person.update_attribute(:primary_campus_involvement_id, nil)
+      # end
+      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_id]})
+        @campus_involvement.update_attribute(:end_date, nil)
+        @person.primary_campus_involvement = @campus_involvement
+      else
+        params[:primary_campus_involvement][:campus_id] = params[:primary_campus_id]
+        params[:primary_campus_involvement][:start_date] = Time.now
+        params[:primary_campus_involvement][:added_by_id] = @my.id
+        params[:primary_campus_involvement][:ministry_id] = @ministry.id
+        params[:primary_campus_involvement][:person_id] = @person.id
+        @person.primary_campus_involvement = CampusInvolvement.new(params[:primary_campus_involvement])
+      end
+      # pci = CampusInvolvement.create(:person_id => @person.id, :campus_id => params[:primary_campus_id],
+      #                                                            :start_date => Time.now, :added_by_id => @my.id,
+      #                                                            :ministry_id => @ministry.id)
+      # @person.update_attribute(:primary_campus_involvement_id, pci.id)
+      # params[:person][:primary_campus_involvement_attributes].merge(pci.attributes)
+    end
+      
     @perm_address = @person.permanent_address
-    @person.updated_by = 'MT'
-    @person.updated_at = Time.now
 
     respond_to do |format|
-      if @person.update_attributes(params[:person]) && 
+      if params[:primary_campus_id].present? && @person.update_attributes(params[:person]) && 
          (params[:current_address].nil? || @current_address.valid?) &&
-         (params[:perm_address].nil? || @perm_address.valid?)
+         (params[:perm_address].nil? || @perm_address.valid?) &&
+         @person.primary_campus_involvement.update_attributes(params[:primary_campus_involvement])
+         
         # Save custom attributes
         @ministry.custom_attributes.each do |ca|
           @person.set_value(ca.id, params[ca.safe_name]) if params[ca.safe_name]
@@ -254,6 +283,7 @@ class PeopleController < ApplicationController
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
         flash[:notice] = 'Profile was successfully updated.'
+        @person = Person.find(params[:id])
         format.html { redirect_to person_path(@person) }
         format.js do 
           render :update do |page|
@@ -262,18 +292,22 @@ class PeopleController < ApplicationController
               page[:info].replace_html :partial => 'view'
               page[:info].show
               page[:edit_info].hide
+              page << "$.scrollTo(0, 0)"
             end
           end
         end
         format.xml  { head :ok }
       else
         setup_dorms
+        setup_campuses
+        @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?
         # @current_address = @person.current_address
         #       @perm_address = @person.permanent_address
         format.html { render :action => "edit" }
         format.js do 
           render :update do |page|
             page[:edit_info].replace_html :partial => 'edit'
+            page << "$.scrollTo(0, 0)"
           end
         end
         format.xml  { render :xml => @person.errors.to_xml }
@@ -449,5 +483,15 @@ class PeopleController < ApplicationController
     
     def get_profile_person
       @person = Person.find(params[:id] || session[:person_id])
+    end
+    
+    def setup_campuses
+      @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+      if params[:state].present?
+        state = params[:state]
+      else
+        state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
+      end
+      @campuses = College.find(:all, :conditions => {_(:state, :campus) => state}) if state.present?
     end
 end

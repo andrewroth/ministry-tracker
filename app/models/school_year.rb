@@ -3,4 +3,8 @@ class SchoolYear < ActiveRecord::Base
   acts_as_list
   default_scope :order => :position
   validates_presence_of :name
+  
+  def description
+    @description ||= "#{name}#{level.present? ? ' (' + level + ')' : ''}"
+  end
 end

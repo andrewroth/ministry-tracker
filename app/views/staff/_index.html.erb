@@ -9,7 +9,8 @@
 		This screen serves as a launching area for managing the <%= t(:staff_plural, :default => 'staff people') %> in your ministry. 
 	</div><br />
 	<div id="add_person_link">
-		<%= link_to_remote("Add a staff member or student leader", :url => new_person_url(:staff => true), :before => "$('#spinner').show()") %>
+		<%= link_to_remote("Add a staff member or student leader", :url => new_person_url(:staff => true), :before => "$('#spinner').show()",
+                                      											 	 :method => :get) %>
 		<%= spinner %><br />
 	</div>
 	<div id="person" style="display:none"></div>

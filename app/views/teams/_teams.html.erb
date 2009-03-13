@@ -17,6 +17,7 @@
 			You haven't added any teams to your ministry yet. Please click the '<strong>Add a team</strong>' link below.<br /><br />
 		<%- end -%>
 		<%= link_to_remote('Add a team', :url => {:action => :new},
-											 	 :before => "$('#new_team_link').slideUp();$('#spinner').show()")%>
+            											 	 :before => "$('#new_team_link').slideUp();$('#spinner').show()",
+            											 	 :method => :get)%>
 	</div><%= spinner %>
 </div>

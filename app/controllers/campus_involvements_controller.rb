@@ -2,7 +2,7 @@ class CampusInvolvementsController < ApplicationController
   def destroy
     # if @person.campus_involvements.count > 1
       @campus_involvement = CampusInvolvement.find(params[:id])
-      @campus_involvement.destroy
+      @campus_involvement.update_attribute(:end_date, Time.now)
       respond_to do |format|
         format.xml  { head :ok }
         format.js

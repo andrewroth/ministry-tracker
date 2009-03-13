@@ -1,10 +1,19 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
-Primary Campus: <%= f.select :primary_campus, @person.ministries.collect(&:campuses).flatten.collect(&:name) %>
+  <div>
+    <h3 class="inline">Primary Campus:</h3>
+    <div id="campuses" class="inline">
+      <%= render :partial => 'campus_dropdown'  if @campuses %>
+    </div>
+    <div id="states" <%= 'style="display:none"' if @campuses %> class="inline">
+        Pick a state: <%= select_tag :state, options_for_select(State::NAMES['USA']) %>
+        <%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %>
+    </div>
+  </div>
 	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address">
 	<tr>	
 	
-	<td colspan=2 valign=top>
+	<td colspan="2" valign="top">
 	<table>
 	<tr><td>First Name</td><td><%= text_field :person, :first_name %></td></tr>
 	<tr><td>Last Name</td><td><%= text_field :person, :last_name %></td></tr>
@@ -15,17 +24,19 @@ Primary Campus: <%= f.select :primary_campus, @person.ministries.collect(&:campu
 	</table>
 	</td>
 
-	<td colspan=2 valign=top>
+	<td colspan="2" valign="top">
+  <%- fields_for :primary_campus_involvement do |cif| -%>
 	<table>	
-  	<tr><td>Year in School</td><td><%= f.select :school_year, school_year_options, {:include_blank => true} %></td></tr>
-  	<tr><td>Graduation Date</td><td class="date"><%= f.date_select :graduation_date, date_options(1950) %></td></tr>
-  	<tr><td>Major</td><td><%= f.text_field :major %></td></tr>
-  	<tr><td>Minor</td><td><%= f.text_field :minor %></td></tr>
+  	<tr><td>Year in School</td><td><%= cif.select :school_year_id, school_year_options %></td></tr>
+  	<tr><td>Graduation Date</td><td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td></tr>
+  	<tr><td>Major</td><td><%= cif.text_field :major %></td></tr>
+  	<tr><td>Minor</td><td><%= cif.text_field :minor %></td></tr>
   	<tr><td>Website</td><td><%= f.text_field :url %></td></tr>
   	<%- fields_for @person.user do |uf| -%>
   	<tr><td>Facebook Username</td><td><%= uf.text_field :facebook_username %></td></tr>
   	<%- end if @person.user -%>
 	</table>
+	<%- end -%>
 	</td>
 	</tr>
 	

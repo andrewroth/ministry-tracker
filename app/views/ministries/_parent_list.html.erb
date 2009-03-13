@@ -7,8 +7,10 @@
 <strong>Select your parent ministry.</strong>
 <br />
 <ul>
-	<li><%= link_to_remote 'No Parent', :url => set_parent_ministry_url(0) %></li>
+	<li><%= link_to_remote 'No Parent', :url => set_parent_ministry_url(0),
+              											 	 :method => :get %></li>
 	<%- @ministries.each do |ministry| -%>
-	<li><%= link_to_remote ministry.name, :url => set_parent_ministry_url(ministry.id) %></li>
+	<li><%= link_to_remote ministry.name, :url => set_parent_ministry_url(ministry.id),
+                											 	 :method => :get %></li>
 	<%- end -%>
 </ul>

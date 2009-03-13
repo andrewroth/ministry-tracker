@@ -16,7 +16,7 @@
 </table>
 
 <br />
-<%= link_to_remote('Add a new school year', :url => new_school_year_path, :before => "$('#spinner').show()") %> 
+<%= link_to_remote('Add a new school year', :url => new_school_year_path, :before => "$('#spinner').show()", :method => :get) %> 
 <br/><br/>
 <div id="school_year">
   

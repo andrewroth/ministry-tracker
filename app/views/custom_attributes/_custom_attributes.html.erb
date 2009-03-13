@@ -8,7 +8,8 @@
 	<div>
 	<div id="new_custom_attribute_link_<%= attrib_type %>">
 		<div class="butAdd" ><%= link_to_remote('Add a ' + attrib_type.to_s.underscore.humanize.downcase, :url => new_custom_attribute_url(:type => attrib_type),
-											 	 :before => "$('#new_custom_attribute_link_#{attrib_type}').slideUp();$('#spinner#{attrib_type}').show()")%></div>
+											 	 :before => "$('#new_custom_attribute_link_#{attrib_type}').slideUp();$('#spinner#{attrib_type}').show()",
+											 	 :method => :get)%></div>
 	</div><%= spinner(attrib_type) %>
 	</div>
 	<div>

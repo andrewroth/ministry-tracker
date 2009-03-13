@@ -17,7 +17,8 @@
     	<p id="no_ministries">There are currently no roles set up for your ministry.</p>
     <%- end -%>
     <div class="butAdd" id="add_link"><%= link_to_remote('Add a new role', :url => new_ministry_role_path,
-      											 	 :before => "$('#spinner').show()")%> <%= spinner %></div>
+      											 	 :before => "$('#spinner').show()",
+      											 	 :method => :get)%> <%= spinner %></div>
     <br/>
     <div id="ministry_role" style="display:none"></div>
 	</div>

@@ -25,7 +25,8 @@
 		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
 		                                                 :loading => "$('#spinneradd_student').show();",
 		                                                 :complete => "$('#spinneradd_student').hide();
-		                                                                show_add_student()") %>
+		                                                                show_add_student()",
+                            											 	 :method => :get) %>
 		<%= spinner('add_student') %>
 		or <%= link_to('import a bunch of students', new_import_path) %>
 	</div>

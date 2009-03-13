@@ -1,0 +1,3 @@
+page[:states].hide
+page[:campuses].replace_html :partial => 'campus_dropdown'
+page[:spinnerp].hide

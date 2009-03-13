@@ -13,6 +13,7 @@
 </table>
 
 <div class="butAdd" id="add_link"><%= link_to_remote('Add a new permission', :url => new_permission_path,
-  											 	 :before => "$('#spinner').show()")%> <%= spinner %></div>
+                                                    											 	 :before => "$('#spinner').show()",
+                                                    											 	 :method => :get)%> <%= spinner %></div>
 <br/>
 <div id="permission" style="display:none"></div>
