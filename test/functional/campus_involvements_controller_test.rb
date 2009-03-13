@@ -15,10 +15,9 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
 
   def test_destroy_with_permission
     login
-    assert_difference "CampusInvolvement.count", -1 do
-      xhr :delete, :destroy, :id => 1
-    end
+    xhr :delete, :destroy, :id => 1
     assert_response :success
+    assert_not_nil(assigns(:campus_involvement).end_date)
     assert_template 'destroy'
   end
   

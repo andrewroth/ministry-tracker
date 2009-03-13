@@ -142,7 +142,8 @@ class PeopleControllerTest < ActionController::TestCase
   def test_should_update_person
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
-                       :perm_address => {:phone => '555-555-5555', :address1 => 'here'}
+                       :perm_address => {:phone => '555-555-5555', :address1 => 'here'},
+                       :primary_campus_id => 1, :primary_campus_involvement => {}
     assert_template '_view'
   end
   
