@@ -1,10 +1,14 @@
 class Person < ActiveRecord::Base
   include ActiveRecord::ConnectionAdapters::Quoting
   load_mappings
-  index _(:id) if $cache
+  if $cache
+    index _(:user_id)
+    index _(:id)
+  end
   
   # Campus Relationships
-  has_many :campus_involvements, :include => [:ministry, :campus]
+  has_many :campus_involvements #, :include => [:ministry, :campus]
+  has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
   belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
   # accepts_nested_attributes_for :primary_campus_involvement
@@ -21,7 +25,7 @@ class Person < ActiveRecord::Base
   
   # Group Involvements  
   has_many :group_involvements
-  has_many :groups, :through => :group_involvements, :conditions => _(:level, :group_involvement) + " IN ('leader', 'member')"
+  has_many :groups, :through => :group_involvements #, :conditions => _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader')"
   
   has_many :group_interests, :through => :group_involvements, :source => :group, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
@@ -258,6 +262,10 @@ class Person < ActiveRecord::Base
     end
     current_address.save(false) if current_address
     self.save(false)
+  end
+  
+  def most_recent_involvement
+    @most_recent_involvement ||= primary_campus_involvement || campus_involvements.last
   end
   
   protected

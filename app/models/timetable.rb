@@ -1,5 +1,9 @@
 class Timetable < ActiveRecord::Base
   load_mappings
+  if $cache
+    index _(:id)
+    index _(:person_id)
+  end
   
   EARLIEST = 8.hours.to_i
   LATEST = 22.hours.to_i

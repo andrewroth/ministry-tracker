@@ -1,5 +1,9 @@
 class ProfilePicture < ActiveRecord::Base
   load_mappings
+  if $cache
+    index _(:id)
+    index _(:person_id)
+  end
   belongs_to :person, :class_name => "Person", :foreign_key => _("person_id")
 
   has_attachment :content_type => :image, 

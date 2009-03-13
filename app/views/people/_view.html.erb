@@ -22,10 +22,10 @@
 	
 	<td>
 	  <table>
-    	<tr><td width="100px">Year in School</td><td><%= @person.primary_campus_involvement.try(:school_year).try(:description) %></td></tr>
-    	<tr><td>Graduation Date</td><td><%= format_date(@person.primary_campus_involvement.try(:graduation_date)) %></td></tr>
-    	<tr><td>Major</td><td><%= @person.primary_campus_involvement.try(:major) %></td></tr>
-    	<tr><td>Minor</td><td><%= @person.primary_campus_involvement.try(:minor) %></td></tr>
+    	<tr><td width="100px">Year in School</td><td><%= @person.most_recent_involvement.try(:school_year).try(:description) %></td></tr>
+    	<tr><td>Graduation Date</td><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
+    	<tr><td>Major</td><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
+    	<tr><td>Minor</td><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
     	<%- if !@person.url.blank?
     	      desc, url = parse_url(@person.url) -%>
     	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>

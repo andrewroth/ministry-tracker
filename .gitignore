@@ -16,3 +16,4 @@ config/initializers/uscm_prod.rb
 config/initializers/cache_money.rb
 config/facebook.yml
 db/schema.rb
+query_trace

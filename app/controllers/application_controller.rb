@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
-  before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
+  before_filter :login_required, :get_person, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all
@@ -72,14 +72,14 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_admin(ministry = nil, person = nil)
-      @admins ||= {}
+      session[:admins] ||= {}
       ministry ||= get_ministry
-      @admins[ministry.id] ||= {}
+      session[:admins][ministry.id] ||= {}
       person ||= (@me || get_person)
-      unless @admins[ministry.id][person.id]
-        @admins[ministry.id][person.id] = person.admin?(ministry)
+      unless session[:admins][ministry.id][person.id]
+        session[:admins][ministry.id][person.id] = person.admin?(ministry)
       end
-      return @admins[ministry.id][person.id]
+      return session[:admins][ministry.id][person.id]
     end
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -89,9 +89,12 @@ class ApplicationController < ActionController::Base
         @user_permissions ||= {}
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
-        mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
-        if mi
-          role = mi.ministry_role
+        if session[:ministry_role_id].nil?
+          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+          session[:ministry_role_id] = mi ? mi.ministry_role_id : false
+        end
+        if session[:ministry_role_id]
+          role = MinistryRole.find(session[:ministry_role_id])
           role.permissions.each do |perm|
             @user_permissions[ministry][perm.controller] ||= []
             @user_permissions[ministry][perm.controller] << perm.action

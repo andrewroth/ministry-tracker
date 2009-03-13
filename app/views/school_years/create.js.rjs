@@ -1,2 +1,3 @@
 page.insert_html :bottom, :school_years, :partial => 'school_year', :object => @school_year
-page[:school_year].hide
+page << "$('#school_year_name').val('')"
+page << "$('#school_year_level').val('')"

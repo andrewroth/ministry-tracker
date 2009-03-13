@@ -1,2 +1,3 @@
 page[:school_year].replace_html :partial => 'form'
 page[:spinner].hide
+page[:school_year].show

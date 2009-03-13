@@ -1,0 +1,15 @@
+  	<h4>Campuses</h4>
+  	<ul>
+  	<%- @person.campus_involvements.each do |ci| 
+  	  if ci.end_date.nil? -%>
+  	  <li id="ci_<%= ci.id %>">
+        <%= link_to_remote(image_tag('delete.png'), :url => person_campus_involvement_path(@person, ci), 
+                                                    :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
+                                                    :method => :delete,
+                                                    :before => "$('#spinner').show()")  if is_ministry_leader || @person == @me %>
+    	  <%= link_to_remote(ci.campus.short_name, :url => change_ministry_people_url(:ministry => ci.ministry.id),
+                        											 	 :method => :get) %>
+    	</li>
+  	<%- end
+  	  end-%>
+  	</ul>

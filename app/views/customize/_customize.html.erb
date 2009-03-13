@@ -48,6 +48,7 @@
     <div class="title">Group Types <%= spinner('gt') %></div>
     <div>
       <table border="0" cellspacing="5" cellpadding="5" id="group_types" class="directorytable">
+        <thead>
         <tr>
           <th rowspan="2">Group Type</th>
           <th rowspan="2">Mentor Priority</th>
@@ -61,6 +62,7 @@
         <th>Co-Leader</th>
         <th>Participant</th>
       </tr>
+      </thead>
       <%= render @ministry.group_types %>
     
     </table>

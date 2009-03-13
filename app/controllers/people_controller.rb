@@ -9,7 +9,6 @@ require 'person_methods'
 
 class PeopleController < ApplicationController
   include PersonMethods
-  skip_before_filter    :get_ministry, :only => [:change_ministry]
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   # GET /people
@@ -258,11 +257,14 @@ class PeopleController < ApplicationController
         params[:primary_campus_involvement][:ministry_id] = @ministry.id
         params[:primary_campus_involvement][:person_id] = @person.id
         @person.primary_campus_involvement = CampusInvolvement.new(params[:primary_campus_involvement])
+        @update_involvements = true
       end
-    else
+    end
+    if params[:primary_campus_id].blank?
       if @person.primary_campus_involvement
          @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
          @person.update_attribute(:primary_campus_involvement_id, nil)
+          @update_involvements = true
       end
     end
       
@@ -273,8 +275,8 @@ class PeopleController < ApplicationController
          (params[:current_address].nil? || @current_address.valid?) &&
          (params[:perm_address].nil? || @perm_address.valid?) 
         
-        if params[:primary_campus_involvement].present?
-          @person.primary_campus_involvement.update_attributes(params[:primary_campus_involvement])
+        if params[:primary_campus_involvement].present? &&  @person.most_recent_involvement
+          @person.most_recent_involvement.update_attributes(params[:primary_campus_involvement])
         end
          
         # Save custom attributes
@@ -295,6 +297,9 @@ class PeopleController < ApplicationController
               page[:info].replace_html :partial => 'view'
               page[:info].show
               page[:edit_info].hide
+              if @update_involvements
+                page[:campuses_div].replace_html :partial => 'campuses'
+              end
               page << "$.scrollTo(0, 0)"
             end
           end
@@ -462,7 +467,7 @@ class PeopleController < ApplicationController
     end
     
     def setup_dorms
-      @dorms = @person.campuses.collect(&:dorms).flatten
+      @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
     
     def can_edit_profile
