@@ -14,7 +14,7 @@
   												 :submit => "person#{person.id}") %><br />
   		<%- end -%>
   		</td>
-  		<td><%= person.current_address.email %></td>
+  		<td><%= person.current_address.try(:email) %></td>
 		</tr>
 	<%- end -%>
 	</table>
