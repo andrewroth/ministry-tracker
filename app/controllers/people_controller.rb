@@ -259,20 +259,23 @@ class PeopleController < ApplicationController
         params[:primary_campus_involvement][:person_id] = @person.id
         @person.primary_campus_involvement = CampusInvolvement.new(params[:primary_campus_involvement])
       end
-      # pci = CampusInvolvement.create(:person_id => @person.id, :campus_id => params[:primary_campus_id],
-      #                                                            :start_date => Time.now, :added_by_id => @my.id,
-      #                                                            :ministry_id => @ministry.id)
-      # @person.update_attribute(:primary_campus_involvement_id, pci.id)
-      # params[:person][:primary_campus_involvement_attributes].merge(pci.attributes)
+    else
+      if @person.primary_campus_involvement
+         @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
+         @person.update_attribute(:primary_campus_involvement_id, nil)
+      end
     end
       
     @perm_address = @person.permanent_address
 
     respond_to do |format|
-      if params[:primary_campus_id].present? && @person.update_attributes(params[:person]) && 
+      if @person.update_attributes(params[:person]) && 
          (params[:current_address].nil? || @current_address.valid?) &&
-         (params[:perm_address].nil? || @perm_address.valid?) &&
-         @person.primary_campus_involvement.update_attributes(params[:primary_campus_involvement])
+         (params[:perm_address].nil? || @perm_address.valid?) 
+        
+        if params[:primary_campus_involvement].present?
+          @person.primary_campus_involvement.update_attributes(params[:primary_campus_involvement])
+        end
          
         # Save custom attributes
         @ministry.custom_attributes.each do |ca|
@@ -300,9 +303,7 @@ class PeopleController < ApplicationController
       else
         setup_dorms
         setup_campuses
-        @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?
-        # @current_address = @person.current_address
-        #       @perm_address = @person.permanent_address
+        # @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?
         format.html { render :action => "edit" }
         format.js do 
           render :update do |page|

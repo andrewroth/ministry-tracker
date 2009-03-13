@@ -744,7 +744,7 @@ margin:0px 0 5px 0;
 .ok {background:#61E6CB;}
 .good {background:#5CE40A;}
 
-.badhead, .poorhead, .okayhead, .goodhead {
+.badhead, .poorhead, .okhead, .goodhead {
 width:40px;
 height:20px;
 display:block;
@@ -756,13 +756,13 @@ margin-bottom:10px;
 
 .badhead {background:url(/images/status_bad.png) 50% 50% #bc0a0a;}
 .poorhead {background:url(/images/status_poor.png) 50% 50% #ffC000;}
-.okayhead {background:url(/images/status_okay.png) 50% 50% #61E6CB;}
+.okhead {background:url(/images/status_okay.png) 50% 50% #61E6CB;}
 .goodhead {background:url(/images/status_good.png) 50% 50% #5CE40A;}
 
 .headselected,
 a.badhead:hover,
 a.poorhead:hover,
-a.okayhead:hover,
+a.okhead:hover,
 a.goodhead:hover {border:2px solid gray;}
 
 .statusheadwrap {height:24px; width:200px; background:none; display:block;margin:10px 0 10px 0; clear:both;}
