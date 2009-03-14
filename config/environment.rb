@@ -21,8 +21,6 @@ Rails::Initializer.run do |config|
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
-#  config.gem "json"
-  config.gem  'httpclient' # Need this for soap4r
   # config.gem  'json'
   config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
