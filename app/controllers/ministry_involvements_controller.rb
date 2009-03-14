@@ -1,10 +1,10 @@
 class MinistryInvolvementsController < ApplicationController
-  before_filter :ministry_leader_filter
+  before_filter :ministry_leader_filter, :except => :destroy
   def destroy
     @person = Person.find(params[:person_id])
-    if @person.all_ministries.size > 1
+    if @me == @person || is_ministry_leader
       @ministry_involvement = MinistryInvolvement.find(params[:id])
-      @ministry_involvement.destroy
+      @ministry_involvement.update_attribute(:end_date, Time.now)
 
       respond_to do |format|
         format.xml  { head :ok }

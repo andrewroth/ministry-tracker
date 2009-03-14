@@ -139,7 +139,7 @@ class Ministry < ActiveRecord::Base
   end
   
   def staff_role_ids
-    @staff_role_ids ||= staff_roles.collect(&:id)
+    @staff_role_ids ||= staff_roles.find(:all).collect(&:id)
   end
   
   def student_role_ids

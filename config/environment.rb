@@ -29,8 +29,9 @@ Rails::Initializer.run do |config|
   config.gem  'roo'
   config.gem  'hpricot'
   config.gem  'mechanize'
+  config.gem  'erubis'
   # config.gem  'rubycas-client'
-  config.gem 'rfacebook'
+  # config.gem 'rfacebook'
   
   config.time_zone = 'UTC'
 

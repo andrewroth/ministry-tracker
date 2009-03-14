@@ -13,8 +13,9 @@ class Person < ActiveRecord::Base
   belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
   # accepts_nested_attributes_for :primary_campus_involvement
   has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
-  has_many :ministry_involvements, :include => :ministry, :order => Ministry.table_name+'.'+_(:name, :ministry), :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
-  has_many :ministries, :through => :ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
+  has_many :active_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
+  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
+  has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
 
   # Address Relationships

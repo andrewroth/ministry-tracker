@@ -1,6 +1,11 @@
 class MinistryInvolvement < ActiveRecord::Base
   load_mappings
   
+  if $cache
+    index _(:id)
+    index _(:person_id)
+  end
+  
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   belongs_to :ministry
   belongs_to :ministry_role, :class_name => "MinistryRole", :foreign_key => _("ministry_role_id")

@@ -18,25 +18,25 @@ render_tabnav :main,
    t.named 'Manage'
    t.titled 'Manage your world'
    t.links_to :controller => 'manage'
-  end if is_ministry_leader_somewhere(@me)
+  end if can_manage
   
   
-  @groups = @my.groups.collect {|group| group}
-  add_tab do |t|
-    if @groups.size == 1
-      if @groups.first.group_type
-        t.named  "My #{@groups.first.group_type.group_type}"
-      else
-        t.named 'My Group'
-      end
-      t.links_to group_path(@groups.first)
-    else
-      t.named  'My Groups'
-      t.links_to groups_path
-    end
-    t.highlights_on :controller => "groups"
-    t.titled 'Where you should be right now'
-  end if @groups.size > 0
+  # @groups = @my.groups.collect {|group| group}
+  # add_tab do |t|
+  #   if @groups.size == 1
+  #     if @groups.first.group_type
+  #       t.named  "My #{@groups.first.group_type.group_type}"
+  #     else
+  #       t.named 'My Group'
+  #     end
+  #     t.links_to group_path(@groups.first)
+  #   else
+  #     t.named  'My Groups'
+  #     t.links_to groups_path
+  #   end
+  #   t.highlights_on :controller => "groups"
+  #   t.titled 'Where you should be right now'
+  # end if @groups.size > 0
   
   add_tab do |t|
    t.named 'My Profile'

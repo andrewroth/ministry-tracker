@@ -10,9 +10,9 @@ class ApplicationController < ActionController::Base
 
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader
+                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
-  before_filter :login_required, :get_person, :set_locale#, :get_bar
+  before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all
@@ -64,6 +64,17 @@ class ApplicationController < ActionController::Base
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
                                           ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
                                             @my.id, get_ministry.root.leader_roles_ids]).nil?
+    end
+    
+    def can_manage
+      unless session[:can_manage]
+        session[:can_manage] = authorized?(:new, :ministries) || authorized?(:edit, :ministries) ||
+                               authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
+                               authorized?(:new, :people) || authorized?(:new, :groups) ||
+                    		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
+                    		       authorized?(:new, :group_types) || authorized?(:new, :dorms)
+      end
+      session[:can_manage]
     end
     
     def is_involved_somewhere(person = nil)

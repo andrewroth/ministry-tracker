@@ -5,17 +5,16 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
-		<%= stylesheet_link_tag "style", :media => "all" %>
-    	<%= stylesheet_link_tag "thickbox", "ext/ext-all", :media => "screen", :cache => true %>
+		<%= stylesheet_link_tag "style", "thickbox", "ext/ext-all", 'calendar/calendar-win2k-1', :media => "screen", :cache => true %>
 		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
 		                            'jquery.disable.text.select.pack', 'calendar', 'lang/calendar-en', 'calendar-setup',
 		                            'jquery.scrollTo-min', :cache => true %>
-		<style type="text/css">@import url(/stylesheets/calendar/calendar-win2k-1.css);</style>
 	</head>
 	<body>
 		<div id="outer">
 		<div id="wrapper">
-		
+		  
+		  <% if logged_in? %>
 		  <div id="userbar">
 		    <div class="floatleft">
 		    <div class="username"><%= @my.full_name %></div><a href=""><small>(<%= link_to('go to my profile', person_path(@me)) %>)</small></a>
@@ -25,19 +24,22 @@
   			<div class="clear"></div>
 			</div>
 			
-			<%- if @ministry && is_ministry_leader -%>
-  			<!--
-  			<div id="addStudentLink">
-  				<%= link_to_function(image_tag("add_student.png"), "show_add_student()") %>&nbsp;&nbsp;&nbsp;
-  			</div>
-  			-->
-			<% end %>
-			
 			<div id="greenbar">	
 			<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
 			<%= tabnav :main %>
 			</div>
-			
+			<%- else -%>
+		  <div id="userbar">
+				<div class="floatleft">
+  		    <div class="username">Please Login</div>
+		    </div>
+  			<div class="clear"></div>
+			</div>
+			<div id="greenbar">	
+  			<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
+  			<%= render :partial => 'tabnav/auth' %>
+			</div>
+			<%- end -%>
 			<div class="clear">&nbsp;</div>
 			<div class="flash notice" id="flash_notice"><%= flash[:notice] if flash[:notice] %></div>
 			<div class="flash warning" id="flash_warning"><%= flash[:warning] if flash[:warning] %></div>
