@@ -165,7 +165,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.xml  { render :xml => @people.to_xml }
       format.xls  do
-        filename = "Directory.xls"    
+        filename = @search_for.gsub(';',' -') + ".xls"    
 
         #this is required if you want this to work with IE        
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
