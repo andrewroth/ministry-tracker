@@ -2,7 +2,7 @@ class MinistryInvolvementsController < ApplicationController
   before_filter :ministry_leader_filter, :except => :destroy
   def destroy
     @person = Person.find(params[:person_id])
-    if @me == @person || authorized?(:new)
+    if @me == @person || authorized?(:new, :people)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
       @ministry_involvement.update_attribute(:end_date, Time.now)
 

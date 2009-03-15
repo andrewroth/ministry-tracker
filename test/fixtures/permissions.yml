@@ -7,3 +7,7 @@ two:
   id: 2
   action: new
   controller: campus_involvements
+three:
+  id: 3
+  action: new
+  controller: people
