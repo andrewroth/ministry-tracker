@@ -1,7 +1,7 @@
 update_flash(page)
 if params[:modalbox]
-  page.call("close_thickbox")
   page['addStudent'].hide
+  page.call("close_thickbox")
 elsif params[:staff]
   @staff = @ministry.staff
   page['left-body'].replace_html(:partial => 'staff/index')

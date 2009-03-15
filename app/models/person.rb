@@ -70,14 +70,17 @@ class Person < ActiveRecord::Base
   # wrapper to make gender display nicely with crusade tables
   def human_gender(value = nil)
     gender = value || self.gender
-    if [0,1,'0','1'].include? gender
-      @gender = ((gender.to_s == '0') ? 'Female' : 'Male')
+    Person.human_gender(gender)
+  end
+  
+  def self.human_gender(gender)
+    if [0,1,'0','1'].include?(gender)
+      gender = ((gender.to_s == '0') ? 'Female' : 'Male')
     end
-    if ['M','F'].include? gender
-      @gender = gender == 'F' ? 'Female' : 'Male'
+    if ['M','F'].include?(gender)
+      gender = gender == 'F' ? 'Female' : 'Male'
     end
-    @gender = @gender.titlecase if @gender
-    @gender || gender
+    gender.titlecase
   end
   
   def gender=(value)

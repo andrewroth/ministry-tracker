@@ -1,5 +1,5 @@
 
-<div id="addStudent" style="display:none">
+<div id="addStudent">
 <% remote_form_for(person || Person.new,
               :loading => "close_thickbox()") do |f| %>
   <%= hidden_field_tag :modalbox, true %>
@@ -8,6 +8,6 @@
   <p>
   <%= submit_tag "Save", {:id => 'save'} %> <%= spinner('form') %>
   or <a id="TB_closeWindowButton" href="#">cancel</a></p>
-  <% end %>
+<% end %>
 
 </div>

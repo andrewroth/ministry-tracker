@@ -883,9 +883,9 @@ float:right;
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
-a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; }
-a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; }
-a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
 .modulecontent h6 {font-size:13px;}
 .lightgray {background:#f0f0f0; padding:5px;}

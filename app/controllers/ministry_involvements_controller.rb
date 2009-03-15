@@ -2,7 +2,7 @@ class MinistryInvolvementsController < ApplicationController
   before_filter :ministry_leader_filter, :except => :destroy
   def destroy
     @person = Person.find(params[:person_id])
-    if @me == @person || is_ministry_leader
+    if @me == @person || authorized?(:new)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
       @ministry_involvement.update_attribute(:end_date, Time.now)
 
@@ -15,7 +15,6 @@ class MinistryInvolvementsController < ApplicationController
         format.xml  { head :ok }
         format.js   do 
           render :update do |page|
-            page.alert('You must leave at least one ministry.')
             page.hide('spinner')
           end
         end

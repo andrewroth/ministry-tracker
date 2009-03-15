@@ -30,8 +30,10 @@
 		<%= spinner('add_student') %>
 		or <%= link_to('import a bunch of students', new_import_path) %>
 	</div>
+	<div id="addStudent" style="display:none"></div>
 <%- end -%>
 <div id="searchBox">
+  <div id="basic_search" <%= 'style="display:none"' if @advanced %>>
 	<%- form_tag directory_people_url do -%>
 		Search by name or email: <%= text_field_tag "search"%> <%= submit_tag "Go"%> &nbsp;&nbsp;
     <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->
@@ -47,11 +49,19 @@
   	<%- if is_ministry_leader -%>
   		<div class="butDExcel" ><%= link_to "", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search => params[:search]) %></div>
   	<%- end -%>
-<!--	
-		<%= link_to "Advanced Search"%> &nbsp;&nbsp;
+
+		<%= link_to_function "Advanced Search", "$('#basic_search').hide();$('#advanced_search').show();"%> 
+	<%- end -%>
+	</div>
+  <div id="advanced_search" <%= 'style="display:none"' unless @advanced %>>
+    <%= render :partial => 'advanced_search' %>
+		<%= link_to_function "Basic Search", "$('#basic_search').show();$('#advanced_search').hide();"%> 
+	</div>
+	
+		&nbsp;&nbsp;
+		<!--	
 		<%= link_to "More actions..."%>
 -->
-	<%- end -%>
 	
 <%- if @count > 2000 -%><br />
 	| 
@@ -71,7 +81,7 @@
 <%- end -%>
 </div>
 <%- if @conditions -%>
-<div class="yoursearch">Search Results for: <strong><%= params[:search] || 'Everybody' %></strong></div>
+<div class="yoursearch">Search Results for: <strong><%= params[:search] || @search_for || 'Everybody' %></strong></div>
 <%- unless params[:start].to_s.empty? -%>
 	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
 <% end %>
