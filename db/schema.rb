@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090312181338) do
+ActiveRecord::Schema.define(:version => 20090314160603) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -41,16 +41,15 @@ ActiveRecord::Schema.define(:version => 20090312181338) do
     t.integer "campus_id"
     t.date    "start_date"
     t.date    "end_date"
-    t.integer "ministry_id"
     t.integer "added_by_id"
     t.date    "graduation_date"
     t.integer "school_year_id"
-    t.integer "major_id"
-    t.integer "minor_id"
+    t.integer "ministry_id"
+    t.string  "major"
+    t.string  "minor"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
-  add_index "campus_involvements", ["ministry_id"], :name => "index_campus_involvements_on_ministry_id"
   add_index "campus_involvements", ["person_id"], :name => "person_id"
 
   create_table "campuses", :force => true do |t|
@@ -399,6 +398,19 @@ ActiveRecord::Schema.define(:version => 20090312181338) do
     t.string   "name"
     t.string   "level"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "searches", :force => true do |t|
+    t.integer  "person_id"
+    t.text     "options"
+    t.text     "query"
+    t.text     "tables"
+    t.boolean  "saved"
+    t.string   "name"
+    t.string   "order"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

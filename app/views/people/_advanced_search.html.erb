@@ -1,10 +1,9 @@
-<%- params.merge(@options) if @options.present? -%>
 <% form_tag(directory_people_path) do %>
   Year in School:
   <ul>
     <% SchoolYear.find(:all).each do |sy| %>
       <li>
-        <%= check_box_tag "school_year[]", sy.id, params[:school_year] && params[:school_year].include?(sy.id.to_s) %>
+        <%= check_box_tag "school_year[]", sy.id, @options["school_year"] && @options["school_year"].include?(sy.id.to_s) %>
         <%= sy.name %> 
         <%= "(#{sy.level})" if sy.level.present? %>
       </li>
@@ -15,7 +14,7 @@
   <ul>
     <% ['1','0'].each do |gender| %>
       <li>
-        <%= check_box_tag "gender[]", gender, params[:gender] && params[:gender].include?(gender) %>
+        <%= check_box_tag "gender[]", gender, @options["gender"] && @options["gender"].include?(gender) %>
         <%= Person.human_gender(gender) %> 
       </li>
     <% end %>
@@ -25,7 +24,7 @@
   <ul>
     <% @my.ministries.each do |ministry| %>
       <li>
-        <%= check_box_tag "ministry[]", ministry.id, params[:ministry] && params[:ministry].include?(ministry.id) %>
+        <%= check_box_tag "ministry[]", ministry.id, @options["ministry"] && @options["ministry"].include?(ministry.id) %>
         <%= ministry.name %> 
       </li>
     <% end %>
@@ -35,7 +34,7 @@
   <ul>
     <% @campuses.sort.each do |campus| %>
       <li>
-        <%= check_box_tag "campus[]", campus.id, params[:campus] && params[:campus].include?(campus.id) %>
+        <%= check_box_tag "campus[]", campus.id, @options["campus"] && @options["campus"].include?(campus.id) %>
         <%= campus.name %> 
       </li>
     <% end %>

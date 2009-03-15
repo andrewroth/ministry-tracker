@@ -56,6 +56,9 @@ class Person < ActiveRecord::Base
   
   has_one :timetable, :class_name => "Timetable", :foreign_key => _(:person_id, :timetable)
   has_many :free_times, :through => :timetable, :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
+  
+  # Searches
+  has_many :searches, :class_name => "Search", :foreign_key => _(:person_id, :search), :order => "#{_(:updated_at, :search)} desc"
     
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name), :on => :update

@@ -30,27 +30,28 @@
 		<%= spinner('add_student') %>
 		or <%= link_to('import a bunch of students', new_import_path) %>
 	</div>
-	<div id="addStudent" style="display:none"></div>
+<%- end -%>
+<%- if @me.all_ministries.length > 1 -%>
+	<div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
+	<%= select_tag("current_ministry", options_for_select(@me.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+	<%= observe_field(:current_ministry, {:url => change_ministry_people_url, :with => 'current_ministry'} ) -%>
+<%- end -%>
+<%- if @ministry.views.length > 1 -%>
+	View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
+	<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
+<%- end -%>
+<%- if authorized?(:advanced) %>
+	<div class="butDExcel" ><%= link_to "Excel Download", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search_id => @search.id) %></div>
 <%- end -%>
 <div id="searchBox">
   <div id="basic_search" <%= 'style="display:none"' if @advanced %>>
 	<%- form_tag directory_people_url do -%>
 		Search by name or email: <%= text_field_tag "search"%> <%= submit_tag "Go"%> &nbsp;&nbsp;
     <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->
-    <%- if @me.all_ministries.length > 1 -%>
-  		<div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#ministry').show()") %></div>
-  		<%= select_tag("ministry", options_for_select(@me.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
-  		<%= observe_field(:ministry, {:url => change_ministry_people_url, :with => 'ministry'} ) -%>
+    
+    <%- if authorized?(:advanced) %>
+  		<%= link_to_function "Advanced Search", "$('#basic_search').hide();$('#advanced_search').show();"%> 
   	<%- end -%>
-  	<%- if @ministry.views.length > 1 -%>
-  		View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
-  		<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
-  	<%- end -%>
-  	<%- if is_ministry_leader -%>
-  		<div class="butDExcel" ><%= link_to "", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search => params[:search]) %></div>
-  	<%- end -%>
-
-		<%= link_to_function "Advanced Search", "$('#basic_search').hide();$('#advanced_search').show();"%> 
 	<%- end -%>
 	</div>
   <div id="advanced_search" <%= 'style="display:none"' unless @advanced %>>
@@ -66,9 +67,9 @@
 <%- if @count > 2000 -%><br />
 	| 
 	<%- ('A'..'Z').each do |l| -%>
-		<%= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search => params[:search]) %> | 
+		<%= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | 
 		<%- finish = (l == 'Z') ? '' : l.next -%>
-		<%= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search => params[:search]) %> | 
+		<%= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id) %> | 
 	<%- end -%>
 <%- elsif @count > 500 
 	# set the default start value to A
@@ -76,12 +77,13 @@
 	-%><br />
 	<%- ('A'..'Z').each do |l| 
 		finish = (l == 'Z') ? '' : l.next-%>
-		<%= link_to l, directory_people_url(:start => l, :finish => finish, :search => params[:search]) %> | 
+		<%= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | 
 	<%- end -%>
 <%- end -%>
 </div>
 <%- if @conditions -%>
-<div class="yoursearch">Search Results for: <strong><%= params[:search] || @search_for || 'Everybody' %></strong></div>
+<div class="yoursearch"><%= simple_format("Search Results for: <strong>#{@search_for.present? ? @search_for : 'Everybody'}</strong>") %>
+</div>
 <%- unless params[:start].to_s.empty? -%>
 	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
 <% end %>
@@ -108,7 +110,7 @@
         			    <%= image_tag('silk/bullet_arrow_up.png') %>
   			    <%- end -%>
   			  <%- end -%>
-  			  <%= link_to(column.title, directory_people_url(:order => "#{column.select_clause}#{direction}", :start => params[:start], :finish => params[:finish], :search => params[:search] )) %>
+  			  <%= link_to(column.title, directory_people_url(:order => "#{column.select_clause}#{direction}", :start => params[:start], :finish => params[:finish], :search_id => @search.id )) %>
   			<%- else -%>
   			  <%= column.title %>
   			<%- end -%>

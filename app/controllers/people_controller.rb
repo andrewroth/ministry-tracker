@@ -17,6 +17,8 @@ class PeopleController < ApplicationController
   end
   
   def advanced
+    @options = {}
+    @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     render :layout => 'application'
   end
   
@@ -25,80 +27,98 @@ class PeopleController < ApplicationController
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     
-    
-    # Build conditions
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
-    email = _(:email, :address)
-    conditions = ["#{first_name_col} <> ''"]
-    search = params[:search].to_s.strip
-    search = '%' if search.empty?
-    case true
-    when !search.scan(' ').empty?
-      names = search.split(' ')
-      first = names[0].strip
-  		last = names[1].strip
-    	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
-    when !search.scan('@').empty?
-      conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
+    if params[:search_id]
+      @search = @my.searches.find(params[:search_id])
+      @conditions = @search.query
+      @options = JSON::Parser.new(@search.options).parse
+      @tables = JSON::Parser.new(@search.tables).parse
+      @search_for = @search.description
+      @search.update_attribute(:updated_at, Time.now)
+      @advanced = true if @tables.present?
     else
-      conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
-    end
-    
-    if params[:campus_id]
-      @campus = Campus.find(params[:campus_id])
-    end
-    
-    # Advanced search options
-    @options = {}
-    @tables = {}
-    # Check year in school
-    if params[:school_year].present?
-      conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
-      @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-      @advanced = true
-    end
-    
-    # Check gender
-    if params[:gender].present?
-      conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
-      @advanced = true
-    end
-    
-    # Check campus
-    if params[:campus].present?
-      # Only consider ministry ids that this person is involved in (stop deviousness)
-      params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
-      unless params[:campus].empty?
-        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
-        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-        @advanced = true
-      end
-    end
-    
-    # Check ministry
-    if params[:ministry].present?
-      # Only consider ministry ids that this person is involved in (stop deviousness)
-      params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
-      unless params[:ministry].empty?
-        cond = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))})"
-        if params[:campus].present?
-          conditions <<  cond 
-        else
-          conditions << ('(' + cond + ' OR ' + campus_condition + ')')
+      # Build conditions
+      first_name_col = _(:first_name, :person)
+      last_name_col = _(:last_name, :person)
+      email = _(:email, :address)
+      conditions = ["#{first_name_col} <> ''"]
+      search = params[:search].to_s.strip
+      search = '%' if search.empty?
+      case true
+      when !search.scan(' ').empty?
+        names = search.split(' ')
+        first = names[0].strip
+    		last = names[1].strip
+      	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
+      when !search.scan('@').empty?
+        conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
+      else
+        if search.present?
+          conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
         end
-        @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
+      end
+    
+      if params[:campus_id]
+        @campus = Campus.find(params[:campus_id])
+      end
+    
+      # Advanced search options
+      @options = {}
+      @tables = {}
+      @search_for = []
+      # Check year in school
+      if params[:school_year].present?
+        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
-    end
+    
+      # Check gender
+      if params[:gender].present?
+        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
+        @advanced = true
+      end
+    
+      # Check ministry
+      if params[:ministry].present?
+        # Only consider ministry ids that this person is involved in (stop deviousness)
+        params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
+        unless params[:ministry].empty?
+          cond = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))})"
+          if params[:campus].present?
+            conditions <<  cond 
+          else
+            conditions << ('(' + cond + ' OR ' + campus_condition + ')')
+          end
+          @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
+          @search_for << Ministry.find(:all, :conditions => "id in(#{quote_string(params[:ministry].join(','))})").collect(&:name).join(', ')
+          @advanced = true
+        end
+      end
+    
+      # Check campus
+      if params[:campus].present?
+        # Only consider ministry ids that this person is involved in (stop deviousness)
+        params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
+        unless params[:campus].empty?
+          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
+          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+          @search_for << Campus.find(:all, :conditions => "id in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+          @advanced = true
+        end
+      end
     
     
-    conditions = add_involvement_conditions(conditions) if params[:ministry].blank? && params[:campus].blank?
+      conditions = add_involvement_conditions(conditions) if params[:ministry].blank? && params[:campus].blank?
     
-    @options = params.delete_if {|key, value| ['action','controller','commit'].include?(key)}
+      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search'].include?(key)}
     
 
-    @conditions = conditions.join(' AND ')
+      @conditions = conditions.join(' AND ')
+      
+      @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
+    end
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
@@ -130,7 +150,18 @@ class PeopleController < ApplicationController
       @people = []
       @count = 0
     end
-
+    
+    if params[:search_id].blank?
+      @search = Search.find(:first, :conditions => {_(:query, :search) => @conditions})
+      if @search
+        @search.update_attribute(:updated_at, Time.now)
+      else
+        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+      end
+      # Only keep the last 5 searches
+      @my.searches.last.destroy if @my.searches.length > 5
+    end
+    
     respond_to do |format|
       format.xml  { render :xml => @people.to_xml }
       format.xls  do
@@ -362,7 +393,7 @@ class PeopleController < ApplicationController
   # end
   
   def change_ministry
-    session[:ministry_id] = params[:ministry]
+    session[:ministry_id] = params[:current_ministry]
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do
@@ -461,7 +492,7 @@ class PeopleController < ApplicationController
     end
     
     def ministry_condition
-      @ministry_ids ||= @ministry.ministry_involvements.collect(&:ministry_id).join(',')
+      @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
       'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
     end
     

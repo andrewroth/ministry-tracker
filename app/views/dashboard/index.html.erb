@@ -5,7 +5,7 @@
 </div><br/>
 <%- if @ministry -%>
 
-<div class="hidememessage">
+<div class="hidememessage" style="display:none;">
 <p>The first thing you're probably going to want to check out is the "Directory"
 tab. The directory tab is the main data entry arena.</p>
 <p>The "Profile" tab is all about you. It's where you keep your personal information
@@ -19,7 +19,7 @@ this system, along with any other information we think would be helpful to you.<
 </div>
 
 
-<div id="dashwrap" style="display:none;">
+<div id="dashwrap">
 
   <div id="col_1">
   
@@ -35,16 +35,21 @@ this system, along with any other information we think would be helpful to you.<
       <div class="modulecontent">
       
         <div class="modulesearchbox">
-        <input type="text" class="searchdash" />
+        <% form_tag(directory_people_path) do %>
+        <input type="text" class="searchdash" name="search" />
         <input type="submit" class="searchdashsubmit" value="Search"/><br />
+        <%- end -%>
+        <% if authorized?(:advanced, :people) %>
         <small><%= link_to('Advanced Search', advanced_people_path()) %></small>
+        <% end %>
         </div>
         
         <h6>Recent Searches</h6>
         <div class="lightgray">
           <ul class="searchicon">
-            <li>David Sudarma: Male</li>
-            <li>Men, Age 20-24, Wednesday Night</li>
+            <% @my.searches.each do |search| %>
+              <li><%= link_to(search.description, directory_people_path(:search_id => search.id)) %></li>
+            <% end %>
           </ul>
         </div>
       
@@ -62,12 +67,24 @@ this system, along with any other information we think would be helpful to you.<
         </div>
       </div>
       <div class="modulecontent">
-        <ul >
-          <li><a href="">Add a person</a></li>
-          <li><a href="">Create a team</a></li>
-          <li><a href="">Create a Ministry</a></li>
-          <li><a href="">Go to the Directory</a></li>
-          <li><a href="">Schedule a meeting</a></li>
+        <ul>
+          <%- if authorized?(:new) -%>
+          <li>
+            <%= link_to_remote('Add a student', :url => '/people/add_student',
+		                                             :loading => "$('#spinneradd_student').show();",
+                                                 :complete => "$('#spinneradd_student').hide();
+                                                                show_add_student()",
+                        											 	 :method => :get) %>
+        		<%= spinner('add_student') %>
+          </li>
+          <%- end -%>
+          <%- if authorized?(:new, :group) -%>
+          <li><%= link_to('Create a group', groups_path) %></li>
+          <%- end -%>
+          <%- if authorized?(:new, :ministry) -%>
+          <li><%= link_to('Create a Ministry', '/manage') %></li>
+          <%- end -%>
+          <li><%= link_to('Go to the Directory', directory_people_path) %></li>
         </ul>
       </div>
     </div>
@@ -89,21 +106,16 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
         <ul class="groupicon">
-          <li>Soccer Outreach</li>
-          <li>Dining Common for Jesus</li>
-          <li>Poker Night Club</li>
-          <li>Modest Dancing in the Quad</li>
-          <li>Ping Pong Outreach</li>
-          <li>Librarians Underground in the Basement</li>
-          <li>I smell like a mouse</li>
-          <li>Asians Only Anonymous</li>
+          <% @my.groups.each do |group| %>
+            <li><%= link_to(group.name, group) %></li>
+          <% end %>
         </ul>
       </div>
     </div>
   
     
     
-    
+    <% if is_ministry_leader %>
     <div class="dashmodule">
       <div class="moduletitle">
         <h2>Statistics</h2>
@@ -115,25 +127,26 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
       <ul>
-        <li><a href="">People in all ministries: 987</a></li>
-        <li><a href="">Number of Bible Studies: 50</a></li>
-        <li><a href="">Number of Teams: 10</a></li>
-        <li><a href="">Ministries: 4</a></li>
+        <li>People in all movements: <%= @people_in_ministries %></li>
+        <% @ministry.group_types.each do |gt| %>
+          <li>Number of <%= gt.group_type.pluralize %>: <%= gt.groups.count %></li>
+        <% end %>
+        <li>Movements: <%= @movement_count %></li>
       </ul>
       <br>
       <h6>Newest People</h6>
         <div class="lightgray">
           <ul class="searchicon">
-            <li>George Brown</li>
-            <li>Richard Marx</li>
-            <li>Deng Xiao Ping</li>
-            <li>Lee Kwan Yu</li>
+            <% @newest_people.each do |person| %>
+              <li><%= link_to(person.full_name, person) %></li>
+            <% end %>
           </ul>
         </div>
       
       
       </div>
     </div>
+    <% end %>
   
   <div class="clear"></div>
   
