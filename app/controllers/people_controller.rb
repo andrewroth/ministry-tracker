@@ -42,7 +42,7 @@ class PeopleController < ApplicationController
       email = _(:email, :address)
       conditions = ["#{first_name_col} <> ''"]
       search = params[:search].to_s.strip
-      search = '%' if search.empty?
+      # search = '%' if search.empty?
       case true
       when !search.scan(' ').empty?
         names = search.split(' ')
@@ -505,7 +505,7 @@ class PeopleController < ApplicationController
         if @ministry.campus_ids.length > 0
           conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
         else
-          conditions << ministry_cond
+          conditions << ministry_condition
         end
       end
       return conditions

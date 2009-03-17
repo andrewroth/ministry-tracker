@@ -16,7 +16,7 @@
   <tr>
   	<td>Main School: </td>
   	<td>
-  		<%= select_tag :campus, options_for_select(@ministry.unique_campuses.sort.collect {|c| [c.campus.name, c.campus.id]})%>
+  		<%#= select_tag :campus, options_for_select(@ministry.unique_campuses.sort.collect {|c| [c.campus.name, c.campus.id] if c.campus})%>
   	</td>
   </tr>
   <tr>

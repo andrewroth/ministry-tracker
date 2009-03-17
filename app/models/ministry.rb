@@ -1,8 +1,12 @@
 class Ministry < ActiveRecord::Base
   load_mappings
-  index _(:id) if $cache
+  if $cache
+    index _(:id) 
+    index _(:parent_id)
+  end
   
-  acts_as_tree :order => _(:name), :counter_cache => true
+  # acts_as_tree :order => _(:name), :counter_cache => true
+  has_many :children, :class_name => "Ministry", :foreign_key => _(:parent_id), :order => _(:name)
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
@@ -102,15 +106,23 @@ class Ministry < ActiveRecord::Base
   end
   
   def campus_ids
-    unique_campuses.collect {|mc| mc.campus.id}
+    unless @campus_ids
+      ministry_ids = ([self] + descendants).collect(&:id)
+      sql = "SELECT #{_(:campus_id, :ministry_campus)} FROM #{MinistryCampus.table_name} WHERE #{_(:ministry_id, :ministry_campus)} IN(#{ministry_ids.join(',')})"
+      @campus_ids = ActiveRecord::Base.connection.select_values(sql)
+    end
+    @campus_ids
   end
   
   def descendants
-    @descendants = self.children
-    self.children.each do |ministry|
-        @descendants += ministry.descendants unless ministry == self
-      end
-    @descendants.sort!
+    unless @descendants
+      @offspring = self.children.find(:all, :include => :children)
+      @descendants = @offspring.dup
+      @offspring.each do |ministry|
+          @descendants += ministry.descendants unless ministry.children.count.to_i == 0 || ministry == self
+        end
+      @descendants.sort!
+    end
     return @descendants
   end
   
