@@ -46,9 +46,6 @@ class TimetablesController < ApplicationController
   end
   
   def search
-    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : params[:leader_ids].length
-    params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
-    
     # Check input parameters
     if params[:member_ids].blank?
       @error = 'You must choose at least one member to be in this group.'
@@ -58,6 +55,11 @@ class TimetablesController < ApplicationController
       @error = 'You must choose at least one leader to lead this group.'
       raise BadParams
     end
+    
+    params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : params[:leader_ids].length
+    params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
+    
+
     if params[:max_groups] > params[:leader_ids].length * params[:groups_per_leader]
       @error = "You don't have enough leaders to lead #{pluralize(params[:max_groups], 'group')}. Either add more leaders, or increase the number of groups per leader."
       raise BadParams

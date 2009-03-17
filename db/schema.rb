@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090314160603) do
+ActiveRecord::Schema.define(:version => 20090317172625) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -375,6 +375,10 @@ ActiveRecord::Schema.define(:version => 20090314160603) do
     t.string  "url",                           :limit => 2000
     t.integer "primary_campus_involvement_id"
   end
+
+  add_index "people", ["first_name"], :name => "index_people_on_first_name"
+  add_index "people", ["last_name", "first_name"], :name => "index_people_on_last_name_and_first_name"
+  add_index "people", ["major", "minor"], :name => "index_people_on_major_and_minor"
 
   create_table "permissions", :force => true do |t|
     t.string "description", :limit => 1000

@@ -40,7 +40,7 @@ class PeopleController < ApplicationController
       first_name_col = _(:first_name, :person)
       last_name_col = _(:last_name, :person)
       email = _(:email, :address)
-      conditions = ["#{first_name_col} <> ''"]
+      conditions = []  #["#{first_name_col} <> ''"]
       search = params[:search].to_s.strip
       # search = '%' if search.empty?
       case true
@@ -436,7 +436,7 @@ class PeopleController < ApplicationController
 	   	end
 	   	if params[:filter_ids].present?
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
-	   	  conditions[1] << params[:filter_ids].split(',')
+	   	  conditions[1] << params[:filter_ids]
    	  end
 	   	conditions = add_involvement_conditions(conditions)
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
