@@ -5,7 +5,6 @@ class CreateSchoolYears < ActiveRecord::Migration
       t.integer :position
       t.timestamps
     end
-    remove_column :campus_involvements, :role_id
     remove_column :campus_involvements, :ministry_role
     add_column :campus_involvements, :graduation_date, :date
     add_column :campus_involvements, :school_year_id, :integer
