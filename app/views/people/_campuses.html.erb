@@ -7,8 +7,7 @@
                                                     :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
                                                     :method => :delete,
                                                     :before => "$('#spinner').show()")  if is_ministry_leader || @person == @me %>
-    	  <%= link_to_remote(ci.campus.short_name, :url => change_ministry_people_url(:ministry => ci.ministry.id),
-                        											 	 :method => :get) %>
+    	  <%= link_to(ci.campus.short_name, directory_people_url(:campus_id => ci.campus.id)) %>
     	</li>
   	<%- end
   	  end-%>
