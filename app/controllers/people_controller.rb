@@ -137,7 +137,7 @@ class PeopleController < ApplicationController
           end
         end
         if finish.blank?
-          conditions << "#{last_name_col} >= '#{start}'"
+          conditions << "#{last_name_col} >= '#{start}'"          
         else
           conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
         end

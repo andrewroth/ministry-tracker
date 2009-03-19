@@ -56,6 +56,7 @@ class Timetable < ActiveRecord::Base
         ordered_people.each do |person|
           if leader_ids.include?(person) && !assigned.include?(person)
             members << ordered_people.delete(person)
+            time_slot[:leaders] = [person]
             break
           end
         end

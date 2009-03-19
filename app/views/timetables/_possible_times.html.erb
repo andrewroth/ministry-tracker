@@ -18,10 +18,11 @@
         <%- group.each do |time| -%>
           <%- hours = time[:time] / 3600
               mins = (time[:time] - (hours * 3600)) / 60 -%>
-          <td>
+          <td align="center">
             <% am_pm = hours > 11 ? 'pm' : 'am' %>
             <% hours = hours > 12 ? hours - 12 : hours %>
             <%= Date::ABBR_DAYNAMES[time[:day]] %> <%= hours %>:<%= sprintf("%02d", mins) %> <%= am_pm %><br/>
+            <%= link_to_function('create this group', '') %>
           </td>
         <%- end -%>
       </tr>
@@ -31,9 +32,9 @@
           <td><%= person.full_name %></td>
           <%- group.each do |time| -%>
             <%- person_time = free_times[time[:day]][time[:time]] -%>
-            <%- css_class =  person_time && person_time.css_class.present? ? person_time.css_class : 'ok' -%>
+            <%- css_class =  person_time && person_time.css_class.present? ? person_time.css_class : 'ok'  -%>
             <%- css_class += ' b' if time[:members].include?(person.id) && @leader_ids.include?(person.id) -%>
-            <td width="80px" class="<%= css_class %> ">
+            <td width="120px" class="<%= css_class %> ">
               <input type="checkbox" value="1" name="time_<%= time[:time] %>[][<%= person.id %>]" id="time_<%= time[:time] %>_<%= person.id %>" <%= time[:members].include?(person.id) ? 'checked="checked"' : '' %>/>
               <%= person_time ? person_time.css_class.try(:titleize) : 'Ok' %>
             </td>
@@ -44,5 +45,19 @@
   </table>
 </div>
 <br/>
+<%- group.each do |time| -%>
+<div id="group_<%= time[:day] %>_<%= time[:time] %>">
+  <% @members = time[:members]
+     @leaders = time[:leaders] %>
+  <%#= render :partial => 'groups/form', :locals => {:group => Group.new(:start_time => time[:time], 
+                                                                        :day => time[:day], 
+                                                                        :end_time => time[:time] + params[:length].to_f.hours)} %>
+</div>
+<% end %>
 <%- end if @groups -%>
+<script type="text/javascript" charset="utf-8">
+function show_create_group() {
+	tb_show('Add Student', '#TB_inline?width=450&height=320&inlineId=addStudent')
+}
+</script>
 <%= link_to_function("Go back and try again", "$('#results').fade();$('#timetable_search').appear()") %>
