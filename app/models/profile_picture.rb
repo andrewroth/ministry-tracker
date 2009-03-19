@@ -14,5 +14,5 @@ class ProfilePicture < ActiveRecord::Base
                                  :thumb => '100x100>',
                                  :medium => '200x200>' }
                                  
-  validates_as_attachment
+ # validates_as_attachment
 end
