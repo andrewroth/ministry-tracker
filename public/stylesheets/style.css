@@ -8,9 +8,6 @@ Green Text:       #539030
 Revised on: 2-16-2009
 */
 
-img {border:0px;}
-
-
 #greenbar {background:#67A03B; height:33px; padding-top:10px;}
 
 #campus, #person, #training_question, #training_category {
@@ -22,6 +19,11 @@ img {border:0px;}
 margin:15px 0 10px 0;
 }
 
+table.address td {
+width:50%;
+}
+
+table.address td.spacer {width:5px;}
 
 #left-body {width:650px; float:left;}
 
@@ -90,10 +92,6 @@ height:200px;
 margin:5px 0 0 0;
 }
 
-td {vertical-align:top;}
-table {width:100%;
-	font-size:1em;}
-
 
 /* OVERALL STUFF */
 
@@ -119,12 +117,16 @@ body {
     background-color:#E6E6E6;
 }
 
+img {border:0px;}
+td {vertical-align:top;}
+table {width:100%; font-size:1em;}
+
 .directorytable {
 width:100%;
 }
 
 
-td {vertical-align:middle;}
+
 .profileImage {
 padding:8px 0 0 0;
 }

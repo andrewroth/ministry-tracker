@@ -39,17 +39,19 @@ ActiveRecord::Schema.define(:version => 20090314160603) do
   create_table "campus_involvements", :force => true do |t|
     t.integer "person_id"
     t.integer "campus_id"
+    t.integer "role_id"
     t.date    "start_date"
     t.date    "end_date"
+    t.integer "ministry_id"
     t.integer "added_by_id"
     t.date    "graduation_date"
     t.integer "school_year_id"
-    t.integer "ministry_id"
     t.string  "major"
     t.string  "minor"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
+  add_index "campus_involvements", ["ministry_id"], :name => "index_campus_involvements_on_ministry_id"
   add_index "campus_involvements", ["person_id"], :name => "person_id"
 
   create_table "campuses", :force => true do |t|
