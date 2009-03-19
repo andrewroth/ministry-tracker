@@ -508,11 +508,13 @@ div.sectionHeader h2 {
 
 #searchBox {
 margin:10px 0 10px;
-	padding: 10px 10px 10px 10px;
+	padding: 10px 10px 0px 10px;
 	border: 1px solid #ccc;
-
 background:#edf3fe;
 }
+
+
+
 .flash {
 
 	margin-left: 10px;
@@ -531,7 +533,7 @@ background:#edf3fe;
 }
 
 #errorExplanation {
-  width: 400px;
+  width: 97%;
   border: 2px solid red;
   padding: 7px;
   padding-bottom: 12px;
@@ -539,10 +541,12 @@ background:#edf3fe;
   background-color: #f0f0f0;
 }
 
+#errorExplanation ul li{
+padding-left:20px;
+list-style-type:round;
+}
 
 #errorExplanation h2 {
-
-
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -923,3 +927,62 @@ float:left;
 	display:inline;
 }
 strong {font-weight:bold;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
