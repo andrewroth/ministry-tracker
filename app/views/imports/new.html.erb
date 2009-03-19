@@ -1,46 +1,27 @@
-<p>This tool is for importing STUDENTs only. Please don't try to add staff in this fashion. The most important step of the upload process is making 
-  sure your spreadsheet has the right column headers. Please <%= link_to('download a sample spreadsheet', '/files/sample_import.csv') %> and make sure your 
-  column headers match EXACTLY. If any of your columns don't match the sample, they will be ignored. Import file must be a CSV (comma separated values)</p>
-
-
-<div style="float:right">  
 <p>
-  There are 3 required fields: 
-  <ul>
+  This tool is for importing STUDENTs only. Please don't try to add staff in this fashion. The most important step of the upload process is making 
+  sure your spreadsheet has the right column headers. Please <%= link_to('download a sample spreadsheet', '/files/sample_import.csv') %> and make sure your 
+  column headers match EXACTLY. If any of your columns don't match the sample, they will be ignored. Import file must be a CSV (comma separated values)
+</p>
+
+
+<div style="margin-bottom:15px;">  
+<p>
+  <h3>There are 3 required fields: </h3>
+  <ul style="margin-left:10px;">
     <li>first_name</li>
     <li>last_name</li>
     <li>email</li>
   </ul>
-</p><br/><br/>
-<p>
-  Optional Fields (explanations in parenthesis):
-  <ul>
-    <li>middle_name</li>
-    <li>preferred_name</li>
-    <li>gender</li>
-    <li>year_in_school (Freshman, Sophomore, Junior, Senior, Alumni)</li>
-    <li>level_of_school (Undergrad, Grad)</li>
-    <li>graduation_date</li>
-    <li>major</li>
-    <li>minor</li>
-    <li>birth_date</li>
-    <li>address1</li>
-    <li>address2</li>
-    <li>city</li>
-    <li>state</li>
-    <li>zip</li>
-    <li>country (USA)</li>
-    <li>phone</li>
-    <li>alternate_phone</li>
-    <li>dorm</li>
-    <li>room (dorm room)</li>
-  </ul>
 </p>
 </div>
 
-<p>Please pick a campus to add students to. The list below is all the campuses you've added to the <%= @ministry.name %> ministry.</p>
+<div class="actionbox">
+<p>Please pick a campus to add students to.</p>
 <%- form_for(@import, :html => {:multipart => true}) do |f|  -%>
-<p><%= select_tag(:campus_id, options_for_select(@ministry.campuses.sort.collect {|c| [c.name, c.id]})) %></p>
-<p>File to import:		<%= f.file_field :uploaded_data, :size => '18px' %></p>
-<p><%= submit_tag('Import!') %></p>
+<p><label>Campus Name</label><%= select_tag(:campus_id, options_for_select(@ministry.campuses.sort.collect {|c| [c.name, c.id]})) %></p>
+<p><label>File to import:</label><%= f.file_field :uploaded_data, :size => '18px' %></p>
+<p><%= submit_tag('Import!') %>&nbsp; <%= link_to('Cancel', :back) %></p>
+</div>
+
 <%- end -%>
