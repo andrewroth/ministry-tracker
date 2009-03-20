@@ -8,7 +8,48 @@ Green Text:       #539030
 Revised on: 2-16-2009
 */
 
+
+
+
+/* OVERALL STUFF */
+
+.directorytable tr:hover  {
+/*    background-color:#fff193;*/
+}
+
+#profileCaption {
+margin:3px 0 0 0;
+text-align:center;
+}
+
+* {
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#747474;
+}
+
+body {
+    font-size:75%;
+    text-align:center;
+    background-color:#E6E6E6;
+}
+
 img {border:0px;}
+td {vertical-align:top;}
+table {width:100%; font-size:1em;}
+
+strong {font-weight:bold;}
+
+
+
+
+
+
+
+
+
+
 
 
 #greenbar {background:#67A03B; height:33px; padding-top:10px;}
@@ -18,10 +59,28 @@ img {border:0px;}
 	padding:8px;
 }
 
+.spacewrap {height:40px; margin:20px 0px 0px 0; display:block; }
+
+a.massimport {margin-left:15px; display:inline-block; }
+a.massimport:hover {text-decoration:none;}
+a.massimport img {margin-right:3px;}
+
+.actionpack {
+border:1px solid silver;
+background:#efefef;
+display:inline-block;
+padding:10px;
+}
+
 #addStudentLink {
 margin:15px 0 10px 0;
 }
 
+table.address td {
+width:50%;
+}
+
+table.address td.spacer {width:5px;}
 
 #left-body {width:650px; float:left;}
 
@@ -41,7 +100,9 @@ width:675px;}
 display:block;margin-bottom:30px; }
 
 div.yoursearch {
-padding:0 10px 10px 10px;
+padding:5px 10px 0px 10px;
+margin-bottom:15px;
+
 }
 
 #staffArea:hover{
@@ -90,41 +151,26 @@ height:200px;
 margin:5px 0 0 0;
 }
 
-td {vertical-align:top;}
-table {width:100%;
-	font-size:1em;}
 
 
-/* OVERALL STUFF */
 
-.directorytable tr:hover  {
-/*    background-color:#fff193;*/
-}
 
-#profileCaption {
-margin:3px 0 0 0;
-text-align:center;
-}
 
-* {
-    margin:0;
-    padding:0;
-    font-family: Arial, Helvetica, sans-serif;
-    color:#747474;
-}
 
-body {
-    font-size:75%;
-    text-align:center;
-    background-color:#E6E6E6;
-}
+
+
+
+
+
+
+
 
 .directorytable {
 width:100%;
 }
 
 
-td {vertical-align:middle;}
+
 .profileImage {
 padding:8px 0 0 0;
 }
@@ -506,7 +552,7 @@ div.sectionHeader h2 {
 
 #searchBox {
 margin:10px 0 10px;
-	padding: 10px 10px 10px 10px;
+	padding: 10px 10px 0px 10px;
 	border: 1px solid #ccc;
 
 background:#edf3fe;
@@ -883,9 +929,9 @@ float:right;
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
-a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; }
-a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; }
-a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
 .modulecontent h6 {font-size:13px;}
 .lightgray {background:#f0f0f0; padding:5px;}

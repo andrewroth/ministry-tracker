@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
-		<%= stylesheet_link_tag "style", "thickbox", "ext/ext-all", 'calendar/calendar-win2k-1', :media => "screen", :cache => true %>
+		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", :media => "screen", :cache => true %>
 		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
 		                            'jquery.disable.text.select.pack', 'calendar', 'lang/calendar-en', 'calendar-setup',
 		                            'jquery.scrollTo-min', :cache => true %>
@@ -17,7 +17,7 @@
 		  <% if logged_in? %>
 		  <div id="userbar">
 		    <div class="floatleft">
-		    <div class="username"><%= @my.full_name %></div><a href=""><small>(<%= link_to('go to my profile', person_path(@me)) %>)</small></a>
+		    <div class="username"><%= @my.full_name %></div><small>(<%= link_to('go to my profile', person_path(@me)) %>)</small>
 		    </div>
 		  
   			<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;
@@ -50,6 +50,7 @@
 			</div>
 		</div> <!-- Wrapper -->
 		
+    <div id="addStudent" style="display:none"></div>
 		<div id="footer">
 		<table width="100%">
 			<tr>
@@ -63,7 +64,6 @@
 			</tr>
 		</table>
 		</div>
-		
 		</div> <!-- Center -->
 		<script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

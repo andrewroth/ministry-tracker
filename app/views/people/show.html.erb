@@ -51,7 +51,7 @@
   	  <%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi), 
                                                   :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?", 
                                                   :method => :delete,
-                                                  :before => "$('#spinner').show()")  if @me == @person || is_ministry_leader %>
+                                                  :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
   	  <%= link_to_remote(mi.ministry.name, :url => change_ministry_people_url(:ministry => mi.ministry.id),
                   											 	 :method => :get) %>
   	  </li>

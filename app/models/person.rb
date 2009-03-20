@@ -56,6 +56,9 @@ class Person < ActiveRecord::Base
   
   has_one :timetable, :class_name => "Timetable", :foreign_key => _(:person_id, :timetable)
   has_many :free_times, :through => :timetable, :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
+  
+  # Searches
+  has_many :searches, :class_name => "Search", :foreign_key => _(:person_id, :search), :order => "#{_(:updated_at, :search)} desc"
     
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name), :on => :update
@@ -70,14 +73,17 @@ class Person < ActiveRecord::Base
   # wrapper to make gender display nicely with crusade tables
   def human_gender(value = nil)
     gender = value || self.gender
-    if [0,1,'0','1'].include? gender
-      @gender = ((gender.to_s == '0') ? 'Female' : 'Male')
+    Person.human_gender(gender)
+  end
+  
+  def self.human_gender(gender)
+    if [0,1,'0','1'].include?(gender)
+      gender = ((gender.to_s == '0') ? 'Female' : 'Male')
     end
-    if ['M','F'].include? gender
-      @gender = gender == 'F' ? 'Female' : 'Male'
+    if ['M','F'].include?(gender)
+      gender = gender == 'F' ? 'Female' : 'Male'
     end
-    @gender = @gender.titlecase if @gender
-    @gender || gender
+    gender ? gender.titlecase : nil
   end
   
   def gender=(value)

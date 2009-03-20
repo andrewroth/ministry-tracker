@@ -17,56 +17,113 @@ class PeopleController < ApplicationController
   end
   
   def advanced
-    
+    @options = {}
+    @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+    render :layout => 'application'
   end
   
   def directory
     # Get View
-    view_id = session[:view_id]
-    if view_id
-      @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
-    end
-    # If there's no view in the session, get the default view
-    @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
-    unless @view
-      # If there was no default view, set the first view found as the default
-      @view = @ministry.views.find(:first)
-      unless @view
-        #If this ministry doesn't have any views, create the first view for this ministry
-        @view = @ministry.create_first_view
-      end
-      @view.default_view = true
-      @view.save!
-    end
+    get_view
+    @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     
-    session[:view_id] = @view.id
-    
-    # Build conditions
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
-    email = _(:email, :address)
-    conditions = ["#{first_name_col} <> ''"]
-    search = params[:search].to_s.strip
-    search = '%' if search.empty?
-    case true
-    when !search.scan(' ').empty?
-      names = search.split(' ')
-      first = names[0].strip
-  		last = names[1].strip
-    	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
-    when !search.scan('@').empty?
-      conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
+    if params[:search_id]
+      @search = @my.searches.find(params[:search_id])
+      @conditions = @search.query
+      @options = JSON::Parser.new(@search.options).parse
+      @tables = JSON::Parser.new(@search.tables).parse
+      @search_for = @search.description
+      @search.update_attribute(:updated_at, Time.now)
+      @advanced = true if @tables.present?
     else
-      conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
+      # Build conditions
+      first_name_col = _(:first_name, :person)
+      last_name_col = _(:last_name, :person)
+      email = _(:email, :address)
+      conditions = ["#{first_name_col} <> ''"]
+      search = params[:search].to_s.strip
+      search = '%' if search.empty?
+      case true
+      when !search.scan(' ').empty?
+        names = search.split(' ')
+        first = names[0].strip
+    		last = names[1].strip
+      	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
+      when !search.scan('@').empty?
+        conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
+      else
+        if search.present?
+          conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
+        end
+      end
+    
+      if params[:campus_id]
+        @campus = Campus.find(params[:campus_id])
+      end
+    
+      # Advanced search options
+      @options = {}
+      @tables = {}
+      @search_for = []
+      # Check year in school
+      if params[:school_year].present?
+        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
+        @advanced = true
+      end
+    
+      # Check gender
+      if params[:gender].present?
+        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
+        @advanced = true
+      end
+    
+      # Check ministry
+      if params[:ministry].present?
+        # Only consider ministry ids that this person is involved in (stop deviousness)
+        params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
+        unless params[:ministry].empty?
+          cond = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))})"
+          if params[:campus].present?
+            conditions <<  cond 
+          else
+            conditions << ('(' + cond + ' OR ' + campus_condition + ')')
+          end
+          @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
+          @search_for << Ministry.find(:all, :conditions => "id in(#{quote_string(params[:ministry].join(','))})").collect(&:name).join(', ')
+          @advanced = true
+        end
+      end
+    
+      # Check campus
+      if params[:campus].present?
+        # Only consider ministry ids that this person is involved in (stop deviousness)
+        params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
+        unless params[:campus].empty?
+          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
+          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+          @search_for << Campus.find(:all, :conditions => "id in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+          @advanced = true
+        end
+      end
+    
+    
+      conditions = add_involvement_conditions(conditions) if params[:ministry].blank? && params[:campus].blank?
+    
+      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search'].include?(key)}
+    
+
+      @conditions = conditions.join(' AND ')
+      
+      @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
     end
-    if params[:campus_id]
-      @campus = Campus.find(params[:campus_id])
-    end
-    conditions = add_involvement_conditions(conditions)
-    @conditions = conditions.join(' AND ')
-  
+    
+    new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
+    tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
     # If these conditions will result in too large a set, use pagination
-    @count = ActiveRecord::Base.connection.select_value("SELECT count(*) FROM #{@view.tables_clause} WHERE #{@conditions}").to_i
+    @count = ActiveRecord::Base.connection.select_value("SELECT count(*) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
       # Build range for pagination
       if @count > 500
@@ -87,26 +144,28 @@ class PeopleController < ApplicationController
         @conditions = conditions.join(' AND ')
       end
       
-      # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
-      session[:order] = params[:order] if params[:order]
-      order = session[:order] 
-      order = order ? order + ',' + standard_order : standard_order
-      sql =   'SELECT ' + @view.select_clause 
-      sql += ' FROM ' + @view.tables_clause
-      sql += ' WHERE ' + @conditions
-      sql += ' ORDER BY ' + order
-      @people = ActiveRecord::Base.connection.select_all(sql)
+      build_sql(tables_clause)
+      @people = ActiveRecord::Base.connection.select_all(@sql)
     else
       @people = []
       @count = 0
     end
-    @sql = sql
-
+    
+    if params[:search_id].blank?
+      @search = Search.find(:first, :conditions => {_(:query, :search) => @conditions})
+      if @search
+        @search.update_attribute(:updated_at, Time.now)
+      else
+        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+      end
+      # Only keep the last 5 searches
+      @my.searches.last.destroy if @my.searches.length > 5
+    end
+    
     respond_to do |format|
       format.xml  { render :xml => @people.to_xml }
       format.xls  do
-        filename = "Directory.xls"    
+        filename = @search_for.gsub(';',' -') + ".xls"    
 
         #this is required if you want this to work with IE        
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
@@ -334,7 +393,7 @@ class PeopleController < ApplicationController
   # end
   
   def change_ministry
-    session[:ministry_id] = params[:ministry]
+    session[:ministry_id] = params[:current_ministry]
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do
@@ -427,6 +486,16 @@ class PeopleController < ApplicationController
   end
   
   protected
+  
+    def campus_condition
+      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+    end
+    
+    def ministry_condition
+      @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
+      'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+    end
+    
     def add_involvement_conditions(conditions)
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
@@ -434,16 +503,7 @@ class PeopleController < ApplicationController
         conditions << campus_cond
       else
         if @ministry.campus_ids.length > 0
-          campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
-        end
-        # restrict to just this ministry's tree
-  #      campus_cond << CampusInvolvement.table_name + '.' +_(:ministry_id, :campus_involvement) + ' = ?'
-  #      conditions[1] << @ministry.root.id
-        # include staff from this ministry and sub_ministries
-        ministry_ids = @ministry.all_ministries.collect {|m| m.id}.join(',')
-        ministry_cond = 'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{ministry_ids})"
-        if campus_cond
-          conditions << '( ' + campus_cond + ' OR ' + ministry_cond + ' )'
+          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
         else
           conditions << ministry_cond
         end
@@ -499,5 +559,41 @@ class PeopleController < ApplicationController
         state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
       end
       @campuses = College.find(:all, :conditions => {_(:state, :campus) => state}) if state.present?
+    end
+    
+    def get_view
+      view_id = session[:view_id]
+      if view_id
+        @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
+      end
+      # If there's no view in the session, get the default view
+      @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
+      unless @view
+        # If there was no default view, set the first view found as the default
+        @view = @ministry.views.find(:first)
+        unless @view
+          #If this ministry doesn't have any views, create the first view for this ministry
+          @view = @ministry.create_first_view
+        end
+        @view.default_view = true
+        @view.save!
+      end
+      session[:view_id] = @view.id
+      @view
+    end
+    
+    def build_sql(tables_clause = nil, extra_select = nil)
+      # Add order if it's available
+      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      session[:order] = params[:order] if params[:order]
+      order = session[:order] 
+      @order = order ? order + ',' + standard_order : standard_order
+      
+      @sql =   'SELECT ' + @view.select_clause 
+      @sql += ', ' + extra_select if extra_select.present?
+      tables_clause ||= @view.tables_clause
+      @sql += ' FROM ' + @view.tables_clause
+      @sql += ' WHERE ' + @conditions
+      @sql += ' ORDER BY ' + @order
     end
 end

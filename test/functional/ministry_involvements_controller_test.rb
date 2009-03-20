@@ -24,15 +24,14 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     login('fred@uscm.org')
     xhr :delete, :destroy, :id => 1, :person_id => 50000
     assert_nil assigns(:ministry_involvement)
-    assert_equal(' ', @response.body)
     assert_response :success
   end
   
-  test "destroy only one ministry" do
-    xhr :delete, :destroy, :id => 1, :person_id => 3000
-    assert_nil assigns(:ministry_involvement)
-    assert_response :success
-  end
+  # test "destroy only one ministry" do
+  #   xhr :delete, :destroy, :id => 1, :person_id => 3000
+  #   assert_nil assigns(:ministry_involvement)
+  #   assert_response :success
+  # end
   
   test "edit own role" do
     xhr :get, :edit, :person_id => 50000, :ministry_id => 2

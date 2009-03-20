@@ -1,6 +1,5 @@
 class Campus < ActiveRecord::Base
   load_mappings
-  index _(:id) if $cache
   
   has_many :campus_involvements
   has_many :people, :through => :campus_involvements
