@@ -3,15 +3,15 @@
 <tr>
 
 	<td>
-	  <table>
-    	<tr><td width="120px">Email</td><td width="200px"><%= @current_address.email %></td></tr>
+	  <table class="halftab">
+    	<tr><th width="120px">Email</th><td width="200px"><%= @current_address.email %></td></tr>
     	<%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
     	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
-    	<tr><td>Birth Day</td><td><%= format_date(@person.birth_date, format) %></td></tr>
-    	<tr><td>Gender</td><td><%= @person.human_gender %></td></tr>
+    	<tr><th>Birth Day</th><td><%= format_date(@person.birth_date, format) %></td></tr>
+    	<tr><th>Gender</th><td><%= @person.human_gender %></td></tr>
   		<%- if @person.user  -%>
       	<tr>
-      	  <td>Facebook Username</td>
+      	  <th>Facebook&trade;</th>
       	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Edit Information" to link your Facebook Account' %></td>
       	</tr>
       <%- end -%>
@@ -21,14 +21,14 @@
 	<td class="spacer">&nbsp;</td>
 	
 	<td>
-	  <table>
-    	<tr><td width="100px">Year in School</td><td><%= @person.most_recent_involvement.try(:school_year).try(:description) %></td></tr>
-    	<tr><td>Graduation Date</td><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
-    	<tr><td>Major</td><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
-    	<tr><td>Minor</td><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
+	  <table class="halftab">
+    	<tr><th width="100px">Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:description) %></td></tr>
+    	<tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
+    	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
+    	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
     	<%- if !@person.url.blank?
     	      desc, url = parse_url(@person.url) -%>
-    	<tr><td>Website</td><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
+    	<tr><th>Website</th><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
     	<%- end -%>
 	  </table>
 	</td>
@@ -44,24 +44,27 @@
 <tr>
 <td>
 	
-	<table>
-	<tr><td width="150">Phone</td><td><%= @current_address.phone %></td></tr>
-	<tr><td>Alternate Phone</td><td><%= @current_address.alternate_phone %></td></tr>
-	<tr><td>Address</td><td><%= @current_address.mailing %></td></tr>
-	<tr><td>&nbsp;</td><td><%= @current_address.dorm %> <%= "Room " + @current_address.room unless @current_address.room.to_s.empty? %></td></tr>
+	<table class="halftab">
+	<tr><th width="150">Phone</th><td><%= @current_address.phone %></td></tr>
+	<tr><th>Alternate Phone</th><td><%= @current_address.alternate_phone %></td></tr>
+	<tr><th>Address</th><td><%= @current_address.mailing %></td></tr>
+	<tr><th>&nbsp;</th><td><%= @current_address.dorm %> <%= "Room " + @current_address.room unless @current_address.room.to_s.empty? %></td></tr>
+	<tr><th>Valid from</th><td><%= format_date(@current_address.start_date) %><% unless @perm_address.start_date.to_s.empty? %> &mdash; <%= format_date(@current_address.end_date) %><% end  %></td></tr>
+
+	
+	
 	</table>
 
 </td>
 <td class="spacer">&nbsp;</td>
 <td>
-	<table>
-		<tr><td width="150">Phone</td><td><%= @perm_address.phone %></td></tr>
-		<tr><td>Address</td><td><%= @perm_address.mailing %></td></tr>
+	<table class="halftab">
+		<tr><th width="150">Phone</th><td><%= @perm_address.phone %></td></tr>
+		<tr><th>Address</th><td><%= @perm_address.mailing %></td></tr>
 	</table>
 </td>
 </tr>
 <%- unless @current_address.start_date.to_s.empty? -%>
-<tr><td colspan="3"> Valid from <strong><%= format_date(@current_address.start_date) %></strong> <% unless @perm_address.start_date.to_s.empty? %>through <strong><%= format_date(@current_address.end_date) %></strong><% end  %></td></tr>
 <%- end -%>
 
 
@@ -75,15 +78,16 @@
 -->
 </table>
 <br />
+
+
 <%- if is_ministry_leader -%>
 	<%- remote_form_for @person do |f| -%>
 	<div id="staffArea">
-		<span class="notice">(everything below this is only seen by those designated as leaders of this ministry)</span><br />
 		<% i = 0 %>
 		<table width="100%">
 		<tr>
 		<%- @ministry.profile_questions.each do |ca| -%>
-			<td width="15%"><%= ca.name %>: </td><td> <%= custom_field(ca, @person) %></td>
+			<th><%= ca.name %>: </th><td> <%= custom_field(ca, @person) %></td>
 			<% i +=1 %>
 			<%- if i%2 == 0 then i = 0 -%></tr><tr><%- end -%>
 		<%- end -%>
@@ -93,12 +97,25 @@
 		<%- end unless i == 0 -%>
 		</tr>
 		</table>
-		Leadership notes: <br />
+		
+		Leadership notes: <span style="color:silver; font-style:italic;">(everything below this is only seen by those designated as leaders of this ministry)</span><br />
 		<%= f.text_area :staff_notes, :rows => 4, :cols => 40 %>
-    <%= submit_tag %>
+    <%= submit_tag "Save Notes" %>
 	</div>
 	<%- end -%>
 <%- end -%>
+
+
+
+
+
+
+
+
+
+
+
+
 <!--
 	<h4 class="title">Interested in a Ministry Team?</h4>
 	<table width="100%" border="0" cellspacing="2px" cellpadding="5px">
