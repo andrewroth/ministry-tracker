@@ -21,14 +21,14 @@
 	<h2><%= @campus ? @campus.name : @ministry.name %> Directory</h2>
 </div>
 <%- if authorized?(:new) -%>
-	<div id="addStudentLink">
+	<div id="addStudentLink" style="vertical-align:middle;">
 		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
 		                                                 :loading => "$('#spinneradd_student').show();",
 		                                                 :complete => "$('#spinneradd_student').hide();
 		                                                                show_add_student()",
                             											 	 :method => :get) %>
 		<%= spinner('add_student') %>
-		or <%= link_to('import a bunch of students', new_import_path) %>
+		<%= link_to(image_tag('import.png') + ' Mass import tool', new_import_path, :class => 'massimport') %>
 	</div>
 <%- end -%>
 <%- if @me.all_ministries.length > 1 -%>
@@ -39,9 +39,6 @@
 <%- if @ministry.views.length > 1 -%>
 	View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
 	<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
-<%- end -%>
-<%- if authorized?(:advanced) %>
-	<div class="butDExcel" ><%= link_to "Excel Download", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search_id => @search.id) %></div>
 <%- end -%>
 <div id="searchBox">
   <div id="basic_search" <%= 'style="display:none"' if @advanced %>>
@@ -84,9 +81,22 @@
   <%= observe_field(:interval, :function => "document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
 <% end %>
 </div>
+
+
 <%- if @conditions -%>
-<div class="yoursearch"><%= simple_format("Search Results for: <strong>#{@search_for.present? ? @search_for : 'Everybody'}</strong>") %>
+
+
+<%- if authorized?(:advanced) %>
+	<div class="butDExcel" style="float:right;"><%= link_to "Excel Download", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search_id => @search.id) %></div>
+<%- end -%>
+
+
+<div class="yoursearch">
+<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found </p>
 </div>
+
+
+
 <%- unless params[:start].to_s.empty? -%>
 	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
 <% end %>
@@ -155,12 +165,12 @@
   				person[column.safe_name] 
   			end %></td>
 	    <%- end -%>
-				<td><span class="butProfile"><%= link_to 'Profile', person_url(person['person_id']) %></span></td>
+				<td class="alignright"><span class="butProfile"><%= link_to 'Profile', person_url(person['person_id']) %></span></td>
 			</tr>
 			<%- end -%>
 			
 		</tbody>
 	</table>
-  (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found
+  
 </div>
   <%- end -%>

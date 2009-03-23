@@ -1,6 +1,12 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
-  <div>
+  
+  
+  
+  
+  
+  
+  <div id="campusprofileselect">
     <h3 class="inline">Primary Campus:</h3>
     <div id="campuses" class="inline">
       <%= render :partial => 'campus_dropdown'  if @campuses %>
@@ -10,79 +16,98 @@
         <%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %>
     </div>
   </div>
+	
+  
+  
+  
+  
 	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address">
 	<tr>	
 	
-	<td colspan="2" valign="top">
-	<table>
-	<tr><td>First Name</td><td><%= text_field :person, :first_name %></td></tr>
-	<tr><td>Last Name</td><td><%= text_field :person, :last_name %></td></tr>
-	<tr><td>Email</td><td><%= text_field :current_address, :email %></td></tr>
-	<tr><td>Date of Birth</td><td class="date"><%= f.date_select :birth_date, date_options(1920) %></td></tr>
-	<tr><td>Gender</td><td><%= f.select :gender, [['Male', 1],['Female', 0]], {}, :selected => @person.gender %></td></tr>
-	<tr>	 <td>&nbsp;</td>	 <td>&nbsp;</td>	</tr>
-	</table>
-	</td>
-
-	<td colspan="2" valign="top">
-  <%- fields_for :primary_campus_involvement do |cif| -%>
-	<table>	
-  	<tr><td>Year in School</td><td><%= cif.select :school_year_id, school_year_options %></td></tr>
-  	<tr><td>Graduation Date</td><td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td></tr>
-  	<tr><td>Major</td><td><%= cif.text_field :major %></td></tr>
-  	<tr><td>Minor</td><td><%= cif.text_field :minor %></td></tr>
-  	<tr><td>Website</td><td><%= f.text_field :url %></td></tr>
-  	<%- fields_for @person.user do |uf| -%>
-  	<tr><td>Facebook Username</td><td><%= uf.text_field :facebook_username %></td></tr>
-  	<%- end if @person.user -%>
-	</table>
-	<%- end -%>
-	</td>
+  	<td>
+    	<table  class="halftab">
+    	<tr><th>First Name</th><td><%= text_field :person, :first_name %></td></tr>
+    	<tr><th>Last Name</th><td><%= text_field :person, :last_name %></td></tr>
+    	<tr><th>Email</th><td><%= text_field :current_address, :email %></td></tr>
+    	<tr><th>Date of Birth</th><td class="date"><%= f.date_select :birth_date, date_options(1920) %></td></tr>
+    	<tr><th>Gender</th><td><%= f.select :gender, [['Male', 1],['Female', 0]], {}, :selected => @person.gender %></td></tr>
+    	<tr><th>&nbsp;</th><td>&nbsp;</td>	</tr>
+    	</table>
+  	</td>
+  	
+  	<td class="spacer">&nbsp;</td>
+  
+  	<td>
+    <%- fields_for :primary_campus_involvement do |cif| -%>
+    	<table class="halftab">	
+      	<tr><th>Year in School</th><td><%= cif.select :school_year_id, school_year_options %></td></tr>
+      	<tr><th>Graduation Date</th><td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td></tr>
+      	<tr><th>Major</th><td><%= cif.text_field :major %></td></tr>
+      	<tr><th>Minor</th><td><%= cif.text_field :minor %></td></tr>
+      	<tr><th>Website</th><td><%= f.text_field :url %></td></tr>
+      	<%- fields_for @person.user do |uf| -%>
+      	<tr><th>Facebook&trade;</th><td><%= uf.text_field :facebook_username %></td></tr>
+      	<%- end if @person.user -%>
+    	</table>
+  	<%- end -%>
+  	</td>
 	</tr>
 	
 	<tr>
-		<td colspan="2"><h4 class="title">Current Address</h4></td>
-		<td colspan="2"><h4 class="title">Permanent Address</h4></td>
+		<td><h4 class="title">Current Address</h4></td>
+		<td class="spacer">&nbsp;</td>
+		<td><h4 class="title">Permanent Address</h4></td>
 	</tr>
 	
 
 	<tr>
-	<td colspan=2 valign=top>
-		<table>
-		<tr><td>Phone</td><td><%= text_field :current_address, :phone %></td></tr>
-		<tr><td>Alternate Phone</td><td><%= text_field :current_address, :alternate_phone %></td></tr>
-		<tr><td>Address 1:</Td><td><%= text_field :current_address, :address1 %></td></tr>
-		<tr><td>Address 2:</td> <td><%= text_field :current_address, :address2 %></td></tr>
-		<tr><td>City: </td><td><%= text_field :current_address, :city %></td></tr>
-		<tr><td>State:</td> <td><%= text_field :current_address, :state %></td></tr>
-		<tr><td>Zip:</td> <Td><%= text_field :current_address, :zip %></td></tr>
+	<td>
+		<table class="halftab">
+		<tr><th>Phone</th><td><%= text_field :current_address, :phone %></td></tr>
+		<tr><th>Alt Phone</th><td><%= text_field :current_address, :alternate_phone %></td></tr>
+		<tr><th>Address 1:</th><td><%= text_field :current_address, :address1 %></td></tr>
+		<tr><th>Address 2:</th> <td><%= text_field :current_address, :address2 %></td></tr>
+		<tr><th>City: </th><td><%= text_field :current_address, :city %></td></tr>
+		<tr><th>State:</th> <td><%= text_field :current_address, :state %></td></tr>
+		<tr><th>Zip:</th> <Td><%= text_field :current_address, :zip %></td></tr>
 		<%- dorms = @dorms.empty? ? [] : @dorms.collect {|d| d.name }.insert(0, '') -%>
-		<tr><td>Dorm: </td><td><%= select :current_address, :dorm, dorms %></td></tr>
-		<tr><td>Room:</td><td><%= text_field :current_address, :room %></td></tr>
-		</table>
-		</td>
+		<tr><th>Dorm: </th><td><%= select :current_address, :dorm, dorms %></td></tr>
+		<tr><th>Room:</th><td><%= text_field :current_address, :room %></td></tr>
 		
-	<td colspan=2 valign=top>
+		<tr><th>&nbsp;</th><td></td></tr>
+		
+		
+		
+	  <tr><th>Valid from</th><td class="date"><%= date_select :current_address, :start_date, date_options %></td></tr>
+		<tr><th>Valid till</th><td class="date"><%= date_select :current_address, :end_date, date_options %></td></tr>
+		</td>
+	</tr>
+
+		</table>
+  </td>
 	
-		<table>
-		<tr><td>Phone</td><td><%= text_field :perm_address, :phone %></td></tr>
-		<tr><td>Address 1:</Td><td><%= text_field :perm_address, :address1 %></td></tr>
-		<tr><td>Address 2:</td> <td><%= text_field :perm_address, :address2 %></td></tr>
-		<tr><td>City: </td><td><%= text_field :perm_address, :city %></td></tr>
-		<tr><td>State:</td> <td><%= text_field :perm_address, :state %></td></tr>
-		<tr><td>Zip:</td> <Td><%= text_field :perm_address, :zip %></td></tr>
+	<td class="spacer">&nbsp;</td>	
+		
+	<td>
+	
+		<table class="halftab">
+		<tr><th>Phone</th><td><%= text_field :perm_address, :phone %></td></tr>
+		<tr><th>Address 1:</th><td><%= text_field :perm_address, :address1 %></td></tr>
+		<tr><th>Address 2:</th> <td><%= text_field :perm_address, :address2 %></td></tr>
+		<tr><th>City: </th><td><%= text_field :perm_address, :city %></td></tr>
+		<tr><th>State:</th> <td><%= text_field :perm_address, :state %></td></tr>
+		<tr><th>Zip:</th> <Td><%= text_field :perm_address, :zip %></td></tr>
 		</table>
 		</td>
 
 	</tr>
 
-	<tr>
-		<td colspan="4" class="date"><br />
-			Valid from <strong><%= date_select :current_address, :start_date, date_options %></strong> 
-			through <strong><%= date_select :current_address, :end_date, date_options %></strong>
-		</td>
-	</tr>
+
 	</table>
+	
+	
+	
+	
 	<br />
 	<%= submit_tag "Save" %> or <%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()",
 	 															:class => 'cancel'%>
