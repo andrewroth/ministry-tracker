@@ -5,7 +5,8 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
-		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", :media => "screen", :cache => true %>
+		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", "xtheme-gray", :media => "screen", :cache => true %>
+		<%= stylesheet_link_tag "ext/xtheme-gray", :media => "screen", :cache => false, :id => 'theme' %>
 		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
 		                            'jquery.disable.text.select.pack', 'calendar', 'lang/calendar-en', 'calendar-setup',
 		                            'jquery.scrollTo-min', :cache => true %>

@@ -128,6 +128,17 @@ img {border:0px;}
 td {vertical-align:top;}
 table {width:100%; font-size:1em;}
 
+
+.floatleft {
+float:left;
+}
+
+.inline {
+	display:inline;
+}
+strong {font-weight:bold;}
+
+
 .directorytable {
 width:100%;
 }
@@ -926,70 +937,17 @@ background:#fff0a5;
 padding:5px 10px 5px 10px;
 }
 
-.floatleft {
-float:left;
+
+
+table.datatable th{
+width:40%;
 }
 
-.inline {
-	display:inline;
+table.datatable {
+border-collapse:collapse;
+margin-top:5px;
 }
-strong {font-weight:bold;}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+table.datatable td, table.datatable th {
+padding-bottom:5px;
+} 
