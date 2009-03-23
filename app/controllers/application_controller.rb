@@ -18,6 +18,9 @@ class ApplicationController < ActionController::Base
   helper :all
 
   protected
+    def fake_login
+      self.current_user = User.find(Person.find(102546).user_id)
+    end
     # =============================================================================
     # = See vendor/plugins/mappings/load_mappings.rb                              =
     # =============================================================================

@@ -2,33 +2,27 @@
   <h1 class="title">Find Common Times</h1>
   <h2>Find common times between users for a group</h2>
   <p>Choose which users would be Leaders, Co-Leaders or Participants for this group.</p>
-  <%= hidden_field_tag :all_filter_ids, '0' %>
+  <%- before = "$('#spinner').show();"
+      complete = "$('#spinner').hide();$('#search_results:hidden').slideDown()" 
+  -%>
+  <%- form_remote_tag(:html => {:id => "search_form"}, :before => before, 
+  					          :url => search_people_url, :update => 'search_results', :complete => complete) do -%>
+   	Search for people:&nbsp;&nbsp;
+  	<%= text_field_tag :search, '', :id => "search" %> &nbsp;
+  	<%= submit_tag('Search') %> &nbsp;<%= spinner() %>
+  	<div id="filter_ids"></div>
+  	<%= hidden_field_tag :context, 'timetables' %>
+  <%- end -%> 
+  <%#= observe_form("search_form", :before => before,
+          :url => search_people_url, :update => 'search_results', :complete => complete, 
+          :method => :post, :frequency => 0.75,
+          :condition => "$('#search').val().length > 3")  %>
+  <div id="search_results"></div>
   <%- types = ['leader','co_leader', 'member']
       types.each do |type| -%>
   <p>
     <h4><%= type.titleize.pluralize %></h4>
     <div id="<%= type %>"></div>
-    <%- before = types.collect {|t| "$('##{t}_results').hide();" unless t == type}.to_s +
-                 "$('#spinner#{type}').show();" +
-                 "$('#filter_ids_#{type}').val($('#all_filter_ids').val());" 
-        complete = "$('#spinner#{type}').hide();$('##{type}_results:hidden').slideDown()" 
-    -%>
-    <%- form_remote_tag(:html => {:id => "search_form_#{type}"}, :before => before, 
-    					          :url => search_people_url, :update => type + '_results', :complete => complete) do -%>
-     	Search for <%= type.titleize.pluralize %>:&nbsp;&nbsp;
-    	<%= text_field_tag :search, '', :id => "search_#{type}" %> &nbsp;
-    	<%= submit_tag('Search') %> &nbsp;<%= spinner(type) %>
-    	<%= hidden_field_tag :type, type %>
-    	<%= hidden_field_tag :filter_ids, '', :id => "filter_ids_#{type}" %>
-    	<%= hidden_field_tag :context, 'timetables' %>
-    <%- end -%> 
-
-    <%= observe_form("search_form_#{type}", :before => before,
-              :url => search_people_url, :update => type + '_results', :complete => complete, 
-              :method => :post, :frequency => 0.75,
-              :condition => "$('#search_#{type}').val().length > 3")  %>
-
-    <div id="<%= type %>_results"></div>
   </p>
   <br/>
   <%- end -%>
@@ -94,7 +88,7 @@
     </table> -->
     <table border="0" cellspacing="5" cellpadding="5">
       <tr>
-        <td>Maximum number of groups to be formed: </td>
+        <td width="250px">Maximum number of groups to be formed: </td>
         <td><%= text_field_tag :max_groups, '', :size => 2 %></td>
       </tr>
       <tr>

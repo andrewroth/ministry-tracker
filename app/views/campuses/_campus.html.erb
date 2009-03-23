@@ -1,3 +1,4 @@
+<%- if campus -%>
 <h4>Campus Details</h4>
 <ul>
   <li>Enrollment Size: <%= number_with_delimiter(campus.enrollment) %></li>
@@ -9,3 +10,4 @@
     <li><%= ministry.name %></li>
   <%- end -%>
 </ul>
+<% end %>

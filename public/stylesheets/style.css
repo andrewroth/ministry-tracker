@@ -8,105 +8,6 @@ Green Text:       #539030
 Revised on: 2-16-2009
 */
 
-
-
-
-/* OVERALL STUFF */
-
-.directorytable tr:hover  {
-/*    background-color:#fff193;*/
-}
-
-#profileCaption {
-margin:3px 0 0 0;
-text-align:center;
-}
-
-* {
-    margin:0;
-    padding:0;
-    font-family: Arial, Helvetica, sans-serif;
-    color:#747474;
-}
-
-body {
-    font-size:75%;
-    text-align:center;
-    background-color:#E6E6E6;
-}
-
-img {border:0px;}
-td {vertical-align:top;}
-table {width:100%; font-size:1em;}
-
-strong {font-weight:bold;}
-
-
-/* EVERYDAY THINGS */
-
-h1 {font-size:2.0em;}
-h2 {font-size:1.5em;}
-h3 {font-size:1.25em; font-weight:normal;}
-h4 {font-size:1.12em;}
-h5, p {font-size:1em;}
-
-th {font-weight:normal;}
-
-input, textarea {
-font-size:1.1em;
-color: #000;
-font-family:Arial, Verdana, Helvetica;
-padding:2px 5px 2px 5px;
-border:1px solid #ddd;
-}
-
-input:focus, textarea:focus {
-background:#FFFFCC;
-}
-
-select {width:175px;}
-li {list-style: none; margin-top:3px;}
-p {margin-bottom:10px;}
-
-a:link, a:visited {
-	color: #67A03B;
-	text-decoration:none;
-}
-
-a:hover, a:active {
-    text-decoration:underline;
-    color:#67A03B;
-}
-
-
-
-table.address tr th {
-font-weight:bold;
-vertical-align:top;
-padding-top:4px;
-}
-
-table.address tr td {
-vertical-align:top;
-padding-top:4px;
-}
-
-table.editpad tr td{
-padding-top:2px;
-}
-
-
-table.address input {
-width:150px;
-}
-
-table.address tr td table.halftab td {width:65%;}
-table.address tr td table.halftab th {width:35%;}
-
-
-.alignright {text-align:right;}
-
-
 #greenbar {background:#67A03B; height:33px; padding-top:10px;}
 
 #campus, #person, #training_question, #training_category {
@@ -114,17 +15,11 @@ table.address tr td table.halftab th {width:35%;}
 	padding:8px;
 }
 
-.spacewrap {height:40px; margin:20px 0px 0px 0; display:block; }
-
-a.massimport {margin-left:15px; display:inline-block; }
-a.massimport:hover {text-decoration:none;}
-a.massimport img {margin-right:3px;}
-
-.actionpack {
-border:1px solid silver;
-background:#efefef;
-display:inline-block;
+.actionbox {
 padding:10px;
+border:1px solid green;
+display:inline-block;
+background:#f7f7f7;
 }
 
 #addStudentLink {
@@ -141,13 +36,8 @@ table.address td.spacer {width:5px;}
 
 #staffArea {
 padding:0px;
-border-top: 1px dotted #CCCCCC;
+border: 0px dotted #CCCCCC;
 }
-#staffArea:hover{}
-
-#staffArea th {font-weight:bold; width:108px;}
-#staffArea td {}
-#staffArea table {margin:10px 0 10px 0;}
 
 #manage {clear:both;}
 
@@ -160,11 +50,12 @@ width:675px;}
 display:block;margin-bottom:30px; }
 
 div.yoursearch {
-padding:5px 10px 0px 10px;
-margin-bottom:15px;
-
+padding:0 10px 10px 10px;
 }
 
+#staffArea:hover{
+
+}
 
 #footer img {border:0;}
 
@@ -209,18 +100,33 @@ margin:5px 0 0 0;
 }
 
 
+/* OVERALL STUFF */
 
+.directorytable tr:hover  {
+/*    background-color:#fff193;*/
+}
 
+#profileCaption {
+margin:3px 0 0 0;
+text-align:center;
+}
 
+* {
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#747474;
+}
 
+body {
+    font-size:75%;
+    text-align:center;
+    background-color:#E6E6E6;
+}
 
-
-
-
-
-
-
-
+img {border:0px;}
+td {vertical-align:top;}
+table {width:100%; font-size:1em;}
 
 .directorytable {
 width:100%;
@@ -343,6 +249,43 @@ height:18px;
 
 
 
+/* EVERYDAY THINGS */
+
+h1 {font-size:2.0em;}
+h2 {font-size:1.5em;}
+h3 {font-size:1.25em; font-weight:normal;}
+h4 {font-size:1.12em;}
+h5, p {font-size:1em;}
+
+th {
+font-weight:normal;
+}
+
+input, textarea {
+font-size:1.1em;
+color: #000;
+font-family:Arial, Verdana, Helvetica;
+padding:2px 5px 2px 5px;
+border:1px solid #ddd;
+}
+
+input:focus, textarea:focus {
+background:#FFFFCC;
+}
+
+select {width:175px;}
+li {list-style: none; margin-top:3px;}
+p {margin-bottom:10px;}
+
+a:link, a:visited {
+	color: #67A03B;
+	text-decoration:none;
+}
+
+a:hover, a:active {
+    text-decoration:underline;
+    color:#67A03B;
+}
 a.norm {
 	color:#747474;
 	text-decoration: none;
@@ -574,9 +517,11 @@ div.sectionHeader h2 {
 margin:10px 0 10px;
 	padding: 10px 10px 0px 10px;
 	border: 1px solid #ccc;
-
 background:#edf3fe;
 }
+
+
+
 .flash {
 
 	margin-left: 10px;
@@ -595,7 +540,7 @@ background:#edf3fe;
 }
 
 #errorExplanation {
-  width: 400px;
+  width: 97%;
   border: 2px solid red;
   padding: 7px;
   padding-bottom: 12px;
@@ -603,10 +548,12 @@ background:#edf3fe;
   background-color: #f0f0f0;
 }
 
+#errorExplanation ul li{
+padding-left:20px;
+list-style-type:round;
+}
 
 #errorExplanation h2 {
-
-
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -969,8 +916,6 @@ ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding
 div#userbar {background:#e6e6e6; padding:5px 5px 5px 10px; height:20px;}
 div.username {font-size:15px; font-weight:bold; color:#000; display:inline; margin-right:5px; }
 div#userbar small {font-size:11px;}
-#userbar img{vertical-align:top; }
-
 
 a.logoutbutton {
 float:right;
@@ -983,20 +928,68 @@ padding:5px 10px 5px 10px;
 
 .floatleft {
 float:left;
-padding-top:2px;
 }
 
 .inline {
-display:inline;
+	display:inline;
 }
+strong {font-weight:bold;}
 
 
-.ui-state-active {
-background:#f4f4f4 url(../images/contract.png) .75% 50% no-repeat;
-padding-left:24px;
-}
 
-.ui-state-default {
-background:#f4f4f4 url(../images/expand.png) .75% 50% no-repeat;
-padding-left:24px;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
