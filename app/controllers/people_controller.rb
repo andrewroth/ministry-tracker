@@ -26,10 +26,14 @@ class PeopleController < ApplicationController
     # Get View
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+    first_name_col = _(:first_name, :person)
+    last_name_col = _(:last_name, :person)
+    email = _(:email, :address)
     
     if params[:search_id]
       @search = @my.searches.find(params[:search_id])
       @conditions = @search.query
+      conditions = @conditions.split(' AND ')
       @options = JSON::Parser.new(@search.options).parse
       @tables = JSON::Parser.new(@search.tables).parse
       @search_for = @search.description
@@ -37,9 +41,6 @@ class PeopleController < ApplicationController
       @advanced = true if @tables.present?
     else
       # Build conditions
-      first_name_col = _(:first_name, :person)
-      last_name_col = _(:last_name, :person)
-      email = _(:email, :address)
       conditions = []  #["#{first_name_col} <> ''"]
       search = params[:search].to_s.strip
       # search = '%' if search.empty?
@@ -122,6 +123,18 @@ class PeopleController < ApplicationController
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
+    
+    if params[:search_id].blank?
+      @search = Search.find(:first, :conditions => {_(:query, :search) => @conditions})
+      if @search
+        @search.update_attribute(:updated_at, Time.now)
+      else
+        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+      end
+      # Only keep the last 5 searches
+      @my.searches.last.destroy if @my.searches.length > 5
+    end
+    
     # If these conditions will result in too large a set, use pagination
     @count = ActiveRecord::Base.connection.select_value("SELECT count(*) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
@@ -149,17 +162,6 @@ class PeopleController < ApplicationController
     else
       @people = []
       @count = 0
-    end
-    
-    if params[:search_id].blank?
-      @search = Search.find(:first, :conditions => {_(:query, :search) => @conditions})
-      if @search
-        @search.update_attribute(:updated_at, Time.now)
-      else
-        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
-      end
-      # Only keep the last 5 searches
-      @my.searches.last.destroy if @my.searches.length > 5
     end
     
     respond_to do |format|
