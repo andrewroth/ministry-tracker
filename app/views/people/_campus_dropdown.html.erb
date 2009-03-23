@@ -1,3 +1,3 @@
-<%= select_tag :primary_campus_id, options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), @person.primary_campus.try(:id)), :style => 'width:300px' %>
+<%= select_tag :primary_campus_id, options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), @person.primary_campus.try(:id)) %>
 
 <%= link_to_function(t(:person_campus_change_state, :default => 'change to a different state'), "$('#campuses').hide();$('#states').show();") %>
