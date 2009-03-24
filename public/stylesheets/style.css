@@ -22,6 +22,18 @@ display:inline-block;
 background:#f7f7f7;
 }
 
+.inline_ajax_form {
+background:#fffbcc;
+padding:5px;
+border:1px dotted orange;
+}
+
+.inline_ajax_form th{
+font-size:14px;
+font-weight:bold;
+padding:0px;
+}
+
 #addStudentLink {
 margin:15px 0 10px 0;
 }
@@ -533,58 +545,6 @@ background:#edf3fe;
 
 
 
-.flash {
-
-	margin-left: 10px;
-}
-.notice {
-	color:green;
-}
-.warning {
-	color:red;
-}
-
-.fieldWithErrors {
-  padding: 2px;
-  background-color: #FFA6A6;
-  display: table;
-}
-
-#errorExplanation {
-  width: 97%;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-}
-
-#errorExplanation ul li{
-padding-left:20px;
-list-style-type:round;
-}
-
-#errorExplanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: -7px;
-  background-color: #c00;
-  color: #fff;
-}
-
-#errorExplanation p {
-  color: #333;
-  margin-bottom: 0px;
-  margin-top: 5px;
-  padding: 5px;
-}
-
-#errorExplanation ul li {
-  font-size: 12px;
-  list-style: none;
-}
 
 div.uploadStatus {
   margin: 5px;
@@ -933,7 +893,7 @@ float:right;
 font-weight:bold;
 text-transform:uppercase;
 margin-top:-5px;
-background:#fff0a5;
+background:#fff5c6;
 padding:5px 10px 5px 10px;
 }
 
@@ -951,3 +911,67 @@ margin-top:5px;
 table.datatable td, table.datatable th {
 padding-bottom:5px;
 } 
+
+
+/* ************* */
+/* Flash Notices */
+#flash_notice {
+margin:10px;
+padding:10px;
+background:#fff7d2;
+border:1px dotted orange;
+}
+
+
+.flash {
+
+	margin-left: 10px;
+}
+.notice {
+	color:green;
+}
+.warning {
+	color:red;
+}
+
+.fieldWithErrors input {
+  display: block;
+border:1px solid red;
+background:pink;
+}
+
+#errorExplanation {
+  width: 97%;
+  border: 1px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation ul li{
+padding-left:20px;
+list-style-type:round;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: none;
+}

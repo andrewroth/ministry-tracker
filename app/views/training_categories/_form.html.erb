@@ -1,10 +1,11 @@
 <%= error_messages_for 'training_category' %>
 <%- remote_form_for @training_category, :before => "$('#spinnertc').show();" do |f| -%>
-  <p>
-    Name: <%= f.text_field :name %>
-  </p>
-  <p>
+	<table border="0" cellspacing="5" cellpadding="5">
+  <tr><th colspan="2">New Training Category</th></tr>
+  <tr><td>Name:</td><td><%= f.text_field :name %></td></tr>
+  </table>
    <%= submit_tag 'Save' %> or <%= link_to_function 'cancel', "$('#new_training_category_link').show();$('#training_category').fadeOut()",
 	 															:class => 'cancel'%>
-  </p>
+  
+
 <% end %>

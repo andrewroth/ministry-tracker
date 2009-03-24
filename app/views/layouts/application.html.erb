@@ -5,8 +5,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
-		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", "xtheme-gray", :media => "screen", :cache => true %>
-		<%= stylesheet_link_tag "ext/xtheme-gray", :media => "screen", :cache => false, :id => 'theme' %>
+		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => true %>
 		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
 		                            'jquery.disable.text.select.pack', 'calendar', 'lang/calendar-en', 'calendar-setup',
 		                            'jquery.scrollTo-min', :cache => true %>
@@ -42,8 +41,12 @@
 			</div>
 			<%- end -%>
 			<div class="clear">&nbsp;</div>
-			<div class="flash notice" id="flash_notice"><%= flash[:notice] if flash[:notice] %></div>
-			<div class="flash warning" id="flash_warning"><%= flash[:warning] if flash[:warning] %></div>
+			
+			<%- if flash[:notice] %><div class="flash notice" id="flash_notice"><%= flash[:notice] %></div><%- end %>
+			<%- if flash[:warning] %><div class="flash warning" id="flash_warning"><%= flash[:warning] %></div><%- end %>
+			
+			
+			
 			<div id="content">
 				<%= yield %>
 				<div class="clear">&nbsp;</div>
