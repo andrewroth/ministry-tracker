@@ -5,8 +5,8 @@ module TrainingHelper
     date = fancy_date_field(question.safe_name + '_date', answer.completed_at)
     # if is_ministry_leader 
       approver = send('text_field_tag', question.safe_name + '_approver', answer.approved_by )
-      approver += '&nbsp;&nbsp;' + link_to_function('approve', "$('##{question.safe_name}_approver').val('#{@my.full_name}')") +
-                 ' | ' +          link_to_function('clear', "$('##{question.safe_name}_approver').val('')")
+      approver += '&nbsp;&nbsp;' + link_to_function(image_tag('silk/tick.png'), "$('##{question.safe_name}_approver').val('#{@my.full_name}')") +
+                 ' ' +          link_to_function(image_tag('silk/cross.png'), "$('##{question.safe_name}_approver').val('')")
     # else
       # approver = answer.approved_by
     # end

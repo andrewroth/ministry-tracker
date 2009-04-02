@@ -1,5 +1,6 @@
 <%- @training_category = training_category -%>
   <li id="<%= dom_id(training_category) %>">
+  
       <span class="drag_me"><%= image_tag('/images/silk/move.png') %></span>
       <%- if @ministry.id == training_category.ministry_id -%>
         &nbsp;&nbsp;&nbsp;

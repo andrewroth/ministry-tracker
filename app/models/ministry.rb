@@ -109,7 +109,7 @@ class Ministry < ActiveRecord::Base
     unless @campus_ids
       ministry_ids = ([self] + descendants).collect(&:id)
       sql = "SELECT #{_(:campus_id, :ministry_campus)} FROM #{MinistryCampus.table_name} WHERE #{_(:ministry_id, :ministry_campus)} IN(#{ministry_ids.join(',')})"
-      @campus_ids = ActiveRecord::Base.connection.select_values(sql)
+      @campus_ids = ActiveRecord::Base.connection.select_values(sql).collect(&:to_i)
     end
     @campus_ids
   end

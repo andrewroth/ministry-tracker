@@ -1,27 +1,29 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
   
+  <table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
+	<tr>
+  	<td>
+    	<table  class="halftab">
+    	<tr><th>Primary Campus:</th><td><%= render :partial => 'campus_dropdown'  if @campuses %></td></tr>
+    	<tr><th>&nbsp;</th><td>&nbsp;</td>	</tr>
+    	</table>
+  	</td>
+  	
+  	<td class="spacer">&nbsp;</td>
   
+  	<td>
+    <%- fields_for :primary_campus_involvement do |cif| -%>
+    	<table class="halftab">	
+      	<tr><th>Pick a state:</th><td class="date"><%= select_tag :state, options_for_select(State::NAMES['USA']) %><%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %></td></tr>
+    	</table>
+  	<%- end -%>
+  	</td>
+	</tr>
+  </table>
   
-  
-  
-  
-  <div id="campusprofileselect">
-    <h3 class="inline">Primary Campus:</h3>
-    <div id="campuses" class="inline">
-      <%= render :partial => 'campus_dropdown'  if @campuses %>
-    </div>
-    <div id="states" <%= 'style="display:none"' if @campuses %> class="inline">
-        Pick a state: <%= select_tag :state, options_for_select(State::NAMES['USA']) %>
-        <%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %>
-    </div>
-  </div>
-	
-  
-  
-  
-  
-	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address">
+    
+	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
 	<tr>	
 	
   	<td>

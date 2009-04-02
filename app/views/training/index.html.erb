@@ -9,10 +9,10 @@
         unless questions.empty? 
           @all_questions += questions -%>
           <h3 class="title"><%= category.name %></h3>
-      		<table width="100%">
+      		<table width="100%" class="datatable">
       		<%- questions.each do |q|  -%>
         		<tr>
-        			<td width="20%" nowrap="nowrap"><%= q.activity %>: </td>
+        			<th width="20%" nowrap="nowrap"><%= q.activity %>: </th>
         			<td> <%= training_question_field(q, @person) %></td>
         		</tr>
       	  <%- end -%>

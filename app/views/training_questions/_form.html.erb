@@ -2,7 +2,7 @@
 <%- remote_form_for @training_question, :before => "$('#spinnertq').show();" do |f| -%>
 	<%= f.hidden_field :ministry_id %>
 	<table border="0" cellspacing="5" cellpadding="5">
-		<tr><th colspan="2"><h4><%= @training_question.new_record? ? 'New Training Question' : 'Editing \'' + @training_question.activity.to_s + "'" %></h4></th></tr>
+		<tr><th colspan="2"><%= @training_question.new_record? ? 'New Training Question' : 'Editing \'' + @training_question.activity.to_s + "'" %></th></tr>
 		<tr><td>Category: </td><td><%= f.select :training_category_id, @ministry.all_training_categories.collect {|c| [c.name, c.id] }, {}, {:class => "customform"} %></td></tr>
 		<tr><td>Activity: </td><td><%= f.text_field :activity, :class => "customform" %></td></tr>
 	</table>
