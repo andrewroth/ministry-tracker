@@ -1,8 +1,11 @@
 <% form_tag(directory_people_path) do %>
-  Year in School: <br/>
-  <%= select_tag 'school_year[]', options_for_select(SchoolYear.find(:all).collect {|sy| ["(#{sy.name} #{sy.level})", sy.id]}, @options["school_year"]), :multiple => true %>
-  <br/>  
-  Gender:
+  
+  
+  <div class="adfieldbox">First Name:<br /><%= text_field_tag :first_name, @options['first_name'], :class => 'wide' %></div>
+  
+  <div class="adfieldbox">Last Name:<br /><%= text_field_tag :last_name, @options['last_name'], :class => 'wide' %></div>
+  
+  <div class="adfieldbox">Gender:<br />
   <ul>
     <% ['1','0'].each do |gender| %>
       <li>
@@ -10,18 +13,21 @@
         <%= Person.human_gender(gender) %> 
       </li>
     <% end %>
-  </ul>
-  <br/> 
-  Ministry: <br/>
-  <%= select_tag 'ministry[]', options_for_select(@my.ministries.collect {|ministry| [ministry.name, ministry.id]}, @options["ministry"]), :multiple => true %>
-  <br/>
-  Campus: <br/>
-  <%= select_tag 'campus[]', options_for_select(@campuses.collect {|campus| [campus.name, campus.id]}, @options["campus"]), :multiple => true %>
-  <br/>
-  First Name: <%= text_field_tag :first_name, @options['first_name'] %>
-  Last Name: <%= text_field_tag :last_name, @options['last_name'] %>
-  <br/>
-  Email: <%= text_field_tag :email, @options['email'] %><br/>
+  </ul></div>
   
-  <%= submit_tag 'Search' %>
+  <div class="adfieldbox">Email:<br /><%= text_field_tag :email, @options['email'], :class => 'wide' %></div>
+  
+  <div class="clear" style="margin-bottom:15px;"></div>
+  
+  <div class="adfieldbox">Year in School: <br/>
+  <%= select_tag 'school_year[]', options_for_select(SchoolYear.find(:all).collect {|sy| ["(#{sy.name} #{sy.level})", sy.id]}, @options["school_year"]), :multiple => true, :class => 'wide' %></div>
+    
+  <div class="adfieldbox">Ministry: <br/>
+  <%= select_tag 'ministry[]', options_for_select(@my.ministries.collect {|ministry| [ministry.name, ministry.id]}, @options["ministry"]), :multiple => true, :class => 'wide' %></div>
+    
+  <div class="adfieldbox">Campus: <br/>
+  <%= select_tag 'campus[]', options_for_select(@campuses.collect {|campus| [campus.name, campus.id]}, @options["campus"]), :multiple => true, :class => 'doublewide'  %></div>
+  
+  <div class="clear" style="margin-bottom:15px;"></div>
+  <%= submit_tag 'Search' %> <%= link_to_function "Back to Basic Search", "$('#basic_search').show();$('#advanced_search').hide();"%>
 <% end %>

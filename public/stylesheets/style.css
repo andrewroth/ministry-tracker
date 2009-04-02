@@ -975,3 +975,14 @@ list-style-type:round;
   font-size: 12px;
   list-style: none;
 }
+
+
+.adfieldbox {
+float:left;
+margin-right:15px;
+min-width:180px;
+}
+
+.adfieldbox input.wide{width:175px; padding:3px 0 3px 0;}
+.adfieldbox select.wide, .adfieldbox select.doublewide{width:175px; padding:0; height:65px;}
+.adfieldbox select.doublewide {width:371px;}
