@@ -127,22 +127,23 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
       <ul>
-        <li>People in all movements: <%= @people_in_ministries %></li>
+        <li>People in your ministries: <%= @people_in_ministries %></li>
         <% @ministry.group_types.each do |gt| %>
           <li>Number of <%= gt.group_type.pluralize %>: <%= gt.groups.count %></li>
         <% end %>
-        <li>Movements: <%= @movement_count %></li>
+        <li>Ministries Involved: <%= @movement_count %></li>
       </ul>
+      <% if @newest_people %>
       <br>
       <h6>Newest People</h6>
-        <div class="lightgray">
-          <ul class="searchicon">
-            <% @newest_people.each do |person| %>
-              <li><%= link_to(person.full_name, person) %></li>
-            <% end %>
-          </ul>
-        </div>
-      
+      <div class="lightgray">
+        <ul class="searchicon">
+          <% @newest_people.each do |person| %>
+            <li><%= link_to(person.full_name, person) %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
       
       </div>
     </div>

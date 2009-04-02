@@ -54,6 +54,7 @@
 	 															:class => 'cancel'%>
 	<%- end -%>
 <%- end -%>
+<% unless group.new_record? %>
 <div id="timePicker" class="thickbox" style="display:none">
   <p>
   <%- form_remote_tag :url => find_times_group_path(group) do -%>
@@ -69,3 +70,4 @@
   <%- end -%>
   </p>
 </div>
+<% end %>

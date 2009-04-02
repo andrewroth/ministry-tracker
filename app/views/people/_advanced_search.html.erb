@@ -1,14 +1,6 @@
 <% form_tag(directory_people_path) do %>
-  Year in School:
-  <ul>
-    <% SchoolYear.find(:all).each do |sy| %>
-      <li>
-        <%= check_box_tag "school_year[]", sy.id, @options["school_year"] && @options["school_year"].include?(sy.id.to_s) %>
-        <%= sy.name %> 
-        <%= "(#{sy.level})" if sy.level.present? %>
-      </li>
-    <% end %>
-  </ul>
+  Year in School: <br/>
+  <%= select_tag 'school_year[]', options_for_select(SchoolYear.find(:all).collect {|sy| ["(#{sy.name} #{sy.level})", sy.id]}, @options["school_year"]), :multiple => true %>
   <br/>  
   Gender:
   <ul>
@@ -20,25 +12,16 @@
     <% end %>
   </ul>
   <br/> 
-  Ministry:
-  <ul>
-    <% @my.ministries.each do |ministry| %>
-      <li>
-        <%= check_box_tag "ministry[]", ministry.id, @options["ministry"] && @options["ministry"].include?(ministry.id) %>
-        <%= ministry.name %> 
-      </li>
-    <% end %>
-  </ul>
+  Ministry: <br/>
+  <%= select_tag 'ministry[]', options_for_select(@my.ministries.collect {|ministry| [ministry.name, ministry.id]}, @options["ministry"]), :multiple => true %>
   <br/>
-  Campus:
-  <ul>
-    <% @campuses.sort.each do |campus| %>
-      <li>
-        <%= check_box_tag "campus[]", campus.id, @options["campus"] && @options["campus"].include?(campus.id) %>
-        <%= campus.name %> 
-      </li>
-    <% end %>
-  </ul>
+  Campus: <br/>
+  <%= select_tag 'campus[]', options_for_select(@campuses.collect {|campus| [campus.name, campus.id]}, @options["campus"]), :multiple => true %>
   <br/>
+  First Name: <%= text_field_tag :first_name, @options['first_name'] %>
+  Last Name: <%= text_field_tag :last_name, @options['last_name'] %>
+  <br/>
+  Email: <%= text_field_tag :email, @options['email'] %><br/>
+  
   <%= submit_tag 'Search' %>
 <% end %>

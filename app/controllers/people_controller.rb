@@ -51,7 +51,7 @@ class PeopleController < ApplicationController
     		last = names[1].strip
       	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
       when !search.scan('@').empty?
-        conditions << "CurrentAddress.#{email} = '#{quote_string(search)}'"
+        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(search)}'"
       else
         if search.present?
           conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
@@ -108,6 +108,24 @@ class PeopleController < ApplicationController
           @search_for << Campus.find(:all, :conditions => "id in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @advanced = true
         end
+      end
+      
+      if params[:first_name].present?
+        conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
+        @search_for << "First Name: #{params[:first_name]}"
+        @advanced = true
+      end
+      
+      if params[:last_name].present?
+        conditions << "Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'"
+        @search_for << "Last Name: #{params[:last_name]}"
+        @advanced = true
+      end
+      
+      if params[:email].present?
+        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+        @search_for << "Email: #{params[:email]}"
+        @advanced = true
       end
     
     
