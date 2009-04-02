@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(:version => 20090317172625) do
     t.integer "role_id"
     t.date    "graduation_date"
     t.integer "school_year_id"
-    t.string  "major"
-    t.string  "minor"
+    t.integer "major_id"
+    t.integer "minor_id"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
