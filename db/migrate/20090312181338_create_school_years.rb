@@ -22,7 +22,6 @@ class CreateSchoolYears < ActiveRecord::Migration
     remove_column :campus_involvements, :school_year_id
     remove_column :campus_involvements, :graduation_date
     add_column :campus_involvements, :ministry_role, :string, :default => "Involved Student"
-    add_column :campus_involvements, :role_id, :integer
     drop_table :school_years
   end
 end
