@@ -131,7 +131,7 @@ this system, along with any other information we think would be helpful to you.<
         <% @ministry.group_types.each do |gt| %>
           <li>Number of <%= gt.group_type.pluralize %>: <%= gt.groups.count %></li>
         <% end %>
-        <li>Movements: <%= @movement_count %></li>
+        <li>Ministries Involved: <%= @movement_count %></li>
       </ul>
       <% if @newest_people %>
       <br>

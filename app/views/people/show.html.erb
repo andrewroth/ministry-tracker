@@ -43,7 +43,7 @@
 
 	
 	<%- if @person.ministries.count > 0 -%>
-  	<h4>Movements</h4>
+  	<h4>Ministries</h4>
   	<ul>
   	<%- @person.ministries.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
