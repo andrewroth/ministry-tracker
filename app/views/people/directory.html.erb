@@ -87,11 +87,11 @@
   <%- elsif @count > 500 
   	# set the default start value to A
   	params[:start] ||= 'A'
-  	-%><br />
+  	-%>
   	<%- ('A'..'Z').each do |l| 
   		finish = (l == 'Z') ? '' : l.next -%>
       <!-- <%#= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | -->
-  		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => finish, :search_id => @search.id)] %>
+  		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id)] %>
   	<%- end -%>
   <%- end -%>
   <% if @count > 500 %>
