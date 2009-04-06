@@ -6,14 +6,11 @@
   <div class="adfieldbox">Last Name:<br /><%= text_field_tag :last_name, @options['last_name'], :class => 'wide' %></div>
   
   <div class="adfieldbox">Gender:<br />
-  <ul>
     <% ['1','0'].each do |gender| %>
-      <li>
         <%= check_box_tag "gender[]", gender, @options["gender"] && @options["gender"].include?(gender) %>
-        <%= Person.human_gender(gender) %> 
-      </li>
+        <%= Person.human_gender(gender) %> &nbsp;&nbsp;
     <% end %>
-  </ul></div>
+  </div>
   
   <div class="adfieldbox">Email:<br /><%= text_field_tag :email, @options['email'], :class => 'wide' %></div>
   

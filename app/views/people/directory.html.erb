@@ -75,7 +75,7 @@
 <div class="yoursearch">
 <p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found<br />
   <%  options = [['Filter by Last Name','']] %>
-  <%- if @count > 2000 -%><br />
+  <%- if @count > 2000 -%>
     <!-- | -->
   	<%- ('A'..'Z').each do |l| -%>
       <!-- <%#= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | -->
