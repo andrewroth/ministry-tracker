@@ -10,7 +10,7 @@ module AuthenticatedSystem
     # Accesses the current user from the session.  Set it to :false if login fails
     # so that future calls do not hit the database.
     def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_facebook || :false)
+      @current_user ||= (login_from_api_key || login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_facebook || :false)
     end
     
     # Store the given user in the session.
@@ -132,6 +132,25 @@ module AuthenticatedSystem
         self.current_user = u
       end
     end
+
+    def login_from_api_key
+      # TODO: should have a version param?
+      # TODO: should have a timestamp param and check within 15 minute interval?
+      return false unless params.has_key?(:api_key) 
+
+      u = User.find_by_api_key(params[:api_key])
+      local_params = params.dup
+      local_params.delete_if {|key, value| ['format', 'submit', 'action','controller','commit','search'].include?(key)}
+ 
+      return false unless local_params.has_key?(:signature)
+      signature_param = local_params[:signature]
+      local_params.delete(:signature)
+      local_params.each{|k, v| local_params[k] = v.join(",") if v.is_a?(Array)}
+ 
+      return false unless signature_param == signature_helper(local_params, u.secret_key)
+
+      self.current_user = u
+    end
     
     def logout_keeping_session!
       # Kill server-side auth cookie
@@ -166,5 +185,13 @@ module AuthenticatedSystem
       auth_key  = @@http_auth_headers.detect { |h| request.env.has_key?(h) }
       auth_data = request.env[auth_key].to_s.split unless auth_key.blank?
       return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil] 
+    end
+
+    def signature_helper(params, secret_key)
+      args = []
+      params.each{|k, v| args << "#{k}=#{v}"}
+      sorted = args.sort
+      request = sorted.join("")
+      Digest::MD5.hexdigest("#{request}#{secret_key}")
     end
 end

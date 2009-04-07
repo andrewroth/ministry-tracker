@@ -41,6 +41,17 @@ class UsersControllerTest < ActionController::TestCase
     assert_template 'new'
   end
 
+  def test_should_get_rest
+    get "/people.xml"
+    
+    assert_response HTTP::Status::OK
+    assert_equal 'application/xml', @response.content_type
+
+    with_options :tag => 'person' do |person|
+      person.assert_tag :children => { :count => 1, :only => { :tag => 'bio' } }
+    end
+  end
+
   def test_should_show_user
     get :show, :id => 1
     assert_response :success

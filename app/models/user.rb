@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     u && u.authenticated?(plain_password) ? u : nil
   end
 
+  def self.authenticate(params, signature)
+    return nil unless api_key == "API KEY 123" and signature == "SIGNATURE 123"
+  end
+
   # Encrypts some data with the salt.
   def self.encrypt(plain_password)
     md5_password = Digest::MD5.digest(plain_password)

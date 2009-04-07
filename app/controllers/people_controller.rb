@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
   include PersonMethods
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
+  append_before_filter :authenticate_rest
   # GET /people
   # GET /people.xml
   def index
@@ -546,7 +547,11 @@ class PeopleController < ApplicationController
         return false
       end
     end
-    
+   
+    def authenticate_rest
+      #User.find_by_api_key()
+    end
+ 
     def get_profile_person
       @person = Person.find(params[:id] || session[:person_id])
     end
