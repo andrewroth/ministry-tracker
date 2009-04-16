@@ -6,7 +6,11 @@
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
-config.cache_classes = true
+#
+# Ugly hack to remove cache_classes when running from rake - see 
+#  http://whatcodecraves.com/articles/2009/03/17/rails_2.2.2_chicken_and_egg_migrations_headache/
+#  https://rails.lighthouseapp.com/projects/8994/tickets/802-eager-load-application-classes-can-block-migration
+config.cache_classes = (File.basename($0) == "rake" && !ARGV.grep(/db:/).empty?) ? false : true
 
 # Use a different logger for distributed setups
 # config.logger = SyslogLogger.new
