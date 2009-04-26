@@ -15,15 +15,18 @@ class InitialData < ActiveRecord::Migration
     # 1: Admin
 
     # Create test user
-    user = User.create!(:username => 'test.user@example.com', :plain_password => 'testuser', :password_confirmation => 'testuser')
-    # XZxoxsUO09AqL89U9jmTtg==
+    begin
+      user = User.create!(:username => 'test.user@example.com', :plain_password => 'testuser', :password_confirmation => 'testuser')
+      # XZxoxsUO09AqL89U9jmTtg==
     
-    # Create person
-    person = Person.create(Person._(:first_name) => 'Test', Person._(:last_name) => 'User', Person._(:user_id) => user.id )
+      # Create person
+      person = Person.create(Person._(:first_name) => 'Test', Person._(:last_name) => 'User', Person._(:user_id) => user.id )
     
-    puts "person: #{person.inspect} minsitry: #{ministry.inspect} top_role: #{top_role.inspect}"
-    MinistryInvolvement.create(:person_id => person.id, :ministry_id => ministry.id, :ministry_role_id => top_role.id, :admin => true)
-    
+      puts "person: #{person.inspect} minsitry: #{ministry.inspect} top_role: #{top_role.inspect}"
+      MinistryInvolvement.create(:person_id => person.id, :ministry_id => ministry.id, :ministry_role_id => top_role.id, :admin => true)
+    rescue
+      puts "NOTE: creating a default user failed.  You should create your own MinistryInvolvement with :admin => true"
+    end
   end
 
   def self.down

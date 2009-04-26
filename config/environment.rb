@@ -33,6 +33,7 @@ Rails::Initializer.run do |config|
   config.gem  'hpricot'
   config.gem  'mechanize'
   config.gem  'erubis'
+  config.gem  'aws-s3', :lib => 'aws/s3'
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
   config.gem 'liquid'

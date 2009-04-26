@@ -20,5 +20,8 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
-config.threadsafe!
+
+# Threadsafe breaks model loading from migrations - see 
+# https://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/2506-models-are-not-loaded-in-migrations-when-configthreadsafe-is-set
+config.threadsafe! unless (File.basename($0) == "rake" && !ARGV.grep(/db:/).empty?)
 
