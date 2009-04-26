@@ -6,6 +6,11 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+# For emailer use
+DEVELOPMENT_HOST = 'localhost:3000'
+TEST_HOST = 'localhost:3000'
+PRODUCTION_HOST = 'example.com'
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
@@ -30,6 +35,7 @@ Rails::Initializer.run do |config|
   config.gem  'erubis'
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
+  config.gem 'liquid'
   
   config.time_zone = 'UTC'
 
