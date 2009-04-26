@@ -57,7 +57,7 @@ class GroupTypesControllerTest < ActionController::TestCase
   
   test  "should remove a group type" do
     assert_difference("GroupType.count", -1) do
-      xhr :delete, :destroy, :id => 1
+      xhr :delete, :destroy, :id => 2
     end
     assert_response :success, @response.body
   end
