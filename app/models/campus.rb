@@ -16,4 +16,9 @@ class Campus < ActiveRecord::Base
   def <=>(other)
     name <=> other.name
   end
+
+  #liquid_methods
+  def to_liquid
+    { "name" => name }
+  end
 end

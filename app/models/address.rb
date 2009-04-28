@@ -20,4 +20,9 @@ class Address < ActiveRecord::Base
     return line[0..-2] if line.last == ','
     return line
   end
+
+  #liquid_methods
+  def to_liquid
+    { "email" => email, "phone" => phone }
+  end
 end

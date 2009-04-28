@@ -504,7 +504,10 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
+
+
   
+
   protected
   
     def campus_condition
@@ -616,4 +619,6 @@ class PeopleController < ApplicationController
       @sql += ' WHERE ' + @conditions
       @sql += ' ORDER BY ' + @order
     end
+
+    
 end

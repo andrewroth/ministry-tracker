@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 
+  subject: 
+  from: 
+  bcc: 
+  cc: 
+  body: MyText
+  templates: MyText
+
+two:
+  id: 
+  subject: 
+  from: 
+  bcc: 
+  cc: 
+  body: MyText
+  templates: MyText
