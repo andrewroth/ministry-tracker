@@ -1,5 +1,5 @@
 {
-  :'en-US' => {
+  :'en' => {
     :date => {
       :formats => {
         :default => "%m/%d/%Y",
