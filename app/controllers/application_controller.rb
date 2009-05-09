@@ -155,7 +155,7 @@ class ApplicationController < ActionController::Base
     # = Filters =
     # ===========
     def set_locale
-      locales = ['en-US', 'en-AU']
+      locales = ['en', 'en-AU']
       begin
         # Try to auto-detect it
         if request.headers['Accept-Language']

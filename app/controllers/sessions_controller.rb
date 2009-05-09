@@ -48,7 +48,6 @@ class SessionsController < ApplicationController
 
   def destroy
     flash[:notice] = "You have been logged out."
-    log_out_of_facebook
     logout_keeping_session!
   end
   

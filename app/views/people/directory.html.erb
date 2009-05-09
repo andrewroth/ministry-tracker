@@ -59,31 +59,8 @@
 		&nbsp;&nbsp;
 		<!--	
 		<%= link_to "More actions..."%>
--->
-<%  options = [['','']] %>
-<%- if @count > 2000 -%><br />
-  <!-- | -->
-	<%- ('A'..'Z').each do |l| -%>
-    <!-- <%#= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | -->
-		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id)] %>
-		<%- finish = (l == 'Z') ? '' : l.next -%>
-    <!-- <%#= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id) %> |  -->
-		<% options << [l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id)] %>
-	<%- end -%>
-<%- elsif @count > 500 
-	# set the default start value to A
-	params[:start] ||= 'A'
-	-%><br />
-	<%- ('A'..'Z').each do |l| 
-		finish = (l == 'Z') ? '' : l.next -%>
-    <!-- <%#= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | -->
-		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => finish, :search_id => @search.id)] %>
-	<%- end -%>
-<%- end -%>
-<% if @count > 500 %>
-  <%= select_tag(:interval, options_for_select(options)) %>
-  <%= observe_field(:interval, :function => "document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
-<% end %>
+  -->
+  
 </div>
 
 
@@ -96,7 +73,33 @@
 
 
 <div class="yoursearch">
-<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found </p>
+<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found<br />
+  <%  options = [['Filter by Last Name','']] %>
+  <%- if @count > 2000 -%>
+    <!-- | -->
+  	<%- ('A'..'Z').each do |l| -%>
+      <!-- <%#= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | -->
+  		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id)] %>
+  		<%- finish = (l == 'Z') ? '' : l.next -%>
+      <!-- <%#= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id) %> |  -->
+  		<% options << [l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id)] %>
+  	<%- end -%>
+  <%- elsif @count > 500 
+  	# set the default start value to A
+  	params[:start] ||= 'A'
+  	-%>
+  	<%- ('A'..'Z').each do |l| 
+  		finish = (l == 'Z') ? '' : l.next -%>
+      <!-- <%#= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | -->
+  		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id)] %>
+  	<%- end -%>
+  <%- end -%>
+  <% if @count > 500 %>
+    <%= select_tag(:interval, options_for_select(options)) %>
+    <%= observe_field(:interval, :function => "if($('#interval').val() != '') document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
+  <% end %>
+
+</p>
 </div>
 
 
