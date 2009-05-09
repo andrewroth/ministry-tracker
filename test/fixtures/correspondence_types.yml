@@ -2,28 +2,14 @@
 
 one:
   id: 1
-  name: MyString
-  email_template_id: 1
-  overdue_lifespan: 1
-  expiry_lifespan: 1
-  redirect_uri: MyString
-  actions_now_task: MyString
-  actions_now_correspondence: MyString
-  actions_overdue_task: MyString
-  actions_overdue_correspondence: MyString
-  actions_followup_task: MyString
-  actions_followup_correspondence: MyString
+  name: PleaseVerify
+  overdue_lifespan: 4
+  expiry_lifespan: 35
+  actions_now_task:
+  actions_overdue_task:
+  actions_followup_task:
+  redirect_params: { action: show, controller: people }
+  redirect_target_id_type: sender
+ 
 
-two:
-  id: 1
-  name: MyString
-  email_template_id: 1
-  overdue_lifespan: 1
-  expiry_lifespan: 1
-  redirect_uri: MyString
-  actions_now_task: MyString
-  actions_now_correspondence: MyString
-  actions_overdue_task: MyString
-  actions_overdue_correspondence: MyString
-  actions_followup_task: MyString
-  actions_followup_correspondence: MyString
+
