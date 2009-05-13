@@ -1,2 +1,2 @@
-page[:flash_warning].replace_html flash[:warning]
+update_flash(page)
 page[:spinner].hide

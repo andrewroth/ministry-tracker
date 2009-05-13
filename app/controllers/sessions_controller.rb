@@ -8,39 +8,63 @@ class SessionsController < ApplicationController
     if logged_in?
       redirect_back_or_default(person_url(self.current_user.person))
     end
+    # force a flash warning div to show up, so that invalid password message can be shown
+    flash[:warning] = '&nbsp;'
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
   end
 
   def create
-    if params[:username].blank? || params[:password].blank?
-      flash[:warning] = "Username and password can't be blank"
-      render :action => :new
-    else
-      # First try SSM
-      self.current_user = User.authenticate(params[:username], params[:password])
-      if logged_in?
-        if params[:remember_me] == "1"
-          self.current_user.remember_me
-          cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-        end
-        flash[:notice] = "Logged in successfully"
-        redirect_to(session[:return_to] || person_path(self.current_user.person)) 
+    respond_to do |wants|
+      if params[:username].blank? || params[:password].blank?
+        flash[:warning] = "Username and password can't be blank"
+        wants.js {}
+        wants.html { render :action => :new }
       else
-        # If regular auth didn't work, see if they used CAS credentials
-        form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
-        cas_url = 'https://signin.mygcx.org/cas/login'
-        agent = WWW::Mechanize.new
-        page = agent.post(cas_url, form_params)
-        result_query = page.uri.query
-        unless result_query && result_query.include?('BadPassword')
-          redirect_to(cas_url + '?service=' + new_session_url + '&username=' + params[:username] + '&password=' + params[:password])
+        # First try SSM
+        self.current_user = User.authenticate(params[:username], params[:password])
+        if logged_in?
+          if params[:remember_me] == "1"
+            self.current_user.remember_me
+            cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
+          end
+          flash[:notice] = "Logged in successfully"
+          # local login worked, redirect to appropriate starting page
+          redirect_params = session[:return_to] || person_path(self.current_user.person)
+          wants.js do
+            render :update do |page|
+              page.redirect_to(redirect_params)
+            end
+          end
+          wants.html do
+            redirect_to(redirect_params)
+          end
         else
-          # No luck. tell them they're a screwup
-          logger.debug(page.uri)
-          flash[:warning] = "Invalid username or password"
-          render :action => :new
+          # If regular auth didn't work, see if they used CAS credentials
+          form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
+          cas_url = 'https://signin.mygcx.org/cas/login'
+          agent = WWW::Mechanize.new
+          page = agent.post(cas_url, form_params)
+          result_query = page.uri.query
+          unless result_query && result_query.include?('BadPassword')
+            # password is correct, send client to gcx to get gcx session set
+            redirect_url = cas_url + '?service=' + new_session_url + '&username=' + params[:username] + '&password=' + params[:password]
+            wants.html do
+              redirect_to(redirect_url)
+            end
+            wants.js do
+              render :update do |page|
+                page.redirect_to(redirect_url)
+              end
+            end
+          else
+            # No luck. tell them they're a screwup
+            logger.debug(page.uri)
+            flash[:warning] = "Invalid username or password"
+            wants.js { }
+            wants.html { render :action => :new }
+          end
         end
       end
     end
@@ -50,5 +74,5 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     logout_keeping_session!
   end
-  
+
 end
