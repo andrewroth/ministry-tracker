@@ -1,7 +1,7 @@
 class ConvertBirthDate < ActiveRecord::Migration
   def self.up
 
-    change_types = false
+    change_types = true
 
     Person.find(:all).each do |p|
       birth_is_date = p.birth_date.is_a?(Date)
