@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 class ConvertBirthDate < ActiveRecord::Migration
   def self.up
 
