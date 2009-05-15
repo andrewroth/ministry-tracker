@@ -14,7 +14,7 @@ end
 # 3 blocks (round up)
 num_blocks = 3
 user_weights = []
-midnight = Time.today.beginning_of_day
+midnight = Time.now.beginning_of_day
 stop_time = midnight + Timetable::LATEST
 
 possible_times = []

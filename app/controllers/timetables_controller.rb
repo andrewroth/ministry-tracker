@@ -84,7 +84,7 @@ class TimetablesController < ApplicationController
         num_blocks = (params[:length].to_f.hours || 1.hour) / Timetable::INTERVAL
         num_blocks = num_blocks > 0 ? num_blocks : 1
         user_weights = []
-        midnight = Time.today.beginning_of_day
+        midnight = Time.now.beginning_of_day
         stop_time = midnight + (Timetable::LATEST - (Timetable::INTERVAL * num_blocks))
     
     

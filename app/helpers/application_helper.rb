@@ -2,7 +2,7 @@
 module ApplicationHelper
   
   def times(start_time, end_time)
-    midnight = Time.today.beginning_of_day
+    midnight = Time.now.beginning_of_day
     # start_time = midnight + start_time.hours
     # end_time = midnight.beginning_of_day + end_time.hours
     time_options = []
