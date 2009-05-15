@@ -19,19 +19,19 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test 'log in with local user' do
-    post :create, :username => 'josh.starcher@example.com', :password => 'test', :remember_me => 1
+    post :create, :username => 'josh.starcher@example.com', :password => 'test', :remember_me => 1, :format => 'html'
     assert_response :redirect
     assert_redirected_to person_path(User.find(1).person)
   end
   
   test 'log in with bad username' do
-    post :create, :username => 'josh.bad@example.com', :password => 'test', :remember_me => 1
+    post :create, :username => 'josh.bad@example.com', :password => 'test', :remember_me => 1, :format => 'html'
     assert_response :success, @response.body
     assert_template 'new'
   end
   
   test 'log in with missing param' do
-    post :create, :username => 'josh.bad@example.com', :password => '', :remember_me => 1
+    post :create, :username => 'josh.bad@example.com', :password => '', :remember_me => 1, :format => 'html'
     assert_response :success, @response.body
     assert_template 'new'
   end
