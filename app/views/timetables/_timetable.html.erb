@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <!-- 6 am to 10 pm in 15 minute intervals -->
-    <%- midnight = Time.today.beginning_of_day
+    <%- midnight = Time.now.beginning_of_day
         time = midnight + Timetable::EARLIEST 
         stop = midnight + Timetable::LATEST 
         time_block = 0 -%>
