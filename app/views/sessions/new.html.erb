@@ -1,7 +1,7 @@
 <script type="text/javascript" charset="utf-8">
   function log_in() {
     $('#spinner').show();
-    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'/session'});
+    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'session'});
   }
   $(function() {
     $('#password').keydown(function(event){
