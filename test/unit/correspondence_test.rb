@@ -17,7 +17,7 @@ class CorrespondenceTest < ActiveSupport::TestCase
     receipt = Correspondence.register('PleaseVerify', @recipient, tokenParams)
     assert_not_nil receipt
     @correspondence = Correspondence.find(:first, :conditions => { :receipt => receipt})
-    assert_equal @correspondence.state, 0  # state unsent
+    assert_equal @correspondence.state, "0"  # state unsent
   end
 
   def test_register_invalid_correspondence
