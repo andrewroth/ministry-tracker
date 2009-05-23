@@ -39,10 +39,8 @@ class Correspondence < ActiveRecord::Base
 
     # create an array of param objects
 
-    hParamObjects = Hash.new()
-    hParamObjects.store(:recipient, person)
-    hParamObjects.store(:receipt, receipt)
-    #hParamObjects.store(:rcpt_uri, ActionView::Helpers::UrlHelper.url_for(:id => correspondence.receipt, :action => 'rcpt', :controller => 'correspondence'))
+    template_params = { :recipient => person, :receipt => receipt }
+    #template_params.store(:rcpt_uri, ActionView::Helpers::UrlHelper.url_for(:id => correspondence.receipt, :action => 'rcpt', :controller => 'correspondence'))
     token_params.each do |key, value|
       klass =  value[:class]
 
@@ -50,14 +48,15 @@ class Correspondence < ActiveRecord::Base
       if value[:type] == 'record'
         id = value[:id]
         paramObj = Object.const_get(klass).find(id)
-        hParamObjects.store(key, paramObj)
+        template_params[:key] = paramObj
       else
-        hParamObjects.store(key, value[:contents])
+        template_params.store(key, value[:contents])
+        template_params[:key] = value[:contents]
       end
       
       
     end
-    email_template.deliver_to(person.current_address.email, hParamObjects)
+    email_template.deliver_to(person.current_address.email, template_params)
 
     # run 'observers'
     executeDefinedActions(outcomeType)
