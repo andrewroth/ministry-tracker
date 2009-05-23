@@ -18,3 +18,5 @@ config/facebook.yml
 db/schema.rb
 query_trace
 nbproject/
+*.swp
+public/profile_pictures
