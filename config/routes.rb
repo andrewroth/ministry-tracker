@@ -1,10 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :correspondences, :only => [:index, :show, :destroy], :collection => { :processqueue => :get }, :member => { :rcpt => :get }
-
-  map.resources :correspondence_types do |correspondence_types|
-    correspondence_types.resources :email_templates
-  end
-
   map.resources :school_years, :collection => {:reorder => :post}
 
   map.resources :group_types
@@ -104,8 +98,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :customize
   
   map.resources :ministry_involvements
-
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:

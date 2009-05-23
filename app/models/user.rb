@@ -18,12 +18,7 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :username, :plain_password, :password_confirmation, :guid, :facebook_username
-
-  #liquid_methods :created_at
-  def to_liquid
-    { "created_at" => created_at }
-  end
-
+  
   # Make sure password and confirm_password are the same on update
   def validate_on_update
     unless plain_password.blank?

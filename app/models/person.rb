@@ -42,8 +42,7 @@ class Person < ActiveRecord::Base
   # Training Questions
   has_many :training_answers, :class_name => "TrainingAnswer", :foreign_key => _(:person_id, :training_answer)
   has_many :training_questions, :through => :training_answers
-
-  # Users
+              
   belongs_to :user, :class_name => "User", :foreign_key => _(:user_id)
   
   # Summer Projects
@@ -60,10 +59,7 @@ class Person < ActiveRecord::Base
   
   # Searches
   has_many :searches, :class_name => "Search", :foreign_key => _(:person_id, :search), :order => "#{_(:updated_at, :search)} desc"
-
-  # Correspondences
-  has_many :correspondences
-  
+    
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name), :on => :update
   # validates_presence_of _(:gender)
@@ -72,13 +68,8 @@ class Person < ActiveRecord::Base
   
   before_save :update_stamp
   before_create :create_stamp
-
-#liquid_methods :first_name, :last_name
-def to_liquid
-    { "hisher" => hisher, "himher" => himher, "heshe" => heshe, "first_name" => first_name, "last_name" => last_name, "preferred_name" => preferred_name, "user" => user, "currentaddress" => current_address }
-end
-
-
+  
+  
   # wrapper to make gender display nicely with crusade tables
   def human_gender(value = nil)
     gender = value || self.gender
@@ -103,19 +94,6 @@ end
   
   def male?(value = nil)
     human_gender(value) == 'Male'
-  end
-
-  # genderization for personafication in templates
-  def hisher
-    hisher = human_gender == 'Male' ? 'his' : 'her'
-  end
-
-  def himher
-    himher = human_gender == 'Male' ? 'him' : 'her'
-  end
-
-  def heshe
-    heshe = human_gender == 'Male' ? 'he' : 'she'
   end
   
   def full_name
