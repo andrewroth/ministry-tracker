@@ -34,4 +34,13 @@ class CorrespondenceTest < ActiveSupport::TestCase
     assert_equal(:once, c.callback_tried)
   end
 
+  test "should create a delayed job on CorrespondenceNightly" do
+    CorrespondenceNightly.create_delayed 1, {}
+    assert_equal(1, Delayed::Job.count)
+    dj = Delayed::Job.find(:first)
+    assert_equal(Time.now.year, dj.run_at.year)
+    assert_equal(Time.now.month, dj.run_at.month)
+    assert_equal(Time.now.hour > 3 ? Time.now.tomorrow.day : Time.now.day, dj.run_at.day)
+    assert_equal(3, dj.run_at.hour)
+  end
 end

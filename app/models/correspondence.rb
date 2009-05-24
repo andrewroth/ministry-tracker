@@ -17,8 +17,7 @@
 class Correspondence < ActiveRecord::Base
   belongs_to :person
   validates_presence_of :person
-  validates_presence_of :params
-
+  
   attr_reader :callback_tried # for testing
 
   # sends a notification to the user this notification is to
@@ -28,7 +27,7 @@ class Correspondence < ActiveRecord::Base
   end
 
   def reschedule
-    # TODO
+    Delayed::Job.enqueue self, 0, resend_delay
   end
 
   # called by delayed_job
