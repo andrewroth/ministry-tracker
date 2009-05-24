@@ -1,0 +1,2 @@
+module CorrespondencesHelper
+end

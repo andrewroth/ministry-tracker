@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :correspondences
+
+  map.resources :correspondences
+
   map.resources :school_years, :collection => {:reorder => :post}
 
   map.resources :group_types
