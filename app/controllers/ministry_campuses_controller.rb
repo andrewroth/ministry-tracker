@@ -19,6 +19,7 @@ class MinistryCampusesController < ApplicationController
   end
   
   def new
+    get_countries
     @states = State::NAMES['USA']
     @ministry = Ministry.find(params[:ministry_id])
   end
