@@ -4,6 +4,29 @@ one:
   person_id: 1
   acknowledged: false
 
-two:
-  person_id: 2
+acked:
+  person_id: 1
   acknowledged: true
+  resend_if_not_acknowledged: true
+  resend_count: 3
+  params: <%= { :a => nil } %>
+
+retry:
+  person_id: 1
+  acknowledged: false
+  resend_if_not_acknowledged: true
+  resend_count: 3
+  params: <%= { :a => nil } %>
+
+giveup:
+  person_id: 1
+  acknowledged: false
+  resend_if_not_acknowledged: true
+  resend_count: -1
+  params: <%= { :a => nil } %>
+
+once:
+  person_id: 1
+  acknowledged: false
+  resend_if_not_acknowledged: false
+  params: <%= { :a => nil } %>
