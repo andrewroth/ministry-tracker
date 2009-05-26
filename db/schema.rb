@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090406233844) do
+ActiveRecord::Schema.define(:version => 20090525204306) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -398,6 +398,13 @@ ActiveRecord::Schema.define(:version => 20090406233844) do
 
   add_index "staff", ["ministry_id"], :name => "index_staff_on_ministry_id"
 
+  create_table "states", :force => true do |t|
+    t.string   "name"
+    t.string   "abbreviation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "stint_applications", :force => true do |t|
     t.integer  "stint_location_id"
     t.integer  "person_id"
@@ -490,7 +497,7 @@ ActiveRecord::Schema.define(:version => 20090406233844) do
     t.datetime "updated_at"
   end
 
-  add_index "view_columns", ["column_id", "view_id"], :name => "index_view_columns_on_column_id_and_view_id"
+  add_index "view_columns", ["column_id", "view_id"], :name => "view_columns_column_id"
   add_index "view_columns", ["view_id"], :name => "index_view_columns_on_view_id"
 
   create_table "views", :force => true do |t|

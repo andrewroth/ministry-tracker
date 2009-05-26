@@ -20,7 +20,7 @@ class MinistryCampusesController < ApplicationController
   
   def new
     get_countries
-    @states = State::NAMES['USA']
+    @states = State.all()
     @ministry = Ministry.find(params[:ministry_id])
   end
   
@@ -33,7 +33,7 @@ class MinistryCampusesController < ApplicationController
         @ministry_campus = MinistryCampus.create(_(:campus_id, 'ministry_campus') => params[:campus_id],
                                               _(:ministry_id, 'ministry_campus') => @ministry.id)
                                               
-        @states = State::NAMES[params[:country]]
+        @states = State.all()
         @colleges = College.find_all_by_country(params[:country], :order => 'name') if @states.nil? 
         flash[:notice] = @campus.name + ' was successfully added.'
         format.html { redirect_to address_url(@address) }
