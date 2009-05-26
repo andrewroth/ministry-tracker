@@ -216,6 +216,7 @@ class PeopleController < ApplicationController
   
   # GET /people/new
   def new
+    setup_states
     @person = Person.new
     @current_address = CurrentAddress.new
     respond_to do |format|
@@ -228,6 +229,7 @@ class PeopleController < ApplicationController
   def edit
     setup_vars
     setup_campuses
+    setup_states
     render :update do |page|
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit'
@@ -242,6 +244,7 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.xml
   def create
+    setup_states
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address])
     respond_to do |format|
@@ -307,6 +310,7 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
+    setup_states
     @person = Person.find(params[:id])
     if params[:current_address]
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
@@ -551,6 +555,10 @@ class PeopleController < ApplicationController
     
     def setup_dorms
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
+    end
+    
+    def setup_states
+      @states = State.all()
     end
     
     def can_edit_profile

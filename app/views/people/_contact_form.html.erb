@@ -14,7 +14,7 @@
 	</tr>
 	<tr>
 		<td>State: </td>
-		<td><%= select :current_address, :state, State::NAMES['USA'] %></td>
+		<td><%= select :current_address, :state, options_from_collection_for_select(@states, 'id','name') %></td>
 	</tr>
 	<tr>
 		<td>Zip: </td>

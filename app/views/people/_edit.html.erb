@@ -15,7 +15,7 @@
   	<td>
     <%- fields_for :primary_campus_involvement do |cif| -%>
     	<table class="halftab">	
-      	<tr><th>Pick a state:</th><td class="date"><%= select_tag :state, options_for_select(State::NAMES['USA']) %><%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %></td></tr>
+      	<tr><th>Pick a state:</th><td class="date"><%= select_tag :state, options_from_collection_for_select(@states, 'id', 'name') %><%= observe_field(:state, {:url => get_campuses_people_path, :with => 'state', :before => "$('#spinnerp').show()"}) %></td></tr>
     	</table>
   	<%- end -%>
   	</td>
