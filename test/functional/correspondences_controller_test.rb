@@ -1,8 +1,8 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class CorrespondencesControllerTest < ActionController::TestCase
-
   def setup
+    CorrespondenceNightly.create_delayed 1, {} # use this so that delayed_job entry is created
     login
   end
 
@@ -13,7 +13,21 @@ class CorrespondencesControllerTest < ActionController::TestCase
   end
 
   test "should show correspondence" do
-    get :show, :id => correspondences(:one).to_param
+    get :show, :id => Correspondence.find(:first).id
     assert_response :success
+  end
+
+  test "should delete correspondence html" do
+    count_before = Correspondence.count
+    post :destroy, :id => Correspondence.find(:first).id
+    assert_response :redirect
+    assert_equal count_before - 1, Correspondence.count
+  end
+
+  test "should delete correspondence xml" do
+    count_before = Correspondence.count
+    post :destroy, :id => Correspondence.find(:first).id, :format => 'xml'
+    assert_response :success
+    assert_equal count_before - 1, Correspondence.count
   end
 end

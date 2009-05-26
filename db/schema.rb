@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090525194515) do
+ActiveRecord::Schema.define(:version => 20090525215422) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -101,28 +101,15 @@ ActiveRecord::Schema.define(:version => 20090525194515) do
     t.datetime "updated_at"
   end
 
-  create_table "correspondence_types", :force => true do |t|
-    t.string  "name"
-    t.integer "overdue_lifespan"
-    t.integer "expiry_lifespan"
-    t.string  "actions_now_task"
-    t.string  "actions_overdue_task"
-    t.string  "actions_followup_task"
-    t.text    "redirect_params"
-    t.string  "redirect_target_id_type"
-  end
-
   create_table "correspondences", :force => true do |t|
     t.string   "type"
     t.integer  "person_id"
     t.datetime "last_sent_at"
     t.boolean  "acknowledged"
-    t.boolean  "resend_if_not_acknowledged", :default => false
-    t.float    "resend_delay",               :default => 86400.0
-    t.integer  "resend_count",               :default => 3
     t.text     "params"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "delayed_job_id"
   end
 
   create_table "counties", :force => true do |t|
@@ -165,6 +152,8 @@ ActiveRecord::Schema.define(:version => 20090525194515) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "recur",           :default => false
+    t.integer  "period"
     t.integer  "executions_left"
   end
 
@@ -175,19 +164,6 @@ ActiveRecord::Schema.define(:version => 20090525194515) do
   end
 
   add_index "dorms", ["campus_id"], :name => "index_dorms_on_campus_id"
-
-  create_table "email_templates", :force => true do |t|
-    t.integer  "correspondence_type_id"
-    t.string   "outcome_type"
-    t.string   "subject",                :null => false
-    t.string   "from",                   :null => false
-    t.string   "bcc"
-    t.string   "cc"
-    t.text     "body",                   :null => false
-    t.text     "template"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "free_times", :force => true do |t|
     t.integer  "start_time"

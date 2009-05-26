@@ -10,14 +10,20 @@
 #
 # Extending models must implement the deliver method.
 #
-# If the model implements the methods "ack", "retry", or "giveup", 
-# they will also be called
-#
+# If the model implements the methods "delivered", "acked", or "gaveup", 
+# they will also be called on the next execution.  Delivered callback
+# is called any time the email is sent, acked callback is sent when
+# a user acknowledges the correpsondence (note this callback is
+# delayed until the next job run) and gaveup is sent when the
+# retry limit is reached.
 #
 class Correspondence < ActiveRecord::Base
   belongs_to :person
   validates_presence_of :person
+  belongs_to :delayed_job, :class_name => 'Delayed::Job'
   
+  before_destroy :finish_job
+
   attr_reader :callback_tried # for testing
 
   # sends a notification to the user this notification is to
@@ -26,36 +32,37 @@ class Correspondence < ActiveRecord::Base
     save!
   end
 
-  def reschedule
-    Delayed::Job.enqueue self, 0, resend_delay
-  end
-
   # called by delayed_job
   # delivers the notification and updates the status, and reschedules if necessary
   def perform
-    if resend_if_not_acknowledged && acknowledged
-      send_callback :ack
+    if recurring && acknowledged
+      send_callback :acked
+      destroy
       return
     end
 
-    if resend_if_not_acknowledged && resend_count >= 0
-      self.resend_count -= 1
-      save!
-      send_callback :retry
-      reschedule
-    elsif resend_if_not_acknowledged
-      send_callback :giveup
+    if recurring && !has_resends_left?
+      send_callback :gaveup
+      destroy
       return
-    else
-      send_callback :once
     end
 
+    send_callback :delivered
     deliver
   end
 
-  protected
+  def recurring() delayed_job.recur end
 
   def pull_params() params.class == Hash ? params : YAML.load(params) end
+
+  def has_resends_left?() delayed_job.executions_left > 0 end
+
+  protected
+
+  def finish_job
+    delayed_job.recur = false # cause the job to terminate right after the perform method
+    delayed_job.save!
+  end
 
   def send_callback(m)
     @callback_tried = m # for testing
