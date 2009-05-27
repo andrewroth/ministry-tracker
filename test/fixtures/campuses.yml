@@ -9,3 +9,8 @@ sac:
   name: Sacramento State
   state: CA
   type: College
+
+wyoming_campus:
+    id: 3
+    name: Campus of Wyoming
+    state_id: 1 # 1 is Wyoming id

@@ -5,28 +5,36 @@ require 'campuses_controller'
 class CampusesController; def rescue_action(e) raise e end; end
 
 class CampusesControllerTest < ActionController::TestCase
-  fixtures Campus.table_name
-
+  fixtures :campuses
+  fixtures :countries
+  
   def setup
-    @controller = CampusesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
     login
   end
 
-  def test_change_country_with_states
-    xhr :post, :change_country, :country => 'USA'
+  test "change to invalid country" do
+    xhr :post, :change_country, :country_id => nil
+    # assert that the states returned have no items
+    assert_equal 0, assigns['states'].count
     assert_response :success
   end
   
-  def test_change_country_without_states
-    xhr :post, :change_country, :country => 'Kenya'
+  test "change to valid country" do
+    xhr :post, :change_country, :country_id => countries(:usa).id
+    assert assigns['states'].count > 0
     assert_response :success
   end
   
-  def test_change_state
-    xhr :post, :change_state, :state => 'CA'
+  test "change to invalid state" do
+    xhr :post, :change_state, :state_id => nil
+    assert_equal 0, assigns['campuses'].count
     assert_response :success
+  end
+  
+  test "change to valid state" do
+    xhr :post, :change_state, :state_id => states(:wyoming).id
+    assert assigns['campuses'].count > 0
+    assert_response :success 
   end
   
   def test_change_county
@@ -38,4 +46,5 @@ class CampusesControllerTest < ActionController::TestCase
     xhr :post, :details, :id => 1
     assert_response :success
   end
+  
 end
