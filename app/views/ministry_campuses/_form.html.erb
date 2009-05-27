@@ -6,11 +6,5 @@ like to add. Currently this system only contains high schools in the United Stat
 	<div id="countries"><%= render :partial => 'campuses/choose_country' %></div>
 	<div id="states"><%= render :partial => 'campuses/choose_state' if @states %></div>
 	<div id="colleges"><%= render :partial => 'campuses/choose_college' if @colleges %></div>
-	<%= submit_tag "Add College", :id => 'add_college', :style => 'display:none' %>
+	<%= submit_tag "Add Campus to Ministry", :id => 'add_college', :style => 'display:none' %>
 <%- end -%>
-<!-- <%- form_remote_tag :url => ministry_campuses_url do -%>
-  <div id="counties"></div>
-  <div id="high_schools"></div>
-  <%= submit_tag "Add School", :id => 'add_high_school', :style => 'display:none' %>
-<%- end -%> -->
-<%= link_to_function 'done', "$('#new_campus').slideUp();", :class => 'cancel' %>

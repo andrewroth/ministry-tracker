@@ -3,11 +3,9 @@ ucd:
   id: 1
   name: University of California-Davis
   state: CA
-  country: USA
   type: College
 sac:
   id: 2
   name: Sacramento State
   state: CA
-  country: USA
   type: College

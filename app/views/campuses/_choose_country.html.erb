@@ -1,4 +1,16 @@
-Pick a country: <%= select_tag(	:country, 
-								options_for_select(@countries.collect {|c| [c.country, c.code]}, params[:country] || 'USA')) %>
-<%= observe_field(:country, {:url => change_country_campuses_url, :with => 'country', :loading => "$('#spinner1').show()"}) %>
+Pick a country:
+<%=
+  cs = @countries.collect {|c| [c.country, c.id]}
+  cs = cs.insert(0,['-- Choose Country --',''])
+  
+  select_tag("country", options_for_select(cs))
+%>
+
+<%=
+  observe_field(:country,
+    { :url => change_country_campuses_url,
+      :with => 'country_id',
+      :loading => "$('#spinner1').show()"})
+%>
+
 <%= spinner(1) %>

@@ -2,13 +2,12 @@ class CampusesController < ApplicationController
   before_filter :get_countries
   
   def change_country
-    @states = State.all()
-    @colleges = College.find(:all, :conditions => ["#{_(:country, :campus)} = ?", params[:country]], :order => 'name') if @states.nil? 
+    @states = State.find_all_by_country_id(params[:country_id])
+    @campuses = Campus.find_all_by_country_id(params[:country_id]) if @states.nil?
   end
   
   def change_state
-    @colleges = College.find(:all, :conditions => ["#{_(:state, :campus)} = ?", params[:state]], :order => 'name')
-    @counties = County.find(:all, :conditions => ["#{_(:state, :campus)} = ?", params[:state]], :order => 'name')
+    @campuses = Campus.find_all_by_state_id(params[:state_id])
   end
   
   def change_county
