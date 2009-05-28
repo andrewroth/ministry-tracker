@@ -1,0 +1,85 @@
+# This file is copied from vendor/plugins/movement_tracker_canada/mappings.yml
+#
+# Make sure to edit that file, not the one in RAILS_ROOT/config/mappings.yml
+#
+lib_path: vendor/plugins/movement_tracker_canada/app/models
+
+databases:
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, province, country, title, emerg, gender
+
+tables:
+  user: accountadmin_viewer
+  person: cim_hrdb_person
+  cim_hrdb_current_address: cim_hrdb_person
+  cim_hrdb_permanent_address: cim_hrdb_person
+  access: cim_hrdb_access
+  campus: cim_hrdb_campus
+  person_year: cim_hrdb_person_year
+  year_in_school: cim_hrdb_year_in_school
+  campus: cim_hrdb_campus
+  assignment: cim_hrdb_assignment
+  assignmentstatus: cim_hrdb_assignmentstatus
+  province: cim_hrdb_province
+  country: cim_hrdb_country
+  title: cim_hrdb_title
+  emerg: cim_hrdb_emerg
+  gender: cim_hrdb_gender
+
+# ciministry
+year_in_school:
+  id: year_id
+campus:
+  id: campus_id
+person_year:
+  id: year_id
+assignment:
+  id: assignment_id
+assignmentstatus:
+  id: assignmentstatus_id
+province:
+  id: province_id
+  name: province_desc
+country:
+  id: country_id
+  name: country_desc
+emerg:
+  id: emerg_id
+gender:
+  id: gender_id
+  desc: gender_desc
+
+# Column Mappings
+user:
+  id: viewer_id
+  last_login: viewer_lastLogin
+  username: viewer_userID
+  password: viewer_passWord
+  
+person:
+  id: person_id
+  first_name: person_fname
+  last_name: person_lname
+  middle_name: person_mname
+  preferred_name: person_fname
+
+campus:
+  id: campus_id
+  name: campus_desc
+  abbrv: campus_shortDesc
+
+cim_hrdb_current_address:
+  id: person_id
+  address1: person_local_addr
+  city: person_local_city
+  zip: person_local_pc
+  phone: person_local_phone
+  email: person_email
+  alternate_phone: cell_phone
+ 
+cim_hrdb_permanent_address:
+  id: person_id
+  address1: person_addr
+  city: person_city
+  zip: person_pc
+  phone: person_phone
+ 
