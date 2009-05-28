@@ -54,7 +54,7 @@ class InsertStates < ActiveRecord::Migration
     [ "Wyoming", "WY" ],
     
     # Canada
-    ["Ontatio", "ON"],
+    ["Ontario", "ON"],
     ["Quebec", "QC"],
     ["Nova Scotia", "NS"],
     ["New Brunswick", "NB"],

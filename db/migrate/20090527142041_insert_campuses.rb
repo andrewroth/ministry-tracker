@@ -7,13 +7,6 @@ class InsertCampuses < ActiveRecord::Migration
     { :name => 'University of Saskatchewan', :state => 'Saskatchewan'}]
     
   def self.up
-    # fix mispelling of Ontario
-    s = State.find_by_name('Ontatio')
-    if s
-      s.name = 'Ontario'
-      s.save
-    end
-    
     Campus.delete_all
     
     to_create = []
@@ -39,12 +32,5 @@ class InsertCampuses < ActiveRecord::Migration
 
   def self.down
     Campus.delete_all
-
-    # put back mispelling of Ontario
-    s = State.find_by_name('Ontario')
-    if s
-      s.name = 'Ontatio'
-      s.save
-    end
   end
 end
