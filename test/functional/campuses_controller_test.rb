@@ -15,30 +15,30 @@ class CampusesControllerTest < ActionController::TestCase
   test "change to invalid country" do
     xhr :post, :change_country, :country_id => nil
     # assert that the states returned have no items
-    assert_equal 0, assigns['states'].count
+    assert_equal 0, assigns['states'].length
     assert_response :success
   end
   
   test "change to valid country" do
     xhr :post, :change_country, :country_id => countries(:usa).id
-    assert assigns['states'].count > 0
+    assert assigns['states'].length > 0
     assert_response :success
   end
   
   test "change to invalid state" do
     xhr :post, :change_state, :state_id => nil
-    assert_equal 0, assigns['campuses'].count
+    assert_equal 0, assigns['campuses'].length
     assert_response :success
   end
   
   test "change to valid state" do
     xhr :post, :change_state, :state_id => states(:wyoming).id
-    assert assigns['campuses'].count > 0
+    assert assigns['campuses'].length > 0
     assert_response :success 
   end
   
-  def test_change_county
-    xhr :post, :change_county, :county => 'DuPage'
+  def test_change_country
+    xhr :post, :change_country, :country => 'DuPage'
     assert_response :success
   end
 

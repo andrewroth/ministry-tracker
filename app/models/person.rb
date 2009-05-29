@@ -30,7 +30,11 @@ class Person < ActiveRecord::Base
   
   has_many :group_interests, :through => :group_involvements, :source => :group, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
-                            
+     
+  #Mentor/Disciple Relationships
+  has_many :disciples, :class_name => "Person", :foreign_key => "mentor_id"
+  belongs_to :mentor, :class_name => "Person"
+  
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
   has_many :conferences, :through => :conference_registrations
