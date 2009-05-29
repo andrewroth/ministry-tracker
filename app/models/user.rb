@@ -116,9 +116,10 @@ class User < ActiveRecord::Base
   def self.find_or_create_from_cas(ticket)
     # Look for a user with this guid
     receipt = ticket.response
-    guid = receipt.extra_attributes['ssoGuid']
-    first_name = receipt.extra_attributes['firstName']
-    last_name = receipt.extra_attributes['lastName']
+    atts = receipt.extra_attributes
+    guid = att_from_receipt(atts, 'ssoGuid')
+    first_name = att_from_receipt(atts, 'firstName')
+    last_name = att_from_receipt(atts, 'lastName')
     u = User.find(:first, :conditions => _(:guid, :user) + " = '#{guid}'")
     # if we have a user by this method, great! update the email address if it doesn't match
     if u
@@ -154,6 +155,11 @@ class User < ActiveRecord::Base
   end
   
   protected
+    # not sure why but cas sometimes sends the extra attributes
+    def self.att_from_receipt(atts, key)
+      atts[key.camelize] || atts[key.underscore]
+    end
+
     # before filter 
     def encrypt_password
       # If the record doesn't have a password at all, assign one
