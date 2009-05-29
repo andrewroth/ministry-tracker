@@ -30,3 +30,10 @@ six:
   name: Random Person
   position: 6
   type: OtherRole
+
+student:
+    id: 7
+    ministry_id: 1
+    name: Student
+    position: 7
+    type: OtherRole

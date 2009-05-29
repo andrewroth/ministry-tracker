@@ -34,3 +34,7 @@ person_<%= i %>:
   last_name: A<%= i %>
 <% end %>
  
+# Create a person who has no ministry involvements
+person_with_no_ministry_involvements:
+    id: 4000
+    user_id: 4
