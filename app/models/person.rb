@@ -162,7 +162,7 @@ end
   def admin?(ministry)
     mi = MinistryInvolvement.find(:first, :conditions => "#{_(:person_id, :ministry_involvement)} = #{self.id} AND
                                                           #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids.join(',')}) AND
-                                                          #{_(:admin, :ministry_id)} = 1")
+                                                          #{_(:admin, :ministry_involvement)} = 1")
     return !mi.nil?
   end
   

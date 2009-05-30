@@ -1,6 +1,9 @@
   <p>Column Name: <%= f.text_field :title %></p>
+  <p>Source Model: <%= f.text_field :source_model, :size => 100 %> Optional, defaults to "Person".</p>
+  <p>Source Column: <%= f.text_field :source_column, :size => 100 %> Optional, defaults to "id".</p>
   <p>Select Clause: <%= f.text_field :select_clause, :size => 100 %></p>
-  <p>From Clause: <%= f.text_field :from_clause, :size => 100 %></p>
-  <p>Update Clause: <%= f.text_field :update_clause, :size => 100 %></p>
-  <p>Join Clause: <%= f.text_field :join_clause, :size => 100 %></p>
+  <p>From Clause: <%= f.text_field :from_clause, :size => 100 %> This is the model you're taking values from, for example, CurrentAddress.</p>
+  <p>Update Clause: <%= f.text_field :update_clause, :size => 100 %> Not used currently.</p>
+  <p>Join Clause: <%= f.text_field :join_clause, :size => 100 %> Optional, additional conditions that are appended after an AND clause.<p>
+  <p>Foriegn Key: <%= f.text_field :foreign_key, :size => 100 %> Optional, foreign key to use when joining.  Defaults to "person_id".</p>
   <p>Data Type: <%= f.text_field :column_type, :size => 100 %></p>

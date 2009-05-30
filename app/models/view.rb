@@ -36,7 +36,13 @@ class View < ActiveRecord::Base
       table_name = column.from_clause.constantize.table_name
       unless tables.include?(column.from_clause)
         tables << column.from_clause
-        tables_clause += " LEFT JOIN #{table_name} as #{column.from_clause} on Person.#{_(:id, :person)} = #{column.from_clause}.#{_(:person_id, column.from_clause.downcase)}"
+        source_model = (column.source_model.to_s.empty? ? 'Person' : column.source_model).constantize
+        source_column = column.source_column.to_s.empty? ? 'id' : column.source_column
+        foreign_key = column.foreign_key.to_s.empty? ? 'person_id' : column.foreign_key
+        source_table_name = source_model.table_name
+        join_on_left = "#{source_model}.#{_(source_column.to_sym, source_table_name)}"
+        join_on_right = "#{column.from_clause}.#{_(foreign_key.to_sym, column.from_clause.downcase)}"
+        tables_clause += " LEFT JOIN #{table_name} as #{column.from_clause} on #{join_on_left} = #{join_on_right}"
         tables_clause += " AND " + column.join_clause unless column.join_clause.blank?
       end
       
