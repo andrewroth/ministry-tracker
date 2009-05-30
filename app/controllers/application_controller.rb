@@ -255,13 +255,8 @@ private
   def associate_person_with_dummy_ministry(person)
     # Ensure the 'No Ministry' ministry exists
     ministry = Ministry.find_or_create_by_name("No Ministry")
-    mr = MinistryRole.find_by_name('Student')
-    
-    mi = MinistryInvolvement.new
-    mi.person_id = person.id
-    mi.ministry_id = ministry.id
-    mi.ministry_role_id = mr.id
-    mi.save
+    sr = StudentRole.find :last, :order => "position"
+    person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
     ministry
   end
