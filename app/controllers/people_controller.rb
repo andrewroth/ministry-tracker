@@ -17,6 +17,7 @@ class PeopleController < ApplicationController
   end
   
   def advanced
+    @advanced = true
     @options = {}
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     render :layout => 'application'

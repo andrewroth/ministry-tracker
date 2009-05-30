@@ -3,6 +3,7 @@ class BadParams < StandardError; end
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
   layout 'people'
+  before_filter :check_authorization
   before_filter :get_timetable, :except => [:create, :index]
   before_filter :setup_timetable, :only => [:show, :edit]
 
@@ -13,35 +14,55 @@ class TimetablesController < ApplicationController
   # GET /timetables/1
   # GET /timetables/1.xml
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @timetable }
+    if @can_show
+      respond_to do |format|
+        format.html # show.html.erb
+        format.xml  { render :xml => @timetable }
+      end
+    else
+      flash[:notice] = "You are not allowed to see that timetable."
     end
   end
 
+  def edit
+    if @can_edit
+      respond_to do |format|
+        format.html
+        format.xml  { render :xml => @timetable }
+      end
+    else
+      flash[:notice] = "You are not allowed to edit that timetable."
+    end
+
+  end
+  
   # PUT /timetables/1
   # PUT /timetables/1.xml
   def update
-    # Clear out all other blocks
-    @timetable.free_times.destroy_all
-    times = JSON::Parser.new(params[:times]).parse
-    # raise times.inspect
-    # There's an array for each day of the week
-    times.each_with_index do |day, i|
-      # Each day of the week then has a list of blocks
-      day.each_with_index do |block, j|
-        unless block.empty?
-          # Each block has a start time and an end time for a free block
-          @timetable.free_times.create(:start_time => block[0], :end_time => block[1], :day_of_week => i, :weight => block[2], :css_class => block[3]) 
+    if @can_edit
+      # Clear out all other blocks
+      @timetable.free_times.destroy_all
+      times = JSON::Parser.new(params[:times]).parse
+      # raise times.inspect
+      # There's an array for each day of the week
+      times.each_with_index do |day, i|
+        # Each day of the week then has a list of blocks
+        day.each_with_index do |block, j|
+          unless block.empty?
+            # Each block has a start time and an end time for a free block
+            @timetable.free_times.create(:start_time => block[0], :end_time => block[1], :day_of_week => i, :weight => block[2], :css_class => block[3]) 
+          end
         end
       end
-    end
 
-    respond_to do |format|
-      flash[:notice] = 'Timetable was successfully updated.'
-      format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
-      format.js
-      format.xml  { head :ok }
+      respond_to do |format|
+        flash[:notice] = 'Timetable was successfully updated.'
+        format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
+        format.js
+        format.xml  { head :ok }
+      end
+    else
+      flash[:notice] = "You are not allowed to update that timetable."
     end
   end
   
@@ -163,7 +184,8 @@ class TimetablesController < ApplicationController
     end if @no_timetable
   end
   
-  protected
+  private
+    
     def get_timetable
       @timetable = @person.timetable || Timetable.new(:person_id => @person.id)
       @person.timetable ||= @timetable
@@ -182,5 +204,21 @@ class TimetablesController < ApplicationController
         @free_times[ft.day_of_week].pop
       end
       # raise @free_times.inspect
+    end
+    
+    def check_authorization
+      @can_edit = can_edit_timetable?
+      @can_show = can_show_timetable?
+    end
+    
+    def can_show_timetable?
+      # a user can see a timetable if it is one of their's
+      @me.id == params[:person_id].to_i
+      # or the have permission
+#        || authorized?('show', 'timetables')
+    end
+    
+    def can_edit_timetable?
+      can_show_timetable?
     end
 end

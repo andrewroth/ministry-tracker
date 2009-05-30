@@ -42,3 +42,7 @@ top:
   country: USA
   phone: 124098
   email: asdf
+  
+no_ministry:
+    id: 5
+    name: No Ministry
