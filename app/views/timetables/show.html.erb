@@ -1,13 +1,18 @@
-<%- if @me == @timetable.person || authorized?('edit', 'timetables') -%>
+<%- if @can_edit -%>
   <div class="butNormal" style="margin-top:20px;">
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
   </div>
 <%- end -%>
+<%- if @can_edit || @can_show -%>
 <div class="statusheadwrap">
-<div class="badhead"></div>
-<div class="poorhead"></div>
-<div class="okhead"></div>
-<div class="goodhead"></div>
+  <div class="badhead"></div>
+  <div class="poorhead"></div>
+  <div class="okhead"></div>
+  <div class="goodhead"></div>
 </div>
-
-<%= render :partial => 'timetable' %>
+<%- end -%>
+<%- if @can_show -%>
+  <%= render :partial => 'timetable' %>
+<%- else -%>
+  Nothing to see here. Please move on.
+<%- end -%>

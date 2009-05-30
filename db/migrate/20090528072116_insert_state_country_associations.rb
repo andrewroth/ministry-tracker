@@ -70,6 +70,8 @@ class InsertStateCountryAssociations < ActiveRecord::Migration
   ]
   
   def self.up
+    State.reset_column_information
+
     # reset all state-country associations
     State.all.each { |s| s.country_id = nil; s.save }
     
@@ -80,14 +82,16 @@ class InsertStateCountryAssociations < ActiveRecord::Migration
     
     # get each states country
     for s in State.all
-      country_code = lookup_states.rassoc(s.name)
+      country_code = lookup_states.rassoc(s.name).first
       country = Country.find_by_code(country_code)
       s.country_id = country.id
       to_save << s
     end
     
     # save each state's country
-    to_save.each {|s| s.save }
+    to_save.each {|s| 
+      s.save
+    }
   end
 
   def self.down

@@ -40,29 +40,8 @@
 	View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
 	<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
 <%- end -%>
-<div id="searchBox">
-  <div id="basic_search" <%= 'style="display:none"' if @advanced %>>
-	<%- form_tag directory_people_url do -%>
-		Search by name or email: <%= text_field_tag "search"%> <%= submit_tag "Go"%> &nbsp;&nbsp;
-    <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->
-    
-    <%- if authorized?(:advanced) %>
-  		<%= link_to_function "Advanced Search", "$('#basic_search').hide();$('#advanced_search').show();"%> 
-  	<%- end -%>
-	<%- end -%>
-	</div>
-  <div id="advanced_search" <%= 'style="display:none"' unless @advanced %>>
-    <%= render :partial => 'advanced_search' %>
-		 
-	</div>
-	
-		&nbsp;&nbsp;
-		<!--	
-		<%= link_to "More actions..."%>
-  -->
-  
-</div>
 
+<%= render :partial => 'search_box' %>
 
 <%- if @conditions -%>
 

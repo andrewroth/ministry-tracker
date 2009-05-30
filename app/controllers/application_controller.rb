@@ -216,10 +216,11 @@ class ApplicationController < ActionController::Base
         @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
-        # If we still don't have a ministry, this person hasn't been assigned a campus. 
-        # Give them the default ministry
-        @ministry ||= Ministry.find_or_create_by_name("No Ministry")
-        
+
+        # If we still don't have a ministry, this person hasn't been assigned a campus.
+        # Looks like we have to give them some dummy information. BUG 1857 
+        @ministry ||= associate_person_with_dummy_ministry(@person)
+
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
           @root_ministry = @ministry
@@ -247,5 +248,16 @@ class ApplicationController < ActionController::Base
     def adjust_format_for_facebook
       request.format = :facebook if iphone_request?
     end
+
+private
+  # Ensures that the _person_ is involved in the 'No Ministry' ministry
+  # BUG 1857
+  def associate_person_with_dummy_ministry(person)
+    # Ensure the 'No Ministry' ministry exists
+    ministry = Ministry.find_or_create_by_name("No Ministry")
+    sr = StudentRole.find :last, :order => "position"
+    person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
+    ministry
+  end
 end

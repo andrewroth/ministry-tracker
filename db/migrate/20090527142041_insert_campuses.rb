@@ -13,7 +13,7 @@ class InsertCampuses < ActiveRecord::Migration
     for c in CAMPUSES do
       state = State.find_by_name(c[:state])
 
-      write "Could not find #{name}" if state.nil?
+      puts "Could not find #{name}" if state.nil?
       
       state_id = state.id
 
