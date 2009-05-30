@@ -9,7 +9,10 @@ class PeopleControllerTest < ActionController::TestCase
           MinistryInvolvement.table_name, MinistryRole.table_name,
           CampusInvolvement.table_name, Address.table_name, Group.table_name,
           View.table_name, ViewColumn.table_name, Column.table_name, ProfilePicture.table_name
-
+  fixtures :people
+  fixtures :users
+  fixtures :ministries
+  
   def setup
     @controller = PeopleController.new
     @request    = ActionController::TestRequest.new
@@ -163,6 +166,23 @@ class PeopleControllerTest < ActionController::TestCase
   
   def test_change_ministry
     xhr :post, :change_ministry, :ministry => 1
+    assert_response :success
+  end
+  
+  test "new person with no ministry involvements should be involved in the dummy ministry" do
+    user = users(:user_with_no_ministry_involvements)
+    @request.session[:user] = user.id
+    @request.session[:ministry_id] = nil
+
+    person = people(:person_with_no_ministry_involvements)
+
+    get :directory, :person_id => person.id
+
+    # person should be involved in 'No Ministry' ministry
+    ministry = ministries(:no_ministry)
+    ministry_involvements = MinistryInvolvement.find_all_by_person_id(person.id)
+    assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
+    
     assert_response :success
   end
 end
