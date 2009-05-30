@@ -17,6 +17,9 @@ class Person < ActiveRecord::Base
   has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
   has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
+  has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
+  has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
+  has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
 
   # Address Relationships
   has_many :addresses, :class_name => "Address", :foreign_key => _(:person_id, :address)
