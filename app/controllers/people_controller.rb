@@ -209,7 +209,6 @@ class PeopleController < ApplicationController
   # GET /people/1.xml
   def show
     setup_vars
-    get_responsible_person
     respond_to do |format|
       format.html { render :action => :show }# show.rhtml
       format.xml  { render :xml => @person.to_xml }
