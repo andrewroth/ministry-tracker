@@ -84,10 +84,9 @@ class PersonTest < ActiveSupport::TestCase
   
   test "person should be born in the past" do
     person = Person.new
-    person.first_name = "Invalid"
-    person.last_name = "Birthdate Test"
-    
-    assert !person.valid?
+    person.first_name = "Invalid Birth Date Test"
+
+    assert person.valid?
     
     person.birth_date = Date.today + 1.days
     assert !person.valid?

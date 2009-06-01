@@ -318,6 +318,10 @@ end
   private
 
     def birth_date_is_in_the_past
-      errors.add(:birth_date, 'should be in the past') if birth_date.nil? || (Date.today - birth_date) < 0
+      if !birth_date.nil?
+        if (Date.today - birth_date) < 0      
+          errors.add(:birth_date, 'should be in the past')
+        end
+      end
     end
 end  
