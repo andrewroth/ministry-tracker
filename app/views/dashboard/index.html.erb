@@ -107,7 +107,9 @@ this system, along with any other information we think would be helpful to you.<
       <div class="modulecontent">
         <ul class="groupicon">
           <% @my.groups.each do |group| %>
+		  	<% if groupmember?(group)%>
             <li>
+            	
             	<%= link_to(group.name, group) %>
 					<ul class="requesticon">
 						<% find_join_requests(group).each do |request| %>
@@ -121,6 +123,7 @@ this system, along with any other information we think would be helpful to you.<
 						<% end %>
 					</ul>
 			</li>
+			<% end %>
           <% end %>
         </ul>
 		<br/>
