@@ -28,9 +28,9 @@
     	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
 	<tr><th>Responsible Person<th><td> 	
 	  
-	<% if @person.responsible_person %>
-	  <%= @person.responsible_person.full_name %>
-	<% end %>
+	<%- if @person.responsible_person -%>
+	    <%= link_to '#{@person.responsible_person.full_name}', person_url(@person.responsible_person['person_id']) %>
+	<%- end -%>
 	</td></tr>
 	
     	<%- if !@person.url.blank?
