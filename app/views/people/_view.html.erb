@@ -16,8 +16,10 @@
       	</tr>
       <%- end -%>
         <tr><th>People Responsible For</th><td>
-	  <%- @people_responsible_for.each do |person| -%>
-	    <%= person.full_name %>
+	  <%- if @people_responsible_for -%>
+	    <%- @people_responsible_for.each do |person| -%>
+	      <%= person.full_name %>
+	    <%- end -%>
 	  <%- end -%>
 	</td></tr>
 	  </table>
