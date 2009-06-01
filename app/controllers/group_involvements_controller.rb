@@ -1,12 +1,25 @@
 class GroupInvolvementsController < ApplicationController
+  
   def create
+    create_group_involvement
+    refresh_page
+  end
+  
+  def joingroup  
+    params[:level] = params[:group_involvement][:level]
+    params[:group_id] = params[:group_involvement][:group_id]
+    create_group_involvement
+    render :layout => layout, :partial => 'groups/join'
+  end
+  
+  def create_group_involvement
     # If the person is already in the group, find them. otherwise, create a new record
     @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
     @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
     @gi.level = params[:type]  # set the level of involvement
+    @gi.requested = params[:requested]
     @gi.save!
     @group = @gi.group
-    refresh_page
   end
   
   def destroy

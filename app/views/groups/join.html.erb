@@ -1,0 +1,36 @@
+<h2>Join a group</h2>	  
+<div id="customizebody" class="accordion">
+	<%- @ministry.all_group_types.each do |gt| -%>
+	  <% if !gt.groups.empty?%>
+		<div>
+			<div class="title"><%= gt.group_type %></div>
+			<div id="">
+			  
+			  <br/>
+			  <p>
+			 
+			  <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" } do %>
+					<%= hidden_field_tag :person_id, @person.id %>
+					<%= hidden_field_tag :requested, true %>
+					Name: <%= collection_select :group_involvement, :group_id, gt.groups, :id, :name %>
+				    Involvement: <%= select(:group_involvement, :level, ['member', 'interested'].collect {|u| u})%>
+			 		<%= submit_tag 'Join group' %>
+					
+			 <% end %>
+			 
+	  	     </p>
+			</div>
+       </div>
+	  <%- end -%>
+	<%- end -%>
+  
+	
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+      $(".accordion").accordion({ header: ".title",
+                                         autoHeight: false,
+                                         clearStyle: true});
+      $(".accordion .title").prepend('<span class="accordion_instructions">&nbsp;</span>')
+    });
+</script>
