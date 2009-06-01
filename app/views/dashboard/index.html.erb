@@ -116,12 +116,16 @@ this system, along with any other information we think would be helpful to you.<
 						<li>
 							Join request from <%=link_to Person.find(request.person_id).full_name, person_url(request.person_id) %>
 							<b>
-							<%= link_to "[Accept]", :controller => "group_involvements", :action => "edit" , :rid => request.id %>
-							<%= link_to '[Decline]',:controller => "group_involvements", :action => "destroy", :rid => request.id %>
+							<%= link_to "[Accept]", :controller => "group_involvements", :action => "accept_request" , :id => request.id %>
+							<%= link_to '[Decline]',:controller => "group_involvements", :action => "decline_request", :id => request.id %>
 							</b>
 						</li>
 						<% end %>
 					</ul>
+			</li>
+			<% else %>
+			<li>
+            	<%= link_to(group.name, group) %> [Awaiting join request decision]
 			</li>
 			<% end %>
           <% end %>

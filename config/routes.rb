@@ -42,7 +42,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :bible_studies
 
-  map.resources :group_involvements
+  map.resources :group_involvements, :collection => {:accept_request => :any,
+                                                     :decline_request => :any }
 
   map.resources :groups, :member => {:find_times => :post},
                          :collection => {:join => :any}

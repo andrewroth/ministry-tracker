@@ -9,7 +9,10 @@ class GroupInvolvementsController < ApplicationController
     params[:level] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
     create_group_involvement
-    render :layout => layout, :partial => 'groups/join'
+    respond_to do |format|
+      format.js
+    end
+    #TODO:refresh appropriate content on join groups page, rather than refresh whole page
   end
   
   def create_group_involvement
@@ -20,6 +23,18 @@ class GroupInvolvementsController < ApplicationController
     @gi.requested = params[:requested]
     @gi.save!
     @group = @gi.group
+  end
+  
+  def accept_request
+    GroupInvolvement.find(params[:id]).update_attribute(:requested, false)
+    render :template => 'dashboard/index'
+    #TODO:refresh the appropriate content on dashboard rather than refresh whole dashboard
+  end
+  
+  def decline_request
+    GroupInvolvement.delete(params[:id])
+    render :template => 'dashboard/index'
+    #TODO: refresh appropriate content on dashboard
   end
   
   def destroy
