@@ -15,6 +15,11 @@
       	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Edit Information" to link your Facebook Account' %></td>
       	</tr>
       <%- end -%>
+        <tr><th>People Responsible For</th><td>
+	  <%- @people_responsible_for.each do |person| -%>
+	    <%= person.full_name %>
+	  <%- end -%>
+	</td></tr>
 	  </table>
 	</td>
 	
@@ -27,7 +32,6 @@
     	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
     	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
 	<tr><th>Responsible Person<th><td> 	
-	  
 	<%- if @person.responsible_person -%>
 	    <%= link_to '#{@person.responsible_person.full_name}', person_url(@person.responsible_person['person_id']) %>
 	<%- end -%>

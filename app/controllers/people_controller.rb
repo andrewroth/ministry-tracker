@@ -208,6 +208,8 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.xml
   def show
+    get_ministry_involvement(get_ministry)
+    get_people_responsible_for
     setup_vars
     respond_to do |format|
       format.html { render :action => :show }# show.rhtml

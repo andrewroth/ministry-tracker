@@ -248,6 +248,10 @@ class ApplicationController < ActionController::Base
     def adjust_format_for_facebook
       request.format = :facebook if iphone_request?
     end
+    
+    def get_people_responsible_for
+      @people_responsible_for = @person.people_responsible_for.find(:all)
+    end
 
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
