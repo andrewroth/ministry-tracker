@@ -2,7 +2,7 @@ class AddInitialSchoolYears < ActiveRecord::Migration
   def self.up
     # Create 5 School Years
     if RAILS_ENV == 'development'
-      for i in 1..5 do
+      for i in 1..5
         SchoolYear.create! :name => 'Year '+i.to_s(),
                            :level => 'Level '+i.to_s(),
                            :position => i              
