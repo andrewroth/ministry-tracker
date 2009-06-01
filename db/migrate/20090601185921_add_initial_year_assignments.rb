@@ -1,6 +1,6 @@
 class AddInitialYearAssignments < ActiveRecord::Migration
   def self.up
-    # Give every user a random school year assignment
+    # Give every user a school year assignment
     if RAILS_ENV == 'development'
       count = 0
       for p in Person.find :all
