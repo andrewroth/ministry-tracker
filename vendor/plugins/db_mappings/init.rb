@@ -1,15 +1,14 @@
 require 'db_mappings'
+require 'require_model'
 
 config.after_initialize do
-  # Load any custom model files
+  # Load any custom model files after the original ones, so that the original app 
+  # can be extended without modifying the original app/models (instead,
+  # require the base app/models files in the lib_path model files)
   @@map_hash ||= ''
   if @@map_hash && @@map_hash['lib_path']
-    for file in Dir.glob("#{File.join(@@map_hash['lib_path'])}/**")
-      # require the app/model/name.rb manually, apparently required to mix in
-      app_models_file = File.join(RAILS_ROOT, 'app','models', File.basename(file))
-      require app_models_file if File.exist? app_models_file
-      # require the new lib_path one
-      require file
-    end
+    # move lib_path folder last
+    ActiveSupport::Dependencies.load_paths.delete @@map_hash['lib_path']
+    ActiveSupport::Dependencies.load_paths.unshift @@map_hash['lib_path']
   end
 end

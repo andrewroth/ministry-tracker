@@ -1,5 +1,6 @@
+require_model 'person'
+
 class Person < ActiveRecord::Base
-  load_mappings
   doesnt_implement_attributes :major => '', :minor => '', :url => '', :staff_notes => '', :updated_at => '', :updated_by => ''
 
   has_many :person_years, :foreign_key => _(:id, :year_in_school)

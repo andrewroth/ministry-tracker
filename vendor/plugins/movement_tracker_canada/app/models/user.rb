@@ -1,6 +1,6 @@
-class User < ActiveRecord::Base
-  load_mappings
+require_model 'user'
 
+class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
 
