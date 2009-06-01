@@ -5,6 +5,11 @@ class SimpleJob
   def perform; @@runs += 1; end
 end
 
+class SimpleJob2
+  cattr_accessor :perform_called_with;
+  def perform(job_info); @@perform_called_with = job_info; end
+end
+
 class ErrorJob
   cattr_accessor :runs; self.runs = 0
   def perform; raise 'did not work'; end
@@ -70,7 +75,13 @@ describe Delayed::Job do
     SimpleJob.runs.should == 1
   end
                      
-                     
+  it "should call perform with info if perform takes a param" do
+    sj2 = SimpleJob2.new
+    Delayed::Job.enqueue sj2
+    Delayed::Job.work_off
+    sj2.perform_called_with.class.should == Hash
+  end
+                      
   it "should work with eval jobs" do
     $eval_job_ran = false
 
@@ -92,7 +103,7 @@ describe Delayed::Job do
 
     M::ModuleJob.runs.should == 1
   end
-                   
+
   it "should re-schedule by about 1 second at first and increment this more and more minutes when it fails to execute properly" do
     Delayed::Job.enqueue ErrorJob.new
     Delayed::Job.work_off(1)
@@ -105,6 +116,31 @@ describe Delayed::Job do
 
     job.run_at.should > Delayed::Job.db_time_now - 10.minutes
     job.run_at.should < Delayed::Job.db_time_now + 10.minutes
+  end
+
+  it "should update run_at when recurring" do
+    Delayed::Job.recurring SimpleJob.new
+
+    rerun = 24.hours.from_now
+
+    job = Delayed::Job.find(:first)
+
+    Delayed::Job.work_off(1)
+    Delayed::Job.first.run_at.should be_close(rerun, 1)
+  end
+
+  it "should execute a finite number of times when given executions when recurring" do
+    Delayed::Job.recurring SimpleJob.new, 0, Delayed::Job.db_time_now, 0.hours, 4
+
+    job = Delayed::Job.find(:first)
+    Delayed::Job.work_off(1)
+    Delayed::Job.first.executions_left.should == 3
+    Delayed::Job.work_off(1)
+    Delayed::Job.first.executions_left.should == 2
+    Delayed::Job.work_off(1)
+    Delayed::Job.first.executions_left.should == 1
+    Delayed::Job.work_off(1)
+    Delayed::Job.count.should == 0
   end
 
   it "should raise an DeserializationError when the job class is totally unknown" do
@@ -147,7 +183,7 @@ describe Delayed::Job do
     job.should_receive(:attempt_to_load).with('Delayed::JobThatDoesNotExist').and_return(true)
     lambda { job.payload_object.perform }.should raise_error(Delayed::DeserializationError)
   end
-  
+
   it "should be failed if it failed more than MAX_ATTEMPTS times and we don't want to destroy jobs" do
     default = Delayed::Job.destroy_failed_jobs
     Delayed::Job.destroy_failed_jobs = false
@@ -245,7 +281,7 @@ describe Delayed::Job do
       Delayed::Job.max_priority = nil
       Delayed::Job.min_priority = nil      
     end
-  
+
     it "should only work_off jobs that are >= min_priority" do
       Delayed::Job.min_priority = -5
       Delayed::Job.max_priority = 5
@@ -283,7 +319,7 @@ describe Delayed::Job do
 
     it "should leave the queue in a consistent state and not run the job if locking fails" do
       SimpleJob.runs.should == 0     
-      @job.stub!(:lock_exclusively!).with(any_args).once.and_raise(Delayed::Job::LockError)
+      @job.stub!(:lock_exclusively!).with(:any_args).once.and_raise(Delayed::Job::LockError)
       Delayed::Job.should_receive(:find_available).once.and_return([@job])
       Delayed::Job.work_off(1)
       SimpleJob.runs.should == 0
