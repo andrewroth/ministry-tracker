@@ -46,15 +46,6 @@ class ApplicationController < ActionController::Base
                                                                   :include => [:ministry])
     end
     
-    def get_responsible_person
-      get_ministry_involvement(get_ministry)
-      if @ministry_involvement
-        @responsible_person = @ministry_involvement.responsible_person
-      else 
-        @responsible_person = nil
-      end	
-    end
-    
     def get_countries
       @countries = Country.find(:all,
         :conditions => "#{_(:is_closed, :country)} = 0 || #{_(:is_closed, :country)} is null", 
