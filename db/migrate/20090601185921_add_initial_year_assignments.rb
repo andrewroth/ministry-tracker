@@ -2,9 +2,11 @@ class AddInitialYearAssignments < ActiveRecord::Migration
   def self.up
     # Give every user a random school year assignment
     if RAILS_ENV == 'development'
+      count = 0
       for p in Person.find :all
-        p.year_in_school = rand(5) + 1
+        p.year_in_school = count % 5 + 1
         p.save!
+        count += 1;
       end
     end
   end
