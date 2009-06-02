@@ -14,7 +14,8 @@ It is a direct extraction from Shopify where the job table is responsible for a 
 
 h2. Changes
                                             
-* 1.8 Added recurring tasks with option to execute a certain number of times and with a given period in between each run.
+* Added check for perform arity, if it takes one method it will pass in an info hash
+* Added recurring tasks with option to execute a certain number of times and with a given period in between each run.
 * 1.7 Added failed_at column which can optionally be set after a certain amount of failed job attempts. By default failed job attempts are destroyed after about a month. 
 * 1.6 Renamed locked_until to locked_at. We now store when we start a given job instead of how long it will be locked by the worker. This allows us to get a reading on how long a job took to execute.                    
 * 1.5 Job runners can now be run in parallel. Two new database columns are needed: locked_until and locked_by. This allows us to use pessimistic locking, which enables us to run as many worker processes as we need to speed up queue processing.
@@ -42,7 +43,8 @@ The library evolves around a delayed_jobs table which looks as follows:
   
 h2. Usage
 
-Jobs are simple ruby objects with a method called perform. Any object which responds to perform can be stuffed into the jobs table.
+Jobs are simple ruby objects with a method called perform. Any object which responds to perform can be stuffed into the jobs table.  If the perform method takes one parameter, a hash is passed in with some read-only info about the job being run (specifically, the locked_by, recur, period, executions_left, description, attempts, and last_error attributes).
+
 Job objects are serialized to yaml so that they can later be resurrected by the job runner. 
 
   class NewsletterJob < Struct.new(:description)

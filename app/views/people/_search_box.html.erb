@@ -1,0 +1,19 @@
+<div id="searchBox">
+  <div id="basic_search"
+    <%= 'style="display:none"' if @advanced %> >
+	  <%- form_tag directory_people_url do -%>
+	    Search by name or email:
+	    <%= text_field_tag "search"%>
+	    <%= submit_tag "Go"%> &nbsp;&nbsp;
+    <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->
+      <%- if authorized?(:advanced) %>
+  		  <%= link_to_function "Advanced Search", "$('#basic_search').hide();$('#advanced_search').show();"%> 
+  	  <%- end -%>
+	  <%- end -%>
+	</div>
+  
+  <div id="advanced_search" <%= 'style="display:none"' unless @advanced %>>
+    <%= render :partial => 'advanced_search' %>	 
+	</div>
+	&nbsp;&nbsp;
+</div>

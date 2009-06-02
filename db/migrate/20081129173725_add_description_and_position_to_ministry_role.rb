@@ -1,3 +1,11 @@
+# make 20090529184914_add_more_join_strings_to_columns.rb not break this migration
+class Column < ActiveRecord::Base
+  def source_model() nil end
+  def source_column() nil end
+  def foreign_key() nil end
+end
+require "#{RAILS_ROOT}/app/models/column"
+
 class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
   def self.up
     add_column :ministry_roles, :position, :integer

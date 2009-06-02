@@ -5,6 +5,11 @@ class SimpleJob
   def perform; @@runs += 1; end
 end
 
+class SimpleJob2
+  cattr_accessor :perform_called_with;
+  def perform(job_info); @@perform_called_with = job_info; end
+end
+
 class ErrorJob
   cattr_accessor :runs; self.runs = 0
   def perform; raise 'did not work'; end
@@ -70,7 +75,13 @@ describe Delayed::Job do
     SimpleJob.runs.should == 1
   end
                      
-                     
+  it "should call perform with info if perform takes a param" do
+    sj2 = SimpleJob2.new
+    Delayed::Job.enqueue sj2
+    Delayed::Job.work_off
+    sj2.perform_called_with.class.should == Hash
+  end
+                      
   it "should work with eval jobs" do
     $eval_job_ran = false
 

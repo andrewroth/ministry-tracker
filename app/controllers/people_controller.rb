@@ -17,6 +17,7 @@ class PeopleController < ApplicationController
   end
   
   def advanced
+    @advanced = true
     @options = {}
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     render :layout => 'application'
@@ -216,6 +217,7 @@ class PeopleController < ApplicationController
   
   # GET /people/new
   def new
+    setup_states
     @person = Person.new
     @current_address = CurrentAddress.new
     respond_to do |format|
@@ -228,6 +230,7 @@ class PeopleController < ApplicationController
   def edit
     setup_vars
     setup_campuses
+    setup_states
     render :update do |page|
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit'
@@ -236,12 +239,14 @@ class PeopleController < ApplicationController
   end
   
   def get_campuses
-    @campuses = College.find(:all, :conditions => {_(:state, :campus) => params[:state]})
+    state = State.find params[:state]
+    @campuses = state.try(:campuses) || []
   end
 
   # POST /people
   # POST /people.xml
   def create
+    setup_states
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address])
     respond_to do |format|
@@ -307,6 +312,7 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
+    setup_states
     @person = Person.find(params[:id])
     if params[:current_address]
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
@@ -550,6 +556,10 @@ class PeopleController < ApplicationController
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
     
+    def setup_states
+      @states = State.all()
+    end
+    
     def can_edit_profile
       if @person == @me || is_ministry_leader
         return true
@@ -578,7 +588,8 @@ class PeopleController < ApplicationController
       else
         state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
       end
-      @campuses = College.find(:all, :conditions => {_(:state, :campus) => state}) if state.present?
+      state_model = State.find :first, :conditions => { _(:name, :state) => state }
+      @campuses = state_model.try(:campuses) || []
     end
     
     def get_view

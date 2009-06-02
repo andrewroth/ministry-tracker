@@ -57,21 +57,27 @@
   
 
 </script>
-<%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
-  <%= hidden_field_tag :times %>
-  <%= f.submit 'Save Timetable' %>
-<%- end -%><br/>
 
-Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:<br/>
+<%- if @can_edit -%>
+  <%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
+    <%= hidden_field_tag :times %>
+    <%= f.submit 'Save Timetable' %>
+  <%- end -%><br/>
 
-<div class="statusheadwrap">
-  <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
-  <%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
-  <%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
-  <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
-</div>
+  Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:<br/>
 
-<%= render :partial => 'timetable' %>
+  <div class="statusheadwrap">
+    <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
+    <%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
+    <%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
+    <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
+  </div>
+
+  <%= render :partial => 'timetable' %>
+<%- else -%>
+  Nothing to see here. Please move on.
+<%- end -%>
+
 <script>
   var down = false;
   var css = '<%= Timetable::BAD_CLASS %>';

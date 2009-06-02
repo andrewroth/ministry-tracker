@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+#
+#worker_startup_script  This resides in /etc/init.d
+#
+#chkconfig:   2345 80 20
+#description: A startup script to automatically start workers for delayed_job
+APP_NAME = 'worker_startup_script'
+
+unless ['start', 'stop', 'restart'].include? ARGV.first
+  puts "Usage: #{APP_NAME} start|stop|restart 2 (for 2 workers - start only)"
+  exit
+end
+
+app_dir = '/home/vmarchive/apps/RISForge'
+require(File.join(app_dir, 'config', 'boot'))
+log = File.open("#{RAILS_ROOT}/log/rake.log", "w+")
+     
+
+@filenames = []
+
+case ARGV.last
+  when /[0-9]/
+    number_of_workers = ARGV.last.to_i
+  else
+    number_of_workers = 1
+end
+
+case ARGV.first
+  when 'start':
+    if number_of_workers > 1
+      log.puts "Starting #{number_of_workers} workers..."
+      number_of_workers.times do 
+        system "/usr/bin/ruby /usr/bin/rake -f #{app_dir}/Rakefile jobs:work --trace 2>&1 >> #{RAILS_ROOT}/log/rake.log &"
+      end
+    else
+      log.puts "Starting 1 worker..."
+      system "/usr/bin/ruby /usr/bin/rake -f #{app_dir}/Rakefile jobs:work --trace 2>&1 >> #{RAILS_ROOT}/log/rake.log &"
+    end
+  
+  when 'stop': 
+    Dir.foreach("#{RAILS_ROOT}/tmp/pids/") do |entry|
+      if entry.include? ".pid"
+        @filenames << entry
+      end
+    end
+    log.puts "Found #{@filenames.length}"
+    log.puts "Stopping workers..."     
+    @filenames.each do |filename|
+      pid = filename.scan(/[0-9]*/).to_s.to_i
+      system "kill -TERM #{pid}"
+      FileUtils.remove_file("#{RAILS_ROOT}/tmp/pids/#{filename}")
+    end
+    
+  when 'restart':
+    log.puts "Restarting workers..."
+    Dir.foreach("#{RAILS_ROOT}/tmp/pids/") do |entry|
+      if entry.include? ".pid"
+        @filenames << entry
+      end
+    end
+    log.puts "Found #{@filenames.length}"
+    @filenames.each do |filename|
+      pid = filename.scan(/[0-9]*/).to_s.to_i
+      system "kill -TERM #{pid}"
+      FileUtils.remove_file("#{RAILS_ROOT}/tmp/pids/#{filename}")
+    end
+    log.puts "Starting #{@filenames.length}"
+    @filenames.each do 
+      system "/usr/bin/ruby /usr/bin/rake -f #{app_dir}/Rakefile jobs:work --trace 2>&1 >> #{RAILS_ROOT}/log/rake.log &"
+    end
+log.close
+end
+
+

@@ -56,6 +56,11 @@ module Delayed
       end
     end
 
+    def info_attributes
+      { :locked_by => locked_by, :period => period, :executions_left => executions_left, :recur => recur, 
+        :description => description, :attempts => attempts, :last_error => last_error }
+    end
+
     def payload_object=(object)
       self['handler'] = object.to_yaml
       self['description'] = object.respond_to?(:description) ? object.description : ''
@@ -144,7 +149,7 @@ module Delayed
           logger.info "* [JOB] aquiring lock on #{job.name}"
           job.lock_exclusively!(max_run_time, worker_name)
           runtime =  Benchmark.realtime do
-            invoke_job(job.payload_object, &block)
+            invoke_job(job.payload_object, job.info_attributes, &block)
             if job.recur == true && (job.executions_left > 1 || job.executions_left == -1)
               run = job.run_at + job.period
               executions_left = job.executions_left == -1 ? -1 : job.executions_left - 1
@@ -205,10 +210,14 @@ module Delayed
 
       num.times do
 
-        job = self.reserve do |j|
+        job = self.reserve do |j, atts|
           begin
             logger.info "job: #{j.description}" if j.respond_to?(:description) && j.description
-            j.perform
+            if j.method(:perform).arity == 1
+              j.perform atts
+            else
+              j.perform
+            end
             success += 1
           rescue
             failure += 1
@@ -224,8 +233,8 @@ module Delayed
     
     
     # Moved into its own method so that new_relic can trace it.
-    def self.invoke_job(job, &block)
-      block.call(job)
+    def self.invoke_job(job, attributes, &block)
+      block.call(job, attributes)
     end
 
 

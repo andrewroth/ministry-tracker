@@ -14,3 +14,4 @@ module Cmt
     :full_account_verification => true,
   }
 end
+

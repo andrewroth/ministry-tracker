@@ -1,3 +1,4 @@
+# NOTE: update column isn't used at all currently, but is an idea for the future
 class Column < ActiveRecord::Base
   load_mappings
   has_many :view_columns

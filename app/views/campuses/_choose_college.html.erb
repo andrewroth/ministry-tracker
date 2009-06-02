@@ -1,3 +1,12 @@
-<br /><strong>Add a College Campus</strong><br />
-Pick a college: <%= select_tag( :campus_id, options_for_select(@colleges.collect() {|college| [college.name, college.id]}.insert(0,['-- Choose College --',''])), :id => 'college', :style => 'width:300px') %>
-<%= observe_field(:college, {:function => "$('#add_college').show()"}) %>
+<br /><strong>Add a Campus</strong><br />
+Pick a campus:
+<%=
+  cs = @campuses.collect {|c| [c.name, c.id]}
+  cs = cs.insert(0, ["-- Choose Campus --", ''])
+
+  select_tag(:campus_id,
+    options_for_select(cs),
+    :style => 'width:300px')
+%>
+<%=
+  observe_field(:campus_id, { :function => "$('#add_college').show()"}) %>

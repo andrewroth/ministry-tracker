@@ -30,7 +30,11 @@ class Person < ActiveRecord::Base
   
   has_many :group_interests, :through => :group_involvements, :source => :group, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
-                            
+     
+  #Mentor/Disciple Relationships
+  has_many :disciples, :class_name => "Person", :foreign_key => "mentor_id"
+  belongs_to :mentor, :class_name => "Person"
+  
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
   has_many :conferences, :through => :conference_registrations
@@ -63,6 +67,8 @@ class Person < ActiveRecord::Base
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name), :on => :update
   # validates_presence_of _(:gender)
+  
+  validate :birth_date_is_in_the_past
 
   has_one :profile_picture, :class_name => "ProfilePicture", :foreign_key => _("person_id", :profile_picture)
   
@@ -136,7 +142,7 @@ class Person < ActiveRecord::Base
   def admin?(ministry)
     mi = MinistryInvolvement.find(:first, :conditions => "#{_(:person_id, :ministry_involvement)} = #{self.id} AND
                                                           #{_(:ministry_id, :ministry_involvement)} IN (#{ministry.ancestor_ids.join(',')}) AND
-                                                          #{_(:admin, :ministry_id)} = 1")
+                                                          #{_(:admin, :ministry_involvement)} = 1")
     return !mi.nil?
   end
   
@@ -285,5 +291,15 @@ class Person < ActiveRecord::Base
       update_stamp
       self.created_at = Time.now
       self.created_by = 'MT'
+    end
+    
+  private
+
+    def birth_date_is_in_the_past
+      if !birth_date.nil?
+        if (Date.today - birth_date) < 0      
+          errors.add(:birth_date, 'should be in the past')
+        end
+      end
     end
 end  

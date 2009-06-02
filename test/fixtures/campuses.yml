@@ -3,11 +3,14 @@ ucd:
   id: 1
   name: University of California-Davis
   state: CA
-  country: USA
   type: College
 sac:
   id: 2
   name: Sacramento State
   state: CA
-  country: USA
   type: College
+
+wyoming_campus:
+    id: 3
+    name: Campus of Wyoming
+    state_id: 1 # 1 is Wyoming id
