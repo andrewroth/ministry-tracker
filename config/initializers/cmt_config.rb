@@ -12,6 +12,10 @@ module Cmt
     # Forces users to go through a longer process for validating accounts.
     # If 
     :full_account_verification => true,
+    
+    #Removes the options of specifying 'poor' timeslots in timetable
+    :hide_poor_status_in_scheduler => true,
+    
   }
 end
 
