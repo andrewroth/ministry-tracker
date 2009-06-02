@@ -109,7 +109,7 @@
         			    <%= image_tag('silk/bullet_arrow_up.png') %>
   			    <%- end -%>
   			  <%- end -%>
-  			  <%= link_to(column.title, directory_people_url(:order => "#{column.select_clause}#{direction}", :start => params[:start], :finish => params[:finish], :search_id => @search.id )) %>
+  			  <%= link_to(column.title, directory_people_url(:format => "html", :order => "#{column.from_clause}.#{column.select_clause}#{direction}", :start => params[:start], :finish => params[:finish], :search_id => @search.id )) %>
   			<%- else -%>
   			  <%= column.title %>
   			<%- end -%>
