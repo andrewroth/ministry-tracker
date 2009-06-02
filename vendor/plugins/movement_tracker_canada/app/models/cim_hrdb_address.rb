@@ -2,7 +2,7 @@
 class CimHrdbAddress < ActiveRecord::Base
   self.abstract_class = true
 
-  belongs_to :province
+  belongs_to :province, :class_name => 'State'
   belongs_to :country
   belongs_to :title_bt, :class_name => 'Title', :foreign_key => :title_id
 
