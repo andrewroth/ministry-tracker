@@ -20,7 +20,9 @@ class Person < ActiveRecord::Base
   has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
   has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
   has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
-
+ 
+  
+  
   # Address Relationships
   has_many :addresses, :class_name => "Address", :foreign_key => _(:person_id, :address)
   has_one :current_address, :class_name => "CurrentAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'current'"

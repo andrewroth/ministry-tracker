@@ -230,6 +230,7 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
+    get_people_in_ministry_campus
     setup_vars
     setup_campuses
     setup_states
@@ -313,8 +314,15 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
+    #throw params.inspect
     setup_states
+    get_people_responsible_for
+    get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
+    if params[:responsible_person_id]
+      @ministry_involvement.responsible_person = Person.find(params[:responsible_person_id])
+      @ministry_involvement.save
+    end
     if params[:current_address]
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
       @person.current_address.update_attributes(params[:current_address])
