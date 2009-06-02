@@ -6,7 +6,7 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def joingroup  
-    params[:level] = params[:group_involvement][:level]
+    params[:type] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
     create_group_involvement
     respond_to do |format|
