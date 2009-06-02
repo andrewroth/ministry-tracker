@@ -32,8 +32,8 @@ class AddInitialCampusAndYearAssignments < ActiveRecord::Migration
     # Drop all campus involvements just added
     if RAILS_ENV == 'development'
       # Assumption: Tables added were the first 20 rows in the CampusInvolvements table
-      for i in 1..20
-        CampusInvolvement.find(i).destroy
+      for c in CampusInvolvement.find :all, :limit => 20
+        c.destroy
       end
       for p in Person.find :all, :offset => 1, :limit => 20
         p.primary_campus_involvement_id = nil
