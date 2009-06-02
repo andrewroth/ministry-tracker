@@ -592,7 +592,7 @@ class PeopleController < ApplicationController
         state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
       end
       state_model = State.find :first, :conditions => { _(:name, :state) => state }
-      @campuses = state_model.campuses
+      @campuses = state_model.try(:campuses) || []
     end
     
     def get_view
