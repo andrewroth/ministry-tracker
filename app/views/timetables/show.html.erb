@@ -6,7 +6,9 @@
 <%- if @can_edit || @can_show -%>
 <div class="statusheadwrap">
   <div class="badhead"></div>
-  <div class="poorhead"></div>
+	<% if !Cmt::CONFIG[:hide_poor_status_in_scheduler] %>
+  	<div class="poorhead"></div>
+	<% end %>
   <div class="okhead"></div>
   <div class="goodhead"></div>
 </div>

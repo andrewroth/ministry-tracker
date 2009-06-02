@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
     t.integer "person_id"
     t.integer "group_id"
     t.string  "level"
+    t.boolean "requested"
   end
 
   add_index "group_involvements", ["person_id", "group_id"], :name => "person_id_group_id", :unique => true
