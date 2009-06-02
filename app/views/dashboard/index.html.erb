@@ -107,9 +107,33 @@ this system, along with any other information we think would be helpful to you.<
       <div class="modulecontent">
         <ul class="groupicon">
           <% @my.groups.each do |group| %>
-            <li><%= link_to(group.name, group) %></li>
+		  	<% if groupmember?(group)%>
+            <li>
+            	
+            	<%= link_to(group.name, group) %>
+					<ul class="requesticon">
+						<% find_join_requests(group).each do |request| %>
+						<li>
+							Join request from <%=link_to Person.find(request.person_id).full_name, person_url(request.person_id) %>
+							<b>
+							<%= link_to "[Accept]", :controller => "group_involvements", :action => "accept_request" , :id => request.id %>
+							<%= link_to '[Decline]',:controller => "group_involvements", :action => "decline_request", :id => request.id %>
+							
+							</b>
+							(Role: '<%= GroupInvolvement.find(request.id).level%>')
+						</li>
+						<% end %>
+					</ul>
+			</li>
+			<% else %>
+			<li>
+            	<%= link_to(group.name, group) %> [Awaiting join request decision]
+			</li>
+			<% end %>
           <% end %>
         </ul>
+		<br/>
+		<%= link_to "Join a group", :controller => "groups", :action => "join" %>
       </div>
     </div>
   

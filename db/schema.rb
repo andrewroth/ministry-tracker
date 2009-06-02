@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090601172113) do
+ActiveRecord::Schema.define(:version => 20090602173255) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(:version => 20090601172113) do
     t.integer "person_id"
     t.integer "group_id"
     t.string  "level"
+    t.boolean "requested"
   end
 
   add_index "group_involvements", ["person_id", "group_id"], :name => "person_id_group_id", :unique => true
