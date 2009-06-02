@@ -239,7 +239,8 @@ class PeopleController < ApplicationController
   end
   
   def get_campuses
-    @campuses = College.find(:all, :conditions => {_(:state, :campus) => params[:state]})
+    state = State.find params[:state]
+    @campuses = state.try(:campuses) || []
   end
 
   # POST /people
@@ -590,8 +591,8 @@ class PeopleController < ApplicationController
       else
         state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
       end
-      #@campuses = Campuses.find(:all, :conditions => {_(:state, :campus) => state}) if state.present?
-      @campuses = Campus.find_all_by_state_id(state.id) if state.present?      
+      state_model = State.find :first, :conditions => { _(:name, :state) => state }
+      @campuses = state_model.campuses
     end
     
     def get_view
