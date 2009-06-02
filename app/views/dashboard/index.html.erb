@@ -118,7 +118,9 @@ this system, along with any other information we think would be helpful to you.<
 							<b>
 							<%= link_to "[Accept]", :controller => "group_involvements", :action => "accept_request" , :id => request.id %>
 							<%= link_to '[Decline]',:controller => "group_involvements", :action => "decline_request", :id => request.id %>
+							
 							</b>
+							(Role: '<%= GroupInvolvement.find(request.id).level%>')
 						</li>
 						<% end %>
 					</ul>
