@@ -20,3 +20,4 @@ nbproject/
 *.swp
 public/profile_pictures
 *~
+.project
