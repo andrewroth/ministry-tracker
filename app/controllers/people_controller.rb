@@ -414,6 +414,8 @@ class PeopleController < ApplicationController
   
   def change_view
     session[:view_id] = params[:view]
+    # Clear session[:order] since this view might not have the same columns
+    session[:order] = nil
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do

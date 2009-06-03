@@ -82,6 +82,13 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to directory_people_path
   end
   
+  def test_should_clear_session_order_when_changing_view
+    get :directory, :order => Person._(:first_name)
+    post :change_view, :view => 1
+    assert_redirected_to directory_people_path
+    assert_nil session[:order]
+  end
+
   def test_should_re_create_staff
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
