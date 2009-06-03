@@ -38,3 +38,9 @@ person_<%= i %>:
 person_with_no_ministry_involvements:
     id: 4000
     user_id: 4
+
+ministry_leader_person_with_no_permanent_address:
+    id: 4001
+    user_id: 5
+    first_name: 'Ministry'
+    last_name: 'Leader'

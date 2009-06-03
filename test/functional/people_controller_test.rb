@@ -12,11 +12,9 @@ class PeopleControllerTest < ActionController::TestCase
   fixtures :people
   fixtures :users
   fixtures :ministries
+  fixtures :ministry_involvements
   
   def setup
-    @controller = PeopleController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
     login
   end
   
@@ -84,6 +82,13 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to directory_people_path
   end
   
+  def test_should_clear_session_order_when_changing_view
+    get :directory, :order => Person._(:first_name)
+    post :change_view, :view => 1
+    assert_redirected_to directory_people_path
+    assert_nil session[:order]
+  end
+
   def test_should_re_create_staff
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
@@ -116,24 +121,27 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   def test_should_re_create_student
-    old_count = Person.count
-    post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                  :current_address => {:email => "josh.starcher@uscm.org"}, :student => true
-    assert person = assigns(:person)
-    assert_equal old_count, Person.count
+    assert_no_difference('Person.count') do
+      post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
+                    :current_address => {:email => "josh.starcher@uscm.org"}, :student => true
+      assert person = assigns(:person)
+    end
     assert_redirected_to person_path(assigns(:person))
   end
   
   def test_should_NOT_create_person
-    old_count = Person.count
-    post :create, :person => { }
-    assert_equal old_count, Person.count
+    assert_no_difference('Person.count') do
+      post :create, :person => { }
+    end
     assert_response :success
     assert_template 'new'
   end
 
   def test_should_show_person
-    get :show, :id => 50000
+    get :show, :id => people(:josh).id
+    
+    assert_template :show
+    assert_template :partial => '_view', :count => 1
     assert_response :success
   end
 
@@ -184,5 +192,38 @@ class PeopleControllerTest < ActionController::TestCase
     assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
     
     assert_response :success
+  end
+  
+  test "ministry leader with no permanent address should render when updating notes" do
+
+    # setup session
+    ministry = ministries(:yfc)    
+    
+    user = users(:ministry_leader_user_with_no_permanent_address)
+    @request.session[:user] = user.id
+    @request.session[:ministry_id] = ministry.id
+    
+    person = people(:ministry_leader_person_with_no_permanent_address)
+
+    # make sure person is a leader
+    involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
+    assert ministry.staff.include?(person) || (involvement && involvement.admin?)
+    
+    # make sure it renders properly
+    get :show, :id => person.id
+    
+    assert_template :show, :count => 1
+    assert_template :partial => '_view', :count => 1
+    assert_response :success
+
+    # save the staff notes    
+    xhr :post, :update,
+      :staff_notes => 'A Note',
+      :id => person.id
+    
+    # make sure everything renders properly
+    assert_response :success
+    assert_template :show, :count => 1
+    assert_template :partial => '_view', :count => 1    
   end
 end
