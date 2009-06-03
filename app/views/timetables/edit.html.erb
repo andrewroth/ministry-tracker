@@ -68,8 +68,10 @@
 
   <div class="statusheadwrap">
     <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
-    <%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
-    <%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
+		<% if !Cmt::CONFIG[:hide_poor_status_in_scheduler] %>
+    	<%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
+    <% end %>
+		<%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
     <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
   </div>
 
