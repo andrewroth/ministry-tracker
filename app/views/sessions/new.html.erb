@@ -1,7 +1,7 @@
 <script type="text/javascript" charset="utf-8">
   function log_in() {
     $('#spinner').show();
-    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'session'});
+    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'<%= url_for :action => "create" %>'});
   }
   $(function() {
     $('#password').keydown(function(event){
@@ -38,8 +38,8 @@
       <label for="remember_me">Remember me:</label>
       <%= check_box_tag 'remember_me', 1, false, :class => "inputcheck" %>
     </div>
-
-    <p><%= button_to_function 'Log in', :onclick => "log_in()"%> <%= spinner %></p>
+    
+   <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
   </div>
   </form>
   <% end -%>
