@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  term_id: 1
+  campus_id: 1
+  start: 2009-06-02
+  end: 2009-06-02
+  verification_date: 2009-06-02
+
+two:
+  term_id: 1
+  campus_id: 1
+  start: 2009-06-02
+  end: 2009-06-02
+  verification_date: 2009-06-02
