@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class CorrespondenceTest < ActiveSupport::TestCase
   fixtures Correspondence.table_name, CorrespondenceType.table_name, EmailTemplate.table_name, Person.table_name, CustomValue.table_name, TrainingAnswer.table_name, Address.table_name, User.table_name
