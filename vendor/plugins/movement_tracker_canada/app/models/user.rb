@@ -15,5 +15,7 @@ class User < ActiveRecord::Base
   def password() '' end
   def password=(val) '' end
 
-  def self.test1() 'test1' end
+  def login_callback
+    throw 'got here'
+  end
 end

@@ -6,6 +6,9 @@ class SessionsController < ApplicationController
   # render new.rhtml
   def new
     if logged_in?
+      if self.current_user.respond_to?(:login_callback) 
+        self.current_user.login_callback
+      end
       redirect_back_or_default(person_url(self.current_user.person))
     end
     # force a flash warning div to show up, so that invalid password message can be shown
@@ -25,6 +28,9 @@ class SessionsController < ApplicationController
         # First try SSM
         self.current_user = User.authenticate(params[:username], params[:password])
         if logged_in?
+          if self.current_user.respond_to?(:login_callback)
+            self.current_user.login_callback
+          end
           if params[:remember_me] == "1"
             self.current_user.remember_me
             cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
