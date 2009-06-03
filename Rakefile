@@ -17,7 +17,6 @@ namespace :test do
     mkdir "doc/coverage"
     rcov = %(rcov --rails --aggregate doc/coverage/coverage.data --text-summary -Ilib --html -o doc/coverage test/unit/*_test.rb)
     rcov = %(rcov --rails --aggregate doc/coverage/coverage.data --text-summary -Ilib --html -o doc/coverage test/functional/*_test.rb)    
-    rcov = %(rcov --rails --aggregate doc/coverage/coverage.data --text-summary -Ilib --html -o doc/coverage test/integration/*_test.rb)        
     r = system rcov
     system "open doc/coverage/index.html" if (PLATFORM['darwin'] && r && $? == 0)
   end
