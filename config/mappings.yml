@@ -32,6 +32,8 @@ tables:
 school_year:
   id: year_id
   position: year_id
+  name: year_desc
+  level: year_id
 person_year:
   id: year_id
 assignment:
