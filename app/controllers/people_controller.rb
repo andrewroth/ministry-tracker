@@ -24,7 +24,6 @@ class PeopleController < ApplicationController
   end
   
   def directory
-    # Get View
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     first_name_col = _(:first_name, :person)
@@ -219,7 +218,7 @@ class PeopleController < ApplicationController
   
   # GET /people/new
   def new
-    setup_states
+    set_states
     @person = Person.new
     @current_address = CurrentAddress.new
     respond_to do |format|
@@ -233,23 +232,18 @@ class PeopleController < ApplicationController
     get_people_in_ministry_campus
     setup_vars
     setup_campuses
-    setup_states
+    set_states
     render :update do |page|
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit'
       page[:edit_info].show
     end
   end
-  
-  def get_campuses
-    state = State.find params[:state]
-    @campuses = state.try(:campuses) || []
-  end
 
   # POST /people
   # POST /people.xml
   def create
-    setup_states
+    set_states
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address])
     respond_to do |format|
@@ -316,7 +310,7 @@ class PeopleController < ApplicationController
   # PUT /people/1.xml
   def update
     #throw params.inspect
-    setup_states
+    set_states
     get_people_responsible_for
     get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
@@ -401,7 +395,7 @@ class PeopleController < ApplicationController
         end
         format.xml  { head :ok }
       else
-        setup_dorms
+        set_dorms
         setup_campuses
         # @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?
         format.html { render :action => "edit" }
@@ -415,18 +409,6 @@ class PeopleController < ApplicationController
       end
     end
   end
-
-  # DELETE /people/1
-  # DELETE /people/1.xml
-  # def destroy
-  #   @person = Person.find(params[:id])
-  #   @person.destroy
-  # 
-  #   respond_to do |format|
-  #     format.html { redirect_to directory_people_path }
-  #     format.xml  { head :ok }
-  #   end
-  # end
   
   def change_ministry
     session[:ministry_id] = params[:current_ministry]
@@ -523,10 +505,7 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
 
-
-  
-
-  protected
+  private
   
     def campus_condition
       "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
@@ -553,25 +532,25 @@ class PeopleController < ApplicationController
     end
     
     def render_new_from_create(format)
-      setup_dorms
+      set_dorms
       format.html { render :action => "new", :layout => 'manage' }
       format.js  {render :action => 'new'}
       format.xml  { render :xml => @person.errors.to_xml }
     end
     
     def setup_vars
-      setup_dorms
+      set_dorms
       @profile_picture = @person.profile_picture || ProfilePicture.new
       @profile_picture.person_id = @person.id
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
     end
     
-    def setup_dorms
+    def set_dorms
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
     
-    def setup_states
+    def set_states
       @states = State.all()
     end
     
@@ -642,6 +621,10 @@ class PeopleController < ApplicationController
       @sql += ' WHERE ' + @conditions
       @sql += ' ORDER BY ' + @order
     end
-
+  
+    def get_campuses
+      state = State.find params[:state]
+      @campuses = state.try(:campuses) || []
+    end
     
 end

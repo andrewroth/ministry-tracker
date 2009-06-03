@@ -4,7 +4,13 @@
 
 	<td>
 	  <table class="halftab">
-    	<tr><th width="120px">Email</th><td width="200px"><%= @current_address.email %></td></tr>
+    	<tr>
+    	  <th width="120px">Email</th>
+    	  <td width="200px">
+    	    <%= @current_address.email if @current_address %>
+    	  </td>
+    	</tr>
+    	
     	<%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
     	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
     	<tr><th>Birth Day</th><td><%= format_date(@person.birth_date, format) %></td></tr>
@@ -62,40 +68,54 @@
 <td>
 	
 	<table class="halftab">
-	<tr><th width="150">Phone</th><td><%= @current_address.phone %></td></tr>
-	<tr><th>Alternate Phone</th><td><%= @current_address.alternate_phone %></td></tr>
-	<tr><th>Address</th><td><%= @current_address.mailing %></td></tr>
-	<tr><th>&nbsp;</th><td><%= @current_address.dorm %> <%= "Room " + @current_address.room unless @current_address.room.to_s.empty? %></td></tr>
-	<tr><th>Valid from</th><td><%= format_date(@current_address.start_date) %><% unless @perm_address.start_date.to_s.empty? %> &mdash; <%= format_date(@current_address.end_date) %><% end  %></td></tr>
-
-	
-	
+	<tr><th width="150">Phone</th><td><%= @current_address.phone if @current_address %></td></tr>
+	<tr><th>Alternate Phone</th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
+	<tr><th>Address</th><td><%= @current_address.mailing if @current_address %></td></tr>
+	<tr><th>&nbsp;</th><td><%= @current_address.dorm if @current_address %> <%= "Room " + @current_address.room unless @current_address.nil? || @current_address.room.to_s.empty? %></td></tr>
+	<tr>
+	  <th>Valid from</th>
+	  <td>
+	    <%=
+	      format_date(@current_address.start_date) if @current_address
+	    %>
+	    <%
+	      unless @perm_address.nil? || @perm_address.start_date.to_s.empty?
+	    %> &mdash;
+	    <%=
+	      format_date(@current_address.end_date) if @current_address
+	    %>
+	    <% end  %>
+	  </td>
+	</tr>
 	</table>
 
 </td>
 <td class="spacer">&nbsp;</td>
 <td>
 	<table class="halftab">
-		<tr><th width="150">Phone</th><td><%= @perm_address.phone %></td></tr>
-		<tr><th>Address</th><td><%= @perm_address.mailing %></td></tr>
+		<tr>
+		  <th width="150">Phone</th>
+		  <td>
+		    <%=
+		      @perm_address.phone if @perm_address
+		    %>
+		  </td>
+		</tr>
+		
+		<tr>
+		  <th>Address</th>
+		  <td>
+		    <%=
+		      @perm_address.mailing if @perm_address
+		    %>
+		  </td>
+		</tr>
+		
 	</table>
 </td>
 </tr>
-<%- unless @current_address.start_date.to_s.empty? -%>
-<%- end -%>
-
-
-
-<!--
-<tr>
-	<td></td>
-	<td><%#= link_to "&raquo; Privacy Settings" %>&nbsp;</td>
-	<td colspan="3"><%#= link_to "&raquo; Why should I keep this up to date?" %>&nbsp;</td>
-</tr>
--->
 </table>
 <br />
-
 
 <%- if is_ministry_leader -%>
 	<%- remote_form_for @person do |f| -%>
@@ -121,35 +141,3 @@
 	</div>
 	<%- end -%>
 <%- end -%>
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-	<h4 class="title">Interested in a Ministry Team?</h4>
-	<table width="100%" border="0" cellspacing="2px" cellpadding="5px">
-		<tr>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Prayer Team for Cru</td>
-		</tr>
-		<tr>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Some Team for Impact</td>
-		</tr>
-		<tr>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
-			<td><%= check_box_tag :prayer_cru %>&nbsp;&nbsp;Another Team for Epic</td>
-		</tr>
-	</table>
--->
