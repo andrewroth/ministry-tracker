@@ -162,9 +162,13 @@ class ApplicationController < ActionController::Base
       @people_in_ministry_campus = []
       peeps_in_m = get_ministry.people.find(:all)
       peeps_in_m.each do |person|
-        if person.campus_involvements.find(:first) == @person.campus_involvements.find(:first) #Needs to be changed when person.primary_campus is working
-	  @people_in_ministry_campus << person
-	end
+        unless person.campus_involvements.find(:first).nil?
+          unless @person.campus_involvements.find(:first).campus.nil?
+            if person.campus_involvements.find(:first).campus == @person.campus_involvements.find(:first).campus
+              @people_in_ministry_campus << person
+            end
+          end
+        end
       end
     end
     
