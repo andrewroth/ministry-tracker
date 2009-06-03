@@ -13,21 +13,49 @@ end
 def setup_directory_view
   # we don't have a Website option
   column = Column.find_by_title 'Website'
+  return unless column
   column.view_columns.first.delete
   column.delete
+end
+
+def theyre_really_sure
+  return true if @last_choice
+  STDOUT.print "warning: this WILL break your MT database data.  Use it only on a fresh mt install.\nContinue? (y/n) "
+  cont = STDIN.gets.chomp.downcase
+  return @last_choice = (cont == 'y')
+end
+
+def switch_to_core
+  if File.exists? "#{RAILS_ROOT}/config/mappings.yml"
+    File.rename "#{RAILS_ROOT}/config/mappings.yml",
+              "#{RAILS_ROOT}/config/mappings.yml.temp"
+  end
+end
+
+def switch_to_emu
+  if File.exists? "#{RAILS_ROOT}/config/mappings.yml.temp"
+    File.rename "#{RAILS_ROOT}/config/mappings.yml.temp",
+              "#{RAILS_ROOT}/config/mappings.yml"
+  end
 end
 
 namespace :canada do
   desc "Sets up the movement tracker for the canadian ministry"
   task :setup => :environment do
-    STDOUT.print "warning: this WILL break your MT database data.  Use it only on a fresh mt install.\nContinue? (y/n) "
-    cont = STDIN.gets.chomp.downcase
+    exit unless theyre_really_sure
 
+    puts "Setting up the CMT for the Canadian schema..."
     clear_everything
+    setup_ministries
+    setup_directory_view
+    puts "Done."
+  end
 
-    if cont == 'y'
-      setup_ministries
-      setup_directory_view
-    end
+  task :reset do
+    return unless theyre_really_sure
+    switch_to_core
+    Rake::Task["db:migrate:reset"].invoke
+    switch_to_emu
+    Rake::Task["canada:setup"].invoke
   end
 end
