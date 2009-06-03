@@ -7,7 +7,20 @@ end
 def setup_ministries
   # set us up
   p2c = Ministry.create! :name => 'Power to Change Ministries'
-  c4c = Ministry.create! :name => 'Campus for Christ', :parent => p2c
+  @c4c = Ministry.create! :name => 'Campus for Christ', :parent => p2c
+end
+
+def setup_roles
+  # rename missionary to staff
+  missionary = StaffRole.find_by_name 'Missionary'
+  missionary.name = "Staff"
+  missionary.save!
+  
+  # add Alumni, Staff Alumni
+  alumni = @c4c.student_roles.find_or_create_by_name 'Alumni'
+  alumni.save!
+  staff_alumni = @c4c.staff_roles.find_or_create_by_name 'Staff Alumni'
+  staff_alumni.save!
 end
 
 def setup_directory_view
@@ -48,6 +61,7 @@ namespace :canada do
     clear_everything
     setup_ministries
     setup_directory_view
+    setup_roles
     puts "Done."
   end
 
