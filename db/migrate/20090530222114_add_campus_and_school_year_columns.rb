@@ -7,7 +7,7 @@ class AddCampusAndSchoolYearColumns < ActiveRecord::Migration
       :source_model => 'CampusInvolvement',
       :source_column => 'campus_id',
       :foreign_key => 'id'
-    Column.create! :title => 'SchoolYear',
+    Column.create! :title => 'School Year',
       :from_clause => 'SchoolYear',
       :select_clause => 'name',
       :source_model => 'CampusInvolvement',
@@ -16,6 +16,6 @@ class AddCampusAndSchoolYearColumns < ActiveRecord::Migration
   end
 
   def self.down
-    Column.delete_all "title in ('Campus','SchoolYear')"
+    Column.delete_all "title in ('Campus','School Year')"
   end
 end

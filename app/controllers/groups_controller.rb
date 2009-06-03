@@ -14,6 +14,16 @@ class GroupsController < ApplicationController
     end
   end
 
+  def join
+    respond_to do |format|
+      format.html do
+        layout = authorized?(:new, :people) ? 'manage' : 'application'
+        render :layout => layout
+      end
+      format.js
+    end
+  end
+  
   def show
     @ministry = @group.ministry
     respond_to do |format|

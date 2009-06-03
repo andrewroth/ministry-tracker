@@ -72,6 +72,8 @@ class Person < ActiveRecord::Base
   validates_presence_of _(:first_name)
   validates_presence_of _(:last_name), :on => :update
   # validates_presence_of _(:gender)
+  
+  validate :birth_date_is_in_the_past
 
   has_one :profile_picture, :class_name => "ProfilePicture", :foreign_key => _("person_id", :profile_picture)
   
@@ -312,5 +314,15 @@ end
       update_stamp
       self.created_at = Time.now
       self.created_by = 'MT'
+    end
+    
+  private
+
+    def birth_date_is_in_the_past
+      if !birth_date.nil?
+        if (Date.today - birth_date) < 0      
+          errors.add(:birth_date, 'should be in the past')
+        end
+      end
     end
 end  

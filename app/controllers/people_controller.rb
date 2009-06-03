@@ -242,7 +242,8 @@ class PeopleController < ApplicationController
   end
   
   def get_campuses
-    @campuses = College.find(:all, :conditions => {_(:state, :campus) => params[:state]})
+    state = State.find params[:state]
+    @campuses = state.try(:campuses) || []
   end
 
   # POST /people
@@ -441,6 +442,8 @@ class PeopleController < ApplicationController
   
   def change_view
     session[:view_id] = params[:view]
+    # Clear session[:order] since this view might not have the same columns
+    session[:order] = nil
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do
@@ -600,8 +603,8 @@ class PeopleController < ApplicationController
       else
         state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
       end
-      #@campuses = Campuses.find(:all, :conditions => {_(:state, :campus) => state}) if state.present?
-      @campuses = Campus.find_all_by_state_id(state.id) if state.present?      
+      state_model = State.find :first, :conditions => { _(:name, :state) => state }
+      @campuses = state_model.try(:campuses) || []
     end
     
     def get_view

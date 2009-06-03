@@ -1,12 +1,40 @@
 class GroupInvolvementsController < ApplicationController
+  
   def create
+    create_group_involvement
+    refresh_page
+  end
+  
+  def joingroup  
+    params[:type] = params[:group_involvement][:level]
+    params[:group_id] = params[:group_involvement][:group_id]
+    create_group_involvement
+    respond_to do |format|
+      format.js
+    end
+    #TODO:refresh appropriate content on join groups page, rather than refresh whole page
+  end
+  
+  def create_group_involvement
     # If the person is already in the group, find them. otherwise, create a new record
     @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
     @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
     @gi.level = params[:type]  # set the level of involvement
+    @gi.requested = params[:requested]
     @gi.save!
     @group = @gi.group
-    refresh_page
+  end
+  
+  def accept_request
+    GroupInvolvement.find(params[:id]).update_attribute(:requested, false)
+    render :template => 'dashboard/index'
+    #TODO:refresh the appropriate content on dashboard rather than refresh whole dashboard
+  end
+  
+  def decline_request
+    GroupInvolvement.delete(params[:id])
+    render :template => 'dashboard/index'
+    #TODO: refresh appropriate content on dashboard
   end
   
   def destroy

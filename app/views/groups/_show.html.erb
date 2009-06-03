@@ -55,7 +55,7 @@
 			<%- @group.group_involvements.sorted.each do |gi| 
 				if gi.level == level
 					person = gi.person
-					if person
+					if (person && gi.requested != true)
   					person.initialize_addresses(:current_address) if person.current_address.nil? -%>
   					<%= render :partial => 'groups/member', :locals => {:person => person} %>
   				<%- end -%>
