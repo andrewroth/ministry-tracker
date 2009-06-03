@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
     t.date    "end_date"
     t.boolean "admin"
     t.integer "ministry_role_id"
+    t.integer "responsible_person_id"
   end
 
   add_index "ministry_involvements", ["person_id"], :name => "index_ministry_involvements_on_person_id"
