@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :ministry_school_years
+
+  map.resources :campus_terms
+
+  map.resources :terms
+
   map.resources :correspondences, :only => [:index, :show, :destroy], :collection => { :processqueue => :get }, :member => { :rcpt => :get }
 
   map.resources :correspondence_types do |correspondence_types|
