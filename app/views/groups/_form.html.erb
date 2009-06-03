@@ -40,7 +40,7 @@
       		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
       		<tr><td>Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
-      		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES, :include_blank => true %></td></tr>
+      		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
   	    </table>
   	  </td>
   	</tr>
@@ -50,7 +50,7 @@
 		<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
 	 															:class => 'cancel'%>
 	<%- else -%>
-		<%= link_to_function 'cancel', "$('#address_form')fadeOut();$('#address').show()",
+		<%= link_to_function 'cancel', "$('#address_form').fadeOut();$('#address').show()",
 	 															:class => 'cancel'%>
 	<%- end -%>
 <%- end -%>
