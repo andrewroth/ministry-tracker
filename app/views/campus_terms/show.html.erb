@@ -1,0 +1,28 @@
+<p>
+  <b>Term:</b>
+  <%=h @campus_term.term_id %>
+</p>
+
+<p>
+  <b>Campus:</b>
+  <%=h @campus_term.campus_id %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%=h @campus_term.start %>
+</p>
+
+<p>
+  <b>End:</b>
+  <%=h @campus_term.end %>
+</p>
+
+<p>
+  <b>Verification date:</b>
+  <%=h @campus_term.verification_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_campus_term_path(@campus_term) %> |
+<%= link_to 'Back', campus_terms_path %>

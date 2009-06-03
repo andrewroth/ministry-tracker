@@ -1,0 +1,28 @@
+<h1>Listing campus_terms</h1>
+
+<table>
+  <tr>
+    <th>Term</th>
+    <th>Campus</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Verification date</th>
+  </tr>
+
+<% @campus_terms.each do |campus_term| %>
+  <tr>
+    <td><%=h campus_term.term_id %></td>
+    <td><%=h campus_term.campus_id %></td>
+    <td><%=h campus_term.start %></td>
+    <td><%=h campus_term.end %></td>
+    <td><%=h campus_term.verification_date %></td>
+    <td><%= link_to 'Show', campus_term %></td>
+    <td><%= link_to 'Edit', edit_campus_term_path(campus_term) %></td>
+    <td><%= link_to 'Destroy', campus_term, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New campus_term', new_campus_term_path %>
