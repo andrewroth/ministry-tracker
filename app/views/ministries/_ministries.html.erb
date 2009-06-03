@@ -142,7 +142,7 @@
     <div id="campus-panel"></div>
     <div id="edit-ministry" style="display:none">
     	<div id="ministry"><%= render :partial => 'ministries/form' %></div>
-      <div id="school-years"><%= render :partial => 'ministry_school_years/ministry_school_years', :locals => {:ministry => @ministry} %></div>
+      <div id="school-years"><%= render :partial => 'ministry_school_years/edit', :locals => {:ministry => @ministry} %></div>
     	<div id="campus-details"><%#= render :partial => 'campuses/campus', :locals => {:campus => @ministry.unique_campuses.first.campus} unless @ministry.unique_campuses.empty? %></div>
     </div>
 	</div>
