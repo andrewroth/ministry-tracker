@@ -75,7 +75,7 @@
 	<%- if @person.group_interests.count > 0 -%>
 		<h5 class="title">I'm Interested In</h5>
 		<%- @person.group_interests.each do |group| -%>
-			<%= link_to group.name, team_url(group), :class => 'norm' %> ( team )<br />
+			<%= link_to group.name, group_url(group), :class => 'norm' %> ( team )<br />
 		<%- end -%>	
 	<%- end -%>	
 </div>
