@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  default: 
+  start: 2009-06-02
+  end: 2009-06-02
+  school_year: 
+  verify_date_sent: 2009-06-02
+
+two:
+  name: MyString
+  default: 
+  start: 2009-06-02
+  end: 2009-06-02
+  school_year: 
+  verify_date_sent: 2009-06-02

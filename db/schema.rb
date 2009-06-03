@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090601172113) do
+ActiveRecord::Schema.define(:version => 20090602212901) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(:version => 20090601172113) do
   add_index "campus_involvements", ["person_id", "campus_id"], :name => "index_campus_involvements_on_person_id_and_campus_id", :unique => true
   add_index "campus_involvements", ["person_id"], :name => "index_campus_involvements_on_person_id"
 
+  create_table "campus_terms", :force => true do |t|
+    t.integer  "term_id"
+    t.integer  "campus_id"
+    t.date     "start"
+    t.date     "end"
+    t.date     "verify_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "campuses", :force => true do |t|
     t.string  "name"
     t.string  "address"
@@ -72,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20090601172113) do
     t.string  "type"
     t.string  "address2"
     t.string  "county"
+    t.string  "abbreviation"
   end
 
   add_index "campuses", ["county"], :name => "index_campuses_on_county"
@@ -315,6 +326,15 @@ ActiveRecord::Schema.define(:version => 20090601172113) do
 
   add_index "ministry_roles", ["ministry_id"], :name => "index_ministry_roles_on_ministry_id"
 
+  create_table "ministry_school_years", :force => true do |t|
+    t.integer  "ministry_id"
+    t.date     "create_next_year_at"
+    t.date     "start"
+    t.date     "end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "people", :force => true do |t|
     t.integer "user_id"
     t.string  "first_name"
@@ -433,6 +453,17 @@ ActiveRecord::Schema.define(:version => 20090601172113) do
 
   create_table "summer_projects", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "terms", :force => true do |t|
+    t.string   "name"
+    t.boolean  "default"
+    t.date     "start"
+    t.date     "end"
+    t.integer  "ministry_school_years_id"
+    t.date     "verify_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

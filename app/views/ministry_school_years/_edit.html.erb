@@ -1,0 +1,28 @@
+<h1>Editing ministry_school_year</h1>
+
+<% form_for(@ministry_school_year) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :ministry_id %><br />
+    <%= f.text_field :ministry_id %>
+  </p>
+  <p>
+    <%= f.label :create_next_year_at %><br />
+    <%= f.date_select :create_next_year_at %>
+  </p>
+  <p>
+    <%= f.label :start %><br />
+    <%= f.date_select :start %>
+  </p>
+  <p>
+    <%= f.label :end %><br />
+    <%= f.date_select :end %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @ministry_school_year %> |
+<%= link_to 'Back', ministry_school_years_path %>
