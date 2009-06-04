@@ -1,28 +1,29 @@
-<h1>Editing ministry_school_year</h1>
+<%# locals %>
+<%# ministry_school_year - The current MinistrySchoolYear we're editing %>
 
-<% form_for(@ministry_school_year) do |f| %>
-  <%= f.error_messages %>
 
-  <p>
-    <%= f.label :ministry_id %><br />
-    <%= f.text_field :ministry_id %>
-  </p>
-  <p>
-    <%= f.label :create_next_year_at %><br />
-    <%= f.date_select :create_next_year_at %>
-  </p>
-  <p>
-    <%= f.label :start %><br />
-    <%= f.date_select :start %>
-  </p>
-  <p>
-    <%= f.label :end %><br />
-    <%= f.date_select :end %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
+<% form_for ministry_school_year do |msyf| %>
+<table cellpadding="0" cellspacing="0">
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Start</td>
+      <td>End</td>
+      <td>Notify</td>
+      <td>Default</td>
+    </tr>
+  </thead>
+  <tbody id="school_terms">
+    <tr>
+      <% msyf.fields_for :terms do |tf| %>
+        <td><% tf.text_field :name %></td>
+        <td><% tf.calendar_date_select :start %></td>
+        <td><% tf.calendar_date_select :start %></td>
+        <td><% tf.calendar_date_select :start %></td>
+        <td><% tf.check_box :default %></td>
+      <% end %>
+    </tr>
+  </tbody>
+      
+</table>
 <% end %>
-
-<%= link_to 'Show', @ministry_school_year %> |
-<%= link_to 'Back', ministry_school_years_path %>
