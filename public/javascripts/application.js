@@ -76,3 +76,13 @@ function serialize_array(obj)
 
     return string;
 }
+
+function show_spinner() 
+{
+  $("#spinner").show();
+}
+
+function hide_spinner()
+{
+  $("#spinner").hide();
+}
