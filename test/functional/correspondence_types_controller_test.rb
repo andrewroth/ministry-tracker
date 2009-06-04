@@ -1,4 +1,5 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
+require 'correspondence_types_controller'
 
 class CorrespondenceTypesControllerTest < ActionController::TestCase
 

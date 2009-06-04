@@ -10,12 +10,14 @@ module Cmt
     :local_enabled => true,
 
     # Forces users to go through a longer process for validating accounts.
-    # If 
+    # Note used yet.
     :full_account_verification => true,
     
-    #Removes the options of specifying 'poor' timeslots in timetable
+    # Removes the options of specifying 'poor' timeslots in timetable
     :hide_poor_status_in_scheduler => true,
     
+    # Default ministry name
+    :default_ministry_name => 'Campus for Christ'
   }
 end
 
