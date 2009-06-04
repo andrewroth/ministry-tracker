@@ -1,0 +1,35 @@
+<%# locals %>
+<%# ministry - required - Ministry object - The ministry to add the year to %>
+
+<% @ministry_school_year ||= MinistrySchoolYear.new %>
+
+<div id="title">No school year found</div>
+<p>Would you like to create one?</p>
+
+<div id="test"></div>
+
+<% form_for @ministry_school_year do |f| %>
+<div>
+  <%= f.error_messages %>
+  <span>
+    <%= f.label :start %><br />
+    <%= calendar_date_select_tag 'test' %>
+  </span>
+
+  <span>
+    <%= f.label :end %><br />
+    <%#= f.calendar_date_select :end %>
+  </span>
+  </div>
+  
+  <%= button_to_remote "Create",
+    :url => { 
+      :controller => 'ministry_school_year',
+      :action => 'create'
+    },
+    :before => 'show_spinner();',
+    :complete => 'hide_spinner();' %>
+    
+</div>
+<% end %>
+
