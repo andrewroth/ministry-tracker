@@ -61,7 +61,7 @@ class Person < ActiveRecord::Base
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
 
-  def graduation_date() person_years.length > 1 ? person_years.first.grad_date : nil end
+  def graduation_date() cim_hrdb_person_year.try(:grad_date) end
 
     # Attended and Unknown Status are not mapped
     ASSIGNMENTS_TO_ROLE = {
@@ -90,7 +90,10 @@ class Person < ActiveRecord::Base
           # ministry involvement
           role = MinistryRole.find_by_name ASSIGNMENTS_TO_ROLE[assignment]
           if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
-            mi = ministry_involvements.find_or_create_by_ministry_id_and_ministry_role_id c4c.id, role.id
+            mi_atts = { :ministry_role_id => role.id, :ministry_id => c4c.id, 
+              :person_id => self.id }
+            mi = MinistryInvolvement.find :first, :conditions => mi_atts
+            mi ||= ministry_involvements.create!(mi_atts)
             mi.admin = cim_hrdb_admins.count > 0
             mi.save!
           end

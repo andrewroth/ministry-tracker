@@ -2,6 +2,7 @@ def clear_everything
   # get rid of the data that comes with the core MT
   Ministry.delete_all
   MinistryInvolvement.delete_all
+  MinistryCampus.delete_all
 end
 
 def setup_ministries
@@ -12,9 +13,11 @@ end
 
 def setup_roles
   # rename missionary to staff
-  missionary = StaffRole.find_by_name 'Missionary'
-  missionary.name = "Staff"
-  missionary.save!
+  missionary = StaffRole.find :first, :conditions => { :name => 'Missionary' }
+  if missionary
+    missionary.name = "Staff"
+    missionary.save!
+  end
   
   # add Alumni, Staff Alumni
   alumni = @c4c.student_roles.find_or_create_by_name 'Alumni'
@@ -29,6 +32,17 @@ def setup_directory_view
   return unless column
   column.view_columns.first.delete
   column.delete
+end
+
+def setup_campuses
+  # I've been unable to get the mappings.yml working properly after a migrate:reset,
+  # so I'm resorting to pure sql
+  ActiveRecord::Base.establish_connection "ciministry_#{Rails.env}"
+  campuses = Campus.find_by_sql "select c.campus_shortDesc, c.campus_id from cim_hrdb_campus c left join cim_hrdb_province p on c.province_id = p.province_id left join cim_hrdb_country ct on ct.country_id = p.country_id where country_shortDesc = 'CAN';"
+  ActiveRecord::Base.establish_connection Rails.env
+  for c in campuses
+    @c4c.ministry_campuses.create! :campus_id => c.campus_id
+  end
 end
 
 def theyre_really_sure
@@ -62,6 +76,7 @@ namespace :canada do
     setup_ministries
     setup_directory_view
     setup_roles
+    setup_campuses
     puts "Done."
   end
 
