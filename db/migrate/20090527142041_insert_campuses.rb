@@ -7,8 +7,11 @@ class InsertCampuses < ActiveRecord::Migration
     { :name => 'University of Saskatchewan', :state => 'Saskatchewan'}]
     
   def self.up
-    Campus.delete_all
-    
+    if Campus.count > 0
+      puts "Skipping inserting initial campuses because there already are some."
+      return
+    end
+
     to_create = []
     for c in CAMPUSES do
       state = State.find_by_name(c[:state])
