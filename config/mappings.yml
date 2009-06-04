@@ -87,6 +87,7 @@ cim_hrdb_current_address:
   phone: person_local_phone
   email: person_email
   alternate_phone: cell_phone
+  state_id: province_id
  
 cim_hrdb_permanent_address:
   id: person_id
@@ -94,6 +95,8 @@ cim_hrdb_permanent_address:
   city: person_city
   zip: person_pc
   phone: person_phone
+  email: person_email
+  state_id: province_id
  
 cim_hrdb_admin:
   id: admin_id

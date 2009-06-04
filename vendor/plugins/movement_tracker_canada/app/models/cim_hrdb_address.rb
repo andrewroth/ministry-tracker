@@ -5,6 +5,11 @@ class CimHrdbAddress < ActiveRecord::Base
   belongs_to :province, :class_name => 'State'
   belongs_to :country
   belongs_to :title_bt, :class_name => 'Title', :foreign_key => :title_id
+  belongs_to :person_extra_ref, :class_name => 'PersonExtra'
+
+  def person_extra()
+    @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
+  end
 
   def state
     province ? province.name : ''
@@ -27,6 +32,20 @@ class CimHrdbAddress < ActiveRecord::Base
     out += city.to_s 
     out += ", "  unless city.to_s.empty?
     out += state.to_s + " " + zip.to_s
+  end
+
+  def start_date() person_extra.send("#{extra_prefix}_start_date") end
+  def start_date=(v) person_extra.send("#{extra_prefix}_start_date=", v) end
+  def end_date() person_extra.send("#{extra_prefix}_end_date") end
+  def end_date=(v) person_extra.send("#{extra_prefix}_end_date=", v) end
+  def alternate_phone() person_extra.send("#{extra_prefix}_alternate_phone") end
+  def alternate_phone=(v) person_extra.send("#{extra_prefix}_alternate_phone=", v) end
+  def dorm() person_extra.send("#{extra_prefix}_dorm") end
+  def dorm=(v) person_extra.send("#{extra_prefix}_dorm=", v) end
+  def room() person_extra.send("#{extra_prefix}_room") end
+  def room=(v) person_extra.send("#{extra_prefix}_room=", v) end
+  def after_save
+    person_extra.save!
   end
 
 end

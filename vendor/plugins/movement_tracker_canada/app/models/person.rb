@@ -1,7 +1,7 @@
 require_model 'person'
 
 class Person < ActiveRecord::Base
-  doesnt_implement_attributes :major => '', :minor => '', :url => '', :staff_notes => '', :updated_at => '', :updated_by => ''
+#  doesnt_implement_attributes :major => '', :minor => '', :url => '', :staff_notes => '', :updated_at => '', :updated_by => ''
 
   has_many :person_years, :foreign_key => _(:id, :year_in_school)
   has_many :year_in_schools, :through => :person_years
@@ -18,6 +18,27 @@ class Person < ActiveRecord::Base
 
   has_one :cim_hrdb_staff
   has_one :cim_hrdb_person_year
+
+  has_one :person_extra_ref, :class_name => 'PersonExtra'
+
+  def person_extra() 
+    @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
+  end
+  def major() person_extra.major end 
+  def major=(val) person_extra.major = val end 
+  def minor() person_extra.minor end 
+  def minor=(val) person_extra.minor = val end 
+  def url() person_extra.major end 
+  def url=(val) person_extra.url = val end 
+  def staff_notes() person_extra.staff_notes end 
+  def staff_notes=(val) person_extra.staff_notes = val end 
+  def updated_at() person_extra.updated_at end 
+  def updated_at=(val) person_extra.updated_at = val end 
+  def updated_by() person_extra.updated_by end 
+  def updated_by=(val) person_extra.updated_by = val end 
+  def after_save
+    person_extra.save!
+  end
 
   def user
     users.first
