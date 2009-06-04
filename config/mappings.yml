@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year
 
 tables:
   user: accountadmin_viewer
@@ -15,16 +15,18 @@ tables:
   access: cim_hrdb_access
   campus: cim_hrdb_campus
   person_year: cim_hrdb_person_year
-  #year_in_school: cim_hrdb_year_in_school
   school_year: cim_hrdb_year_in_school
   assignment: cim_hrdb_assignment
   assignmentstatus: cim_hrdb_assignmentstatus
-  #province: cim_hrdb_province
   country: cim_hrdb_country
   title: cim_hrdb_title
   emerg: cim_hrdb_emerg
   gender: cim_hrdb_gender
   state: cim_hrdb_province
+  cim_hrdb_admin: cim_hrdb_admin
+  cim_hrdb_priv: cim_hrdb_priv
+  cim_hrdb_staff: cim_hrdb_staff
+  cim_hrdb_person_year: cim_hrdb_person_year
 
 # ciministry
 #year_in_school:
@@ -92,3 +94,13 @@ cim_hrdb_permanent_address:
   zip: person_pc
   phone: person_phone
  
+cim_hrdb_admin:
+  id: admin_id
+
+cim_hrdb_priv:
+  id: priv_id
+cim_hrdb_staff:
+  id: staff_id
+cim_hrdb_person_year:
+  id: year_desc
+
