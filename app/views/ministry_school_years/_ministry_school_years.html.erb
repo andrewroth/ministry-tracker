@@ -1,0 +1,29 @@
+<%# locals %>
+<%# ministry - required - Ministry object %>
+
+<% ministry_school_year ||= ministry_school_years || MinistrySchoolYear.findActive(ministry) %>
+
+<div class="title">
+  Year 
+  <%= link_to_remote "<", 
+                     :action => :show, 
+                     :locals => {
+                        :ministry_school_year => ministry_school_year.previous
+                        } if ministry_school_year %>
+  
+  <span id="current_school_year">
+    <%=h ministry_school_year.name if ministry_school_year %>
+  </span>
+
+  <%= link_to_remote ">",
+                     :action => :show, 
+                     :locals => { 
+                        :ministry_school_year => ministry_school_year.next 
+                        } if ministry_school_year %>
+</div>
+
+<div>
+  <%# Render one or the other %>
+  <%= render :partial => 'ministry_school_years/new', :locals => {:ministry => ministry } unless ministry_school_year %>
+  <%= render :partial => 'ministry_school_years/edit', :locals => {:ministry_school_year => ministry_school_year } if ministry_school_year %>
+</div>
