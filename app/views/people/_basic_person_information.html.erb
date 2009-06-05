@@ -38,4 +38,10 @@
 		<th>Website</th>
 		<td><%= f.text_field :url %></td>
 	</tr>
+	<%- fields_for user do |uf| -%>
+  <tr>
+    <th>Facebook&trade;</th>
+	  <td><%= uf.text_field :facebook_username %></td>
+	</tr>
+	<%- end if user -%>  
 </table>

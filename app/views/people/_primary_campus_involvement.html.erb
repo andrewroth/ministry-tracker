@@ -21,11 +21,5 @@
 			<th>Minor</th>
 			<td><%= cif.text_field :minor %></td>
 		</tr>
-	  	<%- fields_for user do |uf| -%>
-	  		<tr>
-				<th>Facebook&trade;</th>
-				<td><%= uf.text_field :facebook_username %></td>
-			</tr>
-	  	<%- end if user -%>
 	</table>
 <%- end -%>
