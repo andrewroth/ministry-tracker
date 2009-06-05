@@ -1,0 +1,31 @@
+<%- fields_for :primary_campus_involvement do |cif| -%>
+	<table class="halftab">	
+  		<tr>
+			<th>Year in School</th>
+			<td><%= cif.select :school_year_id, school_year_options %></td>
+		</tr>
+  		
+		<tr>
+			<th>Graduation Date</th>
+			<td class="date">
+				<%= cif.date_select(:graduation_date, date_options(1980)) %>
+			</td>
+		</tr>
+	  	
+		<tr>
+			<th>Major</th>
+			<td><%= cif.text_field :major %></td>
+		</tr>
+  	
+		<tr>
+			<th>Minor</th>
+			<td><%= cif.text_field :minor %></td>
+		</tr>
+	  	<%- fields_for user do |uf| -%>
+	  		<tr>
+				<th>Facebook&trade;</th>
+				<td><%= uf.text_field :facebook_username %></td>
+			</tr>
+	  	<%- end if user -%>
+	</table>
+<%- end -%>

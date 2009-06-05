@@ -159,26 +159,25 @@ class ApplicationController < ActionController::Base
     end
 
     def get_possible_responsible_people
-      @ministry = get_ministry
-      mi = @ministry.ministry_involvements
+      @possible_responsible_people = []      
+      get_ministry_involvement(@ministry)
       higher_mi_array = []
-      mi.each do |cur_mi|
-        if cur_mi.ministry_role.position < @person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.position 
+      return unless @ministry_involvement
+      your_ministry_involvement_position = @ministry_involvement.ministry_role.position
+      @ministry.ministry_involvements.each do |cur_mi|
+        if cur_mi.ministry_role.position < your_ministry_involvement_position
           higher_mi_array << cur_mi
         end
       end
-      @possible_responsible_people = []
       higher_mi_array.each do |h_mi|
         person = h_mi.person
+        
         #This part here relies on that idea that each person only has one campus_involvements. Once primary_campus_invovlement is ready, use that instead
         #~~~~~~~
-        unless person.campus_involvements.find(:first).nil?
-          unless @person.campus_involvements.find(:first).campus.nil?
-            if person.campus_involvements.find(:first).campus == @person.campus_involvements.find(:first).campus
-        #~~~~~~~
-              @possible_responsible_people << person
-            end
-          end
+        if person.campus_involvements && person.campus_involvements.count > 0 && person.campus_involvements.first.campus &&
+          person.campus_involvements.first.campus == @person.campus_involvements.first.campus
+          
+          @possible_responsible_people << person
         end
       end
     end
