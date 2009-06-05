@@ -231,7 +231,7 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
-    get_possible_responsible_people
+    #get_possible_responsible_people
     setup_vars
     setup_campuses
     set_states
@@ -313,7 +313,7 @@ class PeopleController < ApplicationController
   def update
     #throw params.inspect
     set_states
-    get_people_responsible_for
+    #get_people_responsible_for
     get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
     if params[:responsible_person_id]
