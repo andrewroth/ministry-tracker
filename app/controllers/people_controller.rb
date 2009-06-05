@@ -11,6 +11,8 @@ class PeopleController < ApplicationController
   include PersonMethods
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
+  append_before_filter  :set_use_address2
+
   # GET /people
   # GET /people.xml
   def index
@@ -627,4 +629,7 @@ class PeopleController < ApplicationController
       @campuses = state.try(:campuses) || []
     end
     
+    def set_use_address2
+      @use_address2 = !Cmt::CONFIG[:disable_address2]
+    end
 end

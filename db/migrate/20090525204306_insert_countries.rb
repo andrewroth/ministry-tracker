@@ -6,7 +6,12 @@ class InsertCountries < ActiveRecord::Migration
   ]
 
   def self.up
-    Country.delete_all()
+    if Country.count > 0
+      puts "Skipping initial country creation, since you already have some."
+      return
+    end
+
+    Country.delete_all
     for c in COUNTRIES do
       Country.create(:country => c[0], :code => c[1])
     end

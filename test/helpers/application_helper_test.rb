@@ -9,7 +9,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
   def test_date_options
-    assert_equal({:include_blank => true, :order => [:month, :day, :year], :start_year => 2005}, date_options(2005))
+    assert_equal({:include_blank => true, :start_year => 2005}, date_options(2005))
   end
   
   def test_times
