@@ -44,23 +44,30 @@
 		<th>Room:</th>
 		<td><%= text_field :current_address, :room %></td>
 	</tr>
-
-	<tr>
-		<th>&nbsp;</th>
-		<td></td>
-	</tr>
-
 	<tr>
 		<th>Valid from</th>
 		<td class="date">
-			<%= date_select :current_address, :start_date, date_options %>
+			<%=
+				start_year = Date.today.year - 5
+  	        	end_year = start_year + 5
+				date_select :current_address, :start_date, {
+	        		:include_blank => true,
+	        		:start_year => start_year,
+	        		:end_year => end_year }
+			%>
 		</td>
 	</tr>
-
 	<tr>
 		<th>Valid till</th>
 		<td class="date">
-			<%= date_select :current_address, :end_date, date_options %>
+			<%=
+				start_year = Date.today.year - 5
+  	        	end_year = start_year + 5
+				date_select :current_address, :end_date, {
+	        		:include_blank => true,
+	        		:start_year => start_year,
+	        		:end_year => end_year }
+			%>
 		</td>
 	</tr>
 </table>
