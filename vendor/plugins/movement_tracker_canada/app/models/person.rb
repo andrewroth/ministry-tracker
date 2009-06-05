@@ -56,7 +56,24 @@ class Person < ActiveRecord::Base
     throw "not implemented"
   end
 
-  def birth_date() emerg.emerg_birthdate if emerg end
+  def get_emerg()
+    return @emerg if @emerg
+    @emerg = emerg
+    return @emerg if @emerg
+    # required fields are a bit of a pain
+    @emerg = Emerg.create!(:emerg_birthdate => Time.now, :emerg_contact2Mobile => '', :emerg_contact2Rship => '', :emerg_contact2Home => '', :emerg_passportExpiry => Time.now, :emerg_contact2Work => '', :emerg_contact2Email => '', :emerg_contact2Name => '', :person_id => id)
+    @emerg.emerg_passportExpiry = nil
+    @emerg.save!
+    return @emerg
+  end
+  def birth_date() get_emerg.emerg_birthdate; end
+  def birth_date=(v) @save_emerg = true; emerg.emerg_birthdate end
+  def after_save
+    if @save_emerg
+      get_emerg.save!
+      @save_emerg = false
+    end
+  end
 
   def gender() gender_ ? gender_.desc : '???' end
 
@@ -130,6 +147,16 @@ class Person < ActiveRecord::Base
         end
       end
       true
+    end
+
+    MockAggregation = Struct.new(:klass)
+    def self.reflect_on_aggregation(name)
+      if [:birth_date].include? name
+        agg = MockAggregation.new
+        agg.klass = Date
+        return agg
+      end
+      super
     end
 
 end

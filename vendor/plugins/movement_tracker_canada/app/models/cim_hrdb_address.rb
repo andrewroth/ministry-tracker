@@ -5,7 +5,8 @@ class CimHrdbAddress < ActiveRecord::Base
   belongs_to :province, :class_name => 'State'
   belongs_to :country
   belongs_to :title_bt, :class_name => 'Title', :foreign_key => :title_id
-  belongs_to :person_extra_ref, :class_name => 'PersonExtra'
+  has_one :person_extra_ref, :class_name => 'PersonExtra', 
+    :foreign_key => 'person_id'
 
   def person_extra()
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
@@ -35,7 +36,9 @@ class CimHrdbAddress < ActiveRecord::Base
   end
 
   def start_date() person_extra.send("#{extra_prefix}_start_date") end
-  def start_date=(v) person_extra.send("#{extra_prefix}_start_date=", v) end
+  def start_date=(v)
+    person_extra.send("#{extra_prefix}_start_date=", v)
+  end
   def end_date() person_extra.send("#{extra_prefix}_end_date") end
   def end_date=(v) person_extra.send("#{extra_prefix}_end_date=", v) end
   def alternate_phone() person_extra.send("#{extra_prefix}_alternate_phone") end
@@ -48,4 +51,13 @@ class CimHrdbAddress < ActiveRecord::Base
     person_extra.save!
   end
 
+  MockAggregation = Struct.new(:klass)
+  def self.reflect_on_aggregation(name)
+    if [:start_date, :end_date].include? name
+      agg = MockAggregation.new
+      agg.klass = Date
+      return agg
+    end
+    super
+  end
 end
