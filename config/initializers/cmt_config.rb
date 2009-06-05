@@ -17,7 +17,12 @@ module Cmt
     :hide_poor_status_in_scheduler => true,
     
     # Default ministry name
-    :default_ministry_name => 'Campus for Christ'
+    :default_ministry_name => 'Campus for Christ',
+    
+    # Default Country - When set, the campus filter is disabled and all 
+    # campuses from this country are displayed
+    # Set to nil(:campus_scope_country => nil) to disable.
+    :campus_scope_country => 'Canada'
   }
 end
 
