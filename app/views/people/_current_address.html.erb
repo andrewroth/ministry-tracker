@@ -1,0 +1,66 @@
+<table class="halftab">
+	<tr>
+		<th>Phone</th>
+		<td><%= text_field :current_address, :phone %></td>
+	</tr>
+
+	<tr>
+		<th>Alt Phone</th>
+		<td><%= text_field :current_address, :alternate_phone %></td>
+	</tr>
+
+	<tr>
+		<th>Address 1:</th>
+		<td><%= text_field :current_address, :address1 %></td>
+	</tr>
+
+	<tr>
+		<th>Address 2:</th>
+		<td><%= text_field :current_address, :address2 %></td>
+	</tr>
+
+	<tr>
+		<th>City: </th>
+		<td><%= text_field :current_address, :city %></td>
+	</tr>
+
+	<tr>
+		<th>State:</th>
+		<td><%= text_field :current_address, :state %></td>
+	</tr>
+
+	<tr>
+		<th>Zip:</th>
+		<td><%= text_field :current_address, :zip %></td>
+	</tr>
+
+	<%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
+	<tr>
+		<th>Dorm: </th>
+		<td><%= select :current_address, :dorm, dorm_selection %></td>
+	</tr>
+
+	<tr>
+		<th>Room:</th>
+		<td><%= text_field :current_address, :room %></td>
+	</tr>
+
+	<tr>
+		<th>&nbsp;</th>
+		<td></td>
+	</tr>
+
+	<tr>
+		<th>Valid from</th>
+		<td class="date">
+			<%= date_select :current_address, :start_date, date_options %>
+		</td>
+	</tr>
+
+	<tr>
+		<th>Valid till</th>
+		<td class="date">
+			<%= date_select :current_address, :end_date, date_options %>
+		</td>
+	</tr>
+</table>
