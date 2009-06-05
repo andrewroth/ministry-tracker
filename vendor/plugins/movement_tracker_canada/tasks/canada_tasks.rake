@@ -80,11 +80,30 @@ namespace :canada do
     puts "Done."
   end
 
+  desc "Resets the CMT database, then run the canada task to set it up for the cim_hrdb"
   task :reset do
     return unless theyre_really_sure
     switch_to_core
     Rake::Task["db:migrate:reset"].invoke
     switch_to_emu
     Rake::Task["canada:setup"].invoke
+  end
+
+  desc "Imports all Canadian cim_hrdb assignments to a corresponding ministry/campus involvment."
+  task :import => :environment do
+    total = Person.count
+    ten_percent = total / 10
+    i = j = 0
+    for p in Person.all(:include => :assignments)
+      # give some visual indication of how it's going
+      i += 1; j += 1
+      if j > ten_percent
+        puts "#{(i.to_f / total.to_f * 100).to_i}%"
+        j = 0
+      end
+
+      p.map_cim_hrdb_to_mt
+    end
+    puts "100%"
   end
 end
