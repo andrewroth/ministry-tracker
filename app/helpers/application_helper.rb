@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def date_options(year = Time.now.year - 5)
-    {:include_blank => true, :order => [:month, :day, :year], :start_year => year}
+    {:include_blank => true, :start_year => year}
   end
   
   def spinner(id='')
@@ -70,8 +70,8 @@ module ApplicationHelper
                   $(item).val('');
               }
           </script>
-          <a class="button" href="#" id="pick_date_#{name}"><img src="/images/silk/calendar_view_day.png" /></a>
-          <a class="button" href="javascript:clear_date('#{name}');"><img src="/images/silk/cross.png" /></a>
+          <a class="button" href="#" id="pick_date_#{name}">#{image_tag "silk/calendar_view_day.png"}</a>
+          <a class="button" href="javascript:clear_date('#{name}');">#{image_tag "silk/cross.png"}</a>
           <script type="text/javascript">
             Calendar.setup(
               {
