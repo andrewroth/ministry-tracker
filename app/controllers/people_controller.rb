@@ -12,7 +12,7 @@ class PeopleController < ApplicationController
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
-
+  
   # GET /people
   # GET /people.xml
   def index
@@ -508,7 +508,43 @@ class PeopleController < ApplicationController
   end
 
   private
-  
+    
+    def get_people_responsible_for
+      @people_responsible_for = @person.people_responsible_for
+    end
+
+    def get_possible_responsible_people
+      @possible_responsible_people = []
+      
+      # pull values we'll need
+      @most_recent_campus_involvement = @person.most_recent_involvement
+      @most_recent_ministry = @most_recent_campus_involvement.ministry
+      @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
+      
+      # sanity check
+      return unless @most_recent_campus_involvement && @most_recent_ministry_involvement && @most_recent_ministry
+      
+      # find my position
+      persons_ministry_involvement_position = @most_recent_ministry_involvement.ministry_role.position
+      
+      # find everyone in this ministry with a higher access
+      higher_mi_array = []
+      @most_recent_ministry.ministry_involvements.each do |cur_mi|
+        if cur_mi.ministry_role.position < persons_ministry_involvement_position
+          higher_mi_array << cur_mi
+        end
+      end
+      
+      # only show people in your campus
+      higher_mi_array.each do |h_mi|
+        person = h_mi.person
+        
+        if person.campus_involvements.find_by_campus_id @most_recent_campus_involvement.campus.id
+          @possible_responsible_people << person
+        end
+      end
+    end
+    
     def campus_condition
       "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
     end
