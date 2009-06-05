@@ -314,11 +314,15 @@ class PeopleController < ApplicationController
     #throw params.inspect
     set_states
     get_people_responsible_for
-    get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
     if params[:responsible_person_id]
-      @ministry_involvement.responsible_person = Person.find(params[:responsible_person_id])
-      @ministry_involvement.save
+      #pulls values to needed for most_recent_ministry_involvement to be uses
+      @most_recent_campus_involvement = @person.most_recent_involvement
+      @most_recent_ministry = @most_recent_campus_involvement.ministry
+      @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
+      
+      @most_recent_ministry_involvement.responsible_person = Person.find(params[:responsible_person_id])
+      @most_recent_ministry_involvement.save
     end
     if params[:current_address]
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
@@ -518,11 +522,16 @@ class PeopleController < ApplicationController
       
       # pull values we'll need
       @most_recent_campus_involvement = @person.most_recent_involvement
+      
+      #Check if there even has been a campus_involvement
+      return unless @most_recent_campus_involvement
+      
+      #continue pulling values
       @most_recent_ministry = @most_recent_campus_involvement.ministry
       @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
       
       # sanity check
-      return unless @most_recent_campus_involvement && @most_recent_ministry_involvement && @most_recent_ministry
+      return unless  @most_recent_ministry_involvement && @most_recent_ministry
       
       # find my position
       persons_ministry_involvement_position = @most_recent_ministry_involvement.ministry_role.position
