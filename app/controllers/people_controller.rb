@@ -615,13 +615,19 @@ class PeopleController < ApplicationController
     
     def setup_campuses
       @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-      if params[:state].present?
-        state = params[:state]
+      # If the Country is set in config, don't filter by states but get campuses from the country
+      if Cmt::CONFIG[:campus_scope_country]        
+        @country = Country.find_by_country(Cmt::CONFIG[:campus_scope_country])
+        @campuses = @country.states.collect{|s| s.campuses}.flatten
       else
-        state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
-      end
-      state_model = State.find :first, :conditions => { _(:name, :state) => state }
-      @campuses = state_model.try(:campuses) || []
+        if params[:state].present?
+          state = params[:state]
+        else
+          state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
+        end
+        state_model = State.find :first, :conditions => { _(:name, :state) => state }
+        @campuses = state_model.try(:campuses) || []        
+      end      
     end
     
     def get_view
