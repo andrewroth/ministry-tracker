@@ -80,9 +80,11 @@
 		<tr><th>Phone</th><td><%= text_field :current_address, :phone %></td></tr>
 		<tr><th>Alt Phone</th><td><%= text_field :current_address, :alternate_phone %></td></tr>
 		<tr><th>Address 1:</th><td><%= text_field :current_address, :address1 %></td></tr>
-		<tr><th>Address 2:</th> <td><%= text_field :current_address, :address2 %></td></tr>
+		<% if @use_address2 -%>
+  		<tr><th>Address 2:</th> <td><%= text_field :current_address, :address2 %></td></tr>
+		<% end -%>
 		<tr><th>City: </th><td><%= text_field :current_address, :city %></td></tr>
-		<tr><th>State:</th> <td><%= text_field :current_address, :state %></td></tr>
+		<tr><th>State:</th> <td><%= collection_select :current_address, :state_id, @states, 'id','name' %></td></tr>
 		<tr><th>Zip:</th> <Td><%= text_field :current_address, :zip %></td></tr>
 		<%- dorms = @dorms.empty? ? [] : @dorms.collect {|d| d.name }.insert(0, '') -%>
 		<tr><th>Dorm: </th><td><%= select :current_address, :dorm, dorms %></td></tr>
@@ -107,9 +109,11 @@
 		<table class="halftab">
 		<tr><th>Phone</th><td><%= text_field :perm_address, :phone %></td></tr>
 		<tr><th>Address 1:</th><td><%= text_field :perm_address, :address1 %></td></tr>
+		<% if @use_address2 -%>
 		<tr><th>Address 2:</th> <td><%= text_field :perm_address, :address2 %></td></tr>
+		<% end -%>
 		<tr><th>City: </th><td><%= text_field :perm_address, :city %></td></tr>
-		<tr><th>State:</th> <td><%= text_field :perm_address, :state %></td></tr>
+    <tr><th>State:</th> <td><%= collection_select :perm_address, :state_id, @states, 'id','name' %></td></tr>
 		<tr><th>Zip:</th> <Td><%= text_field :perm_address, :zip %></td></tr>
 		</table>
 		</td>

@@ -1,3 +1,13 @@
+namespace :cmt do
+  namespace :views do
+    desc "rebuilds all views in the CMT"
+    task :rebuild => :environment do
+      rebuilt = View.all.each { |v| v.build_query_parts! }
+      puts "Rebuilt #{rebuilt.length} views"
+    end
+  end
+end
+
 task :people => :environment do
   File.open('lib/tasks/people.csv') do |f|
     f.gets
