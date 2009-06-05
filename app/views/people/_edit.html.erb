@@ -19,7 +19,7 @@
     	</table>
   	<%- end -%>
   	</td>
-	</tr>
+	</tr>s
   </table>
   
     
@@ -38,13 +38,20 @@
   	        end_year = start_year - 100
     	      f.date_select :birth_date, {
     	        :include_blank => true,
-    	        :order => [:month, :day, :year],
+    	        #:order => [:month, :day, :year],
     	        :start_year => start_year,
     	        :end_year => end_year }
           %>
     	  </td>
     	</tr>
     	<tr><th>Gender</th><td><%= f.select :gender, [['Male', 1],['Female', 0]], {}, :selected => @person.gender %></td></tr>
+	
+      <tr><th>Responsible Person</th><td>
+        <%if @people_in_ministry_campus %>
+          <%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %>
+        <% end %>
+	</td></tr>
+	  
     	<tr><th>&nbsp;</th><td>&nbsp;</td>	</tr>
     	</table>
   	</td>
@@ -80,9 +87,11 @@
 		<tr><th>Phone</th><td><%= text_field :current_address, :phone %></td></tr>
 		<tr><th>Alt Phone</th><td><%= text_field :current_address, :alternate_phone %></td></tr>
 		<tr><th>Address 1:</th><td><%= text_field :current_address, :address1 %></td></tr>
-		<tr><th>Address 2:</th> <td><%= text_field :current_address, :address2 %></td></tr>
+		<% if @use_address2 -%>
+  		<tr><th>Address 2:</th> <td><%= text_field :current_address, :address2 %></td></tr>
+		<% end -%>
 		<tr><th>City: </th><td><%= text_field :current_address, :city %></td></tr>
-		<tr><th>State:</th> <td><%= text_field :current_address, :state %></td></tr>
+		<tr><th>State:</th> <td><%= collection_select :current_address, :state_id, @states, 'id','name' %></td></tr>
 		<tr><th>Zip:</th> <Td><%= text_field :current_address, :zip %></td></tr>
 		<%- dorms = @dorms.empty? ? [] : @dorms.collect {|d| d.name }.insert(0, '') -%>
 		<tr><th>Dorm: </th><td><%= select :current_address, :dorm, dorms %></td></tr>
@@ -107,9 +116,11 @@
 		<table class="halftab">
 		<tr><th>Phone</th><td><%= text_field :perm_address, :phone %></td></tr>
 		<tr><th>Address 1:</th><td><%= text_field :perm_address, :address1 %></td></tr>
+		<% if @use_address2 -%>
 		<tr><th>Address 2:</th> <td><%= text_field :perm_address, :address2 %></td></tr>
+		<% end -%>
 		<tr><th>City: </th><td><%= text_field :perm_address, :city %></td></tr>
-		<tr><th>State:</th> <td><%= text_field :perm_address, :state %></td></tr>
+    <tr><th>State:</th> <td><%= collection_select :perm_address, :state_id, @states, 'id','name' %></td></tr>
 		<tr><th>Zip:</th> <Td><%= text_field :perm_address, :zip %></td></tr>
 		</table>
 		</td>

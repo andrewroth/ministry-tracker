@@ -21,6 +21,17 @@
       	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Edit Information" to link your Facebook Account' %></td>
       	</tr>
       <%- end -%>
+      
+      <tr><th>People Responsible For</th><td>
+        <%- if @people_responsible_for -%>
+          <%- @people_responsible_for.each do |person| -%>
+            <%= link_to person.full_name, person_url(person.id) %>
+            <br>
+          <%- end -%>
+        <%- end -%>
+      </td></tr>
+      
+      
 	  </table>
 	</td>
 	
@@ -32,6 +43,12 @@
     	<tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
     	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
     	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
+	<tr><th>Responsible Person<th><td> 
+    <% if @person.responsible_person %>
+	    <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
+    <% end %>
+	</td></tr>
+	
     	<%- if !@person.url.blank?
     	      desc, url = parse_url(@person.url) -%>
     	<tr><th>Website</th><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>

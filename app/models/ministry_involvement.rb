@@ -6,6 +6,7 @@ class MinistryInvolvement < ActiveRecord::Base
     index _(:person_id)
   end
   
+  belongs_to :responsible_person, :class_name => "Person"
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   belongs_to :ministry
   belongs_to :ministry_role, :class_name => "MinistryRole", :foreign_key => _("ministry_role_id")
