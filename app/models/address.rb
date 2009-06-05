@@ -15,6 +15,17 @@ class Address < ActiveRecord::Base
     out += state.to_s + " " + zip.to_s
   end
   
+  def state_obj
+    State.find :first, :conditions => [ 
+      "#{State.table_name}.#{_(:name, :state)} = ? OR #{State.table_name}.#{_(:abbreviation, :state)} = ?", 
+      state, state
+    ]
+  end
+
+  def state_id
+    state_obj.try(:id)
+  end
+
   def mailing_one_line
     line = mailing.sub('<br />', ', ').strip
     return line[0..-2] if line.last == ','
