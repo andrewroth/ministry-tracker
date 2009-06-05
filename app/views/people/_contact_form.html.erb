@@ -4,10 +4,12 @@
 		<td>Address 1: </td>
 		<td><%= text_field :current_address, :address1 %></td>
 	</tr>
+	<% if @use_address2 -%>
 	<tr>
 		<td>Address 2: </td>
 		<td><%= text_field :current_address, :address2 %></td>
 	</tr>
+	<% end -%>
 	<tr>
 		<td>City: </td>
 		<td><%= text_field :current_address, :city %></td>

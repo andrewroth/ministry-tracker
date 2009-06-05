@@ -17,7 +17,10 @@ module Cmt
     :hide_poor_status_in_scheduler => true,
     
     # Default ministry name
-    :default_ministry_name => 'Campus for Christ'
+    :default_ministry_name => 'Campus for Christ',
+
+    # Disable second address line
+    :disable_address2 => true
   }
 end
 
