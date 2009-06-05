@@ -1,0 +1,41 @@
+<table class="halftab">
+	<tr>
+		<th>First Name</th>
+		<td><%= text_field :person, :first_name %></td>
+	</tr>
+	<tr>
+		<th>Last Name</th>
+		<td><%= text_field :person, :last_name %></td>
+	</tr>
+	<tr>
+		<th>Email</th>
+		<td><%= text_field :current_address, :email %></td>
+	</tr>
+	<tr>
+		<th>Date of Birth</th>
+		<td class="date">
+			<%=
+				start_year = Date.today.year
+  	        	end_year = start_year - 100
+    	      	f.date_select :birth_date, {
+    	        	:include_blank => true,
+    	        	:start_year => start_year,
+    	        	:end_year => end_year }
+          	%>
+		</td>
+	</tr>
+	<tr>
+		<th>Gender</th>
+		<td>
+			<%=
+				f.select :gender,
+					[['Male', 1],['Female', 0]], {},
+					:selected => person.gender
+			%>
+		</td>
+	</tr>
+	<tr>
+		<th>Website</th>
+		<td><%= f.text_field :url %></td>
+	</tr>
+</table>
