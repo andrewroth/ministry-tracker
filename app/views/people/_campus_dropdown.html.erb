@@ -1,4 +1,5 @@
-<%= select_tag :primary_campus_id, options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), @person.primary_campus.try(:id)) %>
+<%= select_tag :primary_campus_id, options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), 
+			@person.primary_campus.try(:id)) %>
 
 <%-# If the country field is not set, display the state filter %>
 <% if !@country %>

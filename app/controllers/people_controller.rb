@@ -314,6 +314,7 @@ class PeopleController < ApplicationController
     #throw params.inspect
     set_states
     get_people_responsible_for
+    get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
     if params[:responsible_person_id]
       #pulls values to needed for most_recent_ministry_involvement to be uses

@@ -5,6 +5,8 @@ require "date"
 module ActionView
   module Helpers
     module DepotDateHelper
+      include AssetTagHelper
+      
       def depot_date_select(options = {})
         if(options[:id].blank?)
           options[:id] = options[:name]
@@ -18,15 +20,16 @@ module ActionView
           date = value(object).strftime(options[:ifFormat])
         end
 
-        error = !object.errors.nil? && !object.errors.on(options[:method]).nil?
+        error = object && !object.errors.nil? && !object.errors.on(options[:method]).nil?
         html  = ""
         if error
           html << %(<div class="fieldWithErrors"> \n)
         end
         
-        html << %(<input type="text" name="#{options[:name]}" value="#{date}" class="#{options[:class]} text-input" id="#{options[:id]}" />\n)
-        #html << ActionView::Helpers::AssetTagHelper.image_tag("calendar.png", :id => "#{options[:id]}_trigger", :style => "cursor: pointer;", :title => "Date Selector")
-        html << %(<img src="/cmt/images/calendar.png" id="#{options[:id]}_trigger" style="cursor: pointer;" title="Date selector" />\n)
+        #html << %(<input type="text" name="#{options[:name]}" value="#{date}" class="#{options[:class]} text-input" id="#{options[:id]}" />\n)
+        html << text_field_tag(options[:name], options[:value], options)
+        html << image_tag("calendar.png", :id => "#{options[:id]}_trigger", :style => "cursor: pointer;", :title => "Date Selector")
+        #html << %(<img src="/cmt/images/calendar.png" id="#{options[:id]}_trigger" style="cursor: pointer;" title="Date selector" />\n)
 
         calendar_options = Hash.new
         calendar_options.replace(options)

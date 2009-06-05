@@ -2,8 +2,8 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put do |f| %>
 
-  <%-# If the country field is set, get campuses from the country %>
-  <% if @country %>
+  <%-# If the country variable is set, don't use the campus filter%>
+  <% if !(@country) %>
   	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
   		<tr>
   		  	<td>
@@ -54,12 +54,12 @@
 		  	</td>
 		  	<td class="spacer">&nbsp;</td>
 		  	<td>
-				<% if has_primary_campus_involvement %>
+				<%-# if has_primary_campus_involvement %>
 					<%= render :partial => 'primary_campus_involvement', 
 							:locals => { :user => @person.user } %>
-				<% else %>
-					This person is not involved in any campus.
-				<% end %>
+				<%-# else %>
+					<%#This person is not involved in any campus.%>
+				<%-# end %>
 		  	</td>
 		</tr>
 		<tr>
