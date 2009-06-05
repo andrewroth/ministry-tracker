@@ -77,25 +77,6 @@ class Person < ActiveRecord::Base
 
   def gender() gender_ ? gender_.desc : '???' end
 
-  PRIMARY_ASSIGNMENTS_ORDER = ["Current Student", "Alumni", "Staff", "Attended", "Staff Alumni", "Unknown Status"]
-
-  def primary_campus
-    as = assignments.sort { |a1, a2| 
-      p1 = PRIMARY_ASSIGNMENTS_ORDER.index a1.assignmentstatus.assignmentstatus_desc
-      p2 = PRIMARY_ASSIGNMENTS_ORDER.index a2.assignmentstatus.assignmentstatus_desc
-
-      if p1 && !p2
-        1
-      elsif !p1 && p2
-        -1
-      else
-        p1 <=> p2
-      end
-    }
-
-    as.first.campus
-  end
-
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
 
