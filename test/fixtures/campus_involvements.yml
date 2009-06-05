@@ -7,3 +7,17 @@ person_campus_<%= i %>:
   campus_id: 1
   ministry_id: 1
 <% end %>
+
+
+sues_in:
+  id: 1002
+  person_id: 2000
+  campus_id: 1
+  ministry_id: 1
+  
+joshs_in:
+  id: 1003
+  person_id: 50000
+  campus_id: 1
+  ministry_id: 1
+ 

@@ -159,11 +159,11 @@ class ApplicationController < ActionController::Base
     end
 
     def get_people_in_ministry_campus
-      m = get_ministry
-      mi = m.ministry_involvements
+      @ministry = get_ministry
+      mi = @ministry.ministry_involvements
       higher_mi_array = []
       mi.each do |cur_mi|
-      if cur_mi.ministry_role.position < @person.ministry_involvements.find(:first, :conditions => {:ministry_id => m.id}).ministry_role.position # fix this ASAP, right after it runs...
+        if cur_mi.ministry_role.position < @person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.position 
           higher_mi_array << cur_mi
         end
       end
