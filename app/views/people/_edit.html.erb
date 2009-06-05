@@ -48,7 +48,7 @@
 	
       <tr><th>Responsible Person</th><td>
         <%if @people_in_ministry_campus %>
-          <%= select_tag :responsible_person_id, options_from_collection_for_select(@people_in_ministry_campus, 'id', 'full_name') %>
+          <%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %>
         <% end %>
 	</td></tr>
 	  

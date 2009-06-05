@@ -158,7 +158,7 @@ class ApplicationController < ActionController::Base
       @people_responsible_for = @person.people_responsible_for
     end
 
-    def get_people_in_ministry_campus
+    def get_possible_responsible_people
       @ministry = get_ministry
       mi = @ministry.ministry_involvements
       higher_mi_array = []
@@ -167,20 +167,20 @@ class ApplicationController < ActionController::Base
           higher_mi_array << cur_mi
         end
       end
-      @people_in_ministry_campus = []
+      @possible_responsible_people = []
       higher_mi_array.each do |h_mi|
         person = h_mi.person
+        #This part here relies on that idea that each person only has one campus_involvements. Once primary_campus_invovlement is ready, use that instead
+        #~~~~~~~
         unless person.campus_involvements.find(:first).nil?
           unless @person.campus_involvements.find(:first).campus.nil?
             if person.campus_involvements.find(:first).campus == @person.campus_involvements.find(:first).campus
-              @people_in_ministry_campus << person
+        #~~~~~~~
+              @possible_responsible_people << person
             end
           end
         end
       end
-      
-      
-      
     end
     
     # ===========

@@ -231,7 +231,7 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
-    get_people_in_ministry_campus
+    get_possible_responsible_people
     setup_vars
     setup_campuses
     set_states

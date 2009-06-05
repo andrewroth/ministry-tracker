@@ -164,7 +164,7 @@ class PeopleControllerTest < ActionController::TestCase
   def test_should_show_possible_responsible_people
     get :edit, :id => 2000
     assert_response :success
-    assert_not_nil assigns(:people_in_ministry_campus)
+    assert_not_nil assigns(:possible_responsible_people)
   end
   
   def test_should_update_person
