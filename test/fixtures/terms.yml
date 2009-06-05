@@ -5,13 +5,13 @@ one:
   default: 
   start: 2009-06-02
   end: 2009-06-02
-  school_year: 
-  verify_date_sent: 2009-06-02
+  ministry_school_years_id: 1
+  verify_at: 2009-06-02
 
 two:
   name: MyString
   default: 
   start: 2009-06-02
   end: 2009-06-02
-  school_year: 
-  verify_date_sent: 2009-06-02
+  ministry_school_years_id: 2
+  verify_at: 2009-06-02
