@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
 
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage
+                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
+		:get_people_responsible_for
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   #    use this line for production  
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
@@ -153,6 +154,35 @@ class ApplicationController < ActionController::Base
                                        Person.table_name + '.' + _(:first_name, :person))
     end
     
+    def get_people_responsible_for
+      @people_responsible_for = @person.people_responsible_for
+    end
+
+    def get_possible_responsible_people
+      @ministry = get_ministry
+      mi = @ministry.ministry_involvements
+      higher_mi_array = []
+      mi.each do |cur_mi|
+        if cur_mi.ministry_role.position < @person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.position 
+          higher_mi_array << cur_mi
+        end
+      end
+      @possible_responsible_people = []
+      higher_mi_array.each do |h_mi|
+        person = h_mi.person
+        #This part here relies on that idea that each person only has one campus_involvements. Once primary_campus_invovlement is ready, use that instead
+        #~~~~~~~
+        unless person.campus_involvements.find(:first).nil?
+          unless @person.campus_involvements.find(:first).campus.nil?
+            if person.campus_involvements.find(:first).campus == @person.campus_involvements.find(:first).campus
+        #~~~~~~~
+              @possible_responsible_people << person
+            end
+          end
+        end
+      end
+    end
+    
     # ===========
     # = Filters =
     # ===========
@@ -253,7 +283,7 @@ class ApplicationController < ActionController::Base
     def adjust_format_for_facebook
       request.format = :facebook if iphone_request?
     end
-
+    
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857
