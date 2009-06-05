@@ -581,7 +581,7 @@ class PeopleController < ApplicationController
       @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
       # If the Country is set in config, don't filter by states but get campuses from the country
       if Cmt::CONFIG[:campus_scope_country]        
-        @country = Cmt::CONFIG[:campus_scope_country]
+        @country = Country.find_by_country(Cmt::CONFIG[:campus_scope_country])
         @campuses = @country.states.collect{|s| s.campuses}.flatten
       else
         if params[:state].present?
