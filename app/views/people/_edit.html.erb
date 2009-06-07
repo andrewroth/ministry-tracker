@@ -2,87 +2,83 @@
 <%= error_messages_for :person, :current_address, :perm_address %>
 <% remote_form_for @person, :url => person_url(@person), :method => :put do |f| %>
 
-  <%-# If the country variable is set, don't use the campus filter%>
-  <% if !(@country) %>
-  	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
-  		<tr>
-  		  	<td>
-  		    	<table class="halftab">
-  			    	<tr>
-  						<th>Primary Campus:</th>
-  						<td><%= render :partial => 'campus_dropdown'  if @campuses %></td>
-  					</tr>
-  			    	<tr>
-  						<th>&nbsp;</th>
-  						<td>&nbsp;</td>
-  					</tr>
-  		    	</table>
-  		  	</td>
-   	
-  		  	<td class="spacer">&nbsp;</td>
-   
-  		  	<td>
-  			    <%- fields_for :primary_campus_involvement do |cif| -%>
-  			    	<table class="halftab">	
-  				      	<tr>
-  							<th>Pick a state:</th>
-  							<td class="date">
-  								<%= select_tag :state,
-  										options_from_collection_for_select(
-  											@states, 'id', 'name')
-  								%>
-  								<%= observe_field(
-  										:state, {
-  											:url => get_campuses_people_path,
-  											:with => 'state',
-  											:before => "$('#spinnerp').show()"})
-  								%>
-  							</td>
-  						</tr>
-  			    	</table>
-  			  	<%- end -%>
-  		  	</td>
-  		</tr>
-  	</table>
-	<%- end -%>  
+  <table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
+    <tr>
+      <td>
+        <table class="halftab">
+          <tr>
+            <th>Primary Campus:</th>
+            <td><%= render :partial => 'campus_dropdown' %></td>
+          </tr>
+          <tr>
+            <th>&nbsp;</th>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </td>
 
-	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
-		<tr>	
-		  	<td>
-				<%= render :partial => 'basic_person_information',
-						:locals => { :f => f, :person => @person, :user => @person.user } %>
-		  	</td>
-		  	<td class="spacer">&nbsp;</td>
-		  	<td>
-				<%-# if has_primary_campus_involvement %>
-					<%= render :partial => 'primary_campus_involvement', 
-							:locals => { :user => @person.user } %>
-				<%-# else %>
-					<%#This person is not involved in any campus.%>
-				<%-# end %>
-		  	</td>
-		</tr>
-		<tr>
-			<td><h4 class="title">Current Address</h4></td>
-			<td class="spacer">&nbsp;</td>
-			<td><h4 class="title">Permanent Address</h4></td>
-		</tr>
-		<tr>
-			<td>
-				<%= render :partial => 'current_address',
-						:locals => { :dorms => @dorms }
-				%>
-			</td>
-			<td class="spacer">&nbsp;</td>		
-			<td>
-				<%= render :partial => 'permanent_address' %>
-			</td>
-		</tr>
-	</table>
-	<br />
-	<%= submit_tag "Save" %> or
-	<%= link_to_function 'cancel',
-			"$('#edit_info').hide();$('#info').show()",
-			:class => 'cancel'
-	%>
-<%- end -%>
+      <td class="spacer">&nbsp;</td>
+
+      <td>
+        <%- fields_for :primary_campus_involvement do |cif| -%>
+          <table class="halftab">	
+            <tr>
+              <th>Pick a state:</th>
+              <td class="date">
+                <%= select_tag :state,
+                  options_from_collection_for_select(
+                    @states, 'id', 'name')
+              %>
+              <%= observe_field(
+                :state, {
+                :url => get_campuses_people_path,
+                :with => 'state',
+                :before => "$('#spinnerp').show()"})
+              %>
+            </td>
+          </tr>
+        </table>
+        <%- end -%>
+      </td>
+    </tr>
+  </table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
+    <tr>	
+      <td>
+        <%= render :partial => 'basic_person_information',
+          :locals => { :f => f, :person => @person, :user => @person.user } %>
+        </td>
+        <td class="spacer">&nbsp;</td>
+        <td>
+          <%- if has_primary_campus_involvement %>
+          <%= render :partial => 'primary_campus_involvement', :locals => { :user => @person.user } %>
+          <%- else %>
+          This person is not involved in any campus.
+          <%- end %>
+        </td>
+      </tr>
+      <tr>
+        <td><h4 class="title">Current Address</h4></td>
+        <td class="spacer">&nbsp;</td>
+        <td><h4 class="title">Permanent Address</h4></td>
+      </tr>
+      <tr>
+        <td>
+          <%= render :partial => 'current_address',
+            :locals => { :dorms => @dorms }
+        %>
+      </td>
+      <td class="spacer">&nbsp;</td>		
+      <td>
+        <%= render :partial => 'permanent_address' %>
+      </td>
+    </tr>
+  </table>
+  <br />
+  <%= submit_tag "Save" %> or
+  <%= link_to_function 'cancel',
+      "$('#edit_info').hide();$('#info').show()",
+      :class => 'cancel'
+    %>
+<% end -%>
