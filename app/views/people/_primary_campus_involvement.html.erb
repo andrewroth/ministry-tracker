@@ -1,6 +1,24 @@
 <%- fields_for :primary_campus_involvement do |cif| -%>
   <table class="halftab">
-    <tr>
+    <tr id='campus_country' style='display:none;'>
+      <th>Country</th>
+      <td><%= render :partial => 'campus_country' %></td>
+      <%= observe_field(:primary_campus_country_id, {
+        :url => get_campus_states_people_path,
+        :with => 'primary_campus_country_id',
+        :before => "$('#spinnerp').show()"})
+      %>
+    </tr>
+    <tr id='campus_state' style='display:none;'>
+      <th>State</th>
+      <td><%= render :partial => 'campus_state' %></td>
+      <%= observe_field(:primary_campus_state_id, {
+        :url => get_campuses_people_path,
+        :with => 'primary_campus_state_id',
+        :before => "$('#spinnerp').show()"})
+      %>
+    </tr>
+    <tr id='campuses'>
       <th>Campus</th>
       <td><%= render :partial => 'campus_dropdown' %></td>
     </tr>
@@ -10,9 +28,7 @@
     </tr>
     <tr>
       <th>Grad Date</th>
-      <td class="date">
-        <%= cif.date_select(:graduation_date, date_options(1980)) %>
-      </td>
+      <td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td>
     </tr>
     <tr>
       <th>Major</th>
