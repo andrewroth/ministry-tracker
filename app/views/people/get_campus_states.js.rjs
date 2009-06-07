@@ -1,0 +1,4 @@
+page[:campus_country].hide
+page[:campus_state].show
+page[:primary_campus_state_id].replace_html :partial => 'campus_state_options'
+page[:spinnerp].hide

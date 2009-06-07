@@ -2,7 +2,7 @@
   <table class="halftab">
     <tr id='campus_country' style='display:none;'>
       <th>Country</th>
-      <td><%= render :partial => 'campus_country' %></td>
+      <td><%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %></td>
       <%= observe_field(:primary_campus_country_id, {
         :url => get_campus_states_people_path,
         :with => 'primary_campus_country_id',
@@ -11,16 +11,27 @@
     </tr>
     <tr id='campus_state' style='display:none;'>
       <th>State</th>
-      <td><%= render :partial => 'campus_state' %></td>
-      <%= observe_field(:primary_campus_state_id, {
-        :url => get_campuses_people_path,
-        :with => 'primary_campus_state_id',
-        :before => "$('#spinnerp').show()"})
-      %>
+      <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
+        <br/>
+        <%= link_to_function(t(:person_campus_change_country, 
+                               :default => 'change to a different country'), 
+                           "$('#campus_state').hide();$('#campus_country').show();") %>
+        <%= observe_field(:primary_campus_state_id, {
+          :url => get_campuses_people_path,
+          :with => 'primary_campus_state_id',
+          :before => "$('#spinnerp').show()"})
+        %>
+      </td>
     </tr>
     <tr id='campuses'>
       <th>Campus</th>
-      <td><%= render :partial => 'campus_dropdown' %></td>
+      <td>
+        <%= render :partial => 'campus_dropdown' %>
+        <br/>
+        <%= link_to_function(t(:person_campus_change_state, 
+                               :default => 'change to a different state'), 
+                           "$('#campuses').hide();$('#campus_state').show();") %>
+      </td>
     </tr>
     <tr>
       <th>Year</th>
