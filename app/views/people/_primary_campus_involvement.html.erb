@@ -1,30 +1,26 @@
 <%- fields_for :primary_campus_involvement do |cif| -%>
-	<table class="halftab">
-    <%-# If the country field is set, get campuses from the country %>
-    <% if @country %>
-	    <th>Primary Campus:</th>
-      <%= render :partial => 'campus_dropdown' %>
-    <% end %>
-	  <tr>
-	    <th>Year in School</th>
-	    <td><%= cif.select :school_year_id, school_year_options %></td>
-	  </tr>
-  		
-	  <tr>
-	    <th>Graduation Date</th>
-	    <td class="date">
-	      <%= cif.date_select(:graduation_date, date_options(1980)) %>
-			</td>
-		</tr>
-	  	
-		<tr>
-			<th>Major</th>
-			<td><%= cif.text_field :major %></td>
-		</tr>
-  	
-		<tr>
-			<th>Minor</th>
-			<td><%= cif.text_field :minor %></td>
-		</tr>
-	</table>
+  <table class="halftab">
+    <tr>
+      <th>Campus</th>
+      <td><%= render :partial => 'campus_dropdown' %></td>
+    </tr>
+    <tr>
+      <th>Year</th>
+      <td><%= cif.select :school_year_id, school_year_options %></td>
+    </tr>
+    <tr>
+      <th>Grad Date</th>
+      <td class="date">
+        <%= cif.date_select(:graduation_date, date_options(1980)) %>
+      </td>
+    </tr>
+    <tr>
+      <th>Major</th>
+      <td><%= cif.text_field :major %></td>
+    </tr>
+    <tr>
+      <th>Minor</th>
+      <td><%= cif.text_field :minor %></td>
+    </tr>
+  </table>
 <%- end -%>
