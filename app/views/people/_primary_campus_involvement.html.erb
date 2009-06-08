@@ -13,7 +13,7 @@
       <th>State</th>
       <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
         <br/>
-        <%= link_to_function(t(:person_campus_change_country, 
+        <span id="campus_country_filter">Filtered by <%= @campus_country.country %>.</span>  <%= link_to_function(t(:person_campus_change_country, 
                                :default => 'change to a different country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state_id, {
@@ -28,7 +28,7 @@
       <td>
         <%= render :partial => 'campus_dropdown' %>
         <br/>
-        <%= link_to_function(t(:person_campus_change_state, 
+        <span id='campus_state_filter'>Filtered by <%= @campus_state.name %>.</span>  <%= link_to_function(t(:person_campus_change_state, 
                                :default => 'change to a different state'), 
                            "$('#campuses').hide();$('#campus_state').show();") %>
       </td>

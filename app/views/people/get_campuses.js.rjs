@@ -2,3 +2,4 @@ page[:campus_state].hide
 page[:campuses].show
 page[:primary_campus_id].replace :partial => 'campus_dropdown'
 page[:spinnerp].hide
+page[:campus_state_filter].replace_html "Filtered by #{@campus_state.name}."

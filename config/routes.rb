@@ -94,6 +94,7 @@ ActionController::Routing::Routes.draw do |map|
                                           :add_student => :any,
                                           :advanced => :get,
                                           :advanced_search => :post,
+                                          :get_campus_states => :any,
                                           :get_campuses => :any},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
