@@ -210,7 +210,7 @@ class PeopleController < ApplicationController
   # GET /people/1.xml
   def show
     get_ministry_involvement(get_ministry)
-    get_people_responsible_for
+    #get_people_responsible_for
     setup_vars
     respond_to do |format|
       format.html { render :action => :show }# show.rhtml
@@ -222,6 +222,8 @@ class PeopleController < ApplicationController
   def new
     @person = Person.new
     @current_address = CurrentAddress.new
+    @countries = Country.all
+    @states = State.all
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js
@@ -245,6 +247,8 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address])
+    @countries = Country.all
+    @states = State.all
     respond_to do |format|
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid?
@@ -582,17 +586,17 @@ class PeopleController < ApplicationController
     def setup_campuses
       @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
       # If the Country is set in config, don't filter by states but get campuses from the country
-      if Cmt::CONFIG[:campus_scope]        
+      if Cmt::CONFIG[:campus_scope]
+        @no_campus_scope = true
         @campus_country = Country.find_by_country(Cmt::CONFIG[:campus_scope_country])
-        @campus_states = []
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
       else
         @campus_state = @person.primary_campus.try(:state) || 
-          @person.current_address.try(:state) ||
-          @person.permanent_address.try(:state)
-        @campus_country = @campus_state.try(:country) || Country.first
-        @campus_states = @campus_country.states
-        @campuses = @campus_state.campuses
+          @person.current_address.try(:state_obj) ||
+          @person.permanent_address.try(:state_obj)
+        @campus_country = @campus_state.try(:country)
+        @campus_states = @campus_country.try(:states) || []
+        @campuses = @campus_state.try(:campuses) || []
       end
       @campus_countries = Country.all
     end
