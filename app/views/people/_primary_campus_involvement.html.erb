@@ -1,19 +1,22 @@
 <%- fields_for :primary_campus_involvement do |cif| -%>
   <table class="halftab">
-    <tr id='campus_country' style='<%= "display:none;" if @campus_state %>'>
+    <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
       <th>Country</th>
-      <td><%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %></td>
-      <%= observe_field(:primary_campus_country_id, {
-        :url => get_campus_states_people_path,
-        :with => 'primary_campus_country_id',
-        :before => "$('#spinnerp').show()"})
-      %>
+      <td><%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %>
+        <%= observe_field(:primary_campus_country_id, {
+          :url => get_campus_states_people_path,
+          :with => 'primary_campus_country_id',
+          :before => "$('#spinnerp').show()"})
+        %>
+        <br/>
+        Choose a country in order to choose your primary campus.
+      </td>
     </tr>
-    <tr id='campus_state' style='<%= "display:none;" if @campus_state %>'>
+    <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
       <th>State</th>
       <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
         <br/>
-        <span id="campus_country_filter">Filtered by <%= @campus_country.try(:country) %>.</span>  <%= link_to_function(t(:person_campus_change_country, 
+        <span id="campus_country_filter">Filtered by <%= @campus_country.try(:country) %>.  Choose your a state in order to choose your primary campus.</span>  <%= link_to_function(t(:person_campus_change_country, 
                                :default => 'change to a different country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state_id, {
@@ -23,7 +26,7 @@
         %>
       </td>
     </tr>
-    <tr id='campuses' style='<%= "display:none;" unless @person.primary_campus %>'>
+    <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
       <th>Campus</th>
       <td>
         <%= render :partial => 'campus_dropdown' %>

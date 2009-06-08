@@ -160,6 +160,20 @@ class PeopleControllerTest < ActionController::TestCase
     get :edit, :id => 50000
     assert_response :success
   end
+
+  def test_should_show_only_campus_country
+    josh = Person.find 50000
+    josh.current_address = nil
+    josh.permanent_address = nil
+    josh.primary_campus_involvement = nil
+    josh.save!
+    get :edit, :id => 50000
+    assert_response :success
+    assert_nil assigns['campus_country']
+    assert_nil assigns['campus_state']
+    assert_equal assigns['campuses'], []
+    assert @response.body =~ /Choose a country/
+  end
   
   def test_should_show_possible_responsible_people
     get :edit, :id => 2000
