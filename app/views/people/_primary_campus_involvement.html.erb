@@ -1,5 +1,6 @@
 <%- fields_for :primary_campus_involvement do |cif| -%>
   <table class="halftab">
+    <% unless @no_campus_scope %>
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
       <th>Country</th>
       <td>
@@ -28,15 +29,18 @@
         %>
       </td>
     </tr>
+    <% end %>
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
       <th>Campus</th>
       <td>
         <%= select_tag :primary_campus_id, render(:partial => 'campus_dropdown_options') %>
-        <br/>
-        <span id="campus_filter"><%= campus_filter_message %></span>
-        <%= link_to_function(t(:person_campus_change_state, 
+        <% unless @no_campus_scope %>
+          <br/>
+          <span id="campus_filter"><%= campus_filter_message %></span>
+          <%= link_to_function(t(:person_campus_change_state, 
                                :default => 'change state'), 
                            "$('#campuses').hide();$('#campus_state').show();") %>
+        <% end %>
         <%= observe_field(:primary_campus_id, :function => 'update_pc_visibility()') %>
         <script>
         function update_pc_visibility() {
