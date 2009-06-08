@@ -1,7 +1,4 @@
-<%= select_tag :primary_campus_id, options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), 
-			@person.primary_campus.try(:id)) %>
-
-<%-# If the country field is not set, display the state filter %>
-<% if !@country %>
-  <%= link_to_function(t(:person_campus_change_state, :default => 'change to a different state'), "$('#campuses').hide();$('#states').show();") %>
-<% end %>
+<%= select_tag :primary_campus_id, options_for_select(
+  Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), 
+  @guess_campus_state.try(:id))
+%>

@@ -22,6 +22,13 @@ class Address < ActiveRecord::Base
     ]
   end
 
+  def country_obj
+    Country.find :first, :conditions => [
+      "#{Country.table_name}.#{_(:country, :state)} = ? OR #{Country.table_name}.#{_(:code, :state)} = ?",
+      country, country
+    ]
+  end
+
   def state_id
     state_obj.try(:id)
   end
