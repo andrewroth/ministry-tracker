@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090604184951) do
+ActiveRecord::Schema.define(:version => 20090605160309) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(:version => 20090604184951) do
     t.date    "end_date"
     t.boolean "admin"
     t.integer "ministry_role_id"
+    t.integer "responsible_person_id"
   end
 
   add_index "ministry_involvements", ["person_id"], :name => "index_ministry_involvements_on_person_id"
