@@ -4,13 +4,15 @@
 		<td><%= text_field :perm_address, :phone %></td>
 	</tr>
 	<tr>
-		<th>Address 1:</th>
+  <th>Address<% if @use_address2 %> 1:<% end %></th>
 		<td><%= text_field :perm_address, :address1 %></td>
 	</tr>
+  <% if @use_address2 %>
 	<tr>
 		<th>Address 2:</th>
 		<td><%= text_field :perm_address, :address2 %></td>
 	</tr>
+  <% end %>
 	<tr>
 		<th>City: </th>
 		<td><%= text_field :perm_address, :city %></td>
@@ -18,7 +20,7 @@
 	<tr>
 		<th>State:</th>
 		<td><%= text_field :perm_address, :state %></td>
-		</tr>
+  </tr>
 	<tr>
 		<th>Zip:</th>
 		<td><%= text_field :perm_address, :zip %></td>

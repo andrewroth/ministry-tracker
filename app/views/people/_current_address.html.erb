@@ -10,14 +10,16 @@
 	</tr>
 
 	<tr>
-		<th>Address 1:</th>
+  <th>Address<% if @use_address2 %> 1:<% end %></th>
 		<td><%= text_field :current_address, :address1 %></td>
 	</tr>
 
+  <% if @use_address2 %>
 	<tr>
 		<th>Address 2:</th>
 		<td><%= text_field :current_address, :address2 %></td>
 	</tr>
+  <% end %>
 
 	<tr>
 		<th>City: </th>
