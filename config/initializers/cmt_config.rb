@@ -25,7 +25,7 @@ module Cmt
     :campus_scope_country => 'Canada',
 
     # Disable second address line
-    :disable_address2 => false
+    :disable_address2 => true
   }
 end
 
