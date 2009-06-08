@@ -1,1 +1,0 @@
-page.replace_html("compare", :partial => "compare_timetables")

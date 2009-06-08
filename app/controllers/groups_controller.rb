@@ -90,7 +90,11 @@ class GroupsController < ApplicationController
     end
     @comparison_map = Timetable.generate_compare_table(@people)
     respond_to do |format|
-      format.js
+      format.js{
+         render :update do |page|
+            page.replace_html("compare", :partial => "groups/compare_timetables")
+         end
+      }
     end
   end
   
