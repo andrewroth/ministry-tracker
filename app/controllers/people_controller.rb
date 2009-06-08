@@ -541,8 +541,9 @@ class PeopleController < ApplicationController
       
       # continue pulling values, can't continue without both of these
       @most_recent_ministry = @most_recent_campus_involvement.ministry
+      return unless @most_recent_ministry
       @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
-      return unless @most_recent_ministry_involvement && @most_recent_ministry
+      return unless @most_recent_ministry_involvement
       
       # find my position
       persons_ministry_involvement_position = @most_recent_ministry_involvement.ministry_role.position
