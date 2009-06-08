@@ -2,22 +2,24 @@
   <table class="halftab">
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
       <th>Country</th>
-      <td><%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %>
+      <td>
+        <%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %>
         <%= observe_field(:primary_campus_country_id, {
           :url => get_campus_states_people_path,
           :with => 'primary_campus_country_id',
           :before => "$('#spinnerp').show()"})
         %>
         <br/>
-        Choose a country in order to choose your primary campus.
+        <span id="campus_country_filter"><%= campus_country_filter_message %></span>
       </td>
     </tr>
     <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
       <th>State</th>
       <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
         <br/>
-        <span id="campus_country_filter">Filtered by <%= @campus_country.try(:country) %>.  Choose your a state in order to choose your primary campus.</span>  <%= link_to_function(t(:person_campus_change_country, 
-                               :default => 'change to a different country'), 
+        <span id="campus_state_filter"><%= campus_state_filter_message %></span>
+        <%= link_to_function(t(:person_campus_change_country, 
+                               :default => 'change country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state_id, {
           :url => get_campuses_people_path,
@@ -29,31 +31,45 @@
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
       <th>Campus</th>
       <td>
-        <%= render :partial => 'campus_dropdown' %>
+        <%= select_tag :primary_campus_id, render(:partial => 'campus_dropdown_options') %>
         <br/>
-        <span id='campus_state_filter'>Filtered by <%= @campus_state.try(:name) %>.</span>  <%= link_to_function(t(:person_campus_change_state, 
-                               :default => 'change to a different state'), 
+        <span id="campus_filter"><%= campus_filter_message %></span>
+        <%= link_to_function(t(:person_campus_change_state, 
+                               :default => 'change state'), 
                            "$('#campuses').hide();$('#campus_state').show();") %>
+        <%= observe_field(:primary_campus_id, :function => 'update_pc_visibility()') %>
+        <script>
+        function update_pc_visibility() {
+          visible = $('#primary_campus_id')[0].value != '';
+          if (visible) {
+            $('.pcd').show();
+          } else {
+            $('.pcd').hide();
+          }
+        }
+        update_pc_visibility();
+      </script>
       </td>
     </tr>
-    <tr>
+    <tr class='pcd'>
       <th>Year</th>
       <td><%= cif.select :school_year_id, school_year_options %></td>
     </tr>
-    <tr>
+    <tr class='pcd'>
       <th>Grad Date</th>
       <td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td>
     </tr>
-    <tr>
+    <tr class='pcd'>
       <th>Major</th>
       <td><%= cif.text_field :major %></td>
     </tr>
-    <tr>
+    <tr class='pcd'>
       <th>Minor</th>
       <td><%= cif.text_field :minor %></td>
     </tr>
-    <tr><th>Responsible Person</th><td>
-      <%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %>
-    </td></tr>
+    <tr class='pcd'>
+      <th>Responsible Person</th>
+      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %></td>
+    </tr>
   </table>
 <%- end -%>

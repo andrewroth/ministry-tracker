@@ -1,4 +1,0 @@
-<%= select_tag :primary_campus_id, options_for_select(
-  Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), 
-  @guess_campus_state.try(:id))
-%>

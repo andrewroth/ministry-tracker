@@ -10,11 +10,7 @@
         </td>
         <td class="spacer">&nbsp;</td>
         <td>
-          <%- if has_primary_campus_involvement %>
           <%= render :partial => 'primary_campus_involvement', :locals => { :user => @person.user } %>
-          <%- else %>
-          This person is not involved in any campus.
-          <%- end %>
         </td>
       </tr>
       <tr>

@@ -161,7 +161,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  def test_should_show_only_campus_country
+  def test_should_show_only_campus_country_when_no_primary_involvement
     josh = Person.find 50000
     josh.current_address = nil
     josh.permanent_address = nil

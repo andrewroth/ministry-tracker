@@ -313,6 +313,7 @@ class PeopleController < ApplicationController
   # PUT /people/1.xml
   def update
     get_people_responsible_for
+    get_possible_responsible_people
     get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
     if params[:responsible_person_id]
@@ -512,12 +513,16 @@ class PeopleController < ApplicationController
   end
 
   def get_campuses
-    @campus_state = State.find params[:primary_campus_state_id]
+    @campus_state = State.find :first, :conditions => 
+      { _(:id, :state) => params[:primary_campus_state_id] }
+    render :text => '' unless @campus_state
     @campuses = @campus_state.try(:campuses) || []
   end
 
   def get_campus_states
-    @campus_country = Country.find params[:primary_campus_country_id]
+    @campus_country = Country.find :first, :conditions => 
+      { _(:id, :campus) => params[:primary_campus_country_id] }
+    render :text => '' unless @campus_country
     @campus_states = @campus_country.states
   end
 

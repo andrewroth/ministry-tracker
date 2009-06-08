@@ -1,0 +1,1 @@
+<%= options_for_select(Array.wrap(@campuses.collect {|c| [c.name, c.id]}).insert(0, ['','']), @person.primary_campus_involvement.try(:id)) %>
