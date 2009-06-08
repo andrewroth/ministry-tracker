@@ -17,7 +17,12 @@ class Person < ActiveRecord::Base
   has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
   has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
-
+  has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
+  has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
+  has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
+ 
+  
+  
   # Address Relationships
   has_many :addresses, :class_name => "Address", :foreign_key => _(:person_id, :address)
   has_one :current_address, :class_name => "CurrentAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'current'"
@@ -30,10 +35,6 @@ class Person < ActiveRecord::Base
   
   has_many :group_interests, :through => :group_involvements, :source => :group, 
                             :conditions => _(:level, :group_involvement) + " = 'interested'"
-     
-  #Mentor/Disciple Relationships
-  has_many :disciples, :class_name => "Person", :foreign_key => "mentor_id"
-  belongs_to :mentor, :class_name => "Person"
   
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)

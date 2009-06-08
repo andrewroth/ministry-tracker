@@ -1,5 +1,5 @@
 <li id="<%= dom_id(ministry_role) %>">
-  <span class="drag_me"><%- tooltip image_tag('/images/silk/move.png') do -%>Click and drag to change the position of this role.<%- end -%></span>
+  <span class="drag_me"><%- tooltip image_tag('silk/move.png') do -%>Click and drag to change the position of this role.<%- end -%></span>
   &nbsp;&nbsp;&nbsp;
   <%-  if ministry_role.ministry_involvements.empty? -%>
     <%= link_to_remote image_tag('delete.png', :alt => "Delete this role", :title => "Delete this role"), 

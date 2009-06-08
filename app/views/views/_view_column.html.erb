@@ -1,5 +1,5 @@
 <li id="item_<%= view_column.id %>">
-  <%= image_tag('/images/silk/move.png') %>
+  <%= image_tag('silk/move.png') %>
   <%= view_column.column.title %> &nbsp;&nbsp;&nbsp; 
   <%= link_to_remote image_tag('silk/delete.png', :style => 'vertical-align:bottom'), :url => view_view_column_path(view_column.view_id, view_column), 
                                :method => :delete, :loading => "$('#spinner').show()" %>
