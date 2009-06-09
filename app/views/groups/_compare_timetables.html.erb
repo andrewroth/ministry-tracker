@@ -1,0 +1,53 @@
+<% if @compare == true %>
+	<table id="schedule" width="250px" cellspacing="0">
+	  <thead>
+	    <tr>
+	      <th>&nbsp;</th>
+	    <%- 7.times do |day| -%>
+	      <th><%= Date::DAYNAMES[day] %></th>
+	    <%- end -%>
+	  </thead>
+	  <tbody>
+	    <!-- 6 am to 10 pm in 15 minute intervals -->
+	    <%- midnight = Time.now.beginning_of_day
+	        time = midnight + Timetable::EARLIEST 
+	        stop = midnight + Timetable::LATEST 
+	        time_block = 0 -%>
+	    <%- while time < stop 
+	        time_in_seconds = time.to_i - midnight.to_i -%>
+	      <tr>
+	        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+	        <%- 7.times do |day| -%>
+					<%- color = "neutral" %>
+					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length >= @comparison_map[day][time_block][time_in_seconds]["bads"].length then color = "moregood" end %>
+					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length >= @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "morebad" end %>
+					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "neutral" end %>
+					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length == @people.length then color = "allgood" end %>
+					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @people.length then color = "allbad" end %>
+					
+	        <td width="50px" height="10px" class="day_<%= day %> <%= color %>">
+	          
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["goods"].each do |p|%>
+								<%= 	p.first_name %>,<br/>
+						<% end %>
+							
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["bads"].length%> bad(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["bads"].each do |p|%>
+								<%= 	p.first_name %>,<br/>
+						<% end %>
+							
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["okays"].length%> okay(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
+								<%= 	p.first_name %>,<br/>
+						<% end %>
+	          <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
+	        </td>
+	        <%- end -%>
+	      </tr>
+	      <%- time += Timetable::INTERVAL 
+	          time_block += 1 -%>
+	    <%- end -%>
+	  <tbody>
+	</table>    
+<% end %>

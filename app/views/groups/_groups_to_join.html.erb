@@ -1,0 +1,18 @@
+<br/>
+<p>
+<% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
+<% if !(gt.groups - @my.groups).empty? %>
+  <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" } do %>
+		<%= hidden_field_tag :gt_id, gt.id %>
+		<%= hidden_field_tag :person_id, @person.id %>
+		<%= hidden_field_tag :requested, true %>
+		Name: <%= collection_select :group_involvement, :group_id, (gt.groups - @my.groups), :id, :name %>
+	    Involvement: <%= select(:group_involvement, :level, ['member', 'interested', 'leader','co_leader'].collect {|u| u})%>
+ 		<%= submit_tag 'Join group' %>
+		
+ <% end %>
+<% else %>
+	 No groups to join under this category currently.
+<% end %>
+
+</p>

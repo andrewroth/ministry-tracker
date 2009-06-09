@@ -78,6 +78,26 @@ class GroupsController < ApplicationController
     end
   end
   
+  def compare_timetables
+    @compare = true
+    person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
+    #if nobody is selected, compare schedules of everyone in group
+    if(person_ids.nil? || person_ids.empty?)
+      @group = Group.find(params[:id], :include => :people)
+      @people = @group.people.reject {|person| person.nil?}
+    else
+      @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
+    end
+    @comparison_map = Timetable.generate_compare_table(@people)
+    respond_to do |format|
+      format.js{
+         render :update do |page|
+            page.replace_html("compare", :partial => "groups/compare_timetables")
+         end
+      }
+    end
+  end
+  
   def find_times
     # # Map all the group members schedules to find an open time in the range submitted
     # @group = Group.find(params[:id], :include => :people)
