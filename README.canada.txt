@@ -18,8 +18,9 @@ NOTE: You may get a rake mysql error:
 
 
 == Development ==
-Both 'ciministry_development' and 'development' databases will be used when developing as we are in the process of transitioning over to the ciministry database schema for the canadian version of ministry tracker.
+Both 'ciministry_development' and 'development' databases are used when developing.
 
+//  FIXME Province.table_name should not be used as an example
 For example, if you ruby script/console,
 
 	>> Province.table_name
