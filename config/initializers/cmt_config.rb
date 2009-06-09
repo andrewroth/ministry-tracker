@@ -7,7 +7,7 @@ module Cmt
     :gcx_enabled => true,
     
     # Disable GCX Import functionality
-    :gcx_import_disabled => false,
+    :gcx_import_disabled => true,
 
     # Allow local logins.  Either this of gcx_account_enabled must be true.
     :local_enabled => true,
