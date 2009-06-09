@@ -2,7 +2,7 @@
 <p>
 <% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
 <% if !(gt.groups - @my.groups).empty? %>
-  <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" } do %>
+  <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" }, :before => "$('#spinnergt').show()" do %>
 		<%= hidden_field_tag :gt_id, gt.id %>
 		<%= hidden_field_tag :person_id, @person.id %>
 		<%= hidden_field_tag :requested, true %>
@@ -14,5 +14,5 @@
 <% else %>
 	 No groups to join under this category currently.
 <% end %>
-
 </p>
+<%- if flash[:notice_group] %><div class="flash notice" id="flash_notice"><%= flash[:notice_group]  %></div><%- end %>
