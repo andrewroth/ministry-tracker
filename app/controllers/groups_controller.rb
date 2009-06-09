@@ -80,6 +80,10 @@ class GroupsController < ApplicationController
   
   def compare_timetables
     @compare = true
+    @notices = []
+    if (Cmt::CONFIG[:hide_poor_status_in_scheduler] == false)
+      @notices << "Poor state is currently enabled in the timetables. The 'Compare timetables' feature will not include the poor states during comparison."
+    end
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
     #if nobody is selected, compare schedules of everyone in group
     if(person_ids.nil? || person_ids.empty?)
@@ -88,6 +92,13 @@ class GroupsController < ApplicationController
     else
       @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
     end
+    
+    @people.each do |person|
+      if (person.free_times.nil? || person.free_times.empty?)
+        @notices << "<i>" + person.full_name + "</i> has not submitted his timetable. Hence will be excluded from comparison."
+      end
+    end
+    
     @comparison_map = Timetable.generate_compare_table(@people)
     respond_to do |format|
       format.js{
