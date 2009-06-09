@@ -1,18 +1,26 @@
+require 'ruby-debug'
+
 def clear_everything
+  puts "Clearing existing data..."
   # get rid of the data that comes with the core MT
   Ministry.delete_all
   MinistryInvolvement.delete_all
   MinistryCampus.delete_all
 end
 
+P2C_NAME = 'Power to Change Ministries'
+
 def setup_ministries
+  puts "Setting up ministries..."
   # set us up
-  p2c = Ministry.find_or_create_by_name 'Power to Change Ministries'
-  p2c.save!
+  p2c = Ministry.find_or_create_by_name P2C_NAME
+  p2c.save
   @c4c = Ministry.find_or_create_by_name_and_parent_id 'Campus for Christ', p2c.id
+  @c4c.save
 end
 
 def setup_roles
+  puts "Setting up roles..."
   # rename missionary to staff
   missionary = StaffRole.find :first, :conditions => { :name => 'Missionary' }
   if missionary
@@ -28,11 +36,32 @@ def setup_roles
 end
 
 def setup_directory_view
+  puts "Setting up directory views..."
+  debugger
+
   # we don't have a Website option
-  column = Column.find_by_title 'Website'
-  return unless column
-  column.view_columns.each { |vc| vc.destroy }
-  column.delete
+  ws = Column.find_by_title 'Website'
+  if ws
+    ws.view_columns.each { |vc| vc.destroy }
+    ws.destroy
+  end
+
+  # clear out old views
+  view_ids = View.all.collect &:id
+  used_views_ids = Ministry.all.collect{ |m| m.views.collect &:id }.flatten
+  View.find(view_ids - used_views_ids).each { |v| v.destroy }
+
+  # add campus column and school year columns
+  c = Column.find_by_title 'Campus'
+  sy = Column.find_by_title 'School Year'
+  View.all.each do |v|
+    vc = v.view_columns.find_or_create_by_column_id c.id
+    vc.save
+    vc = v.view_columns.find_or_create_by_column_id sy.id
+    vc.save
+
+    v.build_query_parts!
+  end
 end
 
 def setup_campuses
@@ -49,7 +78,7 @@ end
 
 def theyre_really_sure
   return true if @last_choice
-  STDOUT.print "warning: this WILL break your MT database data.  Use it only on a fresh mt install.\nContinue? (y/n) "
+  STDOUT.print "warning: this MAY break your MT database data.  Recommended usage only on fresh install, but it *should* work on an existing emu install.\nContinue? (y/n) "
   cont = STDIN.gets.chomp.downcase
   return @last_choice = (cont == 'y')
 end
@@ -87,14 +116,13 @@ def copy_file(a, b)
   end
 end
 
-
 namespace :canada do
   desc "Sets up the movement tracker for the canadian ministry"
   task :setup => :environment do
     exit unless theyre_really_sure
 
     puts "Setting up the CMT for the Canadian schema..."
-    #clear_everything
+    clear_everything unless Ministry.find_by_name P2C_NAME
     setup_ministries
     setup_directory_view
     setup_roles
