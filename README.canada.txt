@@ -8,7 +8,7 @@ rake db tasks seem to be hardcodeded to database.yml so...
 - Runs rake db:migrate:reset
 - Restores original database.yml
 
-NOTE: This step assumes you have an original copy of the hrdb database called the name that is under 'ciministry_development' in the database.emu.yml file.
+NOTE: This step assumes you have an original copy of the hrdb database called the name that is under 'ciministry_development' in the database.emu.yml file.  You do not need to change the name of your database to match. You can just change the name of the database in database.emu.yml to match.
 
 == Development ==
 Both 'ciministry_development' and 'development' databases will be used when developing as we are in the process of transitioning over to the ciministry database schema for the canadian version of ministry tracker.
