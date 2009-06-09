@@ -93,6 +93,53 @@ class Timetable < ActiveRecord::Base
     end
     @free_times
   end
+  
+  def self.generate_compare_table(people)
+    timetables = []
+    comparison_map = [Array.new, Array.new, Array.new, Array.new, Array.new, Array.new, Array.new]
+    people.each do |person|
+      timetables << setup_timetable(person)
+    end
+    
+    midnight = Time.now.beginning_of_day
+    
+    7.times do |day|
+        time = midnight + Timetable::EARLIEST 
+        stop = midnight + Timetable::LATEST 
+        time_block = 0
+        while time < stop 
+          time_in_seconds = time.to_i - midnight.to_i
+          
+          goods = []
+          bads = []
+          okays = []
+          poors = []
+          timetables.each_with_index do |tt,i|
+            css_class = (!tt[day][time_in_seconds].nil?) ? tt[day][time_in_seconds].css_class : ''
+            if (css_class == GOOD_CLASS)
+              goods << people[i]
+            elsif (css_class == BAD_CLASS)
+              bads << people[i]
+            elsif (css_class == OK_CLASS)
+              okays << people[i]
+            elsif (css_class == POOR_CLASS)
+              poors << people[i]
+            end           
+            
+          end
+          
+          comparison_map[day] << {time_in_seconds => Hash.new }
+          comparison_map[day][time_block][time_in_seconds]["goods"] = goods
+          comparison_map[day][time_block][time_in_seconds]["bads"] = bads
+          comparison_map[day][time_block][time_in_seconds]["okays"] = okays
+          comparison_map[day][time_block][time_in_seconds]["poors"] = poors
+          time += Timetable::INTERVAL 
+          time_block += 1
+        end  
+        
+    end
+    comparison_map
+  end
 
   def self.calculate_score(time_slot, user_weights, timetables, num_blocks, people, leader_ids)
     score = 0.0

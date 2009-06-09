@@ -46,7 +46,8 @@ ActionController::Routing::Routes.draw do |map|
                                                      :decline_request => :any }
 
   map.resources :groups, :member => {:find_times => :post},
-                         :collection => {:join => :any}
+                         :collection => {:join => :any,
+                                         :compare_timetables => :any}
 
   map.resources :bible_studies, :member => {:transfer => :post}
   

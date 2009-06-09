@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090605160309) do
+ActiveRecord::Schema.define(:version => 20090609044144) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -520,7 +520,7 @@ ActiveRecord::Schema.define(:version => 20090605160309) do
   create_table "view_columns", :force => true do |t|
     t.string   "view_id"
     t.string   "column_id"
-    t.string   "position"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

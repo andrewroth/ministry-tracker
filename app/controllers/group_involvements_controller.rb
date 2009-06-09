@@ -8,11 +8,18 @@ class GroupInvolvementsController < ApplicationController
   def joingroup  
     params[:type] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
+    @group_type_id = params[:gt_id]
     create_group_involvement
+    flash[:notice_group] = "Join request for <b>" + Group.find(params[:group_id]).name +  "</b> group sent!"
     respond_to do |format|
-      format.js
+      format.js {
+         render :update do |page|
+            page.replace_html("groupType"+@group_type_id, :partial => "groups/groups_to_join")
+            page[:flash_notice].fadeOut(4000)
+            page[:spinnergt].hide
+         end
+      }
     end
-    #TODO:refresh appropriate content on join groups page, rather than refresh whole page
   end
   
   def create_group_involvement
@@ -27,14 +34,32 @@ class GroupInvolvementsController < ApplicationController
   
   def accept_request
     GroupInvolvement.find(params[:id]).update_attribute(:requested, false)
-    render :template => 'dashboard/index'
-    #TODO:refresh the appropriate content on dashboard rather than refresh whole dashboard
+    flash[:notice_group] = "Group join request from <b>" + Person.find(GroupInvolvement.find(params[:id]).person_id).full_name + "</b> accepted!"
+    respond_to do |format|
+      format.js {
+         render :update do |page|
+            page.replace_html("groups", :partial => "dashboard/groups")
+            page[:flash_notice].fadeOut(4000)
+            page[:spinnergt].hide
+         end
+      }
+    end
+    
   end
   
   def decline_request
+    person_id = GroupInvolvement.find(params[:id]).person_id
     GroupInvolvement.delete(params[:id])
-    render :template => 'dashboard/index'
-    #TODO: refresh appropriate content on dashboard
+    flash[:notice_group] = "Group join request from <b>" + Person.find(person_id).full_name + "</b> declined!"
+    respond_to do |format|
+      format.js {
+         render :update do |page|
+            page.replace_html("groups", :partial => "dashboard/groups")
+            page[:flash_notice].fadeOut(4000)
+            page[:spinnergt].hide
+         end
+      }
+    end
   end
   
   def destroy
