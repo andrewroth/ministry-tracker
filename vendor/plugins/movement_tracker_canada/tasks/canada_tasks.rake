@@ -30,7 +30,7 @@ def setup_directory_view
   # we don't have a Website option
   column = Column.find_by_title 'Website'
   return unless column
-  column.view_columns.first.delete
+  column.view_columns.each { |vc| vc.destroy }
   column.delete
 end
 
@@ -53,18 +53,38 @@ def theyre_really_sure
 end
 
 def switch_to_core
-  if File.exists? "#{RAILS_ROOT}/config/mappings.yml"
-    File.rename "#{RAILS_ROOT}/config/mappings.yml",
-              "#{RAILS_ROOT}/config/mappings.yml.temp"
-  end
+  move_config 'mappings.yml', 'mappings.yml.orig'
+  move_config 'database.yml', 'database.yml.orig'
+  copy_config 'database.emu.yml', 'database.yml'
 end
 
 def switch_to_emu
-  if File.exists? "#{RAILS_ROOT}/config/mappings.yml.temp"
-    File.rename "#{RAILS_ROOT}/config/mappings.yml.temp",
-              "#{RAILS_ROOT}/config/mappings.yml"
+  move_config 'mappings.yml.orig', 'mappings.yml'
+  move_config 'database.yml.orig', 'database.yml'
+end
+
+def move_config(a, b)
+  move_file Rails.root.join('config', a), Rails.root.join('config', b)
+end
+
+def copy_config(a, b)
+  copy_file Rails.root.join('config', a), Rails.root.join('config', b)
+end
+
+def move_file(a, b)
+  if File.exists? a
+    File.rename a, b
   end
 end
+
+require 'fileutils'
+
+def copy_file(a, b)
+  if File.exists? a
+    FileUtils.cp a, b
+  end
+end
+
 
 namespace :canada do
   desc "Sets up the movement tracker for the canadian ministry"
