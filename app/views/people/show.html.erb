@@ -3,7 +3,12 @@
 
 <div id="profiletitle">
   <%- if @person == @me || is_ministry_leader -%>
-    <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person.user  %></div> 
+    <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
+    <%- if @person == @me && @person.user.guid -%>
+      <div class="butUpdate" ><a href="https://signin.mygcx.org/sso/selfservice/protected/password/changePassword.jsp" target="_blank">Change Password</a></div> 
+    <%- else -%>
+      <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+    <%- end -%>
     <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
       <div class="butUpdate" style="margin-right:5px;"><%= link_to "Import GCX Profile", import_gcx_profile_person_path(@person) %></div>
     <%- end -%>
@@ -142,9 +147,4 @@
 	<div><div id="edit_info" style="display:none"><%#= render :partial => 'edit' %></div></div>
 </div>
 
-<%- if @person.user -%>
-<div style="display:none" id="changePassword" class="passwordbox">
-  <%= render :partial => 'users/change_password', :locals => {:user => @person.user} %>
-</div>
-<%- end -%>
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>
