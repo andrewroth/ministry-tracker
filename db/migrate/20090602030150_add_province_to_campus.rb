@@ -37,7 +37,7 @@ class AddProvinceToCampus < ActiveRecord::Migration
 
     for c, p in CAMPUS_PROVINCES
       campus = Campus.find_by_campus_shortDesc c
-      province = Province.find_by_province_shortDesc p
+      province = State.find_by_province_shortDesc p
       campus.province_id = province.id
       campus.save
     end
