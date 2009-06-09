@@ -1,4 +1,4 @@
-<h2>Join a group</h2>	  
+<h2>Join a group&nbsp;&nbsp;<%= spinner('gt') %></h2>	  
 <div id="customizebody" class="accordion">
 	<%- @ministry.all_group_types.each do |gt| -%>
 	  <% if !gt.groups.empty?%>
