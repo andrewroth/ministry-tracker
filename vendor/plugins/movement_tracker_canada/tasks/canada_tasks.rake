@@ -7,8 +7,9 @@ end
 
 def setup_ministries
   # set us up
-  p2c = Ministry.create! :name => 'Power to Change Ministries'
-  @c4c = Ministry.create! :name => 'Campus for Christ', :parent => p2c
+  p2c = Ministry.find_or_create_by_name 'Power to Change Ministries'
+  p2c.save!
+  @c4c = Ministry.find_or_create_by_name_and_parent_id 'Campus for Christ', p2c.id
 end
 
 def setup_roles
@@ -41,7 +42,8 @@ def setup_campuses
   campuses = Campus.find_by_sql "select c.campus_shortDesc, c.campus_id from cim_hrdb_campus c left join cim_hrdb_province p on c.province_id = p.province_id left join cim_hrdb_country ct on ct.country_id = p.country_id where country_shortDesc = 'CAN';"
   ActiveRecord::Base.establish_connection Rails.env
   for c in campuses
-    @c4c.ministry_campuses.create! :campus_id => c.campus_id
+    mc = @c4c.ministry_campuses.find_or_create_by_campus_id c.campus_id
+    mc.save!
   end
 end
 
@@ -92,7 +94,7 @@ namespace :canada do
     exit unless theyre_really_sure
 
     puts "Setting up the CMT for the Canadian schema..."
-    clear_everything
+    #clear_everything
     setup_ministries
     setup_directory_view
     setup_roles
