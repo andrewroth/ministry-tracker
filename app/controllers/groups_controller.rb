@@ -43,8 +43,16 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(params[:group])
     @group.ministry = @ministry # Add bible study to current ministry
+    group_save = @group.save
+    if (params[:isleader] == "1")
+      @gi = GroupInvolvement.new(:person_id => @person.id, :group_id => @group.id)
+      @gi.level = "leader"
+      @gi.requested = false
+      @gi.save!
+      @group = @gi.group
+    end
     respond_to do |format|
-      if @group.save
+      if group_save
         flash[:notice] = @group.class.to_s.titleize + ' was successfully created.'
         format.html { redirect_to groups_url }
         format.js   { index }
