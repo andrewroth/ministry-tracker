@@ -37,7 +37,6 @@ end
 
 def setup_directory_view
   puts "Setting up directory views..."
-  debugger
 
   # we don't have a Website option
   ws = Column.find_by_title 'Website'
