@@ -37,7 +37,6 @@
 		</table>
 		<%- form_remote_tag({:url => "/group_involvements/transfer/#{@group.id}", 
 							 :html => {:id => 'transfer_form_'+level}}) do -%>
-		
 			<div id="transfer_<%= level %>"  style="display:none">
 				Pick a group to transfer the selected people to:<br />
 				<%= select_tag('transfer_to', options_for_select(get_ministry.groups.collect {|bs| [bs.name, bs.id]})) %>
@@ -56,8 +55,8 @@
 				if gi.level == level
 					person = gi.person
 					if (person && gi.requested != true)
-  					person.initialize_addresses(:current_address) if person.current_address.nil? -%>
-  					<%= render :partial => 'groups/member', :locals => {:person => person} %>
+					person.initialize_addresses(:current_address) if person.current_address.nil? -%>
+					<%= render :partial => 'groups/member', :locals => {:person => person} %>
   				<%- end -%>
 				<%- end -%>
 			<%- end -%>
@@ -65,4 +64,21 @@
 		<%- end -%>
 		</div>
 	<%- end -%>
+</div>
+
+<br/>
+<br/>
+
+<% data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end%>
+
+<%= link_to_remote 'Compare Timetables', {:url => {:controller => 'groups', :action => 'compare_timetables', :id => @group.id} , 
+												  :with => "#{data}"},
+												 {:class => 'small'} %>
+<%- tooltip do -%><p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p><%- end -%>
+  
+
+<br/>
+<br/>
+<div id = "compare">
+	<%= render :partial => 'groups/compare_timetables' %>
 </div>

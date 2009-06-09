@@ -8,9 +8,15 @@ class GroupInvolvementsController < ApplicationController
   def joingroup  
     params[:type] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
+    @group_type_id = params[:gt_id]
     create_group_involvement
+    
     respond_to do |format|
-      format.js
+      format.js {
+         render :update do |page|
+            page.replace_html("groupType"+@group_type_id, :partial => "groups/groups_to_join")
+         end
+      }
     end
     #TODO:refresh appropriate content on join groups page, rather than refresh whole page
   end
