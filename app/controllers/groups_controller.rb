@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_filter :authorization_filter, :only => [:create, :update, :destroy]
+  #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update]
   def index
     @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 

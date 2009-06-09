@@ -126,11 +126,9 @@ class ApplicationController < ActionController::Base
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
-        unless @user_permissions[ministry][permission.controller] && @user_permissions[ministry][permission.controller].include?(permission.action)
-          return false 
-        end
+        return @user_permissions[ministry][permission.controller] && @user_permissions[ministry][permission.controller].include?(permission.action)
       end
-      return true
+      return false
     end
     
     def authorization_filter
