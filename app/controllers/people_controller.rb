@@ -107,7 +107,7 @@ class PeopleController < ApplicationController
         unless params[:campus].empty?
           conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
           @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-          @search_for << Campus.find(:all, :conditions => "id in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @advanced = true
         end
       end
