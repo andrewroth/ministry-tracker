@@ -10,6 +10,13 @@ rake db tasks seem to be hardcodeded to database.yml so...
 
 NOTE: This step assumes you have an original copy of the hrdb database called the name that is under 'ciministry_development' in the database.emu.yml file.  You do not need to change the name of your database to match. You can just change the name of the database in database.emu.yml to match.
 
+NOTE: You may get a rake mysql error:
+
+'Mysql::Error: Unknown column 'c.province_id' in 'on clause': selectc.campus_shortDesc, c.campus_id from cim_hrdb_campus c left joincim_hrdb_province p on c.province_id = p.province_id left join cim_hrdb_countryct on ct.country_id = p.country_id where c...'
+
+** Contact Andrew about this. **  I believe the dump for loop 09 is buggered.
+
+
 == Development ==
 Both 'ciministry_development' and 'development' databases will be used when developing as we are in the process of transitioning over to the ciministry database schema for the canadian version of ministry tracker.
 
