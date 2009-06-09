@@ -30,6 +30,7 @@ class AddProvinceToCampus < ActiveRecord::Migration
 
   def self.up
     return unless Campus.columns.collect(&:name).index('province_id').nil?
+    return unless Campus.table_name =~ /cim_hrdb_campus/
 
     add_column Campus.table_name, :province_id, :integer
     Person.reset_column_information
