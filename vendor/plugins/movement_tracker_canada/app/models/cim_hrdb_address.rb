@@ -16,6 +16,10 @@ class CimHrdbAddress < ActiveRecord::Base
     province ? province.name : ''
   end
 
+  def state=(v)
+    throw "not implemented"
+  end
+
   def country
     province && province.country ? province.country.name : ''
   end
