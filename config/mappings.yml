@@ -5,13 +5,15 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_vieweraccessgroup
 
 tables:
   user: accountadmin_viewer
   person: cim_hrdb_person
   cim_hrdb_current_address: cim_hrdb_person
   cim_hrdb_permanent_address: cim_hrdb_person
+  accountadmin_accessgroup: accountadmin_accessgroup
+  accountadmin_vieweraccessgroup: accountadmin_vieweraccessgroup
   access: cim_hrdb_access
   campus: cim_hrdb_campus
   person_year: cim_hrdb_person_year
@@ -72,6 +74,7 @@ person:
   middle_name: person_mname
   preferred_name: person_fname
   created_at: person_id
+  email: person_email
 
 campus:
   id: campus_id
@@ -107,4 +110,13 @@ cim_hrdb_staff:
   id: staff_id
 cim_hrdb_person_year:
   id: year_desc
+
+accountadmin_accessgroup:
+  id: accessgroup_id
+
+accountadmin_accessgroup:
+  id: accessgroup_id
+
+accountadmin_vieweraccessgroup:
+  id: vieweraccessgroup_id
 

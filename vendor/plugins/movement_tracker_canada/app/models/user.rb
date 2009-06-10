@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
 
+  def created_at=(v) end
+
   def person
     persons.first
   end
@@ -17,5 +19,40 @@ class User < ActiveRecord::Base
 
   def login_callback
     person.sync_cim_hrdb
+  end
+
+  def self.find_or_create_from_cas(ticket)
+    # Look for a user with this guid
+    receipt = ticket.response
+    atts = receipt.extra_attributes
+    guid = att_from_receipt(atts, 'ssoGuid')
+    first_name = att_from_receipt(atts, 'firstName')
+    last_name = att_from_receipt(atts, 'lastName')
+    u = User.find(:first, :conditions => _(:guid, :user) + " = '#{guid}'")
+
+    # if we have a user by this method, great! update the email address if it doesn't match
+    if u
+      u.person.email = receipt.user
+    else
+      # If we didn't find a user with the guid, do it by email address and stamp the guid
+      u = User.find(:first, :conditions => "#{_(:username, :user)} = '#{receipt.user.upcase}' or #{_(:username, :user)} = '#{receipt.user.downcase}'")
+      unless u
+        # try by person email
+        p = Person.find(:first, :conditions => "#{_(:email, :person)} = '#{receipt.user.upcase}' or #{_(:email, :person)} = '#{receipt.user.downcase}'")
+        u = p.user if p
+      end
+
+      if u
+        u.guid = guid
+        u.save!
+      else
+        # If we still don't have a user in SSM, we need to create one.
+        #u = User.create!(:username => receipt.user, :guid => guid)
+        Person.create_new_cim_hrdb_account guid, first_name, 
+          last_name, receipt.user
+      end
+    end 
+
+    u
   end
 end

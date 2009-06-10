@@ -21,6 +21,8 @@ class Person < ActiveRecord::Base
 
   has_one :person_extra_ref, :class_name => 'PersonExtra'
 
+  def created_at=(v) end
+
   def person_extra() 
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
   end
@@ -60,22 +62,33 @@ class Person < ActiveRecord::Base
     return @emerg if @emerg
     @emerg = emerg
     return @emerg if @emerg
+    return if id.nil? || id == ''
     # required fields are a bit of a pain
     @emerg = Emerg.create!(:emerg_birthdate => Time.now, :emerg_contact2Mobile => '', :emerg_contact2Rship => '', :emerg_contact2Home => '', :emerg_passportExpiry => Time.now, :emerg_contact2Work => '', :emerg_contact2Email => '', :emerg_contact2Name => '', :person_id => id)
     @emerg.emerg_passportExpiry = nil
     @emerg.save!
     return @emerg
   end
-  def birth_date() get_emerg.emerg_birthdate; end
-  def birth_date=(v) @save_emerg = true; emerg.emerg_birthdate = v if emerg; end
+  def birth_date() 
+    @birth_date_set ? @birth_date : @birth_date ||= get_emerg.emerg_birthdate
+  end
+  def birth_date=(v)
+    @birth_date = v
+    @birth_date_set = true
+    @save_emerg = true
+  end
+
+  def created_by=(v) end
+
   def after_save
     if @save_emerg
+      if @birth_date_set
+        get_emerg.emerg_birthdate = @birth_date
+      end
       get_emerg.save!
       @save_emerg = false
     end
   end
-
-  def created_by=(v) end # don't bother
 
   def gender() gender_ ? gender_.desc : '???' end
 
@@ -142,6 +155,40 @@ class Person < ActiveRecord::Base
       super
     end
 
+    def self.find_or_create_from_cas(ticket)
+      # Look for a user with this guid
+      receipt = ticket.response
+      atts = receipt.extra_attributes
+      guid = att_from_receipt(atts, 'ssoGuid')
+      first_name = att_from_receipt(atts, 'firstName')
+      last_name = att_from_receipt(atts, 'lastName')
+      u = User.find(:first, :conditions => _(:guid, :user) + " = '#{guid}'")
+
+      # if we have a user by this method, great! update the email address if it doesn't match
+      if u
+        u.person.email = receipt.user
+      else
+        # If we didn't find a user with the guid, do it by email address and stamp the guid
+        u = User.find(:first, :conditions => _(:username, :user) + " = '#{receipt.user}'")
+        unless u
+          # try by person email
+          p = Person.find(:first, :conditions => _(:email, :person) + " = '#{receipt.user}'")
+          u = p.user if p
+        end
+
+        if u
+          u.guid = guid
+        else
+          # If we still don't have a user in SSM, we need to create one.
+          #u = User.create!(:username => receipt.user, :guid => guid)
+          Person.create_new_cim_hrdb_account guid, first_name, 
+            last_name, receipt.user
+        end
+      end 
+
+      u
+    end
+
     def self.create_new_cim_hrdb_account(guid, fn, ln, uid)
       # first and last names can't be nil
       fn ||= ''
@@ -157,15 +204,16 @@ class Person < ActiveRecord::Base
       v.save!
       #v.viewer_lastLogin = nil # hack to get by the create restriction
 
-      p = Person.create! :person_fname => fn, :person_lname => ln,
-        :person_legal_fname => '', :person_legal_lname => '',
+      p = Person.create! :person_fname => fn, :person_lname => ln, 
+        :person_legal_fname => '', :person_legal_lname => '', 
         :birth_date => nil
-      ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]'
-      ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
+      ag_st = Vieweraccessgroup.find_by_accessgroup_key '[accessgroup_student]'
+      ag_all = Vieweraccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
       AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
       AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_all.id
       Access.create :viewer_id => v.id, :person_id => p.id
 
       v
     end
+
 end
