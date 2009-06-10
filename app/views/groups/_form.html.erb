@@ -44,6 +44,9 @@
   	    </table>
   	  </td>
   	</tr>
+		
+	Make me the leader of this group:
+  <%= check_box_tag (:isleader, 1, true)%>
   </table>
 	<%= submit_tag 'Save' %> or 
 	<%- if params[:action] == 'new' -%>
