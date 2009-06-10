@@ -146,12 +146,13 @@ class ApplicationController < ActionController::Base
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
       controller ||= controller_name.to_s
+
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
-        return @user_permissions[ministry][permission.controller] && @user_permissions[ministry][permission.controller].include?(permission.action)
+        return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
       end
-      return false
+      return Cmt::CONFIG[:permissions_granted_by_default]
     end
     
     def authorization_filter
