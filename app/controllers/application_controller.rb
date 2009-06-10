@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
-  protected
+  #protected
     def fake_login
       self.current_user = User.find(Person.find(50195).user_id)
     end
@@ -155,6 +155,10 @@ class ApplicationController < ActionController::Base
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
         return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
+      elsif PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
+        mapped_action = mapped_permission[:action]
+        mapped_controller = mapped_permission[:controller] || controller
+        return authorized?(action, controller, ministry)
       end
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
