@@ -158,7 +158,7 @@ class ApplicationController < ActionController::Base
       elsif PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
         mapped_action = mapped_permission[:action]
         mapped_controller = mapped_permission[:controller] || controller
-        return authorized?(action, controller, ministry)
+        return authorized?(mapped_action, mapped_controller, ministry)
       end
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
