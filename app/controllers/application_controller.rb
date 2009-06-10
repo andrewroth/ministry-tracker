@@ -118,9 +118,13 @@ class ApplicationController < ActionController::Base
     # If no controller mapping is given, it assumes the same controller
     #
     PERMISSION_MAPPINGS = {
-      'group_types' => {
-        'edit' => { :controller => 'another', :action => 'another' },
-        'edit' => { :action => 'samecontroller_differentaction' }
+#      '*' => {
+#        'create' => { :action => 'new' },
+#        'destroy' => { :action => 'new' },
+#        'update' => { :action => 'edit' }
+#      },
+      'groups' => {
+        'edit' => { :action => 'new' }
       }
     }
 

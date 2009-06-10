@@ -35,7 +35,7 @@ module Cmt
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
-    :permissions_granted_by_default => true
+    :permissions_granted_by_default => false
   }
 end
 
