@@ -118,13 +118,15 @@ class ApplicationController < ActionController::Base
     # If no controller mapping is given, it assumes the same controller
     #
     PERMISSION_MAPPINGS = {
-#      '*' => {
+#      '*init' => {
 #        'create' => { :action => 'new' },
-#        'destroy' => { :action => 'new' },
+#        'destroy' => { :action => 'new' }
+#      },
+#      '*' => {
 #        'update' => { :action => 'edit' }
 #      },
       'groups' => {
-        'edit' => { :action => 'new' }
+        'index' => { :action => 'new' }
       }
     }
 
@@ -147,18 +149,32 @@ class ApplicationController < ActionController::Base
           end
         end
       end
+
+      # Make sure we're always using strings      
+      action = action.to_s
+      controller = controller.to_s
+      
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
-      controller ||= controller_name.to_s
+      
+#      # Code to potentially replace the action assignment lines above.
+#      action ||= PERMISSION_MAPPING['*init'].include?(action_name.to_s) ? 
+#                   PERMISSION_MAPPINGS['*init'][action_name.to_s][:action] : action_name.to_s
+#      action = PERMISSION_MAPPING['*'].include?(action) ? 
+#                   PERMISSION_MAPPINGS['*'][action][:action] : action
+
+      controller ||= controller_name.to_s      
+      
+      # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
+      if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
+        action = mapped_permission[:action]
+        controller = mapped_permission[:controller] || controller
+      end
 
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
         return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
-      elsif PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
-        mapped_action = mapped_permission[:action]
-        mapped_controller = mapped_permission[:controller] || controller
-        return authorized?(mapped_action, mapped_controller, ministry)
       end
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
