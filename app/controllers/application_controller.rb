@@ -101,6 +101,15 @@ class ApplicationController < ActionController::Base
       return session[:admins][ministry.id][person.id]
     end
     
+    PERMISSION_MAPPINGS = {
+      'group_types' => {
+        'edit' => { :controller => 'another', :action => 'another' }
+        'edit' => { :action => 'samecontroller_differentaction' }
+      }
+    }
+
+    PERMISSION_MAPPINGS['group_types']['edit'][:controller]
+
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
       ministry ||= get_ministry
