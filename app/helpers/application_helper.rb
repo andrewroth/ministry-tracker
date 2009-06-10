@@ -85,4 +85,16 @@ module ApplicationHelper
           </script>|
   end
 
+  def help_block(text = nil, &proc)
+    text = capture(&proc) if block_given?
+    render_s = render(:partial => 'widgets/help_block', :locals => { :content => text })
+
+    if block_given?
+      concat(render_s)
+      return nil
+    else
+      render_s
+    end
+  end
+
 end

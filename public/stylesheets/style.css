@@ -993,3 +993,10 @@ min-width:180px;
 .adfieldbox input.wide{width:175px; padding:3px 0 3px 0;}
 .adfieldbox select.wide, .adfieldbox select.doublewide{width:175px; padding:0; height:65px;}
 .adfieldbox select.doublewide {width:371px;}
+
+.help_block {
+  border-width:1px;
+  background-color: #FFE99B;
+  margin: 2px;
+}
+
