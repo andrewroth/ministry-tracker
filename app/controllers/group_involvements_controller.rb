@@ -64,7 +64,10 @@ class GroupInvolvementsController < ApplicationController
   
   def destroy
     if params[:members]
-      GroupInvolvement.destroy_all(["#{_(:person_id, :group_involvement)} IN (?)", params[:members].join(',')])
+      params[:members].each do |member|
+        gi = find_by_person_id_and_group_id(member, params[:id])
+        GroupInvolvement.delete(gi.id)
+      end
     else
       raise "No members were selected to delete"
     end
@@ -72,16 +75,25 @@ class GroupInvolvementsController < ApplicationController
     refresh_page
   end
   
-  def transfer
+  def transfer_selected
+    @transfer_notices = []
     if params[:members]
-      GroupInvolvement.update_all(["#{_(:group_id, :group_involvement)} = ?", params[:transfer_to]], 
-                                  ["#{_(:group_id, :group_involvement)} = ? AND " +
-                                   "#{_(:level, :group_invovlement)} = ? AND " + 
-                                   "#{_(:person_id, :group_involvement)} IN (?)", params[:id], params[:level], params[:members].join(',')])
+      params[:members].each do |member|
+        begin
+          gi_id = Group.find(params[:id]).group_involvements.find(:first, :conditions => {:person_id => member}).id
+          GroupInvolvement.find(gi_id).update_attribute(:group_id, params[:transfer_to])
+        rescue ActiveRecord::StatementInvalid
+          @transfer_notices << "Transfer failed: <i>" + Person.find(member).full_name + "</i> already in group " + Group.find(params[:id]).name
+        end
+          
+      end
+    else
+      @transfer_notices << "People need to be selected before initiating a transfer."
     end
     get_group
     refresh_page
   end
+  
   
   protected
     def find_by_person_id_and_group_id(person_id, group_id)
