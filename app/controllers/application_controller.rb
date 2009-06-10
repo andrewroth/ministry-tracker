@@ -101,14 +101,28 @@ class ApplicationController < ActionController::Base
       return session[:admins][ministry.id][person.id]
     end
     
+    # you can map controllers and actions to another controller/action's permissions in this format:
+    #
+    # PERMISSION_MAPPINGS = {
+    #   'group_types' => {
+    #     'edit' => { :controller => 'another', :action => 'another' },
+    #     'edit' => { :action => 'samecontroller_differentaction' }
+    #   }
+    # }
+    #
+    # and then access them with 
+    #
+    # PERMISSION_MAPPINGS['group_types']['edit'][:action]
+    # PERMISSION_MAPPINGS['group_types']['edit'][:controller]
+    #
+    # If no controller mapping is given, it assumes the same controller
+    #
     PERMISSION_MAPPINGS = {
       'group_types' => {
-        'edit' => { :controller => 'another', :action => 'another' }
+        'edit' => { :controller => 'another', :action => 'another' },
         'edit' => { :action => 'samecontroller_differentaction' }
       }
     }
-
-    PERMISSION_MAPPINGS['group_types']['edit'][:controller]
 
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
