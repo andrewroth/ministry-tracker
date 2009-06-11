@@ -38,6 +38,7 @@
       		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
       		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
       		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
+           <%- tooltip do -%> <p>When you create a time a day, this timeslot will appear on ever member's timetable<p> <%-end-%>
       		<tr><td>Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>

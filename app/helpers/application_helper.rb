@@ -21,8 +21,8 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.show "flash_#{level}"
-    page.visual_effect :highlight, "flash_#{level}"
+    page.visual_effect :appear, "flash_#{level}"
+    #page.visual_effect :highlight, "flash_#{level}"
     page.delay(5) do
       page.visual_effect :fade, "flash_#{level}"
       page.delay(2) do
@@ -83,6 +83,18 @@ module ApplicationHelper
               }
             );
           </script>|
+  end
+
+  def help_block(text = nil, &proc)
+    text = capture(&proc) if block_given?
+    render_s = render(:partial => 'widgets/help_block', :locals => { :content => text })
+
+    if block_given?
+      concat(render_s)
+      return nil
+    else
+      render_s
+    end
   end
 
 end

@@ -353,27 +353,6 @@ ActiveRecord::Schema.define(:version => 20090609044144) do
     t.string "action"
   end
 
-  create_table "person_extras", :force => true do |t|
-    t.integer "person_id"
-    t.string  "major"
-    t.string  "minor"
-    t.string  "url"
-    t.string  "staff_notes"
-    t.string  "updated_at"
-    t.string  "updated_by"
-    t.date    "perm_start_date"
-    t.date    "perm_end_date"
-    t.string  "perm_dorm"
-    t.string  "perm_room"
-    t.string  "perm_alternate_phone"
-    t.date    "curr_start_date"
-    t.date    "curr_end_date"
-    t.string  "curr_dorm"
-    t.string  "curr_room"
-  end
-
-  add_index "person_extras", ["person_id"], :name => "index_person_extras_on_person_id"
-
   create_table "profile_pictures", :force => true do |t|
     t.integer "person_id"
     t.integer "parent_id"

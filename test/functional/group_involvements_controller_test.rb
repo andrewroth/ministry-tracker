@@ -24,7 +24,7 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
   def test_destroy
     old_count = GroupInvolvement.count
     delete :destroy, :id => 1, :members => [50000]
-    assert_equal old_count-1, GroupInvolvement.count
+    assert_equal old_count-2, GroupInvolvement.count
   end
   
   def test_destroy_fail

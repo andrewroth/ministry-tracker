@@ -1,12 +1,10 @@
-<%- if !@notices.nil? && !@notices.empty? %>
-	<div class="flash notice" id="flash_notice">
-		<%- @notices.each do |notice|  %>
-				-&nbsp;<%= notice %><br/>
-		<%- end %>
-	</div>
-<%- end %>
 
-<% if @compare == true %>
+<div id = "notices">
+	<%= render :partial => 'groups/show_notices' %>
+</div>
+
+
+<% if @display_compare_table == true %>
 	<table id="schedule" width="250px" cellspacing="0">
 	  <thead>
 	    <tr>
@@ -49,7 +47,10 @@
 						<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
 								<%= 	p.first_name %>,<br/>
 						<% end %>
-	          <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
+						<%=link_to_remote "Set as start time", {:url => {:controller => "groups", :action => "set_start_time", :id => @group.id, :day => day, :time => time_in_seconds} } %>
+						<span class="redlink">
+							<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} } %>
+						</span>
 	        </td>
 	        <%- end -%>
 	      </tr>

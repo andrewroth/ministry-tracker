@@ -1,15 +1,17 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class GroupTypesControllerTest < ActionController::TestCase
+  fixtures GroupInvolvement.table_name, Group.table_name, GroupType.table_name
+  
   def setup
     login
   end
-  # Replace this with your real tests.
+
   test "should GET index with xml" do
     @request.env["HTTP_ACCEPT"] = "application/xml"
     get :index
     assert_response :success, @response.body
-    assert_equal(GroupType.find(:all).to_xml, @response.body)
+    assert_equal(Ministry.first.group_types.to_xml, @response.body)
   end
   
   test  "should GET new" do
@@ -50,7 +52,7 @@ class GroupTypesControllerTest < ActionController::TestCase
   end
   
   test  "should NOT update a group type" do
-    xhr :put, :update, :group_type => {:group_type => ''}, :id => 1
+    xhr :put, :update, :group_type => { :group_type => '' }, :id => 1
     assert_equal(1, assigns(:group_type).errors.length)
     assert_response :success, @response.body
   end

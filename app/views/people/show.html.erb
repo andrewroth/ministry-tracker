@@ -33,26 +33,14 @@
 	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
 
 	<h5 class="title">I'm Involved In</h5>
-	<% type = ''  %>
-  	<%- @person.groups.each do |group| -%>
-  	  <%- unless type == group.group_type.group_type -%>
-            <h4><%= group.group_type.group_type.pluralize %></h4>
-            <ul>
-      <%- end -%>
-  	  <li id="group_<%= group.id %>">
-  		  <%= link_to group.name, group_url(group) %>
-  		</li>
-  	  <%- unless type == group.group_type.group_type
-  	        type = group.group_type.group_type -%>
-  	        </ul><br />
-      <%- end -%>
-  	<%- end -%>
-
+  <%= render :partial => 'group_list', :locals => { 
+    :group_types_and_involvements => @person.group_group_involvements(:involved, :ministry => @ministry)
+  } %>
 	
 	<%- if @person.ministries.count > 0 -%>
   	<h4>Ministries</h4>
   	<ul>
-  	<%- @person.ministries.each do |ministry| 
+  	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
   	  <li id="mi_<%= mi.id %>">
   	  <%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi), 
@@ -61,6 +49,7 @@
                                                   :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
   	  <%= link_to_remote(mi.ministry.name, :url => change_ministry_people_url(:ministry => mi.ministry.id),
                   											 	 :method => :get) %>
+      (<%= mi.ministry_role.name %>)
   	  </li>
   	<%- end -%>
   	</ul> <br />
@@ -70,7 +59,6 @@
     <%= render :partial => 'campuses' %>
   <%- end -%>
   </div>
-	<br />
 	<%# = link_to '&raquo; Find a Group', find_groups_url %><br />
 	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
  <!--
@@ -81,9 +69,16 @@
 	-->
 	<%- if @person.group_interests.count > 0 -%>
 		<h5 class="title">I'm Interested In</h5>
-		<%- @person.group_interests.each do |group| -%>
-			<%= link_to group.name, group_url(group), :class => 'norm' %> ( team )<br />
-		<%- end -%>	
+    <%= render :partial => 'group_list', :locals => {
+      :group_types_and_involvements => @person.group_group_involvements(:interests, :ministry => @ministry)
+    } %>
+	<%- end -%>	
+
+	<%- if @person.group_requests.count > 0 -%>
+		<h5 class="title">I've Requested</h5>
+    <%= render :partial => 'group_list', :locals => {
+      :group_types_and_involvements => @person.group_group_involvements(:requests, :ministry => @ministry)
+    } %>
 	<%- end -%>	
 </div>
 <div class="rightColumn">
