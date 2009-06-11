@@ -26,8 +26,8 @@ class SessionsControllerTest < ActionController::TestCase
   
   test 'log in with bad username' do
     post :create, :username => 'josh.bad@example.com', :password => 'test', :remember_me => 1, :format => 'html'
-    assert_response :success, @response.body
-    assert_template 'new'
+   assert_response :success, @response.body
+   assert_template 'new'
   end
   
   test 'log in with missing param' do

@@ -1,0 +1,12 @@
+<%- group_types_and_involvements.each do |group_type, gis| -%>
+  <h4><%= group_type.group_type.pluralize %></h4>
+  <ul> 
+    <% gis.each do |gi| -%>
+      <% group = gi.group -%>
+      <li id="group_<%= group.id %>">
+        <%= link_to group.name, group_url(group) %> (<%= gi.level.capitalize -%>)
+      </li>
+    <% end -%>
+  </ul>
+  <br/>
+<% end -%>

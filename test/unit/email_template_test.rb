@@ -1,10 +1,6 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class EmailTemplateTest < ActiveSupport::TestCase
   fixtures :correspondence_types
-  
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+
 end

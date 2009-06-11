@@ -1,35 +1,33 @@
 <div class="modulecontent">
-        <ul class="groupicon">
-          <% @my.groups.each do |group| %>
-		  	<% if groupmember?(group)%>
-            <li>
-            	
-            	<%= link_to(group.name, group) %>
-					<ul class="requesticon">
-						<% find_join_requests(group).each do |request| %>
-						<li>
-							Join request from <%=link_to Person.find(request.person_id).full_name, person_url(request.person_id) %>
-							<b>
-							<%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id},
-																						 :before => "$('#spinnergt').show();" %>
-							<%= link_to_remote '[Decline]', :url => {:controller => "group_involvements", :action => "decline_request", :id => request.id},
-																						  :before => "$('#spinnergt').show();" %>
-							
-							</b>
-							(Role: '<%= GroupInvolvement.find(request.id).level%>')
-						</li>
-						<% end %>
-					</ul>
-			</li>
-			<% else %>
-			<li>
-            	<%= link_to(group.name, group) %> [Awaiting join request decision]
-			</li>
-			<% end %>
-          <% end %>
-        </ul>
-		<br/>
-		<%= link_to "Join a group", :controller => "groups", :action => "join" %>
-</div>
+  <ul class="groupicon">
+    <% @my.all_groups.each do |group| %>
+      <% next unless group.ministry == @ministry %>
+      <% if groupmember?(group)%>
+        <li>
 
-<%- if flash[:notice_group] %><div class="flash notice" id="flash_notice"><%= flash[:notice_group]  %></div><%- end %>
+        <%= link_to(group.name, group) %>
+        <ul class="requesticon">
+          <% find_join_requests(group).each do |request| %>
+            <li>
+            Join request from <%= link_to request.person.full_name, person_url(request.person_id) %>
+            <b>
+              <%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id},
+                :before => "$('#spinnergt').show();" %>
+                <%= link_to_remote '[Decline]', :url => {:controller => "group_involvements", :action => "decline_request", :id => request.id},
+                  :before => "$('#spinnergt').show();" %>
+
+                </b>
+                (Role: '<%= GroupInvolvement.find(request.id).level%>')
+                </li>
+              <% end %>
+            </ul>
+            </li>
+          <% else %>
+            <li>
+            <%= link_to(group.name, group) %> [Awaiting join request decision]
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <%= link_to "Join a group", :controller => "groups", :action => "join" %>
+    </div>

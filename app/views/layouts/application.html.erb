@@ -4,11 +4,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-	    <title>Ministry Track<%= ': ' + @site_title if @site_title -%></title>
-		<%= stylesheet_link_tag "ext/ext-all", 'calendar/calendar-win2k-1', "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => true %>
+    <%# Check if the web_title config option is set, and if so, use it %>
+    <title>
+      <% if Cmt::CONFIG[:web_title] %>
+        <%= Cmt::CONFIG[:web_title] %>
+      <% else %>
+	      Ministry Track
+      <% end %>      
+      <%= ': ' + @site_title if @site_title -%>
+    </title>
+		<%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => true %>
 		<%= javascript_include_tag :defaults, 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
-		                            'jquery.disable.text.select.pack', 'calendar', 'lang/calendar-en', 'calendar-setup',
-		                            'jquery.scrollTo-min', :cache => true %>
+		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
+
+		<%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%= javascript_include_tag "jscalendar-1.0/calendar.js" %>
+		<%= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js" %>
+		<%= javascript_include_tag "jscalendar-1.0/calendar-setup.js" %>
 	</head>
 	<body>
 		<div id="outer">
@@ -42,10 +54,8 @@
 			<%- end -%>
 			<div class="clear">&nbsp;</div>
 			
-			<%- if flash[:notice] %><div class="flash notice" id="flash_notice"><%= flash[:notice] %></div><%- end %>
-			<%- if flash[:warning] %><div class="flash warning" id="flash_warning"><%= flash[:warning] %></div><%- end %>
-			
-			
+			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
 			
 			<div id="content">
 				<%= yield %>

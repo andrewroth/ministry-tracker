@@ -41,7 +41,7 @@ class View < ActiveRecord::Base
         foreign_key = column.foreign_key.to_s.empty? ? 'person_id' : column.foreign_key
         source_table_name = source_model.table_name
         join_on_left = "#{source_model}.#{_(source_column.to_sym, source_model.name.downcase.to_sym)}"
-        join_on_right = "#{column.from_clause}.#{_(foreign_key.to_sym, column.from_clause.downcase.to_sym)}"
+        join_on_right = "#{column.from_clause}.#{_(foreign_key.to_sym, column.from_clause.underscore.to_sym)}"
         tables_clause += " LEFT JOIN #{table_name} as #{column.from_clause} on #{join_on_left} = #{join_on_right}"
         tables_clause += " AND " + column.join_clause unless column.join_clause.blank?
       end
@@ -50,7 +50,7 @@ class View < ActiveRecord::Base
       unless ['id','first_name','last_name'].include?(column.select_clause)
         # Add column to select clause
         unless column.select_clause.first == '('
-          select_clause << "#{column.from_clause}.#{_(column.select_clause, column.from_clause.downcase)} as #{column.safe_name}"
+          select_clause << "#{column.from_clause}.#{_(column.select_clause, column.from_clause.underscore)} as #{column.safe_name}"
         else
           select_clause << column.select_clause
         end

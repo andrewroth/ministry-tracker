@@ -1,0 +1,20 @@
+<% @help_uid ||= 0; @help_uid += 1 %>
+<script>help_shown_<%=@help_uid%> = false;</script>
+<%= link_to_function 'Help', "
+      if (help_shown_#{@help_uid} == true) {
+        help_shown_#{@help_uid} = false;
+        $('#helpblock_#{@help_uid}').slideUp('slow');
+        $('#help_link_#{@help_uid}').html('Help');
+      } else {
+        help_shown_#{@help_uid} = true;
+        $('#helpblock_#{@help_uid}').slideDown('slow');
+        $('#help_link_#{@help_uid}').html('Help (Hide)');
+      }
+",
+:id => "help_link_#{@help_uid}",
+:class => 'help_block'
+%>
+
+<div class='help_block' style='display:none;' id='helpblock_<%=@help_uid%>'>
+  <%= content %>
+</div>

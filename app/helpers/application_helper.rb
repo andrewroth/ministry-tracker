@@ -21,8 +21,8 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.show "flash_#{level}"
-    page.visual_effect :highlight, "flash_#{level}"
+    page.visual_effect :appear, "flash_#{level}"
+    #page.visual_effect :highlight, "flash_#{level}"
     page.delay(5) do
       page.visual_effect :fade, "flash_#{level}"
       page.delay(2) do
@@ -33,7 +33,7 @@ module ApplicationHelper
   end
 
   def date_options(year = Time.now.year - 5)
-    {:include_blank => true, :order => [:month, :day, :year], :start_year => year}
+    {:include_blank => true, :start_year => year}
   end
   
   def spinner(id='')
@@ -70,8 +70,8 @@ module ApplicationHelper
                   $(item).val('');
               }
           </script>
-          <a class="button" href="#" id="pick_date_#{name}"><img src="/images/silk/calendar_view_day.png" /></a>
-          <a class="button" href="javascript:clear_date('#{name}');"><img src="/images/silk/cross.png" /></a>
+          <a class="button" href="#" id="pick_date_#{name}">#{image_tag "silk/calendar_view_day.png"}</a>
+          <a class="button" href="javascript:clear_date('#{name}');">#{image_tag "silk/cross.png"}</a>
           <script type="text/javascript">
             Calendar.setup(
               {
@@ -83,6 +83,18 @@ module ApplicationHelper
               }
             );
           </script>|
+  end
+
+  def help_block(text = nil, &proc)
+    text = capture(&proc) if block_given?
+    render_s = render(:partial => 'widgets/help_block', :locals => { :content => text })
+
+    if block_given?
+      concat(render_s)
+      return nil
+    else
+      render_s
+    end
   end
 
 end

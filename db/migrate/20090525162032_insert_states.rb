@@ -70,7 +70,11 @@ class InsertStates < ActiveRecord::Migration
   ]
   
   def self.up
-    State.delete_all
+    if State.count > 0
+      puts "Skipping initial state creation, since you already have some."
+      return
+    end
+
     for s in STATES do
       State.create(:name => s[0], :abbreviation => s[1])
     end

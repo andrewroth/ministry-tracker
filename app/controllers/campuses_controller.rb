@@ -7,7 +7,7 @@ class CampusesController < ApplicationController
   end
   
   def change_state
-    @campuses = Campus.find_all_by_state_id(params[:state_id])
+    @campuses = Campus.find :all, :conditions => { _(:state_id, :campus) => params[:state_id] }
   end
   
   def change_county

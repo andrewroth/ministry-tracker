@@ -1,7 +1,8 @@
 <%- if !@notices.nil? && !@notices.empty? %>
 	<div class="flash notice" id="flash_notice">
-			<%- @notices.each do |notice|  %>
-					-&nbsp;<%= notice %><br/>
-			<%- end %>
-	</div>
+    <%- dash = @notices.length > 1 ? "-&nbsp;" : "" %>
+    <%- @notices.each do |notice|  %>
+      <%= dash %><%= notice %><br/>
+    <%- end %>
+  </div>
 <%- end %>
