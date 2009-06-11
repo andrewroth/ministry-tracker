@@ -1,3 +1,20 @@
+<%- help_block do -%> 
+  <h3>Managing Ministry Roles</h3>
+  <p>This is a very powerful page. 
+  What you modify in here will effect all roles for every ministry on the Ministry Tracker. 
+  The roles you see are listed in hierarchal style; the higher the role, the higher its position in the Ministry Tracker.
+  To change a role position, click on the four-pronged arrow and drag it to its new position. 
+  If you want to change a staff role to a student role, or vice versa, you'll have to click the edit button and change its category.
+  This will effect the Responsible Person chains, who can edit who's profile, etc. Use this carefully.
+  </p>
+  <p>
+  In order to delete a role, everyone of that role must be switched to a different role.
+  Names and desriptions don't change anything rather than how they are displayed. 
+  Permissions are the meat a potatoes of roles. Click on the key to edit what a certain role can do.
+  </p>
+
+<%- end -%>
+
 <div id="permissions">
 	<div class="right_list">
 		<div class="title"><%= @ministry.name %> Roles</div>
