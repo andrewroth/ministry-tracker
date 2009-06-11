@@ -3,8 +3,11 @@ bible_study:
   id: 1
   ministry_id: 1
   group_type: Bible Study
-  
 team:
   id: 2
   ministry_id: 1
   group_type: Team
+chicago:
+  id: 3
+  ministry_id: 2
+  group_type: Bible Study Chicago
