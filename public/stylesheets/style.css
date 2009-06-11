@@ -997,9 +997,16 @@ min-width:180px;
 .adfieldbox select.wide, .adfieldbox select.doublewide{width:175px; padding:0; height:65px;}
 .adfieldbox select.doublewide {width:371px;}
 
-.help_block {
-  border-width:1px;
-  background-color: #FFE99B;
-  margin: 2px;
+a.help_block {
+  float: right;
+}
+
+div.help_block {
+  border: 1px dotted silver;
+  border-color: gray;
+  /*background-color: #FFE99B;*/
+  background-color: white;
+  margin: 0px;
+  padding: 5px;
 }
 

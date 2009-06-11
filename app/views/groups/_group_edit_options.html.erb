@@ -20,8 +20,8 @@
 												 {:class => 'small'} %>
 												 
 <%= link_to_remote 'Compare Timetables', {:url => {:controller => 'groups', :action => 'compare_timetables', :id => @group.id} , 
-												  :with => "#{data}"},
-												 {:class => 'small'} %>
+                          :with => "#{data}", :complete => "location.hash = 'compare';"},
+                          {:class => 'small'} %>
 												 
 <%- tooltip do -%><p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p><%- end -%>
 
