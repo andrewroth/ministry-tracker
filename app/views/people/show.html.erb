@@ -52,7 +52,7 @@
 	<%- if @person.ministries.count > 0 -%>
   	<h4>Ministries</h4>
   	<ul>
-  	<%- @person.ministries.each do |ministry| 
+  	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
   	  <li id="mi_<%= mi.id %>">
   	  <%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi), 
@@ -61,6 +61,7 @@
                                                   :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
   	  <%= link_to_remote(mi.ministry.name, :url => change_ministry_people_url(:ministry => mi.ministry.id),
                   											 	 :method => :get) %>
+      <%= mi.ministry_role.name %>
   	  </li>
   	<%- end -%>
   	</ul> <br />
