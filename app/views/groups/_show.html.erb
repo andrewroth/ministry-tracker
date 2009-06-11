@@ -5,6 +5,12 @@
     To add or remove a member, tick off his or her checkbox and click either "add" or "remove". To transfer a member to another group, do the same, but after click transfer use the dropdown menu to choose what group to switch them into.
   <%- end -%>
 <br />
+<% types = ['leader','co_leader', 'member','interested'] -%>
+<% data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end -%>
+<% data += "+'&'+$('#transfer_to_form').serialize()" -%>
+
+<%= render :partial => 'groups/group_edit_options', :locals => {:data => data}%>
+	
 <h4 class="title">
 	<%= @group.name %>&nbsp;&nbsp;
 	<%= link_to_remote "edit", {:url => edit_group_url(@group), 
@@ -17,20 +23,14 @@
 <div id="address_form"></div>
 <div id="members">
 	<br />
-	<%- types = ['leader','co_leader', 'member','interested']
-	  types.each do |level| -%>
+	<%-types.each do |level| -%>
 		<div id="<%= level %>">
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<td colspan="5">
 			  <h4 class="title"><%= level.titleize.pluralize %>&nbsp;&nbsp;
 				<%- if is_group_leader(@group) -%>
-					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
-					<%= link_to_function 'transfer', "$('#transfer_#{level}').fadeIn()", :class => 'small' %>&nbsp;&nbsp;
-					<%= link_to_remote 'remove', {:url => group_involvement_url(@group.id), :method => :delete, 
-												  :with => "$('#transfer_form_#{level}').serialize()", :confirm => "Are you sure you want to remove these people?",
-												  :condition => "$('#transfer_form_#{level} :checked').length > 0"},
-												 {:class => 'small'} %>
+					<%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>
 				<%- end -%>
 				</h4>
 			</td>
@@ -43,12 +43,6 @@
 		</table>
 		<%- form_remote_tag({:url => "/group_involvements/transfer/#{@group.id}", 
 							 :html => {:id => 'transfer_form_'+level}}) do -%>
-			<div id="transfer_<%= level %>"  style="display:none">
-				Pick a group to transfer the selected people to:<br />
-				<%= select_tag('transfer_to', options_for_select(get_ministry.groups.collect {|bs| [bs.name, bs.id]})) %>
-				<%= hidden_field_tag('level', level) %>
-				<%= submit_tag "go" %><br /><br />
-			</div>
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<th><input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/></th>
@@ -71,17 +65,6 @@
 		</div>
 	<%- end -%>
 </div>
-
-<br/>
-<br/>
-
-<% data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end%>
-
-<%= link_to_remote 'Compare Timetables', {:url => {:controller => 'groups', :action => 'compare_timetables', :id => @group.id} , 
-												  :with => "#{data}"},
-												 {:class => 'small'} %>
-<%- tooltip do -%><p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p><%- end -%>
-  
 
 <br/>
 <br/>
