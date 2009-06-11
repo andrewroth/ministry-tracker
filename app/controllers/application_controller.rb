@@ -126,8 +126,17 @@ class ApplicationController < ActionController::Base
 #        'update' => { :action => 'edit' }
 #      },
       'groups' => {
-        'index' => { :action => 'new' }
-      }
+        #'compare_timetables' => { :controller => '', :action => '' },
+        #'join' => { :controller => '', :action => '' },
+        'index' => { :action => 'new' },
+        #'create' => { :controller => '', :action => '' },
+        #'new' => { :controller => '', :action => '' },
+        #'edit' => { :controller => '', :action => '' },
+        #'find_times' => { :controller => '', :action => '' },
+        #'show' => { :controller => '', :action => '' },
+        #'update' => { :controller => '', :action => '' },
+        #'destroy' => { :controller => '', :action => '' }
+      }      
     }
 
     def authorized?(action = nil, controller = nil, ministry = nil)
