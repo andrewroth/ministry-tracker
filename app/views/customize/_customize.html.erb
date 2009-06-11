@@ -47,6 +47,7 @@
   <div>
     <div class="title">Group Types <%= spinner('gt') %></div>
     <div>
+      <%- tooltip do -%> A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". <%- end -%>
       <table border="0" cellspacing="5" cellpadding="5" id="group_types" class="directorytable">
         <thead>
         <tr>
@@ -71,7 +72,7 @@
     		<div class="butAdd" ><%= link_to_remote('Add a group type', 
     		                                        :url => new_group_type_path,
     		                                        :before => "$('#new_group_type_link').hide();$('#spinnergt').show();",
-    		                                        :method => :get)%></div>
+    		                                        :method => :get)%></div> 
     	</div>
 		  <div id="group_type_form" style="display:none">
   	  </div>
