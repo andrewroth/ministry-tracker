@@ -47,14 +47,15 @@ class GroupInvolvementsController < ApplicationController
   def transfer_selected
     @transfer_notices = []
     if params[:members]
+      @group = Group.find(params[:id])
+      # try to transfer each member
       params[:members].each do |member|
         begin
-          gi_id = Group.find(params[:id]).group_involvements.find(:first, :conditions => {:person_id => member}).id
-          GroupInvolvement.find(gi_id).update_attribute(:group_id, params[:transfer_to])
+          gi = @group.group_involvements.find(:first, :conditions => {:person_id => member})
+          gi.update_attribute(:group_id, params[:transfer_to])
         rescue ActiveRecord::StatementInvalid
-          @transfer_notices << "Transfer failed: <i>" + Person.find(member).full_name + "</i> already in group " + Group.find(params[:id]).name
+          @transfer_notices << "Transfer failed: <i>" + gi.person.full_name + "</i> already in group " + @group.name
         end
-          
       end
     else
       @transfer_notices << "People need to be selected before initiating a transfer."

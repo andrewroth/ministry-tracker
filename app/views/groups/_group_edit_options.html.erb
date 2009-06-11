@@ -1,8 +1,9 @@
 
 <%- if !@transfer_notices.nil? && !@transfer_notices.empty? %>
 		<div class="flash notice" id="flash_notice">
+      <% dash = (@transfer_notices.length > 1 ? "-&nbsp;" : "") -%>
 			<%- @transfer_notices.each do |notice|  %>
-					-&nbsp;<%= notice %><br/>
+        <%= dash %><%= notice %><br/>
 			<%- end %>
 		</div>
 <%- end %>
