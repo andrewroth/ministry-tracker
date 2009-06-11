@@ -35,11 +35,15 @@ class User < ActiveRecord::Base
       u.person.email = receipt.user
     else
       # If we didn't find a user with the guid, do it by email address and stamp the guid
-      u = User.find(:first, :conditions => "#{_(:username, :user)} = '#{receipt.user.upcase}' or #{_(:username, :user)} = '#{receipt.user.downcase}'")
+      u = User.find(:first, :conditions => { 
+        _(:username, :user) => [ receipt.user.upcase, receipt.user.downcase ],
+        _(:guid, :user) => nil # check for hijacking
+      })
       unless u
         # try by person email
         p = Person.find(:first, :conditions => "#{_(:email, :person)} = '#{receipt.user.upcase}' or #{_(:email, :person)} = '#{receipt.user.downcase}'")
         u = p.user if p
+        u = nil unless u.guid.nil? # check for hijacking
       end
 
       if u
