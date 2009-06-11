@@ -232,12 +232,25 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
+    countries = get_countries
+    
+    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
+    current_address_country_id = @person.current_address.try(:state).try(:country_id)
+    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+
     get_possible_responsible_people
     setup_vars
     setup_campuses
     render :update do |page|
       page[:info].hide
-      page[:edit_info].replace_html :partial => 'edit'
+      page[:edit_info].replace_html :partial => 'edit',
+        :locals => {
+          :current_address_country_id => current_address_country_id,
+          :permanent_address_country_id => permanent_address_country_id,
+          :countries => countries,
+          :current_address_states => current_address_states,
+          :permanent_address_states => permanent_address_states }
       page[:edit_info].show
     end
   end
@@ -312,6 +325,13 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
+    countries = get_countries
+
+    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
+    current_address_country_id = @person.current_address.try(:state).try(:country_id)
+    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+    
     get_people_responsible_for
     get_possible_responsible_people
     get_ministry_involvement(get_ministry)
@@ -408,7 +428,13 @@ class PeopleController < ApplicationController
         format.html { render :action => "edit" }
         format.js do 
           render :update do |page|
-            page[:edit_info].replace_html :partial => 'edit'
+            page[:edit_info].replace_html :partial => 'edit',
+              :locals => {
+                :current_address_country_id => current_address_country_id,
+                :permanent_address_country_id => permanent_address_country_id,
+                :countries => countries,
+                :current_address_states => current_address_states,
+                :permanent_address_states => permanent_address_states }
             page << "$.scrollTo(0, 0)"
           end
         end
@@ -526,6 +552,16 @@ class PeopleController < ApplicationController
     @campus_states = @campus_country.states
   end
 
+  # For RJS call for dynamic population of state dropdown (see edit method)
+  def set_current_address_states
+    @current_address_states = get_states params[:current_address_country_id]
+  end
+  
+  # For RJS call for dynamic population of state dropdown (see edit method)
+  def set_permanent_address_states
+    @permanent_address_states = get_states params[:permanent_address_country_id]
+  end
+
   private
     
     def get_people_responsible_for
@@ -640,8 +676,8 @@ class PeopleController < ApplicationController
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
       else
         @campus_state = @person.primary_campus.try(:state) || 
-          @person.current_address.try(:state_obj) ||
-          @person.permanent_address.try(:state_obj)
+          @person.current_address.try(:state) ||
+          @person.permanent_address.try(:state)
         @campus_country = @campus_state.try(:country)
         @campus_states = @campus_country.try(:states) || []
         @campuses = @campus_state.try(:campuses) || []
@@ -688,6 +724,10 @@ class PeopleController < ApplicationController
     def get_states
       country = Country.find params[:primary_campus_country_id]
       @campus_states = country.try(:states) || []
+    end
+
+    def get_states(country_id)
+      State.find_all_by_country_id(country_id)
     end
 
     def set_use_address2

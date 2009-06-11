@@ -85,6 +85,19 @@ module ApplicationHelper
           </script>|
   end
 
+  def countries_select_tag(countries)
+    cs = countries.collect {|c| [c.country, c.id]}
+	  cs = cs.insert(0,['-- Choose Country --',''])
+
+	  select_tag "country", options_for_select(cs)
+  end
+  
+  def states_select_tag(states)
+    ss = states.collect {|s| [s.name, s.id]}
+	  ss = ss.insert(0,['-- Choose State --',''])
+
+	  select_tag "state", options_for_select(ss)
+  end
   def help_block(text = nil, &proc)
     text = capture(&proc) if block_given?
     render_s = render(:partial => 'widgets/help_block', :locals => { :content => text })
