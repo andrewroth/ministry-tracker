@@ -10,7 +10,7 @@ class GroupInvolvementsController < ApplicationController
     params[:group_id] = params[:group_involvement][:group_id]
     @group_type_id = params[:gt_id]
     create_group_involvement
-    flash[:notice_group] = "Join request for <b>" + Group.find(params[:group_id]).name +  "</b> group sent!"
+    flash[:notice_group] = "Join request for <b>#{@group.name}</b> group sent!"
     respond_to do |format|
       format.js {
          render :update do |page|
@@ -20,16 +20,6 @@ class GroupInvolvementsController < ApplicationController
          end
       }
     end
-  end
-  
-  def create_group_involvement
-    # If the person is already in the group, find them. otherwise, create a new record
-    @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
-    @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
-    @gi.level = params[:type]  # set the level of involvement
-    @gi.requested = params[:requested]
-    @gi.save!
-    @group = @gi.group
   end
   
   def accept_request
@@ -102,5 +92,15 @@ class GroupInvolvementsController < ApplicationController
           end
         end
       end
+    end
+
+    def create_group_involvement
+      # If the person is already in the group, find them. otherwise, create a new record
+      @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
+      @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
+      @gi.level = params[:type]  # set the level of involvement
+      @gi.requested = params[:requested]
+      @gi.save!
+      @group = @gi.group
     end
 end

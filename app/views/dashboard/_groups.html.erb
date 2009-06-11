@@ -1,6 +1,7 @@
 <div class="modulecontent">
   <ul class="groupicon">
-    <% @my.groups.each do |group| %>
+    <% @my.all_groups.each do |group| %>
+      <% next unless group.ministry == @ministry %>
       <% if groupmember?(group)%>
         <li>
 
@@ -8,7 +9,7 @@
         <ul class="requesticon">
           <% find_join_requests(group).each do |request| %>
             <li>
-            Join request from <%=link_to Person.find(request.person_id).full_name, person_url(request.person_id) %>
+            Join request from <%= link_to request.person.full_name, person_url(request.person_id) %>
             <b>
               <%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id},
                 :before => "$('#spinnergt').show();" %>
@@ -28,7 +29,6 @@
           <% end %>
         <% end %>
       </ul>
-      <br/>
       <%= link_to "Join a group", :controller => "groups", :action => "join" %>
     </div>
 
