@@ -7,3 +7,8 @@ one:
 two:
   id: 2
   level: interested
+three:
+  id: 3
+  person_id: 50000
+  group_id: 3
+  level: leader

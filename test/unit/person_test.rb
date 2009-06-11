@@ -1,7 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  fixtures Person.table_name, CustomValue.table_name, TrainingAnswer.table_name, Address.table_name, User.table_name
+  fixtures Person.table_name, CustomValue.table_name, TrainingAnswer.table_name, Address.table_name, User.table_name,
+    Ministry.table_name, GroupInvolvement.table_name, GroupType.table_name, Group.table_name
 
   def setup
     @josh = Person.find(50000)
@@ -93,5 +94,11 @@ class PersonTest < ActiveSupport::TestCase
     
     person.birth_date = Date.today - 1.days
     assert person.valid?
+  end
+
+  test "group_involvements_by_group_type should filter by ministry" do
+    person = Person.find 50000
+    assert_equal 2, person.ministry_involvements.length
+    assert_equal 1, person.group_group_involvements(:all, :ministry => Ministry.first).length
   end
 end
