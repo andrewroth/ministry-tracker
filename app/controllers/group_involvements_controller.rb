@@ -1,5 +1,9 @@
 class GroupInvolvementsController < ApplicationController
-  
+  before_filter :get_group_involvement, :only => [ :accept_request, :decline_request ]
+  before_filter :ensure_group_leader_or_coleader, :only => [ :accept_request, :decline_request ]
+
+  # TODO: make sure that destroy and transfer check security
+
   def create
     create_group_involvement
     refresh_page
@@ -10,46 +14,21 @@ class GroupInvolvementsController < ApplicationController
     params[:group_id] = params[:group_involvement][:group_id]
     @group_type_id = params[:gt_id]
     create_group_involvement
-    flash[:notice_group] = "Join request for <b>#{@group.name}</b> group sent!"
-    respond_to do |format|
-      format.js {
-         render :update do |page|
-            page.replace_html("groupType"+@group_type_id, :partial => "groups/groups_to_join")
-            page[:flash_notice].fadeOut(4000)
-            page[:spinnergt].hide
-         end
-      }
-    end
+    flash[:notice] = "Join request for <b>#{@group.name}</b> group sent!"
   end
   
   def accept_request
-    GroupInvolvement.find(params[:id]).update_attribute(:requested, false)
-    flash[:notice_group] = "Group join request from <b>" + Person.find(GroupInvolvement.find(params[:id]).person_id).full_name + "</b> accepted!"
-    respond_to do |format|
-      format.js {
-         render :update do |page|
-            page.replace_html("groups", :partial => "dashboard/groups")
-            page[:flash_notice].fadeOut(4000)
-            page[:spinnergt].hide
-         end
-      }
-    end
-    
+    @gi.update_attribute(:requested, false)
+    flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> accepted."
+    render :action => 'request_result'
   end
   
   def decline_request
-    person_id = GroupInvolvement.find(params[:id]).person_id
-    GroupInvolvement.delete(params[:id])
-    flash[:notice_group] = "Group join request from <b>" + Person.find(person_id).full_name + "</b> declined!"
-    respond_to do |format|
-      format.js {
-         render :update do |page|
-            page.replace_html("groups", :partial => "dashboard/groups")
-            page[:flash_notice].fadeOut(4000)
-            page[:spinnergt].hide
-         end
-      }
-    end
+    @gi = GroupInvolvement.find(params[:id])
+    @gi.destroy
+
+    flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> declined."
+    render :action => 'request_result' 
   end
   
   def destroy
@@ -102,5 +81,17 @@ class GroupInvolvementsController < ApplicationController
       @gi.requested = params[:requested]
       @gi.save!
       @group = @gi.group
+    end
+
+    def get_group_involvement
+      @gi = GroupInvolvement.find params[:id]
+    end
+
+    def ensure_group_leader_or_coleader
+      # make sure we're valid
+      unless @gi.group.leaders.include?(@me) || @gi.group.leaders.include?(@me)
+        flash[:notice] = "You don't have permission to do this"
+        redirect_to access_denied
+      end
     end
 end
