@@ -13,7 +13,7 @@ class CimHrdbAddress < ActiveRecord::Base
   end
 
   def state
-    province ? province.name : ''
+    province
   end
 
   def state=(v)
