@@ -101,24 +101,40 @@ class Person < ActiveRecord::Base
       # TODO
     end
 
+    # import information from the ciministry hrdb to the movement tracker database
     def map_cim_hrdb_to_mt
       c4c = Ministry.find_by_name 'Campus for Christ'
 
+      # ciministry hrdb uses assignments to track
+      # both ministry involvement and campus involvements.
+      # Movement Tracker uses two individual tables.
       for a in assignments(:include => :assignmentstatus)
         campus = a.campus
         assignment = a.assignmentstatus.assignmentstatus_desc
+        
         if campus && ASSIGNMENTS_TO_ROLE[assignment]
+        
           # ministry involvement
           role = MinistryRole.find_by_name ASSIGNMENTS_TO_ROLE[assignment]
+          
+          # if they have a staff role
           if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
-            mi_atts = { :ministry_role_id => role.id, :ministry_id => c4c.id, 
+            mi_atts = {
+              :ministry_role_id => role.id,
+              :ministry_id => c4c.id, 
               :person_id => self.id }
+              
+            # make sure they are involved in the ministry
             mi = MinistryInvolvement.find :first, :conditions => mi_atts
             mi ||= ministry_involvements.create!(mi_atts)
+
+            # FIXME is this a bug?
             mi.admin = cim_hrdb_admins.count > 0
+
             mi.save!
           end
-          # campus involvements
+        
+          # add the appropriate campus involvements
           ci = campus_involvements.find_or_create_by_campus_id campus.id
           school_year = cim_hrdb_person_year.try(:school_year)
           grad_date = cim_hrdb_person_year.try(:grad_date)
