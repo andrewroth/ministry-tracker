@@ -126,17 +126,37 @@ class ApplicationController < ActionController::Base
 #        'update' => { :action => 'edit' }
 #      },
       'groups' => {
-        #'compare_timetables' => { :controller => '', :action => '' },
-        #'join' => { :controller => '', :action => '' },
+        #'compare_timetables' => { :controller => nil, :action => '' },
+        #'join' => { :controller => nil, :action => '' },
         'index' => { :action => 'new' },
-        #'create' => { :controller => '', :action => '' },
-        #'new' => { :controller => '', :action => '' },
-        #'edit' => { :controller => '', :action => '' },
-        #'find_times' => { :controller => '', :action => '' },
-        #'show' => { :controller => '', :action => '' },
-        #'update' => { :controller => '', :action => '' },
-        #'destroy' => { :controller => '', :action => '' }
-      }      
+        'create' => { :action => 'new' },
+        #'new' => { :action => 'new' },
+        'edit' => { :action => 'new' },
+        #'find_times' => { :controller => nil, :action => '' },
+        #'show' => { :controller => nil, :action => '' },
+        #'update' => { :controller => nil, :action => '' },
+        #'destroy' => { :controller => nil, :action => '' }
+      }#,
+#      'group_types' => {
+#        'index' => { :controller => '', :action => '' },
+#        'create' => { :controller => '', :action => '' },
+#        'new' => { :controller => '', :action => '' },
+#        'edit' => { :controller => '', :action => '' },
+#        'show' => { :controller => '', :action => '' },
+#        'update' => { :controller => '', :action => '' },
+#        'destroy' => { :controller => '', :action => '' }
+#      },
+#      'group_involvements' => {
+#        'accept_request' => { :controller => '', :action => '' },
+#        'decline_request' => { :controller => '', :action => '' },
+#        'index' => { :controller => '', :action => '' },
+#        'create' => { :controller => '', :action => '' },
+#        'new' => { :controller => '', :action => '' },
+#        'edit' => { :controller => '', :action => '' },
+#        'show' => { :controller => '', :action => '' },
+#        'update' => { :controller => '', :action => '' },
+#        'destroy' => { :controller => '', :action => '' }
+#      }
     }
 
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -158,21 +178,20 @@ class ApplicationController < ActionController::Base
           end
         end
       end
-
-      # Make sure we're always using strings      
-      action = action.to_s
-      controller = controller.to_s
       
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
-      
 #      # Code to potentially replace the action assignment lines above.
 #      action ||= PERMISSION_MAPPING['*init'].include?(action_name.to_s) ? 
 #                   PERMISSION_MAPPINGS['*init'][action_name.to_s][:action] : action_name.to_s
 #      action = PERMISSION_MAPPING['*'].include?(action) ? 
 #                   PERMISSION_MAPPINGS['*'][action][:action] : action
 
-      controller ||= controller_name.to_s      
+      controller ||= controller_name.to_s
+
+      # Make sure we're always using strings      
+      action = action.to_s
+      controller = controller.to_s
       
       # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
       if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
