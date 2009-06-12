@@ -47,6 +47,11 @@
     <% if @person.responsible_person %>
 	    <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
     <% end %>
+    <%- tooltip do -%> 
+        Your Responsible Person can either be a mentor or a contact that knows you very well who is of a higher ministry role than you.
+        In the future, your Responsible Person will receive notifications on your activities on the Ministry Tracker 
+        and will be able to promote you a higher ministry role.
+    <%- end -%>
 	</td></tr>
 	
     	<%- if !@person.url.blank?
