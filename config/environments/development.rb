@@ -16,3 +16,6 @@ config.action_view.debug_rjs                         = true
 # Don't care if the mailer can't send
 config.action_mailer.delivery_method = :test
 config.action_mailer.raise_delivery_errors = false
+
+# turn log level down so that the SQL statements are not visible in the webserver logs
+#config.log_level = :info
