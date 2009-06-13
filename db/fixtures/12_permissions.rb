@@ -23,6 +23,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'groups'
+  p.action = 'show'
+  p.description = 'Show Group (Lists members)'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'new'
   p.description = 'Add New People'
