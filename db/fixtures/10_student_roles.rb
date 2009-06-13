@@ -1,7 +1,7 @@
 ministry = Ministry.first
 
 StudentRole.seed(:name) do |sr|
-  sr.name = 'MinistryLeader'
+  sr.name = 'Ministry Leader'
   sr.description = 'a student who oversees a campus, eg LINC leader'
   sr.ministry = ministry
 end
