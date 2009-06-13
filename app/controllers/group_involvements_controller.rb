@@ -12,6 +12,7 @@ class GroupInvolvementsController < ApplicationController
   def joingroup  
     params[:type] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
+    params[:requested] = true # force request for now as security feature
     @group_type_id = params[:gt_id]
     create_group_involvement
     flash[:notice] = "Join request for <b>#{@group.name}</b> group sent!"
