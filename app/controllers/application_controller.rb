@@ -128,7 +128,7 @@ class ApplicationController < ActionController::Base
       'groups' => {
         #'compare_timetables' => { :controller => nil, :action => '' },
         #'join' => { :controller => nil, :action => '' },
-        'index' => { :action => 'new' },
+        #'index' => { :action => 'new' },
         'create' => { :action => 'new' },
         #'new' => { :action => 'new' },
         'edit' => { :action => 'new' },
