@@ -25,12 +25,31 @@
 		<th>City: </th>
 		<td><%= text_field :current_address, :city %></td>
 	</tr>
-
 	<tr>
 		<th>State:</th>
-		<td><%= text_field :current_address, :state %></td>
+		<%= render :partial => 'current_address_state_dropdown', 
+				:locals => { :states => states }
+		%>
 	</tr>
-
+	<tr>
+		<th>Country:</th>
+		<td>
+			<%=
+			# needs to be set to the country that the address's state is from if it exists
+				cs = countries.collect { |c| [c.country, c.id]}
+				cs = cs.insert(0,['Please select', ''])
+				
+				select_tag :current_address_country_id,
+					options_for_select(cs,
+						:selected => current_address_country_id)
+			%>
+	        <%= observe_field(:current_address_country_id, {
+	          :url => { :action => "set_current_address_states" },
+	          :with => 'current_address_country_id',
+	          :before => "$('#spinnerp').show()"})
+	        %>
+		</td>
+	</tr>
 	<tr>
 		<th>Zip:</th>
 		<td><%= text_field :current_address, :zip %></td>

@@ -1,1 +1,0 @@
-page[@type+'_results'].replace_html(:partial => 'results')

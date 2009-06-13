@@ -54,10 +54,8 @@
 			<%- end -%>
 			<div class="clear">&nbsp;</div>
 			
-			<%- if flash[:notice] %><div class="flash notice" id="flash_notice"><%= flash[:notice] %></div><%- end %>
-			<%- if flash[:warning] %><div class="flash warning" id="flash_warning"><%= flash[:warning] %></div><%- end %>
-			
-			
+			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
 			
 			<div id="content">
 				<%= yield %>

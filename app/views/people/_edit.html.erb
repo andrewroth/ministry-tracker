@@ -3,6 +3,8 @@
 <% remote_form_for @person, :url => person_url(@person), :method => :put do |f| %>
 
   <table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
+
+<!-- Render the person's basic information -->
     <tr>	
       <td>
         <%= render :partial => 'basic_person_information',
@@ -13,6 +15,8 @@
           <%= render :partial => 'primary_campus_involvement', :locals => { :user => @person.user } %>
         </td>
       </tr>
+
+<!-- Render the address blocks -->
       <tr>
         <td><h4 class="title">Current Address</h4></td>
         <td class="spacer">&nbsp;</td>
@@ -21,16 +25,27 @@
       <tr>
         <td>
           <%= render :partial => 'current_address',
-            :locals => { :dorms => @dorms }
+            :locals => {
+				:dorms => @dorms,
+				:states => current_address_states,
+				:current_address_country_id => current_address_country_id,
+				:countries => countries }
         %>
       </td>
       <td class="spacer">&nbsp;</td>		
       <td>
-        <%= render :partial => 'permanent_address' %>
+        <%= render :partial => 'permanent_address',
+ 			:locals => {
+				:countries => countries,
+				:permanent_address_country_id => permanent_address_country_id,
+				:states => permanent_address_states }
+		%>
       </td>
     </tr>
   </table>
   <br />
+
+<!-- Buttons at the bottom -->
   <%= submit_tag "Save" %> or
   <%= link_to_function 'cancel',
       "$('#edit_info').hide();$('#info').show()",
