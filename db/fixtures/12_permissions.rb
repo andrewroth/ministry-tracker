@@ -1,77 +1,77 @@
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'groups'
-  sr.action = 'index'
-  sr.description = 'View Groups'
+  p.controller = 'groups'
+  p.action = 'index'
+  p.description = 'View Groups'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'groups'
-  sr.action = 'new'
-  sr.description = 'Create Groups'
+  p.controller = 'groups'
+  p.action = 'new'
+  p.description = 'Create Groups'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'groups'
-  sr.action = 'edit'
-  sr.description = 'Edit Groups'
+  p.controller = 'groups'
+  p.action = 'edit'
+  p.description = 'Edit Groups'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'people'
-  sr.action = 'new'
-  sr.description = 'Add New People'
+  p.controller = 'people'
+  p.action = 'new'
+  p.description = 'Add New People'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'imports'
-  sr.action = 'new'
-  sr.description = 'Bulk Import People'
+  p.controller = 'imports'
+  p.action = 'new'
+  p.description = 'Bulk Import People'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'ministries'
-  sr.action = 'new'
-  sr.description = 'Create New Ministries'
+  p.controller = 'ministries'
+  p.action = 'new'
+  p.description = 'Create New Ministries'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'ministries'
-  sr.action = 'edit'
-  sr.description = 'Edit Ministries'
+  p.controller = 'ministries'
+  p.action = 'edit'
+  p.description = 'Edit Ministries'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'ministry_roles'
-  sr.action = 'edit'
-  sr.description = 'Edit Ministry Roles'
+  p.controller = 'ministry_roles'
+  p.action = 'edit'
+  p.description = 'Edit Ministry Roles'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'ministry_roles'
-  sr.action = 'new'
-  sr.description = 'Create Ministry Roles'
+  p.controller = 'ministry_roles'
+  p.action = 'new'
+  p.description = 'Create Ministry Roles'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'involvement_questions'
-  sr.action = 'new'
-  sr.description = 'Create Involvement Questions'
+  p.controller = 'involvement_questions'
+  p.action = 'new'
+  p.description = 'Create Involvement Questions'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'training_questions'
-  sr.action = 'new'
-  sr.description = 'Create Training Questions'
+  p.controller = 'training_questions'
+  p.action = 'new'
+  p.description = 'Create Training Questions'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'views'
-  sr.action = 'new'
-  sr.description = 'Create Directory Views'
+  p.controller = 'views'
+  p.action = 'new'
+  p.description = 'Create Directory Views'
 end
 
 Permission.seed(:controller, :action) do |p|
-  sr.controller = 'custom_attributes'
-  sr.action = 'new'
-  sr.description = 'Create Custom Attributes'
+  p.controller = 'custom_attributes'
+  p.action = 'new'
+  p.description = 'Create Custom Attributes'
 end
