@@ -87,3 +87,9 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'new'
   p.description = 'Create Custom Attributes'
 end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'directory'
+  p.description = 'View Directory'
+end
