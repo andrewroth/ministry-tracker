@@ -1,7 +1,7 @@
 Permission.seed(:controller, :action) do |p|
   p.controller = 'groups'
   p.action = 'index'
-  p.description = 'View Groups'
+  p.description = 'List Groups'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -14,6 +14,12 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'groups'
   p.action = 'edit'
   p.description = 'Edit Groups'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'groups'
+  p.action = 'join'
+  p.description = 'Join Groups'
 end
 
 Permission.seed(:controller, :action) do |p|
