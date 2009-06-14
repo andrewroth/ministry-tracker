@@ -1,5 +1,9 @@
 <tr>
-	<td width="20px"><input type="checkbox" name="members[]" value="<%= person.id %>" /></td>
+	<td width="20px">
+		<% if is_group_leader(@group) %>
+			<input type="checkbox" name="members[]" value="<%= person.id %>" />
+		<% end %>
+	</td>
 	<td><%= link_to(person.full_name, person) %></td>
 	<td><%= person.current_address.phone %></td>
 	<td><%= person.current_address.alternate_phone %></td>
