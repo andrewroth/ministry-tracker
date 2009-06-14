@@ -194,10 +194,10 @@ class ApplicationController < ActionController::Base
       controller = controller.to_s
       
       # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
-      if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
-        action = mapped_permission[:action]
-        controller = mapped_permission[:controller] || controller
-      end
+      #if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
+      #  action = mapped_permission[:action]
+      #  controller = mapped_permission[:controller] || controller
+      #end
 
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
