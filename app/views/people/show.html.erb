@@ -61,12 +61,9 @@
   </div>
 	<%# = link_to '&raquo; Find a Group', find_groups_url %><br />
 	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
- <!--
+
 	<br />
-	<%= link_to '&raquo; Register for a Conference', :controller => 'conference', :action => 'list', :id => '2' %><br />
-	<%= link_to '&raquo; Past Conferences', :controller => 'conference', :action => 'list', :id => '2' %>
- 
-	-->
+
 	<%- if @person.group_interests.count > 0 -%>
 		<h5 class="title">I'm Interested In</h5>
     <%= render :partial => 'group_list', :locals => {
@@ -82,66 +79,12 @@
 	<%- end -%>	
 </div>
 <div class="rightColumn">
-
-<!--
-	<div style="float:right;">
-		<%= link_to_function "School History", "$('#schoolHistory').slideToggle();", :class => 'norm' %> <%= image_tag("down_arrow_sm.png") %> &nbsp;
-	</div>
--->
-
-	
-<!--
-	<div id="schoolHistory" style="display:none;">
-		<div class="schoolHistoryBox">
-			<table cellpadding="0" cellspacing="0">
-				<thead>
-					<th>&nbsp;</th>
-					<th>Started</th>
-					<th>Through</th>
-					<th>Role</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Middle Tennessee State University</td>
-						<td>May 2003</td>
-						<td>Now</td>
-						<td>Student Leader</td>
-					</tr>
-					<tr class="highlight">
-						<td>University of Tennessee</td>
-						<td>August 2002</td>
-						<td>Now</td>
-						<td>Student</td>
-					</tr>
-					<tr>
-						<td>Local Community College</td>
-						<td>August 2001</td>
-						<td>August 2002</td>
-						<td>Student</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
--->
 	<div class="clearDivider">&nbsp;</div>
-<!--	
-	<div class="message">
-		You have <%= link_to "3 new contacts", :controller => 'contacts' %> to follow-up.
-	</div>
- 
-	<div class="message">
-		1 new message in your <%= link_to "inbox", :controller => 'messages' %>.
-	</div>
- 
-	<div class="message">
-		2 new messages have been posted in your <%= link_to "Group", :controller => 'group' %>
-	</div>
--->
+
  	<div id="info">
 		<%= render :partial => 'view' %>
 	</div>
-	<div><div id="edit_info" style="display:none"><%#= render :partial => 'edit' %></div></div>
+	<div><div id="edit_info" style="display:none"></div></div>
 </div>
 
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>
