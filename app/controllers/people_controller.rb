@@ -13,6 +13,10 @@ class PeopleController < ApplicationController
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
   
+  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show]
+  before_filter :authorization_filter, :except => AUTHORIZE_FOR_OWNER_ACTIONS
+  before_filter :authorization_allowed_for_owner, :only => AUTHORIZE_FOR_OWNER_ACTIONS
+
   # GET /people
   # GET /people.xml
   def index
@@ -561,6 +565,14 @@ class PeopleController < ApplicationController
   def set_permanent_address_states
     @permanent_address_states = get_states params[:permanent_address_country_id]
   end
+
+  protected
+
+    def authorization_allowed_for_owner
+      if @person != @me
+        authorization_filter
+      end
+    end
 
   private
     
