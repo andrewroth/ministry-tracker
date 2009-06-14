@@ -30,6 +30,12 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
+  p.action = 'search'
+  p.description = 'Search for People'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
   p.action = 'new'
   p.description = 'Add New People'
 end
