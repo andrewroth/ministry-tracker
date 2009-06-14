@@ -11,6 +11,16 @@ end
 
 MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
   rp.ministry_role_id = ministry_role_id
+  rp.permission_id = p_id :groups, :compare_timetables
+end
+
+MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
+  rp.ministry_role_id = ministry_role_id
+  rp.permission_id = p_id :groups, :set_start_time
+end
+
+MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
+  rp.ministry_role_id = ministry_role_id
   rp.permission_id = p_id :group_involvements, :create
 end
 

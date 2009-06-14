@@ -29,6 +29,18 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'groups'
+  p.action = 'compare_timetables'
+  p.description = 'Compare Timetables'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'groups'
+  p.action = 'set_start_time'
+  p.description = 'Set Group Start Time'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
   p.action = 'create'
   p.description = 'Create a new Group Involvement'
