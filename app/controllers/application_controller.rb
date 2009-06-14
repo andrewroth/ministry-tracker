@@ -158,9 +158,35 @@ class ApplicationController < ActionController::Base
 #        'destroy' => { :controller => '', :action => '' }
 #      }
     }
-
+    
+    # Hash for owner_action
+    AUTHORIZE_FOR_OWNER_ACTIONS = {
+      :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+                  :get_campus_states, :set_current_address_states,
+                  :set_permanent_address_states],
+      :profile_pictures => [:create, :update, :destroy]
+    }    
+    
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
+      
+      # Owner action checks
+      if AUTHORIZE_FOR_OWNER_ACTIONS[controller_name.to_sym] &&
+         AUTHORIZE_FOR_OWNER_ACTIONS[controller_name.to_sym].include?(action_name.to_sym)
+      case
+      when controller_name.to_sym == :people        
+        if params[:id] && params[:id] == @my.id.to_s
+          return true
+        end
+      when controller_name.to_sym == :profile_pictures
+        if params[:person_id] && params[:person_id] == @my.id.to_s
+#          require 'ruby-debug'
+#          debugger
+          return true
+        end
+      end # case
+      end # if
+      
       ministry ||= get_ministry
       unless @user_permissions && @user_permissions[ministry]
         @user_permissions ||= {}
@@ -206,6 +232,12 @@ class ApplicationController < ActionController::Base
       end
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
+    
+#    def authorization_allowed_for_owner
+#      unless self.respond_to?(:is_owner) && is_owner
+#        authorization_filter
+#      end
+#    end    
     
     def authorization_filter
       unless controller_name == 'dashboard' || authorized?
