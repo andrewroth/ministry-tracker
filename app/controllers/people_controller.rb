@@ -466,8 +466,8 @@ class PeopleController < ApplicationController
 	   	  conditions[1] << params[:filter_ids]
    	  end
 	   	conditions = add_involvement_conditions(conditions)
+      #conditions[0] << conditions[2]
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
-  
       includes = [:current_address, :campus_involvements, :ministry_involvements]
 	  	@people = Person.find(:all, :order => "#{_(:last_name, :person)}, #{_(:first_name, :person)}", :conditions => @conditions, :include => includes)
 	  	respond_to do |format|

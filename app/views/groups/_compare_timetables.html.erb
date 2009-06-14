@@ -1,3 +1,48 @@
+<script language="Javascript">
+<!--
+function toggleDiv(id,flagit) {
+	if (flagit=="1"){
+		if (document.layers) {
+			document.layers['' + id + ''].visibility = "show";
+			document.layers['' + id + ''].display = "block";
+		}
+		else 
+		if (document.all) {
+			document.all['' + id + ''].style.visibility = "visible";
+			document.all['' + id + ''].style.display = "block";
+		}
+		else 
+		if (document.getElementById) {
+			document.getElementById('' + id + '').style.visibility = "visible";
+			document.getElementById('' + id + '').style.display = "block";
+		}	
+	} else if (flagit=="0"){
+		if (document.layers) {
+			document.layers['' + id + ''].visibility = "hide";
+			document.layers['' + id + ''].display = "none";
+		}
+		else 
+		if (document.all) {
+			document.all['' + id + ''].style.visibility = "hidden";
+			document.all['' + id + ''].style.display = "none";
+		}
+		else 
+		if (document.getElementById) {
+			document.getElementById('' + id + '').style.visibility = "hidden";
+			document.getElementById('' + id + '').style.display = "none";
+		}
+	}
+}
+
+function toggleTime(id) {
+	console.log('toggle' + id);
+}
+
+//-->
+</script>
+
+<style type="text/css"> #cmap {position:relative; top: 100; left: 200; width:200; visibility:hidden}</style>
+
 <div id = "notices">
 	<%= render :partial => 'groups/show_notices' %>
 </div>
@@ -18,38 +63,46 @@
 	        stop = midnight + Timetable::LATEST 
 	        time_block = 0 -%>
 	    <%- while time < stop 
-	        time_in_seconds = time.to_i - midnight.to_i -%>
+	        	time_in_seconds = time.to_i - midnight.to_i -%>
 	      <tr>
-	        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+	        <td width="10px" class="time" cellspacing="0" cellpadding="0"><%= time.to_s(:time) %></td>
 	        <%- 7.times do |day| -%>
-					<%- color = "neutral" %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length >= @comparison_map[day][time_block][time_in_seconds]["bads"].length then color = "moregood" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length >= @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "morebad" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "neutral" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length == @people.length then color = "allgood" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @people.length then color = "allbad" end %>
-					
-	        <td width="50px" height="10px" class="day_<%= day %> <%= color %>">
-	          
-						<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
-						<% @comparison_map[day][time_block][time_in_seconds]["goods"].each do |p|%>
-								<%= 	p.first_name %>,<br/>
-						<% end %>
-							
-						<u><%= @comparison_map[day][time_block][time_in_seconds]["bads"].length%> bad(s):<br/></u>
-						<% @comparison_map[day][time_block][time_in_seconds]["bads"].each do |p|%>
-								<%= 	p.first_name %>,<br/>
-						<% end %>
-							
-						<u><%= @comparison_map[day][time_block][time_in_seconds]["okays"].length%> okay(s):<br/></u>
-						<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
-								<%= 	p.first_name %>,<br/>
-						<% end %>
-						<%=link_to_remote "Set as start time", {:url => {:controller => "groups", :action => "set_start_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
-						<span class="redlink">
-							<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
-						</span>
-	        </td>
+						<%- color = "neutral" %>
+						<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length >= @comparison_map[day][time_block][time_in_seconds]["bads"].length then color = "moregood" end %>
+						<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length >= @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "morebad" end %>
+						<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "neutral" end %>
+						<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length == @people.length then color = "allgood" end %>
+						<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @people.length then color = "allbad" end %>
+						
+						<% slot_id = "cmap_" + day.to_s + "_" + time_block.to_s %>
+		        <td id="td_<%=slot_id%>" width="50px" height="10px" class="day_<%= day %> <%= color %>" onMouseOver="toggleDiv('<%=slot_id%>',1)" 
+									onMouseOut="toggleDiv('<%=slot_id%>',0)" onMouseDown="toggleTime('<%=slot_id%>')">
+		        	<div id="wrap_<%= slot_id %>" class="timetable_compare_block">
+								<div id='<%=slot_id%>' style="display:none" class="timetable_compare_info <%= color %>">
+									<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
+									<% @comparison_map[day][time_block][time_in_seconds]["goods"].each do |p|%>
+											<%= 	p.first_name %>,<br/>
+									<% end %>
+									
+									<u><%= @comparison_map[day][time_block][time_in_seconds]["bads"].length%> bad(s):<br/></u>
+									<% @comparison_map[day][time_block][time_in_seconds]["bads"].each do |p|%>
+											<%= 	p.first_name %>,<br/>
+									<% end %>
+										
+									<u><%= @comparison_map[day][time_block][time_in_seconds]["okays"].length%> okay(s):<br/></u>
+									<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
+											<%= 	p.first_name %>,<br/>
+									<% end %>
+									<!--
+									<%=link_to_remote "Set as start time", {:url => {:controller => "groups", :action => "set_start_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
+									<br/>
+									<span class="redlink">
+										<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
+									</span>
+									-->
+			  	  		</div>
+							</div>
+		        </td>
 	        <%- end -%>
 	      </tr>
 	      <%- time += Timetable::INTERVAL 

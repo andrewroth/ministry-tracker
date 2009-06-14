@@ -960,8 +960,8 @@ background:pink;
 }
 
 #errorExplanation ul li{
-padding-left:20px;
-list-style-type:round;
+	padding-left:20px;
+	list-style-type:round;
 }
 
 #errorExplanation h2 {
@@ -1010,3 +1010,14 @@ div.help_block {
   padding: 5px;
 }
 
+.timetable_compare_block {
+	position: relative;
+}
+
+.timetable_compare_info {
+	position: absolute;
+	z-index: 2;
+	top: 10px;
+	right: -50px;
+	border: 1px solid;
+}
