@@ -1,42 +1,33 @@
 <script language="Javascript">
 <!--
-function toggleDiv(id,flagit) {
-	if (flagit=="1"){
-		if (document.layers) {
-			document.layers['' + id + ''].visibility = "show";
-			document.layers['' + id + ''].display = "block";
-		}
-		else 
-		if (document.all) {
-			document.all['' + id + ''].style.visibility = "visible";
-			document.all['' + id + ''].style.display = "block";
-		}
-		else 
-		if (document.getElementById) {
-			document.getElementById('' + id + '').style.visibility = "visible";
-			document.getElementById('' + id + '').style.display = "block";
-		}	
-	} else if (flagit=="0"){
-		if (document.layers) {
-			document.layers['' + id + ''].visibility = "hide";
-			document.layers['' + id + ''].display = "none";
-		}
-		else 
-		if (document.all) {
-			document.all['' + id + ''].style.visibility = "hidden";
-			document.all['' + id + ''].style.display = "none";
-		}
-		else 
-		if (document.getElementById) {
-			document.getElementById('' + id + '').style.visibility = "hidden";
-			document.getElementById('' + id + '').style.display = "none";
-		}
-	}
+function toggleDiv(id, flagit) {
+  if (flagit) {
+    $('#'+id).show();
+    $('#time_info_'+id).text(timeLabel());
+  } else {
+    $('#'+id).hide();
+  }
 }
 
 function toggleTime(id) {
-	console.log('toggle' + id);
+  if (set_start_next) {
+    console.log("ajax set start time");
+  } else {
+    console.log("ajax set end time");
+  }
+  set_start_next = !set_start_next;
+  updateTimeLabel(id);
 }
+
+function updateTimeLabel(id) {
+    $('#time_info_'+id).text(timeLabel());
+}
+
+function timeLabel() {
+  return 'Click to set as ' + (set_start_next ? 'start' : 'end') + ' time';
+}
+
+set_start_next = true;
 
 //-->
 </script>
@@ -75,9 +66,10 @@ function toggleTime(id) {
 						<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @people.length then color = "allbad" end %>
 						
 						<% slot_id = "cmap_" + day.to_s + "_" + time_block.to_s %>
-		        <td id="td_<%=slot_id%>" width="50px" height="10px" class="day_<%= day %> <%= color %>" onMouseOver="toggleDiv('<%=slot_id%>',1)" 
-									onMouseOut="toggleDiv('<%=slot_id%>',0)" onMouseDown="toggleTime('<%=slot_id%>')">
-		        	<div id="wrap_<%= slot_id %>" class="timetable_compare_block">
+            <td id="td_<%=slot_id%>" width="50px" height="10px" class="day_<%= day %> <%= color %>" 
+                  onMouseOver="toggleDiv('<%=slot_id%>', true)" 
+                  onMouseOut="toggleDiv('<%=slot_id%>', false)" 
+                  onMouseDown="toggleTime('<%=slot_id%>')">
 								<div id='<%=slot_id%>' style="display:none" class="timetable_compare_info <%= color %>">
 									<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
 									<% @comparison_map[day][time_block][time_in_seconds]["goods"].each do |p|%>
@@ -100,8 +92,16 @@ function toggleTime(id) {
 										<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
 									</span>
 									-->
+                  <span id='time_info_<%=slot_id%>'>&nbsp;</span>
 			  	  		</div>
-							</div>
+                <script>
+                  $("#td_<%=slot_id%>").mousemove(function(e) {
+                    $("#<%=slot_id%>").css({
+                      top: (e.pageY + 15) + "px",
+                      left: (e.pageX + 15) + "px"
+                    });
+                  });
+                </script>
 		        </td>
 	        <%- end -%>
 	      </tr>
