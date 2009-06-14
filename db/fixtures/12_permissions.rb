@@ -29,6 +29,18 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'group_involvements'
+  p.action = 'create'
+  p.description = 'Add people in to any group'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'group_involvements'
+  p.action = 'joingroup'
+  p.description = 'Request to join any group'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'new'
   p.description = 'Add New People'
