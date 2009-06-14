@@ -42,6 +42,12 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
+  p.action = 'accept_request'
+  p.description = 'Accept Group Join Requests'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'group_involvements'
   p.action = 'create'
   p.description = 'Create a new Group Involvement'
 end
@@ -74,6 +80,12 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'imports'
   p.action = 'new'
   p.description = 'Bulk Import People'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'manage'
+  p.action = 'index'
+  p.description = 'Access to the Manage Section'
 end
 
 Permission.seed(:controller, :action) do |p|

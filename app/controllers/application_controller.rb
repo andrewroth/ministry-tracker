@@ -165,7 +165,8 @@ class ApplicationController < ActionController::Base
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states],
       :profile_pictures => [:create, :update, :destroy],
-      :timetables => [:show, :edit, :update]
+      :timetables => [:show, :edit, :update],
+      :groups => [:edit, :update, :destroy]
     }    
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -215,13 +216,17 @@ class ApplicationController < ActionController::Base
          AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
       case controller.to_sym
       when :people        
-        if params[:id] && params[:id] == @my.id.to_s
+        if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
           return true
         end
-      when :profile_pictures, :timetables  
-#          require 'ruby-debug'
-#          debugger
+      when :profile_pictures, :timetables
         if params[:person_id] && params[:person_id] == @my.id.to_s
+          return true
+        end
+      when :groups
+#          require 'ruby-debug'
+#          debugger        
+        if (params[:id] && params[:controller] == "groups") && @my.groups.find_by_id(params[:id])
           return true
         end
       end # case
