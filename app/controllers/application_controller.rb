@@ -159,33 +159,17 @@ class ApplicationController < ActionController::Base
 #      }
     }
     
-    # Hash for owner_action
+    # Hash for Owner Action Checks
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states],
-      :profile_pictures => [:create, :update, :destroy]
+      :profile_pictures => [:create, :update, :destroy],
+      :timetables => [:show, :edit, :update]
     }    
     
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
-      
-      # Owner action checks
-      if AUTHORIZE_FOR_OWNER_ACTIONS[controller_name.to_sym] &&
-         AUTHORIZE_FOR_OWNER_ACTIONS[controller_name.to_sym].include?(action_name.to_sym)
-      case
-      when controller_name.to_sym == :people        
-        if params[:id] && params[:id] == @my.id.to_s
-          return true
-        end
-      when controller_name.to_sym == :profile_pictures
-        if params[:person_id] && params[:person_id] == @my.id.to_s
-#          require 'ruby-debug'
-#          debugger
-          return true
-        end
-      end # case
-      end # if
       
       ministry ||= get_ministry
       unless @user_permissions && @user_permissions[ministry]
@@ -217,7 +201,7 @@ class ApplicationController < ActionController::Base
 
       # Make sure we're always using strings      
       action = action.to_s
-      controller = controller.to_s
+      controller = controller.to_s     
       
       # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
       #if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
@@ -225,11 +209,30 @@ class ApplicationController < ActionController::Base
       #  controller = mapped_permission[:controller] || controller
       #end
 
+      # Owner Action Checking
+      # NOTE: These need to be done after action & controller are set
+      if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
+         AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
+      case controller.to_sym
+      when :people        
+        if params[:id] && params[:id] == @my.id.to_s
+          return true
+        end
+      when :profile_pictures, :timetables  
+#          require 'ruby-debug'
+#          debugger
+        if params[:person_id] && params[:person_id] == @my.id.to_s
+          return true
+        end
+      end # case
+      end # if
+
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
         return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
       end
+      
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
     
