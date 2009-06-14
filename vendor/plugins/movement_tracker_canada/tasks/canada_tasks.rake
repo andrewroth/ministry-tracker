@@ -61,6 +61,21 @@ def setup_directory_view
 
     v.build_query_parts!
   end
+
+  # make address columns hit Person directly as our schema is lke that
+  for t in %w(Street City Zip Email)
+    c = Column.find_by_title t
+    c.from_clause = 'Person'
+    c.save!
+  end
+
+  # state is a special case
+  c = Column.find_by_title 'State'
+  c.source_column = 'person_local_province_id'
+  c.save!
+
+  # rebuild since changing views
+  View.all.each { |v| v.build_query_parts! }
 end
 
 def setup_campuses
