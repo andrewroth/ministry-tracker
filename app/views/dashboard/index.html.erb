@@ -49,6 +49,7 @@ this system, along with any other information we think would be helpful to you.<
 
   <div id="col_1">
   
+    <%- if authorized?(:directory, :people) -%>
     <div class="dashmodule">
       <div class="moduletitle">
         <h2>Search the Directory</h2>
@@ -81,7 +82,7 @@ this system, along with any other information we think would be helpful to you.<
       
       </div>
     </div>
-    
+    <%- end -%>
     
     <div class="dashmodule">
       <div class="moduletitle">
@@ -110,7 +111,9 @@ this system, along with any other information we think would be helpful to you.<
           <%- if authorized?(:new, :ministries) -%>
             <li><%= link_to('Create a Ministry', '/manage') %></li>
           <%- end -%>
-          <li><%= link_to('Go to the Directory', directory_people_path) %></li>
+          <%- if authorized?(:directory, :people) -%>
+            <li><%= link_to('Go to the Directory', directory_people_path) %></li>
+          <%- end -%>
         </ul>
       </div>
     </div>
