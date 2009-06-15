@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
                                                   :include => :ministry)
     respond_to do |format|
       format.html do
-        layout = authorized?(:new, :people) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'manage' : 'application'
         render :layout => layout
       end
       format.js
@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
   def join
     respond_to do |format|
       format.html do
-        layout = authorized?(:new, :people) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'manage' : 'application'
         render :layout => layout
       end
       format.js

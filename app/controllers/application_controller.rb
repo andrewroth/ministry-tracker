@@ -224,6 +224,9 @@ class ApplicationController < ActionController::Base
           return true
         end
       when :groups
+        # NOTE: THIS DOES NOT CHECK FOR PERMISSIONS correctly
+        # Can use the line below to check
+        # Group.find(params[:id]).leaders.include?(@my) || Group.find(params[:id]).co_leaders.include?(@my)
 #          require 'ruby-debug'
 #          debugger        
         if (params[:id] && params[:controller] == "groups") && @my.groups.find_by_id(params[:id])
