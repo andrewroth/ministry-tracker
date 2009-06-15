@@ -77,6 +77,36 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'create'
+  p.description = 'Create People'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'add_student'
+  p.description = 'Add New Students'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'directory'
+  p.description = 'View Directory'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry'
+  p.description = 'Change Current Ministry'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_view'
+  p.description = 'Change Directory View'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'imports'
   p.action = 'new'
   p.description = 'Bulk Import People'
@@ -134,10 +164,4 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'custom_attributes'
   p.action = 'new'
   p.description = 'Create Custom Attributes'
-end
-
-Permission.seed(:controller, :action) do |p|
-  p.controller = 'people'
-  p.action = 'directory'
-  p.description = 'View Directory'
 end
