@@ -32,9 +32,7 @@ class GroupInvolvementsController < ApplicationController
     render :action => 'request_result' 
   end
   
-  def destroy
-  require 'ruby-debug'
-  debugger    
+  def destroy 
     if params[:members]
       params[:members].each do |member|
         gi = find_by_person_id_and_group_id(member, params[:id])
