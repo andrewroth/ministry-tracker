@@ -587,7 +587,7 @@ class PeopleController < ApplicationController
       # find everyone in this ministry with a higher access
       higher_mi_array = []
       @most_recent_ministry.ministry_involvements.each do |cur_mi|
-        if cur_mi.ministry_role.position < persons_ministry_involvement_position
+        if cur_mi.ministry_role.position < persons_ministry_involvement_position && cur_mi.ministry_role.type == "StaffRole"
           higher_mi_array << cur_mi
         end
       end
