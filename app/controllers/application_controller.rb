@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
         end
       when :groups
         if (params[:id] && params[:controller] == "groups") && 
-          @my.groups.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
+          @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
           return true
         end
       end # case

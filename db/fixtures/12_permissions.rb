@@ -64,10 +64,23 @@ Permission.seed(:controller, :action) do |p|
   p.description = 'Request to join any group'
 end
 
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'directory'
+  p.description = 'View Directory'
+end
+
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'search'
   p.description = 'Search for People'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'advanced'
+  p.description = 'Use Advanced Search'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -90,12 +103,6 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
-  p.action = 'directory'
-  p.description = 'View Directory'
-end
-
-Permission.seed(:controller, :action) do |p|
-  p.controller = 'people'
   p.action = 'change_ministry'
   p.description = 'Change Current Ministry'
 end
@@ -104,6 +111,12 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'change_view'
   p.description = 'Change Directory View'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'staff'
+  p.action = 'index'
+  p.description = 'View Leaders/Staff'
 end
 
 Permission.seed(:controller, :action) do |p|
