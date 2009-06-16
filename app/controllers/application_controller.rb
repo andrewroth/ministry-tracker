@@ -166,8 +166,8 @@ class ApplicationController < ActionController::Base
                   :set_permanent_address_states],
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
-      :groups => [:edit, :update, :destroy]
-    }    
+      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time]
+    }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
@@ -215,7 +215,7 @@ class ApplicationController < ActionController::Base
       if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
          AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
       case controller.to_sym
-      when :people        
+      when :people
         if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
           return true
         end
@@ -224,9 +224,8 @@ class ApplicationController < ActionController::Base
           return true
         end
       when :groups
-#          require 'ruby-debug'
-#          debugger        
-        if (params[:id] && params[:controller] == "groups") && @my.groups.find_by_id(params[:id])
+        if (params[:id] && params[:controller] == "groups") && 
+          @my.groups.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
           return true
         end
       end # case

@@ -1,4 +1,4 @@
-<%- if authorized?(:edit, :groups) -%>
+<%- if authorized?(:edit, :groups) || authorized?(:new, :groups) -%>
 	<%= render :partial => 'groups' %>
 <%- else -%>
 	<%- ministry = nil -%>
