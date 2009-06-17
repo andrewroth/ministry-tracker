@@ -1,12 +1,14 @@
-# 
-#  people_controller.rb
-#  studentnetwork
-#  
-#  Created by Josh Starcher on 2007-08-26.
-#  Copyright 2007 Ministry Hacks. All rights reserved.
-# 
 require 'person_methods'
 
+# Question: Seems to handle the production of a directory view, either for
+# entire campus (or ministry?), or according to search criteria. Does other things?
+#
+#Question: what is the difference between method new and method create?
+#
+#Question: What is the difference between a person and a user?
+#
+#Question: What is the use of primary_campus_id and its implications?
+#
 class PeopleController < ApplicationController
   include PersonMethods
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
@@ -25,6 +27,15 @@ class PeopleController < ApplicationController
     render :layout => 'application'
   end
   
+  # Presents a list of all people matching the provided search criteria.
+  # Capable of outputting as xml, xls, or html
+  #
+  # TODO: Needs some major re-writing! Far too large for one method.
+  # Abstract into multiple methods, if not for repeatability,
+  # at least for readability!
+  #
+  # Sets up pagination for results (TODO: this can be put in a method!)
+
   def directory
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
@@ -206,8 +217,7 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/1
-  # GET /people/1.xml
+  #Question: shows an individual's record?
   def show
     setup_vars
     respond_to do |format|
@@ -343,9 +353,9 @@ class PeopleController < ApplicationController
     end
     if params[:primary_campus_id].blank?
       if @person.primary_campus_involvement
-         @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
-         @person.update_attribute(:primary_campus_involvement_id, nil)
-          @update_involvements = true
+        @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
+        @person.update_attribute(:primary_campus_involvement_id, nil)
+        @update_involvements = true
       end
     end
       
@@ -353,8 +363,8 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       if @person.update_attributes(params[:person]) && 
-         (params[:current_address].nil? || @current_address.valid?) &&
-         (params[:perm_address].nil? || @perm_address.valid?) 
+          (params[:current_address].nil? || @current_address.valid?) &&
+          (params[:perm_address].nil? || @perm_address.valid?)
         
         if params[:primary_campus_involvement].present? &&  @person.most_recent_involvement
           @person.most_recent_involvement.update_attributes(params[:primary_campus_involvement])
@@ -402,6 +412,8 @@ class PeopleController < ApplicationController
     end
   end
   
+#Question: does it change which ministry we are now viewing in our session?
+
   def change_ministry
     session[:ministry_id] = params[:current_ministry]
     respond_to do |wants|
@@ -414,7 +426,9 @@ class PeopleController < ApplicationController
     end
   end
   
-  def change_view
+  # Question: what does it do? Are there customisable views, and this changes
+# the currently used one?
+def change_view
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
     session[:order] = nil
@@ -428,7 +442,11 @@ class PeopleController < ApplicationController
     end
   end
   
-  def search
+# Executes a search according to provided criteria.
+# Guesses if the entry includes a first and last name, splits them out for the search
+# TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
+
+def search
     # figure out if the search parameter looks like a first or last name only, or both
     @search = params[:search]
     if @search && !@search.empty?
@@ -467,7 +485,8 @@ class PeopleController < ApplicationController
 	  end
   end
     
-  def add_student
+# Question: what does it do?
+def add_student
     
     respond_to do |format|
       format.js  do
@@ -499,127 +518,127 @@ class PeopleController < ApplicationController
 
   private
   
-    def campus_condition
-      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
-    end
+  def campus_condition
+    "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+  end
     
-    def ministry_condition
-      @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
-      'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
-    end
+  def ministry_condition
+    @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
+    'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+  end
     
-    def add_involvement_conditions(conditions)
-      # figure out which campuses to query based on the campuses listed for the current ministry
-      if  @campus
-        campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
-        conditions << campus_cond
+  def add_involvement_conditions(conditions)
+    # figure out which campuses to query based on the campuses listed for the current ministry
+    if  @campus
+      campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
+      conditions << campus_cond
+    else
+      if @ministry.campus_ids.length > 0
+        conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
       else
-        if @ministry.campus_ids.length > 0
-          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
-        else
-          conditions << ministry_condition
-        end
+        conditions << ministry_condition
       end
-      return conditions
     end
+    return conditions
+  end
     
-    def render_new_from_create(format)
-      set_dorms
-      format.html { render :action => "new", :layout => 'manage' }
-      format.js  {render :action => 'new'}
-      format.xml  { render :xml => @person.errors.to_xml }
-    end
+  def render_new_from_create(format)
+    set_dorms
+    format.html { render :action => "new", :layout => 'manage' }
+    format.js  {render :action => 'new'}
+    format.xml  { render :xml => @person.errors.to_xml }
+  end
     
-    def setup_vars
-      set_dorms
-      @profile_picture = @person.profile_picture || ProfilePicture.new
-      @profile_picture.person_id = @person.id
-      @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
-      @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
-    end
+  def setup_vars
+    set_dorms
+    @profile_picture = @person.profile_picture || ProfilePicture.new
+    @profile_picture.person_id = @person.id
+    @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
+    @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+  end
     
-    def set_dorms
-      @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
-    end
+  def set_dorms
+    @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
+  end
     
-    def set_states
-      @states = State.all()
-    end
+  def set_states
+    @states = State.all()
+  end
     
-    def can_edit_profile
-      if @person == @me || is_ministry_leader
-        return true
-      else 
-        respond_to do |wants|
-          wants.html { redirect_to @person }
-          wants.js  do
-            render :update do |page|
-              page.redirect_to(@person)
-            end
+  def can_edit_profile
+    if @person == @me || is_ministry_leader
+      return true
+    else
+      respond_to do |wants|
+        wants.html { redirect_to @person }
+        wants.js  do
+          render :update do |page|
+            page.redirect_to(@person)
           end
         end
+      end
         
-        return false
-      end
+      return false
     end
+  end
     
-    def get_profile_person
-      @person = Person.find(params[:id] || session[:person_id])
+  def get_profile_person
+    @person = Person.find(params[:id] || session[:person_id])
+  end
+    
+  def setup_campuses
+    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+    if params[:state].present?
+      state = params[:state]
+    else
+      state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
     end
+    state_model = State.find :first, :conditions => { _(:name, :state) => state }
+    @campuses = state_model.try(:campuses) || []
+  end
     
-    def setup_campuses
-      @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-      if params[:state].present?
-        state = params[:state]
-      else
-        state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
-      end
-      state_model = State.find :first, :conditions => { _(:name, :state) => state }
-      @campuses = state_model.try(:campuses) || []
+  def get_view
+    view_id = session[:view_id]
+    if view_id
+      @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
     end
-    
-    def get_view
-      view_id = session[:view_id]
-      if view_id
-        @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
-      end
-      # If there's no view in the session, get the default view
-      @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
+    # If there's no view in the session, get the default view
+    @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
+    unless @view
+      # If there was no default view, set the first view found as the default
+      @view = @ministry.views.find(:first)
       unless @view
-        # If there was no default view, set the first view found as the default
-        @view = @ministry.views.find(:first)
-        unless @view
-          #If this ministry doesn't have any views, create the first view for this ministry
-          @view = @ministry.create_first_view
-        end
-        @view.default_view = true
-        @view.save!
+        #If this ministry doesn't have any views, create the first view for this ministry
+        @view = @ministry.create_first_view
       end
-      session[:view_id] = @view.id
-      @view
+      @view.default_view = true
+      @view.save!
     end
+    session[:view_id] = @view.id
+    @view
+  end
     
-    def build_sql(tables_clause = nil, extra_select = nil)
-      # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
-      session[:order] = params[:order] if params[:order]
-      order = session[:order] 
-      @order = order ? order + ',' + standard_order : standard_order
+  def build_sql(tables_clause = nil, extra_select = nil)
+    # Add order if it's available
+    standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+    session[:order] = params[:order] if params[:order]
+    order = session[:order]
+    @order = order ? order + ',' + standard_order : standard_order
       
-      @sql =   'SELECT ' + @view.select_clause 
-      @sql += ', ' + extra_select if extra_select.present?
-      tables_clause ||= @view.tables_clause
-      @sql += ' FROM ' + @view.tables_clause
-      @sql += ' WHERE ' + @conditions
-      @sql += ' ORDER BY ' + @order
-    end
+    @sql =   'SELECT ' + @view.select_clause
+    @sql += ', ' + extra_select if extra_select.present?
+    tables_clause ||= @view.tables_clause
+    @sql += ' FROM ' + @view.tables_clause
+    @sql += ' WHERE ' + @conditions
+    @sql += ' ORDER BY ' + @order
+  end
   
-    def get_campuses
-      state = State.find params[:state]
-      @campuses = state.try(:campuses) || []
-    end
+  def get_campuses
+    state = State.find params[:state]
+    @campuses = state.try(:campuses) || []
+  end
     
-    def set_use_address2
-      @use_address2 = !Cmt::CONFIG[:disable_address2]
-    end
+  def set_use_address2
+    @use_address2 = !Cmt::CONFIG[:disable_address2]
+  end
 end

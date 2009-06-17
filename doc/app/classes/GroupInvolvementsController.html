@@ -80,6 +80,16 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <p>
+Handles CRUD for involvements for a memeber and a given group at a given
+level of involvement
+</p>
+<p>
+Question: def Transfer: not sure what it does
+</p>
+
+    </div>
 
 
    </div>
@@ -88,11 +98,15 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000145">create</a>&nbsp;&nbsp;
-      <a href="#M000146">destroy</a>&nbsp;&nbsp;
-      <a href="#M000148">find_by_person_id_and_group_id</a>&nbsp;&nbsp;
-      <a href="#M000149">refresh_page</a>&nbsp;&nbsp;
-      <a href="#M000147">transfer</a>&nbsp;&nbsp;
+      <a href="#M000201">accept_request</a>&nbsp;&nbsp;
+      <a href="#M000198">create</a>&nbsp;&nbsp;
+      <a href="#M000200">create_group_involvement</a>&nbsp;&nbsp;
+      <a href="#M000202">decline_request</a>&nbsp;&nbsp;
+      <a href="#M000203">destroy</a>&nbsp;&nbsp;
+      <a href="#M000205">find_by_person_id_and_group_id</a>&nbsp;&nbsp;
+      <a href="#M000199">joingroup</a>&nbsp;&nbsp;
+      <a href="#M000206">refresh_page</a>&nbsp;&nbsp;
+      <a href="#M000204">transfer</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -114,89 +128,192 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000145" class="method-detail">
-        <a name="M000145"></a>
+      <div id="method-M000201" class="method-detail">
+        <a name="M000201"></a>
 
         <div class="method-heading">
-          <a href="#M000145" class="method-signature">
+          <a href="#M000201" class="method-signature">
+          <span class="method-name">accept_request</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000201-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000201-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 33</span>
+33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">accept_request</span>
+34:     <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]).<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:requested</span>, <span class="ruby-keyword kw">false</span>)
+35:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'dashboard/index'</span>
+36:     <span class="ruby-comment cmt">#TODO:refresh the appropriate content on dashboard rather than refresh whole dashboard</span>
+37:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000198" class="method-detail">
+        <a name="M000198"></a>
+
+        <div class="method-heading">
+          <a href="#M000198" class="method-signature">
           <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000145-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000145-source">
+            onclick="toggleCode('M000198-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000198-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 2</span>
- 2:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
- 3:     <span class="ruby-comment cmt"># If the person is already in the group, find them. otherwise, create a new record</span>
- 4:     <span class="ruby-ivar">@gi</span> = <span class="ruby-identifier">find_by_person_id_and_group_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>])
- 5:     <span class="ruby-ivar">@gi</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:person_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person_id</span>], <span class="ruby-identifier">:group_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>])
- 6:     <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">level</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:type</span>]  <span class="ruby-comment cmt"># set the level of involvement</span>
- 7:     <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">save!</span>
- 8:     <span class="ruby-ivar">@group</span> = <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">group</span>
- 9:     <span class="ruby-identifier">refresh_page</span>
-10:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+ 9:     <span class="ruby-identifier">create_group_involvement</span>
+10:     <span class="ruby-identifier">refresh_page</span>
+11:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000146" class="method-detail">
-        <a name="M000146"></a>
+      <div id="method-M000200" class="method-detail">
+        <a name="M000200"></a>
 
         <div class="method-heading">
-          <a href="#M000146" class="method-signature">
+          <a href="#M000200" class="method-signature">
+          <span class="method-name">create_group_involvement</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000200-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000200-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_group_involvement</span>
+24:     <span class="ruby-comment cmt"># If the person is already in the group, find them. otherwise, create a new record</span>
+25:     <span class="ruby-ivar">@gi</span> = <span class="ruby-identifier">find_by_person_id_and_group_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>])
+26:     <span class="ruby-ivar">@gi</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:person_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person_id</span>], <span class="ruby-identifier">:group_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>])
+27:     <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">level</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:type</span>]  <span class="ruby-comment cmt"># set the level of involvement</span>
+28:     <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">requested</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:requested</span>]
+29:     <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">save!</span>
+30:     <span class="ruby-ivar">@group</span> = <span class="ruby-ivar">@gi</span>.<span class="ruby-identifier">group</span>
+31:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000202" class="method-detail">
+        <a name="M000202"></a>
+
+        <div class="method-heading">
+          <a href="#M000202" class="method-signature">
+          <span class="method-name">decline_request</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000202-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000202-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 39</span>
+39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">decline_request</span>
+40:     <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+41:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'dashboard/index'</span>
+42:     <span class="ruby-comment cmt">#TODO: refresh appropriate content on dashboard</span>
+43:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000203" class="method-detail">
+        <a name="M000203"></a>
+
+        <div class="method-heading">
+          <a href="#M000203" class="method-signature">
           <span class="method-name">destroy</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000146-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000146-source">
+            onclick="toggleCode('M000203-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000203-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 12</span>
-12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-13:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>]
-14:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">destroy_all</span>([<span class="ruby-node">&quot;#{_(:person_id, :group_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)])
-15:     <span class="ruby-keyword kw">else</span>
-16:       <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;No members were selected to delete&quot;</span>
-17:     <span class="ruby-keyword kw">end</span>
-18:     <span class="ruby-identifier">get_group</span>
-19:     <span class="ruby-identifier">refresh_page</span>
-20:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 45</span>
+45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+46:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>]
+47:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">destroy_all</span>([<span class="ruby-node">&quot;#{_(:person_id, :group_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)])
+48:     <span class="ruby-keyword kw">else</span>
+49:       <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;No members were selected to delete&quot;</span>
+50:     <span class="ruby-keyword kw">end</span>
+51:     <span class="ruby-identifier">get_group</span>
+52:     <span class="ruby-identifier">refresh_page</span>
+53:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000147" class="method-detail">
-        <a name="M000147"></a>
+      <div id="method-M000199" class="method-detail">
+        <a name="M000199"></a>
 
         <div class="method-heading">
-          <a href="#M000147" class="method-signature">
+          <a href="#M000199" class="method-signature">
+          <span class="method-name">joingroup</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000199-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000199-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 13</span>
+13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">joingroup</span>  
+14:     <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:type</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_involvement</span>][<span class="ruby-identifier">:level</span>]
+15:     <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_involvement</span>][<span class="ruby-identifier">:group_id</span>]
+16:     <span class="ruby-identifier">create_group_involvement</span>
+17:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+18:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+19:     <span class="ruby-keyword kw">end</span>
+20:     <span class="ruby-comment cmt">#TODO:refresh appropriate content on join groups page, rather than refresh whole page</span>
+21:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000204" class="method-detail">
+        <a name="M000204"></a>
+
+        <div class="method-heading">
+          <a href="#M000204" class="method-signature">
           <span class="method-name">transfer</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000147-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000147-source">
+            onclick="toggleCode('M000204-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000204-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 22</span>
-22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transfer</span>
-23:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>]
-24:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">update_all</span>([<span class="ruby-node">&quot;#{_(:group_id, :group_involvement)} = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:transfer_to</span>]], 
-25:                                   [<span class="ruby-node">&quot;#{_(:group_id, :group_involvement)} = ? AND &quot;</span> <span class="ruby-operator">+</span>
-26:                                    <span class="ruby-node">&quot;#{_(:level, :group_invovlement)} = ? AND &quot;</span> <span class="ruby-operator">+</span> 
-27:                                    <span class="ruby-node">&quot;#{_(:person_id, :group_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:level</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)])
-28:     <span class="ruby-keyword kw">end</span>
-29:     <span class="ruby-identifier">get_group</span>
-30:     <span class="ruby-identifier">refresh_page</span>
-31:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 55</span>
+55:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transfer</span>
+56:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>]
+57:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">update_all</span>([<span class="ruby-node">&quot;#{_(:group_id, :group_involvement)} = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:transfer_to</span>]], 
+58:                                   [<span class="ruby-node">&quot;#{_(:group_id, :group_involvement)} = ? AND &quot;</span> <span class="ruby-operator">+</span>
+59:                                    <span class="ruby-node">&quot;#{_(:level, :group_invovlement)} = ? AND &quot;</span> <span class="ruby-operator">+</span> 
+60:                                    <span class="ruby-node">&quot;#{_(:person_id, :group_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:level</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:members</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)])
+61:     <span class="ruby-keyword kw">end</span>
+62:     <span class="ruby-identifier">get_group</span>
+63:     <span class="ruby-identifier">refresh_page</span>
+64:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -204,59 +321,59 @@
 
       <h3 class="section-bar">Protected Instance methods</h3>
 
-      <div id="method-M000148" class="method-detail">
-        <a name="M000148"></a>
+      <div id="method-M000205" class="method-detail">
+        <a name="M000205"></a>
 
         <div class="method-heading">
-          <a href="#M000148" class="method-signature">
+          <a href="#M000205" class="method-signature">
           <span class="method-name">find_by_person_id_and_group_id</span><span class="method-args">(person_id, group_id)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000148-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000148-source">
+            onclick="toggleCode('M000205-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000205-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 34</span>
-34:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_by_person_id_and_group_id</span>(<span class="ruby-identifier">person_id</span>, <span class="ruby-identifier">group_id</span>)
-35:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:person_id</span>, <span class="ruby-identifier">:group_involvement</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; = ? AND &quot;</span> <span class="ruby-operator">+</span> 
-36:                                                           <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:group_id</span>, <span class="ruby-identifier">:group_invovlement</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; = ? &quot;</span>, 
-37:                                                           <span class="ruby-identifier">person_id</span>, <span class="ruby-identifier">group_id</span>])
-38:     <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 67</span>
+67:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_by_person_id_and_group_id</span>(<span class="ruby-identifier">person_id</span>, <span class="ruby-identifier">group_id</span>)
+68:       <span class="ruby-constant">GroupInvolvement</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:person_id</span>, <span class="ruby-identifier">:group_involvement</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; = ? AND &quot;</span> <span class="ruby-operator">+</span> 
+69:                                                           <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:group_id</span>, <span class="ruby-identifier">:group_invovlement</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot; = ? &quot;</span>, 
+70:                                                           <span class="ruby-identifier">person_id</span>, <span class="ruby-identifier">group_id</span>])
+71:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000149" class="method-detail">
-        <a name="M000149"></a>
+      <div id="method-M000206" class="method-detail">
+        <a name="M000206"></a>
 
         <div class="method-heading">
-          <a href="#M000149" class="method-signature">
+          <a href="#M000206" class="method-signature">
           <span class="method-name">refresh_page</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000149-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000149-source">
+            onclick="toggleCode('M000206-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000206-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 40</span>
-40:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">refresh_page</span>
-41:       <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-42:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword kw">do</span> 
-43:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-node">&quot;/#{@group.class.to_s.tableize}/#{params[:id]}&quot;</span>
-44:         <span class="ruby-keyword kw">end</span>
-45:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
-46:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-47:             <span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;@#{@group.class.to_s.underscore} =  @group&quot;</span>)
-48:             <span class="ruby-identifier">page</span>[<span class="ruby-ivar">@group</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span>].<span class="ruby-identifier">replace_html</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{@group.class.to_s.tableize}/show&quot;</span>)
-49:           <span class="ruby-keyword kw">end</span>
-50:         <span class="ruby-keyword kw">end</span>
-51:       <span class="ruby-keyword kw">end</span>
-52:     <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/group_involvements_controller.rb, line 73</span>
+73:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">refresh_page</span>
+74:       <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+75:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword kw">do</span> 
+76:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-node">&quot;/#{@group.class.to_s.tableize}/#{params[:id]}&quot;</span>
+77:         <span class="ruby-keyword kw">end</span>
+78:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
+79:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+80:             <span class="ruby-identifier">eval</span>(<span class="ruby-node">&quot;@#{@group.class.to_s.underscore} =  @group&quot;</span>)
+81:             <span class="ruby-identifier">page</span>[<span class="ruby-ivar">@group</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">underscore</span>].<span class="ruby-identifier">replace_html</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{@group.class.to_s.tableize}/show&quot;</span>)
+82:           <span class="ruby-keyword kw">end</span>
+83:         <span class="ruby-keyword kw">end</span>
+84:       <span class="ruby-keyword kw">end</span>
+85:     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

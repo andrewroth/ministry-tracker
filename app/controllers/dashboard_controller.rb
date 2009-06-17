@@ -1,3 +1,7 @@
+# Provides the following information:
+# * Count of people in ministry
+# * movement count (definition unclear)
+# * names of newest people added
 class DashboardController < ApplicationController
   
   def index

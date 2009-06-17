@@ -1,3 +1,12 @@
+# CRUD for ministries
+#
+# A campus is defined as the official government list of campuses in the country.
+# A ministry happens on a campus, or several campuses, or no campus at all.
+# So everything is attached to a ministry... (ministry should read “movement”...)
+#
+# There is a heirachy of ministries, then campuses can be tied to ministries,
+# but technically aren't part of the ministry heirachy
+
 class MinistriesController < ApplicationController
   layout 'manage'
   skip_before_filter :authorization_filter, :only => [:list]
@@ -27,6 +36,8 @@ class MinistriesController < ApplicationController
     end
   end
   
+  # When a user creates a new ministry, they are assigned the top role within 
+  # that ministry
   def create
     # set the parent of the current ministry as the parent
     params[:ministry][:parent_id] = @ministry.id || @root_ministry.id
@@ -73,6 +84,9 @@ class MinistriesController < ApplicationController
     end
   end
   
+  # Can't delete top level ministries.
+  # 
+  # Can't delete ministries with children (the world has enough orphans)
   def destroy
     @old_ministry = Ministry.find(params[:id])
     # We can't allow a user to delete a root level ministry
@@ -103,15 +117,18 @@ class MinistriesController < ApplicationController
       end
     end
   end
-  
+
+
+  # Question: What exactly does parent_form and set_parent do?
+  # Delete candidate A: I think parent_form is depreciated as it is now handled by a drag-drop ajax library
   def parent_form
     # switch to the ministry they are setting the parent for
     session[:ministry_id] = params[:id]
     get_ministry
     @ministries = Ministry.find(:all, :conditions => ["#{_(:id, 'ministry')} <> ? AND " + 
-                                                      "(#{_(:parent_id,'ministry')} <> ? or #{_(:parent_id,'ministry')} is NULL)",
-                                                      @ministry.id, @ministry.id], 
-                                      :order => _(:name, 'minitry'))
+          "(#{_(:parent_id,'ministry')} <> ? or #{_(:parent_id,'ministry')} is NULL)",
+        @ministry.id, @ministry.id],
+      :order => _(:name, 'minitry'))
     render :update do |page|
       page[:title].replace_html(@ministry.name)
       page[:manage].replace_html :partial => 'parent_list'

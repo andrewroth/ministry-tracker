@@ -80,6 +80,12 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <p>
+CRUD for dorms
+</p>
+
+    </div>
 
 
    </div>
@@ -88,9 +94,9 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000171">create</a>&nbsp;&nbsp;
-      <a href="#M000173">destroy</a>&nbsp;&nbsp;
-      <a href="#M000172">list</a>&nbsp;&nbsp;
+      <a href="#M000225">create</a>&nbsp;&nbsp;
+      <a href="#M000227">destroy</a>&nbsp;&nbsp;
+      <a href="#M000226">list</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -112,76 +118,76 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000171" class="method-detail">
-        <a name="M000171"></a>
+      <div id="method-M000225" class="method-detail">
+        <a name="M000225"></a>
 
         <div class="method-heading">
-          <a href="#M000171" class="method-signature">
+          <a href="#M000225" class="method-signature">
           <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000171-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000171-source">
+            onclick="toggleCode('M000225-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000225-source">
 <pre>
-   <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 2</span>
-2:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
-3:     <span class="ruby-ivar">@dorm</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:dorm</span>])
-4:   <span class="ruby-keyword kw">end</span>
+   <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 4</span>
+4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+5:     <span class="ruby-ivar">@dorm</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:dorm</span>])
+6:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000173" class="method-detail">
-        <a name="M000173"></a>
+      <div id="method-M000227" class="method-detail">
+        <a name="M000227"></a>
 
         <div class="method-heading">
-          <a href="#M000173" class="method-signature">
+          <a href="#M000227" class="method-signature">
           <span class="method-name">destroy</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000173-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000173-source">
+            onclick="toggleCode('M000227-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000227-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 11</span>
-11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-12:     <span class="ruby-ivar">@dorm</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-13:     <span class="ruby-comment cmt"># Make sure this dorm is in their realm of power</span>
-14:     <span class="ruby-ivar">@dorms</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:dorms</span>).<span class="ruby-identifier">flatten</span>
-15:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dorms</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@dorm</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">is_ministry_leader</span>
-16:       <span class="ruby-ivar">@dorm</span>.<span class="ruby-identifier">destroy</span>
-17:     <span class="ruby-keyword kw">end</span>
-18:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 13</span>
+13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+14:     <span class="ruby-ivar">@dorm</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+15:     <span class="ruby-comment cmt"># Make sure this dorm is in their realm of power</span>
+16:     <span class="ruby-ivar">@dorms</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:dorms</span>).<span class="ruby-identifier">flatten</span>
+17:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dorms</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@dorm</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">is_ministry_leader</span>
+18:       <span class="ruby-ivar">@dorm</span>.<span class="ruby-identifier">destroy</span>
+19:     <span class="ruby-keyword kw">end</span>
+20:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000172" class="method-detail">
-        <a name="M000172"></a>
+      <div id="method-M000226" class="method-detail">
+        <a name="M000226"></a>
 
         <div class="method-heading">
-          <a href="#M000172" class="method-signature">
+          <a href="#M000226" class="method-signature">
           <span class="method-name">list</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000172-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000172-source">
+            onclick="toggleCode('M000226-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000226-source">
 <pre>
-   <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 6</span>
-6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
-7:     <span class="ruby-ivar">@dorms</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:campus_id, :dorm)} = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>]])
-8:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-9:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/dorms_controller.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
+ 9:     <span class="ruby-ivar">@dorms</span> = <span class="ruby-constant">Dorm</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:campus_id, :dorm)} = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>]])
+10:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+11:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

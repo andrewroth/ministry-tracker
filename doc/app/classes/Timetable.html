@@ -82,6 +82,19 @@
 
    </div>
 
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000052">adjust_weights</a>&nbsp;&nbsp;
+      <a href="#M000049">calculate_score</a>&nbsp;&nbsp;
+      <a href="#M000047">get_top_times</a>&nbsp;&nbsp;
+      <a href="#M000051">get_user_adjustment_score</a>&nbsp;&nbsp;
+      <a href="#M000050">get_user_score</a>&nbsp;&nbsp;
+      <a href="#M000053">initialize_timetable</a>&nbsp;&nbsp;
+      <a href="#M000048">setup_timetable</a>&nbsp;&nbsp;
+      </div>
+    </div>
 
   </div>
 
@@ -99,7 +112,7 @@
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">EARLIEST</td>
           <td>=</td>
-          <td class="context-item-value">6.hours.to_i</td>
+          <td class="context-item-value">8.hours.to_i</td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">LATEST</td>
@@ -111,6 +124,51 @@
           <td>=</td>
           <td class="context-item-value">30.minutes.to_i</td>
         </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BAD_WEIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">0.0</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">POOR_WEIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">0.3</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">OK_WEIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">0.7</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GOOD_WEIGHT</td>
+          <td>=</td>
+          <td class="context-item-value">1.0</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BAD_CLASS</td>
+          <td>=</td>
+          <td class="context-item-value">'bad'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">POOR_CLASS</td>
+          <td>=</td>
+          <td class="context-item-value">'poor'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">OK_CLASS</td>
+          <td>=</td>
+          <td class="context-item-value">'ok'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">GOOD_CLASS</td>
+          <td>=</td>
+          <td class="context-item-value">'good'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DISPLAY_TOP</td>
+          <td>=</td>
+          <td class="context-item-value">5</td>
+        </tr>
         </table>
       </div>
     </div>
@@ -121,6 +179,282 @@
 
 
     <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000052" class="method-detail">
+        <a name="M000052"></a>
+
+        <div class="method-heading">
+          <a href="#M000052" class="method-signature">
+          <span class="method-name">adjust_weights</span><span class="method-args">(best_time, user_weights, timetables, num_blocks, people, leader_ids)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000052-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000052-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/timetable.rb, line 137</span>
+137:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">adjust_weights</span>(<span class="ruby-identifier">best_time</span>, <span class="ruby-identifier">user_weights</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">leader_ids</span>)
+138:     <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">user_weight</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+139:       <span class="ruby-identifier">user_weights</span>[<span class="ruby-identifier">index</span>] = <span class="ruby-identifier">get_user_adjustment_score</span>(<span class="ruby-identifier">best_time</span>, <span class="ruby-identifier">user_weight</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">index</span>, <span class="ruby-identifier">leader_ids</span>) 
+140:     <span class="ruby-keyword kw">end</span>
+141: 
+142:     <span class="ruby-comment cmt"># normalize weights so sum_of(uw) = 1</span>
+143:     <span class="ruby-comment cmt"># if the weights are all zero (because all the members have been assigned), reset to default weights</span>
+144:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">sum</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+145:       <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">user_weight</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+146:         <span class="ruby-identifier">user_weights</span>[<span class="ruby-identifier">index</span>] = <span class="ruby-value">1.0</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">people</span>.<span class="ruby-identifier">length</span>
+147:       <span class="ruby-keyword kw">end</span>
+148:     <span class="ruby-keyword kw">end</span>
+149:     <span class="ruby-identifier">factor</span> = <span class="ruby-value">1</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">sum</span>
+150:     <span class="ruby-comment cmt"># puts factor</span>
+151:     <span class="ruby-comment cmt"># puts user_weights.sum</span>
+152:     <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">w</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+153:       <span class="ruby-identifier">user_weights</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">w</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">factor</span>
+154:     <span class="ruby-keyword kw">end</span>
+155:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="#M000049" class="method-signature">
+          <span class="method-name">calculate_score</span><span class="method-args">(time_slot, user_weights, timetables, num_blocks, people, leader_ids)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000049-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000049-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/timetable.rb, line 97</span>
+ 97:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">calculate_score</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">user_weights</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">leader_ids</span>)
+ 98:     <span class="ruby-identifier">score</span> = <span class="ruby-value">0</span><span class="ruby-value">.0</span>
+ 99:     <span class="ruby-identifier">user_weights</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">uw</span>, <span class="ruby-identifier">person_index</span><span class="ruby-operator">|</span>
+100:       <span class="ruby-identifier">score</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_user_score</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">uw</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">person_index</span>, <span class="ruby-identifier">leader_ids</span>) 
+101:     <span class="ruby-keyword kw">end</span>
+102:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">score</span>
+103:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
+
+        <div class="method-heading">
+          <a href="#M000047" class="method-signature">
+          <span class="method-name">get_top_times</span><span class="method-args">(user_weights, timetables, num_blocks, needed_groups, possible_times, people, leader_ids, assigned = [], iteration = 1, scored_times = [])</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000047-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000047-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/timetable.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_top_times</span>(<span class="ruby-identifier">user_weights</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">needed_groups</span>, <span class="ruby-identifier">possible_times</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">leader_ids</span>, <span class="ruby-identifier">assigned</span> = [], <span class="ruby-identifier">iteration</span> = <span class="ruby-value">1</span>, <span class="ruby-identifier">scored_times</span> = [])
+27:     <span class="ruby-comment cmt"># if scored_times.empty?</span>
+28:       <span class="ruby-identifier">possible_times</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+29:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:score</span>] = <span class="ruby-identifier">calculate_score</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">user_weights</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">leader_ids</span>)
+30:         <span class="ruby-identifier">scored_times</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">time_slot</span>
+31:       <span class="ruby-keyword kw">end</span>
+32:     <span class="ruby-comment cmt"># end</span>
+33:   
+34:     <span class="ruby-identifier">best_slots</span> = []
+35:     <span class="ruby-identifier">scored_times</span>.<span class="ruby-identifier">sort!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span>,<span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>[<span class="ruby-identifier">:score</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">b</span>[<span class="ruby-identifier">:score</span>]}.<span class="ruby-identifier">reverse!</span>
+36:     
+37:     <span class="ruby-comment cmt"># If it's the first iteration, pick the top 5 to use from there</span>
+38:     <span class="ruby-comment cmt"># if iteration == 1</span>
+39:       <span class="ruby-identifier">scored_times</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+40:         <span class="ruby-keyword kw">break</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">DISPLAY_TOP</span>
+41:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:user_weights</span>] = <span class="ruby-identifier">adjust_weights</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">user_weights</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">leader_ids</span>)
+42:         <span class="ruby-identifier">people_weights</span> = <span class="ruby-constant">ActiveSupport</span><span class="ruby-operator">::</span><span class="ruby-constant">OrderedHash</span>.<span class="ruby-identifier">new</span>
+43:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:user_weights</span>].<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">uw</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+44:           <span class="ruby-identifier">people_weights</span>[<span class="ruby-identifier">people</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">id</span>] = <span class="ruby-identifier">uw</span>
+45:         <span class="ruby-keyword kw">end</span>
+46:         <span class="ruby-comment cmt"># time_slot[:user_weights] = people_weights</span>
+47:         <span class="ruby-identifier">ordered_people</span> = <span class="ruby-identifier">people_weights</span>.<span class="ruby-identifier">sort</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">y</span>[<span class="ruby-value">1</span>]}.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">pw</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pw</span>[<span class="ruby-value">0</span>]}
+48:         <span class="ruby-identifier">each_group</span> = (<span class="ruby-identifier">people</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">needed_groups</span>.<span class="ruby-identifier">to_f</span>).<span class="ruby-identifier">floor</span>
+49:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">iteration</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+50:           <span class="ruby-identifier">pick</span> = <span class="ruby-identifier">each_group</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">people</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">needed_groups</span>) 
+51:         <span class="ruby-keyword kw">else</span>
+52:           <span class="ruby-identifier">pick</span> = <span class="ruby-identifier">each_group</span> 
+53:         <span class="ruby-keyword kw">end</span>
+54:         <span class="ruby-identifier">members</span> = []
+55:         <span class="ruby-comment cmt"># Pick a leader for this group</span>
+56:         <span class="ruby-identifier">ordered_people</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">person</span><span class="ruby-operator">|</span>
+57:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">leader_ids</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">person</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">assigned</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">person</span>)
+58:             <span class="ruby-identifier">members</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ordered_people</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">person</span>)
+59:             <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:leaders</span>] = [<span class="ruby-identifier">person</span>]
+60:             <span class="ruby-keyword kw">break</span>
+61:           <span class="ruby-keyword kw">end</span>
+62:         <span class="ruby-keyword kw">end</span>
+63:         <span class="ruby-identifier">ordered_people</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">person</span><span class="ruby-operator">|</span>
+64:           <span class="ruby-identifier">members</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">person</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">leader_ids</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">person</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">assigned</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">person</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">members</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">person</span>)
+65:           <span class="ruby-keyword kw">break</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">members</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pick</span>
+66:         <span class="ruby-keyword kw">end</span>
+67:         <span class="ruby-comment cmt"># members += ordered_people[0..(pick - 1)]</span>
+68:         <span class="ruby-comment cmt"># Set the weight to 0 for all the members we just picked</span>
+69:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:user_weights</span>].<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">uw</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+70:           <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:user_weights</span>][<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">members</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">people</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">id</span>) <span class="ruby-operator">?</span> <span class="ruby-value">0</span><span class="ruby-value">.0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">uw</span>
+71:         <span class="ruby-keyword kw">end</span>
+72:         <span class="ruby-comment cmt"># raise time_slot[:user_weights].inspect</span>
+73:         <span class="ruby-comment cmt"># logger.debug(members.collect {|id| Person.find(id)}.collect(&amp;:full_name).inspect)</span>
+74:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:members</span>] = <span class="ruby-identifier">members</span>
+75:         <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:assigned</span>] = <span class="ruby-identifier">members</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">assigned</span>
+76:         <span class="ruby-identifier">best_slots</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">time_slot</span>
+77:       <span class="ruby-keyword kw">end</span>
+78:     <span class="ruby-comment cmt"># else</span>
+79:     
+80:     <span class="ruby-comment cmt"># end</span>
+81:     <span class="ruby-identifier">best_slots</span>
+82:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000051" class="method-detail">
+        <a name="M000051"></a>
+
+        <div class="method-heading">
+          <a href="#M000051" class="method-signature">
+          <span class="method-name">get_user_adjustment_score</span><span class="method-args">(time_slot, user_weight, timetables, num_blocks, people, person_index, leader_ids)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000051-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000051-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/timetable.rb, line 121</span>
+121:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_user_adjustment_score</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">user_weight</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">person_index</span>, <span class="ruby-identifier">leader_ids</span>)
+122:     <span class="ruby-identifier">tmp_score</span> = <span class="ruby-value">-1</span>
+123:     (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">num_blocks</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">block_offset</span><span class="ruby-operator">|</span>
+124:       <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:time</span>] <span class="ruby-operator">+</span> (<span class="ruby-identifier">block_offset</span> <span class="ruby-operator">*</span> <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">INTERVAL</span>)
+125:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-constant">LATEST</span>
+126:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">timetables</span>[<span class="ruby-identifier">people</span>[<span class="ruby-identifier">person_index</span>]][<span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:day</span>]][<span class="ruby-identifier">time</span>].<span class="ruby-identifier">nil?</span>
+127:           <span class="ruby-identifier">time_score</span> = <span class="ruby-constant">OK_WEIGHT</span>
+128:         <span class="ruby-keyword kw">else</span>
+129:           <span class="ruby-identifier">time_score</span> = <span class="ruby-identifier">timetables</span>[<span class="ruby-identifier">people</span>[<span class="ruby-identifier">person_index</span>]][<span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:day</span>]][<span class="ruby-identifier">time</span>].<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">to_f</span>
+130:         <span class="ruby-keyword kw">end</span>
+131:         <span class="ruby-identifier">tmp_score</span> <span class="ruby-operator">*=</span> <span class="ruby-identifier">time_score</span> 
+132:       <span class="ruby-keyword kw">end</span>
+133:     <span class="ruby-keyword kw">end</span>
+134:     <span class="ruby-identifier">user_weight</span> <span class="ruby-operator">*</span> <span class="ruby-constant">Math</span>.<span class="ruby-identifier">exp</span>(<span class="ruby-identifier">tmp_score</span>)
+135:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <a href="#M000050" class="method-signature">
+          <span class="method-name">get_user_score</span><span class="method-args">(time_slot, user_weight, timetables, num_blocks, people, person_index, leader_ids)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000050-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000050-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/timetable.rb, line 105</span>
+105:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_user_score</span>(<span class="ruby-identifier">time_slot</span>, <span class="ruby-identifier">user_weight</span>, <span class="ruby-identifier">timetables</span>, <span class="ruby-identifier">num_blocks</span>, <span class="ruby-identifier">people</span>, <span class="ruby-identifier">person_index</span>, <span class="ruby-identifier">leader_ids</span>)
+106:     <span class="ruby-identifier">user_score</span> = <span class="ruby-identifier">user_weight</span>
+107:     (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">num_blocks</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">block_offset</span><span class="ruby-operator">|</span>
+108:       <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:time</span>] <span class="ruby-operator">+</span> (<span class="ruby-identifier">block_offset</span> <span class="ruby-operator">*</span> <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">INTERVAL</span>)
+109:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-constant">LATEST</span>
+110:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">timetables</span>[<span class="ruby-identifier">people</span>[<span class="ruby-identifier">person_index</span>]][<span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:day</span>]][<span class="ruby-identifier">time</span>]
+111:           <span class="ruby-identifier">time_score</span> = <span class="ruby-identifier">timetables</span>[<span class="ruby-identifier">people</span>[<span class="ruby-identifier">person_index</span>]][<span class="ruby-identifier">time_slot</span>[<span class="ruby-identifier">:day</span>]][<span class="ruby-identifier">time</span>].<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">to_f</span>
+112:         <span class="ruby-keyword kw">else</span>
+113:           <span class="ruby-identifier">time_score</span> = <span class="ruby-value">0</span>
+114:         <span class="ruby-keyword kw">end</span>
+115:         <span class="ruby-identifier">user_score</span> <span class="ruby-operator">*=</span> <span class="ruby-identifier">time_score</span> <span class="ruby-comment cmt">#if time_score</span>
+116:       <span class="ruby-keyword kw">end</span>
+117:     <span class="ruby-keyword kw">end</span>
+118:     <span class="ruby-identifier">user_score</span>
+119:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
+
+        <div class="method-heading">
+          <a href="#M000053" class="method-signature">
+          <span class="method-name">initialize_timetable</span><span class="method-args">(person)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000053-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000053-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/timetable.rb, line 157</span>
+157:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">initialize_timetable</span>(<span class="ruby-identifier">person</span>)
+158:     <span class="ruby-identifier">person</span>.<span class="ruby-identifier">timetable</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Timetable</span>.<span class="ruby-identifier">new</span>
+159:     (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">6</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+160:       <span class="ruby-identifier">person</span>.<span class="ruby-identifier">timetable</span>.<span class="ruby-identifier">free_times</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:start_time</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">EARLIEST</span>, <span class="ruby-identifier">:end_time</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">LATEST</span>, <span class="ruby-identifier">:day_of_week</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">i</span>, <span class="ruby-identifier">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">OK_WEIGHT</span>, <span class="ruby-identifier">:css_class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">OK_CLASS</span>) 
+161:     <span class="ruby-keyword kw">end</span>
+162:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="#M000048" class="method-signature">
+          <span class="method-name">setup_timetable</span><span class="method-args">(person)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000048-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000048-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/timetable.rb, line 84</span>
+84:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">setup_timetable</span>(<span class="ruby-identifier">person</span>)
+85:     <span class="ruby-comment cmt"># Create a hash of free times for outut rendering</span>
+86:     <span class="ruby-ivar">@free_times</span> = [<span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>, <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>]
+87:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">person</span>.<span class="ruby-identifier">free_times</span>.<span class="ruby-identifier">empty?</span>
+88:       <span class="ruby-identifier">person</span>.<span class="ruby-identifier">free_times</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ft</span><span class="ruby-operator">|</span>
+89:         <span class="ruby-identifier">ft</span>.<span class="ruby-identifier">start_time</span>.<span class="ruby-identifier">step</span>((<span class="ruby-identifier">ft</span>.<span class="ruby-identifier">end_time</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">ft</span>.<span class="ruby-identifier">end_time</span> <span class="ruby-operator">%</span> <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">INTERVAL</span>)) <span class="ruby-operator">-</span> <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">INTERVAL</span>, <span class="ruby-constant">Timetable</span><span class="ruby-operator">::</span><span class="ruby-constant">INTERVAL</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span><span class="ruby-operator">|</span>
+90:           <span class="ruby-ivar">@free_times</span>[<span class="ruby-identifier">ft</span>.<span class="ruby-identifier">day_of_week</span>][<span class="ruby-identifier">time</span>] =  <span class="ruby-identifier">ft</span>
+91:         <span class="ruby-keyword kw">end</span>
+92:       <span class="ruby-keyword kw">end</span>
+93:     <span class="ruby-keyword kw">end</span>
+94:     <span class="ruby-ivar">@free_times</span>
+95:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
 
 
   </div>

@@ -1,3 +1,5 @@
+# Handles the associating between campuses and ministries
+
 class MinistryCampusesController < ApplicationController
   before_filter :get_countries
   skip_before_filter :get_ministry, :only => :index

@@ -1,10 +1,4 @@
-# 
-#  group_type_controller.rb
-#  movement_tracker
-#  
-#  Created by Daniel Harsojo on 2009-01-26.
-#  Copyright 2009 Daniel Harsojo. All rights reserved.
-# 
+# CRUD for group types of a given ministry 
 
 class GroupTypesController < ApplicationController
     layout 'manage'

@@ -1,3 +1,4 @@
+# CRUD for permissions
 class PermissionsController < ApplicationController
   layout 'manage'
   before_filter :developer_filter

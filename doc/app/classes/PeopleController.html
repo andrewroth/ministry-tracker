@@ -80,6 +80,23 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <pre>
+ Question: Seems to handle the production of a directory view, either for
+ entire campus (or ministry?), or according to search criteria. Does other things?
+</pre>
+<p>
+Question: what is the difference between method <a
+href="PeopleController.html#M000111">new</a> and method create?
+</p>
+<p>
+Question: What is the difference between a person and a user?
+</p>
+<p>
+Question: What is the use of primary_campus_id and its implications?
+</p>
+
+    </div>
 
 
    </div>
@@ -88,24 +105,19 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000089">add_involvement_conditions</a>&nbsp;&nbsp;
-      <a href="#M000087">add_student</a>&nbsp;&nbsp;
-      <a href="#M000093">can_edit_profile</a>&nbsp;&nbsp;
-      <a href="#M000084">change_ministry</a>&nbsp;&nbsp;
-      <a href="#M000085">change_view</a>&nbsp;&nbsp;
-      <a href="#M000082">create</a>&nbsp;&nbsp;
-      <a href="#M000078">directory</a>&nbsp;&nbsp;
-      <a href="#M000081">edit</a>&nbsp;&nbsp;
-      <a href="#M000094">get_profile_person</a>&nbsp;&nbsp;
-      <a href="#M000088">import_gcx_profile</a>&nbsp;&nbsp;
-      <a href="#M000077">index</a>&nbsp;&nbsp;
-      <a href="#M000080">new</a>&nbsp;&nbsp;
-      <a href="#M000090">render_new_from_create</a>&nbsp;&nbsp;
-      <a href="#M000086">search</a>&nbsp;&nbsp;
-      <a href="#M000092">setup_dorms</a>&nbsp;&nbsp;
-      <a href="#M000091">setup_vars</a>&nbsp;&nbsp;
-      <a href="#M000079">show</a>&nbsp;&nbsp;
-      <a href="#M000083">update</a>&nbsp;&nbsp;
+      <a href="#M000118">add_student</a>&nbsp;&nbsp;
+      <a href="#M000108">advanced</a>&nbsp;&nbsp;
+      <a href="#M000115">change_ministry</a>&nbsp;&nbsp;
+      <a href="#M000116">change_view</a>&nbsp;&nbsp;
+      <a href="#M000113">create</a>&nbsp;&nbsp;
+      <a href="#M000109">directory</a>&nbsp;&nbsp;
+      <a href="#M000112">edit</a>&nbsp;&nbsp;
+      <a href="#M000119">import_gcx_profile</a>&nbsp;&nbsp;
+      <a href="#M000107">index</a>&nbsp;&nbsp;
+      <a href="#M000111">new</a>&nbsp;&nbsp;
+      <a href="#M000117">search</a>&nbsp;&nbsp;
+      <a href="#M000110">show</a>&nbsp;&nbsp;
+      <a href="#M000114">update</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -134,118 +146,141 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000087" class="method-detail">
-        <a name="M000087"></a>
+      <div id="method-M000118" class="method-detail">
+        <a name="M000118"></a>
 
         <div class="method-heading">
-          <a href="#M000087" class="method-signature">
+          <a href="#M000118" class="method-signature">
           <span class="method-name">add_student</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+Question: what does it do?
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000087-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000087-source">
+            onclick="toggleCode('M000118-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000118-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 346</span>
-346:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_student</span>
-347:     
-348:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-349:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>  <span class="ruby-keyword kw">do</span>
-350:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-351:           <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:addStudent</span>].<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'students/ajax_form'</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:person</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>})
-352:         <span class="ruby-keyword kw">end</span>
-353:       <span class="ruby-keyword kw">end</span>
-354:     <span class="ruby-keyword kw">end</span>
-355:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 489</span>
+489: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_student</span>
+490:     
+491:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+492:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>  <span class="ruby-keyword kw">do</span>
+493:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+494:           <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:addStudent</span>].<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'students/ajax_form'</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:person</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>})
+495:         <span class="ruby-keyword kw">end</span>
+496:       <span class="ruby-keyword kw">end</span>
+497:     <span class="ruby-keyword kw">end</span>
+498:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000084" class="method-detail">
-        <a name="M000084"></a>
+      <div id="method-M000108" class="method-detail">
+        <a name="M000108"></a>
 
         <div class="method-heading">
-          <a href="#M000084" class="method-signature">
+          <a href="#M000108" class="method-signature">
+          <span class="method-name">advanced</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000108-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000108-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">advanced</span>
+24:     <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+25:     <span class="ruby-ivar">@options</span> = {}
+26:     <span class="ruby-ivar">@campuses</span> = <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministries</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)}.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+27:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'application'</span>
+28:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000115" class="method-detail">
+        <a name="M000115"></a>
+
+        <div class="method-heading">
+          <a href="#M000115" class="method-signature">
           <span class="method-name">change_ministry</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-DELETE /people/1 DELETE /people/1.xml def destroy
-</p>
-<pre>
-  @person = Person.find(params[:id])
-  @person.destroy
-
-  respond_to do |format|
-    format.html { redirect_to directory_people_path }
-    format.xml  { head :ok }
-  end
-</pre>
-<p>
-end
+Question: does it change which ministry we are now viewing in our session?
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000084-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000084-source">
+            onclick="toggleCode('M000115-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000115-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 286</span>
-286:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">change_ministry</span>
-287:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:ministry_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>]
-288:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
-289:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>) }
-290:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
-291:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-292:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>)
-293:         <span class="ruby-keyword kw">end</span>
-294:       <span class="ruby-keyword kw">end</span>
-295:     <span class="ruby-keyword kw">end</span>
-296:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 417</span>
+417:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">change_ministry</span>
+418:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:ministry_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_ministry</span>]
+419:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
+420:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>) }
+421:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
+422:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+423:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>)
+424:         <span class="ruby-keyword kw">end</span>
+425:       <span class="ruby-keyword kw">end</span>
+426:     <span class="ruby-keyword kw">end</span>
+427:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000085" class="method-detail">
-        <a name="M000085"></a>
+      <div id="method-M000116" class="method-detail">
+        <a name="M000116"></a>
 
         <div class="method-heading">
-          <a href="#M000085" class="method-signature">
+          <a href="#M000116" class="method-signature">
           <span class="method-name">change_view</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+Question: what does it do? Are there customisable views, and this changes
+the currently used one?
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000085-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000085-source">
+            onclick="toggleCode('M000116-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000116-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 298</span>
-298:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">change_view</span>
-299:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:view</span>]
-300:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
-301:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>) }
-302:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
-303:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-304:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>)
-305:         <span class="ruby-keyword kw">end</span>
-306:       <span class="ruby-keyword kw">end</span>
-307:     <span class="ruby-keyword kw">end</span>
-308:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 431</span>
+431: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">change_view</span>
+432:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:view</span>]
+433:     <span class="ruby-comment cmt"># Clear session[:order] since this view might not have the same columns</span>
+434:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:order</span>] = <span class="ruby-keyword kw">nil</span>
+435:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
+436:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>) }
+437:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span>
+438:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+439:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">directory_people_path</span>)
+440:         <span class="ruby-keyword kw">end</span>
+441:       <span class="ruby-keyword kw">end</span>
+442:     <span class="ruby-keyword kw">end</span>
+443:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000082" class="method-detail">
-        <a name="M000082"></a>
+      <div id="method-M000113" class="method-detail">
+        <a name="M000113"></a>
 
         <div class="method-heading">
-          <a href="#M000082" class="method-signature">
+          <a href="#M000113" class="method-signature">
           <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
@@ -255,258 +290,366 @@ end
 POST /people POST /people.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000082-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000082-source">
+            onclick="toggleCode('M000113-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000113-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 151</span>
-151:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
-152:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person</span>])
-153:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>])
-154:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-155:       <span class="ruby-comment cmt"># If we don't have a valid person and valid address, get out now</span>
-156:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@current_address</span>.<span class="ruby-identifier">valid?</span>
-157:         <span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@current_address</span> = <span class="ruby-identifier">add_person</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@current_address</span>, <span class="ruby-identifier">params</span>)
-158:         <span class="ruby-comment cmt"># if we don't have a good username, Raise an error</span>
-159:         <span class="ruby-comment cmt"># Since we require a unique email address, we should never get here. </span>
-160:         <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span> 
-161:           <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;Duplicate email address error. Couldn't create a user for:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">inspect</span>
-162:         <span class="ruby-keyword kw">end</span>
-163:         
-164:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry</span>
-165:           <span class="ruby-comment cmt"># add the person to this ministry if they aren't already</span>
-166:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:student</span>]
-167:             <span class="ruby-comment cmt"># create campus involvement if it doesn't already exist</span>
-168:             <span class="ruby-ivar">@ci</span> = <span class="ruby-constant">CampusInvolvement</span>.<span class="ruby-identifier">find_by_campus_id_and_person_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>], <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
-169:             <span class="ruby-comment cmt"># also create the ministry inovlvement if they don't already have it</span>
-170:             <span class="ruby-comment cmt"># @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) </span>
-171:             <span class="ruby-comment cmt"># @mi.destroy if @mi</span>
-172:             <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ci</span>
-173:               <span class="ruby-ivar">@msg</span> = <span class="ruby-value str">'The person you\'re trying to add is already on this campus.'</span>
-174:             <span class="ruby-keyword kw">else</span>
-175:               <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">add_campus</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>], <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">id</span>, <span class="ruby-ivar">@me</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role_id</span>])
-176:               <span class="ruby-comment cmt"># If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation</span>
-177:               <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">plain_password</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">is_involved_somewhere</span>(<span class="ruby-ivar">@person</span>)
-178:                 <span class="ruby-constant">UserMailer</span>.<span class="ruby-identifier">send_later</span>(<span class="ruby-identifier">:deliver_created_student</span>, <span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@ministry</span>, <span class="ruby-ivar">@me</span>, <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">plain_password</span>)
-179:               <span class="ruby-keyword kw">end</span>
-180:             <span class="ruby-keyword kw">end</span>
-181:           <span class="ruby-keyword kw">else</span>
-182:             <span class="ruby-comment cmt"># create ministry involvement if it doesn't already exist</span>
-183:             <span class="ruby-ivar">@mi</span> = <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">find_by_ministry_id_and_person_id</span>(<span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">id</span>, <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
-184:             <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@mi</span>
-185:               <span class="ruby-ivar">@mi</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>])
-186:             <span class="ruby-keyword kw">else</span>
-187:               <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">ministry_involvements</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>]
-188:             <span class="ruby-keyword kw">end</span>
-189:           <span class="ruby-keyword kw">end</span>
-190: 
-191:           <span class="ruby-comment cmt"># If they tried to add a staff as a student, smack them around a little</span>
-192:           <span class="ruby-comment cmt"># if params[:student] &amp;&amp; @mi</span>
-193:           <span class="ruby-comment cmt">#   flash[:warning] = &quot;#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student.&quot;</span>
-194:           <span class="ruby-comment cmt"># else</span>
-195:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-ivar">@msg</span> <span class="ruby-operator">||</span> <span class="ruby-value str">'Person was successfully added to your ministry.'</span>
-196:           <span class="ruby-comment cmt"># end</span>
-197:         <span class="ruby-keyword kw">end</span>
-198:         
-199:         <span class="ruby-comment cmt"># The person MUST have a user record</span>
-200:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">save</span>
-201:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
-202:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
-203:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:created</span>, <span class="ruby-identifier">:location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
-204:         <span class="ruby-keyword kw">else</span>
-205:           <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>
-206:           <span class="ruby-identifier">render_new_from_create</span>(<span class="ruby-identifier">format</span>)
-207:         <span class="ruby-keyword kw">end</span>
-208:       <span class="ruby-keyword kw">else</span>
-209:         <span class="ruby-identifier">render_new_from_create</span>(<span class="ruby-identifier">format</span>)
-210:       <span class="ruby-keyword kw">end</span>
-211:     <span class="ruby-keyword kw">end</span>
-212:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 254</span>
+254:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+255:     <span class="ruby-identifier">set_states</span>
+256:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person</span>])
+257:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>])
+258:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+259:       <span class="ruby-comment cmt"># If we don't have a valid person and valid address, get out now</span>
+260:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">valid?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@current_address</span>.<span class="ruby-identifier">valid?</span>
+261:         <span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@current_address</span> = <span class="ruby-identifier">add_person</span>(<span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@current_address</span>, <span class="ruby-identifier">params</span>)
+262:         <span class="ruby-comment cmt"># if we don't have a good username, Raise an error</span>
+263:         <span class="ruby-comment cmt"># Since we require a unique email address, we should never get here. </span>
+264:         <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span> 
+265:           <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;Duplicate email address error. Couldn't create a user for:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">inspect</span>
+266:         <span class="ruby-keyword kw">end</span>
+267:         
+268:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry</span>
+269:           <span class="ruby-comment cmt"># add the person to this ministry if they aren't already</span>
+270:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:student</span>]
+271:             <span class="ruby-comment cmt"># create campus involvement if it doesn't already exist</span>
+272:             <span class="ruby-ivar">@ci</span> = <span class="ruby-constant">CampusInvolvement</span>.<span class="ruby-identifier">find_by_campus_id_and_person_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>], <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
+273:             <span class="ruby-comment cmt"># also create the ministry inovlvement if they don't already have it</span>
+274:             <span class="ruby-comment cmt"># @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) </span>
+275:             <span class="ruby-comment cmt"># @mi.destroy if @mi</span>
+276:             <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ci</span>
+277:               <span class="ruby-ivar">@msg</span> = <span class="ruby-value str">'The person you\'re trying to add is already on this campus.'</span>
+278:             <span class="ruby-keyword kw">else</span>
+279:               <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">add_campus</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>], <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">id</span>, <span class="ruby-ivar">@me</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role_id</span>])
+280:               <span class="ruby-comment cmt"># If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation</span>
+281:               <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">plain_password</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">is_involved_somewhere</span>(<span class="ruby-ivar">@person</span>)
+282:                 <span class="ruby-constant">UserMailer</span>.<span class="ruby-identifier">send_later</span>(<span class="ruby-identifier">:deliver_created_student</span>, <span class="ruby-ivar">@person</span>, <span class="ruby-ivar">@ministry</span>, <span class="ruby-ivar">@me</span>, <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">plain_password</span>)
+283:               <span class="ruby-keyword kw">end</span>
+284:             <span class="ruby-keyword kw">end</span>
+285:           <span class="ruby-keyword kw">else</span>
+286:             <span class="ruby-comment cmt"># create ministry involvement if it doesn't already exist</span>
+287:             <span class="ruby-ivar">@mi</span> = <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">find_by_ministry_id_and_person_id</span>(<span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">id</span>, <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
+288:             <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@mi</span>
+289:               <span class="ruby-ivar">@mi</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>])
+290:             <span class="ruby-keyword kw">else</span>
+291:               <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">ministry_involvements</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_involvement</span>]
+292:             <span class="ruby-keyword kw">end</span>
+293:           <span class="ruby-keyword kw">end</span>
+294: 
+295:           <span class="ruby-comment cmt"># If they tried to add a staff as a student, smack them around a little</span>
+296:           <span class="ruby-comment cmt"># if params[:student] &amp;&amp; @mi</span>
+297:           <span class="ruby-comment cmt">#   flash[:warning] = &quot;#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student.&quot;</span>
+298:           <span class="ruby-comment cmt"># else</span>
+299:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-ivar">@msg</span> <span class="ruby-operator">||</span> <span class="ruby-value str">'Person was successfully added to your ministry.'</span>
+300:           <span class="ruby-comment cmt"># end</span>
+301:         <span class="ruby-keyword kw">end</span>
+302:         
+303:         <span class="ruby-comment cmt"># The person MUST have a user record</span>
+304:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">save</span>
+305:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
+306:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+307:           <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:created</span>, <span class="ruby-identifier">:location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
+308:         <span class="ruby-keyword kw">else</span>
+309:           <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>
+310:           <span class="ruby-identifier">render_new_from_create</span>(<span class="ruby-identifier">format</span>)
+311:         <span class="ruby-keyword kw">end</span>
+312:       <span class="ruby-keyword kw">else</span>
+313:         <span class="ruby-identifier">render_new_from_create</span>(<span class="ruby-identifier">format</span>)
+314:       <span class="ruby-keyword kw">end</span>
+315:     <span class="ruby-keyword kw">end</span>
+316:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000078" class="method-detail">
-        <a name="M000078"></a>
+      <div id="method-M000109" class="method-detail">
+        <a name="M000109"></a>
 
         <div class="method-heading">
-          <a href="#M000078" class="method-signature">
+          <a href="#M000109" class="method-signature">
           <span class="method-name">directory</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+Presents a list of all people matching the provided <a
+href="PeopleController.html#M000117">search</a> criteria. Capable of
+outputting as xml, xls, or html
+</p>
+<p>
+TODO: Needs some major re-writing! Far too large for one method. Abstract
+into multiple methods, if not for repeatability, at least for readability!
+</p>
+<p>
+Sets up pagination for results (TODO: this can be put in a method!)
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000078-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000078-source">
+            onclick="toggleCode('M000109-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000109-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 20</span>
- 20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">directory</span>
- 21:     <span class="ruby-comment cmt"># Get View</span>
- 22:     <span class="ruby-identifier">view_id</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view_id</span>]
- 23:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">view_id</span>
- 24:       <span class="ruby-ivar">@view</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">views</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:id</span>, <span class="ruby-identifier">:view</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; = #{view_id}&quot;</span>)
- 25:     <span class="ruby-keyword kw">end</span>
- 26:     <span class="ruby-comment cmt"># If there's no view in the session, get the default view</span>
- 27:     <span class="ruby-ivar">@view</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">views</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;default_view = 1&quot;</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:view_columns</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:column</span>})
- 28:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@view</span>
- 29:       <span class="ruby-comment cmt"># If there was no default view, set the first view found as the default</span>
- 30:       <span class="ruby-ivar">@view</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">views</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>)
- 31:       <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@view</span>
- 32:         <span class="ruby-comment cmt">#If this ministry doesn't have any views, create the first view for this ministry</span>
- 33:         <span class="ruby-ivar">@view</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">create_first_view</span>
- 34:       <span class="ruby-keyword kw">end</span>
- 35:       <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">default_view</span> = <span class="ruby-keyword kw">true</span>
- 36:       <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">save!</span>
- 37:     <span class="ruby-keyword kw">end</span>
- 38:     
- 39:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view_id</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">id</span>
- 40:     
- 41:     <span class="ruby-comment cmt"># Build conditions</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 39</span>
+ 39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">directory</span>
+ 40:     <span class="ruby-identifier">get_view</span>
+ 41:     <span class="ruby-ivar">@campuses</span> = <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministries</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)}.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
  42:     <span class="ruby-identifier">first_name_col</span> = <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:first_name</span>, <span class="ruby-identifier">:person</span>)
  43:     <span class="ruby-identifier">last_name_col</span> = <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:last_name</span>, <span class="ruby-identifier">:person</span>)
  44:     <span class="ruby-identifier">email</span> = <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:email</span>, <span class="ruby-identifier">:address</span>)
- 45:     <span class="ruby-identifier">conditions</span> = [<span class="ruby-node">&quot;#{first_name_col} &lt;&gt; ''&quot;</span>]
- 46:     <span class="ruby-identifier">search</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>
- 47:     <span class="ruby-identifier">search</span> = <span class="ruby-value str">'%'</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>.<span class="ruby-identifier">empty?</span>
- 48:     <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">true</span>
- 49:     <span class="ruby-keyword kw">when</span> <span class="ruby-operator">!</span><span class="ruby-identifier">search</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">empty?</span>
- 50:       <span class="ruby-identifier">names</span> = <span class="ruby-identifier">search</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
- 51:       <span class="ruby-identifier">first</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">strip</span>
- 52:                 <span class="ruby-identifier">last</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">strip</span>
- 53:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'&quot;</span>
- 54:     <span class="ruby-keyword kw">when</span> <span class="ruby-operator">!</span><span class="ruby-identifier">search</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-value str">'@'</span>).<span class="ruby-identifier">empty?</span>
- 55:       <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;CurrentAddress.#{email} = '#{quote_string(search)}'&quot;</span>
- 56:     <span class="ruby-keyword kw">else</span>
- 57:       <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')&quot;</span>
- 58:     <span class="ruby-keyword kw">end</span>
- 59:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>]
- 60:       <span class="ruby-ivar">@campus</span> = <span class="ruby-constant">Campus</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>])
- 61:     <span class="ruby-keyword kw">end</span>
- 62:     <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">add_involvement_conditions</span>(<span class="ruby-identifier">conditions</span>)
- 63:     <span class="ruby-ivar">@conditions</span> = <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>)
- 64:   
- 65:     <span class="ruby-comment cmt"># If these conditions will result in too large a set, use pagination</span>
- 66:     <span class="ruby-ivar">@count</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_value</span>(<span class="ruby-node">&quot;SELECT count(*) FROM #{@view.tables_clause} WHERE #{@conditions}&quot;</span>).<span class="ruby-identifier">to_i</span>
- 67:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
- 68:       <span class="ruby-comment cmt"># Build range for pagination</span>
- 69:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">500</span>
- 70:         <span class="ruby-identifier">finish</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:finish</span>]
- 71:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:start</span>]).<span class="ruby-identifier">nil?</span>
- 72:           <span class="ruby-identifier">start</span> = <span class="ruby-value str">''</span>
- 73:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2000</span>
- 74:             <span class="ruby-identifier">finish</span> <span class="ruby-operator">||=</span> <span class="ruby-value str">'am'</span>
- 75:           <span class="ruby-keyword kw">else</span>
- 76:             <span class="ruby-identifier">finish</span> <span class="ruby-operator">||=</span> <span class="ruby-value str">'b'</span>
- 77:           <span class="ruby-keyword kw">end</span>
- 78:         <span class="ruby-keyword kw">end</span>
- 79:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">finish</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span>
- 80:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} &gt;= '#{start}'&quot;</span>
- 81:         <span class="ruby-keyword kw">else</span>
- 82:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} BETWEEN '#{start}' AND '#{finish}'&quot;</span>
- 83:         <span class="ruby-keyword kw">end</span>
- 84:         <span class="ruby-ivar">@conditions</span> = <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>)
- 85:       <span class="ruby-keyword kw">end</span>
- 86:       <span class="ruby-identifier">sql</span> =   <span class="ruby-value str">'SELECT '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">select_clause</span> 
- 87:       <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">' FROM '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">tables_clause</span>
- 88:       <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">' WHERE '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@conditions</span>
- 89:       <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">' ORDER BY '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:last_name</span>, <span class="ruby-identifier">:person</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">', '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:first_name</span>, <span class="ruby-identifier">:person</span>)
- 90:       <span class="ruby-ivar">@people</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span>(<span class="ruby-identifier">sql</span>)
- 91:     <span class="ruby-keyword kw">else</span>
- 92:       <span class="ruby-ivar">@people</span> = []
- 93:       <span class="ruby-ivar">@count</span> = <span class="ruby-value">0</span>
- 94:     <span class="ruby-keyword kw">end</span>
- 95:     <span class="ruby-ivar">@sql</span> = <span class="ruby-identifier">sql</span>
- 96: 
- 97:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
- 98:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@people</span>.<span class="ruby-identifier">to_xml</span> }
- 99:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xls</span>  <span class="ruby-keyword kw">do</span>
-100:         <span class="ruby-identifier">filename</span> = <span class="ruby-value str">&quot;Directory.xls&quot;</span>    
-101: 
-102:         <span class="ruby-comment cmt">#this is required if you want this to work with IE        </span>
-103:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-value str">'HTTP_USER_AGENT'</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/msie/i</span>
-104:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Pragma'</span>] = <span class="ruby-value str">'public'</span>
-105:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-type&quot;</span>] = <span class="ruby-value str">&quot;text/plain&quot;</span> 
-106:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Cache-Control'</span>] = <span class="ruby-value str">'no-cache, must-revalidate, post-check=0, pre-check=0'</span>
-107:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Content-Disposition'</span>] = <span class="ruby-node">&quot;attachment; filename=\&quot;#{filename}\&quot;&quot;</span> 
-108:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Expires'</span>] = <span class="ruby-value str">&quot;0&quot;</span> 
-109:         <span class="ruby-keyword kw">else</span>
-110:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">'text/xml'</span>
-111:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Disposition&quot;</span>] = <span class="ruby-node">&quot;attachment; filename=\&quot;#{filename}\&quot;&quot;</span> 
-112:         <span class="ruby-keyword kw">end</span>
-113:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'excel'</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
-114:       <span class="ruby-keyword kw">end</span>
-115:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'application'</span> }
-116:     <span class="ruby-keyword kw">end</span>
-117:   <span class="ruby-keyword kw">end</span>
+ 45:     
+ 46:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search_id</span>]
+ 47:       <span class="ruby-ivar">@search</span> = <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">searches</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search_id</span>])
+ 48:       <span class="ruby-ivar">@conditions</span> = <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">query</span>
+ 49:       <span class="ruby-identifier">conditions</span> = <span class="ruby-ivar">@conditions</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' AND '</span>)
+ 50:       <span class="ruby-ivar">@options</span> = <span class="ruby-constant">JSON</span><span class="ruby-operator">::</span><span class="ruby-constant">Parser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@search</span>.<span class="ruby-identifier">options</span>).<span class="ruby-identifier">parse</span>
+ 51:       <span class="ruby-ivar">@tables</span> = <span class="ruby-constant">JSON</span><span class="ruby-operator">::</span><span class="ruby-constant">Parser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@search</span>.<span class="ruby-identifier">tables</span>).<span class="ruby-identifier">parse</span>
+ 52:       <span class="ruby-ivar">@search_for</span> = <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">description</span>
+ 53:       <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:updated_at</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+ 54:       <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tables</span>.<span class="ruby-identifier">present?</span>
+ 55:     <span class="ruby-keyword kw">else</span>
+ 56:       <span class="ruby-comment cmt"># Build conditions</span>
+ 57:       <span class="ruby-identifier">conditions</span> = []  <span class="ruby-comment cmt">#[&quot;#{first_name_col} &lt;&gt; ''&quot;]</span>
+ 58:       <span class="ruby-identifier">search</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search</span>].<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>
+ 59:       <span class="ruby-comment cmt"># search = '%' if search.empty?</span>
+ 60:       <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">true</span>
+ 61:       <span class="ruby-keyword kw">when</span> <span class="ruby-operator">!</span><span class="ruby-identifier">search</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">empty?</span>
+ 62:         <span class="ruby-identifier">names</span> = <span class="ruby-identifier">search</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+ 63:         <span class="ruby-identifier">first</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">strip</span>
+ 64:                 <span class="ruby-identifier">last</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">strip</span>
+ 65:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'&quot;</span>
+ 66:       <span class="ruby-keyword kw">when</span> <span class="ruby-operator">!</span><span class="ruby-identifier">search</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-value str">'@'</span>).<span class="ruby-identifier">empty?</span>
+ 67:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;CurrentAddress.#{_(:email, :address)} = '#{quote_string(search)}'&quot;</span>
+ 68:       <span class="ruby-keyword kw">else</span>
+ 69:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">search</span>.<span class="ruby-identifier">present?</span>
+ 70:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')&quot;</span>
+ 71:         <span class="ruby-keyword kw">end</span>
+ 72:       <span class="ruby-keyword kw">end</span>
+ 73:     
+ 74:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>]
+ 75:         <span class="ruby-ivar">@campus</span> = <span class="ruby-constant">Campus</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus_id</span>])
+ 76:       <span class="ruby-keyword kw">end</span>
+ 77:     
+ 78:       <span class="ruby-comment cmt"># Advanced search options</span>
+ 79:       <span class="ruby-ivar">@options</span> = {}
+ 80:       <span class="ruby-ivar">@tables</span> = {}
+ 81:       <span class="ruby-ivar">@search_for</span> = []
+ 82:       <span class="ruby-comment cmt"># Check year in school</span>
+ 83:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:school_year</span>].<span class="ruby-identifier">present?</span>
+ 84:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})&quot;</span>
+ 85:         <span class="ruby-ivar">@tables</span>[<span class="ruby-constant">CampusInvolvement</span>] = <span class="ruby-node">&quot;#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}&quot;</span>
+ 86:         <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">SchoolYear</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;id in(#{quote_string(params[:school_year].join(','))})&quot;</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:description</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+ 87:         <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+ 88:       <span class="ruby-keyword kw">end</span>
+ 89:     
+ 90:       <span class="ruby-comment cmt"># Check gender</span>
+ 91:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:gender</span>].<span class="ruby-identifier">present?</span>
+ 92:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})&quot;</span>
+ 93:         <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:gender</span>].<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">gender</span><span class="ruby-operator">|</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">human_gender</span>(<span class="ruby-identifier">gender</span>)}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+ 94:         <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+ 95:       <span class="ruby-keyword kw">end</span>
+ 96:     
+ 97:       <span class="ruby-comment cmt"># Check ministry</span>
+ 98:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>].<span class="ruby-identifier">present?</span>
+ 99:         <span class="ruby-comment cmt"># Only consider ministry ids that this person is involved in (stop deviousness)</span>
+100:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>].<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_i</span>) <span class="ruby-operator">&amp;</span> <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:ministry_id</span>)
+101:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>].<span class="ruby-identifier">empty?</span>
+102:           <span class="ruby-identifier">cond</span> = <span class="ruby-node">&quot;MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))})&quot;</span>
+103:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>].<span class="ruby-identifier">present?</span>
+104:             <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span>  <span class="ruby-identifier">cond</span> 
+105:           <span class="ruby-keyword kw">else</span>
+106:             <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-value str">'('</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">cond</span> <span class="ruby-operator">+</span> <span class="ruby-value str">' OR '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">campus_condition</span> <span class="ruby-operator">+</span> <span class="ruby-value str">')'</span>)
+107:           <span class="ruby-keyword kw">end</span>
+108:           <span class="ruby-ivar">@tables</span>[<span class="ruby-constant">MinistryInvolvement</span>] = <span class="ruby-node">&quot;#{Person.table_name}.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}&quot;</span>
+109:           <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Ministry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;id in(#{quote_string(params[:ministry].join(','))})&quot;</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:name</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+110:           <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+111:         <span class="ruby-keyword kw">end</span>
+112:       <span class="ruby-keyword kw">end</span>
+113:     
+114:       <span class="ruby-comment cmt"># Check campus</span>
+115:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>].<span class="ruby-identifier">present?</span>
+116:         <span class="ruby-comment cmt"># Only consider ministry ids that this person is involved in (stop deviousness)</span>
+117:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>].<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_i</span>) <span class="ruby-operator">&amp;</span> <span class="ruby-ivar">@campuses</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+118:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>].<span class="ruby-identifier">empty?</span>
+119:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})&quot;</span>
+120:           <span class="ruby-ivar">@tables</span>[<span class="ruby-constant">CampusInvolvement</span>] = <span class="ruby-node">&quot;#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}&quot;</span>
+121:           <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Campus</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;id in(#{quote_string(params[:campus].join(','))})&quot;</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:name</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+122:           <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+123:         <span class="ruby-keyword kw">end</span>
+124:       <span class="ruby-keyword kw">end</span>
+125:       
+126:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:first_name</span>].<span class="ruby-identifier">present?</span>
+127:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'&quot;</span>
+128:         <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;First Name: #{params[:first_name]}&quot;</span>
+129:         <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+130:       <span class="ruby-keyword kw">end</span>
+131:       
+132:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:last_name</span>].<span class="ruby-identifier">present?</span>
+133:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'&quot;</span>
+134:         <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Last Name: #{params[:last_name]}&quot;</span>
+135:         <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+136:       <span class="ruby-keyword kw">end</span>
+137:       
+138:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>].<span class="ruby-identifier">present?</span>
+139:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'&quot;</span>
+140:         <span class="ruby-ivar">@search_for</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Email: #{params[:email]}&quot;</span>
+141:         <span class="ruby-ivar">@advanced</span> = <span class="ruby-keyword kw">true</span>
+142:       <span class="ruby-keyword kw">end</span>
+143:     
+144:     
+145:       <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">add_involvement_conditions</span>(<span class="ruby-identifier">conditions</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:campus</span>].<span class="ruby-identifier">blank?</span>
+146:     
+147:       <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">dup</span>.<span class="ruby-identifier">delete_if</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> [<span class="ruby-value str">'action'</span>,<span class="ruby-value str">'controller'</span>,<span class="ruby-value str">'commit'</span>,<span class="ruby-value str">'search'</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">key</span>)}
+148:     
+149: 
+150:       <span class="ruby-ivar">@conditions</span> = <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>)
+151:       
+152:       <span class="ruby-ivar">@search_for</span> = <span class="ruby-ivar">@search_for</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">'Everyone'</span>) <span class="ruby-operator">:</span> <span class="ruby-ivar">@search_for</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;; &quot;</span>)
+153:     <span class="ruby-keyword kw">end</span>
+154:     
+155:     <span class="ruby-identifier">new_tables</span> = <span class="ruby-ivar">@tables</span>.<span class="ruby-identifier">dup</span>.<span class="ruby-identifier">delete_if</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">tables_clause</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">key</span>.<span class="ruby-identifier">to_s</span>)}
+156:     <span class="ruby-identifier">tables_clause</span> = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">tables_clause</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">new_tables</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">table</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">''</span>)
+157:     
+158:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search_id</span>].<span class="ruby-identifier">blank?</span>
+159:       <span class="ruby-ivar">@search</span> = <span class="ruby-constant">Search</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:query</span>, <span class="ruby-identifier">:search</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@conditions</span>})
+160:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@search</span>
+161:         <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:updated_at</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+162:       <span class="ruby-keyword kw">else</span>
+163:         <span class="ruby-ivar">@search</span> = <span class="ruby-constant">Search</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:person_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">:options</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-identifier">:query</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@conditions</span>, <span class="ruby-identifier">:tables</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@tables</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@search_for</span>)
+164:       <span class="ruby-keyword kw">end</span>
+165:       <span class="ruby-comment cmt"># Only keep the last 5 searches</span>
+166:       <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">searches</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">destroy</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">searches</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+167:     <span class="ruby-keyword kw">end</span>
+168:     
+169:     <span class="ruby-comment cmt"># If these conditions will result in too large a set, use pagination</span>
+170:     <span class="ruby-ivar">@count</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_value</span>(<span class="ruby-node">&quot;SELECT count(*) FROM #{tables_clause} WHERE #{@conditions}&quot;</span>).<span class="ruby-identifier">to_i</span>
+171:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+172:       <span class="ruby-comment cmt"># Build range for pagination</span>
+173:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">500</span>
+174:         <span class="ruby-identifier">finish</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:finish</span>]
+175:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">start</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:start</span>]).<span class="ruby-identifier">blank?</span>
+176:           <span class="ruby-identifier">start</span> = <span class="ruby-value str">''</span>
+177:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2000</span>
+178:             <span class="ruby-identifier">finish</span> <span class="ruby-operator">||=</span> <span class="ruby-value str">'am'</span>
+179:           <span class="ruby-keyword kw">else</span>
+180:             <span class="ruby-identifier">finish</span> <span class="ruby-operator">||=</span> <span class="ruby-value str">'b'</span>
+181:           <span class="ruby-keyword kw">end</span>
+182:         <span class="ruby-keyword kw">end</span>
+183:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">finish</span>.<span class="ruby-identifier">blank?</span>
+184:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} &gt;= '#{start}'&quot;</span>          
+185:         <span class="ruby-keyword kw">else</span>
+186:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{last_name_col} BETWEEN '#{start}' AND '#{finish}'&quot;</span>
+187:         <span class="ruby-keyword kw">end</span>
+188:         <span class="ruby-ivar">@conditions</span> = <span class="ruby-identifier">conditions</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>)
+189:       <span class="ruby-keyword kw">end</span>
+190:       
+191:       <span class="ruby-identifier">build_sql</span>(<span class="ruby-identifier">tables_clause</span>)
+192:       <span class="ruby-ivar">@people</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span>(<span class="ruby-ivar">@sql</span>)
+193:     <span class="ruby-keyword kw">else</span>
+194:       <span class="ruby-ivar">@people</span> = []
+195:       <span class="ruby-ivar">@count</span> = <span class="ruby-value">0</span>
+196:     <span class="ruby-keyword kw">end</span>
+197:     
+198:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+199:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@people</span>.<span class="ruby-identifier">to_xml</span> }
+200:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xls</span>  <span class="ruby-keyword kw">do</span>
+201:         <span class="ruby-identifier">filename</span> = <span class="ruby-ivar">@search_for</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-value str">';'</span>,<span class="ruby-value str">' -'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;.xls&quot;</span>    
+202: 
+203:         <span class="ruby-comment cmt">#this is required if you want this to work with IE        </span>
+204:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-value str">'HTTP_USER_AGENT'</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/msie/i</span>
+205:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Pragma'</span>] = <span class="ruby-value str">'public'</span>
+206:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-type&quot;</span>] = <span class="ruby-value str">&quot;text/plain&quot;</span> 
+207:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Cache-Control'</span>] = <span class="ruby-value str">'no-cache, must-revalidate, post-check=0, pre-check=0'</span>
+208:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Content-Disposition'</span>] = <span class="ruby-node">&quot;attachment; filename=\&quot;#{filename}\&quot;&quot;</span> 
+209:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">'Expires'</span>] = <span class="ruby-value str">&quot;0&quot;</span> 
+210:         <span class="ruby-keyword kw">else</span>
+211:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">'text/xml'</span>
+212:           <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Disposition&quot;</span>] = <span class="ruby-node">&quot;attachment; filename=\&quot;#{filename}\&quot;&quot;</span> 
+213:         <span class="ruby-keyword kw">end</span>
+214:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'excel'</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+215:       <span class="ruby-keyword kw">end</span>
+216:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'application'</span> }
+217:     <span class="ruby-keyword kw">end</span>
+218:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000081" class="method-detail">
-        <a name="M000081"></a>
+      <div id="method-M000112" class="method-detail">
+        <a name="M000112"></a>
 
         <div class="method-heading">
-          <a href="#M000081" class="method-signature">
+          <a href="#M000112" class="method-signature">
           <span class="method-name">edit</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-GET /people/1;<a href="PeopleController.html#M000081">edit</a>
+GET /people/1;<a href="PeopleController.html#M000112">edit</a>
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000081-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000081-source">
+            onclick="toggleCode('M000112-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000112-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 140</span>
-140:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
-141:     <span class="ruby-identifier">setup_vars</span>
-142:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-143:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">hide</span>
-144:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'edit'</span>
-145:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">show</span>
-146:     <span class="ruby-keyword kw">end</span>
-147:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 241</span>
+241:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
+242:     <span class="ruby-identifier">setup_vars</span>
+243:     <span class="ruby-identifier">setup_campuses</span>
+244:     <span class="ruby-identifier">set_states</span>
+245:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+246:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">hide</span>
+247:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'edit'</span>
+248:       <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">show</span>
+249:     <span class="ruby-keyword kw">end</span>
+250:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000088" class="method-detail">
-        <a name="M000088"></a>
+      <div id="method-M000119" class="method-detail">
+        <a name="M000119"></a>
 
         <div class="method-heading">
-          <a href="#M000088" class="method-signature">
+          <a href="#M000119" class="method-signature">
           <span class="method-name">import_gcx_profile</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000088-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000088-source">
+            onclick="toggleCode('M000119-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000119-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 357</span>
-357:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">import_gcx_profile</span>
-358:     <span class="ruby-identifier">proxy_granting_ticket</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:cas_pgt</span>]
-359:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">proxy_granting_ticket</span>.<span class="ruby-identifier">nil?</span>
-360:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">import_gcx_profile</span>(<span class="ruby-identifier">proxy_granting_ticket</span>)
-361:     <span class="ruby-keyword kw">end</span>
-362:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@person</span>
-363:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 500</span>
+500:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">import_gcx_profile</span>
+501:     <span class="ruby-identifier">proxy_granting_ticket</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:cas_pgt</span>]
+502:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">proxy_granting_ticket</span>.<span class="ruby-identifier">nil?</span>
+503:       <span class="ruby-keyword kw">begin</span>
+504:         <span class="ruby-identifier">success</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">import_gcx_profile</span>(<span class="ruby-identifier">proxy_granting_ticket</span>)
+505:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">success</span>
+506:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;Your GCX Profile has been imported successfully.&quot;</span> 
+507:         <span class="ruby-keyword kw">else</span>
+508:           <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:warning</span>] = <span class="ruby-value str">&quot;There was a problem importing your GCX Profile. Please try again later.&quot;</span> 
+509:         <span class="ruby-keyword kw">end</span>
+510:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ETIMEDOUT</span>
+511:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:warning</span>] = <span class="ruby-value str">&quot;There was a problem importing your GCX Profile. Please try again later.&quot;</span>
+512:       <span class="ruby-keyword kw">end</span>
+513:     <span class="ruby-keyword kw">else</span>
+514:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:warning</span>] = <span class="ruby-value str">&quot;There was a problem importing your GCX Profile. Please try again later.&quot;</span>
+515:     <span class="ruby-keyword kw">end</span>
+516:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@person</span>
+517:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000077" class="method-detail">
-        <a name="M000077"></a>
+      <div id="method-M000107" class="method-detail">
+        <a name="M000107"></a>
 
         <div class="method-heading">
-          <a href="#M000077" class="method-signature">
+          <a href="#M000107" class="method-signature">
           <span class="method-name">index</span><span class="method-args">()</span>
           </a>
         </div>
@@ -516,22 +659,22 @@ GET /people/1;<a href="PeopleController.html#M000081">edit</a>
 GET /people GET /people.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000077-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000077-source">
+            onclick="toggleCode('M000107-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000107-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 17</span>
-17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
-18:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 20</span>
+20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+21:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000080" class="method-detail">
-        <a name="M000080"></a>
+      <div id="method-M000111" class="method-detail">
+        <a name="M000111"></a>
 
         <div class="method-heading">
-          <a href="#M000080" class="method-signature">
+          <a href="#M000111" class="method-signature">
           <span class="method-name">new</span><span class="method-args">()</span>
           </a>
         </div>
@@ -541,113 +684,124 @@ GET /people GET /people.xml
 GET /people/new
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000080-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000080-source">
+            onclick="toggleCode('M000111-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000111-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 130</span>
-130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
-131:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>
-132:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>
-133:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-134:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'/people/new'</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'manage'</span> }<span class="ruby-comment cmt"># new.rhtml</span>
-135:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
-136:     <span class="ruby-keyword kw">end</span>
-137:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 230</span>
+230:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+231:     <span class="ruby-identifier">set_states</span>
+232:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">new</span>
+233:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>
+234:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+235:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'/people/new'</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'manage'</span> }<span class="ruby-comment cmt"># new.rhtml</span>
+236:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>
+237:     <span class="ruby-keyword kw">end</span>
+238:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000086" class="method-detail">
-        <a name="M000086"></a>
+      <div id="method-M000117" class="method-detail">
+        <a name="M000117"></a>
 
         <div class="method-heading">
-          <a href="#M000086" class="method-signature">
+          <a href="#M000117" class="method-signature">
           <span class="method-name">search</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
+          <p>
+Executes a <a href="PeopleController.html#M000117">search</a> according to
+provided criteria. Guesses if the entry includes a first and last name,
+splits them out for the <a href="PeopleController.html#M000117">search</a>
+TODO: Check it can handle two word lastnames like mine &quot;Andrew de
+Jonge&quot;
+</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000086-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000086-source">
+            onclick="toggleCode('M000117-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000117-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 310</span>
-310:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">search</span>
-311:     <span class="ruby-comment cmt"># figure out if the search parameter looks like a first or last name only, or both</span>
-312:     <span class="ruby-ivar">@search</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search</span>]
-313:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@search</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@search</span>.<span class="ruby-identifier">empty?</span>
-314:         <span class="ruby-identifier">names</span> = <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
-315:         <span class="ruby-identifier">conditions</span> = [[],[]]
-316:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">names</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)
-317:                <span class="ruby-identifier">first</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span>
-318:                 <span class="ruby-identifier">last</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span>
-319:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? &quot;</span>
-320:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">last</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
-321:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">first</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
-322:                <span class="ruby-keyword kw">else</span>
-323:                  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">names</span>.<span class="ruby-identifier">join</span>
-324:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) &quot;</span>
-325:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-value str">'%'</span>
-326:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-value str">'%'</span> 
-327:                <span class="ruby-keyword kw">end</span>
-328:                <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">add_involvement_conditions</span>(<span class="ruby-identifier">conditions</span>)
-329:                <span class="ruby-ivar">@conditions</span> = [ <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>) ] <span class="ruby-operator">+</span> <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>]
-330:   
-331:       <span class="ruby-identifier">includes</span> = [<span class="ruby-identifier">:current_address</span>, <span class="ruby-identifier">:campus_involvements</span>, <span class="ruby-identifier">:ministry_involvements</span>]
-332:                <span class="ruby-ivar">@people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:last_name, :person)}, #{_(:first_name, :person)}&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@conditions</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">includes</span>)
-333:                <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-334:                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:context</span>]
-335:                    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:context</span>]<span class="ruby-operator">+</span><span class="ruby-value str">'/results'</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:people</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@people</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:type</span>], <span class="ruby-identifier">:group_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>]}}
-336:             <span class="ruby-keyword kw">else</span>
-337:               <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'results'</span>}
-338:               <span class="ruby-keyword kw">end</span>
-339:                <span class="ruby-keyword kw">end</span>
-340:           <span class="ruby-keyword kw">else</span>
-341:             <span class="ruby-identifier">raise</span> <span class="ruby-identifier">params</span>.<span class="ruby-identifier">inspect</span>
-342:             <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-343:           <span class="ruby-keyword kw">end</span>
-344:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 449</span>
+449: <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">search</span>
+450:     <span class="ruby-comment cmt"># figure out if the search parameter looks like a first or last name only, or both</span>
+451:     <span class="ruby-ivar">@search</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:search</span>]
+452:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@search</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@search</span>.<span class="ruby-identifier">empty?</span>
+453:         <span class="ruby-identifier">names</span> = <span class="ruby-ivar">@search</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+454:         <span class="ruby-identifier">conditions</span> = [[],[]]
+455:         <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">names</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)
+456:                <span class="ruby-identifier">first</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span>
+457:                 <span class="ruby-identifier">last</span> = <span class="ruby-identifier">names</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span>
+458:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? &quot;</span>
+459:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">last</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
+460:                <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">first</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;%&quot;</span>
+461:                <span class="ruby-keyword kw">else</span>
+462:                  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">names</span>.<span class="ruby-identifier">join</span>
+463:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) &quot;</span>
+464:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-value str">'%'</span>
+465:                        <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-value str">'%'</span> 
+466:                <span class="ruby-keyword kw">end</span>
+467:                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:filter_ids</span>].<span class="ruby-identifier">present?</span>
+468:                  <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{_(:id, :person)} NOT IN(?)&quot;</span>
+469:                  <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:filter_ids</span>]
+470:           <span class="ruby-keyword kw">end</span>
+471:                <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">add_involvement_conditions</span>(<span class="ruby-identifier">conditions</span>)
+472:                <span class="ruby-ivar">@conditions</span> = [ <span class="ruby-identifier">conditions</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">join</span>(<span class="ruby-value str">' AND '</span>) ] <span class="ruby-operator">+</span> <span class="ruby-identifier">conditions</span>[<span class="ruby-value">1</span>]
+473:   
+474:       <span class="ruby-identifier">includes</span> = [<span class="ruby-identifier">:current_address</span>, <span class="ruby-identifier">:campus_involvements</span>, <span class="ruby-identifier">:ministry_involvements</span>]
+475:                <span class="ruby-ivar">@people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:last_name, :person)}, #{_(:first_name, :person)}&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@conditions</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">includes</span>)
+476:                <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+477:                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:context</span>]
+478:                    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:context</span>] <span class="ruby-operator">+</span> <span class="ruby-value str">'/results'</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:people</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@people</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:type</span>], <span class="ruby-identifier">:group_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:group_id</span>]}}
+479:             <span class="ruby-keyword kw">else</span>
+480:               <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'results'</span>}
+481:               <span class="ruby-keyword kw">end</span>
+482:                <span class="ruby-keyword kw">end</span>
+483:           <span class="ruby-keyword kw">else</span>
+484:             <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+485:           <span class="ruby-keyword kw">end</span>
+486:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000079" class="method-detail">
-        <a name="M000079"></a>
+      <div id="method-M000110" class="method-detail">
+        <a name="M000110"></a>
 
         <div class="method-heading">
-          <a href="#M000079" class="method-signature">
+          <a href="#M000110" class="method-signature">
           <span class="method-name">show</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p>
-GET /people/1 GET /people/1.xml
+Question: shows an individual&#8216;s record?
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000079-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000079-source">
+            onclick="toggleCode('M000110-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000110-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 121</span>
-121:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
-122:     <span class="ruby-identifier">setup_vars</span>
-123:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-124:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:show</span> }<span class="ruby-comment cmt"># show.rhtml</span>
-125:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_xml</span> }
-126:     <span class="ruby-keyword kw">end</span>
-127:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 221</span>
+221:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
+222:     <span class="ruby-identifier">setup_vars</span>
+223:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+224:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:show</span> }<span class="ruby-comment cmt"># show.rhtml</span>
+225:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">to_xml</span> }
+226:     <span class="ruby-keyword kw">end</span>
+227:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000083" class="method-detail">
-        <a name="M000083"></a>
+      <div id="method-M000114" class="method-detail">
+        <a name="M000114"></a>
 
         <div class="method-heading">
-          <a href="#M000083" class="method-signature">
+          <a href="#M000114" class="method-signature">
           <span class="method-name">update</span><span class="method-args">()</span>
           </a>
         </div>
@@ -657,246 +811,104 @@ GET /people/1 GET /people/1.xml
 PUT /people/1 PUT /people/1.xml
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000083-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000083-source">
+            onclick="toggleCode('M000114-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000114-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 216</span>
-216:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
-217:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-218:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>]
-219:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>][<span class="ruby-identifier">:email</span>])
-220:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>])
-221:     <span class="ruby-keyword kw">end</span>
-222:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span>
-223:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>]
-224:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">PermanentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>][<span class="ruby-identifier">:email</span>]) 
-225:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>]) 
-226:     <span class="ruby-keyword kw">end</span>
-227:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>
-228:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>])
-229:     <span class="ruby-keyword kw">end</span>
-230:     <span class="ruby-ivar">@perm_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span>
-231:     <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">updated_by</span> = <span class="ruby-value str">'MT'</span>
-232:     <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">updated_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-233: 
-234:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-235:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person</span>]) <span class="ruby-operator">&amp;&amp;</span> 
-236:          (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@current_address</span>.<span class="ruby-identifier">valid?</span>) <span class="ruby-operator">&amp;&amp;</span>
-237:          (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@perm_address</span>.<span class="ruby-identifier">valid?</span>)
-238:         <span class="ruby-comment cmt"># Save custom attributes</span>
-239:         <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">custom_attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ca</span><span class="ruby-operator">|</span>
-240:           <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">safe_name</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">safe_name</span>]
-241:         <span class="ruby-keyword kw">end</span>
-242:         <span class="ruby-comment cmt"># Save training questions</span>
-243:         <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">training_questions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">q</span><span class="ruby-operator">|</span>
-244:           <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">set_training_answer</span>(<span class="ruby-identifier">q</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_date'</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'approver'</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_date'</span>]
-245:         <span class="ruby-keyword kw">end</span>
-246:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Profile was successfully updated.'</span>
-247:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
-248:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span> 
-249:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-250:             <span class="ruby-identifier">update_flash</span>(<span class="ruby-identifier">page</span>, <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>])
-251:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:no_profile</span>]
-252:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'view'</span>
-253:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">show</span>
-254:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">hide</span>
-255:             <span class="ruby-keyword kw">end</span>
-256:           <span class="ruby-keyword kw">end</span>
-257:         <span class="ruby-keyword kw">end</span>
-258:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
-259:       <span class="ruby-keyword kw">else</span>
-260:         <span class="ruby-identifier">setup_dorms</span>
-261:         <span class="ruby-comment cmt"># @current_address = @person.current_address</span>
-262:         <span class="ruby-comment cmt">#       @perm_address = @person.permanent_address</span>
-263:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span> }
-264:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span> 
-265:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-266:             <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'edit'</span>
-267:           <span class="ruby-keyword kw">end</span>
-268:         <span class="ruby-keyword kw">end</span>
-269:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_xml</span> }
-270:       <span class="ruby-keyword kw">end</span>
-271:     <span class="ruby-keyword kw">end</span>
-272:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="section-bar">Protected Instance methods</h3>
-
-      <div id="method-M000089" class="method-detail">
-        <a name="M000089"></a>
-
-        <div class="method-heading">
-          <a href="#M000089" class="method-signature">
-          <span class="method-name">add_involvement_conditions</span><span class="method-args">(conditions)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000089-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000089-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 365</span>
-365:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_involvement_conditions</span>(<span class="ruby-identifier">conditions</span>)
-366:       <span class="ruby-comment cmt"># figure out which campuses to query based on the campuses listed for the current ministry</span>
-367:       <span class="ruby-keyword kw">if</span>  <span class="ruby-ivar">@campus</span>
-368:         <span class="ruby-identifier">campus_cond</span> = <span class="ruby-node">&quot;CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}&quot;</span>
-369:         <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">campus_cond</span>
-370:       <span class="ruby-keyword kw">else</span>
-371:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">campus_ids</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-372:           <span class="ruby-identifier">campus_cond</span> = <span class="ruby-node">&quot;CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})&quot;</span>
-373:         <span class="ruby-keyword kw">end</span>
-374:         <span class="ruby-comment cmt"># restrict to just this ministry's tree</span>
-375:   <span class="ruby-comment cmt">#      campus_cond &lt;&lt; CampusInvolvement.table_name + '.' +_(:ministry_id, :campus_involvement) + ' = ?'</span>
-376:   <span class="ruby-comment cmt">#      conditions[1] &lt;&lt; @ministry.root.id</span>
-377:         <span class="ruby-comment cmt"># include staff from this ministry and sub_ministries</span>
-378:         <span class="ruby-identifier">ministry_ids</span> = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">all_ministries</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">id</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-379:         <span class="ruby-identifier">ministry_cond</span> = <span class="ruby-value str">'MinistryInvolvement.'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:ministry_id</span>, <span class="ruby-identifier">:ministry_involvement</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; IN (#{ministry_ids})&quot;</span>
-380:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">campus_cond</span>
-381:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'( '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">campus_cond</span> <span class="ruby-operator">+</span> <span class="ruby-value str">' OR '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ministry_cond</span> <span class="ruby-operator">+</span> <span class="ruby-value str">' )'</span>
-382:         <span class="ruby-keyword kw">else</span>
-383:           <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ministry_cond</span>
-384:         <span class="ruby-keyword kw">end</span>
-385:       <span class="ruby-keyword kw">end</span>
-386:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">conditions</span>
-387:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000093" class="method-detail">
-        <a name="M000093"></a>
-
-        <div class="method-heading">
-          <a href="#M000093" class="method-signature">
-          <span class="method-name">can_edit_profile</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000093-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000093-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 407</span>
-407:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">can_edit_profile</span>
-408:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@me</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">is_ministry_leader</span>
-409:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
-410:       <span class="ruby-keyword kw">else</span> 
-411:         <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
-412:           <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@person</span> }
-413:           <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span>  <span class="ruby-keyword kw">do</span>
-414:             <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-415:               <span class="ruby-identifier">page</span>.<span class="ruby-identifier">redirect_to</span>(<span class="ruby-ivar">@person</span>)
-416:             <span class="ruby-keyword kw">end</span>
-417:           <span class="ruby-keyword kw">end</span>
-418:         <span class="ruby-keyword kw">end</span>
-419:         
-420:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
-421:       <span class="ruby-keyword kw">end</span>
-422:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000094" class="method-detail">
-        <a name="M000094"></a>
-
-        <div class="method-heading">
-          <a href="#M000094" class="method-signature">
-          <span class="method-name">get_profile_person</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000094-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000094-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 424</span>
-424:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_profile_person</span>
-425:       <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:person_id</span>])
-426:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000090" class="method-detail">
-        <a name="M000090"></a>
-
-        <div class="method-heading">
-          <a href="#M000090" class="method-signature">
-          <span class="method-name">render_new_from_create</span><span class="method-args">(format)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000090-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000090-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 389</span>
-389:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_new_from_create</span>(<span class="ruby-identifier">format</span>)
-390:       <span class="ruby-identifier">setup_dorms</span>
-391:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'manage'</span> }
-392:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span>  {<span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>}
-393:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_xml</span> }
-394:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000092" class="method-detail">
-        <a name="M000092"></a>
-
-        <div class="method-heading">
-          <a href="#M000092" class="method-signature">
-          <span class="method-name">setup_dorms</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000092-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000092-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 403</span>
-403:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup_dorms</span>
-404:       <span class="ruby-ivar">@dorms</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:dorms</span>).<span class="ruby-identifier">flatten</span>
-405:     <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000091" class="method-detail">
-        <a name="M000091"></a>
-
-        <div class="method-heading">
-          <a href="#M000091" class="method-signature">
-          <span class="method-name">setup_vars</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000091-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000091-source">
-<pre>
-     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 396</span>
-396:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup_vars</span>
-397:       <span class="ruby-identifier">setup_dorms</span>
-398:       <span class="ruby-ivar">@profile_picture</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">profile_picture</span> <span class="ruby-operator">||</span> <span class="ruby-constant">ProfilePicture</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:person_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>)
-399:       <span class="ruby-ivar">@current_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Address</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:type</span>, <span class="ruby-identifier">:address</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'current'</span>)
-400:       <span class="ruby-ivar">@perm_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Address</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:type</span>, <span class="ruby-identifier">:address</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'permanent'</span>)
-401:     <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/controllers/people_controller.rb, line 320</span>
+320:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+321:     <span class="ruby-identifier">set_states</span>
+322:     <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+323:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>]
+324:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">CurrentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>][<span class="ruby-identifier">:email</span>])
+325:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>])
+326:     <span class="ruby-keyword kw">end</span>
+327:     <span class="ruby-ivar">@current_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">current_address</span>
+328:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>]
+329:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">PermanentAddress</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:email</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>][<span class="ruby-identifier">:email</span>]) 
+330:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>]) 
+331:     <span class="ruby-keyword kw">end</span>
+332:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>
+333:       <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>])
+334:     <span class="ruby-keyword kw">end</span>
+335:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_id</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus_involvement</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus</span>.<span class="ruby-identifier">id</span>)
+336:       <span class="ruby-comment cmt"># if @person.primary_campus_involvement</span>
+337:       <span class="ruby-comment cmt">#   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)</span>
+338:       <span class="ruby-comment cmt">#   </span>
+339:       <span class="ruby-comment cmt">#   # @person.update_attribute(:primary_campus_involvement_id, nil)</span>
+340:       <span class="ruby-comment cmt"># end</span>
+341:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@campus_involvement</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">campus_involvements</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:campus_id</span>, <span class="ruby-identifier">:campus_involvement</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_id</span>]})
+342:         <span class="ruby-ivar">@campus_involvement</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:end_date</span>, <span class="ruby-keyword kw">nil</span>)
+343:         <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus_involvement</span> = <span class="ruby-ivar">@campus_involvement</span>
+344:       <span class="ruby-keyword kw">else</span>
+345:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>][<span class="ruby-identifier">:campus_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_id</span>]
+346:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>][<span class="ruby-identifier">:start_date</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+347:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>][<span class="ruby-identifier">:added_by_id</span>] = <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">id</span>
+348:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>][<span class="ruby-identifier">:ministry_id</span>] = <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">id</span>
+349:         <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>][<span class="ruby-identifier">:person_id</span>] = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">id</span>
+350:         <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus_involvement</span> = <span class="ruby-constant">CampusInvolvement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>])
+351:         <span class="ruby-ivar">@update_involvements</span> = <span class="ruby-keyword kw">true</span>
+352:       <span class="ruby-keyword kw">end</span>
+353:     <span class="ruby-keyword kw">end</span>
+354:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_id</span>].<span class="ruby-identifier">blank?</span>
+355:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus_involvement</span>
+356:         <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">primary_campus_involvement</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:end_date</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+357:         <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-identifier">:primary_campus_involvement_id</span>, <span class="ruby-keyword kw">nil</span>)
+358:         <span class="ruby-ivar">@update_involvements</span> = <span class="ruby-keyword kw">true</span>
+359:       <span class="ruby-keyword kw">end</span>
+360:     <span class="ruby-keyword kw">end</span>
+361:       
+362:     <span class="ruby-ivar">@perm_address</span> = <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">permanent_address</span>
+363: 
+364:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+365:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:person</span>]) <span class="ruby-operator">&amp;&amp;</span> 
+366:           (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:current_address</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@current_address</span>.<span class="ruby-identifier">valid?</span>) <span class="ruby-operator">&amp;&amp;</span>
+367:           (<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:perm_address</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@perm_address</span>.<span class="ruby-identifier">valid?</span>)
+368:         
+369:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span>  <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">most_recent_involvement</span>
+370:           <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">most_recent_involvement</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:primary_campus_involvement</span>])
+371:         <span class="ruby-keyword kw">end</span>
+372:          
+373:         <span class="ruby-comment cmt"># Save custom attributes</span>
+374:         <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">custom_attributes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ca</span><span class="ruby-operator">|</span>
+375:           <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">set_value</span>(<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">safe_name</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">ca</span>.<span class="ruby-identifier">safe_name</span>]
+376:         <span class="ruby-keyword kw">end</span>
+377:         <span class="ruby-comment cmt"># Save training questions</span>
+378:         <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">training_questions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">q</span><span class="ruby-operator">|</span>
+379:           <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">set_training_answer</span>(<span class="ruby-identifier">q</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_date'</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'approver'</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">q</span>.<span class="ruby-identifier">safe_name</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'_date'</span>]
+380:         <span class="ruby-keyword kw">end</span>
+381:         <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">'Profile was successfully updated.'</span>
+382:         <span class="ruby-ivar">@person</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+383:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">person_path</span>(<span class="ruby-ivar">@person</span>) }
+384:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span> 
+385:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+386:             <span class="ruby-identifier">update_flash</span>(<span class="ruby-identifier">page</span>, <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>])
+387:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:no_profile</span>]
+388:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'view'</span>
+389:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:info</span>].<span class="ruby-identifier">show</span>
+390:               <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">hide</span>
+391:               <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@update_involvements</span>
+392:                 <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:campuses_div</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'campuses'</span>
+393:               <span class="ruby-keyword kw">end</span>
+394:               <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;$.scrollTo(0, 0)&quot;</span>
+395:             <span class="ruby-keyword kw">end</span>
+396:           <span class="ruby-keyword kw">end</span>
+397:         <span class="ruby-keyword kw">end</span>
+398:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-identifier">:ok</span> }
+399:       <span class="ruby-keyword kw">else</span>
+400:         <span class="ruby-identifier">set_dorms</span>
+401:         <span class="ruby-identifier">setup_campuses</span>
+402:         <span class="ruby-comment cmt"># @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?</span>
+403:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span> }
+404:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword kw">do</span> 
+405:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+406:             <span class="ruby-identifier">page</span>[<span class="ruby-identifier">:edit_info</span>].<span class="ruby-identifier">replace_html</span> <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'edit'</span>
+407:             <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;$.scrollTo(0, 0)&quot;</span>
+408:           <span class="ruby-keyword kw">end</span>
+409:         <span class="ruby-keyword kw">end</span>
+410:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@person</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_xml</span> }
+411:       <span class="ruby-keyword kw">end</span>
+412:     <span class="ruby-keyword kw">end</span>
+413:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

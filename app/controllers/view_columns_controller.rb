@@ -1,3 +1,6 @@
+# Question: I think there are customisable views, and this controls the columns
+# to be included for a given view?
+#
 class ViewColumnsController < ApplicationController
   # POST /view_columns
   # POST /view_columns.xml

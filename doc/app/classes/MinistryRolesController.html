@@ -80,6 +80,23 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <p>
+Manages the roles associated with a given ministry. Three categories:
+</p>
+<ul>
+<li>&#8216;student_role_list&#8216;
+
+</li>
+<li>&#8216;other_role_list&#8216;
+
+</li>
+<li>&#8216;staff_role_list&#8216;
+
+</li>
+</ul>
+
+    </div>
 
 
    </div>
@@ -88,15 +105,15 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000005">create</a>&nbsp;&nbsp;
-      <a href="#M000008">destroy</a>&nbsp;&nbsp;
-      <a href="#M000006">edit</a>&nbsp;&nbsp;
-      <a href="#M000011">find_ministry_role</a>&nbsp;&nbsp;
-      <a href="#M000003">index</a>&nbsp;&nbsp;
-      <a href="#M000004">new</a>&nbsp;&nbsp;
-      <a href="#M000009">permissions</a>&nbsp;&nbsp;
-      <a href="#M000010">reorder</a>&nbsp;&nbsp;
-      <a href="#M000007">update</a>&nbsp;&nbsp;
+      <a href="#M000006">create</a>&nbsp;&nbsp;
+      <a href="#M000009">destroy</a>&nbsp;&nbsp;
+      <a href="#M000007">edit</a>&nbsp;&nbsp;
+      <a href="#M000012">find_ministry_role</a>&nbsp;&nbsp;
+      <a href="#M000004">index</a>&nbsp;&nbsp;
+      <a href="#M000005">new</a>&nbsp;&nbsp;
+      <a href="#M000010">permissions</a>&nbsp;&nbsp;
+      <a href="#M000011">reorder</a>&nbsp;&nbsp;
+      <a href="#M000008">update</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -118,66 +135,12 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000005" class="method-detail">
-        <a name="M000005"></a>
-
-        <div class="method-heading">
-          <a href="#M000005" class="method-signature">
-          <span class="method-name">create</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000005-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 13</span>
-13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
-14:     <span class="ruby-identifier">type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:type</span>)
-15:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-identifier">type</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>])
-16:     <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">ministry</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">root</span>
-17:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">save</span>
-18:       <span class="ruby-identifier">render</span>
-19:     <span class="ruby-keyword kw">else</span>
-20:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:new</span>
-21:     <span class="ruby-keyword kw">end</span>
-22:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000008" class="method-detail">
-        <a name="M000008"></a>
-
-        <div class="method-heading">
-          <a href="#M000008" class="method-signature">
-          <span class="method-name">destroy</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000008-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 38</span>
-38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-39:     <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">destroy</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">empty?</span>
-40:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-41:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
       <div id="method-M000006" class="method-detail">
         <a name="M000006"></a>
 
         <div class="method-heading">
           <a href="#M000006" class="method-signature">
-          <span class="method-name">edit</span><span class="method-args">()</span>
+          <span class="method-name">create</span><span class="method-args">()</span>
           </a>
         </div>
       
@@ -186,58 +149,17 @@
             onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000006-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 24</span>
-24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
-25:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
-26:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 19</span>
+19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+20:     <span class="ruby-identifier">type</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:type</span>)
+21:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-identifier">type</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>])
+22:     <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">ministry</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">root</span>
+23:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">save</span>
+24:       <span class="ruby-identifier">render</span>
+25:     <span class="ruby-keyword kw">else</span>
+26:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:new</span>
 27:     <span class="ruby-keyword kw">end</span>
 28:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000003" class="method-detail">
-        <a name="M000003"></a>
-
-        <div class="method-heading">
-          <a href="#M000003" class="method-signature">
-          <span class="method-name">index</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000003-source">
-<pre>
-   <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 5</span>
-5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
-6:     
-7:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000004" class="method-detail">
-        <a name="M000004"></a>
-
-        <div class="method-heading">
-          <a href="#M000004" class="method-signature">
-          <span class="method-name">new</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000004-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 9</span>
- 9:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
-10:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">new</span>
-11:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -248,7 +170,7 @@
 
         <div class="method-heading">
           <a href="#M000009" class="method-signature">
-          <span class="method-name">permissions</span><span class="method-args">()</span>
+          <span class="method-name">destroy</span><span class="method-args">()</span>
           </a>
         </div>
       
@@ -257,52 +179,11 @@
             onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000009-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 43</span>
-43:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">permissions</span>
-44:     <span class="ruby-ivar">@permissions</span> = <span class="ruby-constant">Permission</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'controller, action'</span>)
-45:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000010" class="method-detail">
-        <a name="M000010"></a>
-
-        <div class="method-heading">
-          <a href="#M000010" class="method-signature">
-          <span class="method-name">reorder</span><span class="method-args">()</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000010-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 47</span>
-47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reorder</span>
-48:     <span class="ruby-identifier">offset</span> = <span class="ruby-value">0</span>
-49:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'student_role_list'</span>]
-50:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">student_roles</span>
-51:       <span class="ruby-identifier">offset</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">count</span> 
-52:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'other_role_list'</span>]
-53:       <span class="ruby-identifier">offset</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">student_roles</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">count</span>
-54:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">other_roles</span>
-55:     <span class="ruby-keyword kw">else</span>
-56:       <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'staff_role_list'</span>]
-57:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>
-58:     <span class="ruby-keyword kw">end</span>
-59:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span>
-60:       <span class="ruby-ivar">@ministry_roles</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">role</span><span class="ruby-operator">|</span>
-61:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">role</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)
-62:           <span class="ruby-identifier">role</span>.<span class="ruby-identifier">position</span> = <span class="ruby-identifier">roles</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">role</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">offset</span>
-63:           <span class="ruby-identifier">role</span>.<span class="ruby-identifier">save</span>
-64:         <span class="ruby-keyword kw">end</span>
-65:       <span class="ruby-keyword kw">end</span>
-66:     <span class="ruby-keyword kw">end</span>
-67:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-68:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 44</span>
+44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+45:     <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">destroy</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">empty?</span>
+46:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+47:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -313,7 +194,7 @@
 
         <div class="method-heading">
           <a href="#M000007" class="method-signature">
-          <span class="method-name">update</span><span class="method-args">()</span>
+          <span class="method-name">edit</span><span class="method-args">()</span>
           </a>
         </div>
       
@@ -323,26 +204,91 @@
           <div class="method-source-code" id="M000007-source">
 <pre>
     <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 30</span>
-30:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
-31:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>])
-32:       <span class="ruby-identifier">render</span>
-33:     <span class="ruby-keyword kw">else</span>
-34:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:edit</span>
-35:     <span class="ruby-keyword kw">end</span>
-36:   <span class="ruby-keyword kw">end</span>
+30:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
+31:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wants</span><span class="ruby-operator">|</span>
+32:       <span class="ruby-identifier">wants</span>.<span class="ruby-identifier">js</span>
+33:     <span class="ruby-keyword kw">end</span>
+34:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <h3 class="section-bar">Protected Instance methods</h3>
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+          <a href="#M000004" class="method-signature">
+          <span class="method-name">index</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000004-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 11</span>
+11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+12:     
+13:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="#M000005" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000005-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 15</span>
+15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+16:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">new</span>
+17:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">permissions</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 49</span>
+49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">permissions</span>
+50:     <span class="ruby-ivar">@permissions</span> = <span class="ruby-constant">Permission</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'controller, action'</span>)
+51:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
 
       <div id="method-M000011" class="method-detail">
         <a name="M000011"></a>
 
         <div class="method-heading">
           <a href="#M000011" class="method-signature">
-          <span class="method-name">find_ministry_role</span><span class="method-args">()</span>
+          <span class="method-name">reorder</span><span class="method-args">()</span>
           </a>
         </div>
       
@@ -351,10 +297,81 @@
             onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000011-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 71</span>
-71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_ministry_role</span>
-72:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
-73:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 53</span>
+53:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reorder</span>
+54:     <span class="ruby-identifier">offset</span> = <span class="ruby-value">0</span>
+55:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'student_role_list'</span>]
+56:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">student_roles</span>
+57:       <span class="ruby-identifier">offset</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">count</span> 
+58:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'other_role_list'</span>]
+59:       <span class="ruby-identifier">offset</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">student_roles</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">count</span>
+60:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">other_roles</span>
+61:     <span class="ruby-keyword kw">else</span>
+62:       <span class="ruby-identifier">roles</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'staff_role_list'</span>]
+63:       <span class="ruby-ivar">@ministry_roles</span> = <span class="ruby-identifier">get_ministry</span>.<span class="ruby-identifier">staff_roles</span>
+64:     <span class="ruby-keyword kw">end</span>
+65:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span>
+66:       <span class="ruby-ivar">@ministry_roles</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">role</span><span class="ruby-operator">|</span>
+67:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">roles</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">role</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)
+68:           <span class="ruby-identifier">role</span>.<span class="ruby-identifier">position</span> = <span class="ruby-identifier">roles</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">role</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">offset</span>
+69:           <span class="ruby-identifier">role</span>.<span class="ruby-identifier">save</span>
+70:         <span class="ruby-keyword kw">end</span>
+71:       <span class="ruby-keyword kw">end</span>
+72:     <span class="ruby-keyword kw">end</span>
+73:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+74:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">update</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 36</span>
+36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+37:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry_role</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:ministry_role</span>])
+38:       <span class="ruby-identifier">render</span>
+39:     <span class="ruby-keyword kw">else</span>
+40:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:edit</span>
+41:     <span class="ruby-keyword kw">end</span>
+42:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Instance methods</h3>
+
+      <div id="method-M000012" class="method-detail">
+        <a name="M000012"></a>
+
+        <div class="method-heading">
+          <a href="#M000012" class="method-signature">
+          <span class="method-name">find_ministry_role</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000012-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/controllers/ministry_roles_controller.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_ministry_role</span>
+78:     <span class="ruby-ivar">@ministry_role</span> = <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
+79:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

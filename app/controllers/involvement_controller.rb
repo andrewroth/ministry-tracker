@@ -1,3 +1,6 @@
+# Looks up what ppl have been involved in (eg summer projects, conferences etc),
+# a read-only view...
+
 class InvolvementController < ApplicationController
   layout 'people'
   

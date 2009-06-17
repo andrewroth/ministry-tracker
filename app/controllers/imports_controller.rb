@@ -1,3 +1,5 @@
+# question: Seems to handle imports of a user list?
+
 class ImportsController < ApplicationController
   before_filter :authorized?
   

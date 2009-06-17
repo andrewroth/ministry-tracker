@@ -1,4 +1,6 @@
 # This controller handles the login/logout function of the site.  
+# Question: Two means for logging in -  first tries local login , then tries
+# a login via GCX's CAS
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter
   

@@ -1,5 +1,10 @@
+# Question: Seems to be a kind of CRUD for a person's involvement with a given
+# ministry, but not complete CRUD?
+
 class MinistryInvolvementsController < ApplicationController
   before_filter :ministry_leader_filter, :except => :destroy
+
+  # Records the ending of a user's involvement with a particular ministry
   def destroy
     @person = Person.find(params[:person_id])
     if @me == @person || authorized?(:new, :people)
@@ -22,6 +27,7 @@ class MinistryInvolvementsController < ApplicationController
     end
   end
   
+  # Question: what is staff? Can only staff be admin over a campus?
   def edit
     if params[:person_id] && params[:ministry_id]
       @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})

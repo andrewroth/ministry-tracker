@@ -86,8 +86,8 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000263">build_query_parts</a>&nbsp;&nbsp;
-      <a href="#M000264">build_query_parts!</a>&nbsp;&nbsp;
+      <a href="#M000324">build_query_parts</a>&nbsp;&nbsp;
+      <a href="#M000325">build_query_parts!</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -109,11 +109,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000263" class="method-detail">
-        <a name="M000263"></a>
+      <div id="method-M000324" class="method-detail">
+        <a name="M000324"></a>
 
         <div class="method-heading">
-          <a href="#M000263" class="method-signature">
+          <a href="#M000324" class="method-signature">
           <span class="method-name">build_query_parts</span><span class="method-args">()</span>
           </a>
         </div>
@@ -123,8 +123,8 @@
 <h1>Build the Select and Tables pieces of a query that uses this view =</h1>
 <h6>===============================================================</h6>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000263-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000263-source">
+            onclick="toggleCode('M000324-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000324-source">
 <pre>
     <span class="ruby-comment cmt"># File app/models/view.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_query_parts</span>
@@ -152,49 +152,55 @@
 36:       <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">column</span>.<span class="ruby-identifier">from_clause</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">table_name</span>
 37:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">tables</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">column</span>.<span class="ruby-identifier">from_clause</span>)
 38:         <span class="ruby-identifier">tables</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">from_clause</span>
-39:         <span class="ruby-identifier">tables_clause</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; LEFT JOIN #{table_name} as #{column.from_clause} on Person.#{_(:id, :person)} = #{column.from_clause}.#{_(:person_id, column.from_clause.downcase)}&quot;</span>
-40:         <span class="ruby-identifier">tables_clause</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot; AND &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">join_clause</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">join_clause</span>.<span class="ruby-identifier">blank?</span>
-41:       <span class="ruby-keyword kw">end</span>
-42:       
-43:       <span class="ruby-comment cmt"># Don't add id, first name or last name here because we added them earlier</span>
-44:       <span class="ruby-keyword kw">unless</span> [<span class="ruby-value str">'id'</span>,<span class="ruby-value str">'first_name'</span>,<span class="ruby-value str">'last_name'</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>)
-45:         <span class="ruby-comment cmt"># Add column to select clause</span>
-46:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'('</span>
-47:           <span class="ruby-identifier">select_clause</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{column.from_clause}.#{_(column.select_clause, column.from_clause.downcase)} as #{column.safe_name}&quot;</span>
-48:         <span class="ruby-keyword kw">else</span>
-49:           <span class="ruby-identifier">select_clause</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>
-50:         <span class="ruby-keyword kw">end</span>
-51:       <span class="ruby-keyword kw">end</span>
-52:     <span class="ruby-keyword kw">end</span>
-53:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_clause</span> = <span class="ruby-identifier">select_clause</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
-54:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">tables_clause</span> = <span class="ruby-identifier">tables_clause</span>
-55:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">tables</span>
-56:   <span class="ruby-keyword kw">end</span>
+39:         <span class="ruby-identifier">source_model</span> = (<span class="ruby-identifier">column</span>.<span class="ruby-identifier">source_model</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span><span class="ruby-value str">'Person'</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">source_model</span>).<span class="ruby-identifier">constantize</span>
+40:         <span class="ruby-identifier">source_column</span> = <span class="ruby-identifier">column</span>.<span class="ruby-identifier">source_column</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span><span class="ruby-value str">'id'</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">source_column</span>
+41:         <span class="ruby-identifier">foreign_key</span> = <span class="ruby-identifier">column</span>.<span class="ruby-identifier">foreign_key</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-value">? </span><span class="ruby-value str">'person_id'</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">foreign_key</span>
+42:         <span class="ruby-identifier">source_table_name</span> = <span class="ruby-identifier">source_model</span>.<span class="ruby-identifier">table_name</span>
+43:         <span class="ruby-identifier">join_on_left</span> = <span class="ruby-node">&quot;#{source_model}.#{_(source_column.to_sym, source_model.name.downcase.to_sym)}&quot;</span>
+44:         <span class="ruby-identifier">join_on_right</span> = <span class="ruby-node">&quot;#{column.from_clause}.#{_(foreign_key.to_sym, column.from_clause.downcase.to_sym)}&quot;</span>
+45:         <span class="ruby-identifier">tables_clause</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; LEFT JOIN #{table_name} as #{column.from_clause} on #{join_on_left} = #{join_on_right}&quot;</span>
+46:         <span class="ruby-identifier">tables_clause</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot; AND &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">join_clause</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">join_clause</span>.<span class="ruby-identifier">blank?</span>
+47:       <span class="ruby-keyword kw">end</span>
+48:       
+49:       <span class="ruby-comment cmt"># Don't add id, first name or last name here because we added them earlier</span>
+50:       <span class="ruby-keyword kw">unless</span> [<span class="ruby-value str">'id'</span>,<span class="ruby-value str">'first_name'</span>,<span class="ruby-value str">'last_name'</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>)
+51:         <span class="ruby-comment cmt"># Add column to select clause</span>
+52:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'('</span>
+53:           <span class="ruby-identifier">select_clause</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{column.from_clause}.#{_(column.select_clause, column.from_clause.downcase)} as #{column.safe_name}&quot;</span>
+54:         <span class="ruby-keyword kw">else</span>
+55:           <span class="ruby-identifier">select_clause</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">column</span>.<span class="ruby-identifier">select_clause</span>
+56:         <span class="ruby-keyword kw">end</span>
+57:       <span class="ruby-keyword kw">end</span>
+58:     <span class="ruby-keyword kw">end</span>
+59:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">select_clause</span> = <span class="ruby-identifier">select_clause</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">', '</span>)
+60:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">tables_clause</span> = <span class="ruby-identifier">tables_clause</span>
+61:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">tables</span>
+62:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000264" class="method-detail">
-        <a name="M000264"></a>
+      <div id="method-M000325" class="method-detail">
+        <a name="M000325"></a>
 
         <div class="method-heading">
-          <a href="#M000264" class="method-signature">
+          <a href="#M000325" class="method-signature">
           <span class="method-name">build_query_parts!</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000264-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000264-source">
+            onclick="toggleCode('M000325-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000325-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/view.rb, line 58</span>
-58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_query_parts!</span>
-59:     <span class="ruby-identifier">tables</span> = <span class="ruby-identifier">build_query_parts</span>
-60:     <span class="ruby-identifier">save!</span>
-61:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">tables</span>
-62:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/view.rb, line 64</span>
+64:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_query_parts!</span>
+65:     <span class="ruby-identifier">tables</span> = <span class="ruby-identifier">build_query_parts</span>
+66:     <span class="ruby-identifier">save!</span>
+67:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">tables</span>
+68:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

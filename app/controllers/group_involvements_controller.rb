@@ -1,3 +1,8 @@
+# Handles CRUD for involvements for a memeber and a given group at a given
+# level of involvement
+#
+# Question: def Transfer: not sure what it does
+
 class GroupInvolvementsController < ApplicationController
   
   def create

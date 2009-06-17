@@ -1,3 +1,4 @@
+# Question: I believe views are customisable, this would be their CRUD
 class ViewsController < ApplicationController
   in_place_edit_for :view, :title
   layout 'manage'
@@ -58,6 +59,7 @@ class ViewsController < ApplicationController
     render :nothing => true
   end
   
+  # default view
   def set_default
     @view = View.find(params[:id])
     respond_to do |format|

@@ -1,3 +1,7 @@
+# Groups associated with an individual
+# delete candidate: def find_times is the method for common times but may no
+# no longer being used, but is handled in timetables controllers
+
 class GroupsController < ApplicationController
   before_filter :authorization_filter, :only => [:create, :update, :destroy]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update]

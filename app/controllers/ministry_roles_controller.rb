@@ -1,3 +1,9 @@
+# Manages the  roles associated with a given ministry.
+# Three categories:
+# * 'student_role_list'
+# * 'other_role_list'
+# * 'staff_role_list'
+
 class MinistryRolesController < ApplicationController
   layout 'manage'
   before_filter :find_ministry_role, :only => [:edit, :update, :destroy, :permissions]

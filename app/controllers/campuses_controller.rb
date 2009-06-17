@@ -1,3 +1,6 @@
+# Question: Doesn't seem to handle campus CRUD, but rather populates lists when
+# another parameter changes. When would this be the case?
+
 class CampusesController < ApplicationController
   before_filter :get_countries
   

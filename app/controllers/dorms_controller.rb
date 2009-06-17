@@ -1,3 +1,5 @@
+# CRUD for dorms
+
 class DormsController < ApplicationController
   def create
     @dorm = Dorm.create!(params[:dorm])

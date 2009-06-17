@@ -1,3 +1,6 @@
+# CRUD for school years.
+#
+# Question: School years are definable by ministry or campus?
 class SchoolYearsController < ApplicationController
   # GET /school_years
   # GET /school_years.xml

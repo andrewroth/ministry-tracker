@@ -86,32 +86,35 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000251">&lt;=&gt;</a>&nbsp;&nbsp;
-      <a href="#M000249">all_ministries</a>&nbsp;&nbsp;
-      <a href="#M000253">all_training_categories</a>&nbsp;&nbsp;
-      <a href="#M000254">all_training_questions</a>&nbsp;&nbsp;
-      <a href="#M000238">ancestor_ids</a>&nbsp;&nbsp;
-      <a href="#M000237">ancestors</a>&nbsp;&nbsp;
-      <a href="#M000239">campus_ids</a>&nbsp;&nbsp;
-      <a href="#M000255">create_default_roles</a>&nbsp;&nbsp;
-      <a href="#M000252">create_first_view</a>&nbsp;&nbsp;
-      <a href="#M000250">deleteable?</a>&nbsp;&nbsp;
-      <a href="#M000240">descendants</a>&nbsp;&nbsp;
-      <a href="#M000248">involved_student_role_ids</a>&nbsp;&nbsp;
-      <a href="#M000247">involved_student_roles</a>&nbsp;&nbsp;
-      <a href="#M000243">leader_roles</a>&nbsp;&nbsp;
-      <a href="#M000244">leader_roles_ids</a>&nbsp;&nbsp;
-      <a href="#M000231">ministry_roles</a>&nbsp;&nbsp;
-      <a href="#M000234">other_roles</a>&nbsp;&nbsp;
-      <a href="#M000241">root</a>&nbsp;&nbsp;
-      <a href="#M000242">root?</a>&nbsp;&nbsp;
-      <a href="#M000230">staff</a>&nbsp;&nbsp;
-      <a href="#M000245">staff_role_ids</a>&nbsp;&nbsp;
-      <a href="#M000232">staff_roles</a>&nbsp;&nbsp;
-      <a href="#M000246">student_role_ids</a>&nbsp;&nbsp;
-      <a href="#M000233">student_roles</a>&nbsp;&nbsp;
-      <a href="#M000235">subministry_campuses</a>&nbsp;&nbsp;
-      <a href="#M000236">unique_campuses</a>&nbsp;&nbsp;
+      <a href="#M000319">&lt;=&gt;</a>&nbsp;&nbsp;
+      <a href="#M000295">all_group_types</a>&nbsp;&nbsp;
+      <a href="#M000317">all_ministries</a>&nbsp;&nbsp;
+      <a href="#M000321">all_training_categories</a>&nbsp;&nbsp;
+      <a href="#M000322">all_training_questions</a>&nbsp;&nbsp;
+      <a href="#M000304">ancestor_ids</a>&nbsp;&nbsp;
+      <a href="#M000303">ancestors</a>&nbsp;&nbsp;
+      <a href="#M000305">campus_ids</a>&nbsp;&nbsp;
+      <a href="#M000323">create_default_roles</a>&nbsp;&nbsp;
+      <a href="#M000320">create_first_view</a>&nbsp;&nbsp;
+      <a href="#M000318">deleteable?</a>&nbsp;&nbsp;
+      <a href="#M000306">descendants</a>&nbsp;&nbsp;
+      <a href="#M000316">involved_student_role_ids</a>&nbsp;&nbsp;
+      <a href="#M000315">involved_student_roles</a>&nbsp;&nbsp;
+      <a href="#M000311">leader_roles</a>&nbsp;&nbsp;
+      <a href="#M000312">leader_roles_ids</a>&nbsp;&nbsp;
+      <a href="#M000307">mandated_training_questions</a>&nbsp;&nbsp;
+      <a href="#M000297">ministry_roles</a>&nbsp;&nbsp;
+      <a href="#M000300">other_roles</a>&nbsp;&nbsp;
+      <a href="#M000309">root</a>&nbsp;&nbsp;
+      <a href="#M000310">root?</a>&nbsp;&nbsp;
+      <a href="#M000308">self_mandated_training_questions</a>&nbsp;&nbsp;
+      <a href="#M000296">staff</a>&nbsp;&nbsp;
+      <a href="#M000313">staff_role_ids</a>&nbsp;&nbsp;
+      <a href="#M000298">staff_roles</a>&nbsp;&nbsp;
+      <a href="#M000314">student_role_ids</a>&nbsp;&nbsp;
+      <a href="#M000299">student_roles</a>&nbsp;&nbsp;
+      <a href="#M000301">subministry_campuses</a>&nbsp;&nbsp;
+      <a href="#M000302">unique_campuses</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -161,57 +164,80 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000251" class="method-detail">
-        <a name="M000251"></a>
+      <div id="method-M000319" class="method-detail">
+        <a name="M000319"></a>
 
         <div class="method-heading">
-          <a href="#M000251" class="method-signature">
+          <a href="#M000319" class="method-signature">
           <span class="method-name">&lt;=&gt;</span><span class="method-args">(ministry)</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000251-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000251-source">
+            onclick="toggleCode('M000319-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000319-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 153</span>
-153:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">ministry</span>)
-154:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">name</span>
-155:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 178</span>
+178:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">ministry</span>)
+179:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">name</span>
+180:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000249" class="method-detail">
-        <a name="M000249"></a>
+      <div id="method-M000295" class="method-detail">
+        <a name="M000295"></a>
 
         <div class="method-heading">
-          <a href="#M000249" class="method-signature">
+          <a href="#M000295" class="method-signature">
+          <span class="method-name">all_group_types</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000295-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000295-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 51</span>
+51:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_group_types</span>
+52:     <span class="ruby-ivar">@all_group_types</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">GroupType</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;ministry_id IN (?)&quot;</span>, <span class="ruby-identifier">ancestor_ids</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:group_type</span>, <span class="ruby-identifier">:group_type</span>))
+53:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000317" class="method-detail">
+        <a name="M000317"></a>
+
+        <div class="method-heading">
+          <a href="#M000317" class="method-signature">
           <span class="method-name">all_ministries</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000249-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000249-source">
+            onclick="toggleCode('M000317-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000317-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 145</span>
-145:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_ministries</span>
-146:     (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">descendants</span> <span class="ruby-operator">+</span> [<span class="ruby-keyword kw">self</span>]).<span class="ruby-identifier">sort</span>
-147:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 170</span>
+170:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_ministries</span>
+171:     (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">descendants</span> <span class="ruby-operator">+</span> [<span class="ruby-keyword kw">self</span>]).<span class="ruby-identifier">sort</span>
+172:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000253" class="method-detail">
-        <a name="M000253"></a>
+      <div id="method-M000321" class="method-detail">
+        <a name="M000321"></a>
 
         <div class="method-heading">
-          <a href="#M000253" class="method-signature">
+          <a href="#M000321" class="method-signature">
           <span class="method-name">all_training_categories</span><span class="method-args">()</span>
           </a>
         </div>
@@ -221,24 +247,24 @@
 Training categories including all the categories higher up on the tree
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000253-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000253-source">
+            onclick="toggleCode('M000321-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000321-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 172</span>
-172:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_training_categories</span>
-173:     <span class="ruby-ivar">@all_training_categories</span> <span class="ruby-operator">||=</span> [<span class="ruby-identifier">training_categories</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_categories</span>)].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
-174:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@all_training_categories</span>
-175:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 197</span>
+197:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_training_categories</span>
+198:     <span class="ruby-ivar">@all_training_categories</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">wrap</span>(<span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_categories</span>)).<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+199:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@all_training_categories</span>
+200:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000254" class="method-detail">
-        <a name="M000254"></a>
+      <div id="method-M000322" class="method-detail">
+        <a name="M000322"></a>
 
         <div class="method-heading">
-          <a href="#M000254" class="method-signature">
+          <a href="#M000322" class="method-signature">
           <span class="method-name">all_training_questions</span><span class="method-args">()</span>
           </a>
         </div>
@@ -248,97 +274,102 @@ Training categories including all the categories higher up on the tree
 Training questions including all the questions higher up on the tree
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000254-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000254-source">
+            onclick="toggleCode('M000322-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000322-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 178</span>
-178:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_training_questions</span>
-179:     <span class="ruby-ivar">@all_training_questions</span> <span class="ruby-operator">||=</span> [<span class="ruby-identifier">training_questions</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_questions</span>)].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
-180:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@all_training_questions</span>
-181:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 203</span>
+203:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_training_questions</span>
+204:     <span class="ruby-ivar">@all_training_questions</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">wrap</span>(<span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_questions</span>)).<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+205:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@all_training_questions</span>
+206:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000238" class="method-detail">
-        <a name="M000238"></a>
+      <div id="method-M000304" class="method-detail">
+        <a name="M000304"></a>
 
         <div class="method-heading">
-          <a href="#M000238" class="method-signature">
+          <a href="#M000304" class="method-signature">
           <span class="method-name">ancestor_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000238-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000238-source">
+            onclick="toggleCode('M000304-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000304-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 91</span>
-91:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ancestor_ids</span>
-92:     <span class="ruby-ivar">@ancestor_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-93:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 105</span>
+105:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ancestor_ids</span>
+106:     <span class="ruby-ivar">@ancestor_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">ancestors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+107:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000237" class="method-detail">
-        <a name="M000237"></a>
+      <div id="method-M000303" class="method-detail">
+        <a name="M000303"></a>
 
         <div class="method-heading">
-          <a href="#M000237" class="method-signature">
+          <a href="#M000303" class="method-signature">
           <span class="method-name">ancestors</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000237-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000237-source">
+            onclick="toggleCode('M000303-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000303-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 83</span>
-83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ancestors</span>
-84:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@ancestors</span>
-85:       <span class="ruby-ivar">@ancestors</span> = <span class="ruby-identifier">parent</span> <span class="ruby-value">? </span>[<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">ancestors</span>] <span class="ruby-operator">:</span> [<span class="ruby-keyword kw">self</span>]
-86:       <span class="ruby-ivar">@ancestors</span>.<span class="ruby-identifier">flatten!</span>
-87:     <span class="ruby-keyword kw">end</span>
-88:     <span class="ruby-ivar">@ancestors</span>
-89:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 97</span>
+ 97:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ancestors</span>
+ 98:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@ancestors</span>
+ 99:       <span class="ruby-ivar">@ancestors</span> = <span class="ruby-identifier">parent</span> <span class="ruby-value">? </span>[<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">ancestors</span>] <span class="ruby-operator">:</span> [<span class="ruby-keyword kw">self</span>]
+100:       <span class="ruby-ivar">@ancestors</span>.<span class="ruby-identifier">flatten!</span>
+101:     <span class="ruby-keyword kw">end</span>
+102:     <span class="ruby-ivar">@ancestors</span>
+103:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000239" class="method-detail">
-        <a name="M000239"></a>
+      <div id="method-M000305" class="method-detail">
+        <a name="M000305"></a>
 
         <div class="method-heading">
-          <a href="#M000239" class="method-signature">
+          <a href="#M000305" class="method-signature">
           <span class="method-name">campus_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000239-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000239-source">
+            onclick="toggleCode('M000305-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000305-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 95</span>
-95:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">campus_ids</span>
-96:     <span class="ruby-identifier">unique_campuses</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">mc</span><span class="ruby-operator">|</span> <span class="ruby-identifier">mc</span>.<span class="ruby-identifier">campus</span>.<span class="ruby-identifier">id</span>}
-97:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 109</span>
+109:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">campus_ids</span>
+110:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@campus_ids</span>
+111:       <span class="ruby-identifier">ministry_ids</span> = ([<span class="ruby-keyword kw">self</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">descendants</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+112:       <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT #{_(:campus_id, :ministry_campus)} FROM #{MinistryCampus.table_name} WHERE #{_(:ministry_id, :ministry_campus)} IN(#{ministry_ids.join(',')})&quot;</span>
+113:       <span class="ruby-ivar">@campus_ids</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_values</span>(<span class="ruby-identifier">sql</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_i</span>)
+114:     <span class="ruby-keyword kw">end</span>
+115:     <span class="ruby-ivar">@campus_ids</span>
+116:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000252" class="method-detail">
-        <a name="M000252"></a>
+      <div id="method-M000320" class="method-detail">
+        <a name="M000320"></a>
 
         <div class="method-heading">
-          <a href="#M000252" class="method-signature">
+          <a href="#M000320" class="method-signature">
           <span class="method-name">create_first_view</span><span class="method-args">()</span>
           </a>
         </div>
@@ -348,442 +379,481 @@ Training questions including all the questions higher up on the tree
 Create a default view for this ministry
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000252-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000252-source">
+            onclick="toggleCode('M000320-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000320-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 158</span>
-158:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_first_view</span>
-159:     <span class="ruby-comment cmt"># For now just copy the first view in the system if there is one</span>
-160:     <span class="ruby-identifier">view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:ministry_id</span>, <span class="ruby-identifier">:view</span>))
-161:     <span class="ruby-identifier">new_view</span> = <span class="ruby-identifier">view</span>.<span class="ruby-identifier">clone</span>
-162:     <span class="ruby-identifier">views</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">view</span>
-163:     <span class="ruby-identifier">view</span>.<span class="ruby-identifier">view_columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">view_column</span><span class="ruby-operator">|</span>
-164:       <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">view_columns</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">view_column</span>.<span class="ruby-identifier">clone</span>
-165:     <span class="ruby-keyword kw">end</span>
-166:     <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">default_view</span> = <span class="ruby-keyword kw">true</span>
-167:     <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">save!</span>
-168:     <span class="ruby-identifier">new_view</span>
-169:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 183</span>
+183:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_first_view</span>
+184:     <span class="ruby-comment cmt"># For now just copy the first view in the system if there is one</span>
+185:     <span class="ruby-identifier">view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:ministry_id</span>, <span class="ruby-identifier">:view</span>))
+186:     <span class="ruby-identifier">new_view</span> = <span class="ruby-identifier">view</span>.<span class="ruby-identifier">clone</span>
+187:     <span class="ruby-identifier">views</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">view</span>
+188:     <span class="ruby-identifier">view</span>.<span class="ruby-identifier">view_columns</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">view_column</span><span class="ruby-operator">|</span>
+189:       <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">view_columns</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">view_column</span>.<span class="ruby-identifier">clone</span>
+190:     <span class="ruby-keyword kw">end</span>
+191:     <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">default_view</span> = <span class="ruby-keyword kw">true</span>
+192:     <span class="ruby-identifier">new_view</span>.<span class="ruby-identifier">save!</span>
+193:     <span class="ruby-identifier">new_view</span>
+194:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000250" class="method-detail">
-        <a name="M000250"></a>
+      <div id="method-M000318" class="method-detail">
+        <a name="M000318"></a>
 
         <div class="method-heading">
-          <a href="#M000250" class="method-signature">
+          <a href="#M000318" class="method-signature">
           <span class="method-name">deleteable?</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000250-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000250-source">
+            onclick="toggleCode('M000318-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000318-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 149</span>
-149:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">deleteable?</span>
-150:     <span class="ruby-operator">!</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-151:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 174</span>
+174:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">deleteable?</span>
+175:     <span class="ruby-operator">!</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+176:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000240" class="method-detail">
-        <a name="M000240"></a>
+      <div id="method-M000306" class="method-detail">
+        <a name="M000306"></a>
 
         <div class="method-heading">
-          <a href="#M000240" class="method-signature">
+          <a href="#M000306" class="method-signature">
           <span class="method-name">descendants</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000240-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000240-source">
+            onclick="toggleCode('M000306-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000306-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 99</span>
- 99:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">descendants</span>
-100:     <span class="ruby-ivar">@descendants</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>
-101:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span>
-102:         <span class="ruby-ivar">@descendants</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">descendants</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">ministry</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>
-103:       <span class="ruby-keyword kw">end</span>
-104:     <span class="ruby-ivar">@descendants</span>.<span class="ruby-identifier">sort!</span>
-105:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@descendants</span>
-106:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 118</span>
+118:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">descendants</span>
+119:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@descendants</span>
+120:       <span class="ruby-ivar">@offspring</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:children</span>)
+121:       <span class="ruby-ivar">@descendants</span> = <span class="ruby-ivar">@offspring</span>.<span class="ruby-identifier">dup</span>
+122:       <span class="ruby-ivar">@offspring</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span>
+123:           <span class="ruby-ivar">@descendants</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">descendants</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">ministry</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>
+124:         <span class="ruby-keyword kw">end</span>
+125:       <span class="ruby-ivar">@descendants</span>.<span class="ruby-identifier">sort!</span>
+126:     <span class="ruby-keyword kw">end</span>
+127:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@descendants</span>
+128:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000248" class="method-detail">
-        <a name="M000248"></a>
+      <div id="method-M000316" class="method-detail">
+        <a name="M000316"></a>
 
         <div class="method-heading">
-          <a href="#M000248" class="method-signature">
+          <a href="#M000316" class="method-signature">
           <span class="method-name">involved_student_role_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000248-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000248-source">
+            onclick="toggleCode('M000316-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000316-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 141</span>
-141:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">involved_student_role_ids</span>
-142:     <span class="ruby-ivar">@involved_student_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">involved_student_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-143:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 166</span>
+166:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">involved_student_role_ids</span>
+167:     <span class="ruby-ivar">@involved_student_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">involved_student_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+168:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000247" class="method-detail">
-        <a name="M000247"></a>
+      <div id="method-M000315" class="method-detail">
+        <a name="M000315"></a>
 
         <div class="method-heading">
-          <a href="#M000247" class="method-signature">
+          <a href="#M000315" class="method-signature">
           <span class="method-name">involved_student_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000247-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000247-source">
+            onclick="toggleCode('M000315-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000315-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 137</span>
-137:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">involved_student_roles</span>
-138:     <span class="ruby-ivar">@involved_student_roles</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">ministry_roles</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:position, :ministry_role)} &gt;= 4 AND #{_(:position, :ministry_role)} &lt; 11&quot;</span>)
-139:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 162</span>
+162:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">involved_student_roles</span>
+163:     <span class="ruby-ivar">@involved_student_roles</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">ministry_roles</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:position, :ministry_role)} &gt;= 4 AND #{_(:position, :ministry_role)} &lt; 11&quot;</span>)
+164:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000243" class="method-detail">
-        <a name="M000243"></a>
+      <div id="method-M000311" class="method-detail">
+        <a name="M000311"></a>
 
         <div class="method-heading">
-          <a href="#M000243" class="method-signature">
+          <a href="#M000311" class="method-signature">
           <span class="method-name">leader_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000243-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000243-source">
+            onclick="toggleCode('M000311-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000311-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 121</span>
-121:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">leader_roles</span>
-122:     <span class="ruby-ivar">@leader_roles</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">staff_roles</span>
-123:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 146</span>
+146:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">leader_roles</span>
+147:     <span class="ruby-ivar">@leader_roles</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">staff_roles</span>
+148:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000244" class="method-detail">
-        <a name="M000244"></a>
+      <div id="method-M000312" class="method-detail">
+        <a name="M000312"></a>
 
         <div class="method-heading">
-          <a href="#M000244" class="method-signature">
+          <a href="#M000312" class="method-signature">
           <span class="method-name">leader_roles_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000244-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000244-source">
+            onclick="toggleCode('M000312-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000312-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 125</span>
-125:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">leader_roles_ids</span>
-126:     <span class="ruby-ivar">@leader_roles_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">leader_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-127:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 150</span>
+150:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">leader_roles_ids</span>
+151:     <span class="ruby-ivar">@leader_roles_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">leader_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+152:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000231" class="method-detail">
-        <a name="M000231"></a>
+      <div id="method-M000307" class="method-detail">
+        <a name="M000307"></a>
 
         <div class="method-heading">
-          <a href="#M000231" class="method-signature">
+          <a href="#M000307" class="method-signature">
+          <span class="method-name">mandated_training_questions</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000307-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000307-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 130</span>
+130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mandated_training_questions</span>
+131:     <span class="ruby-ivar">@mandated_training_questions</span> = <span class="ruby-constant">TrainingQuestionActivation</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;mandate = 1 AND #{_(:ministry_id, :training_question_activation)} IN(?)&quot;</span>, <span class="ruby-identifier">ancestor_ids</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:training_question</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_question</span>)
+132:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000297" class="method-detail">
+        <a name="M000297"></a>
+
+        <div class="method-heading">
+          <a href="#M000297" class="method-signature">
           <span class="method-name">ministry_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000231-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000231-source">
+            onclick="toggleCode('M000297-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000297-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 45</span>
-45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ministry_roles</span>
-46:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_ministry_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_ministry_roles</span>
-47:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 59</span>
+59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ministry_roles</span>
+60:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_ministry_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_ministry_roles</span>
+61:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000234" class="method-detail">
-        <a name="M000234"></a>
+      <div id="method-M000300" class="method-detail">
+        <a name="M000300"></a>
 
         <div class="method-heading">
-          <a href="#M000234" class="method-signature">
+          <a href="#M000300" class="method-signature">
           <span class="method-name">other_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000234-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000234-source">
+            onclick="toggleCode('M000300-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000300-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 57</span>
-57:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">other_roles</span>
-58:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_other_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_other_roles</span>
-59:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 71</span>
+71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">other_roles</span>
+72:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_other_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_other_roles</span>
+73:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000241" class="method-detail">
-        <a name="M000241"></a>
+      <div id="method-M000309" class="method-detail">
+        <a name="M000309"></a>
 
         <div class="method-heading">
-          <a href="#M000241" class="method-signature">
+          <a href="#M000309" class="method-signature">
           <span class="method-name">root</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
-          <p>
-def children
-</p>
-<pre>
-    @children = self.children
-    @children.sort!
-</pre>
-<p>
-end
-</p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000241-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000241-source">
+            onclick="toggleCode('M000309-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000309-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 113</span>
-113:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root</span>
-114:     <span class="ruby-ivar">@root</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-value">? </span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">root</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>
-115:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 138</span>
+138:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root</span>
+139:     <span class="ruby-ivar">@root</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-value">? </span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">root</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>
+140:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000242" class="method-detail">
-        <a name="M000242"></a>
+      <div id="method-M000310" class="method-detail">
+        <a name="M000310"></a>
 
         <div class="method-heading">
-          <a href="#M000242" class="method-signature">
+          <a href="#M000310" class="method-signature">
           <span class="method-name">root?</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000242-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000242-source">
+            onclick="toggleCode('M000310-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000310-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 117</span>
-117:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root?</span>
-118:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent_id</span>.<span class="ruby-identifier">nil?</span>
-119:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 142</span>
+142:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">root?</span>
+143:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">parent_id</span>.<span class="ruby-identifier">nil?</span>
+144:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000230" class="method-detail">
-        <a name="M000230"></a>
+      <div id="method-M000308" class="method-detail">
+        <a name="M000308"></a>
 
         <div class="method-heading">
-          <a href="#M000230" class="method-signature">
+          <a href="#M000308" class="method-signature">
+          <span class="method-name">self_mandated_training_questions</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000308-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000308-source">
+<pre>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 134</span>
+134:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">self_mandated_training_questions</span>
+135:     <span class="ruby-ivar">@self_mandated_training_questions</span> = <span class="ruby-constant">TrainingQuestionActivation</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;mandate = 1 AND #{_(:ministry_id, :training_question_activation)} = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:training_question</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:training_question</span>)
+136:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000296" class="method-detail">
+        <a name="M000296"></a>
+
+        <div class="method-heading">
+          <a href="#M000296" class="method-signature">
           <span class="method-name">staff</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000230-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000230-source">
+            onclick="toggleCode('M000296-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000296-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 41</span>
-41:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff</span>
-42:     <span class="ruby-ivar">@staff</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">staff_role_ids</span>, <span class="ruby-identifier">ancestor_ids</span>], <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:ministry_involvements</span>)
-43:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 55</span>
+55:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff</span>
+56:     <span class="ruby-ivar">@staff</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)&quot;</span>, <span class="ruby-identifier">staff_role_ids</span>, <span class="ruby-identifier">ancestor_ids</span>], <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:ministry_involvements</span>)
+57:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000245" class="method-detail">
-        <a name="M000245"></a>
+      <div id="method-M000313" class="method-detail">
+        <a name="M000313"></a>
 
         <div class="method-heading">
-          <a href="#M000245" class="method-signature">
+          <a href="#M000313" class="method-signature">
           <span class="method-name">staff_role_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000245-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000245-source">
+            onclick="toggleCode('M000313-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000313-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 129</span>
-129:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_role_ids</span>
-130:     <span class="ruby-ivar">@staff_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-131:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 154</span>
+154:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_role_ids</span>
+155:     <span class="ruby-ivar">@staff_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">staff_roles</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+156:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000232" class="method-detail">
-        <a name="M000232"></a>
+      <div id="method-M000298" class="method-detail">
+        <a name="M000298"></a>
 
         <div class="method-heading">
-          <a href="#M000232" class="method-signature">
+          <a href="#M000298" class="method-signature">
           <span class="method-name">staff_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000232-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000232-source">
+            onclick="toggleCode('M000298-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000298-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 49</span>
-49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_roles</span>
-50:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_staff_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_staff_roles</span>
-51:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 63</span>
+63:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">staff_roles</span>
+64:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_staff_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_staff_roles</span>
+65:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000246" class="method-detail">
-        <a name="M000246"></a>
+      <div id="method-M000314" class="method-detail">
+        <a name="M000314"></a>
 
         <div class="method-heading">
-          <a href="#M000246" class="method-signature">
+          <a href="#M000314" class="method-signature">
           <span class="method-name">student_role_ids</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000246-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000246-source">
+            onclick="toggleCode('M000314-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000314-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 133</span>
-133:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">student_role_ids</span>
-134:     <span class="ruby-ivar">@student_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">student_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
-135:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 158</span>
+158:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">student_role_ids</span>
+159:     <span class="ruby-ivar">@student_role_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">student_roles</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)
+160:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000233" class="method-detail">
-        <a name="M000233"></a>
+      <div id="method-M000299" class="method-detail">
+        <a name="M000299"></a>
 
         <div class="method-heading">
-          <a href="#M000233" class="method-signature">
+          <a href="#M000299" class="method-signature">
           <span class="method-name">student_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000233-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000233-source">
+            onclick="toggleCode('M000299-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000299-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 53</span>
-53:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">student_roles</span>
-54:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_student_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_student_roles</span>
-55:   <span class="ruby-keyword kw">end</span>
-</pre>
-          </div>
-        </div>
-      </div>
-
-      <div id="method-M000235" class="method-detail">
-        <a name="M000235"></a>
-
-        <div class="method-heading">
-          <a href="#M000235" class="method-signature">
-          <span class="method-name">subministry_campuses</span><span class="method-args">(top = true)</span>
-          </a>
-        </div>
-      
-        <div class="method-description">
-          <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000235-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000235-source">
-<pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 61</span>
-61:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subministry_campuses</span>(<span class="ruby-identifier">top</span> = <span class="ruby-keyword kw">true</span>)
-62:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@subministry_campuses</span>
-63:       <span class="ruby-ivar">@subministry_campuses</span> = <span class="ruby-identifier">top</span> <span class="ruby-value">? </span>[] <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_campuses</span>
-64:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span>
-65:         <span class="ruby-ivar">@subministry_campuses</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">subministry_campuses</span>(<span class="ruby-keyword kw">false</span>)
-66:       <span class="ruby-keyword kw">end</span>
-67:     <span class="ruby-keyword kw">end</span>
-68:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@subministry_campuses</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 67</span>
+67:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">student_roles</span>
+68:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span> <span class="ruby-value">? </span><span class="ruby-identifier">root_student_roles</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">root_student_roles</span>
 69:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
       </div>
 
-      <div id="method-M000236" class="method-detail">
-        <a name="M000236"></a>
+      <div id="method-M000301" class="method-detail">
+        <a name="M000301"></a>
 
         <div class="method-heading">
-          <a href="#M000236" class="method-signature">
+          <a href="#M000301" class="method-signature">
+          <span class="method-name">subministry_campuses</span><span class="method-args">(top = true)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000301-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000301-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 75</span>
+75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subministry_campuses</span>(<span class="ruby-identifier">top</span> = <span class="ruby-keyword kw">true</span>)
+76:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@subministry_campuses</span>
+77:       <span class="ruby-ivar">@subministry_campuses</span> = <span class="ruby-identifier">top</span> <span class="ruby-value">? </span>[] <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_campuses</span>
+78:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ministry</span><span class="ruby-operator">|</span>
+79:         <span class="ruby-ivar">@subministry_campuses</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">ministry</span>.<span class="ruby-identifier">subministry_campuses</span>(<span class="ruby-keyword kw">false</span>)
+80:       <span class="ruby-keyword kw">end</span>
+81:     <span class="ruby-keyword kw">end</span>
+82:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@subministry_campuses</span>
+83:   <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000302" class="method-detail">
+        <a name="M000302"></a>
+
+        <div class="method-heading">
+          <a href="#M000302" class="method-signature">
           <span class="method-name">unique_campuses</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000236-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000236-source">
+            onclick="toggleCode('M000302-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000302-source">
 <pre>
-    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 71</span>
-71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unique_campuses</span>
-72:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@unique_campuses</span>
-73:       <span class="ruby-ivar">@unique_ministry_campuses</span> = <span class="ruby-identifier">ministry_campuses</span>.<span class="ruby-identifier">clone</span>
-74:       <span class="ruby-ivar">@unique_campuses</span> = <span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">clone</span>
-75:       <span class="ruby-identifier">subministry_campuses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mc</span><span class="ruby-operator">|</span> 
-76:         <span class="ruby-ivar">@unique_ministry_campuses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mc</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@unique_campuses</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">mc</span>.<span class="ruby-identifier">campus</span>)
-77:         <span class="ruby-ivar">@unique_campuses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mc</span>.<span class="ruby-identifier">campus</span>
-78:       <span class="ruby-keyword kw">end</span>
-79:     <span class="ruby-keyword kw">end</span>
-80:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@unique_ministry_campuses</span>
-81:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/models/ministry.rb, line 85</span>
+85:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unique_campuses</span>
+86:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@unique_campuses</span>
+87:       <span class="ruby-ivar">@unique_ministry_campuses</span> = <span class="ruby-identifier">ministry_campuses</span>.<span class="ruby-identifier">clone</span>
+88:       <span class="ruby-ivar">@unique_campuses</span> = <span class="ruby-identifier">campuses</span>.<span class="ruby-identifier">clone</span>
+89:       <span class="ruby-identifier">subministry_campuses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mc</span><span class="ruby-operator">|</span> 
+90:         <span class="ruby-ivar">@unique_ministry_campuses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mc</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@unique_campuses</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">mc</span>.<span class="ruby-identifier">campus</span>)
+91:         <span class="ruby-ivar">@unique_campuses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mc</span>.<span class="ruby-identifier">campus</span>
+92:       <span class="ruby-keyword kw">end</span>
+93:     <span class="ruby-keyword kw">end</span>
+94:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@unique_ministry_campuses</span>
+95:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -791,35 +861,35 @@ end
 
       <h3 class="section-bar">Protected Instance methods</h3>
 
-      <div id="method-M000255" class="method-detail">
-        <a name="M000255"></a>
+      <div id="method-M000323" class="method-detail">
+        <a name="M000323"></a>
 
         <div class="method-heading">
-          <a href="#M000255" class="method-signature">
+          <a href="#M000323" class="method-signature">
           <span class="method-name">create_default_roles</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000255-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000255-source">
+            onclick="toggleCode('M000323-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000323-source">
 <pre>
-     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 184</span>
-184:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_default_roles</span>
-185:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span>
-186:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Campus Coordinator'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>)
-187:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Ministry Leader'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">4</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'a student who oversees a campus, eg LINC leader'</span>)
-188:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Missionary'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>)
-189:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Student Leader'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
-190:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Involved Student'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">6</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'we are saying has been attending events for at least 6 months'</span>)
-191:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Student'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">7</span>)
-192:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Registration Incomplete'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">8</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'A leader has registered them, but user has not completed rego and signed the privacy policy'</span>)
-193:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Approval Pending'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">9</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'They have applied, but a leader has not verified their application yet'</span>)
-194:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Honourary Member'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'not a valid student or missionary, but we are giving them limited access anyway'</span>)
-195:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Admin'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)
-196:     <span class="ruby-keyword kw">end</span>
-197:   <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File app/models/ministry.rb, line 209</span>
+209:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_default_roles</span>
+210:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">root?</span>
+211:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Campus Coordinator'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>)
+212:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Ministry Leader'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">4</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'a student who oversees a campus, eg LINC leader'</span>)
+213:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Missionary'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>)
+214:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Student Leader'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
+215:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Involved Student'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">6</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'we are saying has been attending events for at least 6 months'</span>)
+216:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Student'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">7</span>)
+217:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Registration Incomplete'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">8</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'A leader has registered them, but user has not completed rego and signed the privacy policy'</span>)
+218:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Approval Pending'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">9</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'They have applied, but a leader has not verified their application yet'</span>)
+219:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Honourary Member'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span>, <span class="ruby-identifier">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'not a valid student or missionary, but we are giving them limited access anyway'</span>)
+220:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">ministry_roles</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MinistryRole</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">_</span>(<span class="ruby-identifier">:name</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'Admin'</span>, <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:position</span>, <span class="ruby-identifier">:ministry_role</span>) =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>)
+221:     <span class="ruby-keyword kw">end</span>
+222:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

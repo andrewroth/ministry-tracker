@@ -1,5 +1,7 @@
 #require 'json_pure'
 class BadParams < StandardError; end
+
+
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
   layout 'people'
@@ -66,6 +68,8 @@ class TimetablesController < ApplicationController
     end
   end
   
+  # Question: searching for a common time once given a selection of group
+  # members and leaders
   def search
     # Check input parameters
     if params[:member_ids].blank?
@@ -185,14 +189,16 @@ class TimetablesController < ApplicationController
   end
   
   private
-    
+
+    # finds the timetable for @person, or creates a blank one for use
     def get_timetable
       @timetable = @person.timetable || Timetable.new(:person_id => @person.id)
       @person.timetable ||= @timetable
     end
-    
+
+    # initialises a newly created timetable to default values
     def setup_timetable
-      # Create a hash of free times for outut rendering
+      # Create a hash of free times for output rendering
       @free_times = [Array.new, Array.new, Array.new, Array.new, Array.new, Array.new, Array.new]
       @person.free_times.each do |ft|
         # @free_times[bt.day_of_week] << bt.start_time
@@ -205,19 +211,22 @@ class TimetablesController < ApplicationController
       end
       # raise @free_times.inspect
     end
-    
+
+    # returns whether can edit or show current timetable
     def check_authorization
       @can_edit = can_edit_timetable?
       @can_show = can_show_timetable?
     end
-    
+
+    # determines if user can view timetable being requested
     def can_show_timetable?
       # a user can see a timetable if it is one of their's
       @me.id == params[:person_id].to_i
       # or the have permission
 #        || authorized?('show', 'timetables')
     end
-    
+
+    # determines if user can edit timetable being requested
     def can_edit_timetable?
       can_show_timetable?
     end

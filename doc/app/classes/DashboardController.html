@@ -80,6 +80,23 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <p>
+Provides the following information:
+</p>
+<ul>
+<li>Count of people in ministry
+
+</li>
+<li>movement count (definition unclear)
+
+</li>
+<li>names of newest people added
+
+</li>
+</ul>
+
+    </div>
 
 
    </div>
@@ -88,7 +105,7 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000096">index</a>&nbsp;&nbsp;
+      <a href="#M000131">index</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -110,23 +127,32 @@
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000096" class="method-detail">
-        <a name="M000096"></a>
+      <div id="method-M000131" class="method-detail">
+        <a name="M000131"></a>
 
         <div class="method-heading">
-          <a href="#M000096" class="method-signature">
+          <a href="#M000131" class="method-signature">
           <span class="method-name">index</span><span class="method-args">()</span>
           </a>
         </div>
       
         <div class="method-description">
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000096-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000096-source">
+            onclick="toggleCode('M000131-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000131-source">
 <pre>
-   <span class="ruby-comment cmt"># File app/controllers/dashboard_controller.rb, line 3</span>
-3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
-4:   <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File app/controllers/dashboard_controller.rb, line 7</span>
+ 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+ 8:     <span class="ruby-ivar">@people_in_ministries</span> = <span class="ruby-constant">MinistryInvolvement</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;#{_(:ministry_id, :ministry_involvement)} IN(?)&quot;</span>, <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministries</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>)])
+ 9:     <span class="ruby-ivar">@movement_count</span> = <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">count</span>
+10:   
+11:     <span class="ruby-ivar">@ministry_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@my</span>.<span class="ruby-identifier">ministry_involvements</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:ministry_id</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+12:       
+13:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@ministry</span>.<span class="ruby-identifier">campus_ids</span>.<span class="ruby-identifier">present?</span>
+14:       <span class="ruby-ivar">@newest_people</span> = <span class="ruby-constant">Person</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{MinistryInvolvement.table_name}.&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-identifier">:ministry_id</span>, <span class="ruby-identifier">:ministry_involvement</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; IN (#{@ministry_ids}) OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})&quot;</span>,
+15:                                          <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{_(:created_at, :person)} desc&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">4</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:ministry_involvements</span>, <span class="ruby-identifier">:campus_involvements</span>])
+16:     <span class="ruby-keyword kw">end</span>
+17:   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

@@ -1,3 +1,5 @@
+# Seems to handle the registering of users as a developer, which apparently
+# gives them added benefits
 class DevelopersController < ApplicationController
   # GET /developers
   # GET /developers.xml

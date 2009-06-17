@@ -1,3 +1,7 @@
+# CRUD for training categories.
+#
+# Question: Apparently training categories have questions associated with them,
+# what's that?
 class TrainingCategoriesController < ApplicationController
   in_place_edit_for :training_category, :name
   layout 'manage'

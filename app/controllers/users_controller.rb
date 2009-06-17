@@ -1,3 +1,5 @@
+# CRUD for users
+
 class UsersController < ApplicationController
   filter_parameter_logging :password
   # GET /users

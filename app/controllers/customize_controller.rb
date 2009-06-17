@@ -1,3 +1,4 @@
+# Shows and reorders training categories
 class CustomizeController < ApplicationController
   layout 'manage'
   def show

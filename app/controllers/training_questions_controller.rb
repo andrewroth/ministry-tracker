@@ -1,3 +1,6 @@
+# CRUD for training questions. Questions are associated with ministries,
+# not campuses.
+
 class TrainingQuestionsController < ApplicationController
   before_filter :get_training_question, :only => [:update, :destroy]
   
@@ -81,7 +84,9 @@ class TrainingQuestionsController < ApplicationController
     def get_training_question
       @training_question = TrainingQuestion.find(params[:id])
     end
-    
+
+    # Question: does this involve sending out correspondences asking people
+    # a given question?
     def activate_question(mandate = false)
       unless @ministry.active_training_questions.include?(@training_question)
         tqa = TrainingQuestionActivation.new(:mandate => mandate)

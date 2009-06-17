@@ -1,3 +1,5 @@
+# DELETE CANDIDATE
+# All commented out. Necessary to preserve?
 class FilesController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :only => :progress
   
