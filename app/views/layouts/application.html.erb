@@ -46,11 +46,13 @@
 			<%- end -%>
 			<div class="clear">&nbsp;</div>
 			
-			<%- if flash[:notice] %><div class="flash notice" id="flash_notice"><%= flash[:notice] %></div><%- end %>
-			<%- if flash[:warning] %><div class="flash warning" id="flash_warning"><%= flash[:warning] %></div><%- end %>
-			
-			
-			
+			<%- if flash[:notice] %>
+        <div class="flash notice" id="flash_notice"><%= flash[:notice] %></div>
+      <%- end %>
+			<%- if flash[:warning] %>
+        <div class="flash warning" id="flash_warning"><%= flash[:warning] %></div>
+      <%- end %>
+      
 			<div id="content">
 				<%= yield %>
 				<div class="clear">&nbsp;</div>

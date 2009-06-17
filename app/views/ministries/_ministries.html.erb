@@ -42,13 +42,13 @@
         var tree = new Tree.TreePanel({
             el:'tree-div',
             region:'west',
-            width:300,
+            width:230,
             split:true,
             autoScroll:true,
             animate:true,
             // enableDD:true,
             containerScroll: true,
-            loader: new Tree.TreeLoader({dataUrl: '/ministries/list'})
+            loader: new Tree.TreeLoader({dataUrl: '<%= url_for :controller => 'ministries', :action => 'list' %>'})
         });
         
         var root = new Tree.AsyncTreeNode({
@@ -96,7 +96,7 @@
           // what to do on drag/drop
           tree.on('beforenodedrop', function(e){
             ajax.request({
-              url:'/ministries/set_parent',
+              url:'<%= url_for :controller => 'ministries', :action => 'set_parent' %>',
               method: 'POST',
               params:{parent_id:e.target.id, id:e.dropNode.id}
             })
@@ -104,7 +104,7 @@
           //       
           // // // What to do when a ministry is clicked
           tree.on('click', function(e){
-            $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '/ministry_campuses/list'});
+            $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '<%= url_for :controller => 'ministry_campuses', :action => 'list' %>'});
           });
           //       
           // render the tree

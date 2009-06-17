@@ -1,29 +1,12 @@
 <%# locals %>
 <%# ministry_school_year - The current MinistrySchoolYear we're editing %>
 
+<%= error_messages_for :ministry_school_year, :term %>
 
-<% form_for ministry_school_year do |msyf| %>
-<table cellpadding="0" cellspacing="0">
-  <thead>
-    <tr>
-      <td>Name</td>
-      <td>Start</td>
-      <td>End</td>
-      <td>Notify</td>
-      <td>Default</td>
-    </tr>
-  </thead>
-  <tbody id="school_terms">
-    <tr>
-      <% msyf.fields_for :terms do |tf| %>
-        <td><% tf.text_field :name %></td>
-        <td><% tf.calendar_date_select :start %></td>
-        <td><% tf.calendar_date_select :start %></td>
-        <td><% tf.calendar_date_select :start %></td>
-        <td><% tf.check_box :default %></td>
-      <% end %>
-    </tr>
-  </tbody>
-      
-</table>
-<% end %>
+<%= render :partial => "ministry_school_years/title", :object => ministry_school_year %>
+
+<%= render :partial => "ministry_school_years/dates", :object => ministry_school_year %>
+
+<%= render :parital => "ministry_school_years/next_year", :object => ministry_school_year if ministry_school_year.next %>
+
+<%= render :partial => "ministry_school_years/terms", :object => ministry_school_year %>

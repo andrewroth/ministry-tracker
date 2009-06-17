@@ -1,0 +1,2 @@
+page.replace_html "flash_notice", "#{flash[:notice]} test"
+page.replace dom_id(@term), :partial => 'edit', :object => @term

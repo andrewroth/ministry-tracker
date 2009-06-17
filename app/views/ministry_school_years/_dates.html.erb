@@ -1,0 +1,23 @@
+<% ministry_school_year ||= dates %>
+
+<div id="<%= dom_id(ministry_school_year) %>"class="dates">
+  <% form_for ministry_school_year do |msyf| %>
+    
+    <%= msyf.error_messages %>
+    
+    <p>
+      <%= msyf.label :start %>
+      <%= msyf.date_select :start, :no_button => true  %>
+    </p>
+    <p>
+      <%= msyf.label :end %>
+      <%= msyf.date_select :end, :no_button => true %>
+    </p>
+
+    <%= submit_to_remote "save_btn", "Save",
+        :url => ministry_school_year_path(ministry_school_year),
+        :method => :put,
+        :before => 'show_spinner',
+        :complete => 'hide_spinner' %>
+  <% end %>
+</div>

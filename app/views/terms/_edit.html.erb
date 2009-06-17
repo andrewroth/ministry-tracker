@@ -1,0 +1,24 @@
+<% term ||= edit %>
+
+        <div id="<%= dom_id term %>" class="edit">
+          <% form_for 'term[]', term do |f| %>
+          <%= f.error_messages %>
+          <span class="delete>
+              <%= link_to_remote image_tag('delete.png', :alt => "Delete Term", :title => "Delete Term"), 
+                :url => term_path(term), 
+                :method => :delete,
+                :confirm => "Are you sure you want to delete this term?",
+                :success => "$('##{dom_id(term)}').hide()" %>
+          </span>
+          <span class="save">
+            <%= submit_to_remote 'save_btn', "Save",
+                :url => url_for( :controller => 'terms', :action => 'update', :id => term.id ),
+                :method => :put %>
+          </span>
+          <span class="name"><%= f.text_field :name, :size => 8 %></span>
+          <span class="start"><%= f.date_select :start, :size => 8, :no_button => true %></span>
+          <span class="end"><%= f.date_select :end, :size => 8, :no_button => true %></span>
+          <span class="notify"><%= f.date_select :verify_at, :size => 8, :no_button => true %></span>
+          <span class="default"><%= f.check_box :default %></span>
+          <% end %>
+        </div>

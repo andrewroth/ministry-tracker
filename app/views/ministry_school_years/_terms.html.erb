@@ -1,0 +1,27 @@
+<% ministry_school_year ||= terms %>
+
+<div id="terms">
+  <div class="title">
+    Terms
+  </div>
+  <div class="head">
+    <span class="delete"></span>
+    <span class="save"></span>
+    <span class="name">Name</span>
+    <span class="start">Start</span>
+    <span class="end">End</span>
+    <span class="notify">Notify</span>
+    <span class="default">Default</span>
+  </div>
+  <div id="terms">
+      <%= render :partial => 'terms/show',
+                 :collection => ministry_school_year.terms %>
+  </div>
+  
+  <%= link_to_remote "+ Add Term",
+      :url => {
+        :controller => "ministry_school_years",
+        :action => "add_new_term",
+        :id => ministry_school_year.id } %>
+      
+</div>

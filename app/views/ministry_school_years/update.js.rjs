@@ -1,0 +1,1 @@
+page.replace_html dom_id(@ministry_school_year), :partial => 'dates', :object => @ministry_school_year

@@ -1,10 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :ministry_school_years
-
-  map.resources :campus_terms
-
-  map.resources :terms
-
   map.resources :correspondences, :only => [:index, :show, :destroy], :collection => { :processqueue => :get }, :member => { :rcpt => :get }
 
   map.resources :correspondence_types do |correspondence_types|
@@ -113,6 +107,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :ministry_involvements
 
+  map.resources :ministry_school_years
+  map.resources :terms
+  map.resources :school_terms
 
   # The priority is based upon order of creation: first created -> highest priority.
   
