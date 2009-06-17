@@ -5,7 +5,7 @@ class CreateTerms < ActiveRecord::Migration
       t.boolean :default
       t.date :start
       t.date :end
-      t.integer :ministry_school_years_id
+      t.integer :ministry_school_year_id
       t.date :verify_at
 
       t.timestamps

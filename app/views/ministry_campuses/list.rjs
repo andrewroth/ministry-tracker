@@ -1,2 +1,3 @@
 page['campuses'].replace_html :partial => 'ministry_campuses/campuses'
 page[:ministry].replace_html(:partial => 'ministries/form')
+page['school-years'].replace_html(:partial => 'ministry_school_years/ministry_school_years', :locals => { :ministry  => @ministry })

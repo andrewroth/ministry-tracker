@@ -7,139 +7,82 @@ module ActionView
     module DepotDateHelper
       include AssetTagHelper
       
-      def depot_date_select(options = {})
-        if(options[:id].blank?)
-          options[:id] = options[:name]
+      def depot_date_select_tag(options = {}, html_options = {}, calendar_options = {})
+        
+        error = object && !object.errors.nil? && !object.errors.on(options[:method]).nil?
+
+        html  = ""
+        if error
+          html << %(<div class="fieldWithErrors"> \n)
         end
 
+        add_default_name_and_id(options)
+
+        #FIXME - This is a hack to get the image tag working for a relative url.
+        options[:size] ||= 8 #Default text field size
+        html << self.to_input_field_tag("text", options)
+        html << image_tag("#{ActionController::Base.relative_url_root}#{image_path('calendar.png')}", :id => "#{options['id']}_trigger", :style => "cursor: pointer;", :title => "Date Selector") unless options[:no_button]
+
+
+        calendar_options.replace(options)
+        calendar_options["inputField"] ||= "#{options['id']}"
+        calendar_options["button"] ||= options[:no_button] ? "#{options['id']}" : "#{options['id']}_trigger"
+
+        calendar_options.delete_if do | key, value |
+          [ :name, :class, :id, :object_name, :method ].include? key
+        end
+
+        html << %(<script type="text/javascript">\n)
+        html << "    Calendar.setup\({\n"
+
+        calendar_options.each do | key, value |
+          if(key.to_s.eql?('dateStatusFunc') || !value.instance_of?(String))
+            html << %(        #{key} : #{value},\n )
+          else
+            html << %(        #{key} : "#{value}",\n )
+          end
+        end
+
+        html << %(    }\);\n)
+        html << %(</script>\n)
+
+        if error
+          html << %(</div> \n)
+        end
+
+        html
+      end
+
+      def depot_date_select(options = {}, html_options = {}, calendar_options = {})
         options[:ifFormat] ||= "%Y/%m/%d"
 
-        if value(object) == nil
-          date = ""
-        else
-          date = value(object).strftime(options[:ifFormat])
-        end
+        calendar_options.merge({ :singleClick => true })
 
-        error = object && !object.errors.nil? && !object.errors.on(options[:method]).nil?
-        html  = ""
-        if error
-          html << %(<div class="fieldWithErrors"> \n)
-        end
-        
-        #html << %(<input type="text" name="#{options[:name]}" value="#{date}" class="#{options[:class]} text-input" id="#{options[:id]}" />\n)
-        html << text_field_tag(options[:name], options[:value], options)
-        html << image_tag("calendar.png", :id => "#{options[:id]}_trigger", :style => "cursor: pointer;", :title => "Date Selector")
-        #html << %(<img src="/cmt/images/calendar.png" id="#{options[:id]}_trigger" style="cursor: pointer;" title="Date selector" />\n)
-
-        calendar_options = Hash.new
-        calendar_options.replace(options)
-        calendar_options["inputField"] ||= "#{options[:id]}"
-        calendar_options["button"] ||= "#{options[:id]}_trigger"
-        calendar_options.delete_if { | key, value |
-          [ :name, :class, :id, :object_name, :method ].include? key
-        }
-
-        html << %(<script type="text/javascript">\n)
-        html << %(    Calendar.setup\({\n)
-        calendar_options.each { | key, value |
-          if(key.to_s.eql?('dateStatusFunc') || !value.instance_of?(String))
-            html << %(        #{key} : #{value},\n )
-          else
-            html << %(        #{key} : "#{value}",\n )
-          end
-        }
-#        html << %(        inputField     :    "#{options[:id]}",     // id of the input field\n)
-#        html << %(        ifFormat       :    "%m/%d/%Y",      // format of the input field\n)
-#        html << %(        button         :    "#{options[:id]}_trigger",  // trigger for the calendar, button ID\n)
-        html << %(        singleClick    :    true\n)
-        html << %(    }\);\n)
-        html << %(</script>\n)
-
-        if error
-          html << %(</div> \n)
-        end
-
-        html
+        depot_date_select_tag(options, html_options, calendar_options)
       end
 
-      def depot_datetime_select(options = {})
-        if(options[:id].blank?)
-          options[:id] = options[:name]
-        end
+
+      def depot_datetime_select(options = {}, html_options = {}, calendar_options = {})
 
         options[:ifFormat] ||= "%m/%d/%Y %I:%M %p"
-
-        if value(object) == nil
-          datetime = ""
-        else
-          datetime = value(object).strftime(options[:ifFormat])
-        end
-
-        error = !object.errors.nil? && !object.errors.on(options[:method]).nil?
-        html  = ""
-        if error
-          html << %(<div class="fieldWithErrors"> \n)
-        end
-
-        html << %(<input type="text" name="#{options[:name]}" value="#{datetime}" class="#{options[:class]} text-input" id="#{options[:id]}" />\n)
-        html << %(<img src="/images/calendar.png" id="#{options[:id]}_trigger" style="cursor: pointer;" title="Date & Time selector" />\n)
-
-        calendar_options = Hash.new
-        calendar_options.replace(options)
-        calendar_options["inputField"] ||= "#{options[:id]}"
-        calendar_options["button"] ||= "#{options[:id]}_trigger"
-        calendar_options.delete_if { | key, value |
-          [ :name, :class, :id, :object_name, :method ].include? key
-        }
-
-        html << %(<script type="text/javascript">\n)
-        html << %(    Calendar.setup\({\n)
-        calendar_options.each { | key, value |
-          if(key.to_s.eql?('dateStatusFunc') || !value.instance_of?(String))
-            html << %(        #{key} : #{value},\n )
-          else
-            html << %(        #{key} : "#{value}",\n )
-          end
-        }
-        html << %(        singleClick    :    true, \n)
-        html << %(        showsTime      :    true, \n)
-        html << %(        time24         :    false \n)
-        html << %(    }\);\n)
-        html << %(</script>\n)
-
-        if error
-          html << %(</div> \n)
-        end
-
-        html
-      end
-    end
-
-    module DateHelper
-      def date_select(object_name, method, options = {}, html_options = {})
-        name = options[:name].nil? ? "#{object_name}[#{method}]" : options[:name]
-        id = options[:id].nil? ? "#{object_name}_#{method}" : options[:id]
-        options = options.merge( { :name => name, :id => id, :method => method, :object_name => object_name })
-        InstanceTag.new(object_name, method, self, options.delete(:object)).to_date_select_tag(options)
-      end
-
-      def datetime_select(object_name, method, options = {}, html_options = {})
-        name = options[:name].nil? ? "#{object_name}[#{method}]" : options[:name]
-        id = options[:id].nil? ? "#{object_name}_#{method}" : options[:id]
-        options = options.merge( { :name => name, :id => id, :method => method, :object_name => object_name })
-        InstanceTag.new(object_name, method, self, options.delete(:object)).to_datetime_select_tag(options)
+        
+        calendar_options.merge({ :singleclick => true,
+            :showsTime => true,
+            :time24 => false })
+        
+        depot_date_select_tag(options, html_options, calendar_options)
       end
     end
 
     class InstanceTag #:nodoc:
       include DepotDateHelper
 
-      def to_date_select_tag(options = {})
-        depot_date_select options
+      def to_date_select_tag(options = {}, html_options = {})
+        depot_date_select options, html_options
       end
 
-      def to_datetime_select_tag(options = {})
-        depot_datetime_select options
+      def to_datetime_select_tag(options = {}, html_options = {})
+        depot_datetime_select options, html_options
       end
     end
   end

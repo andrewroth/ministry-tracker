@@ -1,7 +1,7 @@
 <% has_primary_campus_involvement = !@person.primary_campus_involvement.nil? %>
 <%= error_messages_for :person, :current_address, :perm_address %>
-<% remote_form_for @person, :url => person_url(@person), :method => :put do |f| %>
-
+<% remote_form_for @person, :url => person_url(@person), :method => :put  do |f| %>
+  
   <%-# If the country field is set, get campuses from the country %>
   <% if @country %>
   	<table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
@@ -85,4 +85,3 @@
 			"$('#edit_info').hide();$('#info').show()",
 			:class => 'cancel'
 	%>
-<%- end -%>

@@ -3,33 +3,34 @@
 
 <% @ministry_school_year ||= MinistrySchoolYear.new %>
 
-<div id="title">No school year found</div>
-<p>Would you like to create one?</p>
-
-<div id="test"></div>
+<%= render :partial => "ministry_school_years/title", :object => @ministry_school_year %>
 
 <% form_for @ministry_school_year do |f| %>
 <div>
   <%= f.error_messages %>
-  <span>
-    <%= f.label :start %><br />
-    <%= calendar_date_select_tag 'test' %>
-  </span>
-
-  <span>
-    <%= f.label :end %><br />
-    <%#= f.calendar_date_select :end %>
-  </span>
-  </div>
   
-  <%= button_to_remote "Create",
+  <p>No school year found</p>
+  <p>Would you like to create one?</p>
+
+  <p>
+    <%= f.label :start, 'Start of Year' %>
+    <%= f.date_select :start %>
+  </p>
+  <p>
+    <%= f.label :end, 'End of Year' %>
+    <%= f.date_select :end %>
+  </p>
+</div>
+  <br />
+<p>
+  <%= submit_to_remote 'create_btn', "Create",
     :url => { 
-      :controller => 'ministry_school_year',
+      :controller => 'ministry_school_years',
       :action => 'create'
     },
     :before => 'show_spinner();',
     :complete => 'hide_spinner();' %>
+</p>
     
-</div>
 <% end %>
 

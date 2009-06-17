@@ -697,7 +697,7 @@ font-weight:bold;
 line-height:28px;
 }
 
-#campuses, #campus-details {
+#campuses, #campus-details, #school-years {
 	margin: 5px;
 }
 
@@ -936,13 +936,11 @@ border:1px dotted orange;
 }
 
 .fieldWithErrors input {
-  display: block;
 border:1px solid red;
 background:pink;
 }
 
 #errorExplanation {
-  width: 97%;
   border: 1px solid red;
   padding: 7px;
   padding-bottom: 12px;

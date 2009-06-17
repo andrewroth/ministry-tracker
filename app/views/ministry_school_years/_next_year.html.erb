@@ -1,0 +1,9 @@
+<% form_for ministry_school_year do |msyf| %>
+
+<p>Automatically setup next year at: <%= msyf.date_select :create_next_year_at %></p>
+
+<%= button_to_remote "Setup Next Year", 
+      :url => {
+        :controller => 'ministry_school_years',
+        :action => 'new' } %>
+<% end %>

@@ -1,0 +1,2 @@
+page.replace_html "flash_notice", flash[:notice]
+page.replace dom_id(@term), :partial => 'show', :object => @term

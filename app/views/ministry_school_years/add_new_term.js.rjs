@@ -1,0 +1,4 @@
+page.insert_html :bottom, 
+  "terms", 
+  :partial => "terms/edit", 
+  :object => @term

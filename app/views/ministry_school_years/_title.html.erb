@@ -1,0 +1,31 @@
+
+<% ministry_school_year ||= title %>
+
+<%
+  next_year = ministry_school_year.next if ministry_school_year
+  prev_year = ministry_school_year.previous if ministry_school_year
+  %>
+
+
+<div class="title">
+  Year :: 
+  <%= link_to_remote("<", 
+                     :method => :get,
+                     :url => { :action => 'edit', 
+                     :controller => 'ministry_school_years',
+                     :id => prev_year },
+                     :before => "show_spinner()",
+                     :complete => "hide_spinner()" ) if prev_year %>
+  
+  <span id="current_school_year">
+    <%=h ministry_school_year ? ministry_school_year.name : "New Year" %>
+  </span>
+
+  <%= link_to_remote(">",
+                     :method => :get,
+                     :url => { :action => 'edit',
+                      :controller => 'ministry_school_years',
+                      :id => next_year},
+                     :before => "show_spinner()",
+                     :complete => "hide_spinner()" ) if next_year %>
+</div>

@@ -1,0 +1,21 @@
+<% term ||= show %>
+
+        <div id="<%= dom_id term %>" class="show">
+          <span class="delete">
+              <%= link_to_remote image_tag('delete.png', :alt => "Delete Term", :title => "Delete Term"), 
+                :url => term_path(term), 
+                :method => :delete,
+                :confirm => "Are you sure you want to delete this term?",
+                :after => "$('##{dom_id(term)}').hide()" %>
+          </span>
+          <span  class="save">
+            <%= button_to_remote "Edit",
+                  :url => url_for(:controller => :'terms', :action => :'edit',  :id => term.id),
+                  :method => :get %>
+          </span>
+          <span class="name"><%=h term.name %></span>
+          <span class="start"><%=h term.start %></span>
+          <span class="end"><%=h term.end %></span>
+          <span class="verify"><%=h term.verify_at %></span>
+          <span class="default"><%=h term.default %></span>
+        </div>
