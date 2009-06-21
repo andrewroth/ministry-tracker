@@ -1,11 +1,12 @@
-# TODO: it would be better to put these into fixtures and make a task for loading
-# all test fixtures into the current db
+# TODO: delete me
 class MoreInitialData2 < ActiveRecord::Migration
   def self.add_campus(m, c_id)
     m.campuses << Campus.find(c_id) if m.campuses.find_all_by_id(c_id).empty?
   end
 
   def self.up
+    return
+
     if RAILS_ENV == 'development'
       # add a bunch of campuses
       foo = Ministry.find_by_name 'foo'

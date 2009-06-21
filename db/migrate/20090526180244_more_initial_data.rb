@@ -1,3 +1,4 @@
+# TODO: delete me
 class MoreInitialData < ActiveRecord::Migration
 
   def self.username(r, m)
@@ -9,6 +10,8 @@ class MoreInitialData < ActiveRecord::Migration
   end
 
   def self.up
+    return
+
     unless RAILS_ENV == 'development'
       puts "Warning: rails environment is not development, so test users per role were not created."
       return

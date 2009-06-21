@@ -27,7 +27,7 @@ end
 Column.seed(:title) do |c|
   c.title = 'State'
   c.from_clause = 'CurrentAddress'
-  c.select_clause = 'state'
+  c.select_clause = 'state_id'
   c.join_clause = "address_type = 'current'"
 end
 
