@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090613034002) do
+ActiveRecord::Schema.define(:version => 20090622194409) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(:version => 20090613034002) do
   create_table "ministry_campuses", :force => true do |t|
     t.integer "ministry_id"
     t.integer "campus_id"
+    t.integer "tree_head_id"
   end
 
   add_index "ministry_campuses", ["ministry_id", "campus_id"], :name => "index_ministry_campuses_on_ministry_id_and_campus_id", :unique => true
