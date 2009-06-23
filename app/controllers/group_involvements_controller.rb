@@ -12,6 +12,7 @@ class GroupInvolvementsController < ApplicationController
   def joingroup  
     params[:type] = params[:group_involvement][:level]
     params[:group_id] = params[:group_involvement][:group_id]
+    params[:requested] = true # force request for now as security feature
     @group_type_id = params[:gt_id]
     create_group_involvement
     flash[:notice] = "Join request for <b>#{@group.name}</b> group sent!"
@@ -31,7 +32,7 @@ class GroupInvolvementsController < ApplicationController
     render :action => 'request_result' 
   end
   
-  def destroy
+  def destroy 
     if params[:members]
       params[:members].each do |member|
         gi = find_by_person_id_and_group_id(member, params[:id])

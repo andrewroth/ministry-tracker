@@ -10,7 +10,6 @@
 
 <% if is_group_leader(@group) %>
 
-
 <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
 
 <%= link_to_remote 'Remove', {:url => group_involvement_url(@group.id), :method => :delete, 

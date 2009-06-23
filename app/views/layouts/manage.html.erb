@@ -14,7 +14,7 @@
   		<%= link_to 'Ministries', ministries_path %></li>
 		<%- end -%>
 		
-	    <%- if authorized?(:new, :people) -%>
+	    <%- if authorized?(:index, :staff) -%>
 		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
 		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
 	    <%- end -%>

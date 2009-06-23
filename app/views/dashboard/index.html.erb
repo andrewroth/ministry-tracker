@@ -49,6 +49,7 @@ this system, along with any other information we think would be helpful to you.<
 
   <div id="col_1">
   
+    <%- if authorized?(:directory, :people) -%>
     <div class="dashmodule">
       <div class="moduletitle">
         <h2>Search the Directory</h2>
@@ -81,7 +82,7 @@ this system, along with any other information we think would be helpful to you.<
       
       </div>
     </div>
-    
+    <%- end -%>
     
     <div class="dashmodule">
       <div class="moduletitle">
@@ -94,7 +95,7 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
         <ul>
-          <%- if authorized?(:new) -%>
+          <%- if authorized?(:new, :people) -%>
           <li>
             <%= link_to_remote('Add a student', :url => '/people/add_student',
 		                                             :loading => "$('#spinneradd_student').show();",
@@ -104,13 +105,15 @@ this system, along with any other information we think would be helpful to you.<
         		<%= spinner('add_student') %>
           </li>
           <%- end -%>
-          <%- if authorized?(:new, :group) -%>
-          <li><%= link_to('Create a group', groups_path) %></li>
+          <%- if authorized?(:new, :groups) -%>
+            <li><%= link_to('Create a group', groups_path) %></li>
           <%- end -%>
-          <%- if authorized?(:new, :ministry) -%>
-          <li><%= link_to('Create a Ministry', '/manage') %></li>
+          <%- if authorized?(:new, :ministries) -%>
+            <li><%= link_to('Create a Ministry', '/manage') %></li>
           <%- end -%>
-          <li><%= link_to('Go to the Directory', directory_people_path) %></li>
+          <%- if authorized?(:directory, :people) -%>
+            <li><%= link_to('Go to the Directory', directory_people_path) %></li>
+          <%- end -%>
         </ul>
       </div>
     </div>

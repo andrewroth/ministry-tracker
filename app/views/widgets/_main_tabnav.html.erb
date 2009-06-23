@@ -14,12 +14,13 @@
 render_tabnav :main, 
               :html => {:class => 'tablist', :id => 'tablist' } do 
   
-  add_tab do |t|
-   t.named 'Manage'
-   t.titled 'Manage your world'
-   t.links_to :controller => 'manage'
-  end if can_manage
-  
+	if authorized?(:index, :manage)
+    add_tab do |t|
+     t.named 'Manage'
+     t.titled 'Manage your world'
+     t.links_to :controller => 'manage'
+    end #if can_manage
+  end
   
   # @groups = @my.groups.collect {|group| group}
   # add_tab do |t|
@@ -45,12 +46,14 @@ render_tabnav :main,
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
   end 
   
-  add_tab do |t|
-   t.named 'Directory'
-   t.titled 'Directory for ' + @ministry.name
-   t.links_to directory_people_path(:format => :html)
-   t.highlights_on :controller => "people", :action => "directory"
-  end if session[:ministry_id]
+  if authorized?(:directory, :people)
+    add_tab do |t|
+      t.named 'Directory'
+      t.titled 'Directory for ' + @ministry.name
+      t.links_to directory_people_path(:format => :html)
+      t.highlights_on :controller => "people", :action => "directory"
+    end if session[:ministry_id]
+  end
   
   add_tab do |t|
    t.named 'Dashboard'

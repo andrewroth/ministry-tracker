@@ -13,6 +13,7 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
     add_column :ministry_involvements, :ministry_role_id, :integer
     add_column :ministry_roles, :type, :string
     
+=begin
     # Default View
     view = View.create!(:title => 'Default', :default_view => true)
     
@@ -26,9 +27,11 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
     view.columns << Column.create!(:title => 'Email', :from_clause => 'CurrentAddress', :select_clause => "email", :join_clause => "address_type = 'current'")
     view.columns << Column.create!(:title => 'Picture', :from_clause => 'ProfilePicture', :select_clause => "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture", :column_type => 'image')
     view.columns << Column.create!(:title => 'Website', :from_clause => 'Person', :select_clause => "url", :column_type => 'url')
+=end
     
     
     # Ministry
+=begin
     ministry = Ministry.create!(:name => 'Top Level')
     
     MinistryRole.connection.execute("update ministry_roles set position = 1, type = 'StaffRole' where name = 'Director'")
@@ -76,6 +79,7 @@ class AddDescriptionAndPositionToMinistryRole < ActiveRecord::Migration
         MinistryInvolvement.create(:person_id => ci.person_id, :ministry_id => ci.ministry_id, :ministry_role_id => ministry_roles[ci.ministry_id])
       end
     end
+=end
   end
 
   def self.down
