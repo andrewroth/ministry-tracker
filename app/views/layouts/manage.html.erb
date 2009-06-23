@@ -31,11 +31,6 @@
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
     
-    <li<%= ' class="highlighted"' if params[:controller] == "campus trees" %>>
-      <%= link_to(t(:reports, :default => 'Campus Trees'), reports_path) %></li>
-    
-    
-    
   	</ul>
 		<%- if authorized?(:edit, :ministry_roles) -%>
 		<br/><br/>
