@@ -5,6 +5,7 @@ class MinistryCampus < ActiveRecord::Base
     index _(:ministry_id)
   end
   
+  belongs_to :tree_head, :class_name => 'Person'
   belongs_to :ministry
   belongs_to :campus
   
