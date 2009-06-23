@@ -57,6 +57,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :manage
   
+  map.resources :reports
+  
   map.resources :ministry_campuses, :collection => { :list => :any }
 
   map.resources :permissions
