@@ -140,6 +140,7 @@ module AuthenticatedSystem
       session[:user] = nil   # keeps the session but kill our variable
       session[:ministry_id] = nil
       session[:ministry_role_id] = nil
+      session[:can_manage] = nil
       # Log out of SSO if we're in it
       if need_cas_logout
         CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)

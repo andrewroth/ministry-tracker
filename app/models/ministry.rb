@@ -183,14 +183,16 @@ class Ministry < ActiveRecord::Base
   def create_first_view
     # For now just copy the first view in the system if there is one
     view = View.find(:first, :order => _(:ministry_id, :view))
-    new_view = view.clone
-    views << view
-    view.view_columns.each do |view_column|
-      new_view.view_columns << view_column.clone
+    if view
+      new_view = view.clone
+      views << view
+      view.view_columns.each do |view_column|
+        new_view.view_columns << view_column.clone
+      end
+      new_view.default_view = true
+      new_view.save!
+      new_view
     end
-    new_view.default_view = true
-    new_view.save!
-    new_view
   end
   
   # Training categories including all the categories higher up on the tree

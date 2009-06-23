@@ -1,6 +1,6 @@
 class MinistriesController < ApplicationController
   layout 'manage'
-  skip_before_filter :authorization_filter, :only => [:list]
+  #skip_before_filter :authorization_filter, :only => [:list]
 
   def index
     setup_ministries
