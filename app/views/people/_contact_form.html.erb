@@ -1,40 +1,47 @@
-	<strong>Current Address</strong><br />
+	
+  
+<strong>Current Address</strong><br />
+  
+<%- fields_for :current_address do |caf| -%>
 	<table>
 	<tr>
 		<td>Address 1: </td>
-		<td><%= text_field :current_address, :address1 %></td>
+		<td><%= caf.text_field :address1 %></td>
 	</tr>
 	<% if @use_address2 -%>
 	<tr>
 		<td>Address 2: </td>
-		<td><%= text_field :current_address, :address2 %></td>
+		<td><%= caf.text_field :address2 %></td>
 	</tr>
 	<% end -%>
 	<tr>
 		<td>City: </td>
-		<td><%= text_field :current_address, :city %></td>
+		<td><%= caf.text_field :city %></td>
 	</tr>
 	<tr>
     <% #TODO: proper ajax filtering of countries and states
     %>
 		<td>Country: </td>
-		<td><%= select :current_address, :state, options_from_collection_for_select(@countries, 'id','country') %></td>
+		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@countries, 'id','country') %></td>
 	</tr>
 	<tr>
 		<td>State: </td>
-		<td><%= select :current_address, :state, options_from_collection_for_select(@states, 'id','name') %></td>
+		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@states, 'id','name') %></td>
 	</tr>
 	<tr>
 		<td>Zip: </td>
-		<td><%= text_field :current_address, :zip %></td>
+		<td><%= caf.text_field :zip %></td>
 	</tr>
 	<tr>
 		<td>Main Phone: </td>
-		<td><%= text_field :current_address, :phone %></td>
+		<td><%= caf.text_field :phone %></td>
 	</tr>
 	<tr>
 		<td>Second Phone: </td>
-		<td><%= text_field :current_address, :alternate_phone %></td>
+		<td><%= caf.text_field :alternate_phone %></td>
 	</tr>
 	</table>
+<%- end -%>
 	
+  
+ 
