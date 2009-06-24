@@ -1,3 +1,15 @@
-This is not a partial
-<br>
-<%= render :partial => 'tree' %>
+<%- cur_min_camp = MinistryCampus.find_by_campus_id_and_ministry_id (@ministry.campuses.find(:first).id, @ministry.id) -%>
+<%- cur_tree_head = cur_min_camp.tree_head -%>
+<%- cur_camp = cur_min_camp.campus -%>
+
+You are currently look at the Responsible Person Tree for <%= cur_camp.name %> in <%= @ministry.name %>. <br />
+
+<%- if cur_tree_head -%>
+  The head if this campuses tree is <%= cur_tree_head.full_name %>
+<%- else -%>
+  This tree does not have a head.
+<%- end -%>
+
+<br />
+<br />
+<%= render :partial => 'tree', :locals => {:head => cur_tree_head} %>
