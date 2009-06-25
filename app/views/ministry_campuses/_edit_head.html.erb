@@ -1,0 +1,7 @@
+<% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
+  <table>
+    <tr><th>Tree Head:</th> 
+    <td><%= select_tag(:tree_head_id, options_from_collection_for_select(@possible_tree_heads, 'id', 'full_name'))%>
+  <% end %></td></tr>
+  </table
+<%= submit_tag "Go" %>
