@@ -79,14 +79,21 @@ class MinistriesController < ApplicationController
     flash[:warning] = "You can't delete a top level ministry" if @old_ministry == @old_ministry.root
     
     # We don't want users deleting ministries with children. The world already has enough orphans
+    #^^^ Tee hee! 
     flash[:warning] = "You can't delete a ministry that has sub-ministries" unless @old_ministry.children.empty?
     if @old_ministry.deleteable?
       # if the active ministry is the one being deleted, we need a new active ministry
       if session[:ministry_id].to_i == @old_ministry.id
         @ministry = @ministry.parent
         session[:ministry_id] = @ministry.id
+        session[:ministry_role_id] = @my.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.id
       end
-      @old_ministry.destroy 
+      old_mi = MinistryInvolvement.find(:all, :conditions => {:ministry_id => @old_ministry.id})
+      #old_mi.each do |cur_old_mi|
+        #cur_old_mi.destory
+      #end 
+      flash[:notice] = 'Ministry Involvements destroyed.'
+      @old_ministry.destroy
       setup_ministries
       flash[:notice] = 'Ministry was successfully DELETED.'
       respond_to do |format|
