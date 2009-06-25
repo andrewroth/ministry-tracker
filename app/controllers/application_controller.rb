@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
         @user_permissions ||= {}
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
-        if session[:ministry_role_id].nil?
+        if session[:ministry_role_id].nil? .
           mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
           session[:ministry_role_id] = mi ? mi.ministry_role_id : false
         end
