@@ -86,12 +86,8 @@ class MinistriesController < ApplicationController
       if session[:ministry_id].to_i == @old_ministry.id
         @ministry = @ministry.parent
         session[:ministry_id] = @ministry.id
-        session[:ministry_role_id] = @my.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.id
       end
       old_mi = MinistryInvolvement.find(:all, :conditions => {:ministry_id => @old_ministry.id})
-      #old_mi.each do |cur_old_mi|
-        #cur_old_mi.destory
-      #end 
       flash[:notice] = 'Ministry Involvements destroyed.'
       @old_ministry.destroy
       setup_ministries
