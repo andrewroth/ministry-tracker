@@ -4,19 +4,19 @@ class ReportsController < ApplicationController
   
 
   def index
- 
-  
-    @cur_min_camp = MinistryCampus.find_by_campus_id_and_ministry_id(@ministry.campuses.find(:first).id, @ministry.id) 
-    
-    if @cur_min_camp
-      @cur_tree_head = @cur_min_camp.tree_head
-    end
-    if @cur_min_camp 
-      @cur_camp = @cur_min_camp.campus
-    end
     @possible_tree_heads = []
-    get_possible_tree_heads
+    if @ministry.campuses.find :first
+      @cur_min_camp = MinistryCampus.find_by_campus_id_and_ministry_id(@ministry.campuses.find(:first).id, @ministry.id) 
     
+      if @cur_min_camp
+        @cur_tree_head = @cur_min_camp.tree_head
+      end
+      if @cur_min_camp 
+        @cur_camp = @cur_min_camp.campus
+      end
+      @possible_tree_heads = []
+      get_possible_tree_heads
+    end
     
   end
 
