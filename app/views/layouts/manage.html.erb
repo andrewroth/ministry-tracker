@@ -31,8 +31,11 @@
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
     
+   <%- if @ministry.campuses.find :first -%>
     <li<%= ' class="highlighted"' if params[:controller] == "campus trees" %>>
-      <%= link_to(t(:reports, :default => 'Campus Trees'), reports_path) %></li>
+      <%= link_to "Campus Trees", 
+                  ministry_campus_path(@ministry.campuses.find(:first).id) %></li>
+   <%- end -%>
     
     
   	</ul>

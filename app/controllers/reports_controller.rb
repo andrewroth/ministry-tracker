@@ -14,7 +14,6 @@ class ReportsController < ApplicationController
       if @cur_min_camp 
         @cur_camp = @cur_min_camp.campus
       end
-      @possible_tree_heads = []
       get_possible_tree_heads
     end
     
@@ -24,6 +23,7 @@ class ReportsController < ApplicationController
   
   private
   def get_possible_tree_heads
+    @possible_tree_heads = []
     min_people = @ministry.people
     min_camp_people = []
     min_people.each do |person|
