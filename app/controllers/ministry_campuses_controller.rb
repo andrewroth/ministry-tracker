@@ -51,6 +51,24 @@ class MinistryCampusesController < ApplicationController
     end
   end
   
+  def update
+    if params
+      if params[:tree_head_id] && params[:id]
+        cur_min_camp = MinistryCampus.find_by_id(params[:id])
+        cur_min_camp.tree_head_id = params[:tree_head_id]
+        cur_min_camp.save
+        flash[:notice] = cur_min_camp.campus.name + "'s tree head was changed."
+      end
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            update_flash(page)
+          end
+        end
+      end
+    end
+  end
+  
   def destroy
     @ministry_campus = MinistryCampus.find(params[:id])
     @campus = @ministry_campus.campus
