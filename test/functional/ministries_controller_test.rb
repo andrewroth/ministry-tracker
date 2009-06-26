@@ -66,12 +66,12 @@ class MinistriesControllerTest < ActionController::TestCase
   end
   
   def test_delete_removes_only_ministrys_roles
-    xhr :delete, :destroy, :id => 3 #chicago
+    xhr :delete, :destroy, :id => 3
     assert_response :success
-    assert MinistryRole.find_by_ministry_id(3).nil?
-    assert MinistryRole.find_by_ministry_id(1)
-    assert MinistryRole.find_by_ministry_id(6)
-    #assert_equal 8, MinistryRole.find(:all).count 
+    assert_nil Ministry.find_by_id(3)
+    assert MinistryRole.find_by_ministry_id(6) #passes
+    assert MinistryRole.find_by_ministry_id(1) #this fails
+    assert MinistryRole.find_by_ministry_id(3).nil? # this too, but is blocked by the above fail.
   end
   
   
