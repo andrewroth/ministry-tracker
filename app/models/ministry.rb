@@ -13,9 +13,9 @@ class Ministry < ActiveRecord::Base
   
   has_many :ministry_roles, :order => _(:position, :ministry_role)
   has_many :permissions, :through => :ministry_roles, :source => :ministry_role_permissions
-  has_many :student_roles, :order => _(:position, :ministry_role)
-  has_many :staff_roles, :order => _(:position, :ministry_role)
-  has_many :other_roles, :order => _(:position, :ministry_role)   
+  has_many :student_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
+  has_many :staff_roles, :dependent => :destroy, :order => _(:position, :ministry_role)
+  has_many :other_roles, :dependent => :destroy, :order => _(:position, :ministry_role)   
   has_many :campus_involvements
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
