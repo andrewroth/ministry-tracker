@@ -65,6 +65,17 @@ class MinistriesControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  def test_delete_removes_only_ministrys_roles
+    xhr :delete, :destroy, :id => 3 #chicago
+    assert_response :success
+    assert MinistryRole.find_by_ministry_id(3).nil?
+    assert MinistryRole.find_by_ministry_id(1)
+    assert MinistryRole.find_by_ministry_id(6)
+    #assert_equal 8, MinistryRole.find(:all).count 
+  end
+  
+  
+  
   def test_parent_form
     xhr :post, :parent_form
     assert_response :success
