@@ -71,7 +71,7 @@ class MinistriesControllerTest < ActionController::TestCase
     assert_nil Ministry.find_by_id(3)
     assert MinistryRole.find_by_ministry_id(6) #passes
     assert MinistryRole.find_by_ministry_id(1) #this fails
-    assert MinistryRole.find_by_ministry_id(3).nil? # this too, but is blocked by the above fail.
+    assert_nil MinistryRole.find_by_ministry_id(3) # this too, but is blocked by the above fail.
   end
   
   
