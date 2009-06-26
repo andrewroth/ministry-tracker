@@ -52,19 +52,24 @@ class MinistryCampusesController < ApplicationController
   end
   
   def update
-    if params
-      if params[:tree_head_id] && params[:id]
-        cur_min_camp = MinistryCampus.find_by_id(params[:id])
-        cur_min_camp.tree_head_id = params[:tree_head_id]
-        cur_min_camp.save
-        flash[:notice] = cur_min_camp.campus.name + "'s tree head was changed."
+      if params[:new_camp]
+        flash[:notice] = "Campus switched"
+        show_id = params[:new_camp]
+      else
+        if params[:tree_head_id]
+          cur_min_camp = MinistryCampus.find_by_id(params[:id])
+          cur_min_camp.tree_head_id = params[:tree_head_id]
+          cur_min_camp.save
+          flash[:notice] = cur_min_camp.campus.name + "'s tree head was changed."
+        end
+        show_id = params[:id]
       end
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            page.redirect_to (:action => 'show')
-            update_flash(page)
-          end
+          
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.redirect_to (:action => 'show', :id => show_id)
+          update_flash(page)
         end
       end
     end
@@ -87,26 +92,10 @@ class MinistryCampusesController < ApplicationController
   
   
   def show
-  
-    set_min_camps
-    
+      @cur_min_camp = MinistryCampus.find_by_id params[:id]
+      set_min_camps
+      
   end 
-  
-  def change_campus
-  end
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   protected
   
@@ -116,11 +105,6 @@ class MinistryCampusesController < ApplicationController
   
   def set_min_camps
     @possible_tree_heads = []
-    unless @cur_min_camp
-      if @ministry.campuses.find :first
-        @cur_min_camp = MinistryCampus.find_by_campus_id_and_ministry_id(@ministry.campuses.find(:first).id, @ministry.id)
-      end
-    end
     if @cur_min_camp
       @cur_tree_head = @cur_min_camp.tree_head
       @cur_camp = @cur_min_camp.campus

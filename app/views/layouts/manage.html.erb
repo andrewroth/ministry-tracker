@@ -34,7 +34,7 @@
    <%- if @ministry.campuses.find :first -%>
     <li<%= ' class="highlighted"' if params[:controller] == "campus trees" %>>
       <%= link_to "Campus Trees", 
-                  ministry_campus_path(@ministry.campuses.find(:first).id) %></li>
+                  ministry_campus_path(@ministry.ministry_campuses.find(:first).id) %></li>
    <%- end -%>
     
     

@@ -1,14 +1,26 @@
 
 <%- if @cur_min_camp -%>
 
-  You are currently look at the Responsible Person Tree for <%= @cur_camp.name %> in <%= @ministry.name %>. <br />
+  You are currently look at the Responsible Person Tree for <%= @cur_min_camp.campus.name %> in <%= @ministry.name %>. <br />
+  <br />
+  <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
+  <table>
+    <tr><th>Campus:</th> 
+    
+    <td><%= select_tag(:new_camp, 
+                      options_from_collection_for_select(@ministry.ministry_campuses, 
+                                                          'id', 'campus_name'))%>
+  <% end %></td></tr>
+  </table>
+  <%= submit_tag "Switch Campuses" %>
+  <br />
+  <br />
   
   <%- if @cur_tree_head -%>
-    The head if this campuses tree is <%= @cur_tree_head.full_name %> <br />
+    The head if this campus' tree is <%= @cur_tree_head.full_name %> <br />
   <%- else -%>
       This tree does not have a head.
   <%- end -%>
-      
   <%= render :partial => 'edit_head' %>
 
   <br />

@@ -12,4 +12,9 @@ class MinistryCampus < ActiveRecord::Base
   def <=>(mc)
     self.campus.name <=> mc.campus.name
   end
+  
+  def campus_name
+    self.campus.name
+  end
+  
 end
