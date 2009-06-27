@@ -1,3 +1,4 @@
+
 class GroupType < ActiveRecord::Base
   load_mappings
   index _(:id) if $cache

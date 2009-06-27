@@ -1,3 +1,4 @@
+# Belongs to a training category and associated with training answers
 class TrainingQuestion < ActiveRecord::Base
   load_mappings
   has_many :training_answers, :dependent => :destroy

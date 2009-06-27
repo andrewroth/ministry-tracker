@@ -1,6 +1,8 @@
 require 'faster_csv'
 require 'roo'
 require 'person_methods'
+
+# I think this is for mass-import of contacts.
 class Import < ActiveRecord::Base
   load_mappings
   include PersonMethods

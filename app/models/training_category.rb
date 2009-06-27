@@ -1,3 +1,5 @@
+# Training Category is a container for multiple training questions, and is
+# specific to a ministry
 class TrainingCategory < ActiveRecord::Base  
   load_mappings
   acts_as_list

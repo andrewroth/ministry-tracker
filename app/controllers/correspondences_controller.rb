@@ -1,3 +1,5 @@
+# handles viewing, responding and destruction of  correspondences
+# Question: where are correspondences created?
 class CorrespondencesController < ApplicationController
   layout 'manage'
   # GET /correspondences
@@ -36,6 +38,8 @@ class CorrespondencesController < ApplicationController
   end
 
   # GET /correspondences/1/rcpt
+
+  # processes visits using a receipt token. Redirects users for valid tokens.
   def rcpt
     @correspondence = Correspondence.find(:first, :conditions => { :receipt => params[:id]})
 

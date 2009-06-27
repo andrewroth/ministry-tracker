@@ -1,3 +1,4 @@
+# The types of correspondences possible
 class CorrespondenceType < ActiveRecord::Base
   has_many :email_templates
   has_many :correspondences
@@ -8,6 +9,7 @@ class CorrespondenceType < ActiveRecord::Base
   validates_presence_of _(:expiry_lifespan)
 
   # returns a hash of the redirect_params datafield
+  # Question: Incomplete?
   def redirect_params_hash
 
   end
@@ -23,6 +25,7 @@ class CorrespondenceType < ActiveRecord::Base
     self[:redirect_params] = params_hash
   end
 
+  # Question: Called by?
   def get_available_outcomes
     return ["NOW", "OVERDUE"]
   end

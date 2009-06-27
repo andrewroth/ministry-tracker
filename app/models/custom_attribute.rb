@@ -1,3 +1,4 @@
+# Used by involvement questions
 class CustomAttribute < ActiveRecord::Base
   load_mappings
   

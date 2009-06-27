@@ -58,11 +58,13 @@ class User < ActiveRecord::Base
     password == encrypt(plain_password)
   end
 
+  # Remember token remembers users between browser closures
   def remember_token?
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
 
-  # These create and unset the fields required for remembering users between browser closes
+  # These create and unset the fields required for remembering users between
+  # browser closes
   def remember_me
     remember_me_for 2.weeks
   end
@@ -102,7 +104,7 @@ class User < ActiveRecord::Base
       address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
       person = address.person if address && address.person.user.nil?
       
-      # Attache the found person to the user, or create a new person
+      # Attach the found person to the user, or create a new person
       new_person = first_name ? Person.new(:first_name => first_name, :last_name => last_name) : Person.new
       u.person = person || new_person
       
@@ -143,7 +145,7 @@ class User < ActiveRecord::Base
       address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
       person = address.person if address && address.person.user.nil?
       
-      # Attache the found person to the user, or create a new person
+      # Attach the found person to the user, or create a new person
       new_person = first_name ? Person.new(:first_name => first_name, :last_name => last_name) : Person.new
       u.person = person || new_person
       

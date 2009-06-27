@@ -1,3 +1,5 @@
+# Addresses are stored seperately to a person
+# Question: Why?
 class CurrentAddress < Address
   load_mappings
   validates_format_of   _(:email),

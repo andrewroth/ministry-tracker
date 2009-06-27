@@ -1,3 +1,5 @@
+# Used by correspondence types
+# Question: should many of these methods be in a controller instead of model?
 class EmailTemplate < ActiveRecord::Base
   belongs_to :correspondence_type
   ### Validation

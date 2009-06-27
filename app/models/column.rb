@@ -9,6 +9,7 @@ class Column < ActiveRecord::Base
   validates_presence_of :title
   validates_uniqueness_of :title
   
+  # safe_names replace spaces with underscores
   def safe_name
     title.gsub(' ','_')
   end

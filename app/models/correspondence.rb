@@ -16,6 +16,7 @@ class Correspondence < ActiveRecord::Base
 
   
   # GET /correspondences/processQueue
+  # sends unsent correspondences in the queue and executes any overdue correspondences
   def self.processQueue
     # iterate and process unsent correspondences
     correspondences = Correspondence.find(:all, :joins => { :correspondence_type, :email_templates }, :conditions => ["email_templates.outcome_type = 'NOW' and state = ?", State_Unsent])

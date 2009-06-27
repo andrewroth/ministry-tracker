@@ -1,3 +1,4 @@
+
 class State < ActiveRecord::Base
   load_mappings
 

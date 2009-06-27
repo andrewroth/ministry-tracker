@@ -1,3 +1,4 @@
+# Year in school is a customisable list belonging to ministry?
 class SchoolYear < ActiveRecord::Base
   load_mappings
   acts_as_list

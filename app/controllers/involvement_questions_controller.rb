@@ -3,8 +3,8 @@
 #
 # e.g. "did you come to training on saturday?”, students can answer yes or no...
 #
-# Question: where is the logic? not here...
-
+# Inherits the functionality of custom_attributes, seems to add no additional
+# functionality
 
 class InvolvementQuestionsController < CustomAttributesController
 end

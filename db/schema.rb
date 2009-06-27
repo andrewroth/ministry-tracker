@@ -184,11 +184,11 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
   create_table "email_templates", :force => true do |t|
     t.integer  "correspondence_type_id"
     t.string   "outcome_type"
-    t.string   "subject",                :null => false
-    t.string   "from",                   :null => false
+    t.string   "subject",                :default => "", :null => false
+    t.string   "from",                   :default => "", :null => false
     t.string   "bcc"
     t.string   "cc"
-    t.text     "body",                   :null => false
+    t.text     "body",                                   :null => false
     t.text     "template"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -386,7 +386,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
   end
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
+    t.string   "session_id", :default => "", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -247,6 +247,7 @@ end
     end
   end
   
+  # Question: what is this finding? a user who has the username and email address provided?
   def self.find_exact(person, address)
     # check based on username first
     user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
@@ -266,6 +267,7 @@ end
     return p
   end
   
+  # will import all details existing on gcx profile into the user
   def import_gcx_profile(proxy_granting_ticket)
     service_uri = "https://www.mygcx.org/system/report/profile/attributes"
     proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri).ticket
@@ -299,6 +301,7 @@ end
     self.save(false)
   end
   
+  # Question: what does this help with?
   def most_recent_involvement
     @most_recent_involvement ||= primary_campus_involvement || campus_involvements.last
   end

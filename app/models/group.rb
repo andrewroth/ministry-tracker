@@ -1,3 +1,4 @@
+# Groups are weekly events, like bible studies, discipleship times, main meetings
 class Group < ActiveRecord::Base
   load_mappings
   validates_presence_of :name

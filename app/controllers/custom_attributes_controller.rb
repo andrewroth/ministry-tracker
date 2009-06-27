@@ -1,5 +1,6 @@
 # Question: Seems to create custom attributes, whatever they are.
-# Has a comment about adding a biblestudy to the current ministry
+#
+# Has involvement_questions as a child class
 
 class CustomAttributesController < ApplicationController
   before_filter :get_custom_attribute, :only => ['edit','update','destroy']

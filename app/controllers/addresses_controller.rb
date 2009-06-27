@@ -1,3 +1,4 @@
+# DELETE CANDIDATE
 class AddressesController < ApplicationController
   # GET /addresses
   # GET /addresses.xml

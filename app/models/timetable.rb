@@ -1,3 +1,4 @@
+
 class Timetable < ActiveRecord::Base
   load_mappings
   if $cache
@@ -5,9 +6,14 @@ class Timetable < ActiveRecord::Base
     index _(:person_id)
   end
   
+  # Question: Can one change any of these three constants here and have everything else 
+  # correctly work?
   EARLIEST = 8.hours.to_i
   LATEST = 22.hours.to_i
   INTERVAL = 30.minutes.to_i
+
+  # Weights are for Dan Frett's algorithm, would be incorrect for AJ's alg
+  # Current iteration only uses three states.
   BAD_WEIGHT = 0.0
   POOR_WEIGHT = 0.3
   OK_WEIGHT = 0.7
@@ -17,12 +23,17 @@ class Timetable < ActiveRecord::Base
   POOR_CLASS = 'poor'
   OK_CLASS = 'ok'
   GOOD_CLASS = 'good'
-  
+
+  # defines how many top solutions to display following a 'find common times' search
   DISPLAY_TOP = 5
   
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   has_many :free_times, :class_name => "FreeTime", :foreign_key => _(:timetable_id, :free_time), :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
   
+  # Question: This is coded very much like our old PHP code, should we define 
+  # an object instead and hold these values within the object's instance variables?
+  # Question: If we are not manipulating the data with this search, should it be
+  # in the controller rather than model?
   def self.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, people, leader_ids, assigned = [], iteration = 1, scored_times = [])
     # if scored_times.empty?
       possible_times.each_with_index do |time_slot, i|
@@ -82,7 +93,7 @@ class Timetable < ActiveRecord::Base
   end
 
   def self.setup_timetable(person)
-    # Create a hash of free times for outut rendering
+    # Create a hash of free times for output rendering
     @free_times = [Hash.new, Hash.new, Hash.new, Hash.new, Hash.new, Hash.new, Hash.new]
     unless person.free_times.empty?
       person.free_times.each do |ft|

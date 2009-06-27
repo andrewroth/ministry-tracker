@@ -10,10 +10,13 @@ class Campus < ActiveRecord::Base
   has_many :dorms
   belongs_to :state
   
+  # returns <abbrev> the abbreviated name of campus if it exists, 
+  # otherwise <name> the fullname
   def short_name
     self.abbrv.to_s.empty? ? self.name : self.abbrv
   end
-  
+
+  # Comperable - allows campuses to be compared based on their names
   def <=>(other)
     name <=> other.name
   end

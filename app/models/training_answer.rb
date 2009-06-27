@@ -1,3 +1,4 @@
+# A Training answer is a person-specific response to a training question
 class TrainingAnswer < ActiveRecord::Base
   load_mappings
   belongs_to :person, :class_name => "Person", :foreign_key => _(:id, :person)

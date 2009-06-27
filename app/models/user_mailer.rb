@@ -1,3 +1,4 @@
+# Sends an email to a user after creation of a new account
 class UserMailer < ActionMailer::Base
   def created_student(person, ministry, added_by, password = nil)
     password ||= person.user.plain_password
