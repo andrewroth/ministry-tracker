@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   attr_accessor :plain_password, :password_confirmation
 
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-  validates_length_of       :username,    :within => 6..40
-  validates_uniqueness_of   :username, :case_sensitive => false, :on => :create
+  validates_length_of       _(:username), :within => 6..40
+  validates_uniqueness_of   _(:username), :case_sensitive => false, :on => :create
   before_save :encrypt_password, :create_facebook_hash
   before_create :stamp_created_on
   

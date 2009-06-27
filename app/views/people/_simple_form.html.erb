@@ -36,8 +36,8 @@
   </tr>
     <%- if is_ministry_admin(@ministry, @me) -%>
     <tr>
-    	<td>&nbsp; </td>
-    	<td><%= mf.check_box :admin %> Admin</td>
+    	<td>&nbsp; <%- tooltip do -%> An admin has total access and can edit everything within his/her ministry. Make sure this person understands how the website runs.<%- end -%> </td>
+    	<td><%= mf.check_box :admin %> Admin</td> 
     </tr>
     <%- end -%>
   <%- end -%>

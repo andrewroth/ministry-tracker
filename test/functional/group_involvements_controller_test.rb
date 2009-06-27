@@ -24,7 +24,7 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
   def test_destroy
     old_count = GroupInvolvement.count
     delete :destroy, :id => 1, :members => [50000]
-    assert_equal old_count-1, GroupInvolvement.count
+    assert_equal old_count-2, GroupInvolvement.count
   end
   
   def test_destroy_fail
@@ -38,7 +38,7 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     group2 = Group.find(2)
     old_count_1 = group1.group_involvements.count
     old_count_2 = group2.group_involvements.count
-    post :transfer, :id => group1.id, :transfer_to => group2.id, :members => [50000], :level => 'leader'
+    post :transfer_selected, :id => group1.id, :transfer_to => group2.id, :members => [50000], :level => 'leader'
     assert_equal old_count_1 - 1, group1.group_involvements.count
     assert_equal old_count_2 + 1, group2.group_involvements.count
   end

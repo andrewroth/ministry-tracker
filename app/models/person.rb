@@ -17,24 +17,66 @@ class Person < ActiveRecord::Base
   has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
   has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
-
+  has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
+  has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
+  has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
+ 
+  
+  
   # Address Relationships
   has_many :addresses, :class_name => "Address", :foreign_key => _(:person_id, :address)
   has_one :current_address, :class_name => "CurrentAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'current'"
   has_one :permanent_address, :class_name => "PermanentAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'permanent'"
   has_one :emergency_address, :class_name => "EmergencyAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'emergency1'"
   
-  # Group Involvements  
-  has_many :group_involvements
-  has_many :groups, :through => :group_involvements #, :conditions => _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader')"
+  # Group Involvements
+  # all
+  has_many :all_group_involvements, :class_name => 'GroupInvolvement'
+  has_many :all_groups, :through => :all_group_involvements, 
+    :source => :group
+  # no interested or requests
+  has_many :group_involvements, :conditions => [
+    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader')",
+    _(:requested, :group_involvement) + " != true"
+  ]
+  has_many :groups, :through => :group_involvements
+  # interests
+  has_many :group_involvement_interests, 
+    :class_name => 'GroupInvolvement',
+    :conditions => { 
+      _(:level, :group_involvement) => 'interested',
+      _(:requested, :group_involvement) => [ false, nil ]
+    }
+  has_many :group_interests, :through => :group_involvement_interests,
+    :class_name => 'Group', :source => :group
+  # requests
+  has_many :group_involvement_requests,
+    :class_name => 'GroupInvolvement',
+    :conditions => { _(:requested, :group_involvement) => true }
+  has_many :group_requests, :through => :group_involvement_requests,
+    :class_name => 'Group', :source => :group
   
-  has_many :group_interests, :through => :group_involvements, :source => :group, 
-                            :conditions => _(:level, :group_involvement) + " = 'interested'"
-     
-  #Mentor/Disciple Relationships
-  has_many :disciples, :class_name => "Person", :foreign_key => "mentor_id"
-  belongs_to :mentor, :class_name => "Person"
-  
+  def group_group_involvements(filter, options = {})
+    case filter
+    when :all
+      gis = all_group_involvements
+    when :involved
+      gis = group_involvements
+    when :interests
+      gis = group_involvement_interests
+    when :requests
+      gis = group_involvement_requests
+    end
+    gis_grouped = gis.group_by { |gi| gi.group.group_type }
+    if options[:ministry]
+      gis_grouped.delete_if{ |gt, gis| 
+        gt.ministry != options[:ministry]
+      }
+    end
+    gis_grouped
+  end
+
+
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
   has_many :conferences, :through => :conference_registrations

@@ -1,8 +1,8 @@
 # CRUD for group types of a given ministry 
 
 class GroupTypesController < ApplicationController
-    layout 'manage'
-    before_filter :find_group_type, :only => [:edit, :update, :destroy]
+  layout 'manage'
+  before_filter :find_group_type, :only => [:edit, :update, :destroy]
     
   # GET /group_types
   # GET /group_types.xml

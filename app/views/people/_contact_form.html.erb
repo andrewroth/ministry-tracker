@@ -15,6 +15,12 @@
 		<td><%= text_field :current_address, :city %></td>
 	</tr>
 	<tr>
+    <% #TODO: proper ajax filtering of countries and states
+    %>
+		<td>Country: </td>
+		<td><%= select :current_address, :state, options_from_collection_for_select(@countries, 'id','country') %></td>
+	</tr>
+	<tr>
 		<td>State: </td>
 		<td><%= select :current_address, :state, options_from_collection_for_select(@states, 'id','name') %></td>
 	</tr>

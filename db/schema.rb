@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090602173255) do
+ActiveRecord::Schema.define(:version => 20090610190259) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
     t.string  "address1"
     t.string  "address2"
     t.string  "city"
-    t.string  "state"
+    t.integer "state_id"
     t.string  "zip"
     t.string  "country"
     t.string  "phone"
@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
     t.date    "end_date"
     t.boolean "admin"
     t.integer "ministry_role_id"
+    t.integer "responsible_person_id"
   end
 
   add_index "ministry_involvements", ["person_id"], :name => "index_ministry_involvements_on_person_id"
@@ -498,7 +499,7 @@ ActiveRecord::Schema.define(:version => 20090602173255) do
   create_table "view_columns", :force => true do |t|
     t.string   "view_id"
     t.string   "column_id"
-    t.string   "position"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

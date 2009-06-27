@@ -1,0 +1,44 @@
+
+<%- if !@transfer_notices.nil? && !@transfer_notices.empty? %>
+		<div class="flash notice" id="flash_notice">
+      <% dash = (@transfer_notices.length > 1 ? "-&nbsp;" : "") -%>
+			<%- @transfer_notices.each do |notice|  %>
+        <%= dash %><%= notice %><br/>
+			<%- end %>
+		</div>
+<%- end %>
+
+<% if is_group_leader(@group) %>
+
+
+<%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
+
+<%= link_to_remote 'Remove', {:url => group_involvement_url(@group.id), :method => :delete, 
+												  :with => "#{data}", :confirm => "Are you sure you want to remove these people?",
+													:condition => "$('#transfer_form_member :checked').length > 0 || $('#transfer_form_leader :checked').length > 0
+																				|| $('#transfer_form_co_leader :checked').length > 0 || $('#transfer_form_interested :checked').length > 0"},
+												 {:class => 'small'} %>
+												 
+<%= link_to_remote 'Compare Timetables', {:url => {:controller => 'groups', :action => 'compare_timetables', :id => @group.id} , 
+                          :with => "#{data}", :complete => "location.hash = 'compare';"},
+                          {:class => 'small'} %>
+												 
+<%- tooltip do -%><p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p><%- end -%>
+
+
+
+<br/>
+<div id="transfer"  style="display:none">
+				<br />
+				<%- form_remote_tag({:url => "/group_involvements/transfer_selected/#{@group.id}", :html => {:id => 'transfer_to_form'}}) do -%>
+				Pick a group to transfer the selected people to:<br />
+				<%= select_tag('transfer_to', options_for_select(get_ministry.groups.collect {|bs| [bs.name, bs.id]})) %>
+				<%= link_to_remote 'Go', {:url => "/group_involvements/transfer_selected/#{@group.id}", 
+												  :with => "#{data}"},
+												 {:class => 'small'} %>
+				<br />
+				<%end %>
+</div>
+
+
+<% end %>  

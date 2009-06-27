@@ -46,7 +46,10 @@ ActionController::Routing::Routes.draw do |map|
                                                      :decline_request => :any }
 
   map.resources :groups, :member => {:find_times => :post},
-                         :collection => {:join => :any}
+                         :collection => {:join => :any,
+                                         :compare_timetables => :any,
+                                         :set_start_time => :any,
+                                         :set_end_time => :any}
 
   map.resources :bible_studies, :member => {:transfer => :post}
   
@@ -94,6 +97,7 @@ ActionController::Routing::Routes.draw do |map|
                                           :add_student => :any,
                                           :advanced => :get,
                                           :advanced_search => :post,
+                                          :get_campus_states => :any,
                                           :get_campuses => :any},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
