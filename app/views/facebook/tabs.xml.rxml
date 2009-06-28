@@ -1,0 +1,5 @@
+xml.instruct!
+xml.tabs do
+  xml.tab(:href => '/bible_studies', :title => 'Bible Studies', :slug => 'bs')
+  xml.tab(:href => '/training', :title => 'Training', :slug => 'training') 
+end
