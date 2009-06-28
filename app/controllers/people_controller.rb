@@ -468,8 +468,8 @@ class PeopleController < ApplicationController
   end
   
   # Question: what does it do? Are there customisable views, and this changes
-# the currently used one?
-def change_view
+  # the currently used one?
+  def change_view
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
     session[:order] = nil
@@ -483,11 +483,11 @@ def change_view
     end
   end
   
-# Executes a search according to provided criteria.
-# Guesses if the entry includes a first and last name, splits them out for the search
-# TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
+  # Executes a search according to provided criteria.
+  # Guesses if the entry includes a first and last name, splits them out for the search
+  # TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
 
-def search
+  def search
     # figure out if the search parameter looks like a first or last name only, or both
     @search = params[:search]
     if @search && !@search.empty?
@@ -526,9 +526,8 @@ def search
 	  end
   end
     
-# Question: what does it do?
-def add_student
-    
+  # Question: what does it do?
+  def add_student
     respond_to do |format|
       format.js  do
         render :update do |page|
@@ -664,22 +663,21 @@ def add_student
     @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
   end
     
-    def can_edit_profile
-      if @person == @me || is_ministry_leader
-        return true
-      else 
-        respond_to do |wants|
-          wants.html { redirect_to @person }
-          wants.js  do
-            render :update do |page|
-              page.redirect_to(@person)
-            end
+  def can_edit_profile
+    if @person == @me || is_ministry_leader
+      return true
+    else 
+      respond_to do |wants|
+        wants.html { redirect_to @person }
+        wants.js  do
+          render :update do |page|
+            page.redirect_to(@person)
           end
         end
       end
-        
-      return false
     end
+      
+    return false
   end
     
   def get_profile_person
@@ -697,24 +695,23 @@ def add_student
     @campuses = state_model.try(:campuses) || []
   end
     
-    def setup_campuses
-      @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-      # If the Country is set in config, don't filter by states but get campuses from the country
-      if Cmt::CONFIG[:campus_scope_country] && 
-        (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
-        @no_campus_scope = true
-        @campus_country = c
-        @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
-      else
-        @campus_state = @person.primary_campus.try(:state) || 
-          @person.current_address.try(:state) ||
-          @person.permanent_address.try(:state)
-        @campus_country = @campus_state.try(:country)
-        @campus_states = @campus_country.try(:states) || []
-        @campuses = @campus_state.try(:campuses) || []
-      end
-      @campus_countries = Country.all
+  def setup_campuses
+    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+    # If the Country is set in config, don't filter by states but get campuses from the country
+    if Cmt::CONFIG[:campus_scope_country] && 
+      (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
+      @no_campus_scope = true
+      @campus_country = c
+      @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
+    else
+      @campus_state = @person.primary_campus.try(:state) || 
+        @person.current_address.try(:state) ||
+        @person.permanent_address.try(:state)
+      @campus_country = @campus_state.try(:country)
+      @campus_states = @campus_country.try(:states) || []
+      @campuses = @campus_state.try(:campuses) || []
     end
+    @campus_countries = Country.all
     # If there's no view in the session, get the default view
     @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
     unless @view
