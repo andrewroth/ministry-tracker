@@ -52,40 +52,35 @@ class MinistryCampusesController < ApplicationController
   end
   
   def update
-      if params[:new_camp]
-        flash[:notice] = "Campus switched"
-        show_id = params[:new_camp]
-      else
-        if params[:tree_head_id]
-					@cur_min_camp = MinistryCampus.find_by_id(params[:id])
-					@cur_min_camp.tree_head_id = params[:tree_head_id]
-          @cur_min_camp.save
-					flash[:notice] = @cur_min_camp.campus.name + "'s tree head was changed."
+  		if params[:new_camp]
+			flash[:notice] = "Campus switched"	
+			show_id = params[:new_camp]
+    else
+			if params[:tree_head_id]
+				#saves the new tree head
+				@cur_min_camp = MinistryCampus.find_by_id(params[:id])
+		@cur_min_camp.tree_head_id = params[:tree_head_id]
+        @cur_min_camp.save
+		flash[:notice] = @cur_min_camp.campus.name + "'s tree head was changed."
 										
-					# get everyone who is in this ministry campus
-					min_people = @ministry.people
-					min_camp_people = []
-					min_people.each do |person|
-						if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
-							min_camp_people << person
-						end
-					end
+		# get everyone who is in this ministry campus
+		get_min_camp_people
 					
-					# we now have everyone in this campus_ministry, lets start severing those
-					# who are not under the new tree_head and are not connected to him
-					min_camp_people.each do |person|
-						unless rp_by_head(person)
-							if person.responsible_person
-								cur_mi = person.ministry_involvements.find_by_ministry_id @ministry.id
-								cur_mi.responsible_person_id = nil
-								cur_mi.save
-								#Should send a correspondence saying your RP must be reset
-							end
-						end
+		# we now have everyone in this campus_ministry, lets start severing those
+		# who are not under the new tree_head and are not connected to him
+		@min_camp_people.each do |person|
+					unless rp_by_head(person)
+						if person.responsible_person
+							cur_mi = person.ministry_involvements.find_by_ministry_id @ministry.id
+							cur_mi.responsible_person_id = nil
+							cur_mi.save
+							#Should send a correspondence saying your RP must be reset
+			end
 					end
-        end
-        show_id = params[:id]
+		end
       end
+      show_id = params[:id]
+        end
           
     respond_to do |format|
       format.js do
@@ -114,28 +109,25 @@ class MinistryCampusesController < ApplicationController
   
   
   def show
-      @cur_min_camp = MinistryCampus.find_by_id params[:id]
-      set_min_camps
-      
+		@cur_min_camp = MinistryCampus.find_by_id params[:id]
+    set_min_camps  
   end 
   
-  protected
-  
-  
+  protected 
   
   private
   
-	 def rp_by_head(person = nil)
-    if person.responsible_person
+  	def rp_by_head(person = nil)
+  		if person.responsible_person
 			if person.responsible_person == @cur_min_camp.tree_head
-				true
+  				true
 			else
 				rp_by_head(person.responsible_person)
 			end
 		else
 			false
 		end
-  end
+	end
 	
 	
   def set_min_camps
@@ -147,17 +139,22 @@ class MinistryCampusesController < ApplicationController
     end
   end
   
-  def get_possible_tree_heads
-    min_people = @ministry.people
-    min_camp_people = []
+  def get_min_camp_people
+  	min_people = @ministry.people
+    @min_camp_people = []
     min_people.each do |person|
-      if @cur_camp.people.find :first, :conditions => {:id => person.id}
-        min_camp_people << person
+         if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
+      	@min_camp_people << person
       end
     end
+  end
+  
+  
+  def get_possible_tree_heads
+    get_min_camp_people
     
     #Don't know why this doesn't accept people when I have cur_role_type == "StaffRole", even when it is equal to "StaffRole" Leave it here for now
-    min_camp_people.each do |person|
+    @min_camp_people.each do |person|
     cur_role_type = person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.type
       if cur_role_type #== "StaffRole"
         @possible_tree_heads << person
