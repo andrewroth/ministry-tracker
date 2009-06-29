@@ -17,4 +17,12 @@ class FacebookController < ApplicationController
     render :layout => false
   end
   
+  def install
+    render :nothing => true
+  end
+  
+  def remove
+    render :nothing => true
+  end
+  
 end
