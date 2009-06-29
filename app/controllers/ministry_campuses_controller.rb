@@ -136,6 +136,13 @@ class MinistryCampusesController < ApplicationController
       @cur_tree_head = @cur_min_camp.tree_head
       @cur_camp = @cur_min_camp.campus
       get_possible_tree_heads
+      @no_rp = []
+      @min_camp_people.each do |person|
+      	mi = person.ministry_involvements.find_by_ministry_id @ministry.id
+      	unless mi.responsible_person_id || @cur_min_camp.tree_head == person
+      		@no_rp << person
+      	end
+      end
     end
   end
   

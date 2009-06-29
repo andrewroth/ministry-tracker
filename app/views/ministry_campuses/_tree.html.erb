@@ -5,7 +5,18 @@
     <%= head.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
   <br />
   <%= render :partial => 'children', :locals => {:parent => head, :count => 1} %>
+  <br />
+  <br />
   
+  <%- if @no_rp != [] -%>
+  	<h4>People with no Responsible Person:</h4>
+  	<br />
+  	<%- @no_rp.each do |person| -%>
+  		<%= person.full_name  %>, &nbsp
+  		<%=person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
+  		<br />
+  	<%- end -%>
+  <%- end -%>
   
 <%- else -%>
   Please select a staff from the this campus to be at the top of the Responsible Person Tree.
