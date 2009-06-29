@@ -57,10 +57,32 @@ class MinistryCampusesController < ApplicationController
         show_id = params[:new_camp]
       else
         if params[:tree_head_id]
-          cur_min_camp = MinistryCampus.find_by_id(params[:id])
-          cur_min_camp.tree_head_id = params[:tree_head_id]
-          cur_min_camp.save
-          flash[:notice] = cur_min_camp.campus.name + "'s tree head was changed."
+					@cur_min_camp = MinistryCampus.find_by_id(params[:id])
+					@cur_min_camp.tree_head_id = params[:tree_head_id]
+          @cur_min_camp.save
+					flash[:notice] = @cur_min_camp.campus.name + "'s tree head was changed."
+										
+					# get everyone who is in this ministry campus
+					min_people = @ministry.people
+					min_camp_people = []
+					min_people.each do |person|
+						if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
+							min_camp_people << person
+						end
+					end
+					
+					# we now have everyone in this campus_ministry, lets start severing those
+					# who are not under the new tree_head and are not connected to him
+					min_camp_people.each do |person|
+						unless rp_by_head(person)
+							if person.responsible_person
+								cur_mi = person.ministry_involvements.find_by_ministry_id @ministry.id
+								cur_mi.responsible_person_id = nil
+								cur_mi.save
+								#Should send a correspondence saying your RP must be reset
+							end
+						end
+					end
         end
         show_id = params[:id]
       end
@@ -103,6 +125,19 @@ class MinistryCampusesController < ApplicationController
   
   private
   
+	 def rp_by_head(person = nil)
+    if person.responsible_person
+			if person.responsible_person == @cur_min_camp.tree_head
+				true
+			else
+				rp_by_head(person.responsible_person)
+			end
+		else
+			false
+		end
+  end
+	
+	
   def set_min_camps
     @possible_tree_heads = []
     if @cur_min_camp

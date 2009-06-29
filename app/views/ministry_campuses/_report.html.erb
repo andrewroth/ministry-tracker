@@ -1,7 +1,9 @@
 
 <%- if @cur_min_camp -%>
 
-  You are currently look at the Responsible Person Tree for <%= @cur_min_camp.campus.name %> in <%= @ministry.name %>. <br />
+  Campus: <b> <%= @cur_min_camp.campus.name %> </b> <br />
+  Ministry: <b> <%= @ministry.name %> </b>
+  <br />
   <br />
   <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
   <table>

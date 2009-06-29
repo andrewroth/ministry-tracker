@@ -1,4 +1,6 @@
 <%- if head -%>
+	<h4> Responsible Person Tree: </h4>
+	<br />
     <%= head.full_name %>, &nbsp
     <%= head.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
   <br />
