@@ -10,6 +10,34 @@ before_filter :user_filter
 	
 	
 	def create
+	
+		#will try to send a request to the tree head of this person's ministrty campus
+		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
+		#if this is not possible, we will look for the person with highest ministry role in that ministry.
+		to_promote = Person.find_by_id params[promotee_id]
+		#Trying to find ministry_campus
+		mi = MinistryInvolvement.find_by_id params[ministry_involvement_id] 
+		most_recent_campus_involvement = to_promote.most_recent_involvement
+		active_ministry_campus = MinistryCampus.find_by_campus_id_and_ministry_id most_recent_campus_involvement.campus_id,
+																																						mi.ministry_id
+		if active_ministry_campus.tree_head
+			promoter_id = active_ministry_campus.tree_head_id
+		elsif to_promote.responsible_person
+			if to_promote.responsible_person.responsible_person
+				promoter_id = responsible_person.responsible_person
+			end
+		else
+			## find the person with highest ministry_role in that ministry
+			
+		end
+		
+		###use params passed to create a promotion
+
+		
+		
+		
+		
+		
 		redirect_to :action => 'index', :person_id => params[:person_id]
 	end
 	
@@ -45,8 +73,8 @@ before_filter :user_filter
         render :update do |page|
         	if create
         		page.redirect_to :action => 'create', :person_id => @person.id,
-																						:promotee_id => to_promote.id, 
-																						:ministry_involvement_id => mi_looked_at.id
+																									:promotee_id => to_promote.id, 
+																									:ministry_involvement_id => mi_looked_at.id
         	else
           	page.redirect_to (:action => 'index', :person_id => @person.id)
           end
