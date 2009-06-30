@@ -57,7 +57,7 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
   has_many :promotions
-  has_many :promotions_requests, :class_name => 'Promotion', :foreign_key => "promoter_id"
+  has_many :promotion_requests, :class_name => 'Promotion', :foreign_key => "promoter_id"
   
   
   def group_group_involvements(filter, options = {})
