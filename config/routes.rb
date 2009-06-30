@@ -101,13 +101,12 @@ ActionController::Routing::Routes.draw do |map|
                                           :advanced_search => :post,
                                           :get_campus_states => :any,
                                           :get_campuses => :any},
-                         :has_many => [:timetables] do |person|
+                         :has_many => [:timetables, :promotions] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements
     person.resources :involvement
     person.resources :training
     person.resources :profile_pictures
-    person.resources :promotions
   end                             
                                           
   map.resources :customize

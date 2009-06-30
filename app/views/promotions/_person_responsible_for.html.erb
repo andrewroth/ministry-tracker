@@ -7,5 +7,7 @@
 		<%- else -%>
 			N/A
 		<%- end -%></td>
-<td> Promote Button </td>
+<td>
+      <%= link_to_remote 'Promote', :url => person_promotion_path(@person.id, person.id), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %>
+</td>
 </tr>
