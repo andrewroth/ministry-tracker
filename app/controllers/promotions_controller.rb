@@ -20,7 +20,6 @@ before_filter :user_filter
 		to_promote = Person.find_by_id params[:id]
 		person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 		old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
-		
 		if old_role.position > person_role.position
 			mi_looked_at.ministry_role_id = MinistryRole.find_by_position(old_role.position - 1).id
 			mi_looked_at.save
@@ -45,7 +44,5 @@ before_filter :user_filter
 			redirect_to :action => 'index', :person_id => @me.id
 		end
 	end
-
-	
 
 end
