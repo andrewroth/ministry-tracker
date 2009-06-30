@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  person_id: 1
+  promoter_id: 1
+  ministry_involvement_id: 1
+  answer: MyString
+
+two:
+  person_id: 1
+  promoter_id: 1
+  ministry_involvement_id: 1
+  answer: MyString
