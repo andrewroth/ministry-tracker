@@ -9,6 +9,9 @@
     <li><%= link_to('Training', person_training_index_path(@person), :class => params[:controller] == 'training' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
   <%- end -%>
   <li><%= link_to('Timetable', person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+  
+  <li> <%= link_to 'Promote People', person_promotions_path(@person.id) %> </li>
+  
   </ul>
   </div>
   <%= yield %>

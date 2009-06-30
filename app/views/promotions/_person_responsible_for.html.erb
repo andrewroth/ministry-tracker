@@ -1,0 +1,11 @@
+<% cur_role = person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role %>
+<tr><th><%=person.full_name%></th>
+<td><%= cur_role.name %></td>
+<td><%= cur_role.description %> </td>
+<td><%- if cur_role.position > 1 -%>
+			<%= MinistryRole.find_by_position(cur_role.position - 1).name %>
+		<%- else -%>
+			N/A
+		<%- end -%></td>
+<td> Promote Button </td>
+</tr>

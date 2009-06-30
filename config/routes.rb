@@ -107,6 +107,7 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :involvement
     person.resources :training
     person.resources :profile_pictures
+    person.resources :promotions
   end                             
                                           
   map.resources :customize
