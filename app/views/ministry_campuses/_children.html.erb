@@ -1,0 +1,19 @@
+<% children = parent.people_responsible_for %>
+<%- if children -%>
+  <%- children.each do |child| -%>
+      
+  
+ <% now = 0 %>
+ <%- while now < count -%>
+    &nbsp &nbsp &nbsp
+ <%  now += 1 %>
+ <%- end -%>
+  
+  
+      <%= child.full_name %>, &nbsp
+      <%= child.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
+    <br />
+    <%= render :partial => 'children', :locals => {:parent => child, :count => count + 1} %>
+  <%- end -%>
+<%- end -%>    
+  
