@@ -1,34 +1,30 @@
 <h2> Promote People Your are Responsible For </h2>
 <br />
-<%- if @person -%>
-	<table>	
-		<tr><th><h4>Name</h4></th>
+<table>	
+	<tr><th><h4>Name</h4></th>
+	<td><h4>Current Role</h4></td>
+	<td><h4>Description</h4></td>
+	<td><h4>Next Role</h4></td>
+	<td><h4>Promote?</h4></td>
+	</tr>	
+	<%- @person.people_responsible_for.each do |person| -%>
+		<%= render :partial => 'person_responsible_for', :locals => {:person => person} %>
+	<%- end -%>
+</table>
+<br />
+<br />
+<%- if @person.promotion_requests != []-%>
+	<h3> Promotion Requests </h3>
+	<br>
+	<table>
+		<tr><th><h4>Promotee</h4></th>
 		<td><h4>Current Role</h4></td>
-		<td><h4>Description</h4></td>
 		<td><h4>Next Role</h4></td>
+		<td><h4>Responsible Person</h4><td>
 		<td><h4>Promote?</h4></td>
-		</tr>	
-		<%- @person.people_responsible_for.each do |person| -%>
-			<%= render :partial => 'person_responsible_for', :locals => {:person => person} %>
+		</tr>
+		<%- @person.promotion_requests.each do |promotion| -%>
+			<%= render :partial => 'request', :locals => {:promotion => promotion} %>
 		<%- end -%>
 	</table>
-	<br />
-	<br />
-	<%- if @person.promotion_requests != []-%>
-		<h3> Promotion Requests </h3>
-		<br>
-		<table>
-			<tr><th><h4>Promotee</h4></th>
-			<td><h4>Current Role</h4></td>
-			<td><h4>Next Role</h4></td>
-			<td><h4>Responsible Person</h4><td>
-			<td><h4>Promote?</h4></td>
-			</tr>
-			<%- @person.promotion_requests.each do |promotion| -%>
-				<%= render :partial => 'request', :locals => {:promotion => promotion} %>
-			<%- end -%>
-		</table>
-	<%- end -%>	
-<%- else -%>
-	What are you doing?!
-<%- end -%>
+<%- end -%>	

@@ -7,7 +7,12 @@ before_filter :user_filter
 			@person = Person.find_by_id params[:person_id]
 		end
 	end
-
+	
+	
+	def create
+		redirect_to :action => 'index', :person_id => params[:person_id]
+	end
+	
 	def update
 		#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
 		#to do that, find out what ministry_involvement connects these two people
@@ -21,16 +26,30 @@ before_filter :user_filter
 		person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 		old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 		if old_role.position > person_role.position
-			mi_looked_at.ministry_role_id = MinistryRole.find_by_position(old_role.position - 1).id
-			mi_looked_at.save
-			flash[:notice] = to_promote.full_name + " has been promoted"
+			new_role = MinistryRole.find_by_position(old_role.position - 1)
+			if old_role.type == new_role.type	
+				mi_looked_at.ministry_role_id = new_role.id
+				mi_looked_at.save
+				flash[:notice] = to_promote.full_name + " has been promoted"
+				create = false
+			else 
+				create = true
+				flash[:notice] = "A request has been sent to the head of the Responsible Person tree."
+			end
 		else
 			flash[:notice] = to_promote.full_name + " can not be promoted any higher."
+			create = false
 		end
 		respond_to do |format|
       format.js do
         render :update do |page|
-          page.redirect_to (:action => 'index', :person_id => @person.id)
+        	if create
+        		page.redirect_to :action => 'create', :person_id => @person.id,
+																						:promotee_id => to_promote.id, 
+																						:ministry_involvement_id => mi_looked_at.id
+        	else
+          	page.redirect_to (:action => 'index', :person_id => @person.id)
+          end
           update_flash(page)
         end
       end
