@@ -65,6 +65,17 @@ class MinistriesControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  def test_delete_removes_only_ministrys_roles
+    xhr :delete, :destroy, :id => 3
+    assert_response :success
+    assert_nil Ministry.find_by_id(3)
+    assert MinistryRole.find_by_ministry_id(6) #passes
+    assert MinistryRole.find_by_ministry_id(1) #this fails
+    assert_nil MinistryRole.find_by_ministry_id(3) # this too, but is blocked by the above fail.
+  end
+  
+  
+  
   def test_parent_form
     xhr :post, :parent_form
     assert_response :success

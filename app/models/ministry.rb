@@ -11,8 +11,11 @@ class Ministry < ActiveRecord::Base
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
   
-  has_many :ministry_roles, :order => _(:position, :ministry_role)
   has_many :permissions, :through => :ministry_roles, :source => :ministry_role_permissions
+  # note - dependent is removed since these role methods are overridden
+  #  to return the root ministry's roles as well, meaning the root ministry's
+  #  roles were also being deleted!
+  has_many :ministry_roles, :order => _(:position, :ministry_role)
   has_many :student_roles, :order => _(:position, :ministry_role)
   has_many :staff_roles, :order => _(:position, :ministry_role)
   has_many :other_roles, :order => _(:position, :ministry_role)   
@@ -43,10 +46,10 @@ class Ministry < ActiveRecord::Base
   
   after_create :create_first_view, :create_default_roles
   
-  alias_method :root_ministry_roles, :ministry_roles
-  alias_method :root_staff_roles, :staff_roles
-  alias_method :root_student_roles, :student_roles
-  alias_method :root_other_roles, :other_roles
+  alias_method :my_ministry_roles, :ministry_roles
+  alias_method :my_staff_roles, :staff_roles
+  alias_method :my_student_roles, :student_roles
+  alias_method :my_other_roles, :other_roles
   
   def all_group_types
     @all_group_types ||= GroupType.find(:all, :conditions => ["ministry_id IN (?)", ancestor_ids], :order => _(:group_type, :group_type))
@@ -57,19 +60,19 @@ class Ministry < ActiveRecord::Base
   end
   
   def ministry_roles
-    self.root? ? root_ministry_roles : self.root.root_ministry_roles
+    self.root? ? my_ministry_roles : self.root.my_ministry_roles
   end
   
   def staff_roles
-    self.root? ? root_staff_roles : self.root.root_staff_roles
+    self.root? ? my_staff_roles : self.root.my_staff_roles
   end
   
   def student_roles
-    self.root? ? root_student_roles : self.root.root_student_roles
+    self.root? ? my_student_roles : self.root.my_student_roles
   end
   
   def other_roles
-    self.root? ? root_other_roles : self.root.root_other_roles
+    self.root? ? my_other_roles : self.root.my_other_roles
   end
   
   def subministry_campuses(top = true)
@@ -208,6 +211,13 @@ class Ministry < ActiveRecord::Base
   end
   
   protected
+
+  def before_destroy
+    my_ministry_roles.each do |mr|
+      mr.destroy
+    end
+  end
+
   def create_default_roles
     if self.root?
       self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Campus Coordinator', _(:position, :ministry_role) => 2)
