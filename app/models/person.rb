@@ -21,7 +21,6 @@ class Person < ActiveRecord::Base
   has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
   has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
   has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
-  has_many :promotions_responsible_for, :class_name => "Promotion", :through => :involvements_responsible_for, :source => :promotion
  
   
   
@@ -60,6 +59,16 @@ class Person < ActiveRecord::Base
   has_many :promotions
   has_many :promotion_requests, :class_name => 'Promotion', :foreign_key => "promoter_id"
   
+  def requests_responsible_for
+  	requests = []
+  	involvements = self.involvements_responsible_for
+  	involvements.each do |involvement|
+  		if involvement.promotion
+  			requests << involvement.promotion
+  		end
+  	end
+  	requests
+  end
   
   def group_group_involvements(filter, options = {})
     case filter

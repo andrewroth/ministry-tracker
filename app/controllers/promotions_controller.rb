@@ -42,15 +42,16 @@ before_filter :user_filter
 			prom = Promotion.find_by_id params[:id]
 			prom.answer = params[:answer]
 			if params[:answer] == "accept"
-				flash[:notice] = "Passed"
+				flash[:notice] = prom.person.full_name + " has been promoted."
 				cur_role = prom.ministry_involvement.ministry_role
 				next_role_id = MinistryRole.find_by_position(cur_role.position - 1).id
 				prom.ministry_involvement.ministry_role_id = next_role_id
 				prom.ministry_involvement.save
+			else
+				flash[:notice] = "Request declined."
 			end
 			prom.save	
 		end
-		
 		respond_to do |format|
 			if create
 				#render :action => "create", :person_id => @person.id, :promotee_id => to_promote.id, :ministry_involvement_id => mi_looked_at.id
@@ -65,10 +66,15 @@ before_filter :user_filter
       end
   	end
 	end
-
 	
-	
-	
+	def destroy
+		prom = Promotion.find_by_id params[:id]
+		unless prom.nil?
+			prom.destroy
+			flash[:notice] = "Promotion deleted."
+		end
+		redirect_to :action => 'index', :person_id => @me.id
+	end
 	
 	
 	private
@@ -80,7 +86,7 @@ before_filter :user_filter
 	end
 	
 	def create_promotion(promotee_id = nil, ministry_involvement_id = nil)	
-		#will try to send a request to the tree head of this person's ministrty campus
+		#will try to send a request to the tree head of this person's ministry campus
 		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
 		#if this is not possible, we will look for the person with highest ministry role in that ministry.
 		

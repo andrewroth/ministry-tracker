@@ -11,10 +11,10 @@
 		<%= render :partial => 'person_responsible_for', :locals => {:person => person} %>
 	<%- end -%>
 </table>
-<br />
-<br />
 
 <%- if @person.promotion_requests != [] && @person.promotion_requests.find_by_answer(nil) -%>
+	<br />
+	<br />
 	<h3> Promotion Requests </h3>
 	<br>
 	<table>
@@ -32,3 +32,15 @@
 		<%- end -%>
 	</table>
 <%- end -%>	
+
+<%- if @person.requests_responsible_for != [] -%>
+	<br />
+	<br />
+	<h3> Requests You've Made </h3>
+	<br />
+	<%- @person.requests_responsible_for.each do |request| -%>
+		<%=render :partial => 'made', :locals => {:request => request} %>
+		<br />
+	<%- end -%>
+<%- end -%>
+
