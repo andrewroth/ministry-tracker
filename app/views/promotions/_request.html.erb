@@ -3,5 +3,8 @@
 	<td><%= promotion.ministry_involvement.ministry_role.name %></td>
 	<td><%= MinistryRole.find_by_position(promotion.ministry_involvement.ministry_role.position - 1).name %></td>
 	<td><%=  promotion.person.responsible_person.full_name %></td>
-	<td> Accept-Button, Decline-Button </td>
+	<td><%= link_to_remote 'Accept', :url => person_promotion_path(@person.id, promotion.id, :answer => "accept"), 
+      														:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %> </td>
+  <td><%= link_to_remote 'Decline', :url => person_promotion_path(@person.id, promotion.id, :answer => "decline"), 
+      														:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %> </td>
 </tr>

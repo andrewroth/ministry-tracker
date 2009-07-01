@@ -10,40 +10,46 @@ before_filter :user_filter
 	
 		
 	def update
-		#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
-		#to do that, find out what ministry_involvement connects these two people
-		mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
-		#then find that ministry_involvement's ministry
-		ministry_looked_at = Ministry.find_by_id mi_looked_at.ministry_id
+		create = false
+		unless params[:answer] #unless accepting or declines an actual request
+			#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
+			#to do that, find out what ministry_involvement connects these two people
+			mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
+			#then find that ministry_involvement's ministry
+			ministry_looked_at = Ministry.find_by_id mi_looked_at.ministry_id
 		
-		#get our people and their ministry_roles in the ministry we are looking at
-		@person = Person.find_by_id params[:person_id]
-		to_promote = Person.find_by_id params[:id]
-		person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
-		old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
-		if old_role.position > person_role.position
-			new_role = MinistryRole.find_by_position(old_role.position - 1)
-			if old_role.type == new_role.type	
-				mi_looked_at.ministry_role_id = new_role.id
-				mi_looked_at.save
-				flash[:notice] = to_promote.full_name + " has been promoted"
+			#get our people and their ministry_roles in the ministry we are looking at
+			@person = Person.find_by_id params[:person_id]
+			to_promote = Person.find_by_id params[:id]
+			person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
+			old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
+			if old_role.position > person_role.position
+				new_role = MinistryRole.find_by_position(old_role.position - 1)
+				if old_role.type == new_role.type	
+					mi_looked_at.ministry_role_id = new_role.id
+					mi_looked_at.save
+					flash[:notice] = to_promote.full_name + " has been promoted"
+					create = false
+				else 
+					create = true
+					flash[:notice] = "A request has been sent to the head of the Responsible Person tree."
+				end
+			else
+				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
 				create = false
-			else 
-				create = true
-				flash[:notice] = "A request has been sent to the head of the Responsible Person tree."
 			end
 		else
-			flash[:notice] = to_promote.full_name + " can not be promoted any higher."
-			create = false
+			prom = Promotion.find_by_id params[:id]
+			prom.answer = params[:answer]
+			if params[:answer] == "accept"
+				flash[:notice] = "Passed"
+				cur_role = prom.ministry_involvement.ministry_role
+				next_role_id = MinistryRole.find_by_position(cur_role.position - 1).id
+				prom.ministry_involvement.ministry_role_id = next_role_id
+				prom.ministry_involvement.save
+			end
+			prom.save	
 		end
-		#	if create
-   #     		page.redirect_to :action => 'create', :person_id => @person.id,
-		#																							:promotee_id => to_promote.id, 
-		#																							:ministry_involvement_id => mi_looked_at.id
-     #   	else
-      #    	page.redirect_to(:action => 'index', :person_id => @person.id)
-       #   end
-
 		
 		respond_to do |format|
 			if create
@@ -60,6 +66,10 @@ before_filter :user_filter
   	end
 	end
 
+	
+	
+	
+	
 	
 	private
 	
@@ -118,18 +128,4 @@ before_filter :user_filter
 		
 	end
 	
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 end

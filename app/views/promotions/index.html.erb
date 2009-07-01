@@ -13,7 +13,8 @@
 </table>
 <br />
 <br />
-<%- if @person.promotion_requests != []-%>
+
+<%- if @person.promotion_requests != [] -%>
 	<h3> Promotion Requests </h3>
 	<br>
 	<table>
@@ -21,10 +22,13 @@
 		<td><h4>Current Role</h4></td>
 		<td><h4>Next Role</h4></td>
 		<td><h4>Responsible Person</h4></td>
-		<td><h4>Accept or Decline Request?</h4></td>
+		<td><h4>Accept Request?</h4></td>
+		<td><h4>Decline Request?</h4></td>
 		</tr>
 		<%- @person.promotion_requests.each do |promotion| -%>
-			<%= render :partial => 'request', :locals => {:promotion => promotion} %>
+			<%-unless promotion.answer -%>
+				<%= render :partial => 'request', :locals => {:promotion => promotion} %>
+			<%- end -%>
 		<%- end -%>
 	</table>
 <%- end -%>	
