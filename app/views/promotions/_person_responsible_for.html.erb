@@ -1,4 +1,7 @@
-<% cur_role = person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role %>
+<% cur_mi = MinistryInvolvement.find_by_responsible_person_id_and_person_id @person.id, person.id %>
+<% cur_ministry = Ministry.find_by_id cur_mi.ministry_id %>
+<% cur_role = cur_mi.ministry_role %>
+
 <tr><th><%=person.full_name%></th>
 <td><%= cur_role.name %></td>
 <td><%= cur_role.description %> </td>
@@ -8,7 +11,11 @@
 			N/A
 		<%- end -%></td>
 <td>
-      <%= link_to_remote 'Promote', :url => person_promotion_path(@person.id, person.id), 
-      										:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %>
+	<%- unless person.promotions && person.promotions.find_by_ministry_involvement_id(cur_mi.id) -%>
+		<%= link_to_remote 'Promote', :url => person_promotion_path(@person.id, person.id), 
+      														:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %>
+  <%- else -%>
+  	Promotion Request Pending
+  <%- end -%>
 </td>
 </tr>

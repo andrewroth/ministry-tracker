@@ -20,8 +20,8 @@
 		<tr><th><h4>Promotee</h4></th>
 		<td><h4>Current Role</h4></td>
 		<td><h4>Next Role</h4></td>
-		<td><h4>Responsible Person</h4><td>
-		<td><h4>Promote?</h4></td>
+		<td><h4>Responsible Person</h4></td>
+		<td><h4>Accept or Decline Request?</h4></td>
 		</tr>
 		<%- @person.promotion_requests.each do |promotion| -%>
 			<%= render :partial => 'request', :locals => {:promotion => promotion} %>

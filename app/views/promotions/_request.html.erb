@@ -1,7 +1,7 @@
 <tr>
-	<td>promotion.person.full_name</td>
-	<td>promotion.ministry_involvement.ministry_role.name</td>
-	<td>MinistryRole.find_by_position(promotion.ministry_involvement.ministry_role.position - 1).name</td>
-	<td>promotion.person.responsible_person.full_name</td>
-	<td> Button </td>
+	<td><%= promotion.person.full_name %></td>
+	<td><%= promotion.ministry_involvement.ministry_role.name %></td>
+	<td><%= MinistryRole.find_by_position(promotion.ministry_involvement.ministry_role.position - 1).name %></td>
+	<td><%=  promotion.person.responsible_person.full_name %></td>
+	<td> Accept-Button, Decline-Button </td>
 </tr>
