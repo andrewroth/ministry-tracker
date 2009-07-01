@@ -11,7 +11,7 @@
 			N/A
 		<%- end -%></td>
 <td>
-	<%- unless person.promotions != [] && person.promotions.find_by_ministry_involvement_id(cur_mi.id)-%>
+	<%- unless person.promotions != [] && person.promotions.find_by_ministry_involvement_id_and_answer(cur_mi.id, nil)-%>
 		<%= link_to_remote 'Promote', :url => person_promotion_path(@person.id, person.id), 
       														:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %>
   <%- else -%>

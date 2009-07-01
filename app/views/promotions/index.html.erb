@@ -14,7 +14,7 @@
 <br />
 <br />
 
-<%- if @person.promotion_requests != [] -%>
+<%- if @person.promotion_requests != [] && @person.promotion_requests.find_by_answer(nil) -%>
 	<h3> Promotion Requests </h3>
 	<br>
 	<table>
