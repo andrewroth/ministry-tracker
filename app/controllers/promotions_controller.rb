@@ -8,66 +8,7 @@ before_filter :user_filter
 		end
 	end
 	
-	
-	def create
-	
-		#will try to send a request to the tree head of this person's ministrty campus
-		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
-		#if this is not possible, we will look for the person with highest ministry role in that ministry.
 		
-		to_promote = Person.find_by_id params[promotee_id]
-		
-		#Trying to find ministry_campus
-		mi = MinistryInvolvement.find_by_id params[ministry_involvement_id] 
-		most_recent_campus_involvement = to_promote.most_recent_involvement
-		active_ministry_campus = MinistryCampus.find_by_campus_id_and_ministry_id most_recent_campus_involvement.campus_id,
-																																						mi.ministry_id
-		if active_ministry_campus.tree_head
-			promoter_id = active_ministry_campus.tree_head_id
-		elsif to_promote.responsible_person
-			if to_promote.responsible_person.responsible_person
-				promoter_id = to_promote.responsible_person.responsible_person.id
-			end
-		else
-			## find someone with the highest ministry_role in that ministry
-			active_ministry = Ministry.find_by_id mi.ministry_id
-			stop = false
-			count = 0
-			while !stop
-				count += 1
-				#find the next highest MinistryRole
-				cur_role = MinistryRoles.find_by_position(count)
-				if cur_role
-					#find a ministry_involvement with that role
-					cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
-					if cur_mi
-						promoter_id = cur_mi.person_id
-						stop = true
-					end
-				else #we have gone through all the roles, this should NEVER happen, but just incase it does
-					#have the person promote himself
-					promoter_id = params[:promotee_id]
-					stop = true
-				end	
-			end				
-		end
-		
-		new_promotion = Promotion.new(:person_id => params[promotee_id],
-																	:promoter_id => promoter_id, 
-																	:ministry_involvement_id => params[ministry_involvement_id])
-		new_promotion.save 
-		flash[:notice] = "Promotion request made."
-		
-		respond_to do |format|
-      format.js do
-        render :update do |page|
-        	update_flash(page)
-        	page.redirect_to (:action => 'index', :person_id => @person.id)
-        end
-      end
-    end
-	end
-	
 	def update
 		#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
 		#to do that, find out what ministry_involvement connects these two people
@@ -95,21 +36,30 @@ before_filter :user_filter
 			flash[:notice] = to_promote.full_name + " can not be promoted any higher."
 			create = false
 		end
+		#	if create
+   #     		page.redirect_to :action => 'create', :person_id => @person.id,
+		#																							:promotee_id => to_promote.id, 
+		#																							:ministry_involvement_id => mi_looked_at.id
+     #   	else
+      #    	page.redirect_to(:action => 'index', :person_id => @person.id)
+       #   end
+
+		
 		respond_to do |format|
+			if create
+				#render :action => "create", :person_id => @person.id, :promotee_id => to_promote.id, :ministry_involvement_id => mi_looked_at.id
+				create_promotion(to_promote.id, mi_looked_at.id)
+			else 
+				format.html {redirect_to person_promotions_path(@person)}
+			end
       format.js do
         render :update do |page|
-        	if create
-        		page.redirect_to :action => 'create', :person_id => @person.id,
-																									:promotee_id => to_promote.id, 
-																									:ministry_involvement_id => mi_looked_at.id
-        	else
-          	page.redirect_to (:action => 'index', :person_id => @person.id)
-          end
-          update_flash(page)
-        end
+      	   update_flash(page)
+      	end
       end
-    end
+  	end
 	end
+
 	
 	private
 	
@@ -118,5 +68,68 @@ before_filter :user_filter
 			redirect_to :action => 'index', :person_id => @me.id
 		end
 	end
+	
+	def create_promotion(promotee_id = nil, ministry_involvement_id = nil)	
+		#will try to send a request to the tree head of this person's ministrty campus
+		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
+		#if this is not possible, we will look for the person with highest ministry role in that ministry.
+		
+		to_promote = Person.find_by_id promotee_id
+		
+		#Trying to find ministry_campus
+		mi = MinistryInvolvement.find_by_id ministry_involvement_id
+		most_recent_campus_involvement = to_promote.most_recent_involvement
+		active_ministry_campus = MinistryCampus.find_by_campus_id_and_ministry_id most_recent_campus_involvement.campus_id,
+																																						mi.ministry_id
+		if active_ministry_campus.tree_head
+			promoter_id = active_ministry_campus.tree_head_id
+		elsif to_promote.responsible_person
+			if to_promote.responsible_person.responsible_person
+				promoter_id = to_promote.responsible_person.responsible_person.id
+			end
+		else
+			## find someone with the highest ministry_role in that ministry
+			active_ministry = Ministry.find_by_id mi.ministry_id
+			stop = false
+			count = 0
+			while !stop
+				count += 1
+				#find the next highest MinistryRole
+				cur_role = MinistryRoles.find_by_position(count)
+				if cur_role
+					#find a ministry_involvement with that role
+					cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
+					if cur_mi
+						promoter_id = cur_mi.person_id
+						stop = true
+					end
+				else #we have gone through all the roles, this should NEVER happen, but just incase it does
+					#have the person promote himself
+					promoter_id = promotee_id
+					stop = true
+				end	
+			end				
+		end
+		
+		p = Promotion.new(:person_id => promotee_id,
+																	:promoter_id => promoter_id, 
+																	:ministry_involvement_id => ministry_involvement_id)	
+		p.save
+		
+	end
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 end
