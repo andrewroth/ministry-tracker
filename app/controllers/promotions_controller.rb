@@ -14,7 +14,9 @@ before_filter :user_filter
 		#will try to send a request to the tree head of this person's ministrty campus
 		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
 		#if this is not possible, we will look for the person with highest ministry role in that ministry.
+		
 		to_promote = Person.find_by_id params[promotee_id]
+		
 		#Trying to find ministry_campus
 		mi = MinistryInvolvement.find_by_id params[ministry_involvement_id] 
 		most_recent_campus_involvement = to_promote.most_recent_involvement
@@ -24,21 +26,46 @@ before_filter :user_filter
 			promoter_id = active_ministry_campus.tree_head_id
 		elsif to_promote.responsible_person
 			if to_promote.responsible_person.responsible_person
-				promoter_id = responsible_person.responsible_person
+				promoter_id = to_promote.responsible_person.responsible_person.id
 			end
 		else
-			## find the person with highest ministry_role in that ministry
-			
+			## find someone with the highest ministry_role in that ministry
+			active_ministry = Ministry.find_by_id mi.ministry_id
+			stop = false
+			count = 0
+			while !stop
+				count += 1
+				#find the next highest MinistryRole
+				cur_role = MinistryRoles.find_by_position(count)
+				if cur_role
+					#find a ministry_involvement with that role
+					cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
+					if cur_mi
+						promoter_id = cur_mi.person_id
+						stop = true
+					end
+				else #we have gone through all the roles, this should NEVER happen, but just incase it does
+					#have the person promote himself
+					promoter_id = params[:promotee_id]
+					stop = true
+				end	
+			end				
 		end
 		
-		###use params passed to create a promotion
-
+		new_promotion = Promotion.new(:person_id => params[promotee_id],
+																	:promoter_id => promoter_id, 
+																	:ministry_involvement_id => params[ministry_involvement_id])
+		new_promotion.save 
+		flash[:notice] = "Promotion request made."
 		
-		
-		
-		
-		
-		redirect_to :action => 'index', :person_id => params[:person_id]
+		respond_to do |format|
+      format.js do
+        render :update do |page|
+        	update_flash(page)
+        	page.redirect_to (:action => 'index', :person_id => @person.id)
+        end
+      end
+    end
 	end
 	
 	def update
