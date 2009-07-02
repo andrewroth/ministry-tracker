@@ -11,8 +11,8 @@ class MinistryInvolvement < ActiveRecord::Base
   belongs_to :ministry
   belongs_to :ministry_role, :class_name => "MinistryRole", :foreign_key => _("ministry_role_id")
   has_many :permissions, :through => :ministry_role, :source => :ministry_role_permissions
-  has_one :promotion, :dependent => :destroy
-  
+  has_one :promotion
+    
   validates_presence_of _(:ministry_role_id), :on => :create, :message => "can't be blank"
 
 end

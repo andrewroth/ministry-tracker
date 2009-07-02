@@ -18,3 +18,8 @@ three:
   promoter_id: 30000
   ministry_involvement_id: 4
   answer: accept
+four:
+  id: 4
+  person_id: 50000
+  promoter_id: 2000
+  ministry_involvement_id: 1

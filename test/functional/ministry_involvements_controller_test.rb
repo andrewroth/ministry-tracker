@@ -19,6 +19,19 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert assigns(:ministry_involvement)
     assert_response :success
   end
+  
+   test "destroy_involvement_and_promotions" do
+   	promotions_begin = Promotion.find_by_ministry_involvement_id(1)
+    	post :destroy, :id => 1, :person_id => 50000
+    	assert assigns(:ministry_involvement)
+    	assert_response :success
+    promotions_end = Promotion.find_by_ministry_involvement_id(1)
+   
+    assert_nil promotions_end
+    assert_not_nil promotions_begin
+  end
+  
+  
 
   test "try destroying without access" do
     login('fred@uscm.org')

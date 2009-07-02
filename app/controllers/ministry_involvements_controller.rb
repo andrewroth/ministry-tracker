@@ -5,7 +5,10 @@ class MinistryInvolvementsController < ApplicationController
     if @me == @person || authorized?(:new, :people)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
       @ministry_involvement.update_attribute(:end_date, Time.now)
-
+      prom = @ministry_involvement.promotion
+      if prom
+      	prom.destroy
+      end
       respond_to do |format|
         format.xml  { head :ok }
         format.js
