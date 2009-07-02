@@ -19,23 +19,33 @@ joshs_in:
   person_id: 50000
   campus_id: 1
   ministry_id: 1
-freds_in:
+joshs_in_two:
   id: 1004
+  person_id: 50000
+  campus_id: 2
+  ministry_id: 1
+freds_in:
+  id: 1005
   person_id: 3000
   campus_id: 1
   ministry_id: 2
 promotees_in:
-  id: 1005
+  id: 1006
   person_id: 5678
   campus_id: 1
   ministry_id: 2
 rps_rps_in:
-  id: 1006
+  id: 1007
   person_id: 5555
   campus_id: 1
   ministry_id: 2
 promotee_two_in:
-  id: 1007
+  id: 1008
   person_id: 4444
+  campus_id: 1
+  ministry_id: 2
+promotee_three_in:
+  id: 1009
+  person_id: 6666
   campus_id: 1
   ministry_id: 2

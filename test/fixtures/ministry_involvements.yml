@@ -22,13 +22,13 @@ four:
   person_id: 2000
   ministry_id: 1
   ministry_role_id: 4
-  responsible_person_id: 50000
-  
+  responsible_person_id: 50000 
 staff_involvement_with_one:
     id: 5
     person_id: 4001
     ministry_id: 1
-    ministry_role_id: 1 # admin
+    ministry_role_id: 1
+    responsible_person_id: 50000
 responsible_involvement:
   id: 6
   person_id: 5555
@@ -45,4 +45,10 @@ promotee_two_involvement:
   person_id: 4444
   ministry_id: 2
   ministry_role_id: 6
-  responsible_person_id: 5555  
+  responsible_person_id: 5555 
+promotee_three_involvement:
+  id: 9
+  person_id: 6666
+  ministry_id: 2
+  ministry_role_id: 3
+  responsible_person_id: 50000  

@@ -57,3 +57,7 @@ promotee_two:
   id: 4444
   first_name: 'Promote'
   last_name: 'Me'
+promotee_three:
+  id: 6666
+  first_name: 'Promote'
+  last_name: 'Me Again'

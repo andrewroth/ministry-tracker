@@ -10,8 +10,7 @@ before_filter :user_filter
 	
 		
 	def update
-		create = false
-		unless params[:answer] #unless accepting or declines an actual request
+			unless params[:answer] #unless accepting or declines an actual request
 			#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
 			#to do that, find out what ministry_involvement connects these two people
 			mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
@@ -29,13 +28,11 @@ before_filter :user_filter
 					mi_looked_at.ministry_role_id = new_role.id
 					mi_looked_at.save
 					flash[:notice] = to_promote.full_name + " has been promoted"
-					create = false
 				else 
-					create = true
+					create_promotion(to_promote.id, mi_looked_at.id)
 				end
 			else
 				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
-				create = false
 			end
 		else
 			prom = Promotion.find_by_id params[:id]
@@ -52,11 +49,7 @@ before_filter :user_filter
 			prom.save	
 		end
 		respond_to do |format|
-			if create
-				create_promotion(to_promote.id, mi_looked_at.id)
-			else 
-				format.html {redirect_to person_promotions_path(@person)}
-			end
+			format.html {redirect_to person_promotions_path(@person)}
       format.js do
         render :update do |page|
       	   update_flash(page)
