@@ -1,13 +1,14 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  person_id: 1
-  promoter_id: 1
-  ministry_involvement_id: 1
-  answer: MyString
+  id: 1
+  person_id: 2000
+  promoter_id: 50000
+  ministry_involvement_id: 4
 
 two:
+  id: 2
   person_id: 1
   promoter_id: 1
   ministry_involvement_id: 1
-  answer: MyString
+  answer: accept

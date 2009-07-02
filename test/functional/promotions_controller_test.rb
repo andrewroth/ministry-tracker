@@ -54,7 +54,14 @@ class PromotionsControllerTest < ActionController::TestCase
   	assert_redirected_to :action => 'index', :person_id => 50000
 	end
   
-  
+  def test_updates_promotion_accept
+  	session[:user] = 1
+  	put :update, :person_id => 50000, :id => 1, :answer => "accept"
+  	assert_equal 3, MinistryInvolvement.find_by_person_id_and_ministry_id(2000, 1).ministry_role.position
+  	assert_equal "accept", promotions(:one).answer
+  	assert_redirected_to :action => 'index', :person_id => 50000
+  end
+
 
   
   
