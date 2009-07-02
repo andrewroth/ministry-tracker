@@ -5,14 +5,14 @@ class AddressTest < ActiveSupport::TestCase
 
   def test_mailing
     a = Address.find(1)
-    assert_equal "108 E. Burlington Ave.<br />Westmont, IL 60559", a.mailing
+    assert_equal "108 E. Burlington Ave.<br />Westmont, WY 60559", a.mailing
     a = Address.find(2)
     assert_equal ' ', a.mailing
   end
   
   def test_mailing_one_line
     a = Address.find(1)
-    assert_equal "108 E. Burlington Ave., Westmont, IL 60559", a.mailing_one_line
+    assert_equal "108 E. Burlington Ave., Westmont, WY 60559", a.mailing_one_line
   end
   
   def test_address_types

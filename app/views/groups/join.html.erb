@@ -1,4 +1,4 @@
-<h2>Join a group</h2>	  
+<h2>Join a group&nbsp;&nbsp;<%= spinner('gt') %></h2>	  
 <div id="customizebody" class="accordion">
 	<%- @ministry.all_group_types.each do |gt| -%>
 	  <% if !gt.groups.empty?%>
@@ -6,22 +6,7 @@
 			<div class="title"><%= gt.group_type %></div>
 			<div id= <%="groupType" + gt.id.to_s %> >
 			
-			  <br/>
-			  <p>
-			 <% if !(gt.groups - @my.groups).empty? %>
-				  <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" } do %>
-						<%= hidden_field_tag :person_id, @person.id %>
-						<%= hidden_field_tag :requested, true %>
-						Name: <%= collection_select :group_involvement, :group_id, (gt.groups - @my.groups), :id, :name %>
-					    Involvement: <%= select(:group_involvement, :level, ['member', 'interested', 'leader','co_leader'].collect {|u| u})%>
-				 		<%= submit_tag 'Join group' %>
-						
-				 <% end %>
-			 <% else %>
-			 	 No groups to join under this category currently.
-			 <% end %>
-			 
-	  	     </p>
+			  <%= render :partial => 'groups/groups_to_join', :locals => {:gt => gt} %>
 			</div>
        </div>
 	  <%- end -%>

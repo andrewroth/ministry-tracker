@@ -1,0 +1,5 @@
+<%=
+	options_from_collection_for_select(
+		@campuses, :id, :name,
+		:selected => @person.primary_campus_involvement.try(:campus_id))
+%>

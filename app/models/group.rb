@@ -11,4 +11,5 @@ class Group < ActiveRecord::Base
   has_many :group_involvements
   has_many :people, :through => :group_involvements
   has_many :leaders, :class_name => "Person", :through => :group_involvements
+  has_many :co_leaders, :class_name => "Person", :through => :group_involvements
 end

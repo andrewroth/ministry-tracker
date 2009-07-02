@@ -1,0 +1,48 @@
+<table class="halftab">
+	<tr>
+		<th>Phone:</th>
+		<td><%= text_field :perm_address, :phone %></td>
+	</tr>
+	<tr>
+  <th>Address<% if @use_address2 %> 1:<% end %></th>
+		<td><%= text_field :perm_address, :address1 %></td>
+	</tr>
+  <% if @use_address2 %>
+	<tr>
+		<th>Address 2:</th>
+		<td><%= text_field :perm_address, :address2 %></td>
+	</tr>
+  <% end %>
+	<tr>
+		<th>City:</th>
+		<td><%= text_field :perm_address, :city %></td>
+	</tr>
+	<tr>
+		<th>State:</th>
+		<%= render :partial => 'permanent_address_state_dropdown', 
+				:locals => { :states => states }
+		%>
+	</tr>
+	<tr>
+		<th>Country:</th>
+		<td>
+			<%=
+				cs = countries.collect { |c| [c.country, c.id]}
+				cs = cs.insert(0,['Please select', ''])
+			
+				select_tag :permanent_address_country_id,
+					options_for_select(cs,
+						:selected => permanent_address_country_id)
+			%>
+	        <%= observe_field(:permanent_address_country_id, {
+	          :url => { :action => "set_permanent_address_states" },
+	          :with => 'permanent_address_country_id',
+	          :before => "$('#spinnerp').show()"})
+	        %>
+		</td>
+	</tr>
+	<tr>
+		<th>Zip:</th>
+		<td><%= text_field :perm_address, :zip %></td>
+	</tr>
+</table>

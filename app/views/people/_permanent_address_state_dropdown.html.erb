@@ -1,0 +1,10 @@
+<td id ="permanent_address_state_dropdown">
+	<%=
+	collection_select :perm_address,
+		:state_id,
+		states,
+		:id,
+		:name,
+		{ :prompt => true }
+	%>
+</td>

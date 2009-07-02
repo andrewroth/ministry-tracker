@@ -1,4 +1,30 @@
 <% @site_title = 'Dashboard' -%>
+
+<%- help_block do -%>
+  <h3>The Dashboard. </h3> 
+  <br>
+  VROOM! VROOM! This is your quick access point to pretty much anything on the Ministry Tracker. 
+  <br /><br />
+  Immediately below is your recent directory searches. Click on one of them and you'll be taken to the directory which will automatically showed the results.
+  <br /><br />
+  Under that is your quick tools.
+  <br>
+    Add a student will add a new student to ministry you are currently viewing.
+    <br />
+    Create a group will begin the process of adding a new group to meet weekly within your ministry.
+    <br />
+    Create a ministry will begin the process of adding a creating a sub ministry of your current ministry.
+    <br />
+    Finally Go to Your Directory sends to this ministry's directory.
+    <br /><br />
+   To the right is your groups you've joined. Simply click on one and you'll be able to edit and view them.
+   <br /><br />
+   Under that is your stats. This can be a helpful reference to see how many meetings you have each week, new people, etc.
+   <br>
+   Enjoy! You can also click on the "Help" button to find information on a page, and click on it again to said info.
+<% end %>
+
+
 <div class="welcome">
 <div class="sectionHeader">
 	<h2>Welcome to the Ministry Tracker</h2>
@@ -97,43 +123,17 @@ this system, along with any other information we think would be helpful to you.<
   
     <div class="dashmodule">
       <div class="moduletitle">
-        <h2>My Groups</h2>
+        <h2>My Groups
+				<%= spinner('gt') %></h2>
         <div class="modulecontrols">
           <a href="" class="minmodule"></a>
           <a href="" class="movemodule"></a>
           <a href="" class="closemodule"></a>
         </div>
       </div>
-      <div class="modulecontent">
-        <ul class="groupicon">
-          <% @my.groups.each do |group| %>
-		  	<% if groupmember?(group)%>
-            <li>
-            	
-            	<%= link_to(group.name, group) %>
-					<ul class="requesticon">
-						<% find_join_requests(group).each do |request| %>
-						<li>
-							Join request from <%=link_to Person.find(request.person_id).full_name, person_url(request.person_id) %>
-							<b>
-							<%= link_to "[Accept]", :controller => "group_involvements", :action => "accept_request" , :id => request.id %>
-							<%= link_to '[Decline]',:controller => "group_involvements", :action => "decline_request", :id => request.id %>
-							
-							</b>
-							(Role: '<%= GroupInvolvement.find(request.id).level%>')
-						</li>
-						<% end %>
-					</ul>
-			</li>
-			<% else %>
-			<li>
-            	<%= link_to(group.name, group) %> [Awaiting join request decision]
-			</li>
-			<% end %>
-          <% end %>
-        </ul>
-		<br/>
-		<%= link_to "Join a group", :controller => "groups", :action => "join" %>
+			
+      <div id = "groups">
+      	<%= render :partial => "dashboard/groups" %>
       </div>
     </div>
   

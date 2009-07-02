@@ -14,7 +14,7 @@ class PeopleController < ApplicationController
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
-
+  
   # GET /people
   # GET /people.xml
   def index
@@ -118,7 +118,7 @@ class PeopleController < ApplicationController
         unless params[:campus].empty?
           conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
           @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-          @search_for << Campus.find(:all, :conditions => "id in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @advanced = true
         end
       end
@@ -219,6 +219,8 @@ class PeopleController < ApplicationController
 
   #Question: shows an individual's record?
   def show
+    get_ministry_involvement(get_ministry)
+    get_people_responsible_for
     setup_vars
     respond_to do |format|
       format.html { render :action => :show }# show.rhtml
@@ -228,9 +230,10 @@ class PeopleController < ApplicationController
   
   # GET /people/new
   def new
-    set_states
     @person = Person.new
     @current_address = CurrentAddress.new
+    @countries = Country.all
+    @states = State.all
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js
@@ -239,12 +242,25 @@ class PeopleController < ApplicationController
 
   # GET /people/1;edit
   def edit
+    countries = get_countries
+    
+    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
+    current_address_country_id = @person.current_address.try(:state).try(:country_id)
+    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+
+    get_possible_responsible_people
     setup_vars
     setup_campuses
-    set_states
     render :update do |page|
       page[:info].hide
-      page[:edit_info].replace_html :partial => 'edit'
+      page[:edit_info].replace_html :partial => 'edit',
+        :locals => {
+          :current_address_country_id => current_address_country_id,
+          :permanent_address_country_id => permanent_address_country_id,
+          :countries => countries,
+          :current_address_states => current_address_states,
+          :permanent_address_states => permanent_address_states }
       page[:edit_info].show
     end
   end
@@ -252,9 +268,10 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.xml
   def create
-    set_states
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address])
+    @countries = Country.all
+    @states = State.all
     respond_to do |format|
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid?
@@ -318,8 +335,26 @@ class PeopleController < ApplicationController
   # PUT /people/1
   # PUT /people/1.xml
   def update
-    set_states
+    countries = get_countries
+
+    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
+    current_address_country_id = @person.current_address.try(:state).try(:country_id)
+    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+    
+    get_people_responsible_for
+    get_possible_responsible_people
+    get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
+    if params[:responsible_person_id]
+      #pulls values to needed for most_recent_ministry_involvement to be uses
+      @most_recent_campus_involvement = @person.most_recent_involvement
+      @most_recent_ministry = @most_recent_campus_involvement.ministry
+      @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
+      
+      @most_recent_ministry_involvement.responsible_person = Person.find(params[:responsible_person_id])
+      @most_recent_ministry_involvement.save
+    end
     if params[:current_address]
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
       @person.current_address.update_attributes(params[:current_address])
@@ -403,7 +438,13 @@ class PeopleController < ApplicationController
         format.html { render :action => "edit" }
         format.js do 
           render :update do |page|
-            page[:edit_info].replace_html :partial => 'edit'
+            page[:edit_info].replace_html :partial => 'edit',
+              :locals => {
+                :current_address_country_id => current_address_country_id,
+                :permanent_address_country_id => permanent_address_country_id,
+                :countries => countries,
+                :current_address_states => current_address_states,
+                :permanent_address_states => permanent_address_states }
             page << "$.scrollTo(0, 0)"
           end
         end
@@ -427,8 +468,8 @@ class PeopleController < ApplicationController
   end
   
   # Question: what does it do? Are there customisable views, and this changes
-# the currently used one?
-def change_view
+  # the currently used one?
+  def change_view
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
     session[:order] = nil
@@ -442,11 +483,11 @@ def change_view
     end
   end
   
-# Executes a search according to provided criteria.
-# Guesses if the entry includes a first and last name, splits them out for the search
-# TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
+  # Executes a search according to provided criteria.
+  # Guesses if the entry includes a first and last name, splits them out for the search
+  # TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
 
-def search
+  def search
     # figure out if the search parameter looks like a first or last name only, or both
     @search = params[:search]
     if @search && !@search.empty?
@@ -485,9 +526,8 @@ def search
 	  end
   end
     
-# Question: what does it do?
-def add_student
-    
+  # Question: what does it do?
+  def add_student
     respond_to do |format|
       format.js  do
         render :update do |page|
@@ -516,11 +556,73 @@ def add_student
     redirect_to @person
   end
 
-  private
-  
-  def campus_condition
-    "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+  def get_campuses
+    @campus_state = State.find :first, :conditions => 
+      { _(:id, :state) => params[:primary_campus_state_id] }
+    render :text => '' unless @campus_state
+    @campuses = @campus_state.try(:campuses) || []
   end
+
+  def get_campus_states
+    @campus_country = Country.find :first, :conditions => 
+      { _(:id, :campus) => params[:primary_campus_country_id] }
+    render :text => '' unless @campus_country
+    @campus_states = @campus_country.states
+  end
+
+  # For RJS call for dynamic population of state dropdown (see edit method)
+  def set_current_address_states
+    @current_address_states = get_states params[:current_address_country_id]
+  end
+  
+  # For RJS call for dynamic population of state dropdown (see edit method)
+  def set_permanent_address_states
+    @permanent_address_states = get_states params[:permanent_address_country_id]
+  end
+
+  private
+    
+    def get_people_responsible_for
+      @people_responsible_for = @person.people_responsible_for
+    end
+
+    def get_possible_responsible_people
+      @possible_responsible_people = []
+      
+      # pull values we'll need, make sure this one exists
+      @most_recent_campus_involvement = @person.most_recent_involvement
+      return unless @most_recent_campus_involvement
+      
+      # continue pulling values, can't continue without both of these
+      @most_recent_ministry = @most_recent_campus_involvement.ministry
+      return unless @most_recent_ministry
+      @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
+      return unless @most_recent_ministry_involvement
+      
+      # find my position
+      persons_ministry_involvement_position = @most_recent_ministry_involvement.ministry_role.position
+      
+      # find everyone in this ministry with a higher access
+      higher_mi_array = []
+      @most_recent_ministry.ministry_involvements.each do |cur_mi|
+        if cur_mi.ministry_role.position < persons_ministry_involvement_position
+          higher_mi_array << cur_mi
+        end
+      end
+      
+      # only show people in your campus
+      higher_mi_array.each do |h_mi|
+        person = h_mi.person
+        
+        if person.campus_involvements.find_by_campus_id @most_recent_campus_involvement.campus.id
+          @possible_responsible_people << person
+        end
+      end
+    end
+    
+    def campus_condition
+      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+    end
     
   def ministry_condition
     @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
@@ -561,14 +663,10 @@ def add_student
     @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
   end
     
-  def set_states
-    @states = State.all()
-  end
-    
   def can_edit_profile
     if @person == @me || is_ministry_leader
       return true
-    else
+    else 
       respond_to do |wants|
         wants.html { redirect_to @person }
         wants.js  do
@@ -577,9 +675,9 @@ def add_student
           end
         end
       end
-        
-      return false
     end
+      
+    return false
   end
     
   def get_profile_person
@@ -597,11 +695,23 @@ def add_student
     @campuses = state_model.try(:campuses) || []
   end
     
-  def get_view
-    view_id = session[:view_id]
-    if view_id
-      @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
+  def setup_campuses
+    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+    # If the Country is set in config, don't filter by states but get campuses from the country
+    if Cmt::CONFIG[:campus_scope_country] && 
+      (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
+      @no_campus_scope = true
+      @campus_country = c
+      @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
+    else
+      @campus_state = @person.primary_campus.try(:state) || 
+        @person.current_address.try(:state) ||
+        @person.permanent_address.try(:state)
+      @campus_country = @campus_state.try(:country)
+      @campus_states = @campus_country.try(:states) || []
+      @campuses = @campus_state.try(:campuses) || []
     end
+    @campus_countries = Country.all
     # If there's no view in the session, get the default view
     @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
     unless @view
@@ -633,12 +743,16 @@ def add_student
     @sql += ' ORDER BY ' + @order
   end
   
-  def get_campuses
-    state = State.find params[:state]
-    @campuses = state.try(:campuses) || []
-  end
-    
-  def set_use_address2
-    @use_address2 = !Cmt::CONFIG[:disable_address2]
-  end
+    def get_states
+      country = Country.find params[:primary_campus_country_id]
+      @campus_states = country.try(:states) || []
+    end
+
+    def get_states(country_id)
+      State.find_all_by_country_id(country_id)
+    end
+
+    def set_use_address2
+      @use_address2 = !Cmt::CONFIG[:disable_address2]
+    end
 end

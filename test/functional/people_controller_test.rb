@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'people_controller'
 
+
 # Re-raise errors caught by the controller.
 class PeopleController; def rescue_action(e) raise e end; end
 
@@ -13,6 +14,8 @@ class PeopleControllerTest < ActionController::TestCase
   fixtures :users
   fixtures :ministries
   fixtures :ministry_involvements
+  fixtures :campus_involvements
+  fixtures :campuses
   
   def setup
     login
@@ -144,17 +147,46 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_view', :count => 1
     assert_response :success
   end
+  
+  def test_should_show_rp
+    get :show, :id => people(:sue).id
+    
+    assert_template :show
+    assert_template :partial => '_view', :count => 1
+    assert_response :success
+  end
 
   def test_should_get_edit
     get :edit, :id => 50000
     assert_response :success
+  end
+
+  def test_should_show_only_campus_country_when_no_primary_involvement
+    josh = Person.find 50000
+    josh.current_address = nil
+    josh.permanent_address = nil
+    josh.primary_campus_involvement = nil
+    josh.save!
+    get :edit, :id => 50000
+    assert_response :success
+    assert_nil assigns['campus_country']
+    assert_nil assigns['campus_state']
+    assert_equal assigns['campuses'], []
+    assert @response.body =~ /Choose a country/
+  end
+  
+  def test_should_show_possible_responsible_people
+    get :edit, :id => 2000
+    assert_response :success
+    assert_not_nil assigns(:possible_responsible_people)
   end
   
   def test_should_update_person
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
                        :perm_address => {:phone => '555-555-5555', :address1 => 'here'},
-                       :primary_campus_id => 1, :primary_campus_involvement => {}
+                       :primary_campus_id => 1, :primary_campus_involvement => {},
+                       :responsible_person_id => people(:fred).id
     assert_template '_view'
   end
   
