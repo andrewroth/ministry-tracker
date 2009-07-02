@@ -8,7 +8,13 @@ one:
 
 two:
   id: 2
-  person_id: 1
-  promoter_id: 1
-  ministry_involvement_id: 1
+  person_id: 2000
+  promoter_id: 50000
+  ministry_involvement_id: 4
+  answer: accept
+three:
+  id: 3
+  person_id: 2000
+  promoter_id: 30000
+  ministry_involvement_id: 4
   answer: accept

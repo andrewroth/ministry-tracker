@@ -60,7 +60,7 @@ before_filter :user_filter
 	
 	def destroy
 		prom = Promotion.find_by_id params[:id]
-		unless prom.nil?
+		unless prom.nil? || prom.answer.nil? || prom.promoter != @person
 			prom.destroy
 			flash[:notice] = "Promotion deleted."
 		end

@@ -69,11 +69,32 @@ class PromotionsControllerTest < ActionController::TestCase
   	assert_equal "decline", promotions(:one).answer
   	assert_redirected_to :action => 'index', :person_id => 50000
   end
-
-
-
   
+  def test_delete_valid
+  	session[:user] = 1
+  	original_number = Promotion.count
+  	post :destroy, :person_id => 50000, :id => 2
+  	after_number = Promotion.count
+  	assert_equal after_number, original_number - 1
+  	assert_redirected_to :action => 'index', :person_id => 50000
+  end
   
+  def test_delete_not_answered_fails
+  	session[:user] = 1
+  	original_number = Promotion.count
+  	post :destroy, :person_id => 50000, :id => 1
+  	after_number = Promotion.count
+  	assert_equal after_number, original_number
+  	assert_redirected_to :action => 'index', :person_id => 50000
+  end
   
+  def test_delete_wrong_promoter_id_fails
+  	session[:user] = 1
+  	original_number = Promotion.count
+  	post :destroy, :person_id => 50000, :id => 3
+  	after_number = Promotion.count
+  	assert_equal after_number, original_number
+  	assert_redirected_to :action => 'index', :person_id => 50000
+  end
   
 end
