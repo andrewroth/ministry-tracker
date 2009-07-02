@@ -1,3 +1,4 @@
+
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 one:
   id: 1
@@ -10,6 +11,12 @@ two:
   name: Campus Coordinator
   ministry_id: 1
   position: 2
+  type: StaffRole
+three:
+  id: 3
+  ministry_id: 1
+  name: Missionary
+  position: 3
   type: StaffRole
 four:
   id: 4

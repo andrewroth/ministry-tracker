@@ -44,3 +44,12 @@ ministry_leader_person_with_no_permanent_address:
     user_id: 5
     first_name: 'Ministry'
     last_name: 'Leader'
+person_to_rp_rp:
+  id: 5555
+  user_id: 6
+  first_name: 'Responsible'
+  last_name: 'Person'
+promotee:
+  id: 5678
+  first_name: 'Promotee'
+  last_name: 'Magee'

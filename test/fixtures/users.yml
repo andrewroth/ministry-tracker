@@ -25,3 +25,7 @@ ministry_leader_user_with_no_permanent_address:
     username: user_with_no_permanent_address
     password: <%= User.encrypt('test') %>
     guid: 253b648c-3537-464c-b97a-e2d7e2c748b8
+resposible_person_user:
+  id: 6
+  username: rp@you_talking_to_me.com
+  password: <%= User.encrypt('test') %>

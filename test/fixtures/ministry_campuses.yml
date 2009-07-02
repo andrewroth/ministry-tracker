@@ -3,7 +3,12 @@ one:
   id: 1
   ministry_id: 1
   campus_id: 1
+  tree_head_id: 50000
 two:
   id: 2
   ministry_id: 2
   campus_id: 2
+three:
+  id: 3
+  ministry_id: 2
+  campus_id: 1

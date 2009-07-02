@@ -8,7 +8,6 @@ person_campus_<%= i %>:
   ministry_id: 1
 <% end %>
 
-
 sues_in:
   id: 1002
   person_id: 2000
@@ -20,4 +19,18 @@ joshs_in:
   person_id: 50000
   campus_id: 1
   ministry_id: 1
- 
+freds_in:
+  id: 1004
+  person_id: 3000
+  campus_id: 1
+  ministry_id: 2
+promotees_in:
+  id: 1005
+  person_id: 5678
+  campus_id: 1
+  ministry_id: 2
+rps_rps_in:
+  id: 1006
+  person_id: 5555
+  campus_id: 1
+  ministry_id: 2

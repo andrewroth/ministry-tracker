@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
 layout 'people'
-before_filter :user_filter
+before_filter :user_filter, :get_person
 
 	def index
 		if params[:person_id]
@@ -32,7 +32,6 @@ before_filter :user_filter
 					create = false
 				else 
 					create = true
-					flash[:notice] = "A request has been sent to the head of the Responsible Person tree."
 				end
 			else
 				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
@@ -54,7 +53,6 @@ before_filter :user_filter
 		end
 		respond_to do |format|
 			if create
-				#render :action => "create", :person_id => @person.id, :promotee_id => to_promote.id, :ministry_involvement_id => mi_looked_at.id
 				create_promotion(to_promote.id, mi_looked_at.id)
 			else 
 				format.html {redirect_to person_promotions_path(@person)}
@@ -81,6 +79,7 @@ before_filter :user_filter
 	
 	def user_filter
 		unless params[:person_id] && @person && @person == @me
+			flash[:notice] = "You are not allowed to view someone elses 'Promotions' page."
 			redirect_to :action => 'index', :person_id => @me.id
 		end
 	end
@@ -131,7 +130,7 @@ before_filter :user_filter
 																	:promoter_id => promoter_id, 
 																	:ministry_involvement_id => ministry_involvement_id)	
 		p.save
-		
+		flash[:notice] = "Promotion requested."
 	end
 	
 end

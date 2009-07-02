@@ -16,14 +16,27 @@ three:
   person_id: 3000
   ministry_id: 2
   ministry_role_id: 5
+  responsible_person_id: 5555
 four:
   id: 4
   person_id: 2000
   ministry_id: 1
   ministry_role_id: 4
+  responsible_person_id: 50000
   
 staff_involvement_with_one:
     id: 5
     person_id: 4001
     ministry_id: 1
     ministry_role_id: 1 # admin
+responsible_involvement:
+  id: 6
+  person_id: 5555
+  ministry_id: 2
+  ministry_role_id: 1
+promotee_involvement:
+  id: 7
+  person_id: 5678
+  ministry_id: 2
+  ministry_role_id: 6
+  responsible_person_id: 3000 
