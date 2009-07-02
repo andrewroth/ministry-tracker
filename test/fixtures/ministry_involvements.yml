@@ -39,4 +39,10 @@ promotee_involvement:
   person_id: 5678
   ministry_id: 2
   ministry_role_id: 6
-  responsible_person_id: 3000 
+  responsible_person_id: 3000
+promotee_two_involvement:
+  id: 8
+  person_id: 4444
+  ministry_id: 2
+  ministry_role_id: 6
+  responsible_person_id: 5555  

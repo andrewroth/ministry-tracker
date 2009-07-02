@@ -53,3 +53,7 @@ promotee:
   id: 5678
   first_name: 'Promotee'
   last_name: 'Magee'
+promotee_two:
+  id: 4444
+  first_name: 'Promote'
+  last_name: 'Me'

@@ -34,3 +34,8 @@ rps_rps_in:
   person_id: 5555
   campus_id: 1
   ministry_id: 2
+promotee_two_in:
+  id: 1007
+  person_id: 4444
+  campus_id: 1
+  ministry_id: 2

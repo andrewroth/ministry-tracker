@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
 layout 'people'
-before_filter :user_filter, :get_person
+before_filter :user_filter
 
 	def index
 		if params[:person_id]
@@ -98,10 +98,8 @@ before_filter :user_filter, :get_person
 																																						mi.ministry_id
 		if active_ministry_campus.tree_head
 			promoter_id = active_ministry_campus.tree_head_id
-		elsif to_promote.responsible_person
-			if to_promote.responsible_person.responsible_person
+		elsif to_promote.responsible_person && to_promote.responsible_person.responsible_person
 				promoter_id = to_promote.responsible_person.responsible_person.id
-			end
 		else
 			## find someone with the highest ministry_role in that ministry
 			active_ministry = Ministry.find_by_id mi.ministry_id
@@ -110,7 +108,7 @@ before_filter :user_filter, :get_person
 			while !stop
 				count += 1
 				#find the next highest MinistryRole
-				cur_role = MinistryRoles.find_by_position(count)
+				cur_role = MinistryRole.find_by_position(count)
 				if cur_role
 					#find a ministry_involvement with that role
 					cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
