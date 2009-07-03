@@ -50,7 +50,6 @@ before_filter :user_filter
 		end
 		
 		respond_to do |format|
-			#format.html {redirect_to person_promotions_path(@person)}
       format.js do
         render :update do |page|
       	   update_flash(page)
@@ -66,7 +65,14 @@ before_filter :user_filter
 			prom.destroy
 			flash[:notice] = "Promotion deleted."
 		end
-		redirect_to :action => 'index', :person_id => @me.id
+		respond_to do |format|
+      format.js do
+        render :update do |page|
+      	   update_flash(page)
+      	   page.redirect_to :action => 'index', :person_id => @me.id
+      	end
+      end
+  	end
 	end
 	
 	
