@@ -74,13 +74,12 @@ class MinistryCampusesController < ApplicationController
 						cur_mi = person.ministry_involvements.find_by_ministry_id @cur_min_camp.ministry_id
 						cur_mi.responsible_person_id = nil
 						cur_mi.save
-							#Should send a correspondence saying your RP must be reset
+						#Should send a correspondence saying your RP must be reset
 					end
 		    end
       end
       show_id = params[:id]
-    end
-          
+    end      
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -133,7 +132,6 @@ class MinistryCampusesController < ApplicationController
 	end
 	
   def set_min_camps
-    @possible_tree_heads = []
     if @cur_min_camp
       @cur_tree_head = @cur_min_camp.tree_head
       @cur_camp = @cur_min_camp.campus
@@ -149,6 +147,7 @@ class MinistryCampusesController < ApplicationController
   end
   
   def get_possible_tree_heads
+  	@possible_tree_heads = []
     get_min_camp_people
     @min_camp_people.each do |person|
     cur_role_class = person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.class
@@ -159,13 +158,25 @@ class MinistryCampusesController < ApplicationController
   end
   
   def get_min_camp_people
+  
+  #the commented code below works for the most part, but there is a bug in campus_involvements, that a new one isn't created
+  #if a new ministry is made, and the user already has an involvement with that campus, but not with that ministry_campus,
+  #so when that is fixed, uncomment this code and comment out the bad code below...or just delete it.
+  
+  #involvements = @cur_min_camp.campus.campus_involvements.find_all_by_ministry_id @cur_min_camp.ministry_id
+  #@min_camp_people = []
+  #involvements.each do |inv|
+  	#@min_camp_people << inv.person
+  #end
+  
+    #bad version starts here
   	min_people = @cur_min_camp.ministry.people
-    @min_camp_people = []
+   	@min_camp_people = []
     min_people.each do |person|
-      if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
+    	if person.campuses.find_by_id @cur_min_camp.campus_id
       	@min_camp_people << person
       end
     end
-  end
-  
+    #bad version ends here    
+  end  
 end
