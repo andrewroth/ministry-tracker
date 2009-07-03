@@ -1,16 +1,20 @@
-<h2> Promote People Your are Responsible For </h2>
+<h1> Your Promotions</h1>
 <br />
-<table>	
-	<tr><th><h4>Name</h4></th>
-	<td><h4>Current Role</h4></td>
-	<td><h4>Description</h4></td>
-	<td><h4>Next Role</h4></td>
-	<td><h4>Promote?</h4></td>
-	</tr>	
-	<%- @person.people_responsible_for.each do |person| -%>
-		<%= render :partial => 'person_responsible_for', :locals => {:person => person} %>
-	<%- end -%>
-</table>
+<%- if @person.people_responsible_for.find :first -%>
+	<h3> People Your are Responsible For </h3>
+	<br />
+	<table>	
+		<tr><th><h4>Name</h4></th>
+		<td><h4>Current Role</h4></td>
+		<td><h4>Description</h4></td>
+		<td><h4>Next Role</h4></td>
+		<td><h4>Promote?</h4></td>
+		</tr>	
+		<%- @person.people_responsible_for.each do |person| -%>
+			<%= render :partial => 'person_responsible_for', :locals => {:person => person} %>
+		<%- end -%>
+	</table>
+<%- end -%>
 
 <%- if @person.promotion_requests != [] && @person.promotion_requests.find_by_answer(nil) -%>
 	<br />

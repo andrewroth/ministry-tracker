@@ -70,12 +70,10 @@ class MinistryCampusesController < ApplicationController
 		    # who are not under the new tree_head and are not connected to him
 		    @min_camp_people.each do |person|
 					unless rp_by_head(person)
-						if person.responsible_person
-							cur_mi = person.ministry_involvements.find_by_ministry_id @ministry.id
-							cur_mi.responsible_person_id = nil
-							cur_mi.save
+						cur_mi = person.ministry_involvements.find_by_ministry_id @cur_min_camp.ministry_id
+						cur_mi.responsible_person_id = nil
+						cur_mi.save
 							#Should send a correspondence saying your RP must be reset
-			      end
 					end
 		    end
       end
@@ -85,7 +83,7 @@ class MinistryCampusesController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.redirect_to (:action => 'show', :id => show_id)
+          page.redirect_to(:action => 'show', :id => show_id)
           update_flash(page)
         end
       end
@@ -113,8 +111,6 @@ class MinistryCampusesController < ApplicationController
     set_min_camps  
   end 
   
-  protected 
-  
   private
   
   def rp_by_head(person = nil)
@@ -128,7 +124,6 @@ class MinistryCampusesController < ApplicationController
 		  false
 	  end
 	end
-	
 	
   def set_min_camps
     @possible_tree_heads = []
@@ -146,25 +141,22 @@ class MinistryCampusesController < ApplicationController
     end
   end
   
-  def get_min_camp_people
-  	min_people = @ministry.people
-    @min_camp_people = []
-    min_people.each do |person|
-      if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
-      	@min_camp_people << person
+  def get_possible_tree_heads
+    get_min_camp_people
+    @min_camp_people.each do |person|
+    cur_role_class = person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.class
+      if cur_role_class == StaffRole
+        @possible_tree_heads << person
       end
     end
   end
   
-  
-  def get_possible_tree_heads
-    get_min_camp_people
-    
-    #Don't know why this doesn't accept people when I have cur_role_type == "StaffRole", even when it is equal to "StaffRole" Leave it here for now
-    @min_camp_people.each do |person|
-    cur_role_type = person.ministry_involvements.find(:first, :conditions => {:ministry_id => @ministry.id}).ministry_role.type
-      if cur_role_type #== "StaffRole"
-        @possible_tree_heads << person
+  def get_min_camp_people
+  	min_people = @cur_min_camp.ministry.people
+    @min_camp_people = []
+    min_people.each do |person|
+      if @cur_min_camp.campus.people.find :first, :conditions => {:id => person.id}
+      	@min_camp_people << person
       end
     end
   end

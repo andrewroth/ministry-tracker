@@ -34,7 +34,7 @@ before_filter :user_filter
 			else
 				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
 			end
-		else
+		else # If they are in fact giving us a real promotion instance to update
 			prom = Promotion.find_by_id params[:id]
 			prom.answer = params[:answer]
 			if params[:answer] == "accept"
@@ -48,11 +48,13 @@ before_filter :user_filter
 			end
 			prom.save	
 		end
+		
 		respond_to do |format|
-			format.html {redirect_to person_promotions_path(@person)}
+			#format.html {redirect_to person_promotions_path(@person)}
       format.js do
         render :update do |page|
       	   update_flash(page)
+      	   page.redirect_to :action => 'index', :person_id => @person.id
       	end
       end
   	end
@@ -60,7 +62,7 @@ before_filter :user_filter
 	
 	def destroy
 		prom = Promotion.find_by_id params[:id]
-		unless prom.nil? || prom.answer.nil? || prom.promoter != @person
+		unless prom.nil? || prom.answer.nil? || prom.promoter != @person 
 			prom.destroy
 			flash[:notice] = "Promotion deleted."
 		end
@@ -70,6 +72,7 @@ before_filter :user_filter
 	
 	private
 	
+	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
 	def user_filter
 		unless params[:person_id] && @person && @person == @me
 			flash[:notice] = "You are not allowed to view someone elses 'Promotions' page."

@@ -53,4 +53,38 @@ class MinistryCampusesControllerTest < ActionController::TestCase
     end
     assert_response :success
   end
+  
+  
+  def test_report
+  	get :show, :id => MinistryCampus.find(:first).id
+  	assert_response :success 
+  end
+  
+  def test_show_another_min_camp
+  	old = MinistryCampus.find(:first)
+  	new = MinistryCampus.find_last_by_ministry_id old.ministry_id
+  	put :update, :id => old.id, :new_camp => new.id
+  	assert_not_equal old, assigns(:cur_min_camp)
+  	assert_response :success 
+  end
+  
+  
+  #this fails, but the log shows that it shouldn't, as it does save a new tree head id in the right place. 
+  #I don't know why this isn't passing then, oldtreeheadid != newtreeheadid in the log.
+  def test_change_tree_head
+  	old_tree_head_id = ministry_campuses(:three).tree_head_id
+  	put :update, :id => ministry_campuses(:three).id, :tree_head_id => 3000
+  	assert_response :success
+  	assert_not_equal old_tree_head_id, ministry_campuses(:three).tree_head_id
+  end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 end
