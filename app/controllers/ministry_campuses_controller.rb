@@ -1,6 +1,5 @@
 class MinistryCampusesController < ApplicationController
   before_filter :get_countries
-  before_filter :check_ids, :only => [:show, :update]
   skip_before_filter :get_ministry, :only => :index
   layout 'manage'
   
@@ -71,7 +70,7 @@ class MinistryCampusesController < ApplicationController
 		    # who are not under the new tree_head and are not connected to him
 		    @min_camp_people.each do |person|
 					unless rp_by_head(person)
-						cur_mi = person.ministry_involvements.find_by_ministry_id @cur_min_camp.ministry_id
+						cur_mi = person.ministry_involvements.find_by_ministry_id @ministry.id
 						cur_mi.responsible_person_id = nil
 						cur_mi.save
 						#Should send a correspondence saying your RP must be reset
@@ -107,17 +106,20 @@ class MinistryCampusesController < ApplicationController
   
   
   def show
+  	get_ministry
 		@cur_min_camp = MinistryCampus.find_by_id params[:id]
+		if @cur_min_camp.ministry != get_ministry
+			redirect_to :action => 'show', :id => MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id}).id
+		end
+			
     set_min_camps  
   end   
   
-  private
   
-  def check_ids
-  	unless MinistryCampus.find_by_id(params[:id]) && MinistryCampus.find_by_id(params[:id]).ministry = @ministry
-  		redirect_to :action => 'show', :id => MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id}).id 
-  	end
-  end
+  
+  
+  
+  private
   
   def rp_by_head(person = nil)
   	if person.responsible_person
@@ -139,7 +141,7 @@ class MinistryCampusesController < ApplicationController
       @no_rp = []
       @min_camp_people.each do |person|
       	mi = person.ministry_involvements.find_by_ministry_id @ministry.id
-      	unless mi.responsible_person_id || @cur_min_camp.tree_head == person
+      	unless @cur_min_camp.tree_head == person || mi.responsible_person_id #person.ministry_involvements.find(:first, :conditions => ["responsible_person_id"])
       		@no_rp << person
       	end
       end
@@ -170,7 +172,7 @@ class MinistryCampusesController < ApplicationController
   #end
   
     #bad version starts here
-  	min_people = @cur_min_camp.ministry.people
+  	min_people = @ministry.people
    	@min_camp_people = []
     min_people.each do |person|
     	if person.campuses.find_by_id @cur_min_camp.campus_id

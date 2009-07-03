@@ -2,7 +2,7 @@
 <%- if @cur_min_camp -%>
 
   Campus: <b> <%= @cur_min_camp.campus.name %> </b> <br />
-  Ministry: <b> <%= @ministry.name %> </b>
+  Ministry: <b> <%= @cur_min_camp.ministry.name %> </b>
   <br />
   <br />
   <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
