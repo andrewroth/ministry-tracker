@@ -52,13 +52,19 @@ class MinistryCampusesController < ApplicationController
   end
   
   def update
-    if params[:new_camp]
-			flash[:notice] = "Campus switched"	
+  	get_ministry
+		@cur_min_camp = MinistryCampus.find_by_id params[:id]
+		if @cur_min_camp.ministry != @ministry
+			@cur_min_camp = MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id})
+			show_id = @cur_min_camp.id
+			@test_fail = true
+    elsif params[:new_camp]
+			flash[:notice] = "Campus switched"
+			@cur_min_camp = MinistryCampus.find_by_id params[:new_camp]	
 			show_id = params[:new_camp]
     else
 			if params[:tree_head_id]
 				#saves the new tree head
-				@cur_min_camp = MinistryCampus.find_by_id(params[:id])
 		    @cur_min_camp.tree_head_id = params[:tree_head_id]
         @cur_min_camp.save
 		    flash[:notice] = @cur_min_camp.campus.name + "'s tree head was changed."

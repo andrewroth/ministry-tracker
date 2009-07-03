@@ -61,9 +61,11 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
   
   def test_show_another_min_camp
-  	old = MinistryCampus.find(:first)
-  	new = MinistryCampus.find_last_by_ministry_id old.ministry_id
+  	old = MinistryCampus.find(2)
+  	new = MinistryCampus.find(4)
+  	session[:ministry_id] = 2
   	put :update, :id => old.id, :new_camp => new.id
+  	assert_nil assigns(:test_fail)
   	assert_not_equal old, assigns(:cur_min_camp)
   	assert_response :success 
   end

@@ -12,3 +12,7 @@ three:
   id: 3
   ministry_id: 2
   campus_id: 1
+four:
+  id: 4
+  ministry_id: 1
+  campus_id: 3
