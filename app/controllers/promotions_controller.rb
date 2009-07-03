@@ -1,6 +1,7 @@
 class PromotionsController < ApplicationController
 layout 'people'
 before_filter :user_filter
+before_filter :check_rp, :only => :update
 
 	def index
 		if params[:person_id]
@@ -77,6 +78,17 @@ before_filter :user_filter
 	
 	
 	private
+	
+	def check_rp
+		if params[:answer]
+			valid = @person == Promotion.find_by_id(params[:id]).promoter		
+		else 
+			valid = @person = Person.find_by_id(params[:id]).responsible_person
+		end	
+		unless valid
+			redirect_to :action => 'index', :person_id => @me.id
+		end
+	end
 	
 	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
 	def user_filter
