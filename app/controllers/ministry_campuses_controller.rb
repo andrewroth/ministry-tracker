@@ -57,7 +57,6 @@ class MinistryCampusesController < ApplicationController
 		if @cur_min_camp.ministry != @ministry
 			@cur_min_camp = MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id})
 			show_id = @cur_min_camp.id
-			@test_fail = true
     elsif params[:new_camp]
 			flash[:notice] = "Campus switched"
 			@cur_min_camp = MinistryCampus.find_by_id params[:new_camp]	
@@ -116,8 +115,7 @@ class MinistryCampusesController < ApplicationController
 		@cur_min_camp = MinistryCampus.find_by_id params[:id]
 		if @cur_min_camp.ministry != get_ministry
 			redirect_to :action => 'show', :id => MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id}).id
-		end
-			
+		end			
     set_min_camps  
   end   
   
@@ -146,8 +144,7 @@ class MinistryCampusesController < ApplicationController
       get_possible_tree_heads
       @no_rp = []
       @min_camp_people.each do |person|
-      	mi = person.ministry_involvements.find_by_ministry_id @ministry.id
-      	unless @cur_min_camp.tree_head == person || mi.responsible_person_id #person.ministry_involvements.find(:first, :conditions => ["responsible_person_id"])
+      	unless @cur_min_camp.tree_head == person || person.ministry_involvements.find(:first, :conditions => ["responsible_person_id"])
       		@no_rp << person
       	end
       end

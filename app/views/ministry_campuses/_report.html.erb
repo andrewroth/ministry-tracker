@@ -1,8 +1,8 @@
 
 <%- if @cur_min_camp -%>
 
-  Campus: <b> <%= @cur_min_camp.campus.name %> </b> <br />
-  Ministry: <b> <%= @cur_min_camp.ministry.name %> </b>
+  Campus: <i><b> <%= @cur_min_camp.campus.name %> </b></i><br />
+  Ministry:<i><b> <%= @cur_min_camp.ministry.name %></b></i>
   <br />
   <br />
   <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
@@ -19,7 +19,7 @@
   <br />
   
   <%- if @cur_tree_head -%>
-    The head if this campus' tree is <%= @cur_tree_head.full_name %> <br />
+    The head if this campus' tree is <i><b> <%= @cur_tree_head.full_name %> </b></i> <br />
   <%- else -%>
       This tree does not have a head.
   <%- end -%>

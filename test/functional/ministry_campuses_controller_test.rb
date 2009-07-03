@@ -61,11 +61,11 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
   
   def test_show_another_min_camp
-  	old = MinistryCampus.find(2)
+  	old = MinistryCampus.find(2) 
   	new = MinistryCampus.find(4)
+  	#makes sure update doesn't simply divert them to index
   	session[:ministry_id] = 2
   	put :update, :id => old.id, :new_camp => new.id
-  	assert_nil assigns(:test_fail)
   	assert_not_equal old, assigns(:cur_min_camp)
   	assert_response :success 
   end
@@ -79,14 +79,6 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   	assert_response :success
   	assert_not_equal old_tree_head_id, ministry_campuses(:three).tree_head_id
   end
-  
-  
-  
-  
-  
-  
-  
-  
-  
+   
   
 end
