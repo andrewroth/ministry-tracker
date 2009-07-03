@@ -1,5 +1,6 @@
 class MinistryCampusesController < ApplicationController
   before_filter :get_countries
+  before_filter :check_ids, :only => [:show, :update]
   skip_before_filter :get_ministry, :only => :index
   layout 'manage'
   
@@ -109,9 +110,15 @@ class MinistryCampusesController < ApplicationController
   def show
 		@cur_min_camp = MinistryCampus.find_by_id params[:id]
     set_min_camps  
-  end 
+  end   
   
   private
+  
+  def check_ids
+  	unless MinistryCampus.find_by_id(params[:id]) && MinistryCampus.find_by_id(params[:id]).ministry = @ministry
+  		redirect_to :action => 'show', :id => MinistryCampus.find(:first, :conditions => {:ministry_id => @ministry.id}).id 
+  	end
+  end
   
   def rp_by_head(person = nil)
   	if person.responsible_person
