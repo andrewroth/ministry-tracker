@@ -66,16 +66,8 @@ before_filter :check_rp, :only => :update
 			prom.destroy
 			flash[:notice] = "Promotion deleted."
 		end
-		respond_to do |format|
-      format.js do
-        render :update do |page|
-      	   update_flash(page)
-      	   page.redirect_to :action => 'index', :person_id => @me.id
-      	end
-      end
-  	end
-	end
-	
+		redirect_to :action => 'index', :person_id => @me.id
+  end
 	
 	private
 	
