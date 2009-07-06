@@ -35,7 +35,16 @@ module Cmt
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
-    :permissions_granted_by_default => true
+    :permissions_granted_by_default => true,
+    
+    #Within the CMT, someone's Responsible Person can promote them to a higher role. 
+    #Setting this to true allows RP's to promote students to staff without 
+    #having to ask for validation from a Campus Tree Head or someone with a higher role.
+    :staff_promote_student_to_staff_by_default => true,
+    
+    #If this is set to true, any staff can promote a student, even if they are not their RP
+    :staff_can_promote_any_student => true
+    
   }
 end
 

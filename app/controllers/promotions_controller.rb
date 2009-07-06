@@ -25,7 +25,7 @@ before_filter :check_rp, :only => :update
 			old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 			if old_role.position > person_role.position
 				new_role = MinistryRole.find_by_position(old_role.position - 1)
-				if old_role.type == new_role.type	
+				if old_role.type == new_role.type || Cmt::CONFIG[:staff_promote_student_to_staff_by_default]
 					mi_looked_at.ministry_role_id = new_role.id
 					mi_looked_at.save
 					flash[:notice] = to_promote.full_name + " has been promoted"
