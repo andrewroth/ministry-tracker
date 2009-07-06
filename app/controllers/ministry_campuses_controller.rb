@@ -82,13 +82,18 @@ class MinistryCampusesController < ApplicationController
 					end
 		    end
       end
-      show_id = params[:id]
-    end      
+      show_id = false
+    end   
+    set_min_camps   
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.redirect_to(:action => 'show', :id => show_id)
-          update_flash(page)
+        	update_flash(page)
+        	if show_id
+          	page.redirect_to(:action => 'show', :id => show_id)
+          else
+          	page.replace_html "tree_and_info", :partial => "report"
+          end
         end
       end
     end

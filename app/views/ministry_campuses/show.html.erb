@@ -1,1 +1,22 @@
-<%= render :partial => 'report' %>
+
+<%- if @cur_min_camp -%>
+  <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
+  <table>
+    <tr><th>Campus:</th> 
+    
+    <td><%= select_tag(:new_camp, 
+                      options_from_collection_for_select(@ministry.ministry_campuses, 
+                                                          'id', 'campus_name'))%>
+  <% end %></td></tr>
+  </table>
+  <%= submit_tag "Switch Campuses" %>
+  <br />
+  <br />
+  <%= render :partial => 'edit_head' %>
+  <br />
+  <br />
+
+	<%= render :partial => 'report' %>
+<%- else -%>
+	You don't have any campuses for this ministry -%>
+<%- end -%>

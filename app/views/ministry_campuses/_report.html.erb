@@ -1,35 +1,14 @@
-
-<%- if @cur_min_camp -%>
-
+  
+  <div id = "tree_and_info">
   Campus: <i><b> <%= @cur_min_camp.campus.name %> </b></i><br />
-  Ministry:<i><b> <%= @cur_min_camp.ministry.name %></b></i>
-  <br />
-  <br />
-  <% remote_form_for @cur_min_camp, :url => ministry_campus_url(@cur_min_camp), :method => :put do |f| %>
-  <table>
-    <tr><th>Campus:</th> 
-    
-    <td><%= select_tag(:new_camp, 
-                      options_from_collection_for_select(@ministry.ministry_campuses, 
-                                                          'id', 'campus_name'))%>
-  <% end %></td></tr>
-  </table>
-  <%= submit_tag "Switch Campuses" %>
-  <br />
-  <br />
-  
+  Ministry:<i><b> <%= @cur_min_camp.ministry.name %></b></i><br />
   <%- if @cur_tree_head -%>
-    The head if this campus' tree is <i><b> <%= @cur_tree_head.full_name %> </b></i> <br />
+    Head of Tree: <i><b> <%= @cur_tree_head.full_name %> </b></i> 
+    <br />
+    <br />
+    <%= render :partial => 'tree', :locals => {:head => @cur_tree_head} %>
   <%- else -%>
-      This tree does not have a head.
+      <br />
+      This tree does not have a head. Therefore there is no tree.
   <%- end -%>
-  <%= render :partial => 'edit_head' %>
-
-  <br />
-  <br />
-  <%= render :partial => 'tree', :locals => {:head => @cur_tree_head} %>
-  
-<%- else -%> <!-- there are no campuses -->
-
-  Your ministry has no campuses. Therefore you cannot have any Responsible Person Trees.
-<%- end -%>
+  </div>
