@@ -29,8 +29,10 @@ before_filter :check_rp, :only => :update
 					mi_looked_at.ministry_role_id = new_role.id
 					mi_looked_at.save
 					flash[:notice] = to_promote.full_name + " has been promoted"
-				else 
+				elsif new_role.class ==StaffRole
 					create_promotion(to_promote.id, mi_looked_at.id)
+				else 
+					flash[:notice] = "Cannot promote some to a 'student'."
 				end
 			else
 				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
@@ -84,9 +86,16 @@ before_filter :check_rp, :only => :update
 	
 	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
 	def user_filter
-		unless params[:person_id] && @person && @person == @me
-			flash[:notice] = "You are not allowed to view someone elses 'Promotions' page."
-			redirect_to :action => 'index', :person_id => @me.id
+		if Cmt::CONFIG[:only_staff_can_promote] && @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
+				kick = true
+		elsif params[:person_id].nil? || @person.nil? || @person != @me
+			kick = true	
+		else
+			kick = false
+		end
+		
+		unless kick = false
+			redirect_to person_path(@me.id)
 		end
 	end
 	

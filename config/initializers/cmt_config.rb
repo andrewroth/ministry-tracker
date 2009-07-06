@@ -43,7 +43,10 @@ module Cmt
     :staff_promote_student_to_staff_by_default => true,
     
     #If this is set to true, any staff can promote a student, even if they are not their RP
-    :staff_can_promote_any_student => true
+    :staff_can_promote_any_student => true,  
+    
+    #if this is set to true, then only Staff have the permission to promote
+    :only_staff_can_promote => true
     
   }
 end
