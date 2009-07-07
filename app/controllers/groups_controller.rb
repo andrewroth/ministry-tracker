@@ -1,13 +1,14 @@
 class GroupsController < ApplicationController
-  before_filter :authorization_filter, :only => [:create, :update, :destroy]
+  #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time]
+
   def index
     @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 
                                                   :order => Ministry.table_name + '.' + _(:name, :ministry),
                                                   :include => :ministry)
     respond_to do |format|
       format.html do
-        layout = authorized?(:new, :people) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'manage' : 'application'
         render :layout => layout
       end
       format.js
@@ -17,7 +18,7 @@ class GroupsController < ApplicationController
   def join
     respond_to do |format|
       format.html do
-        layout = authorized?(:new, :people) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'manage' : 'application'
         render :layout => layout
       end
       format.js
@@ -92,11 +93,18 @@ class GroupsController < ApplicationController
     if (Cmt::CONFIG[:hide_poor_status_in_scheduler] == false)
       @notices << "Poor state is currently enabled in the timetables. The 'Compare timetables' feature will not include the poor states during comparison."
     end
+    @group = Group.find(params[:id], :include => :people)
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
     #if nobody is selected, compare schedules of everyone in group
     if(person_ids.nil? || person_ids.empty?)
-      @group = Group.find(params[:id], :include => :people)
-      @people = @group.people.reject {|person| person.nil?}
+      @people = @group.people.reject {|person| 
+          person.nil? ||
+          (GroupInvolvement.find(:first, :conditions => [_(:person_id, :group_involvement) + " = ? AND " + 
+                                                              _(:group_id, :group_invovlement) + " = ? ", 
+                                                              person.id, @group.id]).requested == true)
+          
+          }
+      
     else
       @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
     end

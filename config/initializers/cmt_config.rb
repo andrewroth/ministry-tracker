@@ -31,7 +31,11 @@ module Cmt
     :disable_address2 => true,
     
     # Default website title appearing at the top of the browser
-    :web_title => 'Campus for Christ :: Movement Tracker'
+    :web_title => 'Campus for Christ :: Movement Tracker',
+
+    # When no Permission object is found for a controller/action,
+    # does the user have permission
+    :permissions_granted_by_default => false
   }
 end
 

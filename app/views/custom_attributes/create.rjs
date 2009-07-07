@@ -1,3 +1,5 @@
 update_flash(page, flash[:notice])
-page.insert_html(:bottom, 'direct_custom_attribute_' + params[:type], :partial => 'custom_attributes/custom_attribute', :object => @custom_attribute)
-page[params[:type]].visual_effect(:fade)
+unless @no_permission
+  page.insert_html(:bottom, 'direct_custom_attribute_' + params[:type], :partial => 'custom_attributes/custom_attribute', :object => @custom_attribute)
+  page[params[:type]].visual_effect(:fade)
+end

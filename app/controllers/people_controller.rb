@@ -13,6 +13,12 @@ class PeopleController < ApplicationController
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
   
+#  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+#                                 :get_campus_states, :set_current_address_states,
+#                                 :set_permanent_address_states]
+#  before_filter :authorization_filter, :except => AUTHORIZE_FOR_OWNER_ACTIONS
+#  before_filter :authorization_allowed_for_owner, :only => AUTHORIZE_FOR_OWNER_ACTIONS
+
   # GET /people
   # GET /people.xml
   def index
@@ -561,7 +567,7 @@ class PeopleController < ApplicationController
   def set_permanent_address_states
     @permanent_address_states = get_states params[:permanent_address_country_id]
   end
-
+  
   private
     
     def get_people_responsible_for
@@ -587,7 +593,7 @@ class PeopleController < ApplicationController
       # find everyone in this ministry with a higher access
       higher_mi_array = []
       @most_recent_ministry.ministry_involvements.each do |cur_mi|
-        if cur_mi.ministry_role.position < persons_ministry_involvement_position
+        if cur_mi.ministry_role.position < persons_ministry_involvement_position && cur_mi.ministry_role.type == "StaffRole"
           higher_mi_array << cur_mi
         end
       end

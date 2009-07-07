@@ -1,4 +1,5 @@
 class ProfilePicturesController < ApplicationController
+  
   # POST /profile_pictures
   # POST /profile_pictures.xml
   def create

@@ -207,18 +207,8 @@ class TimetablesController < ApplicationController
     end
     
     def check_authorization
-      @can_edit = can_edit_timetable?
-      @can_show = can_show_timetable?
+      @can_edit = authorized?(:timetables, :edit)
+      @can_show = authorized?(:timetables, :show)
     end
     
-    def can_show_timetable?
-      # a user can see a timetable if it is one of their's
-      @me.id == params[:person_id].to_i
-      # or the have permission
-#        || authorized?('show', 'timetables')
-    end
-    
-    def can_edit_timetable?
-      can_show_timetable?
-    end
 end

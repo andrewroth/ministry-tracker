@@ -1,4 +1,4 @@
-require 'ruby-debug'
+
 class UpdateStateColumnToStateId < ActiveRecord::Migration
   def self.up
     c = Column.find :first, :conditions => { # don't clobber any data

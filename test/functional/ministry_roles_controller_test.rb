@@ -35,7 +35,23 @@ class MinistryRolesControllerTest < ActionController::TestCase
     end
     assert_response :success, @response.body
   end
+  
+  # this checks to see if, when you create a new ministry_role when @ministry = 2, 
+  # that your ministry_role.ministry_id = 2
+  def test_create_different_ministry_id
+    session[:ministry_id] = 2
+    assert_difference("MinistryRole.count") do
+      xhr :post, :create, :ministry_role => {:type => 'StaffRole', :name => 'Admin'}
+    end
+    assert_response :success, @response.body
+    # asserts that we are infact looking at another ministry
+    assert_equal 2, assigns(:ministry).id
+    # asserts this ministry_role was assigned to our current ministry
+    assert_equal 2, MinistryRole.find(:last).ministry_id
+  end
 
+  
+  
   def test_create_bad
     assert_no_difference("MinistryRole.count") do
       xhr :post, :create, :ministry_role => {:type => 'StaffRole', :name => ''}
