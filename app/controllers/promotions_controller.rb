@@ -38,15 +38,23 @@ before_filter :check_rp, :only => :update
 			old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 			if old_role.position > person_role.position
 				new_role = MinistryRole.find_by_position(old_role.position - 1)
-				if old_role.type == new_role.type || Cmt::CONFIG[:staff_promote_student_to_staff_by_default]
+				if old_role.type != new_role.type 				
+					if new_role.class ==StaffRole
+						if Cmt::CONFIG[:staff_promote_student_to_staff_by_default]
+							mi_looked_at.ministry_role_id = new_role.id
+							mi_looked_at.save
+							flash[:notice] = to_promote.full_name + " has been promoted"
+						else
+							create_promotion(to_promote.id, mi_looked_at.id)
+						end
+					else 
+						flash[:notice] = "Cannot promote some to a 'student'."
+					end
+				else
 					mi_looked_at.ministry_role_id = new_role.id
 					mi_looked_at.save
 					flash[:notice] = to_promote.full_name + " has been promoted"
-				elsif new_role.class ==StaffRole
-					create_promotion(to_promote.id, mi_looked_at.id)
-				else 
-					flash[:notice] = "Cannot promote some to a 'student'."
-				end
+				end				
 			else
 				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
 			end
@@ -161,6 +169,5 @@ before_filter :check_rp, :only => :update
 																	:ministry_involvement_id => ministry_involvement_id)	
 		p.save
 		flash[:notice] = "Promotion requested."
-	end
-	
+	end	
 end
