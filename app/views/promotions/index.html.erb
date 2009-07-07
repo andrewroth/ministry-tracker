@@ -16,6 +16,23 @@
 	</table>
 <%- end -%>
 
+<%- if @people_to_promote && @people_to_promote != []-%>
+	<br />
+	<h3> Students You Can Promote In Your Ministry</h3>
+	<br />
+	<table>	
+		<tr><th><h4>Name</h4></th>
+		<td><h4>Current Role</h4></td>
+		<td><h4>Description</h4></td>
+		<td><h4>Next Role</h4></td>
+		<td><h4>Promote?</h4></td>
+		</tr>	
+		<%- @people_to_promote.each do |person| -%>
+			<%= render :partial => 'person_to_promote', :locals => {:person => person} %>
+		<%- end -%>
+	</table>
+<%- end -%>
+
 <%- if @person.promotion_requests != [] && @person.promotion_requests.find_by_answer(nil) -%>
 	<br />
 	<br />

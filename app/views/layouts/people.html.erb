@@ -11,7 +11,9 @@
   <li><%= link_to('Timetable', person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
   
   <%- if @person == @me -%>
-  	<li> <%= link_to 'Promote People', person_promotions_path(@person.id), :class => params[:controller] == 'promotions' ? "subtabs-menu-active" : "subtabs-menu-inactive" %> </li>
+  	<%- unless Cmt::CONFIG[:only_staff_can_promote] && @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class != StaffRole -%>
+  		<li> <%= link_to 'Promotions', person_promotions_path(@person.id), :class => params[:controller] == 'promotions' ? "subtabs-menu-active" : "subtabs-menu-inactive" %> </li>
+  	<%- end -%>
   <%- end -%>
   
   </ul>

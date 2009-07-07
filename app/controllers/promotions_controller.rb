@@ -7,20 +7,33 @@ before_filter :check_rp, :only => :update
 		if params[:person_id]
 			@person = Person.find_by_id params[:person_id]
 		end
+		if Cmt::CONFIG[:staff_can_promote_any_student] && 
+		@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
+		  @people_to_promote = []
+			min_involves = @ministry.ministry_involvements
+			min_involves.each do |inv|
+				if inv.ministry_role.class == StudentRole
+					@people_to_promote <<  inv.person
+				end
+			end
+		end	
 	end
 	
 		
 	def update
 			unless params[:answer] #unless accepting or declines an actual request
+			@person = Person.find_by_id params[:person_id]
+			to_promote = Person.find_by_id params[:id]
 			#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
 			#to do that, find out what ministry_involvement connects these two people
 			mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
+			if mi_looked_at.nil?
+				mi_looked_at = to_promote.ministry_involvements.find_by_ministry_id @ministry.id
+			end
 			#then find that ministry_involvement's ministry
 			ministry_looked_at = Ministry.find_by_id mi_looked_at.ministry_id
 		
 			#get our people and their ministry_roles in the ministry we are looking at
-			@person = Person.find_by_id params[:person_id]
-			to_promote = Person.find_by_id params[:id]
 			person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 			old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
 			if old_role.position > person_role.position
@@ -76,8 +89,11 @@ before_filter :check_rp, :only => :update
 	def check_rp
 		if params[:answer]
 			valid = @person == Promotion.find_by_id(params[:id]).promoter		
+		elsif Cmt::CONFIG[:staff_can_promote_any_student] && 
+					@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
+			valid = true
 		else 
-			valid = @person = Person.find_by_id(params[:id]).responsible_person
+			valid = @person == Person.find_by_id(params[:id]).responsible_person
 		end	
 		unless valid
 			redirect_to :action => 'index', :person_id => @me.id
@@ -86,7 +102,8 @@ before_filter :check_rp, :only => :update
 	
 	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
 	def user_filter
-		if Cmt::CONFIG[:only_staff_can_promote] && @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
+		if Cmt::CONFIG[:only_staff_can_promote] && 
+			@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class != StaffRole
 				kick = true
 		elsif params[:person_id].nil? || @person.nil? || @person != @me
 			kick = true	
@@ -94,7 +111,7 @@ before_filter :check_rp, :only => :update
 			kick = false
 		end
 		
-		unless kick = false
+		unless kick == false
 			redirect_to person_path(@me.id)
 		end
 	end

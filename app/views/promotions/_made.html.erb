@@ -1,0 +1,6 @@
+<%- if request.answer -%>
+	<%= request.promoter.full_name %> has chosen to <%= request.answer%> your request to promote <%= request.person.full_name %>. 
+	<%= link_to 'Delete', person_promotion_path(@person.id, request.id), :method => :delete %>
+<%- else -%>
+	<%= request.promoter.full_name %> has not yet decided whether to promote <%= request.person.full_name %>.
+<%- end -%>
