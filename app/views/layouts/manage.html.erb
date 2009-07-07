@@ -26,7 +26,8 @@
       
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
-		       authorized?(:new, :group_types) || authorized?(:new, :dorms) -%>
+           authorized?(:new, :group_types) || authorized?(:new, :dorms) ||
+           authorized?(:new, :training_categories) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>

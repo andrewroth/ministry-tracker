@@ -213,22 +213,22 @@ class ApplicationController < ActionController::Base
       # Owner Action Checking
       # NOTE: These need to be done after action & controller are set
       if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
-         AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
-      case controller.to_sym
-      when :people
-        if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
-          return true
-        end
-      when :profile_pictures, :timetables
-        if params[:person_id] && params[:person_id] == @my.id.to_s
-          return true
-        end
-      when :groups
-        if (params[:id] && params[:controller] == "groups") && 
-          @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
-          return true
-        end
-      end # case
+        AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
+        case controller.to_sym
+        when :people
+          if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
+            return true
+          end
+        when :profile_pictures, :timetables
+          if params[:person_id] && params[:person_id] == @my.id.to_s
+            return true
+          end
+        when :groups
+          if (params[:id] && params[:controller] == "groups") && 
+            @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
+            return true
+          end
+        end # case
       end # if
 
       # First see if this is restricted in the permissions table
