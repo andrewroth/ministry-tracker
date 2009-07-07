@@ -1,3 +1,6 @@
-page[@type].replace_html(:partial => 'form', :locals => {:type => @type})
-page[@type].show
-page['spinner' + @type].hide
+update_flash(page, flash[:notice])
+unless @no_permission
+  page[@type].replace_html(:partial => 'form', :locals => {:type => @type})
+  page[@type].show
+  page['spinner' + @type].hide
+end
