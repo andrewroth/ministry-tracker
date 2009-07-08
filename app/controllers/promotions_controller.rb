@@ -1,173 +1,174 @@
 class PromotionsController < ApplicationController
-  layout 'people'
-  before_filter :user_filter
-  before_filter :check_rp, :only => :update
+layout 'people'
+before_filter :user_filter
+before_filter :check_rp, :only => :update
 
-  def index
-    if params[:person_id]
-      @person = Person.find_by_id params[:person_id]
-    end
-    if Cmt::CONFIG[:staff_can_promote_any_student] && 
-      @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
-      @people_to_promote = []
-      min_involves = @ministry.ministry_involvements
-      min_involves.each do |inv|
-        if inv.ministry_role.class == StudentRole
-          @people_to_promote << inv.person
-        end
-      end
-    end	
-  end
-
-
-  def update
-    unless params[:answer] #unless accepting or declines an actual request
-      @person = Person.find_by_id params[:person_id]
-      to_promote = Person.find_by_id params[:id]
-      #first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
-      #to do that, find out what ministry_involvement connects these two people
-      mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
-      if mi_looked_at.nil?
-        mi_looked_at = to_promote.ministry_involvements.find_by_ministry_id @ministry.id
-      end
-      #then find that ministry_involvement's ministry
-      ministry_looked_at = Ministry.find_by_id mi_looked_at.ministry_id
-
-      #get our people and their ministry_roles in the ministry we are looking at
-      person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
-      old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
-      if old_role.position > person_role.position
-        new_role = MinistryRole.find_by_position(old_role.position - 1)
-        if old_role.type != new_role.type 				
-          if new_role.class ==StaffRole
-            if Cmt::CONFIG[:staff_promote_student_to_staff_by_default]
-              mi_looked_at.ministry_role_id = new_role.id
-              mi_looked_at.save
-              flash[:notice] = to_promote.full_name + " has been promoted"
-            else
-              create_promotion(to_promote.id, mi_looked_at.id)
-            end
-          else 
-            flash[:notice] = "Cannot promote some to a 'student'."
-          end
-        else
-          mi_looked_at.ministry_role_id = new_role.id
-          mi_looked_at.save
-          flash[:notice] = to_promote.full_name + " has been promoted"
-        end				
-      else
-        flash[:notice] = to_promote.full_name + " can not be promoted any higher."
-      end
-    else # If they are in fact giving us a real promotion instance to update
-      prom = Promotion.find_by_id params[:id]
-      prom.answer = params[:answer]
-      if params[:answer] == "accept"
-        flash[:notice] = prom.person.full_name + " has been promoted."
-        cur_role = prom.ministry_involvement.ministry_role
-        next_role_id = MinistryRole.find_by_position(cur_role.position - 1).id
-        prom.ministry_involvement.ministry_role_id = next_role_id
-        prom.ministry_involvement.save
-      else
-        flash[:notice] = "Request declined."
-      end
-      prom.save	
-    end
-
-    respond_to do |format|
+	def index
+        if params[:person_id]
+		    @person = Person.find_by_id params[:person_id]
+		end
+		if @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole &&
+				Cmt::CONFIG[:permissions_granted_by_default] == true
+		
+		  @people_to_promote = []
+			min_involves = @ministry.ministry_involvements
+			min_involves.each do |inv|
+				if inv.ministry_role.class == StudentRole
+					@people_to_promote <<  inv.person
+				end
+			end
+		end	
+	end
+	
+		
+	def update
+			unless params[:answer] #unless accepting or declines an actual request
+			@person = Person.find_by_id params[:person_id]
+			to_promote = Person.find_by_id params[:id]
+			#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
+			#to do that, find out what ministry_involvement connects these two people
+			mi_looked_at = MinistryInvolvement.find_by_responsible_person_id_and_person_id(params[:person_id], params[:id])
+			if mi_looked_at.nil?
+				mi_looked_at = to_promote.ministry_involvements.find_by_ministry_id @ministry.id
+			end
+			#then find that ministry_involvement's ministry
+			ministry_looked_at = Ministry.find_by_id mi_looked_at.ministry_id
+		
+			#get our people and their ministry_roles in the ministry we are looking at
+			person_role = @person.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
+			old_role = to_promote.ministry_involvements.find_by_ministry_id(ministry_looked_at.id).ministry_role
+			if old_role.position > person_role.position
+				new_role = MinistryRole.find_by_position(old_role.position - 1)
+				if old_role.type != new_role.type 				
+					if new_role.class ==StaffRole
+						if Cmt::CONFIG[:staff_promote_student_to_staff_by_default]
+							mi_looked_at.ministry_role_id = new_role.id
+							mi_looked_at.save
+							flash[:notice] = to_promote.full_name + " has been promoted"
+						else
+							create_promotion(to_promote.id, mi_looked_at.id)
+						end
+					else 
+						flash[:notice] = "Cannot promote some to a 'student'."
+					end
+				else
+					mi_looked_at.ministry_role_id = new_role.id
+					mi_looked_at.save
+					flash[:notice] = to_promote.full_name + " has been promoted"
+				end				
+			else
+				flash[:notice] = to_promote.full_name + " can not be promoted any higher."
+			end
+		else # If they are in fact giving us a real promotion instance to update
+			prom = Promotion.find_by_id params[:id]
+			prom.answer = params[:answer]
+			if params[:answer] == "accept"
+				flash[:notice] = prom.person.full_name + " has been promoted."
+				cur_role = prom.ministry_involvement.ministry_role
+				next_role_id = MinistryRole.find_by_position(cur_role.position - 1).id
+				prom.ministry_involvement.ministry_role_id = next_role_id
+				prom.ministry_involvement.save
+			else
+				flash[:notice] = "Request declined."
+			end
+			prom.save	
+		end
+		
+		respond_to do |format|
       format.js do
         render :update do |page|
-          update_flash(page)
-          page.redirect_to :action => 'index', :person_id => @person.id
-        end
+      	   update_flash(page)
+      	   page.redirect_to :action => 'index', :person_id => @person.id
+      	end
       end
-    end
+  	end
+	end
+	
+	def destroy
+		prom = Promotion.find_by_id params[:id]
+		unless prom.nil? || prom.answer.nil? || prom.promoter != @person 
+			prom.destroy
+			flash[:notice] = "Promotion deleted."
+		end
+		redirect_to :action => 'index', :person_id => @me.id
   end
-
-  def destroy
-    prom = Promotion.find_by_id params[:id]
-    unless prom.nil? || prom.answer.nil? || prom.promoter != @person 
-      prom.destroy
-      flash[:notice] = "Promotion deleted."
-    end
-    redirect_to :action => 'index', :person_id => @me.id
-  end
-
-  private
-
-  def check_rp
-    if params[:answer]
-      valid = @person == Promotion.find_by_id(params[:id]).promoter		
-    elsif Cmt::CONFIG[:staff_can_promote_any_student] && 
-      @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
-      valid = true
-    else 
-      valid = @person == Person.find_by_id(params[:id]).responsible_person
-    end	
-    unless valid
-      redirect_to :action => 'index', :person_id => @me.id
-    end
-  end
-
-  #we want only the user to view his/her own promotions. No changeing any other people's promotions!
-  def user_filter
-    if Cmt::CONFIG[:only_staff_can_promote] && 
-      @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class != StaffRole
-      kick = true
-    elsif params[:person_id].nil? || @person.nil? || @person != @me
-      kick = true	
-    else
-      kick = false
-    end
-
-    unless kick == false
-      redirect_to person_path(@me.id)
-    end
-  end
-
-  def create_promotion(promotee_id = nil, ministry_involvement_id = nil)	
-    #will try to send a request to the tree head of this person's ministry campus
-    #if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
-    #if this is not possible, we will look for the person with highest ministry role in that ministry.
-
-    to_promote = Person.find_by_id promotee_id
-
-    #Trying to find ministry_campus
-    mi = MinistryInvolvement.find_by_id ministry_involvement_id
-    most_recent_campus_involvement = to_promote.most_recent_involvement
-    active_ministry_campus = MinistryCampus.find_by_campus_id_and_ministry_id most_recent_campus_involvement.campus_id,
-      mi.ministry_id
-    if active_ministry_campus.tree_head
-      promoter_id = active_ministry_campus.tree_head_id
-    elsif to_promote.responsible_person && to_promote.responsible_person.responsible_person
-      promoter_id = to_promote.responsible_person.responsible_person.id
-    else
-      ## find someone with the highest ministry_role in that ministry
-      active_ministry = Ministry.find_by_id mi.ministry_id
-      stop = false
-      count = 0
-      while !stop
-        count += 1
-        #find the next highest MinistryRole
-        cur_role = MinistryRole.find_by_position(count)
-        if cur_role
-          #find a ministry_involvement with that role
-          cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
-          if cur_mi
-            promoter_id = cur_mi.person_id
-            stop = true
-          end
-        else #we have gone through all the roles, this should NEVER happen, but just incase it does
-          #have the person promote himself
-          promoter_id = promotee_id
-          stop = true
-        end	
-      end				
-    end
-
-    p = Promotion.new(:person_id => promotee_id,
-                      :promoter_id => promoter_id, 
-                      :ministry_involvement_id => ministry_involvement_id)	
-    p.save
-    flash[:notice] = "Promotion requested."
-  end	
+	
+	private
+	
+	def check_rp
+		if params[:answer]
+			valid = @person == Promotion.find_by_id(params[:id]).promoter		
+		elsif Cmt::CONFIG[:staff_can_promote_any_student] && 
+					@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole
+			valid = true
+		else 
+			valid = @person == Person.find_by_id(params[:id]).responsible_person
+		end	
+		unless valid
+			redirect_to :action => 'index', :person_id => @me.id
+		end
+	end
+	
+	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
+	def user_filter
+		if Cmt::CONFIG[:only_staff_can_promote] && 
+			@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class != StaffRole
+				kick = true
+		elsif params[:person_id].nil? || @person.nil? || @person != @me
+			kick = true	
+		else
+			kick = false
+		end
+		
+		unless kick == false
+			redirect_to person_path(@me.id)
+		end
+	end
+	
+	def create_promotion(promotee_id = nil, ministry_involvement_id = nil)	
+		#will try to send a request to the tree head of this person's ministry campus
+		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
+		#if this is not possible, we will look for the person with highest ministry role in that ministry.
+		
+		to_promote = Person.find_by_id promotee_id
+		
+		#Trying to find ministry_campus
+		mi = MinistryInvolvement.find_by_id ministry_involvement_id
+		most_recent_campus_involvement = to_promote.most_recent_involvement
+		active_ministry_campus = MinistryCampus.find_by_campus_id_and_ministry_id most_recent_campus_involvement.campus_id,
+																																						mi.ministry_id
+		if active_ministry_campus.tree_head
+			promoter_id = active_ministry_campus.tree_head_id
+		elsif to_promote.responsible_person && to_promote.responsible_person.responsible_person
+				promoter_id = to_promote.responsible_person.responsible_person.id
+		else
+			## find someone with the highest ministry_role in that ministry
+			active_ministry = Ministry.find_by_id mi.ministry_id
+			stop = false
+			count = 0
+			while !stop
+				count += 1
+				#find the next highest MinistryRole
+				cur_role = MinistryRole.find_by_position(count)
+				if cur_role
+					#find a ministry_involvement with that role
+					cur_mi = active_ministry.ministry_involvements.find(:first, :conditions => {:ministry_role_id => cur_role.id})
+					if cur_mi
+						promoter_id = cur_mi.person_id
+						stop = true
+					end
+				else #we have gone through all the roles, this should NEVER happen, but just incase it does
+					#have the person promote himself
+					promoter_id = promotee_id
+					stop = true
+				end	
+			end				
+		end
+		
+		p = Promotion.new(:person_id => promotee_id,
+																	:promoter_id => promoter_id, 
+																	:ministry_involvement_id => ministry_involvement_id)	
+		p.save
+		flash[:notice] = "Promotion requested."
+	end	
 end
