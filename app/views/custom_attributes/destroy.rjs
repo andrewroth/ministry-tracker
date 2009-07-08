@@ -1,1 +1,4 @@
 update_flash(page, flash[:notice])
+unless @no_permission
+  page[dom_id(@custom_attribute)].hide
+end

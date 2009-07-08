@@ -168,6 +168,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'training_categories'
+  p.action = 'new'
+  p.description = 'Create Training Categories'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'views'
   p.action = 'new'
   p.description = 'Create Directory Views'
@@ -176,5 +182,23 @@ end
 Permission.seed(:controller, :action) do |p|
   p.controller = 'custom_attributes'
   p.action = 'new'
-  p.description = 'Create Custom Attributes'
+  p.description = 'Create Custom Attributes (Note: You still need to enable the individual custom attribute types as well)'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'involvement_questions'
+  p.action = 'new'
+  p.description = 'Create Involvement Custom Attributes'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'profile_questions'
+  p.action = 'new'
+  p.description = 'Create Profile Questions'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'customize'
+  p.action = 'show'
+  p.description = 'Customizes A Ministry (based on what your other permissions are)'
 end
