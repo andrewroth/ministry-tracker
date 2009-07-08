@@ -1,5 +1,4 @@
-  
-  <div id = "tree_and_info">
+<div id = "tree_and_info">
   Campus: <i><b> <%= @cur_min_camp.campus.name %> </b></i><br />
   Ministry:<i><b> <%= @cur_min_camp.ministry.name %></b></i><br />
   <%- if @cur_tree_head -%>
@@ -8,7 +7,7 @@
     <br />
     <%= render :partial => 'tree', :locals => {:head => @cur_tree_head} %>
   <%- else -%>
-      <br />
-      This tree does not have a head. Therefore there is no tree.
+    <br />
+    This tree does not have a head. Therefore there is no tree.
   <%- end -%>
-  </div>
+</div>
