@@ -12,12 +12,12 @@
   	<h4>People with no Responsible Person:</h4>
   	<br />
   	<%- @no_rp.each do |person| -%>
-  		<%= person.full_name  %>, &nbsp
-  		<%=person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
+  		<%= person.full_name %>, &nbsp
+  		<%= person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
   		<br />
   	<%- end -%>
   <%- end -%>
   
 <%- else -%>
-  Please select a staff from the this campus to be at the top of the Responsible Person Tree.
+  Please select a staff from this campus to be at the top of the Responsible Person Tree.
 <%- end -%>
