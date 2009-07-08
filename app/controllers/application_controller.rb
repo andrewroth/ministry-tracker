@@ -166,7 +166,8 @@ class ApplicationController < ActionController::Base
                   :set_permanent_address_states],
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
-      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time]
+      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time],
+      :promotions => [:index, :show, :update, :destroy ]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -219,7 +220,7 @@ class ApplicationController < ActionController::Base
           if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
             return true
           end
-        when :profile_pictures, :timetables
+        when :profile_pictures, :timetables, :promotions
           if params[:person_id] && params[:person_id] == @my.id.to_s
             return true
           end
