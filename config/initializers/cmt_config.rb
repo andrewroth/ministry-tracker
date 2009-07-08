@@ -47,7 +47,7 @@ module Cmt
     :staff_can_promote_any_student => true,  
     
     #if this is set to true, then only Staff have the permission to promote
-    :only_staff_can_promote => true
+    :only_staff_can_promote => true,
     
     :disable_group_timetable_impact => true
 
