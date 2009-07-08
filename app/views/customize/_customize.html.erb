@@ -45,6 +45,7 @@
 <%- end -%>
 
 <div id="customizebody" class="accordion">
+
   <%- if authorized?(:new, :views) -%>
   <div>
 		<div class="title">Directory Views</div>
@@ -53,6 +54,7 @@
 		</div>
 	</div>
 	<%- end -%>
+	
 	<%- if authorized?(:new, :dorms) -%>
 	<div>
 		<div class="title">Dorms</div>
@@ -75,26 +77,33 @@
 		</div>
 	</div>
 	<%- end -%>
+	
   <%- if authorized?(:new, :group_types) -%>
   <div>
     <div class="title">Group Types <%= spinner('gt') %></div>
     <div>
-      <%- tooltip do -%> A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". <%- end -%>
+      <%- tooltip do -%> 
+      	A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". 
+      <%- end -%>
       <table border="0" cellspacing="5" cellpadding="5" id="group_types" class="directorytable">
         <thead>
-        <tr>
+        	<tr>
           <th rowspan="2">Group Type</th>
           <th rowspan="2">Mentor Priority</th>
           <th rowspan="2">Publicly Listed</th>
-          <th colspan="3" style="border: none; text-align: center;">Impact on timetable for</th>
-
-          <th  rowspan="2" colspan="4">Actions</th>
-      </tr>
-      <tr>
-        <th>Leader</th>
-        <th>Co-Leader</th>
-        <th>Participant</th>
-      </tr>
+          <%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
+          	<th colspan="3" style="border: none; text-align: center;">Impact on timetable for</th>
+					<%- end -%>
+          	<th  rowspan="2" colspan="4">Actions</th>
+      		</tr>
+                
+      	<%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
+      	<tr>
+        	<th>Leader</th>
+        	<th>Co-Leader</th>
+        	<th>Participant</th>
+      	</tr>
+      <%- end -%>
       </thead>
       <%= render @ministry.group_types %>
     
