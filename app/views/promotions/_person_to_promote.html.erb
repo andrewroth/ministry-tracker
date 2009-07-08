@@ -1,0 +1,21 @@
+<% cur_mi = MinistryInvolvement.find_by_ministry_id_and_person_id @ministry.id, person.id %>>
+<% cur_role = cur_mi.ministry_role %>
+
+<tr><th><%=person.full_name%></th>
+<td><%= cur_role.name %></td>
+<td><%= cur_role.description %> </td>
+<td><%- if cur_role.position > 1 -%>
+			<%= MinistryRole.find_by_position(cur_role.position - 1).name %>
+		<%- else -%>
+			N/A
+		<%- end -%></td>
+<td>
+	<%- unless person.promotions != [] && person.promotions.find_by_ministry_involvement_id_and_answer(cur_mi.id, nil) &&
+							Cmt::CONFIG[:staff_promote_student_to_staff_by_default] == false-%>
+		<%= link_to_remote 'Promote', :url => person_promotion_path(@person.id, person.id), 
+      														:before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :put %>
+  <%- else -%>
+  	Promotion Request Pending
+  <%- end -%>
+</td>
+</tr>
