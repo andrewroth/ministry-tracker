@@ -1,6 +1,6 @@
 <%- if head -%>
-	<h4> Responsible Person Tree: </h4>
-	<br />
+  <h4> Responsible Person Tree: </h4>
+  <br />
     <%= head.full_name %>, &nbsp
     <%= head.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
   <br />
@@ -9,13 +9,13 @@
   <br />
   
   <%- if @no_rp != [] -%>
-  	<h4>People with no Responsible Person:</h4>
-  	<br />
-  	<%- @no_rp.each do |person| -%>
-  		<%= person.full_name %>, &nbsp
-  		<%= person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
-  		<br />
-  	<%- end -%>
+    <h4>People with no Responsible Person:</h4>
+    <br />
+    <%- @no_rp.each do |person| -%>
+      <%= person.full_name %>, &nbsp
+      <%= person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.name %>
+      <br />
+    <%- end -%>
   <%- end -%>
   
 <%- else -%>
