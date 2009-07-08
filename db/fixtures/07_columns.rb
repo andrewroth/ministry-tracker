@@ -59,3 +59,21 @@ Column.seed(:title) do |c|
   c.column_type = 'url'
 end
 
+Column.seed(:title) do |c|
+  c.title = 'Campus'
+  c.from_clause = 'Campus'
+  c.select_clause = 'name'
+  c.source_model = 'CampusInvolvement'
+  c.source_column = 'campus_id'
+  c.foreign_key = 'id'
+end
+
+Column.seed(:title) do |c|
+  c.title = 'SchoolYear'
+  c.from_clause = 'SchoolYear'
+  c.select_clause = 'name'
+  c.source_model = 'CampusInvolvement'
+  c.source_column = 'school_year_id'
+  c.foreign_key = 'id'
+end
+
