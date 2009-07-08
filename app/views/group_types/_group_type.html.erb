@@ -10,9 +10,11 @@
         <%= image_tag('silk/accept.png') %>
         <%- end %>
     </td>
-    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_leader) %></td>
-    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_coleader) %></td>
-    <td><%=h group_type.unsuitability_metric(group_type.unsuitability_participant) %></td>
+    <%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
+    	<td><%=h group_type.unsuitability_metric(group_type.unsuitability_leader) %></td>
+    	<td><%=h group_type.unsuitability_metric(group_type.unsuitability_coleader) %></td>
+    	<td><%=h group_type.unsuitability_metric(group_type.unsuitability_participant) %></td>
+    <%- end -%>
     <td><%= link_to_remote(image_tag('edit.png', :alt => "Edit this type", :title => "Edit this type"), 
                                                  :url => edit_group_type_path(group_type),
                                                  :before => "$('#spinnergt').show()",

@@ -31,30 +31,32 @@
                     <%= f.check_box :public %>
                 </td>
     		</tr>
-    		<tr>
-    		    <td>
-    		        <%= f.label :unsuitability_leader %> <%- tooltip do -%><p>How should this group impact a leader’s timetable?</p><%- end -%>
-    		    </td>
-    		    <td>
-    		        <%= f.select :unsuitability_leader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
-    		    </td>
-    		</tr>
-    		<tr>
-    		    <td>
-    		        <%= f.label :unsuitability_coleader %> <%- tooltip do -%><p>How should this group impact a co-leader’s timetable?</p><%- end -%>
-    		    </td>
-    		    <td>
-    		        <%= f.select :unsuitability_coleader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
-    		    </td>
-    		</tr>
-    		<tr>
-    		    <td>
+    		<%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
+    			<tr>
+    		  	  <td>
+    		    	    <%= f.label :unsuitability_leader %> <%- tooltip do -%><p>How should this group impact a leader’s timetable?</p><%- end -%>
+    		    	</td>
+    		    	<td>
+    		      	  <%= f.select :unsuitability_leader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    	</td>
+    			</tr>
+    			<tr>
+    		  	  <td>
+    		    	    <%= f.label :unsuitability_coleader %> <%- tooltip do -%><p>How should this group impact a co-leader’s timetable?</p><%- end -%>
+    		    	</td>
+    		    	<td>
+    		      	  <%= f.select :unsuitability_coleader, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    	</td>
+    			</tr>
+    			<tr>
+    		  	  <td>
     		        <%= f.label :unsuitability_participant %> <%- tooltip do -%><p>How should this group impact a participant’s timetable?</p><%- end -%>
-    		    </td>
-    		    <td>
-    		        <%= f.select :unsuitability_participant, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
-    		    </td>
-    		</tr>
+    		    	</td>
+    		    	<td>
+    		      	<%= f.select :unsuitability_participant, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
+    		    	</td>
+    			</tr>
+    		<%- end -%>
     	</table>
   	  </td>
   	</tr>
