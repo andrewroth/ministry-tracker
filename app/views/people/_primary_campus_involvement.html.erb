@@ -73,7 +73,7 @@
     </tr>
     <tr class='pcd'>
       <th>Responsible Person</th>
-      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %></td>
+      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name', @person.responsible_person.id) %></td>
     </tr>
   </table>
 <%- end -%>
