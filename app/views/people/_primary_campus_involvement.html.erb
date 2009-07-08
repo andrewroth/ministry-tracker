@@ -1,4 +1,4 @@
-<%- fields_for :primary_campus_involvement do |cif| -%>
+<%- fields_for :primary_campus_involvement, @person.most_recent_involvement do |cif| -%>
   <table class="halftab">
     <% unless @no_campus_scope %>
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
