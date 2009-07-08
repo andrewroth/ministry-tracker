@@ -1,5 +1,5 @@
 <%= error_messages_for 'group' %>
-<%- remote_form_for group do |f| -%>
+<%- remote_form_for @group do |f| -%>
   <%= hidden_field_tag :member_ids, @members.join(',') if @members.present? %>
   <%= hidden_field_tag :leader_ids, @leaders.join(',') if @leaders.present? %>
   <%= hidden_field_tag :co_leader_ids, @co_leaders.join(',') if @co_leaders.present? %>

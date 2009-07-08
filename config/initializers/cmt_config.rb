@@ -35,6 +35,7 @@ module Cmt
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
+    
     :permissions_granted_by_default => true,
     
     #Within the CMT, someone's Responsible Person can promote them to a higher role. 
@@ -48,6 +49,8 @@ module Cmt
     #if this is set to true, then only Staff have the permission to promote
     :only_staff_can_promote => true
     
+    :disable_group_timetable_impact => true
+
   }
 end
 
