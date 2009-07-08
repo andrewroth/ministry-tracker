@@ -16,39 +16,25 @@
 <%- help_block do -%> 
   <h3>Customization</h3>  
 
-  <p>You can edit seven things from this page. 
-  Click on each of the category headings to open that category of customization. </p>
-  
-  <p>The first thing at the top of this page is your different directory views. 
-  A directory view contains what columns you wish to view when you search on the directory. 
-  You can switch between these views while at the directory.
+  <p>You can edit a number of things from this page. 
+  Click on each of the category headings to open that category of customization.
+  You can view help on each section.
   </p>
-  
-  <p>The next option is to manage dorms. 
-  Dorms represent residence arrangements on a campus. 
-  These are used to help pin down where even one is, and can be used for searches or easily narrowing down a meeting place.
-  </p>
-  
-  <p>
-  Group types are under Dorms. 
-  These are categories in which groups are stored. 
-  In order to make a new group, you to have to have atleast one group type in your ministry or parent ministry.
-  </p>
-  
-  <p>
-  Profile Questions will show up on everyone's profile, but only admins or leaders will be able to view them.<br />
-  Everyone in your ministry can see Involvement Questions, where the answer and questions are displayed for all in your ministry to see.<br />
-  Training Categories host Training Questions, where everyone in your ministry can see and verify the answers. In order to have a Training Question, it has to be in a Training Category.<br />
-  </p>
-  
-
 <%- end -%>
 
 <div id="customizebody" class="accordion">
 
-  <%- if authorized?(:new, :views) -%>
+  <%- if true || authorized?(:new, :views) -%>
   <div>
-		<div class="title">Directory Views</div>
+    <div class="title">
+      <% help_block do -%>
+        <p>
+        A directory view contains what columns you wish to view when you search on the directory. 
+        You can switch between these views while at the directory.
+        </p>
+      <% end -%>
+      Directory Views
+    </div>
 		<div>
   		<%= render :partial => 'views/views' %>
 		</div>
@@ -57,7 +43,15 @@
 	
 	<%- if authorized?(:new, :dorms) -%>
 	<div>
-		<div class="title">Dorms</div>
+    <div class="title">
+      <% help_block do -%>
+        <p>
+        Dorms represent residence arrangements on a campus. 
+        These are used to help pin down where even one is, and can be used for searches or easily narrowing down a meeting place.
+        </p>
+      <% end %>
+      Dorms
+    </div>
 		<div id="dorm_box">
 		  <%- @ministry.campuses.each do |campus| -%>
 		    <h5><%= campus.name %></h5>
@@ -80,11 +74,16 @@
 	
   <%- if authorized?(:new, :group_types) -%>
   <div>
-    <div class="title">Group Types <%= spinner('gt') %></div>
+    <div class="title">
+      <% help_block do -%>
+        <p>
+      	  A group type is category of group.  Possible group types, for example, might be "Bible Study" or "Prayer Group".
+          In order to make a new group, you to have to have atleast one group type in your ministry or parent ministry.
+        </p>
+      <% end -%>
+      Group Types <%= spinner('gt') %>
+    </div>
     <div>
-      <%- tooltip do -%> 
-      	A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". 
-      <%- end -%>
       <table border="0" cellspacing="5" cellpadding="5" id="group_types" class="directorytable">
         <thead>
         	<tr>
@@ -135,7 +134,12 @@
   
 	<%- if authorized?(:new, :training_categories) -%>
   <div>
-		<div class="title">Training Categories <%= spinner('tc') %></div>
+    <div class="title">
+      <% help_block do -%>
+        Training questions will go in a training category, for example "General Training", "Involved Student Training".
+      <% end %>
+      Training Categories <%= spinner('tc') %>
+    </div>
 		<div id="training_categories">
     	<div id="current_training_categories" class="right_list">
     		<ul id="training_categories_list"> 
@@ -163,7 +167,12 @@
 	<%- end -%>
 	<%- if authorized?(:new, :training_questions) -%>
   <div>
-		<div class="title">Training Questions <%= spinner('tq') %></div>
+    <div class="title">
+      <% help_block do -%>
+        Training questions track what training each person has received.  They can be verified by staff.  An example would be "4-laws training".  In order to have a Training Question, it has to be in a Training Category.
+      <% end -%>
+      Training Questions <%= spinner('tq') %>
+    </div>
 		<div id="training_questions">
     	<div id="current_training_questions" class="right_list">
     	  <%= render :partial =>'customize/training_category', :collection => @ministry.all_training_categories %>
@@ -188,6 +197,6 @@
       $(".accordion").accordion({ header: ".title",
                                          autoHeight: false,
                                          clearStyle: true});
-      $(".accordion .title").prepend('<span class="accordion_instructions">&nbsp;</span>')
+      $(".accordion .title").prepend('<span class="accordion_instructions"></span>');
     });
 </script>
