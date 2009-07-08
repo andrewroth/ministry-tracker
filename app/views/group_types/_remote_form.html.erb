@@ -31,6 +31,7 @@
                     <%= f.check_box :public %>
                 </td>
     		</tr>
+    		<%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
     		<tr>
     		    <td>
     		        <%= f.label :unsuitability_leader %> <%- tooltip do -%><p>How should this group impact a leader’s timetable?</p><%- end -%>
@@ -55,6 +56,7 @@
     		        <%= f.select :unsuitability_participant, [[t(:Excellent, :default => 'OK'),3],['Poor',2],['Bad',1]] %>
     		    </td>
     		</tr>
+    		<%- end -%>
     	</table>
   	  </td>
   	</tr>
