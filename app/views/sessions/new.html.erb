@@ -16,42 +16,43 @@
     });
   })
 </script>
-
 <div class="clearfix">
-  <% form_tag session_path, :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
-  <!--<form enctype="application/x-www-form-urlencoded" method="post" action="https://signin.mygcx.org/cas/login?service=<%= new_session_url %>" class="right" id="form_login">-->
-  <div class="login_sector">
-    <!-- <div class="login_prompt"><b>Login</b>:</div> -->
-    <div class="clearfix">
-      <%= image_tag('gcx.png') %> </div>
-      <div align= "center"> <%= link_to "Log in with GCX!", "https://signin.mygcx.org/sso/login" %>
-    </div>
-    <div class="clearfix">
-      <label for="username">Username:</label>
-      <%= text_field_tag('username', params[:username], :class => "inputtext") %>
-    </div>
-    <div class="clearfix">
-      <label for="password">Password</label>
-      <%= password_field_tag('password', '', :class => "inputtext") %>
-    </div>
-
-    <div class="clearfix">
-      <label for="remember_me">Remember me:</label>
-      <%= check_box_tag 'remember_me', 1, false, :class => "inputcheck" %>
-    </div>
-    
-   <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
-  </div>
-  </form>
-  <% end -%>
-
-  <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
-  <div class="login_sector_fb">
-    <div class="login_prompt">Or <b>login</b> with Facebook:</div>
-    <fb:login-button size="medium" background="light" length="long" onlogin="facebook_onlogin_ready();"></fb:login-button>
-  </div> -->
+  <%= image_tag('gcx.png') %> 
 </div>
+<%- if Cmt::CONFIG[:gcx_enabled] == true -%>
+  <%= link_to "Log in with GCX!", "https://signin.mygcx.org/sso/login" %>
+<%- end -%>
+<%- if Cmt::CONFIG[:local_enabled] == true -%>
+  <div class="clearfix">
+    <% form_tag session_path, :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
+    <!--<form enctype="application/x-www-form-urlencoded" method="post" action="https://signin.mygcx.org/cas/login?service=<%= new_session_url %>" class="right" id="form_login">-->
+    <div class="login_sector">
+      <!-- <div class="login_prompt"><b>Login</b>:</div> -->    
+      <div class="clearfix">
+        <label for="username">Username:</label>
+        <%= text_field_tag('username', params[:username], :class => "inputtext") %>
+      </div>
+      <div class="clearfix">
+        <label for="password">Password</label>
+        <%= password_field_tag('password', '', :class => "inputtext") %>
+      </div>
 
+      <div class="clearfix">
+        <label for="remember_me">Remember me:</label>
+        <%= check_box_tag 'remember_me', 1, false, :class => "inputcheck" %>
+      </div>
+    
+    <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
+    </div>
+    </form>
+    <% end -%>
+    <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+    <div class="login_sector_fb">
+      <div class="login_prompt">Or <b>login</b> with Facebook:</div>
+      <fb:login-button size="medium" background="light" length="long" onlogin="facebook_onlogin_ready();"></fb:login-button>
+    </div> -->
+  </div>
+<%- end -%>
 <!--      <script src="/javascripts/fbconnect.js" type="text/javascript"></script>
       <script type="text/javascript">
        FB.init("<%#= FACEBOOK["key"] %>", "/facebook/xd_receiver.htm");
