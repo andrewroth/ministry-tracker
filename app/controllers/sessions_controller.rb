@@ -5,6 +5,8 @@ class SessionsController < ApplicationController
   filter_parameter_logging :password
   # render new.rhtml
   def new
+  
+  
     if logged_in?
       redirect_back_or_default(person_url(self.current_user.person))
     end
@@ -13,6 +15,7 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+    
   end
 
   def create
@@ -74,5 +77,11 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     logout_keeping_session!
   end
+  
+  def gcx_response
+    redirect_to :controller => 'dashboard', :action => 'index'
+  end
+  
+  
 
 end
