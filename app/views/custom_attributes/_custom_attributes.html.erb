@@ -1,4 +1,20 @@
-<div class="title"><%= attrib_type.to_s.underscore.pluralize.humanize.titleize %></div>
+<div class="title">
+  <% if attrib_type == 'ProfileQuestion' %>
+    <% help_block do -%>
+      <p>
+        Profile questions are added to the bottom of each person's profile.  Their answers can be seen by everyone who can see the profile.
+      </p>
+    <% end -%>
+  <% elsif attrib_type == 'InvolvementQuestion'-%>
+    <% help_block do -%>
+      <p>
+        Involvement questions keep track of what each person is involved in.
+      </p>
+    <% end -%>
+  <% end -%>
+  <%= attrib_type.to_s.underscore.pluralize.humanize.titleize %>
+</div>
+
 <div id="custom_attributes_<%= attrib_type %>">
 	<div id="current_custom_attributes_<%= attrib_type %>" class="right_list">
 		<ul id="direct_custom_attribute_<%= attrib_type %>">

@@ -1,4 +1,4 @@
-<%- fields_for :primary_campus_involvement do |cif| -%>
+<%- fields_for :primary_campus_involvement, @person.most_recent_involvement do |cif| -%>
   <table class="halftab">
     <% unless @no_campus_scope %>
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
@@ -61,7 +61,7 @@
     </tr>
     <tr class='pcd'>
       <th>Grad Date</th>
-      <td class="date"><%= cif.date_select(:graduation_date, date_options(1980)) %></td>
+      <td class="date"><%= cif.date_select(:graduation_date, date_options(1980) ) %></td>
     </tr>
     <tr class='pcd'>
       <th>Major</th>
@@ -73,7 +73,7 @@
     </tr>
     <tr class='pcd'>
       <th>Responsible Person</th>
-      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name') %></td>
+      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name', @person.responsible_person.object_id) %></td>
     </tr>
   </table>
 <%- end -%>
