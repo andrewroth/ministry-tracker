@@ -1,10 +1,15 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter
+  before_filter CASClient::Frameworks::Rails::GatewayFilter
+
+  
   
   filter_parameter_logging :password
   # render new.rhtml
   def new
+  
+  
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
@@ -16,6 +21,7 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+    
   end
 
   def create
@@ -80,5 +86,11 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     logout_keeping_session!
   end
+  
+  def gcx_response
+    redirect_to :controller => 'dashboard', :action => 'index'
+  end
+  
+  
 
 end
