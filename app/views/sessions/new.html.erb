@@ -20,7 +20,7 @@
   <%= image_tag('gcx.png') %> 
 </div>
 <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
-  <%= link_to "Log in with GCX!", "https://signin.mygcx.org/cas/login?service=" + new_session_url %>
+  <%= link_to("Login", CASClient::Frameworks::Rails::Filter.login_url(controller)) %>
 <%- end -%>
 <%- if Cmt::CONFIG[:local_enabled] == true -%>
   <div class="clearfix">
