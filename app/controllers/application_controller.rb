@@ -220,7 +220,7 @@ class ApplicationController < ActionController::Base
           if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
             return true
           end
-        when :profile_pictures, :timetables, :promotions
+        when :profile_pictures, :timetables
           if params[:person_id] && params[:person_id] == @my.id.to_s
             return true
           end
@@ -228,6 +228,16 @@ class ApplicationController < ActionController::Base
           if (params[:id] && params[:controller] == "groups") && 
             @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
             return true
+          end
+        when :promotions
+          if (get_person == @my && params[:controller] == "promotions")
+            if Cmt::CONFIG[:only_staff_can_promote] == true && (role || MinistryRole.find(session[:ministry_role_id])).class != StaffRole
+              return false
+            else
+              return true
+            end
+          else
+            return false
           end
         end # case
       end # if

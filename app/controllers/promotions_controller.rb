@@ -1,15 +1,10 @@
 class PromotionsController < ApplicationController
 layout 'people'
-before_filter :user_filter
 before_filter :check_rp, :only => :update
 
 	def index
-        if params[:person_id]
-		    @person = Person.find_by_id params[:person_id]
-		end
 		if @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole &&
-				Cmt::CONFIG[:permissions_granted_by_default] == true
-		
+		Cmt::CONFIG[:staff_can_promote_any_student] == true		
 		  @people_to_promote = []
 			min_involves = @ministry.ministry_involvements
 			min_involves.each do |inv|
@@ -23,7 +18,6 @@ before_filter :check_rp, :only => :update
 		
 	def update
 			unless params[:answer] #unless accepting or declines an actual request
-			@person = Person.find_by_id params[:person_id]
 			to_promote = Person.find_by_id params[:id]
 			#first, find out where what ministry this person_responsible_for, since it might not necesarily be @ministry
 			#to do that, find out what ministry_involvement connects these two people
@@ -105,26 +99,10 @@ before_filter :check_rp, :only => :update
 			valid = @person == Person.find_by_id(params[:id]).responsible_person
 		end	
 		unless valid
-			redirect_to :action => 'index', :person_id => @me.id
+			redirect_to :action => 'index', :person_id => @person.id
 		end
 	end
-	
-	#we want only the user to view his/her own promotions. No changeing any other people's promotions!
-	def user_filter
-		if Cmt::CONFIG[:only_staff_can_promote] && 
-			@person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class != StaffRole
-				kick = true
-		elsif params[:person_id].nil? || @person.nil? || @person != @me
-			kick = true	
-		else
-			kick = false
-		end
 		
-		unless kick == false
-			redirect_to person_path(@me.id)
-		end
-	end
-	
 	def create_promotion(promotee_id = nil, ministry_involvement_id = nil)	
 		#will try to send a request to the tree head of this person's ministry campus
 		#if there is no tree head, then we will look for this person's responsible person's responsible person (two steps up the tree)
