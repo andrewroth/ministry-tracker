@@ -1,11 +1,11 @@
 <html>
 <head>                                                                            
  <script type="text/javascript">                                         
-  $(document.body, id="slide").click(function () {
-      if ($("div:local_form").is(":hidden")) {
-        $("div:local_form").show();
-      } 
-    });                                     
+  function SlideForm() {
+           var form = document.getElementById('local_form');
+           $('#local_form').show("slow");
+   }
+                                  
 </script>                                                               
 </head> 
 <body>   
@@ -14,7 +14,7 @@
   <tr>
     <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
     <td>
-     <div id="slide"> <a href="">Try this</a></div>
+     <div id="slide"> <a href="" onclick="SlideForm()">Try this</a></div>
     </td>
   </tr>
   <%- end -%>
