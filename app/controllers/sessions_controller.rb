@@ -86,11 +86,6 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     logout_keeping_session!
   end
-  
-  def gcx_response
-    redirect_to :controller => 'dashboard', :action => 'index'
-  end
-  
-  
+    
 
 end
