@@ -1,18 +1,41 @@
+<html>
+<head>                                                                            
+ <script type="text/javascript">                                         
+  $(document.body, id="slide").click(function () {
+      if ($("div:local_form").is(":hidden")) {
+        $("div:local_form").show();
+      } 
+    });                                     
+</script>                                                               
+</head> 
+<body>   
+<table id='login_table' border='0'>
+  <%- if Cmt::CONFIG[:local_enabled] == true -%>
+  <tr>
+    <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
+    <td>
+     <div id="slide"> <a href="">Try this</a></div>
+    </td>
+  </tr>
+  <%- end -%>
+  <tr>
+    <td></td>
+    <td>
+      <div id="local_form" style="display:none"><%= render :partial => 'local_form' %></div> 
+    </td>
+  </tr>
+  <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
+  <tr>
+    <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
+    <td><%= link_to 'Login with GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
+  </tr>
+  <%- end-%>
+</table>
+</body>
+</html>
 
-<%- if Cmt::CONFIG[:gcx_enabled] == true -%>
-  <table width="200px">
-  <tr><td width="200px">
-    <img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/> 
-  </td>
-  <td>
-    <%= link_to("Login with GCX!", CASClient::Frameworks::Rails::Filter.login_url(controller)) %>
-  </td></tr>
-  </table>
-  </table>
-<%- end -%>
-<br />
-<br />
-<%- if Cmt::CONFIG[:local_enabled] == true -%>
-  <!-- <%= link_to_function 'Login with Campus for Christ intranet account', "Effect.SlideDown('localform')" %> -->
-  <div id='localform' ><%=render :partial => 'local_form' %> </div>
-<%- end -%>
+
+
+
+
+
