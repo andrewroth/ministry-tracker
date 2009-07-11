@@ -48,6 +48,20 @@ class GroupsControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  def test_should_get_new_and_post_and_create
+    login
+    session[:group] = nil
+    assert_difference("Group.count") do
+      xhr(:get, :new)
+      assert_response :success
+      post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there', 
+                                :state => 'IL', :country => 'United States',
+                                :email => 'asdf', :group_type_id => 1 }    
+    end
+    assert_not_nil assigns(:group) 
+  end
+  
+  
   def test_should_create
     login
     old_count = Group.count
