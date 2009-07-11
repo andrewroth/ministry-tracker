@@ -65,7 +65,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_should_create
     login
     old_count = Group.count
-    post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there', 
+    post :create, :group => {:name => 'Water Water Water', :address => 'here', :city => 'there', 
                                 :state => 'IL', :country => 'United States',
                                 :email => 'asdf', :group_type_id => 1 }
     assert_equal old_count+1, Group.count
