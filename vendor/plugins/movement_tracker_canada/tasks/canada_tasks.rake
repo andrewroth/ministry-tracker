@@ -64,7 +64,7 @@ def setup_directory_view
 
   # make address columns hit Person directly as our schema is lke that
   for t in %w(Street City Zip Email)
-    c = Column.find_or_create_by_title t
+    c = Column.find_by_title t
     c.from_clause = 'Person'
     c.save!
   end
@@ -171,3 +171,17 @@ namespace :canada do
     puts "100%"
   end
 end
+
+
+#Seed setup
+namespace :emu do
+  task :reset do
+    return unless theyre_really_sure
+    Rake::Task["db:reset"].invoke
+    Rake::Task["db:seed"].invoke
+    #Rake::Task["canada:import"].invoke
+    puts "Database recreated, fixtures made, and HRDB data imported"
+  end
+end
+    
+
