@@ -87,20 +87,20 @@ class MinistryRolesController < ApplicationController
 
 #pseudo code
   counter = 0
-  @new_list.each |x| do
-	 if x == @old_list [counter]
+  @new_list.each |role| do
+	 if role == @old_list [counter]
 	   counter += 1
-	 else
-		# x has gone up
-	#	if @backup.nil?
-	#		@backup = x
-	#	end
-	#	mi_to_check = x.ministry_involvements
-	#	position = 
-	#	@mi_role_rpRolePosition_pairs = mi.collect do {|mi| [mi,person.rp.ministry_involvement.find_by_id(mi.ministry_id).ministry_role.position]}
-	#	@mi_rpRolePosition_pairs.each do |pair|
-	#	unless position > pair[2]
-	#		pair[1].responsible_person_id = @backup.id
+	 else # x has gone up
+	   if @backup_role.nil?
+	     @backup_role = role
+	   end
+	   mi_to_check = role.ministry_involvements
+	   position = role.position
+	   #make pairs that have [ministry_involvements, rp's ministry_involvement]
+	   @mi_role_rpRolePosition_pairs = mi.collect {|mi| [mi, person.rp.ministry_involvements.find_by_id(mi.ministry_id)]}
+	   @mi_rpRolePosition_pairs.each do |pair|
+	     unless position > pair[2].minsitry_role.position
+	     pair[1].responsible_person_id = MinistryInvolvement.find_by_
 	#		pair[1].save
 	#	end
 	 end
