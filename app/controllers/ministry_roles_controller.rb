@@ -57,17 +57,66 @@ class MinistryRolesController < ApplicationController
       @ministry_roles = get_ministry.staff_roles
     end
     if roles
+      @new_list = roles
+      @old_list = []
+      counter = 1
+      
+      while counter > roles.length
+        role = MinistryRole.find_by_position(counter + offset)
+        @old_list << role
+        counter += 1
+      end
+      
       @ministry_roles.each do |role|
         if roles.include?(role.id.to_s)
           role.position = roles.index(role.id.to_s) + 1 + offset
           role.save
         end
       end
+      manage_rp_trees
     end
     render :nothing => true
   end
   
   protected
+  
+  def manage_rp_trees
+
+
+
+
+#pseudo code
+  counter = 0
+  @new_list.each |x| do
+	 if x == @old_list [counter]
+	   counter += 1
+	 else
+		# x has gone up
+	#	if @backup.nil?
+	#		@backup = x
+	#	end
+	#	mi_to_check = x.ministry_involvements
+	#	position = 
+	#	@mi_role_rpRolePosition_pairs = mi.collect do {|mi| [mi,person.rp.ministry_involvement.find_by_id(mi.ministry_id).ministry_role.position]}
+	#	@mi_rpRolePosition_pairs.each do |pair|
+	#	unless position > pair[2]
+	#		pair[1].responsible_person_id = @backup.id
+	#		pair[1].save
+	#	end
+	 end
+	 @backup = x
+  end
+end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   def find_ministry_role
     @ministry_role = MinistryRole.find(params[:id])
   end
