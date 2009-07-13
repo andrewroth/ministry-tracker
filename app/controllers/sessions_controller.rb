@@ -1,14 +1,6 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
-<<<<<<< HEAD:app/controllers/sessions_controller.rb
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter
-  before_filter CASClient::Frameworks::Rails::GatewayFilter
-
-  
-  
-=======
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter  
->>>>>>> dev:app/controllers/sessions_controller.rb
   filter_parameter_logging :password
   # render new.rhtml
   def new

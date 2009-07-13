@@ -1,4 +1,4 @@
-require 'ruby-debug'
+
 
 def clear_everything
   puts "Clearing existing data..."
@@ -64,7 +64,7 @@ def setup_directory_view
 
   # make address columns hit Person directly as our schema is lke that
   for t in %w(Street City Zip Email)
-    c = Column.find_by_title t
+    c = Column.find_or_create_by_title t
     c.from_clause = 'Person'
     c.save!
   end
