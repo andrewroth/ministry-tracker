@@ -4,8 +4,7 @@
   function SlideForm() {
            var form = document.getElementById('local_form');
            $('#local_form').show("slow");
-   }
-                                  
+   }                                
 </script>                                                               
 </head> 
 <body>   
@@ -14,14 +13,17 @@
   <tr>
     <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
     <td>
-     <div id="slide"> <a href="" onclick="SlideForm()">Try this</a></div>
+     <div id="slide"> <a href="" onclick="SlideForm()">Login with the Ministry Tracker</a></div>
     </td>
   </tr>
   <%- end -%>
   <tr>
     <td></td>
     <td>
-      <div id="local_form" style="display:none"><%= render :partial => 'local_form' %></div> 
+      <!-- <div id="local_form" style="display:none"> --> 
+      <!-- uncommet the line above and delte the line below during production -->
+      <div id="local_form">
+      <%= render :partial => 'local_form' %></div> 
     </td>
   </tr>
   <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
