@@ -128,9 +128,8 @@ class Person < ActiveRecord::Base
             mi = MinistryInvolvement.find :first, :conditions => mi_atts
             mi ||= ministry_involvements.create!(mi_atts)
 
-            # FIXME is this a bug? <== Yes
-            mi.admin = false #cim_hrdb_admins.count > 0
-
+            # is this a bug? <== No actually. Keep it here. This column is in the production cim_hrdb
+            mi.admin = cim_hrdb_admins.count > 0
             mi.save!
           end
         
