@@ -49,46 +49,22 @@ namespace :canada do
     end
     puts "100%"
   end
+
+  desc "Moves the mappings.yml file to a temporary file, so that the core db is hit"
+  task :core do
+    switch_to_core
+  end
+
+  # since there's a :core task, let's have an emu one as well
+  desc "Puts the mappings.yml file back in place, so that the intranet db is hit again"
+  task :emu do
+    switch_to_emu
+  end
 end 
 
 
-
-task :switch_to_core do
- switch_to_core
-end
-
 namespace :db do
- task :migrate => [:switch_to_core] do   
+ task :migrate => [ "canada:core" ] do   
    switch_to_emu
  end
-
-
-#namespace :migrate do
-# task :reset => [:switch_to_core] do   
-#   switch_to_emu
-# end 
-#end
-
- 
 end
-
-#def theyre_really_sure
-#  return true if @last_choice
-#  STDOUT.print "warning: this MAY break your MT database data.  Recommended usage only on fresh install, but it *should* work on an existing emu install.\nContinue? (y/n) "
-#  cont = STDIN.gets.chomp.downcase
-#  return @last_choice = (cont == 'y')
-#end
-
-
-#Seed setup
-#namespace :emu do
-#  task :reset do
-#    return unless theyre_really_sure
-#    Rake::Task["db:reset"].invoke
-#    Rake::Task["db:seed"].invoke
-#    #Rake::Task["canada:import"].invoke
-#    puts "Database recreated, fixtures made, and HRDB data imported"
-#  end
-#end
-    
-
