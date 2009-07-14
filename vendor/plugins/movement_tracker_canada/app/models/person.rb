@@ -128,7 +128,7 @@ class Person < ActiveRecord::Base
             mi = MinistryInvolvement.find :first, :conditions => mi_atts
             mi ||= ministry_involvements.create!(mi_atts)
 
-            # FIXME is this a bug?
+            # FIXME is this a bug? <== Yes
             mi.admin = false #cim_hrdb_admins.count > 0
 
             mi.save!
