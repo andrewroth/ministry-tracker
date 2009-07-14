@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-      @countries = Country.find(:all,
+        @countries = Country.find(:all,
         :conditions => "#{_(:is_closed, :country)} = 0 || #{_(:is_closed, :country)} is null", 
         :order => _(:country, 'country'))
     end
