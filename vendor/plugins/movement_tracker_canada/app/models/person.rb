@@ -5,7 +5,7 @@ class Person < ActiveRecord::Base
 
   has_many :person_years, :foreign_key => _(:id, :year_in_school)
   has_many :year_in_schools, :through => :person_years
-  has_many :cim_hrdb_admins, :class_name => 'CimHrdbAdmin'
+  #has_many :cim_hrdb_admins, :class_name => 'CimHrdbAdmin'
 
   has_one :access
   has_many :users, :through => :access
@@ -129,7 +129,7 @@ class Person < ActiveRecord::Base
             mi ||= ministry_involvements.create!(mi_atts)
 
             # FIXME is this a bug?
-            mi.admin = cim_hrdb_admins.count > 0
+            mi.admin = false #cim_hrdb_admins.count > 0
 
             mi.save!
           end
