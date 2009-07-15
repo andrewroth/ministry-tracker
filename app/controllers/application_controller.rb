@@ -48,9 +48,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-        @countries = Country.find(:all,
-        :conditions => "#{_(:is_closed, :country)} = 0 || #{_(:is_closed, :country)} is null", 
-        :order => _(:country, 'country'))
+        @countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
     end
 
     def is_group_leader(group, person = nil)
