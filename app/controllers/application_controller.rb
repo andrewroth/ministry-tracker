@@ -325,14 +325,10 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
+        @ministry = session[:ministry_id] ? @person.ministries.find(session[:ministry_id]) : @person.ministries.first
+
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
-
-        # Try the default ministry given in the config
-        if Cmt::CONFIG[:default_ministry_name]
-          @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] } 
-        end
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
