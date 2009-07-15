@@ -58,7 +58,6 @@ class User < ActiveRecord::Base
           last_name, receipt.user
       end
     end 
-
     u
   end
 end

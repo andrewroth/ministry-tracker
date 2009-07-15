@@ -331,7 +331,11 @@ class ApplicationController < ActionController::Base
 
         # Try the default ministry given in the config
         if Cmt::CONFIG[:default_ministry_name]
-          @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] }
+          @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] } 
+          if @ministry && @person.ministries.find_by_id(@ministry.id).nil?
+            sr = StudentRole.find :last, :order => "position"
+            @person.ministry_involvements.create! :ministry_id => @ministry.id, :ministry_role_id => sr.id
+          end
         end
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
