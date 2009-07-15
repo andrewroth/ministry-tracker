@@ -22,6 +22,9 @@ module Cmt
     # Default ministry name
     :default_ministry_name => 'Campus for Christ',
     
+    #Associate person with no ministry to default ministry
+    :associate_with_default_ministry => true,
+    
     # Default Country - When set, the campus filter is disabled and all 
     # campuses from this country are displayed
     # Set to nil(:campus_scope_country => nil) to disable.
