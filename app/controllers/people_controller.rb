@@ -281,14 +281,14 @@ class PeopleController < ApplicationController
           # add the person to this ministry if they aren't already
           if params[:student]
             # create campus involvement if it doesn't already exist
-            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus], @person.id)
+            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus_id], @person.id)
             # also create the ministry inovlvement if they don't already have it
             # @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) 
             # @mi.destroy if @mi
             if @ci
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
-              @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role_id])
+              @person.add_campus(params[:campus_id], @ministry.id, @me.id, params[:ministry_role_id])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
                 UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)
