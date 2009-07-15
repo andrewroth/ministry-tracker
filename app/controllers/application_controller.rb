@@ -329,18 +329,21 @@ class ApplicationController < ActionController::Base
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
-        # Try the default ministry given in the config
+        # Try the default ministry given in the config, also, if the person has no ministries, make him/her part of this one
         if Cmt::CONFIG[:default_ministry_name]
           @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] } 
-          if @ministry && @person.ministries.find_by_id(@ministry.id).nil?
+          if @ministry && @person.ministries.empty? && Cmt::CONFIG[:associate_with_default_ministry] == true
             sr = StudentRole.find :last, :order => "position"
             @person.ministry_involvements.create! :ministry_id => @ministry.id, :ministry_role_id => sr.id
           end
         end
 
-        # If we still don't have a ministry, this person hasn't been assigned a campus.
-        # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_dummy_ministry(@person)
+        #Even if we have a ministry set, if the person still is unassociated, lets put them into no ministry
+        #and change the ministy we are looking at to No Ministry.
+        if @person.ministries.empty?
+          @ministry ||= associate_person_with_dummy_ministry(@person)
+        end 
+
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
