@@ -244,7 +244,7 @@ class PeopleController < ApplicationController
     permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
     current_address_country_id = @person.current_address.try(:state).try(:country_id)
     permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
-
+    @birth_date = @person.birth_date
     get_possible_responsible_people
     setup_vars
     setup_campuses
