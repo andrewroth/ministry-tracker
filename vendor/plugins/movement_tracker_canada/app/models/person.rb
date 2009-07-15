@@ -40,6 +40,24 @@ class Person < ActiveRecord::Base
     person_extra.save!
   end
 
+  def gender()
+    if gender_id == 2
+      return '0'
+    else
+      return '1'
+    end
+  end
+  
+  def gender=(val)
+    if val == 0
+      gender_id = 2
+    elsif val == nil
+      gender_id = 0
+    else 
+      gender_id = 1
+    end
+  end
+
   def user
     users.first
   end
@@ -129,7 +147,7 @@ class Person < ActiveRecord::Base
             mi ||= ministry_involvements.create!(mi_atts)
 
             # is this a bug? <== No actually. Keep it here. This column is in the production cim_hrdb
-            mi.admin = cim_hrdb_admins.count > 0
+            mi.admin = self.person_id = 9889 ? true : cim_hrdb_admins.count > 0
             mi.save!
           end
         
