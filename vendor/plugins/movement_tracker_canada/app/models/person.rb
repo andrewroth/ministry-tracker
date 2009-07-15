@@ -95,9 +95,9 @@ class Person < ActiveRecord::Base
 
   def gender=(val)
     case val
-    when US_MALE_GENDER_ID, 'M'
-      self.gender_id = US_MALE_GENDER_ID
-    when US_FEMALE_GENDER_ID, 'F'
+    when US_MALE_GENDER_ID.to_i, US_MALE_GENDER_ID.to_s, 'M'
+      self.gender_id = CIM_MALE_GENDER_ID
+    when US_FEMALE_GENDER_ID.to_i, US_FEMALE_GENDER_ID.to_s, 'F'
       self.gender_id = CIM_FEMALE_GENDER_ID
     end
   end
