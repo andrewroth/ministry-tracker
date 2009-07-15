@@ -78,6 +78,7 @@ class Person < ActiveRecord::Base
   def created_by=(v) end # don't bother
 
   def gender() gender_ ? gender_.desc : '???' end
+  def gender=(val) self.gender_id = val.to_i end
 
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
