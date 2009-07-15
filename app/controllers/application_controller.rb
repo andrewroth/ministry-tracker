@@ -329,21 +329,18 @@ class ApplicationController < ActionController::Base
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
-        # Try the default ministry given in the config, also, if the person has no ministries, make him/her part of this one
+        # Try the default ministry given in the config
         if Cmt::CONFIG[:default_ministry_name]
           @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] } 
-          if @ministry && @person.ministries.empty? && Cmt::CONFIG[:associate_with_default_ministry] == true
+          if @ministry && @person.ministries.find_by_id(@ministry.id).nil?
             sr = StudentRole.find :last, :order => "position"
             @person.ministry_involvements.create! :ministry_id => @ministry.id, :ministry_role_id => sr.id
           end
         end
 
-        #Even if we have a ministry set, if the person still is unassociated, lets put them into no ministry
-        #and change the ministy we are looking at to No Ministry.
-        if @person.ministries.empty?
-          @ministry ||= associate_person_with_dummy_ministry(@person)
-        end 
-
+        # If we still don't have a ministry, this person hasn't been assigned a campus.
+        # Looks like we have to give them some dummy information. BUG 1857 
+        @ministry ||= associate_person_with_default_ministry(@person)
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -376,9 +373,14 @@ class ApplicationController < ActionController::Base
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857
-  def associate_person_with_dummy_ministry(person)
-    # Ensure the 'No Ministry' ministry exists
-    ministry = Ministry.find_or_create_by_name("No Ministry")
+  def associate_person_with_default_ministry(person)
+    if Cmt::CONFIG[:associate_with_default_ministry]
+      default_ministry = Cmt::CONFIG[:default_ministry_name]
+    else
+      default_ministry = 'No Ministry'
+    end
+    # Ensure the default ministry exists
+    ministry = Ministry.find_or_create_by_name(default_ministry)
     sr = StudentRole.find :last, :order => "position"
     person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
