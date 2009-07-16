@@ -51,7 +51,7 @@ class Person < ActiveRecord::Base
   end
   
   def last_name=(val="")
-    self.person_legal_lname = ""
+    self.person_legal_lname ||= ""
     self.person_lname = val
   end
 
