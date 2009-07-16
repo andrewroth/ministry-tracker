@@ -373,7 +373,7 @@ private
     end
     # Ensure the default ministry exists
     ministry = Ministry.find_or_create_by_name(default_ministry)
-    sr = StudentRole_find_by_name 'Student' 
+    sr = StudentRole.find_by_name 'Student' 
     sr ||= StudentRole.find :last, :order => "position"
     person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
