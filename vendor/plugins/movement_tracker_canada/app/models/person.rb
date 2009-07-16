@@ -45,24 +45,6 @@ class Person < ActiveRecord::Base
     person_extra.save!
   end
 
-  def gender()
-    if gender_id == 2
-      return '0'
-    else
-      return '1'
-    end
-  end
-  
-  def gender=(val)
-    if val == 0
-      gender_id = 2
-    elsif val == nil
-      gender_id = 0
-    else 
-      gender_id = 1
-    end
-  end
-
   def user
     users.first
   end
