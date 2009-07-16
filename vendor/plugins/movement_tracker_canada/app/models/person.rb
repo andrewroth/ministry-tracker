@@ -1,6 +1,11 @@
 require_model 'person'
 
 class Person < ActiveRecord::Base
+  CIM_MALE_GENDER_ID = 1
+  CIM_FEMALE_GENDER_ID = 2
+  US_MALE_GENDER_ID = 1
+  US_FEMALE_GENDER_ID = 0
+
 #  doesnt_implement_attributes :major => '', :minor => '', :url => '', :staff_notes => '', :updated_at => '', :updated_by => ''
 
   has_many :person_years, :foreign_key => _(:id, :year_in_school)
@@ -95,7 +100,25 @@ class Person < ActiveRecord::Base
 
   def created_by=(v) end # don't bother
 
-  def gender() gender_ ? gender_.desc : '???' end
+  def gender()
+    case gender_id 
+    when CIM_MALE_GENDER_ID
+      US_MALE_GENDER_ID
+    when CIM_FEMALE_GENDER_ID
+      US_FEMALE_GENDER_ID
+    else
+      nil
+    end
+  end
+
+  def gender=(val)
+    case val
+    when US_MALE_GENDER_ID.to_i, US_MALE_GENDER_ID.to_s, 'M'
+      self.gender_id = CIM_MALE_GENDER_ID
+    when US_FEMALE_GENDER_ID.to_i, US_FEMALE_GENDER_ID.to_s, 'F'
+      self.gender_id = CIM_FEMALE_GENDER_ID
+    end
+  end
 
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
