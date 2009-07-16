@@ -6,6 +6,7 @@
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
 require 'person_methods'
+require 'person_methods_emu'
 
 class PeopleController < ApplicationController
   include PersonMethods
