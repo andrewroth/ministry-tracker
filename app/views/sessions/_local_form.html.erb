@@ -20,12 +20,8 @@
 <div class="clearfix">
   <% form_tag session_path, :id => 'login_form', :enctype => "application/x-www-form-urlencoded" do -%>
   <!--<form enctype="application/x-www-form-urlencoded" method="post" action="https://signin.mygcx.org/cas/login?service=<%= new_session_url %>" class="right" id="form_login">-->
+  <!-- <div class="login_prompt"><b>Login</b>:</div> -->
   <div class="login_sector">
-    <!-- <div class="login_prompt"><b>Login</b>:</div> -->
-    <div class="clearfix">
-      <%= image_tag('gcx.png') %> </div>
-      <div align= "center"> <%= link_to "Log in with GCX!", "https://signin.mygcx.org/sso/login" %>
-    </div>
     <div class="clearfix">
       <label for="username">Username:</label>
       <%= text_field_tag('username', params[:username], :class => "inputtext") %>
@@ -41,10 +37,9 @@
     </div>
     
    <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
-  </div>
   </form>
   <% end -%>
- 
+  </div>
   <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
 <div class="login_sector_fb">
 <div class="login_prompt">Or <b>login</b> with Facebook:</div>
