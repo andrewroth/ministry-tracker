@@ -44,13 +44,26 @@ class Person < ActiveRecord::Base
   def after_save
     person_extra.save!
   end
+  
+  def first_name=(val="")
+    self.person_legal_fname ||= ""
+    self.person_fname = val
+  end
+  
+  def last_name=(val="")
+    self.person_legal_lname = ""
+    self.person_lname = val
+  end
 
   def user
     users.first
   end
 
   def user=(val)
-    throw "not implemented"
+    viewer =  User.new(:viewer_userID => self.person_email, :guid => "")
+    viewer.save!    
+    a = Access.new(:viewer_id => viewer.viewer_id, :person_id => self.person_id)
+    a.save!
   end
 
   def year_in_school
@@ -65,13 +78,15 @@ class Person < ActiveRecord::Base
     return @emerg if @emerg
     @emerg = emerg
     return @emerg if @emerg
-    # required fields are a bit of a pain
-    @emerg = Emerg.create!(:emerg_birthdate => Time.now, :emerg_contact2Mobile => '', :emerg_contact2Rship => '', :emerg_contact2Home => '', :emerg_passportExpiry => Time.now, :emerg_contact2Work => '', :emerg_contact2Email => '', :emerg_contact2Name => '', :person_id => id)
-    @emerg.emerg_passportExpiry = nil
-    @emerg.save!
+    unless self.new_record?
+      # required fields are a bit of a pain
+      @emerg = Emerg.create!(:emerg_birthdate => Time.now, :emerg_contact2Mobile => '', :emerg_contact2Rship => '', :emerg_contact2Home => '', :emerg_passportExpiry => Time.now, :emerg_contact2Work => '', :emerg_contact2Email => '', :emerg_contact2Name => '', :person_id => id)
+      @emerg.emerg_passportExpiry = nil
+      @emerg.save!
+    end
     return @emerg
   end
-  def birth_date() get_emerg.emerg_birthdate; end
+  def birth_date() get_emerg ? get_emerg.emerg_birthdate : nil; end
   def birth_date=(v) @save_emerg = true; emerg.emerg_birthdate = v if emerg; end
   def after_save
     if @save_emerg

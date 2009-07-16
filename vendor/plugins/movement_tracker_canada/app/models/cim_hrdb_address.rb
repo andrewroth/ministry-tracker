@@ -11,7 +11,7 @@ class CimHrdbAddress < ActiveRecord::Base
   def person_extra()
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
   end
-
+  
   def state
     province
   end

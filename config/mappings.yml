@@ -86,7 +86,7 @@ campus:
   name: campus_desc
   abbrv: campus_shortDesc
   state_id: province_id
-
+  
 cim_hrdb_current_address:
   id: person_id
   address1: person_local_addr
