@@ -225,9 +225,9 @@ class Person < ActiveRecord::Base
     end
         
     def create_access (v)
-      ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]' #this returns nil currently. This is where we get an error
+      #ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]' #this returns nil currently. This is where we get an error
       ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
-      AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
+      #AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
       AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_all.id
       Access.create :viewer_id => v.id, :person_id => self.id
     end
