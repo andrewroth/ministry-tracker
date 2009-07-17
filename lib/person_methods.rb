@@ -1,9 +1,9 @@
 module PersonMethods
   def database_conditions(params)
     special_conditions = Hash.new
-    special_condtions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
-    special_condtions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"    
-    special_condtions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+    special_conditions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+    special_conditions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"    
+    special_conditions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
     special_conditions
   end
   

@@ -78,7 +78,7 @@ class PeopleController < ApplicationController
       if params[:school_year].present?
         conditions << database_conditions(params)[:school_year]
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
+        @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
     
