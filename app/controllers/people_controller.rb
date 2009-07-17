@@ -84,7 +84,7 @@ class PeopleController < ApplicationController
     
       # Check gender
       if params[:gender].present?
-        conditions << database_conditions(params)[:school_gender]
+        conditions << database_conditions(params)[:gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
