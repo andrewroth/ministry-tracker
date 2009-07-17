@@ -1,4 +1,14 @@
 module PersonMethods
+  def database_conditions
+    special_conditions = Hash.new
+    special_condtions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+    special_condtions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"    
+    special_condtions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+    special_conditions
+  end
+  
+  
+  
   def add_person(person, current_address, params)
     # ===============================================
     # = Check for duplicate person. VERY IMPORTANT! =
