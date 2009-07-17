@@ -1,5 +1,18 @@
 module PersonMethodsEmu
 
+  def database_conditions(params)
+    special_conditions = {}
+    
+    if params[:gender] == 1
+      special_conditions[:gender] = "Person.gender_id IN('1')"
+    else
+      special_conditions[:gender] = "Person.gender_id IN('2')"
+    end
+    special_conditions[:school_year] = "PersonYear.year_id IN(#{quote_string(params[:school_year].join(','))})"    
+    special_conditions[:email] = "Person.person_email = '#{quote_string(params[:email])}'"
+    special_conditions
+  end
+  
   def add_person(person, current_address, params)
     # ===============================================
     # = Check for duplicate person. VERY IMPORTANT! =

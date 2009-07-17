@@ -7,8 +7,6 @@ module PersonMethods
     special_conditions
   end
   
-  
-  
   def add_person(person, current_address, params)
     # ===============================================
     # = Check for duplicate person. VERY IMPORTANT! =
