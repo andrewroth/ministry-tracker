@@ -1,13 +1,13 @@
 module PersonMethodsEmu
 
-  def database_conditions(params)
+  def database_search_conditions(params)
     special_conditions = {}
     
     if params[:gender] == ["1"] || params[:gender] == [1]
       special_conditions[:gender] = "Person.gender_id IN (#{quote_string(params[:gender].join(','))})"
-    elsif params[:gender] == ["0"]
+    elsif params[:gender] == ["0"] || params[:gender] == [0]
       special_conditions[:gender] = "Person.gender_id IN (#{quote_string(['2'].join(','))})"
-    elsif params[:gender].present?
+    elsif
       special_conditions[:gender] = "Person.gender_id IN (#{quote_string(['1', '2'].join(','))})"
     end
     special_conditions[:school_year] = "#{_(:year_id, :person_year)} IN(#{quote_string(params[:school_year].join(','))})" if params[:school_year].present?   
