@@ -76,7 +76,7 @@ class PeopleController < ApplicationController
       @search_for = []
       # Check year in school
       if params[:school_year].present?
-        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        conditions << database_conditions[:school_year]
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
         @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
@@ -84,7 +84,7 @@ class PeopleController < ApplicationController
     
       # Check gender
       if params[:gender].present?
-        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        conditions << database_conditions[:school_gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
       end
       
       if params[:email].present?
-        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+        conditions << database_conditions[:email]
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
