@@ -60,10 +60,7 @@ class Person < ActiveRecord::Base
   end
 
   def user=(val)
-    viewer =  User.new(:viewer_userID => self.person_email, :guid => "")
-    viewer.save!    
-    a = Access.new(:viewer_id => viewer.viewer_id, :person_id => self.person_id)
-    a.save!
+    throw "not implemented"
   end
 
   def year_in_school
@@ -194,12 +191,8 @@ class Person < ActiveRecord::Base
       end
       super
     end
-
-    def self.create_new_cim_hrdb_account(guid, fn, ln, uid)
-      # first and last names can't be nil
-      fn ||= ''
-      ln ||= ''
-
+    
+    def create_viewer(guid, uid)
       v = User.new
       v.guid = guid
       v.language_id = 1
@@ -209,16 +202,62 @@ class Person < ActiveRecord::Base
       v.viewer_userID = uid
       v.save!
       #v.viewer_lastLogin = nil # hack to get by the create restriction
-
+      
+      v
+    end
+    
+    def self.create_new_cim_hrdb_account(guid, fn, ln, uid)
+      # first and last names can't be nil
+      fn ||= ''
+      ln ||= ''
       p = Person.create! :person_fname => fn, :person_lname => ln,
         :person_legal_fname => '', :person_legal_lname => '',
-        :birth_date => nil
-      ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]'
-      ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
-      AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
-      AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_all.id
-      Access.create :viewer_id => v.id, :person_id => p.id
+        :birth_date => nil 
+      v = create_viewer (guid, uid)       
+      p.create_access (v)
 
       v
     end
+    
+    def create_user_and_access_only(guid, uid)
+      v = create_viewer(guid, uid)
+      self.create_access(v)
+    end
+        
+    def create_access (v)
+      ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]' #this returns nil currently. This is where we get an error
+      ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
+      AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
+      AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_all.id
+      Access.create :viewer_id => v.id, :person_id => self.id
+    end
+    
+    
+    def self.find_user(person, address)
+    # if there a user with the same email?
+    user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
+    if user && user.person.nil?
+      # If we have an orphaned user record, might as well use it...
+      person.email = address.email
+      person.save(false)
+      person.create_access (user)
+      p = person
+    else
+      p = user.person if user
+    end
+    unless p
+      p = Person.find(:first, :conditions => {:person_email => address.email})
+      p.create_user_and_access_only("", p.person_email) if p
+    end
+    return p
+  end
+
+    
+    
+    
+    
+    
+    
+    
+    
 end

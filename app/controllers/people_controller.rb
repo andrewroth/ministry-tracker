@@ -5,11 +5,10 @@
 #  Created by Josh Starcher on 2007-08-26.
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
-require 'person_methods'
 require 'person_methods_emu'
 
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
@@ -265,7 +264,8 @@ class PeopleController < ApplicationController
   # POST /people.xml
   def create
     @person = Person.new(params[:person])
-    @current_address = CurrentAddress.new(params[:current_address])
+    #for emu, we need to extract @current_address.email into @person.current_address.email
+    @current_address = CurrentAddress.new(params[:current_address]) 
     @countries = Country.all
     @states = State.all
     respond_to do |format|
