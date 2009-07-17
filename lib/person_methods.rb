@@ -1,5 +1,5 @@
 module PersonMethods
-  def database_conditions
+  def database_conditions(params)
     special_conditions = Hash.new
     special_condtions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
     special_condtions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"    
