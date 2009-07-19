@@ -325,7 +325,10 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = session[:ministry_id] ? @person.ministries.find(session[:ministry_id]) : @person.ministries.first
+        @ministry = session[:ministry_id] ?
+          @person.ministries.find(:first, :conditions => [ :id => session[:ministry_id] ]) :
+          @person.ministries.first
+
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
