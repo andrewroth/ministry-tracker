@@ -5,10 +5,10 @@
 #  Created by Josh Starcher on 2007-08-26.
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
-require 'person_methods'
+require 'person_methods_emu'
 
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
@@ -76,15 +76,15 @@ class PeopleController < ApplicationController
       @search_for = []
       # Check year in school
       if params[:school_year].present?
-        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        conditions << database_search_conditions(params)[:school_year]
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
+        @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
     
       # Check gender
       if params[:gender].present?
-        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        conditions << database_search_conditions(params)[:gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
       end
       
       if params[:email].present?
-        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+        conditions << database_search_conditions(params)[:email]
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
@@ -264,7 +264,8 @@ class PeopleController < ApplicationController
   # POST /people.xml
   def create
     @person = Person.new(params[:person])
-    @current_address = CurrentAddress.new(params[:current_address])
+    #for emu, we need to extract @current_address.email into @person.current_address.email
+    @current_address = CurrentAddress.new(params[:current_address]) 
     @countries = Country.all
     @states = State.all
     respond_to do |format|
