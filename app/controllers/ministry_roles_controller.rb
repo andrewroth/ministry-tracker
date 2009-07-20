@@ -80,42 +80,36 @@ class MinistryRolesController < ApplicationController
   
   protected
   
+  #this is used to make sure that every rp is higher to that who they rp
   def manage_rp_trees
-
-
-
-
-#pseudo code
   counter = 0
   @new_list.each |role| do
 	 if role == @old_list [counter]
 	   counter += 1
-	 else # x has gone up
-	   if @backup_role.nil?
-	     @backup_role = role
-	   end
-	   mi_to_check = role.ministry_involvements
+	 else # role has gone up
+	   @backup_role ||= role
+	   mis = role.ministry_involvements
 	   position = role.position
 	   #make pairs that have [ministry_involvements, rp's ministry_involvement]
-	   @mi_role_rpRolePosition_pairs = mi.collect {|mi| [mi, person.rp.ministry_involvements.find_by_id(mi.ministry_id)]}
-	   @mi_rpRolePosition_pairs.each do |pair|
+	   @mi_rpRole_pairs = mis.collect {|mi| [mi, person.rp.ministry_involvements.find_by_id(mi.ministry_id)]}
+	   @mi_rpRole_pairs.each do |pair|
 	     unless position > pair[2].minsitry_role.position
-	     pair[1].responsible_person_id = MinistryInvolvement.find_by_
-	#		pair[1].save
-	#	end
+	       cur_min = pair[1].ministry
+	       cur_camp = pair[1].person.most_recent_involvement
+	       possible_mis = MinistryInvolvements.find(:all, :conditions => {:ministry_role_id => @backup_role.id, 
+	                                                       :ministry_id => cur_min.id})
+	       possible_mis.reject{|mi| mi.person.campuses.find_by_id(cur_camp.id).nil?}
+	       new_rp_id = possible_mis.first.person_id
+	       pair[1].responsible_person_id = new_rp_id
+	 	     pair[1].save
+	     end
+	   end
 	 end
-	 @backup = x
+	 @backup = role
   end
 end
   
-  
-  
-  
-  
-  
-  
-  
-  
+ 
   
   def find_ministry_role
     @ministry_role = MinistryRole.find(params[:id])
