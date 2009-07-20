@@ -184,7 +184,7 @@ class Ministry < ActiveRecord::Base
   
   # Create a default view for this ministry
   def create_first_view
-    # For now just copy the first view in the system if there is one
+    # copy the first view in the system if there is one
     view = View.find(:first, :order => _(:ministry_id, :view))
     if view
       new_view = view.clone
@@ -192,10 +192,16 @@ class Ministry < ActiveRecord::Base
       view.view_columns.each do |view_column|
         new_view.view_columns << view_column.clone
       end
-      new_view.default_view = true
-      new_view.save!
-      new_view
+    #if that doesn't exist, make a new view will every column
+    else
+      new_view = View.new(:title => "default", :ministry_id => self.id)
+      ViewColumn.all.each do |vc|
+        new_view_columns << vc.clone
+      end
     end
+    new_view.default_view = true
+    new_view.save!
+    new_view
   end
   
   # Training categories including all the categories higher up on the tree

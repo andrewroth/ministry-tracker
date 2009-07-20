@@ -5,10 +5,10 @@
 #  Created by Josh Starcher on 2007-08-26.
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
-require 'person_methods'
+require 'person_methods_emu'
 
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
@@ -76,15 +76,15 @@ class PeopleController < ApplicationController
       @search_for = []
       # Check year in school
       if params[:school_year].present?
-        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        conditions << database_search_conditions(params)[:school_year]
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
+        @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
     
       # Check gender
       if params[:gender].present?
-        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        conditions << database_search_conditions(params)[:gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
       end
       
       if params[:email].present?
-        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+        conditions << database_search_conditions(params)[:email]
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
@@ -244,7 +244,6 @@ class PeopleController < ApplicationController
     permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
     current_address_country_id = @person.current_address.try(:state).try(:country_id)
     permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
-
     get_possible_responsible_people
     setup_vars
     setup_campuses
@@ -265,7 +264,8 @@ class PeopleController < ApplicationController
   # POST /people.xml
   def create
     @person = Person.new(params[:person])
-    @current_address = CurrentAddress.new(params[:current_address])
+    #for emu, we need to extract @current_address.email into @person.current_address.email
+    @current_address = CurrentAddress.new(params[:current_address]) 
     @countries = Country.all
     @states = State.all
     respond_to do |format|
@@ -282,14 +282,14 @@ class PeopleController < ApplicationController
           # add the person to this ministry if they aren't already
           if params[:student]
             # create campus involvement if it doesn't already exist
-            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus], @person.id)
+            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus_id], @person.id)
             # also create the ministry inovlvement if they don't already have it
             # @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) 
             # @mi.destroy if @mi
             if @ci
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
-              @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role_id])
+              @person.add_campus(params[:campus_id], @ministry.id, @me.id, params[:ministry_role_id])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
                 UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)

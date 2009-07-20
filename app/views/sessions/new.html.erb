@@ -1,40 +1,22 @@
-<html>
-<head>                                                                            
- <script type="text/javascript">                                         
-  function SlideForm() {
-           var form = document.getElementById('local_form');
-           $('#local_form').show("slow");
-   }                                
-</script>                                                               
-</head> 
-<body>   
-<table id='login_table' border='0'>
-  <%- if Cmt::CONFIG[:local_enabled] == true -%>
+  
+  <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
+  <table>
   <tr>
-    <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
-    <td>
-     <div id="slide"> <a href="" onclick="SlideForm()">Login with the Ministry Tracker</a></div>
-    </td>
+    <td width='125'><%= link_to '<img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/>', 
+                    CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
+    <td><br /><br /><%= link_to 'Login to GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
   </tr>
-  <%- end -%>
-  <tr>
-    <td></td>
-    <td>
-      <!-- <div id="local_form" style="display:none"> --> 
-      <!-- uncommet the line above and delte the line below during production -->
+  </table>
+  <br /> 
+  <br />
+  <%- end-%>
+
+  
+  <%- if Cmt::CONFIG[:local_enabled] == true -%>
       <div id="local_form">
       <%= render :partial => 'local_form' %></div> 
-    </td>
-  </tr>
-  <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
-  <tr>
-    <td><img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/></td>
-    <td><%= link_to 'Login with GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
-  </tr>
-  <%- end-%>
-</table>
-</body>
-</html>
+  <%- end -%>
+
 
 
 

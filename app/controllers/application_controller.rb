@@ -48,9 +48,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-      @countries = Country.find(:all,
-        :conditions => "#{_(:is_closed, :country)} = 0 || #{_(:is_closed, :country)} is null", 
-        :order => _(:country, 'country'))
+        @countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
     end
 
     def is_group_leader(group, person = nil)
@@ -338,18 +336,17 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
+        @ministry = session[:ministry_id] ?
+          @person.ministries.find(:first, :conditions => {:id => session[:ministry_id] }) :
+          @person.ministries.first
+
+
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
-        # Try the default ministry given in the config
-        if Cmt::CONFIG[:default_ministry_name]
-          @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] }
-        end
-
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_dummy_ministry(@person)
+        @ministry ||= associate_person_with_default_ministry(@person)
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -382,10 +379,16 @@ class ApplicationController < ActionController::Base
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857
-  def associate_person_with_dummy_ministry(person)
-    # Ensure the 'No Ministry' ministry exists
-    ministry = Ministry.find_or_create_by_name("No Ministry")
-    sr = StudentRole.find :last, :order => "position"
+  def associate_person_with_default_ministry(person)
+    if Cmt::CONFIG[:associate_with_default_ministry]
+      default_ministry = Cmt::CONFIG[:default_ministry_name]
+    else
+      default_ministry = 'No Ministry'
+    end
+    # Ensure the default ministry exists
+    ministry = Ministry.find_or_create_by_name(default_ministry)
+    sr = StudentRole.find_by_name 'Student' 
+    sr ||= StudentRole.find :last, :order => "position"
     person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
     ministry

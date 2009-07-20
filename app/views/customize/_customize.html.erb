@@ -55,7 +55,7 @@
 		<div id="dorm_box">
 		  <%- @ministry.campuses.each do |campus| -%>
 		    <h5><%= campus.name %></h5>
-		    <ul id="dorms">
+		    <ul id=<%= campus.id %> >
 		      <%= render :partial => 'dorms/dorm', :collection => campus.dorms %>
 		    </ul>
 		  <%- end -%>
