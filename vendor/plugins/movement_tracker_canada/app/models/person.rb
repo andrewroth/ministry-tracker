@@ -163,13 +163,13 @@ class Person < ActiveRecord::Base
             mi = MinistryInvolvement.find :first, :conditions => mi_atts
             mi ||= ministry_involvements.create!(mi_atts)
 
-            # is this a bug? <== No actually. Keep it here. This column is in the production cim_hrdb
             mi.admin = self.person_id = 9889 ? true : cim_hrdb_admins.count > 0
             mi.save!
           end
         
           # add the appropriate campus involvements
           ci = campus_involvements.find_or_create_by_campus_id campus.id
+          ci.person_id = self.id # not sure why it doesn't get this automatically..
           school_year = cim_hrdb_person_year.try(:school_year)
           grad_date = cim_hrdb_person_year.try(:grad_date)
           ci.ministry_id = c4c.id
@@ -182,6 +182,7 @@ class Person < ActiveRecord::Base
       true
     end
 
+    # TODO: Can this be removed now?
     MockAggregation = Struct.new(:klass)
     def self.reflect_on_aggregation(name)
       if [:birth_date].include? name
@@ -224,7 +225,7 @@ class Person < ActiveRecord::Base
       self.create_access(v)
     end
         
-    def create_access (v)
+    def create_access(v)
       #ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]' #this returns nil currently. This is where we get an error
       ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
       #AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_st.id
@@ -232,32 +233,22 @@ class Person < ActiveRecord::Base
       Access.create :viewer_id => v.id, :person_id => self.id
     end
     
-    
     def self.find_user(person, address)
-    # if there a user with the same email?
-    user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
-    if user && user.person.nil?
-      # If we have an orphaned user record, might as well use it...
-      person.email = address.email
-      person.save(false)
-      person.create_access (user)
-      p = person
-    else
-      p = user.person if user
+      # if there a user with the same email?
+      user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
+      if user && user.person.nil?
+        # If we have an orphaned user record, might as well use it...
+        person.email = address.email
+        person.save(false)
+        person.create_access (user)
+        p = person
+      else
+        p = user.person if user
+      end
+      unless p
+        p = Person.find(:first, :conditions => {:person_email => address.email})
+        p.create_user_and_access_only("", p.person_email) if p
+      end
+      return p
     end
-    unless p
-      p = Person.find(:first, :conditions => {:person_email => address.email})
-      p.create_user_and_access_only("", p.person_email) if p
-    end
-    return p
-  end
-
-    
-    
-    
-    
-    
-    
-    
-    
 end
