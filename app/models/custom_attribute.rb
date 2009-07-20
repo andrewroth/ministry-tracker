@@ -6,6 +6,6 @@ class CustomAttribute < ActiveRecord::Base
   validates_presence_of _(:name), :message => "can't be blank"
   
   def safe_name
-    name.downcase.gsub(' ', '_')
+    name.downcase.gsub(/[ ?]/, '_')
   end
 end
