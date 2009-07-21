@@ -204,7 +204,7 @@ class Person < ActiveRecord::Base
       super
     end
     
-    def create_viewer(guid, uid)
+    def self.create_viewer(guid, uid)
       v = User.new
       v.guid = guid
       v.language_id = 1
@@ -225,8 +225,8 @@ class Person < ActiveRecord::Base
       p = Person.create! :person_fname => fn, :person_lname => ln,
         :person_legal_fname => '', :person_legal_lname => '',
         :birth_date => nil 
-      v = create_viewer (guid, uid)       
-      p.create_access (v)
+      v = create_viewer(guid, uid)       
+      p.create_access(v)
 
       v
     end
@@ -245,13 +245,13 @@ class Person < ActiveRecord::Base
     end
     
     def self.find_user(person, address)
-      # if there a user with the same email?
+      # is there a user with the same email?
       user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
       if user && user.person.nil?
         # If we have an orphaned user record, might as well use it...
         person.email = address.email
         person.save(false)
-        person.create_access (user)
+        person.create_access(user)
         p = person
       else
         p = user.person if user

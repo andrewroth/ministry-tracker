@@ -195,8 +195,8 @@ class Ministry < ActiveRecord::Base
     #if that doesn't exist, make a new view will every column
     else
       new_view = View.new(:title => "default", :ministry_id => self.id)
-      ViewColumn.all.each do |vc|
-        new_view_columns << vc.clone
+      Column.all.each do |c|
+        new_view.columns.create! :column_id => c.id
       end
     end
     new_view.default_view = true
