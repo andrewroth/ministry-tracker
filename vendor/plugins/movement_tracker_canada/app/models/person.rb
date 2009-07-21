@@ -193,7 +193,7 @@ class Person < ActiveRecord::Base
       super
     end
     
-    def create_viewer(guid, uid)
+    def self.create_viewer(guid, uid)
       v = User.new
       v.guid = guid
       v.language_id = 1
