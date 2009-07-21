@@ -12,21 +12,21 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Street'
-  c.from_clause = 'CurrentAddress'
-  c.select_clause = 'address1'
-  c.join_clause = "address_type = 'current'"
+  c.from_clause = 'Person'
+  c.select_clause = 'person_local_addr'
+  c.join_clause = ''
 end
 
 Column.seed(:title) do |c|
   c.title = 'City'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'city'
   c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
   c.title = 'State'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'state_id'
   c.join_clause = "address_type = 'current'"
 end
