@@ -143,7 +143,7 @@ class Person < ActiveRecord::Base
       # ciministry hrdb uses assignments to track
       # both ministry involvement and campus involvements.
       # Movement Tracker uses two individual tables.
-      for a in assignments(:include => :assignmentstatus)
+      for a in assignments
         campus = a.campus
         assignment = a.assignmentstatus.assignmentstatus_desc
         
@@ -168,15 +168,26 @@ class Person < ActiveRecord::Base
           end
         
           # add the appropriate campus involvements
-          ci = campus_involvements.find_or_create_by_campus_id campus.id
-          ci.person_id = self.id # not sure why it doesn't get this automatically..
+          # not sure why, but it seems that the association breaks the person array
+          # in the rake canada:import task.  It was making the person_id be 1, really
+          # weird
+          #ci = campus_involvements.find_or_create_by_campus_id campus.id
+          ci = CampusInvolvement.find :first, :conditions => { 
+            :person_id => self.id,
+            :campus_id => campus.id
+          }
+          ci ||= CampusInvolvement.new :person_id => self.id, :campus_id => campus.id
+
           school_year = cim_hrdb_person_year.try(:school_year)
-          grad_date = cim_hrdb_person_year.try(:grad_date)
           ci.ministry_id = c4c.id
           ci.campus_id = campus.id
-          ci.graduation_date = grad_date
+          ci.graduation_date = graduation_date
           ci.school_year = school_year
+          #begin
           ci.save!
+          #rescue
+          #  puts "self: #{self.inspect} ci: #{ci.inspect}"
+          #end
         end
       end
       true

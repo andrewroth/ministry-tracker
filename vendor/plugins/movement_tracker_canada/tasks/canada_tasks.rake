@@ -37,7 +37,8 @@ namespace :canada do
     total = Person.count
     ten_percent = total / 10
     i = j = 0
-    for p in Person.all(:include => :assignments)
+    for p in Person.all(:include => { :assignments => :assignmentstatus })
+      throw p.inspect if p.person_id == 1
       # give some visual indication of how it's going
       i += 1; j += 1
       if j > ten_percent
@@ -64,7 +65,7 @@ end
 
 
 namespace :db do
- task :migrate => [ "canada:core" ] do   
+ task :load_config => [ "canada:core" ] do   
    switch_to_emu
  end
 end
