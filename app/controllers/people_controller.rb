@@ -298,7 +298,7 @@ class PeopleController < ApplicationController
           else
             # create ministry involvement if it doesn't already exist
             @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            if @mi
+            if @mi  
               @mi.update_attributes(params[:ministry_involvement])
             else
               @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
@@ -309,7 +309,7 @@ class PeopleController < ApplicationController
           # if params[:student] && @mi
           #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."
           # else
-          flash[:notice] = @msg || 'Person was successfully added to your ministry.'
+          flash[:notice] = @msg || 'Person was successfully created and added to your ministry.'
           # end
         end
         
