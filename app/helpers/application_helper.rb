@@ -47,8 +47,8 @@ module ApplicationHelper
   def custom_field(attrib, person)
     case attrib.value_type
     when 'check_box'
-      field = eval("check_box_tag('#{attrib.safe_name}_checkbox', '1', #{person.get_value(attrib.id) == 'yes' ? true : false}, {:onclick => \"alternate('#{attrib.safe_name}')\"})")
-      field += hidden_field_tag(attrib.safe_name, person.get_value(attrib.id) || 'no')
+      field = eval("check_box_tag('#{attrib.safe_name}_checkbox', '1', #{person.get_value(attrib.id) == 'yes' ? true : false}, {:onclick => \"alternate('##{attrib.safe_name}')\"})")
+      field += hidden_field_tag(attrib.safe_name, person.get_value(attrib.id) || "no")
       return field
     when 'text_field'
       return send('text_field_tag', attrib.safe_name, person.get_value(attrib.id))

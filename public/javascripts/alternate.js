@@ -1,8 +1,8 @@
 // Alternate yes/no for the hidden field corresponding to a checkbox
 function alternate(elem) {
-	if($(elem).value == 'yes') {
-		$(elem).value = 'no';
+	if ($(elem).val() == 'yes') {
+		$(elem).val('no');
 	} else {
-		$(elem).value = 'yes';
+		$(elem).val('yes');
 	}
 }
