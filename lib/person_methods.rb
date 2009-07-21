@@ -29,6 +29,7 @@ module PersonMethods
         person.current_address = current_address
       end
       current_address = person.current_address
+      @msg = "Person already exists. Person was updated and added to your ministry."
     else
       person.created_by = 'MT'
       person.updated_by = 'MT'
