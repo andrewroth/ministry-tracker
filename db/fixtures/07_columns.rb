@@ -52,12 +52,14 @@ Column.seed(:title) do |c|
   c.column_type = 'image'
 end
 
-Column.seed(:title) do |c|
-  c.title = 'Website'
-  c.from_clause = 'Person'
-  c.select_clause = 'url'
-  c.column_type = 'url'
-end
+# We don't need websites for Emu
+#
+# Column.seed(:title) do |c|
+#   c.title = 'Website'
+#   c.from_clause = 'Person'
+#   c.select_clause = 'url'
+#   c.column_type = 'url'
+# end
 
 Column.seed(:title) do |c|
   c.title = 'Campus'
