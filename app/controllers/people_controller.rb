@@ -34,8 +34,8 @@ class PeopleController < ApplicationController
   def directory
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
+    first_name_col = "Person.#{_(:first_name, :person)}"
+    last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
     
     if params[:search_id]
