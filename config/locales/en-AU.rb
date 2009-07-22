@@ -86,28 +86,28 @@
             :one => "Couldn't save this {{model}}: 1 error",
             :other => "Couldn't save this {{model}}: {{count}} errors."
           },
-          :body => "Please check the following fields, dude:"
+          :body => "Please check the following fields:"
         },
         :messages => {
-          :inclusion => "ain't included in the list",
-          :exclusion => "ain't available",
-          :invalid => "ain't valid",
+          :inclusion => "is not included in the list",
+          :exclusion => "is not available",
+          :invalid => "is not valid",
           :confirmation => "don't match its confirmation",
-          :accepted  => "gotta be accepted",
-          :empty => "gotta be given",
-          :blank => "gotta be given",
-          :too_long => "is too long-ish (no more than {{count}} characters)",
-          :too_short => "is too short-ish (no less than {{count}} characters)",
-          :wrong_length => "ain't got the right length (gotta be {{count}} characters)",
-          :taken => "ain't available",
-          :not_a_number => "ain't a number",
-          :greater_than => "gotta be greater than {{count}}",
-          :greater_than_or_equal_to => "gotta be greater than or equal to {{count}}",
-          :equal_to => "gotta be equal to {{count}}",
-          :less_than => "gotta be less than {{count}}",
-          :less_than_or_equal_to => "gotta be less than or equal to {{count}}",
-          :odd => "gotta be odd",
-          :even => "gotta be even"
+          :accepted  => "must be accepted",
+          :empty => "must not be empty",
+          :blank => "must not be blank",
+          :too_long => "is too long (must be less than {{count}} characters)",
+          :too_short => "is too short (must be greater than {{count}} characters)",
+          :wrong_length => "is not the right length (must be {{count}} characters)",
+          :taken => "is not available",
+          :not_a_number => "is not a number",
+          :greater_than => "must be greater than {{count}}",
+          :greater_than_or_equal_to => "must be greater than or equal to {{count}}",
+          :equal_to => "must be equal to {{count}}",
+          :less_than => "must be less than {{count}}",
+          :less_than_or_equal_to => "must be less than or equal to {{count}}",
+          :odd => "must be odd",
+          :even => "must be even"
         }
       }
     }

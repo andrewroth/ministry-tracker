@@ -714,7 +714,7 @@ class PeopleController < ApplicationController
     
     def build_sql(tables_clause = nil, extra_select = nil)
       # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      standard_order = 'last_name' + ', ' + 'first_name'
       session[:order] = params[:order] if params[:order]
       order = session[:order] 
       @order = order ? order + ',' + standard_order : standard_order

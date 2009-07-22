@@ -12,37 +12,36 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Street'
-  c.from_clause = 'Person'
+  c.from_clause = 'CimHrdbCurrentAddress'
   c.select_clause = 'person_local_addr'
-  c.join_clause = ''
 end
 
 Column.seed(:title) do |c|
   c.title = 'City'
-  c.from_clause = 'Person'
+  c.from_clause = 'CimHrdbCurrentAddress'
   c.select_clause = 'city'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
   c.title = 'State'
-  c.from_clause = 'Person'
-  c.select_clause = 'state_id'
-  c.join_clause = "address_type = 'current'"
+  c.select_clause = 'province_desc'
+  c.from_clause = 'State'
+  c.source_model = 'CimHrdbCurrentAddress'
+  c.source_column = 'province_id'
+  c.foreign_key = 'id'
+  
 end
 
 Column.seed(:title) do |c|
   c.title = 'Zip'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'CimHrdbCurrentAddress'
   c.select_clause = 'zip'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
   c.title = 'Email'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'CimHrdbCurrentAddress'
   c.select_clause = 'email'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
@@ -51,15 +50,6 @@ Column.seed(:title) do |c|
   c.select_clause = "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture"
   c.column_type = 'image'
 end
-
-# We don't need websites for Emu
-#
-# Column.seed(:title) do |c|
-#   c.title = 'Website'
-#   c.from_clause = 'Person'
-#   c.select_clause = 'url'
-#   c.column_type = 'url'
-# end
 
 Column.seed(:title) do |c|
   c.title = 'Campus'
@@ -78,4 +68,13 @@ Column.seed(:title) do |c|
   c.source_column = 'school_year_id'
   c.foreign_key = 'id'
 end
+
+# We don't need websites for Emu
+#
+# Column.seed(:title) do |c|
+#   c.title = 'Website'
+#   c.from_clause = 'Person'
+#   c.select_clause = 'url'
+#   c.column_type = 'url'
+# end
 
