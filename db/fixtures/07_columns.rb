@@ -54,7 +54,7 @@ end
 Column.seed(:title) do |c|
   c.title = 'Campus'
   c.from_clause = 'Campus'
-  c.select_clause = 'name'
+  c.select_clause = 'campus_shortDesc'
   c.source_model = 'CampusInvolvement'
   c.source_column = 'campus_id'
   c.foreign_key = 'id'
