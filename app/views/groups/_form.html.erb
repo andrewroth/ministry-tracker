@@ -25,7 +25,9 @@
     				                                    :complete => "$('#spinnerc').hide()") %>
     			</td>
     		</tr>
-    		<%- dorms =  @campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : [] -%>
+    		<%- dorms = @campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : [] -%>
+    		<%- no_dorm = Dorm.find_or_create_by_name("No Dorm") -%>
+    		<%- dorms << [no_dorm.name, no_dorm.id] -%>
     		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
     		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
     		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
