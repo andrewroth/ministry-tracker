@@ -5,6 +5,8 @@ class DormsController < ApplicationController
   
   def list
     @dorms = Dorm.find(:all, :conditions => ["#{_(:campus_id, :dorm)} = ?", params[:campus_id]])
+    no_dorm = Dorm.find_or_create_by_name("No Dorm")
+    @dorms << no_dorm
     render :partial => 'list'
   end
   
