@@ -106,7 +106,7 @@ class GroupsController < ApplicationController
           }
       
     else
-      @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
+      @people = Person.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
     end
     
     @people.each do |person|
