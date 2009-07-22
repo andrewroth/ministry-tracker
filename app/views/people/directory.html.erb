@@ -149,7 +149,7 @@
 				    file_id, filename = person[column.safe_name].split('|')
             filename = filename.split('.')
             filename = filename[0] + '_mini.' + filename[1]
-  				  #image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}") 
+  				  #image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")
 				  end
 				when 'date'
 				  format_date(person[column.safe_name])

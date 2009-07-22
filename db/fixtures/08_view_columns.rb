@@ -38,19 +38,18 @@ ViewColumn.seed(:view_id, :column_id) do |vc|
   vc.column_id = 8
 end
 
+ViewColumn.seed(:view_id, :column_id) do |vc|
+  vc.view_id = 1
+  vc.column_id = 9
+end
+
+ViewColumn.seed(:view_id, :column_id) do |vc|
+  vc.view_id = 1
+  vc.column_id =10
+end
+
 # emu doesn't have a Website column
-
-ViewColumn.seed(:view_id, :column_id) do |vc|
-  vc.view_id = 1
-  vc.column_id = 10
-end
-
-ViewColumn.seed(:view_id, :column_id) do |vc|
-  vc.view_id = 1
-  vc.column_id = 11
-end
-
-ViewColumn.seed(:view_id, :column_id) do |vc|
-  vc.view_id = 1
-  vc.column_id = 12
-end
+#ViewColumn.seed(:view_id, :column_id) do |vc|
+#  vc.view_id = 1
+#  vc.column_id =11
+#end
