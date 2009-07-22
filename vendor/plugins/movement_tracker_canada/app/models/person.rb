@@ -225,14 +225,14 @@ class Person < ActiveRecord::Base
       p = Person.create! :person_fname => fn, :person_lname => ln,
         :person_legal_fname => '', :person_legal_lname => '',
         :birth_date => nil 
-      v = create_viewer(guid, uid)       
+      v = Person.create_viewer(guid, uid)       
       p.create_access(v)
 
       v
     end
     
     def create_user_and_access_only(guid, uid)
-      v = create_viewer(guid, uid)
+      v = Person.create_viewer(guid, uid)
       self.create_access(v)
     end
         
