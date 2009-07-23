@@ -497,7 +497,7 @@ class PeopleController < ApplicationController
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
-	   	conditions[0] = add_involvement_conditions(conditions[0])
+	   	conditions[0] = add_involvement_conditions(conditions[0], true)
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
       includes = [:current_address, :campus_involvements, :ministry_involvements]
@@ -608,26 +608,37 @@ class PeopleController < ApplicationController
       end
     end
     
-    def campus_condition
-      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+    
+    def campus_involvements_field(safe_format = false)
+      if safe_format
+        "campus_involvements.#{_(:campus_id, :campus_involvement)}"
+      else
+        "CampusInvolvement.#{_(:campus_id, :campus_involvement)}"
+      end
     end
     
-    def ministry_condition
+    def campus_condition(safe_format = false)
+      campus_involvements_field(safe_format) + " IN (#{@ministry.campus_ids.join(',')})"     
+    end
+    
+    def ministry_condition(safe_format = false)
       @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
-      'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      if safe_format
+        'ministry_involvements.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      else
+        'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      end
     end
     
-    def add_involvement_conditions(conditions)
+    def add_involvement_conditions(conditions, safe_format = false)
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
-        campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
+        campus_cond = campus_involvements_field(safe_format) + " = #{@campus.id}"
         conditions << campus_cond
+      elsif @ministry.campus_ids.length > 0
+        conditions << '( ' + campus_condition(safe_format) + ' OR ' + ministry_condition(safe_format) + ' )'
       else
-        if @ministry.campus_ids.length > 0
-          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
-        else
-          conditions << ministry_condition
-        end
+        conditions << ministry_condition(safe_format)
       end
       return conditions
     end
