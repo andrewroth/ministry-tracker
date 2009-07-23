@@ -363,17 +363,16 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    if params[:primary_campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_id].to_i != @person.primary_campus.id)
+    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
       # if @person.primary_campus_involvement
       #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
       #   
       #   # @person.update_attribute(:primary_campus_involvement_id, nil)
       # end
-      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_id]})
+      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_involvement][:campus_id]})
         @campus_involvement.update_attribute(:end_date, nil)
         @person.primary_campus_involvement = @campus_involvement
       else
-        params[:primary_campus_involvement][:campus_id] = params[:primary_campus_id]
         params[:primary_campus_involvement][:start_date] = Time.now
         params[:primary_campus_involvement][:added_by_id] = @my.id
         params[:primary_campus_involvement][:ministry_id] = @ministry.id
@@ -382,7 +381,7 @@ class PeopleController < ApplicationController
         @update_involvements = true
       end
     end
-    if params[:primary_campus_id].blank?
+    if params[:primary_campus_involvement][:campus_id].blank?
       if @person.primary_campus_involvement
          @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
          @person.update_attribute(:primary_campus_involvement_id, nil)
