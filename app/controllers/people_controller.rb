@@ -609,24 +609,24 @@ class PeopleController < ApplicationController
     end
     
     def campus_condition
-      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+      "campus_involvements.campus_id IN (#{@ministry.campus_ids.join(',')})"
     end
     
     def ministry_condition
       @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
-      'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      'ministry_involvements.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
     end
     
     def add_involvement_conditions(conditions)
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
-        campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
-        conditions << campus_cond
+        campus_cond = "campus_involvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
+        conditions[0] << campus_cond
       else
         if @ministry.campus_ids.length > 0
-          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
+          conditions[0] << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
         else
-          conditions << ministry_condition
+          conditions[0] << ministry_condition
         end
       end
       return conditions
