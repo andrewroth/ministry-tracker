@@ -15,7 +15,7 @@
       </td>
     </tr>
     <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
-      <th>State</th>
+      <th><%= I18n.t :State, :default => 'State' %></th>
       <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
         <br/>
         <span id="campus_state_filter"><%= campus_state_filter_message %></span>

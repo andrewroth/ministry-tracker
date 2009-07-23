@@ -10,7 +10,7 @@
 	<tr>
 		<th>City</th>
 		<td><%= @group.city %></td>
-		<th>Zip</th>
+		<th><%= I18n.t :Zip, :default => 'Zip' %> </th>
 		<td><%= @group.zip %></td>
 		<th>Email</th>
 		<td><%= @group.email %></td>

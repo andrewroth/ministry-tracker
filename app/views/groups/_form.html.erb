@@ -29,7 +29,7 @@
     		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
     		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
     		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
-    		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
+    		<tr><td><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
     	</table>
   	  </td>
   	  <td style="vertical-align:top;">

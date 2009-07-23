@@ -25,11 +25,11 @@
 		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@countries, 'id','country') %></td>
 	</tr>
 	<tr>
-		<td>State: </td>
+		<td><%= I18n.t :State, :default => 'State' %>:</td>
 		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@states, 'id','name') %></td>
 	</tr>
 	<tr>
-		<td>Zip: </td>
+		<td><%= I18n.t :Zip, :default => 'Zip' %>:</td>
 		<td><%= caf.text_field :zip %></td>
 	</tr>
 	<tr>
