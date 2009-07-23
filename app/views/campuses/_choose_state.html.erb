@@ -1,7 +1,7 @@
 Pick a state:
 <%=
   ss = @states.collect {|s| [s.name, s.id]}
-  ss = ss.insert(0, ['-- Choose ' + (I18n.t :State, :default => 'State') ' --', ''])
+  ss = ss.insert(0, ["-- Choose #{I18n.t :State, :default => 'State'} --", ''])
   
   select_tag("state", options_for_select(ss))
 %>
