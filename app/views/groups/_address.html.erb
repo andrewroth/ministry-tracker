@@ -2,7 +2,7 @@
 	<tr>
 		<th>Address</th>
 		<td><%= @group.address %></td>
-		<th>State</th>
+		<th> <%= I18n.t :State, :default => 'State' %></th>
 		<td><%= @group.state %></td>
 		<th>Website</th>
 		<td><%= @group.url %></td>
