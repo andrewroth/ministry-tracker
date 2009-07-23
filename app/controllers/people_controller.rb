@@ -34,8 +34,8 @@ class PeopleController < ApplicationController
   def directory
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
+    first_name_col = "Person.#{_(:first_name, :person)}"
+    last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
     
     if params[:search_id]
@@ -298,7 +298,7 @@ class PeopleController < ApplicationController
           else
             # create ministry involvement if it doesn't already exist
             @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            if @mi
+            if @mi  
               @mi.update_attributes(params[:ministry_involvement])
             else
               @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
@@ -309,7 +309,7 @@ class PeopleController < ApplicationController
           # if params[:student] && @mi
           #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."
           # else
-          flash[:notice] = @msg || 'Person was successfully added to your ministry.'
+          flash[:notice] = @msg || 'Person was successfully created and added to your ministry.'
           # end
         end
         
@@ -497,7 +497,7 @@ class PeopleController < ApplicationController
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
-	   	conditions = add_involvement_conditions(conditions)
+	   	conditions[0] = add_involvement_conditions(conditions[0])
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
       includes = [:current_address, :campus_involvements, :ministry_involvements]
@@ -621,12 +621,12 @@ class PeopleController < ApplicationController
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
         campus_cond = "campus_involvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
-        conditions[0] << campus_cond
+        conditions << campus_cond
       else
         if @ministry.campus_ids.length > 0
-          conditions[0] << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
+          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
         else
-          conditions[0] << ministry_condition
+          conditions << ministry_condition
         end
       end
       return conditions
@@ -714,7 +714,7 @@ class PeopleController < ApplicationController
     
     def build_sql(tables_clause = nil, extra_select = nil)
       # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      standard_order = 'last_name' + ', ' + 'first_name'
       session[:order] = params[:order] if params[:order]
       order = session[:order] 
       @order = order ? order + ',' + standard_order : standard_order
