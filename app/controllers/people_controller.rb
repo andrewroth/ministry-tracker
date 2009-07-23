@@ -497,7 +497,7 @@ class PeopleController < ApplicationController
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
-	   	conditions = add_involvement_conditions(conditions)
+	   	conditions[0] = add_involvement_conditions(conditions[0])
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
       includes = [:current_address, :campus_involvements, :ministry_involvements]
@@ -621,12 +621,12 @@ class PeopleController < ApplicationController
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
         campus_cond = "campus_involvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
-        conditions[0] << campus_cond
+        conditions << campus_cond
       else
         if @ministry.campus_ids.length > 0
-          conditions[0] << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
+          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
         else
-          conditions[0] << ministry_condition
+          conditions << ministry_condition
         end
       end
       return conditions
