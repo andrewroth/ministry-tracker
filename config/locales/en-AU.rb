@@ -2,6 +2,10 @@
   :'en-AU' => {
     # General stuff
     :staff => 'missionary',
+    :staff_member => 'missionary',
+    :staff_member_plural => 'missionaries',
+    :Staff_Member => 'Missionary',
+    :Staff_Member_plural => 'Missionaries',
     :staff_plural => 'missionaries',
     :Staff => 'Missionary',
     :Staff_plural => 'Missionaries',
