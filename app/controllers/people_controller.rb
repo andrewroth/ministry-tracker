@@ -727,6 +727,30 @@ class PeopleController < ApplicationController
     session[:view_id] = @view.id
     @view
   end
+
+   ##Not sure what happened, this was removed when Andrew's and Twing'es branches were merged.
+   #Seems to be required, as seen by a call in the directory function
+    def get_view
+      view_id = session[:view_id]
+      if view_id
+        @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
+      end
+      # If there's no view in the session, get the default view
+      @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
+      unless @view
+        # If there was no default view, set the first view found as the default
+        @view = @ministry.views.find(:first)
+        unless @view
+          #If this ministry doesn't have any views, create the first view for this ministry
+          @view = @ministry.create_first_view
+        end
+        @view.default_view = true
+        @view.save!
+      end
+      session[:view_id] = @view.id
+      @view
+    end
+
     
   def build_sql(tables_clause = nil, extra_select = nil)
     # Add order if it's available
