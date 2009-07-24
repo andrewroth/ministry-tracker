@@ -5,6 +5,10 @@
     :state_plural => 'provinces',
     :State => 'Province',
     :State_plural => 'Provinces',
+    :zip => 'postal code',
+    :zip_plural => 'postal codes',
+    :Zip => 'Postal Code',
+    :Zip_plural => 'Postal Codes',
     :date => {
       :formats => {
         :default => "%m/%d/%Y",
