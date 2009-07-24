@@ -228,8 +228,8 @@ class PeopleController < ApplicationController
   def new
     @person = Person.new
     @current_address = CurrentAddress.new
-    @countries = Country.all
-    @states = State.all
+    @countries = CmtGeo.all_countries
+    @states = CmtGeo.all_states
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js
@@ -266,8 +266,8 @@ class PeopleController < ApplicationController
     @person = Person.new(params[:person])
     #for emu, we need to extract @current_address.email into @person.current_address.email
     @current_address = CurrentAddress.new(params[:current_address]) 
-    @countries = Country.all
-    @states = State.all
+    @countries = CmtGeo.all_countries
+    @states = CmtGeo.all_states
     respond_to do |format|
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid?
@@ -544,6 +544,7 @@ class PeopleController < ApplicationController
   end
 
   def get_campuses
+    # TODO
     @campus_state = State.find :first, :conditions => 
       { _(:id, :state) => params[:primary_campus_state_id] }
     render :text => '' unless @campus_state
@@ -551,6 +552,7 @@ class PeopleController < ApplicationController
   end
 
   def get_campus_states
+    # TODO
     @campus_country = Country.find :first, :conditions => 
       { _(:id, :campus) => params[:primary_campus_country_id] }
     render :text => '' unless @campus_country
@@ -559,12 +561,12 @@ class PeopleController < ApplicationController
 
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
-    @current_address_states = get_states params[:current_address_country_id]
+    @current_address_states = Carmen::tates(params[:current_address_country])
   end
   
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
-    @permanent_address_states = get_states params[:permanent_address_country_id]
+    @permanent_address_states = Carmen::tates(params[:permanent_address_country])
   end
   
   private
@@ -691,14 +693,14 @@ class PeopleController < ApplicationController
         @campus_country = c
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
       else
-        @campus_state = @person.primary_campus.try(:state) || 
+        @campus_state = @person.primary_campus.state || 
           @person.current_address.try(:state) ||
           @person.permanent_address.try(:state)
-        @campus_country = @campus_state.try(:country)
-        @campus_states = @campus_country.try(:states) || []
-        @campuses = @campus_state.try(:campuses) || []
+        @campus_country = CmtGeo.country_for_state(@campus_state)
+        @campus_states = CmtGeo.states_for_country(@campus_country)
+        @campuses = CmtGeo.campuses_in_state(@campus_state)
       end
-      @campus_countries = Country.all
+      @campus_countries = CmtGeo.all_states
     end
     
     def get_view
@@ -738,12 +740,7 @@ class PeopleController < ApplicationController
     end
   
     def get_states
-      country = Country.find params[:primary_campus_country_id]
-      @campus_states = country.try(:states) || []
-    end
-
-    def get_states(country_id)
-      State.find_all_by_country_id(country_id)
+      CmtGeo.states_for_country params[:primary_campus_country]
     end
 
     def set_use_address2
