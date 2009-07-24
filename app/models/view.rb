@@ -26,9 +26,10 @@ class View < ActiveRecord::Base
     # Always include the ministry involvements table
     tables << 'MinistryInvolvement'
     tables_clause += " LEFT JOIN #{MinistryInvolvement.table_name} as MinistryInvolvement on Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
+    
     # Always include the current address
-    tables << 'CurrentAddress'
-    tables_clause += " LEFT JOIN #{CurrentAddress.table_name} as CurrentAddress on Person.#{_(:id, :person)} = CurrentAddress.#{_(:person_id, :address)} AND #{_(:address_type, :address)} = 'current'"
+    tables << 'HrdbCimCurrentAddress'
+    tables_clause += " LEFT JOIN #{Person.table_name} as CimHrdbCurrentAddress on Person.#{_(:id, :person)} = CimHrdbCurrentAddress.#{_(:person_id, :address)}"
     
     columns.each do |column|
       raise inspect if column.nil?      # If something goes wrong, we want good information
