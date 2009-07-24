@@ -35,60 +35,56 @@
 		<th>Country:</th>
 		<td>
 			<%=
-			# needs to be set to the country that the address's state is from if it exists
-				cs = countries.collect { |c| [c.country, c.id]}
-				cs = cs.insert(0,['Please select', ''])
-				
-				select_tag :current_address_country_id,
-					options_for_select(cs,
-						:selected => current_address_country_id)
-			%>
-	        <%= observe_field(:current_address_country_id, {
-	          :url => { :action => "set_current_address_states" },
-	          :with => 'current_address_country_id',
-	          :before => "$('#spinnerp').show()"})
-	        %>
-		</td>
-	</tr>
-	<tr>
-		<th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
-		<td><%= text_field :current_address, :zip %></td>
-	</tr>
+        select_tag :current_address_country,
+          options_for_select([['Please Select', '']] + countries, 
+                           :selected => current_address_country)
+      %>
+      <%= observe_field(:current_address_country_id, {
+        :url => { :action => "set_current_address_states" },
+        :with => 'current_address_country',
+        :before => "$('#spinnerp').show()"})
+      %>
+  </td>
+</tr>
+<tr>
+  <th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
+  <td><%= text_field :current_address, :zip %></td>
+</tr>
 
-	<%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
-	<tr>
-		<th>Dorm: </th>
-		<td><%= select :current_address, :dorm, dorm_selection %></td>
-	</tr>
+<%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
+<tr>
+  <th>Dorm: </th>
+  <td><%= select :current_address, :dorm, dorm_selection %></td>
+</tr>
 
-	<tr>
-		<th>Room:</th>
-		<td><%= text_field :current_address, :room %></td>
-	</tr>
-	<tr>
-		<th>Valid from</th>
-		<td class="date">
-			<%=
-				start_year = Date.today.year - 5
-  	        	end_year = start_year + 5
-				date_select :current_address, :start_date, {
-	        		:include_blank => true,
-	        		:start_year => start_year,
-	        		:end_year => end_year }
-			%>
-		</td>
-	</tr>
-	<tr>
-		<th>Valid till</th>
-		<td class="date">
-			<%=
-				start_year = Date.today.year - 5
-  	        	end_year = start_year + 5
-				date_select :current_address, :end_date, {
-	        		:include_blank => true,
-	        		:start_year => start_year,
-	        		:end_year => end_year }
-			%>
-		</td>
-	</tr>
+<tr>
+  <th>Room:</th>
+  <td><%= text_field :current_address, :room %></td>
+</tr>
+<tr>
+  <th>Valid from</th>
+  <td class="date">
+    <%=
+        start_year = Date.today.year - 5
+    end_year = start_year + 5
+    date_select :current_address, :start_date, {
+      :include_blank => true,
+      :start_year => start_year,
+      :end_year => end_year }
+    %>
+  </td>
+</tr>
+<tr>
+  <th>Valid till</th>
+  <td class="date">
+    <%=
+        start_year = Date.today.year - 5
+    end_year = start_year + 5
+    date_select :current_address, :end_date, {
+      :include_blank => true,
+      :start_year => start_year,
+      :end_year => end_year }
+    %>
+  </td>
+</tr>
 </table>

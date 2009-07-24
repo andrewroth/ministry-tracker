@@ -240,10 +240,10 @@ class PeopleController < ApplicationController
   def edit
     countries = get_countries
     
-    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
-    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
-    current_address_country_id = @person.current_address.try(:state).try(:country_id)
-    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+    current_address_states = get_states @person.current_address.try(:state).try(:country)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country)
+    current_address_country = @person.current_address.try(:state).try(:country)
+    permanent_address_country = @person.permanent_address.try(:state).try(:country)
     get_possible_responsible_people
     setup_vars
     setup_campuses
@@ -251,8 +251,8 @@ class PeopleController < ApplicationController
       page[:info].hide
       page[:edit_info].replace_html :partial => 'edit',
         :locals => {
-          :current_address_country_id => current_address_country_id,
-          :permanent_address_country_id => permanent_address_country_id,
+          :current_address_country => current_address_country,
+          :permanent_address_country => permanent_address_country,
           :countries => countries,
           :current_address_states => current_address_states,
           :permanent_address_states => permanent_address_states }
@@ -333,10 +333,10 @@ class PeopleController < ApplicationController
   def update
     countries = get_countries
 
-    current_address_states = get_states @person.current_address.try(:state).try(:country_id)
-    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
-    current_address_country_id = @person.current_address.try(:state).try(:country_id)
-    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+    current_address_states = get_states @person.current_address.try(:state).try(:country)
+    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country)
+    current_address_country = @person.current_address.try(:state).try(:country)
+    permanent_address_country = @person.permanent_address.try(:state).try(:country)
     
     get_people_responsible_for
     get_possible_responsible_people
@@ -435,8 +435,8 @@ class PeopleController < ApplicationController
           render :update do |page|
             page[:edit_info].replace_html :partial => 'edit',
               :locals => {
-                :current_address_country_id => current_address_country_id,
-                :permanent_address_country_id => permanent_address_country_id,
+                :current_address_country_id => current_address_country,
+                :permanent_address_country_id => permanent_address_country,
                 :countries => countries,
                 :current_address_states => current_address_states,
                 :permanent_address_states => permanent_address_states }
@@ -543,6 +543,7 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
 
+=begin
   def get_campuses
     # TODO
     @campus_state = State.find :first, :conditions => 
@@ -558,6 +559,7 @@ class PeopleController < ApplicationController
     render :text => '' unless @campus_country
     @campus_states = @campus_country.states
   end
+=end
 
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
@@ -693,14 +695,20 @@ class PeopleController < ApplicationController
         @campus_country = c
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
       else
-        @campus_state = @person.primary_campus.state || 
-          @person.current_address.try(:state) ||
-          @person.permanent_address.try(:state)
-        @campus_country = CmtGeo.country_for_state(@campus_state)
-        @campus_states = CmtGeo.states_for_country(@campus_country)
-        @campuses = CmtGeo.campuses_in_state(@campus_state)
+        if @person.try(:primary_campus).try(:state).present? && @primary_campus.country.present?
+          @campus_state = @person.primary_campus.state
+          @campus_country = @person.primary_campus.country
+        elsif @person.current_address.try(:state).present? && @person.current_address.try(:country).present?
+          @campus_state = @person.current_address.state
+          @campus_country = @person.current_address.country
+        elsif @person.try(:permanent_address).try(:state).present? && @person.permenant_address.try(:country).present?
+          @campus_state = @person.permanent_address.state
+          @campus_country = @person.permanent_address.country
+        end
+        @campus_states = CmtGeo.states_for_country(@campus_country) || []
+        @campuses = CmtGeo.campuses_in_state(@campus_state, @campus_country) || []
       end
-      @campus_countries = CmtGeo.all_states
+      @campus_countries = CmtGeo.all_countries
     end
     
     def get_view
@@ -739,8 +747,8 @@ class PeopleController < ApplicationController
       @sql += ' ORDER BY ' + @order
     end
   
-    def get_states
-      CmtGeo.states_for_country params[:primary_campus_country]
+    def get_states(country)
+      CmtGeo.states_for_country(country) || []
     end
 
     def set_use_address2

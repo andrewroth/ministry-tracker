@@ -1,1 +1,1 @@
-<%= options_for_select Array.wrap(@campus_states.collect {|c| [c.name, c.id]}).insert(0, ['','']) %>
+<%= options_for_select [[''] + @campus_states] %>
