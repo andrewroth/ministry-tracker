@@ -27,7 +27,7 @@
 		<th>Country:</th>
 		<td>
 			<%=
-				select_tag :permanent_address_country_id,
+				select_tag :permanent_address_country,
 					options_for_select([['Please Select', '']] + countries,
 						:selected => permanent_address_country)
       %>

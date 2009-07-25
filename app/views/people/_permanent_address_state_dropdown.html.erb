@@ -1,3 +1,3 @@
 <td id ="permanent_address_state_dropdown">
-  <%= select :perm_address, :state, states %>
+  <%= select :perm_address, :state, options_for_select(states), :prompt => true %>
 </td>

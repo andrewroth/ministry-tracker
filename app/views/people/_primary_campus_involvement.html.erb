@@ -4,10 +4,10 @@
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
       <th>Country</th>
       <td>
-        <%= select_tag :primary_campus_country_id, render(:partial => 'campus_country_options') %>
-        <%= observe_field(:primary_campus_country_id, {
+        <%= select_tag :primary_campus_country, render(:partial => 'campus_country_options') %>
+        <%= observe_field(:primary_campus_country, {
           :url => get_campus_states_people_path,
-          :with => 'primary_campus_country_id',
+          :with => 'primary_campus_country',
           :before => "$('#spinnerp').show()"})
         %>
         <br/>
@@ -16,15 +16,15 @@
     </tr>
     <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
       <th><%= I18n.t :State, :default => 'State' %></th>
-      <td><%= select_tag :primary_campus_state_id, render(:partial => 'campus_state_options') %>
+      <td><%= select_tag :primary_campus_state, render(:partial => 'campus_state_options') %>
         <br/>
         <span id="campus_state_filter"><%= campus_state_filter_message %></span>
         <%= link_to_function(t(:person_campus_change_country, 
                                :default => 'change country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
-        <%= observe_field(:primary_campus_state_id, {
+        <%= observe_field(:primary_campus_state, {
           :url => get_campuses_people_path,
-          :with => 'primary_campus_state_id',
+          :with => 'primary_campus_state',
           :before => "$('#spinnerp').show()"})
         %>
       </td>

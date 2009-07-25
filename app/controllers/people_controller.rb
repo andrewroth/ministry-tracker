@@ -543,32 +543,27 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
 
-=begin
   def get_campuses
-    # TODO
-    @campus_state = State.find :first, :conditions => 
-      { _(:id, :state) => params[:primary_campus_state_id] }
+    @campus_state = params[:primary_campus_state]
     render :text => '' unless @campus_state
-    @campuses = @campus_state.try(:campuses) || []
+    @campuses = CmtGeo.campuses_for_country(@campus_country) || []
   end
 
   def get_campus_states
-    # TODO
-    @campus_country = Country.find :first, :conditions => 
-      { _(:id, :campus) => params[:primary_campus_country_id] }
-    render :text => '' unless @campus_country
-    @campus_states = @campus_country.states
+    @campus_country = params[:primary_campus_country]
+    render :text => '' unless @campus_country.present?
+    @campus_states = CmtGeo.states_for_country(@campus_country) || []
+    throw @campus_states.to_yaml
   end
-=end
 
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
-    @current_address_states = Carmen::tates(params[:current_address_country])
+    @current_address_states = Carmen::states(params[:current_address_country]) || []
   end
   
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
-    @permanent_address_states = Carmen::tates(params[:permanent_address_country])
+    @permanent_address_states = Carmen::states(params[:permanent_address_country]) || []
   end
   
   private

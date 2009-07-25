@@ -3,7 +3,7 @@ module PeopleHelper
     "[#{@campus_state.try(:name)}]"
   end
   def campus_state_filter_message
-    country = @campus_country.try(:country)
+    country = CmtGeo.lookup_country(@campus_country)
     ("[#{country}] " if country).to_s + "Choose a state in order to choose your primary campus."
   end
   def campus_country_filter_message

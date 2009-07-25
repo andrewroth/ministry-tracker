@@ -26,32 +26,32 @@
 		<td><%= text_field :current_address, :city %></td>
 	</tr>
 	<tr>
+		<th>Country:</th>
+		<td>
+			<%=
+        select_tag :current_address_country,
+          options_for_select([['Please select', '']] + countries, 
+                           :selected => current_address_country)
+      %>
+      <%= observe_field(:current_address_country, {
+        :url => { :action => "set_current_address_states" },
+        :with => 'current_address_country',
+        :before => "$('#spinnerp').show()"})
+      %>
+    </td>
+  </tr>
+	<tr>
 		<th><%= I18n.t :State, :default => 'State' %>:</th>
 		<%= render :partial => 'current_address_state_dropdown', 
 				:locals => { :states => states }
 		%>
 	</tr>
-	<tr>
-		<th>Country:</th>
-		<td>
-			<%=
-        select_tag :current_address_country,
-          options_for_select([['Please Select', '']] + countries, 
-                           :selected => current_address_country)
-      %>
-      <%= observe_field(:current_address_country_id, {
-        :url => { :action => "set_current_address_states" },
-        :with => 'current_address_country',
-        :before => "$('#spinnerp').show()"})
-      %>
-  </td>
-</tr>
-<tr>
-  <th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
-  <td><%= text_field :current_address, :zip %></td>
-</tr>
+  <tr>
+    <th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
+    <td><%= text_field :current_address, :zip %></td>
+  </tr>
 
-<%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
+  <%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
 <tr>
   <th>Dorm: </th>
   <td><%= select :current_address, :dorm, dorm_selection %></td>
