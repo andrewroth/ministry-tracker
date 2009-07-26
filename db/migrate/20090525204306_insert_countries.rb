@@ -11,7 +11,6 @@ class InsertCountries < ActiveRecord::Migration
       return
     end
 
-    Country.delete_all
     for c in COUNTRIES do
       Country.create(:country => c[0], :code => c[1])
     end
