@@ -29,6 +29,8 @@ module Cmt
     # campuses from this country are displayed
     # Set to nil(:campus_scope_country => nil) to disable.
     :campus_scope_country => 'Canada',
+    
+    :default_country => 'Canada',
 
     # Disable second address line
     :disable_address2 => false,

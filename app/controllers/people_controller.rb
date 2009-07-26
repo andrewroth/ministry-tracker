@@ -344,8 +344,8 @@ class PeopleController < ApplicationController
 
     current_address_states = get_states @person.current_address.try(:state).try(:country_id)
     permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
-    current_address_country_id = @person.current_address.try(:state).try(:country_id)
-    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
+    current_address_country_id = @person.current_address.try(:state).try(:country_id) || default_country.id
+    permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id) || default_country.id
     
     get_people_responsible_for
     get_possible_responsible_people
@@ -702,7 +702,7 @@ class PeopleController < ApplicationController
       @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
       # If the Country is set in config, don't filter by states but get campuses from the country
       if Cmt::CONFIG[:campus_scope_country] && 
-        (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
+        (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
@@ -753,13 +753,15 @@ class PeopleController < ApplicationController
       @sql += ' ORDER BY ' + @order
     end
   
-    def get_states
-      country = Country.find params[:primary_campus_country_id]
-      @campus_states = country.try(:states) || []
-    end
-
-    def get_states(country_id)
-      State.find_all_by_country_id(country_id)
+    def get_states(country_id = nil)
+      if country_id
+        states = State.find_all_by_country_id(country_id)
+      else
+        country = Country.find(params[:primary_campus_country_id]) if params[:primary_campus_country_id]
+        states = @campus_states = country.try(:states)
+      end
+      states = default_country.states if states.blank?
+      states || []
     end
 
     def set_use_address2

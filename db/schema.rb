@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090613034002) do
+ActiveRecord::Schema.define(:version => 20090726200034) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(:version => 20090613034002) do
   end
 
   add_index "campuses", ["county"], :name => "index_campuses_on_county"
+  add_index "campuses", ["name"], :name => "index_campuses_on_name"
+  add_index "campuses", ["state_id"], :name => "index_campuses_on_state_id"
 
   create_table "columns", :force => true do |t|
     t.string   "title"

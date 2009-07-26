@@ -1,10 +1,5 @@
 <td id ="current_address_state_dropdown">
 	<%=
-		collection_select :current_address,
-			:state_id,
-			states,
-			:id,
-			:name,
-			{ :prompt => true }
+		collection_select(:current_address,	:state_id, states, :id, :name, { :prompt => true })
 	%>
 </td>

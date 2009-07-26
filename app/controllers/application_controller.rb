@@ -365,6 +365,10 @@ class ApplicationController < ActionController::Base
       request.format = :facebook if iphone_request?
     end
     
+    def default_country
+      @default_country ||= (Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:default_country] }) || Country.new)
+    end
+    
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857

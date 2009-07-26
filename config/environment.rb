@@ -71,6 +71,10 @@ Rails::Initializer.run do |config|
   # All files from config/locales/*.rb,yml are added automatically.
   # config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+  
+  if File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example')) && !File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
+    FileUtils.cp(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example'), File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
+  end
 end
 
 
