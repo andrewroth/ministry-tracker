@@ -37,3 +37,19 @@ student:
     name: Student
     position: 7
     type: OtherRole
+    
+new:
+  id: 8
+  ministry_id: 3
+  name: Chicago Role
+  position: 8
+  type: OtherRole
+  
+exists:
+  id: 9
+  ministry_id: 6
+  name: Will I Exist?
+  position: 9
+  type: OtherRole
+  
+

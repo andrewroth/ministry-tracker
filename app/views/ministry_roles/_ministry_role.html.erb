@@ -31,7 +31,7 @@
                                                         :rel => "#tooltip_content_#{dom_id(ministry_role)}_p"}), 
                                                         :id => "#{dom_id(ministry_role)}_p",
                                                         :link_id => "permissions_#{dom_id(ministry_role)}") do -%>Set permissions for this role<%- end -%>&nbsp;&nbsp;&nbsp;
-  <%= ministry_role.name %>&nbsp;&nbsp;&nbsp;
+  <%= I18n.t ministry_role.name, :default => ministry_role.name %>&nbsp;&nbsp;&nbsp;
   <%- unless ministry_role.description.blank? -%>
     <%- tooltip do -%><%= ministry_role.description %><%- end -%>
   <%- end -%>

@@ -27,7 +27,7 @@ module ActionView
         end
         
         #html << %(<input type="text" name="#{options[:name]}" value="#{date}" class="#{options[:class]} text-input" id="#{options[:id]}" />\n)
-        html << text_field_tag(options[:name], options[:value], options)
+        html << text_field_tag(options[:name], options[:value] || date, options)
         html << image_tag("calendar.png", :id => "#{options[:id]}_trigger", :style => "cursor: pointer;", :title => "Date Selector")
         #html << %(<img src="/cmt/images/calendar.png" id="#{options[:id]}_trigger" style="cursor: pointer;" title="Date selector" />\n)
 

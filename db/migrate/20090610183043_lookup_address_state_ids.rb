@@ -6,7 +6,6 @@ class LookupAddressStateIds < ActiveRecord::Migration
     for a in addresses do
       if a.state && !a.state.empty?
         state = find_state_by_name_or_abbreviation(a.state)
-        debugger
         if state
           a.state = state.id
           to_save << a

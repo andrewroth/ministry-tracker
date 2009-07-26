@@ -14,7 +14,7 @@
   		<%= link_to 'Ministries', ministries_path %></li>
 		<%- end -%>
 		
-	    <%- if authorized?(:new, :people) -%>
+	    <%- if authorized?(:index, :staff) -%>
 		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
 		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
 	    <%- end -%>
@@ -26,10 +26,12 @@
       
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
-		       authorized?(:new, :group_types) || authorized?(:new, :dorms) -%>
+           authorized?(:new, :group_types) || authorized?(:new, :dorms) ||
+           authorized?(:new, :training_categories) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
+    
   	</ul>
 		<%- if authorized?(:edit, :ministry_roles) -%>
 		<br/><br/>

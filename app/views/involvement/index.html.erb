@@ -1,3 +1,4 @@
+
 <h1><%= @person.full_name %></h1> 
 <div class="divider" style="margin-bottom:0;">&nbsp;</div>
 
@@ -46,6 +47,7 @@
   		<tr>
   			<td width="20%" nowrap="nowrap"><%= ca.name %>: </td>
   			<td> <%= custom_field(ca, @person) %></td>
+  			<td> <%= ca.description %> </td>
   		</tr>
   	  <%- end -%>
   		</table>

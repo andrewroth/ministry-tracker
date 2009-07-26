@@ -122,7 +122,11 @@
         			    <%= image_tag('silk/bullet_arrow_up.png') %>
   			    <%- end -%>
   			  <%- end -%>
-  			  <%= link_to(column.title, directory_people_url(:format => "html", :order => "#{column.from_clause}.#{column.select_clause}#{direction}", :start => params[:start], :finish => params[:finish], :search_id => @search.id )) %>
+  			  <%= link_to(I18n.t(column.title, :default => column.title), 
+  			               directory_people_url(:format => "html", 
+  			                                     :order => "#{column.from_clause}.#{column.select_clause}#{direction}", 
+  			                                     :start => params[:start], :finish => params[:finish], 
+  			                                     :search_id => @search.id )) %>
   			<%- else -%>
   			  <%= column.title %>
   			<%- end -%>
@@ -149,7 +153,7 @@
 				    file_id, filename = person[column.safe_name].split('|')
             filename = filename.split('.')
             filename = filename[0] + '_mini.' + filename[1]
-  				  image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}") 
+  				  #image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}") 
 				  end
 				when 'date'
 				  format_date(person[column.safe_name])

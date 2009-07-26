@@ -1,60 +1,25 @@
-<script type="text/javascript" charset="utf-8">
-  function log_in() {
-    $('#spinner').show();
-    $.ajax({data:$.param($('#login_form').serializeArray()), dataType:'script', type:'post', url:'<%= url_for :action => "create" %>'});
-  }
-  $(function() {
-    $('#password').keydown(function(event){
-      if (event.keyCode == 13) {
-        log_in();
-      }
-    });
-    $('#username').keydown(function(event){
-      if (event.keyCode == 13) {
-        $('#password').focus();
-      }
-    });
-  })
-</script>
+  
+  <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
+  <table>
+  <tr>
+    <td width='125'><%= link_to '<img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/>', 
+                    CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
+    <td><br /><br /><%= link_to 'Login to GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
+  </tr>
+  </table>
+  <br /> 
+  <br />
+  <%- end-%>
 
-<div class="clearfix">
-  <% form_tag session_path, :id => 'login_form',  :enctype => "application/x-www-form-urlencoded" do -%>
-  <!--<form enctype="application/x-www-form-urlencoded" method="post" action="https://signin.mygcx.org/cas/login?service=<%= new_session_url %>" class="right" id="form_login">-->
-  <div class="login_sector">
-    <!-- <div class="login_prompt"><b>Login</b>:</div> -->
-    <div class="clearfix">
-      <%= image_tag('gcx.png') %>
-    </div>
-    <div class="clearfix">
-      <label for="username">Username:</label>
-      <%= text_field_tag('username', params[:username], :class => "inputtext") %>
-    </div>
-    <div class="clearfix">
-      <label for="password">Password</label>
-      <%= password_field_tag('password', '', :class => "inputtext") %>
-    </div>
+  
+  <%- if Cmt::CONFIG[:local_enabled] == true -%>
+      <div id="local_form">
+      <%= render :partial => 'local_form' %></div> 
+  <%- end -%>
 
-    <div class="clearfix">
-      <label for="remember_me">Remember me:</label>
-      <%= check_box_tag 'remember_me', 1, false, :class => "inputcheck" %>
-    </div>
-    
-   <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
-  </div>
-  </form>
-  <% end -%>
 
-  <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
-  <div class="login_sector_fb">
-    <div class="login_prompt">Or <b>login</b> with Facebook:</div>
-    <fb:login-button size="medium" background="light" length="long" onlogin="facebook_onlogin_ready();"></fb:login-button>
-  </div> -->
-</div>
 
-<!--      <script src="/javascripts/fbconnect.js" type="text/javascript"></script>
-      <script type="text/javascript">
-       FB.init("<%#= FACEBOOK["key"] %>", "/facebook/xd_receiver.htm");
-     </script>
-     <script type="text/javascript">//window.onload = function() { facebook_onload(false); };</script>  -->
 
-  </body></html>
+
+
+

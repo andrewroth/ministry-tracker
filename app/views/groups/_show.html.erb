@@ -47,7 +47,11 @@
 							 :html => {:id => 'transfer_form_'+level}}) do -%>
 		<table width="70%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
-			<th><input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/></th>
+			<th>
+				<% if is_group_leader(@group) %>
+					<input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/>
+				<% end%>
+			</th>
 			<th>Name</th>
 			<th>Phone</th>
 			<th>Cell</th>

@@ -26,7 +26,7 @@
 		<td><%= text_field :current_address, :city %></td>
 	</tr>
 	<tr>
-		<th>State:</th>
+		<th><%= I18n.t :State, :default => 'State' %>:</th>
 		<%= render :partial => 'current_address_state_dropdown', 
 				:locals => { :states => states }
 		%>
@@ -51,7 +51,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Zip:</th>
+		<th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
 		<td><%= text_field :current_address, :zip %></td>
 	</tr>
 

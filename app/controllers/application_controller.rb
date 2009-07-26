@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
+  #before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
   #    use this line for production  
   before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
 #  before_filter :fake_login, :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
-  protected
+  #protected
     def fake_login
       self.current_user = User.find(Person.find(50195).user_id)
     end
@@ -48,9 +48,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-      @countries = Country.find(:all,
-        :conditions => "#{_(:is_closed, :country)} = 0 || #{_(:is_closed, :country)} is null", 
-        :order => _(:country, 'country'))
+        @countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
     end
 
     def is_group_leader(group, person = nil)
@@ -101,8 +99,77 @@ class ApplicationController < ActionController::Base
       return session[:admins][ministry.id][person.id]
     end
     
+    # you can map controllers and actions to another controller/action's permissions in this format:
+    #
+    # PERMISSION_MAPPINGS = {
+    #   'group_types' => {
+    #     'edit' => { :controller => 'another', :action => 'another' },
+    #     'edit' => { :action => 'samecontroller_differentaction' }
+    #   }
+    # }
+    #
+    # and then access them with 
+    #
+    # PERMISSION_MAPPINGS['group_types']['edit'][:action]
+    # PERMISSION_MAPPINGS['group_types']['edit'][:controller]
+    #
+    # If no controller mapping is given, it assumes the same controller
+    #
+    PERMISSION_MAPPINGS = {
+#      '*init' => {
+#        'create' => { :action => 'new' },
+#        'destroy' => { :action => 'new' }
+#      },
+#      '*' => {
+#        'update' => { :action => 'edit' }
+#      },
+      'groups' => {
+        #'compare_timetables' => { :controller => nil, :action => '' },
+        #'join' => { :controller => nil, :action => '' },
+        #'index' => { :action => 'new' },
+        'create' => { :action => 'new' },
+        #'new' => { :action => 'new' },
+        'edit' => { :action => 'new' },
+        #'find_times' => { :controller => nil, :action => '' },
+        #'show' => { :controller => nil, :action => '' },
+        #'update' => { :controller => nil, :action => '' },
+        #'destroy' => { :controller => nil, :action => '' }
+      }#,
+#      'group_types' => {
+#        'index' => { :controller => '', :action => '' },
+#        'create' => { :controller => '', :action => '' },
+#        'new' => { :controller => '', :action => '' },
+#        'edit' => { :controller => '', :action => '' },
+#        'show' => { :controller => '', :action => '' },
+#        'update' => { :controller => '', :action => '' },
+#        'destroy' => { :controller => '', :action => '' }
+#      },
+#      'group_involvements' => {
+#        'accept_request' => { :controller => '', :action => '' },
+#        'decline_request' => { :controller => '', :action => '' },
+#        'index' => { :controller => '', :action => '' },
+#        'create' => { :controller => '', :action => '' },
+#        'new' => { :controller => '', :action => '' },
+#        'edit' => { :controller => '', :action => '' },
+#        'show' => { :controller => '', :action => '' },
+#        'update' => { :controller => '', :action => '' },
+#        'destroy' => { :controller => '', :action => '' }
+#      }
+    }
+    
+    # Hash for Owner Action Checks
+    AUTHORIZE_FOR_OWNER_ACTIONS = {
+      :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+                  :get_campus_states, :set_current_address_states,
+                  :set_permanent_address_states],
+      :profile_pictures => [:create, :update, :destroy],
+      :timetables => [:show, :edit, :update],
+      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time]
+    }
+    
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
+      
       ministry ||= get_ministry
       unless @user_permissions && @user_permissions[ministry]
         @user_permissions ||= {}
@@ -120,18 +187,62 @@ class ApplicationController < ActionController::Base
           end
         end
       end
+      
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
+#      # Code to potentially replace the action assignment lines above.
+#      action ||= PERMISSION_MAPPING['*init'].include?(action_name.to_s) ? 
+#                   PERMISSION_MAPPINGS['*init'][action_name.to_s][:action] : action_name.to_s
+#      action = PERMISSION_MAPPING['*'].include?(action) ? 
+#                   PERMISSION_MAPPINGS['*'][action][:action] : action
+
       controller ||= controller_name.to_s
+
+      # Make sure we're always using strings      
+      action = action.to_s
+      controller = controller.to_s     
+      
+      # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
+      #if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
+      #  action = mapped_permission[:action]
+      #  controller = mapped_permission[:controller] || controller
+      #end
+
+      # Owner Action Checking
+      # NOTE: These need to be done after action & controller are set
+      if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
+        AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
+        case controller.to_sym
+        when :people
+          if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
+            return true
+          end
+        when :profile_pictures, :timetables
+          if params[:person_id] && params[:person_id] == @my.id.to_s
+            return true
+          end
+        when :groups
+          if (params[:id] && params[:controller] == "groups") && 
+            @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
+            return true
+          end
+        end # case
+      end # if
+
       # First see if this is restricted in the permissions table
       permission = Permission.find(:first, :conditions => {_(:action, :permission) => action.to_s, _(:controller, :permission) => controller.to_s})
       if permission
-        unless @user_permissions[ministry][permission.controller] && @user_permissions[ministry][permission.controller].include?(permission.action)
-          return false 
-        end
+        return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
       end
-      return true
+      
+      return Cmt::CONFIG[:permissions_granted_by_default]
     end
+    
+#    def authorization_allowed_for_owner
+#      unless self.respond_to?(:is_owner) && is_owner
+#        authorization_filter
+#      end
+#    end    
     
     def authorization_filter
       unless controller_name == 'dashboard' || authorized?
@@ -214,18 +325,17 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = session[:ministry_id] ? Ministry.find(session[:ministry_id]) : @person.ministries.first
+        @ministry = session[:ministry_id] ?
+          @person.ministries.find(:first, :conditions => {:id => session[:ministry_id] }) :
+          @person.ministries.first
+
+
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
-        # Try the default ministry given in the config
-        if Cmt::CONFIG[:default_ministry_name]
-          @ministry ||= Ministry.find :first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] }
-        end
-
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_dummy_ministry(@person)
+        @ministry ||= associate_person_with_default_ministry(@person)
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -258,10 +368,16 @@ class ApplicationController < ActionController::Base
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857
-  def associate_person_with_dummy_ministry(person)
-    # Ensure the 'No Ministry' ministry exists
-    ministry = Ministry.find_or_create_by_name("No Ministry")
-    sr = StudentRole.find :last, :order => "position"
+  def associate_person_with_default_ministry(person)
+    if Cmt::CONFIG[:associate_with_default_ministry]
+      default_ministry = Cmt::CONFIG[:default_ministry_name]
+    else
+      default_ministry = 'No Ministry'
+    end
+    # Ensure the default ministry exists
+    ministry = Ministry.find_or_create_by_name(default_ministry)
+    sr = StudentRole.find_by_name 'Student' 
+    sr ||= StudentRole.find :last, :order => "position"
     person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
     
     ministry

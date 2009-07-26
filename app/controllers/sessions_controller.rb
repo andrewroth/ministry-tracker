@@ -2,11 +2,13 @@
 # Question: Two means for logging in -  first tries local login , then tries
 # a login via GCX's CAS
 class SessionsController < ApplicationController
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter
-  
+  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
+  before_filter CASClient::Frameworks::Rails::GatewayFilter 
   filter_parameter_logging :password
   # render new.rhtml
   def new
+  
+  
     if logged_in?
       redirect_back_or_default(person_url(self.current_user.person))
     end
@@ -15,6 +17,7 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+    
   end
 
   def create
@@ -76,5 +79,6 @@ class SessionsController < ApplicationController
     flash[:notice] = "You have been logged out."
     logout_keeping_session!
   end
+    
 
 end

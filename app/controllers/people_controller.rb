@@ -15,6 +15,12 @@ class PeopleController < ApplicationController
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
   
+  #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+  #                                 :get_campus_states, :set_current_address_states,
+  #                                 :set_permanent_address_states]
+  #  before_filter :authorization_filter, :except => AUTHORIZE_FOR_OWNER_ACTIONS
+  #  before_filter :authorization_allowed_for_owner, :only => AUTHORIZE_FOR_OWNER_ACTIONS
+
   # GET /people
   # GET /people.xml
   def index
@@ -39,8 +45,8 @@ class PeopleController < ApplicationController
   def directory
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
+    first_name_col = "Person.#{_(:first_name, :person)}"
+    last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
     
     if params[:search_id]
@@ -81,15 +87,15 @@ class PeopleController < ApplicationController
       @search_for = []
       # Check year in school
       if params[:school_year].present?
-        conditions << "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})"
+        conditions << database_search_conditions(params)[:school_year]
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-        @search_for << SchoolYear.find(:all, :conditions => "id in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
+        @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
     
       # Check gender
       if params[:gender].present?
-        conditions << "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})"
+        conditions << database_search_conditions(params)[:gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
@@ -136,7 +142,7 @@ class PeopleController < ApplicationController
       end
       
       if params[:email].present?
-        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'"
+        conditions << database_search_conditions(params)[:email]
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
@@ -248,7 +254,6 @@ class PeopleController < ApplicationController
     permanent_address_states = get_states @person.permanent_address.try(:state).try(:country_id)
     current_address_country_id = @person.current_address.try(:state).try(:country_id)
     permanent_address_country_id = @person.permanent_address.try(:state).try(:country_id)
-
     get_possible_responsible_people
     setup_vars
     setup_campuses
@@ -286,14 +291,14 @@ class PeopleController < ApplicationController
           # add the person to this ministry if they aren't already
           if params[:student]
             # create campus involvement if it doesn't already exist
-            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus], @person.id)
+            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus_id], @person.id)
             # also create the ministry inovlvement if they don't already have it
             # @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) 
             # @mi.destroy if @mi
             if @ci
               @msg = 'The person you\'re trying to add is already on this campus.'
             else
-              @person.add_campus(params[:campus], @ministry.id, @me.id, params[:ministry_role_id])
+              @person.add_campus(params[:campus_id], @ministry.id, @me.id, params[:ministry_role_id])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
                 UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)
@@ -302,7 +307,7 @@ class PeopleController < ApplicationController
           else
             # create ministry involvement if it doesn't already exist
             @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            if @mi
+            if @mi  
               @mi.update_attributes(params[:ministry_involvement])
             else
               @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
@@ -313,7 +318,7 @@ class PeopleController < ApplicationController
           # if params[:student] && @mi
           #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."
           # else
-          flash[:notice] = @msg || 'Person was successfully added to your ministry.'
+          flash[:notice] = @msg || 'Person was successfully created and added to your ministry.'
           # end
         end
         
@@ -367,17 +372,16 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    if params[:primary_campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_id].to_i != @person.primary_campus.id)
+    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
       # if @person.primary_campus_involvement
       #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
       #   
       #   # @person.update_attribute(:primary_campus_involvement_id, nil)
       # end
-      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_id]})
+      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_involvement][:campus_id]})
         @campus_involvement.update_attribute(:end_date, nil)
         @person.primary_campus_involvement = @campus_involvement
       else
-        params[:primary_campus_involvement][:campus_id] = params[:primary_campus_id]
         params[:primary_campus_involvement][:start_date] = Time.now
         params[:primary_campus_involvement][:added_by_id] = @my.id
         params[:primary_campus_involvement][:ministry_id] = @ministry.id
@@ -386,7 +390,7 @@ class PeopleController < ApplicationController
         @update_involvements = true
       end
     end
-    if params[:primary_campus_id].blank?
+    if params[:primary_campus_involvement][:campus_id].blank?
       if @person.primary_campus_involvement
         @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
         @person.update_attribute(:primary_campus_involvement_id, nil)
@@ -453,7 +457,7 @@ class PeopleController < ApplicationController
     end
   end
   
-#Question: does it change which ministry we are now viewing in our session?
+  #Question: does it change which ministry we are now viewing in our session?
 
   def change_ministry
     session[:ministry_id] = params[:current_ministry]
@@ -509,7 +513,7 @@ class PeopleController < ApplicationController
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
-	   	conditions = add_involvement_conditions(conditions)
+	   	conditions[0] = add_involvement_conditions(conditions[0], true)
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
       includes = [:current_address, :campus_involvements, :ministry_involvements]
@@ -579,7 +583,7 @@ class PeopleController < ApplicationController
   def set_permanent_address_states
     @permanent_address_states = get_states params[:permanent_address_country_id]
   end
-
+  
   private
     
     def get_people_responsible_for
@@ -605,7 +609,7 @@ class PeopleController < ApplicationController
       # find everyone in this ministry with a higher access
       higher_mi_array = []
       @most_recent_ministry.ministry_involvements.each do |cur_mi|
-        if cur_mi.ministry_role.position < persons_ministry_involvement_position
+        if cur_mi.ministry_role.position < persons_ministry_involvement_position && cur_mi.ministry_role.type == "StaffRole"
           higher_mi_array << cur_mi
         end
       end
@@ -620,116 +624,99 @@ class PeopleController < ApplicationController
       end
     end
     
-    def campus_condition
-      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
-    end
     
-  def ministry_condition
-    @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
-    'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
-  end
-    
-  def add_involvement_conditions(conditions)
-    # figure out which campuses to query based on the campuses listed for the current ministry
-    if  @campus
-      campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
-      conditions << campus_cond
-    else
-      if @ministry.campus_ids.length > 0
-        conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
+    def campus_involvements_field(safe_format = false)
+      if safe_format
+        "campus_involvements.#{_(:campus_id, :campus_involvement)}"
       else
-        conditions << ministry_condition
+        "CampusInvolvement.#{_(:campus_id, :campus_involvement)}"
       end
     end
-    return conditions
-  end
     
-  def render_new_from_create(format)
-    set_dorms
-    format.html { render :action => "new", :layout => 'manage' }
-    format.js  {render :action => 'new'}
-    format.xml  { render :xml => @person.errors.to_xml }
-  end
+    def campus_condition(safe_format = false)
+      campus_involvements_field(safe_format) + " IN (#{@ministry.campus_ids.join(',')})"     
+    end
     
-  def setup_vars
-    set_dorms
-    @profile_picture = @person.profile_picture || ProfilePicture.new
-    @profile_picture.person_id = @person.id
-    @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
-    @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
-  end
+    def ministry_condition(safe_format = false)
+      @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
+      if safe_format
+        'ministry_involvements.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      else
+        'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      end
+    end
     
-  def set_dorms
-    @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
-  end
+    def add_involvement_conditions(conditions, safe_format = false)
+      # figure out which campuses to query based on the campuses listed for the current ministry
+      if  @campus
+        campus_cond = campus_involvements_field(safe_format) + " = #{@campus.id}"
+        conditions << campus_cond
+      elsif @ministry.campus_ids.length > 0
+        conditions << '( ' + campus_condition(safe_format) + ' OR ' + ministry_condition(safe_format) + ' )'
+      else
+        conditions << ministry_condition(safe_format)
+      end
+      return conditions
+    end
     
-  def can_edit_profile
-    if @person == @me || is_ministry_leader
-      return true
-    else 
-      respond_to do |wants|
-        wants.html { redirect_to @person }
-        wants.js  do
-          render :update do |page|
-            page.redirect_to(@person)
+    def render_new_from_create(format)
+      set_dorms
+      format.html { render :action => "new", :layout => 'manage' }
+      format.js  {render :action => 'new'}
+      format.xml  { render :xml => @person.errors.to_xml }
+    end
+    
+    def setup_vars
+      set_dorms
+      @profile_picture = @person.profile_picture || ProfilePicture.new
+      @profile_picture.person_id = @person.id
+      @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
+      @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+    end
+    
+    def set_dorms
+      @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
+    end
+    
+    def can_edit_profile
+      if @person == @me || is_ministry_leader
+        return true
+      else 
+        respond_to do |wants|
+          wants.html { redirect_to @person }
+          wants.js  do
+            render :update do |page|
+              page.redirect_to(@person)
+            end
           end
         end
       end
+      return false
     end
-      
-    return false
-  end
     
-  def get_profile_person
-    @person = Person.find(params[:id] || session[:person_id])
-  end
-    
-  def setup_campuses
-    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-    if params[:state].present?
-      state = params[:state]
-    else
-      state = @person.primary_campus.try(:state) || @person.current_address.try(:state)
+    def get_profile_person
+      @person = Person.find(params[:id] || session[:person_id])
     end
-    state_model = State.find :first, :conditions => { _(:name, :state) => state }
-    @campuses = state_model.try(:campuses) || []
-  end
     
-  def setup_campuses
-    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-    # If the Country is set in config, don't filter by states but get campuses from the country
-    if Cmt::CONFIG[:campus_scope_country] && 
-      (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
-      @no_campus_scope = true
-      @campus_country = c
-      @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
-    else
-      @campus_state = @person.primary_campus.try(:state) || 
-        @person.current_address.try(:state) ||
-        @person.permanent_address.try(:state)
-      @campus_country = @campus_state.try(:country)
-      @campus_states = @campus_country.try(:states) || []
-      @campuses = @campus_state.try(:campuses) || []
-    end
-    @campus_countries = Country.all
-    # If there's no view in the session, get the default view
-    @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
-    unless @view
-      # If there was no default view, set the first view found as the default
-      @view = @ministry.views.find(:first)
-      unless @view
-        #If this ministry doesn't have any views, create the first view for this ministry
-        @view = @ministry.create_first_view
+    def setup_campuses
+      @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+      # If the Country is set in config, don't filter by states but get campuses from the country
+      if Cmt::CONFIG[:campus_scope_country] && 
+        (c = Country.find :first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] })
+        @no_campus_scope = true
+        @campus_country = c
+        @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
+      else
+        @campus_state = @person.primary_campus.try(:state) || 
+          @person.current_address.try(:state) ||
+          @person.permanent_address.try(:state)
+        @campus_country = @campus_state.try(:country)
+        @campus_states = @campus_country.try(:states) || []
+        @campuses = @campus_state.try(:campuses) || []
       end
-      @view.default_view = true
-      @view.save!
+      @campus_countries = Country.all
     end
-    session[:view_id] = @view.id
-    @view
-  end
-
-   ##Not sure what happened, this was removed when Andrew's and Twing'es branches were merged.
-   #Seems to be required, as seen by a call in the directory function
+    
     def get_view
       view_id = session[:view_id]
       if view_id
@@ -751,21 +738,20 @@ class PeopleController < ApplicationController
       @view
     end
 
-    
-  def build_sql(tables_clause = nil, extra_select = nil)
-    # Add order if it's available
-    standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
-    session[:order] = params[:order] if params[:order]
-    order = session[:order]
-    @order = order ? order + ',' + standard_order : standard_order
+    def build_sql(tables_clause = nil, extra_select = nil)
+      # Add order if it's available
+      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      session[:order] = params[:order] if params[:order]
+      order = session[:order]
+      @order = order ? order + ',' + standard_order : standard_order
       
-    @sql =   'SELECT ' + @view.select_clause
-    @sql += ', ' + extra_select if extra_select.present?
-    tables_clause ||= @view.tables_clause
-    @sql += ' FROM ' + @view.tables_clause
-    @sql += ' WHERE ' + @conditions
-    @sql += ' ORDER BY ' + @order
-  end
+      @sql =   'SELECT ' + @view.select_clause
+      @sql += ', ' + extra_select if extra_select.present?
+      tables_clause ||= @view.tables_clause
+      @sql += ' FROM ' + @view.tables_clause
+      @sql += ' WHERE ' + @conditions
+      @sql += ' ORDER BY ' + @order
+    end
   
     def get_states
       country = Country.find params[:primary_campus_country_id]

@@ -1,6 +1,6 @@
     <li id="column_<%= unused_column.id %>">
     <%= link_to_remote image_tag('silk/add.png', :style => 'vertical-align:bottom'), :url => view_view_columns_path(:view_id => view.id, :column_id => unused_column.id), 
                                 :method => :post, :loading => "$('#spinner').show()" %>&nbsp;&nbsp;
-      <%= unused_column.title %> 
+      <%=  I18n.t unused_column.title, :default => unused_column.title %> 
       
     </li>

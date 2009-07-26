@@ -22,6 +22,9 @@ module Cmt
     # Default ministry name
     :default_ministry_name => 'Campus for Christ',
     
+    #Associate person with no ministry to default ministry
+    :associate_with_default_ministry => true,
+    
     # Default Country - When set, the campus filter is disabled and all 
     # campuses from this country are displayed
     # Set to nil(:campus_scope_country => nil) to disable.
@@ -31,7 +34,14 @@ module Cmt
     :disable_address2 => false,
     
     # Default website title appearing at the top of the browser
-    :web_title => 'Campus for Christ :: Movement Tracker'
+    :web_title => 'Campus for Christ :: Movement Tracker',
+
+    # When no Permission object is found for a controller/action,
+    # does the user have permission
+    :permissions_granted_by_default => true,
+    
+    #When true, hides timetable impact dropdown in group_types form
+    :disable_group_timetable_impact => true
   }
 end
 
