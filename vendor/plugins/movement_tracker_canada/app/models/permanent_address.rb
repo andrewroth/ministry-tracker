@@ -1,4 +1,6 @@
-class PermanentAddress < CimHrdbAddress
+require_model 'permanent_address'
+
+class PermanentAddress < Address
   before_save :reject
   load_mappings
 

@@ -1,4 +1,7 @@
-class CurrentAddress < CimHrdbAddress
+require_model 'current_address'
+
+class CurrentAddress < Address
+require_model 'current_address'
   before_save :reject
   load_mappings
 
