@@ -3,7 +3,11 @@
   <thead>
     <!-- <th width="20">&nbsp;</th> -->
     <th width="55">Activated</th>
-    <th width="60">Mandated</th>
+    <th width="80">Mandated</th> <%- tooltip do -%>
+      Training Items that have been mandated in this ministry are mandatory for sub-ministry of this. 
+      Ministries cannot unmandate an item unless it is ministry that mandated the item.
+    <%- end -%></th> 
+
     <th>Question</th>
   </thead>
   <tbody id="direct_training_questions_<%= training_category.id %>">
