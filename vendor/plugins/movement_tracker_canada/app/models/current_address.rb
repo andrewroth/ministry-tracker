@@ -13,7 +13,10 @@ require_model 'current_address'
                         
   def address_type() 'current' end
   def extra_prefix() 'curr' end
-
+  def set_address_type
+  end
+  def address_type=()
+  end
   def alternate_phone() cell_phone end
   def alternate_phone=(v) cell_phone = v end  
   
