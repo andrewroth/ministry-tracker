@@ -5,10 +5,10 @@
 #  Created by Josh Starcher on 2007-08-26.
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
-require 'person_methods_emu'
+require 'person_methods'
 
 class PeopleController < ApplicationController
-  include PersonMethodsEmu
+  include PersonMethods
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
