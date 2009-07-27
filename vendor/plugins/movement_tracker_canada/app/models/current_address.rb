@@ -15,7 +15,6 @@ class CurrentAddress < CimHrdbAddress
   def alternate_phone=(v) cell_phone = v end  
   
   def reject
-    throw "Don't. Just Don't."
-    log.console("Got here")
+    throw "Don't save a new Current Address in Emu."
   end
 end
