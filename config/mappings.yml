@@ -5,12 +5,13 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, current_address, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_vieweraccessgroup
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, campus, assignment, assignmentstatus, current_address, permanent_address, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_vieweraccessgroup
 
 tables:
   user: accountadmin_viewer
   person: cim_hrdb_person
   current_address: cim_hrdb_person
+  permanent_address: cim_hrdb_person
   cim_hrdb_current_address: cim_hrdb_person
   cim_hrdb_permanent_address: cim_hrdb_person
   accountadmin_accessgroup: accountadmin_accessgroup
@@ -126,7 +127,24 @@ accountadmin_accessgroup:
 accountadmin_vieweraccessgroup:
   id: vieweraccessgroup_id
 
+current_address:
+  id: person_id
+  address1: person_local_addr
+  city: person_local_city
+  zip: person_local_pc
+  phone: person_local_phone
+  email: person_email
+  alternate_phone: cell_phone
+  state_id: province_id
   
+permanent_address:
+  id: person_id
+  address1: person_addr
+  city: person_city
+  zip: person_pc
+  phone: person_phone
+  email: person_email
+  state_id: province_id
 
 
 
