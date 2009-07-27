@@ -1,9 +1,9 @@
 require_model 'current_address'
 
 class CurrentAddress < Address
-require_model 'current_address'
   before_save :reject
   load_mappings
+  belongs_to :person
 
   doesnt_implement_attributes :address2 => '', :email_validated => false
 

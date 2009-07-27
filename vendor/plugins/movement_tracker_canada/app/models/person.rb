@@ -25,6 +25,8 @@ class Person < ActiveRecord::Base
   has_one :cim_hrdb_person_year
 
   has_one :person_extra_ref, :class_name => 'PersonExtra'
+  has_one :current_address, :class_name => 'CurrentAddress'
+  has_one :permanent_address, :class_name => 'PermanentAddress'
 
   def person_extra() 
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
@@ -114,7 +116,8 @@ class Person < ActiveRecord::Base
     end
   end
 
-  #these will be commented out
+  #these will be left in. 
+  #No where in the core code do we have CimHrdb___Address.new, so this will ensure a duplicate person isn't saved.
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
 

@@ -130,7 +130,6 @@ accountadmin_vieweraccessgroup:
 
 address:
   id: person_id
-  address1: person_local_addr
   city: person_local_city
   zip: person_local_pc
   phone: person_local_phone

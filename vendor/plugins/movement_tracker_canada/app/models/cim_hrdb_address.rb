@@ -7,6 +7,7 @@ class CimHrdbAddress < ActiveRecord::Base
   belongs_to :title_bt, :class_name => 'Title', :foreign_key => :title_id
   has_one :person_extra_ref, :class_name => 'PersonExtra', 
     :foreign_key => 'person_id'
+  
 
   def person_extra()
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
