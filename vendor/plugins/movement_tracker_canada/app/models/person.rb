@@ -114,7 +114,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  #these will be commented out
   def current_address() CimHrdbCurrentAddress.find(id) end
   def permanent_address() CimHrdbPermanentAddress.find(id) end
 

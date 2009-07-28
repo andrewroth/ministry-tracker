@@ -4,12 +4,6 @@ class PermanentAddress < CimHrdbAddress
 
   doesnt_implement_attributes :address2 => '', :email_validated => false
 
-  def set_address_type
-  end
-  
-  def address_type=()
-  end
-  
   def address_type() 'permanent' end
   def extra_prefix() 'perm' end
   
