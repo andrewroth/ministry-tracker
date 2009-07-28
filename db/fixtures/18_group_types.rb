@@ -7,6 +7,11 @@ end
 
 GroupType.seed(:ministry_id, :group_type) do |gt|
   gt.ministry_id = c4c.id
+  gt.group_type = 'Movement Development Area (MDA)'
+end
+
+GroupType.seed(:ministry_id, :group_type) do |gt|
+  gt.ministry_id = c4c.id
   gt.group_type = 'Prayer Group'
 end
 
