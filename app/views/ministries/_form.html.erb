@@ -4,8 +4,8 @@
 		<tr><td>Ministry Name: </td><td><%= f.text_field :name %></td></tr>
 		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
 		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
-		<tr><td>State: </td><td><%= f.text_field :state %></td></tr>
-		<tr><td>Zip: </td><td><%= f.text_field :zip %></td></tr>
+		<tr><td><%= I18n.t :State, :default => 'State' %>:</td><td><%= f.text_field :state %></td></tr>
+		<tr><td><%= I18n.t :Zip, :default => 'Zip' %>:</td><td><%= f.text_field :zip %></td></tr>
 		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
 		<tr><td>Phone: </td><td><%= f.text_field :phone %></td></tr>
 		<tr><td>Fax: </td><td><%= f.text_field :fax %></td></tr>

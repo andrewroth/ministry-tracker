@@ -67,6 +67,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    @campus = Group.find_by_id(params[:id]).campus
     respond_to do |format|
       format.js
     end
@@ -106,7 +107,7 @@ class GroupsController < ApplicationController
           }
       
     else
-      @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
+      @people = Person.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
     end
     
     @people.each do |person|

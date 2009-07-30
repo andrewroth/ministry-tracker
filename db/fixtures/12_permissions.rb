@@ -170,7 +170,7 @@ end
 Permission.seed(:controller, :action) do |p|
   p.controller = 'training_questions'
   p.action = 'new'
-  p.description = 'Create Training Questions'
+  p.description = 'Create Training Items'
 end
 
 Permission.seed(:controller, :action) do |p|

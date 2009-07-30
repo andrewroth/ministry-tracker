@@ -1,18 +1,24 @@
 <table width="60%" border="0" cellspacing="2" cellpadding="5">
 	<tr>
-		<th>Address</th>
+		<th>Campus:</th>
+		<!-- <td><%= @group.campus ? @group.campus.name : "No Campus Assigned" %></td> -->
+		<td><%= @group.campus.name if  @group.campus %></td>
+		<th>Address:</th>
 		<td><%= @group.address %></td>
-		<th>State</th>
+		<th> <%= I18n.t :State, :default => 'State' %>:</th>
 		<td><%= @group.state %></td>
-		<th>Website</th>
-		<td><%= @group.url %></td>
+		<th>Email:</th>
+		<td><%= @group.email %></td>
 	</tr>
 	<tr>
-		<th>City</th>
+	  <th>Dorm:</th>
+		<!-- <td><%= @group.dorm ? @group.dorm.name : "No Dorm Assigned" %></td> -->
+		<td><%= @group.dorm.name if  @group.dorm %></td>
+		<th>City:</th>
 		<td><%= @group.city %></td>
-		<th>Zip</th>
+		<th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
 		<td><%= @group.zip %></td>
-		<th>Email</th>
-		<td><%= @group.email %></td>
+		<th>Website:</th>
+		<td><%= @group.url %></td>	
 	</tr>
 	</table>

@@ -56,6 +56,9 @@ module Cmt
     # will these show up?
     :disable_group_timetable_impact => true
 
+    # When enabled, users will be able to use the 'find common times' algorithim when making groups
+    :find_common_times_enabled => false
+
   }
 end
 

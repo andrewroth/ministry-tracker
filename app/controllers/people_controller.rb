@@ -5,10 +5,10 @@
 #  Created by Josh Starcher on 2007-08-26.
 #  Copyright 2007 Ministry Hacks. All rights reserved.
 # 
-require 'person_methods_emu'
+require 'person_methods'
 
 class PeopleController < ApplicationController
-  include PersonMethodsEmu
+  include PersonMethods
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
@@ -34,8 +34,8 @@ class PeopleController < ApplicationController
   def directory
     get_view
     @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-    first_name_col = _(:first_name, :person)
-    last_name_col = _(:last_name, :person)
+    first_name_col = "Person.#{_(:first_name, :person)}"
+    last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
     
     if params[:search_id]
@@ -298,7 +298,7 @@ class PeopleController < ApplicationController
           else
             # create ministry involvement if it doesn't already exist
             @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            if @mi
+            if @mi  
               @mi.update_attributes(params[:ministry_involvement])
             else
               @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
@@ -309,7 +309,7 @@ class PeopleController < ApplicationController
           # if params[:student] && @mi
           #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."
           # else
-          flash[:notice] = @msg || 'Person was successfully added to your ministry.'
+          flash[:notice] = @msg || 'Person was successfully created and added to your ministry.'
           # end
         end
         
@@ -363,17 +363,16 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    if params[:primary_campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_id].to_i != @person.primary_campus.id)
+    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
       # if @person.primary_campus_involvement
       #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
       #   
       #   # @person.update_attribute(:primary_campus_involvement_id, nil)
       # end
-      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_id]})
+      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_involvement][:campus_id]})
         @campus_involvement.update_attribute(:end_date, nil)
         @person.primary_campus_involvement = @campus_involvement
       else
-        params[:primary_campus_involvement][:campus_id] = params[:primary_campus_id]
         params[:primary_campus_involvement][:start_date] = Time.now
         params[:primary_campus_involvement][:added_by_id] = @my.id
         params[:primary_campus_involvement][:ministry_id] = @ministry.id
@@ -382,7 +381,7 @@ class PeopleController < ApplicationController
         @update_involvements = true
       end
     end
-    if params[:primary_campus_id].blank?
+    if params[:primary_campus_involvement][:campus_id].blank?
       if @person.primary_campus_involvement
          @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
          @person.update_attribute(:primary_campus_involvement_id, nil)
@@ -497,7 +496,7 @@ class PeopleController < ApplicationController
 	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
-	   	conditions = add_involvement_conditions(conditions)
+	   	conditions[0] = add_involvement_conditions(conditions[0], true)
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
       includes = [:current_address, :campus_involvements, :ministry_involvements]
@@ -608,26 +607,37 @@ class PeopleController < ApplicationController
       end
     end
     
-    def campus_condition
-      "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})"
+    
+    def campus_involvements_field(safe_format = false)
+      if safe_format
+        "campus_involvements.#{_(:campus_id, :campus_involvement)}"
+      else
+        "CampusInvolvement.#{_(:campus_id, :campus_involvement)}"
+      end
     end
     
-    def ministry_condition
+    def campus_condition(safe_format = false)
+      campus_involvements_field(safe_format) + " IN (#{@ministry.campus_ids.join(',')})"     
+    end
+    
+    def ministry_condition(safe_format = false)
       @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
-      'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      if safe_format
+        'ministry_involvements.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      else
+        'MinistryInvolvement.' + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})"
+      end
     end
     
-    def add_involvement_conditions(conditions)
+    def add_involvement_conditions(conditions, safe_format = false)
       # figure out which campuses to query based on the campuses listed for the current ministry
       if  @campus
-        campus_cond = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} = #{@campus.id}"
+        campus_cond = campus_involvements_field(safe_format) + " = #{@campus.id}"
         conditions << campus_cond
+      elsif @ministry.campus_ids.length > 0
+        conditions << '( ' + campus_condition(safe_format) + ' OR ' + ministry_condition(safe_format) + ' )'
       else
-        if @ministry.campus_ids.length > 0
-          conditions << '( ' + campus_condition + ' OR ' + ministry_condition + ' )'
-        else
-          conditions << ministry_condition
-        end
+        conditions << ministry_condition(safe_format)
       end
       return conditions
     end
@@ -714,7 +724,7 @@ class PeopleController < ApplicationController
     
     def build_sql(tables_clause = nil, extra_select = nil)
       # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
+      standard_order = 'last_name' + ', ' + 'first_name'
       session[:order] = params[:order] if params[:order]
       order = session[:order] 
       @order = order ? order + ',' + standard_order : standard_order
