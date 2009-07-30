@@ -12,13 +12,13 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Street'
-  c.from_clause = 'CimHrdbCurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'person_local_addr'
 end
 
 Column.seed(:title) do |c|
   c.title = 'City'
-  c.from_clause = 'CimHrdbCurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'city'
 end
 
@@ -26,7 +26,7 @@ Column.seed(:title) do |c|
   c.title = 'State'
   c.select_clause = 'province_desc'
   c.from_clause = 'State'
-  c.source_model = 'CimHrdbCurrentAddress'
+  c.source_model = 'Person'
   c.source_column = 'province_id'
   c.foreign_key = 'id'
   
@@ -34,13 +34,13 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Zip'
-  c.from_clause = 'CimHrdbCurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'zip'
 end
 
 Column.seed(:title) do |c|
   c.title = 'Email'
-  c.from_clause = 'CimHrdbCurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'email'
 end
 
