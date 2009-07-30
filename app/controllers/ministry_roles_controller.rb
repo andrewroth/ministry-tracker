@@ -82,33 +82,37 @@ class MinistryRolesController < ApplicationController
   
   #this is used to make sure that every rp is higher to that who they rp
   def manage_rp_trees
-  counter = 0
-  @new_list.each |role| do
-	 if role == @old_list [counter]
-	   counter += 1
-	 else # role has gone up
-	   @backup_role ||= role
-	   mis = role.ministry_involvements
-	   position = role.position
-	   #make pairs that have [ministry_involvements, rp's ministry_involvement]
-	   @mi_rpRole_pairs = mis.collect {|mi| [mi, person.rp.ministry_involvements.find_by_id(mi.ministry_id)]}
-	   @mi_rpRole_pairs.each do |pair|
-	     unless position > pair[2].minsitry_role.position
-	       cur_min = pair[1].ministry
-	       cur_camp = pair[1].person.most_recent_involvement
-	       possible_mis = MinistryInvolvements.find(:all, :conditions => {:ministry_role_id => @backup_role.id, 
-	                                                       :ministry_id => cur_min.id})
-	       possible_mis.reject{|mi| mi.person.campuses.find_by_id(cur_camp.id).nil?}
-	       new_rp_id = possible_mis.first.person_id
-	       pair[1].responsible_person_id = new_rp_id
-	 	     pair[1].save
-	     end
-	   end
-	 end
-	 @backup = role
+    counter = 0
+    @new_list.each do |string_role|
+      role_id = string_role.to_i
+	    if role_id == @old_list [counter]
+	      counter += 1
+	    else # role has gone up
+	      @backup_id ||= role_id
+	      role = MinistryRole.find(role_id)
+	      mis = role.ministry_involvements
+	      position = role.position
+	      #make pairs that have [ministry_involvements, rp's ministry_involvement]
+	      @mi_rpRole_pairs = mis.collect {|mi| [mi, get_rps_ministry_involvement(mi)]}
+	      @mi_rpRole_pairs.each do |pair|
+	        unless pair[2].nil? || position > pair[2].minsitry_role.position
+	          cur_min = pair[1].ministry
+	          cur_camp = pair[1].person.most_recent_involvement
+	          possible_mis = MinistryInvolvements.find(:all, :conditions => {:ministry_role_id => @backup_id, 
+	                                                       :ministry_id => cur_min.id}).reject{|mi| mi.person.campuses.find_by_id(cur_camp.id).nil?}
+	          new_rp_id = possible_mis.first.person_id
+	          pair[1].responsible_person_id = new_rp_id
+	 	        pair[1].save
+	        end
+	      end
+	    end
+	    @backup_id = role_id
+    end
   end
-end
   
+  def get_rps_ministry_involvement(mi)
+    mi.person.responsible_person ?  mi.person.responsible_person.ministry_involvements.find_by_id(mi.ministry_id) : nil
+  end
  
   
   def find_ministry_role
