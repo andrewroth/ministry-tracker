@@ -1,6 +1,7 @@
 <li id="<%= dom_id(group) %>">
   <%#= link_to_remote(group.name, :url => group_url(group), :method => :get) %> 
   <%= link_to(group.name, group_url(group), :method => :get) %> 
+  <%= group.campus ? group.campus.name : "No Campus"%>
   <%- if (@ministry.is_a?(Campus) && @ministry.id == group.campus_id) || @ministry.id = group.ministry_id -%>
   	&nbsp; <%= link_to_remote image_tag('delete.png'), 
   						:url => {:action => :destroy, :id => group}, 
