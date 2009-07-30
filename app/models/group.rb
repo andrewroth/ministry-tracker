@@ -6,6 +6,7 @@ class Group < ActiveRecord::Base
   belongs_to :ministry
   belongs_to :campus
   belongs_to :group_type
+  belongs_to :dorm
   
   has_many :group_involvements
   has_many :people, :through => :group_involvements
