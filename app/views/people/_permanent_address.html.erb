@@ -18,12 +18,6 @@
 		<td><%= text_field :perm_address, :city %></td>
 	</tr>
 	<tr>
-		<th><%= I18n.t :State, :default => 'State' %>:</th>
-		<%= render :partial => 'permanent_address_state_dropdown', 
-				:locals => { :states => states }
-		%>
-	</tr>
-	<tr>
 		<th>Country:</th>
 		<td>
 			<%=
@@ -37,6 +31,12 @@
 	          :before => "$('#spinnerp').show()"})
 	    %>
 		</td>
+	</tr>
+	<tr>
+		<th><%= I18n.t :State, :default => 'State' %>:</th>
+		<%= render :partial => 'permanent_address_state_dropdown', 
+				:locals => { :states => states }
+		%>
 	</tr>
 	<tr>
 		<th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
