@@ -36,7 +36,7 @@ class Person < ActiveRecord::Base
     :source => :group
   # no interested or requests
   has_many :group_involvements, :conditions => [
-    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader')",
+    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader') AND " +
     _(:requested, :group_involvement) + " != true"
   ]
   has_many :groups, :through => :group_involvements
