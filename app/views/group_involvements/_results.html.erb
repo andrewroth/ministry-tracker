@@ -1,7 +1,7 @@
 <%- if people.length > 0 -%>
 	Click on the name of the person you'd like to add:<br />
 	<table cellpadding="0" cellspacing="0" class="directorytable">
-	  <tr><th>Name</th><th>Email</th></tr>
+	  <tr><th>Name</th><th>Email</th><th>Last Logged In</th></tr>
 	<%- people.each do |person| -%>
 	  <tr class="<%= cycle('nohighlight','highlight') %>">
 	    <td>
@@ -15,6 +15,7 @@
   		<%- end -%>
   		</td>
   		<td><%= person.current_address.try(:email) %></td>
+  		<td><%= person.user.last_login if person.user %> </td>
 		</tr>
 	<%- end -%>
 	</table>
