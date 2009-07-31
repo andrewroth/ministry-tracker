@@ -8,7 +8,7 @@ class Group < ActiveRecord::Base
   belongs_to :group_type
   belongs_to :dorm
   
-  has_many :group_involvements
+  has_many :group_involvements, :dependent => :destroy
   has_many :people, :through => :group_involvements
   has_many :leaders, :class_name => "Person", :through => :group_involvements
   has_many :co_leaders, :class_name => "Person", :through => :group_involvements
