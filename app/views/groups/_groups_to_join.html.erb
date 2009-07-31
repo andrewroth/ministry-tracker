@@ -1,18 +1,27 @@
-<br/>
-<p>
-<% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
+<br/> 
+<% campus_id = @campus ? @campus.id : nil %>
 <% if !(gt.groups - @my.groups).empty? %>
+  <% form_remote_tag :url => { :action => "get_campus", :controller => "groups" }, :before => "$('#spinnergt').show()" do %>
+    <% campuses = Campus.all.collect {|c| [c.name, c.id]} %>
+    <% options = [["No Campus", nil]] + campuses %>
+    Campus: <%= select_tag :campus_id, options_for_select(options, campus_id) %>
+    <%= hidden_field_tag :gt_id, gt.id %>
+    <%= submit_tag 'Filter' %>
+  <% end %>
+  <br /><br />
+
+  <h4><%= @campus ? @campus.name + " Groups" : "Groups With No Campus" %> </h4>
+  <% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
   <% form_remote_tag :url => { :action => "joingroup", :controller => "group_involvements" }, :before => "$('#spinnergt').show()" do %>
 		<%= hidden_field_tag :gt_id, gt.id %>
 		<%= hidden_field_tag :person_id, @person.id %>
 		<%= hidden_field_tag :requested, true %>
-		Name: <%= collection_select :group_involvement, :group_id, (gt.groups - @my.groups), :id, :name %>
-	    Involvement: <%= select(:group_involvement, :level, ['member', 'interested'].collect {|u| u})%>
- 		<%= submit_tag 'Join group' %>
-		
- <% end %>
+		<% groups_to_choose = Group.find(:all, :conditions => {:group_type_id => gt.id, :campus_id => campus_id}) %>
+		Name: <%= collection_select :group_involvement, :group_id, (groups_to_choose - @my.groups), :id, :name %>
+	  Involvement: <%= select(:group_involvement, :level, ['member', 'interested'].collect {|u| u})%>
+ 		<%= submit_tag 'Join group' %>	
+  <% end %>
 <% else %>
 	 No groups to join under this category currently.
 <% end %>
-</p>
 <%- if flash[:notice_group] %><div class="flash notice" id="flash_notice"><%= flash[:notice_group]  %></div><%- end %>

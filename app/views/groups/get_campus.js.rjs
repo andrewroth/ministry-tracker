@@ -1,0 +1,2 @@
+page.replace_html("groupType"+@gt.id.to_s, :partial => 'groups/groups_to_join', :locals => {:gt => @gt})
+page[:spinnergt].hide
