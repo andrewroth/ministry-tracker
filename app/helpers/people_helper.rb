@@ -1,6 +1,6 @@
 module PeopleHelper
   def campus_filter_message
-    "[#{@campus_state.try(:name)}]"
+    "[#{@campus_state}]"
   end
   def campus_state_filter_message
     country = CmtGeo.lookup_country(@campus_country)

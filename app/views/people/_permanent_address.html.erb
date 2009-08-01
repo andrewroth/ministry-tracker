@@ -20,12 +20,8 @@
 	<tr>
 		<th>Country:</th>
 		<td>
-			<%=
-				select_tag :permanent_address_country,
-					options_for_select([['Please Select', '']] + countries,
-						:selected => permanent_address_country)
-      %>
-	    <%= observe_field(:permanent_address_country, {
+      <%= select :perm_address, :country, countries, :prompt => true %>
+	    <%= observe_field(:perm_address_country, {
 	          :url => { :action => "set_permanent_address_states" },
 	          :with => 'permanent_address_country',
 	          :before => "$('#spinnerp').show()"})

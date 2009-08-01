@@ -240,10 +240,12 @@ class PeopleController < ApplicationController
   def edit
     countries = get_countries
     
-    current_address_states = get_states @person.current_address.try(:state).try(:country)
-    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country)
-    current_address_country = @person.current_address.try(:state).try(:country)
-    permanent_address_country = @person.permanent_address.try(:state).try(:country)
+    current_address_states = get_states @person.current_address.try(:country)
+    permanent_address_states = get_states @person.permanent_address.try(:country)
+    current_address_country = @person.current_address.try(:country)
+    permanent_address_country = @person.permanent_address.try(:country)
+    @person.sanify_addresses
+
     get_possible_responsible_people
     setup_vars
     setup_campuses
@@ -333,11 +335,6 @@ class PeopleController < ApplicationController
   def update
     countries = get_countries
 
-    current_address_states = get_states @person.current_address.try(:state).try(:country)
-    permanent_address_states = get_states @person.permanent_address.try(:state).try(:country)
-    current_address_country = @person.current_address.try(:state).try(:country)
-    permanent_address_country = @person.permanent_address.try(:state).try(:country)
-    
     get_people_responsible_for
     get_possible_responsible_people
     get_ministry_involvement(get_ministry)
@@ -355,15 +352,21 @@ class PeopleController < ApplicationController
       @person.current_address ||= CurrentAddress.new(:email => params[:current_address][:email])
       @person.current_address.update_attributes(params[:current_address])
     end
-    @current_address = @person.current_address
     if params[:perm_address]
       @person.permanent_address ||= PermanentAddress.new(:email => params[:perm_address][:email]) 
       @person.permanent_address.update_attributes(params[:perm_address]) 
     end
+
+    current_address_states = get_states @person.current_address.try(:country)
+    permanent_address_states = get_states @person.permanent_address.try(:country)
+    current_address_country = @person.current_address.try(:country)
+    permanent_address_country = @person.permanent_address.try(:country)
+
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
+    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || 
+       params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
       # if @person.primary_campus_involvement
       #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
       #   
@@ -388,8 +391,8 @@ class PeopleController < ApplicationController
           @update_involvements = true
       end
     end
-      
-    @perm_address = @person.permanent_address
+     
+    setup_vars
 
     respond_to do |format|
       if @person.update_attributes(params[:person]) && 
@@ -435,8 +438,8 @@ class PeopleController < ApplicationController
           render :update do |page|
             page[:edit_info].replace_html :partial => 'edit',
               :locals => {
-                :current_address_country_id => current_address_country,
-                :permanent_address_country_id => permanent_address_country,
+                :current_address_country => current_address_country,
+                :permanent_address_country => permanent_address_country,
                 :countries => countries,
                 :current_address_states => current_address_states,
                 :permanent_address_states => permanent_address_states }
@@ -696,7 +699,7 @@ class PeopleController < ApplicationController
         elsif @person.current_address.try(:state).present? && @person.current_address.try(:country).present?
           @campus_state = @person.current_address.state
           @campus_country = @person.current_address.country
-        elsif @person.try(:permanent_address).try(:state).present? && @person.permenant_address.try(:country).present?
+        elsif @person.try(:permanent_address).try(:state).present? && @person.permanent_address.try(:country).present?
           @campus_state = @person.permanent_address.state
           @campus_country = @person.permanent_address.country
         end
