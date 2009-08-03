@@ -24,7 +24,8 @@
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state, {
           :url => get_campuses_people_path,
-          :with => 'primary_campus_state',
+          :with => %|'primary_campus_state=' + $('#primary_campus_state')[0].value + '&primary_campus_country=#{@campus_country}'|,
+          #:with => 'primary_campus_state',
           :before => "$('#spinnerp').show()"})
         %>
       </td>
@@ -44,7 +45,7 @@
         <%= observe_field(:campus_id, :function => 'update_pc_visibility()') %>
         <script>
         function update_pc_visibility() {
-          visible = $('#campus_id')[0].value != '';
+          visible = $('#primary_campus_involvement_campus_id')[0].value != '';
           if (visible) {
             $('.pcd').show();
           } else {

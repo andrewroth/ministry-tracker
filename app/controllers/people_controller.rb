@@ -548,15 +548,15 @@ class PeopleController < ApplicationController
 
   def get_campuses
     @campus_state = params[:primary_campus_state]
+    @campus_country = params[:primary_campus_country]
     render :text => '' unless @campus_state
-    @campuses = CmtGeo.campuses_for_country(@campus_country) || []
+    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
   end
 
   def get_campus_states
     @campus_country = params[:primary_campus_country]
     render :text => '' unless @campus_country.present?
     @campus_states = CmtGeo.states_for_country(@campus_country) || []
-    throw @campus_states.to_yaml
   end
 
   # For RJS call for dynamic population of state dropdown (see edit method)
@@ -704,7 +704,7 @@ class PeopleController < ApplicationController
           @campus_country = @person.permanent_address.country
         end
         @campus_states = CmtGeo.states_for_country(@campus_country) || []
-        @campuses = CmtGeo.campuses_in_state(@campus_state, @campus_country) || []
+        @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
       end
       @campus_countries = CmtGeo.all_countries
     end
