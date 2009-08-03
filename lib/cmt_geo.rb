@@ -6,7 +6,7 @@ class CmtGeo
     Carmen::STATES
   end
   def self.states_for_country(c)
-    Carmen::states(c)
+    Carmen::states(c) || []
   end
   def self.campuses_for_state(s,c)
     Campus.find :all, :conditions => { :state => s, :country => c }

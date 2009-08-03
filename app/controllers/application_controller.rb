@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
     
     def get_countries
         #@countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
-      CmtGeo.all_countries
+      @countries = CmtGeo.all_countries
     end
 
     def is_group_leader(group, person = nil)
