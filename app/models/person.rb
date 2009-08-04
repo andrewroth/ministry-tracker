@@ -35,19 +35,15 @@ class Person < ActiveRecord::Base
   has_many :all_groups, :through => :all_group_involvements, 
     :source => :group
   # no interested or requests
-  has_many :group_involvements, :conditions => [
-    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader') AND " +
-    _(:requested, :group_involvement) + " != true"
-  ]
+  has_many :group_involvements, :conditions =>["#{_(:level, :group_involvement)} != ? AND (#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)", 'interested', false]
+  
   has_many :groups, :through => :group_involvements
   # interests
   has_many :group_involvement_interests, 
     :class_name => 'GroupInvolvement',
-    :conditions => { 
-      _(:level, :group_involvement) => 'interested',
-      _(:requested, :group_involvement) => [ false, nil ]
-    }
-  has_many :group_interests, :through => :group_involvement_interests,
+    :conditions =>["#{_(:level, :group_involvement)} = ? AND (#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)", 'interested', false]
+    
+     has_many :group_interests, :through => :group_involvement_interests,
     :class_name => 'Group', :source => :group
   # requests
   has_many :group_involvement_requests,
