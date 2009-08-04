@@ -48,7 +48,8 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-        @countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
+        #@countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed && c.is_close != 0}
+      @countries = CmtGeo.all_countries
     end
 
     def is_group_leader(group, person = nil)
@@ -364,6 +365,11 @@ class ApplicationController < ActionController::Base
     
     def adjust_format_for_facebook
       request.format = :facebook if iphone_request?
+    end
+    
+    def get_joinable_groups
+      groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
+      @joinable_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
     end
     
 private

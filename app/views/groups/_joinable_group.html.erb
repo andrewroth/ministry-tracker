@@ -1,0 +1,49 @@
+<%= joinable_group.name %> 
+
+<%- if @my.group_involvement_interests.find_by_group_id(joinable_group.id) -%>
+   &nbsp &nbsp <i> Marked as Interested </i>
+<%- elsif @my.group_involvement_requests.find_by_group_id(joinable_group.id) -%>
+  &nbsp &nbsp <i> Join Request Pending </i>
+<%- elsif @my.group_involvements.find_by_group_id(joinable_group.id) -%>
+  <% gi = @my.group_involvements.find_by_group_id(joinable_group.id) %>
+  <% @is_leader = gi.level == "leader" %>
+  &nbsp &nbsp <i> <%= gi.level.capitalize %> </i>
+<%- else -%>  
+  &nbsp &nbsp <%= link_to_remote 'Join', 
+  :url => { :action => 'joingroup', :controller => 'group_involvements', 
+            :gt_id => joinable_group.group_type.id,
+            :person_id => @person.id,
+            :group_involvement =>
+                                {:group_id => joinable_group.id, 
+                                :level => 'member'}}, 
+            :method => :post %>
+  &nbsp <%= link_to_remote 'Interested', 
+  :url => { :action => 'joingroup', :controller => 'group_involvements', 
+            :gt_id => joinable_group.group_type.id,
+            :person_id => @person.id,
+            :group_involvement =>
+                                {:group_id => joinable_group.id, 
+                                :level => 'interested'}}, 
+            :method => :post %>  
+<%- end -%>
+
+<%- if @is_leader || authorized?(:edit, :groups) -%>
+  &nbsp <%= link_to_remote image_tag('delete.png'), 
+  						:url => {:action => :destroy, :id => joinable_group.id}, 
+  						:method => :delete,
+  						:confirm => "Are you sure you want to delete this bible study?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!" %><%- end -%>
+<br />
+
+
+&nbsp &nbsp Campus: <%= joinable_group.campus ? joinable_group.campus.name : "No Campus Selected" %> <br />
+&nbsp &nbsp Members:
+<% involvements = joinable_group.group_involvements.reject{|gi| gi.requested == true || gi.level == "interested"} %>
+<%- involvements.each do |gi| -%>
+  <%- if involvements.last != gi -%>
+   <%= gi.person.full_name %>,
+  <%- else -%>
+    <%= gi.person.full_name %>
+  <%- end -%>
+<%- end -%>
+<br />
+<br />

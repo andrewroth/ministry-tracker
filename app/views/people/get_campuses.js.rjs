@@ -1,5 +1,5 @@
 page[:campus_state].hide
 page[:campuses].show
-page[:primary_campus_id].replace_html :partial => 'campus_dropdown_options'
+page[:primary_campus_involvement_campus_id].replace_html :partial => 'campus_dropdown_options'
 page[:spinnerp].hide
 page[:campus_filter].replace_html campus_filter_message

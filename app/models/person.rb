@@ -36,7 +36,7 @@ class Person < ActiveRecord::Base
     :source => :group
   # no interested or requests
   has_many :group_involvements, :conditions => [
-    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader')",
+    _(:level, :group_involvement) + " IN ('leader', 'member', 'co-leader') AND " +
     _(:requested, :group_involvement) + " != true"
   ]
   has_many :groups, :through => :group_involvements
@@ -151,6 +151,11 @@ end
   
   def male?(value = nil)
     human_gender(value) == 'Male'
+  end
+
+  def sanify_addresses
+    current_address.sanify if current_address
+    permanent_address.sanify if permanent_address
   end
 
   # genderization for personafication in templates
