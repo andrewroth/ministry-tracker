@@ -51,6 +51,7 @@ country:
   id: country_id
   name: country_desc
   country: country_desc
+  abbrev: country_shortDesc
 emerg:
   id: emerg_id
 gender:
@@ -60,6 +61,7 @@ state:
   id: province_id
   name: province_desc
   abbreviation: province_shortDesc
+  abbrev: province_shortDesc
 
 # Column Mappings
 user:
