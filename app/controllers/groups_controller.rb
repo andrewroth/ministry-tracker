@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
   end
 
   def join
+    get_joinable_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -225,4 +226,9 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
+  
+  private
+  
+  
+  #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
 end
