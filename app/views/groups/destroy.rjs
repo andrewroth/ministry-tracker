@@ -1,2 +1,2 @@
 update_flash(page, flash[:notice])
-page[:groups].replace_html(:partial => 'groups')
+page[("group_"+@group.id.to_s).to_sym].hide
