@@ -2,15 +2,16 @@ class CampusesController < ApplicationController
   before_filter :get_countries
   
   def change_country
-    @states = State.find_all_by_country_id(params[:country_id])
-    @campuses = Campus.find_all_by_country_id(params[:country_id]) if @states.nil?
+    @states = CmtGeo.states_for_country(params[:country])
+    @campuses = @states.collect{ |state| CmtGeo.campuses_for_state(state, params[:country]) }
   end
   
   def change_state
-    @campuses = Campus.find :all, :conditions => { _(:state_id, :campus) => params[:state_id] }
+    @campuses = CmtGeo.campuses_for_state(params[:state], params[:country])
   end
   
   def change_county
+    # TODO
     @high_schools = HighSchool.find(:all, :conditions => ["#{_(:county, :campus)} = ?", params[:county]], :order => 'name')
   end
   

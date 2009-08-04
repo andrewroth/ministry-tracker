@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20090713201443) do
     t.string  "address1"
     t.string  "address2"
     t.string  "city"
-    t.integer "state_id"
+    t.string  "state"
     t.string  "zip"
     t.string  "country"
     t.string  "phone"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20090713201443) do
     t.string  "name"
     t.string  "address"
     t.string  "city"
-    t.integer "state_id"
+    t.string  "state"
     t.string  "zip"
     t.string  "country"
     t.string  "phone"
@@ -408,7 +408,7 @@ ActiveRecord::Schema.define(:version => 20090713201443) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "country_id"
+    t.integer  "country"
   end
 
   create_table "stint_applications", :force => true do |t|

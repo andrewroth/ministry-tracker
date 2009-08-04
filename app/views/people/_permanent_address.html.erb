@@ -18,28 +18,21 @@
 		<td><%= text_field :perm_address, :city %></td>
 	</tr>
 	<tr>
+		<th>Country:</th>
+		<td>
+      <%= select :perm_address, :country, countries, :prompt => true %>
+	    <%= observe_field(:perm_address_country, {
+	          :url => { :action => "set_permanent_address_states" },
+	          :with => 'permanent_address_country',
+	          :before => "$('#spinnerp').show()"})
+	    %>
+		</td>
+	</tr>
+	<tr>
 		<th><%= I18n.t :State, :default => 'State' %>:</th>
 		<%= render :partial => 'permanent_address_state_dropdown', 
 				:locals => { :states => states }
 		%>
-	</tr>
-	<tr>
-		<th>Country:</th>
-		<td>
-			<%=
-				cs = countries.collect { |c| [c.country, c.id]}
-				cs = cs.insert(0,['Please select', ''])
-			
-				select_tag :permanent_address_country_id,
-					options_for_select(cs,
-						:selected => permanent_address_country_id)
-			%>
-	        <%= observe_field(:permanent_address_country_id, {
-	          :url => { :action => "set_permanent_address_states" },
-	          :with => 'permanent_address_country_id',
-	          :before => "$('#spinnerp').show()"})
-	        %>
-		</td>
 	</tr>
 	<tr>
 		<th><%= I18n.t :Zip, :default => 'Zip' %>:</th>

@@ -149,6 +149,11 @@ end
     human_gender(value) == 'Male'
   end
 
+  def sanify_addresses
+    current_address.sanify if current_address
+    permanent_address.sanify if permanent_address
+  end
+
   # genderization for personafication in templates
   def hisher
     hisher = human_gender == 'Male' ? 'his' : 'her'
