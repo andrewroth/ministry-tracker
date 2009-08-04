@@ -37,11 +37,12 @@
 
 &nbsp &nbsp Campus: <%= joinable_group.campus ? joinable_group.campus.name : "No Campus Selected" %> <br />
 &nbsp &nbsp Members:
-<%- joinable_group.people.each do |p| -%>
-  <%- if joinable_group.people.last != p -%>
-   <%= p.full_name %>,
+<% involvements = joinable_group.group_involvements.reject{|gi| gi.requested == true || gi.level == "interested"} %>
+<%- involvements.each do |gi| -%>
+  <%- if involvements.last != gi -%>
+   <%= gi.person.full_name %>,
   <%- else -%>
-    <%= p.full_name %>
+    <%= gi.person.full_name %>
   <%- end -%>
 <%- end -%>
 <br />
