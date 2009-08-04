@@ -39,46 +39,15 @@
 
 <% involvements = joinable_group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
 <%- unless involvements.empty? -%>
-  &nbsp &nbsp <b>Members:</b>
-  <%- involvements.each do |gi| -%>
-    <%- if involvements.last != gi -%>
-      <%= gi.person.full_name %>,
-    <%- else -%>
-      <%= gi.person.full_name %>
-    <%- end -%>
-  <%- end -%>
+  &nbsp &nbsp <b>Members:</b>  
+  <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />
 <%- end -%>
 
 <% involvements = joinable_group.group_involvements.select{|gi| (gi.requested.nil? || gi.requested == false) && gi.level == 'interested'}%>
 <%- unless involvements.empty? -%>
-  &nbsp &nbsp <b>Interested:</b> 
-  <%- involvements.each do |gi| -%>
-    <%- if involvements.last != gi -%>
-      <%= gi.person.full_name %>,
-    <%- else -%>
-      <%= gi.person.full_name %>
-    <%- end -%>
-  <%- end -%>
+  &nbsp &nbsp <b>Interested:</b>
+  <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />
 <%- end -%>
 <br />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
