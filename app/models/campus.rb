@@ -8,7 +8,6 @@ class Campus < ActiveRecord::Base
   has_many :ministry_campuses, :include => :ministry
   has_many :ministries, :through => :ministry_campuses, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :dorms
-  belongs_to :state
   
   def short_name
     self.abbrv.to_s.empty? ? self.name : self.abbrv

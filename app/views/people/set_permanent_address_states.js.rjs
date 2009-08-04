@@ -1,3 +1,3 @@
-page[:permanent_address_state_dropdown].replace_html :partial => 'permanent_address_state_dropdown',
+page[:permanent_address_state_dropdown].replace :partial => 'permanent_address_state_dropdown',
   :locals => { :states => @permanent_address_states }
 page[:spinnerp].hide
