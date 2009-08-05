@@ -120,13 +120,12 @@ class Person < ActiveRecord::Base
   def graduation_date() cim_hrdb_person_year.try(:grad_date) end
 
     # Attended and Unknown Status are not mapped
-    ASSIGNMENTS_TO_ROLE = {
-      'Current Student' => 'Student',
-      'Alumni' => 'Alumni',
-      'Staff' => 'Staff',
-      'Staff Alumni' => 'Staff Alumni',
-      'Campus Alumni' => 'Alumni'
-    }
+    ASSIGNMENTS_TO_ROLE = ActiveSupport::OrderedHash.new
+    ASSIGNMENTS_TO_ROLE['Alumni'] = 'Alumni' # not sure why we have two Campus Alumni like roles..
+    ASSIGNMENTS_TO_ROLE['Campus Alumni'] = 'Alumni'
+    ASSIGNMENTS_TO_ROLE['Staff Alumni'] = 'Staff Alumni'
+    ASSIGNMENTS_TO_ROLE['Current Student'] = 'Student'
+    ASSIGNMENTS_TO_ROLE['Staff'] = 'Staff'
 
     def sync_cim_hrdb
       map_cim_hrdb_to_mt
@@ -136,6 +135,23 @@ class Person < ActiveRecord::Base
       # TODO
     end
 
+    def get_highest_assignment
+      return nil if assignments.empty?
+
+      best_a = assignments.first
+      best_p = ASSIGNMENTS_TO_ROLE.keys.index(best_a.assignmentstatus.assignmentstatus_desc)
+
+      for a in assignments
+        a_p = ASSIGNMENTS_TO_ROLE.keys.index(a.assignmentstatus.assignmentstatus_desc)
+        if a_p > best_p
+          best_p = a_p
+          best_a = a
+        end
+      end
+
+      best_a
+    end
+
     # import information from the ciministry hrdb to the movement tracker database
     def map_cim_hrdb_to_mt
       c4c = Ministry.find_by_name 'Campus for Christ'
@@ -143,53 +159,57 @@ class Person < ActiveRecord::Base
       # ciministry hrdb uses assignments to track
       # both ministry involvement and campus involvements.
       # Movement Tracker uses two individual tables.
-      for a in assignments
-        campus = a.campus
-        assignment = a.assignmentstatus.assignmentstatus_desc
-        
-        if campus && ASSIGNMENTS_TO_ROLE[assignment]
-        
-          # ministry involvement
-          role = MinistryRole.find_by_name ASSIGNMENTS_TO_ROLE[assignment]
-          
-          # if they have a staff role
-          if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
-            mi_atts = {
-              :ministry_role_id => role.id,
-              :ministry_id => c4c.id, 
-              :person_id => self.id }
-              
-            # make sure they are involved in the ministry
-            mi = MinistryInvolvement.find :first, :conditions => mi_atts
-            mi ||= ministry_involvements.create!(mi_atts)
+      debugger
+      a = get_highest_assignment
+      return unless a
 
-            mi.admin =  self.cim_hrdb_admins.count > 0
-            mi.save!
-          end
-        
-          # add the appropriate campus involvements
-          # not sure why, but it seems that the association breaks the person array
-          # in the rake canada:import task.  It was making the person_id be 1, really
-          # weird
-          #ci = campus_involvements.find_or_create_by_campus_id campus.id
-          ci = CampusInvolvement.find :first, :conditions => { 
-            :person_id => self.id,
-            :campus_id => campus.id
+      campus = a.campus
+      assignment = a.assignmentstatus.assignmentstatus_desc
+
+      if campus && ASSIGNMENTS_TO_ROLE[assignment]
+
+        # ministry involvement
+        role = MinistryRole.find_by_name ASSIGNMENTS_TO_ROLE[assignment]
+
+        # if they have a staff role
+        if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
+          mi_atts = {
+            :ministry_id => c4c.id, 
+            :person_id => self.id
           }
-          ci ||= CampusInvolvement.new :person_id => self.id, :campus_id => campus.id
 
-          school_year = cim_hrdb_person_year.try(:school_year)
-          ci.ministry_id = c4c.id
-          ci.campus_id = campus.id
-          ci.graduation_date = graduation_date
-          ci.school_year = school_year
-          #begin
-          ci.save!
-          #rescue
-          #  puts "self: #{self.inspect} ci: #{ci.inspect}"
-          #end
+          # make sure they are involved in the ministry
+          mi = MinistryInvolvement.find :first, :conditions => mi_atts
+          mi ||= ministry_involvements.create!(mi_atts)
+          mi.update_attributes :ministry_role_id => role.id
+
+          mi.admin = self.cim_hrdb_admins.count > 0
+          mi.save!
         end
+
+        # add the appropriate campus involvements
+        # not sure why, but it seems that the association breaks the person array
+        # in the rake canada:import task.  It was making the person_id be 1, really
+        # weird
+        #ci = campus_involvements.find_or_create_by_campus_id campus.id
+        ci = CampusInvolvement.find :first, :conditions => { 
+          :person_id => self.id,
+          :campus_id => campus.id
+        }
+        ci ||= CampusInvolvement.new :person_id => self.id, :campus_id => campus.id
+
+        school_year = cim_hrdb_person_year.try(:school_year)
+        ci.ministry_id = c4c.id
+        ci.campus_id = campus.id
+        ci.graduation_date = graduation_date
+        ci.school_year = school_year
+        #begin
+        ci.save!
+        #rescue
+        #  puts "self: #{self.inspect} ci: #{ci.inspect}"
+        #end
       end
+
       true
     end
 
@@ -203,7 +223,7 @@ class Person < ActiveRecord::Base
       end
       super
     end
-    
+
     def self.create_viewer(guid, uid)
       v = User.new
       v.guid = guid
@@ -214,10 +234,10 @@ class Person < ActiveRecord::Base
       v.viewer_userID = uid
       v.save!
       #v.viewer_lastLogin = nil # hack to get by the create restriction
-      
+
       v
     end
-    
+
     def self.create_new_cim_hrdb_account(guid, fn, ln, uid)
       # first and last names can't be nil
       fn ||= ''
@@ -230,12 +250,12 @@ class Person < ActiveRecord::Base
 
       v
     end
-    
+
     def create_user_and_access_only(guid, uid)
       v = Person.create_viewer(guid, uid)
       self.create_access(v)
     end
-        
+
     def create_access(v)
       #ag_st = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_student]' #this returns nil currently. This is where we get an error
       ag_all = AccountadminAccessgroup.find_by_accessgroup_key '[accessgroup_key1]'
@@ -243,7 +263,7 @@ class Person < ActiveRecord::Base
       AccountadminVieweraccessgroup.create! :viewer_id => v.id, :accessgroup_id => ag_all.id
       Access.create :viewer_id => v.id, :person_id => self.id
     end
-    
+
     def self.find_user(person, address)
       # is there a user with the same email?
       user = User.find(:first, :conditions => ["#{_(:username, :user)} = ?", address.email])
