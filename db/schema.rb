@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(:version => 20090726200034) do
 
   add_index "campuses", ["county"], :name => "index_campuses_on_county"
   add_index "campuses", ["name"], :name => "index_campuses_on_name"
-  add_index "campuses", ["state_id"], :name => "index_campuses_on_state_id"
 
   create_table "columns", :force => true do |t|
     t.string   "title"
