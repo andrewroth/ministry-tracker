@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
                                                   :order => Ministry.table_name + '.' + _(:name, :ministry),
                                                   :include => :ministry)
     @join = false
-    get_joinable_groups
+    get_person_campus_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
 
   def join
     @join = true
-    get_joinable_groups
+    get_person_campus_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'

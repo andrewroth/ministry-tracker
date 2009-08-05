@@ -1,12 +1,12 @@
 <div id="groups">
   <% campus_id = @campus ? @campus.id : nil %>
   <% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
-  <%- gt_groups = @joinable_groups.select{|g| g.group_type == gt} -%>
+  <%- gt_groups = @person_campus_groups.select{|g| g.group_type == gt} -%>
 
   <% unless gt_groups.empty? %>
     <%- gt_groups.each do |group| -%>
       <div id=<%= "group_#{group.id}" %> >
-        <%= render :partial => 'joinable_group', :locals => {:joinable_group => group} %>
+        <%= render :partial => 'group', :locals => {:group => group} %>
       </div>
     <%- end -%> 
   <% else %>

@@ -366,9 +366,9 @@ class ApplicationController < ActionController::Base
       request.format = :facebook if iphone_request?
     end
     
-    def get_joinable_groups
+    def get_person_campus_groups
       groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
-      @joinable_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
+      @person_campus_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
     end
     
 private
