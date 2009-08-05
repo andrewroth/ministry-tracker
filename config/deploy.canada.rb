@@ -37,7 +37,7 @@ deploy.task :after_symlink do
 
   # other shared files / folders
   link_shared 'log', :overwrite => true
-  link_shared 'config/database.yml'
+  link_shared 'config/database.emu.yml', :overwrite => true
 end
 
 namespace :deploy do

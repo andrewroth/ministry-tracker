@@ -2,7 +2,6 @@ log/*.log
 log/*.pid
 tmp/**/*
 config/database.yml
-config/mappings.yml
 config/amazon_s3.yml
 config/memcached.yml
 .DS_Store

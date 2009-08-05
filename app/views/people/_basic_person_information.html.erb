@@ -16,12 +16,12 @@
 		<td class="date">
 			<%=
 				start_year = Date.today.year
-  	        	end_year = start_year - 100
-    	      	f.date_select :birth_date, {
-    	        	:include_blank => true,
-    	        	:start_year => start_year,
-    	        	:end_year => end_year }
-          	%>
+        end_year = start_year - 100
+        f.date_select :birth_date, {
+          :include_blank => true,
+          :start_year => start_year,
+          :end_year => end_year }
+        %>
 		</td>
 	</tr>
 	<tr>

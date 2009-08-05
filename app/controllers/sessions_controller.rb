@@ -3,13 +3,16 @@
 # a login via GCX's CAS
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
-  #before_filter CASClient::Frameworks::Rails::GatewayFilter 
+  before_filter CASClient::Frameworks::Rails::GatewayFilter 
   filter_parameter_logging :password
   # render new.rhtml
   def new
   
   
     if logged_in?
+      if self.current_user.respond_to?(:login_callback) 
+        self.current_user.login_callback
+      end
       self.current_user.last_login = Time.now
       self.current_user.save
       redirect_back_or_default(person_url(self.current_user.person))
@@ -32,6 +35,9 @@ class SessionsController < ApplicationController
         # First try SSM
         self.current_user = User.authenticate(params[:username], params[:password])
         if logged_in?
+          if self.current_user.respond_to?(:login_callback)
+            self.current_user.login_callback
+          end
           if params[:remember_me] == "1"
             self.current_user.remember_me
             cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }

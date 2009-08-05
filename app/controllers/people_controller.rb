@@ -1,4 +1,12 @@
 require 'person_methods'
+# 
+#  people_controller.rb
+#  studentnetwork
+#  
+#  Created by Josh Starcher on 2007-08-26.
+#  Copyright 2007 Ministry Hacks. All rights reserved.
+# 
+require 'person_methods_emu'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -10,7 +18,7 @@ require 'person_methods'
 #Question: What is the use of primary_campus_id and its implications?
 #
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2

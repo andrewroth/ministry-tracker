@@ -7,7 +7,7 @@ module Cmt
     :gcx_enabled => true,
     
     # Disable GCX Import functionality
-    :gcx_import_disabled => false,
+    :gcx_import_disabled => true,
 
     # Allow local logins.  Either this of gcx_account_enabled must be true.
     :local_enabled => true,
@@ -33,7 +33,7 @@ module Cmt
     :default_country => 'Canada',
 
     # Disable second address line
-    :disable_address2 => false,
+    :disable_address2 => true,
     
     # Default website title appearing at the top of the browser
     :web_title => 'Campus for Christ :: Movement Tracker',

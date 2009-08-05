@@ -337,6 +337,7 @@ class ApplicationController < ActionController::Base
         # Looks like we have to give them some dummy information. BUG 1857 
         @ministry ||= associate_person_with_default_ministry(@person)
 
+
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
           @root_ministry = @ministry
