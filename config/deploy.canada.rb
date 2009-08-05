@@ -9,7 +9,7 @@ set :use_sudo, false
 set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
 
 set :scm, "git"
-set :repository, "git://github.com/andrewroth/#{application}.git"
+set :repository, "git://github.com/twinge/#{application}.git"
 set :branch, (ma? ? 'dev' : 'emu')
 set :deploy_via, :remote_cache
 set :deploy_to, "/var/www/#{ma? ? "mt.ministryhacks.com" : "emu.campusforchrist.org"}"
