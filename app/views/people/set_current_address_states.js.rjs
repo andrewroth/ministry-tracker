@@ -1,3 +1,3 @@
-page[:current_address_state_dropdown].replace_html :partial => 'current_address_state_dropdown',
+page[:current_address_state_dropdown].replace :partial => 'current_address_state_dropdown',
   :locals => { :states => @current_address_states }
 page[:spinnerp].hide

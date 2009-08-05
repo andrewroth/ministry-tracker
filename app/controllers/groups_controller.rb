@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
   end
 
   def join
+    get_joinable_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -172,6 +173,15 @@ class GroupsController < ApplicationController
     end
   end
   
+  def get_campus
+    if params[:campus_id] && !params[:campus_id].blank?
+      @campus = Campus.find(params[:campus_id])
+    end
+    if params[:gt_id]
+      @gt = GroupType.find(params[:gt_id])
+    end
+  end
+  
   def find_times
     # # Map all the group members schedules to find an open time in the range submitted
     # @group = Group.find(params[:id], :include => :people)
@@ -216,4 +226,9 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
+  
+  private
+  
+  
+  #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
 end

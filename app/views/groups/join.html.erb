@@ -4,8 +4,7 @@
 	  <% if !gt.groups.empty?%>
 		<div>
 			<div class="title"><%= gt.group_type %></div>
-			<div id= <%="groupType" + gt.id.to_s %> >
-			
+			<div id= <%="groupType" + gt.id.to_s %> 
 			  <%= render :partial => 'groups/groups_to_join', :locals => {:gt => gt} %>
 			</div>
        </div>

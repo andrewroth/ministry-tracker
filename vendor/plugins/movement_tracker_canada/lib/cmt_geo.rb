@@ -26,5 +26,4 @@ class CmtGeo
   def self.find_country(c)
     Country.find :first, :conditions => { Country._(:abbrev) => c } 
   end
-
 end

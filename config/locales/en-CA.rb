@@ -9,6 +9,12 @@
     :zip_plural => 'postal codes',
     :Zip => 'Postal Code',
     :Zip_plural => 'Postal Codes',
+    :Bible_Study => 'Discipleship Group',
+    :bible_study => 'discipleship group',
+    :Bible_Study_plural => 'Discipleship Groups',
+    :bible_study_plural => 'discipleship groups',
+    :Bible_Study_short => 'DG',
+    :Bible_Study_short_plural => 'DGs',
     :date => {
       :formats => {
         :default => "%m/%d/%Y",
