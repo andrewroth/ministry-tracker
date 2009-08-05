@@ -21,46 +21,19 @@
   
   <h2> <%= @ministry.name %> Groups </h2>
   
-  <div id="customizebody" class="accordion">
-	  <%- @ministry.all_group_types.each do |gt| -%>
-	    <div>
-		    <div class="title"><%= gt.group_type %></div>
-			  <div id= <%="groupType" + gt.id.to_s %> 
-			   <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
-			 </div>
-      </div>
-	 <%- end -%>	
-  </div>
-  
-<%- else -%>
-
-	<%- ministry = nil -%>
-	<%- @groups.each do |group| -%>
-		<%- if group.ministry != ministry 
-				ministry = group.ministry-%>
-			<h4 class="title"><%= group.ministry.name %></h4>
-		<%- end -%>
-		<%= link_to(group.name, group_url(group)) %><br />
-	<%- end -%>
-<%- end -%>
-
-
-<div id="instructions">
-		This screen serves as a launching area for managing <%= @ministry.name %> groups. 
-</div><br />
-
-
-
+  <div id="instructions">
+    This screen serves as a launching area for managing <%= @ministry.name %> groups. 
+  </div><br/>
 
 <%- if @ministry.all_group_types.empty? -%>
-	<p>
+	<div>
 	  <%- if authorized?(:new, :group_types) -%>
 	  You don't have any group types defined for your movement. Please <%= link_to('go to the customize area', customize_path(@ministry)) %>
 	  and create some. <%- tooltip do -%> A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". <%- end -%>
 	  <%- else -%>
 	  No group types have been created for your movement. Please ask your leader to create some.
 	  <%- end -%>
-	</p>
+	</div>
 <%- else -%>
 	<div>
   	<div id="new_group_link">
@@ -86,4 +59,27 @@
 		<div id="group">
 		</div>
 	</div>
+<%- end -%>  <div id="customizebody" class="accordion">
+	  <%- @ministry.all_group_types.each do |gt| -%>
+	    <div>
+		    <div class="title"><%= gt.group_type %></div>
+			  <div id= <%="groupType" + gt.id.to_s %> 
+			   <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
+			 </div>
+      </div>
+	 <%- end -%>	
+  </div>
+  
+<%- else -%>
+
+	<%- ministry = nil -%>
+	<%- @groups.each do |group| -%>
+		<%- if group.ministry != ministry 
+				ministry = group.ministry-%>
+			<h4 class="title"><%= group.ministry.name %></h4>
+		<%- end -%>
+		<%= link_to(group.name, group_url(group)) %><br />
+	<%- end -%>
 <%- end -%>
+
+
