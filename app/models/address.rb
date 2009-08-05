@@ -13,7 +13,7 @@ class Address < ActiveRecord::Base
     out += "<br />" unless out.strip.empty?
     out += city.to_s 
     out += ", " if city.present? && state.present?
-    out += state
+    out += state if state.present?
     out += " " + zip.to_s
   end
 
