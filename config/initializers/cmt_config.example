@@ -42,8 +42,11 @@ module Cmt
     # does the user have permission
     :permissions_granted_by_default => true,
     
-    #When true, hides timetable impact dropdown in group_types form
-    :disable_group_timetable_impact => true
+    # When true, hides timetable impact dropdown in group_types form
+    :disable_group_timetable_impact => true,
+    
+    # When enabled, users will be able to use the 'find common times' algorithim when making groups
+    :find_common_times_enabled => false
   }
 end
 

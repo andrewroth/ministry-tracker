@@ -10,6 +10,8 @@ class GroupsController < ApplicationController
     @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 
                                                   :order => Ministry.table_name + '.' + _(:name, :ministry),
                                                   :include => :ministry)
+    @join = false
+    get_person_campus_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -20,6 +22,8 @@ class GroupsController < ApplicationController
   end
 
   def join
+    @join = true
+    get_person_campus_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -56,6 +60,7 @@ class GroupsController < ApplicationController
       @gi.save!
       @group = @gi.group
     end
+    @group_type = @group.group_type
     respond_to do |format|
       if group_save
         flash[:notice] = @group.class.to_s.titleize + ' was successfully created.'
@@ -176,6 +181,15 @@ class GroupsController < ApplicationController
     end
   end
   
+  def get_campus
+    if params[:campus_id] && !params[:campus_id].blank?
+      @campus = Campus.find(params[:campus_id])
+    end
+    if params[:gt_id]
+      @gt = GroupType.find(params[:gt_id])
+    end
+  end
+  
   def find_times
     # # Map all the group members schedules to find an open time in the range submitted
     # @group = Group.find(params[:id], :include => :people)
@@ -220,4 +234,9 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
+  
+  private
+  
+  
+  #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
 end

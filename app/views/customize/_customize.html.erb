@@ -134,7 +134,7 @@
   <div>
     <div class="title">
       <% help_block do -%>
-        Training questions will go in a training category, for example "General Training", "Involved Student Training".
+        Training items will go in a training category, for example "General Training", "Involved Student Training".
       <% end %>
       Training Categories <%= spinner('tc') %>
     </div>
@@ -167,9 +167,11 @@
   <div>
     <div class="title">
       <% help_block do -%>
-        Training questions track what training each person has received.  They can be verified by staff.  An example would be "4-laws training".  In order to have a Training Question, it has to be in a Training Category.
+        Training items track what training each person has received.  They can be verified by staff.  An example would be "4-laws training".  
+        In order to have a Training Item, it has to be in a Training Category. <br />
+        Mandated Training Items are automatically active in sub-ministries.
       <% end -%>
-      Training Questions <%= spinner('tq') %>
+      Training Items <%= spinner('tq') %>
     </div>
 		<div id="training_questions">
     	<div id="current_training_questions" class="right_list">
@@ -177,7 +179,7 @@
     	</div>
     	<div>
     	  <div id="new_training_question_link">
-      		<div class="butAdd" ><%= link_to_remote('Add a training question', :url => new_training_question_url,
+      		<div class="butAdd" ><%= link_to_remote('Add a training item', :url => new_training_question_url,
       											 	 :before => "$('#new_training_question_link').hide();$('#spinnertq').show()",
       											 	 :method => :get)%></div>
       	</div>

@@ -1,10 +1,10 @@
-<h5 ><%= training_category.name %> Questions <span class="small">(added by <%= training_category.ministry.name %>)</span>
+<h5 ><%= training_category.name %> Items <span class="small">(added by <%= training_category.ministry.name %>)</span>
 <table>
   <thead>
     <!-- <th width="20">&nbsp;</th> -->
     <th width="55">Activated</th>
-    <th width="60">Mandated</th>
-    <th>Question</th>
+    <th width="60">Mandated</th>  
+    <th>Item</th>
   </thead>
   <tbody id="direct_training_questions_<%= training_category.id %>">
     <%= render :partial => 'training_questions/training_question', :collection => @ministry.all_training_questions.select {|tq| tq.training_category_id == training_category.id} %>

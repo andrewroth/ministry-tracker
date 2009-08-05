@@ -1,10 +1,3 @@
 <td id ="permanent_address_state_dropdown">
-	<%=
-	collection_select :perm_address,
-		:state_id,
-		states,
-		:id,
-		:name,
-		{ :prompt => true }
-	%>
+  <%= select :perm_address, :state, options_for_select(states, @person.try(:permanent_address).try(:state)), :prompt => true %>
 </td>

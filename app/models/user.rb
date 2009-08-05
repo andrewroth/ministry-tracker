@@ -157,9 +157,9 @@ class User < ActiveRecord::Base
   end
   
   protected
-    # not sure why but cas sometimes sends the extra attributes
+    # not sure why but cas sometimes sends the extra attributes as underscored
     def self.att_from_receipt(atts, key)
-      atts[key.camelize] || atts[key.underscore]
+      atts[key] || atts[key.underscore]
     end
 
     # before filter 

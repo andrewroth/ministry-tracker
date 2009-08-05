@@ -4,15 +4,12 @@
 	  <% if !gt.groups.empty?%>
 		<div>
 			<div class="title"><%= gt.group_type %></div>
-			<div id= <%="groupType" + gt.id.to_s %> >
-			
-			  <%= render :partial => 'groups/groups_to_join', :locals => {:gt => gt} %>
+			<div id= <%="groupType" + gt.id.to_s %> 
+			  <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
 			</div>
        </div>
 	  <%- end -%>
-	<%- end -%>
-  
-	
+	<%- end -%>	
 </div>
 <script type="text/javascript" charset="utf-8">
     $(function(){

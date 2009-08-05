@@ -3,13 +3,15 @@
 # a login via GCX's CAS
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
-  before_filter CASClient::Frameworks::Rails::GatewayFilter 
+  #before_filter CASClient::Frameworks::Rails::GatewayFilter 
   filter_parameter_logging :password
   # render new.rhtml
   def new
   
   
     if logged_in?
+      self.current_user.last_login = Time.now
+      self.current_user.save
       redirect_back_or_default(person_url(self.current_user.person))
     end
     # force a flash warning div to show up, so that invalid password message can be shown
@@ -36,6 +38,8 @@ class SessionsController < ApplicationController
           end
           flash[:notice] = "Logged in successfully"
           # local login worked, redirect to appropriate starting page
+          self.current_user.last_login = Time.now
+          self.current_user.save
           redirect_params = session[:return_to] || person_path(self.current_user.person)
           wants.js do
             render :update do |page|

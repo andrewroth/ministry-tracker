@@ -1,2 +1,2 @@
 update_flash(page, flash[:notice])
-page[:groups].replace_html(:partial => 'groups')
+page[("groupType" + @group.group_type.id.to_s).to_sym].replace_html(:partial => 'group_type_groups', :locals => {:gt => @group.group_type}) 

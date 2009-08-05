@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     end
     
     def get_countries
-        @countries = Country.find(:all, :order => _(:country, 'country')).reject{|c| c.is_closed?}
+      @countries = CmtGeo.all_countries
     end
 
     def is_group_leader(group, person = nil)
@@ -367,6 +367,11 @@ class ApplicationController < ActionController::Base
     
     def default_country
       @default_country ||= (Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:default_country] }) || Country.new)
+    end
+
+    def get_person_campus_groups
+      groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
+      @person_campus_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
     end
     
 private
