@@ -12,8 +12,8 @@ class Address < ActiveRecord::Base
     out += address2.to_s
     out += "<br />" unless out.strip.empty?
     out += city.to_s 
-    out += ", " if city.present? && state.present?
-    out += state
+    out += ", " if city.present? && state_id.present?
+    out += state if state
     out += " " + zip.to_s
   end
 
