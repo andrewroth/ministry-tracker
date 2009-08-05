@@ -1,4 +1,8 @@
-<u><b><%= joinable_group.name %></b></u>
+<%- if @join -%>
+  <u><b><%= joinable_group.name %></b></u>
+<%- else -%>
+  <b><%= link_to(joinable_group.name, group_url(joinable_group), :method => :get) %></b>
+<%- end -%>
 
 <%- if @my.group_involvement_interests.find_by_group_id(joinable_group.id) -%>
   &nbsp &nbsp <i> Marked as Interested </i>
@@ -8,7 +12,8 @@
   <% gi = @my.group_involvements.find_by_group_id(joinable_group.id) %>
   <% @is_leader = gi.level == "leader" %>
   &nbsp &nbsp <i> <%= gi.level.capitalize %> </i>
-<%- else -%>  
+<%- else -%>
+  <%- if @join == true -%>  
   &nbsp &nbsp <%= link_to_remote 'Join', 
   :url => { :action => 'joingroup', :controller => 'group_involvements', 
             :gt_id => joinable_group.group_type.id,
@@ -24,7 +29,9 @@
             :group_involvement =>
                                 {:group_id => joinable_group.id, 
                                 :level => 'interested'}}, 
-            :method => :post %>  
+            :method => :post %> 
+  <%- end -%>        
+   
 <%- end -%>
 
 <%- if @is_leader || authorized?(:edit, :groups) -%>

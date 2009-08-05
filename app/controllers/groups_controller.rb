@@ -6,6 +6,8 @@ class GroupsController < ApplicationController
     @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 
                                                   :order => Ministry.table_name + '.' + _(:name, :ministry),
                                                   :include => :ministry)
+    @join = false
+    get_joinable_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -16,6 +18,7 @@ class GroupsController < ApplicationController
   end
 
   def join
+    @join = true
     get_joinable_groups
     respond_to do |format|
       format.html do
@@ -53,6 +56,7 @@ class GroupsController < ApplicationController
       @gi.save!
       @group = @gi.group
     end
+    @group_type = @group.group_type
     respond_to do |format|
       if group_save
         flash[:notice] = @group.class.to_s.titleize + ' was successfully created.'
