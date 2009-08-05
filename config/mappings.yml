@@ -44,9 +44,6 @@ assignment:
   id: assignment_id
 assignmentstatus:
   id: assignmentstatus_id
-province:
-  id: province_id
-  name: province_desc
 country:
   id: country_id
   name: country_desc

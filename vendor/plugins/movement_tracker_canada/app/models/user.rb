@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_or_create_from_cas(ticket)
+    debugger
     # Look for a user with this guid
     receipt = ticket.response
     atts = receipt.extra_attributes
