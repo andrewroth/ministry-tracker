@@ -693,7 +693,7 @@ class PeopleController < ApplicationController
         @campus_country = c
         @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
       else
-        if @person.try(:primary_campus).try(:state).present? && @primary_campus.country.present?
+        if @person.try(:primary_campus).try(:state).present? && @primary_campus_involvement.campus.country.present?
           @campus_state = @person.primary_campus.state
           @campus_country = @person.primary_campus.country
         elsif @person.current_address.try(:state).present? && @person.current_address.try(:country).present?
