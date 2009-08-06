@@ -1,0 +1,4 @@
+<br />
+<h3> <%= link_to "Click here to edit <b>#{student.full_name}</b>'s timetable.", 
+                person_timetable_path(student.id, (student.timetable || Timetable.create(:person_id => student.id)).id) %> </h3>
+<br />
