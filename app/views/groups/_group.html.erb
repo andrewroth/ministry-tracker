@@ -1,37 +1,37 @@
-<%- if @join -%>
-  <u><b><%= group.name %></b></u>
-<%- else -%>
-  <b><%= link_to(group.name, group_url(group), :method => :get) %></b>
-<%- end -%>
+<h2><%= 
+  if @my.group_involvements.find_by_group_id(group.id)
+    link_to(group.name, group_url(group), :method => :get)
+  else
+    "b>#{group.name}</b>"
+  end
+-%>
+</h2>
 
+&nbsp &nbsp 
+<b>Involvement:</b>
 <%- if @my.group_involvement_interests.find_by_group_id(group.id) -%>
-  &nbsp &nbsp <i> Marked as Interested </i>
+  Marked as Interested
 <%- elsif @my.group_involvement_requests.find_by_group_id(group.id) -%>
-  &nbsp &nbsp <i> Join Request Pending </i>
+  Join Request Pending
 <%- elsif @my.group_involvements.find_by_group_id(group.id) -%>
   <% gi = @my.group_involvements.find_by_group_id(group.id) %>
   <% @is_leader = gi.level == "leader" %>
-  &nbsp &nbsp <i> <%= gi.level.capitalize %> </i>
-<%- else -%>
-  <%- if @join == true -%>  
-  &nbsp &nbsp <%= link_to_remote 'Join', 
-  :url => { :action => 'joingroup', :controller => 'group_involvements', 
-            :gt_id => group.group_type.id,
-            :person_id => @person.id,
-            :group_involvement =>
-                                {:group_id => group.id, 
-                                :level => 'member'}}, 
-            :method => :post %>
-  &nbsp <%= link_to_remote 'Interested', 
-  :url => { :action => 'joingroup', :controller => 'group_involvements', 
-            :gt_id => group.group_type.id,
-            :person_id => @person.id,
-            :group_involvement =>
-                                {:group_id => group.id, 
-                                :level => 'interested'}}, 
-            :method => :post %> 
-  <%- end -%>        
-   
+  <%= gi.level.capitalize %>
+<%- elsif @join -%>
+  <%= link_to_remote 'Join', 
+    :url => { :action => 'joingroup', :controller => 'group_involvements', 
+      :gt_id => group.group_type.id,
+      :person_id => @person.id,
+      :group_involvement => { :group_id => group.id, :level => 'member' }
+    }, 
+    :method => :post %>
+    <%= link_to_remote 'Interested', 
+      :url => { :action => 'joingroup', :controller => 'group_involvements', 
+        :gt_id => group.group_type.id,
+        :person_id => @person.id,
+        :group_involvement => { :group_id => group.id, :level => 'interested' }
+      }, 
+      :method => :post %> 
 <%- end -%>
 
 <%- if @is_leader || authorized?(:edit, :groups) -%>
@@ -42,7 +42,7 @@
 <br />
 
 
-&nbsp &nbsp <b>Campus:</b> <%= group.campus ? group.campus.name : "No Campus Selected" %> <br />
+&nbsp &nbsp <b>Campus:</b> <%= group.campus ? group.campus.name : "<i>No Campus Selected</i>" %> <br />
 
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
 <%- unless involvements.empty? -%>

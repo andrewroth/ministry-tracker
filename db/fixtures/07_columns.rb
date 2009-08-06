@@ -29,7 +29,6 @@ Column.seed(:title) do |c|
   c.source_model = 'Person'
   c.source_column = 'province_id'
   c.foreign_key = 'id'
-  
 end
 
 Column.seed(:title) do |c|

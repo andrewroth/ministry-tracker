@@ -11,7 +11,7 @@ class GroupInvolvementsController < ApplicationController
 
   def create
     create_group_involvement
-    refresh_page
+    refresh_directory_page
   end
   
   def joingroup  
@@ -49,7 +49,7 @@ class GroupInvolvementsController < ApplicationController
       raise "No members were selected to delete"
     end
     get_group
-    refresh_page
+    refresh_directory_page
   end
   
   def transfer_selected
@@ -69,7 +69,7 @@ class GroupInvolvementsController < ApplicationController
       @transfer_notices << "People need to be selected before initiating a transfer."
     end
     get_group
-    refresh_page
+    refresh_directory_page
   end
   
   
@@ -80,14 +80,14 @@ class GroupInvolvementsController < ApplicationController
                                                           person_id, group_id])
     end
     
-    def refresh_page
+    def refresh_directory_page
       respond_to do |format|
         format.html do 
           redirect_to "/#{@group.class.to_s.tableize}/#{params[:id]}"
         end
         format.js do
           render :update do |page|
-            eval("@#{@group.class.to_s.underscore} =  @group")
+            eval("@#{@group.class.to_s.underscore} = @group")
             page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show")
           end
         end

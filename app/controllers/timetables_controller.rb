@@ -214,20 +214,19 @@ class TimetablesController < ApplicationController
 
     # returns whether can edit or show current timetable
     def check_authorization
-      @can_edit = can_edit_timetable?
-      @can_show = can_show_timetable?
+      @can_edit = can_blank_timetable?('edit')
+      @can_show = can_blank_timetable?('show')
     end
-
-    # determines if user can view timetable being requested
-    def can_show_timetable?
-      # a user can see a timetable if it is one of their's
-      @me.id == params[:person_id].to_i
-      # or the have permission
-#        || authorized?('show', 'timetables')
+    
+    def can_blank_timetable?(action)
+      @me.id == params[:person_id].to_i || authorized?(action, 'timetables') ||
+      (@me.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole &&
+      Cmt::CONFIG[:staff_can_edit_student_timetables] &&
+      @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StudentRole)
     end
-
-    # determines if user can edit timetable being requested
-    def can_edit_timetable?
-      can_show_timetable?
-    end
+    
+    
+    
+    
+    
 end

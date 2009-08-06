@@ -99,65 +99,8 @@ class ApplicationController < ActionController::Base
       return session[:admins][ministry.id][person.id]
     end
     
-    # you can map controllers and actions to another controller/action's permissions in this format:
-    #
-    # PERMISSION_MAPPINGS = {
-    #   'group_types' => {
-    #     'edit' => { :controller => 'another', :action => 'another' },
-    #     'edit' => { :action => 'samecontroller_differentaction' }
-    #   }
-    # }
-    #
-    # and then access them with 
-    #
-    # PERMISSION_MAPPINGS['group_types']['edit'][:action]
-    # PERMISSION_MAPPINGS['group_types']['edit'][:controller]
-    #
-    # If no controller mapping is given, it assumes the same controller
-    #
-    PERMISSION_MAPPINGS = {
-#      '*init' => {
-#        'create' => { :action => 'new' },
-#        'destroy' => { :action => 'new' }
-#      },
-#      '*' => {
-#        'update' => { :action => 'edit' }
-#      },
-      'groups' => {
-        #'compare_timetables' => { :controller => nil, :action => '' },
-        #'join' => { :controller => nil, :action => '' },
-        #'index' => { :action => 'new' },
-        'create' => { :action => 'new' },
-        #'new' => { :action => 'new' },
-        'edit' => { :action => 'new' },
-        #'find_times' => { :controller => nil, :action => '' },
-        #'show' => { :controller => nil, :action => '' },
-        #'update' => { :controller => nil, :action => '' },
-        #'destroy' => { :controller => nil, :action => '' }
-      }#,
-#      'group_types' => {
-#        'index' => { :controller => '', :action => '' },
-#        'create' => { :controller => '', :action => '' },
-#        'new' => { :controller => '', :action => '' },
-#        'edit' => { :controller => '', :action => '' },
-#        'show' => { :controller => '', :action => '' },
-#        'update' => { :controller => '', :action => '' },
-#        'destroy' => { :controller => '', :action => '' }
-#      },
-#      'group_involvements' => {
-#        'accept_request' => { :controller => '', :action => '' },
-#        'decline_request' => { :controller => '', :action => '' },
-#        'index' => { :controller => '', :action => '' },
-#        'create' => { :controller => '', :action => '' },
-#        'new' => { :controller => '', :action => '' },
-#        'edit' => { :controller => '', :action => '' },
-#        'show' => { :controller => '', :action => '' },
-#        'update' => { :controller => '', :action => '' },
-#        'destroy' => { :controller => '', :action => '' }
-#      }
-    }
-    
-    # Hash for Owner Action Checks
+    # These actions all have custom code to check that for the current user
+    # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
@@ -190,24 +133,12 @@ class ApplicationController < ActionController::Base
       
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
-#      # Code to potentially replace the action assignment lines above.
-#      action ||= PERMISSION_MAPPING['*init'].include?(action_name.to_s) ? 
-#                   PERMISSION_MAPPINGS['*init'][action_name.to_s][:action] : action_name.to_s
-#      action = PERMISSION_MAPPING['*'].include?(action) ? 
-#                   PERMISSION_MAPPINGS['*'][action][:action] : action
-
       controller ||= controller_name.to_s
 
       # Make sure we're always using strings      
       action = action.to_s
       controller = controller.to_s     
       
-      # Check if the action is mapped in the Permission Mappings Hash. If so, use that mapping.
-      #if PERMISSION_MAPPINGS[controller] && (mapped_permission = PERMISSION_MAPPINGS[controller][action])
-      #  action = mapped_permission[:action]
-      #  controller = mapped_permission[:controller] || controller
-      #end
-
       # Owner Action Checking
       # NOTE: These need to be done after action & controller are set
       if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
@@ -374,7 +305,7 @@ class ApplicationController < ActionController::Base
       groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
       @person_campus_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
     end
-    
+
 private
   # Ensures that the _person_ is involved in the 'No Ministry' ministry
   # BUG 1857

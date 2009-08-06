@@ -48,14 +48,8 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
-  p.action = 'create'
-  p.description = 'Create a new Group Involvement'
-end
-
-Permission.seed(:controller, :action) do |p|
-  p.controller = 'group_involvements'
-  p.action = 'new'
-  p.description = 'Add a new Group Involvement'
+  p.action = 'joingroup'
+  p.description = 'Join a group'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -87,12 +81,6 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'new'
   p.description = 'Add New People'
-end
-
-Permission.seed(:controller, :action) do |p|
-  p.controller = 'people'
-  p.action = 'create'
-  p.description = 'Create People'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -208,3 +196,16 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'show'
   p.description = 'Customizes A Ministry (based on what your other permissions are)'
 end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'timetables'
+  p.action = 'show'
+  p.description = 'View the timetables of other people'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'timetables'
+  p.action = 'edit'
+  p.description = 'Edit the timetables of other people'
+end
+
