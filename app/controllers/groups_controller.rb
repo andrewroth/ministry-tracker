@@ -24,7 +24,6 @@ class GroupsController < ApplicationController
   def join
     @join = true
     get_person_campus_groups
-    get_joinable_groups
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'

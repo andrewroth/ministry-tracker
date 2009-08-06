@@ -22,11 +22,11 @@
     <% #TODO: proper ajax filtering of countries and states
     %>
 		<td>Country: </td>
-		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@countries, 'id','country') %></td>
+		<td><%= select_tag :current_address_state_id, options_for_select(@countries) %></td>
 	</tr>
 	<tr>
 		<td><%= I18n.t :State, :default => 'State' %>:</td>
-		<td><%= select_tag :current_address_state_id, options_from_collection_for_select(@states, 'id','name') %></td>
+		<td><%= select_tag :current_address_state_id, options_for_select(@states) %></td>
 	</tr>
 	<tr>
 		<td><%= I18n.t :Zip, :default => 'Zip' %>:</td>
