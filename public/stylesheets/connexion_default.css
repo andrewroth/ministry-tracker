@@ -1,0 +1,12 @@
+#ConneXionBar {
+  background: #4D4D4D no-repeat scroll left center;
+  max-width: 900px;
+  min-width: 900px;
+  margin: auto;
+  padding-left: 18px; /* don't ask my why, but this is what makes it fit exactly */
+}
+
+#wrapper {
+  margin-top: 0px;
+}
+
