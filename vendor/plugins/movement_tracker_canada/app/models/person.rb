@@ -138,12 +138,11 @@ class Person < ActiveRecord::Base
     def get_highest_assignment
       return nil if assignments.empty?
 
-      best_a = assignments.first
-      best_p = ASSIGNMENTS_TO_ROLE.keys.index(best_a.assignmentstatus.assignmentstatus_desc)
+      best_p = nil
 
       for a in assignments
         a_p = ASSIGNMENTS_TO_ROLE.keys.index(a.assignmentstatus.assignmentstatus_desc)
-        if a_p > best_p
+        if (a_p && !best_p) || (a_p && a_p > best_p)
           best_p = a_p
           best_a = a
         end
@@ -173,6 +172,7 @@ class Person < ActiveRecord::Base
         # if they have a staff role
         if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
           mi_atts = {
+            :ministry_role_id => role.id,
             :ministry_id => c4c.id, 
             :person_id => self.id
           }
@@ -180,7 +180,6 @@ class Person < ActiveRecord::Base
           # make sure they are involved in the ministry
           mi = MinistryInvolvement.find :first, :conditions => mi_atts
           mi ||= ministry_involvements.create!(mi_atts)
-          mi.update_attributes :ministry_role_id => role.id
 
           mi.admin = self.cim_hrdb_admins.count > 0
           mi.save!
