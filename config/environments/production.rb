@@ -31,3 +31,10 @@ config.action_controller.perform_caching             = true
 
 # be notified of crashes
 ExceptionNotifier.exception_recipients = %w(andrewroth@gmail.com ebendall@gmail.com)
+
+# Mail settings
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address => 'smtp.powertochange.local',
+  :domain => 'powertochange.local'
+}
