@@ -37,9 +37,9 @@ module ExceptionHandler
     raise MethodDisabled
   end
   #The current user does not have enough privileges to access the requested resource
-  def access_denied
-    raise AccessDenied
-  end
+  #def access_denied
+  #  raise AccessDenied
+  #end
 
 protected
 
