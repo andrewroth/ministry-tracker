@@ -5,7 +5,7 @@ class CimHrdbCurrentAddress < CimHrdbAddress
   
   
   def state
-    State.find(self.person_local_province_id).province_shortDesc if State.find(self.person_local_province_id)
+    State.find_by_province_id(self.person_local_province_id).province_shortDesc if State.find(self.person_local_province_id)
   end
 
   def state=(v)
