@@ -747,12 +747,6 @@ class PeopleController < ApplicationController
     end
 
     def build_sql(tables_clause = nil, extra_select = nil)
-      # Add order if it's available
-      standard_order = 'Person.' + _(:last_name, :person) + ', ' + 
-        'Person.' + _(:first_name, :person)
-      session[:order_column_id] = params[:order_column_id] if params[:order_column_id]
-      session[:direction] = params[:direction] if params[:direction]
-
       setup_order_clause
 
       @sql =   'SELECT ' + @view.select_clause
