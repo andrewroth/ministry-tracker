@@ -1,11 +1,11 @@
 <tr>
-	<td width="20px">
-		<% if is_group_leader(@group) %>
-			<input type="checkbox" name="members[]" value= <%= person.id %> />
-		<% end %>
-	</td>
-	<td><%= link_to(person.full_name, person) %></td>
-	<td><%= person.current_address.phone %></td>
-	<td><%= person.current_address.alternate_phone %></td>
-	<td><%= person.current_address.email %></td>
+  <% if is_group_leader(@group) %>
+    <td width="20px">
+      <input type="checkbox" name="members[]" value= <%= person.id %> />
+    </td>
+  <% end %>
+  <td><%= link_to(person.full_name, person) %></td>
+  <td><%= person.current_address.email %></td>
+  <td><%= person.current_address.phone %></td>
+  <td><%= person.current_address.alternate_phone %></td>
 </tr>

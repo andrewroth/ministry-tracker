@@ -6,4 +6,6 @@ else
   page[:address].replace_html(:partial => 'address')
   page[:address].show
   page[:address].visual_effect("highlight")
+  page[:name].replace_html(@group.name)
+  page[:type].replace_html(@group.group_type.group_type.humanize)
 end
