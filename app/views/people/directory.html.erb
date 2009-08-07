@@ -116,17 +116,19 @@
 			<th>
 			  <%- if [nil, 'date'].include?(column.column_type) 
 			        direction = '' -%>
-  			  <%- if session[:order].to_s.include?(column.select_clause) 
-  			        if session[:order].to_s.include?(' desc') -%>
+  			  <%- if session[:order_column_id].to_s == column.id.to_s
+                if session[:direction] == 'asc' 
+                  direction = 'desc' -%>
         			    <%= image_tag('silk/bullet_arrow_down.png') %>
   			    <%- else 
-  			          direction = ' desc' -%>
+  			          direction = 'asc' -%>
         			    <%= image_tag('silk/bullet_arrow_up.png') %>
   			    <%- end -%>
   			  <%- end -%>
   			  <%= link_to(I18n.t(column.title, :default => column.title), 
   			               directory_people_url(:format => "html", 
-  			                                     :order => "#{column.from_clause}.#{column.select_clause}#{direction}", 
+  			                                     :order_column_id => column.id,
+                                             :direction => direction,
   			                                     :start => params[:start], :finish => params[:finish], 
   			                                     :search_id => @search.id )) %>
   			<%- else -%>

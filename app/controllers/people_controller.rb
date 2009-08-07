@@ -479,7 +479,7 @@ class PeopleController < ApplicationController
   def change_view
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
-    session[:order] = nil
+    session[:order_column_id] = nil
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do
@@ -747,12 +747,8 @@ class PeopleController < ApplicationController
     end
 
     def build_sql(tables_clause = nil, extra_select = nil)
-      # Add order if it's available
-      standard_order = _(:last_name, :person) + ', ' + _(:first_name, :person)
-      session[:order] = params[:order] if params[:order]
-      order = session[:order]
-      @order = order ? order + ',' + standard_order : standard_order
-      
+      setup_order_clause
+
       @sql =   'SELECT ' + @view.select_clause
       @sql += ', ' + extra_select if extra_select.present?
       tables_clause ||= @view.tables_clause
@@ -761,6 +757,26 @@ class PeopleController < ApplicationController
       @sql += ' ORDER BY ' + @order
     end
   
+    def setup_order_clause
+      # setup a standard order to use for secondary sorting
+      standard_order = 'Person.' + _(:last_name, :person) + ', ' +
+        'Person.' + _(:first_name, :person)
+      # update session
+      session[:order_column_id] = params[:order_column_id] if params[:order_column_id]
+      session[:direction] = params[:direction] if params[:direction]
+      # generate the order clause
+      order_column_id = session[:order_column_id]
+      @order = ''
+      if order_column_id
+        column = @view.columns.find(order_column_id)
+        model = column.from_clause.constantize
+        @order += "#{column.from_clause}.#{model._(column.select_clause)}"
+        @order += (params[:direction] == 'asc' ? ' ASC' : ' DESC')
+        @order += ',' # get ready for appending standard order
+      end
+      @order += standard_order
+    end
+
     def get_states(country)
       CmtGeo.states_for_country(country)
     end
