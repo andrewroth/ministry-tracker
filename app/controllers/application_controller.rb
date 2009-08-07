@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
   include HoptoadNotifier::Catcher
+  include ExceptionNotifiable
   
   self.allow_forgery_protection = false
 
