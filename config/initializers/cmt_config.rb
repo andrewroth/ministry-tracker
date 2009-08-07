@@ -46,7 +46,7 @@ module Cmt
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
-    :permissions_granted_by_default => true,
+    :permissions_granted_by_default => false,
     
     # When true, hides timetable impact dropdown in group_types form
     :disable_group_timetable_impact => true,
