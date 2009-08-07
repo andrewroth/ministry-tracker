@@ -4,7 +4,7 @@ The Exception Notifier plugin provides a mailer object and a default set of
 templates for sending email notifications when errors occur in a Rails
 application, as well as a default set of error page templates to render 
 based on the status code assigned to an error. The plugin is configurable, 
-allowing programmers to specify (all on a per environment basis!):
+allowing programmers to customize (all on a per environment basis!):
 
 * the sender address of the email
 * the recipient addresses
@@ -17,15 +17,21 @@ allowing programmers to specify (all on a per environment basis!):
 * the view path to the error page templates
 * custom errors, with custom error templates
 * define error layouts at application or controller level, or use the controller's own default layout, or no layout at all
+
+New features:
+
 * get error notification for errors that occur in the console, using notifiable method
+* Hooks into `git blame` output so you can get an idea of who (may) have introduced the bug
 
 The email includes information about the current request, session, and
 environment, and also gives a backtrace of the exception.
 
-This plugin was originally called Super Exception Notifier and was based on 
+This plugin was originally called Super Exception Notifier and was (initially) based on
 svn v8821 of the wonderful exception_notification plugin, and remains for 
 the most part a drop in replacement with greatly extended functionality and 
-customization options.  The original is here:
+customization options.  Since then it has kept up with the work on the core team's branch.
+
+The original is here:
  
   http://github.com/rails/exception_notification/tree/master
 
@@ -277,9 +283,28 @@ in ExceptionNotifiable for an example of how to go about that.
 
 == HTTP Error Codes Used by Exception Notifier by default
 
-  For reference these are the error codes that Exception Notifier can inherently handle.  Official w3.org HTTP 1.1 Error Codes:  http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+  For reference these are the error codes that Exception Notifier can inherently handle.
+  Official w3.org HTTP 1.1 Error Codes:
+  http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 
-  400 Bad Request    * The request could not be understood by the server due to malformed syntax.     * The client SHOULD NOT repeat the request without modifications.  403 Forbidden    * The server understood the request, but is refusing to fulfill it  404 Not Found    * The server has not found anything matching the Request-URI  405 Method Not Allowed    * The method specified in the Request-Line is not allowed for the resource identified by the Request-URI    * This is not implemented entirely as the response is supposed to contain a list of accepted methods.  410 Gone    * The requested resource is no longer available at the server and no forwarding address is known. This condition is expected to be considered permanent  500 Internal Server Error    * The server encountered an unexpected condition which prevented it from fulfilling the request.  501 Not Implemented    * The server does not support the functionality required to fulfill the request.  503 Service Unavailable    * The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.
+  400 Bad Request
+    * The request could not be understood by the server due to malformed syntax. 
+    * The client SHOULD NOT repeat the request without modifications.
+  403 Forbidden
+    * The server understood the request, but is refusing to fulfill it
+  404 Not Found
+    * The server has not found anything matching the Request-URI
+  405 Method Not Allowed
+    * The method specified in the Request-Line is not allowed for the resource identified by the Request-URI
+    * This is not implemented entirely as the response is supposed to contain a list of accepted methods.
+  410 Gone
+    * The requested resource is no longer available at the server and no forwarding address is known. This condition is expected to be considered permanent
+  500 Internal Server Error
+    * The server encountered an unexpected condition which prevented it from fulfilling the request.
+  501 Not Implemented
+    * The server does not support the functionality required to fulfill the request.
+  503 Service Unavailable
+    * The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.
     
   Copyright (c) 2008 Peter H. Boling, released under the MIT license
   Portions Copyright (c) 2005 Jamis Buck, released under the MIT license

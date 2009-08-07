@@ -1,10 +1,23 @@
 Gem::Specification.new do |s|
   s.name = 'exception_notification'
-  s.version = '1.4'
-  s.date = '2008-07-28'
-   
-  s.summary = "Allows unhandled exceptions to be captured and sent via email"
-  s.description = ""
+  s.version = '1.5.0'
+  s.date = '2009-08-07'
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+
+  s.summary = %q{Allows unhandled exceptions to be captured and sent via email}
+  s.description = %q{Allows customization of:
+* the sender address of the email
+* the recipient addresses
+* the text used to prefix the subject line
+* the HTTP status codes to send emails for
+* the error classes to send emails for
+* alternatively, the error classes to not send emails for
+* whether to send error emails or just render without sending anything
+* the HTTP status and status code that gets rendered with specific errors
+* the view path to the error page templates
+* custom errors, with custom error templates
+* define error layouts at application or controller level, or use the controller's own default layout, or no layout at all
+* get error notification for errors that occur in the console, using notifiable method}
   
   s.authors = ['Peter Boling', 'Jacques Crocker', 'Jamis Buck']
   s.email = 'peter.boling@gmail.com'
@@ -43,6 +56,7 @@ Gem::Specification.new do |s|
   
 
   s.test_files = ["test/exception_notifier_helper_test.rb",
+                  "test/exception_notify_functional_test.rb",
                   "test/test_helper.rb"]
 
 end
