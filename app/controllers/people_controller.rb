@@ -170,7 +170,7 @@ class PeopleController < ApplicationController
     tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
     
     if params[:search_id].blank?
-      @search = Search.find(:first, :conditions => {_(:query, :search) => @conditions})
+      @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
       if @search
         @search.update_attribute(:updated_at, Time.now)
       else
