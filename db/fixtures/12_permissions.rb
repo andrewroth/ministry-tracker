@@ -108,6 +108,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'edit'
+  p.description = 'Edit Profiles'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'staff'
   p.action = 'index'
   p.description = 'View Leaders/Staff'
