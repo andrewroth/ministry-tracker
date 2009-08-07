@@ -1,6 +1,17 @@
 class CimHrdbPermanentAddress < CimHrdbAddress
   load_mappings
   belongs_to :country
+  belongs_to :province, :class_name => 'State'
+  
+  
+  def state
+    province.province_shortDesc if province
+  end
+
+  def state=(v)
+    self.province_id = State.find(:first, :conditions => { :province_shortDesc => v}).try(:id)
+    self.save!
+  end
   
   def country
     Country.find(person_local_country_id) ? Country.find(person_local_country_id).country_shortDesc : ''

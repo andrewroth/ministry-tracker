@@ -11,20 +11,10 @@ class CimHrdbAddress < ActiveRecord::Base
   def person_extra()
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
   end
-  
-  def state
-    province
-  end
-
-  def state=(v)
-    throw "not implemented"
-  end
 
   def title
     title_bt ? title_bt.desc : ''
   end
-
-  def province=(val) throw 'not implemented' end
       
   def mailing
     out = address1.to_s 

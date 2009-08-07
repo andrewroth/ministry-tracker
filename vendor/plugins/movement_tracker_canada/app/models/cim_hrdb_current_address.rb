@@ -1,12 +1,23 @@
 class CimHrdbCurrentAddress < CimHrdbAddress
   load_mappings
   belongs_to :country, :class_name => 'Country', :foreign_key => :local_person_country_id
+  belongs_to :province, :class_name => 'State', :foreign_key => :local_person_province_id
   
-    def country
-      Country.find(country_id) ? Country.find(country_id).country_shortDesc : ''
-    end
   
-   def country=(val) 
+  def state
+    State.find(self.person_local_province_id).province_shortDesc if State.find(self.person_local_province_id)
+  end
+
+  def state=(v)
+    self.person_local_province_id = State.find(:first, :conditions => { :province_shortDesc => v}).try(:id)
+    self.save!
+  end
+  
+  def country
+    Country.find(country_id) ? Country.find(country_id).country_shortDesc : ''
+  end
+  
+  def country=(val) 
     self.person_local_country_id = Country.find(:first, :conditions => {:country_shortDesc => val}).try(:country_id)
     self.save!
   end
