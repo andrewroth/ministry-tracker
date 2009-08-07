@@ -49,4 +49,11 @@ namespace :deploy do
     desc "#{t} task is not applicable to Passenger"
     task t, :roles => :app do ; end
   end
+
+  task :rebuild do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
+
+    run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:rebuild"
+  end
 end
