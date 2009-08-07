@@ -66,7 +66,6 @@ module CASClient
       if destination_url || follow_url
         uri = URI.parse(url)
         h = uri.query ? query_to_hash(uri.query) : {}
-        h['destination'] = destination_url if destination_url
         h['service'] = destination_url if destination_url
         h['url'] = follow_url if follow_url
         uri.query = hash_to_query(h)
@@ -187,10 +186,12 @@ module CASClient
         conn.get("#{uri.path}?#{uri.query}")
       end
       
-      
-      raise CASException, res.body unless res.kind_of? Net::HTTPSuccess
-      
-      ProxyGrantingTicket.new(res.body.strip, pgt_iou)
+      unless res.kind_of? Net::HTTPSuccess
+        log.debug(res.body)
+        nil
+      else
+        ProxyGrantingTicket.new(res.body.strip, pgt_iou)
+      end
     end
     
     def add_service_to_login_url(service_url)
