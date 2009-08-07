@@ -64,4 +64,7 @@ class CimHrdbAddress < ActiveRecord::Base
     end
     super
   end
+
+  def sanify
+  end
 end
