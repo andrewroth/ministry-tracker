@@ -22,11 +22,17 @@
     <% #TODO: proper ajax filtering of countries and states
     %>
 		<td>Country: </td>
-		<td><%= select_tag :current_address_state_id, options_for_select(@countries) %></td>
-	</tr>
+		<td><%= select :current_address, :country, @countries, :prompt => true %>
+		</td>
+	</tr>	
+	<%= observe_field(:current_address_country, {
+        :url => { :action => "set_current_address_states" },
+        :with => 'current_address_country',
+        :before => "$('#spinnerp').show()"})
+      %>	
 	<tr>
 		<td><%= I18n.t :State, :default => 'State' %>:</td>
-		<td><%= select_tag :current_address_state_id, options_for_select(@states) %></td>
+		<%= render :partial => 'current_address_state_dropdown', :locals => { :states => @states }%>
 	</tr>
 	<tr>
 		<td><%= I18n.t :Zip, :default => 'Zip' %>:</td>

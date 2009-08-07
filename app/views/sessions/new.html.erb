@@ -1,25 +1,29 @@
-  
-  <%- if Cmt::CONFIG[:gcx_enabled] == true -%>
-  <table>
-  <tr>
-    <td width='125'><%= link_to '<img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/>', 
-                    CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
-    <td><br /><br /><%= link_to 'Login to GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %></td>
-  </tr>
+<%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
+<%- gcx_table_height = show_form ? 80 : 120 %>
+<%- if Cmt::CONFIG[:gcx_greenscreen] -%>
+  <%- unless show_form %><br /><%- end -%>
+  <table style='width: 120px;'>
+    <tr class='login_sector' <% unless show_form %>style='height: <%= gcx_table_height %>px;'<% end %>>
+      <td style='width: 120px; text-align: center; vertical-align: middle; height: <%= gcx_table_height %>px;'>
+        <%= link_to '<img src="http://technology.ccci.org/gcx/images/288-GCX-logo.gif" width="100px"/>', 
+          CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+      </td>
+      <td style='width: 120px; text-align: center; vertical-align: middle; height: <%= gcx_table_height %>px;'>
+        <%= link_to 'Login with GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+      </td>
+    </tr>
+    <%- if show_form -%>
+      <tr>
+        <td colspan='2'>
+          <div id="local_form">
+          <%= render :partial => 'local_form' %></div> 
+        </td>
+      </tr>
+    <%- end -%>
   </table>
-  <br /> 
-  <br />
-  <%- end-%>
-
-  
-  <%- if Cmt::CONFIG[:local_enabled] == true -%>
-      <div id="local_form">
-      <%= render :partial => 'local_form' %></div> 
-  <%- end -%>
-
-
-
-
-
-
-
+<%- else -%>
+  <div id="local_form">
+    <br/>
+    <%= render :partial => 'local_form' %>
+  </div> 
+<%- end-%>

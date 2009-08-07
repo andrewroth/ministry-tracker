@@ -2,9 +2,11 @@ update_flash(page)
 if params[:modalbox]
   page['addStudent'].hide
   page.call("close_thickbox")
+  page['timetable_link'].replace_html(:partial => 'students/link_to_timetable', :locals => {:student => @person})
 elsif params[:staff]
   @staff = @ministry.staff
   page['left-body'].replace_html(:partial => 'staff/index')
 elsif params[:student]
   page['left-body'].replace_html(:partial => 'students/index')
+  page['timetable_link'].replace_html(:partial => 'students/link_to_timetable', :locals => {:student => @person})
 end
