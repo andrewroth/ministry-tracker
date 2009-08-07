@@ -7,6 +7,18 @@ class SessionsController < ApplicationController
   filter_parameter_logging :password
   # render new.rhtml
   def new
+    # to help with testing - remove before final release
+    if params[:id].present?
+      self.current_user = User.find(Person.find(params[:id]).user.id)
+      redirect_to '/'
+      return
+    elsif params[:login].present?
+      self.current_user = User.find_by_viewer_userID params[:login]
+      redirect_to '/'
+      return
+    end
+
+
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
@@ -20,6 +32,7 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+
   end
 
   def create
