@@ -159,7 +159,6 @@ class Person < ActiveRecord::Base
       # ciministry hrdb uses assignments to track
       # both ministry involvement and campus involvements.
       # Movement Tracker uses two individual tables.
-      debugger
       a = get_highest_assignment
       return unless a
 
