@@ -3,9 +3,10 @@ class CimHrdbCurrentAddress < CimHrdbAddress
   belongs_to :country, :class_name => 'Country', :foreign_key => :local_person_country_id
   belongs_to :province, :class_name => 'State', :foreign_key => :local_person_province_id
   
-  
   def state
-    State.find_by_province_id(self.person_local_province_id).province_shortDesc if State.find(self.person_local_province_id)
+    if self.person_local_province_id
+      State.find_by_province_id(self.person_local_province_id).try(:province_shortDesc)
+    end
   end
 
   def state=(v)
