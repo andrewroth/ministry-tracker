@@ -7,8 +7,6 @@ class SessionsController < ApplicationController
   filter_parameter_logging :password
   # render new.rhtml
   def new
-  
-  
     if logged_in?
       self.current_user.last_login = Time.now
       self.current_user.save
@@ -19,7 +17,6 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
-    
   end
 
   def create
@@ -34,6 +31,9 @@ class SessionsController < ApplicationController
           self.current_user = User.authenticate(params[:username], params[:password])
         end
         if Cmt::CONFIG[:local_direct_logins] && logged_in?
+          if self.current_user.respond_to?(:login_callback)
+            self.current_user.login_callback
+          end
           if params[:remember_me] == "1"
             self.current_user.remember_me
             cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
