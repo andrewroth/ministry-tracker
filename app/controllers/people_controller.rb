@@ -772,13 +772,15 @@ class PeopleController < ApplicationController
       session[:direction] = params[:direction] if params[:direction]
       # generate the order clause
       order_column_id = session[:order_column_id]
+      @order = ''
       if order_column_id
         column = @view.columns.find(order_column_id)
         model = column.from_clause.constantize
-        @order = "#{column.from_clause}.#{model._(column.select_clause)}"
+        @order += "#{column.from_clause}.#{model._(column.select_clause)}"
+        @order += (params[:direction] == 'asc' ? ' ASC' : ' DESC')
+        @order += ',' # get ready for appending standard order
       end
-      @order += (params[:direction] == 'asc' ? ' ASC' : ' DESC')
-      @order += ','+standard_order
+      @order += standard_order
     end
 
     def get_states(country)
