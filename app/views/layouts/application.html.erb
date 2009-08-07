@@ -18,6 +18,9 @@
 		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
 
 		<%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%- if session[:connexion_bar] -%>
+      <%= stylesheet_link_tag "connexion_default.css" %>
+    <%- end -%>
     <%= javascript_include_tag "jscalendar-1.0/calendar.js" %>
 		<%= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js" %>
 		<%= javascript_include_tag "jscalendar-1.0/calendar-setup.js" %>
