@@ -1,6 +1,6 @@
 class CmtGeo
   def self.all_countries
-    Country.all.collect &:country_shortDesc
+    Country.all.collect{|c| [c.country_desc, c.country_shortDesc]}
   end
   def self.all_states
     Country.all.collect{ |c| 

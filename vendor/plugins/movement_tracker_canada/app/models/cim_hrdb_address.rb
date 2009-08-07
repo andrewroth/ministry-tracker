@@ -20,17 +20,12 @@ class CimHrdbAddress < ActiveRecord::Base
     throw "not implemented"
   end
 
-  def country
-    province && province.country ? province.country.name : ''
-  end
-
   def title
     title_bt ? title_bt.desc : ''
   end
 
   def province=(val) throw 'not implemented' end
-  def country=(val) throw 'not implemented' end
-    
+      
   def mailing
     out = address1.to_s 
     out += "<br />" unless out.strip.empty?
