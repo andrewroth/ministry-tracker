@@ -48,7 +48,7 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
-  p.action = 'joingroup'
+  p.action = 'new'
   p.description = 'Join a group'
 end
 
