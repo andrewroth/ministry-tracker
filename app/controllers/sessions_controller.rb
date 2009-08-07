@@ -29,9 +29,11 @@ class SessionsController < ApplicationController
         wants.js {}
         wants.html { render :action => :new }
       else
-        # First try SSM
-        self.current_user = User.authenticate(params[:username], params[:password])
-        if logged_in?
+        if Cmt::CONFIG[:local_direct_logins]
+          # First try SSM
+          self.current_user = User.authenticate(params[:username], params[:password])
+        end
+        if Cmt::CONFIG[:local_direct_logins] && logged_in?
           if params[:remember_me] == "1"
             self.current_user.remember_me
             cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
@@ -49,7 +51,7 @@ class SessionsController < ApplicationController
           wants.html do
             redirect_to(redirect_params)
           end
-        else
+        elsif Cmt::CONFIG[:gcx_direct_logins]
           # If regular auth didn't work, see if they used CAS credentials
           form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
           cas_url = 'https://signin.mygcx.org/cas/login'

@@ -1,10 +1,16 @@
 module Cmt
   CONFIG = {
-    # Allow GCX logins.
-    # The signup process is slightly different if they want to use GCX.
-    # They will be asked to log in with GCX in order to grab their 
-    # GCX credentials and tie them to a user.
-    :gcx_enabled => true,
+    # Allow GCX logins in the form on the CMT login page.
+    :gcx_direct_logins => true,
+
+    # Allow local user logins in the form on the CMT login page.
+    :local_direct_logins => true,
+
+    # Allow GCX logins using the GCX login page (aka the greenscreen).
+    # This will show a link on the login page.  If the direct GCX or
+    # local logins are also allowed, both the form and link will be
+    # displayed.
+    :gcx_greenscreen => true,
     
     # Disable GCX Import functionality
     :gcx_import_disabled => false,
