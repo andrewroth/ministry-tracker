@@ -1,9 +1,10 @@
 = RubyCAS-Client
 
 Author::    Matt Zukowski <matt AT roughest DOT net>; inspired by code by Ola Bini <ola.bini AT ki DOT se> and Matt Walker <mwalker AT tamu DOT edu>
+Modified By:: Josh Starcher <josh AT 26am DOT com>
 Copyright:: (c) 2008 Urbacon Ltd.
 License::   GNU Lesser General Public License v2.1 (LGPL 2.1)
-Websites::   http://code.google.com/p/rubycas-client
+Websites::   http://github.com/twinge/ccc_rubycas_client
              http://github.com/gunark/rubycas-client
              http://rubyforge.org/projects/rubycas-client
             
