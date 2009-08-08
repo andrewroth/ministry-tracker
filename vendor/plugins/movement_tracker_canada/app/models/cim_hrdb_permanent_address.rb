@@ -9,12 +9,12 @@ class CimHrdbPermanentAddress < CimHrdbAddress
   end
 
   def state=(v)
-    self.province_id = State.find(:first, :conditions => { :province_shortDesc => v}).try(:id)
+    self.province_id = State.find_by_province_id(:first, :conditions => { :province_shortDesc => v}).try(:id)
     self.save!
   end
   
   def country
-    Country.find(person_local_country_id) ? Country.find(person_local_country_id).country_shortDesc : ''
+    Country.find_by_country_id(person_local_country_id) ? Country.find_by_country_id(person_local_country_id).country_shortDesc : ''
   end
   
   def country=(val) 

@@ -15,7 +15,7 @@ class CimHrdbCurrentAddress < CimHrdbAddress
   end
   
   def country
-    Country.find(country_id) ? Country.find(country_id).country_shortDesc : ''
+    Country.find_by_country_id(country_id) ? Country.find_by_country_id(country_id).country_shortDesc : ''
   end
   
   def country=(val) 
