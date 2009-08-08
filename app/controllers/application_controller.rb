@@ -267,6 +267,7 @@ class ApplicationController < ActionController::Base
         # Looks like we have to give them some dummy information. BUG 1857 
         @ministry ||= associate_person_with_default_ministry(@person)
 
+
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
           @root_ministry = @ministry
@@ -301,7 +302,8 @@ class ApplicationController < ActionController::Base
 
     def get_person_campus_groups
       groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
-      @person_campus_groups = groups.select{|g| g.campus.nil? || @my.campuses.find_by_id(g.campus_id)}
+      @person_campus_groups = groups.select{|g| g.campus.nil? || 
+                                                @my.campuses.find(:first, :conditions => ["#{_(:id, :campuses)} = ?", g.campus_id])}    
     end
 
 private
