@@ -1,3 +1,6 @@
+<h1><%= @person.full_name %></h1> 
+<div class="divider" style="margin-bottom:0;">&nbsp;</div>
+<br />
 <%- if @can_edit -%>
   <div class="butNormal" style="margin-top:20px;">
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>

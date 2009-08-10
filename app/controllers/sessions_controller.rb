@@ -3,11 +3,27 @@
 # a login via GCX's CAS
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
-  #before_filter CASClient::Frameworks::Rails::GatewayFilter 
+  before_filter CASClient::Frameworks::Rails::GatewayFilter 
   filter_parameter_logging :password
   # render new.rhtml
   def new
+    # to help with testing - remove before final release
+    p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)
+    if p && p.user
+      self.current_user = p.user
+      redirect_to '/'
+      return
+    elsif params[:login].present?
+      self.current_user = User.find_by_viewer_userID params[:login]
+      redirect_to '/'
+      return
+    end
+
+
     if logged_in?
+      if self.current_user.respond_to?(:login_callback) 
+        self.current_user.login_callback
+      end
       self.current_user.last_login = Time.now
       self.current_user.save
       redirect_back_or_default(person_url(self.current_user.person))
@@ -17,6 +33,7 @@ class SessionsController < ApplicationController
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+
   end
 
   def create
