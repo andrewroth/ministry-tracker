@@ -12,8 +12,10 @@ class CmtGeo
     return [] unless country
     country.states.collect{ |s| [ s.name, s.abbrev ] }
   end
-  def self.campuses_for_state(s,c)
-    Campus.find :all, :conditions => { :state => s, :country => c }
+  def self.campuses_for_state(s, c)
+    state = State.find_by_province_shortDesc(s)
+    state_id = state.id if state
+    return Campus.all.select{|c|  c.province_id == state_id}
   end
   def self.lookup_country(c)
     country = find_country(c)

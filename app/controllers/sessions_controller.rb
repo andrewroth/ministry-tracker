@@ -8,8 +8,9 @@ class SessionsController < ApplicationController
   # render new.rhtml
   def new
     # to help with testing - remove before final release
-    if params[:id].present?
-      self.current_user = User.find(Person.find(params[:id]).user.id)
+    p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)
+    if p && p.user
+      self.current_user = p.user
       redirect_to '/'
       return
     elsif params[:login].present?

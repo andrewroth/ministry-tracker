@@ -178,11 +178,14 @@ class Person < ActiveRecord::Base
           }
 
           # make sure they are involved in the ministry
-          mi = MinistryInvolvement.find :first, :conditions => mi_atts
-          mi ||= ministry_involvements.create!(mi_atts)
+          
+          mi = MinistryInvolvement.find :first, :conditions => {:ministry_id => c4c.id, :person_id => self.id}
+          if mi.nil?
+            mi = ministry_involvements.create!(mi_atts)
 
-          mi.admin = self.cim_hrdb_admins.count > 0
-          mi.save!
+            mi.admin = self.cim_hrdb_admins.count > 0
+            mi.save!
+          end
         end
 
         # add the appropriate campus involvements
@@ -207,7 +210,6 @@ class Person < ActiveRecord::Base
         #  puts "self: #{self.inspect} ci: #{ci.inspect}"
         #end
       end
-
       true
     end
 
