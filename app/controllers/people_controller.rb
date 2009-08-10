@@ -14,6 +14,8 @@ class PeopleController < ApplicationController
   append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
   append_before_filter  :can_edit_profile, :only => [:edit, :update]
   append_before_filter  :set_use_address2
+  skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
+                                                      :get_campus_states, :get_campuses]
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
