@@ -92,7 +92,7 @@ end
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'change_ministry'
-  p.description = 'Change Current Ministry'
+  p.description = 'Change Current Ministry View'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -105,6 +105,18 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'show'
   p.description = 'View Profiles'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'edit'
+  p.description = 'Edit Profiles'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry'
+  p.description = 'Switch to viewing another ministry in the directory'
 end
 
 Permission.seed(:controller, :action) do |p|
