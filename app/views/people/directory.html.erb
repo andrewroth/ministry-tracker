@@ -33,9 +33,9 @@
 		<%= link_to(image_tag('import.png') + ' Mass import tool', new_import_path, :class => 'massimport') %>
 	</div>
 <%- end -%>
-<%- if @me.all_ministries.length > 1 -%>
+<%- if @me.ministries.length > 1 -%>
 	<div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
-	<%= select_tag("current_ministry", options_for_select(@me.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+	<%= select_tag("current_ministry", options_for_select(@me.ministries.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
 	<%= observe_field(:current_ministry, {:url => change_ministry_people_url, :with => 'current_ministry'} ) -%>
   <%- tooltip do -%> 
     This will allow to to view the directory of another ministry you are involved in.
