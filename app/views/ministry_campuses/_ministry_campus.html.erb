@@ -11,8 +11,8 @@
     						:method => :delete,
     						:confirm => "Are you sure you want to delete this campus?\nOnce you do, it'll be gone, along with all the people on it.\n YOU'VE BEEN WARNED!" %>
     <%- end -%>
-    <% if @my.all_ministries.include?(ministry_campus.ministry) %>
-      <%= link_to(h(campus.name), change_ministry_people_path(:ministry => ministry_campus.ministry_id, :format => :html, :campus => campus.id), :method => :get) %> 
+    <% if @my.ministries.include?(ministry_campus.ministry) %>
+      <%= link_to(h(campus.name), change_ministry_and_goto_directory_people_path(:current_ministry => ministry_campus.ministry_id, :format => :html, :campus => campus.id), :method => :get) %> 
     <%- else -%>
       <%= h campus.name %>
     <%- end -%>
