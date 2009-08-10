@@ -6,6 +6,16 @@ inherit_seed('15_student_leader_permissions')
 
 MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
   rp.ministry_role_id = ministry_role_id
+  rp.permission_id = p_id :ministry_involvements, :new
+end
+
+MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
+  rp.ministry_role_id = ministry_role_id
+  rp.permission_id = p_id :ministry_involvements, :edit
+end
+
+MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
+  rp.ministry_role_id = ministry_role_id
   rp.permission_id = p_id :customize, :show
 end
 
@@ -52,6 +62,11 @@ end
 MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
   rp.ministry_role_id = ministry_role_id
   rp.permission_id = p_id :people, :edit
+end
+
+MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
+  rp.ministry_role_id = ministry_role_id
+  rp.permission_id = p_id :campus_involvements, :new
 end
 
 MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
