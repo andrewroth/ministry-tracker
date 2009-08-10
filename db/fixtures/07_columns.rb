@@ -60,20 +60,21 @@ Column.seed(:title) do |c|
 end
 
 Column.seed(:title) do |c|
-  c.title = 'Campus',
-  c.from_clause = 'Campus',
-  c.select_clause = 'name',
-  c.source_model = 'CampusInvolvement',
-  c.source_column = 'campus_id',
+  c.title = 'Campus'
+  c.from_clause = 'Campus'
+  c.select_clause = 'abbrv'
+  c.source_model = 'CampusInvolvement'
+  c.source_column = 'campus_id'
   c.foreign_key = 'id'
 end
 
 Column.seed(:title) do |c|
-  c.title = 'School Year',
-  c.from_clause = 'SchoolYear',
-  c.select_clause = 'name',
-  c.source_model = 'CampusInvolvement',
-  c.source_column = 'school_year_id',
+  c.title = 'School Year'
+  c.from_clause = 'SchoolYear'
+  c.select_clause = 'name'
+  c.source_model = 'CampusInvolvement'
+  c.source_column = 'school_year_id'
   c.foreign_key = 'id'
 end
+
 
