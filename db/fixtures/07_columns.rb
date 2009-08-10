@@ -24,7 +24,7 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'State'
-  c.select_clause = 'province_desc'
+  c.select_clause = 'province_shortDesc'
   c.from_clause = 'State'
   c.source_model = 'Person'
   c.source_column = 'province_id'
