@@ -302,8 +302,8 @@ class ApplicationController < ActionController::Base
 
     def get_person_campus_groups
       groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
-      @person_campus_groups = groups.select{|g| g.campus.nil? || 
-                                                @my.campuses.find(:first, :conditions => ["#{_(:id, :campuses)} = ?", g.campus_id])}    
+      my_campuses_ids = @my.campuses.collect &:id
+      @person_campus_groups = groups.select { |g| g.campus.nil? || my_campuses_ids.include?(g.campus.id) }
     end
 
 private
