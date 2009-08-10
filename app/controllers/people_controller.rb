@@ -585,12 +585,12 @@ class PeopleController < ApplicationController
 
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
-    @current_address_states = Carmen::states(params[:current_address_country]) || []
+    @current_address_states = CmtGeo.states_for_country(params[:current_address_country]) || []
   end
   
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
-    @permanent_address_states = Carmen::states(params[:permanent_address_country]) || []
+    @permanent_address_states = CmtGeo.states_for_country(params[:permanent_address_country]) || []
   end
   
   private
