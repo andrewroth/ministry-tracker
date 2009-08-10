@@ -1,7 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-wyoming:
-    id: 1
-    name: Wyoming
-    abbreviation: WY
-    country_id: 1 # 1 is USA
