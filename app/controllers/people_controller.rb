@@ -89,13 +89,6 @@ class PeopleController < ApplicationController
       @options = {}
       @tables = {}
       @search_for = []
-      
-      #Check from Campus
-      if params[:campus_id]
-        @campus = Campus.find(params[:campus_id])
-        @search_for << @campus.name if @campus
-      end
-      
       # Check year in school
       if params[:school_year].present?
         conditions << database_search_conditions(params)[:school_year]
@@ -135,7 +128,7 @@ class PeopleController < ApplicationController
         unless params[:campus].empty?
           conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
           @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in(#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @advanced = true
         end
       end
@@ -471,34 +464,20 @@ class PeopleController < ApplicationController
     end
   end
   
-  #Question: does it change which ministry we are now viewing in our session?
-  
+  # Change which ministry we are now viewing in our session
+  # NOTE: there is security checking done in ApplicationController::get_ministry
   def change_ministry
-    session[:ministry_id] = params[:current_ministry] if params[:current_ministry] && 
-                                                         Ministry.find_by_id(params[:current_ministry])
-    respond_to do |wants|
-      wants.html { redirect_to(directory_people_path) }
-      wants.js do
-        render :update do |page|
-          page.redirect_to(directory_people_path)
-        end
-      end
-    end
-  end
-  
-  def set_directory_to_campus
-    session[:ministry_id] = params[:current_ministry] if params[:current_ministry] && 
-                                                         Ministry.find_by_id(params[:current_ministry])
-    respond_to do |wants|
-      wants.html { redirect_to(directory_people_path(:campus_id => params[:campus_id])) }
-      wants.js do
-        render :update do |page|
-          page.redirect_to(directory_people_path(:campus_id => params[:campus_id]))
-        end
-      end
-    end
-  end
+    session[:ministry_id] = params[:ministry_id]
 
+    respond_to do |wants|
+      wants.html { redirect_to(directory_people_path(:campus => params[:campus])) }
+      wants.js do
+        render :update do |page|
+          page.redirect_to(directory_people_path(:campus => params[:campus]))
+        end
+      end
+    end
+  end
   
   # Question: what does it do? Are there customisable views, and this changes
   # the currently used one?
