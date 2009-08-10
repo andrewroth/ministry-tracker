@@ -28,7 +28,7 @@ for m in [a, b]
       mi.person_id = p.id
       mi.ministry_id = m.id
       mi.ministry_role_id = r.id
-      mi.admin = false
+      mi.admin = (r.name == 'Admin')
     end
   end
 end
