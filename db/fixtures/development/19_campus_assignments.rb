@@ -1,5 +1,5 @@
 def self.assign_to_campus(p, c_id, m_id, year)
-  involvement = CampusInolvement.seed(:person_id, :campus_id, :ministry_id, :school_year_id) do |ci|
+  involvement = CampusInvolvement.seed(:person_id, :campus_id, :ministry_id, :school_year_id) do |ci|
                   ci.person_id = p.id
                   ci.campus_id = c_id
                   ci.ministry_id = m_id
