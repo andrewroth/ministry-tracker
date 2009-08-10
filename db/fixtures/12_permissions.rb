@@ -92,7 +92,7 @@ end
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'change_ministry'
-  p.description = 'Change Current Ministry'
+  p.description = 'Change Current Ministry View'
 end
 
 Permission.seed(:controller, :action) do |p|
