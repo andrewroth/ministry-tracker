@@ -97,6 +97,12 @@ end
 
 Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
+  p.action = 'set_directory_to_campus'
+  p.description = 'Quickly View Directory For A Specific Campus And Ministry'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
   p.action = 'change_view'
   p.description = 'Change Directory View'
 end
