@@ -6,7 +6,7 @@ class CampusesController < ApplicationController
   
   def change_country
     @states = CmtGeo.states_for_country(params[:country])
-    @campuses = @states.collect{ |state| CmtGeo.campuses_for_state(state, params[:country]) }
+    @campuses = @states.collect{ |state| CmtGeo.campuses_for_state(state.second, params[:country]) }
   end
   
   def change_state
