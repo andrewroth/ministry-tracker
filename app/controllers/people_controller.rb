@@ -85,17 +85,14 @@ class PeopleController < ApplicationController
         end
       end
     
+      if params[:campus_id]
+        @campus = Campus.find(params[:campus_id])
+      end
+    
       # Advanced search options
       @options = {}
       @tables = {}
       @search_for = []
-      
-      #Check from Campus
-      if params[:campus_id]
-        @campus = Campus.find(params[:campus_id])
-        @search_for << @campus.name if @campus
-      end
-      
       # Check year in school
       if params[:school_year].present?
         conditions << database_search_conditions(params)[:school_year]
@@ -472,10 +469,9 @@ class PeopleController < ApplicationController
   end
   
   #Question: does it change which ministry we are now viewing in our session?
-  
+
   def change_ministry
-    session[:ministry_id] = params[:current_ministry] if params[:current_ministry] && 
-                                                         Ministry.find_by_id(params[:current_ministry])
+    session[:ministry_id] = params[:current_ministry]
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path) }
       wants.js do
@@ -485,20 +481,6 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
-  def set_directory_to_campus
-    session[:ministry_id] = params[:current_ministry] if params[:current_ministry] && 
-                                                         Ministry.find_by_id(params[:current_ministry])
-    respond_to do |wants|
-      wants.html { redirect_to(directory_people_path(:campus_id => params[:campus_id])) }
-      wants.js do
-        render :update do |page|
-          page.redirect_to(directory_people_path(:campus_id => params[:campus_id]))
-        end
-      end
-    end
-  end
-
   
   # Question: what does it do? Are there customisable views, and this changes
   # the currently used one?
