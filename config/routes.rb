@@ -97,7 +97,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :people,  :member => {:import_gcx_profile => :any},
                           :collection => { :directory => :any,
-                                          :change_ministry => :any,
+                                          :change_ministry_and_goto_directory => :any,
                                           :change_view => :any,
                                           :search => :any,
                                           :add_student => :any,

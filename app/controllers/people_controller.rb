@@ -458,8 +458,8 @@ class PeopleController < ApplicationController
   
   # Change which ministry we are now viewing in our session
   # NOTE: there is security checking done in ApplicationController::get_ministry
-  def change_ministry
-    session[:ministry_id] = params[:ministry_id]
+  def change_ministry_and_goto_directory
+    session[:ministry_id] = params[:current_ministry]
 
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path(:campus => params[:campus])) }
