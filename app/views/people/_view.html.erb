@@ -120,7 +120,7 @@
 </table>
 <br />
 
-<%- if is_ministry_leader -%>
+<%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
 	<%- remote_form_for @person do |f| -%>
 	<div id="staffArea">
 		<% i = 0 %>
@@ -137,9 +137,10 @@
 		<%- end unless i == 0 -%>
 		</tr>
 		</table>
-		
-		Leadership notes: <span style="color:silver; font-style:italic;">(everything below this is only seen by those designated as leaders of this ministry)</span><br />
-		<%= f.text_area :staff_notes, :rows => 4, :cols => 40 %>
+		<%- if Cmt::CONFIG[:leadership_notes_enabled] -%>
+		  Leadership notes: <span style="color:silver; font-style:italic;">(everything below this is only seen by those designated as leaders of this ministry)</span><br />
+		  <%= f.text_area :staff_notes, :rows => 4, :cols => 40 %>
+		<%- end -%>		
     <%= submit_tag "Save Notes" %>
 	</div>
 	<%- end -%>
