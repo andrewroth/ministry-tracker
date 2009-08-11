@@ -39,6 +39,7 @@ class MinistryInvolvementsController < ApplicationController
       @possible_roles.reject! { |r| r.class == OtherRole }
       # if staff, allow all student roles
       @possible_roles += StudentRole.all
+      @possible_roles.uniq!
     else
       raise "Missing parameters"
     end
