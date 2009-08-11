@@ -16,11 +16,11 @@ module Cmt
     :gcx_import_disabled => true,
 
     # Allow local logins.  Either this of gcx_account_enabled must be true.
-    :local_enabled => true,
+    :local_enabled => false,
 
     # Forces users to go through a longer process for validating accounts.
     # Note used yet.
-    :full_account_verification => true,
+    :full_account_verification => false,
     
     # Removes the options of specifying 'poor' timeslots in timetable
     :hide_poor_status_in_scheduler => true,
@@ -31,11 +31,12 @@ module Cmt
     # Associate person with no ministry to default ministry
     :associate_with_default_ministry => true,
     
-    # Default Country - When set, the campus filter is disabled and all 
+    # When set, the campus filter is disabled and all 
     # campuses from this country are displayed
     # Set to nil(:campus_scope_country => nil) to disable.
     :campus_scope_country => 'Canada',
-    
+
+    # The default country to select on all the country dropdowns
     :default_country => 'Canada',
 
     # Disable second address line
@@ -58,10 +59,10 @@ module Cmt
     :staff_can_edit_student_timetables => true,
     
     # When enabled, training items and catergories will be shown and can be editted by users
-    :training_enabled => false,
+    :training_enabled => true,
     
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
-    :leadership_notes_enabled => false
+    :leadership_notes_enabled => true
   }
 end
 
