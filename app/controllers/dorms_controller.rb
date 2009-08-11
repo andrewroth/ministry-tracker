@@ -1,6 +1,7 @@
 # CRUD for dorms
 
 class DormsController < ApplicationController
+skip_before_filter :authorization_filter, :only => [:list]
   def create
     @dorm = Dorm.create!(params[:dorm])
   end
