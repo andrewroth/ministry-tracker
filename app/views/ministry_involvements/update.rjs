@@ -1,2 +1,6 @@
-page["campus_form#{@staff.id}"].hide
-page["staff#{@staff.id}"].highlight
+if params[:single_edit]
+  page.redirect_to person_url(@person)
+else
+  page["campus_form#{@person.id}"].hide
+  page["staff#{@person.id}"].highlight
+end

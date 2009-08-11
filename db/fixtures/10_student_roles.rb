@@ -5,6 +5,7 @@ StudentRole.seed(:name) do |sr|
   sr.description = 'a student who oversees a campus, eg LINC leader'
   sr.ministry = ministry
   sr.position = 1
+  sr.involved = true
 end
 
 StudentRole.seed(:name) do |sr|
@@ -12,6 +13,7 @@ StudentRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 2
+  sr.involved = true
 end
 
 StudentRole.seed(:name) do |sr|
@@ -19,6 +21,7 @@ StudentRole.seed(:name) do |sr|
   sr.description = 'we are saying has been attending events for at least 6 months'
   sr.ministry = ministry
   sr.position = 3
+  sr.involved = true
 end
 
 StudentRole.seed(:name) do |sr|
@@ -26,6 +29,7 @@ StudentRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 4
+  sr.involved = false
 end
 
 StudentRole.seed(:name) do |sr|

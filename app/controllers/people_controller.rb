@@ -229,7 +229,8 @@ class PeopleController < ApplicationController
     end
   end
 
-  #Question: shows an individual's record?
+  # GET /people/show
+  # Shows a person's profile (address info, assignments, involvements, etc)
   def show
     get_ministry_involvement(get_ministry)
     get_people_responsible_for
@@ -252,7 +253,7 @@ class PeopleController < ApplicationController
     end
   end
 
-  # GET /people/1;edit
+  # GET /people/1/edit
   def edit
     countries = get_countries
     

@@ -163,7 +163,7 @@ class Ministry < ActiveRecord::Base
   end
   
   def involved_student_roles
-    @involved_student_roles ||= ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_role)} >= 4 AND #{_(:position, :ministry_role)} < 11")
+    @involved_student_roles ||= StudentRole.find(:all, :conditions => { _(:involved, :ministry_roles) => true })
   end
   
   def involved_student_role_ids

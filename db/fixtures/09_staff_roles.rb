@@ -5,6 +5,7 @@ StaffRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 6
+  sr.involved = true
 end
 
 StaffRole.seed(:name) do |sr|
@@ -12,6 +13,7 @@ StaffRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 7
+  sr.involved = true
 end
 
 StaffRole.seed(:name) do |sr|
@@ -19,6 +21,7 @@ StaffRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 8
+  sr.involved = false
 end
 
 StaffRole.seed(:name) do |sr|
@@ -26,4 +29,5 @@ StaffRole.seed(:name) do |sr|
   sr.description = ''
   sr.ministry = ministry
   sr.position = 9
+  sr.involved = false
 end
