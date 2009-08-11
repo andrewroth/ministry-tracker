@@ -49,8 +49,9 @@
                                                   :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
   	  <%= link_to_remote(mi.ministry.name, 
             :url => change_ministry_and_goto_directory_people_url(:current_ministry => mi.ministry.id),
-            :method => :get) %>
-      (<%= mi.ministry_role.name %>)
+            :method => :get) 
+      %>
+      (<%= mi.ministry_role.name %><%- if @person != @me && authorized?(:edit, :people) -%> <%= link_to image_tag("edit.png"), edit_ministry_involvement_url(0, :person_id => @person.id, :ministry_id => @ministry.id, :single_edit => true) %><%- end -%>)
   	  </li>
   	<%- end -%>
   	</ul> <br />

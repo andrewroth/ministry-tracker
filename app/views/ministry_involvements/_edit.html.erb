@@ -4,6 +4,9 @@
   	<%- if @me.admin?(@ministry_involvement.ministry) # You have to be an admin to make an admin -%>
     <p><%= f.check_box :admin %> Admin</p>
     <%- end -%>
-    <p><%= f.submit %> or <%= link_to_function 'cancel', "$('#campus_form#{@staff.id}').blindUp();",
- 															:class => 'cancel' %></p>
+    <%- if defined?(single_edit) && single_edit -%>
+      <%= hidden_field_tag :single_edit, true %>
+    <%- end -%>
+    <p><%= f.submit %> or <%- if params[:single_edit] -%><%= link_to 'cancel', person_url(@person) %><%- else -%><%= link_to_function 'cancel', "$('#campus_form#{@person.id}').blindUp();",
+                                :class => 'cancel' %><%- end -%></p>
 <%- end -%>

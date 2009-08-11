@@ -27,13 +27,18 @@ class MinistryInvolvementsController < ApplicationController
     end
   end
   
-  # Question: what is staff? Can only staff be admin over a campus?
+  # Staff are admin if they're marked admin in the ministry involvement.  The
+  # actual role of being an admin doesn't inherently grant anything.
   def edit
     if params[:person_id] && params[:ministry_id]
       @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
-      @staff = Person.find(params[:person_id])
-      @ministry_involvement.admin = @staff.admin?(@ministry_involvement.ministry)
+      @person = @ministry_involvement.person
+      @ministry_involvement.admin = @person.admin?(@ministry_involvement.ministry)
       @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_roles)} >= #{@my.role(get_ministry).position}")
+      # remove all 'Other' roles for now
+      @possible_roles.reject! { |r| r.class == OtherRole }
+      # if staff, allow all student roles
+      @possible_roles += StudentRole.all
     else
       raise "Missing parameters"
     end
@@ -44,7 +49,11 @@ class MinistryInvolvementsController < ApplicationController
     # We don't want someone screwing themselves over by accidentally removing admin privs
     params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me
     @ministry_involvement.update_attributes(params[:ministry_involvement])
-    @staff = @ministry_involvement.person
+    @person = @ministry_involvement.person
+    # special case when editing a single person's role
+    if params[:single_edit]
+      flash[:notice] = "#{@person.full_name}'s ministry role updated to #{@ministry_involvement.ministry_role.name}"
+    end
     respond_to do |wants|
       wants.js {  }
     end
