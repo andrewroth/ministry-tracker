@@ -5,6 +5,7 @@ OtherRole.seed(:name) do |r|
   r.description = 'A leader has registered them, but user has not completed rego and signed the privacy policy'
   r.ministry = ministry
   r.position = 8
+  r.involved = false
 end
 
 OtherRole.seed(:name) do |r|
@@ -12,6 +13,7 @@ OtherRole.seed(:name) do |r|
   r.description = 'They have applied, but a leader has not verified their application yet'
   r.ministry = ministry
   r.position = 9
+  r.involved = false
 end
 
 OtherRole.seed(:name) do |r|
@@ -19,4 +21,5 @@ OtherRole.seed(:name) do |r|
   r.description = 'not a valid student or missionary, but we are giving them limited access anyway'
   r.ministry = ministry
   r.position = 10
+  r.involved = true
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090726200034) do
+ActiveRecord::Schema.define(:version => 20090811190042) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(:version => 20090726200034) do
     t.integer "position"
     t.string  "description"
     t.string  "type"
+    t.boolean "involved"
   end
 
   add_index "ministry_roles", ["ministry_id"], :name => "index_ministry_roles_on_ministry_id"
