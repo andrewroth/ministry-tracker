@@ -58,7 +58,7 @@ module Cmt
     :staff_can_edit_student_timetables => true,
     
     #When enabled, training items and catergories will be shown and can be editted by users
-    :training_enabled => true
+    :training_enabled => false
   }
 end
 

@@ -55,7 +55,7 @@ module Cmt
     :find_common_times_enabled => false,
     
     # All staff can edit any student's timetable in their ministry
-    :staff_can_edit_student_timetables => true
+    :staff_can_edit_student_timetables => false
   }
 end
 
