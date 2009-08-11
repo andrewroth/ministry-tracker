@@ -130,7 +130,7 @@
   </div>
   <%- end -%>
   
-	<%- if authorized?(:new, :training_categories) -%>
+	<%- if authorized?(:new, :training_categories) && Cmt::CONFIG[:training_enabled]  -%>
   <div>
     <div class="title">
       <% help_block do -%>
@@ -163,7 +163,7 @@
     </div>
   </div>
 	<%- end -%>
-	<%- if authorized?(:new, :training_questions) -%>
+	<%- if authorized?(:new, :training_questions) && Cmt::CONFIG[:training_enabled] -%>
   <div>
     <div class="title">
       <% help_block do -%>
