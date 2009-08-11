@@ -59,10 +59,10 @@ module Cmt
     :staff_can_edit_student_timetables => true,
     
     # When enabled, training items and catergories will be shown and can be editted by users
-    :training_enabled => true,
+    :training_enabled => false,
     
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
-    :leadership_notes_enabled => true
+    :leadership_notes_enabled => false
   }
 end
 
