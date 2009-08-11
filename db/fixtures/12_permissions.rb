@@ -210,6 +210,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'dorms'
+  p.action = 'new'
+  p.description = 'Customizes A Ministry (based on what your other permissions are)'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'timetables'
   p.action = 'show'
   p.description = 'View the timetables of other people'
