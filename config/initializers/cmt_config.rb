@@ -1,19 +1,19 @@
 module Cmt
   CONFIG = {
     # Allow GCX logins in the form on the CMT login page.
-    :gcx_direct_logins => false,
+    :gcx_direct_logins => true,
 
     # Allow local user logins in the form on the CMT login page.
-    :local_direct_logins => false,
+    :local_direct_logins => true,
 
     # Allow GCX logins using the GCX login page (aka the greenscreen).
     # This will show a link on the login page.  If the direct GCX or
     # local logins are also allowed, both the form and link will be
     # displayed.
-    :gcx_greenscreen => true,
+    :gcx_greenscreen => false,
     
     # Disable GCX Import functionality
-    :gcx_import_disabled => true,
+    :gcx_import_disabled => false,
 
     # Allow local logins.  Either this of gcx_account_enabled must be true.
     :local_enabled => true,
@@ -39,14 +39,14 @@ module Cmt
     :default_country => 'Canada',
 
     # Disable second address line
-    :disable_address2 => true,
+    :disable_address2 => false,
     
     # Default website title appearing at the top of the browser
     :web_title => 'Campus for Christ :: Movement Tracker',
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
-    :permissions_granted_by_default => false,
+    :permissions_granted_by_default => true,
     
     # When true, hides timetable impact dropdown in group_types form
     :disable_group_timetable_impact => true,
@@ -55,7 +55,11 @@ module Cmt
     :find_common_times_enabled => false,
     
     # All staff can edit any student's timetable in their ministry
-    :staff_can_edit_student_timetables => true
+    :staff_can_edit_student_timetables => true,
+    
+    
+    #When enabled, training items and catergories will be shown and can be editted by users
+    :training_enabled => false
   }
 end
 

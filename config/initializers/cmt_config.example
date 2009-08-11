@@ -13,7 +13,7 @@ module Cmt
     :gcx_greenscreen => false,
     
     # Disable GCX Import functionality
-    :gcx_import_disabled => true,
+    :gcx_import_disabled => false,
 
     # Allow local logins.  Either this of gcx_account_enabled must be true.
     :local_enabled => true,
@@ -39,7 +39,7 @@ module Cmt
     :default_country => 'Canada',
 
     # Disable second address line
-    :disable_address2 => true,
+    :disable_address2 => false,
     
     # Default website title appearing at the top of the browser
     :web_title => 'Campus for Christ :: Movement Tracker',
@@ -58,7 +58,7 @@ module Cmt
     :staff_can_edit_student_timetables => true,
     
     #When enabled, training items and catergories will be shown and can be editted by users
-    :training_enabled => true
+    :training_enabled => false
   }
 end
 
