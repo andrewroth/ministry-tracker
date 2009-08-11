@@ -28,7 +28,7 @@ module Cmt
     # Default ministry name
     :default_ministry_name => 'Campus for Christ',
     
-    #Associate person with no ministry to default ministry
+    # Associate person with no ministry to default ministry
     :associate_with_default_ministry => true,
     
     # Default Country - When set, the campus filter is disabled and all 
@@ -55,7 +55,13 @@ module Cmt
     :find_common_times_enabled => false,
     
     # All staff can edit any student's timetable in their ministry
-    :staff_can_edit_student_timetables => false
+    :staff_can_edit_student_timetables => true,
+    
+    # When enabled, training items and catergories will be shown and can be editted by users
+    :training_enabled => false,
+    
+    # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
+    :leadership_notes_enabled => false
   }
 end
 
