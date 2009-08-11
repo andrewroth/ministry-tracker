@@ -372,8 +372,9 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    if params[:primary_campus_involvement][:campus_id].present? && (@person.primary_campus_involvement.nil? || 
-       params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
+    
+    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].present? &&
+       (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
       # if @person.primary_campus_involvement
       #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
       #   
@@ -391,7 +392,7 @@ class PeopleController < ApplicationController
         @update_involvements = true
       end
     end
-    if params[:primary_campus_involvement][:campus_id].blank?
+    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].blank?
       if @person.primary_campus_involvement
         @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
         @person.update_attribute(:primary_campus_involvement_id, nil)
