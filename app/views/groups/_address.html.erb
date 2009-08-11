@@ -22,3 +22,14 @@
 		<td><%= @group.url %></td>	
 	</tr>
 	</table>
+<br />
+<% midnight = Time.now.beginning_of_day %>
+<%- if @group.start_time -%>
+  Start Time: <%= (midnight + @group.start_time).to_s(:time) %><br />
+<%- end -%>
+<%- if @group.end_time -%>
+  End Time:<%= (midnight + @group.end_time).to_s(:time) %> <br />
+<%- end -%>
+<%- if @group.day -%>
+  Day of Week: <%= Date::DAYNAMES[@group.day] %> <br />
+<%- end -%>
