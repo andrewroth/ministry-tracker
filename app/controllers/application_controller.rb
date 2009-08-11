@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
                   :set_permanent_address_states],
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
-      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time]
+      :groups => [:edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
