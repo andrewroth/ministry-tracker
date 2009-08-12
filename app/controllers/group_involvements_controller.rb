@@ -77,9 +77,15 @@ class GroupInvolvementsController < ApplicationController
     @gi = GroupInvolvement.find_by_id(params[:id]) if params[:id] 
     @level = params[:level]
     if @gi
-      @gi.level = @level #this function should always have level in the params
-      @gi.save
+      @group = @gi.group
+      @previous_level = @gi.level
+     if @level
+        @gi.level = @level
+        @gi.save
+        flash[:notice] = "#{@gi.person.full_name} is now a #{@level}"
+      end
     end
+    
   end
   
   protected
@@ -96,8 +102,8 @@ class GroupInvolvementsController < ApplicationController
         end
         format.js do
           render :update do |page|
-            eval("@#{@group.class.to_s.underscore} = @group")
-            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show")
+            eval("@#{@group.class.to_s.underscore} = @group" )
+            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show/show")
           end
         end
       end

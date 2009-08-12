@@ -1,1 +1,5 @@
 page["change_#{@level}".to_sym].hide
+update_flash(page)
+page["person_#{@gi.person.id}"].hide
+page.replace_html(@level, :partial => 'groups/level', :locals => {:level => @level})
+page.replace_html(@previous_level, :partial => 'groups/level', :locals => {:level => @previous_level})

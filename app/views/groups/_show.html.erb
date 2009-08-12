@@ -28,55 +28,11 @@
     <%= render :partial => 'groups/address' %>
   </div>
   <div id="address_form"></div>
-  <div id="members">
+    <div id="members">
     <br />
     <%-types.each do |level| -%>
       <div id="<%= level %>">
-        <table width="70%" border="0" cellspacing="0" cellpadding="5">
-          <tr>
-            <td colspan="5">
-              <h4 class="title"><%= level.titleize.pluralize %>&nbsp;&nbsp;
-                <%- if is_group_leader(@group) -%>
-                  <%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>
-                  <%= link_to_function "Change a member to #{level.titleize}", "$('#change_#{level}').fadeIn()", :class => 'small' %>
-                <%- end -%>
-              </h4>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="5">
-              <div id="add_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/new', :locals => {:type => level} %></div>
-              <div id="change_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/change_level', :locals => {:level => level} %></div>
-            </td>
-          </tr>
-        </table>
-        <%- form_remote_tag({:url => "/group_involvements/transfer/#{@group.id}", 
-                            :html => { :id => 'transfer_form_' + level }
-        } ) do 
-        -%>
-        <table width="70%" border="0" cellspacing="0" cellpadding="5">
-          <tr>
-            <% if is_group_leader(@group) -%>
-              <th width='20px'>
-                <input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/>
-              </th>
-            <% end -%>
-            <th width='120px'>Name</th>
-            <th width='120px'>Email</th>
-            <th width='70px'>Phone</th>
-            <th width='70px'>Cell</th>
-          </tr>
-          <%- @group.group_involvements.sorted.each do |gi| 
-            if gi.level == level
-              person = gi.person
-              if (person && gi.requested != true)
-                person.initialize_addresses(:current_address) if person.current_address.nil? -%>
-                <%= render :partial => 'groups/member', :locals => {:person => person} %>
-              <%- end -%>
-            <%- end -%>
-          <%- end -%>
-        </table>	
-      <%- end -%>
+        <%= render :partial => 'level', :object => level %>
     </div>
   <%- end -%>
 </div>

@@ -3,6 +3,9 @@
   
   <%- remote_form_for :group_involvement, :url => url_for(:controller => "group_involvements", :action => "change_level", :level => level) do |f| -%>
     Choose a Member: <%=select_tag :id, options_for_select(options) %>
-    <%= submit_tag "Make #{level}" %>
-  <%- end -%>
-  
+    <br />
+    <%= submit_tag "Make #{level}" %> 
+    <%= link_to_function 'cancel', "$('#change_#{level}').fadeOut()",
+	 								:class => 'cancel'%>
+
+  <%- end -%>  
