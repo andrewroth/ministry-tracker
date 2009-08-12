@@ -32,7 +32,7 @@
       %>	
 	<tr>
 		<td><%= I18n.t :State, :default => 'State' %>:</td>
-		<%= render :partial => 'current_address_state_dropdown', :locals => { :states => @states }%>
+		<%= render :partial => 'people/current_address_state_dropdown', :locals => { :states => @states }%>
 	</tr>
 	<tr>
 		<td><%= I18n.t :Zip, :default => 'Zip' %>:</td>
