@@ -8,7 +8,7 @@
   To transfer a member to another group, do the same, but after you click transfer button use the dropdown menu to choose what group to switch them into.</p>
   <%- end -%>
   <br />
-  <% types = ['leader','co_leader', 'member','interested'] -%>
+  <% types = Group::LEVELS %>
   <% data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end -%>
   <% data += "+'&'+$('#transfer_to_form').serialize()" -%>
 
@@ -20,7 +20,6 @@
   <%= link_to_remote "edit", { :url => edit_group_url(@group), :method => :get }, 
     { :class => "small" } if is_group_leader(@group) 
   %>
-  <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
 
   <br/>
 
@@ -28,11 +27,11 @@
     <%= render :partial => 'groups/address' %>
   </div>
   <div id="address_form"></div>
+    <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
     <div id="members">
-    <br />
     <%-types.each do |level| -%>
       <div id="<%= level %>">
-        <%= render :partial => 'level', :object => level %>
+        <%= render :partial => 'groups/level', :object => level %>
     </div>
   <%- end -%>
 </div>

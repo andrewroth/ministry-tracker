@@ -35,6 +35,7 @@ class GroupsController < ApplicationController
   
   def show
     @ministry = @group.ministry
+    @gi = @group.group_involvements.select{ |gi| gi.person = @me }
     respond_to do |format|
       format.html 
       format.js

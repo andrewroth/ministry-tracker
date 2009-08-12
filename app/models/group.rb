@@ -1,5 +1,7 @@
 # Groups are weekly events, like bible studies, discipleship times, main meetings
 class Group < ActiveRecord::Base
+  LEVELS = [ 'leader', 'co_leader', 'member', 'interested' ]
+
   load_mappings
   validates_presence_of :name
   validates_presence_of :group_type

@@ -4,10 +4,10 @@
 # Question: def Transfer: not sure what it does
 
 class GroupInvolvementsController < ApplicationController
-  before_filter :get_group_involvement, :only => [ :accept_request, :decline_request ]
-  before_filter :ensure_group_leader_or_coleader, :only => [ :accept_request, :decline_request ]
-
-  # TODO: make sure that destroy and transfer check security
+  before_filter :get_group_involvement, :only => [ :accept_request, :decline_request, 
+    :decline_request, :transfer, :change_level, :destroy ]
+  before_filter :ensure_group_leader_or_coleader, :only => [ :accept_request, 
+    :decline_request, :transfer, :change_level, :destroy ]
 
   def create
     create_group_involvement
@@ -41,8 +41,8 @@ class GroupInvolvementsController < ApplicationController
   def destroy 
     if params[:members]
       params[:members].each do |member|
-        gi = find_by_person_id_and_group_id(member, params[:id])
-        GroupInvolvement.delete(gi.id)
+        gi = find_by_person_id_and_group_id(member, params[:group_id])
+        gi.destroy if gi
       end
     else
       raise "No members were selected to delete"
@@ -54,7 +54,7 @@ class GroupInvolvementsController < ApplicationController
   def transfer_selected
     @transfer_notices = []
     if params[:members]
-      @group = Group.find(params[:id])
+      @group = Group.find(params[:id]) # TODO this should be group_id
       # try to transfer each member
       params[:members].each do |member|
         begin
@@ -71,20 +71,16 @@ class GroupInvolvementsController < ApplicationController
     refresh_directory_page
   end
   
-  #group_involvements/change_level (level => ?, :id  => ?)
+  # group_involvements/id/change_level (level => ?)
   def change_level
-    @gi = GroupInvolvement.find_by_id(params[:id]) if params[:id] 
     @level = params[:level]
-    if @gi
+    if @gi && @level
       @group = @gi.group
       @previous_level = @gi.level
-     if @level
-        @gi.level = @level
-        @gi.save
-        flash[:notice] = "#{@gi.person.full_name} is now a #{@level}"
-      end
+      @gi.level = @level
+      @gi.save
+      flash[:notice] = "#{@gi.person.full_name} is now a #{@level}"
     end
-    
   end
   
   protected
@@ -102,7 +98,7 @@ class GroupInvolvementsController < ApplicationController
         format.js do
           render :update do |page|
             eval("@#{@group.class.to_s.underscore} = @group" )
-            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show/show")
+            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show")
           end
         end
       end
@@ -124,7 +120,7 @@ class GroupInvolvementsController < ApplicationController
 
     def ensure_group_leader_or_coleader
       # make sure we're valid
-      unless @gi.group.leaders.include?(@me) || @gi.group.leaders.include?(@me)
+      unless @gi.person == @me && (@gi.group.leaders.include?(@me) || @gi.group.leaders.include?(@me))
         flash[:notice] = "You don't have permission to do this"
         redirect_to access_denied
       end
