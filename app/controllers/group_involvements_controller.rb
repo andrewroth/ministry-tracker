@@ -38,25 +38,24 @@ class GroupInvolvementsController < ApplicationController
     render :action => 'request_result' 
   end
   
-  # TODO: clean this up
   def destroy 
+    @group = @gi.group
     if params[:members]
-      leader_count = 0
+      leaders_to_delete_count = 0
       gis = []
       params[:members].each do |member|
         gi = find_by_person_id_and_group_id(member, params[:group_id])
         gi.destroy if gi
-        leader_count += 1 if gi.level == 'leader'
+        leaders_to_delete_count += 1 if gi.level == 'leader'
       end
-      #check that we don't delete all the leaders
-      if leader_count < Group.find_by_id(params[:id]).leaders.count
+      # check that we don't delete all the leaders
+      if leader_count < @group.leaders.count
         gis.each do |gi|
-          GroupInvolvement.delete(gi.id)
+          gis.destroy
         end
       else 
         flash[:notice] = "You can not delete all the leaders in a groups"
       end
-      
     else
       raise "No members were selected to delete"
     end
@@ -66,8 +65,8 @@ class GroupInvolvementsController < ApplicationController
   
   def transfer_selected
     @transfer_notices = []
+    @group = @gi.group
     if params[:members]
-      @group = Group.find(params[:id]) # TODO this should be group_id
       # try to transfer each member
       params[:members].each do |member|
         begin
@@ -106,7 +105,7 @@ class GroupInvolvementsController < ApplicationController
     def refresh_directory_page
       respond_to do |format|
         format.html do 
-          redirect_to "/#{@group.class.to_s.tableize}/#{params[:id]}"
+          redirect_to "/#{@group.class.to_s.tableize}/#{params[:group_id]}"
         end
         format.js do
           render :update do |page|
@@ -135,6 +134,7 @@ class GroupInvolvementsController < ApplicationController
       # make sure we're valid
       unless @gi.person == @me && (@gi.group.leaders.include?(@me) || @gi.group.leaders.include?(@me))
         flash[:notice] = "You don't have permission to do this"
+        throw response.inspect
         redirect_to access_denied
       end
     end
