@@ -3,8 +3,9 @@
   <p>There is alot to do here.  Here you can edit who's in your group, where your group is, and what time they meet. 
   Leaders and Co Leaders can add, remove, and transfer people in their group as they wish. Leaders can accept join requests.</p>
   <p>A helpful idea is to use the "compare timetables" function at the bottom of the page to help schedule the meeting times.
-  To add or remove a member, tick off his or her checkbox and click either "add" or "remove". 
-  To transfer a member to another group, do the same, but after click transfer use the dropdown menu to choose what group to switch them into.</p>
+  To add a member, click the add button by the role you wish to add that member as, fill in the search box that appears, and choose the member you wish to add.<br />
+  To remove a member, tick off his or her checkbox and click "remove". 
+  To transfer a member to another group, do the same, but after you click transfer button use the dropdown menu to choose what group to switch them into.</p>
   <%- end -%>
   <br />
   <% types = ['leader','co_leader', 'member','interested'] -%>
@@ -37,6 +38,7 @@
               <h4 class="title"><%= level.titleize.pluralize %>&nbsp;&nbsp;
                 <%- if is_group_leader(@group) -%>
                   <%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>
+                  <%= link_to_function "Change a member to #{level.titleize}", "$('#change_#{level}').fadeIn()", :class => 'small' %>
                 <%- end -%>
               </h4>
             </td>
@@ -44,6 +46,7 @@
           <tr>
             <td colspan="5">
               <div id="add_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/new', :locals => {:type => level} %></div>
+              <div id="change_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/change_level', :locals => {:level => level} %></div>
             </td>
           </tr>
         </table>

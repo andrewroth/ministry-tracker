@@ -1,0 +1,1 @@
+page["change_#{@level}".to_sym].hide

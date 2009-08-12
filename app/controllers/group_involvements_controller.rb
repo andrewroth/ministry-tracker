@@ -72,6 +72,15 @@ class GroupInvolvementsController < ApplicationController
     refresh_directory_page
   end
   
+  #group_involvements/change_level (level => ?, :id  => ?)
+  def change_level
+    @gi = GroupInvolvement.find_by_id(params[:id]) if params[:id] 
+    @level = params[:level]
+    if @gi
+      @gi.level = @level #this function should always have level in the params
+      @gi.save
+    end
+  end
   
   protected
     def find_by_person_id_and_group_id(person_id, group_id)
