@@ -39,7 +39,7 @@
 	
 	<td>
 	  <table class="halftab">
-    	<tr><th width="100px">Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:description) %></td></tr>
+    	<tr><th width="100px">Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:name) %></td></tr>
     	<tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
     	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
     	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
