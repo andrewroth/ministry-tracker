@@ -106,7 +106,8 @@ class ApplicationController < ActionController::Base
                   :set_permanent_address_states],
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
-      :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time]
+      :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
+      :campus_involvements => [:new]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -156,6 +157,10 @@ class ApplicationController < ActionController::Base
             @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
             return true
           end
+        when :campus_involvements
+          if (params[:person_id] && params[:controller] == "campus_involvements") && params[:person_id] == @my.id.to_s 
+            return true
+          end   
         end # case
       end # if
 
