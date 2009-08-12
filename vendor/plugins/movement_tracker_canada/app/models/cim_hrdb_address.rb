@@ -45,7 +45,7 @@ class CimHrdbAddress < ActiveRecord::Base
     out += state if state.present?
     out += "<br />" + zip.to_s if zip.present?
     out += "<br />" unless out.strip.empty? || !country.present?
-    out += country_ref.name
+    out += country_ref.try(:name)
   end
 
   def start_date() person_extra.send("#{extra_prefix}_start_date") end
