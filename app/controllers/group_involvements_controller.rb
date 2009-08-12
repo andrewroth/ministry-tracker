@@ -38,12 +38,25 @@ class GroupInvolvementsController < ApplicationController
     render :action => 'request_result' 
   end
   
+  # TODO: clean this up
   def destroy 
     if params[:members]
+      leader_count = 0
+      gis = []
       params[:members].each do |member|
         gi = find_by_person_id_and_group_id(member, params[:group_id])
         gi.destroy if gi
+        leader_count += 1 if gi.level == 'leader'
       end
+      #check that we don't delete all the leaders
+      if leader_count < Group.find_by_id(params[:id]).leaders.count
+        gis.each do |gi|
+          GroupInvolvement.delete(gi.id)
+        end
+      else 
+        flash[:notice] = "You can not delete all the leaders in a groups"
+      end
+      
     else
       raise "No members were selected to delete"
     end
