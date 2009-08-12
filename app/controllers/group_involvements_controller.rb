@@ -102,7 +102,7 @@ class GroupInvolvementsController < ApplicationController
         format.js do
           render :update do |page|
             eval("@#{@group.class.to_s.underscore} = @group" )
-            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show/show")
+            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show")
           end
         end
       end
