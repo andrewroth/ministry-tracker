@@ -13,9 +13,7 @@
                 <%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id},
                   :before => "$('#spinnergt').show();" %>
                   <%= link_to_remote '[Decline]', :url => {:controller => "group_involvements", :action => "decline_request", :id => request.id},
-                    :before => "$('#spinnergt').show();" %>    
-                  </b>
-                  (Role: '<%= GroupInvolvement.find(request.id).level%>')
+                    :before => "$('#spinnergt').show();" %>   
               </li>
             <% end %>
           </ul>
