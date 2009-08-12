@@ -32,7 +32,7 @@
     <br />
     <%-types.each do |level| -%>
       <div id="<%= level %>">
-        <%= render :partial => 'level', :object => level %>
+        <%= render :partial => 'groups/level', :object => level %>
     </div>
   <%- end -%>
 </div>
