@@ -153,6 +153,7 @@ class GroupsController < ApplicationController
       format.js{
          render :update do |page|
             page.replace_html("notices", :partial => "groups/show_notices")
+            page.replace_html("address", :partial => "groups/address")
          end
       }
     end
@@ -176,6 +177,7 @@ class GroupsController < ApplicationController
       format.js{
          render :update do |page|
             page.replace_html("notices", :partial => "groups/show_notices")
+            page.replace_html("address", :partial => "groups/address")
          end
       }
     end
