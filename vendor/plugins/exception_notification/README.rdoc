@@ -1,14 +1,14 @@
 = Super Exception Notifier
 
-The Exception Notifier plugin provides a mailer object and a default set of
+The Super Exception Notifier (SEN) gem provides a mailer object and a default set of
 templates for sending email notifications when errors occur in a Rails
 application, as well as a default set of error page templates to render 
-based on the status code assigned to an error. The plugin is configurable, 
+based on the status code assigned to an error. The gem is configurable,
 allowing programmers to customize (all on a per environment basis!):
 
 * the sender address of the email
 * the recipient addresses
-* the text used to prefix the subject line
+* text used to prepend and append the subject line
 * the HTTP status codes to send emails for
 * the error classes to send emails for
 * alternatively, the error classes to not send emails for
@@ -16,51 +16,82 @@ allowing programmers to customize (all on a per environment basis!):
 * the HTTP status and status code that gets rendered with specific errors
 * the view path to the error page templates
 * custom errors, with custom error templates
-* define error layouts at application or controller level, or use the controller's own default layout, or no layout at all
+* fine-grained customization of error layouts (or no layout)
 
 New features:
 
 * get error notification for errors that occur in the console, using notifiable method
 * Hooks into `git blame` output so you can get an idea of who (may) have introduced the bug
+* Hooks into other website services (e.g. you can send exceptions to to Switchub.com)
 
 The email includes information about the current request, session, and
 environment, and also gives a backtrace of the exception.
 
-This plugin was originally called Super Exception Notifier and was (initially) based on
-svn v8821 of the wonderful exception_notification plugin, and remains for 
-the most part a drop in replacement with greatly extended functionality and 
-customization options.  Since then it has kept up with the work on the core team's branch.
+This gem is based on the wonderful exception_notification plugin
+created by Jamis Buck. I have modified it extensively and merged many of the improvements from
+a dozen or so other forks.  It remains a (mostly) drop in replacement with greatly extended
+functionality and customization options.  I keep it up to date with the work on the core team's
+branch.
 
 The original is here:
  
   http://github.com/rails/exception_notification/tree/master
 
-The current version of this plugin is a git fork of the original and 
+The current version of this gem is a git fork of the original and
 has been updated to include the latest improvements from the original, 
-including compatability with Rails 2.1, as well as many improvements from 
+including compatability with Rails 2.1, 2.2, 2.3, as well as many improvements from 
 the other forks on github.  I merge them in when I have time, and when the 
 changes fit nicely with the enhancements I have already made.
 
-This fork of Exception Notifier is in production use on at least five large 
-websites that I know of totaling hundreds of thousands of users and hits. 
-As errors happen on those sites it has performed flawlessly in rendering 
-error pages, and sending error notification emails when asked. So I decided 
-it had been through the fire and am offering it to the world under the MIT 
-license.
+This fork of Exception Notifier is in production use on several large websites (top 5000).
 
 == Installation
 
-Using Git:
+Gem Using Git building from source:
 
+  mkdir -p ~/src
+  cd ~/src
+  git clone git://github.com/pboling/exception_notification.git
+  cd exception_notification
+  gem build exception_notification.gemspec
+  sudo gem install super_exception_notification-1.6.4.gem # (Or whatever version gets built)
+
+Then cd to your rails app to optionally freeze the gem into your app:
+
+  rake gems:freeze GEM=super_exception_notifier
+
+Then in your environment.rb:
+
+  config.gem 'super_exception_notifier',
+      :version => '~> 1.6.5',
+      :lib => "exception_notifier"
+
+
+Installing Gem from Github's Gem Server:
+
+  gem sources -a http://gems.github.com
+  sudo gem install pboling-super_exception_notifier
+
+Then in your environment.rb:
+
+  config.gem 'pboling-super_exception_notifier',
+      :version => '~> 1.6.5',
+      :lib => "exception_notifier",
+      :source => 'http://gems.github.com'
+
+
+Plugin using Git:
+
+  # Installation as plugin might work... I haven't tried it.
   ./script/plugin install git://github.com/pboling/exception_notification.git
 
-SVN (deprecated, no longer updated, install Git!):
+SVN Plugin (very deprecated, no longer updated, install Git!):
 
   ./script/plugin install http://super-exception-notifier.googlecode.com/svn/trunk/super_exception_notifier
 
 == Usage
 
-First, include the ExceptionNotifiable mixin in whichever controller you want
+1. Include the ExceptionNotifiable mixin in whichever controller you want
 to generate error emails (typically ApplicationController):
 
   class ApplicationController < ActionController::Base
@@ -68,31 +99,50 @@ to generate error emails (typically ApplicationController):
     ...
   end
 
-Then, specify the email recipients in your environment:
+2. Specify the email recipients in your environment:
 
-  ExceptionNotifier.exception_recipients = %w(joe@example.com bill@example.com)
+  ExceptionNotifier.configure_exception_notifier do |config|
+    config[:exception_recipients] = %w(joe@example.com bill@example.com)
+  end
 
-And that's it! The defaults take care of the rest.
+3. Make sure you have your ActionMailer server settings correct if you are using the e-mail features.
 
-== Configuration
+4. That's it!  The defaults take care of the rest.
+
+== Basic Configuration
 
 You can tweak other values to your liking, as well. In your environment file,
-just set any or all of the following values:
+just set any or all of the following values (defaults are shown):
 
-  # defaults to errors@example.com
-  ExceptionNotifier.sender_address = %(MYRAILSAPP #{RAILS_ENV.capitalize} Error <errors@example.com>)
+  ExceptionNotifier.configure_exception_notifier do |config|
+    # If left empty web hooks will not be engaged
+    config[:web_hooks]                = []
+    config[:app_name]                 = "[MYAPP]"
+    config[:sender_address]           = %("#{(defined?(Rails) ? Rails.env : RAILS_ENV).capitalize} Error" <super.exception.notifier@example.com>)
+    config[:exception_recipients]     = []
+    # Customize the subject line
+    config[:subject_prepend]          = "[#{(defined?(Rails) ? Rails.env : RAILS_ENV).capitalize} ERROR] "
+    config[:subject_append]           = nil
+    # Include which sections of the exception email?
+    config[:sections]                 = %w(request session environment backtrace)
+    # Only use this gem to render, never email
+    #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
+    config[:render_only]              = false
+    config[:skip_local_notification   = true
+    # Example:
+    #config[:view_path]               = 'app/views/error'
+    config[:view_path]                = nil
+    #Error Notification will be sent if the HTTP response code for the error matches one of the following error codes
+    config[:send_email_error_codes]   = %W( 405 500 503 )
+    #Error Notification will be sent if the error class matches one of the following error error classes
+    config[:send_email_error_classes] = %W( )
+    config[:send_email_other_errors]  = true
+    # If you set this SEN will
+    config[:git_repo_path]            = nil
+    config[:template_root]            = "#{File.dirname(__FILE__)}/../views"
+  end
 
-  # defaults to "[ERROR] "
-  ExceptionNotifier.email_prefix = "[APP-#{RAILS_ENV.capitalize} ERROR] "
-
-  #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
-  ExceptionNotifier.render_only = true
-
-  #defaults to %W( 405 500 503 )
-  ExceptionNotifier.send_email_error_codes = %W( 400 403 404 405 410 500 501 503 )
-
-  #defaults explained further down in detail
-  ExceptionNotifier.view_path = 'app/views/error'
+== Environmental Behavior
 
 Email notifications will only occur when the IP address is determined not to
 be local. You can specify certain addresses to always be local so that you'll
@@ -112,10 +162,25 @@ NOT be considered local), you can simply do, somewhere in your controller:
 
   local_addresses.clear
 
-SuperExceptionNotifier allows you to specify the layout for errors ocurring in a site-wide, or just in a particular controller, or to use the same layout as the controller, or to not use a loyout at all:
-By default it will render the error with the latout the controller is using. You just need to set in application.rb (or per-controller):
+== Error Layout Customization
 
-  self.error_layout = 'my_error_layout' #or = true for the same layout as the controller, or = false for no layout
+SEN allows you to specify the layout for errors at several levels:
+
+  * all errors use same layout site-wide
+  * customize a single controller
+  * can use the same layout as the controller
+  * no layout at all
+
+By default it will render the error with the layout the controller is using. You just need to set in application.rb (assuming you included ExceptionNotifiable in applicaiton.rb) (or per-controller):
+
+  # All Same site-wide (in application.rb)
+  self.error_layout = 'my_error_layout'
+  # customize a single controller
+  self.error_layout = 'example_controller_error_layout'
+  # Same layout as the current controller is using
+  self.error_layout = true
+  # No layout at all
+  self.error_layout = false
 
 SuperExceptionNotifier allows customization of the error classes that will be handled, and which HTTP status codes they will be handled as: (default values are shown)
 Example in application.rb or on a per-controller basis:
@@ -134,37 +199,31 @@ Q: Why is "200" listed as an error code?
 
 A: You may want to have multiple custom errors that the standard HTTP status codes weren't designed to accommodate, and for which you need to render customized pages. Explanation and examples are a little further down...
 
-Then you can specify which of those should send out emails! By default, the email notifier will only notify on critical errors (405 500 503 statuses). For example, ActiveRecord::RecordNotFound and ActionController::UnknownAction errors will simply render the contents of /vendor/plugins/exception_notifier/views/exception_notifiable/###.html file, where ### is 400 and 501 respectively.
+Then you can specify which of those should send out emails!
+By default, the email notifier will only notify on critical errors (405 500 503 statuses).
+For example, ActiveRecord::RecordNotFound and ActionController::UnknownAction errors will simply render the contents of #{this gem's root}/rails/app/views/exception_notifiable/###.html file, where ### is 400 and 501 respectively.
 
-  ExceptionNotifier.send_email_error_codes = %w( 400 405 500 503 )
+  ExceptionNotifier.config[:send_email_error_codes] = %w( 400 405 500 503 )
 
 You can also configure the text of the HTTP request's response status code: (by default only the last 6 will be handled, the first 6 are made up error classes)
 Example in application.rb or on a per-controller basis:
 
   self.rails_error_classes = { 
-    AccessDenied => "403",
-    PageNotFound => "404",
-    InvalidMethod => "405",
-    ResourceGone => "410",
-    CorruptData => "500",
-    NotImplemented => "501",
     NameError => "503",
     TypeError => "503",
     ActiveRecord::RecordNotFound => "400",
-    ::ActionController::UnknownController => "404",
-    ::ActionController::UnknownAction => "501",
-    ::ActionController::RoutingError => "404",
-    ::ActionController::MissingTemplate => "404",
-    ::ActionView::TemplateError => "500"
 	}
 
-To make up your own error classes, you can define them in environment.rb, or in application.rb:
-class AccessDenied    < StandardError; end
-class ResourceGone    < StandardError; end
-class NotImplemented  < StandardError; end
-class PageNotFound    < StandardError; end
-class InvalidMethod   < StandardError; end
-class CorruptData     < StandardError; end
+To make up your own error classes, you can define them in environment.rb, or in application.rb, or wherever you need them.
+These are defined by the gem and are available to you in controllers once ExceptionNotifiable is included in application.rb or the current controller:
+
+    class AccessDenied < StandardError; end
+    class ResourceGone < StandardError; end
+    class NotImplemented < StandardError; end
+    class PageNotFound < StandardError; end
+    class InvalidMethod < StandardError; end
+    class CorruptData < StandardError; end
+    class MethodDisabled < StandardError; end
 
 These error classes can be raised in before filters, or controller actions like so:
   def owner_required
@@ -183,7 +242,7 @@ And then used like so (as before filter in a controller):
 
 You may also configure which HTTP status codes will send out email: (by default = [], email sending is defined by status code only)
 
-  ExceptionNotifier.send_email_error_classes = [	
+  ExceptionNotifier.config[:send_email_error_classes] = [	
     NameError, 
     TypeError, 
     ActionController::RoutingError 
@@ -193,19 +252,19 @@ Email will be sent if the error matches one of the error classes to send email f
 
 You can also customize what is rendered. SuperExceptionNotifier will render the first file it finds in this order:
 
-  RAILS_ROOT/public/###.html
-  RAILS_ROOT/ExceptionNotifier.view_path/###.html
-  RAILS_ROOT/vendor/plugins/super_exception_notifier/views/exception_notifiable/###.html"
+  #{RAILS_ROOT}/public/###.html
+  #{RAILS_ROOT}/#ExceptionNotifier.config[:view_path]}/###.html
+  #{this gem's root}/rails/app/views/exception_notifiable/#{status_cd}.html
 
 And if none of those paths has a valid file to render, this one wins:
 
-  RAILS_ROOT/vendor/plugins/super_exception_notifier/views/exception_notifiable/500.html"
+  #{RAILS_ROOT}/rails/app/views/exception_notifiable/500.html
 
-You can configure ExceptionNotifier.view_path in your environment file like this:
+You can configure ExceptionNotifier.config[:view_path] in your environment file like this:
 
-  ExceptionNotifier.view_path = 'app/views/error'
+  ExceptionNotifier.config[:view_path] = 'app/views/error'
 
-So public trumps your custom path which trumps the plugin's default path.
+So public trumps your custom path which trumps the gem's default path.
 
 == Custom Error Pages
 
@@ -218,14 +277,14 @@ You can render CUSTOM error pages! Here's how:
   3. Setup SuperExceptionNotifier to handle the error, in app/controllers/application.rb:
     * self.rails_error_classes = { InsufficientFundsForWithdrawal => "200" }
   4. Set your custom error's view path:
-    * ExceptionNotifier.view_path = 'app/views/error'
+    * ExceptionNotifier.config[:view_path] = 'app/views/error'
   5. Create a view for the error. SuperExceptionNotifier munges the error's class by converting to a string and then replacing consecutive ':' with '' and then downcases it:
     * touch app/views/error/insufficient_funds_for_withdrawal.html
   6. If you want a custom layout (by default it will render the error with the latout the controller is using) you just need to set, in application.rb (or per-controller):
     * self.error_layout = 'my_error_layout' #or = true for the same layout as the controller, or = false for no layout
   7. That's it! All errors that are set to be handled with a status of "200" will render a custom page.
   8. If you want to have errors that render custom pages also send emails then you'll need to:
-    * ExceptionNotifier.send_email_error_classes = [ InsufficientFundsForWithdrawal ]
+    * ExceptionNotifier.config[:send_email_error_classes] = [ InsufficientFundsForWithdrawal ]
 
 == Customization
 
@@ -245,7 +304,11 @@ access to the following variables:
 * @sections: the array of sections to include in the email
 
 You can reorder the sections, or exclude sections completely, by altering the
-ExceptionNotifier.sections variable. You can even add new sections that
+ExceptionNotifier.config[:sections] variable.
+
+== Not working due to nature of gem vs plugin
+
+You can even add new sections that
 describe application-specific data--just add the section's name to the list
 (whereever you'd like), and define the corresponding partial. Then, if your
 new section requires information that isn't available by default, make sure
@@ -265,7 +328,7 @@ it is made available to the email using the exception_data macro:
 
 In the above case, @document and @person would be made available to the email
 renderer, allowing your new section(s) to access and display them. See the
-existing sections defined by the plugin for examples of how to write your own.
+existing sections defined by the gem for examples of how to write your own.
 
 == Exceptions Without a Controller
 
@@ -286,6 +349,8 @@ in ExceptionNotifiable for an example of how to go about that.
   For reference these are the error codes that Exception Notifier can inherently handle.
   Official w3.org HTTP 1.1 Error Codes:
   http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+  Not all the error codes in use today are on that list, so here's Apache's list:
+  http://www.askapache.com/htaccess/apache-status-code-headers-errordocument.html#apache-response-codes-57
 
   400 Bad Request
     * The request could not be understood by the server due to malformed syntax. 
@@ -299,12 +364,39 @@ in ExceptionNotifiable for an example of how to go about that.
     * This is not implemented entirely as the response is supposed to contain a list of accepted methods.
   410 Gone
     * The requested resource is no longer available at the server and no forwarding address is known. This condition is expected to be considered permanent
+  418 I'm a teapot
+    * ErrorDocument I'm a teapot | Sample 418 I'm a teapot
+    * The HTCPCP server is a teapot. The responding entity MAY be short and stout. Defined by the April Fools specification RFC 2324. See Hyper Text Coffee Pot Control Protocol for more information.
+  422 Unprocessable Entity
+    * ErrorDocument Unprocessable Entity | Sample 422 Unprocessable Entity
+    * (WebDAV) (RFC 4918 ) - The request was well-formed but was unable to be followed due to semantic errors.
+  423 Locked
+    * ErrorDocument Locked | Sample 423 Locked
+    * (WebDAV) (RFC 4918 ) - The resource that is being accessed is locked
   500 Internal Server Error
     * The server encountered an unexpected condition which prevented it from fulfilling the request.
   501 Not Implemented
     * The server does not support the functionality required to fulfill the request.
   503 Service Unavailable
     * The server is currently unable to handle the request due to a temporary overloading or maintenance of the server.
+
+== CSS
+
+All the standard error pages that come in the gem render a div with a class of "dialog",
+so put this in a stylesheet you are including in your app to get you started (like stardard rails error style):
+
+<style type="text/css">
+  div.dialog {
+    width: 25em;
+    padding: 0 4em;
+    margin: 4em auto 0 auto;
+    border: 1px solid #ccc;
+    border-right-color: #999;
+    border-bottom-color: #999;
+  }
+  h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
+</style>
+
     
   Copyright (c) 2008 Peter H. Boling, released under the MIT license
   Portions Copyright (c) 2005 Jamis Buck, released under the MIT license
@@ -312,4 +404,16 @@ in ExceptionNotifiable for an example of how to go about that.
 == jamescook changes
 
 Hooks into `git blame` output so you can get an idea of who (may) have introduced the bug :)
--- Usage: set ExceptionNotifier.git_repo_path to the path of your git repo.
+-- Usage: set ExceptionNotifier.config[:git_repo_path] to the path of your git repo.
+
+
+== ismasan changes
+
+POST exception data in JSON format to the specified services for processing
+-- Usage:
+  ExceptionNotifier.configure_exception_notifier do |config|
+      config[:web_hooks]            = %w(http://some-hook-service.example.com http://another-hook-service.example.com) # defaults to []
+      config[:app_name]             = "[APP]" # defaults to [MYAPP]
+      config[:exception_recipients] = %w(my@example.com another@example.com) # defaults to []
+      config[:sender_address]       = %("Application Error" <app.error@myapp.com>) # defaults to super.exception.notifier@example.com
+  end
