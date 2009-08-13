@@ -1,7 +1,11 @@
 <% gi = @my.group_involvements.find_by_group_id(group.id) %>
 
 <h2><%= 
-  link_to(group.name, group_url(group), :method => :get)
+  if authorized?(:show, :groups) 
+    link_to(group.name, group_url(group), :method => :get)
+  else
+    "<b>#{group.name}</b>"
+  end
 -%> <%- if authorized?(:new, :groups) -%>
   &nbsp <%= link_to_remote image_tag('delete.png'), 
   						:url => {:action => :destroy, :id => group.id}, 
@@ -44,7 +48,16 @@
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
 <%- unless involvements.empty? -%>
   &nbsp &nbsp <b>Members:</b>  
-  <%= involvements.map{|i| link_to(i.person.full_name, person_url(i.person.id))}.join(", ") %>
+  <%= 
+      link = authorized?(:show, :people)
+      involvements.map{ |i| 
+        if link
+          link_to(i.person.full_name, person_url(i.person.id))
+        else
+          i.person.full_name
+        end
+      }.join(', ')
+  %>
   <br />
 <%- end -%>
 
