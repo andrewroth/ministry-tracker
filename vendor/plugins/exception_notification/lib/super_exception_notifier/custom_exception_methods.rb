@@ -30,7 +30,7 @@ module SuperExceptionNotifier
       raise MethodDisabled
     end
     #The current user does not have enough privileges to access the requested resource
-    def access_denied
+    def access_denied2
       raise AccessDenied2
     end
 
