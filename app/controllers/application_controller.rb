@@ -107,6 +107,7 @@ class ApplicationController < ActionController::Base
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
+      :group_involvements => [:transfer, :change_level],
       :campus_involvements => [:new]
     }
     
@@ -145,7 +146,7 @@ class ApplicationController < ActionController::Base
         AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
         case controller.to_sym
         when :people
-          if (params[:id] && params[:controller] == "people") && params[:id] == @my.id.to_s
+          if params[:id] && params[:id] == @my.id.to_s
             return true
           end
         when :profile_pictures, :timetables
@@ -153,8 +154,11 @@ class ApplicationController < ActionController::Base
             return true
           end
         when :groups
-          if (params[:id] && params[:controller] == "groups") && 
-            @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
+          if params[:id] && @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
+            return true
+          end
+        when :group_involvements
+          if params[:id] && GroupInvolvement.find(params[:id]).group.leaders.include?(@me)
             return true
           end
         when :campus_involvements
