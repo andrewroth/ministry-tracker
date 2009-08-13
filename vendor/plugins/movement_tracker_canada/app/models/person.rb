@@ -179,7 +179,7 @@ class Person < ActiveRecord::Base
 
           # make sure they are involved in the ministry
           
-          mi = MinistryInvolvement.find :first, :conditions => {:ministry_id => c4c.id, :person_id => self.id}
+          mi = MinistryInvolvement.find :first, :conditions => {:ministry_id => c4c.id, :person_id => self.id, :end_date => nil}
           if mi.nil?
             mi = ministry_involvements.create!(mi_atts)
 
