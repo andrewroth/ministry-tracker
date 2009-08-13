@@ -2,3 +2,6 @@
 page[:"request_#{@gi_request.id}"].fade
 update_flash(page)
 page[:spinnergt].hide
+if params[:source] == 'groups_show'
+  page.replace_html(@gi_request.level, :partial => 'groups/level', :locals => {:level => @gi_request.level})
+end

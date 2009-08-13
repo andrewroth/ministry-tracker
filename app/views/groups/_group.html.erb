@@ -27,18 +27,20 @@
   <%- if @join -%>
     <%= link_to_remote 'Join', 
       :url => { :action => 'joingroup', :controller => 'group_involvements', 
+        :person_id => @person.id,
+        :group_id => group.id,
+        :level => 'member'
+      }, 
+      :method => :post
+    %>
+    <%= link_to_remote 'Interested', 
+      :url => { :action => 'joingroup', :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
         :person_id => @person.id,
-        :group_involvement => { :group_id => group.id, :level => 'member'}
+        :group_involvement => { :group_id => group.id, :level => 'interested'}
       }, 
-      :method => :post %>
-      <%= link_to_remote 'Interested', 
-        :url => { :action => 'joingroup', :controller => 'group_involvements', 
-          :gt_id => group.group_type.id,
-          :person_id => @person.id,
-          :group_involvement => { :group_id => group.id, :level => 'interested'}
-        }, 
-        :method => :post %>
+      :method => :post 
+    %>
   <%- end -%> 
 <%- end -%>
 <br />

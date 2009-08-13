@@ -10,12 +10,12 @@ class GroupInvolvementsController < ApplicationController
   def create
     get_person_campus_groups
     @groups = @person_campus_groups
+    params[:requested] = false
     create_group_involvement
     refresh_directory_page
   end
   
   def joingroup
-    params[:level] = params[:group_involvement][:level]
     unless %w(member interested).include?(params[:level])
       flash[:notice] = 'invalid level'
       render(:update) do |page|
@@ -23,7 +23,6 @@ class GroupInvolvementsController < ApplicationController
       end
       return
     end
-    params[:group_id] = params[:group_involvement][:group_id]
     params[:requested] = (params[:level] == 'member' ? @group.needs_approval : false)
     create_group_involvement
     get_person_campus_groups
@@ -35,14 +34,14 @@ class GroupInvolvementsController < ApplicationController
     get_person_campus_groups
     @gi_request.requested = false
     @gi_request.save!
-    flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> accepted."
+    flash[:notice] = "Group join request from <b>" + @gi_request.person.full_name + "</b> accepted."
     render :action => 'request_result'
   end
   
   def decline_request
     get_person_campus_groups
-    @gi.destroy
-    flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> declined."
+    @gi_request.destroy
+    flash[:notice] = "Group join request from <b>" + @gi_request.person.full_name + "</b> declined."
     render :action => 'request_result' 
   end
   
@@ -64,6 +63,8 @@ class GroupInvolvementsController < ApplicationController
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
         @member_notices << "Couldn't transfer #{gi.person.full_name}, since that would result in a leaderless group!"
+      elsif @group_to_transfer_to.people.detect{ |p| p == gi.person }
+        @member_notices << "#{gi.person.full_name} already in group #{@group_to_transfer_to.name}"
       else
         gi.group = @group_to_transfer_to
         @member_notices << "#{gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
@@ -105,13 +106,9 @@ class GroupInvolvementsController < ApplicationController
     if params[:members]
       # try to transfer each member
       params[:members].each do |member|
-        begin
-          gi = @group.group_involvements.find(:first, :conditions => {:person_id => member})
-          yield gi
-          gi.save!
-        rescue ActiveRecord::StatementInvalid
-          @member_notices << "Error for <i>" + gi.person.full_name
-        end
+        gi = @group.group_involvements.find(:first, :conditions => {:person_id => member})
+        yield gi
+        gi.save!
       end
     else
       @member_notices << "People need to be selected"
