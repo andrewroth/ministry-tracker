@@ -1,13 +1,3 @@
-
-<%- if !@transfer_notices.nil? && !@transfer_notices.empty? %>
-		<div class="flash notice" id="flash_notice">
-      <% dash = (@transfer_notices.length > 1 ? "-&nbsp;" : "") -%>
-			<%- @transfer_notices.each do |notice|  %>
-        <%= dash %><%= notice %><br/>
-			<%- end %>
-		</div>
-<%- end %>
-
 <% if is_group_leader(@group) %>
 
 <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
@@ -29,10 +19,10 @@
 <br/>
 <div id="transfer"  style="display:none">
 				<br />
-				<%- form_remote_tag({:url => "/group_involvements/transfer_selected/#{@group.id}", :html => {:id => 'transfer_to_form'}}) do -%>
+				<%- form_remote_tag({:url => "/group_involvements/transfer/#{@gi.id}", :html => {:id => 'transfer_to_form'}}) do -%>
 				Pick a group to transfer the selected people to:<br />
-				<%= select_tag('transfer_to', options_for_select(get_ministry.groups.collect {|bs| [bs.name, bs.id]})) %>
-				<%= link_to_remote 'Go', {:url => "/group_involvements/transfer_selected/#{@group.id}", 
+				<%= select_tag('transfer_to', options_for_select(@groups.collect {|g| [g.name, g.id]})) %>
+				<%= link_to_remote 'Go', {:url => "/group_involvements/transfer/#{@gi.id}", 
 												  :with => "#{data}"},
 												 {:class => 'small'} %>
 				<br />

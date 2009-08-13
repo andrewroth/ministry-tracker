@@ -1,9 +1,3 @@
-<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id)),
-                    :html => { :id => 'transfer_form_' + level },
-                    :condition => "$('#transfer_form_#{level} :checked').length > 0",
-                    :method => :post
-} ) do 
--%>
 <table width="70%" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <td colspan="5">
@@ -17,11 +11,21 @@
   </tr>
   <tr>
     <td colspan="5">
-      <div id="add_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/new', :locals => {:type => level} %></div>
-      <div id="change_<%= level %>" class="box" style="display:none"><%= render :partial => 'group_involvements/change_level', :locals => {:level => level} %></div>
+      <div id="add_<%= level %>" class="box" style="display:none">
+        <%= render :partial => 'group_involvements/new', :locals => {:type => level} %>
+      </div>
+      <div id="change_<%= level %>" class="box" style="display:none">
+        <%= render :partial => 'groups/change_level', :locals => {:level => level} %>
+      </div>
     </td>
   </tr>
 </table>
+<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id)),
+                    :html => { :id => 'transfer_form_' + level },
+                    :condition => "$('#transfer_form_#{level} :checked').length > 0",
+                    :method => :post
+} ) do 
+-%>
 <table width="70%" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <% if is_group_leader(@group) -%>
@@ -43,5 +47,5 @@
       <%- end -%>
     <%- end -%>
   <%- end -%>
-  </table>	
+</table>	
 <%- end -%>

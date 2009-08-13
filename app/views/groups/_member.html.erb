@@ -1,11 +1,10 @@
-<div id="person_#{person.id}">
-<% person.initialize_addresses(:current_address) if person.current_address.nil? %>
 <tr>
-  <% if is_group_leader(@group) %>
+  <%- person.initialize_addresses(:current_address) if person.current_address.nil? -%>
+  <%- if is_group_leader(@group) -%>
     <td width="20px">
       <input type="checkbox" name="members[]" value= <%= person.id %> />
     </td>
-  <% end %>
+  <%- end -%>
   <td><%= link_to(person.full_name, person) %></td>
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>

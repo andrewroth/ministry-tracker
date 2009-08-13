@@ -1,0 +1,10 @@
+Change selected <%= level.pluralize %> to level: <%= select_tag "change_level_#{level}", options_for_select(Group::LEVEL_TITLES, Group.promote(level)) %>
+<br />
+<%= button_to_remote("Move",
+    :url => change_level_group_involvement_url(@gi.try(:id)),
+    :condition => "$('#transfer_form_#{level} :checked').length > 0",
+    :method => :post,
+    :with => "$('#transfer_form_#{level}').serialize()+'&level='+$('#change_level_#{level}')[0].value"
+)
+%>
+<%= link_to_function 'cancel', "$('#change_#{level}').fadeOut()", :class => 'cancel'%>

@@ -1,4 +1,0 @@
-Move selected <%= level.pluralize %> to role: <%= select_tag :level, options_for_select(Group::LEVELS) %>
-<br />
-<%= submit_tag "Move" %> 
-<%= link_to_function 'cancel', "$('#change_#{level}').fadeOut()", :class => 'cancel'%>

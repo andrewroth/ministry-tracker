@@ -7,9 +7,6 @@ class GroupsController < ApplicationController
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time]
 
   def index
-    @groups = @person.groups.find(:all, :group => _(:ministry_id, :group_involvement), 
-                                                  :order => Ministry.table_name + '.' + _(:name, :ministry),
-                                                  :include => :ministry)
     @join = false
     get_person_campus_groups
     respond_to do |format|
@@ -21,6 +18,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # lists all relevant groups with a join / interested link for each one
   def join
     @join = true
     get_person_campus_groups
@@ -34,8 +32,10 @@ class GroupsController < ApplicationController
   end
   
   def show
+    get_person_campus_groups
+    @groups = @person_campus_groups
     @ministry = @group.ministry
-    @gi = @group.group_involvements.select{ |gi| gi.person = @me }
+    @gi = @group.group_involvements.find_by_person_id @me.id
     respond_to do |format|
       format.html 
       format.js
