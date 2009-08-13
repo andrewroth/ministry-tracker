@@ -1,0 +1,13 @@
+<li id="request_<%=member_request.id%>">
+  Join request from <%= link_to member_request.person.full_name, person_url(member_request.person_id) %>
+  <b>
+    <%= link_to_remote "[Accept]", :url => accept_request_group_involvement_url(member_request.id, :source => source),
+      :before => "$('#spinnergt').show();",
+      :method => :post
+    %>
+    <%= link_to_remote '[Decline]', :url => decline_request_group_involvement_url(member_request.id, :source => source),
+      :before => "$('#spinnergt').show();",
+      :method => :post
+    %>
+  </b>
+</li>

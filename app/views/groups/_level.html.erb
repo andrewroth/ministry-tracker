@@ -22,7 +22,7 @@
     </td>
   </tr>
 </table>
-<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id) || 0),
+<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id),
                     :html => { :id => 'transfer_form_' + level },
                     :condition => "$('#transfer_form_#{level} :checked').length > 0",
                     :method => :post

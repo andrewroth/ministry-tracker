@@ -6,7 +6,7 @@
         <%- if authorized?(:accept_request, :group_involvements) || 
               authorized?(:decline_requests, :group_involvements) %>
           <ul class="requesticon">
-            <%= render :partial => 'groups/request', :collection => group.requests, 
+            <%= render :partial => 'groups/member_request', :collection => group.requests, 
               :locals => { :source => 'dashboard' } %>
           </ul>
         <%- elsif group.has_requested(@me) -%>

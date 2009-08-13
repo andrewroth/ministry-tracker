@@ -33,8 +33,8 @@
          authorized?(:decline_requests, :group_involvements) %>
   <div id="requests" class="section">
     <ul class="requesticon">
-      <%= render :partial => 'groups/request', :collection => @group.requests, 
-            :locals => { :source => 'show' }
+      <%= render :partial => 'groups/member_request', :collection => @group.requests, 
+            :locals => { :source => 'groups_show' }
       %>
     </ul>
   </div>

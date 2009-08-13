@@ -1,6 +1,6 @@
 <tr>
   <%- person.initialize_addresses(:current_address) if person.current_address.nil? -%>
-  <%- if is_group_leader(@group) -%>
+  <%- if authorized?(:transfer, :group_involvements) || authorized?(:change_level, :group_involvements) %>
     <td width="20px">
       <input type="checkbox" name="members[]" value= <%= person.id %> />
     </td>
