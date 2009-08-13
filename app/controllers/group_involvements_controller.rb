@@ -3,19 +3,18 @@
 #
 
 class GroupInvolvementsController < ApplicationController
-  before_filter :set_group_involvement, :only => [ :accept_request, :decline_request, 
-    :decline_request, :transfer, :change_level, :destroy ]
+  before_filter :set_group_involvement_and_group, :only => [ :accept_request, :decline_request, 
+    :decline_request, :transfer, :change_level, :destroy, :joingroup ]
   before_filter :ensure_request_matches_group, :only => [ :accept_request, :decline_request ]
 
   def create
     get_person_campus_groups
     @groups = @person_campus_groups
     create_group_involvement
-    @group = @gi.group
     refresh_directory_page
   end
   
-  def joingroup  
+  def joingroup
     params[:level] = params[:group_involvement][:level]
     unless %w(member interested).include?(params[:level])
       flash[:notice] = 'invalid level'
@@ -25,7 +24,6 @@ class GroupInvolvementsController < ApplicationController
       return
     end
     params[:group_id] = params[:group_involvement][:group_id]
-    @group = Group.find(params[:group_id])
     params[:requested] = (params[:level] == 'member' ? @group.needs_approval : false)
     create_group_involvement
     get_person_campus_groups
@@ -49,7 +47,6 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def destroy 
-    @group = @gi.group
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
         @member_notices << "Couldn't remove #{@gi.person.full_name}, since that would result in a leaderless group!"
@@ -63,7 +60,6 @@ class GroupInvolvementsController < ApplicationController
   
   # Moves members to another group
   def transfer
-    @group = @gi.group
     @group_to_transfer_to = Group.find params[:transfer_to] # TODO: add some security
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
@@ -78,7 +74,6 @@ class GroupInvolvementsController < ApplicationController
   
   # group_involvements/id/change_level (level => ?)
   def change_level
-    @group = @gi.group
     if Group::LEVEL_TITLES.include?(params[:level])
       params[:level] = Group::LEVELS[Group::LEVEL_TITLES.index(params[:level])]
     end
@@ -155,8 +150,9 @@ class GroupInvolvementsController < ApplicationController
       @gi.save!
     end
 
-    def set_group_involvement
+    def set_group_involvement_and_group
       @gi = GroupInvolvement.find :first, :conditions => { :id => params[:id] }
+      @group = @gi ? @gi.group : Group.find(params[:group_id])
     end
 
     def ensure_request_matches_group

@@ -1,6 +1,5 @@
-page["change_#{@level}".to_sym].hide
 update_flash(page)
-page["person_#{@gi.person.id}"].hide
+page["change_#{@level}".to_sym].hide
 page["change_member"].fade
 for level in @levels_to_update
   page.replace_html(level, :partial => 'groups/level', :locals => {:level => level})

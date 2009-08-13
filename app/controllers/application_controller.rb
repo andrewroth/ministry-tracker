@@ -162,9 +162,9 @@ class ApplicationController < ActionController::Base
           end
         when :group_involvements
           if params[:id] || @gi
-            @gi ||= GroupInvolvement.find(params[:id])
-            group = @gi.group
-            if group.is_leader(@me) || group.is_co_leader(@me)
+            @gi ||= GroupInvolvement.find_by_id(params[:id])
+            @group ||= @gi.try(:group) || Group.find(params[:group_id])
+            if @group.is_leader(@me) || @group.is_co_leader(@me)
               return true
             end
           end
