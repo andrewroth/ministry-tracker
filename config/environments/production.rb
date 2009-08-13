@@ -30,7 +30,9 @@ config.action_controller.perform_caching             = true
 #config.threadsafe! unless (File.basename($0) == "rake" && !ARGV.grep(/[\w]+:/).empty?)
 
 # be notified of crashes
-ExceptionNotifier.exception_recipients = %w(andrewroth@gmail.com ebendall@gmail.com)
+ExceptionNotifier.configure_exception_notifier do |config|
+  config[:exception_recipients] = %w(andrewroth@gmail.com ebendall@gmail.com)
+end
 
 # Mail settings
 ActionMailer::Base.delivery_method = :smtp
