@@ -11,6 +11,8 @@ class GroupInvolvementsController < ApplicationController
     :decline_request, :transfer, :change_level, :destroy ]
 
   def create
+    get_person_campus_groups
+    @groups = @person_campus_groups
     create_group_involvement
     refresh_directory_page
   end
@@ -49,7 +51,7 @@ class GroupInvolvementsController < ApplicationController
         leaders_to_delete_count += 1 if gi.level == 'leader'
       end
       # check that we don't delete all the leaders
-      if leader_count < @group.leaders.count
+      if leaders_to_delete_count < @group.leaders.count
         gis.each do |gi|
           gis.destroy
         end
