@@ -8,7 +8,7 @@
   		<%- form_tag search_people_url, :id => "person#{person.id}" do -%>
   			<%= hidden_field_tag :group_id, group_id %>
   			<%= hidden_field_tag :person_id, person.id %>
-  			<%= hidden_field_tag :type, type %>
+  			<%= hidden_field_tag :level, type %>
   			<%= link_to_remote(person.full_name, :url => group_involvements_url(), 
   												 :method => :post,
   												 :submit => "person#{person.id}") %><br />

@@ -21,8 +21,7 @@
 		<th>Website:</th>
 		<td><%= @group.url %></td>	
 	</tr>
-	</table>
-<br />
+</table>
 <% midnight = Time.now.beginning_of_day %>
 <%- if @group.start_time -%>
   Start Time: <%= (midnight + @group.start_time).to_s(:time) %><br />

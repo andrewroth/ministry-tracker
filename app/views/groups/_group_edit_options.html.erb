@@ -1,4 +1,4 @@
-<% if is_group_leader(@group) %>
+<% if authorized?(:update, :groups) %>
 
 <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
 
@@ -19,10 +19,10 @@
 <br/>
 <div id="transfer"  style="display:none">
 				<br />
-				<%- form_remote_tag({:url => "/group_involvements/transfer/#{@gi.id}", :html => {:id => 'transfer_to_form'}}) do -%>
+				<%- form_remote_tag({:url => "/group_involvements/transfer/#{@gi.try(:id) || 0}", :html => {:id => 'transfer_to_form'}}) do -%>
 				Pick a group to transfer the selected people to:<br />
 				<%= select_tag('transfer_to', options_for_select(@groups.collect {|g| [g.name, g.id]})) %>
-				<%= link_to_remote 'Go', {:url => "/group_involvements/transfer/#{@gi.id}", 
+				<%= link_to_remote 'Go', {:url => "/group_involvements/transfer/#{@gi.try(:id) || 0}", 
 												  :with => "#{data}"},
 												 {:class => 'small'} %>
 				<br />

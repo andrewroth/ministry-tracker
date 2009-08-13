@@ -2,8 +2,10 @@
   <tr>
     <td colspan="5">
       <h4 class="title"><%= level.titleize.pluralize %>&nbsp;&nbsp;
-        <%- if is_group_leader(@group) -%>
+        <%- if authorized?(:new, :group_involvements) %>
           <%= link_to_function 'add', "$('#add_#{level}').fadeIn()", :class => 'small' %>
+        <%- end -%>
+        <%- if authorized?(:change_level, :group_involvements) %>
           <%= link_to_function "move", "$('#change_#{level}').fadeIn()", :class => 'small' %>
         <%- end -%>
       </h4>
@@ -20,7 +22,7 @@
     </td>
   </tr>
 </table>
-<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id)),
+<%- form_remote_tag({:url => change_level_group_involvement_url(@gi.try(:id) || 0),
                     :html => { :id => 'transfer_form_' + level },
                     :condition => "$('#transfer_form_#{level} :checked').length > 0",
                     :method => :post
@@ -28,11 +30,11 @@
 -%>
 <table width="70%" border="0" cellspacing="0" cellpadding="5">
   <tr>
-    <% if is_group_leader(@group) -%>
+    <%- if authorized?(:transfer, :group_involvements) || authorized?(:change_level, :group_involvements) -%>
       <th width='20px'>
         <input type="checkbox" name="<%= level %>_checked" id="<%= level %>_checked" onclick="$('#transfer_form_<%= level %> :checkbox:not(#<%= level %>_checked)').attr('checked', $('#<%= level %>_checked').attr('checked'));"/>
       </th>
-    <% end -%>
+    <%- end -%>
     <th width='120px'>Name</th>
     <th width='120px'>Email</th>
     <th width='70px'>Phone</th>

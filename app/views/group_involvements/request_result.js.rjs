@@ -1,3 +1,4 @@
-page.replace_html("groups", :partial => "dashboard/groups")
+#page.replace_html("groups", :partial => "dashboard/groups")
+page[:"request_#{@gi_request.id}"].fade
 update_flash(page)
 page[:spinnergt].hide
