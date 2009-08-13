@@ -67,8 +67,8 @@ class GroupInvolvementsController < ApplicationController
     @group = @gi.group
     @group_to_transfer_to = Group.find params[:transfer_to] # TODO: add some security
     act_on_members do |gi|
-      gi.group_id = params[:transfer_id]
-      @member_notices << "#{@gi.person.full_name} transferred to #{@group_to_transfer_to}"
+      gi.group = @group_to_transfer_to
+      @member_notices << "#{@gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
       @levels_to_update << gi.level
     end
   end
