@@ -37,7 +37,7 @@ module ExceptionNotifiable
       TypeError => "503",
       RuntimeError => "500",
       # These are custom error names defined in lib/super_exception_notifier/custom_exception_classes
-      AccessDenied => "403",
+      AccessDenied2 => "403",
       PageNotFound => "404",
       InvalidMethod => "405",
       ResourceGone => "410",
