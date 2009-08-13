@@ -24,6 +24,8 @@ class GroupInvolvementsController < ApplicationController
     @group_id = params[:group_involvement][:group_id]
     get_person_campus_groups
     create_group_involvement
+    @gi.requested = (@gi.level == 'member' ? @group.needs_approval : false)
+    @gi.save!
     flash[:notice] = (@gi.requested ? "Join request for <b>#{@group.name}</b> group sent!" : 
                                       "You are now marked as <b>#{@gi.level.capitalize}</b> in the group <b>#{@group.name}</b>")
   end
@@ -151,7 +153,6 @@ class GroupInvolvementsController < ApplicationController
       @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
       @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
       @gi.level = params[:type]  # set the level of involvement
-      @gi.requested = (@gi.group.needs_approval ? params[:requested] : false)
       @gi.save!
       @group = @gi.group
     end
