@@ -1,0 +1,4 @@
+update_flash(page)
+for level in @levels_to_update
+  page.replace_html(level, :partial => 'groups/level', :locals => {:level => level})
+end
