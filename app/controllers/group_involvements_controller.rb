@@ -42,36 +42,28 @@ class GroupInvolvementsController < ApplicationController
   
   def destroy 
     @group = @gi.group
-    if params[:members]
-      leaders_to_delete_count = 0
-      gis = []
-      params[:members].each do |member|
-        gi = find_by_person_id_and_group_id(member, params[:group_id])
-        gi.destroy if gi
-        leaders_to_delete_count += 1 if gi.level == 'leader'
+    act_on_members do |gi|
+      if gi.level == 'leader' && gi.group.leaders.count == 1
+        @member_notices << "Couldn't remove #{@gi.person.full_name}, since that would result in a leaderless group!"
+      else
+        @levels_to_update << gi.level
+        @member_notices << "#{gi.person.full_name} removed"
+        gi.destroy
       end
-      # check that we don't delete all the leaders
-      if leaders_to_delete_count < @group.leaders.count
-        gis.each do |gi|
-          gis.destroy
-        end
-      else 
-        flash[:notice] = "You can not delete all the leaders in a groups"
-      end
-    else
-      raise "No members were selected to delete"
     end
-    get_group
-    refresh_directory_page
   end
   
   def transfer
     @group = @gi.group
     @group_to_transfer_to = Group.find params[:transfer_to] # TODO: add some security
     act_on_members do |gi|
-      gi.group = @group_to_transfer_to
-      @member_notices << "#{@gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
-      @levels_to_update << gi.level
+      if gi.level == 'leader' && gi.group.leaders.count == 1
+        @member_notices << "Couldn't transfer #{gi.person.full_name}, since that would result in a leaderless group!"
+      else
+        gi.group = @group_to_transfer_to
+        @member_notices << "#{gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
+        @levels_to_update << gi.level
+      end
     end
   end
   
@@ -91,12 +83,12 @@ class GroupInvolvementsController < ApplicationController
 
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
-        @member_notices << "Couldn't change #{@gi.person.full_name}'s level from a leader, since that would result in a leaderless group!"
+        @member_notices << "Couldn't change #{gi.person.full_name}'s level from a leader, since that would result in a leaderless group!"
       else
         @levels_to_update << gi.level # update old
         gi.level = params[:level]
         @levels_to_update << gi.level # update new
-        @member_notices << "#{@gi.person.full_name} is now a #{params[:level]}"
+        @member_notices << "#{gi.person.full_name} is now a #{params[:level]}"
       end
     end
   end
