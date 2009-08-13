@@ -48,6 +48,11 @@
 		
 	Make me the leader of this group:
   <%= check_box_tag(:isleader, 1, true)%>
+  <br />
+  Join requests must be approved:
+  <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
+  
+  
   </table>
 	<%= submit_tag 'Save' %> or 
 	<%- if params[:action] == 'new' -%>
