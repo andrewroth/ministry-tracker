@@ -1,9 +1,0 @@
-<li id="request_<%=request.id%>">
-  Join request from <%= link_to request.person.full_name, person_url(request.person_id) %>
-  <b>
-    <%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id, :source => source},
-         :before => "$('#spinnergt').show();" %>
-         <%= link_to_remote '[Decline]', :url => {:controller => "group_involvements", :action => "decline_request", :id => request.id, :source => source},
-         :before => "$('#spinnergt').show();" %>
-  </b>
-</li>
