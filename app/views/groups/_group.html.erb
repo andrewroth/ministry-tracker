@@ -1,11 +1,7 @@
 <% gi = @my.group_involvements.find_by_group_id(group.id) %>
 
 <h2><%= 
-  if gi
-    link_to(group.name, group_url(group), :method => :get)
-  else
-    "<b>#{group.name}</b>"
-  end
+  link_to(group.name, group_url(group), :method => :get)
 -%> <%- if authorized?(:new, :groups) -%>
   &nbsp <%= link_to_remote image_tag('delete.png'), 
   						:url => {:action => :destroy, :id => group.id}, 
@@ -23,7 +19,6 @@
 <%- elsif gi -%>
   <%= gi.level.capitalize %>
 <%- else -%>
-  <i>Not Involved</i>
   <%- if @join -%>
     <%= link_to_remote 'Join', 
       :url => { :action => 'joingroup', :controller => 'group_involvements', 
@@ -33,6 +28,7 @@
       }, 
       :method => :post
     %>
+    or
     <%= link_to_remote 'Interested', 
       :url => { :action => 'joingroup', :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
@@ -44,12 +40,11 @@
   <%- end -%> 
 <%- end -%>
 <br />
-&nbsp &nbsp <b>Campus:</b> <%= group.campus ? group.campus.name : "<i>No Campus Selected</i>" %> <br />
 
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
 <%- unless involvements.empty? -%>
   &nbsp &nbsp <b>Members:</b>  
-  <%= involvements.map{|i| i.person.full_name}.join(", ") %>
+  <%= involvements.map{|i| link_to(i.person.full_name, person_url(i.person.id))}.join(", ") %>
   <br />
 <%- end -%>
 
@@ -59,4 +54,5 @@
   <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />
 <%- end -%>
+&nbsp &nbsp <b>Campus:</b> <%= group.campus ? group.campus.name : "All" %> <br />
 <br />
