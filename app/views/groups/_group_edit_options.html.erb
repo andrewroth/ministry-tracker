@@ -1,7 +1,8 @@
-<%- if authorized?(:update, :groups) -%>
-
+<%- if authorized?(:transfer, :group_involvements) -%>
   <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
+<%- end -%>
 
+<%- if authorized?(:new, :group_involvements) -%>
   <%= link_to_remote 'Remove', {:url => group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :method => :delete, 
     :with => "#{data}", 
     :confirm => "Are you sure you want to remove these people?",
@@ -9,7 +10,9 @@
                    || $('#transfer_form_co_leader :checked').length > 0 || $('#transfer_form_interested :checked').length > 0"},
     {:class => 'small'} 
   %>
+<%- end -%>
 
+<%- if authorized?(:compare_timetables, :groups) -%>
   <%= link_to_remote 'Compare Timetables', {
     :url => group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), 
     :with => "#{data}", :complete => "location.hash = 'compare';"
@@ -19,11 +22,13 @@
   <%- tooltip do -%>
     <p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p>
   <%- end -%>
+<%- end -%>
 
+<%- if authorized?(:transfer, :group_involvements) -%>
   <br/>
   <div id="transfer"  style="display:none">
     <br />
-      <%- form_remote_tag(:url => transfer_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :html => {:id => 'transfer_to_form'}) do -%>
+    <%- form_remote_tag(:url => transfer_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :html => {:id => 'transfer_to_form'}) do -%>
       Pick a group to transfer the selected people to:<br />
       <%= select_tag('transfer_to', options_for_select(@groups.collect {|g| [g.name, g.id]})) %>
       <%= link_to_remote 'Go', {:url => transfer_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), 
@@ -32,4 +37,4 @@
       <br />
     <%- end -%>
   </div>
-<% end %>  
+<%- end -%>  
