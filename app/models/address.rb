@@ -17,6 +17,8 @@ class Address < ActiveRecord::Base
     out += ", " if city.present? && state.present?
     out += state if state.present?
     out += " " + zip.to_s
+    out += "<br />" unless out.strip.empty? || !country.present?
+    out += country if country.present?
   end
 
   def mailing_one_line

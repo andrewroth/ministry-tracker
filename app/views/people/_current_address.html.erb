@@ -71,10 +71,10 @@
   </td>
 </tr>
 <tr>
-  <th>Valid till</th>
+  <th>Valid until</th>
   <td class="date">
     <%=
-        start_year = Date.today.year - 5
+    start_year = Date.today.year - 5
     end_year = start_year + 5
     date_select :current_address, :end_date, {
       :include_blank => true,

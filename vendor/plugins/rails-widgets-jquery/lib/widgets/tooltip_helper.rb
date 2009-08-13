@@ -9,7 +9,7 @@ module Widgets
       end
       
       opts[:id] ||= rand(1000)
-      name ||= image_tag('widgets/tooltip_image.gif', :border => 0)
+      name ||= image_tag('widgets/tooltip_image.gif', :border => 0, :alt => '')
  
       result = ''
       result << tooltip_css
@@ -54,6 +54,10 @@ module Widgets
       width = opts[:width] || 200
       arrows = opts[:arrows] || true
       "$('##{link_id}').cluetip({local: true, width: '#{width}px', showTitle: false, arrows: #{arrows}});"
+      "$(document).ready(function() {
+         $('##{link_id}').cluetip({local: true, width: '#{width}px', showTitle: false, arrows: #{arrows}});
+       });
+      "
     end
  
     def close_tooltip_link(id, message = 'close')

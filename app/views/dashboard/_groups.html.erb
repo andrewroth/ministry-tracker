@@ -6,18 +6,7 @@
         <li>
           <%= link_to(group.name, group) %>
           <ul class="requesticon">
-            <% find_join_requests(group).each do |request| %>
-              <li>
-              Join request from <%= link_to request.person.full_name, person_url(request.person_id) %>
-              <b>
-                <%= link_to_remote "[Accept]", :url => {:controller => "group_involvements", :action => "accept_request" , :id => request.id},
-                  :before => "$('#spinnergt').show();" %>
-                  <%= link_to_remote '[Decline]', :url => {:controller => "group_involvements", :action => "decline_request", :id => request.id},
-                    :before => "$('#spinnergt').show();" %>    
-                  </b>
-                  (Role: '<%= GroupInvolvement.find(request.id).level%>')
-              </li>
-            <% end %>
+            <%= render :partial => 'groups/request', :collection => find_join_requests(group), :locals => { :source => 'dashboard' } %>
           </ul>
         </li>
       <% else %>
