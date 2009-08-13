@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'rubygems'
+
 require 'active_support'
 
 require 'active_record'
@@ -15,5 +16,13 @@ require 'action_controller/test_process'
 ActionController::Base
 
 RAILS_ROOT = '.' unless defined?(RAILS_ROOT)
+RAILS_ENV = 'test'
 
 require File.join(File.dirname(__FILE__), "..", "init")
+
+ExceptionNotifier.configure_exception_notifier do |config|
+  # If left empty web hooks will not be engaged
+  config[:web_hooks]                = []
+  config[:exception_recipients]     = ["test.errors@example.com"]
+  config[:view_path]                = File.join(File.dirname(__FILE__), "mocks")
+end
