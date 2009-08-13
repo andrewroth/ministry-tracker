@@ -48,7 +48,7 @@ class MinistryInvolvementsController < ApplicationController
     # And only admins can set other admins anyways
     params[:ministry_involvement][:admin] = false unless @ministry_involvement.admin?
     # And you can't set any roles higher than yourself
-    unless @possible_roles.collect(&:id).include?(params[:ministry_involvement][:id].to_i)
+    unless @possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
       flash[:notice] = "Sorry, you can't set that role"
       return
     end
