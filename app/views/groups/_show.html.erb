@@ -18,7 +18,7 @@
   <div id="type"><%= @group.group_type.group_type.humanize %></div>
 
   <%= link_to_remote "edit", { :url => edit_group_url(@group), :method => :get }, 
-    { :class => "small" } if authorized?(:edit, :group_involvements)
+    { :class => "small" } if authorized?(:edit, :groups)
   %>
 
   <br/>
@@ -41,9 +41,13 @@
   <br/>
   <%- end -%>
 
+  <%- if authorized?(:transfer, :group_involvements) || authorized?(:new, :group_involvements) || 
+         authorized?(:compare_timetables, :groups)
+  -%>
   <div id="edit_buttons" class="section">
     <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
   </div>
+  <%- end -%>
 
   <div id="members" class="section">
     <%- types.each do |level| -%>
