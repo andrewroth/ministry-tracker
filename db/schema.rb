@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090811190042) do
+ActiveRecord::Schema.define(:version => 20090813162637) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20090811190042) do
     t.integer "end_time"
     t.integer "day"
     t.integer "group_type_id"
+    t.boolean "needs_approval"
   end
 
   add_index "groups", ["campus_id"], :name => "index_groups_on_campus_id"

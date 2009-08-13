@@ -1,6 +1,5 @@
 <div id="groups">
-  <% campus_id = @campus ? @campus.id : nil %>
-  <% gt = (gt.nil?) ? GroupType.find(@group_type_id) : gt%>
+  <%- campus_id = @campus ? @campus.id : nil -%>
   <%- gt_groups = @person_campus_groups.select{|g| g.group_type == gt} -%>
 
   <% unless gt_groups.empty? %>

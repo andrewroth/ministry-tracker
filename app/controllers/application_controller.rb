@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
       :profile_pictures => [:create, :update, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
-      :group_involvements => [:transfer, :change_level],
+      :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new]
     }
     
@@ -154,12 +154,19 @@ class ApplicationController < ActionController::Base
             return true
           end
         when :groups
-          if params[:id] && @my.group_involvements.find(:first, :conditions => { :id => params[:id], :level => [ 'co-leader', 'leader' ]})
-            return true
+          if params[:id] || @group
+            @group ||= Group.find(params[:id])
+            if @group.is_leader(@me) || @group.is_co_leader(@me)
+              return true
+            end
           end
         when :group_involvements
-          if params[:id] && GroupInvolvement.find(params[:id]).group.leaders.include?(@me)
-            return true
+          if params[:id] || @gi
+            @gi ||= GroupInvolvement.find(params[:id])
+            group = @gi.group
+            if group.is_leader(@me) || group.is_co_leader(@me)
+              return true
+            end
           end
         when :campus_involvements
           if (params[:person_id] && params[:controller] == "campus_involvements") && params[:person_id] == @my.id.to_s 

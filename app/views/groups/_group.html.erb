@@ -1,9 +1,4 @@
 <% gi = @my.group_involvements.find_by_group_id(group.id) %>
-<%- if gi -%>
-  <% @is_leader = gi.level == "leader" %>
-<%- else -%>
-  <%- @is_leader = nil -%>
-<%- end -%>
 
 <h2><%= 
   if gi
@@ -11,7 +6,7 @@
   else
     "<b>#{group.name}</b>"
   end
--%> <%- if @is_leader || authorized?(:new, :groups) -%>
+-%> <%- if authorized?(:new, :groups) -%>
   &nbsp <%= link_to_remote image_tag('delete.png'), 
   						:url => {:action => :destroy, :id => group.id}, 
   						:method => :delete,
@@ -34,7 +29,6 @@
       :url => { :action => 'joingroup', :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
         :person_id => @person.id,
-        :requested => true, 
         :group_involvement => { :group_id => group.id, :level => 'member'}
       }, 
       :method => :post %>
@@ -42,7 +36,6 @@
         :url => { :action => 'joingroup', :controller => 'group_involvements', 
           :gt_id => group.group_type.id,
           :person_id => @person.id,
-          :requested => false, 
           :group_involvement => { :group_id => group.id, :level => 'interested'}
         }, 
         :method => :post %>

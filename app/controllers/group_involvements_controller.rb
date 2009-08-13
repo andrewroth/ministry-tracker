@@ -1,33 +1,40 @@
 # Handles CRUD for involvements for a memeber and a given group at a given
 # level of involvement
 #
-# Question: def Transfer: not sure what it does
 
 class GroupInvolvementsController < ApplicationController
   before_filter :set_group_involvement, :only => [ :accept_request, :decline_request, 
     :decline_request, :transfer, :change_level, :destroy ]
   before_filter :ensure_request_matches_group, :only => [ :accept_request, :decline_request ]
-  before_filter :ensure_group_leader_or_coleader, :only => [ :accept_request, 
-    :decline_request, :transfer, :change_level, :destroy ]
 
   def create
     get_person_campus_groups
     @groups = @person_campus_groups
     create_group_involvement
+    @group = @gi.group
     refresh_directory_page
   end
   
   def joingroup  
-    params[:type] = params[:group_involvement][:level]
+    params[:level] = params[:group_involvement][:level]
+    unless %w(member interested).include?(params[:level])
+      flash[:notice] = 'invalid level'
+      render(:update) do |page|
+        update_flash(page, flash[:notice])
+      end
+      return
+    end
     params[:group_id] = params[:group_involvement][:group_id]
-    @group_type_id = params[:gt_id]
-    @group_id = params[:group_involvement][:group_id]
-    get_person_campus_groups
+    @group = Group.find(params[:group_id])
+    params[:requested] = (params[:level] == 'member' ? @group.needs_approval : false)
     create_group_involvement
-    flash[:notice] = "Join request for <b>#{@group.name}</b> group sent!"
+    get_person_campus_groups
+    flash[:notice] = (@gi.requested ? "Join request for <b>#{@group.name}</b> group sent!" : 
+                                      "You are now marked as <b>#{@gi.level.capitalize}</b> in the group <b>#{@group.name}</b>")
   end
   
   def accept_request
+    get_person_campus_groups
     @gi_request.requested = false
     @gi_request.save!
     flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> accepted."
@@ -35,6 +42,7 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def decline_request
+    get_person_campus_groups
     @gi.destroy
     flash[:notice] = "Group join request from <b>" + @gi.person.full_name + "</b> declined."
     render :action => 'request_result' 
@@ -42,36 +50,29 @@ class GroupInvolvementsController < ApplicationController
   
   def destroy 
     @group = @gi.group
-    if params[:members]
-      leaders_to_delete_count = 0
-      gis = []
-      params[:members].each do |member|
-        gi = find_by_person_id_and_group_id(member, params[:group_id])
-        gi.destroy if gi
-        leaders_to_delete_count += 1 if gi.level == 'leader'
+    act_on_members do |gi|
+      if gi.level == 'leader' && gi.group.leaders.count == 1
+        @member_notices << "Couldn't remove #{@gi.person.full_name}, since that would result in a leaderless group!"
+      else
+        @levels_to_update << gi.level
+        @member_notices << "#{gi.person.full_name} removed"
+        gi.destroy
       end
-      # check that we don't delete all the leaders
-      if leaders_to_delete_count < @group.leaders.count
-        gis.each do |gi|
-          gis.destroy
-        end
-      else 
-        flash[:notice] = "You can not delete all the leaders in a groups"
-      end
-    else
-      raise "No members were selected to delete"
     end
-    get_group
-    refresh_directory_page
   end
   
+  # Moves members to another group
   def transfer
     @group = @gi.group
     @group_to_transfer_to = Group.find params[:transfer_to] # TODO: add some security
     act_on_members do |gi|
-      gi.group = @group_to_transfer_to
-      @member_notices << "#{@gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
-      @levels_to_update << gi.level
+      if gi.level == 'leader' && gi.group.leaders.count == 1
+        @member_notices << "Couldn't transfer #{gi.person.full_name}, since that would result in a leaderless group!"
+      else
+        gi.group = @group_to_transfer_to
+        @member_notices << "#{gi.person.full_name} transferred to #{@group_to_transfer_to.name}"
+        @levels_to_update << gi.level
+      end
     end
   end
   
@@ -91,12 +92,12 @@ class GroupInvolvementsController < ApplicationController
 
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
-        @member_notices << "Couldn't change #{@gi.person.full_name}'s level from a leader, since that would result in a leaderless group!"
+        @member_notices << "Couldn't change #{gi.person.full_name}'s level from a leader, since that would result in a leaderless group!"
       else
         @levels_to_update << gi.level # update old
         gi.level = params[:level]
         @levels_to_update << gi.level # update new
-        @member_notices << "#{@gi.person.full_name} is now a #{params[:level]}"
+        @member_notices << "#{gi.person.full_name} is now a #{params[:level]}"
       end
     end
   end
@@ -149,22 +150,13 @@ class GroupInvolvementsController < ApplicationController
       # If the person is already in the group, find them. otherwise, create a new record
       @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
       @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
-      @gi.level = params[:type]  # set the level of involvement
+      @gi.level = params[:level]
       @gi.requested = params[:requested]
       @gi.save!
-      @group = @gi.group
     end
 
     def set_group_involvement
-      @gi = GroupInvolvement.find params[:id]
-    end
-
-    def ensure_group_leader_or_coleader
-      # make sure we're valid
-      unless @gi.person == @me && (@gi.group.leaders.include?(@me) || @gi.group.leaders.include?(@me))
-        flash[:notice] = "You don't have permission to do this"
-        access_denied
-      end
+      @gi = GroupInvolvement.find :first, :conditions => { :id => params[:id] }
     end
 
     def ensure_request_matches_group

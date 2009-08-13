@@ -18,25 +18,41 @@
   <div id="type"><%= @group.group_type.group_type.humanize %></div>
 
   <%= link_to_remote "edit", { :url => edit_group_url(@group), :method => :get }, 
-    { :class => "small" } if is_group_leader(@group) 
+    { :class => "small" } if authorized?(:edit, :group_involvements)
   %>
 
   <br/>
 
-  <div id="address">
+  <div id="address" class="section">
     <%= render :partial => 'groups/address' %>
   </div>
-  <div id="address_form"></div>
+
+  <div id="address_form" class="section" style="display:none"></div>
+
+  <%- if authorized?(:accept_request, :group_involvements) || 
+         authorized?(:decline_requests, :group_involvements) %>
+  <div id="requests" class="section">
+    <ul class="requesticon">
+      <%= render :partial => 'groups/request', :collection => @group.requests, 
+            :locals => { :source => 'show' }
+      %>
+    </ul>
+  </div>
+  <br/>
+  <%- end -%>
+
+  <div id="edit_buttons" class="section">
     <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
-    <div id="members">
-    <%-types.each do |level| -%>
+  </div>
+
+  <div id="members" class="section">
+    <%- types.each do |level| -%>
       <div id="<%= level %>">
         <%= render :partial => 'groups/level', :object => level %>
-    </div>
-  <%- end -%>
+      </div>
+    <%- end -%>
+  </div>
 </div>
-
-<br/>
 <br/>
 <div id = "compare">
   <%= render :partial => 'groups/compare_timetables' %>
