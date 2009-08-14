@@ -2,7 +2,7 @@ require 'pathname'
 
 class ExceptionNotifier < ActionMailer::Base
 
-  @@config = {
+  @@config ||= {
     # If left empty web hooks will not be engaged
     :web_hooks                => [],
     :app_name                 => "[MYAPP]",
