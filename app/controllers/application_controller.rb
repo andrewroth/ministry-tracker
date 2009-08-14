@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
   include ExceptionNotifiable
+  self.error_layout = false
   
   self.allow_forgery_protection = false
 
