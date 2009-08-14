@@ -261,8 +261,3 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'edit'
   p.description = 'Edit Ministry Involvements'
 end
-
-
-
-
-
