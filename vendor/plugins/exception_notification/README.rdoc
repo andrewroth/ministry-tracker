@@ -54,7 +54,7 @@ Gem Using Git building from source:
   git clone git://github.com/pboling/exception_notification.git
   cd exception_notification
   gem build exception_notification.gemspec
-  sudo gem install super_exception_notification-1.6.4.gem # (Or whatever version gets built)
+  sudo gem install super_exception_notification-1.6.7.gem # (Or whatever version gets built)
 
 Then cd to your rails app to optionally freeze the gem into your app:
 
@@ -63,7 +63,7 @@ Then cd to your rails app to optionally freeze the gem into your app:
 Then in your environment.rb:
 
   config.gem 'super_exception_notifier',
-      :version => '~> 1.6.5',
+      :version => '~> 1.6.7',
       :lib => "exception_notifier"
 
 
@@ -75,7 +75,7 @@ Installing Gem from Github's Gem Server:
 Then in your environment.rb:
 
   config.gem 'pboling-super_exception_notifier',
-      :version => '~> 1.6.5',
+      :version => '~> 1.6.7',
       :lib => "exception_notifier",
       :source => 'http://gems.github.com'
 

@@ -16,6 +16,7 @@ module ExceptionNotifiable
     ] if defined?(ActionController)
   end
 
+  # TODO: use ActionController::StatusCodes
   HTTP_ERROR_CODES = { 
     "400" => "Bad Request",
     "403" => "Forbidden",
@@ -37,7 +38,7 @@ module ExceptionNotifiable
       TypeError => "503",
       RuntimeError => "500",
       # These are custom error names defined in lib/super_exception_notifier/custom_exception_classes
-      AccessDenied2 => "403",
+      AccessDenied => "403",
       PageNotFound => "404",
       InvalidMethod => "405",
       ResourceGone => "410",
@@ -96,6 +97,7 @@ module ExceptionNotifiable
         write_inheritable_attribute(:local_addresses, addresses)
       end
       addresses
+      []
     end
 
     # set the exception_data deliverer OR retrieve the exception_data
@@ -141,28 +143,27 @@ module ExceptionNotifiable
       # OTW the error class is listed!
       status_code = status_code_for_exception(exception)
       if status_code == '200'
-        notify_and_render_error_template(status_code, request, exception, exception_to_filename(exception))
+        notify_and_render_error_template(status_code, request, exception, ExceptionNotifier.get_view_path_for_class(exception, self.class.exception_notifier_verbose))
       else
-        notify_and_render_error_template(status_code, request, exception)
+        notify_and_render_error_template(status_code, request, exception, ExceptionNotifier.get_view_path_for_status_code(status_code, self.class.exception_notifier_verbose))
       end
     end
 
-    def notify_and_render_error_template(status_cd, request, exception, file_path = nil)
+    def notify_and_render_error_template(status_cd, request, exception, file_path)
       status = self.class.http_error_codes[status_cd] ? status_cd + " " + self.class.http_error_codes[status_cd] : status_cd
-      file = file_path ? ExceptionNotifier.get_view_path(file_path) : ExceptionNotifier.get_view_path(status_cd)
       data = get_exception_data
       send_email = should_notify_on_exception?(exception, status_cd)
       send_web_hooks = !ExceptionNotifier.config[:web_hooks].empty?
       the_blamed = ExceptionNotifier.config[:git_repo_path].nil? ? nil : lay_blame(exception)
 
       # Debugging output
-      verbose_output(exception, status_cd, file, send_email, send_web_hooks, request, the_blamed) if self.class.exception_notifier_verbose
+      verbose_output(exception, status_cd, file_path, send_email, send_web_hooks, request, the_blamed) if self.class.exception_notifier_verbose
       # Send the email before rendering to avert possible errors on render preventing the email from being sent.
       perform_exception_notify_mailing(exception, data, request, the_blamed) if send_email
       # Send Web Hook requests
       HooksNotifier.deliver_exception_to_web_hooks(ExceptionNotifier.config, exception, self, request, data, the_blamed) if send_web_hooks
       # Render the error page to the end user
-      render_error_template(file, status)
+      render_error_template(file_path, status)
     end
 
     def get_exception_data
@@ -184,16 +185,16 @@ module ExceptionNotifiable
       end
     end
 
-    def verbose_output(exception, status_cd, file, send_email, send_web_hooks, request = nil, the_blamed = nil)
+    def verbose_output(exception, status_cd, file_path, send_email, send_web_hooks, request = nil, the_blamed = nil)
       puts "[EXCEPTION] #{exception}"
       puts "[EXCEPTION CLASS] #{exception.class}"
       puts "[EXCEPTION STATUS_CD] #{status_cd}"
       puts "[ERROR LAYOUT] #{self.class.error_layout}" if self.class.error_layout
       puts "[ERROR VIEW PATH] #{ExceptionNotifier.config[:view_path]}" if !ExceptionNotifier.nil? && !ExceptionNotifier.config[:view_path].nil?
-      puts "[ERROR RENDER] #{file}"
+      puts "[ERROR FILE PATH] #{file_path.inspect}"
       puts "[ERROR EMAIL] #{send_email ? "YES" : "NO"}"
       puts "[ERROR WEB HOOKS] #{send_web_hooks ? "YES" : "NO"}"
-      puts "[COMPAT MODE] #{ExceptionNotifierHelper::COMPAT_MODE ? "Yes" : "No"}"
+      puts "[COMPAT MODE] #{ExceptionNotifierHelper::COMPAT_MODE ? "YES" : "NO"}"
       puts "[THE BLAMED] #{the_blamed}"
       req = request ? " for request_uri=#{request.request_uri} and env=#{request.env.inspect}" : ""
       logger.error("render_error(#{status_cd}, #{self.class.http_error_codes[status_cd]}) invoked#{req}") if !logger.nil?
@@ -225,10 +226,6 @@ module ExceptionNotifiable
 
     def status_code_for_exception(exception)
       self.class.rails_error_classes[exception.class].nil? ? '500' : self.class.rails_error_classes[exception.class].blank? ? '200' : self.class.rails_error_classes[exception.class]
-    end
-
-    def exception_to_filename(exception)
-      exception.to_s.delete(':').gsub( /([A-Za-z])([A-Z])/, '\1' << '_' << '\2' ).downcase
     end
 
     def lay_blame(exception)
