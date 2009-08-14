@@ -12,7 +12,8 @@ class GroupInvolvementsController < ApplicationController
     @groups = @person_campus_groups
     params[:requested] = false
     create_group_involvement
-    refresh_directory_page
+    @group = @gi.group
+    @level = @gi.level
   end
   
   def joingroup
@@ -124,20 +125,6 @@ class GroupInvolvementsController < ApplicationController
                                                           person_id, group_id])
     end
     
-    def refresh_directory_page
-      respond_to do |format|
-        format.html do 
-          redirect_to "/#{@group.class.to_s.tableize}/#{params[:group_id]}"
-        end
-        format.js do
-          render :update do |page|
-            eval("@#{@group.class.to_s.underscore} = @group" )
-            page[@group.class.to_s.underscore].replace_html(:partial => "#{@group.class.to_s.tableize}/show")
-          end
-        end
-      end
-    end
-
     def create_group_involvement
       # If the person is already in the group, find them. otherwise, create a new record
       @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
