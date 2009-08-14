@@ -5,7 +5,7 @@
       <input type="checkbox" name="members[]" value= <%= person.id %> />
     </td>
   <%- end -%>
-  <td><%= link_to(person.full_name, person) %></td>
+  <td><%= authorized?(:show, :people) ? link_to(person.full_name, person) : person.full_name %></td>
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>
   <td><%= person.current_address.alternate_phone %></td>
