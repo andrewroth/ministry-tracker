@@ -49,7 +49,7 @@
   		  <%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
   											 	   :before => "$('#new_group_link').slideUp();$('#spinner').show()",
   											 	   :method => :get)%>
-  		  <%- if Cmt::CONFIG[:find_common_times_enabled] == true -%>
+  		  <%- if Cmt::CONFIG[:find_common_times_enabled] -%>
     	   or <%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
     	  <%- end -%>
       <%- end -%>
