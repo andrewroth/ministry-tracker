@@ -49,7 +49,7 @@
             animate:true,
             // enableDD:true,
             containerScroll: true,
-            loader: new Tree.TreeLoader({dataUrl: '/ministries/list'})
+            loader: new Tree.TreeLoader({dataUrl: '<%= url_for :controller => 'ministries', :action => 'list' -%>'})
         });
         
         var root = new Tree.AsyncTreeNode({
@@ -102,7 +102,7 @@
           //       
           // // // What to do when a ministry is clicked
           tree.on('click', function(e){
-            $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '/ministry_campuses/list'});
+            $.ajax({data: 'ministry_id=' + e.id, dataType: 'script', type: 'post', url: '<%= url_for :controller => 'ministry_campuses', :action => 'list' -%>'});
           });
           //       
           // render the tree
