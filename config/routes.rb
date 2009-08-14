@@ -50,11 +50,11 @@ ActionController::Routing::Routes.draw do |map|
                                                  :transfer => :post,
                                                  :change_level => :post}
 
-  map.resources :groups, :member => {:find_times => :post},
-                         :collection => {:join => :any,
-                                         :compare_timetables => :any,
-                                         :set_start_time => :any,
-                                         :set_end_time => :any}
+  map.resources :groups, :collection => {:find_times => :post},
+                         :member => {:join => :any,
+                                     :compare_timetables => :any,
+                                     :set_start_time => :any,
+                                     :set_end_time => :any}
 
   map.resources :manage
   
