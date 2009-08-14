@@ -156,7 +156,9 @@ class ApplicationController < ActionController::Base
         when :groups
           if params[:id] || @group
             @group ||= Group.find(params[:id])
-            if @group.is_leader(@me) || @group.is_co_leader(@me)
+            if action == 'show'
+              return @group.is_member(@me)
+            elsif @group.is_leader(@me) || @group.is_co_leader(@me)
               return true
             end
           end
