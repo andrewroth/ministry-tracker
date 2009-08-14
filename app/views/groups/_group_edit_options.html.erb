@@ -14,7 +14,7 @@
 
 <%- if authorized?(:compare_timetables, :groups) -%>
   <%= link_to_remote 'Compare Timetables', {
-    :url => group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), 
+    :url => compare_timetables_group_url(:id => @group.id), 
     :with => "#{data}", :complete => "location.hash = 'compare';"
   }, {:class => 'small'} 
   %>
