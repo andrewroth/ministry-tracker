@@ -67,5 +67,42 @@
   <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />
 <%- end -%>
-&nbsp &nbsp <b>Campus:</b> <%= group.campus ? group.campus.name : "All" %> <br />
+&nbsp &nbsp <b>Campus:</b> 
+
+<%- if group.campus -%>
+  <%= group.campus.name %>
+  <%= ", " + group.dorm.name if group.dorm %>
+<%- else -%>
+  All 
+<%- end -%>
+<br />
+
+&nbsp &nbsp <b>Time:</b>
+<% no_time_const = "TBA" %>
+<% midnight = Time.now.beginning_of_day %>
+
+<%- if group.day -%>
+  <%= Date::DAYNAMES[group.day] + ", "%>
+<%- end -%>
+
+<%- if group.start_time -%>
+  <%= (midnight + group.start_time).to_s(:time) + " - "%>
+  <%- if group.end_time -%>
+    <%= (midnight + group.end_time).to_s(:time) %>
+  <%- else -%>
+    <%= no_time_const %>
+  <%- end -%>
+<%- else -%>
+  <%= no_time_const %>
+<%- end -%>
+<br />
+  
+
+&nbsp &nbsp <b>Email:</b> 
+<%- if group.email && group.email != "" -%>
+  <%= group.email %>
+<%- else -%>
+  <%= group.leaders.first.current_address.email if group.leaders.first && group.leaders.first.current_address %>
+<%- end -%>
+<br />
 <br />
