@@ -32,6 +32,7 @@ config.action_controller.perform_caching             = true
 # be notified of crashes
 ExceptionNotifier.configure_exception_notifier do |config|
   config[:exception_recipients] = %w(andrewroth@gmail.com ebendall@gmail.com)
+  config[:send_email_error_codes] = %W( 400 403 404 405 500 501 503 )
 end
 
 # Mail settings
