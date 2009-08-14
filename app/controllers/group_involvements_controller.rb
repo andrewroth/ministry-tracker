@@ -12,6 +12,7 @@ class GroupInvolvementsController < ApplicationController
     @groups = @person_campus_groups
     params[:requested] = false
     create_group_involvement
+    @group = @gi.group
     refresh_directory_page
   end
   
