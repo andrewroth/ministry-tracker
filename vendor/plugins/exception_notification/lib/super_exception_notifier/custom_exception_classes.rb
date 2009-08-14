@@ -4,7 +4,7 @@
 module SuperExceptionNotifier
   module CustomExceptionClasses
 
-    class AccessDenied2 < StandardError; end
+    class AccessDenied < StandardError; end
     class ResourceGone < StandardError; end
     class NotImplemented < StandardError; end
     class PageNotFound < StandardError; end

@@ -37,18 +37,77 @@ class ExceptionNotifier < ActionMailer::Base
 
   def self.reloadable?() false end
 
-  # What is the path of the file we will render to the user?
-  def self.get_view_path(status_cd)
-    if File.exist?("#{RAILS_ROOT}/public/#{status_cd}.html")
-      "#{RAILS_ROOT}/public/#{status_cd}.html"
-    elsif !config[:view_path].nil? && File.exist?("#{RAILS_ROOT}/#{config[:view_path]}/#{status_cd}.html")
-      "#{RAILS_ROOT}/#{config[:view_path]}/#{status_cd}.html"
-    elsif File.exist?("#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{status_cd}.html")
-      #ExceptionNotifierHelper::COMPAT_MODE ? "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{status_cd}.html" : "#{status_cd}.html"
-      "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{status_cd}.html"
+  # Returns an array of potential filenames to look for
+  # eg. For the Exception Class - SuperExceptionNotifier::CustomExceptionClasses::MethodDisabled
+  # the filename handles are:
+  #   super_exception_notifier_custom_exception_classes_method_disabled
+  #   method_disabled
+  def self.exception_to_filenames(exception)
+    filenames = []
+    e = exception.to_s
+    filenames << ExceptionNotifier.filenamify(e)
+
+    last_colon = e.rindex(':')
+    unless last_colon.nil?
+      filenames << ExceptionNotifier.filenamify(e[(last_colon + 1)..(e.length - 1)])
+    end
+    filenames
+  end
+
+  # Converts Stringified Class Names to acceptable filename handles with underscores
+  def self.filenamify(str)
+    str.delete(':').gsub( /([A-Za-z])([A-Z])/, '\1' << '_' << '\2').downcase
+  end
+
+  # What is the path of the file we will render to the user based on a given status code?
+  def self.get_view_path_for_status_code(status_cd, verbose = false)
+    file_name = ExceptionNotifier.get_view_path(status_cd, verbose)
+    #ExceptionNotifierHelper::COMPAT_MODE ? "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html" : "500.html"
+    file_name.nil? ? self.catch_all(verbose) : file_name
+  end
+
+#  def self.get_view_path_for_files(filenames = [])
+#    filepaths = filenames.map do |file|
+#      ExceptionNotifier.get_view_path(file)
+#    end.compact
+#    filepaths.empty? ? "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html" : filepaths.first
+#  end
+
+  # What is the path of the file we will render to the user based on a given exception class?
+  def self.get_view_path_for_class(exception, verbose = false)
+    return self.catch_all if exception.nil?
+    return self.catch_all unless exception.is_a?(StandardError) || exception.is_a?(Class) # For some reason exception.is_a?(Class) works in console, but not when running in mongrel (ALWAYS returns false)?!?!?
+    filepaths = ExceptionNotifier.exception_to_filenames(exception).map do |file|
+      ExceptionNotifier.get_view_path(file, verbose)
+    end.compact
+    filepaths.empty? ? self.catch_all(verbose) : filepaths.first
+  end
+
+  def self.catch_all(verbose = false)
+    puts "[CATCH ALL INVOKED] #{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html" if verbose
+    "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html"
+  end
+
+  # Check the usual suspects
+  def self.get_view_path(file_name, verbose = false)
+    if File.exist?("#{RAILS_ROOT}/public/#{file_name}.html")
+      puts "[FOUND FILE] #{RAILS_ROOT}/public/#{file_name}.html" if verbose
+      "#{RAILS_ROOT}/public/#{file_name}.html"
+    elsif !config[:view_path].nil? && File.exist?("#{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html.erb")
+      puts "[FOUND FILE] #{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html.erb" if verbose
+      "#{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html.erb"
+    elsif !config[:view_path].nil? && File.exist?("#{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html")
+      puts "[FOUND FILE] #{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html" if verbose
+      "#{RAILS_ROOT}/#{config[:view_path]}/#{file_name}.html"
+    elsif File.exist?("#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html.erb")
+      puts "[FOUND FILE] #{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html.erb" if verbose
+      "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html.erb"
+    elsif File.exist?("#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html")
+      #ExceptionNotifierHelper::COMPAT_MODE ? "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html" : "#{status_cd}.html"
+      puts "[FOUND FILE] #{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html" if verbose
+      "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/#{file_name}.html"
     else
-      #ExceptionNotifierHelper::COMPAT_MODE ? "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html" : "500.html"
-      "#{File.dirname(__FILE__)}/../rails/app/views/exception_notifiable/500.html"
+      nil
     end
   end
 

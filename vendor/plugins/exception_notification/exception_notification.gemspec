@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'super_exception_notifier'
-  s.version = '1.6.5'
-  s.date = '2009-08-12'
+  s.version = '1.6.7'
+  s.date = '2009-08-14'
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
 
   s.summary = %q{Allows unhandled (and handled!) exceptions to be captured and sent via email}
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.authors = ['Peter Boling', 'Jacques Crocker', 'Jamis Buck']
   s.email = 'peter.boling@gmail.com'
   s.homepage = 'http://github.com/pboling/exception_notification'
+  s.require_paths = ["lib"]
   
   s.has_rdoc = true
 
@@ -50,6 +51,7 @@ Gem::Specification.new do |s|
              "rails/app/views/exception_notifiable/423.html",
              "rails/app/views/exception_notifiable/501.html",
              "rails/app/views/exception_notifiable/503.html",
+             "rails/app/views/exception_notifiable/method_disabled.html.erb",
              "views/exception_notifier/_backtrace.html.erb",
              "views/exception_notifier/_environment.html.erb",
              "views/exception_notifier/_inspect_model.html.erb",
