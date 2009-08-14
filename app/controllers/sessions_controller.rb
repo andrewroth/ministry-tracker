@@ -5,6 +5,11 @@ class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
   before_filter CASClient::Frameworks::Rails::GatewayFilter 
   filter_parameter_logging :password
+
+  def crash
+    throw("Forced crash.  env: #{RAILS_ENV}")
+  end
+
   # render new.rhtml
   def new
     # to help with testing - remove before final release
