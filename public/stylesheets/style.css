@@ -3,12 +3,12 @@ Codename: Ministry Track
 Author: David T Sudarma (Follower), Caleb Wright (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
-Green Block:      #67A03B
-Green Text:       #539030
+Orange Block:      #FFCB05
+Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar {background:#67A03B; height:33px; padding-top:10px;}
+#greenbar {background:#FFCB05; height:33px; padding-top:10px;}
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -126,7 +126,7 @@ text-align:center;
 * {
     margin:0;
     padding:0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Tahoma, Arial, Sans-Serif;
     color:#747474;
 }
 
@@ -301,13 +301,13 @@ li {list-style: none; margin-top:3px;}
 p {margin-bottom:10px;}
 
 a:link, a:visited {
-	color: #67A03B;
+	color: #1F429B;
 	text-decoration:none;
 }
 
 a:hover, a:active {
     text-decoration:underline;
-    color:#67A03B;
+    color:#FFCB05;
 }
 a.norm {
 	color:#747474;
@@ -328,7 +328,7 @@ a.small {
   color:#000;
 	background: #FFFFCC;
 	text-decoration: none;
-	border:1px solid #67A03B;
+	border:1px solid #FFCB05;
 	line-height:19px;
 	text-transform:uppercase;
 }
@@ -340,7 +340,7 @@ a.small:active, a.small:hover {
 }
 /* MORE (S)PACIFIC */
 h1 {
-    color:#539030;
+    color: #1F429B;
     font-weight:normal;
 }
 
@@ -387,10 +387,10 @@ margin-top:10px;
 /* TABS */
 .tablist {
     width:50%;
-    background:#67A03B url("") repeat-x bottom;
+    background:#FFCB05 url("") repeat-x bottom;
     float:right;
     margin-bottom:0px;
-    border-bottom: #67A03B solid 0px;
+    border-bottom: #FFCB05 solid 0px;
 }
 
 .tablist ul {
@@ -441,7 +441,7 @@ margin-top:10px;
 .title {
     border:1px dotted silver;
 background:#e9e9e9;
-    color:#539030;
+    color:#1F429B;
     margin:15px 0 4px 0;
 padding:7px;
 }
@@ -454,7 +454,7 @@ h1#title {color:white; float:left; padding-left:10px;}
 
 .divider {
     height:1px;
-    background-color:#67A03B;
+    background-color:#FFCB05;
     margin:2px 0 10px 0px;
 }
 
@@ -500,7 +500,7 @@ div.sectionHeader h2 {
 .directorytable {
     background-color:#f5f5f5;
     padding:8px;
-    border-bottom:1px #67A03B solid;
+    border-bottom:1px #FFCB05 solid;
 }
 .directorytable th, .directorytable td {
     padding:3px;
@@ -508,8 +508,7 @@ div.sectionHeader h2 {
 }
 .directorytable th {
     font-weight: normal;
-    color:#539030;
-
+    color: #1F429B;
     border-bottom: 1px solid #000;
 		text-align: left;
 }
@@ -721,7 +720,7 @@ text-align:center;
 }
 
 a.action-button {
-background:#67A03B;
+background:#FFCB05;
 border:1px solid black;
 color:white;
 padding:4px;
