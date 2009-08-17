@@ -401,6 +401,7 @@ margin-top:10px;
     float:right;
     background:url("../images/yellowtab.png") no-repeat left top;
     margin-bottom:0px;
+	width: 86px;
 }
 
 .tablist a {
@@ -409,6 +410,7 @@ margin-top:10px;
     color:#1F429B; font-weight:bold;
     padding:8px 10px 7px 0;
     margin-left:11px;
+	text-align: center;
 }
 
 /* Commented Backslash Hack
