@@ -1,0 +1,5 @@
+<%- if Cmt::CONFIG[:application_name] == 'The Pulse' -%>
+  <%= image_tag 'yellowbanner.png'%>
+<%- else -%>
+  <%= @ministry ? @ministry.name : Cmt::CONFIG[:application_name] %>
+<%- end -%>

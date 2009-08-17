@@ -28,7 +28,11 @@ module Cmt
     # Default ministry name
     :default_ministry_name => 'Campus for Christ',
     
-    # Associate person with no ministry to default ministry
+    # Public name for this application. If it is set to 'The Pulse', certain parts of 
+    # the application will change according to Campus for Christ's branding in Canada
+    :application_name => 'The Ministry Tracker',
+    
+    #Associate person with no ministry to default ministry
     :associate_with_default_ministry => true,
     
     # When set, the campus filter is disabled and all 
