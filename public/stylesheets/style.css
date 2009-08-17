@@ -446,7 +446,7 @@ background:#e9e9e9;
 padding:7px;
 }
 
-h1#title {color:white; float:left; padding-left:10px;}
+h1#title { float:left; padding-left:10px;}
 
 .clearDivider {
     height:10px;
@@ -893,13 +893,15 @@ ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding
 div#userbar {background:#e6e6e6; padding:5px 5px 5px 10px; height:20px;}
 div.username {font-size:15px; font-weight:bold; color:#000; display:inline; margin-right:5px; }
 div#userbar small {font-size:11px;}
+div.usernameAndLink {float:right; padding-right: 20px;}
 
 a.logoutbutton {
 float:right;
 font-weight:bold;
+color:#FFCB05;
 text-transform:uppercase;
 margin-top:-5px;
-background:#fff5c6;
+background:#1F429B;
 padding:5px 10px 5px 10px;
 }
 
