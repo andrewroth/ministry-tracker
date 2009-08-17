@@ -407,7 +407,7 @@ margin-top:10px;
     float:right;
     display:block;
     background:url("../images/tab_r_off.gif") no-repeat right top;
-    color:green; font-weight:bold;
+    color:#1F429B; font-weight:bold;
     padding:8px 10px 7px 0;
     margin-left:11px;
 }
@@ -426,7 +426,7 @@ margin-top:10px;
  
 .tablist li.active a {
     background-image:url("../images/tab_r_on.gif");
-	color: green;
+	color: #1F429B;
 }
 
 /* MISC LAYOUT */
