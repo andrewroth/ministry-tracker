@@ -800,8 +800,8 @@ a.goodhead:hover {border:2px solid gray;}
 
 .login_sector {
   width: 300px;
-  float: left;
   border-right: solid 1px #839553;
+  height: 100px;
 }
 
 .login_sector_fb {
@@ -892,9 +892,10 @@ ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding
 ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
 
 div#userbar {background:#e6e6e6; padding:5px 5px 5px 10px; height:20px;}
-div.username {font-size:15px; font-weight:bold; color:#000; display:inline; margin-right:5px; }
+div#username {font-size:15px; font-weight:bold; color:#000; display:inline; margin-right:5px; }
+div#userblock {float: left;}
+
 div#userbar small {font-size:11px;}
-div.usernameAndLink {float:left;}
 
 a.logoutbutton {
 float:right;
