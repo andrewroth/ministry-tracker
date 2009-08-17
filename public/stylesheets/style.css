@@ -8,7 +8,7 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar {background:#FFCB05; height:33px; padding-top:10px;}
+#greenbar {background:#FFCB05; height:33px; padding: 5px 0px;}
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -389,7 +389,7 @@ margin-top:10px;
     width:50%;
     background:#FFCB05 url("") repeat-x bottom;
     float:right;
-    margin-bottom:0px;
+    margin-top: 4px;
     border-bottom: #FFCB05 solid 0px;
 }
 
@@ -868,7 +868,7 @@ float:right;
 #dashwrap {padding:0;}
 .dashmodule {border:1px solid silver; float:left; width:100%; margin-bottom:7px;}
 .moduletitle {background:#e8e8e8; height:30px;}
-.moduletitle h2 {float:left; color:#000; font-weight:normal; font-size:18px; padding:4px 4px 4px 5px;}
+.moduletitle h2 {float:left; color:#000; font-weight:bold; font-size:18px; padding:4px 4px 4px 5px;}
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
