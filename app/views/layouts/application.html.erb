@@ -34,12 +34,13 @@
       
 		  <% if logged_in? %>
 		  <div id="userbar">
-		    <%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;
-		    <div class="usernameAndLink">
-		    <div class="username"><%= @my.full_name %></div><small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
+		    <div id="userblock">
+          <div id="username"><%= @my.full_name %></div>
+          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
 		    </div>
 		  
-  			<div class="clear"> </div>
+  			<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;
+  			<div class="clear"></div>
 			</div>
 			
 			<div id="greenbar">	
@@ -48,8 +49,8 @@
 			</div>
 			<%- else -%>
 		  <div id="userbar">
-				<div class="floatleft">
-  		    <div class="username">Please Login</div>
+				<div id="userblock">
+  		    <div id="username">Please Login</div>
 		    </div>
   			<div class="clear"></div>
 			</div>
