@@ -890,7 +890,15 @@ ul.groupicon li{background:url(/images/silk/user_go.png) no-repeat 0% 0%; paddin
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
 ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
 
-div#userbar {background:#e6e6e6; padding: 10px; height:90px;}
+div#userbar {
+background:#e6e6e6; 
+background-image: url(/images/resized_c4c.png); 
+background-repeat: no-repeat;
+background-position: 10px 10px;
+padding: 10px; 
+height:50px;
+}
+
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
 div#userblock {float: right; padding-right: 30px}
 
