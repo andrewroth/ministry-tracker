@@ -1,3 +1,4 @@
 <td id ="current_address_state_dropdown">
-		<%= select :current_address, :state, options_for_select(states, @person.try(:current_address).try(:state)), :prompt => true %>
+<% state = @person && !@person.new_record? && @person.current_address ? @person.current_address.state : "" %>
+		<%= select :current_address, :state, options_for_select(states, state), :prompt => true %>
 </td>
