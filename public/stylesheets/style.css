@@ -799,8 +799,8 @@ a.goodhead:hover {border:2px solid gray;}
 
 .login_sector {
   width: 300px;
-  float: left;
   border-right: solid 1px #839553;
+  height: 100px;
 }
 
 .login_sector_fb {
