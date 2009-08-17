@@ -399,14 +399,13 @@ margin-top:10px;
 
 .tablist li {
     float:right;
-    background:url("../images/tab_l_off.gif") no-repeat left top;
+    background:url("../images/yellowtab.png") no-repeat left top;
     margin-bottom:0px;
 }
 
 .tablist a {
     float:right;
     display:block;
-    background:url("../images/tab_r_off.gif") no-repeat right top;
     color:#1F429B; font-weight:bold;
     padding:8px 10px 7px 0;
     margin-left:11px;
@@ -421,11 +420,10 @@ margin-top:10px;
 }
 
 .tablist li.active {
-    background-image:url("../images/tab_l_on.gif");
+    background-image:url("../images/whitetab.png");
 }
  
 .tablist li.active a {
-    background-image:url("../images/tab_r_on.gif");
 	color: #1F429B;
 }
 
