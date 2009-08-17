@@ -1,6 +1,39 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+      $(".accordion").accordion({ header: ".title",
+                                         autoHeight: false,
+                                         clearStyle: true});
+      $(".accordion .title").prepend('<span class="accordion_instructions">&nbsp;</span>')
+    });
+</script>
 <%- if authorized?(:edit, :groups) || authorized?(:new, :groups) -%>
-	<%= render :partial => 'groups' %>
+
+  <%- help_block do -%>
+    <h3>Groups</h3>
+    A group is a body of people who meet weekly. <br />
+    You can do two things from this page: view and edit groups or create a new group.<br /><br />
+    You can view groups within this ministry by simply clicking on the <b>group's name</b>.<br /><br />
+    You can also create a new group in this ministry by simply clicking the <b>'Add a group'</b> link, 
+    entering in information, and then adding members.<br />
+    <br />
+    You need to have at least on "group type" defined, so you can have your group categorized.
+  <%- end -%>
+  
+  <h2> <%= @ministry.name %> Groups </h2>
+  
+  <div id="customizebody" class="accordion">
+	  <%- @ministry.all_group_types.each do |gt| -%>
+	    <div>
+		    <div class="title"><%= gt.group_type %></div>
+			  <div id= <%="groupType" + gt.id.to_s %> 
+			   <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
+			 </div>
+      </div>
+	 <%- end -%>	
+  </div>
+  
 <%- else -%>
+
 	<%- ministry = nil -%>
 	<%- @groups.each do |group| -%>
 		<%- if group.ministry != ministry 
@@ -9,4 +42,48 @@
 		<%- end -%>
 		<%= link_to(group.name, group_url(group)) %><br />
 	<%- end -%>
+<%- end -%>
+
+
+<div id="instructions">
+		This screen serves as a launching area for managing <%= @ministry.name %> groups. 
+</div><br />
+
+
+
+
+<%- if @ministry.all_group_types.empty? -%>
+	<p>
+	  <%- if authorized?(:new, :group_types) -%>
+	  You don't have any group types defined for your movement. Please <%= link_to('go to the customize area', customize_path(@ministry)) %>
+	  and create some. <%- tooltip do -%> A group type is category of group. An example of this is a group called "Math DG Bible Study" might be put in a group type called "Bible Study". <%- end -%>
+	  <%- else -%>
+	  No group types have been created for your movement. Please ask your leader to create some.
+	  <%- end -%>
+	</p>
+<%- else -%>
+	<div>
+  	<div id="new_group_link">
+  		<%- if @ministry.groups.empty? -%>
+  			You have no groups in your ministry yet. 
+  			<%- if authorized?(:new, :groups) -%>
+  		    Please click the '<strong>Add a group</strong>' link below.<br /><br />
+  		  <%- else -%>
+  		    Please ask your leader to add some 
+  		  <%- end -%>
+  		<%- end -%>
+  		<%- if authorized?(:new, :groups) -%>	
+  		  <%= link_to_remote(t(:add_group_link, :default => 'Add a group'), :url => {:action => :new},
+  											 	   :before => "$('#new_group_link').slideUp();$('#spinner').show()",
+  											 	   :method => :get)%>
+  		  <%- if Cmt::CONFIG[:find_common_times_enabled] == true -%>
+    	   or <%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
+    	  <%- end -%>
+      <%- end -%>
+  	</div><%= spinner %>
+	</div>
+	<div>
+		<div id="group">
+		</div>
+	</div>
 <%- end -%>

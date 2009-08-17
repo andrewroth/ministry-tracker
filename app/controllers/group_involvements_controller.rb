@@ -15,8 +15,8 @@ class GroupInvolvementsController < ApplicationController
     params[:requested] = true # force request for now as security feature
     @group_type_id = params[:gt_id]
     @group_id = params[:group_involvement][:group_id]
+    get_person_campus_groups
     create_group_involvement
-    get_joinable_groups
     flash[:notice] = "Join request for <b>#{@group.name}</b> group sent!"
   end
   
