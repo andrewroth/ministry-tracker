@@ -25,17 +25,12 @@
    This can be a helpful reference to see how many meetings you have each week, new people, etc.
    <br>
 <% end %>
-<br />
 
 
 <div class="welcome">
-
-<%- if Cmt::CONFIG[:application_name] != 'The Pulse' %>
 <div class="sectionHeader">
 	<h2>Welcome to the Ministry Tracker</h2>
-</div>
-<%- end -%>
-<br/>
+</div><br/>
 <%- if @ministry -%>
 
 <div class="hidememessage" style="display:none;">
