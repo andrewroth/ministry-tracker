@@ -15,6 +15,10 @@
     :bible_study_plural => 'discipleship groups',
     :Bible_Study_short => 'DG',
     :Bible_Study_short_plural => 'DGs',
+    :welcome => '',
+    :slogan => "<img src='/images/conduitbanner.png'></img>",
+    
+    
     :date => {
       :formats => {
         :default => "%m/%d/%Y",
