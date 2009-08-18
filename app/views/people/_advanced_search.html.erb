@@ -1,4 +1,4 @@
-<% form_tag(directory_people_path) do %>
+<% form_tag(directory_people_path(:format => 'html')) do %>
   <div class="adfieldbox">
     First Name:<br />
     <%= text_field_tag :first_name,
@@ -39,7 +39,7 @@
   <div class="adfieldbox">
     Year in School: <br/>
     <%= select_tag 'school_year[]',
-      options_for_select(SchoolYear.find(:all).collect {|sy| ["(#{sy.name} #{sy.level})", sy.id]},
+      options_for_select(SchoolYear.find(:all).collect {|sy| [sy.name, sy.id.to_s]},
         @options["school_year"]),
       :multiple => true,
       :class => 'wide'
