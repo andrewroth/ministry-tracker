@@ -124,7 +124,5 @@ accountadmin_accessgroup:
 accountadmin_vieweraccessgroup:
   id: vieweraccessgroup_id
 
-  
-
-
-
+access:
+  id: access_id

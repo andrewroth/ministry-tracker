@@ -284,4 +284,12 @@ class Person < ActiveRecord::Base
       end
       return p
     end
+
+    def full_destroy
+      self.user.try(:destroy)
+      self.access.try(:destroy)
+      self.emerg.try(:destroy)
+      self.cim_hrdb_person_year.try(:destroy)
+      self.destroy
+    end
 end
