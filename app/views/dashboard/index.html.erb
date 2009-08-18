@@ -26,11 +26,11 @@
    <br>
 <% end %>
 
-
 <div class="welcome">
 <div class="sectionHeader">
-	<h2>Welcome to the Ministry Tracker</h2>
-</div><br/>
+	<%= I18n.t(:welcome, :default => "<h2>Welcome to the Ministry Tracker</h2>")%>
+</div>
+<br/>
 <%- if @ministry -%>
 
 <div class="hidememessage" style="display:none;">
