@@ -127,13 +127,16 @@ class PeopleController < ApplicationController
       if params[:campus].present?
         # Only consider ministry ids that this person is involved in (stop deviousness)
         params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
-        unless params[:campus].empty?
-          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
-          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
-          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
-          @advanced = true
-        end
+        @advanced = true
+        @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
+      elsif get_ministry_involvement(@ministry).ministry_role.class == StudentRole
+        params[:campus] = @my.campuses.collect(&:id)
+      end      
+      unless params[:campus].nil? || params[:campus].empty?
+        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
+        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
       end
+      
       
       if params[:first_name].present?
         conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
