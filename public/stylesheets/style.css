@@ -900,7 +900,7 @@ height:50px;
 }
 
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 30px}
+div#userblock {float: right; padding-right: 30px; margin-top: 3px;}
 
 div#userbar small {font-size:11px;}
 
@@ -911,7 +911,7 @@ color:#FFCB05;
 text-transform:uppercase;
 margin-top: 0px;
 background:#1F429B;
-padding:5px 10px;
+padding:2px 5px;
 }
 
 
