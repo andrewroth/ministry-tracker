@@ -44,7 +44,7 @@
 			</div>
 			
 			<div id="greenbar">	
-			<h1 id="title"><%= render :partial => 'tabnav/bar_title' %></h1>
+			<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
 			<%= tabnav :main %>
 			</div>
 			<%- else -%>
@@ -55,7 +55,7 @@
   			<div class="clear"></div>
 			</div>
 			<div id="greenbar">	
-  			<h1 id="title"><%= render :partial => 'tabnav/bar_title' %></h1>
+  			<h1 id="title"><%= @ministry ? @ministry.name : 'Ministry Track' %></h1>
   			<%= render :partial => 'tabnav/auth' %>
 			</div>
 			<%- end -%>
