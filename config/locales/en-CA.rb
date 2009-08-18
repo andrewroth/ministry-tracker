@@ -15,7 +15,7 @@
     :bible_study_plural => 'discipleship groups',
     :Bible_Study_short => 'DG',
     :Bible_Study_short_plural => 'DGs',
-    :welcome => '',
+    :welcome => '<br />',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
     
     
