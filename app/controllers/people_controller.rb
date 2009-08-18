@@ -29,9 +29,9 @@ class PeopleController < ApplicationController
   end
   
   def advanced
+    get_campuses
     @advanced = true
     @options = {}
-    @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
     render :layout => 'application'
   end
   
@@ -46,7 +46,7 @@ class PeopleController < ApplicationController
 
   def directory
     get_view
-    @campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+    get_campuses 
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
@@ -120,11 +120,17 @@ class PeopleController < ApplicationController
         # Only consider ministry ids that this person is involved in (stop deviousness)
         params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
         @advanced = true
-        @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
-      elsif get_ministry_involvement(@ministry).ministry_role.class == StudentRole
-        params[:campus] = @my.campuses.collect(&:id)
-      end      
-      unless params[:campus].nil? || params[:campus].empty?
+        @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ') if !params[:campus].empty?
+      else
+        params[:campus] = @campuses.collect(&:id)
+      end
+            
+      if params[:campus].empty?
+        if get_ministry_involvement(@ministry).ministry_role.class == StudentRole
+          return # they're a student who has either hacked in params[:campus] or they have no campus_involvements. Bad Student.
+          #redirect_to :controller => 'dashboard', :action => 'index'
+        end
+      else
         conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
       end
@@ -788,4 +794,15 @@ class PeopleController < ApplicationController
     def set_use_address2
       @use_address2 = !Cmt::CONFIG[:disable_address2]
     end
+    
+    private
+    
+    def get_campuses
+      campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+      if get_ministry_involvement(@ministry).ministry_role.class == StudentRole
+        @campuses = campuses.select{|id| @my.campuses.find(:first, :conditions => {_(:id, :campus) => id})}
+      end
+      @campuses ||= campuses 
+    end
+    
 end
