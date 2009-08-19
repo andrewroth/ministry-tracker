@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
       end
       self.current_user.last_login = Time.now
       self.current_user.save
-      redirect_back_or_default(person_url(self.current_user.person))
+      redirect_back_or_default('/')
     end
     # force a flash warning div to show up, so that invalid password message can be shown
     flash[:warning] = '&nbsp;'
@@ -64,7 +64,7 @@ class SessionsController < ApplicationController
           # local login worked, redirect to appropriate starting page
           self.current_user.last_login = Time.now
           self.current_user.save
-          redirect_params = session[:return_to] || person_path(self.current_user.person)
+          redirect_params = session[:return_to] || '/'
           wants.js do
             render :update do |page|
               page.redirect_to(redirect_params)
