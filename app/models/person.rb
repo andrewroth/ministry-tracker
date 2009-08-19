@@ -10,6 +10,7 @@ class Person < ActiveRecord::Base
   has_many :campus_involvements #, :include => [:ministry, :campus]
   has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
+  has_many :active_campuses, :through => :active_campus_involvements, :class_name => 'Campus', :source => :campus
   belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
   # accepts_nested_attributes_for :primary_campus_involvement
   has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
