@@ -23,12 +23,22 @@
 	        <td width="10px" class="time"><%= time.to_s(:time) %></td>
 	        <%- 7.times do |day| -%>
 					<%- color = "neutral" %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length >= @comparison_map[day][time_block][time_in_seconds]["bads"].length then color = "moregood" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length >= @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "morebad" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @comparison_map[day][time_block][time_in_seconds]["goods"].length then color = "neutral" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["goods"].length == @people.length then color = "allgood" end %>
-					<%- if @comparison_map[day][time_block][time_in_seconds]["bads"].length == @people.length then color = "allbad" end %>
+					<% current_time = @comparison_map[day][time_block][time_in_seconds] %>
 					
+					
+					<%- if current_time["goods"].length == @people.length -%>
+					 <% color = "allgood" %>
+					<%- elsif current_time["okays"].length > 0 && current_time["bads"].length == 0 -%>
+					 <% color = "moregood" %>
+					<%- elsif current_time["bads"].length < (@people.length * 0.25) -%>
+					 <% color = "neutral" %>
+					<%- elsif current_time["bads"].length < @people.length -%>
+					 <% color = "morebad" %>
+					<%- else -%>
+					 <% color = "allbad" %>
+					<%- end -%>
+
+
 	        <td width="50px" height="10px" class="day_<%= day %> <%= color %>">
 	          
 						<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
@@ -45,10 +55,13 @@
 						<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
 								<%= 	p.first_name %>,<br/>
 						<% end %>
+						
+						<div class="setLink" >
 						<%=link_to_remote "Set as start time", {:url => {:controller => "groups", :action => "set_start_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
-						<span class="redlink">
+						</div>
+						<div class="setLink">
 							<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
-						</span>
+					  </div>
 	        </td>
 	        <%- end -%>
 	      </tr>
