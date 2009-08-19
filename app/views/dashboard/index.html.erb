@@ -5,25 +5,38 @@
   <br>
   The Dashboard gives you quick access point to pretty much everything on the Movement Tracker.
   <br /><br />
+  <%- if authorized?(:directory, :people) -%>
   <h4>Search the Directory</h4>
   Immediately below is your <b>recent searches</b>. Click on them to re-display a previous search.
   <br /><br />
+  <%- end -%>
   <h4>Quick Tools</h4>
-  <br>
+    <%- if authorized?(:new, :people) -%>
     <b>Add a student</b> to ministry you are currently viewing.
     <br />
+    <%- end -%>
+    <%- if authorized?(:new, :groups) -%>
     <b>Create a group</b> to track groups of people meeting weekly within your ministry.
     <br />
+    <%- end -%>
+    <%- if authorized?(:new, :groups) -%>
     <b>Create a ministry</b>: Ministries are where the action happens, use this when starting new campus ministries
     <br />
-    <b>Go to Your Directory</b> displays a list of all people involved in this ministry
-    <br /><br />
+    <%- end -%>
+    <%- if authorized?(:new, :groups) -%>
+    Go to your <b>Directory</b> to display a list of all people involved in this ministry.
+    <br />
+    <%- end -%>
+    <br />
    <h4>My Groups</h4>
    Click any of the groups you are registered for to view and edit its details.
-   <br /><br />
+   <br />
+   <%- if is_ministry_leader -%>
+   <br />
    <h4>Statistics</h4>
    This can be a helpful reference to see how many meetings you have each week, new people, etc.
    <br>
+   <%- end -%>
 <% end %>
 
 <div class="welcome">
@@ -34,13 +47,14 @@
 <%- if @ministry -%>
 
 <div class="hidememessage" style="display:none;">
-<p>The first thing you're probably going to want to check out is the "Directory"
-tab. The directory tab is the main data entry arena.</p>
 <p>The "Profile" tab is all about you. It's where you keep your personal information
 up to date. It's also a launching point for managing the different areas of ministry
 you're responsible for.</p>
 <p>This "Dashboard" area will keep you informed of new features we have added to 
 this system, along with any other information we think would be helpful to you.</p>
+<%- if authorized?(:directory, :people) -%>
+<p>The directory tab lists everyone involved on your campus.</p>
+<%- end -%>
 <div class="closebox" style="display:none;">
   <a href="">Hide this message</a>
 </div>
