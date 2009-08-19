@@ -3,7 +3,8 @@
   <%- unless show_form %><br /><%- end -%>
   <div class='login_sector' style='text-align: center'>
     <br/>
-    <%= link_to '<img src="images/GCX-logo.gif" height="68" width="100px" style="vertical-align: middle"/>', 
+    <%= link_to image_tag('GCX-logo.gif', :height => '68px', :width => '100px', 
+                          :style => 'vertical-align: middle'),
       CASClient::Frameworks::Rails::Filter.login_url(controller) %>
       &nbsp; &nbsp; &nbsp;
     <%= link_to 'Login with GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
