@@ -708,11 +708,18 @@ table#schedule {
 border-collapse:collapse;
 width:100%;
 }
+
+table#schedule u {
+color: black;
+}
+
+
 table#schedule td, table#schedule th {
 padding:2px;
 border:1px solid gray;
 width:12.5%;
 height:25px;
+color: black;
 }
 
 table#schedule th {
@@ -737,11 +744,11 @@ margin:0px 0 5px 0;
 .ok {background:#61E6CB;}
 .good {background:#5CE40A;}
 
-.allbad {background:#FFBBBB;}
-.allgood {background:#BBFFBB;}
-.moregood {background:#FFFFBB;}
-.morebad {background:#FFDDDB;}
-.neutral {background:#FFEEEB;}
+.allbad {background:#FD4239;}
+.allgood {background:#66BD29;}
+.moregood {background:#C9E49C;}
+.morebad {background:#ffa192;}
+.neutral {background:#fad0cb;}
 
 .badhead, .poorhead, .okhead, .goodhead {
 width:40px;
@@ -943,8 +950,8 @@ border:1px dotted orange;
 	color:red;
 }
 
-.redlink a:link {color: red;}
-.redlink a:visited {color: red;}
+.setLink a:link {color: #1F429B;}
+.setLink a:visited {color: #1F429B;}
 
 .fieldWithErrors input {
   display: block;

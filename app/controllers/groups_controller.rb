@@ -123,6 +123,7 @@ class GroupsController < ApplicationController
     @people.each do |person|
       if (person.free_times.nil? || person.free_times.empty?)
         @notices << "<i>" + person.full_name + "</i> has not submitted his timetable. Hence will be excluded from comparison."
+        @people.delete(person)
       end
     end
     
