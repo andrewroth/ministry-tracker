@@ -1,5 +1,4 @@
 <% @site_title = 'Dashboard' -%>
-
 <%- help_block do -%>
   <h3>The Dashboard. </h3> 
   <br>
@@ -11,6 +10,10 @@
   <br /><br />
   <%- end -%>
   <h4>Quick Tools</h4>
+    <b>Go to your profile</b> to view your profile (ie. addresses, campuses you're at, etc.), then click the 'Edit Information' button to edit it.
+    <br/>
+    <b>Enter your timetable</b> to mark which times you're free at, which can then be used to schedule group meeting times.
+    <br/>
     <%- if authorized?(:new, :people) -%>
     <b>Add a student</b> to ministry you are currently viewing.
     <br />
@@ -19,18 +22,22 @@
     <b>Create a group</b> to track groups of people meeting weekly within your ministry.
     <br />
     <%- end -%>
-    <%- if authorized?(:new, :groups) -%>
+    <%- if authorized?(:new, :ministries) -%>
     <b>Create a ministry</b>: Ministries are where the action happens, use this when starting new campus ministries
     <br />
     <%- end -%>
     <%- if authorized?(:new, :groups) -%>
-    Go to your <b>Directory</b> to display a list of all people involved in this ministry.
+    Go to your <b>directory</b> to display a list of all people involved in this ministry.
     <br />
     <%- end -%>
     <br />
    <h4>My Groups</h4>
-   Click any of the groups you are registered for to view and edit its details.
+   Click any of the groups you are registered for to view its details.
    <br />
+   <%- if authorized?(:join, :groups) -%>
+   <b>Join a group</b> to see a list of groups available, that you can join or mark as being interested.
+   <br />
+   <%- end -%>
    <%- if is_ministry_leader -%>
    <br />
    <h4>Statistics</h4>
@@ -111,6 +118,13 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
         <ul>
+          <li>
+            <%= link_to('Go to your profile', person_url(@me.id)) %>
+          </li>
+          <li>
+            <%= link_to('Enter your timetable', person_timetable_path(@me.id, 
+                  (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
+          </li>
           <%- if authorized?(:new, :people) -%>
           <li>
             <%= link_to_remote('Add a student', :url => '/people/add_student',
@@ -125,10 +139,10 @@ this system, along with any other information we think would be helpful to you.<
             <li><%= link_to('Create a group', groups_path) %></li>
           <%- end -%>
           <%- if authorized?(:new, :ministries) -%>
-            <li><%= link_to('Create a Ministry', '/manage') %></li>
+            <li><%= link_to('Create a ministry', '/manage') %></li>
           <%- end -%>
           <%- if authorized?(:directory, :people) -%>
-            <li><%= link_to('Go to the Directory', directory_people_path) %></li>
+            <li><%= link_to('Go to the directory', directory_people_path) %></li>
           <%- end -%>
         </ul>
       </div>
