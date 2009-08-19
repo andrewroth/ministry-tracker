@@ -17,12 +17,12 @@ class SessionsController < ApplicationController
     if p && p.user
       self.current_user = p.user
       session[:ministry_role_id] = nil
-      redirect_to '/'
+      redirect_to :controller => 'dashboard', :action => 'index'
       return
     elsif params[:login].present?
       self.current_user = User.find_by_viewer_userID params[:login]
       session[:ministry_role_id] = nil
-      redirect_to '/'
+      redirect_to :controller => 'dashboard', :action => 'index'
       return
     end
 
@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
       end
       self.current_user.last_login = Time.now
       self.current_user.save
-      redirect_back_or_default('/')
+      redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     end
     # force a flash warning div to show up, so that invalid password message can be shown
     flash[:warning] = '&nbsp;'
@@ -66,7 +66,7 @@ class SessionsController < ApplicationController
           # local login worked, redirect to appropriate starting page
           self.current_user.last_login = Time.now
           self.current_user.save
-          redirect_params = session[:return_to] || '/'
+          redirect_params = session[:return_to] || url_for(:controller => 'dashboard', :action => 'index')
           wants.js do
             render :update do |page|
               page.redirect_to(redirect_params)
