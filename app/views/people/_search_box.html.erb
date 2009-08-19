@@ -1,7 +1,7 @@
 <div id="searchBox">
   <div id="basic_search"
     <%= 'style="display:none"' if @advanced %> >
-	  <%- form_tag directory_people_url do -%>
+    <%- form_tag directory_people_url(:format => 'html') do -%>
 	    Search by name or email:
 	    <%= text_field_tag "search"%>
 	    <%= submit_tag "Go"%> &nbsp;&nbsp;
