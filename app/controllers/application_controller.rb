@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states],
-      :profile_pictures => [:create, :update, :destroy],
+      :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
