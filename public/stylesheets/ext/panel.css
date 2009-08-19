@@ -20,7 +20,7 @@
     padding:5px 3px 4px 5px;
     border:1px solid #99bbe8;
     line-height: 15px;
-    background: transparent url(../images/default/panel/white-top-bottom.gif) repeat-x 0 -1px;
+    background: transparent url(../../images/default/panel/white-top-bottom.gif) repeat-x 0 -1px;
 }
 
 .x-panel-body {
@@ -80,7 +80,7 @@
 	 margin-bottom:-1px;
 }
 .x-panel-tc {
-	background: transparent url(../images/default/panel/top-bottom.gif) repeat-x 0 0;
+	background: transparent url(../../images/default/panel/top-bottom.gif) repeat-x 0 0;
 	overflow:hidden;
 }
 /* fix ie7 strict mode bug */
@@ -88,18 +88,18 @@
     overflow: visible;
 }
 .x-panel-tl {
-	background: transparent url(../images/default/panel/corners-sprite.gif) no-repeat 0 0;
+	background: transparent url(../../images/default/panel/corners-sprite.gif) no-repeat 0 0;
 	padding-left:6px;
     zoom:1;
     border-bottom:1px solid #99bbe8;
 }
 .x-panel-tr {
-	background: transparent url(../images/default/panel/corners-sprite.gif) no-repeat right 0;
+	background: transparent url(../../images/default/panel/corners-sprite.gif) no-repeat right 0;
 	zoom:1;
     padding-right:6px;
 }
 .x-panel-bc {
-	background: transparent url(../images/default/panel/top-bottom.gif) repeat-x 0 bottom;
+	background: transparent url(../../images/default/panel/top-bottom.gif) repeat-x 0 bottom;
     zoom:1;
 }
 .x-panel-bc .x-panel-footer {
@@ -107,12 +107,12 @@
 }
 
 .x-panel-bl {
-	background: transparent url(../images/default/panel/corners-sprite.gif) no-repeat 0 bottom;
+	background: transparent url(../../images/default/panel/corners-sprite.gif) no-repeat 0 bottom;
 	padding-left:6px;
     zoom:1;
 }
 .x-panel-br {
-	background: transparent url(../images/default/panel/corners-sprite.gif) no-repeat right bottom;
+	background: transparent url(../../images/default/panel/corners-sprite.gif) no-repeat right bottom;
 	padding-right:6px;
     zoom:1;
 }
@@ -129,12 +129,12 @@
     border: 0 none;
 }
 .x-panel-ml {
-	background: #fff url(../images/default/panel/left-right.gif) repeat-y 0 0;
+	background: #fff url(../../images/default/panel/left-right.gif) repeat-y 0 0;
 	padding-left:6px;
     zoom:1;
 }
 .x-panel-mr {
-	background: transparent url(../images/default/panel/left-right.gif) repeat-y right 0;
+	background: transparent url(../../images/default/panel/left-right.gif) repeat-y right 0;
 	padding-right:6px;
     zoom:1;
 }
@@ -195,7 +195,7 @@
     height:15px;
     float:right;
     cursor:pointer;
-    background:transparent url(../images/default/panel/tool-sprites.gif) no-repeat;
+    background:transparent url(../../images/default/panel/tool-sprites.gif) no-repeat;
     margin-left:2px;
 }
 
