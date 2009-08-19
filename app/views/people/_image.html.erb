@@ -8,7 +8,9 @@
   <%= image_tag(@person.profile_picture.public_filename(:medium)) %>
 	<div id="profileCaption">
 	  <%= link_to_function image_tag("pencil.png") + 'Change', "show_upload_picture()"  %>
-  	<%= link_to_remote(image_tag("delete.png") + 'Delete', :url => profile_picture_url(@person.profile_picture), :method => :delete,
+  	<%= link_to_remote(image_tag("delete.png") + 'Delete', :url => profile_picture_url(:id => @person.profile_picture.try(:id), 
+  	                                                                                   :person_id => @person.id), 
+  	                                                       :method => :delete,
   	                                                       :before => "$('#spinner').show()") %>
 	</div>
 <%- end -%>
