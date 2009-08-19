@@ -22,7 +22,8 @@ class Ministry < ActiveRecord::Base
   has_many :campus_involvements
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
-  has_many :ministry_campuses, :include => :campus, :dependent => :destroy
+  has_many :ministry_campuses, :include => :campus, :dependent => :destroy, 
+    :include => :campus, :order => _(:name, :campus)
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
   has_many :groups, :dependent => :destroy
