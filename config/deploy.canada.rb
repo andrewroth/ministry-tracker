@@ -2,6 +2,9 @@ def ma?
   ENV['system'] == 'ma'
 end
 
+def dev?() ENV['target'] != 'prod' end
+def prod?() !dev? end
+
 # This file 
 set :application, "ministry-tracker"
 set :user, 'deploy'
@@ -12,7 +15,7 @@ set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
 set :branch, (ma? ? 'dev' : 'emu')
 set :deploy_via, :remote_cache
-set :deploy_to, "/var/www/#{ma? ? "mt.ministryhacks.com" : "emu.campusforchrist.org"}"
+set :deploy_to, "/var/www/#{ma? ? "mt.ministryhacks.com" : "#{dev? ? 'emu' : 'pulse'}.campusforchrist.org"}"
 set :git_enable_submodules, false
 set :git_shallow_clone, true
 
@@ -38,6 +41,7 @@ deploy.task :after_symlink do
   # other shared files / folders
   link_shared 'log', :overwrite => true
   link_shared 'config/database.emu.yml', :overwrite => true
+  link_shared 'public/emu_dev.profile_pictures'
 end
 
 namespace :deploy do
