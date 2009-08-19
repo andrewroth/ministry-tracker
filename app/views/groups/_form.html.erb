@@ -38,21 +38,22 @@
       		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
       		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
       		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
-           <%- tooltip do -%> <p>When you create a time a day, this timeslot will appear on every member's timetable<p> <%-end-%>
-      		<tr><td>Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
+          <tr><td>
+              Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
       		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
   	    </table>
   	  </td>
   	</tr>
-		
-	Make me the leader of this group:
-  <%= check_box_tag(:isleader, 1, true)%>
-  <br />
-  Join requests must be approved:
-  <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
-  
-  
+    <tr>
+      <td colspan='2'>
+        <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
+        Join requests must be approved
+        <br/>
+        <%= check_box_tag(:isleader, 1, true)%>
+        Make me the leader of this group
+       </td>
+     </tr>
   </table>
 	<%= submit_tag 'Save' %> or 
 	<%- if params[:action] == 'new' -%>
