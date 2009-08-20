@@ -13,12 +13,27 @@
 #     
 render_tabnav :main, 
               :html => {:class => 'tablist', :id => 'tablist' } do 
+  link = I18n.t :help_link, :default => 'nil'
+  unless link.nil? || link == "nil" || link == ""
+    add_tab do |t|
+      t.named 'Support'
+      t.titled "Support centre for the #{I18n.t :app_name, :default => 'Ministry Tracker'}"
+      t.links_to link
+    end
+  end 
+
   
 	if authorized?(:index, :manage)
     add_tab do |t|
      t.named 'Manage'
      t.titled 'Manage your world'
      t.links_to :controller => 'manage'
+     t.highlights_on :controller => "ministries"
+     t.highlights_on :controller => "staff"
+     t.highlights_on :controller => "groups"
+     t.highlights_on :controller => "customize"
+     t.highlights_on :controller => "ministry_roles"
+     t.highlights_on :controller => "school_years"
     end #if can_manage
   end
   
@@ -60,6 +75,8 @@ render_tabnav :main,
    t.titled 'This is your Dashboard'
    t.links_to :controller => 'dashboard'
   end 
+  
+  
   #  
   # you can use restful routes with:
   #

@@ -386,7 +386,7 @@ margin-top:10px;
 
 /* TABS */
 .tablist {
-    width:50%;
+    width:60%;
     background:#FFCB05 url("") repeat-x bottom;
     float:right;
     margin-top: 4px;
@@ -400,8 +400,9 @@ margin-top:10px;
 .tablist li {
     float:right;
     background:url("../images/yellowtab.png") no-repeat left top;
-    margin-bottom:0px;
+    margin-left:4px;
 	width: 86px;
+	
 }
 
 .tablist a {
