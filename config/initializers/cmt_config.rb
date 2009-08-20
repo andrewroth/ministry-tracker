@@ -66,6 +66,9 @@ module Cmt
     :training_enabled => false,
     
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
+    :leadership_notes_enabled => false,
+    
+    # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
     :leadership_notes_enabled => false
   }
 end
