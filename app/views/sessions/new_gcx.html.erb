@@ -1,0 +1,31 @@
+<br/>
+
+<p>
+We are using <a href="http://www.mygcx.org">Global ConneXion</a> (GCX) to authenticate users.  GCX is developed by the American Campus Crusade for Christ tech team, and is used by Campus Crusade ministries around the world.  <a href="http://technology.ccci.org/gcx/index.html">Read more about GCX here</a>.  Using GCX means more people can use the project tool, and you only need to remember their GCX login rather than separate credentials for each site.
+</p>
+
+<p>
+To signup,
+</p>
+
+<style>
+  #content {
+    margin-left: 10em;
+    margin-right: 10em;
+  }
+
+  ol#login_instructions {
+    margin-left: 3em;
+  }
+  #login_instructions li {
+    list-style-type: decimal;
+  }
+</style>
+
+<ol id="login_instructions">
+  <li>Go to <a href="http://www.mygcx.org" target="blank">http://www.mygcx.org</a> (will open in a new window) to create an account.</li>
+  <li><strong>Wait 2-3 minutes.  This is a GCX issue where it takes their system a few minutes to synchronize some data under the covers.</strong></li>
+  <li>Return to <%= link_to 'the login page', login_url %> to login with your newly created GCX account.</li>
+</ol>
+<br/>
+<p>If you need help you can watch a <a href="http://www.screencast.com/users/ccci/folders/GCX%20Screencasts/media/d54b42e4-0cf2-43a7-b3d2-0919871a5602">quick video</a> which will show you how to create a GCX account<%- if (help_link = (I18n.t :help_link, :default => '')).present? -%> or visit our <%= link_to 'Support Community', help_link %><%- end -%>.</p>
