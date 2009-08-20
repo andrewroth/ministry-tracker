@@ -26,8 +26,7 @@ class Person < ActiveRecord::Base
 
   has_one :person_extra_ref, :class_name => 'PersonExtra'
 
-  def created_at() id end # best we can do to give an idea of when created 
-  def created_at=(v) end # noop
+  def created_at=(v) end # noop since it would have set the id to the timestamp
 
   def person_extra() 
     @person_extra ||= person_extra_ref || PersonExtra.new(:person_id => id)
