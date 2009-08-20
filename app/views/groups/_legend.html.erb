@@ -1,0 +1,10 @@
+<table id="legend" width="250px" cellspacing="0">
+  <tr><th> <b>LEGEND</b> </th> 
+  <td id="allgood"> Good for everyone </td>
+  <td id="moregood"> Good or Okay for Everyone </td>
+  <td id="neutral"> Bad for up to than <%= Rational(@people.length, 4).to_i %>  people</td>
+  <td id="morebad"> Bad for more than <%= Rational(@people.length, 4).to_i %>  people</td>
+  <td id="allbad"> Bad for everyone</td></tr>
+  
+  <br />
+</table>
