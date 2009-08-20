@@ -1,3 +1,4 @@
+<%= raise view_column.inspect if view_column.column.nil? %>
 <li id="item_<%= view_column.id %>">
   <%= image_tag('silk/move.png') %>
   <%= I18n.t view_column.column.title, :default => view_column.column.title %> &nbsp;&nbsp;&nbsp; 
