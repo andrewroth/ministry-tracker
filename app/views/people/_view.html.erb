@@ -22,14 +22,16 @@
       	</tr>
       <%- end -%>
       
-      <tr><th>People Responsible For</th><td>
-        <%- if @people_responsible_for -%>
-          <%- @people_responsible_for.each do |person| -%>
-            <%= link_to person.full_name, person_url(person.id) %>
-            <br>
+      <%- if Cmt::CONFIG[:rp_system_enabled] -%>
+        <tr><th>People Responsible For</th><td>
+          <%- if @people_responsible_for -%>
+            <%- @people_responsible_for.each do |person| -%>
+              <%= link_to person.full_name, person_url(person.id) %>
+              <br />
+            <%- end -%>
           <%- end -%>
-        <%- end -%>
-      </td></tr>
+        </td></tr>
+      <%- end -%>
       
       
 	  </table>
@@ -43,15 +45,16 @@
     	<tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
     	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
     	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
-	<tr><th>Responsible Person<th><td> 
-    <% if @person.responsible_person %>
-	    <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
-    <% end %>
-    <%- tooltip do -%> 
+	<%- if Cmt::CONFIG[:rp_system_enabled] -%>
+	  <tr><th>Responsible Person<th><td> 
+      <% if @person.responsible_person %>
+	      <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
+      <% end %>
+      <%- tooltip do -%> 
         Your Responsible Person can either be a mentor or a contact that knows you very well and who is of a higher ministry role than you.
-    <%- end -%>
-	</td></tr>
-	
+      <%- end -%>
+	  </td></tr>
+	<%- end -%>
     	<%- if !@person.url.blank?
     	      desc, url = parse_url(@person.url) -%>
     	<tr><th>Website</th><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>

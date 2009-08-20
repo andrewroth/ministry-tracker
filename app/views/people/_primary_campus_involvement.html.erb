@@ -72,9 +72,11 @@
       <th>Minor</th>
       <td><%= cif.text_field :minor %></td>
     </tr>
-    <tr class='pcd'>
-      <th>Responsible Person</th>
-      <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name', @person.responsible_person.object_id) %></td>
-    </tr>
+    <%- if Cmt::CONFIG[:rp_system_enabled] -%>
+      <tr class='pcd'>
+        <th>Responsible Person</th>
+        <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name', @person.responsible_person.object_id) %></td>
+      </tr>
+    <%- end -%>
   </table>
 <%- end -%>
