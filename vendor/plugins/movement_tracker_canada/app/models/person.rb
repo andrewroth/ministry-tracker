@@ -135,6 +135,33 @@ class Person < ActiveRecord::Base
       # TODO
     end
 
+    # ministry and role contain what the new ministry_involvement should be set up
+    # for those attributes
+    def upgrade_ministry_involvement(ministry, role)
+      atts = {
+        :ministry_role_id => role.id,
+        :ministry_id => ministry.id,
+        :person_id => self.id,
+        :admin => self.cim_hrdb_admins.count > 0,
+        :end_date => nil
+      }
+
+      # find highest ministry involvement
+      mi = self.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.id], :joins => :ministry_role, :order => _(:position, :ministry_role))
+
+      if mi.nil?
+        mi = ministry_involvements.create!(atts)
+      else
+        # don't demote them (higher roles have lower position values)
+        if (mi.ministry_role.class == StaffRole && role.class == StudentRole) || 
+             (mi.ministry_role && mi.ministry_role.position < role.position)
+          atts.delete :ministry_role_id
+        end
+
+        mi.update_attributes atts
+      end
+    end
+
     def get_highest_assignment
       return nil if assignments.empty?
 
@@ -152,7 +179,14 @@ class Person < ActiveRecord::Base
     end
 
     # import information from the ciministry hrdb to the movement tracker database
-    def map_cim_hrdb_to_mt
+    #
+    # when secure flag is on, it will import staff with a cim_hrdb_assignment (as staff)
+    # only if they cim_hrdb_staff entry
+    #
+    def map_cim_hrdb_to_mt(options = {})
+      options = { :secure => true
+      }.merge(options)
+
       c4c = Ministry.find_by_name 'Campus for Christ'
 
       # ciministry hrdb uses assignments to track
@@ -169,24 +203,9 @@ class Person < ActiveRecord::Base
         # ministry involvement
         role = MinistryRole.find_by_name ASSIGNMENTS_TO_ROLE[assignment]
 
-        # if they have a staff role
-        if (assignment == 'Staff' ? !cim_hrdb_staff.nil? : true) # verify staff
-          mi_atts = {
-            :ministry_role_id => role.id,
-            :ministry_id => c4c.id, 
-            :person_id => self.id
-          }
-
-          # make sure they are involved in the ministry
-          
-          mi = MinistryInvolvement.find :first, :conditions => {:ministry_id => c4c.id, :person_id => self.id}
-          if mi.nil?
-            mi = ministry_involvements.create!(mi_atts)
-
-            mi.admin = self.cim_hrdb_admins.count > 0     
-          end
-          mi.end_date = nil
-          mi.save!
+        # if they have a staff role (verify staff if secure flag is on)
+        if (assignment == 'Staff' && options[:secure] ? !cim_hrdb_staff.nil? : true)
+          upgrade_ministry_involvement(c4c, role)
         end
 
         # add the appropriate campus involvements
@@ -213,6 +232,12 @@ class Person < ActiveRecord::Base
         #end
       end
       true
+
+      # add a staff ministry role if they're cim_hrdb_staff
+      if !cim_hrdb_staff.nil?
+        role = MinistryRole.find_by_name('Staff')
+        upgrade_ministry_involvement(c4c, role)
+      end
     end
 
     # TODO: Can this be removed now?

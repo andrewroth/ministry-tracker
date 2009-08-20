@@ -46,7 +46,7 @@ namespace :canada do
         j = 0
       end
 
-      p.map_cim_hrdb_to_mt
+      p.map_cim_hrdb_to_mt :secure => false
     end
     puts "100%"
   end
