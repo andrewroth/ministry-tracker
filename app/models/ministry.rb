@@ -225,6 +225,7 @@ class Ministry < ActiveRecord::Base
     end
   end
 
+  # TODO this should use the seed instead of recreating it inline here
   def create_default_roles
     if self.root?
       self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Campus Coordinator', _(:position, :ministry_role) => 2)
