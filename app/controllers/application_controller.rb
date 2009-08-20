@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
-  before_filter :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
+  before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
 #  before_filter :fake_login, :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
@@ -278,14 +278,12 @@ class ApplicationController < ActionController::Base
           @person.ministries.find(:first, :conditions => {:id => session[:ministry_id] }) :
           @person.ministries.first
 
-
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
         @ministry ||= associate_person_with_default_ministry(@person)
-
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -323,6 +321,12 @@ class ApplicationController < ActionController::Base
       groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}
       my_campuses_ids = @my.active_campuses.collect &:id
       @person_campus_groups = groups.select { |g| g.campus.nil? || my_campuses_ids.include?(g.campus.id) }
+    end
+
+    def ensure_has_ministry_involvement
+      if @me && @me.ministry_involvements.empty?
+        associate_person_with_default_ministry(@me)
+      end
     end
 
 private
