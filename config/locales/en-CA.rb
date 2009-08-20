@@ -17,6 +17,7 @@
     :Bible_Study_short_plural => 'DGs',
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
+    :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
     
     
     :date => {
