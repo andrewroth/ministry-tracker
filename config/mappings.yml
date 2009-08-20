@@ -73,7 +73,6 @@ person:
   last_name: person_lname
   middle_name: person_mname
   preferred_name: person_fname
-  created_at: person_id
   email: person_email
   address1: person_local_addr
   city: person_local_city
