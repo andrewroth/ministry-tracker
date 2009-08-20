@@ -23,7 +23,7 @@ class Ministry < ActiveRecord::Base
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
   has_many :ministry_campuses, :include => :campus, :dependent => :destroy, 
-    :include => :campus, :order => _(:name, :campus)
+    :include => :campus, :order => Campus.table_name + '.' + _(:name, :campus)
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
   has_many :groups, :dependent => :destroy
@@ -225,6 +225,7 @@ class Ministry < ActiveRecord::Base
     end
   end
 
+  # TODO this should use the seed instead of recreating it inline here
   def create_default_roles
     if self.root?
       self.ministry_roles << MinistryRole.create(_(:name, :ministry_role) => 'Campus Coordinator', _(:position, :ministry_role) => 2)
