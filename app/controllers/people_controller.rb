@@ -247,13 +247,7 @@ class PeopleController < ApplicationController
     @person = Person.new
     @current_address = CurrentAddress.new
     @countries = CmtGeo.all_countries
-    
-    default_country = Country.find(:first, :conditions => {_(:name, :country) => Cmt::CONFIG[:default_country] })
-    @default_country_code = default_country.abbrev if default_country
-    @current_address_states = get_states @default_country_code
-    
-    @states = (@default_country_code ? get_states(@default_country_code) : CmtGeo.all_states)    
-    
+    @states = CmtGeo.all_states
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js
@@ -264,15 +258,13 @@ class PeopleController < ApplicationController
   def edit
     countries = get_countries
     
-    default_country = Country.find(:first, :conditions => {_(:name, :country) => Cmt::CONFIG[:default_country] })
-    @default_country_code = default_country.abbrev if default_country
-    current_address_country = (@person.current_address.try(:country) || @default_country_code)
-    permanent_address_country = (@person.permanent_address.try(:country) || @default_country_code)
-    current_address_states = get_states current_address_country
-    permanent_address_states = get_states permanent_address_country    
+    current_address_states = get_states @person.current_address.try(:country)
+    permanent_address_states = get_states @person.permanent_address.try(:country)
+    current_address_country = @person.current_address.try(:country)
+    permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
-    
-    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
+
+    get_possible_responsible_people
     setup_vars
     setup_campuses
     render :update do |page|
