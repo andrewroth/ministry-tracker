@@ -15,9 +15,6 @@ module Cmt
     # Disable GCX Import functionality
     :gcx_import_disabled => true,
 
-    # Allow local logins.  Either this of gcx_account_enabled must be true.
-    :local_enabled => false,
-
     # Forces users to go through a longer process for validating accounts.
     # Note used yet.
     :full_account_verification => false,
