@@ -26,9 +26,10 @@
 		<td><%= text_field :current_address, :city %></td>
 	</tr>
 	<tr>
-		<th>Country:</th>
+		<th>Country: </th>
 		<td>
-			<%= select :current_address, :country, countries, :prompt => true %>
+			<%= select :current_address, :country, countries, :prompt => true,
+			           :selected => current_address_country %>
       <%= observe_field(:current_address_country, {
         :url => { :action => "set_current_address_states" },
         :with => 'current_address_country',
