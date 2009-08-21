@@ -17,7 +17,7 @@ Revised on: 2-16-2009
 
 .actionbox {
 padding:10px;
-border:1px solid green;
+border:1px solid #1F429B;
 display:inline-block;
 background:#f7f7f7;
 }
@@ -80,14 +80,14 @@ color:white;
 }
 
 input.lbbutton {
-background:green;
+background:#1F429B;
 color:white;
 font-size:10px;
 border: 2px solid white;
 }
 
 .lbbutton:hover {
-background:green;
+background:#1F429B;
 color:white;
 border: 2px solid white;
 }
@@ -182,7 +182,7 @@ font-weight:bold;
 
 #profileCaption a:hover {
 text-decoration:none;
-border:1px solid green;
+border:1px solid #1F429B;
 background: #ffffcc;
 }
 
@@ -207,7 +207,7 @@ height:18px;
 
 .butUpdate a:hover {
 text-decoration:none;
-border:1px solid green;
+border:1px solid #1F429B;
 background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
 }
 
@@ -231,7 +231,7 @@ height:18px;
 
 .butDExcel a:hover {
 text-decoration:none;
-border:1px solid green;
+border:1px solid #1F429B;
 background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
 }
 
@@ -251,7 +251,7 @@ height:18px;
 
 .butNormal a:hover {
 text-decoration:none;
-border:1px solid green;
+border:1px solid #1F429B;
 background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
 }
 
@@ -307,7 +307,7 @@ a:link, a:visited {
 
 a:hover, a:active {
     text-decoration:underline;
-    color:#FFCB05;
+    color:#ecac00;
 }
 a.norm {
 	color:#747474;
@@ -654,7 +654,7 @@ margin-bottom:10px;
 #subtabs {
 display:block;
 clear:both;
-background:#e7f7ff;
+background:#cbd1e8;
 padding:10px;
 margin: 0 0 10px 0;
 }
@@ -880,7 +880,7 @@ div.closebox a{
 background:#fff url(/images/silk/cross.png) no-repeat 2% 50%;
 font-weight:bold;
 padding:5px 5px 5px 25px;
-border:1px solid green;
+border:1px solid #1F429B;
 }
 
 div.closebox {padding-top:10px; padding-bottom:10px;}
@@ -975,7 +975,7 @@ border:1px dotted orange;
 	margin-left: 10px;
 }
 .notice {
-	color:green;
+	color:#1F429B;
 }
 .warning {
 	color:red;
