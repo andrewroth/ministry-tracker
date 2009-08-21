@@ -22,8 +22,7 @@
     <% #TODO: proper ajax filtering of countries and states
     %>
 		<td>Country: </td>
-		<td><%= select :current_address, :country, @countries, :prompt => true, 
-		               :selected => @default_country_code %>
+		<td><%= select :current_address, :country, @countries, :prompt => true %>
 		</td>
 	</tr>	
 	<%= observe_field(:current_address_country, {

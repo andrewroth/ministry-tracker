@@ -44,7 +44,6 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
-    @group.country = Cmt::CONFIG[:default_country]
     respond_to do |format|
       format.html { render :layout => false }
       format.js

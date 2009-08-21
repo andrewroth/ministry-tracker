@@ -264,7 +264,7 @@ class PeopleController < ApplicationController
     permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
 
-    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
+    get_possible_responsible_people
     setup_vars
     setup_campuses
     render :update do |page|
