@@ -35,7 +35,10 @@
   	  <td style="vertical-align:top;">
   	    <table border="0" cellspacing="5" cellpadding="5">
       		<tr><td><%= I18n.t :Zip, :default => 'Zip' %>: </td><td><%= f.text_field :zip %></td></tr>
-      		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'] %></td></tr>
+      		
+      		<% default_country = (Cmt::CONFIG[:default_country] ? Carmen.country_code(Cmt::CONFIG[:default_country]) : "") %>
+      		<tr><td>Country: </td><td><%= f.country_select :country, ['United States', 'Canada','Australia'], 
+      		                              {}, {:select => Cmt::CONFIG[:default_country]} %></td></tr>
       		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
       		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
           <tr><td>

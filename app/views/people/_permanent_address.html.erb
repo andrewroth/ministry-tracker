@@ -20,7 +20,8 @@
 	<tr>
 		<th>Country:</th>
 		<td>
-      <%= select :perm_address, :country, countries, :prompt => true %>
+      <%= select :perm_address, :country, countries, :prompt => true,
+                 :selected => permanent_address_country %>
 	    <%= observe_field(:perm_address_country, {
 	          :url => { :action => "set_permanent_address_states" },
 	          :with => 'permanent_address_country',
