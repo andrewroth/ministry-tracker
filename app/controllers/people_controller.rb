@@ -264,7 +264,7 @@ class PeopleController < ApplicationController
     permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
 
-    get_possible_responsible_people
+    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
     setup_vars
     setup_campuses
     render :update do |page|
@@ -353,7 +353,7 @@ class PeopleController < ApplicationController
   def update
     countries = get_countries
     get_people_responsible_for
-    get_possible_responsible_people
+    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
     get_ministry_involvement(get_ministry)
     @person = Person.find(params[:id])
     if params[:responsible_person_id]
