@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new
+    @group = Group.new :country => Cmt::CONFIG[:default_country]
     respond_to do |format|
       format.html { render :layout => false }
       format.js
