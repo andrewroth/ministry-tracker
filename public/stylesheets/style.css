@@ -715,17 +715,12 @@ table#legend th {
 font-weight:bold;
 }
 
-table#legend td, table#legend th {
+table#legend td {
 color:black;
 border:1px solid gray;
 text-align:center;
 height:15px;
 }
-
-table#legend td {
-width:18%
-}
-
 
 table#schedule {
 border-collapse:collapse;
