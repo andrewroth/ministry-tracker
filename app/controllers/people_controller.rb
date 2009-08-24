@@ -717,7 +717,7 @@ class PeopleController < ApplicationController
         (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
-        @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
+        @campuses = @campus_country.campus_list
       else
         if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
           @campus_state = @person.primary_campus.state
