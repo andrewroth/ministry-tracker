@@ -193,6 +193,7 @@ class Person < ActiveRecord::Base
       
       if !self.current_address.email.present?
         self.current_address.email = self.user.viewer_userID if self.user
+        self.current_address.save
       end
       
       # ciministry hrdb uses assignments to track
