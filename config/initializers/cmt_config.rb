@@ -66,7 +66,10 @@ module Cmt
     :leadership_notes_enabled => false,
     
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
-    :leadership_notes_enabled => false
+    :involvement_questions_enabled => false,
+    
+    # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
+    :facebook_connectivity_enabled => false
   }
 end
 
