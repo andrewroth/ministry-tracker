@@ -4,6 +4,7 @@ for c in Country.find_by_country_desc('Canada').states.collect(&:campuses).flatt
     mc.campus_id = c.id
     mc.ministry_id = c4c.id
   end
+  end
   
   regnat = Campus.find_by_campus_desc("Regional / National")
   MinistryCampus.seed(:campus_id, :ministry_id) do |mc|
@@ -15,6 +16,5 @@ for c in Country.find_by_country_desc('Canada').states.collect(&:campuses).flatt
   MinistryCampus.seed(:campus_id, :ministry_id) do |mc|
     mc.campus_id = other.id
     mc.ministry_id = c4c.id
-  end
   
 end
