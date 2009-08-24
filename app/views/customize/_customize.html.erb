@@ -123,7 +123,7 @@
 		                                                                          :attrib_type => 'ProfileQuestion'} %>
 	</div>
 	<%- end -%>
-	<%- if authorized?(:new, :involvement_questions) -%>
+	<%- if authorized?(:new, :involvement_questions) && Cmt::CONFIG[:involvement_questions_enabled]  -%>
 	<div>
 		<%= render :partial => 'custom_attributes/custom_attributes', :locals => {:attributes => @ministry.involvement_questions, 
 		                                                                          :attrib_type => 'InvolvementQuestion'} %>

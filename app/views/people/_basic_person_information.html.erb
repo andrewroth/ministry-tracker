@@ -33,10 +33,15 @@
 			%>
 		</td>
 	</tr>
-  <%- fields_for user do |uf| -%>
-  <tr>
-    <th>Facebook&trade;</th>
-	  <td><%= uf.text_field :facebook_username %></td>
-	</tr>
-	<%- end if user -%>  
+	
+	<%- if Cmt::CONFIG[:facebook_connectivity_enabled] -%>
+   <%- fields_for user do |uf| -%>
+    <tr>
+      <th>Facebook&trade;</th>
+	   <td><%= uf.text_field :facebook_username %></td>
+	  </tr>
+	  <%- end if user -%>
+	<%- end -%>  
+	
+	
 </table>
