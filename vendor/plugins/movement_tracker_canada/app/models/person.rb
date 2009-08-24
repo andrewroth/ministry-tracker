@@ -190,7 +190,11 @@ class Person < ActiveRecord::Base
       }.merge(options)
 
       c4c = Ministry.find_by_name 'Campus for Christ'
-
+      
+      if !self.current_address.email.present?
+        self.current_address.email = self.user.viewer_userID if self.user
+      end
+      
       # ciministry hrdb uses assignments to track
       # both ministry involvement and campus involvements.
       # Movement Tracker uses two individual tables.
@@ -276,6 +280,8 @@ class Person < ActiveRecord::Base
         :birth_date => nil 
       v = Person.create_viewer(guid, uid)       
       p.create_access(v)
+      p.current_address.email = uid
+      p.current_address.save
 
       v
     end
