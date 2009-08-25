@@ -22,11 +22,9 @@
   <div class="divider" style="margin-bottom:0;">&nbsp;</div>
 </div>
 <div class="leftColumn">
-  <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
 	  <div id="profileImageBox">
 		  <%= render :partial => 'image' %>
 	  </div>
-	<%- end -%>
 	<div>
 		<div class="floatLeft"><%= spinner %></div>
 		<div id="progress-bar"></div>
