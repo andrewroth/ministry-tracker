@@ -15,7 +15,8 @@
       </li>
     <%- end -%>
   </ul>
-  <%= link_to "Join a group", :controller => "groups", :action => "join" %> 
+  <br />
+  <%= link_to "#{image_tag 'joinagroupbutton.png'}", :controller => "groups", :action => "join"%> 
   <%- tooltip do -%> 
     Click here to go to the page where you can request joining a group. 
   <%- end -%>
