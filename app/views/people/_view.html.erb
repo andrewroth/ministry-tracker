@@ -75,7 +75,8 @@
 	
 	<table class="halftab">
 	<tr><th width="150">Phone</th><td><%= @current_address.phone if @current_address %></td></tr>
-	<tr><th>Alternate Phone</th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
+	<tr><th><%= I18n.t :alternate_phone, :default => "Alternate Phone" %>
+	    </th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
 	<tr><th>Address</th><td><%= @current_address.mailing if @current_address %></td></tr>
 	<tr><th>&nbsp;</th><td><%= @current_address.dorm if @current_address %> <%= "Room " + @current_address.room unless @current_address.nil? || @current_address.room.to_s.empty? %></td></tr>
 	<tr>
