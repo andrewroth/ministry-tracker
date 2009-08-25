@@ -18,6 +18,7 @@
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
     :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
+    :alternate_phone => 'Cell Phone',
     
     :analytics => "<script type=\"text/javascript\">
 var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");
