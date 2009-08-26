@@ -72,7 +72,10 @@ module Cmt
     :facebook_connectivity_enabled => false,
     
     # When enabled, users can edit profile pictures on their profile
-    :profile_picture_enabled => false
+    :profile_picture_enabled => false,
+    
+    # When enabled, large buttons for 'join a group' and 'edit your timetable' will appear in the dashboard
+    :dashboard_big_buttons_enabled => true
   }
 end
 
