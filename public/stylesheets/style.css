@@ -881,6 +881,15 @@ border:1px solid green;
 div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
+
+.bigbuttons {
+margin-bottom: 10px;
+}
+
+.bigbuttons b{
+	font-size:large;
+}
+
 div#col_1{
 width:49.5%;
 float:left;
