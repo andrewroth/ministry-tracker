@@ -891,6 +891,14 @@ width:49.5%;
 float:right;
 }
 
+.dashbutton{
+margin: 0px 150px 15px 150px
+}
+
+.timetabledashbutton{
+margin: 0px 125px 15px 125px
+}
+
 #dashwrap {padding:0;}
 .dashmodule {border:1px solid silver; float:left; width:100%; margin-bottom:7px;}
 .moduletitle {background:#e8e8e8; height:30px;}
