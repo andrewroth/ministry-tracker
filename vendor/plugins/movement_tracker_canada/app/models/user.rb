@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
       end
 
       if u
+        # u.viewer_userID = recipt.user
         u.guid = guid
         u.save!
       else
