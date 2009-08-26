@@ -72,8 +72,6 @@ this system, along with any other information we think would be helpful to you.<
 
   <div id="col_1">
   
-  <div class="dashbutton" > <%= link_to "#{image_tag 'bigjoinagroupbutton.png'}", :controller => "groups", :action => "join"%> </div> 
-    
     <%- if authorized?(:directory, :people) -%>
     <div class="dashmodule">
       <div class="moduletitle">
@@ -155,9 +153,6 @@ this system, along with any other information we think would be helpful to you.<
   </div><!-- col 1 -->
   
   <div id="col_2">
-  
-  <div class="timetabledashbutton" > <%= link_to("#{image_tag 'timetablebutton.png'}", person_timetable_path(@me.id, 
-                  (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>  </div> 
   
     <div class="dashmodule">
       <div class="moduletitle">
