@@ -43,10 +43,10 @@ class MinistryInvolvementsController < ApplicationController
   
   def update
     @ministry_involvement = MinistryInvolvement.find(params[:id])
-    # We don't want someone screwing themselves over by accidentally removing admin privs
-    params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me
-    # And only admins can set other admins anyways
-    params[:ministry_involvement][:admin] = false unless @ministry_involvement.admin?
+    # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
+    params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me ||
+    !is_ministry_admin(@ministry, @me)
+    
     # And you can't set any roles higher than yourself
     unless @possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
       flash[:notice] = "Sorry, you can't set that role"
