@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
           #redirect_to :controller => 'dashboard', :action => 'index'
         end
       else
-        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
+        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
       end
       
