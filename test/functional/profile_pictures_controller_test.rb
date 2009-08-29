@@ -25,7 +25,7 @@ class ProfilePicturesControllerTest < ActionController::TestCase
   
     assert_redirected_to person_path(assigns(:profile_picture).person)
   end
-
+  
   def test_should_update_profile_picture
     image = fixture_file_upload('/files/rails.png', 'image/png')
     put :update, :id => profile_pictures(:one).id, :profile_picture => {:uploaded_data => image  }
@@ -35,9 +35,10 @@ class ProfilePicturesControllerTest < ActionController::TestCase
   end
 
   def test_should_NOT_update_profile_picture
-    put :update, :id => profile_pictures(:one).id, :profile_picture => { }
+    put :update, :id => profile_pictures(:one).id, :profile_picture => {:uploaded_data => fixture_file_upload('/files/foo.txt', 'application/txt') }
     assert picture = assigns(:profile_picture)
-    assert_equal(5, picture.errors.length)
+    assert_equal('There was a problem updating your profile picture.', flash[:warning])
+    assert_equal(["Content type is not included in the list"], picture.errors.full_messages)
     assert_redirected_to person_path(assigns(:profile_picture).person)
   end
 

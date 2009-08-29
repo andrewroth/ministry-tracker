@@ -17,25 +17,26 @@ class ProfilePicturesController < ApplicationController
   # PUT /profile_pictures/1
   # PUT /profile_pictures/1.xml
   def update
-    new_profile_picture = ProfilePicture.new(params[:profile_picture])
-    new_profile_picture.person = @me
     @profile_picture = ProfilePicture.find(params[:id])
-    @person = @profile_picture
-    error = true
-    if new_profile_picture.valid?
-      @profile_picture.destroy
-      @profile_picture = new_profile_picture
-      error = false if @profile_picture.save
-    end
-    flash[:warning] = (error ? 'There was a problem updating your profile picture.' :
-                               'Profile Picture was successfully updated.')
-    respond_to do |format|
+    if @profile_picture.update_attributes(params[:profile_picture])
+      flash[:warning] = 'Profile Picture was successfully updated.'
+      respond_to do |format|
         format.html { redirect_to(@profile_picture.person) }
-        format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity } if error
+        format.xml  { render :xml => @profile_picture.to_xml}
+      end
+    else
+      flash[:warning] = 'There was a problem updating your profile picture.'
+      respond_to do |format|
+        format.html { redirect_to(@profile_picture.person) }
+        format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity }
+      end
     end
-    rescue Errno::ECONNREFUSED # Catch an S3 error
+  rescue Errno::ECONNREFUSED # Catch an S3 error
     flash[:warning] = 'There was a problem updating your profile picture. Please try again.'
-    redirect_to(@profile_picture.person)
+    respond_to do |format|
+      format.html { redirect_to(@profile_picture.person) }
+      format.xml  { render :xml => @profile_picture.errors, :status => :unprocessable_entity }
+    end
   end
   
     

@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
   test "new" do
     get :new
     assert_response :success
@@ -21,7 +20,7 @@ class SessionsControllerTest < ActionController::TestCase
   test 'log in with local user' do
     post :create, :username => 'josh.starcher@example.com', :password => 'test', :remember_me => 1, :format => 'html'
     assert_response :redirect
-    assert_redirected_to person_path(User.find(1).person)
+    assert_redirected_to '/'
   end
   
   test 'log in with bad username' do

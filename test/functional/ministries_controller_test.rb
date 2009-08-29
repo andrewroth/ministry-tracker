@@ -55,8 +55,9 @@ class MinistriesControllerTest < ActionController::TestCase
   end
   
   def test_delete_ministry
-    @request.session[:ministry_id] = 3 #dg
-    xhr :delete, :destroy, :id => 3 #dg
+    ministry = ministries(:dg)
+    @request.session[:ministry_id] = ministry.id
+    xhr :delete, :destroy, :id => ministry.id
     assert_response :success
   end
   
