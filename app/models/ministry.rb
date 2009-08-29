@@ -124,7 +124,7 @@ class Ministry < ActiveRecord::Base
       @offspring = self.children.find(:all, :include => :children)
       @descendants = @offspring.dup
       @offspring.each do |ministry|
-          @descendants += ministry.descendants unless ministry.children.count.to_i == 0 || ministry == self
+          @descendants += ministry.descendants unless ministry.children.length == 0 || ministry == self
         end
       @descendants.sort!
     end
