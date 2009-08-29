@@ -165,7 +165,7 @@ end
     <span class="ruby-comment cmt"># File app/models/user_mailer.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">created</span>(<span class="ruby-identifier">person</span>, <span class="ruby-identifier">ministry</span>, <span class="ruby-identifier">added_by</span>, <span class="ruby-identifier">password</span>)
 17:     <span class="ruby-ivar">@recipients</span>  = <span class="ruby-identifier">person</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">username</span>
-18:     <span class="ruby-ivar">@from</span>        = <span class="ruby-value str">&quot;'Ministry Tracker' &lt;noreply@ministrytracker.org&gt;&quot;</span>
+18:     <span class="ruby-ivar">@from</span>        = <span class="ruby-value str">&quot;'Campus Movement Tracker' &lt;noreply@ministrytracker.org&gt;&quot;</span>
 19:     <span class="ruby-ivar">@subject</span>     = <span class="ruby-value str">&quot;[MT] An account has been created for you&quot;</span>
 20:     <span class="ruby-ivar">@sent_on</span>     = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
 21:     <span class="ruby-ivar">@body</span>[<span class="ruby-identifier">:person</span>] = <span class="ruby-identifier">person</span>

@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
   protected
   def created(person, ministry, added_by, password)
     @recipients  = person.user.username
-    @from        = "'Ministry Tracker' <noreply@ministrytracker.org>"
+    @from        = "'Campus Movement Tracker' <noreply@ministrytracker.org>"
     @subject     = "[MT] An account has been created for you"
     @sent_on     = Time.now
     @body[:person] = person
