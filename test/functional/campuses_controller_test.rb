@@ -5,9 +5,6 @@ require 'campuses_controller'
 class CampusesController; def rescue_action(e) raise e end; end
 
 class CampusesControllerTest < ActionController::TestCase
-  fixtures :campuses
-  fixtures :countries
-  
   def setup
     login
   end
@@ -20,7 +17,7 @@ class CampusesControllerTest < ActionController::TestCase
   end
   
   test "change to valid country" do
-    xhr :post, :change_country, :country_id => countries(:usa).id
+    xhr :post, :change_country, :country => 'US'
     assert assigns['states'].length > 0
     assert_response :success
   end
@@ -32,7 +29,7 @@ class CampusesControllerTest < ActionController::TestCase
   end
   
   test "change to valid state" do
-    xhr :post, :change_state, :state_id => states(:wyoming).id
+    xhr :post, :change_state, :country => 'USA', :state => 'CA'
     assert assigns['campuses'].length > 0
     assert_response :success 
   end

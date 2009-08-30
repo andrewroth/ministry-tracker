@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090813162637) do
+ActiveRecord::Schema.define(:version => 20090830223139) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -41,35 +41,36 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.integer "campus_id"
     t.date    "start_date"
     t.date    "end_date"
+    t.integer "ministry_id"
     t.integer "added_by_id"
     t.date    "graduation_date"
     t.integer "school_year_id"
-    t.integer "ministry_id"
     t.string  "major"
     t.string  "minor"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
+  add_index "campus_involvements", ["ministry_id"], :name => "index_campus_involvements_on_ministry_id"
   add_index "campus_involvements", ["person_id"], :name => "person_id"
 
   create_table "campuses", :force => true do |t|
-    t.string  "name"
-    t.string  "address"
-    t.string  "city"
-    t.string  "state"
-    t.string  "zip"
-    t.string  "country"
-    t.string  "phone"
-    t.string  "fax"
-    t.string  "url"
-    t.string  "abbrv"
-    t.string  "is_secure",  :limit => 100
-    t.integer "enrollment"
-    t.date    "created_at"
-    t.date    "updated_at"
-    t.string  "type"
-    t.string  "address2"
-    t.string  "county"
+    t.string "name"
+    t.string "address"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "country"
+    t.string "phone"
+    t.string "fax"
+    t.string "url"
+    t.string "abbrv"
+    t.string "is_secure",  :limit => 100
+    t.string "enrollment", :limit => 100
+    t.date   "created_at"
+    t.date   "updated_at"
+    t.string "type"
+    t.string "address2"
+    t.string "county"
   end
 
   add_index "campuses", ["county"], :name => "index_campuses_on_county"
@@ -418,8 +419,8 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.date    "updated_at"
     t.integer "old_id"
     t.string  "staff_notes"
-    t.integer "updated_by"
-    t.integer "created_by"
+    t.string  "updated_by",                    :limit => 11
+    t.string  "created_by",                    :limit => 11
     t.string  "url",                           :limit => 2000
     t.integer "primary_campus_involvement_id"
     t.integer "mentor_id"
@@ -428,6 +429,7 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
   add_index "people", ["first_name"], :name => "index_people_on_first_name"
   add_index "people", ["last_name", "first_name"], :name => "index_people_on_last_name_and_first_name"
   add_index "people", ["major", "minor"], :name => "index_people_on_major_and_minor"
+  add_index "people", ["user_id"], :name => "user_id"
 
   create_table "permissions", :force => true do |t|
     t.string "description", :limit => 1000
@@ -489,6 +491,7 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "country_id"
   end
 
   create_table "stint_applications", :force => true do |t|
@@ -644,16 +647,16 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.string   "electronicSignature",                     :limit => 90
     t.string   "ssn",                                     :limit => 50
     t.integer  "fk_ssmUserID"
-    t.integer  "person_id",                                                     :null => false
+    t.integer  "person_id",                                                                                    :null => false
     t.boolean  "isPaid"
-    t.integer  "appFee"
+    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
     t.boolean  "isSubmitted"
     t.string   "appStatus",                               :limit => 15
     t.integer  "assignedToProject"
-    t.integer  "stint_location_id"
+    t.integer  "stint_location_id",                       :limit => 10,         :precision => 10, :scale => 0
     t.string   "siYear",                                  :limit => 50
     t.datetime "submitDate"
     t.string   "status",                                  :limit => 22
@@ -718,7 +721,7 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 255
+    t.binary   "lastChangedDate",               :limit => 8
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"
@@ -899,38 +902,20 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.integer  "training_category_id"
   end
 
-  create_table "user_group_permissions", :force => true do |t|
-    t.integer "permission_id"
-    t.integer "user_group_id"
-    t.string  "created_at"
-  end
-
-  create_table "user_groups", :force => true do |t|
-    t.string  "name"
-    t.date    "created_at"
-    t.integer "ministry_id"
-  end
-
-  create_table "user_memberships", :force => true do |t|
-    t.integer "user_id"
-    t.integer "user_group_id"
-    t.date    "created_at"
-  end
-
   create_table "users", :force => true do |t|
-    t.string   "username"
-    t.string   "password"
-    t.date     "last_login"
-    t.boolean  "system_admin"
-    t.string   "remember_token"
-    t.datetime "remember_token_expires_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "guid"
-    t.boolean  "email_validated"
-    t.boolean  "developer"
-    t.string   "facebook_hash"
-    t.string   "facebook_username"
+    t.string    "username"
+    t.string    "password"
+    t.date      "last_login"
+    t.boolean   "system_admin"
+    t.string    "remember_token"
+    t.timestamp "remember_token_expires_at"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.string    "guid"
+    t.boolean   "email_validated"
+    t.boolean   "developer"
+    t.string    "facebook_hash"
+    t.string    "facebook_username"
   end
 
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true
