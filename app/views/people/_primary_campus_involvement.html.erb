@@ -34,7 +34,7 @@
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
       <th>Campus</th>
       <td>
-        <%= cif.collection_select :campus_id, @campuses, :id, :name %>
+        <%= cif.collection_select :campus_id, @campuses, :id, :name, options = {:include_blank => true} %>
         <% unless @no_campus_scope %>
           <br/>
           <span id="campus_filter"><%= campus_filter_message %></span>

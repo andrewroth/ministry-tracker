@@ -1,7 +1,10 @@
+<% link = I18n.t :help_link, :default => '#' %>
+<% header = I18n.t :help_header, :default => 'Welcome' %>
+
 <div class="tablist">
 	<ul>
 		<li<%= ' class="highlighted"' if params[:controller] == "dashboard" %>>
-			<%= link_to "Welcome", '#' -%>
+			<%= link_to header, link -%>
 		</li>
 	</ul>
 </div>

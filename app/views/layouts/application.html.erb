@@ -10,7 +10,7 @@
       <% if Cmt::CONFIG[:web_title] %>
         <%= Cmt::CONFIG[:web_title] %>
       <% else %>
-	      Ministry Track
+	      Campus Movement Tracker
       <% end %>      
       <%= ': ' + @site_title if @site_title -%>
     </title>
@@ -25,6 +25,10 @@
     <%= javascript_include_tag "jscalendar-1.0/calendar.js" %>
 		<%= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js" %>
 		<%= javascript_include_tag "jscalendar-1.0/calendar-setup.js" %>
+		
+		<%= I18n.t :analytics, :default => "" %>
+		
+		
 	</head>
 	<body>
 		<div id="outer">
@@ -43,8 +47,8 @@
 			</div>
 			
 			<div id="greenbar">	
-			<h1 id="title"><%= @ministry && Cmt::CONFIG[:ministry_in_banner] ? @ministry.name : 
-			                   I18n.t(:slogan, :default => 'Ministry Track')%> </h1> 
+			<h1 id="title"><%= @ministry ? @ministry.name : 
+			                   I18n.t(:slogan, :default => 'Campus Movement Tracker')%> </h1> 
 			<%= tabnav :main %>
 			</div>
 			<%- else -%>
@@ -56,7 +60,7 @@
 			</div>
 			<div id="greenbar">	
   			<h1 id="title"><%= @ministry && Cmt::CONFIG[:ministry_in_banner] ? @ministry.name : 
-			                     I18n.t(:slogan, :default => 'Ministry Track') %></h1>
+			                     I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
   			<%= render :partial => 'tabnav/auth' %>
 			</div>
 			<%- end -%>

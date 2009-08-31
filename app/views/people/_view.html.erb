@@ -15,7 +15,7 @@
     	  format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
     	<tr><th>Birth Day</th><td><%= format_date(@person.birth_date, format) %></td></tr>
     	<tr><th>Gender</th><td><%= @person.human_gender %></td></tr>
-  		<%- if @person.user  -%>
+  		<%- if @person.user && Cmt::CONFIG[:facebook_connectivity_enabled] -%>
       	<tr>
       	  <th>Facebook&trade;</th>
       	  <td><%= @person.user.facebook_username.present? ? @person.user.facebook_username : 'Click "Edit Information" to link your Facebook Account' %></td>
@@ -75,7 +75,8 @@
 	
 	<table class="halftab">
 	<tr><th width="150">Phone</th><td><%= @current_address.phone if @current_address %></td></tr>
-	<tr><th>Alternate Phone</th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
+	<tr><th><%= I18n.t :alternate_phone, :default => "Alternate Phone" %>
+	    </th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
 	<tr><th>Address</th><td><%= @current_address.mailing if @current_address %></td></tr>
 	<tr><th>&nbsp;</th><td><%= @current_address.dorm if @current_address %> <%= "Room " + @current_address.room unless @current_address.nil? || @current_address.room.to_s.empty? %></td></tr>
 	<tr>

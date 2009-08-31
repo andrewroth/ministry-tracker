@@ -18,6 +18,18 @@
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
     :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
+    :help_header => "Support",
+    :alternate_phone => 'Cell Phone',
+    
+    :analytics => "<script type=\"text/javascript\">
+var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");
+document.write(unescape(\"%3Cscript src=\'\" + gaJsHost + \"/google-analytics.com/ga.js\' type=\'text/javascript\'/%3E%3C/script%3E\"));
+</script>
+<script type=\"text/javascript\">
+try {
+var pageTracker = _gat._getTracker(\"UA-2437988-20\");
+pageTracker._trackPageview();
+} catch(err) {}</script>",
     
     
     :date => {

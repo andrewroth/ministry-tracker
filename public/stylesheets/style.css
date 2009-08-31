@@ -1,5 +1,5 @@
 /*
-Codename: Ministry Track
+Codename: Campus Movement Tracker
 Author: David T Sudarma (Follower), Caleb Wright (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
@@ -715,17 +715,12 @@ table#legend th {
 font-weight:bold;
 }
 
-table#legend td, table#legend th {
+table#legend td {
 color:black;
 border:1px solid gray;
 text-align:center;
 height:15px;
 }
-
-table#legend td {
-width:18%
-}
-
 
 table#schedule {
 border-collapse:collapse;
@@ -886,6 +881,21 @@ border:1px solid green;
 div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
+
+.bigbuttons {
+margin-bottom:25px;
+margin-top:10px;
+}
+
+.bigbuttons b{
+	font-size:large;
+	color:black;
+}
+
+.bigbuttons img{
+	margin: -15px 5px;
+}
+
 div#col_1{
 width:49.5%;
 float:left;

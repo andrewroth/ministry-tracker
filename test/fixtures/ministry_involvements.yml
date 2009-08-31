@@ -23,7 +23,7 @@ four:
   ministry_role_id: 4
   
 staff_involvement_with_one:
-    id: 5
-    person_id: 4001
-    ministry_id: 1
-    ministry_role_id: 1 # admin
+  id: 5
+  person_id: 4001
+  ministry_id: 1
+  ministry_role_id: 1 # admin

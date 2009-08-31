@@ -101,14 +101,12 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   def test_should_create_student
-    assert_difference "Delayed::Job.count" do
-      old_count = Person.count
+    assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
                     :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
                     :modalbox => 'true', :ministry_role_id => 4,  :campus => Campus.find(:first).id
       assert person = assigns(:person)
       assert_not_nil person.user.id
-      assert_equal old_count + 1, Person.count
       assert_redirected_to person_path(assigns(:person))
     end
   end
@@ -176,9 +174,13 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   def test_should_show_possible_responsible_people
-    get :edit, :id => 2000
-    assert_response :success
-    assert_not_nil assigns(:possible_responsible_people)
+    if Cmt::CONFIG[:rp_system_enabled]
+      get :edit, :id => 2000
+      assert_response :success
+      assert_not_nil assigns(:possible_responsible_people)
+    else
+      assert true
+    end
   end
   
   def test_should_update_person
@@ -204,8 +206,8 @@ class PeopleControllerTest < ActionController::TestCase
   #   assert_redirected_to people_path
   # end
   
-  def test_change_ministry
-    xhr :post, :change_ministry, :ministry => 1
+  def test_change_ministry_and_goto_directory
+    xhr :post, :change_ministry_and_goto_directory, :ministry => 1
     assert_response :success
   end
   
@@ -244,7 +246,6 @@ class PeopleControllerTest < ActionController::TestCase
     # make sure it renders properly
     get :show, :id => person.id
     
-    assert_template :show, :count => 1
     assert_template :partial => '_view', :count => 1
     assert_response :success
 
@@ -255,7 +256,6 @@ class PeopleControllerTest < ActionController::TestCase
     
     # make sure everything renders properly
     assert_response :success
-    assert_template :show, :count => 1
     assert_template :partial => '_view', :count => 1    
   end
 end

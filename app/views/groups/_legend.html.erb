@@ -1,10 +1,16 @@
+<% twentyfive_per = Rational(@people.length, 4).to_i %>
+<% width = (twentyfive_per == 0 ? "25%" : "20%") %>
+
 <table id="legend" width="250px" cellspacing="0">
-  <tr><th> <b>LEGEND</b> </th> 
-  <td class="allgood"> Good for everyone </td>
-  <td class="moregood"> Good or Okay for Everyone </td>
-  <td class="neutral"> Bad for up to <%= Rational(@people.length, 4).to_i %>  people</td>
-  <td class="morebad"> Bad for more than <%= Rational(@people.length, 4).to_i %>  people</td>
-  <td class="allbad"> Bad for everyone</td></tr>
+  <td class="allgood" width=<%= width %> > Good for everyone </td>
+  <td class="moregood" width=<%= width %>> Good or Okay for Everyone </td>
+  <%- if twentyfive_per == 0 %>
+    <td class="morebad" width=<%= width %>> Bad for some people</td>
+  <%- else -%>
+    <td class="neutral" width=<%= width %>> Bad for up to <%= Rational(@people.length, 4).to_i %>  people</td>
+    <td class="morebad" width=<%= width %>> Bad for more than <%= Rational(@people.length, 4).to_i %>  people</td>
+  <%- end -%>
+  <td class="allbad" width=<%= width %>> Bad for everyone</td></tr>
   
   <br />
 </table>

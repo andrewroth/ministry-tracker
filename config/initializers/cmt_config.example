@@ -22,10 +22,6 @@ module Cmt
     # Removes the options of specifying 'poor' timeslots in timetable
     :hide_poor_status_in_scheduler => true,
     
-    # If enabled, if the user is currently viewing a ministry, 
-    # the ministry's name will be displayed in the banner
-    :ministry_in_banner => true,
-    
     # Default ministry name
     :default_ministry_name => 'Campus for Christ',
     
@@ -63,7 +59,20 @@ module Cmt
     :training_enabled => true,
     
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
-    :leadership_notes_enabled => true
+    :leadership_notes_enabled => true,
+    
+    # When enabled, involvement questions will appear as a tab in profiles and also in the customize area
+    :involvement_questions_enabled => true,
+    
+    # When enabled, users can connect their CMT profile to that of their facebook
+    :facebook_connectivity_enabled => false,
+    
+    # When enabled, users can edit profile pictures on their profile
+    :profile_picture_enabled => true,
+    
+    # When enabled, large buttons for 'join a group' and 'edit your timetable' will appear in the dashboard
+    :dashboard_big_buttons_enabled => true
+    
   }
 end
 

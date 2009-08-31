@@ -15,31 +15,26 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
   end
 
   def test_create
-    xhr :post, :create, :person_id => 50000, :group_id => 2, :type => 'leader'
+    xhr :post, :create, :person_id => 50000, :group_id => 2, :level => 'leader'
     assert gi = assigns(:gi)
     assert_equal gi.level, 'leader'
     assert_response :success
   end
   
   def test_destroy
-    old_count = GroupInvolvement.count
-    delete :destroy, :id => 1, :members => [50000]
-    assert_equal old_count-2, GroupInvolvement.count
-  end
-  
-  def test_destroy_fail
-    assert_raise(RuntimeError) {
-      delete :destroy, :id => 1  
-    }
+    group = groups(:bible_study_2)
+    assert_difference "GroupInvolvement.count", -1 do
+      xhr :delete, :destroy, :id => 3, :members => [50000]
+    end
   end
   
   def test_transfer
-    group1 = Group.find(1)
-    group2 = Group.find(2)
+    group1 = groups(:bible_study)
+    group2 = groups(:bible_study_2)
     old_count_1 = group1.group_involvements.count
     old_count_2 = group2.group_involvements.count
-    post :transfer_selected, :id => group1.id, :transfer_to => group2.id, :members => [50000], :level => 'leader'
-    assert_equal old_count_1 - 1, group1.group_involvements.count
-    assert_equal old_count_2 + 1, group2.group_involvements.count
+    xhr :post, :transfer, :id => group2.id, :transfer_to => group1.id, :members => [50000], :level => 'leader'
+    assert_equal old_count_1 + 1, group1.group_involvements.count
+    assert_equal old_count_2 - 1, group2.group_involvements.count
   end
 end

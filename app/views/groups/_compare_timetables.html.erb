@@ -33,7 +33,7 @@
 					 <% color = "allgood" %>
 					<%- elsif current_time["okays"].length > 0 && current_time["bads"].length == 0 -%>
 					 <% color = "moregood" %>
-					<%- elsif current_time["bads"].length < (@people.length * 0.25) -%>
+					<%- elsif current_time["bads"].length <= (@people.length * 0.25) -%>
 					 <% color = "neutral" %>
 					<%- elsif current_time["bads"].length < @people.length -%>
 					 <% color = "morebad" %>
