@@ -882,18 +882,17 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
 
-.bigbuttons {
-margin-bottom:25px;
-margin-top:10px;
+#gettingstarted {
+  margin-bottom:5px;
 }
 
-.bigbuttons b{
-	font-size:large;
+#gettingstarted b{
 	color:black;
+  font-size: 120%;
 }
 
-.bigbuttons img{
-	margin: -15px 5px;
+#gettingstarted img {
+  vertical-align: middle;
 }
 
 div#col_1{
