@@ -350,7 +350,7 @@ end
   
   # Question: what does this help with?
   def most_recent_involvement
-    @most_recent_involvement ||= primary_campus_involvement || campus_involvements.last
+    @most_recent_involvement = primary_campus_involvement || active_campus_involvements.last
   end
   
   protected

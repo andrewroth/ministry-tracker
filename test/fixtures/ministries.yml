@@ -44,8 +44,8 @@ top:
   email: asdf
   
 no_ministry:
-    id: 5
-    name: No Ministry
+  id: 5
+  name: <%= Cmt::CONFIG[:default_ministry_name] || 'No Ministry' %>
     
 check:
   id: 6

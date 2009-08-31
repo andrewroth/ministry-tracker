@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
           #redirect_to :controller => 'dashboard', :action => 'index'
         end
       else
-        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))})"
+        conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
       end
       
@@ -312,7 +312,7 @@ class PeopleController < ApplicationController
               @person.add_campus(params[:campus_id], @ministry.id, @me.id, params[:ministry_role_id])
               # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
               if @person.user.plain_password.present? && is_involved_somewhere(@person)
-                UserMailer.send_later(:deliver_created_student, @person, @ministry, @me, @person.user.plain_password)
+                UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
               end
             end
           else
@@ -717,7 +717,7 @@ class PeopleController < ApplicationController
         (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
-        @campuses = @campus_country.states.collect{|s| s.campuses}.flatten
+        @campuses = @campus_country.campus_list
       else
         if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
           @campus_state = @person.primary_campus.state

@@ -57,7 +57,7 @@ class Ministry < ActiveRecord::Base
   end 
   
   def staff
-    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)", staff_role_ids, ancestor_ids], :joins => :ministry_involvements)
+    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} IN (?)", staff_role_ids, ancestor_ids], :joins => :ministry_involvements, :order => _(:first_name, :person))
   end
   
   def ministry_roles
@@ -124,7 +124,7 @@ class Ministry < ActiveRecord::Base
       @offspring = self.children.find(:all, :include => :children)
       @descendants = @offspring.dup
       @offspring.each do |ministry|
-          @descendants += ministry.descendants unless ministry.children.count.to_i == 0 || ministry == self
+          @descendants += ministry.descendants unless ministry.children.length == 0 || ministry == self
         end
       @descendants.sort!
     end

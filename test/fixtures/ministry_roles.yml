@@ -18,12 +18,14 @@ four:
   position: 4
   description: a student who oversees a campus, eg LINC leader
   type: StudentRole
+  involved: true
 five:
   id: 5
   ministry_id: 1
   name: Student Leader
   position: 5
   type: StudentRole
+  involved: true
 six:
   id: 6
   ministry_id: 1

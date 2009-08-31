@@ -98,7 +98,7 @@ class MinistriesController < ApplicationController
     if @old_ministry.deleteable?
       # if the active ministry is the one being deleted, we need a new active ministry
       if session[:ministry_id].to_i == @old_ministry.id
-        @ministry = @ministry.parent
+        @ministry = @old_ministry.parent
         session[:ministry_id] = @ministry.id
       end
       old_mi = MinistryInvolvement.find(:all, :conditions => {:ministry_id => @old_ministry.id})

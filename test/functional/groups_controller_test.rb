@@ -10,12 +10,12 @@ class GroupsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
   end
-
-  def test_index_xhr
-    login
-    xhr :get, :index
-    assert_response :success
-  end
+  # 
+  # def test_index_xhr
+  #   login
+  #   xhr :get, :index
+  #   assert_response :success
+  # end
   
   def test_show
     login

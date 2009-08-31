@@ -15,6 +15,7 @@ class Import < ActiveRecord::Base
   # the rows in the header row should match up with attributes on person and address
   # the people in the file will be added to the given _ministry_ and campus with _campus_id_
   def process!(campus_id, ministry)
+    raise 'no ministry' unless ministry
     # number of entries processes as...
     successful = 0
     unsuccessful = 0

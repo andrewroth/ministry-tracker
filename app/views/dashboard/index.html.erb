@@ -48,7 +48,7 @@
 
 <div class="welcome">
 <div class="sectionHeader">
-  <h2>Welcome to the <%= I18n.t(:app_name, :default => "Ministry Tracker")%></h2>
+  <h2>Welcome to the <%= I18n.t(:app_name, :default => "Campus Movement Tracker")%></h2>
 </div>
 <br/>
 <%- if @ministry -%>
@@ -67,6 +67,12 @@ this system, along with any other information we think would be helpful to you.<
 </div>
 </div>
 
+<div class="bigbuttons">
+  <b>Getting Started: </b> 
+  <%= link_to "#{image_tag 'biggroupbutton.png'}", :controller => "groups", :action => "join"%> 
+  <%= link_to("#{image_tag 'bigtimetablebutton.png'}", person_timetable_path(@me.id, 
+                (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
+</div>
 
 <div id="dashwrap">
 

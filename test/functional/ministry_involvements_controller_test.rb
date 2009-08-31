@@ -42,7 +42,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   test "edit someone else's role" do
     xhr :get, :edit, :person_id => 3000, :ministry_id => 2
     assert_response :success
-    assert_template 'edit'
+    assert assigns(@ministry_involvement)
   end
   
   test "edit with bad parameters" do

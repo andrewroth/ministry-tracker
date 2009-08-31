@@ -21,11 +21,10 @@
 	<h1><%= @person.full_name %> <%= spinner('p') %></h1> 
   <div class="divider" style="margin-bottom:0;">&nbsp;</div>
 </div>
- 
 <div class="leftColumn">
-	<div id="profileImageBox">
-		<%= render :partial => 'image' %>
-	</div>
+	  <div id="profileImageBox">
+		  <%= render :partial => 'image' %>
+	  </div>
 	<div>
 		<div class="floatLeft"><%= spinner %></div>
 		<div id="progress-bar"></div>
