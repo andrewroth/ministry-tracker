@@ -49,7 +49,9 @@ class User < ActiveRecord::Base
       end
 
       if u
-        # u.viewer_userID = recipt.user
+        u.viewer_userID = receipt.user # force longer usernames by using their email
+                                       # instead of silly short usernames; this is ok because
+                                       # we don't support the accountadmin_viewer logins anymore
         u.guid = guid
         u.save!
       else
