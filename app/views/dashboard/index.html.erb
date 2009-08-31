@@ -67,11 +67,11 @@ this system, along with any other information we think would be helpful to you.<
 </div>
 </div>
 
-<div class="bigbuttons">
+<div id="gettingstarted">
   <b>Getting Started: </b> 
-  <%= link_to "#{image_tag 'biggroupbutton.png'}", :controller => "groups", :action => "join"%> 
-  <%= link_to("#{image_tag 'bigtimetablebutton.png'}", person_timetable_path(@me.id, 
-                (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
+  <%= link_to image_tag('groupbutton.png'), :controller => "groups", :action => "join"%> 
+  <%= link_to image_tag('timetablebutton.png'), person_timetable_path(@me.id, 
+                (@my.timetable || Timetable.create(:person_id => @me.id)).id) %>
 </div>
 
 <div id="dashwrap">
