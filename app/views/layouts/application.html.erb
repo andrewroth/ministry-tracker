@@ -26,10 +26,7 @@
 		<%= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js" %>
 		<%= javascript_include_tag "jscalendar-1.0/calendar-setup.js" %>
 		
-		<%= I18n.t :analytics, :default => "" %>
-		
-		
-	</head>
+	</head>	
 	<body>
 		<div id="outer">
     <%= connexion_bar %>
@@ -91,14 +88,6 @@
 		</table>
 		</div>
 		</div> <!-- Center -->
-		<script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-      </script>
-      <script type="text/javascript">
-      var pageTracker = _gat._getTracker("UA-79392-17");
-      pageTracker._initData();
-      pageTracker._trackPageview();
-    </script>
+		<%= I18n.t :analytics, :default => "No Analytics" %>
 	</body>
 </html>

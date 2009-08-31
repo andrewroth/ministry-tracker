@@ -1,5 +1,14 @@
 {
   :'en' => {
+    :analytics => "<script type=\"text/javascript\">
+      var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");
+      document.write(unescape(\"%3Cscript src=\' \" + gaJsHost + \"google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E\"));
+      </script>
+      <script type=\"text/javascript\">
+      var pageTracker = _gat._getTracker(\"UA-79392-17\");
+      pageTracker._initData();
+      pageTracker._trackPageview();
+    </script>",
     :date => {
       :formats => {
         :default => "%m/%d/%Y",
@@ -7,7 +16,7 @@
         :long => "%B %e, %Y",
         :only_day => "%e",
         :long_ordinal => lambda { |date| "%B #{date.day.ordinalize}, %Y" },
-        :short_ordinal => lambda { |date| "%B #{date.day.ordinalize}" }
+        :short_ordinal => lambda { |date| "%B #{date.day.ordinalize}" },    
       },
       
       :order => [ :year, :month, :day ],
