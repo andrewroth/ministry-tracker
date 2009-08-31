@@ -54,8 +54,6 @@ class CimHrdbAddress < ActiveRecord::Base
   end
   def end_date() person_extra.send("#{extra_prefix}_end_date") end
   def end_date=(v) person_extra.send("#{extra_prefix}_end_date=", v) end
-  def alternate_phone() person_extra.send("#{extra_prefix}_alternate_phone") end
-  def alternate_phone=(v) person_extra.send("#{extra_prefix}_alternate_phone=", v) end
   def dorm() person_extra.send("#{extra_prefix}_dorm") end
   def dorm=(v) person_extra.send("#{extra_prefix}_dorm=", v) end
   def room() person_extra.send("#{extra_prefix}_room") end

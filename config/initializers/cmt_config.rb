@@ -65,8 +65,17 @@ module Cmt
     # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
     :leadership_notes_enabled => false,
     
-    # When enabled, leadership notes can be editted and view on someone's profile when the user has permission
-    :leadership_notes_enabled => false
+    # When enabled, involvement questions will appear as a tab in profiles and also in the customize area
+    :involvement_questions_enabled => false,
+    
+    # When enabled, users can connect their CMT profile to that of their facebook
+    :facebook_connectivity_enabled => false,
+    
+    # When enabled, users can edit profile pictures on their profile
+    :profile_picture_enabled => false,
+    
+    # When enabled, large buttons for 'join a group' and 'edit your timetable' will appear in the dashboard
+    :dashboard_big_buttons_enabled => true
   }
 end
 
