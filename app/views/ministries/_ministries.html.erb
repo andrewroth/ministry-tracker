@@ -19,7 +19,7 @@
 		<% end %>
 		<%= spinner %>
 		<% if @my.all_ministries.length > 1 %>
-		  <%- if is_ministry_admin -%>
+		  <%- if @me.admin?(@ministry.root) -%>
     	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(Ministry.find(:all, :order => 'name').collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
     	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
