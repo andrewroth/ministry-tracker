@@ -19,7 +19,11 @@
 		<% end %>
 		<%= spinner %>
 		<% if @my.all_ministries.length > 1 %>
-  	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
+		  <%- if is_ministry_admin -%>
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(Ministry.find(:all, :order => 'name').collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
+    	<%- else -%>
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
+    	<%- end -%>
       <%- tooltip do -%> By changing you current ministry, what ministry you are interacting with. You current ministry is displayed under your name <%- end -%>
   	  <%= spinner('ministry') %>
       <%= observe_field(:current_ministry, :function => "$('#spinnerministry').show();$.ajax({dataType: 'script', type:'get', url:'/ministries/edit/' + value})" ) %>
