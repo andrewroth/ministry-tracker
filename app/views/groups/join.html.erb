@@ -1,4 +1,5 @@
 <h2>Join a group&nbsp;&nbsp;<%= spinner('gt') %></h2>	  
+<div>Click on Group Categories to see the list of groups you can join in that category.</div>
 <div id="customizebody" class="accordion">
 	<%- @ministry.all_group_types.each do |gt| -%>
 	  <% if !gt.groups.empty?%>
