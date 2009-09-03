@@ -29,6 +29,7 @@ class GroupInvolvementsController < ApplicationController
     get_person_campus_groups
     flash[:notice] = (@gi.requested ? "Join request for <b>#{@group.name}</b> group sent!" : 
                                       "You are now marked as <b>#{@gi.level.capitalize}</b> in the group <b>#{@group.name}</b>")
+    @join = true
   end
   
   def accept_request
