@@ -9,6 +9,13 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
+    assert_equal [ Group.first ], assigns('groups')
+  end
+
+  def test_index_all
+    get :index, :all => 'true'
+    assert_response :success
+    assert_equal Ministry.first.groups, assigns('groups')
   end
   # 
   # def test_index_xhr
