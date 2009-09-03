@@ -38,11 +38,28 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     assert_equal old_count_2 - 1, group2.group_involvements.count
   end
 
-  def test_join
+  def test_join_interested
     group = groups(:bible_study)
     assert_difference "GroupInvolvement.count", 1 do
-      xhr :post, :joingroup, :group_involvement => { :group_id => 1, :level => 'interested' },
+      xhr :post, :joingroup, :group_id => 1, :level => 'interested',
             :gt_id => 1, :person_id => 2 
     end
+  end
+
+  def test_join_member
+    group = groups(:bible_study)
+    assert_difference "GroupInvolvement.count", 1 do
+      xhr :post, :joingroup, :group_id => 1, :level => 'member',
+            :gt_id => 1, :person_id => 2 
+    end
+  end
+
+  def test_join_level_check
+    group = groups(:bible_study)
+    assert_difference "GroupInvolvement.count", 0 do
+      xhr :post, :joingroup, :group_id => 1, :level => 'leader',
+            :gt_id => 1, :person_id => 2 
+    end
+    assert_match /invalid level/, @response.body
   end
 end
