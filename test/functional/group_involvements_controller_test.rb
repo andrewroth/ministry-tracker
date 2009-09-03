@@ -44,6 +44,7 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
       xhr :post, :joingroup, :group_id => 1, :level => 'interested',
             :gt_id => 1, :person_id => 2 
     end
+    assert_no_match /Are you sure you want to delete/, @response.body
   end
 
   def test_join_member
