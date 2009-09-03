@@ -37,4 +37,12 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     assert_equal old_count_1 + 1, group1.group_involvements.count
     assert_equal old_count_2 - 1, group2.group_involvements.count
   end
+
+  def test_join
+    group = groups(:bible_study)
+    assert_difference "GroupInvolvement.count", 1 do
+      xhr :post, :joingroup, :group_involvement => { :group_id => 1, :level => 'interested' },
+            :gt_id => 1, :person_id => 2 
+    end
+  end
 end
