@@ -8,6 +8,11 @@ namespace :cmt do
   end
 end
 
+namespace :db do
+  desc "db:reset and db:seed"
+  task :rebuild => [ "db:reset", "db:seed" ]
+end
+
 task :people => :environment do
   File.open('lib/tasks/people.csv') do |f|
     f.gets

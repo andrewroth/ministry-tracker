@@ -26,7 +26,6 @@ class SessionsController < ApplicationController
       return
     end
 
-
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback

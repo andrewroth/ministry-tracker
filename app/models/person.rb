@@ -76,6 +76,11 @@ class Person < ActiveRecord::Base
     gis_grouped
   end
 
+  def is_leading_group_with?(p)
+    !group_involvements.find_all_by_level(%w(leader co-leader)).detect{ |gi|
+      gi.group.people.detect{ |gp| gp == p }
+    }.nil?
+  end
 
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
