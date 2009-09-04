@@ -101,4 +101,9 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 2, person.ministry_involvements.length
     assert_equal 1, person.group_group_involvements(:all, :ministry => Ministry.first).length
   end
+
+  test "is_leading_group_with? works" do
+    person = Person.find 50000
+    assert_equal true, person.is_leading_group_with?(Person.find(2))
+  end
 end
