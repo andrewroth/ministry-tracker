@@ -63,12 +63,14 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'change_level'
   p.description = 'Change the level of someone invlved in a group'
 end
-Permission.seed(:controller, :action) do |p|
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
   p.action = 'transfer'
   p.description = 'Move someone from one group to another'
 end
-Permission.seed(:controller, :action) do |p|
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'group_involvements'
   p.action = 'new'
   p.description = 'Add/remove people to any group'
