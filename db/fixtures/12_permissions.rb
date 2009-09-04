@@ -261,3 +261,21 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'edit'
   p.description = 'Edit Ministry Involvements'
 end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry'
+  p.description = 'Switch to viewing another ministry in the directory'
+end
+ 
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'training_questions'
+  p.action = 'edit'
+  p.description = 'Modify Training Items'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'dorms'
+  p.action = 'new'
+  p.description = 'Customizes A Ministry (based on what your other permissions are)'
+end
