@@ -129,12 +129,6 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
-  p.controller = 'people'
-  p.action = 'change_ministry'
-  p.description = 'Switch to viewing another ministry in the directory'
-end
-
-Permission.seed(:controller, :action) do |p|
   p.controller = 'staff'
   p.action = 'index'
   p.description = 'View Leaders/Staff'
@@ -189,6 +183,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'training_questions'
+  p.action = 'edit'
+  p.description = 'Modify Training Items'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'training_categories'
   p.action = 'new'
   p.description = 'Create Training Categories'
@@ -225,6 +225,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'dorms'
+  p.action = 'new'
+  p.description = 'Customizes A Ministry (based on what your other permissions are)'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'timetables'
   p.action = 'show'
   p.description = 'View the timetables of other people'
@@ -236,3 +242,40 @@ Permission.seed(:controller, :action) do |p|
   p.description = 'Edit the timetables of other people'
 end
 
+#There is no 'create' action in campus_involvements_controller.rb, only 'destroy'
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'campus_involvements'
+  p.action = 'new'
+  p.description = 'Remove People From Campuses'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministry_involvements'
+  p.action = 'new'
+  p.description = 'Remove People From Ministries'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministry_involvements'
+  p.action = 'edit'
+  p.description = 'Edit Ministry Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry'
+  p.description = 'Switch to viewing another ministry in the directory'
+end
+ 
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'training_questions'
+  p.action = 'edit'
+  p.description = 'Modify Training Items'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'dorms'
+  p.action = 'new'
+  p.description = 'Customizes A Ministry (based on what your other permissions are)'
+end
