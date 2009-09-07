@@ -19,13 +19,13 @@ class Correspondence < ActiveRecord::Base
   # sends unsent correspondences in the queue and executes any overdue correspondences
   def self.processQueue
     # iterate and process unsent correspondences
-    correspondences = Correspondence.find(:all, :joins => { :correspondence_type, :email_templates }, :conditions => ["email_templates.outcome_type = 'NOW' and state = ?", State_Unsent])
+    correspondences = Correspondence.find(:all, :joins => [:correspondence_type, :email_templates ], :conditions => ["email_templates.outcome_type = 'NOW' and state = ?", State_Unsent])
     correspondences.each do |correspondence|
       correspondence.initiate('NOW')
     end
 
     # find and iterate through overdue correspondences
-    correspondences = Correspondence.find(:all, :joins => { :correspondence_type, :email_templates }, :conditions => ["email_templates.outcome_type = 'OVERDUE' and state >= ? and state < ? and curdate() > overdue_at", State_Sent, State_OverdueSent])
+    correspondences = Correspondence.find(:all, :joins => [:correspondence_type, :email_templates ], :conditions => ["email_templates.outcome_type = 'OVERDUE' and state >= ? and state < ? and curdate() > overdue_at", State_Sent, State_OverdueSent])
     correspondences.each do |correspondence|
       correspondence.initiate('OVERDUE')
     end

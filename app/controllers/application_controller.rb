@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
   before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
+   # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
-#  before_filter :fake_login, :login_required, :get_person, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all

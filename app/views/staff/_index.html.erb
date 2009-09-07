@@ -18,7 +18,8 @@
 		This screen serves as a launching area for managing the <%= t(:staff_plural, :default => 'staff') %> in your ministry. 
 	</div><br />
 	<div id="add_person_link">
-		<%= link_to_remote( "Add a #{I18n.t :staff_member_plural, :default => 'staff member'} or student leader", 
+		<%= link_to( "Add a #{I18n.t :staff_member_plural, :default => 'staff member'} or student leader", new_staff_path) %>
+		<%#= link_to_remote( "Add a #{I18n.t :staff_member_plural, :default => 'staff member'} or student leader", 
 		                    :url => new_person_url(:staff => true), :before => "$('#spinner').show()", :method => :get) %>
 		<%= spinner %><br />
 	</div>

@@ -67,7 +67,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :user_memberships, :collection => { :group => :any }
 
-  map.resources :staff, :member => { :demote => :post }
+  map.resources :staff, :member => { :demote => :post }, :collection => {:search_to_add => :any}
   
   map.resources :students
 

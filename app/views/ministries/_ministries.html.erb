@@ -5,7 +5,6 @@
   	<%= render :partial => 'ministries/instructions' %>
   <%- else -%>
 		You don't currently have any ministries you're involved in. This usually indicates that something went wrong. 
-		Please contact <%= mail_to 'support@studentnetwork.com' %> to have them add you to the correct ministry.
 	<%- end -%>	
 	  <br />
 	</div>
@@ -18,11 +17,11 @@
 												 {:class => "action-button"} %>
 		<% end %>
 		<%= spinner %>
-		<% if @my.all_ministries.length > 1 %>
+		<% if @my.ministries.length > 1 %>
 		  <%- if @me.admin?(@ministry.root) -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(Ministry.find(:all, :order => 'name').collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(Ministry.find(:all, :order => 'name').collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.all_ministries.collect {|m| [m.name, m.id]}, @ministry.id)) %>&nbsp; 
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.ministry_tree.sort.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- end -%>
       <%- tooltip do -%> By changing you current ministry, what ministry you are interacting with. You current ministry is displayed under your name <%- end -%>
   	  <%= spinner('ministry') %>
