@@ -91,4 +91,9 @@ class GroupsControllerTest < ActionController::TestCase
     xhr :delete, :destroy, :id => 2
     assert_response :success
   end
+
+  def test_compare_timetables
+    login
+    get :compare_timetables, :id => 1
+  end
 end

@@ -23,7 +23,7 @@ module ExceptionNotifiable
     "404" => "Not Found",
     "405" => "Method Not Allowed",
     "410" => "Gone",
-    "418" => "IÕm a teapot",
+    "418" => "I'm a teapot",
     "422" => "Unprocessable Entity",
     "423" => "Locked",
     "500" => "Internal Server Error",

@@ -1,5 +1,5 @@
 require 'yaml'
-require 'ftools'
+require 'fileutils'
 
 module Carmen
 

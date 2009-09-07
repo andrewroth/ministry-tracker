@@ -1,0 +1,12 @@
+<table border="0" cellspacing="5" cellpadding="5">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+  </tr>
+  <%- @results.each do |person| -%>
+    <tr>
+      <td><%= person.full_name %></td>
+      <td><%= person.current_address.try(:email) %></td>
+    </tr>
+  <%- end -%>
+</table>
