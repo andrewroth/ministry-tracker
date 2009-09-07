@@ -21,9 +21,9 @@ class StaffController < PeopleController
       when !search.scan(' ').empty?
         names = search.split(' ')
         first = names[0].strip
-    		last = names[1..-1].strip
-      	conditions = ["(#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ?) OR #{_(:last_name, :person)} LIKE ?", 
-      	              "#{quote_string(last)}%", "#{quote_string(first)}%", "#{quote_string(search)}%"] 
+    		last = names[1..-1].join(' ').strip
+      	conditions = ["(#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ?)", 
+      	              "#{quote_string(last)}%", "#{quote_string(first)}%"] 
       when !search.scan('@').empty?
         conditions = ["#{CurrentAddress.table_name}.#{_(:email, :address)} LIKE ?", "#{quote_string(search)}%"]
       else
@@ -31,7 +31,8 @@ class StaffController < PeopleController
           conditions = ["(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?)", "#{quote_string(search)}%", "#{quote_string(search)}%"]
         end
       end
-      @results = Person.find(:all, :conditions => conditions, :include => :current_address)
+      @count = Person.count(:conditions => conditions, :include => :current_address)
+      @results = Person.find(:all, :conditions => conditions, :include => :current_address, :limit => 20, :order => "#{_(:last_name, :person)}, #{_(:first_name, :person)}")
       render :update do |page|
         page[:results].replace_html :partial => 'staff/results', :results => @results
       end

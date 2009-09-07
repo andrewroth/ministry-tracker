@@ -31,7 +31,7 @@
   	<td>Role: </td>
   	<td>
   	  <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
-  	  <%= mf.select :ministry_role_id, @ministry.staff_roles.collect {|role| [role.name, role.id]} %>
+  	  <%= mf.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %>
   	</td>
   </tr>
     <%- if is_ministry_admin(@ministry, @me) -%>

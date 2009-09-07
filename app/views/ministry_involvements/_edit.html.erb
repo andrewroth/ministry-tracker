@@ -1,6 +1,6 @@
 <%- remote_form_for @ministry_involvement do |f| -%>
   	<p>Role: 
-  	<%= f.select :ministry_role_id, @possible_roles.collect {|role| [role.name, role.id]} %></p>
+  	<%= f.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %></p>
   	<%- if @me.admin?(@ministry_involvement.ministry) # You have to be an admin to make an admin -%>
     <p><%= f.check_box :admin %> Admin</p>
     <%- end -%>

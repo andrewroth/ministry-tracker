@@ -3,7 +3,6 @@
 
 class MinistryInvolvementsController < ApplicationController
   before_filter :ministry_leader_filter, :except => :destroy
-  before_filter :set_possible_roles, :only => [ :edit, :update ]
 
   # Records the ending of a user's involvement with a particular ministry
   def destroy
@@ -28,6 +27,11 @@ class MinistryInvolvementsController < ApplicationController
     end
   end
   
+  def create
+    MinistryInvolvement.create(params[:ministry_involvement])
+    redirect_to '/staff'
+  end
+  
   # A staff is defined as a student leader or anyone with a StaffRole
   # Staff are admin if they're marked admin in the ministry involvement.  The
   # actual role of being an admin doesn't inherently grant anything.
@@ -48,7 +52,7 @@ class MinistryInvolvementsController < ApplicationController
     !is_ministry_admin(@ministry, @me)
     
     # And you can't set any roles higher than yourself
-    unless @possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
+    unless possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
       flash[:notice] = "Sorry, you can't set that role"
       return
     end
@@ -62,15 +66,5 @@ class MinistryInvolvementsController < ApplicationController
       wants.js {  }
     end
   end
-
-  protected
   
-  def set_possible_roles
-    @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_roles)} >= #{@my.role(get_ministry).position}")
-    # remove all 'Other' roles for now
-    @possible_roles.reject! { |r| r.class == OtherRole }
-    # if staff, allow all student roles
-    @possible_roles += StudentRole.all
-    @possible_roles.uniq!
-  end
 end
