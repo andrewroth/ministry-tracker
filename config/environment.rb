@@ -39,7 +39,6 @@ Rails::Initializer.run do |config|
   config.gem  'aws-s3', :lib => 'aws/s3'
   config.gem  'aaronchi-jrails', :lib => 'jrails'
   config.gem  'spreadsheet'
-  config.gem  'deep_test' # for parallel testing
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
   config.gem 'liquid'
