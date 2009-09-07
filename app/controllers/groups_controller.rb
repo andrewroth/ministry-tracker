@@ -111,26 +111,25 @@ class GroupsController < ApplicationController
     end
     @group = Group.find(params[:id], :include => :people)
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
-    #if nobody is selected, compare schedules of everyone in group
-    if(person_ids.nil? || person_ids.empty?)
-      @people = @group.people.reject {|person| 
-          person.nil? ||
-          (GroupInvolvement.find(:first, :conditions => [_(:person_id, :group_involvement) + " = ? AND " + 
-                                                              _(:group_id, :group_invovlement) + " = ? ", 
-                                                              person.id, @group.id]).requested == true)
-          
-          }
-      
+    # if nobody is selected, compare schedules of everyone in group
+    if person_ids.present?
+      gis = @group.group_involvements.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
     else
-      @people = Person.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
+      gis = @group.group_involvements
     end
     
-    @people.each do |person|
-      if (person.free_times.nil? || person.free_times.empty?)
-        @notices << "<i>" + person.full_name + "</i> has not submitted his timetable. Hence will be excluded from comparison."
-        @people.delete(person)
+    # remove those who haven't submitted timetable (and make sure the group involvement is valid
+    # while we're at it, ie. no requests, and valid person)
+    @people = gis.reject { |gi| 
+      if gi.person.nil? || gi.requested
+        true
+      elsif !gi.person.free_times.present?
+        @notices << "<i>" + gi.person.full_name + "</i> has not submitted his timetable. Hence will be excluded from comparison."
+        true
+      else
+        false
       end
-    end
+    }.collect(&:person)
     
     @comparison_map = Timetable.generate_compare_table(@people)
     respond_to do |format|
