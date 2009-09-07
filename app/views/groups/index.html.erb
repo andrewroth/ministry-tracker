@@ -22,7 +22,8 @@
   <h2> <%= @ministry.name %> Groups </h2>
   
   <div id="instructions">
-    This screen serves as a launching area for managing <%= @ministry.name %> groups. 
+    <div>This screen serves as a launching area for managing <%= @ministry.name %> groups.</div>
+    <div>Click on Group Categories to see the list of groups you can join in that category.</div>
   </div><br/>
 
 <%- if @ministry.all_group_types.empty? -%>

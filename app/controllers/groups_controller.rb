@@ -8,7 +8,12 @@ class GroupsController < ApplicationController
 
   def index
     @join = false
-    get_person_campus_groups
+    if params[:all] == 'true'
+      @groups = @person_campus_groups = @ministry.groups
+    else
+      get_person_campus_groups
+      @groups = @person_campus_groups
+    end
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'

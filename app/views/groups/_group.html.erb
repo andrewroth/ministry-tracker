@@ -37,7 +37,8 @@
       :url => { :action => 'joingroup', :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
         :person_id => @person.id,
-        :group_involvement => { :group_id => group.id, :level => 'interested'}
+        :group_id => group.id,
+        :level => 'interested'
       }, 
       :method => :post 
     %>

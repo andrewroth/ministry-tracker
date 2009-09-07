@@ -31,3 +31,10 @@ StudentRole.seed(:name) do |sr|
   sr.position = 4
   sr.involved = false
 end
+
+StudentRole.seed(:name) do |sr|
+  sr.name = 'Alumni'
+  sr.description = ''
+  sr.ministry = ministry
+  sr.position = 5
+end

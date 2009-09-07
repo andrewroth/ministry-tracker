@@ -1,4 +1,10 @@
 <br />
-<h3> <%= link_to "Click here to edit <b>#{student.full_name}</b>'s timetable.", 
-                person_timetable_path(student.id, (student.timetable || Timetable.create(:person_id => student.id)).id) %> </h3>
+<h3>
+  <%- if authorized?(:edit, :timetables) -%>
+    <%= link_to "Click here to edit <b>#{student.full_name}</b>'s timetable.", 
+      person_timetable_path(student.id, (student.timetable || Timetable.create(:person_id => student.id)).id) %>
+  <%- else -%>
+    Once <%= student.full_name %> is added to a group you are leading or coleading, you can edit his or her timetable.
+  <%- end -%>
+</h3>
 <br />
