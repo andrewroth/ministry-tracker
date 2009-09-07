@@ -1,5 +1,5 @@
 require 'connexion_bar'
-require 'ftools'
+require 'fileutils'
 
 # copy our connexion.css to public if it's not there
 src = File.join(File.dirname(__FILE__), 'assets', 'connexion_default.css')

@@ -1,4 +1,4 @@
-require 'ftools'
+require 'fileutils'
 require 'erb'
 
 # Install a newrelic.yml file into the local config directory.

@@ -195,12 +195,13 @@ end
     end
   end
   
-  def all_ministries
-    (self.ministries + self.campus_ministries).uniq.sort
-  end
+  # def all_ministries
+  #   (self.ministries + self.campus_ministries).uniq.sort
+  # end
   
   def ministry_tree
-    @ministry_tree ||= (self.ministries.collect(&:ancestors).flatten + self.ministries.collect(&:descendants).flatten).uniq
+    res =  lambda {(self.ministries.collect(&:ancestors).flatten + self.ministries.collect(&:descendants).flatten).uniq}
+    Rails.env.production? ? Rails.cache.fetch([self.cache_key, 'ministry_tree']) {res.call} : res.call
   end
   
   def role(ministry)

@@ -1,5 +1,17 @@
-<strong>New <%= params[:staff] ? "#{t(:Staff, :default => 'Staff Person')} Person or Leader" : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
-<%= error_messages_for :person, :current_address %>
-<% form_for(@person) do |f| %>
-	<%= render :partial => 'people/form', :locals => {:f => f, :person => @person} %>
-<% end %>
+<h2>Search for the person you want to add: <%= text_field_tag :search %><%= spinner %></h2>
+<%= observe_field :search, :url => search_to_add_staff_path, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();", :with => 'search', :frequency => 0.5 %>
+<div id="results"></div>
+<br /><br />
+<hr />
+Can't find who you're looking for? 
+<%= link_to_function("Click here to add them", "$('#staff_form_box').toggle()") %>
+<br><br>
+<div id="staff_form_box" style="display:none">
+  <strong>New <%= params[:staff] ? "#{t(:Staff, :default => 'Staff Person')} Person or Leader" : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
+  <%= error_messages_for :person, :current_address %>
+  <% form_for(@person) do |f| %>
+  	<%= render :partial => 'people/form', :locals => {:f => f, :person => @person} %>
+  <% end %>
+</div>
+<br>
+<%= link_to("Go Back", :back, :class => 'cancel') %>
