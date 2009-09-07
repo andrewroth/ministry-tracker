@@ -31,6 +31,22 @@ class ApplicationController < ActionController::Base
       ActiveRecord::Base._(column, table)
     end
     
+    def current_ministry; @ministry; end
+    helper_method :current_ministry
+    
+    def possible_roles
+      unless @possible_roles
+        @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_roles)} >= #{@my.role(get_ministry).position}")
+        # remove all 'Other' roles for now
+        @possible_roles.reject! { |r| r.class == OtherRole }
+        # if staff, allow all student roles
+        @possible_roles += StudentRole.all
+        @possible_roles.uniq!
+      end
+      @possible_roles
+    end
+    helper_method :possible_roles
+    
     def format_date(value, format = :default)
       return '' if value.blank?
       date = value.is_a?(Date) ? value : Date.parse(value.to_s)

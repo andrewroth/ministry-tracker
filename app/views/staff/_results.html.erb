@@ -1,12 +1,27 @@
 <table border="0" cellspacing="5" cellpadding="5">
   <tr>
-    <th>Name</th>
-    <th>Email</th>
+    <th><strong>Name</strong></th>
+    <th><strong>Email</strong></th>
+    <th><strong>Role</strong></th>
+    <th></th>
   </tr>
   <%- @results.each do |person| -%>
     <tr>
       <td><%= person.full_name %></td>
       <td><%= person.current_address.try(:email) %></td>
+      <td><%= select_tag "#{dom_id(person)}_role_id", options_for_select(possible_roles.collect {|role| [role.name, role.id]}) %></td>
+      <td>
+        <% form_for(MinistryInvolvement.new(:person_id => person.id, :ministry_id => current_ministry.id), :html => {:id => "form_for_#{dom_id(person)}"}) do |f| %>
+          <%= f.hidden_field :person_id %>
+          <%= f.hidden_field :ministry_id %>
+          <%= f.hidden_field :ministry_role_id, :id => "#{dom_id(person)}_ministry_role_id" %>
+          <%= link_to_function("Add", "if(confirm('Are you sure you want to add #{escape_javascript(person.full_name)} to #{escape_javascript(current_ministry.name)}?')) { $('##{dom_id(person)}_ministry_role_id').val($('##{dom_id(person)}_role_id').val()); $('#form_for_#{dom_id(person)}').submit()}") %>
+        <% end %>
+      </td>
     </tr>
   <%- end -%>
 </table>
+<br/>
+<% if @count > @results.length %>
+  <strong><%= @count - @results.length %> more results. Keep typing to refine.</strong>
+<% end %>
