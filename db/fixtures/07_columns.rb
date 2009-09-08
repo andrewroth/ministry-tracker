@@ -77,3 +77,20 @@ end
 #   c.column_type = 'url'
 # end
 
+Column.seed(:title) do |c|
+  c.title = 'Last Login'
+  c.from_clause = 'User'
+  c.select_clause = 'last_login'
+  c.source_model = 'Access'
+  c.source_column = 'person_id'
+  c.foreign_key = 'viewer_id'
+end
+
+Column.seed(:title) do |c|
+  c.title = 'Last Login'
+  c.from_clause = 'User'
+  c.select_clause = 'last_login'
+  c.source_model = 'Access'
+  c.source_column = 'person_id'
+  c.foreign_key = 'viewer_id'
+end

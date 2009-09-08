@@ -2,7 +2,7 @@
   <tr>
     <th><strong>Name</strong></th>
     <th><strong>Email</strong></th>
-    <th><strong>Role</strong></th>
+    <th><strong>New Role In <%= current_ministry.name %></strong></th>
     <th></th>
   </tr>
   <%- @results.each do |person| -%>
@@ -23,5 +23,5 @@
 </table>
 <br/>
 <% if @count > @results.length %>
-  <strong><%= @count - @results.length %> more results. Keep typing to refine.</strong>
+  <strong><%= pluralize(@count - @results.length, 'more results') %>. Keep typing to refine.</strong>
 <% end %>
