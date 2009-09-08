@@ -77,4 +77,12 @@ Column.seed(:title) do |c|
   c.foreign_key = 'id'
 end
 
+Column.seed(:title) do |c|
+  c.title = 'Last Login'
+  c.from_clause = 'User'
+  c.select_clause = 'last_login'
+  c.source_model = 'Person'
+  c.source_column = 'user_id'
+  c.foreign_key = 'id'
+end
 
