@@ -60,4 +60,11 @@ namespace :deploy do
 
     run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:rebuild"
   end
+
+  task :seed do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
+
+    run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:seed"
+  end
 end
