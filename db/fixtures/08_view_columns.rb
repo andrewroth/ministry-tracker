@@ -61,5 +61,11 @@ end
 # school year
 ViewColumn.seed(:view_id, :column_id) do |vc|
   vc.view_id = 1
-  vc.column_id =10
+  vc.column_id = 10
+end
+
+# last login
+ViewColumn.seed(:view_id, :column_id) do |vc|
+  vc.view_id = 1
+  vc.column_id = 11
 end
