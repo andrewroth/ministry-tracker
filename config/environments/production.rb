@@ -26,6 +26,6 @@ config.action_controller.perform_caching             = true
 config.threadsafe! unless (File.basename($0) == "rake" && !ARGV.grep(/db:/).empty?)
 
 ExceptionNotifier.configure_exception_notifier do |config|
-  config[:exception_recipients] = %w(andrewroth@gmail.com ebendall@gmail.com)
+  config[:exception_recipients] = %w(andrewroth@gmail.com josh.starcher@gmail.com)
   config[:send_email_error_codes] = %W( 400 403 404 405 500 501 503 )
 end
