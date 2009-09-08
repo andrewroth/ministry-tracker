@@ -29,8 +29,10 @@ class View < ActiveRecord::Base
     # Always include the current address
     tables << 'CurrentAddress'
     tables_clause += " LEFT JOIN #{CurrentAddress.table_name} as CurrentAddress on Person.#{_(:id, :person)} = CurrentAddress.#{_(:person_id, :address)} AND #{_(:address_type, :address)} = 'current'"
+    # Hooks to support different schemas
+    tables += build_query_parts_custom_tables if self.respond_to?(:build_query_parts_custom_tables)
+    tables_clause += build_query_parts_custom_tables_clause if self.respond_to?(:build_query_parts_custom_tables_clause)
 
-    
     columns.each do |column|
       raise inspect if column.nil?      # If something goes wrong, we want good information
       # Add table to table clause
