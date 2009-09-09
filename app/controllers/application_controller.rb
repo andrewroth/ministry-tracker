@@ -36,12 +36,12 @@ class ApplicationController < ActionController::Base
     
     def possible_roles
       unless @possible_roles
-        @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:position, :ministry_roles)} >= #{@my.role(get_ministry).position}")
+        @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:type, :ministry_roles)} <> 'OtherRole'")
         # remove all 'Other' roles for now
-        @possible_roles.reject! { |r| r.class == OtherRole }
-        # if staff, allow all student roles
-        @possible_roles += StudentRole.all
-        @possible_roles.uniq!
+        # @possible_roles.reject! { |r| r.class == OtherRole }
+        # # if staff, allow all student roles
+        # @possible_roles += StudentRole.all
+        # @possible_roles.uniq!
       end
       @possible_roles
     end
@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
     
     def is_ministry_admin(ministry = nil, person = nil)
       session[:admins] ||= {}
-      ministry ||= get_ministry
+      ministry ||= current_ministry
       session[:admins][ministry.id] ||= {}
       person ||= (@me || get_person)
       unless session[:admins][ministry.id][person.id]
@@ -114,6 +114,8 @@ class ApplicationController < ActionController::Base
       end
       return session[:admins][ministry.id][person.id]
     end
+    alias_method :is_admin?, :is_ministry_admin
+    helper_method :is_admin?
     
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
@@ -294,7 +296,7 @@ class ApplicationController < ActionController::Base
       raise "no person" unless @person
       unless @ministry
         @ministry = session[:ministry_id] ?
-          @person.ministries.find(:first, :conditions => {:id => session[:ministry_id] }) :
+          @person.ministry_tree.detect {|m| m.id == session[:ministry_id] } :
           @person.ministries.first
 
         # If we didn't get a ministry out of that, check for a ministry through campus
