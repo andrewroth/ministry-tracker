@@ -27,9 +27,9 @@ Rails::Initializer.run do |config|
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
   # config.gem  'json'
+  config.gem  'hpricot'
   config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
-  config.gem  'hpricot'
   config.gem  'rubyzip', :lib => 'zip/zip'
   config.gem  'roo'
   config.gem  'mechanize'
