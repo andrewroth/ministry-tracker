@@ -122,13 +122,16 @@ class PeopleController < ApplicationController
         @advanced = true
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ') if !params[:campus].empty?
       else
-        params[:campus] = @campuses.collect(&:id)
+        # If no campuses were passed in, include all the campuses from the current ministry
+        params[:campus] = current_ministry.campuses.collect(&:id)
       end
-            
+
       if params[:campus].empty?
-        if get_ministry_involvement(@ministry).ministry_role.class == StudentRole
-          return # they're a student who has either hacked in params[:campus] or they have no campus_involvements. Bad Student.
-          #redirect_to :controller => 'dashboard', :action => 'index'
+        mi = get_ministry_involvement(current_ministry)
+        if mi && mi.ministry_role.class == StudentRole
+          #return # they're a student who has either hacked in params[:campus] or they have no campus_involvements. Bad Student.
+          redirect_to :controller => 'dashboard', :action => 'index'
+          return
         end
       else
         conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
@@ -572,13 +575,13 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
-
-  def get_campuses
-    @campus_state = params[:primary_campus_state]
-    @campus_country = params[:primary_campus_country]
-    render :text => '' unless @campus_state
-    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
-  end
+#### THIS METHOD WAS DEFINED TWICE! #####
+  # def get_campuses
+  #   @campus_state = params[:primary_campus_state]
+  #   @campus_country = params[:primary_campus_country]
+  #   render :text => '' unless @campus_state
+  #   @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
+  # end
 
   def get_campus_states
     @campus_country = params[:primary_campus_country]
@@ -799,7 +802,8 @@ class PeopleController < ApplicationController
     
     def get_campuses
       campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-      if get_ministry_involvement(@ministry).ministry_role.class == StudentRole
+      mi = get_ministry_involvement(@ministry)
+      if mi && mi.ministry_role.class == StudentRole
         @campuses = campuses.select{|id| @my.campuses.find(:first, :conditions => {_(:id, :campus) => id})}
       end
       @campuses ||= campuses 

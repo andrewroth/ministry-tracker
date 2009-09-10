@@ -28,7 +28,9 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    MinistryInvolvement.create(params[:ministry_involvement])
+    # If this person was already on this ministry, update with the new role
+    @mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id]})
+    @mi ? @mi.update_attribute(:ministry_role_id, params[:ministry_involvement][:ministry_role_id]) : MinistryInvolvement.create!(params[:ministry_involvement])
     redirect_to '/staff'
   end
   

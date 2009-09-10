@@ -42,6 +42,7 @@ Rails::Initializer.run do |config|
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
   config.gem 'liquid'
+  config.gem 'image_science'
   
   config.time_zone = 'UTC'
 

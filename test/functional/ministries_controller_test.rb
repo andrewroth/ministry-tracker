@@ -38,8 +38,9 @@ class MinistriesControllerTest < ActionController::TestCase
     assert_template 'new'
   end
   
+  # This changes the active ministry
   def test_should_get_edit
-    get :edit, :id => 1
+    xhr :get, :edit, :id => 1
     assert_response :success
   end
   

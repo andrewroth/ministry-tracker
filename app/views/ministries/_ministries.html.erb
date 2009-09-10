@@ -18,8 +18,8 @@
 		<% end %>
 		<%= spinner %>
 		<% if @my.ministries.length > 1 %>
-		  <%- if @me.admin?(@ministry.root) -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(Ministry.find(:all, :order => 'name').collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
+		  <%- if is_admin? -%>
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.all_ministries.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
     	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.ministry_tree.sort.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- end -%>

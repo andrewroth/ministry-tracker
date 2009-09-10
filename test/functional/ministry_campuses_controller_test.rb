@@ -15,7 +15,7 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
   
   def test_index
-    xhr :get, :index, :ministry_id => 1 #yfc
+    xhr :get, :index #yfc
     assert_response :success
   end
   

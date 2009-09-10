@@ -9,15 +9,15 @@
   </p>
   <p>
   In order to delete a role, everyone of that role must be switched to a different role.
-  Names and desriptions don't change anything rather than how they are displayed. 
-  Permissions are the meat a potatoes of roles. Click on the key to edit what a certain role can do.
+  Names and descriptions don't change anything rather than how they are displayed. 
+  Permissions are the meat and potatoes of roles. Click on the key to edit what a certain role can do.
   </p>
 
 <%- end -%>
 
 <div id="permissions">
 	<div class="right_list">
-		<div class="title"><%= @ministry.name %> Roles</div>
+		<div class="title">System Wide Roles</div>
 		<h4><%= t(:Staff, :default => 'Staff') %> Roles</h4>
 		<ul id="staff_role_list">
 		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.staff_roles %>

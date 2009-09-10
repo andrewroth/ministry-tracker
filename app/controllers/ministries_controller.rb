@@ -9,7 +9,8 @@
 
 class MinistriesController < ApplicationController
   layout 'manage'
-  #skip_before_filter :authorization_filter, :only => [:list]
+  skip_before_filter :authorization_filter, :only => [:edit]
+  skip_before_filter :get_ministry, :only => [:edit]
 
   def index
     setup_ministries
@@ -61,8 +62,18 @@ class MinistriesController < ApplicationController
   
   def edit
     @ministry = Ministry.find(params[:id])
-    session[:ministry_id] = @ministry.id
-    get_ministry_involvement(@ministry)
+    if is_admin? || @my.ministry_tree.include?(@ministry)
+      session[:ministry_id] = @ministry.id
+      # get_ministry_involvement(@ministry)
+    end
+    respond_to do |wants|
+      wants.html { redirect_to :back }
+      wants.js do 
+        render :update do |page| 
+          page.reload
+        end
+      end
+    end
   end
   
   def update
