@@ -5,7 +5,7 @@ require 'ministry_involvements_controller'
 class MinistryInvolvementsController; def rescue_action(e) raise e end; end
 
 class MinistryInvolvementsControllerTest < ActionController::TestCase
-  fixtures MinistryInvolvement.table_name
+  fixtures MinistryInvolvement.table_name, Ministry.table_name, Person.table_name
 
   def setup
     @controller = MinistryInvolvementsController.new
@@ -54,5 +54,25 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     xhr :put, :update, :id => old_mi.id, :ministry_involvement => {:ministry_role_id => 4}
     assert mi = assigns(:ministry_involvement)
     assert_not_equal old_mi.ministry_role, mi.ministry_role
+  end
+  
+  test "add a person to a ministry" do
+    assert_difference "MinistryInvolvement.count", 1 do
+      ministry = ministries(:top)
+      person = people(:josh)
+      xhr :post, :create, :ministry_involvement => {:ministry_role_id => ministry.ministry_roles.first, :person_id => person.id, :ministry_id => ministry}
+    end
+  end
+  
+  test "add a person to a ministry who is already in that ministry should update the role" do
+    assert_difference "MinistryInvolvement.count", 0 do
+      ministry = ministries(:yfc)
+      person = people(:josh)
+      old_role = ministry_involvements(:one).ministry_role
+      attribs = {:ministry_role_id => ministry_roles(:two).id, :person_id => person.id, :ministry_id => ministry.id}
+      xhr :post, :create, :ministry_involvement => attribs
+      assert(@mi = assigns(:mi))
+      assert_not_equal(old_role, @mi.ministry_role)
+    end
   end
 end

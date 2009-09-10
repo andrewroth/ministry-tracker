@@ -60,6 +60,10 @@ class Ministry < ActiveRecord::Base
     @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", staff_role_ids, self.id], :joins => :ministry_involvements, :order => _(:first_name, :person))
   end
   
+  def leaders
+    @leaders ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", leader_role_ids, self.id], :joins => :ministry_involvements, :order => _(:first_name, :person))
+  end
+  
   def ministry_roles
     self.root? ? my_ministry_roles : self.root.my_ministry_roles
   end

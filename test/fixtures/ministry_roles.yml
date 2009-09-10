@@ -38,7 +38,7 @@ student:
     ministry_id: 1
     name: Student
     position: 7
-    type: OtherRole
+    type: StudentRole
     
 new:
   id: 8
@@ -53,5 +53,11 @@ exists:
   name: Will I Exist?
   position: 9
   type: OtherRole
-  
+
+top_staff:
+    id: 10
+    ministry_id: 4
+    name: Staff
+    position: 1
+    type: StaffRole
 
