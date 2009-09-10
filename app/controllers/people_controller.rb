@@ -799,7 +799,7 @@ class PeopleController < ApplicationController
     
     def get_campuses
       campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
-      if get_ministry_involvement(@ministry).ministry_role.class == StudentRole
+      if mi = get_ministry_involvement(@ministry) && mi.ministry_role.class == StudentRole
         @campuses = campuses.select{|id| @my.campuses.find(:first, :conditions => {_(:id, :campus) => id})}
       end
       @campuses ||= campuses 
