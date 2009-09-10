@@ -27,3 +27,9 @@ staff_involvement_with_one:
   person_id: 4001
   ministry_id: 1
   ministry_role_id: 1 # admin
+  
+staff_involvement_on_top:
+  id: 6
+  person_id: 4002
+  ministry_id: 4
+  ministry_role_id: 10

@@ -41,6 +41,14 @@ class PeopleControllerTest < ActionController::TestCase
     assert assigns(:people)
   end
   
+  test "A user should be able to see a directory a directory on a ministry with no campuses" do
+    login('staff_on_ministry_with_no_campus')
+    @request.session[:ministry_id] = ministries(:under_top).id #under_top is under top, which I am a member of
+    get :directory
+    assert_response :success
+    assert assigns(:people)
+  end
+  
   def test_perform_search_by_firstname
     post :directory, :search => 'josh'
     assert_response :success
@@ -74,12 +82,12 @@ class PeopleControllerTest < ActionController::TestCase
     xhr :post, :search, :search => 'Josh', :context => 'group_involvements', :group_id => 2, :type => 'leader'
     assert_response :success
   end
-
+  
   def test_should_get_new
     get :new
     assert_response :success
   end
-
+  
   def test_should_change_view
     post :change_view, :view => 1
     assert_redirected_to directory_people_path
@@ -91,7 +99,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to directory_people_path
     assert_nil session[:order]
   end
-
+  
   def test_should_re_create_staff
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
@@ -137,7 +145,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
     assert_template 'new'
   end
-
+  
   def test_should_show_person
     get :show, :id => people(:josh).id
     
@@ -153,12 +161,12 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_view', :count => 1
     assert_response :success
   end
-
+  
   def test_should_get_edit
     get :edit, :id => 50000
     assert_response :success
   end
-
+  
   def test_should_show_only_campus_country_when_no_primary_involvement
     josh = Person.find 50000
     josh.current_address = nil
@@ -215,21 +223,20 @@ class PeopleControllerTest < ActionController::TestCase
     user = users(:user_with_no_ministry_involvements)
     @request.session[:user] = user.id
     @request.session[:ministry_id] = nil
-
+  
     person = people(:person_with_no_ministry_involvements)
-
+  
     get :directory, :person_id => person.id
-
+  
     # person should be involved in 'No Ministry' ministry
     ministry = ministries(:no_ministry)
     ministry_involvements = MinistryInvolvement.find_all_by_person_id(person.id)
     assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
-    
-    assert_response :success
+    assert_redirected_to :action => "index", :controller => "dashboard"
   end
   
   test "ministry leader with no permanent address should render when updating notes" do
-
+  
     # setup session
     ministry = ministries(:yfc)    
     
@@ -238,7 +245,7 @@ class PeopleControllerTest < ActionController::TestCase
     @request.session[:ministry_id] = ministry.id
     
     person = people(:ministry_leader_person_with_no_permanent_address)
-
+  
     # make sure person is a leader
     involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
     assert ministry.staff.include?(person) || (involvement && involvement.admin?)
@@ -248,7 +255,7 @@ class PeopleControllerTest < ActionController::TestCase
     
     assert_template :partial => '_view', :count => 1
     assert_response :success
-
+  
     # save the staff notes    
     xhr :post, :update,
       :staff_notes => 'A Note',

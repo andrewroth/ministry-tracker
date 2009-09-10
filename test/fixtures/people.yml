@@ -44,3 +44,9 @@ ministry_leader_person_with_no_permanent_address:
     user_id: 5
     first_name: 'Ministry'
     last_name: 'Leader'
+
+staff_on_ministry_with_no_campus:
+    id: 4002
+    user_id: 6
+    first_name: 'Ministry'
+    last_name: 'Leader'

@@ -1,6 +1,6 @@
 <%- ministry = ministry_involvement.ministry -%>
-<li><%= link_to(ministry.name, ministry_campuses_url(:ministry_id => ministry)) %>  | 
-	<%= link_to_remote('edit', :url => edit_ministry_url(ministry), 
+<li><%= link_to(ministry.name, ministry_campuses_path(:ministry_id => ministry)) %>  | 
+	<%= link_to_remote('edit', :url => edit_ministry_path(ministry), 
 								   :method => :get,
 								   :before => "$('#new_ministry_link').slideUp()",
 								 	 :method => :get) %>  |  

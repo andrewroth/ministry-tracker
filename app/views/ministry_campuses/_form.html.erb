@@ -1,7 +1,7 @@
 To find the campus you'd like to add, first choose a country, then a state (if applicable), then the high school or college you'd 
 like to add. Currently this system only contains high schools in the United States. <br /><br />
 
-<%- form_remote_tag :url => ministry_campuses_url do -%>
+<%- form_remote_tag :url => ministry_campuses_path do -%>
   <%= hidden_field_tag :ministry_id, @ministry.id %>
 	<div id="countries"><%= render :partial => 'campuses/choose_country' %></div>
 	<div id="states"><%= render :partial => 'campuses/choose_state' if @states %></div>
