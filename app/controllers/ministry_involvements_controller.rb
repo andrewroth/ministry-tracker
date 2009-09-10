@@ -28,7 +28,7 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    MinistryInvolvement.create(params[:ministry_involvement])
+    MinistryInvolvement.create!(params[:ministry_involvement])
     redirect_to '/staff'
   end
   
