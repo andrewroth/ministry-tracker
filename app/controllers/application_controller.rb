@@ -73,6 +73,7 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_leader( ministry = nil, person = nil)
+      return true if is_ministry_admin(ministry, person)
       ministry ||= @ministry || get_ministry
       person ||= (@me || get_person)
       involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
