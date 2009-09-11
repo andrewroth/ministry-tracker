@@ -1,5 +1,9 @@
 module PersonMethodsEmu
 
+  def search_email_conditions(email)
+    "Person.person_email = '#{quote_string(email)}'"
+  end
+
   def database_search_conditions(params)
     special_conditions = {}
     
