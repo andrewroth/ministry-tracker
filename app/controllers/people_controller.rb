@@ -1,4 +1,4 @@
-require 'person_methods_emu'
+require 'person_methods'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
