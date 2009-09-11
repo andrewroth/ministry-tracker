@@ -1,4 +1,4 @@
-require 'person_methods'
+require 'person_methods_emu'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -72,7 +72,7 @@ class PeopleController < ApplicationController
     		last = names[1].strip
       	conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
       when !search.scan('@').empty?
-        conditions << "CurrentAddress.#{_(:email, :address)} = '#{quote_string(search)}'"
+        conditions << search_email_conditions(search)
       else
         if search.present?
           conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
