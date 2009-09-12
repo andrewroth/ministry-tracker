@@ -2,8 +2,6 @@
 class Address < ActiveRecord::Base
   load_mappings
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
-  index _(:id) if $cache
-  index [ _(:address_type), _(:person_id)] if $cache
 
   # validates_presence_of _(:type), :message => "can't be blank"
   

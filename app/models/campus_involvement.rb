@@ -1,10 +1,5 @@
 class CampusInvolvement < ActiveRecord::Base
   load_mappings
-  if $cache
-    index _(:id)
-    index _(:person_id), :order => :desc
-    index [_(:person_id), _(:id)]
-  end
   validates_presence_of :campus_id, :person_id, :ministry_id
   
   belongs_to :school_year

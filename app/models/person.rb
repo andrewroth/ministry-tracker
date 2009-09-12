@@ -1,10 +1,6 @@
 class Person < ActiveRecord::Base
   include ActiveRecord::ConnectionAdapters::Quoting
   load_mappings
-  if $cache
-    index _(:user_id)
-    index _(:id)
-  end
   
   # Campus Relationships
   has_many :campus_involvements #, :include => [:ministry, :campus]
