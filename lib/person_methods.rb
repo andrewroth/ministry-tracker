@@ -1,4 +1,9 @@
 module PersonMethods
+
+  def search_email_conditions(email)
+    "CurrentAddress.#{_(:email, :address)} = '#{quote_string(email)}'"
+  end
+
   def database_search_conditions(params)
     special_conditions = Hash.new
     special_conditions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})" if params[gender].present?
@@ -6,8 +11,6 @@ module PersonMethods
     special_conditions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'" if params[gender].present?
     special_conditions
   end
-  
-  
   
   def add_person(person, current_address, params)
     # ===============================================
