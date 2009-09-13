@@ -89,13 +89,13 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   def test_should_change_view
-    post :change_view, :view => 1
+    post :change_view, :view => '1'
     assert_redirected_to directory_people_path
   end
   
   def test_should_clear_session_order_when_changing_view
     get :directory, :order => Person._(:first_name)
-    post :change_view, :view => 1
+    post :change_view, :view => '1'
     assert_redirected_to directory_people_path
     assert_nil session[:order]
   end
@@ -215,8 +215,24 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   def test_change_ministry_and_goto_directory
-    xhr :post, :change_ministry_and_goto_directory, :ministry => 1
+    xhr :post, :change_ministry_and_goto_directory, :current_ministry => '1'
     assert_response :success
+  end
+  
+  test "change to a ministry that is under my assigned level" do
+    xhr :post, :change_ministry_and_goto_directory, :current_ministry => ministries(:dg).id
+    assert_response :success
+    assert_equal(3, session[:ministry_id])
+    
+    get :directory
+    assert_equal(ministries(:dg), assigns(:ministry))
+  end
+  
+  test "change to a ministry that is NOT under my assigned level should default to my first ministry" do
+    get :change_ministry_and_goto_directory, :current_ministry => ministries(:top).id
+    assert_response :redirect
+    assert_not_equal(ministries(:top), assigns(:ministry))
+    assert_equal(people(:josh).ministries.first, assigns(:ministry))
   end
   
   test "new person with no ministry involvements should be involved in the dummy ministry" do
