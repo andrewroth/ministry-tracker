@@ -50,7 +50,9 @@
             split:true,
             autoScroll:true,
             animate:true,
-            // enableDD:true,
+			<% if is_admin? %>
+            enableDD:true,
+			<% end %>
             containerScroll: true,
             loader: new Tree.TreeLoader({dataUrl: '<%= url_for :controller => 'ministries', :action => 'list' -%>'})
         });
