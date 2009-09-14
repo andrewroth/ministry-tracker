@@ -65,7 +65,7 @@ render_tabnav :main,
     add_tab do |t|
       t.named 'Directory'
       t.titled 'Directory for ' + @ministry.name
-      t.links_to directory_people_path(:format => :html)
+      t.links_to directory_people_path
       t.highlights_on :controller => "people", :action => "directory"
     end if session[:ministry_id]
   end
