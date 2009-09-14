@@ -1,55 +1,55 @@
 <table>
-<tr>
-	<td>First Name: </td>
-	<td><%= f.text_field :first_name %></td>
-</tr>
-<tr>
-	<td>Last Name: </td>
-	<td><%= f.text_field :last_name %></td>
-</tr>
-<tr>
-	<td>Gender: </td>
-	<td><%= f.select :gender, [[' -- Choose -- ', ''], ["Male", 1], ['Female', 0]] %></td>
-</tr>
-<%- if params[:student] -%>
-<tr>
-	<td>Main School: </td>
-	<td>
-		<%= select_tag :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]})%>
-	</td>
-</tr>
-<tr>
-	<td>Involvement Level: </td>
-	<td>
-		<%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
-	</td>
-</tr>
-<%- end -%>
-<%- if params[:staff] -%>
-  <%- fields_for :ministry_involvement do |mf| -%>
   <tr>
-  	<td>Role: </td>
-  	<td>
-  	  <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
-  	  <%= mf.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %>
-  	</td>
+    <td>First Name: </td>
+    <td><%= f.text_field :first_name %></td>
   </tr>
+  <tr>
+    <td>Last Name: </td>
+    <td><%= f.text_field :last_name %></td>
+  </tr>
+  <tr>
+    <td>Gender: </td>
+    <td><%= f.select :gender, [[' -- Choose -- ', ''], ["Male", 1], ['Female', 0]] %></td>
+  </tr>
+  <%- if params[:student] -%>
+  <tr>
+    <td>Main School: </td>
+    <td>
+      <%= select_tag :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]})%>
+    </td>
+  </tr>
+  <tr>
+    <td>Involvement Level: </td>
+    <td>
+      <%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
+    </td>
+  </tr>
+  <%- end -%>
+  <%- if params[:staff] -%>
+  <%- fields_for :ministry_involvement do |mf| -%>
+    <tr>
+      <td>Role: </td>
+      <td>
+        <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
+        <%= mf.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %>
+      </td>
+    </tr>
     <%- if is_ministry_admin(@ministry, @me) -%>
     <tr>
-    	<td>&nbsp; <%- tooltip do -%> An admin has total access and can edit everything within his/her ministry. Make sure this person understands how the website runs.<%- end -%> </td>
-    	<td><%= mf.check_box :admin %> Admin</td> 
-    </tr>
+      <td>&nbsp; <%- tooltip do -%> An admin has total access and can edit everything within his/her ministry. Make sure this person understands how the website runs.<%- end -%> </td>
+        <td><%= mf.check_box :admin %> Admin</td> 
+      </tr>
     <%- end -%>
   <%- end -%>
-<%- end -%>
-<tr>
-	<td>Email: </td>
-	<td><%= text_field :current_address, :email %></td>
-</tr>
+  <%- end -%>
+  <tr>
+    <td>Email: </td>
+    <td><%= text_field :current_address, :email %></td>
+  </tr>
 </table>
 <%- if params[:staff] -%>
-	<%= hidden_field_tag :staff, true %>
+<%= hidden_field_tag :staff, true %>
 <%- else -%>
-		<%= hidden_field_tag :student, true %>
+<%= hidden_field_tag :student, true %>
 <%- end -%>
 
