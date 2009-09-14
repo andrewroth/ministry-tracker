@@ -46,6 +46,7 @@ class PeopleController < ApplicationController
 
   def directory
     get_view
+    get_campuses
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
@@ -167,7 +168,7 @@ class PeopleController < ApplicationController
     end
     
     respond_to do |format|
-      format.xml  { render :xml => @people.to_xml }
+      format.html { render :layout => 'application' }
       format.xls  do
         filename = @search_for.gsub(';',' -') + ".xls"    
 
@@ -184,7 +185,7 @@ class PeopleController < ApplicationController
         end
         render :action => 'excel', :layout => false
       end
-      format.html { render :layout => 'application' }
+      format.xml  { render :xml => @people.to_xml }
     end
   end
   
@@ -739,7 +740,7 @@ class PeopleController < ApplicationController
     end
     
     def get_campuses
-      @campuses = @my_campuses
+      @campuses = @my_campuses || current_ministry.campuses
     end
     
     def add_involvement_conditions(conditions)

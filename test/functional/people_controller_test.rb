@@ -14,15 +14,16 @@ class PeopleControllerTest < ActionController::TestCase
     get :directory
     assert_response :success
     assert assigns(:people)
+    assert_template('directory')
   end
   
-  # def test_directory_download
-  #   @request.env["HTTP_ACCEPT"] = "text/html"
-  #   get :directory, :format => :xls
-  #   assert_equal "text/html", @response.content_type
-  #   assert_response 406
-  #   assert assigns(:people)
-  # end
+  def test_directory_download
+    @request.env["HTTP_ACCEPT"] = "text/html"
+    get :directory, :format => :xls
+    assert_equal "text/html", @response.content_type
+    assert_response 406
+    assert assigns(:people)
+  end
   
   test "directory pagination" do
     post :directory, :search => 'all'
