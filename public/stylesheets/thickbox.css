@@ -90,6 +90,7 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	margin-bottom:1px;
 	text-align:right;
 	float:right;
+	display:none;
 }
 
 #TB_ajaxWindowTitle{
