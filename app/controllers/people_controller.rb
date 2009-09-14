@@ -255,12 +255,16 @@ class PeopleController < ApplicationController
     end
   end
   
-  # GET /people/new
-  def new
+  def setup_new
     @person = Person.new
     @current_address = CurrentAddress.new
     @countries = CmtGeo.all_countries
     @states = CmtGeo.all_states
+  end
+
+  # GET /people/new
+  def new
+    setup_new
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js
@@ -514,8 +518,10 @@ class PeopleController < ApplicationController
     end
   end
     
-  # Question: what does it do?
+  # Renders the add person form but restricts role to students; also assumes an ajax
+  # form render.
   def add_student
+    setup_new
     respond_to do |format|
       format.js  do
         render :update do |page|

@@ -69,8 +69,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :staff, :member => { :demote => :post }, :collection => {:search_to_add => :any}
   
-  map.resources :students
-
   map.resources :dorms, :collection => {:list => :any}
 
   map.resources :ministry_roles, :member => {:permissions => :any}

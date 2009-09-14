@@ -10,7 +10,7 @@ Can't find who you're looking for?
   <strong>New <%= params[:staff] ? "#{t(:Staff, :default => 'Staff Person')} Person or Leader" : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
   <%= error_messages_for :person, :current_address %>
   <% form_for(@person) do |f| %>
-  	<%= render :partial => 'people/form', :locals => {:f => f, :person => @person} %>
+  	<%= render :partial => 'people/form', :locals => { :f => f, :person => @person } %>
   <% end %>
 </div>
 <br>
