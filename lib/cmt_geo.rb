@@ -11,6 +11,9 @@ class CmtGeo
   def self.campuses_for_state(s,c)
     Campus.find :all, :conditions => { :state => s, :country => c }
   end
+  def self.campuses_for_country(c)
+    Campus.find :all, :conditions => { :country => c }
+  end
   def self.lookup_country(c)
     Carmen::country_name(c)
   end
