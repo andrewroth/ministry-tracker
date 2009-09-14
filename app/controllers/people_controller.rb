@@ -721,7 +721,7 @@ class PeopleController < ApplicationController
         (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
-        @campuses = CmtGeo.campuses_for_country(c.country)
+        @campuses = CmtGeo.campuses_for_country(c.abbrev).sort{ |c1, c2| c1.name <=> c2.name }
       else
         if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
           @campus_state = @person.primary_campus.state
