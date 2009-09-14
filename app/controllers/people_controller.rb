@@ -115,7 +115,7 @@ class PeopleController < ApplicationController
         @advanced = true
       end
     
-      add_involvement_conditions(conditions)
+      conditions = add_involvement_conditions(conditions)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search'].include?(key)}
     
@@ -543,13 +543,6 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
 
-  def get_campuses
-    @campus_state = params[:primary_campus_state]
-    @campus_country = params[:primary_campus_country]
-    render :text => '' unless @campus_state
-    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
-  end
-
   def get_campus_states
     @campus_country = params[:primary_campus_country]
     render :text => '' unless @campus_country.present?
@@ -565,7 +558,14 @@ class PeopleController < ApplicationController
   def set_permanent_address_states
     @permanent_address_states = CmtGeo.states_for_country(params[:permanent_address_country]) || []
   end
-  
+
+  def get_campuses_for_state
+    @campus_state = params[:primary_campus_state]
+    @campus_country = params[:primary_campus_country]
+    render :text => '' unless @campus_state
+    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
+  end
+
   private
     
     def get_people_responsible_for
@@ -652,7 +652,7 @@ class PeopleController < ApplicationController
         (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
-        @campuses = @campus_country.campus_list
+        @campuses = CmtGeo.campuses_for_country(c.abbrev).sort{ |c1, c2| c1.name <=> c2.name }
       else
         if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
           @campus_state = @person.primary_campus.state

@@ -1,11 +1,16 @@
 if params[:modalbox]
+  # is this still used?
   page['addStudent'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
   page.call("show_add_student")
 else
-  page[:address_form].slide_up
-  page[:address].replace_html(:partial => 'address')
-  page[:address].show
-  page[:address].visual_effect("highlight")
-  page[:name].replace_html(@group.name)
-  page[:type].replace_html(@group.group_type.group_type.humanize)
+  if @group.errors.empty?
+    page[:address_form].slide_up
+    page[:address].replace_html(:partial => 'address')
+    page[:address].show
+    page[:address].visual_effect("highlight")
+    page[:name].replace_html(@group.name)
+    page[:type].replace_html(@group.group_type.group_type.humanize)
+  else
+    page[:address_form].replace_html(:partial => 'form', :locals => {:group => @group})
+  end
 end
