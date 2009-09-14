@@ -1,10 +1,6 @@
 
 class Timetable < ActiveRecord::Base
   load_mappings
-  if $cache
-    index _(:id)
-    index _(:person_id)
-  end
   
   # Question: Can one change any of these three constants here and have everything else 
   # correctly work?

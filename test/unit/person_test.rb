@@ -106,4 +106,23 @@ class PersonTest < ActiveSupport::TestCase
     person = Person.find 50000
     assert_equal true, person.is_leading_group_with?(Person.find(2))
   end
+  
+  test "his - her" do
+    assert_equal('his', people(:josh).hisher)
+    assert_equal('her', people(:sue).hisher)
+  end
+  
+  test "him - her" do
+    assert_equal('him', people(:josh).himher)
+    assert_equal('her', people(:sue).himher)
+  end
+  
+  test "he - she" do
+    assert_equal('he', people(:josh).heshe)
+    assert_equal('she', people(:sue).heshe)
+  end
+  
+  test "person's role in a ministry" do
+    assert_equal(ministry_roles(:one), people(:josh).role(ministries(:yfc)))
+  end
 end

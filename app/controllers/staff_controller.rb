@@ -40,7 +40,7 @@ class StaffController < PeopleController
       render :nothing => true
     end
   end
-  # 
+
   # def demote
   #   @person = Person.find(params[:id])
   #   # we have to have at least one campus for this person

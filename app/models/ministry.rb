@@ -1,9 +1,5 @@
 class Ministry < ActiveRecord::Base
   load_mappings
-  if $cache
-    index _(:id) 
-    index _(:parent_id)
-  end
   
   # acts_as_tree :order => _(:name), :counter_cache => true
   has_many :children, :class_name => "Ministry", :foreign_key => _(:parent_id), 

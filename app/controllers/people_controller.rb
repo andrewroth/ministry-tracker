@@ -1,4 +1,4 @@
-require 'person_methods_emu'
+require 'person_methods'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -475,8 +475,9 @@ class PeopleController < ApplicationController
   # Change which ministry we are now viewing in our session
   # NOTE: there is security checking done in ApplicationController::get_ministry
   def change_ministry_and_goto_directory
-    session[:ministry_id] = params[:current_ministry]
-
+    session[:ministry_id] = params[:current_ministry].to_i
+    @ministry = nil; get_ministry # reset the active ministry
+    
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path(:campus => params[:campus])) }
       wants.js do
@@ -720,7 +721,7 @@ class PeopleController < ApplicationController
         (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
         @no_campus_scope = true
         @campus_country = c
-        @campuses = @campus_country.campus_list
+        @campuses = CmtGeo.campuses_for_country(c.country)
       else
         if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
           @campus_state = @person.primary_campus.state

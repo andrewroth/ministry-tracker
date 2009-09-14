@@ -4,8 +4,8 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-  include ExceptionNotifiable
-  self.error_layout = false
+  # include ExceptionNotifiable
+  # self.error_layout = false
   
   self.allow_forgery_protection = false
 
@@ -296,16 +296,15 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = session[:ministry_id] ?
-          @person.ministry_tree.detect {|m| m.id == session[:ministry_id] } :
-          @person.ministries.first
+        @ministry = @person.ministry_tree.detect {|m| m.id == session[:ministry_id].to_i } if session[:ministry_id]
+        @ministry ||= @person.ministries.first
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_default_ministry(@person)
+        @ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?

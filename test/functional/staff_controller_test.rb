@@ -23,6 +23,36 @@ class StaffControllerTest < ActionController::TestCase
     get :new
     assert_response :success
   end
+  
+  test "search for people to add by first name" do
+    xhr :post, :search_to_add, :search => 'josh'
+    assert results = assigns(:results)
+    assert(results.length > 0)
+  end
+  
+  test "search for people to add by last name" do
+    xhr :post, :search_to_add, :search => 'starcher'
+    assert results = assigns(:results)
+    assert(results.length > 0)
+  end
+  
+  test "search for people to add by full name" do
+    xhr :post, :search_to_add, :search => 'josh starcher'
+    assert results = assigns(:results)
+    assert(results.length > 0)
+  end
+  
+  test "search for people to add by email" do
+    xhr :post, :search_to_add, :search => 'josh.starcher@'
+    assert results = assigns(:results)
+    assert(results.length > 0)
+  end
+  
+  test "search with bad params" do
+    xhr :post, :search_to_add
+    assert_nil assigns(:results)
+  end
+  
   # 
   # def test_should_get_demote_form
   #   @request.session[:ministry_id] = 2

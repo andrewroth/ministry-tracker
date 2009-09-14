@@ -3,7 +3,6 @@ require 'digest/md5'
 require 'base64'
 class User < ActiveRecord::Base
   load_mappings
-  index _(:id) if $cache
   # Virtual attribute for the unencrypted password
   attr_accessor :plain_password, :password_confirmation
 
