@@ -78,10 +78,14 @@ class SessionsController < ApplicationController
           # If regular auth didn't work, see if they used CAS credentials
           form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
           cas_url = 'https://signin.mygcx.org/cas/login'
-          agent = WWW::Mechanize.new
-          page = agent.post(cas_url, form_params)
-          result_query = page.uri.query
-          unless result_query && result_query.include?('BadPassword')
+          begin
+            agent = WWW::Mechanize.new
+            page = agent.post(cas_url, form_params)
+            result_query = page.uri.query
+          rescue Errno::ECONNREFUSED
+            failed = true
+          end
+          unless failed || (result_query && result_query.include?('BadPassword'))
             # password is correct, send client to gcx to get gcx session set
             redirect_url = cas_url + '?service=' + new_session_url + '&username=' + params[:username] + '&password=' + params[:password]
             wants.html do
@@ -94,7 +98,6 @@ class SessionsController < ApplicationController
             end
           else
             # No luck. tell them they're a screwup
-            logger.debug(page.uri)
             flash[:warning] = "Invalid username or password"
             wants.js { }
             wants.html { render :action => :new }

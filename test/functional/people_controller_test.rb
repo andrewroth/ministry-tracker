@@ -6,22 +6,11 @@ require 'people_controller'
 class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
-  fixtures Person.table_name, Ministry.table_name, MinistryCampus.table_name,
-          MinistryInvolvement.table_name, MinistryRole.table_name,
-          CampusInvolvement.table_name, Address.table_name, Group.table_name,
-          View.table_name, ViewColumn.table_name, Column.table_name, ProfilePicture.table_name
-  fixtures :people
-  fixtures :users
-  fixtures :ministries
-  fixtures :ministry_involvements
-  fixtures :campus_involvements
-  fixtures :campuses
-  
   def setup
     login
   end
   
-  def test_full_directory
+  test "full directory" do
     get :directory
     assert_response :success
     assert assigns(:people)
@@ -35,7 +24,7 @@ class PeopleControllerTest < ActionController::TestCase
   #   assert assigns(:people)
   # end
   
-  def test_directory_pagination
+  test "directory pagination" do
     post :directory, :search => 'all'
     assert_response :success
     assert assigns(:people)
@@ -49,58 +38,58 @@ class PeopleControllerTest < ActionController::TestCase
     assert assigns(:people)
   end
   
-  def test_perform_search_by_firstname
+  test "perform search by firstname" do
     post :directory, :search => 'josh'
     assert_response :success
     assert assigns(:people)
   end
   
-  def test_perform_search_by_fullname
+  test "perform search by fullname" do
     post :directory, :search => 'josh starcher'
     assert_response :success
     assert assigns(:people)
   end
   
-  def test_perform_search_by_email
+  test "perform search by email" do
     post :directory, :search => 'josh.starcher@uscm.org'
     assert_response :success
     assert assigns(:people)
   end
   
-  def test_directory_paginate_Z
+  test "directory paginate Z" do
     post :directory, :first => 'Z', :finish => ''
     assert_response :success
     assert assigns(:people)
   end
   
-  def test_search_full_name
+  test "search full name" do
     xhr :post, :search, :search => 'Josh Starcher', :context => 'group_involvements', :group_id => 2, :type => 'leader'
     assert_response :success
   end
   
-  def test_search_first_name
+  test "search first name" do
     xhr :post, :search, :search => 'Josh', :context => 'group_involvements', :group_id => 2, :type => 'leader'
     assert_response :success
   end
   
-  def test_should_get_new
+  test "should get new" do
     get :new
     assert_response :success
   end
   
-  def test_should_change_view
+  test "should change view" do
     post :change_view, :view => '1'
     assert_redirected_to directory_people_path
   end
   
-  def test_should_clear_session_order_when_changing_view
+  test "should clear session order when changing view" do
     get :directory, :order => Person._(:first_name)
     post :change_view, :view => '1'
     assert_redirected_to directory_people_path
     assert_nil session[:order]
   end
   
-  def test_should_re_create_staff
+  test "should re-create staff" do
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                   :current_address => {:email => "josh.starcher@uscm.org"}
@@ -108,7 +97,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to person_path(assigns(:person))
   end
   
-  def test_should_create_student
+  test "should create student" do
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
                     :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
@@ -129,7 +118,7 @@ class PeopleControllerTest < ActionController::TestCase
   #   assert_redirected_to person_path(assigns(:person))
   # end
   
-  def test_should_re_create_student
+  test "should re-create student" do
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                     :current_address => {:email => "josh.starcher@uscm.org"}, :student => true
@@ -138,7 +127,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to person_path(assigns(:person))
   end
   
-  def test_should_NOT_create_person
+  test "should NOT create person" do
     assert_no_difference('Person.count') do
       post :create, :person => { }
     end
@@ -146,7 +135,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template 'new'
   end
   
-  def test_should_show_person
+  test "should_show_person" do
     get :show, :id => people(:josh).id
     
     assert_template :show
@@ -154,7 +143,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-  def test_should_show_rp
+  test "should_show_rp" do
     get :show, :id => people(:sue).id
     
     assert_template :show
@@ -162,12 +151,12 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-  def test_should_get_edit
+  test "should_get_edit" do
     get :edit, :id => 50000
     assert_response :success
   end
   
-  def test_should_show_only_campus_country_when_no_primary_involvement
+  test "should_show_only_campus_country_when_no_primary_involvement" do
     josh = Person.find 50000
     josh.current_address = nil
     josh.permanent_address = nil
@@ -181,7 +170,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert @response.body =~ /Choose a country/
   end
   
-  def test_should_show_possible_responsible_people
+  test "should_show_possible_responsible_people" do
     if Cmt::CONFIG[:rp_system_enabled]
       get :edit, :id => 2000
       assert_response :success
@@ -191,7 +180,7 @@ class PeopleControllerTest < ActionController::TestCase
     end
   end
   
-  def test_should_update_person
+  test "should update person" do
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
                        :perm_address => {:phone => '555-555-5555', :address1 => 'here'},
@@ -200,7 +189,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template '_view'
   end
   
-  def test_should_NOT_update_person
+  test "should NOT update person" do
     xhr :put, :update, :id => 50000, :person => {:first_name => '' }
     assert_response :success
     assert_template '_edit'
@@ -214,7 +203,7 @@ class PeopleControllerTest < ActionController::TestCase
   #   assert_redirected_to people_path
   # end
   
-  def test_change_ministry_and_goto_directory
+  test "change ministry and goto directory" do
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => '1'
     assert_response :success
   end
