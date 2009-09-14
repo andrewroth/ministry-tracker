@@ -35,12 +35,6 @@ class SessionsControllerTest < ActionController::TestCase
     assert_template 'new'
   end
   
-  test 'log in with gcx account' do
-    post :create, :username => 'machomagna@gmail.com', :password => 'Abcd1234', :remember_me => 1
-    assert_response :redirect
-    assert_redirected_to 'https://signin.mygcx.org/cas/login?service=http://test.host/session/new&username=machomagna@gmail.com&password=Abcd1234'
-  end
-  
   test 'log out' do
     login
     delete :destroy
