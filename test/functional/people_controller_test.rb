@@ -38,6 +38,14 @@ class PeopleControllerTest < ActionController::TestCase
     assert assigns(:people)
   end
   
+  test "A person with no campus involvements should still show in the directory" do
+    login('staff_on_ministry_with_no_campus')
+    session[:ministry_id] = ministries(:top).id
+    get :directory
+    assert ppl = assigns(:people)
+    assert(ppl.detect {|p| p['person_id'].to_i == people(:staff_on_ministry_with_no_campus).id}, "staff_on_ministry_with_no_campus didn't show up.")
+  end
+  
   test "perform search by firstname" do
     post :directory, :search => 'josh'
     assert_response :success
@@ -237,7 +245,8 @@ class PeopleControllerTest < ActionController::TestCase
     ministry = ministries(:no_ministry)
     ministry_involvements = MinistryInvolvement.find_all_by_person_id(person.id)
     assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
-    assert_redirected_to :action => "index", :controller => "dashboard"
+    # assert_redirected_to :action => "index", :controller => "dashboard"
+    assert_response :success, @response.body
   end
   
   test "ministry leader with no permanent address should render when updating notes" do

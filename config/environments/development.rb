@@ -20,3 +20,16 @@ config.action_mailer.raise_delivery_errors = false
 
 # turn log level down so that the SQL statements are not visible in the webserver logs
 #config.log_level = :info
+
+# config.after_initialize do
+#   Bullet.enable = true 
+#   Bullet.bullet_logger = true  
+#   # Bullet.console = true
+#   begin
+#     require 'ruby-growl'
+#     Bullet.growl = true
+#   rescue MissingSourceFile
+#     Bullet.alert = true
+#   end
+#   Bullet.rails_logger = true
+# end

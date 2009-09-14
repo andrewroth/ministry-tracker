@@ -9,7 +9,7 @@ class GroupsController < ApplicationController
   def index
     @join = false
     if params[:all] == 'true'
-      @groups = @person_campus_groups = @ministry.groups
+      @groups = @person_campus_groups = @ministry.groups.find(:all, :include => [:group_type, :group_involvements, :campus])
     else
       get_person_campus_groups
       @groups = @person_campus_groups

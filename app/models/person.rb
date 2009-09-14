@@ -196,8 +196,22 @@ end
   # end
   
   def ministry_tree
-    res =  lambda {(self.ministries.collect(&:ancestors).flatten + self.ministries.collect(&:descendants).flatten).uniq}
-    Rails.env.production? ? Rails.cache.fetch([self.cache_key, 'ministry_tree']) {res.call} : res.call
+    res =  lambda {
+      ministries = self.ministries.find(:all, :include => [:parent, :children])
+      (ministries.collect(&:ancestors).flatten + ministries.collect(&:descendants).flatten).uniq
+    }
+    Rails.env.production? ? Rails.cache.fetch([self, 'ministry_tree']) {res.call} : res.call
+  end
+  
+  def campus_list(ministry_involvement)
+    res =  lambda {
+      if ministry_involvement && ministry_involvement.ministry_role.class == StudentRole
+        self.campuses
+      else
+        self.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+      end
+    }
+    Rails.env.production? ? Rails.cache.fetch([self, 'campus_list', ministry_involvement]) {res.call} : res.call
   end
   
   def role(ministry)
