@@ -89,7 +89,9 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group.update_attributes(params[:group])
+    if @group.update_attributes(params[:group])
+      flash[:notice] = 'Group was successfully updated'
+    end
     respond_to do |format|
       format.js
     end
