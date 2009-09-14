@@ -576,13 +576,6 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
-#### THIS METHOD WAS DEFINED TWICE! #####
-  # def get_campuses
-  #   @campus_state = params[:primary_campus_state]
-  #   @campus_country = params[:primary_campus_country]
-  #   render :text => '' unless @campus_state
-  #   @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
-  # end
 
   def get_campus_states
     @campus_country = params[:primary_campus_country]
@@ -599,7 +592,14 @@ class PeopleController < ApplicationController
   def set_permanent_address_states
     @permanent_address_states = CmtGeo.states_for_country(params[:permanent_address_country]) || []
   end
-  
+
+  def get_campuses_for_state
+    @campus_state = params[:primary_campus_state]
+    @campus_country = params[:primary_campus_country]
+    render :text => '' unless @campus_state
+    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
+  end
+
   private
     
     def get_people_responsible_for
@@ -798,8 +798,6 @@ class PeopleController < ApplicationController
     def set_use_address2
       @use_address2 = !Cmt::CONFIG[:disable_address2]
     end
-    
-    private
     
     def get_campuses
       campuses = @my.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
