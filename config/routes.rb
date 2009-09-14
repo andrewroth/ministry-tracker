@@ -102,7 +102,7 @@ ActionController::Routing::Routes.draw do |map|
                                           :advanced => :get,
                                           :advanced_search => :post,
                                           :get_campus_states => :any,
-                                          :get_campuses => :any},
+                                          :get_campuses_for_state => :any},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

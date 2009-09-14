@@ -23,7 +23,7 @@
                                :default => 'change country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state, {
-          :url => get_campuses_people_path,
+          :url => get_campuses_for_state_people_path,
           :with => %|'primary_campus_state=' + $('#primary_campus_state')[0].value + '&primary_campus_country=#{@campus_country}'|,
           #:with => 'primary_campus_state',
           :before => "$('#spinnerp').show()"})
