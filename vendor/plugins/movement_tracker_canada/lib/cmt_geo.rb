@@ -17,6 +17,11 @@ class CmtGeo
     state_id = state.id if state
     return Campus.all.select{|c|  c.province_id == state_id}
   end
+  def self.campuses_for_country(c)
+    country = Country.find_by_country_shortDesc(c)
+    return [] unless country
+    country.states.collect{ |p| p.campuses }.flatten
+  end
   def self.lookup_country(c)
     country = find_country(c)
     return nil unless country
