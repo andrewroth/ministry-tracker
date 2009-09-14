@@ -10,20 +10,20 @@
   </tr>
   <tr>
     <td>Gender: </td>
-    <td><%= f.select :gender, [[' -- Choose -- ', ''], ["Male", 1], ['Female', 0]] %></td>
+    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => true %></td>
   </tr>
   <%- fields_for :campus_involvement do |cf| -%>
   <tr>
     <td>Main School: </td>
     <td>
-      <%= cf.select :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]})%>
+      <%= cf.select :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]}), :prompt => true %>
     </td>
   </tr>
   <tr>
     <td>School Year: </td>
     <td>
       <%= cf.select :school_year_id, options_for_select(SchoolYear.all.collect { |sy| 
-        [sy.name, sy.id] })%>
+        [sy.name, sy.id] }), :prompt => true %>
     </td>
   </tr>
   <%- end -%>

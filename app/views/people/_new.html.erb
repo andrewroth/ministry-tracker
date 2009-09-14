@@ -8,7 +8,7 @@ Can't find who you're looking for?
 <br><br>
 <div id="staff_form_box" style="display:none">
   <strong>New <%= params[:staff] ? "#{t(:Staff, :default => 'Staff Person')} Person or Leader" : '' %> <%= params[:student] ? 'Student' : '' %></strong><br/>
-  <%= error_messages_for :person, :current_address %>
+  <%= error_messages_for :person, :current_address, :ci, :mi %>
   <% form_for(@person) do |f| %>
   	<%= render :partial => 'people/form', :locals => { :f => f, :person => @person } %>
   <% end %>

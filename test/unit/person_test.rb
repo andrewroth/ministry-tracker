@@ -125,4 +125,34 @@ class PersonTest < ActiveSupport::TestCase
   test "person's role in a ministry" do
     assert_equal(ministry_roles(:one), people(:josh).role(ministries(:yfc)))
   end
+
+  test "add_or_update_campus adds a campus" do
+    @person = Person.first
+    assert_difference('CampusInvolvement.count', 1) do
+      @person.add_or_update_campus Campus.last.id, SchoolYear.first.id, Ministry.first.id, Person.last
+    end
+  end
+
+  test "add_or_update_campus updates a campus" do
+    ci = CampusInvolvement.first
+    @person = ci.person
+    assert_no_difference('CampusInvolvement.count') do
+      @person.add_or_update_campus ci.campus, SchoolYear.first.id, Ministry.first.id, Person.last
+    end
+  end
+
+  test "add_or_update_ministry adds a ministry" do
+    @person = Person.find 111 # someone without ministry roles
+    assert_difference('MinistryInvolvement.count', 1) do
+      @person.add_or_update_ministry Ministry.first(2), MinistryRole.find(2)
+    end
+  end
+
+  test "add_or_update_ministry updates a campus" do
+    mi = MinistryInvolvement.first
+    @person = mi.person
+    assert_no_difference('MinistryInvolvement.count') do
+      @person.add_or_update_ministry mi.ministry, MinistryRole.find(2)
+    end
+  end
 end

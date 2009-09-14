@@ -101,7 +101,9 @@ class PeopleControllerTest < ActionController::TestCase
   test "should re-create staff" do
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                  :current_address => {:email => "josh.starcher@uscm.org"}
+                  :current_address => {:email => "josh.starcher@uscm.org"},
+                  :ministry_involvement => { :ministry_role_id => StaffRole.first.id },
+                  :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
     assert_equal old_count, Person.count
     assert_redirected_to person_path(assigns(:person))
   end
@@ -109,8 +111,10 @@ class PeopleControllerTest < ActionController::TestCase
   test "should create student" do
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
-                    :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
-                    :modalbox => 'true', :ministry_role_id => 4,  :campus => Campus.find(:first).id
+                    :current_address => {:email => "josh.starcsher@gmail.org"}, 
+                    :modalbox => 'true', 
+                    :ministry_involvement => { :ministry_id => 1, :ministry_role_id => StudentRole.first.id }, 
+                    :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
       assert person = assigns(:person)
       assert_not_nil person.user.id
       assert_redirected_to person_path(assigns(:person))
@@ -130,7 +134,9 @@ class PeopleControllerTest < ActionController::TestCase
   test "should re-create student" do
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                    :current_address => {:email => "josh.starcher@uscm.org"}, :student => true
+                    :current_address => {:email => "josh.starcher@uscm.org"},
+                    :ministry_involvement => { :ministry_role_id => StudentRole.first.id },
+                    :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
       assert person = assigns(:person)
     end
     assert_redirected_to person_path(assigns(:person))

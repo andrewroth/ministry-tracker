@@ -316,42 +316,31 @@ class PeopleController < ApplicationController
         end
         
         if @ministry
+          ministry_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
+          @staff_role = ministry_role.is_a?(StaffRole)
+          @student_role = ministry_role.is_a?(StudentRole)
+
           # add the person to this ministry if they aren't already
-          if params[:student]
-            # create campus involvement if it doesn't already exist
-            @ci = CampusInvolvement.find_by_campus_id_and_person_id(params[:campus_id], @person.id)
-            # also create the ministry inovlvement if they don't already have it
-            # @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id) 
-            # @mi.destroy if @mi
-            if @ci
-              @msg = 'The person you\'re trying to add is already on this campus.'
-            else
-              @person.add_campus(params[:campus_id], @ministry.id, @me.id, params[:ministry_role_id])
-              # If this is an Involved Student record that has plain_password value, this is a new user who should be notified of the account creation
-              if @person.user.plain_password.present? && is_involved_somewhere(@person)
-                UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
-              end
-            end
-          else
-            # create ministry involvement if it doesn't already exist
-            @mi = MinistryInvolvement.find_by_ministry_id_and_person_id(@ministry.id, @person.id)
-            if @mi  
-              @mi.update_attributes(params[:ministry_involvement])
-            else
-              @person.ministry_involvements << MinistryInvolvement.new(params[:ministry_involvement]) if params[:ministry_involvement]
+          if @student_role
+            @ci = @person.add_or_update_campus params[:campus_involvement][:campus_id], 
+              params[:campus_involvement][:school_year_id],
+              @ministry.id,
+              @me
+
+            # If this is an Involved Student record that has plain_password value, 
+            # this is a new user who should be notified of the account creation
+            if @person.user.plain_password.present? && is_involved_somewhere(@person)
+              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
             end
           end
 
-          # If they tried to add a staff as a student, smack them around a little
-          # if params[:student] && @mi
-          #   flash[:warning] = "#{@person.full_name} is already on staff. You can't add #{@person.male? ? 'him' : 'her'} as a student."
-          # else
-          flash[:notice] = @msg || 'Person was successfully created and added to your ministry.'
-          # end
+          # create ministry involvement if it doesn't already exist
+          @mi = @person.add_or_update_ministry(@ministry.id, params[:ministry_involvement][:ministry_role_id])
         end
         
         # The person MUST have a user record
-        if @person.user && @person.user.save
+        if @person.user && @person.user.save && (@staff_role || (@ci && @ci.valid?)) && @mi.valid?
+          @success = true
           format.html { redirect_to person_path(@person) }
           format.js
           format.xml  { head :created, :location => person_path(@person) }

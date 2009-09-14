@@ -1,12 +1,13 @@
+flash[:notice] = "#{link_to(@person.full_name, @person)} was successfully created and added to your ministry." if @success
 update_flash(page)
 if params[:modalbox]
   page['addStudent'].hide
   page.call("close_thickbox")
   page['timetable_link'].replace_html(:partial => 'students/link_to_timetable', :locals => {:student => @person})
-elsif params[:staff]
+elsif @staff_role
   @staff = @ministry.staff
   page['left-body'].replace_html(:partial => 'staff/index')
-elsif params[:student]
+elsif @student_role
   page['left-body'].replace_html(:partial => 'students/index')
   page['timetable_link'].replace_html(:partial => 'students/link_to_timetable', :locals => {:student => @person})
 end
