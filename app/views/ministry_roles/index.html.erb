@@ -18,11 +18,11 @@
 <div id="permissions">
 	<div class="right_list">
 		<div class="title">System Wide Roles</div>
-		<h4><%= t(:Staff, :default => 'Staff') %> Roles</h4>
+		<h4><%= t(:Staff, :default => 'Leadership (Staff, Volunteers, etc.)') %> Roles</h4>
 		<ul id="staff_role_list">
 		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.staff_roles %>
 		</ul>
-		<h4>Student Roles</h4>
+		<h4><%= t(:ParticiantStudent, :default => 'Participant (Student) Roles') %></h4>
 		<ul id="student_role_list">
 		  <%= render :partial => 'ministry_roles/ministry_role', :collection => @ministry.student_roles %>
 		</ul>

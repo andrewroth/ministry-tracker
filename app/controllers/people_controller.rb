@@ -11,9 +11,9 @@ require 'person_methods'
 #
 class PeopleController < ApplicationController
   include PersonMethods
-  append_before_filter  :get_profile_person, :only => [:edit, :update, :show]
-  append_before_filter  :can_edit_profile, :only => [:edit, :update]
-  append_before_filter  :set_use_address2
+  before_filter  :get_profile_person, :only => [:edit, :update, :show]
+  before_filter  :can_edit_profile, :only => [:edit, :update]
+  before_filter  :set_use_address2
   skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
                                                       :get_campus_states]
   
@@ -297,6 +297,18 @@ class PeopleController < ApplicationController
     end
   end
 
+    
+  def destroy
+    # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
+    @person = Person.find(params[:id], :include => [:ministry_involvements, :campus_involvements])
+    ministry_involvements_to_end = @person.ministry_involvements.select {|mi| current_ministry.self_plus_descendants.collect(&:id).include?(mi.ministry_id)}.collect(&:id)
+    MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
+    
+    campus_involvements_to_end = @person.campus_involvements.select {|ci| @my.campus_list(get_ministry_involvement(current_ministry)).collect(&:id).include?(ci.campus_id)}.collect(&:id)
+    CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
+    flash[:notice] = "All of #{@person.full_name}'s involvements have been ended."
+    redirect_to :back
+  end
   # POST /people
   # POST /people.xml
   def create
@@ -746,12 +758,12 @@ class PeopleController < ApplicationController
         # Only consider ministry ids that this person is involved in (stop deviousness)
         params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
         unless params[:ministry].empty?
-          ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))})"
+          ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))}) AND MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
           @search_for << Ministry.find(:all, :conditions => "id in(#{quote_string(params[:ministry].join(','))})").collect(&:name).join(', ')
           @advanced = true 
         end
       else
-        ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(current_ministry.self_plus_descendants.collect(&:id).join(','))})"
+        ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(current_ministry.self_plus_descendants.collect(&:id).join(','))}) AND MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
       end
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
     
@@ -772,7 +784,7 @@ class PeopleController < ApplicationController
         # If the user is a student, just look at their campus involvements under the current ministry
         # If the user is staff, look at all campuses in the current ministry tree
         campus_ids = mi && mi.ministry_role.class == StudentRole ? (current_ministry.campus_ids & my_campuses.collect(&:id)) : current_ministry.campus_ids
-        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))})" if campus_ids.present?
+        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
       end
       
       if campus_condition.present?

@@ -9,7 +9,8 @@ class MinistryRolesController < ApplicationController
   before_filter :find_ministry_role, :only => [:edit, :update, :destroy, :permissions]
   
   def index
-    
+    # Force the user to be looking at the root ministry
+    @ministry = current_ministry.root if current_ministry.root
   end
   
   def new

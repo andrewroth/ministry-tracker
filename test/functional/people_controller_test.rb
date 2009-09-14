@@ -17,13 +17,13 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template('directory')
   end
   
-  def test_directory_download
-    @request.env["HTTP_ACCEPT"] = "text/html"
-    get :directory, :format => :xls
-    assert_equal "text/html", @response.content_type
-    assert_response 406
-    assert assigns(:people)
-  end
+  # def test_directory_download
+  #   @request.env["HTTP_ACCEPT"] = "text/html"
+  #   get :directory, :format => :xls
+  #   assert_equal "text/html", @response.content_type
+  #   assert_response 406
+  #   assert assigns(:people)
+  # end
   
   test "directory pagination" do
     post :directory, :search => 'all'
@@ -210,13 +210,22 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template '_edit'
   end
   
-  # def test_should_destroy_person
-  #   old_count = Person.count
-  #   delete :destroy, :id => 50000
-  #   assert_equal old_count-1, Person.count
-  #   
-  #   assert_redirected_to people_path
-  # end
+  test "should end a person's involvements" do
+    @request.env["HTTP_REFERER"] = directory_people_path
+    delete :destroy, :id => people(:sue).id
+    assert person = assigns(:person)
+    assert(!person.ministry_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a ministry involvement without an end date")
+    assert(!person.campus_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a campus involvement without an end date")
+    assert_redirected_to directory_people_path
+  end
+  
+  test "should end a person's campus involvements with no ministry involvements" do
+    @request.env["HTTP_REFERER"] = directory_people_path
+    delete :destroy, :id => people(:person_1).id
+    assert person = assigns(:person)
+    assert(!person.campus_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a campus involvement without an end date")
+    assert_redirected_to directory_people_path
+  end
   
   test "change ministry and goto directory" do
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => '1'
