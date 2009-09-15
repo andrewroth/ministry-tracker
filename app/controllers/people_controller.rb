@@ -260,6 +260,7 @@ class PeopleController < ApplicationController
     @current_address = CurrentAddress.new
     @countries = CmtGeo.all_countries
     @states = CmtGeo.all_states
+    @modal = request.xhr?
   end
 
   # GET /people/new
@@ -267,7 +268,7 @@ class PeopleController < ApplicationController
     setup_new
     set_dorms
     respond_to do |format|
-      format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
+      format.html { render :template => 'people/new', :layout => 'manage' }# new.rhtml
       format.js
     end
   end
@@ -573,7 +574,7 @@ class PeopleController < ApplicationController
   
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
-    @permanent_address_states = CmtGeo.states_for_country(params[:permanent_address_country]) || []
+    @permanent_address_states = CmtGeo.states_for_country(params[:perm_address_country]) || []
   end
 
   private
