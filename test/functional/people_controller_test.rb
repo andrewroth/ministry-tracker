@@ -81,6 +81,11 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "search with no results" do
+    xhr :post, :search, :search => 'xyz'
+    assert_response :success
+  end
+
   test "should get new" do
     get :new
     assert_response :success
