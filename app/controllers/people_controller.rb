@@ -265,6 +265,7 @@ class PeopleController < ApplicationController
   # GET /people/new
   def new
     setup_new
+    set_dorms
     respond_to do |format|
       format.html { render :template => '/people/new', :layout => 'manage' }# new.rhtml
       format.js

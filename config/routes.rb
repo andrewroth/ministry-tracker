@@ -68,7 +68,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_memberships, :collection => { :group => :any }
 
   map.resources :staff, :member => { :demote => :post }, :collection => {:search_to_add => :any}
-  
+
   map.resources :dorms, :collection => {:list => :any}
 
   map.resources :ministry_roles, :member => {:permissions => :any}
@@ -92,7 +92,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource  :files
 
   map.resources :people,  :member => {:import_gcx_profile => :any},
-                          :collection => { :directory => :any,
+                          :collection => {:directory => :any,
                                           :change_ministry_and_goto_directory => :any,
                                           :change_view => :any,
                                           :search => :any,
@@ -100,7 +100,9 @@ ActionController::Routing::Routes.draw do |map|
                                           :advanced => :get,
                                           :advanced_search => :post,
                                           :get_campus_states => :any,
-                                          :get_campuses_for_state => :any},
+                                          :get_campuses_for_state => :any,
+                                          :set_current_address_states => :get,
+                                          :set_permanent_address_states => :get},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

@@ -82,7 +82,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "search with no results" do
-    xhr :post, :search, :search => 'xyz'
+    get :search, :search => 'xyz', :context => 'group_involvements'
     assert_response :success
   end
 
