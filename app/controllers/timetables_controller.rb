@@ -94,7 +94,7 @@ class TimetablesController < ApplicationController
     @leader_ids = params[:leader_ids] ? Array.wrap(params[:leader_ids]).map(&:to_i) : []
     person_ids = @member_ids + @co_leader_ids + @leader_ids
     unless person_ids.empty?
-      @people = Person.find(:all, :conditions => ["id in (?)",  person_ids])
+      @people = Person.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
       timetables = {}
       @no_timetable = []
       @people.each_with_index do |person, i|
