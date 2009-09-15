@@ -1,53 +1,13 @@
-	
-  
-<strong>Current Address</strong><br />
-  
-<%- fields_for :current_address, @current_address do |caf| -%>
-	<table>
-	<tr>
-		<td>Address 1: </td>
-		<td><%= caf.text_field :address1 %></td>
-	</tr>
-	<% if @use_address2 -%>
-	<tr>
-		<td>Address 2: </td>
-		<td><%= caf.text_field :address2 %></td>
-	</tr>
-	<% end -%>
-	<tr>
-		<td>City: </td>
-		<td><%= caf.text_field :city %></td>
-	</tr>
-	<tr>
-    <% #TODO: proper ajax filtering of countries and states
-    %>
-		<td>Country: </td>
-		<td><%= select :current_address, :country, @countries, :prompt => true %>
-		</td>
-	</tr>	
-	<%= observe_field(:current_address_country, {
-        :url => { :action => "set_current_address_states" },
-        :with => 'current_address_country',
-        :before => "$('#spinnerp').show()"})
-      %>	
-	<tr>
-		<td><%= I18n.t :State, :default => 'State' %>:</td>
-		<%= render :partial => 'people/current_address_state_dropdown', :locals => { :states => @states }%>
-	</tr>
-	<tr>
-		<td><%= I18n.t :Zip, :default => 'Zip' %>:</td>
-		<td><%= caf.text_field :zip %></td>
-	</tr>
-	<tr>
-		<td>Main Phone: </td>
-		<td><%= caf.text_field :phone %></td>
-	</tr>
-	<tr>
-		<td>Second Phone: </td>
-		<td><%= caf.text_field :alternate_phone %></td>
-	</tr>
-	</table>
-<%- end -%>
-	
-  
- 
+
+<table>
+  <tr>
+    <td>
+      <strong>Current Address</strong><%= spinner('a') %><br />
+      <%= render :partial => 'people/current_address', :locals => { :countries => @countries, :states => @states, :dorms => @dorms, :spinner => 'spinnera' } %>
+    </td>
+    <td>
+      <strong>Permanent Address</strong><%= spinner('p') %><br />
+      <%= render :partial => 'people/permanent_address', :locals => { :countries => @countries, :states => @states, :dorms => @dorms } %>
+    </td>
+  </tr>
+</table>
