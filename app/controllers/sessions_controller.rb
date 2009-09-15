@@ -10,6 +10,11 @@ class SessionsController < ApplicationController
     throw("Forced crash.  env: #{RAILS_ENV}")
   end
 
+  def new_gcx
+    get_person
+    get_ministry
+  end
+
   # render new.rhtml
   def new
     if logged_in?
