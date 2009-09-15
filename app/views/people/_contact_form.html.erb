@@ -1,13 +1,18 @@
-
+<%- unless single_column -%>
 <table>
   <tr>
     <td>
+<%- end -%>
       <strong>Current Address</strong><%= spinner('a') %><br />
       <%= render :partial => 'people/current_address', :locals => { :countries => @countries, :states => @states, :dorms => @dorms, :spinner => 'spinnera' } %>
+<%- unless single_column -%>
     </td>
     <td>
+<%- end -%>
       <strong>Permanent Address</strong><%= spinner('p') %><br />
       <%= render :partial => 'people/permanent_address', :locals => { :countries => @countries, :states => @states, :dorms => @dorms } %>
+<%- unless single_column -%>
     </td>
   </tr>
 </table>
+<%- end -%>

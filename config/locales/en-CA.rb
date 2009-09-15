@@ -33,6 +33,7 @@
     } catch(err) {}
 </script>
 |,
+    :add_person_default_staff_role => 'Staff',
     :date => {
       :formats => {
         :default => "%m/%d/%Y",

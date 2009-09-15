@@ -1,4 +1,5 @@
 <%- force_student = false if local_assigns[:force_student].nil? -%>
+<%- single_column = false if local_assigns[:single_column].nil? -%>
 <table>
   <tr>
     <td>First Name: </td>
@@ -63,3 +64,16 @@
     <td><%= text_field :current_address, :email %></td>
   </tr>
 </table>
+
+<br />
+<div id="contact_info">
+  <div id="contact_info_link">
+    <%= link_to_function "Add contact information", "$('#contact_info_link').hide();$('#contact_info_form').show()" %>
+    -- You can do this later
+  </div>
+  <div id="contact_info_form" style="display:none">
+    <%= render :partial => "people/contact_form", :locals => { :single_column => single_column } %>
+  </div>
+</div>
+<br />
+
