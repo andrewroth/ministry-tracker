@@ -1,0 +1,91 @@
+<%- throw "people/_address partial needs a 'address_type' local one of :permanent, :current" if local_assigns[:address_type].nil? || ![:permanent, :current].include?(address_type) -%>
+<%- prefix = (address_type == :permanent ? 'perm' : 'current') -%>
+<%- long_prefix = (address_type == :permanent ? 'permanent' : 'current') -%>
+<%- spinner = (address_type == :permanent ? 'spinnerp' : 'spinnera') if local_assigns[:spinner].nil? -%>
+<table class="halftab">
+	<tr>
+		<th>Phone</th>
+		<td><%= text_field :"#{prefix}_address", :phone %></td>
+	</tr>
+  <%- if address_type == :current %>
+	<tr>
+		<th><%= I18n.t :alternate_phone, :default => "Alt Phone" %></th>
+		<td><%= text_field :"#{prefix}_address", :alternate_phone %></td>
+	</tr>
+  <%- end -%>
+	<tr>
+  <th>Address<% if @use_address2 %> 1:<% end %></th>
+		<td><%= text_field :"#{prefix}_address", :address1 %></td>
+	</tr>
+
+  <%- if @use_address2 -%>
+	<tr>
+		<th>Address 2:</th>
+		<td><%= text_field :"#{prefix}_address", :address2 %></td>
+	</tr>
+  <%- end -%>
+	<tr>
+		<th>City: </th>
+		<td><%= text_field :"#{prefix}_address", :city %></td>
+	</tr>
+	<tr>
+		<th>Country:</th>
+		<td>
+			<%= select :"#{prefix}_address", :country, countries, :prompt => true %>
+      <%= observe_field(:"#{prefix}_address_country", {
+        :url => (address_type == :current ? set_current_address_states_people_url : set_permanent_address_states_people_url),
+        :with => "#{prefix}_address_country",
+        :before => "$('##{spinner}').show()"})
+      %>
+    </td>
+  </tr>
+	<tr>
+		<th><%= I18n.t :State, :default => 'State' %>:</th>
+		<%= render :partial => "people/#{long_prefix}_address_state_dropdown",
+				:locals => { :states => states || [] }
+		%>
+	</tr>
+  <tr>
+    <th><%= I18n.t :Zip, :default => 'Zip' %>:</th>
+    <td><%= text_field :"#{prefix}_address", :zip %></td>
+  </tr>
+
+<%- if address_type == :current -%>
+<%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
+<tr>
+  <th>Dorm: </th>
+  <td><%= select :"#{prefix}_address", :dorm, dorm_selection %></td>
+</tr>
+
+<tr>
+  <th>Room:</th>
+  <td><%= text_field :"#{prefix}_address", :room %></td>
+</tr>
+<tr>
+  <th>Valid from</th>
+  <td class="date">
+    <%=
+    start_year = Date.today.year - 5
+    end_year = start_year + 5
+    date_select :"#{prefix}_address", :start_date, {
+      :include_blank => true,
+      :start_year => start_year,
+      :end_year => end_year }
+    %>
+  </td>
+</tr>
+<tr>
+  <th>Valid until</th>
+  <td class="date">
+    <%=
+    start_year = Date.today.year - 5
+    end_year = start_year + 5
+    date_select :"#{prefix}_address", :end_date, {
+      :include_blank => true,
+      :start_year => start_year,
+      :end_year => end_year }
+    %>
+  </td>
+</tr>
+<%- end -%>
+</table>
