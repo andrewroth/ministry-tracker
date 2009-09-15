@@ -524,6 +524,7 @@ class PeopleController < ApplicationController
   # form render.
   def add_student
     setup_new
+    @force_student = true
     respond_to do |format|
       format.js  do
         render :update do |page|
@@ -552,6 +553,13 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
 
+  def get_campuses_for_state
+    @campus_state = params[:primary_campus_state]
+    @campus_country = params[:primary_campus_country]
+    render :text => '' unless @campus_state
+    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
+  end
+
   def get_campus_states
     @campus_country = params[:primary_campus_country]
     render :text => '' unless @campus_country.present?
@@ -566,13 +574,6 @@ class PeopleController < ApplicationController
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
     @permanent_address_states = CmtGeo.states_for_country(params[:permanent_address_country]) || []
-  end
-
-  def get_campuses_for_state
-    @campus_state = params[:primary_campus_state]
-    @campus_country = params[:primary_campus_country]
-    render :text => '' unless @campus_state
-    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
   end
 
   private
