@@ -1,3 +1,4 @@
+<%- spinner = 'spinnera' if local_assigns[:spinner].nil? -%>
 <table class="halftab">
 	<tr>
 		<th>Phone</th>
@@ -30,15 +31,15 @@
 		<td>
 			<%= select :current_address, :country, countries, :prompt => true %>
       <%= observe_field(:current_address_country, {
-        :url => { :action => "set_current_address_states" },
+        :url => set_current_address_states_people_url,
         :with => 'current_address_country',
-        :before => "$('#spinnerp').show()"})
+        :before => "$('##{spinner}').show()"})
       %>
     </td>
   </tr>
 	<tr>
 		<th><%= I18n.t :State, :default => 'State' %>:</th>
-		<%= render :partial => 'current_address_state_dropdown', 
+		<%= render :partial => 'people/current_address_state_dropdown', 
 				:locals => { :states => states }
 		%>
 	</tr>
