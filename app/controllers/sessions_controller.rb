@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
 
   def new_gcx
     get_person
-    get_ministry
+    get_ministry if @person
   end
 
   # render new.rhtml
