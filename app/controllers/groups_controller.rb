@@ -115,7 +115,7 @@ class GroupsController < ApplicationController
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
     # if nobody is selected, compare schedules of everyone in group
     if person_ids.present?
-      gis = @group.group_involvements.find(:all, :conditions => ["#{_(:id, :person)} in (?)",  person_ids])
+      gis = @group.group_involvements.find(:all, :conditions => ["#{_(:person_id, :group_involvement)} in (?)",  person_ids])
     else
       gis = @group.group_involvements
     end
