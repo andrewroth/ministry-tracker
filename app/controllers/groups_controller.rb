@@ -59,7 +59,7 @@ class GroupsController < ApplicationController
     @group = Group.new(params[:group])
     @group.ministry = @ministry # Add bible study to current ministry
     group_save = @group.save
-    if (params[:isleader] == "1")
+    if (group_save && params[:isleader] == "1")
       @gi = GroupInvolvement.new(:person_id => @person.id, :group_id => @group.id)
       @gi.level = "leader"
       @gi.requested = false

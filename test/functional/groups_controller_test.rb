@@ -81,11 +81,11 @@ class GroupsControllerTest < ActionController::TestCase
   def test_should_NOT_create
     login
     old_count = Group.count
-    post :create, :group => {:name => '' }
+    post :create, :group => {:name => '' }, :isleader => '1'
     assert_equal old_count, Group.count
     assert_template 'new'
   end
-    
+
   def test_delete
     login
     xhr :delete, :destroy, :id => 2
