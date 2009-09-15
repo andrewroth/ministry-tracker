@@ -116,8 +116,8 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def current_address() CimHrdbCurrentAddress.find(id) end
-  def permanent_address() CimHrdbPermanentAddress.find(id) end
+  def current_address() id ? CimHrdbCurrentAddress.find(id) : CimHrdbCurrentAddress.new  end
+  def permanent_address() id ? CimHrdbPermanentAddress.find(id) : CimHrdbPermanentAddress.new end
 
   def graduation_date() cim_hrdb_person_year.try(:grad_date) end
 
