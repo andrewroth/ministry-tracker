@@ -15,7 +15,7 @@
           <%= f.hidden_field :person_id %>
           <%= f.hidden_field :ministry_id %>
           <%= f.hidden_field :ministry_role_id, :id => "#{dom_id(person)}_ministry_role_id" %>
-          <%= link_to_function("Add", "if(confirm('Are you sure you want to add #{escape_javascript(person.full_name)} to #{escape_javascript(current_ministry.name)}?')) { $('##{dom_id(person)}_ministry_role_id').val($('##{dom_id(person)}_role_id').val()); $('#form_for_#{dom_id(person)}').submit()}") %>
+          <%= link_to_function("Add", "$('##{dom_id(person)}_ministry_role_id').val($('##{dom_id(person)}_role_id').val()); $('#form_for_#{dom_id(person)}').submit()") %>
         <% end %>
       </td>
     </tr>
