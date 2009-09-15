@@ -140,8 +140,9 @@
 			</tr>
 		</thead>
 		<tbody>
+		<% @can_delete = authorized?(:new) %>
 		<%- @people.each_with_index do |person, i|  -%>
-			<tr <%= i.even? ? 'class="highlight"' : 'class="nohighlight"' %> onclick="javascript:document.location = '<%= person_path(person['person_id']) %>'">
+			<tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
 <!--
 				<td>
 					<%= i+1 %>.
@@ -150,14 +151,14 @@
 				</td>
 -->
       <%- @view.columns.each do |column| -%>
-				<td style="white-space: nowrap;"><%= 
+				<td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%= 
 				case column.column_type
 				when 'image'
 				  if person[column.safe_name]
 				    file_id, filename = person[column.safe_name].split('|')
             filename = filename.split('.')
             filename = filename[0] + '_mini.' + filename[1]
-  				  image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}") 
+  				  image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")  if defined?(Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name)
 				  end
 				when 'date'
 				  format_date(person[column.safe_name])
@@ -172,7 +173,10 @@
   				person[column.safe_name] 
   			end %></td>
 	    <%- end -%>
-				<td class="alignright"><span class="butProfile"><%= link_to 'Profile', person_url(person['person_id']) %></span></td>
+				<td class="alignright">
+				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :method => :delete, :confirm => "You are about to remove this person from all ministries and campuses they are a part of. Are you SURE you want to continue?") if @can_delete %>
+				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']) %></span>
+				</td>
 			</tr>
 			<%- end -%>
 			

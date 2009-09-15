@@ -1,55 +1,59 @@
+<%- force_student = false if local_assigns[:force_student].nil? -%>
 <table>
-<tr>
-	<td>First Name: </td>
-	<td><%= f.text_field :first_name %></td>
-</tr>
-<tr>
-	<td>Last Name: </td>
-	<td><%= f.text_field :last_name %></td>
-</tr>
-<tr>
-	<td>Gender: </td>
-	<td><%= f.select :gender, [[' -- Choose -- ', ''], ["Male", 1], ['Female', 0]] %></td>
-</tr>
-<%- if params[:student] -%>
-<tr>
-	<td>Main School: </td>
-	<td>
-		<%= select_tag :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]})%>
-	</td>
-</tr>
-<tr>
-	<td>Involvement Level: </td>
-	<td>
-		<%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
-	</td>
-</tr>
-<%- end -%>
-<%- if params[:staff] -%>
-  <%- fields_for :ministry_involvement do |mf| -%>
   <tr>
-  	<td>Role: </td>
-  	<td>
-  	  <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
-  	  <%= mf.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %>
-  	</td>
+    <td>First Name: </td>
+    <td><%= f.text_field :first_name %></td>
   </tr>
-    <%- if is_ministry_admin(@ministry, @me) -%>
+  <tr>
+    <td>Last Name: </td>
+    <td><%= f.text_field :last_name %></td>
+  </tr>
+  <tr>
+    <td>Gender: </td>
+    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => true %></td>
+  </tr>
+  <%- fields_for :campus_involvement do |cf| -%>
+  <tr>
+    <td>Main School: </td>
+    <td>
+      <%= cf.select :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]}), :prompt => true %>
+    </td>
+  </tr>
+  <tr>
+    <td>School Year: </td>
+    <td>
+      <%= cf.select :school_year_id, options_for_select(SchoolYear.all.collect { |sy| 
+        [sy.name, sy.id] }), :prompt => true %>
+    </td>
+  </tr>
+  <%- end -%>
+  <%- fields_for :ministry_involvement do |mf| -%>
     <tr>
-    	<td>&nbsp; <%- tooltip do -%> An admin has total access and can edit everything within his/her ministry. Make sure this person understands how the website runs.<%- end -%> </td>
-    	<td><%= mf.check_box :admin %> Admin</td> 
+      <td>Role: </td>
+      <td>
+        <%= mf.hidden_field :ministry_id, :value => @ministry.id %>
+        <%- allowed_role_types = force_student ? [ StudentRole ] : [ StaffRole, StudentRole ] -%>
+        <%- default_role = MinistryRole.find :first, :conditions => { :name => force_student ? I18n.t(:add_person_default_student_role, :default => 'Student') : I18n.t(:add_person_default_staff_role, :default => 'Missionary') } -%>
+        <%= mf.select :ministry_role_id, option_groups_from_collection_for_select(allowed_role_types, :all, :human_name, :id, :name, default_role.try(:id)) %>
+        <%= observe_field :ministry_involvement_ministry_role_id, :function => %|
+          staff = (jQuery.inArray($('#ministry_involvement_ministry_role_id')[0].value, [ #{StaffRole.all.collect{ |sr| "'#{sr.id.to_s}'" }.join(",")} ])) != -1;
+          if (staff) {
+            $('#admin_checkbox').show();
+          } else {
+            $('#admin_checkbox').hide();
+          }
+      |%>
+      </td>
+    </tr>
+    <%- if !force_student && is_ministry_admin(@ministry, @me) -%>
+    <tr id='admin_checkbox'>
+      <td></td>
+      <td><%= mf.check_box :admin %> Admin&nbsp; <%- tooltip do -%> An admin has total access and can edit everything within his/her ministry. Make sure this person understands how the website runs.  Note that the Admin role is merely a label; this checkbox is what really determines if someone is an admin.<%- end -%> </td> 
     </tr>
     <%- end -%>
   <%- end -%>
-<%- end -%>
-<tr>
-	<td>Email: </td>
-	<td><%= text_field :current_address, :email %></td>
-</tr>
+  <tr>
+    <td>Email: </td>
+    <td><%= text_field :current_address, :email %></td>
+  </tr>
 </table>
-<%- if params[:staff] -%>
-	<%= hidden_field_tag :staff, true %>
-<%- else -%>
-		<%= hidden_field_tag :student, true %>
-<%- end -%>
-

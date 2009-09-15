@@ -18,8 +18,6 @@ class Person < ActiveRecord::Base
   has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
   has_many :people_responsible_for, :class_name => "Person", :through => :involvements_responsible_for, :source => :person
  
-  
-  
   # Address Relationships
   has_many :addresses, :class_name => "Address", :foreign_key => _(:person_id, :address)
   has_one :current_address, :class_name => "CurrentAddress", :foreign_key => _(:person_id, :address), :conditions => _(:address_type, :address) + " = 'current'"
@@ -196,8 +194,22 @@ end
   # end
   
   def ministry_tree
-    res =  lambda {(self.ministries.collect(&:ancestors).flatten + self.ministries.collect(&:descendants).flatten).uniq}
-    Rails.env.production? ? Rails.cache.fetch([self.cache_key, 'ministry_tree']) {res.call} : res.call
+    res =  lambda {
+      ministries = self.ministries.find(:all, :include => [:parent, :children])
+      (ministries.collect(&:ancestors).flatten + ministries.collect(&:descendants).flatten).uniq
+    }
+    Rails.env.production? ? Rails.cache.fetch([self, 'ministry_tree']) {res.call} : res.call
+  end
+  
+  def campus_list(ministry_involvement)
+    res =  lambda {
+      if ministry_involvement && ministry_involvement.ministry_role.class == StudentRole
+        self.campuses
+      else
+        self.ministries.collect {|ministry| ministry.campuses.find(:all)}.flatten.uniq
+      end
+    }
+    Rails.env.production? ? Rails.cache.fetch([self, 'campus_list', ministry_involvement]) {res.call} : res.call
   end
   
   def role(ministry)
@@ -279,22 +291,41 @@ end
     self.emergency_address ||= EmergencyAddress.new
   end
   
-  def add_campus(campus_id, ministry_id, added_by, role = nil)
-    unless role
-      ministry = Ministry.find(ministry_id)
-      student_roles = ministry.student_roles
-      role = student_roles.first.id
-    end
+  # return true or false based on update / save success
+  def add_or_update_campus(campus_id, school_year_id, ministry_id, added_by)
     # Make sure they're not already on this campus
-    campus_involvement = CampusInvolvement.find_by_campus_id_and_person_id(campus_id, self.id)
-    self.campus_involvements << CampusInvolvement.new(:campus_id => campus_id, :ministry_id => ministry_id, :added_by_id => added_by, :start_date => Time.now()) unless campus_involvement
+    ci = CampusInvolvement.find_by_campus_id_and_person_id(campus_id, self.id)
+    if ci
+      # make sure school year is the same
+      if ci.school_year_id != school_year_id
+        ci.school_year_id = school_year_id
+        ci.save
+      end
+    else
+      ci = campus_involvements.create(
+        :campus_id => campus_id, :ministry_id => ministry_id, 
+        :added_by_id => added_by, :start_date => Time.now(), 
+        :school_year_id => school_year_id)
+    end
+    ci
+  end
+
+  # return true or false based on update / save success
+  def add_or_update_ministry(ministry_id, role_id)
+    role = MinistryRole.find role_id
+
+    # TODO: add security so that only staff can add other staff roles
     
     # Add the person to the ministry
     mi = MinistryInvolvement.find_by_ministry_id_and_person_id(ministry_id, self.id)
-    unless mi
-      self.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry_id, :ministry_role_id => role, :start_date => Time.now()) 
+    if mi
+      mi.ministry_role_id = role.id 
+      mi.save
+    else
+      mi = ministry_involvements.create(:ministry_id => ministry_id, :ministry_role_id => role.id, :start_date => Time.now) 
     end
-  end
+    mi
+ end
   
   # Question: what is this finding? a user who has the username and email address provided?
   def self.find_exact(person, address)

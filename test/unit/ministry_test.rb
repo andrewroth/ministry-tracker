@@ -25,8 +25,8 @@ class MinistryTest < ActiveSupport::TestCase
     assert_equal(Ministry.find(1), Ministry.find(2).root)
   end
   
-  def test_all_ministries
-    assert_equal([Ministry.find(2), Ministry.find(3)], Ministry.find(2).all_ministries)
+  def test_self_plus_descendants
+    assert_equal([Ministry.find(2), Ministry.find(3)], Ministry.find(2).self_plus_descendants)
   end
   
   def test_create_first_view

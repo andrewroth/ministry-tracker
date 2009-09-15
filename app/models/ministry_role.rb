@@ -18,4 +18,8 @@ class MinistryRole < ActiveRecord::Base
   def >=(other)
     self.position <= other.position
   end
+
+  def self.human_name
+    self.name.underscore.humanize
+  end
 end

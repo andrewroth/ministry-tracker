@@ -18,8 +18,7 @@ class Ministry < ActiveRecord::Base
   has_many :campus_involvements
   # has_many :people, :through => :campus_involvements
   has_many :people, :through => :ministry_involvements
-  has_many :ministry_campuses, :include => :campus, :dependent => :destroy, 
-    :include => :campus, :order => Campus.table_name + '.' + _(:name, :campus)
+  has_many :ministry_campuses, :include => :campus, :dependent => :destroy, :order => Campus.table_name + '.' + _(:name, :campus)
   has_many :campuses, :through => :ministry_campuses, :order => _(:name, 'campus')
   has_many :ministry_involvements, :dependent => :destroy, :dependent => :destroy
   has_many :groups, :dependent => :destroy
@@ -76,6 +75,14 @@ class Ministry < ActiveRecord::Base
     self.root? ? my_other_roles : self.root.my_other_roles
   end
   
+  def unique_campuses
+    unless @unique_campuses
+      res =  lambda {Campus.find(campus_ids)}
+      @unique_campuses = (Rails.env.production? ? Rails.cache.fetch([self, 'unique_campuses']) {res.call} : res.call)
+    end
+    return @unique_campuses
+  end
+  
   def subministry_campuses(top = true)
     unless @subministry_campuses
       @subministry_campuses = top ? [] : self.ministry_campuses
@@ -85,15 +92,18 @@ class Ministry < ActiveRecord::Base
     end
     return @subministry_campuses
   end
-  
-  def unique_campuses
-    unless @unique_campuses
-      @unique_ministry_campuses = ministry_campuses.clone
-      @unique_campuses = campuses.clone
-      subministry_campuses.each do |mc| 
-        @unique_ministry_campuses << mc unless @unique_campuses.include?(mc.campus)
-        @unique_campuses << mc.campus
-      end
+
+  def unique_ministry_campuses
+    unless @unique_ministry_campuses
+      res =  lambda {
+        @unique_ministry_campuses = ministry_campuses.clone
+        @unique_campuses = campuses.clone
+        subministry_campuses.each do |mc| 
+          @unique_ministry_campuses << mc unless @unique_campuses.include?(mc.campus)
+          @unique_campuses << mc.campus
+        end
+      }
+      @unique_ministry_campuses = (Rails.env.production? ? Rails.cache.fetch([self, 'unique_ministry_campuses']) {res.call} : res.call)
     end
     return @unique_ministry_campuses
   end
@@ -112,9 +122,12 @@ class Ministry < ActiveRecord::Base
   
   def campus_ids
     unless @campus_ids
-      ministry_ids = ([self] + descendants).collect(&:id)
-      sql = "SELECT #{_(:campus_id, :ministry_campus)} FROM #{MinistryCampus.table_name} WHERE #{_(:ministry_id, :ministry_campus)} IN(#{ministry_ids.join(',')})"
-      @campus_ids = ActiveRecord::Base.connection.select_values(sql).collect(&:to_i)
+      res =  lambda {
+        ministry_ids = self_plus_descendants.collect(&:id)
+        sql = "SELECT #{_(:campus_id, :ministry_campus)} FROM #{MinistryCampus.table_name} WHERE #{_(:ministry_id, :ministry_campus)} IN(#{ministry_ids.join(',')})"
+        ActiveRecord::Base.connection.select_values(sql).collect(&:to_i)
+      }
+      @campus_ids = Rails.env.production? ? Rails.cache.fetch([self, 'campus_ids']) {res.call} : res.call
     end
     @campus_ids
   end
@@ -171,8 +184,9 @@ class Ministry < ActiveRecord::Base
     @involved_student_role_ids ||= involved_student_roles.collect(&:id)
   end
   
-  def all_ministries
-    (self.descendants + [self]).sort
+  def self_plus_descendants
+    res =  lambda {(self.descendants + [self]).sort}
+    Rails.env.production? ? Rails.cache.fetch([self, 'self_plus_descendants']) {res.call} : res.call
   end
   
   def deleteable?

@@ -75,4 +75,16 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
       assert_not_equal(old_role, @mi.ministry_role)
     end
   end
+
+  test "can edit a ministry_involvement" do # promoting
+    mi = MinistryInvolvement.first
+    get :edit, :ministry_id => mi.ministry.id, :person_id => mi.person.id
+    assert_response :success
+  end
+
+  test "edit handles invalid parameters without crashing" do
+    @request.env["HTTP_REFERER"] = 'test.com'
+    get :edit, :ministry_id => Ministry.first.id, :person_id => Person.find(123)
+    assert_response :redirect
+  end
 end

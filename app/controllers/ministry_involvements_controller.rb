@@ -40,6 +40,12 @@ class MinistryInvolvementsController < ApplicationController
   def edit
     if params[:person_id] && params[:ministry_id]
       @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
+      unless @ministry_involvement
+        flash[:notice] = "Couldn't find ministry involvement."
+        redirect_to :back
+        return
+      end
+
       @person = @ministry_involvement.person
       @ministry_involvement.admin = @person.admin?(@ministry_involvement.ministry)
     else

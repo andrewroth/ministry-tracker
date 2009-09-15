@@ -1,31 +1,3 @@
-  <%= error_messages_for :person, :current_address, :user %>
-  <%= hidden_field_tag :student, true %>
-  <table>
-  <tr>
-  	<td>First Name: </td>
-  	<td><%= f.text_field :first_name %></td>
-  </tr>
-  <tr>
-  	<td>Last Name: </td>
-  	<td><%= f.text_field :last_name %></td>
-  </tr>
-  <tr>
-  	<td>Gender: </td>
-  	<td><%= f.select :gender, [[' -- Choose -- ', ''], ['Male', 1], ['Female', 0]] %></td>
-  </tr>
-  <tr>
-  	<td>Main School: </td>
-  	<td><%= select_tag :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]})%>
-  	</td>
-  </tr>
-  <tr>
-  	<td>Involvement Level: </td>
-  	<td>
-  		<%= select_tag :ministry_role_id, options_for_select(@ministry.student_roles.collect {|role| [role.name, role.id]})%>
-  	</td>
-  </tr>
-  <tr>
-  	<td>Email: </td>
-  	<td><%= text_field :current_address, :email %></td>
-  </tr>
-  </table>
+<%= error_messages_for :person, :current_address, :user, :ci, :mi %>
+<%= hidden_field_tag :student, true %>
+<%= render :partial => 'people/simple_form', :locals => { :f => f, :force_student => true } %>

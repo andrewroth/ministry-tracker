@@ -14,6 +14,7 @@ class PeopleControllerTest < ActionController::TestCase
     get :directory
     assert_response :success
     assert assigns(:people)
+    assert_template('directory')
   end
   
   # def test_directory_download
@@ -36,6 +37,14 @@ class PeopleControllerTest < ActionController::TestCase
     get :directory
     assert_response :success
     assert assigns(:people)
+  end
+  
+  test "A person with no campus involvements should still show in the directory" do
+    login('staff_on_ministry_with_no_campus')
+    session[:ministry_id] = ministries(:top).id
+    get :directory
+    assert ppl = assigns(:people)
+    assert(ppl.detect {|p| p['person_id'].to_i == people(:staff_on_ministry_with_no_campus).id}, "staff_on_ministry_with_no_campus didn't show up.")
   end
   
   test "perform search by firstname" do
@@ -92,7 +101,9 @@ class PeopleControllerTest < ActionController::TestCase
   test "should re-create staff" do
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                  :current_address => {:email => "josh.starcher@uscm.org"}
+                  :current_address => {:email => "josh.starcher@uscm.org"},
+                  :ministry_involvement => { :ministry_role_id => StaffRole.first.id },
+                  :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
     assert_equal old_count, Person.count
     assert_redirected_to person_path(assigns(:person))
   end
@@ -100,8 +111,10 @@ class PeopleControllerTest < ActionController::TestCase
   test "should create student" do
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
-                    :current_address => {:email => "josh.starcsher@gmail.org"}, :student => true,
-                    :modalbox => 'true', :ministry_role_id => 4,  :campus => Campus.find(:first).id
+                    :current_address => {:email => "josh.starcsher@gmail.org"}, 
+                    :modalbox => 'true', 
+                    :ministry_involvement => { :ministry_id => 1, :ministry_role_id => StudentRole.first.id }, 
+                    :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
       assert person = assigns(:person)
       assert_not_nil person.user.id
       assert_redirected_to person_path(assigns(:person))
@@ -121,7 +134,9 @@ class PeopleControllerTest < ActionController::TestCase
   test "should re-create student" do
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                    :current_address => {:email => "josh.starcher@uscm.org"}, :student => true
+                    :current_address => {:email => "josh.starcher@uscm.org"},
+                    :ministry_involvement => { :ministry_role_id => StudentRole.first.id },
+                    :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
       assert person = assigns(:person)
     end
     assert_redirected_to person_path(assigns(:person))
@@ -195,13 +210,22 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template '_edit'
   end
   
-  # def test_should_destroy_person
-  #   old_count = Person.count
-  #   delete :destroy, :id => 50000
-  #   assert_equal old_count-1, Person.count
-  #   
-  #   assert_redirected_to people_path
-  # end
+  test "should end a person's involvements" do
+    @request.env["HTTP_REFERER"] = directory_people_path
+    delete :destroy, :id => people(:sue).id
+    assert person = assigns(:person)
+    assert(!person.ministry_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a ministry involvement without an end date")
+    assert(!person.campus_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a campus involvement without an end date")
+    assert_redirected_to directory_people_path
+  end
+  
+  test "should end a person's campus involvements with no ministry involvements" do
+    @request.env["HTTP_REFERER"] = directory_people_path
+    delete :destroy, :id => people(:person_1).id
+    assert person = assigns(:person)
+    assert(!person.campus_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a campus involvement without an end date")
+    assert_redirected_to directory_people_path
+  end
   
   test "change ministry and goto directory" do
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => '1'
@@ -237,7 +261,8 @@ class PeopleControllerTest < ActionController::TestCase
     ministry = ministries(:no_ministry)
     ministry_involvements = MinistryInvolvement.find_all_by_person_id(person.id)
     assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
-    assert_redirected_to :action => "index", :controller => "dashboard"
+    # assert_redirected_to :action => "index", :controller => "dashboard"
+    assert_response :success, @response.body
   end
   
   test "ministry leader with no permanent address should render when updating notes" do

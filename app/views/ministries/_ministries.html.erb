@@ -19,7 +19,7 @@
 		<%= spinner %>
 		<% if @my.ministries.length > 1 %>
 		  <%- if is_admin? -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.all_ministries.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.self_plus_descendants.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
     	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.ministry_tree.sort.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- end -%>
@@ -145,7 +145,7 @@
     <div id="campus-panel"></div>
     <div id="edit-ministry" style="display:none">
     	<div id="ministry"><%= render :partial => 'ministries/form' %></div>
-    	<div id="campus-details"><%#= render :partial => 'campuses/campus', :locals => {:campus => @ministry.unique_campuses.first.campus} unless @ministry.unique_campuses.empty? %></div>
+    	<div id="campus-details"><%#= render :partial => 'campuses/campus', :locals => {:campus => @ministry.unique_campuses.first} unless @ministry.unique_campuses.empty? %></div>
     </div>
 	</div>
 	<div id="campuses">

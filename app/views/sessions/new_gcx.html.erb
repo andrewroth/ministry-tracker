@@ -25,7 +25,8 @@ To signup,
 <ol id="login_instructions">
   <li>Go to <a href="http://www.mygcx.org" target="blank">http://www.mygcx.org</a> (will open in a new window) to create an account.</li>
   <li><strong>Wait 2-3 minutes.  This is a GCX issue where it takes their system a few minutes to synchronize some data under the covers.</strong></li>
-  <li>Return to <%= link_to 'the login page', login_url %> to login with your newly created GCX account.</li>
+  <li>To get back to the <%= link_to "#{I18n.t(:app_name)} login page", login_url %>, retype <%= request.protocol %><%= request.host_with_port %> in your url bar</li>
+  <li>Click the GCX logo on the <%= I18n.t(:app_name) %> to log in with your new account.  <I>If you ever get stuck at a GCX main page, retype <%= request.protocol %><%= request.host_with_port %> in your URL window.</I></li>
 </ol>
 <br/>
 <p>If you need help you can watch a <a href="http://www.screencast.com/users/ccci/folders/GCX%20Screencasts/media/d54b42e4-0cf2-43a7-b3d2-0919871a5602">quick video</a> which will show you how to create a GCX account<%- if (help_link = (I18n.t :help_link, :default => '')).present? -%> or visit our <%= link_to 'Support Community', help_link %><%- end -%>.</p>
