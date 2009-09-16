@@ -88,13 +88,13 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should change view" do
     post :change_view, :view => '1'
-    assert_redirected_to directory_people_path
+    assert_redirected_to directory_people_path(:format => :html)
   end
   
   test "should clear session order when changing view" do
     get :directory, :order => Person._(:first_name)
     post :change_view, :view => '1'
-    assert_redirected_to directory_people_path
+    assert_redirected_to directory_people_path(:format => :html)
     assert_nil session[:order]
   end
   

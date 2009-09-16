@@ -18,7 +18,7 @@ class ImportsControllerTest < ActionController::TestCase
     assert assigns(:import)
     assert_equal(1, assigns(:successful))
     assert_response :redirect
-    assert_redirected_to '/people/directory'
+    assert_redirected_to '/people/directory.html'
   end
   
   test "create from xls file" do
@@ -27,7 +27,7 @@ class ImportsControllerTest < ActionController::TestCase
     assert assigns(:import)
     assert_equal(1, assigns(:successful))
     assert_response :redirect
-    assert_redirected_to '/people/directory'
+    assert_redirected_to '/people/directory.html'
   end
     
    test "create with no good rows" do
@@ -46,6 +46,6 @@ class ImportsControllerTest < ActionController::TestCase
      assert_equal(1, assigns(:successful))
      assert_equal(1, assigns(:unsuccessful))
      assert_response :redirect
-     assert_redirected_to '/people/directory'
+     assert_redirected_to '/people/directory.html'
    end
 end

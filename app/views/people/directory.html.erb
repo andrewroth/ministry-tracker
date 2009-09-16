@@ -73,10 +73,10 @@
     <!-- | -->
   	<%- ('A'..'Z').each do |l| -%>
       <!-- <%#= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | -->
-  		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id)] %>
+  		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id, :format => :html)] %>
   		<%- finish = (l == 'Z') ? '' : l.next -%>
       <!-- <%#= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id) %> |  -->
-  		<% options << [l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id)] %>
+  		<% options << [l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id, :format => :html)] %>
   	<%- end -%>
   <%- elsif @count > 500 
   	# set the default start value to A
@@ -85,7 +85,7 @@
   	<%- ('A'..'Z').each do |l| 
   		finish = (l == 'Z') ? '' : l.next -%>
       <!-- <%#= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | -->
-  		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id)] %>
+  		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id, :format => :html)] %>
   	<%- end -%>
   <%- end -%>
   <% if @count > 500 %>

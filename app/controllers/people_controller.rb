@@ -494,10 +494,10 @@ class PeopleController < ApplicationController
     @ministry = nil; get_ministry # reset the active ministry
     
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_path(:campus => params[:campus])) }
+      wants.html { redirect_to(directory_people_path(:campus => params[:campus], :format => :html)) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_path(:campus => params[:campus]))
+          page.redirect_to(directory_people_path(:campus => params[:campus], :format => :html))
         end
       end
     end
@@ -510,10 +510,10 @@ class PeopleController < ApplicationController
     # Clear session[:order] since this view might not have the same columns
     session[:order_column_id] = nil
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_path) }
+      wants.html { redirect_to(directory_people_path(:format => :html)) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_path)
+          page.redirect_to(directory_people_path(:format => :html))
         end
       end
     end
