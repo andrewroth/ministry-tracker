@@ -20,7 +20,7 @@ four:
   id: 4
   person_id: 2000
   ministry_id: 1
-  ministry_role_id: 4
+  ministry_role_id: 4 # student ministry leader
   
 staff_involvement_with_one:
   id: 5

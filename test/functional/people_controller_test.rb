@@ -176,6 +176,12 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "should_get_edit_for_someone_in_my_group" do
+    login('sue@uscm.org') # leading group 3; sue is a student ministry leader
+    get :edit, :id => 50 # member in group 3
+    assert_redirected_to 'http://test.host/people/50'
+  end
+
   test "should_show_only_campus_country_when_no_primary_involvement" do
     josh = Person.find 50000
     josh.current_address = nil
