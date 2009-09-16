@@ -24,7 +24,7 @@
 </div>
 <%- if authorized?(:new) -%>
 	<div id="addStudentLink" style="vertical-align:middle;">
-		<%= link_to_remote(image_tag("add_student.png"), :url => '/people/add_student',
+		<%= link_to_remote(image_tag("add_student.png"), :url => add_student_people_url,
 		                                                 :loading => "$('#spinneradd_student').show();",
 		                                                 :complete => "$('#spinneradd_student').hide();
 		                                                                show_add_student()",

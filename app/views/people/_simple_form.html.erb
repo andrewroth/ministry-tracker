@@ -1,4 +1,5 @@
 <%- force_student = false if local_assigns[:force_student].nil? -%>
+<%- single_column = false if local_assigns[:single_column].nil? -%>
 <table>
   <tr>
     <td>First Name: </td>
@@ -12,21 +13,6 @@
     <td>Gender: </td>
     <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => true %></td>
   </tr>
-  <%- fields_for :campus_involvement do |cf| -%>
-  <tr>
-    <td>Main School: </td>
-    <td>
-      <%= cf.select :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]}), :prompt => true %>
-    </td>
-  </tr>
-  <tr>
-    <td>School Year: </td>
-    <td>
-      <%= cf.select :school_year_id, options_for_select(SchoolYear.all.collect { |sy| 
-        [sy.name, sy.id] }), :prompt => true %>
-    </td>
-  </tr>
-  <%- end -%>
   <%- fields_for :ministry_involvement do |mf| -%>
     <tr>
       <td>Role: </td>
@@ -35,14 +21,20 @@
         <%- allowed_role_types = force_student ? [ StudentRole ] : [ StaffRole, StudentRole ] -%>
         <%- default_role = MinistryRole.find :first, :conditions => { :name => force_student ? I18n.t(:add_person_default_student_role, :default => 'Student') : I18n.t(:add_person_default_staff_role, :default => 'Missionary') } -%>
         <%= mf.select :ministry_role_id, option_groups_from_collection_for_select(allowed_role_types, :all, :human_name, :id, :name, default_role.try(:id)) %>
-        <%= observe_field :ministry_involvement_ministry_role_id, :function => %|
-          staff = (jQuery.inArray($('#ministry_involvement_ministry_role_id')[0].value, [ #{StaffRole.all.collect{ |sr| "'#{sr.id.to_s}'" }.join(",")} ])) != -1;
+        <script type="text/javascript">
+        function set_fields_visibility() {
+          staff = (jQuery.inArray($('#ministry_involvement_ministry_role_id')[0].value, [ <%=StaffRole.all.collect{ |sr| "'#{sr.id.to_s}'" }.join(",")%> ])) != -1;
           if (staff) {
-            $('#admin_checkbox').show();
+            $('.campus_fields').hide();
+            $('#admin_checkbox').fadeIn();
           } else {
             $('#admin_checkbox').hide();
+            $('.campus_fields').fadeIn();
           }
-      |%>
+        }
+        set_fields_visibility();
+        </script>
+        <%= observe_field :ministry_involvement_ministry_role_id, :function => 'set_fields_visibility();' %>
       </td>
     </tr>
     <%- if !force_student && is_ministry_admin(@ministry, @me) -%>
@@ -52,8 +44,36 @@
     </tr>
     <%- end -%>
   <%- end -%>
+  <%- fields_for :campus_involvement do |cf| -%>
+  <tr class='campus_fields'>
+    <td>Main School: </td>
+    <td>
+      <%= cf.select :campus_id, options_for_select(@ministry.campuses.collect {|c| [c.name, c.id]}), :prompt => true %>
+    </td>
+  </tr>
+  <tr class='campus_fields'>
+    <td>School Year: </td>
+    <td>
+      <%= cf.select :school_year_id, options_for_select(SchoolYear.all.collect { |sy| 
+        [sy.name, sy.id] }), :prompt => true %>
+    </td>
+  </tr>
+  <%- end -%>
   <tr>
     <td>Email: </td>
     <td><%= text_field :current_address, :email %></td>
   </tr>
 </table>
+
+<br />
+<div id="contact_info">
+  <div id="contact_info_link">
+    <%= link_to_function "Add contact information", "$('#contact_info_link').hide();$('#contact_info_form').show()" %>
+    -- You can do this later
+  </div>
+  <div id="contact_info_form" style="display:none">
+    <%= render :partial => "people/contact_form", :locals => { :single_column => single_column } %>
+  </div>
+</div>
+<br />
+

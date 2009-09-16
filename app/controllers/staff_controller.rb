@@ -8,11 +8,6 @@ class StaffController < PeopleController
     @staff = @ministry.staff
   end
   
-  def new
-    params[:staff] = true
-    super
-  end
-  
   def search_to_add
     if params[:search].present?
       search = params[:search].to_s.strip
