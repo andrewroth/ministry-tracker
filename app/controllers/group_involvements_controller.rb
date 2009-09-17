@@ -50,7 +50,7 @@ class GroupInvolvementsController < ApplicationController
   def destroy 
     act_on_members do |gi|
       if gi.level == 'leader' && gi.group.leaders.count == 1
-        @member_notices << "Couldn't remove #{@gi.person.full_name}, since that would result in a leaderless group!"
+        @member_notices << "Couldn't remove #{gi.person.full_name}, since that would result in a leaderless group!"
       else
         @levels_to_update << gi.level
         @member_notices << "#{gi.person.full_name} removed"
