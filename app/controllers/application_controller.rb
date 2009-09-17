@@ -166,7 +166,7 @@ class ApplicationController < ActionController::Base
         AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
         case controller.to_sym
         when :people
-          if action == 'edit' && @me.is_leading_group_with?(Person.find(params[:id]))
+          if action == 'edit' && @me.is_leading_mentor_priority_group_with?(Person.find(params[:id]))
             return true
           end
 

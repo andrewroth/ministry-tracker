@@ -76,6 +76,12 @@ class Person < ActiveRecord::Base
     }.nil?
   end
 
+  def is_leading_mentor_priority_group_with?(p)
+    !group_involvements.find_all_by_level(%w(leader co-leader)).detect{ |gi|
+      gi.group.group_type.mentor_priority && gi.group.people.detect{ |gp| gp == p }
+    }.nil?
+  end
+
   # Conferences
   has_many :conference_registrations, :class_name => "ConferenceRegistration", :foreign_key => _(:person_id, :conference_registration)
   has_many :conferences, :through => :conference_registrations
