@@ -54,17 +54,31 @@ namespace :deploy do
     task t, :roles => :app do ; end
   end
 
+  desc "runs db:rebuild remotely (resets and reseeds)"
   task :rebuild do
+    puts "this will DESTROY the remote database, are you sure?"
+    return unless gets.chomp == 'y'
     rake = fetch(:rake, "rake")
     rails_env = fetch(:rails_env, "production")
 
     run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:rebuild"
   end
 
+  desc "runs db:seed remotely"
   task :seed do
     rake = fetch(:rake, "rake")
     rails_env = fetch(:rails_env, "production")
 
     run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} db:seed"
+  end
+
+  namespace :views do
+    desc "runs cmt:views:rebuild remotely"
+    task :rebuild do
+      rake = fetch(:rake, "rake")
+      rails_env = fetch(:rails_env, "production")
+
+      run "cd #{current_path}; #{rake} RAILS_ENV=#{rails_env} cmt:views:rebuild"
+    end
   end
 end
