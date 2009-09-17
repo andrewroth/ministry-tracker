@@ -107,6 +107,15 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal true, person.is_leading_group_with?(Person.find(2))
   end
   
+  test "is_leading_mentor_priority_group_with? works" do
+    person = Person.find 50000
+    assert_equal true, person.is_leading_mentor_priority_group_with?(Person.find(2))
+    gt = Group.find(3).group_type
+    gt.mentor_priority = false
+    gt.save!
+    assert_equal false, person.is_leading_mentor_priority_group_with?(Person.find(2))
+  end
+
   test "his - her" do
     assert_equal('his', people(:josh).hisher)
     assert_equal('her', people(:sue).hisher)
