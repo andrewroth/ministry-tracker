@@ -12,7 +12,6 @@ require 'person_methods'
 class PeopleController < ApplicationController
   include PersonMethods
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
-  before_filter  :can_edit_profile, :only => [:edit, :update]
   before_filter  :set_use_address2
   skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
                                                       :get_campus_states]
@@ -634,22 +633,6 @@ class PeopleController < ApplicationController
     
     def set_dorms
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
-    end
-    
-    def can_edit_profile
-      if @person == @me || is_ministry_leader
-        return true
-      else 
-        respond_to do |wants|
-          wants.html { redirect_to @person }
-          wants.js  do
-            render :update do |page|
-              page.redirect_to(@person)
-            end
-          end
-        end
-      end
-      return false
     end
     
     def get_profile_person
