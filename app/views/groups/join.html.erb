@@ -4,19 +4,11 @@
 	<%- @ministry.all_group_types.each do |gt| -%>
 	  <% if !gt.groups.empty?%>
 		<div>
-			<div class="title"><%= gt.group_type %></div>
-      <div id="<%="groupType" + gt.id.to_s %>"> 
+			<div class="title"><%= gt.group_type %> <%= link_to_function("click here to hide these groups", "$('##{dom_id(gt)}').toggle();", :class => 'help_block') %></div>
+      <div id="<%= dom_id(gt) %>"> 
 			  <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
 			</div>
     </div>
 	  <%- end -%>
 	<%- end -%>	
 </div>
-<script type="text/javascript" charset="utf-8">
-    $(function(){
-      $(".accordion").accordion({ header: ".title",
-                                         autoHeight: false,
-                                         clearStyle: true});
-      $(".accordion .title").prepend('<span class="accordion_instructions">&nbsp;</span>')
-    });
-</script>
