@@ -52,14 +52,6 @@
 		</div>
 	</div>
 <%- end -%>
-  <%= render :partial => 'groups_for_ministry.html.erb' %>
-<%- else -%>
-	<%- ministry = nil -%>
-	<%- @groups.each do |group| -%>
-		<%- if group.ministry != ministry 
-				ministry = group.ministry-%>
-			<h4 class="title"><%= group.ministry.name %></h4>
-		<%- end -%>
-		<%= link_to(group.name, group_url(group)) %><br />
-	<%- end -%>
 <%- end -%>
+
+<%= render :partial => 'groups_for_ministry.html.erb' %>
