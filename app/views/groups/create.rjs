@@ -1,4 +1,4 @@
 update_flash(page, flash[:notice])
-page["groupType" + @group_type.id.to_s].replace_html(:partial => 'group_type_groups', :locals => {:gt => @group_type})
+page[dom_id(@group_type)].replace_html(:partial => 'group_type_groups', :locals => {:gt => @group_type})
 page[:group].fade
 page[:new_group_link].show

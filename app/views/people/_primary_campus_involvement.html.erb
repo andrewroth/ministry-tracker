@@ -42,7 +42,7 @@
                                :default => 'change state'), 
                            "$('#campuses').hide();$('#campus_state').show();") %>
         <% end %>
-        <%= observe_field(:campus_id, :function => 'update_pc_visibility()') %>
+        <%= observe_field(:primary_campus_involvement_campus_id, :function => 'update_pc_visibility()') %>
         <script>
         function update_pc_visibility() {
           visible = $('#primary_campus_involvement_campus_id')[0].value != '';
