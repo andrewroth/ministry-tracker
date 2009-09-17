@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag "profile", :media => "all" %>
 
 <div id="profiletitle">
-  <%- if @person == @me || is_ministry_leader -%>
+  <%- if authorized?(:edit, :people) -%>
     <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
     <%- if @person == @me && @person.user.guid -%>
       <div class="butUpdate" ><a href="https://signin.mygcx.org/sso/selfservice/protected/password/changePassword.jsp" target="_blank">Change Password</a></div> 

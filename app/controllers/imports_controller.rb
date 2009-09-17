@@ -19,7 +19,7 @@ class ImportsController < ApplicationController
         if @unsuccessful > 0
           flash[:warning] = "Failed to import #{@unsuccessful} #{@unsuccessful > 1 ? 'people' : 'person'}"
         end
-        format.html { redirect_to(directory_people_path) }
+        format.html { redirect_to(directory_people_path(:format => :html)) }
         format.xml  { render :xml => @import, :status => :created, :location => @import  }
       else
         flash[:warning] = 'Import failed. Check to make sure you header column names match the names on the right exactly.'

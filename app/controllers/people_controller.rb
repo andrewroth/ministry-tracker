@@ -12,7 +12,6 @@ require 'person_methods'
 class PeopleController < ApplicationController
   include PersonMethodsEmu
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
-  before_filter  :can_edit_profile, :only => [:edit, :update]
   before_filter  :set_use_address2
   skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
                                                       :get_campus_states]
@@ -496,10 +495,10 @@ class PeopleController < ApplicationController
     @ministry = nil; get_ministry # reset the active ministry
     
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_path(:campus => params[:campus])) }
+      wants.html { redirect_to(directory_people_path(:campus => params[:campus], :format => :html)) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_path(:campus => params[:campus]))
+          page.redirect_to(directory_people_path(:campus => params[:campus], :format => :html))
         end
       end
     end
@@ -512,10 +511,10 @@ class PeopleController < ApplicationController
     # Clear session[:order] since this view might not have the same columns
     session[:order_column_id] = nil
     respond_to do |wants|
-      wants.html { redirect_to(directory_people_path) }
+      wants.html { redirect_to(directory_people_path(:format => :html)) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_path)
+          page.redirect_to(directory_people_path(:format => :html))
         end
       end
     end
@@ -634,22 +633,6 @@ class PeopleController < ApplicationController
     
     def set_dorms
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
-    end
-    
-    def can_edit_profile
-      if @person == @me || is_ministry_leader
-        return true
-      else 
-        respond_to do |wants|
-          wants.html { redirect_to @person }
-          wants.js  do
-            render :update do |page|
-              page.redirect_to(@person)
-            end
-          end
-        end
-      end
-      return false
     end
     
     def get_profile_person
