@@ -61,6 +61,8 @@ class User < ActiveRecord::Base
           last_name, receipt.user
       end
     end 
+    u.viewer_lastLogin = Time.now
+    u.save!
     u
   end
 end
