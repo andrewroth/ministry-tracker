@@ -1,0 +1,10 @@
+<div id="customizebody" class="accordion">
+  <%- @ministry.all_group_types.each do |gt| -%>
+    <div>
+      <div class="title"><%= gt.group_type %> <%= link_to_function("hide these groups", "$('##{dom_id(gt)}').toggle(); $('#toggle_#{gt.id}').text($('##{dom_id(gt)}').is(':visible') ? 'hide these groups' : 'show these groups');", :class => 'help_block', :id => "toggle_#{gt.id}") %></div>
+      <div id="<%= dom_id(gt) %>">
+        <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
+      </div>
+    </div>
+  <%- end -%>
+</div>

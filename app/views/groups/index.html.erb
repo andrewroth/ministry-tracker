@@ -15,7 +15,6 @@
   
   <div id="instructions">
     <div>This screen serves as a launching area for managing <%= @ministry.name %> groups.</div>
-    <div>Click on Group Categories to see the list of groups you can join in that category.</div>
   </div><br/>
 
 <%- if @ministry.all_group_types.empty? -%>
@@ -52,19 +51,9 @@
 		<div id="group">
 		</div>
 	</div>
-<%- end -%>  <div id="customizebody" class="accordion">
-	  <%- @ministry.all_group_types.each do |gt| -%>
-	    <div>
-		    <div class="title"><%= gt.group_type %> <%= link_to_function("click here to hide these groups", "$('##{dom_id(gt)}').toggle();", :class => 'help_block') %></div>
-        <div id="<%= dom_id(gt) %>">
-			   <%= render :partial => 'groups/group_type_groups', :locals => {:gt => gt} %>
-			  </div>
-      </div>
-	 <%- end -%>	
-  </div>
-  
+<%- end -%>
+  <%= render :partial => 'groups_for_ministry.html.erb' %>
 <%- else -%>
-
 	<%- ministry = nil -%>
 	<%- @groups.each do |group| -%>
 		<%- if group.ministry != ministry 
