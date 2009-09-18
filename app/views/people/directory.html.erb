@@ -29,8 +29,10 @@
 		                                                 :complete => "$('#spinneradd_student').hide();
 		                                                                show_add_student()",
                             											 	 :method => :get) %>
-		<%= spinner('add_student') %>
-		<%= link_to(image_tag('import.png') + ' Mass import tool', new_import_path, :class => 'massimport') %>
+    <%= spinner('add_student') %>
+    <%- if authorized?(:new, :imports) -%>
+      <%= link_to(image_tag('import.png') + ' Mass import tool', new_import_path, :class => 'massimport') %>
+    <%- end -%>
 	</div>
 <%- end -%>
 <%- if @me.ministries.length > 1 -%>
