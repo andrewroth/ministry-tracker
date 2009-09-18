@@ -28,6 +28,25 @@ class MinistryRolesController < ApplicationController
     end
   end
   
+  def show
+    if params[:person_id] 
+      @person = Person.find(params[:person_id])
+      @ministry = params[:ministry_id] ? Ministry.find(params[:ministry_id]).try(:root) : @person.ministries.first.try(:root)
+      if @person && @ministry
+        mi = MinistryInvolvement.find(:first, :conditions => {:person_id => @person.id, :ministry_id => @ministry.id})
+        @ministry_role = mi.ministry_role
+        if @ministry_role
+          respond_to do |wants|
+            # wants.html { render @ministry_role.to_xml }
+            wants.xml { render :xml => @ministry_role.to_xml }
+          end
+          return
+        end
+      end
+    end
+    render :nothing => true
+  end
+  
   def edit
     respond_to do |wants|
       wants.js
