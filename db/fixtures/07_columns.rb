@@ -85,3 +85,9 @@ Column.seed(:title) do |c|
   c.source_column = 'viewer_id'
   c.foreign_key = 'viewer_id'
 end
+
+Column.seed(:title) do |c|
+  c.title = 'On Pulse Since'
+  c.from_clause = 'MinistryInvolvement'
+  c.select_clause = 'start_date'
+end

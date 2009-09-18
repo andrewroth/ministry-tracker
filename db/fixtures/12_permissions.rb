@@ -203,6 +203,18 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'view_columns'
+  p.action = 'new'
+  p.description = 'Add and remove column to/from views'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'views'
+  p.action = 'edit'
+  p.description = 'Create Directory Views'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'custom_attributes'
   p.action = 'new'
   p.description = 'Create Custom Attributes (Note: You still need to enable the individual custom attribute types as well)'
