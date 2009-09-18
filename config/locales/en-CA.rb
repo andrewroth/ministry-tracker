@@ -18,7 +18,7 @@
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
     :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
-    :help_header => "Support",
+    :help_header => "Help",
     :alternate_phone => 'Cell Phone',
     
     :analytics => %|
