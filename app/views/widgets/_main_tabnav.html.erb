@@ -16,8 +16,8 @@ render_tabnav :main,
   link = I18n.t :help_link, :default => ''
   if link.present?
     add_tab do |t|
-      t.named 'Support'
-      t.titled "Support centre for the #{I18n.t :app_name, :default => 'Campus Movement Tracker'}"
+      t.named 'Help'
+      t.titled "Bug and feature forms, user manual and help forum #{I18n.t :app_name, :default => 'Campus Movement Tracker'}"
       t.links_to link
     end
   end 

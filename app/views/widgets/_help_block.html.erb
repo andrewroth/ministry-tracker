@@ -1,6 +1,6 @@
 <% @help_uid ||= 0; @help_uid += 1 %>
 <script>help_shown_<%=@help_uid%> = false;</script>
-<%= link_to_function 'Help', "
+<%= link_to_function 'Quick Help', "
       if (help_shown_#{@help_uid} == true) {
         help_shown_#{@help_uid} = false;
         $('#helpblock_#{@help_uid}').slideUp('slow');
