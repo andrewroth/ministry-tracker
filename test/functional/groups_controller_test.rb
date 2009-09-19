@@ -15,7 +15,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index_all
     get :index, :all => 'true'
     assert_response :success
-    assert_equal Ministry.first.groups, assigns('groups')
+    assert_equal Ministry.first.groups.sort{ |g1, g2| g1.name <=> g2.name }, assigns('groups')
   end
   # 
   # def test_index_xhr
