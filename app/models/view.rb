@@ -36,8 +36,8 @@ class View < ActiveRecord::Base
     columns.each do |column|
       raise inspect if column.nil?      # If something goes wrong, we want good information
       # Add table to table clause
-      table_name = column.from_clause.constantize.table_name
-      unless tables.include?(column.from_clause)
+      table_name = column.from_clause.constantize.table_name if column.from_clause.present?
+      unless !column.from_clause.present? || tables.include?(column.from_clause)
         tables << column.from_clause
         source_model = (column.source_model.to_s.empty? ? 'Person' : column.source_model).constantize
         source_column = column.source_column.to_s.empty? ? 'id' : column.source_column
