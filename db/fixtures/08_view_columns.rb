@@ -65,12 +65,12 @@ ViewColumn.seed(:view_id, :column_id) do |vc|
 end
 
 # last login
-ViewColumn.seed(:view_id, :column_id) do |vc|
-  vc.view_id = 1
-  vc.column_id = 11
-end
+#ViewColumn.seed(:view_id, :column_id) do |vc|
+#  vc.view_id = 1
+#  vc.column_id = 11
+#end
 
-# first signed on
+# on pulse since
 ViewColumn.seed(:view_id, :column_id) do |vc|
   vc.view_id = 1
   vc.column_id = 12

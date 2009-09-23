@@ -52,11 +52,10 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Campus'
-  c.from_clause = 'Campus'
-  c.select_clause = 'campus_shortDesc'
-  c.source_model = 'CampusInvolvement'
-  c.source_column = 'campus_id'
-  c.foreign_key = 'id'
+  c.select_clause = '(SELECT Campus2.campus_shortDesc FROM ciministry.cim_hrdb_person as Person2
+  LEFT JOIN emu.campus_involvements as CampusInvolvement2 on Person2.person_id = CampusInvolvement2.person_id
+  LEFT JOIN ciministry.cim_hrdb_campus as Campus2 on CampusInvolvement2.campus_id = Campus2.campus_id
+  WHERE Person2.person_id = Person.person_id LIMIT 1) as Campus'
 end
 
 Column.seed(:title) do |c|
