@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090813162637) do
+ActiveRecord::Schema.define(:version => 20090923163810) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(:version => 20090813162637) do
     t.string   "title"
     t.string   "update_clause"
     t.string   "from_clause"
-    t.string   "select_clause"
+    t.text     "select_clause"
     t.string   "column_type"
     t.string   "writeable"
     t.datetime "created_at"
