@@ -96,6 +96,17 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to directory_people_path(:format => :html)
   end
   
+  test "should restrict students directory to their campuses" do
+    login 'sue@student.org'
+    get :directory
+    assert_equal [ Campus.first ], assigns(:campuses)
+  end
+ 
+  test "should have all campuses on directory for staff" do
+    get :directory
+    assert_equal Ministry.first.campuses, assigns(:campuses)
+  end
+
   test "should clear session order when changing view" do
     get :directory, :order => Person._(:first_name)
     post :change_view, :view => '1'
@@ -177,7 +188,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_get_edit_for_someone_in_my_group" do
-    login('sue@uscm.org') # leading group 3; sue is a student ministry leader
+    login('sue@student.org') # leading group 3; sue is a student ministry leader
     get :edit, :id => 50 # member in group 3
     assert_response :success
   end

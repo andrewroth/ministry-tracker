@@ -11,7 +11,7 @@ fred:
   password: test
 sue:
   id: 3
-  username: sue@uscm.org
+  username: sue@student.org
   password: bob
 
 user_with_no_ministry_involvements:

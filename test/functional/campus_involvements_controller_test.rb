@@ -22,7 +22,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
   end
   
   def test_destroy_WITHOUT_permission
-    login('sue@uscm.org')
+    login('sue@student.org')
     assert_no_difference "CampusInvolvement.count" do
       xhr :delete, :destroy, :id => 1
     end

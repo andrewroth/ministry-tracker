@@ -14,7 +14,7 @@ class MinistryTest < ActiveSupport::TestCase
   end
   
   def test_campus_ids
-    assert_equal([1,2], Ministry.find(1).campus_ids)
+    assert_equal([1,3,2], Ministry.find(1).campus_ids)
   end
   
   def test_descendants

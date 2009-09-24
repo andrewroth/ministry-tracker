@@ -6,9 +6,9 @@ module PersonMethods
 
   def database_search_conditions(params)
     special_conditions = Hash.new
-    special_conditions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})" if params[gender].present?
-    special_conditions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})" if params[gender].present?   
-    special_conditions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'" if params[gender].present?
+    special_conditions[:gender] = "Person.#{_(:gender, :person)} IN(#{quote_string(params[:gender].join(','))})" if params[:gender].present?
+    special_conditions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})" if params[:school_year].present?   
+    special_conditions[:email] = "CurrentAddress.#{_(:email, :address)} = '#{quote_string(params[:email])}'" if params[:email].present?
     special_conditions
   end
   
