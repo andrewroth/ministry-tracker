@@ -48,7 +48,7 @@ end
 Column.seed(:title) do |c|
   c.title = 'Picture'
   c.from_clause = 'ProfilePicture'
-  c.select_clause = "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture"
+  c.select_clause = "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename))"
   c.column_type = 'image'
 end
 

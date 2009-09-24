@@ -55,7 +55,7 @@ class View < ActiveRecord::Base
         unless column.select_clause.first == '('
           select_clause << "#{column.from_clause}.#{_(column.select_clause, column.from_clause.underscore)} as #{column.safe_name}"
         else
-          select_clause << column.select_clause
+          select_clause << "#{column.select_clause} as #{column.title}"
         end
       end
     end
