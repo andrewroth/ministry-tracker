@@ -46,7 +46,7 @@ end
 Column.seed(:title) do |c|
   c.title = 'Picture'
   c.from_clause = 'ProfilePicture'
-  c.select_clause = "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename)) as Picture"
+  c.select_clause = "(CONCAT(ProfilePicture.id, '|', ProfilePicture.filename))"
   c.column_type = 'image'
 end
 
@@ -55,7 +55,7 @@ Column.seed(:title) do |c|
   c.select_clause = '(SELECT Campus2.campus_shortDesc FROM ciministry.cim_hrdb_person as Person2
   LEFT JOIN emu.campus_involvements as CampusInvolvement2 on Person2.person_id = CampusInvolvement2.person_id
   LEFT JOIN ciministry.cim_hrdb_campus as Campus2 on CampusInvolvement2.campus_id = Campus2.campus_id
-  WHERE Person2.person_id = Person.person_id LIMIT 1) as Campus'
+  WHERE Person2.person_id = Person.person_id LIMIT 1)'
 end
 
 Column.seed(:title) do |c|
