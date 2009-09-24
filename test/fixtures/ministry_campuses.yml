@@ -7,3 +7,7 @@ two:
   id: 2
   ministry_id: 2
   campus_id: 2
+three:
+  id: 3
+  ministry_id: 1
+  campus_id: 3

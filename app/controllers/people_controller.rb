@@ -45,6 +45,7 @@ class PeopleController < ApplicationController
 
   def directory
     get_view
+    my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
     get_campuses
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"
@@ -733,10 +734,16 @@ class PeopleController < ApplicationController
     end
     
     def get_campuses
-      @campuses = @my_campuses || current_ministry.campuses
+      if @my_campuses
+        @campuses = @my_campuses & current_ministry.campuses
+      else
+        @campuses = current_ministry.campuses
+      end
     end
     
     def add_involvement_conditions(conditions)
+      is_staff = get_ministry_involvement(current_ministry).try(:ministry_role).class == StaffRole
+
       # figure out which campuses to query based on the campuses listed for the current ministry
       # Check ministry
       ministry_condition = ''
@@ -756,8 +763,8 @@ class PeopleController < ApplicationController
       # Check campus
       campus_condition = ''
       if params[:campus].present?
-        # Only consider campus ids that this person is involved in (stop deviousness)
-        params[:campus] = params[:campus].collect(&:to_i) & my_campuses.collect(&:id)
+        # Only consider campus ids that this person is allowed to see (stop deviousness)
+        params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
         unless params[:campus].empty?
           conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
           @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
@@ -765,16 +772,17 @@ class PeopleController < ApplicationController
           @advanced = true
         end
       else
-        # If no campuses were passed in...
-        mi = get_ministry_involvement(current_ministry)
-        # If the user is a student, just look at their campus involvements under the current ministry
-        # If the user is staff, look at all campuses in the current ministry tree
-        campus_ids = mi && mi.ministry_role.class == StudentRole ? (current_ministry.campus_ids & my_campuses.collect(&:id)) : current_ministry.campus_ids
+        campus_ids = @campuses.collect &:id # note that @campuses is restricted to campus involvements in this ministry if the person is a student (see get_campuses)
         campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
       end
       
       if campus_condition.present?
-        conditions << ('(' + ministry_condition + ' OR ' + campus_condition + ')')
+        # students should not have access to everyone in the ministry
+        if is_staff
+          conditions << ('(' + ministry_condition + ' OR ' + campus_condition + ')')
+        else
+          conditions << campus_condition
+        end
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
       else
         conditions << ministry_condition
