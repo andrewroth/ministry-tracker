@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
     # doesn't work
     begin
       u.viewer_lastLogin = Time.now
-      u.person.email = receipt.user
+      u.viewer_userID = receipt.user
       u.save!
     rescue
     end
