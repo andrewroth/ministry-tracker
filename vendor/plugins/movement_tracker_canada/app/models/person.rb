@@ -192,9 +192,9 @@ class Person < ActiveRecord::Base
 
       c4c = Ministry.find_by_name 'Campus for Christ'
       
-      if !self.current_address.email.present?
-        self.current_address.email = self.user.viewer_userID if self.user
-        self.current_address.save
+      if !self.email.present?
+        self.email = self.user.viewer_userID if self.user
+        self.save
       end
       
       # ciministry hrdb uses assignments to track
@@ -279,11 +279,9 @@ class Person < ActiveRecord::Base
       ln ||= ''
       p = Person.create! :person_fname => fn, :person_lname => ln,
         :person_legal_fname => '', :person_legal_lname => '',
-        :birth_date => nil 
+        :birth_date => nil, :person_email => uid
       v = Person.create_viewer(guid, uid)       
       p.create_access(v)
-      p.current_address.email = uid
-      p.current_address.save
 
       v
     end

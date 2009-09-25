@@ -61,8 +61,16 @@ class User < ActiveRecord::Base
           last_name, receipt.user
       end
     end 
-    u.viewer_lastLogin = Time.now
-    u.save!
+
+    # update last login and email in a way that won't break the rest of the login if it
+    # doesn't work
+    begin
+      u.viewer_lastLogin = Time.now
+      u.person.email = receipt.user
+      u.save!
+    rescue
+    end
+
     u
   end
 end
