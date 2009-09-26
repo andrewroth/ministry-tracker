@@ -21,16 +21,17 @@ class MinistryCampusesController < ApplicationController
   
   def new
     if Cmt::CONFIG[:campus_scope_country]
-      @country = Country.find :first, :conditions => { Country._(:name) => Cmt::CONFIG[:default_country] }
+      @country = CmtGeo.lookup_country(Cmt::CONFIG[:campus_scope_country])
       @ministry = Ministry.find(params[:ministry_id])
       if @country
-        @colleges = @campuses = CmtGeo.campuses_for_country(@country.abbrev)
+        @colleges = @campuses = CmtGeo.campuses_for_country(@country)
         @countries = nil # no need to show countries when campus_scope_country is set
       end
     end
 
     unless @colleges
-      @country = Country.find :first, :conditions => { Country._(:name) => Cmt::CONFIG[:default_country] }
+      @country = CmtGeo.lookup_country(Cmt::CONFIG[:default_country])
+      @country = Cmt::CONFIG[:default_country]
       get_states
       @ministry = Ministry.find(params[:ministry_id])
     end
@@ -82,6 +83,6 @@ class MinistryCampusesController < ApplicationController
   protected
 
   def get_states
-    @states = CmtGeo.states_for_country(@country.abbrev) if @country
+    @states = CmtGeo.states_for_country(@country) if @country
   end
 end
