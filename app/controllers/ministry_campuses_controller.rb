@@ -2,6 +2,7 @@
 
 class MinistryCampusesController < ApplicationController
   before_filter :get_countries
+  before_filter :get_states
   layout 'manage'
   
   def index
@@ -19,7 +20,9 @@ class MinistryCampusesController < ApplicationController
   end
   
   def new
-    get_countries
+    debugger
+    @country = Country.find :first, :conditions => { Country._(:name) => Cmt::CONFIG[:default_country] }
+    get_states
     @ministry = Ministry.find(params[:ministry_id])
   end
   
@@ -67,4 +70,8 @@ class MinistryCampusesController < ApplicationController
   end
   
   protected
+
+  def get_states
+    @states = CmtGeo.states_for_country(@country.abbrev) if @country
+  end
 end

@@ -1,7 +1,7 @@
 Pick a country:
 <%=
   countries2 = [['-- Choose Country --','']] + @countries
-  select_tag("country", options_for_select(countries2))
+  select_tag("country", options_for_select(countries2, @country.try(:abbrev)))
 %>
 
 <%=
