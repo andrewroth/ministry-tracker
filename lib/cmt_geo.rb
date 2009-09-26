@@ -1,4 +1,5 @@
 class CmtGeo
+  # TODO: need to make all the country stuff properly hit the Country model
   def self.all_countries
     Carmen::COUNTRIES
   end
@@ -14,7 +15,10 @@ class CmtGeo
   def self.campuses_for_country(c)
     Campus.find :all, :conditions => { :country => c }
   end
-  def self.lookup_country(c)
-    Carmen::country_name(c)
+  def self.lookup_country_code(name)
+    Carmen::country_code(name)
+  end
+  def self.lookup_country_name(code)
+    Carmen::country_name(code)
   end
 end

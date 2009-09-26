@@ -21,7 +21,7 @@ class MinistryCampusesController < ApplicationController
   
   def new
     if Cmt::CONFIG[:campus_scope_country]
-      @country = CmtGeo.lookup_country(Cmt::CONFIG[:campus_scope_country])
+      @country = CmtGeo.lookup_country_code(Cmt::CONFIG[:campus_scope_country])
       @ministry = Ministry.find(params[:ministry_id])
       if @country
         @colleges = @campuses = CmtGeo.campuses_for_country(@country)
@@ -30,8 +30,7 @@ class MinistryCampusesController < ApplicationController
     end
 
     unless @colleges
-      @country = CmtGeo.lookup_country(Cmt::CONFIG[:default_country])
-      @country = Cmt::CONFIG[:default_country]
+      @country = CmtGeo.lookup_country_code(Cmt::CONFIG[:default_country])
       get_states
       @ministry = Ministry.find(params[:ministry_id])
     end
