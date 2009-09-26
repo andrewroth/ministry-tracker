@@ -20,7 +20,7 @@ class CmtGeo
   def self.campuses_for_country(c)
     country = Country.find_by_country_shortDesc(c)
     return [] unless country
-    country.states.collect{ |p| p.campuses }.flatten
+    country.states.collect{ |p| p.campuses }.flatten.sort{ |c1,c2| c1.name <=> c2.name }
   end
   def self.lookup_country(c)
     country = find_country(c)
