@@ -58,7 +58,7 @@ namespace :db do
       columns = ENV['columns'] ? ENV['columns'].split(',') : model.column_names
       constraints = ENV['constraints'].split(',').collect{|c| ":#{c}"}.join(', ')
 
-      output = ENV['seed'] ? File.open(ENV['seed'], 'w') || STDOUT
+      output = ENV['seed'] ? File.open(ENV['seed'], 'w') : STDOUT
 
       seeds = model.all.collect{ |row|
 "#{model.name}.seed(#{constraints}) do \|#{model_varname}\|
