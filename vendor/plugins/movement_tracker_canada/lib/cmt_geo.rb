@@ -8,7 +8,7 @@ class CmtGeo
     }
   end
   def self.states_for_country(c)
-    country = find_country(c)
+    country = find_country_from_code(c)
     return [] unless country
     country.states.collect{ |s| [ s.name, s.abbrev ] }
   end
@@ -22,15 +22,23 @@ class CmtGeo
     return [] unless country
     country.states.collect{ |p| p.campuses }.flatten.sort{ |c1,c2| c1.name <=> c2.name }
   end
-  def self.lookup_country(c)
-    country = find_country(c)
+  def self.lookup_country_name(code)
+    country = find_country_from_code(c)
     return nil unless country
     country.name
   end
-  
+  def self.lookup_country_code(name)
+    country = find_country_from_name(name)
+    return nil unless country
+    country.abbrev
+  end
+   
   private
 
-  def self.find_country(c)
+  def self.find_country_from_code(c)
     Country.find :first, :conditions => { Country._(:abbrev) => c } 
+  end
+  def self.find_country_from_name(c)
+    Country.find :first, :conditions => { Country._(:name) => c } 
   end
 end
