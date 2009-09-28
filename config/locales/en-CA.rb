@@ -99,6 +99,7 @@
           :less_than_or_equal_to => "must be less than or equal to {{count}}",
           :odd => "must be odd",
           :even => "must be even",
+          :record_invalid => "Validation failed: {{errors}}"
         },
         :template => {
           :header => {

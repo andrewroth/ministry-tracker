@@ -200,8 +200,15 @@ class Ministry < ActiveRecord::Base
   
   # Create a default view for this ministry
   def create_first_view
-    # copy the first view in the system if there is one
-    view = View.find(:first, :order => _(:ministry_id, :view))
+    # copy the default ministry's first view if possible
+    if Cmt::CONFIG[:default_ministry_name] && 
+      ministry = Ministry.find(:first, :conditions => { _(:name, :ministry) => Cmt::CONFIG[:default_ministry_name] } )
+      view = ministry.views.first
+    else
+      # copy the first view in the system if there is one
+      view = View.find(:first, :order => _(:ministry_id, :view))
+    end
+
     if view
       new_view = view.clone
       views << view
