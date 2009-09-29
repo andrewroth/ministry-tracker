@@ -2,8 +2,9 @@ def ma?
   ENV['system'] == 'ma'
 end
 
-def dev?() ENV['target'] != 'prod' end
-def prod?() !dev? end
+def dev?() ENV['target'] == 'dev' end
+def stage?() %w(stage moose).include?(ENV['target']) end
+def prod?() ENV['target'] == 'prod' end
 
 # This file 
 set :application, "ministry-tracker"
@@ -13,9 +14,18 @@ set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, (ma? ? 'dev' : 'emu')
+set :branch, if ma? then 'dev' elsif stage? then 'moose' elsif dev? then 'emu' end
 set :deploy_via, :remote_cache
-set :deploy_to, "/var/www/#{ma? ? "mt.ministryhacks.com" : "#{dev? ? 'emu' : 'pulse'}.campusforchrist.org"}"
+path = if ma?
+         'mt.ministryhacks.com'
+       elsif dev?
+         'emu.campusforchrist.org'
+       elsif stage?
+         'moose.campusforchrist.org'
+       elsif prod?
+         'pulse.campusforchrist.org'
+       end
+set :deploy_to, "/var/www/#{path}"
 set :git_enable_submodules, false
 set :git_shallow_clone, true
 
