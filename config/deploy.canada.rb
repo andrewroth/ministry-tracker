@@ -14,7 +14,7 @@ set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, if ma? then 'dev' elsif stage? then 'moose' elsif dev? then 'emu' end
+set :branch, if ma? then 'dev' elsif stage? then 'moose' else 'emu' end
 set :deploy_via, :remote_cache
 path = if ma?
          'mt.ministryhacks.com'
