@@ -199,15 +199,12 @@ class TimetablesController < ApplicationController
     # initialises a newly created timetable to default values
     def setup_timetable
       # Create a hash of free times for output rendering
-      @free_times = [Array.new, Array.new, Array.new, Array.new, Array.new, Array.new, Array.new]
+      @free_times = [{}, {}, {}, {}, {}, {}, {}]
       @person.free_times.each do |ft|
-        # @free_times[bt.day_of_week] << bt.start_time
         ft.start_time.step(ft.end_time + (ft.end_time % Timetable::INTERVAL), Timetable::INTERVAL) do |time|
           css_class = ft.css_class.present? ? ft.css_class : 'good'
-          @free_times[ft.day_of_week] << {time => css_class}
+          @free_times[ft.day_of_week][time] = css_class
         end
-        # We don't want the end time in the array
-        @free_times[ft.day_of_week].pop
       end
       # raise @free_times.inspect
     end
