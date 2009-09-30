@@ -767,6 +767,7 @@ margin:0px 0 5px 0;
 .moregood {background:#C9E49C;}
 .morebad {background:#ffa192;}
 .neutral {background:#fad0cb;}
+.empty {background:white;}
 
 .badhead, .poorhead, .okhead, .goodhead {
 width:40px;
