@@ -2,7 +2,7 @@ def ma?
   ENV['system'] == 'ma'
 end
 
-def dev?() ENV['target'] == 'dev' end
+def dev?() %w(emu dev).include?(ENV['target']) end
 def stage?() %w(stage moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
 
