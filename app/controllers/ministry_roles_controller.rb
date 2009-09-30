@@ -8,6 +8,9 @@ class MinistryRolesController < ApplicationController
   layout 'manage'
   before_filter :find_ministry_role, :only => [:edit, :update, :destroy, :permissions]
   skip_before_filter :authorization_filter, :only => :show
+  skip_before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :show
+  skip_before_filter :login_required, :only => :show
+  skip_before_filter :get_ministry, :only => :show
   
   def index
     # Force the user to be looking at the root ministry
@@ -32,7 +35,7 @@ class MinistryRolesController < ApplicationController
   def show
     if params[:person_id] 
       @person = Person.find(params[:person_id])
-      @ministry = params[:ministry_id] ? Ministry.find(params[:ministry_id]).try(:root) : @person.ministries.first.try(:root)
+      @ministry = Ministry.find(params[:ministry_id])
       if @person && @ministry
         mi = MinistryInvolvement.find(:first, :conditions => {:person_id => @person.id, :ministry_id => @ministry.id})
         @ministry_role = mi.ministry_role
