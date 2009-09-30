@@ -179,6 +179,8 @@ class ApplicationController < ActionController::Base
           elsif controller.to_sym == :timetables && params[:person_id] &&
             @me.is_leading_group_with?(Person.find(params[:person_id]))
             return true
+          elsif controller.to_sym == :timetables && @person && @me.is_leading_group_with?(@person)
+            return true
           end
         when :groups
           if params[:id] || @group
