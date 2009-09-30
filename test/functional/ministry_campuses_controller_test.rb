@@ -25,10 +25,17 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
 
   def test_new
+    Cmt::CONFIG[:campus_scope_country] = nil
     xhr :get, :new, :ministry_id => 1
     assert_response :success
   end
   
+  def test_new_with_campus_scope_country
+    Cmt::CONFIG[:campus_scope_country] = 'US'
+    xhr :get, :new, :ministry_id => 1
+    puts @campuses.inspect
+  end
+
   def test_create
     assert_difference('MinistryCampus.count') do
       xhr :post, :create, :campus_id => 2, :ministry_id => 1

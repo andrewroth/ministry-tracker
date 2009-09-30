@@ -41,4 +41,44 @@ namespace :db do
       load file
     end
   end
+
+  namespace :seed do
+    desc <<-EOS
+  dumps all values in the database for a given model in to a seed file
+  
+  model=<modelname>
+  seed=<path to output file> or standard out if no seed= given
+  constraints=<cn1,cn2,...> will output Model.seed(:c1, :c2, ...) do ...
+  columns=<cl1,cl2,...> or output all columns if not given
+
+    EOS
+    task :dump => :environment do
+      model = ENV['model'].constantize
+      model_varname = model.name.underscore.downcase
+      columns = ENV['columns'] ? ENV['columns'].split(',') : model.column_names
+      constraints = ENV['constraints'].split(',').collect{|c| ":#{c}"}.join(', ')
+
+      output = ENV['seed'] ? File.open(ENV['seed'], 'w') : STDOUT
+
+      seeds = model.all.collect{ |row|
+"#{model.name}.seed(#{constraints}) do \|#{model_varname}\|
+#{columns.collect { |col|
+  val = row.send(col)
+  val_s = case val.class.name
+          when String.name
+            "'#{val}'"
+          when NilClass.name
+            'nil'
+          else
+            val
+          end
+
+"  #{model_varname}.#{col} = #{val_s}"
+}.join("\n")}
+end"
+      }
+
+      output.puts seeds.join("\n\n")
+    end
+  end
 end

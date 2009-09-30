@@ -3,9 +3,10 @@ class Ministry < ActiveRecord::Base
   
   # acts_as_tree :order => _(:name), :counter_cache => true
   has_many :children, :class_name => "Ministry", :foreign_key => _(:parent_id), 
-    :order => "#{Ministry.table_name}.`#{_(:name)}"
+    :order => "#{Ministry.table_name}.`#{_(:ministries_count)}` > 0 DESC,#{Ministry.table_name}.`#{_(:name)}"
   
-  belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id)
+  belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id),
+    :counter_cache => :ministries_count
   
   has_many :permissions, :through => :ministry_roles, :source => :ministry_role_permissions
   # note - dependent is removed since these role methods are overridden
@@ -199,8 +200,15 @@ class Ministry < ActiveRecord::Base
   
   # Create a default view for this ministry
   def create_first_view
-    # copy the first view in the system if there is one
-    view = View.find(:first, :order => _(:ministry_id, :view))
+    # copy the default ministry's first view if possible
+    if Cmt::CONFIG[:default_ministry_name] && 
+      ministry = Ministry.find(:first, :conditions => { _(:name, :ministry) => Cmt::CONFIG[:default_ministry_name] } )
+      view = ministry.views.first
+    else
+      # copy the first view in the system if there is one
+      view = View.find(:first, :order => _(:ministry_id, :view))
+    end
+
     if view
       new_view = view.clone
       views << view
