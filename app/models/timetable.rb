@@ -2,8 +2,8 @@
 class Timetable < ActiveRecord::Base
   load_mappings
   
-  # Question: Can one change any of these three constants here and have everything else 
-  # correctly work?
+  # You can change any of these constants and have everything still work,
+  # including existing timetables.
   EARLIEST = (6.hours + 30.minutes).to_i
   LATEST = 22.hours.to_i
   INTERVAL = 30.minutes.to_i
