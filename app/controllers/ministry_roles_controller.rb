@@ -7,6 +7,7 @@
 class MinistryRolesController < ApplicationController
   layout 'manage'
   before_filter :find_ministry_role, :only => [:edit, :update, :destroy, :permissions]
+  skip_before_filter :authorization_filter, :only => :show
   
   def index
     # Force the user to be looking at the root ministry
