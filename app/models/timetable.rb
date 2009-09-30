@@ -4,7 +4,7 @@ class Timetable < ActiveRecord::Base
   
   # You can change any of these constants and have everything still work,
   # including existing timetables.
-  EARLIEST = (6.hours + 30.minutes).to_i
+  EARLIEST = 6.hours.to_i
   LATEST = 22.hours.to_i
   INTERVAL = 30.minutes.to_i
 
