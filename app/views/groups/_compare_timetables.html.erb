@@ -28,7 +28,11 @@
 					<%- color = "neutral" %>
 					<% current_time = @comparison_map[day][time_block][time_in_seconds] %>
 					
-					<%- if current_time["goods"].length == @people.length -%>
+          <%- if current_time["goods"] == 0 && 
+                current_time["okays"] == 0 && 
+                current_time["bads"] == 0 -%>
+           <% color = "empty" %>
+					<%- elsif current_time["goods"].length == @people.length -%>
 					 <% color = "allgood" %>
 					<%- elsif current_time["okays"].length > 0 && current_time["bads"].length == 0 -%>
 					 <% color = "moregood" %>
