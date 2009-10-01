@@ -529,7 +529,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.js  do
         render :update do |page|
-          page[:addStudent].replace(:partial => 'students/ajax_form', :locals => {:person => Person.new})
+          page[:dialog].replace(:partial => 'students/ajax_form', :locals => {:person => Person.new})
         end
       end
     end

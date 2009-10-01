@@ -1,4 +1,4 @@
-  	<h4>Campuses</h4>
+<h4 style='display:inline'>Campuses</h4> <% if authorized?(:edit, :campus_involvements) %><%= link_to_remote image_tag('button_edit_grey_tiny.gif'), :url => person_campus_involvements_url(@person), :method => :get, :success => "show_dialog('Manage Campuses')" %><% end %>
   	<ul>
   	<%- @person.campus_involvements.each do |ci| 
   	  if ci.end_date.nil? -%>

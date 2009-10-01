@@ -2,7 +2,11 @@
 # ministry, but not complete CRUD?
 
 class MinistryInvolvementsController < ApplicationController
-  before_filter :ministry_leader_filter, :except => :destroy
+  #before_filter :ministry_leader_filter, :except => :destroy
+
+  # used to pop up a dialog box
+  def index
+  end
 
   # Records the ending of a user's involvement with a particular ministry
   def destroy
@@ -34,7 +38,8 @@ class MinistryInvolvementsController < ApplicationController
     redirect_to '/staff'
   end
   
-  # A staff is defined as a student leader or anyone with a StaffRole
+  # A staff is defined as a anyone with a StaffRole.  But what really matters
+  # is what their role gives them permission to do.
   # Staff are admin if they're marked admin in the ministry involvement.  The
   # actual role of being an admin doesn't inherently grant anything.
   def edit

@@ -1,4 +1,7 @@
 class CampusInvolvementsController < ApplicationController
+  def index
+  end
+
   def destroy
     # if @person.campus_involvements.count > 1
       @campus_involvement = CampusInvolvement.find(params[:id])

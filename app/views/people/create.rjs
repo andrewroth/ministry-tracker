@@ -1,7 +1,7 @@
 flash[:notice] = "#{link_to(@person.full_name, @person)} was successfully created and added to your ministry." if @success
 update_flash(page)
 if params[:modalbox]
-  page['addStudent'].hide
+  page['dialog'].hide
   page.call("close_thickbox")
   page['timetable_link'].replace_html(:partial => 'students/link_to_timetable', :locals => {:student => @person})
 elsif @staff_role
