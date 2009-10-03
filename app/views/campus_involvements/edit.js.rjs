@@ -1,0 +1,1 @@
+page[:"ci_li_#{@campus_involvement.id}"].replace_html :partial => 'edit'

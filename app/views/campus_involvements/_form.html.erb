@@ -1,4 +1,2 @@
-<div id="dialog">
-  <p>manage users</p>
-  <a id="TB_closeWindowButton" href="#">cancel</a>
-</div>
+Campus: <%= collection_select :campus_involvement, :campus_id, @campuses, :id, :name %><br/>
+Year: <%= collection_select :campus_involvement, :school_year_id, @school_years, :id, :name %><br/>

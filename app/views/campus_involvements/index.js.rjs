@@ -1,2 +1,2 @@
-page['dialog'].replace(:partial => 'campus_involvements/form')
+page['dialog'].replace(:partial => 'campus_involvements/index')
 page['dialog'].show();
