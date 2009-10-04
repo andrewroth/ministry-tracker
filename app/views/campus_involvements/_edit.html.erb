@@ -1,7 +1,7 @@
 <li id='ci_li_edit_<%= @campus_involvement.id %>'>
 <br/>
 <% remote_form_for(@campus_involvement, 
-                   :url => person_campus_involvement_url(@person.id, @campus_involvement),
+                   :url => person_campus_involvement_url(@person.id, @campus_involvement.id),
                    :method => :post) do |f| %>
   <%= render :partial => 'form' %>
   <%= submit_tag 'Save' %>

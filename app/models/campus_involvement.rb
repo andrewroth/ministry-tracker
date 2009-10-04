@@ -1,6 +1,6 @@
 class CampusInvolvement < ActiveRecord::Base
   load_mappings
-  validates_presence_of :campus_id, :person_id, :ministry_id
+  validates_presence_of :campus_id, :person_id, :ministry_id, :school_year_id
   
   belongs_to :school_year
   belongs_to :campus

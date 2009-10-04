@@ -1,3 +1,3 @@
-<%= link_to_remote image_tag('delete.png'), :url => person_campus_involvements_url(@person.id), :method => :delete %> 
-<%= campus_involvement.campus.name %>, <%= campus_involvement.school_year.name %> 
+<%= link_to_remote image_tag('delete.png'), :url => person_campus_involvement_url(@person.id, campus_involvement.id), :method => :delete %> 
+<%= campus_involvement.campus.name %>, <%= campus_involvement.try(:school_year).try(:name) %> 
 <%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_campus_involvement_url(@person.id, campus_involvement.id), :method => :get %>

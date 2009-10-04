@@ -1,2 +1,3 @@
-Campus: <%= collection_select :campus_involvement, :campus_id, @campuses, :id, :name %><br/>
-Year: <%= collection_select :campus_involvement, :school_year_id, @school_years, :id, :name %><br/>
+<%= error_messages_for :campus_involvement %>
+Campus: <%= collection_select :campus_involvement, :campus_id, @campuses, :id, :name, { :include_blank => true } %><br/>
+Year: <%= collection_select :campus_involvement, :school_year_id, @school_years, :id, :name, { :include_blank => true } %><br/>
