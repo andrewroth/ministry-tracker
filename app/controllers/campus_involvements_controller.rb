@@ -12,16 +12,8 @@ class CampusInvolvementsController < ApplicationController
 
   def create
     params[:campus_involvement][:ministry_id] = get_ministry.id
-    @campus_involvement = @person.active_campus_involvements.find :first, :conditions => {
-      :campus_id => params[:campus_involvement][:campus_id], 
-      :ministry_id => params[:campus_involvement][:ministry_id] 
-    }
-    if @campus_involvement
-      @campus_involvement.update_attributes(params[:campus_involvement])
-      @updated = true
-    else
-      @campus_involvement = @person.campus_involvements.create(params[:campus_involvement])
-    end
+    params[:campus_involvement][:start_date] = Date.today
+    @campus_involvement = @person.campus_involvements.create(params[:campus_involvement])
   end
 
   def destroy

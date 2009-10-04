@@ -1,8 +1,6 @@
-if @updated && @campus_involvement.errors.empty?
-  page["ci_li_#{@campus_involvement.id}"].replace_html :partial => @campus_involvement
-elsif !@updated && @campus_involvement.errors.empty?
+if @campus_involvement.errors.empty?
   page.insert_html :before, :new_campus_li, :partial => 'campus_involvement_li', :object => @campus_involvement
-  page[:new_campus_involvement_li].replace ''
+  page[:new_campus_involvement_li].hide
   page[:add_campus_button].show
 else
   page[:"new_campus_involvement"].replace_html :partial => 'new'
