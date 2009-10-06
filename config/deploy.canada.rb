@@ -6,11 +6,11 @@ def dev?() %w(emu dev).include?(ENV['target']) end
 def stage?() %w(stage moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
 
-# This file 
 set :application, "ministry-tracker"
 set :user, 'deploy'
 set :use_sudo, false
 set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
+set :keep_releases, 3
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
@@ -51,7 +51,8 @@ deploy.task :after_symlink do
   # other shared files / folders
   link_shared 'log', :overwrite => true
   link_shared 'config/database.emu.yml', :overwrite => true
-  link_shared 'public/emu_dev.profile_pictures'
+  profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
+  link_shared "public/#{profile_pic_prefix}.profile_pictures"
 end
 
 namespace :deploy do
