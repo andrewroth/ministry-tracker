@@ -286,16 +286,23 @@ class PeopleController < ApplicationController
     get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
     setup_vars
     setup_campuses
-    render :update do |page|
-      page[:info].hide
-      page[:edit_info].replace_html :partial => 'edit',
-        :locals => {
-          :current_address_country => current_address_country,
-          :permanent_address_country => permanent_address_country,
-          :countries => countries,
-          :current_address_states => current_address_states,
-          :permanent_address_states => permanent_address_states }
-      page[:edit_info].show
+    respond_to do |format|
+      format.html {
+        
+      }
+      format.js {
+        render :update do |page|
+          page[:info].hide
+          page[:edit_info].replace_html :partial => 'edit',
+            :locals => {
+            :current_address_country => current_address_country,
+            :permanent_address_country => permanent_address_country,
+            :countries => countries,
+            :current_address_states => current_address_states,
+            :permanent_address_states => permanent_address_states }
+          page[:edit_info].show
+        end
+      }
     end
   end
 
