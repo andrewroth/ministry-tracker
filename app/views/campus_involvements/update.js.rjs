@@ -1,2 +1,3 @@
 page["ci_li_#{@campus_involvement.id}"].replace_html :partial => 'campus_involvement'
-page["ci_li_edit_#{@campus_involvement.id}"].replace ''
+page["ci_li_#{@campus_involvement.id}"].show
+page["ci_li_edit_#{@campus_involvement.id}"].hide
