@@ -12,6 +12,20 @@ class GroupsControllerTest < ActionController::TestCase
     assert_equal [ Group.first ], assigns('groups')
   end
 
+  def test_join
+    get :join
+    assert_response :success
+    assert_equal [ Group.first ], assigns('person_campus_groups')
+  end
+
+  def test_join_request_campus_chosen
+    p = Person.find 50000
+    p.campus_involvements.delete_all
+    get :join
+    assert_response :success
+    assert flash[:notice] =~ /You do not have a campus chosen/
+  end
+
   def test_index_all
     get :index, :all => 'true'
     assert_response :success
