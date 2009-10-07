@@ -7,7 +7,7 @@ Pick a state:
 <%=
   observe_field(:state,
     { :url => change_state_campuses_path,
-      :with => %|'state='+$('#state')[0].value+'&country=#{params[:country]}'|,
+      :with => %|'state=' + $('#state')[0].value + '&country=' + $('#country')[0].value|,
       :loading => "$('#spinner2').show()"})
 %>	
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090923163810) do
+ActiveRecord::Schema.define(:version => 20091007141651) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(:version => 20090923163810) do
     t.string  "country"
     t.string  "code"
     t.boolean "is_closed"
+    t.string  "iso_code"
+    t.boolean "closed",    :default => false
   end
 
   create_table "custom_attributes", :force => true do |t|
