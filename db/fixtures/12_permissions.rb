@@ -265,6 +265,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'campus_involvements'
+  p.action = 'edit'
+  p.description = 'Edit Campus Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'ministry_involvements'
   p.action = 'new'
   p.description = 'Remove People From Ministries'
