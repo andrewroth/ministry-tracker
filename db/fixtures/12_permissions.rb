@@ -256,8 +256,6 @@ Permission.seed(:controller, :action) do |p|
   p.description = 'Edit the timetables of other people'
 end
 
-#There is no 'create' action in campus_involvements_controller.rb, only 'destroy'
-
 Permission.seed(:controller, :action) do |p|
   p.controller = 'campus_involvements'
   p.action = 'new'
@@ -268,6 +266,12 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'campus_involvements'
   p.action = 'edit'
   p.description = 'Edit Campus Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'campus_involvements'
+  p.action = 'index'
+  p.description = 'List Campus Involvements'
 end
 
 Permission.seed(:controller, :action) do |p|
