@@ -28,10 +28,7 @@ class GroupsController < ApplicationController
     @join = true
     get_person_campus_groups
     respond_to do |format|
-      format.html do
-        layout = authorized?(:index, :manage) ? 'manage' : 'application'
-        render :layout => layout
-      end
+      format.html
       format.js
     end
   end
