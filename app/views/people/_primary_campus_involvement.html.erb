@@ -11,20 +11,20 @@
           :before => "$('#spinnerp').show()"})
         %>
         <br/>
-        <span id="campus_country_filter"><%= campus_country_filter_message %></span>
+        <span id="campus_country_filter" <%= highlight_if_requested %>><%= campus_country_filter_message %></span>
       </td>
     </tr>
     <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
-      <th><%= I18n.t :State, :default => 'State' %></th>
+      <th class='highlight'><%= I18n.t :State, :default => 'State' %></th>
       <td><%= select_tag :primary_campus_state, render(:partial => 'campus_state_options') %>
         <br/>
-        <span id="campus_state_filter"><%= campus_state_filter_message %></span>
+        <span id="campus_state_filter" <%= highlight_if_requested %>><%= campus_state_filter_message %></span>
         <%= link_to_function(t(:person_campus_change_country, 
                                :default => 'change country'), 
                            "$('#campus_state').hide();$('#campus_country').show();") %>
         <%= observe_field(:primary_campus_state, {
           :url => get_campuses_for_state_people_path,
-          :with => %|'primary_campus_state=' + $('#primary_campus_state')[0].value + '&primary_campus_country=#{@campus_country}'|,
+          :with => %|'primary_campus_state=' + $('#primary_campus_state')[0].value + '&primary_campus_country=' + $('#primary_campus_country')[0].value|,
           #:with => 'primary_campus_state',
           :before => "$('#spinnerp').show()"})
         %>
@@ -32,12 +32,12 @@
     </tr>
     <% end %>
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
-      <th>Campus</th>
-      <td>
+      <th <%= highlight_if_requested %>>Campus</th>
+      <td <%= highlight_if_requested %>>
         <%= cif.collection_select :campus_id, @campuses, :id, :name, options = {:include_blank => true} %>
         <% unless @no_campus_scope %>
           <br/>
-          <span id="campus_filter"><%= campus_filter_message %></span>
+          <span id="campus_filter" <%= highlight_if_requested %>><%= campus_filter_message %></span>
           <%= link_to_function(t(:person_campus_change_state, 
                                :default => 'change state'), 
                            "$('#campuses').hide();$('#campus_state').show();") %>

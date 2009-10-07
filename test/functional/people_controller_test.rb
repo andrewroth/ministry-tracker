@@ -199,11 +199,12 @@ class PeopleControllerTest < ActionController::TestCase
     josh.permanent_address = nil
     josh.primary_campus_involvement = nil
     josh.save!
-    get :edit, :id => 50000
+    get :edit, :id => 50000, :format => 'js'
     assert_response :success
     assert_nil assigns['campus_country']
     assert_nil assigns['campus_state']
     assert_equal assigns['campuses'], []
+    puts @response.body
     assert @response.body =~ /Choose a country/
   end
   

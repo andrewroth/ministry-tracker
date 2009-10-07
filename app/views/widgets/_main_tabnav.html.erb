@@ -30,7 +30,7 @@ render_tabnav :main,
      t.links_to :controller => 'manage'
      t.highlights_on :controller => "ministries"
      t.highlights_on :controller => "staff"
-     t.highlights_on :controller => "groups"
+     t.highlights_on :controller => "groups", :action => 'index'
      t.highlights_on :controller => "customize"
      t.highlights_on :controller => "ministry_roles"
      t.highlights_on :controller => "school_years"
