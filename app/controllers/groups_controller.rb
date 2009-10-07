@@ -25,11 +25,13 @@ class GroupsController < ApplicationController
 
   # lists all relevant groups with a join / interested link for each one
   def join
+    unless @person.primary_campus_involvement.present?
+      flash[:notice] = "You do not have a campus chosen.  <A HREF='#{edit_person_url(@person.id, :highlight_campus => true)}'>Click here</A> to set your campus, so that we can display the groups you are looking for."
+    end
     @join = true
     get_person_campus_groups
     respond_to do |format|
       format.html
-      format.js
     end
   end
   

@@ -1,4 +1,9 @@
 module PeopleHelper
+  def highlight_if_requested
+    if params[:highlight_campus] == 'true'
+      %|class="warning"|
+    end
+  end
   def campus_filter_message
     "[#{@campus_state}]"
   end
