@@ -457,6 +457,10 @@ class PeopleController < ApplicationController
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
         flash[:notice] = 'Profile was successfully updated.'
+        if params[:set_campus_requested] == 'true'
+          flash[:notice] += "  Thank you for setting your campus.  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
+        end
+
         @person = Person.find(params[:id])
         format.html { redirect_to person_path(@person) }
         format.js do 

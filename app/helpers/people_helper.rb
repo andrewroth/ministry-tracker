@@ -1,6 +1,6 @@
 module PeopleHelper
   def highlight_if_requested
-    if params[:highlight_campus] == 'true'
+    if params[:set_campus_requested] == 'true'
       %|class="warning"|
     end
   end
