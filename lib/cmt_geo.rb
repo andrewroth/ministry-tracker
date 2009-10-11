@@ -16,9 +16,9 @@ class CmtGeo
     Campus.find :all, :conditions => { :country => c }
   end
   def self.lookup_country_code(name)
-    Country.find_by_country(name).iso_code
+    Country.find_by_country(name).try(:iso_code)
   end
   def self.lookup_country_name(code)
-    Country.find_by_iso_code(code).name
+    Country.find_by_iso_code(code).try(:country)
   end
 end

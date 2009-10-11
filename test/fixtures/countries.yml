@@ -2,4 +2,5 @@
 usa:
   id: 1
   country: United States
+  iso_code: US
   code: USA
