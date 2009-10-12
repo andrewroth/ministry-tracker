@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(:version => 20091012000730) do
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
     t.text     "handler"
-    t.string   "last_error"
+    t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
