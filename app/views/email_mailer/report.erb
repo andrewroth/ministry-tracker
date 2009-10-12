@@ -1,0 +1,17 @@
+We have sent the following email on your behalf:
+
+------------------------------------------------------------------------------
+<%= @email.salutation %> John Doe,
+
+<%= @email.body %>
+
+------------------------------------------------------------------------------
+
+<%- if @missing.present? -%>
+The following recipients didn't have an email address:
+<%- @missing.each do |person| -%>
+ - <%= person.full_name %>
+<%- end -%>
+
+We'd suggest you go update their profiles.
+<%- end -%>

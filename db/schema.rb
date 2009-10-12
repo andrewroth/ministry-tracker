@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091007141651) do
+ActiveRecord::Schema.define(:version => 20091012000730) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -274,6 +274,18 @@ ActiveRecord::Schema.define(:version => 20091007141651) do
     t.string   "cc"
     t.text     "body",                   :null => false
     t.text     "template"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "emails", :force => true do |t|
+    t.string   "salutation",          :default => "Hi"
+    t.string   "subject"
+    t.text     "body"
+    t.text     "people_ids"
+    t.text     "missing_address_ids"
+    t.integer  "search_id"
+    t.integer  "sender_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
