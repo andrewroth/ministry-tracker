@@ -283,6 +283,12 @@ Permission.seed(:controller, :action) do |p|
 end
  
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'email'
+  p.description = 'Email people off the directory'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'training_questions'
   p.action = 'edit'
   p.description = 'Modify Training Items'
