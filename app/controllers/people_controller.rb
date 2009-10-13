@@ -118,7 +118,7 @@ class PeopleController < ApplicationController
     
       conditions = add_involvement_conditions(conditions)
     
-      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search'].include?(key)}
+      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
     
       @conditions = conditions.join(' AND ')
       @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
@@ -126,20 +126,19 @@ class PeopleController < ApplicationController
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
-    
     if params[:search_id].blank?
       @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
       if @search
         @search.update_attribute(:updated_at, Time.now)
       else
-        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+        @search = @my.searches.create(:options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
       end
       # Only keep the last 5 searches
       @my.searches.last.destroy if @my.searches.length > 5
     end
     
     # If these conditions will result in too large a set, use pagination
-    @count = ActiveRecord::Base.connection.select_value("SELECT count(*) FROM #{tables_clause} WHERE #{@conditions}").to_i
+    @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
       # Build range for pagination
       if @count > 500
@@ -564,7 +563,7 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
-
+  
   def get_campuses_for_state
     @campus_state = params[:primary_campus_state]
     @campus_country = params[:primary_campus_country]
