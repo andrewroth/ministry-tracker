@@ -293,3 +293,15 @@ Permission.seed(:controller, :action) do |p|
   p.action = 'new'
   p.description = 'Customizes A Ministry (based on what your other permissions are)'
 end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'emails'
+  p.action = 'new'
+  p.description = 'ability to send emails'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'emails'
+  p.action = 'index'
+  p.description = 'manage active emails being sent out'
+end
