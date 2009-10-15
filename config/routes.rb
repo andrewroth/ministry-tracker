@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :emails
+
   map.resource :facebook, :collection => {:tabs => :post, :install => :post, :remove => :post}, :controller => 'facebook'
   
   map.resources :correspondences, :only => [:index, :show, :destroy], :collection => { :processqueue => :get }, :member => { :rcpt => :get }
@@ -102,7 +104,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campus_states => :any,
                                           :get_campuses_for_state => :any,
                                           :set_current_address_states => :get,
-                                          :set_permanent_address_states => :get},
+                                          :set_permanent_address_states => :get,
+                                          :perform_task => :post},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

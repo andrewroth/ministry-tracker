@@ -3,6 +3,7 @@ $:.unshift(File.dirname(__FILE__) + '/../../rspec/lib')
 
 require 'rubygems'
 require 'active_record'
+gem 'sqlite3-ruby'
 
 require File.dirname(__FILE__) + '/../init'
 require 'spec'
@@ -22,10 +23,6 @@ ActiveRecord::Schema.define do
     table.datetime :locked_at
     table.string   :locked_by
     table.datetime :failed_at
-    table.string   :description
-    table.boolean  :recur,    :default => false
-    table.integer  :period,   :limit => 11
-    table.integer  :executions_left
     table.timestamps
   end
 
@@ -38,5 +35,8 @@ end
 
 # Purely useful for test cases...
 class Story < ActiveRecord::Base
-  def tell; text; end
+  def tell; text; end       
+  def whatever(n, _); tell*n; end
+  
+  handle_asynchronously :whatever
 end
