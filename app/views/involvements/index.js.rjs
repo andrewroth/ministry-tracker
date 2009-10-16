@@ -1,0 +1,2 @@
+page['dialog'].replace(:partial => "involvements/index")
+page['dialog'].show();

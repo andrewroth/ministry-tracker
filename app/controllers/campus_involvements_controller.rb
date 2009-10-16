@@ -1,19 +1,23 @@
 class CampusInvolvementsController < ApplicationController
   before_filter :set_campuses
   before_filter :set_school_years
+  before_filter :set_inv_type
 
   def index
     @campus_involvements = @person.active_campus_involvements
+    render :template => 'involvements/index'
   end
 
   def new
     @campus_involvement = @person.campus_involvements.new
+    render :template => 'involvements/new'
   end
 
   def create
     params[:campus_involvement][:ministry_id] = get_ministry.id
     params[:campus_involvement][:start_date] = Date.today
     @campus_involvement = @person.campus_involvements.create(params[:campus_involvement])
+    render :template => 'involvements/create'
   end
 
   def destroy
@@ -55,5 +59,12 @@ class CampusInvolvementsController < ApplicationController
 
   def set_school_years
     @school_years = SchoolYear.all
+  end
+
+  def set_inv_type
+    @plural = 'campuses'
+    @singular = 'campus'
+    @short = 'ci'
+    @add_title = 'Add Campus'
   end
 end

@@ -3,16 +3,18 @@
 
 class MinistryInvolvementsController < ApplicationController
   #before_filter :ministry_leader_filter, :except => :destroy
+  before_filter :set_inv_type
+  before_filter :set_ministries_and_roles, :only => [ :new, :create, :edit ]
 
   # used to pop up a dialog box
   def index
     @ministry_involvements = @person.active_ministry_involvements
+    render :template => 'involvements/index'
   end
 
   def new
     @ministry_involvement = @person.ministry_involvements.new
-    @ministries = Ministry.all # TODO restrict to their ministries and sub-ministries
-    @roles = MinistryRole.all # TODO restrict to their ministries and sub-ministries
+    render :template => 'involvements/new'
   end
 
   # Records the ending of a user's involvement with a particular ministry
@@ -40,11 +42,23 @@ class MinistryInvolvementsController < ApplicationController
   
   def create
     # If this person was already on this ministry, update with the new role
-    @mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id]})
-    @mi ? @mi.update_attribute(:ministry_role_id, params[:ministry_involvement][:ministry_role_id]) : @mi = MinistryInvolvement.create!(params[:ministry_involvement].merge(:start_date => Time.now))
-    @ministry_involvement = @mi
+    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id]})
+    if mi
+      mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
+      mi.start_date ||= Date.today
+      mi.save
+      @updated = true
+    else
+      # TODO: check role is underneath current user's role, if student
+      mi = MinistryInvolvement.create(params[:ministry_involvement].merge({
+        :person_id => @person.id, :start_date => Date.today
+      }))
+    end
+    @ministry_involvement = mi
     unless request.xhr?
       redirect_to '/staff'
+    else
+      render :template => 'involvements/create'
     end
   end
   
@@ -53,7 +67,11 @@ class MinistryInvolvementsController < ApplicationController
   # Staff are admin if they're marked admin in the ministry involvement.  The
   # actual role of being an admin doesn't inherently grant anything.
   def edit
-    if params[:person_id] && params[:ministry_id]
+    debugger
+    if params[:person_id].present? && !params[:ministry_id].present? && params[:id].present?
+      @ministry_involvement = @person.ministry_involvements.find params[:id]
+      render :template => 'involvements/edit' if params[:from_profile] == 'true'
+    elsif params[:person_id].present? && params[:ministry_id].present?
       @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
       unless @ministry_involvement
         flash[:notice] = "Couldn't find ministry involvement."
@@ -86,8 +104,23 @@ class MinistryInvolvementsController < ApplicationController
       flash[:notice] = "#{@person.full_name}'s ministry role updated to #{@ministry_involvement.ministry_role.name}"
     end
     respond_to do |wants|
-      wants.js {  }
+      wants.js {
+        render :template => 'involvements/update' if params[:from_profile] == 'true'
+      }
     end
   end
   
+  protected
+
+  def set_inv_type
+    @plural = 'ministries'
+    @singular = 'ministry'
+    @short = 'mi'
+    @add_title = 'Add Ministry / Team'
+  end
+
+  def set_ministries_and_roles
+    @ministries = Ministry.all # TODO restrict to their ministries and sub-ministries
+    @roles = MinistryRole.all # TODO restrict to their ministries and sub-ministries
+  end
 end

@@ -1,7 +1,0 @@
-if @campus_involvement.errors.empty?
-  page.insert_html :before, :new_campus_li, :partial => 'campus_involvement_li', :object => @campus_involvement
-  page[:new_campus_involvement_li].hide
-  page[:add_campus_button].show
-else
-  page[:"new_campus_involvement"].replace_html :partial => 'new'
-end

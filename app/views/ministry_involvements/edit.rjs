@@ -1,3 +1,0 @@
-page.replace_html "campus_form#{@person.id}", :partial => 'edit'
-page["campus_form#{@person.id}"].show
-page["spinner#{@person.id}"].hide

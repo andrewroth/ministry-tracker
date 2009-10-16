@@ -1,4 +1,0 @@
-unless params[:already] == 'true'
-  page.insert_html :before, :new_campus_li, :partial => 'new'
-  page[:add_campus_button].hide
-end

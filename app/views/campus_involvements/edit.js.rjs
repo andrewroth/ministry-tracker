@@ -1,2 +1,0 @@
-page.insert_html :after, :"ci_li_#{@campus_involvement.id}", :partial => 'edit'
-page[:"ci_li_#{@campus_involvement.id}"].hide

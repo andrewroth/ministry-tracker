@@ -1,0 +1,3 @@
+debugger
+page.insert_html :after, :"#{@short}_li_#{involvement.id}", :partial => 'involvements/edit'
+page[:"ci_li_#{involvement.id}"].hide
