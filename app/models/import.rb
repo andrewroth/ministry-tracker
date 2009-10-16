@@ -1,6 +1,7 @@
 require 'faster_csv'
 require 'roo'
 require 'person_methods'
+require 'ftools'
 
 # I think this is for mass-import of contacts.
 class Import < ActiveRecord::Base
@@ -23,14 +24,21 @@ class Import < ActiveRecord::Base
     # for checking what methods they respond to
     fake_person = Person.new
     fake_address = Address.new
-    
-    Import.transaction do
-      if File.extname(filename).downcase == '.xls'
-        oo = Excel.new(full_filename)
-        oo.to_csv(File.join(RAILS_ROOT, 'public', public_filename.sub('.xls','.csv')))
-        @csv_filename = full_filename.sub('.xls','.csv')
+    tmp_dir = '/tmp/sn_imports'
+    FileUtils.mkdir_p(tmp_dir)
+    tmp_filename = File.join(tmp_dir, filename)
+    File.open(tmp_filename, 'w') do |file|
+      AWS::S3::S3Object.stream(full_filename, bucket_name) do |chunk|
+        file.write chunk
       end
-      @csv_filename ||= full_filename
+    end
+    Import.transaction do
+      if File.extname(tmp_filename).downcase == '.xls'
+        oo = Excel.new(tmp_filename)
+        oo.to_csv(tmp_filename.sub('.xls','.csv'))
+        @csv_filename = tmp_filename.sub('.xls','.csv')
+      end
+      @csv_filename ||= tmp_filename
       
       row_number = 0
       FasterCSV.foreach(@csv_filename) do |row|
