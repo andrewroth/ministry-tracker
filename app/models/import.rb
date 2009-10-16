@@ -14,11 +14,11 @@ class Import < ActiveRecord::Base
   
   # the rows in the header row should match up with attributes on person and address
   # the people in the file will be added to the given _ministry_ and campus with _campus_id_
-  def process!(campus_id, ministry)
+  def process!(campus_id, ministry, importer)
     raise 'no ministry' unless ministry
     # number of entries processes as...
-    successful = 0
-    unsuccessful = 0
+    successful = []
+    unsuccessful = []
     
     # for checking what methods they respond to
     fake_person = Person.new
@@ -63,7 +63,7 @@ class Import < ActiveRecord::Base
           if address_attributes['state'] && !address_attributes['state'].empty?
             state = find_state_by_abbreviation_or_name(address_attributes['state'])
             if state
-              address_attributes['state'] = state
+              address_attributes['state'] = state.abbreviation
             # FIXME we need to bail if they have some information in state and we cannot import it              
             else
               address_attributes['state'] = nil
@@ -90,17 +90,17 @@ class Import < ActiveRecord::Base
                 person.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry.id, :ministry_role_id => ministry.involved_student_roles.first.id, :start_date => Time.now()) 
               end
             end
-            successful += 1
+            successful << person
           # otherwise we have a non-valid entry
           else
-            unsuccessful += 1
+            unsuccessful << person
           end
         end
       end
     end
     self.destroy
     begin File.unlink(@csv_filename); rescue; end # In case we created an extra csv file
-    return successful, unsuccessful
+    Mailers::ImportMailer.deliver_complete(importer, successful, unsuccessful)
   end
   
   def find_state_by_abbreviation_or_name(state_string)
