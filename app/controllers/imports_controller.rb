@@ -12,7 +12,7 @@ class ImportsController < ApplicationController
     respond_to do |format|
       if @import.valid? && !params[:campus_id].blank?
         @import.save!
-        @import.send_later(:process!, params[:campus_id], @ministry, @me)
+        @import.send_later(:run!, params[:campus_id], @ministry, @me)
       end
       # if @successful && @successful > 0
         flash[:notice] = "Your file has been queued for import. We'll shoot you an email as soon as it's done"
