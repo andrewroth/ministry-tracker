@@ -6,6 +6,13 @@ class MinistryInvolvementsController < ApplicationController
 
   # used to pop up a dialog box
   def index
+    @ministry_involvements = @person.active_ministry_involvements
+  end
+
+  def new
+    @ministry_involvement = @person.ministry_involvements.new
+    @ministries = Ministry.all # TODO restrict to their ministries and sub-ministries
+    @roles = MinistryRole.all # TODO restrict to their ministries and sub-ministries
   end
 
   # Records the ending of a user's involvement with a particular ministry
@@ -34,8 +41,11 @@ class MinistryInvolvementsController < ApplicationController
   def create
     # If this person was already on this ministry, update with the new role
     @mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id]})
-    @mi ? @mi.update_attribute(:ministry_role_id, params[:ministry_involvement][:ministry_role_id]) : MinistryInvolvement.create!(params[:ministry_involvement])
-    redirect_to '/staff'
+    @mi ? @mi.update_attribute(:ministry_role_id, params[:ministry_involvement][:ministry_role_id]) : @mi = MinistryInvolvement.create!(params[:ministry_involvement].merge(:start_date => Time.now))
+    @ministry_involvement = @mi
+    unless request.xhr?
+      redirect_to '/staff'
+    end
   end
   
   # A staff is defined as a anyone with a StaffRole.  But what really matters

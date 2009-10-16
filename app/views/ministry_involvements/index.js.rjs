@@ -1,2 +1,2 @@
-page['dialog'].replace(render(:inline => 'here'))
+page['dialog'].replace(render :partial => 'ministry_involvements/index')
 page['dialog'].show

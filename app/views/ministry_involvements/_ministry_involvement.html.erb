@@ -1,15 +1,3 @@
-<%- ministry = ministry_involvement.ministry -%>
-<li><%= link_to(ministry.name, ministry_campuses_path(:ministry_id => ministry)) %>  | 
-	<%= link_to_remote('edit', :url => edit_ministry_path(ministry), 
-								   :method => :get,
-								   :before => "$('#new_ministry_link').slideUp()",
-								 	 :method => :get) %>  |  
-	<%= link_to_remote('set parent', :url => parent_form_ministry_url(ministry),
-          											 	 :method => :get) %> 
-	<%- if ministry.deleteable? -%>
-		| 
-		<%= link_to_remote('delete', :url => ministry_url(ministry), 
-									 :method => :delete,
-									 :confirm => "Are you sure you want to delete this ministry?\nOnce you do, it'll be gone, along with all the people in it.\n YOU'VE BEEN WARNED!") %>
-	<%- end -%>
-</li>
+<%= link_to_remote image_tag('delete.png'), :url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true), :method => :delete %> 
+<%= ministry_involvement.ministry.name %>, since <%= ministry_involvement.start_date %>
+<%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_ministry_involvement_url(@person.id, ministry_involvement.id), :method => :get %> 
