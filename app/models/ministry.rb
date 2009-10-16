@@ -39,7 +39,7 @@ class Ministry < ActiveRecord::Base
   
   validates_presence_of _(:name)
   
-  validates_uniqueness_of _(:name)
+  validates_uniqueness_of _(:name), :scope => _(:parent_id)
   
   after_create :create_first_view, :create_default_roles
   
