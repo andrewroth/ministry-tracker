@@ -118,7 +118,7 @@ class PeopleController < ApplicationController
     
       conditions = add_involvement_conditions(conditions)
     
-      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search'].include?(key)}
+      @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
     
       @conditions = conditions.join(' AND ')
       @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
@@ -126,20 +126,19 @@ class PeopleController < ApplicationController
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
-    
     if params[:search_id].blank?
       @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
       if @search
         @search.update_attribute(:updated_at, Time.now)
       else
-        @search = Search.create(:person_id => @my.id, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+        @search = @my.searches.create(:options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
       end
       # Only keep the last 5 searches
       @my.searches.last.destroy if @my.searches.length > 5
     end
     
     # If these conditions will result in too large a set, use pagination
-    @count = ActiveRecord::Base.connection.select_value("SELECT count(*) FROM #{tables_clause} WHERE #{@conditions}").to_i
+    @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
       # Build range for pagination
       if @count > 500
@@ -286,16 +285,23 @@ class PeopleController < ApplicationController
     get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
     setup_vars
     setup_campuses
-    render :update do |page|
-      page[:info].hide
-      page[:edit_info].replace_html :partial => 'edit',
-        :locals => {
-          :current_address_country => current_address_country,
-          :permanent_address_country => permanent_address_country,
-          :countries => countries,
-          :current_address_states => current_address_states,
-          :permanent_address_states => permanent_address_states }
-      page[:edit_info].show
+    respond_to do |format|
+      format.html {
+        
+      }
+      format.js {
+        render :update do |page|
+          page[:info].hide
+          page[:edit_info].replace_html :partial => 'edit',
+            :locals => {
+            :current_address_country => current_address_country,
+            :permanent_address_country => permanent_address_country,
+            :countries => countries,
+            :current_address_states => current_address_states,
+            :permanent_address_states => permanent_address_states }
+          page[:edit_info].show
+        end
+      }
     end
   end
 
@@ -450,6 +456,10 @@ class PeopleController < ApplicationController
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
         flash[:notice] = 'Profile was successfully updated.'
+        if params[:set_campus_requested] == 'true'
+          flash[:notice] += "  Thank you for setting your campus.  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
+        end
+
         @person = Person.find(params[:id])
         format.html { redirect_to person_path(@person) }
         format.js do 
@@ -553,7 +563,7 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
-
+  
   def get_campuses_for_state
     @campus_state = params[:primary_campus_state]
     @campus_country = params[:primary_campus_country]

@@ -1,0 +1,11 @@
+<%- content_for :edit do -%>
+<script>
+  <%= remote_function :url => edit_person_path(@person, :set_campus_requested => params[:set_campus_requested]), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
+</script>
+<%- end -%>
+
+<%- content_for :show do -%>
+  <%= render :partial => 'view' %>
+<%- end -%>
+
+<%= render :partial => 'profile_layout' %>

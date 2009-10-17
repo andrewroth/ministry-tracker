@@ -25,6 +25,12 @@ class PeopleControllerTest < ActionController::TestCase
   #   assert assigns(:people)
   # end
   
+  test "when i do a search, save it" do
+    assert_difference "Search.count" do
+      post :directory, :search => 'all'
+    end
+  end
+  
   test "directory pagination" do
     post :directory, :search => 'all'
     assert_response :success
@@ -199,7 +205,7 @@ class PeopleControllerTest < ActionController::TestCase
     josh.permanent_address = nil
     josh.primary_campus_involvement = nil
     josh.save!
-    get :edit, :id => 50000
+    get :edit, :id => 50000, :format => 'js'
     assert_response :success
     assert_nil assigns['campus_country']
     assert_nil assigns['campus_state']

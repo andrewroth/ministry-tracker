@@ -1,22 +1,4 @@
 <% @site_title = 'Directory' -%>
-<script language="JavaScript" type="text/javascript">
-	function switchCheck(form) {
-		if(form["select_all"].checked == true) {
-			checkAll(form)
-		} else {
-			uncheckAll(form)
-		}
-	}
-	function checkAll(form) {
-		for(i=0; i< form.length; i++)
-			form[i].checked = true;
-	}
-	// Uncheck all the options option
-	function uncheckAll(form) {
-		for(i=0; i< form.length; i++)
-			form[i].checked = false;
-	}
-</script>
 <div id="timetable_link"
 </div>
 <div class="sectionHeader">
@@ -47,7 +29,7 @@
 	View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
 	<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
   <%- tooltip do -%> 
-    These are defined in the Manage tab, under the Customize option. Views are differet ways to look at the directory.
+    These are defined in the Manage tab, under the Customize option. Views are different ways to look at the directory.
   <%- end -%>
 <%- end -%>
 
@@ -68,8 +50,12 @@
 <%- end -%>
 
 
+<%= form_tag(perform_task_people_path, :name => 'people_form', :id => 'people_form') %>
 <div class="yoursearch">
-<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @people.size %>) <%= @people.size != 1 ? 'people' : 'person' %> found<br />
+<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @count %>) <%= @count != 1 ? 'people' : 'person' %> found<br />
+  <script type="text/javascript" charset="utf-8">
+    var total_people = <%= @count %>
+  </script>
   <%  options = [['Filter by Last Name','']] %>
   <%- if @count > 2000 -%>
     <!-- | -->
@@ -95,6 +81,10 @@
     <%= observe_field(:interval, :function => "if($('#interval').val() != '') document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
   <% end %>
 
+  <%- if authorized?(:email) -%>
+    <%= select_tag(:perform_action, options_for_select([['Perform Action on Selected',''],['Send Email',new_email_path]])) %>
+    <%= observe_field :perform_action, :function => "performAction()" %>
+  <%- end -%>
 </p>
 </div>
 
@@ -104,16 +94,27 @@
 	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
 <% end %>
 <div id="people">
-	<%= form_tag({}, :name => 'people_form', :id => 'people_form') %>
 	<table cellpadding="0" cellspacing="0" class="directorytable">
 		<thead class="center">
+		  <tr id="selected_row" style="display:none">
+		    <td colspan="<%= @view.columns.length + 2 %>">
+		      <%= hidden_field_tag :entire_search, 0 %>
+		      <%= hidden_field_tag :search_id, @search.id %>
+		      All <strong><%= @people.length %></strong> people on this page are selected.
+		      <%= link_to_function("Select all <strong>#{@count}</strong> people from this search.", "selectEntireSearch();") %>
+		    </td>
+	    </tr>
+		  <tr id="entire_search_row" style="display:none">
+		    <td colspan="<%= @view.columns.length + 2 %>">All <strong><%= @count %></strong> people from this search are selected.
+		      <%= link_to_function("Clear selection.", "clearSelection();") %>
+		    </td>
+	    </tr>
 		  <tr>
-<!--
-			<th>
-				<%= check_box_tag 'select_all', 1, false, :onClick => "switchCheck($('#people_form'));" %>
-				<%= image_tag "button_edit_grey_tiny.gif", :size => '13x13', :border => '0', :style => "visibility:hidden"%>
-			</th>
--->
+  <%- if authorized?(:email) -%>
+      <th>
+        <%= check_box_tag 'select_all', 1, false %>
+      </th>
+  <%- end -%>
   <%- @view.columns.each do |column| -%>
 			<th>
 			  <%- if [nil, 'date'].include?(column.column_type) 
@@ -145,13 +146,11 @@
 		<% @can_delete = authorized?(:new) %>
 		<%- @people.each_with_index do |person, i|  -%>
 			<tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
-<!--
-				<td>
-					<%= i+1 %>.
-					<%= check_box_tag 'person[]'%>
-					<%= image_tag "button_edit_grey_tiny.gif", :size => '13x13', :border => '0'%>
-				</td>
--->
+  <%- if authorized?(:email) -%>
+      <td width="10px">
+        <%= check_box_tag 'person[]', person["person_id"] %> 
+      </td>
+  <%- end -%>
       <%- @view.columns.each do |column| -%>
 				<td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%= 
 				case column.column_type
@@ -186,4 +185,4 @@
 	</table>
   
 </div>
-  <%- end -%>
+<%- end -%>

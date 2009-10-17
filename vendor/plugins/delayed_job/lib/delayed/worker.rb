@@ -2,23 +2,24 @@ module Delayed
   class Worker
     SLEEP = 5
 
+    cattr_accessor :logger
+    self.logger = if defined?(Merb::Logger)
+      Merb.logger
+    elsif defined?(RAILS_DEFAULT_LOGGER)
+      RAILS_DEFAULT_LOGGER
+    end
+
     def initialize(options={})
       @quiet = options[:quiet]
-      @logger = options[:logger] ? options[:logger] : RAILS_DEFAULT_LOGGER
       Delayed::Job.min_priority = options[:min_priority] if options.has_key?(:min_priority)
       Delayed::Job.max_priority = options[:max_priority] if options.has_key?(:max_priority)
-    end                                                                          
+    end
 
     def start
       say "*** Starting job worker #{Delayed::Job.worker_name}"
-      
-      file = File.new("#{RAILS_ROOT}/tmp/pids/Worker_#{Process.pid}.pid", "w+")
-      file.puts "Rake Task Started #{Time.now}"
-      file.puts "PID: #{Process.pid}"
-      file.close      
 
-      trap('TERM') { say "Exiting...#{Delayed::Job.worker_name}"; $exit = true }
-      trap('INT')  { say "Exiting...#{Delayed::Job.worker_name}"; $exit = true }
+      trap('TERM') { say 'Exiting...'; $exit = true }
+      trap('INT')  { say 'Exiting...'; $exit = true }
 
       loop do
         result = nil
@@ -38,15 +39,15 @@ module Delayed
         end
 
         break if $exit
-      end           
-      
+      end
+
     ensure
       Delayed::Job.clear_locks!
     end
-    
+
     def say(text)
       puts text unless @quiet
-      @logger.info text
+      logger.info text if logger
     end
 
   end

@@ -293,6 +293,12 @@ Permission.seed(:controller, :action) do |p|
 end
  
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'email'
+  p.description = 'Email people off the directory'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'training_questions'
   p.action = 'edit'
   p.description = 'Modify Training Items'
@@ -302,4 +308,16 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'dorms'
   p.action = 'new'
   p.description = 'Customizes A Ministry (based on what your other permissions are)'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'emails'
+  p.action = 'new'
+  p.description = 'ability to send emails'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'emails'
+  p.action = 'index'
+  p.description = 'manage active emails being sent out'
 end

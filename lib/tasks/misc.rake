@@ -1,3 +1,4 @@
+require 'csv'
 namespace :cmt do
   namespace :views do
     desc "rebuilds all views in the CMT"
@@ -46,6 +47,41 @@ task :people => :environment do
                                         :phone => array[16],
                                         :person_id => person.id)
       end                                    
+    end
+  end
+end
+
+task :ucla => :environment do
+  CSV.open('lib/tasks/import.csv', 'w') do |writer|
+    writer << %w{first_name last_name year_in_school level_of_school email phone alternate_phone address1 city state zip country gender}
+    CSV.open('lib/tasks/ucla.csv', 'r') do |row|
+      year = case row[3].to_s
+             when '1'
+               'Freshman'
+             when '2'
+               'Sophomore'
+              when '3'
+                'Junior'
+              when '4'
+                'Senior'
+              when 'Grad'
+                '1st Year'
+              end
+      level = case row[3].to_s
+              when '1','2','3','4'
+                'Undergrad'
+              when 'Grad'
+                'Grad Schol'
+              when 'Staff'
+                next
+              end
+      address = row[7].to_s.split('<br>')
+      address = [address[0]] + address[1].split(', ') if address.length > 1
+      address = address[0..1] + address[2].split(' ') if address.length > 2
+      city = row[8].present? ? row[8] : address[1]
+      state = row[9].present? ? row[9] : address[2]
+      zip = row[10].present? ? row[10] : address[3]
+      writer << [row[1], row[2], year, level, row[4], row[5], row[6], address[0], city, state, zip, 'USA', row[11].to_s == 'F' ? 'Female' : 'Male']
     end
   end
 end

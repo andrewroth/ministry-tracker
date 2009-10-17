@@ -1,0 +1,23 @@
+<h1>New email</h1>
+
+<% form_for(@email) do |f| %>
+  <%= f.error_messages %>
+  <%= f.hidden_field :search_id %>
+  <%= f.hidden_field :people_ids %>
+  <p>
+    <%= f.label :subject %>
+    <%= f.text_field :subject %>
+  </p>
+  <p>
+    <%= f.label :salutation %>
+    <%= f.text_field :salutation %>
+  </p>
+  <p>
+    <%= f.label :body %>
+    <%= f.text_area :body, :cols => 80 %>
+  </p>
+  <p>
+    <%= f.submit 'Send Email' %> or 
+    <%= link_to 'cancel', :back, :class => 'cancel' %>
+  </p>
+<% end %>

@@ -1,0 +1,16 @@
+Hi <%= @person.first_name %>,
+
+<%- if @successful.present? -%>
+We've finished running your import. 
+
+<%= @successful.length %> <%= @successful.length == 1 ? 'person' : 'people' %> were imported successfully.
+<%- if @unsuccessful.present? -%>
+
+The following people failed to import:
+<% @unsuccessful.each do |person| %> 
+ - <%= person.full_name %>
+<%- end -%>
+<%- end -%>
+<%- else -%>
+There was a problem running your import. Please make sure all the columns were named correctly.
+<% end %>

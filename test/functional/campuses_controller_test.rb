@@ -29,7 +29,7 @@ class CampusesControllerTest < ActionController::TestCase
   end
   
   test "change to valid state" do
-    xhr :post, :change_state, :country => 'USA', :state => 'CA'
+    xhr :post, :change_state, :country => 'US', :state => 'CA'
     assert assigns['campuses'].length > 0
     assert_response :success 
   end

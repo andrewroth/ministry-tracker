@@ -130,7 +130,7 @@ this system, along with any other information we think would be helpful to you.<
             <%= link_to('Go to your profile', person_url(@me.id)) %>
           </li>
           <li>
-            <%= link_to('Enter your timetable', person_timetable_path(@me.id, 
+            <%= link_to('Enter your timetable', edit_person_timetable_path(@me.id, 
                   (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
           </li>
           <%- if authorized?(:new, :people) -%>

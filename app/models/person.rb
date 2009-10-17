@@ -2,6 +2,8 @@ class Person < ActiveRecord::Base
   include ActiveRecord::ConnectionAdapters::Quoting
   load_mappings
   
+  has_many :emails, :class_name => "Email", :foreign_key => "sender_id"
+  
   # Campus Relationships
   has_many :campus_involvements #, :include => [:ministry, :campus]
   has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
@@ -193,6 +195,12 @@ end
       @training_answer_hash = {}
       training_answers.each {|ta| @training_answer_hash[ta.training_question_id] = ta }
     end
+  end
+  
+  def primary_email
+    @primary_email = current_address.try(:email)
+    @primary_email = user.username if @primary_email.blank? && user.username =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+    @primary_email
   end
   
   # def all_ministries
