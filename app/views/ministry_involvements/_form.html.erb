@@ -1,3 +1,4 @@
 <%= error_messages_for :ministry_involvement %>
 Ministry: <%= collection_select :ministry_involvement, :ministry_id, @ministries, :id, :name, { :include_blank => true } %><br/>
 Role: <%= collection_select :ministry_involvement, :ministry_role_id, @roles, :id, :name, { :include_blank => true } %><br/>
+Start Date: <%= date_select :ministry_involvement, :start_date, {}, { :style => "z-index: 1100" } %><br/>

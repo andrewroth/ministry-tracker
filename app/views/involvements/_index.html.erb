@@ -1,3 +1,14 @@
+<script>
+  /* hack to make the activescaffold dialog appear fixed */
+  function make_calendars_fixed_repeatedly() {
+    if ($('#TB_window').length != 0) {
+      $('.calendar').css({ 'position': 'fixed'});
+      setTimeout("make_calendars_fixed_repeatedly()", 333);
+    }
+  }
+  setTimeout("make_calendars_fixed_repeatedly()", 333);
+</script>
+
 <div id="dialog">
   <ul id='<%=@short%>_list'>
     <%= render :collection => instance_variable_get("@#{@singular}_involvements"), :partial => "involvements/involvement_li" %>

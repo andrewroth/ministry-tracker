@@ -8,7 +8,7 @@ class MinistryInvolvementsController < ApplicationController
 
   # used to pop up a dialog box
   def index
-    @ministry_involvements = @person.active_ministry_involvements
+    @ministry_involvements = @person.ministry_involvements
     render :template => 'involvements/index'
   end
 
@@ -67,7 +67,6 @@ class MinistryInvolvementsController < ApplicationController
   # Staff are admin if they're marked admin in the ministry involvement.  The
   # actual role of being an admin doesn't inherently grant anything.
   def edit
-    debugger
     if params[:person_id].present? && !params[:ministry_id].present? && params[:id].present?
       @ministry_involvement = @person.ministry_involvements.find params[:id]
       render :template => 'involvements/edit' if params[:from_profile] == 'true'

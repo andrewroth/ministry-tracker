@@ -1055,3 +1055,12 @@ div.help_block {
 div.section {
   padding-top: 5px;
 }
+
+.archived_text {
+  color: #AAAAAA;
+}
+
+.calendar {
+  z-index: 1100;
+  position: fixed;
+}
