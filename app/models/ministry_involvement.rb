@@ -8,5 +8,7 @@ class MinistryInvolvement < ActiveRecord::Base
   has_many :permissions, :through => :ministry_role, :source => :ministry_role_permissions
   
   validates_presence_of _(:ministry_role_id), :on => :create, :message => "can't be blank"
+  validates_uniqueness_of _(:end_date), :scope => [ _(:ministry_id), _(:person_id), 
+    _(:ministry_role_id) ], :message => 'is invalid.  You already have a ministry involvement with this role on this ministry; edit that ministry involvement instead.'
 
 end

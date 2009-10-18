@@ -56,9 +56,7 @@
   	</ul> <br />
 	<%- end -%>
 	<div id="campuses_div">
-	<%- if @person.active_campus_involvements.count > 0 -%>
     <%= render :partial => 'campuses' %>
-  <%- end -%>
   </div>
 	<%# = link_to '&raquo; Find a Group', find_groups_url %><br />
 	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>

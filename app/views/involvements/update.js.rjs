@@ -1,4 +1,7 @@
-involvement = instance_variable_get("@#{@singular}_involvement")
-page["#{@short}_li_#{involvement.id}"].replace_html :partial => involvement
-page["#{@short}_li_#{involvement.id}"].show
-page["#{@short}_li_edit_#{involvement.id}"].hide
+if involvement.errors.empty?
+  page["#{@short}_li_#{involvement.id}"].replace_html :partial => involvement
+  page["#{@short}_li_#{involvement.id}"].show
+  page["#{@short}_li_edit_#{involvement.id}"].hide
+else
+  page["#{@short}_li_edit_#{involvement.id}"].replace_html :partial => 'new'
+end

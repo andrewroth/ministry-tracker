@@ -2,7 +2,7 @@ if involvement.errors.empty?
   if @updated
     render :file => 'involvements/update.js.rjs'
   else
-    page.insert_html :before, :"new_#{@singular}_li", :partial => "#{@singular}_involvement_li", :object => involvement
+    page.insert_html :before, :"new_#{@singular}_li", :partial => "involvements/involvement_li", :object => involvement
   end
   page["new_#{@singular}_involvement_li"].replace ''
   page["add_#{@singular}_button"].show

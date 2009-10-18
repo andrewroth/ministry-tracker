@@ -43,18 +43,22 @@ class CampusInvolvementsController < ApplicationController
 
   def edit
     @campus_involvement = @person.campus_involvements.find params[:id]
+    render :template => 'involvements/edit'
   end
 
   def update
     @campus_involvement = @person.campus_involvements.find params[:id]
     params[:campus_involvement][:ministry_id] = get_ministry.id
     @campus_involvement.update_attributes params[:campus_involvement]
+    render :template => 'involvements/update'
   end
 
   protected
 
   def set_campuses
-    @campuses = get_ministry.campuses
+    @campuses = @person.ministries.collect &:campuses
+    @campuses.flatten!
+    @campuses.uniq!
   end
 
   def set_school_years
