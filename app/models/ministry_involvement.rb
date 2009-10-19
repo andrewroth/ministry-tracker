@@ -8,7 +8,16 @@ class MinistryInvolvement < ActiveRecord::Base
   has_many :permissions, :through => :ministry_role, :source => :ministry_role_permissions
   
   validates_presence_of _(:ministry_role_id), :on => :create, :message => "can't be blank"
-  validates_uniqueness_of _(:end_date), :scope => [ _(:ministry_id), _(:person_id), 
-    _(:ministry_role_id) ], :message =>  "is invalid.  This means you already have a ministry involvement with this school year OR there is a conflicting archived ministry involvement, with this end date already. It's impossible to be involved at different school years at the same time.  In this case, you should edit or delete the conflicting archived involvement."
+  validates_presence_of _(:ministry_id)
 
+  def validate
+    if !archived?
+      if MinistryInvolvement.find(:first, :conditions => { :person_id => person_id, :ministry_id => ministry_id })
+      errors.add_to_base "There is already a ministry involvement for the ministry \"#{ministry.try(:name)}\"; you can only be involved once per ministry.  Archive the existing involvement and try again."
+    end
+  end
+end
+
+
+def archived?() end_date.present? end
 end

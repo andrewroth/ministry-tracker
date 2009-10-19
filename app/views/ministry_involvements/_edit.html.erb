@@ -1,0 +1,12 @@
+<%- remote_form_for @ministry_involvement do |f| -%>
+  	<p>Role: 
+  	<%= f.select :ministry_role_id, possible_roles.collect {|role| [role.name, role.id]} %></p>
+  	<%- if @me.admin?(@ministry_involvement.ministry) # You have to be an admin to make an admin -%>
+    <p><%= f.check_box :admin %> Admin</p>
+    <%- end -%>
+    <%- if defined?(single_edit) && single_edit -%>
+      <%= hidden_field_tag :single_edit, true %>
+    <%- end -%>
+    <p><%= f.submit %> or <%- if params[:single_edit] -%><%= link_to 'cancel', person_url(@person) %><%- else -%><%= link_to_function 'cancel', "$('#campus_form#{@person.id}').blindUp();",
+                                :class => 'cancel' %><%- end -%></p>
+<%- end -%>

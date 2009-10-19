@@ -22,11 +22,19 @@ class MinistryInvolvementsController < ApplicationController
     @person = Person.find(params[:person_id])
     if @me == @person || authorized?(:new, :people)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
-      @ministry_involvement.update_attribute(:end_date, Time.now)
+      if @ministry_involvement.end_date.present?
+        @ministry_involvement.destroy
+      else
+        @archived_ministry_involvement = @ministry_involvement
+        setup_archived_after(@archived_ministry_involvement)
+        @ministry_involvement.update_attribute(:end_date, Time.now)
+      end
 
       respond_to do |format|
         format.xml  { head :ok }
-        format.js
+        format.js {
+          render :template => 'involvements/destroy' if params[:from_manage]
+        }
       end
     else
       respond_to do |format|
@@ -42,7 +50,7 @@ class MinistryInvolvementsController < ApplicationController
   
   def create
     # If this person was already on this ministry, update with the new role
-    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id]})
+    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id], _(:end_date, :ministry_involvement) => nil } )
     if mi
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
       mi.start_date ||= Date.today
@@ -67,14 +75,14 @@ class MinistryInvolvementsController < ApplicationController
   # Staff are admin if they're marked admin in the ministry involvement.  The
   # actual role of being an admin doesn't inherently grant anything.
   def edit
-    if params[:person_id].present? && !params[:ministry_id].present? && params[:id].present?
+    if params[:from_manage] == 'true'
       @ministry_involvement = @person.ministry_involvements.find params[:id]
-      render :template => 'involvements/edit' if params[:from_profile] == 'true'
+      render :template => 'involvements/edit'
     elsif params[:person_id].present? && params[:ministry_id].present?
-      @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id]})
+      @ministry_involvement = MinistryInvolvement.find(:first, :conditions => {:ministry_id => params[:ministry_id], :person_id => params[:person_id], :end_date => nil})
       unless @ministry_involvement
         flash[:notice] = "Couldn't find ministry involvement."
-        redirect_to :back
+        redirect_to :back unless request.xhr?
         return
       end
 
@@ -88,23 +96,34 @@ class MinistryInvolvementsController < ApplicationController
   def update
     @ministry_involvement = MinistryInvolvement.find(params[:id])
     # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
-    params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me ||
-    !is_ministry_admin(@ministry, @me)
+    params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me || !is_ministry_admin(@ministry, @me)
     
     # And you can't set any roles higher than yourself
     unless possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
       flash[:notice] = "Sorry, you can't set that role"
       return
     end
-    @ministry_involvement.update_attributes(params[:ministry_involvement])
-    @person = @ministry_involvement.person
+    @person = @ministry_involvement.person 
+
+    if (params[:from_manage] == 'true' && @ministry_involvement.archived?) || 
+      params[:from_manage] != 'true'
+      @ministry_involvement.end_date = Date.today
+      @ministry_involvement.save
+      if @ministry_involvement.errors.empty?
+        @ministry_involvement = MinistryInvolvement.create :person_id => @ministry_involvement.person_id, :start_date => Date.today, :end_date => nil, :ministry_role_id => params[:ministry_involvement][:ministry_role_id], :admin => params[:ministry_involvement][:admin], :ministry_id => @ministry_involvement.ministry_id
+      end
+      if @ministry_involvement.errors.length > 0
+        flash[:notice] = "There were errors saving your changes: #{@ministry_involvement.errors.full_messages.join("; ")}"
+      end
+    end
+
     # special case when editing a single person's role
     if params[:single_edit]
       flash[:notice] = "#{@person.full_name}'s ministry role updated to #{@ministry_involvement.ministry_role.name}"
     end
     respond_to do |wants|
       wants.js {
-        render :template => 'involvements/update' if params[:from_profile] == 'true'
+        render :template => 'involvements/update' if params[:from_manage] == 'true'
       }
     end
   end
@@ -121,5 +140,11 @@ class MinistryInvolvementsController < ApplicationController
   def set_ministries_and_roles
     @ministries = Ministry.all # TODO restrict to their ministries and sub-ministries
     @roles = MinistryRole.all # TODO restrict to their ministries and sub-ministries
+  end
+
+  def setup_archived_after(ami, mis = @person.ministry_involvements)
+    # figure out where to put the archived campus involvement
+    archived_index = mis.index ami
+    @archived_after = archived_index == 0 ? :first : mis[archived_index - 1]
   end
 end

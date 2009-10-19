@@ -38,20 +38,10 @@
 	
   <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
   <%- if @person.ministries.count > 0 -%>
-  	<ul>
+  	<ul id="ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
-  	  <li id="mi_<%= mi.id %>">
-  	  <%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi), 
-                                                  :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?", 
-                                                  :method => :delete,
-                                                  :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
-  	  <%= link_to_remote(mi.ministry.name, 
-            :url => change_ministry_and_goto_directory_people_url(:current_ministry => mi.ministry.id),
-            :method => :get) 
-      %>
-      (<%= mi.ministry_role.try(:name) %>)
-  	  </li>
+      <%= render :partial => 'ministry_li', :locals => { :mi => mi } %>
   	<%- end -%>
   	</ul> <br />
 	<%- end -%>

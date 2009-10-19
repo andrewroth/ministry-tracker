@@ -1,0 +1,7 @@
+if flash[:notice]
+  update_flash page, flash[:notice]
+else
+  page.replace_html "campus_form#{@person.id}", :partial => 'edit'
+  page["campus_form#{@person.id}"].show
+end
+page["spinner#{@person.id}"].hide

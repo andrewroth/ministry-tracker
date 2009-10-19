@@ -1,14 +1,11 @@
 <%- archived = ministry_involvement.end_date.present? -%>
 <div<%= ' class="archived_text"' if archived %>>
-<%- unless archived -%>
-<%= link_to_remote image_tag('delete.png'), :url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true, :person_id => @person.id, :ministry_id => ministry_involvement.ministry_id), :method => :delete %> 
-<%- else -%>
-&nbsp;&nbsp;&nbsp;
-<%- end -%>
-<%= ministry_involvement.ministry.name %>,
-<%- if ministry_involvement.end_date.present? -%> from <%= ministry_involvement.start_date %> to <%= ministry_involvement.end_date %> (archive)
+<%= link_to_remote image_tag('delete.png'), :url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true), :method => :delete, :confirm => (archived ? "Are you sure you want to delete this archived involvement?  Please delete this archived involvement only if it's inaccurate, so that we can collect accurate statistics." : "Are you sure you want to archive this involvement?" ) %> 
+<%= ministry_involvement.ministry.name %>, 
+<%= ministry_involvement.ministry_role.try(:name) %>, 
+<%- if ministry_involvement.end_date.present? -%> from <%= ministry_involvement.start_date %> to <%= ministry_involvement.end_date %> (archived)
 <%- else -%>
  since <%= ministry_involvement.start_date %>
 <%- end -%>
-<%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_profile => true), :method => :get %> 
+<%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true), :method => :get %>
 </div>

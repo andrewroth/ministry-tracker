@@ -3,7 +3,7 @@
 <% remote_form_for(@ministry_involvement, 
                    :url => person_ministry_involvements_url(@person.id),
                    :method => :post) do |f| %>
-  <%= render :partial => 'form' %>
+  <%= render :partial => 'form', :locals => { :role_only => false } %>
   <%= submit_tag 'Save' %>
   or
   <%= link_to_function 'cancel', '$("#new_ministry_involvement_li").replaceWith("");' %>
