@@ -128,7 +128,7 @@ class ApplicationController < ActionController::Base
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new]
+      :campus_involvements => [:new, :edit, :index]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -203,6 +203,9 @@ class ApplicationController < ActionController::Base
           if (params[:person_id] && params[:controller] == "campus_involvements") && params[:person_id] == @my.id.to_s 
             return true
           end   
+          if @person == @me
+            return true
+          end
         end # case
       end # if
 
