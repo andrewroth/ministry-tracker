@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
+  #before_filter CASClient::Frameworks::Rails::Filter unless Rails.env.test?
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
   before_filter :authorization_filter
@@ -128,7 +128,8 @@ class ApplicationController < ActionController::Base
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new]
+      :campus_involvements => [:new, :edit, :index],
+      :ministry_involvements => [:new, :edit, :index]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -194,15 +195,18 @@ class ApplicationController < ActionController::Base
         when :group_involvements
           if params[:id] || @gi
             @gi ||= GroupInvolvement.find_by_id(params[:id])
-            @group ||= @gi.try(:group) || Group.find(params[:group_id])
-            if @group.is_leader(@me) || @group.is_co_leader(@me)
+            @group ||= @gi.try(:group) || (params[:group_id] && Group.find(params[:group_id]))
+            if @group && (@group.is_leader(@me) || @group.is_co_leader(@me))
               return true
             end
           end
-        when :campus_involvements
-          if (params[:person_id] && params[:controller] == "campus_involvements") && params[:person_id] == @my.id.to_s 
+        when :campus_involvements, :ministry_involvements
+          if params[:person_id] == @my.id.to_s 
             return true
           end   
+          if @person == @me
+            return true
+          end
         end # case
       end # if
 

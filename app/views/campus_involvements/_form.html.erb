@@ -1,0 +1,9 @@
+<%= error_messages_for :campus_involvement %>
+<%- unless year_only -%>
+Campus: <%= collection_select :campus_involvement, :campus_id, @campuses, :id, :name, { :include_blank => true } %><br/>
+<%- end -%>
+School Year: <%= collection_select :campus_involvement, :school_year_id, @school_years, :id, :name, { :include_blank => true } %><br/>
+<%- unless year_only -%>
+Start Date: <%= date_select :campus_involvement, :start_date %><br/>
+End Date: <%= date_select :campus_involvement, :end_date %><br/><p><% if @campus_involvement.end_date.present? %>Leave blank to reinstante.<% else %>End Date is optional; provide one to create an archived campus involvement.<% end %></p>
+<%- end -%>

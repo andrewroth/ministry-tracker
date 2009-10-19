@@ -1,0 +1,3 @@
+class Business < Campus
+
+end

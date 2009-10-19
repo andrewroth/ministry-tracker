@@ -36,29 +36,17 @@
     :group_types_and_involvements => @person.group_group_involvements(:involved, :ministry => @ministry)
   } %>
 	
-	<%- if @person.ministries.count > 0 -%>
-  	<h4>Ministries</h4>
-  	<ul>
+  <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
+  <%- if @person.ministries.count > 0 -%>
+  	<ul id="ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
-  	  <li id="mi_<%= mi.id %>">
-  	  <%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi), 
-                                                  :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?", 
-                                                  :method => :delete,
-                                                  :before => "$('#spinner').show()")  if @me == @person || authorized?(:new) %>
-  	  <%= link_to_remote(mi.ministry.name, 
-            :url => change_ministry_and_goto_directory_people_url(:current_ministry => mi.ministry.id),
-            :method => :get) 
-      %>
-      (<%= mi.ministry_role.try(:name) %><%- if @person != @me && authorized?(:edit, :people) -%> <%= link_to image_tag("edit.png"), edit_ministry_involvement_url(0, :person_id => @person.id, :ministry_id => @ministry.id, :single_edit => true) %><%- end -%>)
-  	  </li>
+      <%= render :partial => 'ministry_li', :locals => { :mi => mi } %>
   	<%- end -%>
   	</ul> <br />
 	<%- end -%>
 	<div id="campuses_div">
-	<%- if @person.active_campus_involvements.count > 0 -%>
     <%= render :partial => 'campuses' %>
-  <%- end -%>
   </div>
 	<%# = link_to '&raquo; Find a Group', find_groups_url %><br />
 	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>

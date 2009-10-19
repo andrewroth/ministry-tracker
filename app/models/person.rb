@@ -13,7 +13,7 @@ class Person < ActiveRecord::Base
   # accepts_nested_attributes_for :primary_campus_involvement
   has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
   has_many :active_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
-  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
+  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :order => 'end_date DESC'
   has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
   has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
