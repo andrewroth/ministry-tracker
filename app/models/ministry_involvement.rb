@@ -9,6 +9,6 @@ class MinistryInvolvement < ActiveRecord::Base
   
   validates_presence_of _(:ministry_role_id), :on => :create, :message => "can't be blank"
   validates_uniqueness_of _(:end_date), :scope => [ _(:ministry_id), _(:person_id), 
-    _(:ministry_role_id) ], :message => 'is invalid.  You already have a ministry involvement with this role on this ministry; edit that ministry involvement instead.'
+    _(:ministry_role_id) ], :message =>  "is invalid.  This means you already have a ministry involvement with this school year OR there is a conflicting archived ministry involvement, with this end date already. It's impossible to be involved at different school years at the same time.  In this case, you should edit or delete the conflicting archived involvement."
 
 end
