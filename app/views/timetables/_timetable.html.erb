@@ -1,10 +1,20 @@
-<table id="schedule" width="250px" cellspacing="0">
+<table id="schedule_header" width="250px" cellspacing="0">
   <thead>
     <tr>
       <th>&nbsp;</th>
-    <%- 7.times do |day| -%>
-      <th><%= Date::DAYNAMES[day] %></th>
-    <%- end -%>
+      <%- 7.times do |day| -%>
+        <th><%= Date::DAYNAMES[day] %></th>
+      <%- end -%>
+  </thead>
+</table>
+
+ <table id="schedule" width="250px" cellspacing="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <%- 7.times do |day| -%>
+        <th><%= Date::DAYNAMES[day] %></th>
+      <%- end -%>
   </thead>
   <tbody>
     <!-- EARLIEST to LATEST in 15 minute intervals -->
