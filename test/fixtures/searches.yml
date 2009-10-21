@@ -1,7 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
+one:
+  id: 1
+  person_id: 50000
+  options: "{}"
+  query: 'Person.id IN(50000)'
+  tables: '{}'
 #
 # two:
 #   column: value
