@@ -109,6 +109,7 @@ class Import < ActiveRecord::Base
     self.destroy
     begin File.unlink(@csv_filename); rescue; end # In case we created an extra csv file
     Mailers::ImportMailer.deliver_complete(importer, successful, unsuccessful)
+    [successful, unsuccessful]
   end
   
   def find_state_by_abbreviation_or_name(state_string)
