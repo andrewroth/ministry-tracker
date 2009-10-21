@@ -199,7 +199,7 @@ end
   
   def primary_email
     @primary_email = current_address.try(:email)
-    @primary_email = user.username if @primary_email.blank? && user.username =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+    @primary_email = user.username if @primary_email.blank? && user && user.username =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
     @primary_email
   end
   

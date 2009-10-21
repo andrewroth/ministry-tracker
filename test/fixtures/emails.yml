@@ -1,7 +1,19 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+one:
+  salutation: hi
+  subject: test
+  body: foob ar
+  sender_id: 50000
+  people_ids: "[50000, 1]"
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
+
+two:
+  salutation: hi
+  subject: test
+  body: foob ar
+  sender_id: 50000
+  search_id: 1
+  created_at: <%= Time.now.to_s(:db) %>
+  updated_at: <%= Time.now.to_s(:db) %>
