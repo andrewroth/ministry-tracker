@@ -52,16 +52,4 @@ class EmailsController < ApplicationController
       end
     end
   end
-
-  # DELETE /emails/1
-  # DELETE /emails/1.xml
-  def destroy
-    @email = Email.find(params[:id])
-    @email.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(emails_url) }
-      format.xml  { head :ok }
-    end
-  end
 end
