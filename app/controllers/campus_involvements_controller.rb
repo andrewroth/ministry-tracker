@@ -85,7 +85,7 @@ class CampusInvolvementsController < ApplicationController
     @add_title = 'Add Campus'
   end
 
-  def (aci, cis = @person.campus_involvements)
+  def setup_archived_after(aci, cis = @person.campus_involvements)
     # figure out where to put the archived campus involvement
     archived_index = cis.index aci
     @archived_after = archived_index == 0 ? :first : cis[archived_index - 1]

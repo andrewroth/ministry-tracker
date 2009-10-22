@@ -4,7 +4,8 @@ class CampusInvolvement < ActiveRecord::Base
 
   def validate
     if !archived?
-      if CampusInvolvement.find(:first, :conditions => { :person_id => person_id, :campus_id => campus_id })
+      if (ci = CampusInvolvement.find(:first, :conditions => { :person_id => person_id, :campus_id => campus_id })) && (ci != self)
+        debugger
         errors.add_to_base "There is already a campus involvement for the campus \"#{campus.name}\"; you can only be involved once per campus.  Archive the existing involvement and try again."
       end
     end
