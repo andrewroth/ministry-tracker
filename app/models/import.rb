@@ -8,7 +8,7 @@ class Import < ActiveRecord::Base
   load_mappings
   include PersonMethods
   
-  has_attachment  :storage => :s3
+  has_attachment :storage => $attachment_storage_mode
   validates_as_attachment 
   
   belongs_to :person
