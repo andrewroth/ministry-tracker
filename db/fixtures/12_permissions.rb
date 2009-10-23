@@ -299,6 +299,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry_and_goto_directory'
+  p.description = 'Change ministry'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'training_questions'
   p.action = 'edit'
   p.description = 'Modify Training Items'
