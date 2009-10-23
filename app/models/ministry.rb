@@ -3,7 +3,7 @@ class Ministry < ActiveRecord::Base
   
   # acts_as_tree :order => _(:name), :counter_cache => true
   has_many :children, :class_name => "Ministry", :foreign_key => _(:parent_id), 
-    :order => "#{Ministry.table_name}.`#{_(:ministries_count)}` > 0 DESC,#{Ministry.table_name}.`#{_(:name)}"
+    :order => "#{Ministry.table_name}.`#{_(:ministries_count)}` DESC, #{Ministry.table_name}.`#{_(:name)}"
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id),
     :counter_cache => :ministries_count
