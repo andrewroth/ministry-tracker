@@ -33,6 +33,7 @@ class GroupsController < ApplicationController
     end
     @join = true
     get_person_campus_groups
+    @groups = @person_campus_groups
     setup_campus_filter
     respond_to do |format|
       format.html

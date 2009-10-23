@@ -12,7 +12,7 @@ class MinistryInvolvement < ActiveRecord::Base
 
   def validate
     if !archived?
-      if (mi = MinistryInvolvement.find(:first, :conditions => { :person_id => person_id, :ministry_id => ministry_id })) && (mi != self)
+      if (mi = MinistryInvolvement.find(:first, :conditions => { :person_id => person_id, :ministry_id => ministry_id, :end_date => nil })) && (mi != self)
       errors.add_to_base "There is already a ministry involvement for the ministry \"#{ministry.try(:name)}\"; you can only be involved once per ministry.  Archive the existing involvement and try again."
     end
   end

@@ -4,7 +4,7 @@
 class MinistryInvolvementsController < ApplicationController
   #before_filter :ministry_leader_filter, :except => :destroy
   before_filter :set_inv_type
-  before_filter :set_ministries_and_roles, :only => [ :new, :create, :edit ]
+  before_filter :set_ministries_and_roles, :only => [ :new, :create, :edit, :update ]
 
   # used to pop up a dialog box
   def index
@@ -138,8 +138,9 @@ class MinistryInvolvementsController < ApplicationController
   end
 
   def set_ministries_and_roles
-    @ministries = Ministry.all # TODO restrict to their ministries and sub-ministries
-    @roles = MinistryRole.all # TODO restrict to their ministries and sub-ministries
+    @ministries = get_ministry.self_plus_descendants
+    @roles = [ [ 'Staff Roles', StaffRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
   end
 
   def setup_archived_after(ami, mis = @person.ministry_involvements)

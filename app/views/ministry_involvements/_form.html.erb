@@ -2,7 +2,7 @@
 <%- unless role_only -%>
 Ministry: <%= collection_select :ministry_involvement, :ministry_id, @ministries, :id, :name, { :include_blank => true } %><br/>
 <%- end -%>
-Role: <%= collection_select :ministry_involvement, :ministry_role_id, @roles, :id, :name, { :include_blank => true } %><br/>
+Role: <%= select_tag 'ministry_involvement[ministry_role_id]', grouped_options_for_select(@roles) %><br/>
 <%- unless role_only -%>
 Start Date: <%= date_select :ministry_involvement, :start_date, {}, { :style => "z-index: 1100" } %><br/>
 End Date: <%= date_select :ministry_involvement, :end_date, {}, { :style => "z-index: 1100" } %><br/>

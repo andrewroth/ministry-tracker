@@ -44,7 +44,7 @@
 			</div>
 			
 			<div id="greenbar">	
-        <h1 id="title"><%= I18n.t(:slogan, :default => (@ministry ? @ministry.name : 'Campus Movement Tracker')) %></h1>
+        <h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %> <%= @ministry.try(:name) %></h1>
         <%= tabnav :main %>
 			</div>
 			<%- else -%>
