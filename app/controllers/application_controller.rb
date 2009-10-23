@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
     end
 
     def get_ministry_involvement(ministry)
-      @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+      @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
         if session[:ministry_role_id].nil?
-          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
           session[:ministry_role_id] = mi ? mi.ministry_role_id : false
         end
         if session[:ministry_role_id]

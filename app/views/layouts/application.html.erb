@@ -44,7 +44,7 @@
 			</div>
 			
 			<div id="greenbar">	
-        <h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %> <%= @ministry.try(:name) %></h1>
+        <h1 id="title"><%= @ministry.try(:name) == Cmt::CONFIG[:default_ministry_name] ? I18n.t(:slogan, :default => 'Campus Movement Tracker') : @ministry.try(:name) %></h1>
         <%= tabnav :main %>
 			</div>
 			<%- else -%>
@@ -55,8 +55,7 @@
   			<div class="clear"></div>
 			</div>
 			<div id="greenbar">	
-  			<h1 id="title"><%= @ministry && Cmt::CONFIG[:ministry_in_banner] ? @ministry.name : 
-			                     I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
+  			<h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
   			<%= render :partial => 'tabnav/auth' %>
 			</div>
 			<%- end -%>
