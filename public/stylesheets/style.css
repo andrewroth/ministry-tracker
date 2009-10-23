@@ -447,7 +447,11 @@ background:#e9e9e9;
 padding:7px;
 }
 
-h1#title { float:left; padding-left:10px;}
+h1#title { 
+  float: left; 
+  padding-left:10px;
+  font-size: 1.5em;
+}
 
 .clearDivider {
     height:10px;
