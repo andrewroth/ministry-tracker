@@ -304,11 +304,17 @@ class GroupsController < ApplicationController
 
   def setup_campus_filter
     get_person_campuses
-    @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
-    @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
-    campus_filter_ids = @campus_filter.collect &:id
-    @groups = @person_campus_groups = @groups.find_all{ |g| campus_filter_ids.include?(g.campus_id) }
-
+    role = get_ministry_involvement(get_ministry).ministry_role
+    if role.is_a?(StaffRole)
+      @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
+      @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
+      campus_filter_ids = @campus_filter.collect &:id
+      @groups = @person_campus_groups = @groups.find_all{ |g| campus_filter_ids.include?(g.campus_id) }
+    elsif role.is_a?(StudentRole)
+      @campus_filter_options = [ [ 'Your Campuses' , @person_campuses.collect{ |c| [ c.name, c.id ] } ] ]
+      @campus_filter = @person_campuses.first
+      @campus_filter_default = @person_campuses.id
+    end
   end
 
   #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
