@@ -15,11 +15,7 @@ class GroupsController < ApplicationController
       @groups = @person_campus_groups
     end
 
-    get_person_campuses
-    @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
-    @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
-    campus_filter_ids = @campus_filter.collect &:id
-    @groups = @person_campus_groups = @groups.find_all{ |g| campus_filter_ids.include?(g.campus_id) }
+    setup_campus_filter
 
     respond_to do |format|
       format.html do
@@ -37,6 +33,7 @@ class GroupsController < ApplicationController
     end
     @join = true
     get_person_campus_groups
+    setup_campus_filter
     respond_to do |format|
       format.html
     end
@@ -252,8 +249,16 @@ class GroupsController < ApplicationController
   end
   
   def build_campus_filter_options(ministry)
-    r = [["All #{ministry.name} Campuses", "m_#{ministry.id}"]]
-    r += ministry.campuses.collect{ |pc| [ "--#{pc.name}", "m_#{ministry.id}_c#{pc.id}" ] }
+    if ministry.campuses.length > 0
+      title = "#{ministry.name} Campuses"
+      campuses = ministry.campuses.length > 1 ? [ [ "All", "m_#{ministry.id}" ] ] : []
+      campuses += ministry.campuses.collect{ |pc| [ "#{pc.name}", "m_#{ministry.id}_c#{pc.id}" ] }
+      r = [ [ title, campuses ] ]
+    else
+      r = []
+    end
+
+    return r if ministry.ministries_count == 0
     
     subministries = ministry.children
     for sub in subministries
@@ -282,19 +287,28 @@ class GroupsController < ApplicationController
   def campus_filter_from_param
     return nil unless params[:campus_filter].present?
     cf = params[:campus_filter]
-    if cf =~ /m_(.*)/
+    if cf =~ /m_(\d+)$/
       m = Ministry.find $1
       # ensure it's valid
       m = get_ministry unless get_ministry.self_plus_descendants.include?(m)
       return [ m.campuses, params[:campus_filter] ]
-    elsif cf =~ /m(.*)_c(.*)/
-      campuses = get_person_campuses.detect{ |c| c.id.to_s == params[:campus_filter] }
+    elsif cf =~ /m_(\d+)_c(\d+)/
+      campuses = get_person_campuses.find_all{ |c| c.id.to_s == $2 }
       [ campuses, params[:campus_filter] ]
     end
   end
 
   def get_ministry_with_three_levels
     Ministry.find get_ministry.id, :include => [ { :children => [ { :children => :campuses }, :campuses ] }, :campuses ]
+  end
+
+  def setup_campus_filter
+    get_person_campuses
+    @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
+    @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
+    campus_filter_ids = @campus_filter.collect &:id
+    @groups = @person_campus_groups = @groups.find_all{ |g| campus_filter_ids.include?(g.campus_id) }
+
   end
 
   #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
