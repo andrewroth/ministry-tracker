@@ -285,7 +285,7 @@ class GroupsController < ApplicationController
     if cf =~ /m_(.*)/
       m = Ministry.find $1
       # ensure it's valid
-      return [ nil, nil ] unless get_ministry.self_plus_descendants.include?(m)
+      m = get_ministry unless get_ministry.self_plus_descendants.include?(m)
       return [ m.campuses, params[:campus_filter] ]
     elsif cf =~ /m(.*)_c(.*)/
       campuses = get_person_campuses.detect{ |c| c.id.to_s == params[:campus_filter] }
