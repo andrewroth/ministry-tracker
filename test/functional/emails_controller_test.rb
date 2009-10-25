@@ -1,6 +1,10 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class EmailsControllerTest < ActionController::TestCase
+  def setup
+    login
+  end
+  
   test "should get index" do
     get :index
     assert_response :success
@@ -12,34 +16,29 @@ class EmailsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get new with entire search" do
+    get :new, :entire_search => '1'
+    assert_response :success
+  end
+
   test "should create email" do
     assert_difference('Email.count') do
-      post :create, :email => { }
+      post :create, :email => {:subject => 'test', :salutation => 'hi', :body => 'foo bar' }
+    end
+    assert_response :redirect
+  end
+
+  test "should NOT create email" do
+    assert_no_difference('Email.count') do
+      post :create, :email => {:subject => '', :salutation => 'hi', :body => 'foo bar' }
     end
 
-    assert_redirected_to email_path(assigns(:email))
+    assert_response :success, @response.body
+    assert_template :new
   end
 
   test "should show email" do
     get :show, :id => emails(:one).to_param
     assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => emails(:one).to_param
-    assert_response :success
-  end
-
-  test "should update email" do
-    put :update, :id => emails(:one).to_param, :email => { }
-    assert_redirected_to email_path(assigns(:email))
-  end
-
-  test "should destroy email" do
-    assert_difference('Email.count', -1) do
-      delete :destroy, :id => emails(:one).to_param
-    end
-
-    assert_redirected_to emails_path
   end
 end
