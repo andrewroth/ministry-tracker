@@ -727,6 +727,10 @@ border-collapse:collapse;
 width:100%;
 }
 
+table#schedule_header {
+  background-color: white;
+}
+
 table#schedule u, table#schedule_header u {
 color: black;
 }
