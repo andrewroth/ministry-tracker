@@ -9,7 +9,13 @@
       var pageTracker = _gat._getTracker(\"UA-79392-17\");
       pageTracker._initData();
       pageTracker._trackPageview();
-    </script>",
+    </script>" +
+    '<!-- Woopra Code Start -->
+    <script type="text/javascript">
+    var _woopraScript = document.location.protocol + "//static.woopra.com/js/woopra.js";
+    document.write(unescape("%3Cscript src=\'"+_woopraScript+"\' type=\'text/javascript\'%3E%3C/script%3E"));
+    </script>
+    <!-- Woopra Code End -->',
     :date => {
       :formats => {
         :default => "%m/%d/%Y",

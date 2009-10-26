@@ -16,12 +16,12 @@ class Email < ActiveRecord::Base
     end
     @people.each do |person|
       if person.primary_email.present?
-        EmailMailer.deliver_email(person, self)
+        Mailers::EmailMailer.deliver_email(person, self)
       else
         missing << person
       end
     end
-    EmailMailer.deliver_report(self, missing)
+    Mailers::EmailMailer.deliver_report(self, missing)
     self.missing_address_ids = missing.collect(&:id).to_json
   end
   private

@@ -1,36 +1,44 @@
 require 'faster_csv'
 require 'roo'
 require 'person_methods'
+require 'ftools'
 
 # I think this is for mass-import of contacts.
 class Import < ActiveRecord::Base
   load_mappings
   include PersonMethods
   
-  has_attachment  :storage => :file_system
+  has_attachment :storage => $attachment_storage_mode
   validates_as_attachment 
   
   belongs_to :person
   
   # the rows in the header row should match up with attributes on person and address
   # the people in the file will be added to the given _ministry_ and campus with _campus_id_
-  def process!(campus_id, ministry)
+  def run!(campus_id, ministry, importer)
     raise 'no ministry' unless ministry
     # number of entries processes as...
-    successful = 0
-    unsuccessful = 0
+    successful = []
+    unsuccessful = []
     
     # for checking what methods they respond to
     fake_person = Person.new
     fake_address = Address.new
-    
-    Import.transaction do
-      if File.extname(filename).downcase == '.xls'
-        oo = Excel.new(full_filename)
-        oo.to_csv(File.join(RAILS_ROOT, 'public', public_filename.sub('.xls','.csv')))
-        @csv_filename = full_filename.sub('.xls','.csv')
+    tmp_dir = '/tmp/sn_imports'
+    FileUtils.mkdir_p(tmp_dir)
+    tmp_filename = File.join(tmp_dir, filename)
+    File.open(tmp_filename, 'w') do |file|
+      AWS::S3::S3Object.stream(full_filename, bucket_name) do |chunk|
+        file.write chunk
       end
-      @csv_filename ||= full_filename
+    end
+    Import.transaction do
+      if File.extname(tmp_filename).downcase == '.xls'
+        oo = Excel.new(tmp_filename)
+        oo.to_csv(tmp_filename.sub('.xls','.csv'))
+        @csv_filename = tmp_filename.sub('.xls','.csv')
+      end
+      @csv_filename ||= tmp_filename
       
       row_number = 0
       FasterCSV.foreach(@csv_filename) do |row|
@@ -63,7 +71,7 @@ class Import < ActiveRecord::Base
           if address_attributes['state'] && !address_attributes['state'].empty?
             state = find_state_by_abbreviation_or_name(address_attributes['state'])
             if state
-              address_attributes['state'] = state
+              address_attributes['state'] = state.abbreviation
             # FIXME we need to bail if they have some information in state and we cannot import it              
             else
               address_attributes['state'] = nil
@@ -90,17 +98,18 @@ class Import < ActiveRecord::Base
                 person.ministry_involvements << MinistryInvolvement.new(:ministry_id => ministry.id, :ministry_role_id => ministry.involved_student_roles.first.id, :start_date => Time.now()) 
               end
             end
-            successful += 1
+            successful << person
           # otherwise we have a non-valid entry
           else
-            unsuccessful += 1
+            unsuccessful << person
           end
         end
       end
     end
     self.destroy
     begin File.unlink(@csv_filename); rescue; end # In case we created an extra csv file
-    return successful, unsuccessful
+    Mailers::ImportMailer.deliver_complete(importer, successful, unsuccessful)
+    [successful, unsuccessful]
   end
   
   def find_state_by_abbreviation_or_name(state_string)

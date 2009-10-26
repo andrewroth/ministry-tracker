@@ -39,7 +39,7 @@ class Ministry < ActiveRecord::Base
   
   validates_presence_of _(:name)
   
-  validates_uniqueness_of _(:name)
+  validates_uniqueness_of _(:name), :scope => _(:parent_id)
   
   after_create :create_first_view, :create_default_roles
   
@@ -178,7 +178,7 @@ class Ministry < ActiveRecord::Base
   end
   
   def involved_student_roles
-    @involved_student_roles ||= StudentRole.find(:all, :conditions => { _(:involved, :ministry_roles) => true })
+    @involved_student_roles ||= StudentRole.find(:all, :conditions => { _(:involved, :ministry_roles) => true }, :order => _(:position, :ministry_roles))
   end
   
   def involved_student_role_ids

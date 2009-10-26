@@ -1,4 +1,4 @@
-class EmailMailer < ActionMailer::Base
+class Mailers::EmailMailer < ActionMailer::Base
   def email(person, email)
     @recipients  = person.primary_email
     @from        = "'#{email.sender.full_name}' <#{email.sender.primary_email}>"
