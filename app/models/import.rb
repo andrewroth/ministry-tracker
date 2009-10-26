@@ -8,7 +8,7 @@ class Import < ActiveRecord::Base
   load_mappings
   include PersonMethods
   
-  has_attachment  :storage => :s3
+  has_attachment :storage => $attachment_storage_mode
   validates_as_attachment 
   
   belongs_to :person
@@ -109,6 +109,7 @@ class Import < ActiveRecord::Base
     self.destroy
     begin File.unlink(@csv_filename); rescue; end # In case we created an extra csv file
     Mailers::ImportMailer.deliver_complete(importer, successful, unsuccessful)
+    [successful, unsuccessful]
   end
   
   def find_state_by_abbreviation_or_name(state_string)

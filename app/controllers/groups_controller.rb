@@ -14,6 +14,9 @@ class GroupsController < ApplicationController
       get_person_campus_groups
       @groups = @person_campus_groups
     end
+
+    setup_campus_filter
+
     respond_to do |format|
       format.html do
         layout = authorized?(:index, :manage) ? 'manage' : 'application'
@@ -30,6 +33,8 @@ class GroupsController < ApplicationController
     end
     @join = true
     get_person_campus_groups
+    @groups = @person_campus_groups
+    setup_campus_filter
     respond_to do |format|
       format.html
     end
@@ -244,8 +249,74 @@ class GroupsController < ApplicationController
     # end
   end
   
-  private
-  
-  
+  def build_campus_filter_options(ministry)
+    if ministry.campuses.length > 0
+      title = "#{ministry.name} Campuses"
+      campuses = ministry.campuses.length > 1 ? [ [ "All", "m_#{ministry.id}" ] ] : []
+      campuses += ministry.campuses.collect{ |pc| [ "#{pc.name}", "m_#{ministry.id}_c#{pc.id}" ] }
+      r = [ [ title, campuses ] ]
+    else
+      r = []
+    end
+
+    return r if ministry.ministries_count == 0
+    
+    subministries = ministry.children
+    for sub in subministries
+      r += build_campus_filter_options(sub)
+    end
+
+    r
+  end
+
+  def determine_default_campus_filter(ministry)
+    # use the MinistryInvolvement whose ministry is at or under ministry,
+    # with the Ministry with the least number of campuses
+    possible_involvements = @person.ministry_involvements.find(:all, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.self_plus_descendants.collect(&:id)])
+    # find one with fewest campuses
+    final_mi = possible_involvements.inject(possible_involvements.first) do |mi, min_mi|
+      if mi.ministry.campuses.size < min_mi.ministry.campuses.size
+        mi
+      else
+        min_mi
+      end
+    end
+    [ final_mi.ministry.campuses, "m_#{final_mi.ministry.id}" ]
+  end
+
+  # return [ campuse-filter-array, default-value-to-select-in-dropdown ]
+  def campus_filter_from_param
+    return nil unless params[:campus_filter].present?
+    cf = params[:campus_filter]
+    if cf =~ /m_(\d+)$/
+      m = Ministry.find $1
+      # ensure it's valid
+      m = get_ministry unless get_ministry.self_plus_descendants.include?(m)
+      return [ m.campuses, params[:campus_filter] ]
+    elsif cf =~ /m_(\d+)_c(\d+)/
+      campuses = get_person_campuses.find_all{ |c| c.id.to_s == $2 }
+      [ campuses, params[:campus_filter] ]
+    end
+  end
+
+  def get_ministry_with_three_levels
+    Ministry.find get_ministry.id, :include => [ { :children => [ { :children => :campuses }, :campuses ] }, :campuses ]
+  end
+
+  def setup_campus_filter
+    get_person_campuses
+    role = get_ministry_involvement(get_ministry).ministry_role
+    if role.is_a?(StaffRole)
+      @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
+      @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
+      campus_filter_ids = @campus_filter.collect &:id
+      @groups = @person_campus_groups = @groups.find_all{ |g| campus_filter_ids.include?(g.campus_id) }
+    elsif role.is_a?(StudentRole)
+      @campus_filter_options = [ [ 'Your Campuses' , @person_campuses.collect{ |c| [ c.name, c.id ] } ] ]
+      @campus_filter = @person_campuses.first
+      @campus_filter_default = @person_campuses.id
+    end
+  end
+
   #returns groups with no campus or campuses the user is assoicated with and the user hasn't joined
 end

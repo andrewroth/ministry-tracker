@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  before_filter CASClient::Frameworks::Rails::Filter unless Rails.env.test?
+  before_filter CASClient::Frameworks::Rails::Filter unless Rails.env.test? || (!Cmt::CONFIG[:gcx_direct_logins] && !Cmt::CONFIG[:gcx_greenscreen])
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
   before_filter :authorization_filter
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
     end
 
     def get_ministry_involvement(ministry)
-      @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+      @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
         if session[:ministry_role_id].nil?
-          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
           session[:ministry_role_id] = mi ? mi.ministry_role_id : false
         end
         if session[:ministry_role_id]
@@ -349,11 +349,15 @@ class ApplicationController < ActionController::Base
     end
 
     def get_person_campus_groups
-      groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}, :include => [:group_type, :group_involvements, :campus]
-      my_campuses_ids = @my.active_campuses.collect &:id
+      groups = Group.find :all, :conditions => {:ministry_id => get_ministry.id}, :include => [:group_type, :group_involvements, :campus]
+      my_campuses_ids = get_person_campuses.collect &:id
       @person_campus_groups = groups.select { |g| 
         g.campus.nil? || my_campuses_ids.include?(g.campus.id)
       }.sort{ |g1, g2| g1.name.to_s <=> g2.name.to_s }
+    end
+
+    def get_person_campuses
+      @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
     def ensure_has_ministry_involvement

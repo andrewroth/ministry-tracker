@@ -400,25 +400,35 @@ end
     @most_recent_involvement = primary_campus_involvement || active_campus_involvements.last
   end
   
+  # for students, use their campuse involvements; for staff, use ministry teams
+  def working_campuses(ministry_involvement)
+    return @working_campuses if @working_campuses
+    if ministry_involvement.ministry_role.is_a?(StudentRole)
+      @working_campuses = active_campuses
+    elsif ministry_involvement.ministry_role.is_a?(StaffRole)
+      @working_campuses = ministry_involvement.ministry.campuses
+    end
+  end
+
   protected
-    def update_stamp
-      self.updated_at = Time.now
-      self.updated_by = 'MT'
-    end
-    
-    def create_stamp
-      update_stamp
-      self.created_at = Time.now
-      self.created_by = 'MT'
-    end
-    
+  def update_stamp
+    self.updated_at = Time.now
+    self.updated_by = 'MT'
+  end
+
+  def create_stamp
+    update_stamp
+    self.created_at = Time.now
+    self.created_by = 'MT'
+  end
+
   private
 
-    def birth_date_is_in_the_past
-      if !birth_date.nil?
-        if (birth_date <=> Date.today) > 0
-          errors.add(:birth_date, 'should be in the past')
-        end
+  def birth_date_is_in_the_past
+    if !birth_date.nil?
+      if (birth_date <=> Date.today) > 0
+        errors.add(:birth_date, 'should be in the past')
       end
     end
+  end
 end  
