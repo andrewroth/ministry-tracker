@@ -5,7 +5,7 @@ defaults: &defaults
   socket: /tmp/mysql.sock
 
 development:
-  database: emu
+  database: pulse_stage_emu
   <<: *defaults
 
 test:
