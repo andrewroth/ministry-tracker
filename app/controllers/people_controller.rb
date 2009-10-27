@@ -775,14 +775,14 @@ class PeopleController < ApplicationController
         # Only consider campus ids that this person is allowed to see (stop deviousness)
         params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
         unless params[:campus].empty?
-          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
+          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
           @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
           @advanced = true
         end
       else
         campus_ids = @campuses.collect &:id # note that @campuses is restricted to campus involvements in this ministry if the person is a student (see get_campuses)
-        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
+        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
       end
       
       if campus_condition.present?
