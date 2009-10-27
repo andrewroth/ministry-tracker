@@ -726,17 +726,21 @@ text-align:center;
 height:15px;
 }
 
-table#schedule {
+table#schedule, table#schedule_header {
 border-collapse:collapse;
 width:100%;
 }
 
-table#schedule u {
+table#schedule_header {
+  background-color: white;
+}
+
+table#schedule u, table#schedule_header u {
 color: black;
 }
 
 
-table#schedule td, table#schedule th {
+table#schedule td, table#schedule th, table#schedule_header td, table#schedule_header th {
 padding:2px;
 border:1px solid gray;
 width:12.5%;
@@ -744,9 +748,15 @@ height:25px;
 color: black;
 }
 
-table#schedule th {
+table#schedule th, table#schedule_header th {
 font-weight:bold;
 text-align:center;
+}
+
+table#schedule_header {
+  position: fixed;
+  top: 0px;
+  left: 10px;
 }
 
 a.action-button {

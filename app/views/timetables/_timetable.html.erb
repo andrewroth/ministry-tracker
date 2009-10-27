@@ -1,10 +1,12 @@
-<table id="schedule" width="250px" cellspacing="0">
+<%= render :partial => 'schedule_header' %>
+
+ <table id="schedule" cellspacing="0">
   <thead>
     <tr>
       <th>&nbsp;</th>
-    <%- 7.times do |day| -%>
-      <th><%= Date::DAYNAMES[day] %></th>
-    <%- end -%>
+      <%- 7.times do |day| -%>
+        <th><%= Date::DAYNAMES[day] %></th>
+      <%- end -%>
   </thead>
   <tbody>
     <!-- EARLIEST to LATEST in 15 minute intervals -->
