@@ -10,7 +10,7 @@
 </script>
 
 <div id="dialog">
-  <p>Please make the archived involvements be as accurate to your actual school history.</p>
+  <p>If you see any information missing below, please add it. Thanks!.</p>
   <ul id='<%=@short%>_list'>
     <%= render :collection => instance_variable_get("@#{@singular}_involvements"), :partial => "involvements/involvement_li" %>
     <li id='new_<%=@singular%>_li'>
