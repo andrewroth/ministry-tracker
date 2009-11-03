@@ -13,8 +13,10 @@ class PeopleController < ApplicationController
   include PersonMethods
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
-  skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
-                                                      :get_campus_states]
+  free_actions = [:set_current_address_states, :set_permanent_address_states,  
+                  :get_campus_states, :set_initial_campus, :get_campuses_for_state]
+  skip_before_filter :authorization_filter, :only => free_actions
+  skip_before_filter :force_campus_set, :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -499,6 +501,15 @@ class PeopleController < ApplicationController
     end
   end
   
+  def set_initial_campus
+    if request.method == :put
+      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(
+        :person_id => @person.id, :ministry_id => get_ministry.id)
+    end
+
+    setup_campuses
+  end
+
   # Change which ministry we are now viewing in our session
   # NOTE: there is security checking done in ApplicationController::get_ministry
   def change_ministry_and_goto_directory

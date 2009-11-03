@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   before_filter CASClient::Frameworks::Rails::Filter unless Rails.env.test? || (!Cmt::CONFIG[:gcx_direct_logins] && !Cmt::CONFIG[:gcx_greenscreen])
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
-  before_filter :authorization_filter
+  before_filter :authorization_filter, :force_campus_set
   
   helper :all
 
@@ -363,6 +363,12 @@ class ApplicationController < ActionController::Base
     def ensure_has_ministry_involvement
       if @me && @me.ministry_involvements.empty?
         associate_person_with_default_ministry(@me)
+      end
+    end
+
+    def force_campus_set
+      unless @person.campus_involvements.size > 0
+        redirect_to set_initial_campus_person_url(@person.id)
       end
     end
 
