@@ -1,0 +1,4 @@
+<li>
+<%- inv = involvement_li %>
+&nbsp;&nbsp;<%= inv.start_date %> to <%= inv.end_date %><%- if inv.campus -%> at <%= inv.campus.name %><%- end -%> as <%- if inv.school_year -%> <%= inv.school_year.name -%> <%- end -%><%- if inv.ministry_role %> <%= inv.ministry_role.name %><%- end -%>
+</li>

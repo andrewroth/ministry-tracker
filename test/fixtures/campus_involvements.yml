@@ -14,10 +14,16 @@ sues_in:
   person_id: 2000
   campus_id: 1
   ministry_id: 1
+  start_date: 2009-10-10
   
 joshs_in:
   id: 1003
   person_id: 50000
   campus_id: 1
   ministry_id: 1
- 
+
+sues_in_with_history:
+  id: 1004
+  person_id: 2000
+  campus_id: 2
+  ministry_id: 1

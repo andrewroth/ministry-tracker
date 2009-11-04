@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091012000730) do
+ActiveRecord::Schema.define(:version => 20091103202343) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -358,6 +358,21 @@ ActiveRecord::Schema.define(:version => 20091012000730) do
     t.datetime "updated_at"
   end
 
+  create_table "involvement_histories", :force => true do |t|
+    t.string   "type"
+    t.integer  "person_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "campus_id"
+    t.integer  "school_year_id"
+    t.integer  "ministry_id"
+    t.integer  "ministry_role_id"
+    t.integer  "campus_involvement_id"
+    t.integer  "ministry_involvement_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ministries", :force => true do |t|
     t.integer "parent_id"
     t.string  "name"
@@ -660,16 +675,16 @@ ActiveRecord::Schema.define(:version => 20091012000730) do
     t.string   "electronicSignature",                     :limit => 90
     t.string   "ssn",                                     :limit => 50
     t.integer  "fk_ssmUserID"
-    t.integer  "person_id",                                                                                    :null => false
+    t.integer  "person_id",                                                     :null => false
     t.boolean  "isPaid"
-    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
+    t.integer  "appFee"
     t.datetime "dateAppLastChanged"
     t.datetime "dateAppStarted"
     t.datetime "dateSubmitted"
     t.boolean  "isSubmitted"
     t.string   "appStatus",                               :limit => 15
     t.integer  "assignedToProject"
-    t.integer  "stint_location_id",                       :limit => 10,         :precision => 10, :scale => 0
+    t.integer  "stint_location_id"
     t.string   "siYear",                                  :limit => 50
     t.datetime "submitDate"
     t.string   "status",                                  :limit => 22
@@ -734,7 +749,7 @@ ActiveRecord::Schema.define(:version => 20091012000730) do
     t.datetime "leadershipStartDate"
     t.datetime "leadershipEndDate"
     t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 8
+    t.binary   "lastChangedDate",               :limit => 255
     t.integer  "lastChangedBy"
     t.string   "displayLocation"
     t.boolean  "partnershipRegionOnly"
@@ -916,19 +931,19 @@ ActiveRecord::Schema.define(:version => 20091012000730) do
   end
 
   create_table "users", :force => true do |t|
-    t.string    "username"
-    t.string    "password"
-    t.date      "last_login"
-    t.boolean   "system_admin"
-    t.string    "remember_token"
-    t.timestamp "remember_token_expires_at"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "guid"
-    t.boolean   "email_validated"
-    t.boolean   "developer"
-    t.string    "facebook_hash"
-    t.string    "facebook_username"
+    t.string   "username"
+    t.string   "password"
+    t.date     "last_login"
+    t.boolean  "system_admin"
+    t.string   "remember_token"
+    t.datetime "remember_token_expires_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "guid"
+    t.boolean  "email_validated"
+    t.boolean  "developer"
+    t.string   "facebook_hash"
+    t.string   "facebook_username"
   end
 
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true

@@ -1,6 +1,7 @@
 class CreateInvolvementHistories < ActiveRecord::Migration
   def self.up
     create_table :involvement_histories do |t|
+      t.string :type
       t.integer :person_id
       t.date :start_date
       t.date :end_date
@@ -8,7 +9,8 @@ class CreateInvolvementHistories < ActiveRecord::Migration
       t.integer :school_year_id
       t.integer :ministry_id
       t.integer :ministry_role_id
-      t.boolean :admin
+      t.integer :campus_involvement_id
+      t.integer :ministry_involvement_id
 
       t.timestamps
     end
