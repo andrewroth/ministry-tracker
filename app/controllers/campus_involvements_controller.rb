@@ -16,15 +16,17 @@ class CampusInvolvementsController < ApplicationController
 
   def create
     # look for an existing one
-    ci = @person.campus_involvements.find :first, :campus_id => params[:campus_involvement][:campus_id]
-    ci ||= @person.campus_involvements.new
+    @campus_involvement = @person.campus_involvements.find :first, :conditions => { :campus_id => params[:campus_involvement][:campus_id] }
+    @campus_involvement ||= @person.campus_involvements.new :start_date => Date.today, :ministry_id => get_ministry.id, :campus_id => params[:campus_involvement][:campus_id]
+    @updated = !@campus_involvement.new_record?
 
-    params[:campus_involvement][:ministry_id] = get_ministry.id
-    params[:campus_involvement][:start_date] ||= Date.today
-    params[:campus_involvement][:end_date] = nil
-    params[:campus_involvement][:person_id] = @person.id
-    ci.new_student_history unless ci.new_record?
-    ci.update_attributes params[:campus_involvement]
+    params[:campus_involvement][:school_year_id] = params[:campus_involvement][:school_year_id]
+    params[:campus_involvement][:ministry_role_id] = StudentRole.first # TODO
+    update_campus_involvement
+    if @campus_involvement.archived?
+      @campus_involvement.end_date = nil
+      @campus_involvement.save!
+    end
 
     render :template => 'involvements/create'
   end
@@ -69,8 +71,9 @@ class CampusInvolvementsController < ApplicationController
   # record the mi history as well
   def update_student_campus_involvement
     @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
-    record_history = @campus_involvement.school_year_id.to_s != params[:school_year_id] || 
-      @ministry_involvement.ministry_role_id.to_s != params[:ministry_role_id]
+    record_history = !@campus_involvement.new_record? && 
+      (@campus_involvement.school_year_id.to_s != params[:school_year_id] || 
+      @ministry_involvement.ministry_role_id.to_s != params[:ministry_role_id])
     if record_history
       @student_history = @campus_involvement.new_student_history
       @student_history.ministry_role_id = @ministry_involvement.ministry_role_id
@@ -83,8 +86,12 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def update
-    debugger
     @campus_involvement = @person.campus_involvements.find params[:id]
+    update_campus_involvement
+    render :template => 'involvements/update'
+  end
+
+  def update_campus_involvement
     current_role = get_ministry_involvement(get_ministry).try(:ministry_role) || 
       @campus_involvement.find_or_create_ministry_involvement.ministry_role
 
@@ -93,8 +100,6 @@ class CampusInvolvementsController < ApplicationController
     else
       update_staff_campus_involvement
     end
- 
-    render :template => 'involvements/update'
   end
 
   protected

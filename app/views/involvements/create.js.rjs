@@ -1,6 +1,6 @@
 if involvement.errors.empty?
   if @updated
-    render :file => 'involvements/update.js.rjs'
+    page << render(:file => 'involvements/update.js.rjs')
   else
     page.insert_html :before, :"new_#{@singular}_li", :partial => "involvements/involvement_li", :object => involvement
   end
