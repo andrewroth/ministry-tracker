@@ -471,6 +471,7 @@ class PeopleController < ApplicationController
     if request.method == :put
       @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(
         :person_id => @person.id, :ministry_id => get_ministry.id)
+      @campus_involvement.find_or_create_ministry_involvement
     end
 
     setup_campuses

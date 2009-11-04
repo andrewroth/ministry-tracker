@@ -4,17 +4,8 @@ if params[:from_manage] == 'true'
   #page["#{@short}_li_#{involvement.id}"].fade
   #page["#{@short}_li_#{involvement.id}"].replace ''
   page << %|$('##{@short}_li_#{involvement.id}').fadeOut(500, function() { $(this).remove(); });|
-  # add an archived involvement
-  if (archived_instance = instance_variable_get("@archived_#{@singular}_involvement"))
-    if @archived_after == :first
-      page.insert_html :top, :"#{@short}_list", 
-        :partial => "involvements/involvement_li", 
-        :object => archived_instance
-    else
-      page.insert_html :after, :"#{@short}_li_#{@archived_after.id}", 
-        :partial => "involvements/involvement_li", 
-        :object => archived_instance
-    end
+  if @student_history
+    page.insert_html :bottom, "involvement_history", render(:partial => 'involvement_history/involvement_li', :object => @student_history)
   end
 end
 page.hide('spinner')

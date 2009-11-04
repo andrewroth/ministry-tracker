@@ -32,15 +32,8 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def destroy
-    # if @person.campus_involvements.count > 1
     @campus_involvement = CampusInvolvement.find(params[:id])
-    if @campus_involvement.end_date.present?
-      @campus_involvement.destroy
-    else
-      @archived_campus_involvement = @campus_involvement
-      setup_archived_after(@archived_campus_involvement)
-      @campus_involvement.update_attribute(:end_date, Date.today)
-    end
+    destroy_campus_involvement
     respond_to do |format|
       format.xml  { head :ok }
       format.js { render :template => 'involvements/destroy' if params[:from_manage] == 'true' }
@@ -92,14 +85,31 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def update_campus_involvement
+    handle_campus_involvement do |current_role|
+      if current_role.nil? || current_role.is_a?(StudentRole)
+        update_student_campus_involvement
+      else
+        update_staff_campus_involvement
+      end
+    end
+  end
+
+  def destroy_campus_involvement
+    handle_campus_involvement do |current_role|
+      save_history = current_role.nil? || current_role.is_a?(StudentRole)
+      if save_history
+        @student_history = @campus_involvement.new_student_history
+        @student_history.ministry_role_id = @ministry_involvement.ministry_role_id
+        @student_history.save!
+      end
+      @campus_involvement.destroy
+    end
+  end
+
+  def handle_campus_involvement
     current_role = get_ministry_involvement(get_ministry).try(:ministry_role) || 
       @campus_involvement.find_or_create_ministry_involvement.ministry_role
-
-    if current_role.nil? || current_role.is_a?(StudentRole)
-      update_student_campus_involvement
-    else
-      update_staff_campus_involvement
-    end
+    yield current_role
   end
 
   protected
@@ -120,11 +130,4 @@ class CampusInvolvementsController < ApplicationController
     @short = 'ci'
     @add_title = 'Add Campus'
   end
-
-  def setup_archived_after(aci, cis = @person.campus_involvements)
-    # figure out where to put the archived campus involvement
-    archived_index = cis.index aci
-    @archived_after = archived_index == 0 ? :first : cis[archived_index - 1]
-  end
-
 end

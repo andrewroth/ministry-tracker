@@ -32,7 +32,9 @@ class CampusInvolvement < ActiveRecord::Base
     ministry = derive_ministry || Cmt::CONFIG[:default_ministry] || Ministry.first
     mi = ministry.ministry_involvements.find :first, :conditions => [ "person_id = ? AND end_date IS NULL", person_id ]
     if mi.nil?
-      mi = ministry.ministry_involvements.create :person => person, :ministry_role => StudentRole.first
+      sr = StudentRole.find_by_name 'Student'
+      sr ||= StudentRole.find :last, :order => "position"
+      mi = ministry.ministry_involvements.create :person => person, :ministry_role => sr
     elsif mi.ministry_role_id.nil?
       mi.ministry_role_id = StudentRole
       mi.save
