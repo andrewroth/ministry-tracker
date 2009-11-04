@@ -25,6 +25,7 @@ class CampusInvolvementsController < ApplicationController
     update_campus_involvement
     if @campus_involvement.archived?
       @campus_involvement.end_date = nil
+      @campus_involvement.last_history_update_date = Date.today
       @campus_involvement.save!
     end
 
@@ -68,13 +69,14 @@ class CampusInvolvementsController < ApplicationController
       (@campus_involvement.school_year_id.to_s != params[:school_year_id] || 
       @ministry_involvement.ministry_role_id.to_s != params[:ministry_role_id])
     if record_history
-      @student_history = @campus_involvement.new_student_history
-      @student_history.ministry_role_id = @ministry_involvement.ministry_role_id
+      @history = @campus_involvement.new_student_history
+      @history.ministry_role_id = @ministry_involvement.ministry_role_id
     end
     @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
     @ministry_involvement.update_attributes :ministry_role_id => StudentRole.first # TODO
     if record_history && @campus_involvement.errors.empty? && @ministry_involvement.errors.empty?
-      @student_history.save!
+      @history.save!
+      @campus_involvement.update_attributes :last_history_update_date => Date.today
     end
   end
 
@@ -85,8 +87,8 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def update_campus_involvement
-    handle_campus_involvement do |current_role|
-      if current_role.nil? || current_role.is_a?(StudentRole)
+    handle_campus_involvement do |is_student|
+      if is_student
         update_student_campus_involvement
       else
         update_staff_campus_involvement
@@ -95,21 +97,22 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def destroy_campus_involvement
-    handle_campus_involvement do |current_role|
-      save_history = current_role.nil? || current_role.is_a?(StudentRole)
-      if save_history
-        @student_history = @campus_involvement.new_student_history
-        @student_history.ministry_role_id = @ministry_involvement.ministry_role_id
-        @student_history.save!
+    handle_campus_involvement do |is_student|
+      if is_student
+        @history = @campus_involvement.new_student_history
+        @history.ministry_role_id = @ministry_involvement.ministry_role_id
+        @history.save!
+        @campus_involvement.last_history_update_date = Date.today
       end
-      @campus_involvement.destroy
+      @campus_involvement.end_date = Date.today
+      @campus_involvement.save!
     end
   end
 
   def handle_campus_involvement
     current_role = get_ministry_involvement(get_ministry).try(:ministry_role) || 
       @campus_involvement.find_or_create_ministry_involvement.ministry_role
-    yield current_role
+    yield current_role.nil? || current_role.is_a?(StudentRole)
   end
 
   protected

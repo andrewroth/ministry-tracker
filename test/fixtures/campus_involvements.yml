@@ -6,6 +6,7 @@ person_campus_<%= i %>:
   person_id: <%= i %>
   campus_id: 1
   ministry_id: 1
+  school_year_id: 1
 <% end %>
 
 
@@ -15,15 +16,18 @@ sues_in:
   campus_id: 1
   ministry_id: 1
   start_date: 2009-10-10
+  school_year_id: 1
   
 joshs_in:
   id: 1003
   person_id: 50000
   campus_id: 1
   ministry_id: 1
+  school_year_id: 1
 
 sues_in_with_history:
   id: 1004
   person_id: 2000
   campus_id: 2
   ministry_id: 1
+  school_year_id: 1

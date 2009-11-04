@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091103202343) do
+ActiveRecord::Schema.define(:version => 20091104204904) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20091103202343) do
     t.integer "school_year_id"
     t.string  "major"
     t.string  "minor"
+    t.date    "last_history_update_date"
   end
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
@@ -408,6 +409,7 @@ ActiveRecord::Schema.define(:version => 20091103202343) do
     t.boolean "admin"
     t.integer "ministry_role_id"
     t.integer "responsible_person_id"
+    t.date    "last_history_update_date"
   end
 
   add_index "ministry_involvements", ["person_id"], :name => "person_id"

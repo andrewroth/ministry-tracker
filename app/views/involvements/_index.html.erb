@@ -1,4 +1,7 @@
 <div id="dialog" style="display:none;">
+  <%- if @denied -%>
+    <p>Students are assigned to campuses, not ministries.  Edit their Campuses instead.</p>
+  <%- else -%>
   <ul id='<%=@short%>_list'>
     <%= render :collection => instance_variable_get("@#{@singular}_involvements"), :partial => "involvements/involvement_li" %>
     <li id='new_<%=@singular%>_li'>
@@ -13,4 +16,5 @@
       <%= render :collection => @involvement_history, :partial => "involvement_history/involvement_li" %>
     </ul>
   </div>
+  <%- end -%>
 </div>

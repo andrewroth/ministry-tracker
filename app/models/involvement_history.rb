@@ -4,4 +4,5 @@ class InvolvementHistory < ActiveRecord::Base
   belongs_to :campus
   belongs_to :ministry_role
   belongs_to :school_year
+  belongs_to :ministry
 end
