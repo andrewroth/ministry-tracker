@@ -239,6 +239,16 @@ class Ministry < ActiveRecord::Base
     return @all_training_questions
   end
   
+  def to_hash_with_children
+    base_hash = { 'text' => name, 'id' => id }
+    if children.empty?
+      base_hash.merge('leaf' => true)
+    else
+      base_hash.merge('expanded' => true, 
+        'children' => children.collect(&:to_hash_with_children))
+    end
+  end
+
   protected
 
   def before_destroy

@@ -1,5 +1,5 @@
 <%= error_messages_for :ministry_involvement %>
 <%- unless role_only -%>
-Ministry: <%= collection_select :ministry_involvement, :ministry_id, @ministries, :id, :name, { :include_blank => true } %><br/>
+Ministry: <%= render :partial => 'choose_ministry' %><BR />
 <%- end -%>
 Role: <%= select_tag 'ministry_involvement[ministry_role_id]', grouped_options_for_select(@roles) %><br/>
