@@ -1,19 +1,9 @@
 if involvement.errors.empty?
   page["#{@short}_li_#{involvement.id}"].show
-  fade = %|$('##{@short}_li_edit_#{involvement.id}').fadeOut(500, function() { $(this).remove(); });|
-  unless @was_archived
-    # active involvements should always archive and create new, so that we 
-    # have a record
-    if involvement.is_a?(CampusInvolvement)
-      create = remote_function(:url => person_campus_involvements_url(@person.id, :from_manage => true), :method => :post, :with => %|"campus_involvement[school_year_id]=" + $(\'#campus_involvement_school_year_id\')[0].value + "&campus_involvement[campus_id]=#{involvement.campus.id}"|)
-    elsif involvement.is_a?(MinistryInvolvement)
-      create = remote_function(:url => person_ministry_involvements_url(@person.id, :from_manage => true), :method => :post, :with => %|"ministry_involvement[ministry_role_id]=" + $(\'#ministry_involvement_ministry_role_id\')[0].value + "&ministry_involvement[ministry_id]=#{involvement.ministry.id}"|)
-    end
-    page << "function do_create() { #{create} }"
-    page << "function do_fade() { #{fade} }"
-    page << remote_function(:url => self.send("person_#{@singular}_involvement_url", @person.id, involvement.id, :from_manage => true, :keep_edit => true), :method => :delete, :success => 'do_create(); do_fade();')
-  else
-    page["#{@short}_li_#{involvement.id}"].replace_html :partial => involvement
+  page["#{@short}_li_edit_#{involvement.id}"].fade
+  page["#{@short}_li_#{involvement.id}"].replace_html :partial => involvement
+  if @history
+    page.insert_html :bottom, "involvement_history", render(:partial => 'involvement_history/involvement_li', :object => @history)
   end
 else
   page["#{@short}_li_edit_#{involvement.id}"].replace_html :partial => 'involvements/edit', :locals => { :involvement => involvement }

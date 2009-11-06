@@ -13,8 +13,10 @@ class PeopleController < ApplicationController
   include PersonMethodsEmu
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
-  skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
-                                                      :get_campus_states]
+  free_actions = [:set_current_address_states, :set_permanent_address_states,  
+                  :get_campus_states, :set_initial_campus, :get_campuses_for_state]
+  skip_before_filter :authorization_filter, :only => free_actions
+  skip_before_filter :force_campus_set, :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -285,23 +287,16 @@ class PeopleController < ApplicationController
     get_possible_responsible_people
     setup_vars
     setup_campuses
-    respond_to do |format|
-      format.html {
-        
-      }
-      format.js {
-        render :update do |page|
-          page[:info].hide
-          page[:edit_info].replace_html :partial => 'edit',
-            :locals => {
-            :current_address_country => current_address_country,
-            :permanent_address_country => permanent_address_country,
-            :countries => countries,
-            :current_address_states => current_address_states,
-            :permanent_address_states => permanent_address_states }
-          page[:edit_info].show
-        end
-      }
+    render :update do |page|
+      page[:info].hide
+      page[:edit_info].replace_html :partial => 'edit',
+        :locals => {
+          :current_address_country => current_address_country,
+          :permanent_address_country => permanent_address_country,
+          :countries => countries,
+          :current_address_states => current_address_states,
+          :permanent_address_states => permanent_address_states }
+      page[:edit_info].show
     end
   end
 
@@ -409,33 +404,6 @@ class PeopleController < ApplicationController
       @person.user.update_attributes(params[:user])
     end
     
-    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].present? &&
-       (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
-      # if @person.primary_campus_involvement
-      #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
-      #   
-      #   # @person.update_attribute(:primary_campus_involvement_id, nil)
-      # end
-      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_involvement][:campus_id]})
-        @campus_involvement.update_attribute(:end_date, nil)
-        @person.primary_campus_involvement = @campus_involvement
-      else
-        params[:primary_campus_involvement][:start_date] = Time.now
-        params[:primary_campus_involvement][:added_by_id] = @my.id
-        params[:primary_campus_involvement][:ministry_id] = @ministry.id
-        params[:primary_campus_involvement][:person_id] = @person.id
-        @person.primary_campus_involvement = CampusInvolvement.new(params[:primary_campus_involvement])
-        @update_involvements = true
-      end
-    end
-    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].blank?
-      if @person.primary_campus_involvement
-        @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
-        @person.update_attribute(:primary_campus_involvement_id, nil)
-        @update_involvements = true
-      end
-    end
-     
     setup_vars
 
     respond_to do |format|
@@ -499,6 +467,16 @@ class PeopleController < ApplicationController
     end
   end
   
+  def set_initial_campus
+    if request.method == :put
+      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(
+        :person_id => @person.id, :ministry_id => get_ministry.id)
+      @campus_involvement.find_or_create_ministry_involvement
+    end
+
+    setup_campuses
+  end
+
   # Change which ministry we are now viewing in our session
   # NOTE: there is security checking done in ApplicationController::get_ministry
   def change_ministry_and_goto_directory
@@ -640,6 +618,7 @@ class PeopleController < ApplicationController
       @profile_picture.person_id = @person.id
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+      @show_ministries_list = get_ministry_involvement(get_ministry).try(:ministry_role).is_a?(StaffRole)
     end
     
     def set_dorms

@@ -1,16 +1,7 @@
-<script>
-  /* hack to make the activescaffold dialog appear fixed */
-  function make_calendars_fixed_repeatedly() {
-    if ($('#TB_window').length != 0) {
-      $('.calendar').css({ 'position': 'fixed'});
-      setTimeout("make_calendars_fixed_repeatedly()", 333);
-    }
-  }
-  setTimeout("make_calendars_fixed_repeatedly()", 333);
-</script>
-
-<div id="dialog">
-  <p>Please make the archived involvements be as accurate to your actual school history.</p>
+<div id="dialog" style="display:none;">
+  <%- if @denied -%>
+    <p>Students are assigned to campuses, not ministries.  Edit their Campuses instead.</p>
+  <%- else -%>
   <ul id='<%=@short%>_list'>
     <%= render :collection => instance_variable_get("@#{@singular}_involvements"), :partial => "involvements/involvement_li" %>
     <li id='new_<%=@singular%>_li'>
@@ -19,4 +10,11 @@
       <a id="TB_closeWindowButton" href="#">close</a>
     </li>
   </ul>
+  <br/>
+  <div id='involvement_history'>Involvement History</div>
+    <ul id='history'>
+      <%= render :collection => @involvement_history, :partial => "involvement_history/involvement_li" %>
+    </ul>
+  </div>
+  <%- end -%>
 </div>

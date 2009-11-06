@@ -7,6 +7,5 @@
 <%= link_to_remote(mi.ministry.name,
       :url => change_ministry_and_goto_directory_people_url(:current_ministry => mi.ministry.id),
       :method => :get)
-%>,
-<%= mi.ministry_role.try(:name) %>
+%> <%= mi.ministry_role.try(:name) %>
 </li>

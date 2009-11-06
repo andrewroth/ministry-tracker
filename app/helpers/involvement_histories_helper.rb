@@ -1,0 +1,2 @@
+module InvolvementHistoriesHelper
+end

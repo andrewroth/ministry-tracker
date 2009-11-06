@@ -5,6 +5,7 @@ class Person < ActiveRecord::Base
   has_many :emails, :class_name => "Email", :foreign_key => "sender_id"
   
   # Campus Relationships
+  has_many :involvement_history
   has_many :campus_involvements #, :include => [:ministry, :campus]
   has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
@@ -403,6 +404,7 @@ end
   # for students, use their campuse involvements; for staff, use ministry teams
   def working_campuses(ministry_involvement)
     return @working_campuses if @working_campuses
+    return [] unless ministry_involvement
     if ministry_involvement.ministry_role.is_a?(StudentRole)
       @working_campuses = active_campuses
     elsif ministry_involvement.ministry_role.is_a?(StaffRole)

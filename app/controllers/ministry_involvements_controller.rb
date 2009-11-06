@@ -8,7 +8,13 @@ class MinistryInvolvementsController < ApplicationController
 
   # used to pop up a dialog box
   def index
-    @ministry_involvements = @person.ministry_involvements
+    ministry_role = get_ministry_involvement(get_ministry).ministry_role
+    unless ministry_role.is_a?(StaffRole)
+      @denied = true
+    else
+      @ministry_involvements = @person.ministry_involvements
+      @involvement_history = @person.involvement_history
+    end
     render :template => 'involvements/index'
   end
 
@@ -50,10 +56,17 @@ class MinistryInvolvementsController < ApplicationController
   
   def create
     # If this person was already on this ministry, update with the new role
-    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => params[:ministry_involvement][:person_id], _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id], _(:end_date, :ministry_involvement) => nil } )
+    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
     if mi
+      save_history = mi.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id]
+      if save_history
+        @history = mi.new_staff_history
+        @history.save!
+        mi.last_history_update_date = Date.today
+      end
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
       mi.start_date ||= Date.today
+      mi.end_date = nil
       mi.save
       @updated = true
     else
@@ -105,16 +118,16 @@ class MinistryInvolvementsController < ApplicationController
     end
     @person = @ministry_involvement.person 
 
-    if (params[:from_manage] == 'true' && @ministry_involvement.archived?) || 
-      params[:from_manage] != 'true'
-      @ministry_involvement.end_date = Date.today
-      @ministry_involvement.save
-      if @ministry_involvement.errors.empty?
-        @ministry_involvement = MinistryInvolvement.create :person_id => @ministry_involvement.person_id, :start_date => Date.today, :end_date => nil, :ministry_role_id => params[:ministry_involvement][:ministry_role_id], :admin => params[:ministry_involvement][:admin], :ministry_id => @ministry_involvement.ministry_id
-      end
-      if @ministry_involvement.errors.length > 0
-        flash[:notice] = "There were errors saving your changes: #{@ministry_involvement.errors.full_messages.join("; ")}"
-      end
+    if @ministry_involvement.archived?
+      @ministry_involvement.end_date = nil
+      @ministry_involvement.last_history_update_date = Date.today
+    end
+
+    save_history = @ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id]
+    @history = @ministry_involvement.new_staff_history if save_history
+    @ministry_involvement.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
+    if @ministry_involvement.save
+      @history.save if save_history
     end
 
     # special case when editing a single person's role

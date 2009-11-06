@@ -13,10 +13,12 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  before_filter CASClient::Frameworks::Rails::Filter unless Rails.env.test? || (!Cmt::CONFIG[:gcx_direct_logins] && !Cmt::CONFIG[:gcx_greenscreen])
+  if !Rails.env.test? && (!Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen])
+    before_filter CASClient::Frameworks::Rails::Filter
+  end
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
-  before_filter :authorization_filter
+  before_filter :authorization_filter, :force_campus_set
   
   helper :all
 
@@ -363,6 +365,12 @@ class ApplicationController < ActionController::Base
     def ensure_has_ministry_involvement
       if @me && @me.ministry_involvements.empty?
         associate_person_with_default_ministry(@me)
+      end
+    end
+
+    def force_campus_set
+      unless @person.campus_involvements.size > 0
+        redirect_to set_initial_campus_person_url(@person.id)
       end
     end
 
