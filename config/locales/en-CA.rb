@@ -33,6 +33,21 @@
     } catch(err) {}
 </script>
 |,
+    :GCX_login_info => %|
+<p>What is GCX login?</p>
+<p>GCX is a single sign on login that authenticates you to use Campus for Christ web applications including:</p>
+<p>
+<ul><li><a href="http://pulse.campusforchrist.org">Pulse</a></li>
+  <li><a href="http://pat.powertochange.org">Project Application Tool</a></li>
+  <li><a href="http://intranet.campusforchrist.org">Registration/Intranet</a></li>
+  <li><a href="http://resources.powertochange.org">Resources</a></li>
+  <li><a href="http://mpdtool.powertochange.org">MPD Tool</a></li>
+</ul>
+</p>
+<p>Your GCX username will authenticate you to all these sites using one login.  You do not have to create a new one each time!  Contact us at helpdesk@c4c.ca if you have any questions about your GCX username.  Thank you!
+<br>
+</p>
+    |,
     :add_person_default_staff_role => 'Staff',
     :date => {
       :formats => {
