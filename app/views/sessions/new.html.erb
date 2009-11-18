@@ -11,6 +11,9 @@
     <br/>
     <%= link_to 'Create an Account', new_gcx_url %>
   </div>
+  <div class='login_info'>
+    <%= I18n.t :GCX_login_info, :default => '' %>
+  </div>
   <%- if show_form -%>
     <br/>
     <div id="local_form">

@@ -838,7 +838,16 @@ a.goodhead:hover {border:2px solid gray;}
   width: 300px;
   border-right: solid 1px #839553;
   height: 100px;
+  float: left;
 }
+
+.login_info {
+  width: 450px;
+  height: 25px;
+  float: left;
+  padding: 25px;
+}
+
 
 .login_sector_fb {
   float: left;
