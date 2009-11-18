@@ -837,17 +837,22 @@ a.goodhead:hover {border:2px solid gray;}
 .login_sector {
   width: 300px;
   border-right: solid 1px #839553;
-  height: 100px;
+  height: 225px;
   float: left;
+  padding-top: 50px;
 }
 
 .login_info {
   width: 450px;
-  height: 25px;
+  height: 225px;
   float: left;
   padding: 25px;
 }
 
+.login_info ul {
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
 
 .login_sector_fb {
   float: left;
