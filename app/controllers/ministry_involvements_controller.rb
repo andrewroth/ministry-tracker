@@ -155,5 +155,6 @@ class MinistryInvolvementsController < ApplicationController
     @ministries = get_ministry.self_plus_descendants
     @roles = [ [ 'Staff Roles', StaffRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
     @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @default_role_id = MinistryRole.default_staff_role.id
   end
 end

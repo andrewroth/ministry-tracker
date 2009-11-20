@@ -27,4 +27,9 @@ class MinistryRole < ActiveRecord::Base
     sr = StudentRole.find_by_name %w(Student student)
     sr ||= StudentRole.find :last, :order => "position"
   end
+
+  def self.default_staff_role
+    sr = StaffRole.find_by_name %w(Missionary missionary Staff staff)
+    sr ||= StaffRole.find :last, :order => "position"
+  end
 end

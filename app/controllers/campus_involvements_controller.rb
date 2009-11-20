@@ -14,7 +14,6 @@ class CampusInvolvementsController < ApplicationController
 
   def new
     @campus_involvement = @person.campus_involvements.new :start_date => Date.today
-    @default_role_id = MinistryRole.default_student_role.id
     render :template => 'involvements/new'
   end
 
@@ -34,6 +33,7 @@ class CampusInvolvementsController < ApplicationController
       @updated = false
     end
 
+    @from_profile = true
     render :template => 'involvements/create'
   end
 
@@ -42,7 +42,7 @@ class CampusInvolvementsController < ApplicationController
     destroy_campus_involvement
     respond_to do |format|
       format.xml  { head :ok }
-      format.js { render :template => 'involvements/destroy' if params[:from_manage] == 'true' }
+      format.js { render :template => 'involvements/destroy' if params[:from_profile] == 'true' }
     end
     # else
     #      respond_to do |format|
@@ -141,6 +141,7 @@ class CampusInvolvementsController < ApplicationController
 
   def set_roles
     @roles = [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @default_role_id = MinistryRole.default_student_role.id
   end
 
   def set_student

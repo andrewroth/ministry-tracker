@@ -132,6 +132,8 @@ class MinistriesController < ApplicationController
     end
   end
 
+  def switch_to
+  end
 
   # Question: What exactly does parent_form and set_parent do?
   # Delete candidate A: I think parent_form is depreciated as it is now handled by a drag-drop ajax library

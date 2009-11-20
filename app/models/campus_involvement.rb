@@ -32,6 +32,7 @@ class CampusInvolvement < ActiveRecord::Base
   end
 
   def find_or_create_ministry_involvement
+    return @ministry_involvement if @ministry_involvement
     ministry = derive_ministry || Cmt::CONFIG[:default_ministry] || Ministry.first
     mi = ministry.ministry_involvements.find :first, :conditions => [ "person_id = ? AND end_date IS NULL", person_id ]
     if mi.nil?
@@ -42,6 +43,6 @@ class CampusInvolvement < ActiveRecord::Base
     elsif !mi.try(:ministry_role).is_a?(StudentRole)
       mi.ministry_role_id = MinistryRole.default_student_role.id
     end
-    mi
+    @ministry_involvement = mi
   end
 end
