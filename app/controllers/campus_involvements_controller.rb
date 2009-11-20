@@ -6,6 +6,8 @@ class CampusInvolvementsController < ApplicationController
   def index
     @campus_involvements = @person.active_campus_involvements
     @involvement_history = @person.involvement_history
+    @student = is_staff_somewhere(@person)
+    @from_profile = true
     render :template => 'involvements/index'
   end
 
@@ -27,6 +29,7 @@ class CampusInvolvementsController < ApplicationController
       @campus_involvement.end_date = nil
       @campus_involvement.last_history_update_date = Date.today
       @campus_involvement.save!
+      @updated = false
     end
 
     render :template => 'involvements/create'
