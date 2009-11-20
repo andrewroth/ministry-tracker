@@ -1,0 +1,34 @@
+<span id='chosen_ministry'></span> <%= link_to_function 'Choose Ministry', "$('#tree-div').slideDown()", :id => 'choose_ministry_link' %>
+<%= hidden_field_tag 'ministry_involvement[ministry_id]' %>
+<div id='tree-div' style='display:none'></div>
+<script>
+  Ext.onReady(function(){
+    // shorthand
+    var Tree = Ext.tree;
+
+    var tree = new Tree.TreePanel({
+      useArrows: true,
+      autoScroll: true,
+      animate: true,
+      enableDD: false,
+      containerScroll: true,
+      border: true,
+      width: 400,
+
+      root: <%= Ministry.first.to_hash_with_children.to_json %>
+    });
+
+    // render the tree
+    tree.render('tree-div');
+    tree.getRootNode().expand();
+
+    // handle clicks
+    tree.on('click', function(node, e) {
+      $('#ministry_involvement_ministry_id')[0].value = node.id;
+      $('#tree-div').slideUp();
+      $('#chosen_ministry').text(node.text);
+      $('#choose_ministry_link').text('Change Ministry')
+    }, this);
+  });
+
+</script>
