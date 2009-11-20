@@ -1,4 +1,6 @@
-if involvement.errors.empty?
+if @promoted
+  page.reload
+elsif involvement.errors.empty?
   if @updated
     page << render(:file => 'involvements/update.js.rjs')
   else

@@ -2,17 +2,19 @@ class CampusInvolvementsController < ApplicationController
   before_filter :set_campuses
   before_filter :set_school_years
   before_filter :set_inv_type
+  before_filter :set_roles, :only => [ :new, :edit ]
+  before_filter :set_student, :only => [ :index, :new, :edit ]
 
   def index
     @campus_involvements = @person.active_campus_involvements
     @involvement_history = @person.involvement_history
-    @student = is_staff_somewhere(@person)
     @from_profile = true
     render :template => 'involvements/index'
   end
 
   def new
     @campus_involvement = @person.campus_involvements.new :start_date => Date.today
+    @default_role_id = MinistryRole.default_student_role.id
     render :template => 'involvements/new'
   end
 
@@ -23,7 +25,7 @@ class CampusInvolvementsController < ApplicationController
     @updated = !@campus_involvement.new_record?
 
     params[:campus_involvement][:school_year_id] = params[:campus_involvement][:school_year_id]
-    params[:campus_involvement][:ministry_role_id] = StudentRole.first # TODO
+    # TODO: check that a student can only assign roles <= their own role
     update_campus_involvement
     if @campus_involvement.archived?
       @campus_involvement.end_date = nil
@@ -57,6 +59,7 @@ class CampusInvolvementsController < ApplicationController
 
   def edit
     @campus_involvement = @person.campus_involvements.find params[:id]
+    @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     render :template => 'involvements/edit'
   end
 
@@ -67,11 +70,10 @@ class CampusInvolvementsController < ApplicationController
 
   # record the mi history as well
   def update_student_campus_involvement
-    debugger
     @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     record_history = !@campus_involvement.new_record? && 
-      (@campus_involvement.school_year_id.to_s != params[:school_year_id] || 
-      @ministry_involvement.ministry_role_id.to_s != params[:ministry_role_id])
+      (@campus_involvement.school_year_id.to_s != params[:campus_involvement][:school_year_id] || 
+      @ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id])
     if record_history
       @history = @campus_involvement.new_student_history
       @history.ministry_role_id = @ministry_involvement.ministry_role_id
@@ -135,5 +137,14 @@ class CampusInvolvementsController < ApplicationController
     @singular = 'campus'
     @short = 'ci'
     @add_title = 'Add Campus'
+  end
+
+  def set_roles
+    @roles = [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
+  end
+
+  def set_student
+    @staff = is_staff_somewhere(@person)
+    @student = !@staff
   end
 end

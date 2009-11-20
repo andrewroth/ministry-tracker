@@ -287,6 +287,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministry_involvements'
+  p.action = 'index'
+  p.description = 'List Ministry Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'change_ministry'
   p.description = 'Switch to viewing another ministry in the directory'

@@ -3,3 +3,6 @@
 Campus: <%= collection_select :campus_involvement, :campus_id, @campuses, :id, :name, { :include_blank => true } %><br/>
 <%- end -%>
 School Year: <%= collection_select :campus_involvement, :school_year_id, @school_years, :id, :name, { :include_blank => true } %><br/>
+<% if @student %>
+Role: <%= select_tag 'ministry_involvement[ministry_role_id]', grouped_options_for_select(@roles, @ministry_involvement.try(:ministry_role_id) || @default_role_id) %><br/>
+<% end %>

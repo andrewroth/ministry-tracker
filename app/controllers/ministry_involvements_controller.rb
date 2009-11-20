@@ -53,12 +53,14 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
+    debugger
+    @student_before = !is_staff_somewhere(@person)
     # If this person was already on this ministry, update with the new role
     mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
     if mi
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
       mi.start_date ||= Date.today
-      if mi.archived?
+      if mi.archived? || (@student_before && mi.ministry_role.is_a?(StaffRole))
         mi.end_date = nil
         mi.last_history_update_date = Date.today
       else
@@ -72,6 +74,7 @@ class MinistryInvolvementsController < ApplicationController
       }))
     end
     @ministry_involvement = mi
+    @promoted = @student_before && mi.ministry_role.is_a?(StaffRole)
     unless request.xhr?
       redirect_to '/staff'
     else
