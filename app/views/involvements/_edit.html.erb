@@ -4,7 +4,7 @@
      :url => self.send("person_#{@singular}_involvement_url", @person.id, involvement.id, :from_manage => true),
      :method => :post) do |f|
 %>
-  <%= render :partial => 'form', :locals => { :year_only => !involvement.archived?, :role_only => !involvement.archived? } %>
+  <%= render :partial => 'form', :locals => { :year_only => false, :role_only => false } %>
   <%= submit_tag 'Save' %>
   or
   <%= link_to_function 'cancel', "$(\"##{@short}_li_edit_#{involvement.id}\").replaceWith(\"\"); $(\"##{@short}_li_#{involvement.id}\").show();" %>

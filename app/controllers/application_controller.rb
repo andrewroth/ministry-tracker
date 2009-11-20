@@ -87,10 +87,19 @@ class ApplicationController < ActionController::Base
       return false unless person
       @is_ministry_leader ||= {}
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
-                                          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
-                                            @my.id, get_ministry.root.leader_roles_ids]).nil?
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
+         person.id, get_ministry.root.leader_roles_ids]).nil?
     end
     
+    def is_staff_somewhere(person = nil)
+      person ||= (@me || get_person)
+      return false unless person
+      @is_staff_somewhere ||= {}
+      @is_staff_somewhere[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
+         person.id, get_ministry.root.staff_role_ids]).nil?
+    end
+ 
     def can_manage
       unless session[:can_manage]
         session[:can_manage] = authorized?(:new, :ministries) || authorized?(:edit, :ministries) ||
@@ -369,7 +378,7 @@ class ApplicationController < ActionController::Base
     end
 
     def force_campus_set
-      unless @person.campus_involvements.size > 0
+      unless @my.campus_involvements.size > 0
         redirect_to set_initial_campus_person_url(@person.id)
       end
     end

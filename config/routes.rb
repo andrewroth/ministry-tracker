@@ -108,7 +108,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state => :any,
                                           :set_current_address_states => :get,
                                           :set_permanent_address_states => :get,
-                                          :perform_task => :post},
+                                          :perform_task => :post,
+                                          :make_staff => :post},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

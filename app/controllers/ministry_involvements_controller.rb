@@ -8,11 +8,11 @@ class MinistryInvolvementsController < ApplicationController
 
   # used to pop up a dialog box
   def index
-    ministry_role = get_ministry_involvement(get_ministry).ministry_role
-    unless ministry_role.is_a?(StaffRole)
+    @from_profile = true
+    unless is_staff_somewhere(@person)
       @denied = true
     else
-      @ministry_involvements = @person.ministry_involvements
+      @ministry_involvements = @person.active_ministry_involvements
       @involvement_history = @person.involvement_history
     end
     render :template => 'involvements/index'
@@ -28,18 +28,16 @@ class MinistryInvolvementsController < ApplicationController
     @person = Person.find(params[:person_id])
     if @me == @person || authorized?(:new, :people)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
-      if @ministry_involvement.end_date.present?
-        @ministry_involvement.destroy
-      else
-        @archived_ministry_involvement = @ministry_involvement
-        setup_archived_after(@archived_ministry_involvement)
-        @ministry_involvement.update_attribute(:end_date, Time.now)
-      end
+      @history = @ministry_involvement.new_staff_history
+      @history.save
+      @ministry_involvement.end_date = Date.today
+      @ministry_involvement.save!
+      @from_profile = params[:from_profile]
 
       respond_to do |format|
         format.xml  { head :ok }
         format.js {
-          render :template => 'involvements/destroy' if params[:from_manage]
+          render :template => 'involvements/destroy' if params[:from_profile]
         }
       end
     else
@@ -58,17 +56,15 @@ class MinistryInvolvementsController < ApplicationController
     # If this person was already on this ministry, update with the new role
     mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
     if mi
-      save_history = mi.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id]
-      if save_history
-        @history = mi.new_staff_history
-        @history.save!
-        mi.last_history_update_date = Date.today
-      end
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
       mi.start_date ||= Date.today
-      mi.end_date = nil
+      if mi.archived?
+        mi.end_date = nil
+        mi.last_history_update_date = Date.today
+      else
+        @updated = true
+      end
       mi.save
-      @updated = true
     else
       # TODO: check role is underneath current user's role, if student
       mi = MinistryInvolvement.create(params[:ministry_involvement].merge({
@@ -79,6 +75,7 @@ class MinistryInvolvementsController < ApplicationController
     unless request.xhr?
       redirect_to '/staff'
     else
+      @from_profile = true
       render :template => 'involvements/create'
     end
   end
@@ -134,6 +131,7 @@ class MinistryInvolvementsController < ApplicationController
     if params[:single_edit]
       flash[:notice] = "#{@person.full_name}'s ministry role updated to #{@ministry_involvement.ministry_role.name}"
     end
+    @from_profile = params[:from_profile]
     respond_to do |wants|
       wants.js {
         render :template => 'involvements/update' if params[:from_manage] == 'true'
@@ -154,11 +152,5 @@ class MinistryInvolvementsController < ApplicationController
     @ministries = get_ministry.self_plus_descendants
     @roles = [ [ 'Staff Roles', StaffRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
     @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
-  end
-
-  def setup_archived_after(ami, mis = @person.ministry_involvements)
-    # figure out where to put the archived campus involvement
-    archived_index = mis.index ami
-    @archived_after = archived_index == 0 ? :first : mis[archived_index - 1]
   end
 end
