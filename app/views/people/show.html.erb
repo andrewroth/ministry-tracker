@@ -36,7 +36,7 @@
     :group_types_and_involvements => @person.group_group_involvements(:involved, :ministry => @ministry)
   } %>
 	
-  <%- if @show_ministries_list -%>
+  <%- if @staff -%>
   <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
   <%- if @person.ministries.count > 0 -%>
   	<ul id="ministries">

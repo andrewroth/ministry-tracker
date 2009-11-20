@@ -4,4 +4,5 @@
       :method => :delete,
       :before => "$('#spinner').show()")  if is_ministry_leader || @person == @me %>
       <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
+      <%= ci.find_or_create_ministry_involvement.ministry_role.name if @student %> 
 </li>

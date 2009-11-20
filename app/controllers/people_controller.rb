@@ -619,7 +619,8 @@ class PeopleController < ApplicationController
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
       #@show_ministries_list = get_ministry_involvement(get_ministry).try(:ministry_role).is_a?(StaffRole)
-      @show_ministries_list = is_staff_somewhere(@person)
+      @staff = is_staff_somewhere(@person)
+      @student = !@staff
     end
     
     def set_dorms
