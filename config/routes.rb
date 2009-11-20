@@ -82,8 +82,9 @@ ActionController::Routing::Routes.draw do |map|
                                             :change_county => :any,
                                             :change_state => :any}
 
-  map.resources :ministries, :member => { :switch_to => :any,
-                                          :parent_form => :any,
+  map.resources :ministries, :collection => { :switch_list => :get,
+                                              :switch_apply => :post},
+                             :member => { :parent_form => :any,
                                           :set_parent => :any},
                              :has_many => [:ministry_campuses]
 
@@ -108,8 +109,7 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state => :any,
                                           :set_current_address_states => :get,
                                           :set_permanent_address_states => :get,
-                                          :perform_task => :post,
-                                          :make_staff => :post},
+                                          :perform_task => :post},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements
     person.resources :ministry_involvements

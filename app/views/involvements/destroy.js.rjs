@@ -3,6 +3,7 @@ page["#{@short}_#{involvement.id}"].fade
 if params[:from_profile] == 'true'
   #page["#{@short}_li_#{involvement.id}"].fade
   #page["#{@short}_li_#{involvement.id}"].replace ''
+  page << %|$('##{@short}_#{involvement.id}').fadeOut(500, function() { $(this).remove(); });|
   page << %|$('##{@short}_li_#{involvement.id}').fadeOut(500, function() { $(this).remove(); });|
   if @history
     page.insert_html :bottom, "involvement_history", render(:partial => 'involvement_history/involvement_li', :object => @history)

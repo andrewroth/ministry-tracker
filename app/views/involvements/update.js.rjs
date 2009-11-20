@@ -2,6 +2,8 @@ if involvement.errors.empty?
   page["#{@short}_li_#{involvement.id}"].show
   page["#{@short}_li_edit_#{involvement.id}"].fade
   page["#{@short}_li_#{involvement.id}"].replace_html :partial => involvement
+  page["#{@short}_#{involvement.id}"].replace_html :partial => "people/profile_#{@singular}_li",
+    :locals => { @short.to_sym => involvement }
   if @history
     page.insert_html :bottom, "involvement_history", render(:partial => 'involvement_history/involvement_li', :object => @history)
   end

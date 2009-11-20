@@ -37,15 +37,17 @@
   } %>
 	
   <%- if @staff -%>
+  <div id="ministries_div">
   <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
   <%- if @person.ministries.count > 0 -%>
   	<ul id="ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
-      <%= render :partial => 'ministry_li', :locals => { :mi => mi } %>
+      <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
   	<%- end -%>
   	</ul> <br />
 	<%- end -%>
+  </div>
   <%- end -%>
 	<div id="campuses_div">
     <%= render :partial => 'campuses' %>

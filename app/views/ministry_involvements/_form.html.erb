@@ -2,4 +2,4 @@
 <%- unless role_only -%>
 Ministry: <%= render :partial => 'choose_ministry' %><BR />
 <%- end -%>
-Role: <%= select_tag 'ministry_involvement[ministry_role_id]', grouped_options_for_select(@roles) %><br/>
+Role: <%= select_tag 'ministry_involvement[ministry_role_id]', grouped_options_for_select(@roles, @ministry_involvement.try(:ministry_role_id) || @default_role_id) %><br/>
