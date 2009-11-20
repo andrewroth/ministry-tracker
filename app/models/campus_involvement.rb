@@ -24,7 +24,10 @@ class CampusInvolvement < ActiveRecord::Base
   end
 
   def derive_ministry
-    ministry_campus = MinistryCampus.find :first, :conditions => { :campus_id => campus_id }
+    # look for the latest MC, under the assumption it will be the most nested
+    # if staff start wanting to have staff-only groups with campuses, we'll have to
+    # rethink this
+    ministry_campus = MinistryCampus.find :last, :conditions => { :campus_id => campus_id }
     ministry_campus.try(:ministry)
   end
 
@@ -32,13 +35,19 @@ class CampusInvolvement < ActiveRecord::Base
     ministry = derive_ministry || Cmt::CONFIG[:default_ministry] || Ministry.first
     mi = ministry.ministry_involvements.find :first, :conditions => [ "person_id = ? AND end_date IS NULL", person_id ]
     if mi.nil?
-      sr = StudentRole.find_by_name 'Student'
-      sr ||= StudentRole.find :last, :order => "position"
-      mi = ministry.ministry_involvements.create :person => person, :ministry_role => sr
+      mi = ministry.ministry_involvements.create :person => person, :ministry_role => default_student_role
     elsif mi.ministry_role_id.nil?
       mi.ministry_role_id = StudentRole
       mi.save
+    elsif !mi.try(:ministry_role).is_a?(StudentRole)
+      mi.ministry_role_id = default_student_role.id
     end
     mi
+  end
+
+  private
+  def default_student_role
+    sr = StudentRole.find_by_name %w(Student student)
+    sr ||= StudentRole.find :last, :order => "position"
   end
 end

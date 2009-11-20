@@ -67,6 +67,7 @@ class CampusInvolvementsController < ApplicationController
 
   # record the mi history as well
   def update_student_campus_involvement
+    debugger
     @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     record_history = !@campus_involvement.new_record? && 
       (@campus_involvement.school_year_id.to_s != params[:school_year_id] || 
@@ -76,7 +77,6 @@ class CampusInvolvementsController < ApplicationController
       @history.ministry_role_id = @ministry_involvement.ministry_role_id
     end
     @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
-    @ministry_involvement.update_attributes :ministry_role_id => StudentRole.first # TODO
     if record_history && @campus_involvement.errors.empty? && @ministry_involvement.errors.empty?
       @history.save!
       @campus_involvement.update_attributes :last_history_update_date => Date.today
