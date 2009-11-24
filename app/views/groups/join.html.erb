@@ -1,4 +1,7 @@
 <h2>Join a group&nbsp;&nbsp;<%= spinner('gt') %></h2>	  
 <div id="customizebody" class="accordion">
+  <%- if @campuses.length > 1 -%>
+    <%= render :partial => 'campus_filter' %>
+  <%- end -%>
   <%= render :partial => 'groups_for_ministry.html.erb' %>
 </div>

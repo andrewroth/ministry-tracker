@@ -53,7 +53,6 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    debugger
     @student_before = !is_staff_somewhere(@person)
     # If this person was already on this ministry, update with the new role
     mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
