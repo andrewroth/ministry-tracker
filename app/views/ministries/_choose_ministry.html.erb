@@ -1,0 +1,40 @@
+<div>
+<div id='switch_ministries_tree'>
+</div>
+</div>
+<script>
+  Ext.onReady(function(){
+    // shorthand
+    var Tree = Ext.tree;
+
+    var tree = new Tree.TreePanel({
+      useArrows: true,
+      autoScroll: true,
+      animate: true,
+      enableDD: false,
+      containerScroll: true,
+      border: true,
+      width: 400,
+      height: 300,
+      rootVisible: false,
+      root: {"text":"root", "id":0, "children":[ <%= @ministries.join(",") %> ] }
+    });
+
+    // render the tree
+    tree.render('switch_ministries_tree');
+    tree.getRootNode().expand();
+
+    // handle clicks
+    tree.on('click', function(node, e) {
+      myurl = "<%= switch_apply_ministry_url(':id') %>".replace(/:id/,node.id);
+      jQuery.ajax({data:'', dataType:'script', type:'post', url:(""+myurl)});
+      //jQuery.ajax({data:'', dataType:'script', type:'post', url:'here'})
+      //$('#ministry_involvement_ministry_id')[0].value = node.id;
+    }, this);
+  });
+
+  $(document).click(function(e) {
+    $('#switch_ministries_list').hide();    
+  });
+
+</script>
