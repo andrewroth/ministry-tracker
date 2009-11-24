@@ -18,11 +18,13 @@
 	</div>
 <%- end -%>
 <%- if @me.ministries.length > 1 -%>
-	<div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
-	<%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
-	<%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
-  <%- tooltip do -%> 
-    This will allow to to view the directory of another ministry you are involved in.
+  <%- if authorized?(:change_ministry_and_goto_directory) -%>
+	  <div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
+    <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+    <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
+    <%- tooltip do -%> 
+      This will allow to to view the directory of another ministry you are involved in.
+    <%- end -%>
   <%- end -%>
 <%- end -%>
 <%- if @ministry.views.length > 1 -%>
