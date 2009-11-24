@@ -24,13 +24,17 @@ class Import < ActiveRecord::Base
     # for checking what methods they respond to
     fake_person = Person.new
     fake_address = Address.new
-    tmp_dir = '/tmp/sn_imports'
-    FileUtils.mkdir_p(tmp_dir)
-    tmp_filename = File.join(tmp_dir, filename)
-    File.open(tmp_filename, 'w') do |file|
-      AWS::S3::S3Object.stream(full_filename, bucket_name) do |chunk|
-        file.write chunk
+    if $attachment_storage_mode == :s3
+      tmp_dir = '/tmp/sn_imports'
+      FileUtils.mkdir_p(tmp_dir)
+      tmp_filename = File.join(tmp_dir, filename)
+      File.open(tmp_filename, 'w') do |file|
+        AWS::S3::S3Object.stream(full_filename, S3_CONFIG[:bucket_name]) do |chunk|
+          file.write chunk
+        end
       end
+    else
+      tmp_filename = full_filename
     end
     Import.transaction do
       if File.extname(tmp_filename).downcase == '.xls'

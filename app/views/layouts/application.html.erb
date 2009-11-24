@@ -44,7 +44,7 @@
 			</div>
 			
 			<div id="greenbar">	
-        <h1 id="title"><%= @ministry.try(:name) == Cmt::CONFIG[:default_ministry_name] ? I18n.t(:slogan, :default => 'Campus Movement Tracker') : @ministry.try(:name) %><%- if @is_staff_somewhere %> <%= link_to_remote "&#92;&#47;", :url => switch_list_ministries_url %><%- end -%></h1>
+        <h1 id="title"><%= @ministry.try(:name) == Cmt::CONFIG[:default_ministry_name] ? I18n.t(:slogan, :default => 'Campus Movement Tracker') : @ministry.try(:name) %><%- if @is_staff_somewhere[@me.id] %> <%= link_to_remote "&#92;&#47;", :url => switch_list_ministries_url %><%- end -%></h1>
         <%= tabnav :main %>
         <div id="switch_ministries_list" style="display:none">
           &nbsp;
