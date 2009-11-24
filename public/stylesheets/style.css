@@ -1086,3 +1086,8 @@ div.section {
   z-index: 1100;
   position: fixed;
 }
+
+#switch_ministries_list {
+  position: absolute;  
+  z-index: 500;
+}

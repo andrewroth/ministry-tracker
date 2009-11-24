@@ -47,7 +47,8 @@ class PeopleController < ApplicationController
 
   def directory
     get_view
-    my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
+    #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
+    my_campuses unless is_staff_somewhere
     get_campuses
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"

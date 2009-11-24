@@ -82,10 +82,10 @@ ActionController::Routing::Routes.draw do |map|
                                             :change_county => :any,
                                             :change_state => :any}
 
-  map.resources :ministries, :collection => { :switch_list => :get,
-                                              :switch_apply => :post},
+  map.resources :ministries, :collection => { :switch_list => :get},
                              :member => { :parent_form => :any,
-                                          :set_parent => :any},
+                                          :set_parent => :any,
+                                          :switch_apply => :post},
                              :has_many => [:ministry_campuses]
 
   map.resources :addresses
