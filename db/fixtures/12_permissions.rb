@@ -161,6 +161,18 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministries'
+  p.action = 'switch_list'
+  p.description = 'Switch Ministries List'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministries'
+  p.action = 'switch_apply'
+  p.description = 'Switch Ministries Apply'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'ministry_roles'
   p.action = 'edit'
   p.description = 'Edit Ministry Roles'

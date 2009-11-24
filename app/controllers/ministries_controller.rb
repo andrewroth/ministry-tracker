@@ -132,7 +132,17 @@ class MinistriesController < ApplicationController
     end
   end
 
-  def switch_to
+  def switch_list
+    #person_ministries = @person.active_ministry_involvements.collect(&:ministry_id)
+    #allowed_ministries << person_ministries.
+    @ministries = [ Ministry.first.to_hash_with_children.to_json ]
+
+    #@ministries = [ Ministry.find(15).to_hash_with_children.to_json, Ministry.find(10).to_hash_with_children.to_json ]
+  end
+
+  def switch_apply
+    @ministry = Ministry.find params[:id]
+    session[:ministry_id] = @ministry.id
   end
 
   # Question: What exactly does parent_form and set_parent do?

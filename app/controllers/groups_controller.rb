@@ -305,7 +305,7 @@ class GroupsController < ApplicationController
 
   def setup_campus_filter
     get_person_campuses
-    role = get_ministry_involvement(get_ministry).ministry_role
+    role = get_ministry_involvement(get_ministry).try(:ministry_role)
     if role.is_a?(StaffRole)
       @campus_filter_options = build_campus_filter_options(get_ministry_with_three_levels)
       @campus_filter, @campus_filter_default = campus_filter_from_param || determine_default_campus_filter(get_ministry)
@@ -315,6 +315,8 @@ class GroupsController < ApplicationController
       @campus_filter_options = [ [ 'Your Campuses' , @person_campuses.collect{ |c| [ c.name, c.id ] } ] ]
       @campus_filter = @person_campuses.first
       @campus_filter_default = @person_campuses.id
+    else
+      @campus_filter_options = []
     end
   end
 

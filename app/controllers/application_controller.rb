@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
-  before_filter :authorization_filter, :force_campus_set
+  before_filter :authorization_filter, :force_campus_set, :is_staff_somewhere
   
   helper :all
 
@@ -317,7 +317,7 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = @person.ministry_tree.detect {|m| m.id == session[:ministry_id].to_i } if session[:ministry_id]
+        @ministry = Ministry.find session[:ministry_id] if session[:ministry_id].present?
         @ministry ||= @person.ministries.first
 
         # If we didn't get a ministry out of that, check for a ministry through campus
