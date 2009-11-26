@@ -133,7 +133,7 @@ class MinistriesController < ApplicationController
   end
 
   def switch_list
-    #person_ministries = @person.active_ministry_involvements.collect(&:ministry_id)
+    #person_ministries = @person.ministry_involvements.collect(&:ministry_id)
     #allowed_ministries << person_ministries.
     @ministries = [ Ministry.first.to_hash_with_children.to_json ]
 

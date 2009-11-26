@@ -31,3 +31,11 @@ sues_in_with_history:
   campus_id: 2
   ministry_id: 1
   school_year_id: 1
+  start_date: 2009-10-20
+
+ministry_leader_with_no_permanent_address:
+  id: 1005
+  person_id: 4001
+  campus_id: 1
+  ministry_id: 1
+  school_year_id: 1

@@ -105,12 +105,12 @@ class PeopleControllerTest < ActionController::TestCase
   test "should restrict students directory to their campuses" do
     login 'sue@student.org'
     get :directory
-    assert_equal [ Campus.first ], assigns(:campuses)
+    assert_equal @person.campuses, assigns(:campuses)
   end
  
   test "should have all campuses on directory for staff" do
     get :directory
-    assert_equal Ministry.first.campuses, assigns(:campuses)
+    assert_equal Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten, assigns(:campuses)
   end
 
   test "should clear session order when changing view" do
@@ -269,34 +269,33 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(ministries(:dg), assigns(:ministry))
   end
   
-  test "change to a ministry that is NOT under my assigned level should default to my first ministry" do
+  test "change to a ministry that is NOT under my assigned level should default to my first ministry for student" do
+    login 'ministry_leader_user_with_no_permanent_address'
     get :change_ministry_and_goto_directory, :current_ministry => ministries(:top).id
     assert_response :redirect
     assert_not_equal(ministries(:top), assigns(:ministry))
-    assert_equal(people(:josh).ministries.first, assigns(:ministry))
+    assert_equal(people(:ministry_leader_person_with_no_permanent_address).ministries.first, assigns(:ministry))
   end
+
+  test "change to a ministry that is NOT under my assigned level should still work for staff" do
+    get :change_ministry_and_goto_directory, :current_ministry => ministries(:top).id
+    assert_response :redirect
+    assert_equal(ministries(:top), assigns(:ministry))
+  end
+ 
   
-  test "new person with no ministry involvements should be involved in the dummy ministry" do
-    user = users(:user_with_no_ministry_involvements)
-    @request.session[:user] = user.id
-    @request.session[:ministry_id] = nil
+  test "user with no ministry involvements should be redirected to set their initial campus" do
+    login('user_with_no_ministry_involvements')
   
-    person = people(:person_with_no_ministry_involvements)
+    get :directory
   
-    get :directory, :person_id => person.id
-  
-    # person should be involved in 'No Ministry' ministry
-    ministry = ministries(:no_ministry)
-    ministry_involvements = MinistryInvolvement.find_all_by_person_id(person.id)
-    assert ministry_involvements.any?{ |mr| mr.ministry_id == ministry.id }
-    # assert_redirected_to :action => "index", :controller => "dashboard"
-    assert_response :success, @response.body
+    assert_redirected_to "http://test.host/people/4000/set_initial_campus"
   end
   
   test "ministry leader with no permanent address should render when updating notes" do
   
     # setup session
-    ministry = ministries(:yfc)    
+    ministry = ministries(:under_top)
     
     user = users(:ministry_leader_user_with_no_permanent_address)
     @request.session[:user] = user.id
@@ -304,14 +303,8 @@ class PeopleControllerTest < ActionController::TestCase
     
     person = people(:ministry_leader_person_with_no_permanent_address)
   
-    # make sure person is a leader
-    involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
-    assert ministry.staff.include?(person) || (involvement && involvement.admin?)
-    
     # make sure it renders properly
     get :show, :id => person.id
-    
-    assert_template :partial => '_view', :count => 1
     assert_response :success
   
     # save the staff notes    

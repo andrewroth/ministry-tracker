@@ -6,7 +6,7 @@ class CampusInvolvementsController < ApplicationController
   before_filter :set_student, :only => [ :index, :new, :edit ]
 
   def index
-    @campus_involvements = @person.active_campus_involvements
+    @campus_involvements = @person.campus_involvements
     @involvement_history = @person.involvement_history
     @from_profile = true
     render :template => 'involvements/index'
@@ -19,8 +19,8 @@ class CampusInvolvementsController < ApplicationController
 
   def create
     # look for an existing one
-    @campus_involvement = @person.campus_involvements.find :first, :conditions => { :campus_id => params[:campus_involvement][:campus_id] }
-    @campus_involvement ||= @person.campus_involvements.new :start_date => Date.today, :ministry_id => get_ministry.id, :campus_id => params[:campus_involvement][:campus_id]
+    @campus_involvement = @person.all_campus_involvements.find :first, :conditions => { :campus_id => params[:campus_involvement][:campus_id] }
+    @campus_involvement ||= @person.all_campus_involvements.new :start_date => Date.today, :ministry_id => get_ministry.id, :campus_id => params[:campus_involvement][:campus_id]
     @updated = !@campus_involvement.new_record?
 
     params[:campus_involvement][:school_year_id] = params[:campus_involvement][:school_year_id]

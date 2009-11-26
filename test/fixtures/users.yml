@@ -22,7 +22,7 @@ user_with_no_ministry_involvements:
 
 ministry_leader_user_with_no_permanent_address:
     id: 5
-    username: user_with_no_permanent_address
+    username: ministry_leader_user_with_no_permanent_address
     password: <%= User.encrypt('test') %>
     guid: 253b648c-3537-464c-b97a-e2d7e2c748b8
 

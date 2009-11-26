@@ -42,7 +42,7 @@
   <%- if @person.ministries.count > 0 -%>
   	<ul id="ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
-  	  mi = @person.active_ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
+  	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
       <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
   	<%- end -%>
   	</ul> <br />

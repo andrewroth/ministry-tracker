@@ -318,6 +318,10 @@ class ApplicationController < ActionController::Base
       raise "no person" unless @person
       unless @ministry
         @ministry = Ministry.find session[:ministry_id] if session[:ministry_id].present?
+        # security feature: restrict students
+        if @ministry && !is_staff_somewhere
+          @ministry = @person.ministries.find_by_id session[:ministry_id]
+        end
         @ministry ||= @person.ministries.first
 
         # If we didn't get a ministry out of that, check for a ministry through campus
@@ -378,7 +382,7 @@ class ApplicationController < ActionController::Base
     end
 
     def force_campus_set
-      unless @my.campus_involvements.size > 0
+      if !is_staff_somewhere && @my.campus_involvements.empty?
         redirect_to set_initial_campus_person_url(@person.id)
       end
     end
