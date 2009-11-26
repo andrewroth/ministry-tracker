@@ -50,7 +50,7 @@
     Ministry: <br/>
     <%= select_tag 'ministry[]',
       options_for_select(
-        @my.ministries.collect {|ministry| [ministry.name, ministry.id]},
+        @ministries.collect {|ministry| [ministry.name, ministry.id]},
           @options["ministry"]),
       :multiple => true,
       :class => 'wide'
