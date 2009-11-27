@@ -44,7 +44,6 @@ class PeopleController < ApplicationController
   # at least for readability!
   #
   # Sets up pagination for results (TODO: this can be put in a method!)
-require 'ruby-debug'
   def directory
     get_view
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
