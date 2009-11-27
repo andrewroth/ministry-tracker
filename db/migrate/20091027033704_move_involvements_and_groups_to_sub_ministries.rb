@@ -53,7 +53,7 @@ class MoveInvolvementsAndGroupsToSubMinistries < ActiveRecord::Migration
         else
           STDOUT.print "[student] #{p.full_name}"
           # students just get their one involvement moved
-          ci = p.active_campus_involvements.first
+          ci = p.campus_involvements.first
           if ci
             add_to_campus_team p, ci.campus, mi.ministry_role_id
           end
