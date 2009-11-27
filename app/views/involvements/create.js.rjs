@@ -5,7 +5,7 @@ elsif involvement.errors.empty?
     page << render(:file => 'involvements/update.js.rjs')
   else
     page.insert_html :before, :"new_#{@singular}_li", :partial => "involvements/involvement_li", :object => involvement
-    page.insert_html :bottom, :"profile_campuses", :partial => "people/profile_#{@singular}_li",
+    page.insert_html :bottom, :"profile_#{@plural}", :partial => "people/profile_#{@singular}_li",
       :locals => { @short.to_sym => involvement }
   end
   page["new_#{@singular}_involvement_li"].replace ''
