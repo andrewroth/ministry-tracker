@@ -123,9 +123,14 @@ class CampusInvolvementsController < ApplicationController
   protected
 
   def set_campuses
-    @campuses = @person.ministries.collect &:campuses
-    @campuses.flatten!
-    @campuses.uniq!
+    if Cmt::CONFIG[:campus_scope_country]
+      @campuses = CmtGeo.campuses_for_country('CA')
+    else
+      # TODO this should do the proper ajax choose Country -> State -> Campus
+      @campuses = @person.ministries.collect &:campuses
+      @campuses.flatten!
+      @campuses.uniq!
+    end
   end
 
   def set_school_years
