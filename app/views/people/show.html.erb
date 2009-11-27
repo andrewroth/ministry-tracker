@@ -40,7 +40,7 @@
   <div id="ministries_div">
   <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
   <%- if @person.ministries.count > 0 -%>
-  	<ul id="ministries">
+  	<ul id="profile_ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
       <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
