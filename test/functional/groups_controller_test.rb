@@ -9,6 +9,8 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
+    puts @person.ministry_involvements.to_yaml
+    puts assigns('groups').to_yaml
     assert_equal [ Group.first ], assigns('groups')
   end
 

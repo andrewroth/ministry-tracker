@@ -6,16 +6,16 @@ class Person < ActiveRecord::Base
   
   # Campus Relationships
   has_many :involvement_history
-  has_many :campus_involvements #, :include => [:ministry, :campus]
-  has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
+  has_many :all_campus_involvements #, :include => [:ministry, :campus]
+  has_many :campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
-  has_many :active_campuses, :through => :active_campus_involvements, :class_name => 'Campus', :source => :campus
+  has_many :all_campuses, :through => :all_campus_involvements, :class_name => 'Campus', :source => :campus
   belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
   # accepts_nested_attributes_for :primary_campus_involvement
   has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
-  has_many :active_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
-  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :order => 'end_date DESC'
-  has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
+  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
+  has_many :all_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :order => 'end_date DESC'
+  has_many :ministries, :through => :ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
   has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
   has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
@@ -398,7 +398,7 @@ end
   
   # Question: what does this help with?
   def most_recent_involvement
-    @most_recent_involvement = primary_campus_involvement || active_campus_involvements.last
+    @most_recent_involvement = primary_campus_involvement || campus_involvements.last
   end
   
   # for students, use their campuse involvements; for staff, use ministry teams
@@ -406,7 +406,7 @@ end
     return @working_campuses if @working_campuses
     return [] unless ministry_involvement
     if ministry_involvement.ministry_role.is_a?(StudentRole)
-      @working_campuses = active_campuses
+      @working_campuses = campuses
     elsif ministry_involvement.ministry_role.is_a?(StaffRole)
       @working_campuses = ministry_involvement.ministry.campuses
     end

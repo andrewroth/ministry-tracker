@@ -165,7 +165,7 @@ class Ministry < ActiveRecord::Base
     @leader_roles ||= staff_roles
   end
   
-  def leader_roles_ids
+  def leader_role_ids
     @leader_roles_ids ||= leader_roles.collect(&:id)
   end
   

@@ -44,10 +44,11 @@ class PeopleController < ApplicationController
   # at least for readability!
   #
   # Sets up pagination for results (TODO: this can be put in a method!)
-
+require 'ruby-debug'
   def directory
     get_view
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
+    get_ministries
     get_campuses
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"

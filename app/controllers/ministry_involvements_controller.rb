@@ -12,7 +12,7 @@ class MinistryInvolvementsController < ApplicationController
     unless is_staff_somewhere(@person)
       @denied = true
     else
-      @ministry_involvements = @person.active_ministry_involvements
+      @ministry_involvements = @person.ministry_involvements
       @involvement_history = @person.involvement_history
     end
     render :template => 'involvements/index'
