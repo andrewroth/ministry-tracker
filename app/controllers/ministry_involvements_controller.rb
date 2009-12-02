@@ -53,6 +53,12 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
+    # Only staff can create ministry_involvements
+    unless is_staff_somewhere(@me)
+      flash[:notice] = "Only staff can set ministry involvement"
+      redirect_to :back
+      return
+    end
     @student_before = !is_staff_somewhere(@person)
     # If this person was already on this ministry, update with the new role
     mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
@@ -67,7 +73,6 @@ class MinistryInvolvementsController < ApplicationController
       end
       mi.save
     else
-      # TODO: check role is underneath current user's role, if student
       mi = MinistryInvolvement.create(params[:ministry_involvement].merge({
         :person_id => @person.id, :start_date => Date.today
       }))

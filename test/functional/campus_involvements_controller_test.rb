@@ -35,8 +35,6 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     xhr :get, :index
     assert_not_nil(assigns(:campus_involvements))
     assert_not_nil(assigns(:involvement_history))
-    puts assigns(:campus_involvements).inspect
-    puts assigns(:involvement_history).inspect
   end
 
   def test_update_staff_campus_involvement
@@ -51,13 +49,19 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
   def test_update_student_campus_involvement_first_involvement
     login 'sue@student.org'
     histories_before = Person.find(2000).involvement_history.count
-    xhr :get, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }
+    xhr :post, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }
     histories_after = Person.find(2000).involvement_history.count
     assert_equal(histories_before + 1, histories_after)
     history = Person.find(2000).involvement_history.last
     campus_involvement = CampusInvolvement.find 1002
     assert_equal(history.start_date, campus_involvement.start_date)
     assert_equal(Date.today, history.end_date)
+  end
+
+  def test_students_restricted_to_creating_under_their_role
+    login 'sue@student.org'
+    xhr :post, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }, :ministry_involvement => { :ministry_role_id => StaffRole.first.id }
+    assert_equal StudentRole, CampusInvolvement.find(1002).find_or_create_ministry_involvement.ministry_role.class
   end
 
   def test_update_student_campus_involvement_second_involvement
