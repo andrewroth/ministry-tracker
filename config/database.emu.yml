@@ -5,7 +5,7 @@ defaults: &defaults
   socket: /tmp/mysql.sock
 
 development:
-  database: pulse_stage_emu
+  database: pulse_prod
   <<: *defaults
 
 test:
@@ -17,7 +17,7 @@ production:
   <<: *defaults
 
 ciministry_development:
-  database: ciministry
+  database: cim_prod
   <<: *defaults
 
 ciministry_production:
