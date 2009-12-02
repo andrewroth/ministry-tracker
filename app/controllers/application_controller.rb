@@ -325,12 +325,12 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = Ministry.find session[:ministry_id] if session[:ministry_id].present?
+        @ministry = Ministry.find :first, :conditions => { :id => session[:ministry_id] } if session[:ministry_id].present?
         # security feature: restrict students
         if @ministry && !is_staff_somewhere
           @ministry = @person.ministries.find_by_id session[:ministry_id]
         end
-        @ministry ||= @person.ministries.first
+        @ministry ||= @person.most_nested_ministry
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
