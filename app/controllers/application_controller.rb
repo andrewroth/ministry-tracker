@@ -55,7 +55,15 @@ class ApplicationController < ActionController::Base
       date.to_formatted_s(format)
     end
 
-    def get_ministry_involvement(ministry)
+    def get_my_ministry_involvement(ministry = get_ministry)
+      get_ministry_involvement(ministry, @me)
+    end
+
+    def get_my_role(ministry = get_ministry)
+      get_my_ministry_involvement(ministry).try(:ministry_role)
+    end
+
+    def get_ministry_involvement(ministry, person = @person)
       @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
