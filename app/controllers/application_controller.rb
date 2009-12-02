@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
       return false unless person
       @is_ministry_leader ||= {}
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
-         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
          person.id, get_ministry.root.leader_roles_ids]).nil?
     end
     
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
       return false unless person
       @is_staff_somewhere ||= {}
       @is_staff_somewhere[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
-         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
          person.id, get_ministry.root.staff_role_ids]).nil?
     end
  
