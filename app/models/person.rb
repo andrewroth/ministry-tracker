@@ -53,6 +53,16 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
   
+  def most_nested_ministry
+    ministries.inject(nil) { |best, ministry|
+      if best
+        ministry.ancestors.length > best.ancestors.length ? ministry : best
+      else
+        ministry
+      end
+    }
+  end
+
   def group_group_involvements(filter, options = {})
     case filter
     when :all

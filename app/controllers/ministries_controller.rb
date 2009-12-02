@@ -142,7 +142,13 @@ class MinistriesController < ApplicationController
 
   def switch_apply
     @ministry = Ministry.find params[:id]
+    # make sure they have a role on this ministry, otherwise bump them to their default ministry
+    if get_my_role(@ministry).nil?
+      @ministry = nil
+      get_ministry
+    end
     session[:ministry_id] = @ministry.id
+    session[:ministry_role_id] = nil
   end
 
   # Question: What exactly does parent_form and set_parent do?
