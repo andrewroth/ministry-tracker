@@ -261,16 +261,22 @@ MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
   ministry_campus.campus_id = 56
 end
 
-# Dal
+# Dal (Halifax Metro)
 MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
-  ministry_campus.ministry_id = 11
+  ministry_campus.ministry_id = 20 # Halifax Metro
   ministry_campus.campus_id = 37
 end
 
-# Saint Mary's (Halifax)
+# Saint Mary's (Halifax Metro)
 MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
-  ministry_campus.ministry_id = 11
+  ministry_campus.ministry_id = 20 # Halifax Metro
   ministry_campus.campus_id = 40
+end
+
+# UNB
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 21 # UNB Ministry
+  ministry_campus.campus_id = 83 # UNB Campus
 end
 
 # Western Region Campuses

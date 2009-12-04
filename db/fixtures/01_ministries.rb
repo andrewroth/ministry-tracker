@@ -135,14 +135,14 @@ Ministry.seed(:name) do |ministry|
   ministry.id = 20
   ministry.name = 'Halifax Metro'
   ministry.ministries_count = 0
-  ministry.parent_id = 12
+  ministry.parent_id = 11
 end
 
 Ministry.seed(:name) do |ministry|
   ministry.id = 21
   ministry.name = 'UNB'
   ministry.ministries_count = 0
-  ministry.parent_id = 12
+  ministry.parent_id = 11
 end
 
 Ministry.seed(:name) do |ministry|
