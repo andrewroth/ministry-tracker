@@ -1,7 +1,7 @@
 class MoveInvolvementsAndGroupsToSubMinistries < ActiveRecord::Migration
   def self.up
     if Ministry.count <= 3
-      MinistryRolePermission.clear
+      MinistryRolePermission.delete_all
       throw "do a db:seed to make the ministries first (note: permissions have also been cleared; the db:seed will recreate them)"
     end
 
