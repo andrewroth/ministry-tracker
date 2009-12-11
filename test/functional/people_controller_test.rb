@@ -199,20 +199,6 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should_show_only_campus_country_when_no_primary_involvement" do
-    josh = Person.find 50000
-    josh.current_address = nil
-    josh.permanent_address = nil
-    josh.primary_campus_involvement = nil
-    josh.save!
-    get :edit, :id => 50000, :format => 'js'
-    assert_response :success
-    assert_nil assigns['campus_country']
-    assert_nil assigns['campus_state']
-    assert_equal assigns['campuses'], []
-    assert @response.body =~ /Choose a country/
-  end
-  
   test "should_show_possible_responsible_people" do
     if Cmt::CONFIG[:rp_system_enabled]
       get :edit, :id => 2000

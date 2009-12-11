@@ -39,3 +39,10 @@ ministry_leader_with_no_permanent_address:
   campus_id: 1
   ministry_id: 1
   school_year_id: 1
+
+fred:
+  id: 1006
+  person_id: 3000
+  campus_id: 1
+  ministry_id: 1
+  school_year_id: 1

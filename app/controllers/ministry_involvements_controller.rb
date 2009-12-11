@@ -73,7 +73,7 @@ class MinistryInvolvementsController < ApplicationController
       end
       mi.save
     else
-      mi = MinistryInvolvement.create(params[:ministry_involvement].merge({
+      mi = MinistryInvolvement.create!(params[:ministry_involvement].merge({
         :person_id => @person.id, :start_date => Date.today
       }))
     end
