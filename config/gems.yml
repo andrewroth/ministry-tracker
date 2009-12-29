@@ -1,0 +1,14 @@
+--- 
+- :name: json_pure
+- :name: fastercsv
+- :name: hpricot
+- :name: rubyzip
+- :name: roo
+- :name: mechanize
+- :name: erubis
+- :name: aws-s3
+- :name: aaronchi-jrails
+- :name: spreadsheet
+- :name: liquid
+- :version: 2.3.4
+  :name: rails
