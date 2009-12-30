@@ -51,17 +51,19 @@
       Dorms
     </div>
 		<div id="dorm_box">
-		  <%- @ministry.campuses.each do |campus| -%>
-		    <h5><%= campus.name %></h5>
-		    <ul id=<%= campus.id %> >
-		      <%= render :partial => 'dorms/dorm', :collection => campus.dorms %>
-		    </ul>
+		  <%- @ministry.unique_campuses.each do |campus| -%>
+		    <% unless campus.dorms.empty? %>
+  		    <h5><%= campus.name %></h5>
+  		    <ul id="<%= campus.id %>">
+  		      <%= render :partial => 'dorms/dorm', :collection => campus.dorms %>
+  		    </ul>
+  		  <%- end -%>
 		  <%- end -%>
 		  <br/>
 		  <p>
 		    Add new dorms
 		  <%- remote_form_for Dorm.new do |f| -%>
-		    <%= f.collection_select :campus_id, @ministry.campuses, :id, :name %> 
+		    <%= f.collection_select :campus_id, @ministry.unique_campuses, :id, :name %> 
 		    <%= f.text_field :name, :size => 20 %>
 		    <%= f.submit 'Add Dorm' %>
 		  <%- end -%>
