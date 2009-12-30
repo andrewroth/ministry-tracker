@@ -4,6 +4,6 @@ class MakeColumnsSelectClauseLonger < ActiveRecord::Migration
   end
 
   def self.down
-    change_column Column.table_name, Column._(:select_clause), :strin
+    change_column Column.table_name, Column._(:select_clause), :string
   end
 end

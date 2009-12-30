@@ -15,6 +15,7 @@ module Widgets
       self.disabled_if opts[:disabled_if] || proc { false }
       @html = opts[:html] || {} 
       @html[:title] = opts[:title] 
+      @html[:target] = opts[:target]
      
       yield(self) if block_given?
       
@@ -36,6 +37,7 @@ module Widgets
     end
     def named(n); @name = n; end
     def titled(t); @html[:title] = t; end
+    def new_window(n); html[:target] = n ? '_blank' : nil; end
     
     def link?
       @link && !@link.empty?

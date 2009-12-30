@@ -1,4 +1,5 @@
 class Email < ActiveRecord::Base
+  load_mappings
   belongs_to :sender, :class_name => "Person", :foreign_key => "sender_id"
   belongs_to :search, :class_name => "Search", :foreign_key => "search_id"
   validates_presence_of :subject, :salutation, :body, :sender_id
