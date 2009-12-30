@@ -1,5 +1,5 @@
 development:
-  adapter: mysql
+  database: c4c_utility
 
 production:
-  adapter: mysql
+  database: c4c_utility
