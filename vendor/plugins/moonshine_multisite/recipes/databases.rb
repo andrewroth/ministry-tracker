@@ -100,13 +100,7 @@ namespace :pull do
         puts "pull:dbs should not have a stage specified"
         exit(0)
       end
-      if fetch(:server_only, nil)
-        servers = [ fetch(:server_only) ]
-      else
-        servers = multisite_config_hash[:servers].keys
-      end
-
-      servers.each do |server|
+      multisite_config_hash[:servers].keys.each do |server|
         set(:server_only, server)
         debug "[DBG] pull all apps off #{server}"
         multisite_config_hash[:apps].keys.each do |app|
