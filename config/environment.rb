@@ -33,7 +33,7 @@ Rails::Initializer.run do |config|
   config.gem  'fastercsv'
   config.gem  'hpricot'
   config.gem  'rubyzip', :lib => 'zip/zip'
-  config.gem  'roo'
+  config.gem  'roo', :version => '1.3.11'
   config.gem  'mechanize'
   config.gem  'erubis'
   config.gem  'aws-s3', :lib => 'aws/s3'
