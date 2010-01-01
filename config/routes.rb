@@ -58,7 +58,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :groups, :member => {:find_times => :post,
                                      :compare_timetables => :any,
                                      :set_start_time => :any,
-                                     :set_end_time => :any},
+                                     :set_end_time => :any,
+                                     :email => :post},
                          :collection => {:join => :get}
 
   map.resources :manage
