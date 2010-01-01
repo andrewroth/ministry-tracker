@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
       return
     end
     @group = Group.find(params[:id])
-    people = params[:members] ? params[:members] : @group.members
+    people = params[:members] ? params[:members] : @group.people
     render(:update) { |page|  page.redirect_to new_email_url(:person => people) }
   end
 
