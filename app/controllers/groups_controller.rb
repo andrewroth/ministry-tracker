@@ -25,7 +25,7 @@ class GroupsController < ApplicationController
   end
 
   def email
-    unless authorized?(:email, :groups)
+    unless authorized?(:new, :emails)
       render(:update) { |page| page.alert("no permission") }
       return
     end
