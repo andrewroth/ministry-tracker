@@ -86,8 +86,8 @@ class ApplicationController < ActionController::Base
       return true if is_ministry_admin(ministry, person)
       ministry ||= @ministry || get_ministry
       person ||= (@me || get_person)
-      involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
-      return ministry.staff.include?(person) || (involvement && involvement.admin?)
+      involvement = get_ministry_involvement(ministry)
+      return (involvement && involvement.try(:ministry_role).is_a?(StaffRole)) || ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
     
     def is_ministry_leader_somewhere(person = nil)
