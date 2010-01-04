@@ -15,6 +15,7 @@ class MinistryInvolvementsController < ApplicationController
         respond_to do |format|
           format.js   do
             render :update do |page|
+              page.hide('spinner')
               page.alert("Sorry, you can't remove the #{Cmt::CONFIG[:default_ministry_name]} involvement")
             end
           end
