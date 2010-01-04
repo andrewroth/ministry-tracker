@@ -7,6 +7,9 @@
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
   </div>
 <%- end -%>
+<div style="float:right">
+  Last updated at <%= @timetable.updated_at %>
+</div>
 <%- if @can_edit || @can_show -%>
 <div class="statusheadwrap">
   <div class="badhead"></div>
