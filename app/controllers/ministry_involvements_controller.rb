@@ -46,7 +46,6 @@ class MinistryInvolvementsController < ApplicationController
       @ministry_involvement.end_date = Date.today
       @ministry_involvement.save!
       @from_profile = params[:from_profile]
-      @ministry_involvement.update_attribute(:end_date, Time.now)
 
       respond_to do |format|
         format.xml  { head :ok }
@@ -87,7 +86,7 @@ class MinistryInvolvementsController < ApplicationController
       end
       mi.save
     else
-      mi = MinistryInvolvement.create(params[:ministry_involvement].merge({
+      mi = MinistryInvolvement.create!(params[:ministry_involvement].merge({
         :person_id => @person.id, :start_date => Date.today
       }))
     end
