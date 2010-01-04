@@ -192,11 +192,10 @@ this system, along with any other information we think would be helpful to you.<
       </div>
       <div class="modulecontent">
       <ul>
-        <li>People in your ministries: <%= @people_in_ministries %></li>
-        <% @ministry.group_types.each do |gt| %>
-          <li>Number of <%= gt.group_type.pluralize %>: <%= gt.groups.count %></li>
+        <li><%= pluralize(@people_in_ministries, "person") %> in <%= @ministry.name %> ministry</li>
+        <% @ministry.groups.group_by(&:group_type).each do |gt, groups| %>
+          <li><%= pluralize(groups.length, gt.group_type) %></li>
         <% end %>
-        <li>Ministries Involved: <%= @movement_count %></li>
       </ul>
       <% if @newest_people %>
       <br>
