@@ -12,10 +12,6 @@
         %>
       </td>
       <td class="spacer">&nbsp;</td>
-      <td>
-        Primary campus:
-        <%= select :person, :primary_campus_involvement_id, options_for_select(@person.campus_involvements.collect{ |ci| [ ci.campus.name, ci.id ] }) %>
-      </td>
     </tr>
 
     <!-- Render the address blocks -->

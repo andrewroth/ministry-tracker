@@ -1,6 +1,6 @@
 require "seed_fu_helper"
 
-ministry_role_id = set_or_inherit_ministry_role_id 'Missionary'
+ministry_role_id = set_or_inherit_ministry_role_id 'Staff Team'
 
 inherit_seed('16_ministry_leader_permissions')
 

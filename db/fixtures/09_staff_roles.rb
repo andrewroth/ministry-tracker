@@ -9,7 +9,7 @@ StaffRole.seed(:name) do |sr|
 end
 
 StaffRole.seed(:name) do |sr|
-  sr.name = 'Missionary'
+  sr.name = 'Staff Team'
   sr.description = ''
   sr.ministry = ministry
   sr.position = 7
@@ -17,10 +17,18 @@ StaffRole.seed(:name) do |sr|
 end
 
 StaffRole.seed(:name) do |sr|
-  sr.name = 'Missionary Alumni'
+  sr.name = 'Staff'
   sr.description = ''
   sr.ministry = ministry
   sr.position = 8
+  sr.involved = true
+end
+
+StaffRole.seed(:name) do |sr|
+  sr.name = 'Staff Alumni'
+  sr.description = ''
+  sr.ministry = ministry
+  sr.position = 9
   sr.involved = false
 end
 
@@ -28,6 +36,6 @@ StaffRole.seed(:name) do |sr|
   sr.name = 'Admin'
   sr.description = ''
   sr.ministry = ministry
-  sr.position = 9
+  sr.position = 10
   sr.involved = false
 end

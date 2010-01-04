@@ -10,7 +10,7 @@ require 'person_methods'
 #Question: What is the use of primary_campus_id and its implications?
 #
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
@@ -284,7 +284,7 @@ class PeopleController < ApplicationController
     permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
 
-    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
+    #get_possible_responsible_people
     setup_vars
     setup_campuses
     render :update do |page|
