@@ -57,6 +57,8 @@ class TimetablesController < ApplicationController
         end
       end
 
+      @timetable.touch
+
       respond_to do |format|
         flash[:notice] = 'Timetable was successfully updated.'
         format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }

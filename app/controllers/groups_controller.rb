@@ -5,6 +5,7 @@
 class GroupsController < ApplicationController
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time]
+  skip_before_filter :authorization_filter, :email_helper
 
   def index
     @join = false
@@ -18,6 +19,16 @@ class GroupsController < ApplicationController
       end
       format.js
     end
+  end
+
+  def email
+    unless authorized?(:new, :emails)
+      render(:update) { |page| page.alert("no permission") }
+      return
+    end
+    @group = Group.find(params[:id])
+    people = params[:members] ? params[:members] : @group.people
+    render(:update) { |page|  page.redirect_to new_email_url(:person => people) }
   end
 
   # lists all relevant groups with a join / interested link for each one

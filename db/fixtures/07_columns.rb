@@ -90,3 +90,9 @@ Column.seed(:title) do |c|
   c.from_clause = 'MinistryInvolvement'
   c.select_clause = 'start_date'
 end
+
+Column.seed(:title) do |c|
+  c.title = 'Timetable Updated'
+  c.from_clause = 'Timetable'
+  c.select_clause = 'updated_at'
+end
