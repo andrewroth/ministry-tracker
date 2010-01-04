@@ -2,8 +2,8 @@
 # Question: Two means for logging in -  first tries local login , then tries
 # a login via GCX's CAS
 class SessionsController < ApplicationController
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter 
-  before_filter CASClient::Frameworks::Rails::GatewayFilter  unless Rails.env.test?
+  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_campus_set
+  #before_filter CASClient::Frameworks::Rails::GatewayFilter  unless Rails.env.test?
   filter_parameter_logging :password
 
   def crash

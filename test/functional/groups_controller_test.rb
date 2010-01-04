@@ -15,7 +15,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_join
     get :join
     assert_response :success
-    assert_equal [ Group.first ], assigns('person_campus_groups')
+    assert_equal [ Group.first ], assigns('groups')
   end
 
   def test_join_request_campus_chosen
@@ -23,14 +23,8 @@ class GroupsControllerTest < ActionController::TestCase
     p.campus_involvements.delete_all
     get :join
     assert_response :success
-    assert flash[:notice] =~ /You do not have a campus chosen/
   end
 
-  def test_index_all
-    get :index, :all => 'true'
-    assert_response :success
-    assert_equal Ministry.first.groups.sort{ |g1, g2| g1.name <=> g2.name }, assigns('groups')
-  end
   # 
   # def test_index_xhr
   #   login

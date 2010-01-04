@@ -5,16 +5,17 @@ class Person < ActiveRecord::Base
   has_many :emails, :class_name => "Email", :foreign_key => "sender_id"
   
   # Campus Relationships
-  has_many :campus_involvements #, :include => [:ministry, :campus]
-  has_many :active_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
+  has_many :involvement_history
+  has_many :all_campus_involvements #, :include => [:ministry, :campus]
+  has_many :campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
-  has_many :active_campuses, :through => :active_campus_involvements, :class_name => 'Campus', :source => :campus
+  has_many :all_campuses, :through => :all_campus_involvements, :class_name => 'Campus', :source => :campus
   belongs_to  :primary_campus_involvement, :class_name => "CampusInvolvement", :foreign_key => _(:primary_campus_involvement_id)
   # accepts_nested_attributes_for :primary_campus_involvement
   has_one  :primary_campus, :class_name => "Campus", :through => :primary_campus_involvement, :source => :campus
-  has_many :active_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
-  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement)
-  has_many :ministries, :through => :active_ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
+  has_many :ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :conditions => {_(:end_date, :ministry_involvement) => nil}
+  has_many :all_ministry_involvements, :class_name => "MinistryInvolvement", :foreign_key => _(:person_id, :ministry_involvement), :order => 'end_date DESC'
+  has_many :ministries, :through => :ministry_involvements, :order => Ministry.table_name+'.'+_(:name, :ministry)
   has_many :campus_ministries, :through => :campus_involvements, :class_name => "Ministry", :source => :ministry
   has_one :responsible_person, :class_name => "Person", :through => :ministry_involvements
   has_many :involvements_responsible_for, :class_name => "MinistryInvolvement", :foreign_key => "responsible_person_id"
@@ -52,6 +53,16 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
   
+  def most_nested_ministry
+    ministries.inject(nil) { |best, ministry|
+      if best
+        ministry.ancestors.length > best.ancestors.length ? ministry : best
+      else
+        ministry
+      end
+    }
+  end
+
   def group_group_involvements(filter, options = {})
     case filter
     when :all
@@ -397,28 +408,39 @@ end
   
   # Question: what does this help with?
   def most_recent_involvement
-    @most_recent_involvement = primary_campus_involvement || active_campus_involvements.last
+    @most_recent_involvement = primary_campus_involvement || campus_involvements.last
   end
   
+  # for students, use their campuse involvements; for staff, use ministry teams
+  def working_campuses(ministry_involvement)
+    return @working_campuses if @working_campuses
+    return [] unless ministry_involvement
+    if ministry_involvement.ministry_role.is_a?(StudentRole)
+      @working_campuses = campuses
+    elsif ministry_involvement.ministry_role.is_a?(StaffRole)
+      @working_campuses = ministry_involvement.ministry.campuses
+    end
+  end
+
   protected
-    def update_stamp
-      self.updated_at = Time.now
-      self.updated_by = 'MT'
-    end
-    
-    def create_stamp
-      update_stamp
-      self.created_at = Time.now
-      self.created_by = 'MT'
-    end
-    
+  def update_stamp
+    self.updated_at = Time.now
+    self.updated_by = 'MT'
+  end
+
+  def create_stamp
+    update_stamp
+    self.created_at = Time.now
+    self.created_by = 'MT'
+  end
+
   private
 
-    def birth_date_is_in_the_past
-      if !birth_date.nil?
-        if (birth_date <=> Date.today) > 0
-          errors.add(:birth_date, 'should be in the past')
-        end
+  def birth_date_is_in_the_past
+    if !birth_date.nil?
+      if (birth_date <=> Date.today) > 0
+        errors.add(:birth_date, 'should be in the past')
       end
     end
+  end
 end  

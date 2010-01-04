@@ -1,0 +1,15 @@
+if @promoted
+  page.reload
+elsif involvement.errors.empty?
+  if @updated
+    page << render(:file => 'involvements/update.js.rjs')
+  else
+    page.insert_html :before, :"new_#{@singular}_li", :partial => "involvements/involvement_li", :object => involvement
+    page.insert_html :bottom, :"profile_#{@plural}", :partial => "people/profile_#{@singular}_li",
+      :locals => { @short.to_sym => involvement }
+  end
+  page["new_#{@singular}_involvement_li"].replace ''
+  page["add_#{@singular}_button"].show
+else
+  page[:"new_#{@singular}_involvement"].replace_html :partial => 'new'
+end

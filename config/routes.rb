@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :involvement_histories
+
   map.resources :emails
 
   map.resource :facebook, :collection => {:tabs => :post, :install => :post, :remove => :post}, :controller => 'facebook'
@@ -80,9 +82,10 @@ ActionController::Routing::Routes.draw do |map|
                                             :change_county => :any,
                                             :change_state => :any}
 
-  map.resources :ministries, :member => { :switch_to => :any,
-                                          :parent_form => :any,
-                                          :set_parent => :any},
+  map.resources :ministries, :collection => { :switch_list => :get},
+                             :member => { :parent_form => :any,
+                                          :set_parent => :any,
+                                          :switch_apply => :post},
                              :has_many => [:ministry_campuses]
 
   map.resources :addresses
@@ -93,7 +96,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource  :files
 
-  map.resources :people,  :member => {:import_gcx_profile => :any},
+  map.resources :people,  :member => {:import_gcx_profile => :any,
+                                      :set_initial_campus => :any},
                           :collection => {:directory => :any,
                                           :change_ministry_and_goto_directory => :any,
                                           :change_view => :any,

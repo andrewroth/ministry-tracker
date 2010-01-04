@@ -1,2 +1,5 @@
 page["ci_#{@campus_involvement.id}"].fade
+if params[:from_manage] == 'true'
+  page["ci_li_#{@campus_involvement.id}"].fade
+end
 page.hide('spinner')

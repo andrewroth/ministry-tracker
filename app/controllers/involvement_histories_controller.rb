@@ -1,0 +1,2 @@
+class InvolvementHistoriesController < ApplicationController
+end

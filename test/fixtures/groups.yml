@@ -4,6 +4,7 @@ team:
   name: 'Foo'
   group_type_id: 2
   ministry_id: 1
+  campus_id: 1
 bible_study:
   id: 2
   name: 'Bar'

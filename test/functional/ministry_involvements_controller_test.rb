@@ -58,9 +58,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   
   test "add a person to a ministry" do
     assert_difference "MinistryInvolvement.count", 1 do
-      ministry = ministries(:top)
+      ministry = ministries(:dg)
       person = people(:josh)
-      xhr :post, :create, :ministry_involvement => {:ministry_role_id => ministry.ministry_roles.first, :person_id => person.id, :ministry_id => ministry}
+      xhr :post, :create, :ministry_involvement => {:ministry_role_id => ministry.ministry_roles.first, :person_id => person.id, :ministry_id => ministry.id}
     end
   end
   
@@ -71,7 +71,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
       old_role = ministry_involvements(:one).ministry_role
       attribs = {:ministry_role_id => ministry_roles(:two).id, :person_id => person.id, :ministry_id => ministry.id}
       xhr :post, :create, :ministry_involvement => attribs
-      assert(@mi = assigns(:mi))
+      assert(@mi = assigns(:ministry_involvement))
       assert_not_equal(old_role, @mi.ministry_role)
     end
   end

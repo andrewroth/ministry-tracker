@@ -22,4 +22,14 @@ class MinistryRole < ActiveRecord::Base
   def self.human_name
     self.name.underscore.humanize
   end
+
+  def self.default_student_role
+    sr = StudentRole.find_by_name %w(Student student)
+    sr ||= StudentRole.find :last, :order => "position"
+  end
+
+  def self.default_staff_role
+    sr = StaffRole.find_by_name %w(Missionary missionary Staff staff)
+    sr ||= StaffRole.find :last, :order => "position"
+  end
 end

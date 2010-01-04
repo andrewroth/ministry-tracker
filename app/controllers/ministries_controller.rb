@@ -132,6 +132,24 @@ class MinistriesController < ApplicationController
     end
   end
 
+  def switch_list
+    #person_ministries = @person.ministry_involvements.collect(&:ministry_id)
+    #allowed_ministries << person_ministries.
+    @ministries = [ Ministry.first.to_hash_with_children.to_json ]
+
+    #@ministries = [ Ministry.find(15).to_hash_with_children.to_json, Ministry.find(10).to_hash_with_children.to_json ]
+  end
+
+  def switch_apply
+    @ministry = Ministry.find params[:id]
+    # make sure they have a role on this ministry, otherwise bump them to their default ministry
+    if get_my_role(@ministry).nil?
+      @ministry = nil
+      get_ministry
+    end
+    session[:ministry_id] = @ministry.id
+    session[:ministry_role_id] = nil
+  end
 
   # Question: What exactly does parent_form and set_parent do?
   # Delete candidate A: I think parent_form is depreciated as it is now handled by a drag-drop ajax library
