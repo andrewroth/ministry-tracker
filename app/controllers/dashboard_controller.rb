@@ -5,7 +5,7 @@
 class DashboardController < ApplicationController
   
   def index
-    @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @my.ministries.collect(&:id)])
+    @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
   
     @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
