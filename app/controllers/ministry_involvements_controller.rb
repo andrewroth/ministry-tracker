@@ -28,11 +28,24 @@ class MinistryInvolvementsController < ApplicationController
     @person = Person.find(params[:person_id])
     if @me == @person || authorized?(:new, :people)
       @ministry_involvement = MinistryInvolvement.find(params[:id])
+      if !is_admin? &&
+        @ministry_involvement.ministry.name == Cmt::CONFIG[:default_ministry_name] &&
+        @ministry_involvement.ministry_role.is_a?(StaffRole)
+        respond_to do |format|
+          format.js   do
+            render :update do |page|
+              page.alert("Sorry, you can't remove the #{Cmt::CONFIG[:default_ministry_name]} involvement")
+            end
+          end
+        end
+        return
+      end
       @history = @ministry_involvement.new_staff_history
       @history.save
       @ministry_involvement.end_date = Date.today
       @ministry_involvement.save!
       @from_profile = params[:from_profile]
+      @ministry_involvement.update_attribute(:end_date, Time.now)
 
       respond_to do |format|
         format.xml  { head :ok }
