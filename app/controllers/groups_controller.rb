@@ -284,7 +284,6 @@ class GroupsController < ApplicationController
   end
 
   def setup_groups
-    @groups = get_ministry.groups.find :all, :conditions => { 
-      :campus_id => (@campus.try(:id) || @campuses.collect(&:id)) }
+    @groups = get_ministry.groups.find :all, :conditions => "campus_id is null OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
   end
 end
