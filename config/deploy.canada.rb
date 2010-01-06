@@ -53,6 +53,8 @@ deploy.task :after_symlink do
   link_shared 'config/database.emu.yml', :overwrite => true
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
   link_shared "public/#{profile_pic_prefix}.profile_pictures"
+
+  sudo "/opt/ruby/bin/god restart dj-moose"
 end
 
 namespace :deploy do
