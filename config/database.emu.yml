@@ -3,6 +3,7 @@ defaults: &defaults
   username: root
   password: 
   socket: /tmp/mysql.sock
+  reconnect: true
 
 development:
   database: pulse_prod
