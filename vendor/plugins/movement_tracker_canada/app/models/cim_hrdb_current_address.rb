@@ -1,4 +1,5 @@
 class CimHrdbCurrentAddress < CimHrdbAddress
+  unloadable
   load_mappings
   belongs_to :country_ref, :class_name => 'Country', :foreign_key => 'person_local_country_id'
   belongs_to :state_ref, :class_name => 'State', :foreign_key => 'person_local_province_id'
