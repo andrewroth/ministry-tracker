@@ -1,13 +1,14 @@
 #class CimHrdbAddress < Address
 class CimHrdbAddress < ActiveRecord::Base
   self.abstract_class = true
+  unloadable
 
   belongs_to :title_bt, :class_name => 'Title', :foreign_key => :title_id
   has_one :person_extra_ref, :class_name => 'PersonExtra', 
     :foreign_key => 'person_id'
 
   def state
-    @state_v || state_ref.try(:province_shortDesc)
+    @state_v || self.state_ref.try(:province_shortDesc)
   end
 
   def state=(v)
