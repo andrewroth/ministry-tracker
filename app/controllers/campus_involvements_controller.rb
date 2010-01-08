@@ -74,6 +74,7 @@ class CampusInvolvementsController < ApplicationController
     # restrict students to making ministry involvements of their role or less
     if ministry_role_being_updated = (params[:ministry_involvement] && mr_id = params[:ministry_involvement][:ministry_role_id])
       requested_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
+      requested_role ||= MinistryRole.default_student_role
       # note that get_my_role sets @ministry_involvement as a side effect
       if get_my_role.class != requested_role.class && requested_role.position < get_my_role.position
         flash[:notice] = "You can only set ministry roles of less than or equal to your current role"
@@ -93,12 +94,15 @@ class CampusInvolvementsController < ApplicationController
     # update the records
     @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
     if ministry_role_being_updated
-      @campus_ministry_involvement.ministry_role = MinistryRole.find(mr_id)
+      @campus_ministry_involvement.ministry_role = requested_role
       @campus_ministry_involvement.save!
     end
     if record_history && @campus_involvement.errors.empty? && @campus_ministry_involvement.errors.empty?
       @history.save!
       @campus_involvement.update_attributes :last_history_update_date => Date.today
+    end
+    unless @campus_involvement.errors.empty?
+      set_roles
     end
     logger.info "@campus_involvement.object_id = #{@campus_involvement.object_id}"
   end
