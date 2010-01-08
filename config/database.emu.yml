@@ -14,7 +14,7 @@ test:
   <<: *defaults
 
 production:
-  database: pulse_stage_emu
+  database: pulse_prod
   <<: *defaults
 
 ciministry_development:
