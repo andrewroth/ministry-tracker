@@ -76,7 +76,8 @@ class CampusInvolvementsController < ApplicationController
       requested_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
       requested_role ||= MinistryRole.default_student_role
       # note that get_my_role sets @ministry_involvement as a side effect
-      if get_my_role.class != requested_role.class && requested_role.position < get_my_role.position
+      if !(get_my_role.is_a?(StaffRole) && requested_role.is_a?(StudentRole)) && 
+        requested_role.position < get_my_role.position
         flash[:notice] = "You can only set ministry roles of less than or equal to your current role"
         ministry_role_being_updated = false
         params[:ministry_involvement][:ministry_role_id] = @campus_ministry_involvement.ministry_role_id.to_s
