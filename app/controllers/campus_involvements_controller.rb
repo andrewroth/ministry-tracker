@@ -69,34 +69,38 @@ class CampusInvolvementsController < ApplicationController
 
   # record the mi history as well
   def update_student_campus_involvement
-    @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
+    @student = true
+    @campus_ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     # restrict students to making ministry involvements of their role or less
     if ministry_role_being_updated = (params[:ministry_involvement] && mr_id = params[:ministry_involvement][:ministry_role_id])
       requested_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
-      if requested_role.position < get_my_role.position
+      # note that get_my_role sets @ministry_involvement as a side effect
+      if get_my_role.class != requested_role.class && requested_role.position < get_my_role.position
         flash[:notice] = "You can only set ministry roles of less than or equal to your current role"
         ministry_role_being_updated = false
-        params[:ministry_involvement][:ministry_role_id] = @ministry_involvement.ministry_role_id.to_s
+        params[:ministry_involvement][:ministry_role_id] = @campus_ministry_involvement.ministry_role_id.to_s
       end
     end
 
     # record history
     record_history = !@campus_involvement.new_record? && 
       (@campus_involvement.school_year_id.to_s != params[:campus_involvement][:school_year_id] || 
-      @ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id])
+      @campus_ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id])
     if record_history
       @history = @campus_involvement.new_student_history
-      @history.ministry_role_id = @ministry_involvement.ministry_role_id
+      @history.ministry_role_id = @campus_ministry_involvement.ministry_role_id
     end
     # update the records
     @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
     if ministry_role_being_updated
-      @ministry_involvement.update_attributes :ministry_role_id => mrid
+      @campus_ministry_involvement.ministry_role = MinistryRole.find(mr_id)
+      @campus_ministry_involvement.save!
     end
-    if record_history && @campus_involvement.errors.empty? && @ministry_involvement.errors.empty?
+    if record_history && @campus_involvement.errors.empty? && @campus_ministry_involvement.errors.empty?
       @history.save!
       @campus_involvement.update_attributes :last_history_update_date => Date.today
     end
+    logger.info "@campus_involvement.object_id = #{@campus_involvement.object_id}"
   end
 
   def update
