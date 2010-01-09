@@ -75,7 +75,13 @@ module Cmt
     :profile_picture_enabled => true,
     
     # When enabled, large buttons for 'join a group' and 'edit your timetable' will appear in the dashboard
-    :dashboard_big_buttons_enabled => true
+    :dashboard_big_buttons_enabled => true,
+
+    # prefix to preprend to the subject of each email going out
+    :email_subject_prefix => "[pulse] ",
+
+    # the from address for each outgoing email
+    :email_from_address => "noreply@campusforchrist.org"
   }
 end
 
