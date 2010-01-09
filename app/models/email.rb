@@ -2,7 +2,7 @@ class Email < ActiveRecord::Base
   load_mappings
   belongs_to :sender, :class_name => "Person", :foreign_key => "sender_id"
   belongs_to :search, :class_name => "Search", :foreign_key => "search_id"
-  validates_presence_of :subject, :salutation, :body, :sender_id
+  validates_presence_of :subject, :body, :sender_id
   
   after_create :queue_email
   
@@ -25,8 +25,14 @@ class Email < ActiveRecord::Base
     Mailers::EmailMailer.deliver_report(self, missing)
     self.missing_address_ids = missing.collect(&:id).to_json
   end
+
+  def render_body(person)
+    Liquid::Template.parse(body).render 'first_name' => person.try(:first_name), 'last_name' => person.try(:last_name)
+  end
+
   private
   def queue_email
     self.send_later(:send_email)
   end
+
 end
