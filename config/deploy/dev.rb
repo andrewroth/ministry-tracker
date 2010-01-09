@@ -8,6 +8,8 @@ set :moonshine_apply, false
 def stage?() %w(emu stage).include?(ENV['target']) end
 def dev?() %w(dev moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
+puts ENV['target']
+puts "dev? #{dev?}"
 
 set :application, "ministry-tracker"
 set :user, 'deploy'
@@ -21,9 +23,9 @@ set :branch, if ma? then 'dev' elsif stage? then 'emu' else 'c4c.dev' end
 set :deploy_via, :remote_cache
 path = if ma?
          'mt.ministryhacks.com'
-       elsif dev?
-         'emu.campusforchrist.org'
        elsif stage?
+         'emu.campusforchrist.org'
+       elsif dev?
          'moose.campusforchrist.org'
        elsif prod?
          'pulse.campusforchrist.org'
