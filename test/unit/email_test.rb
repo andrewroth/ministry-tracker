@@ -15,4 +15,10 @@ class EmailTest < ActiveSupport::TestCase
       emails(:two).send_email
     end
   end
+
+  test "send email substitutes first/last name properly" do
+    ActionMailer::Base.deliveries = []
+    emails(:one).send_email
+    assert_equal emails(:one).render_body(people(:josh)), "Josh Starcher"
+  end
 end
