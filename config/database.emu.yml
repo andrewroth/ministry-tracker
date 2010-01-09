@@ -6,7 +6,7 @@ defaults: &defaults
   reconnect: true
 
 development:
-  database: pulse_prod
+  database: c4c_pulse_dev
   <<: *defaults
 
 test:
@@ -14,7 +14,7 @@ test:
   <<: *defaults
 
 production:
-  database: pulse_prod
+  database: c4c_pulse_dev
   <<: *defaults
 
 ciministry_development:
