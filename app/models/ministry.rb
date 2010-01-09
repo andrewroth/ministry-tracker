@@ -3,7 +3,7 @@ class Ministry < ActiveRecord::Base
   
   # acts_as_tree :order => _(:name), :counter_cache => true
   has_many :children, :class_name => "Ministry", :foreign_key => _(:parent_id), 
-    :order => "#{Ministry.table_name}.`#{_(:ministries_count)}` > 0 DESC,#{Ministry.table_name}.`#{_(:name)}"
+    :order => "#{Ministry.table_name}.`#{_(:ministries_count)}` DESC, #{Ministry.table_name}.`#{_(:name)}"
   
   belongs_to :parent, :class_name => "Ministry", :foreign_key => _(:parent_id),
     :counter_cache => :ministries_count
@@ -165,7 +165,7 @@ class Ministry < ActiveRecord::Base
     @leader_roles ||= staff_roles
   end
   
-  def leader_roles_ids
+  def leader_role_ids
     @leader_roles_ids ||= leader_roles.collect(&:id)
   end
   
@@ -239,6 +239,16 @@ class Ministry < ActiveRecord::Base
     return @all_training_questions
   end
   
+  def to_hash_with_children
+    base_hash = { 'text' => name, 'id' => id }
+    if children.empty?
+      base_hash.merge('leaf' => true)
+    else
+      base_hash.merge('expanded' => true, 
+        'children' => children.collect(&:to_hash_with_children))
+    end
+  end
+
   protected
 
   def before_destroy

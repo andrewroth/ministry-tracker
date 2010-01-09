@@ -161,6 +161,18 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministries'
+  p.action = 'switch_list'
+  p.description = 'Switch Ministries List'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministries'
+  p.action = 'switch_apply'
+  p.description = 'Switch Ministries Apply'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'ministry_roles'
   p.action = 'edit'
   p.description = 'Edit Ministry Roles'
@@ -256,12 +268,22 @@ Permission.seed(:controller, :action) do |p|
   p.description = 'Edit the timetables of other people'
 end
 
-#There is no 'create' action in campus_involvements_controller.rb, only 'destroy'
-
 Permission.seed(:controller, :action) do |p|
   p.controller = 'campus_involvements'
   p.action = 'new'
   p.description = 'Remove People From Campuses'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'campus_involvements'
+  p.action = 'edit'
+  p.description = 'Edit Campus Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'campus_involvements'
+  p.action = 'index'
+  p.description = 'List Campus Involvements'
 end
 
 Permission.seed(:controller, :action) do |p|
@@ -277,6 +299,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'ministry_involvements'
+  p.action = 'index'
+  p.description = 'List Ministry Involvements'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'change_ministry'
   p.description = 'Switch to viewing another ministry in the directory'
@@ -286,6 +314,12 @@ Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'email'
   p.description = 'Email people off the directory'
+end
+
+Permission.seed(:controller, :action) do |p|
+  p.controller = 'people'
+  p.action = 'change_ministry_and_goto_directory'
+  p.description = 'Change ministry'
 end
 
 Permission.seed(:controller, :action) do |p|

@@ -28,7 +28,9 @@ class EmailsController < ApplicationController
       @email = @my.emails.new(:search_id => params[:search_id])
     else
       @email = @my.emails.new(:people_ids => params[:person].to_json)
+      @people = Person.find(:all, :conditions => { Person._(:id) => params[:person] })
     end
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @email }

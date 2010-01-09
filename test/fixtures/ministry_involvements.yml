@@ -20,13 +20,13 @@ four:
   id: 4
   person_id: 2000
   ministry_id: 1
-  ministry_role_id: 4 # student ministry leader
+  ministry_role_id: 4 # sue student ministry leader
   
-staff_involvement_with_one:
+five:
   id: 5
   person_id: 4001
-  ministry_id: 1
-  ministry_role_id: 1 # admin
+  ministry_id: 7
+  ministry_role_id: 4 # ministry leader
   
 staff_involvement_on_top:
   id: 6

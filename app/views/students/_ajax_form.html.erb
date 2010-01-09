@@ -1,4 +1,4 @@
-<div id="addStudent" style="display:none">
+<div id="dialog" style="display:none">
 <% remote_form_for(person || Person.new,
               :loading => "close_thickbox()") do |f| %>
   <%= hidden_field_tag :modalbox, true %>

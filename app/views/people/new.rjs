@@ -1,6 +1,6 @@
 if params[:modalbox]
-  page['addStudent'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
-  # page['addStudent' ].show
+  page['dialog'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
+  # page['dialog' ].show
   page.call("show_add_student")
   # page.call('Modalbox.resizeToContent')
 else

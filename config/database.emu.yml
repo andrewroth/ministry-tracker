@@ -1,0 +1,35 @@
+defaults: &defaults
+  adapter: mysql
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+  reconnect: true
+
+development:
+  database: pulse_prod
+  <<: *defaults
+
+test:
+  database: mt_test
+  <<: *defaults
+
+production:
+  database: pulse_prod
+  <<: *defaults
+
+ciministry_development:
+  database: cim_prod
+  <<: *defaults
+
+ciministry_production:
+  database: ciministry
+  <<: *defaults
+
+authservice_development:
+  database: authservice
+  <<: *defaults
+
+authservice_production:
+  database: authservice
+  <<: *defaults
+

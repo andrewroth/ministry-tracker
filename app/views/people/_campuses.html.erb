@@ -1,14 +1,11 @@
-  	<h4>Campuses</h4>
-  	<ul>
-  	<%- @person.campus_involvements.each do |ci| 
-  	  if ci.end_date.nil? -%>
-  	  <li id="ci_<%= ci.id %>">
-        <%= link_to_remote(image_tag('delete.png'), :url => person_campus_involvement_path(@person, ci), 
-                                                    :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
-                                                    :method => :delete,
-                                                    :before => "$('#spinner').show()")  if is_ministry_leader || @person == @me %>
-    	  <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
-    	</li>
-  	<%- end
-  	  end-%>
-  	</ul>
+<h4 style='display:inline'>Campuses</h4> <% if authorized?(:edit, :campus_involvements) %><%= link_to_remote image_tag('button_edit_grey_tiny.gif'), :url => person_campus_involvements_url(@person), :method => :get, :success => "show_dialog('Manage Campuses')" %><% end %>
+  <ul id='profile_campuses'>
+    <%- @person.campus_involvements.each do |ci| 
+          if ci.end_date.nil?
+    -%>
+          <%= render :partial => 'profile_campus_li', :locals => { :ci => ci } %>
+    <%-
+          end
+        end
+    -%>
+  </ul>

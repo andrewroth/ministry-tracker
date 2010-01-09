@@ -2,8 +2,13 @@ function show_upload_picture() {
 	tb_show('Upload Picture', '#TB_inline?width=300&height=300&inlineId=uploadPicture')
 }
 
+// use as a general dialog utility
+function show_dialog(title) {
+	tb_show(title, '#TB_inline?width=450&height=320&inlineId=dialog')
+}
+
 function show_add_student() {
-	tb_show('Add Student', '#TB_inline?width=450&height=320&inlineId=addStudent')
+	show_dialog('Add Student');
 }
 
 function show_change_password() {
