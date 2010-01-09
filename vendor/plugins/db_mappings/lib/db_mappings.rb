@@ -40,9 +40,18 @@ ActiveRecord::Base.class_eval do
       column, table = column.to_s, table.to_s
       @@map_hash && @@map_hash[table] && @@map_hash[table][column] ? @@map_hash[table][column] : column
     end
-  
+
+    def self.__(column, table = self.name.underscore)
+      model = self.is_a?(ActiveRecord::Base) ? self.class : table.to_s.camelize.constantize
+      "#{model.table_name}.#{self._(column, table)}"
+    end
+
     def _(column, table)
       ActiveRecord::Base._(column, table).to_s
+    end
+
+    def __(column, table)
+      ActiveRecord::Base.__(column, table).to_s
     end
   else
     
@@ -54,10 +63,18 @@ ActiveRecord::Base.class_eval do
       column.to_s
     end
     
+    def self.__(column, table = self.name.underscore)
+      "#{self.table_name}.#{column.to_s}"
+    end
+
     def _(column, table)
       ActiveRecord::Base._(column, table).to_s
     end
-  end
+
+    def __(column, table)
+      ActiveRecord::Base.__(column, table).to_s
+    end
+   end
 
   protected
 
