@@ -40,9 +40,10 @@ ActiveRecord::Base.class_eval do
       column, table = column.to_s, table.to_s
       @@map_hash && @@map_hash[table] && @@map_hash[table][column] ? @@map_hash[table][column] : column
     end
-  
+
     def self.__(column, table = self.name.underscore)
-      "#{self.table_name}.#{self._(column, table)}"
+      model = self.is_a?(ActiveRecord::Base) ? self.class : table.to_s.camelize.constantize
+      "#{model.table_name}.#{self._(column, table)}"
     end
 
     def _(column, table)

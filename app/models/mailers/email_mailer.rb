@@ -10,8 +10,8 @@ class Mailers::EmailMailer < ActionMailer::Base
   
   def report(email, missing)
     recipients   email.sender.primary_email.strip
-    from         "<noreply@ministrytracker.org>"
-    @subject     = "[MT] Email sent on your behalf"
+    from         Cmt::CONFIG['email_subject_prefix']
+    @subject     = "[#{Cmt::CONFIG['email_subject_prefix']} Email sent on your behalf"
     @sent_on     = Time.now
     @body = {:email => email, :missing => missing}
   end
