@@ -21,6 +21,7 @@
     :help_header => "Help",
     :alternate_phone => 'Cell Phone',
     
+    :please_login => 'Sign In',
     :analytics => %|
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
