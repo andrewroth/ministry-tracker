@@ -213,7 +213,17 @@ class Person < ActiveRecord::Base
 
         # if they have a staff role (verify staff if secure flag is on)
         if (assignment == 'Staff' && options[:secure] ? !cim_hrdb_staff.nil? : true)
-          upgrade_ministry_involvement(c4c, role)
+          staff = true
+
+          # staff should get a staff team role on the ministry and a staff role in c4c
+          mc = MinistryCampus.find_all_by_campus_id(campus).last
+          if mc && mc.ministry
+            upgrade_ministry_involvement(mc.ministry, MinistryRole.find_by_name('Staff Team'))
+          end
+          # they should also get a generic staff involvement
+          upgrade_ministry_involvement(c4c, MinistryRole.find_by_name('Staff'))
+        else
+          staff = false
         end
 
         # add the appropriate campus involvements
@@ -231,7 +241,11 @@ class Person < ActiveRecord::Base
         ci.ministry_id = c4c.id
         ci.campus_id = campus.id
         ci.graduation_date = graduation_date
-        ci.school_year = school_year
+        if staff
+          ci.school_year = SchoolYear.find_by_year_desc "Alumni"
+        else
+          ci.school_year = school_year
+        end
         ci.end_date = nil
         #begin
         ci.save!
@@ -243,8 +257,7 @@ class Person < ActiveRecord::Base
 
       # add a staff ministry role if they're cim_hrdb_staff
       if !cim_hrdb_staff.nil?
-        role = MinistryRole.find_by_name('Staff')
-        upgrade_ministry_involvement(c4c, role)
+        upgrade_ministry_involvement(c4c, MinistryRole.find_by_name('Staff'))
       end
     end
 
