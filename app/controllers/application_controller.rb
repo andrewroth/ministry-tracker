@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
   if !Rails.env.test? && (!Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen])
-    before_filter CASClient::Frameworks::Rails::Filter
+    before_filter CASClient::Frameworks::Rails::GatewayFilter
   end
    # before_filter :fake_login
   before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar

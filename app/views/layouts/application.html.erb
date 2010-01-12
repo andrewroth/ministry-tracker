@@ -56,7 +56,7 @@
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-          <div id="username"><%= I18n.t(:please_login, :default => 'Please Login') %></div>
+          <div id="username"><%= link_to I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller) %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>
