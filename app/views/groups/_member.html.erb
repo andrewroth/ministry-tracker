@@ -9,5 +9,5 @@
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>
   <td><%= person.current_address.alternate_phone %></td>
-  <td><%= person.timetable.updated_at %></td>
+  <td><%= person.timetable.try(:updated_at) %></td>
 </tr>
