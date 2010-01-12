@@ -35,6 +35,7 @@ class GroupsController < ApplicationController
   def join
     setup_campuses_filter
     setup_groups
+    @join = true
 
     respond_to do |format|
       format.html

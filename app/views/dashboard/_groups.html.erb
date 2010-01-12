@@ -1,16 +1,18 @@
 <div class="modulecontent">
   <ul class="groupicon">
-    <% @person.groups.each do |group| %>
+    <% @person.all_groups.each do |group| %>
       <li>
-        <%= link_to(group.name, group) %>
         <%- if authorized?(:accept_request, :group_involvements) || 
               authorized?(:decline_requests, :group_involvements) %>
+          <%= link_to(group.name, group) %>
           <ul class="requesticon">
             <%= render :partial => 'groups/member_request', :collection => group.requests, 
               :locals => { :source => 'dashboard' } %>
           </ul>
+        <%- elsif group.is_interested(@me) -%>
+          <%= link_to(group.name, group) %>, Interested
         <%- elsif group.has_requested(@me) -%>
-          [Awaiting join request decision]
+          <%= link_to(group.name, group) %>, Awaiting join request decision
         <%- end -%>
       </li>
     <%- end -%>
