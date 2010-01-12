@@ -12,7 +12,7 @@
     </li>
   </ul>
   <br/>
-  <% if @student %>
+  <% if @student && is_admin? %>
     <p>
       <%= link_to_remote "Make this person a staff member.", 
             :url => new_person_ministry_involvement_url(@person),
