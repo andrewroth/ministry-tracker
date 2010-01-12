@@ -74,13 +74,12 @@ class Person < ActiveRecord::Base
     when :requests
       gis = group_involvement_requests
     end
-    gis_grouped = gis.group_by { |gi| gi.group.group_type }
     if options[:ministry]
-      gis_grouped.delete_if{ |gt, gis| 
-        gt.ministry != options[:ministry]
+      gis.delete_if{ |gi| 
+        gi.group.ministry != options[:ministry]
       }
     end
-    gis_grouped
+    gis.group_by { |gi| gi.group.group_type }
   end
 
   def is_leading_group_with?(p)

@@ -17,8 +17,8 @@ class ApplicationController < ActionController::Base
     before_filter CASClient::Frameworks::Rails::Filter
   end
    # before_filter :fake_login
-  before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
-  before_filter :authorization_filter, :force_campus_set, :is_staff_somewhere
+  before_filter :login_required, :get_person, :force_campus_set, :get_ministry, :set_locale#, :get_bar
+  before_filter :authorization_filter
   
   helper :all
 
@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
       @is_staff_somewhere ||= {}
       @is_staff_somewhere[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
-         person.id, get_ministry.root.staff_role_ids]).nil?
+         person.id, Ministry.first.root.staff_role_ids]).nil?
     end
  
     def can_manage
@@ -125,6 +125,7 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_admin(ministry = nil, person = nil)
+      return false unless ministry
       session[:admins] ||= {}
       ministry ||= current_ministry
       session[:admins][ministry.id] ||= {}
@@ -337,7 +338,8 @@ class ApplicationController < ActionController::Base
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
+        #@ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
+        return unless @ministry # at this point we can abort, since it should force them to choose a campus
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -383,33 +385,9 @@ class ApplicationController < ActionController::Base
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
-    def ensure_has_ministry_involvement
-      if @me && @me.ministry_involvements.empty?
-        associate_person_with_default_ministry(@me)
-      end
-    end
-
     def force_campus_set
       if !is_staff_somewhere && @my.campus_involvements.empty?
         redirect_to set_initial_campus_person_url(@person.id)
       end
     end
-
-private
-  # Ensures that the _person_ is involved in the 'No Ministry' ministry
-  # BUG 1857
-  def associate_person_with_default_ministry(person)
-    if Cmt::CONFIG[:associate_with_default_ministry]
-      default_ministry = Cmt::CONFIG[:default_ministry_name]
-    else
-      default_ministry = 'No Ministry'
-    end
-    # Ensure the default ministry exists
-    ministry = Ministry.find_or_create_by_name(default_ministry)
-    sr = StudentRole.find_by_name 'Student' 
-    sr ||= StudentRole.find :last, :order => "position"
-    person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
-    
-    ministry
-  end
 end
