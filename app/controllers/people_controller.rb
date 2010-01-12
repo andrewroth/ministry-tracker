@@ -469,8 +469,15 @@ class PeopleController < ApplicationController
   
   def set_initial_campus
     if request.method == :put
-      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(
-        :person_id => @person.id, :ministry_id => get_ministry.id)
+      ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
+      if ministry_campus
+        ministry = ministry_campus.ministry
+      else
+        ministry = Cmt::CONFIG[:default_ministry_name]
+        ministry ||= Ministry.first
+        throw "add some ministries" unless ministry
+      end
+      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
       @campus_involvement.find_or_create_ministry_involvement
     end
 
