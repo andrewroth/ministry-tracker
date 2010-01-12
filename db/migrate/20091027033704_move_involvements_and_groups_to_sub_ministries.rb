@@ -28,6 +28,7 @@ class MoveInvolvementsAndGroupsToSubMinistries < ActiveRecord::Migration
     mc = MinistryCampus.find_all_by_campus_id(c).last
     if mc
       m = mc.ministry
+      rid = @staff_role.id if m == @c4c # force "Staff" role for c4c
       STDOUT.puts " add to #{m.name}"
       mi = MinistryInvolvement.find_or_create_by_ministry_id_and_person_id m.id, p.id, rid
       mi.ministry_role_id = rid
