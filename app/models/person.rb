@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
   
   # Campus Relationships
   has_many :involvement_history
-  has_many :all_campus_involvements #, :include => [:ministry, :campus]
+  has_many :all_campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :order => 'end_date DESC' #, :include => [:ministry, :campus]
   has_many :campus_involvements, :class_name => "CampusInvolvement", :foreign_key => _(:person_id), :conditions => {_(:end_date, :campus_involvement) => nil}
   has_many :campuses, :through => :campus_involvements, :order => Campus.table_name+'.'+_(:name, :campus)
   has_many :all_campuses, :through => :all_campus_involvements, :class_name => 'Campus', :source => :campus
