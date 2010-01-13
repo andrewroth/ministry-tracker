@@ -43,7 +43,9 @@ Rails::Initializer.run do |config|
   # config.gem 'rfacebook'
   config.gem 'liquid'
   
-  config.active_record.default_timezone = 'Pacific Time (US & Canada)'
+  #config.active_record.default_timezone = 'Pacific Time (US & Canada)'
+  config.time_zone = 'Pacific Time (US & Canada)'
+  config.active_record.default_timezone = :pst
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')

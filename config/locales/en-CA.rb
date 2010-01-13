@@ -87,7 +87,7 @@
       },
       :datetime => {
         :formats => {
-          :default => "%Y-%m-%dT%H:%M:%S%Z",
+          :default => "%Y-%m-%d %H:%M:%S %Z",
         }
       },
       :am => 'am',
