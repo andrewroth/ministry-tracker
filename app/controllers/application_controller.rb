@@ -197,7 +197,7 @@ class ApplicationController < ActionController::Base
             return true
           end
         when :profile_pictures, :timetables
-          if params[:person_id] && params[:person_id] == @my.id.to_s
+          if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
             return true
           elsif controller.to_sym == :timetables && params[:person_id] &&
             @me.is_leading_group_with?(Person.find(params[:person_id]))
