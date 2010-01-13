@@ -163,6 +163,7 @@ class PeopleController < ApplicationController
       
       build_sql(tables_clause)
       @people = ActiveRecord::Base.connection.select_all(@sql)
+      post_process_directory(@people)
     else
       @people = []
       @count = 0
@@ -798,4 +799,20 @@ class PeopleController < ApplicationController
       return conditions
     end
     
+    # does some post-processing on the people returned by directory.  I found this way
+    # easier than getting the SQL right in some specific cases.  In particular, for people
+    # with multiple campus involvements, the directory code is difficult to work with.
+    # It auto adds a join on people and campus involvements.  It's really a pain to get
+    # the campuses right in SQL, so it's done here.
+    def post_process_directory(people)
+      people_ids = {}
+      people.reject!{ |person|
+        if people_ids[person['person_id']]
+          true
+        else
+          people_ids[person['person_id']] = true
+          false
+        end
+      }
+    end
 end
