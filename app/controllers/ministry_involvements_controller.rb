@@ -85,8 +85,8 @@ class MinistryInvolvementsController < ApplicationController
       for mi in mis
         first ? first = false : mi.delete
       end
-      mi = mis.first
     end
+    mi = mis.first
 
     # update the mi
     if mi
@@ -98,7 +98,12 @@ class MinistryInvolvementsController < ApplicationController
       else
         @updated = true
       end
-      mi.save
+      save_history = mi.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id]
+      @history = mi.new_staff_history if save_history
+      mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
+      if mi.save
+        @history.save if save_history
+      end
     else
       mi = MinistryInvolvement.create!(params[:ministry_involvement].merge({
         :person_id => @person.id, :start_date => Date.today
