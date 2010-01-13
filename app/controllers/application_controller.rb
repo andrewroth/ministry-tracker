@@ -156,6 +156,8 @@ class ApplicationController < ActionController::Base
       return true if is_ministry_admin
       
       ministry ||= get_ministry
+      return false unless ministry
+
       unless @user_permissions && @user_permissions[ministry]
         @user_permissions ||= {}
         @user_permissions[ministry] ||= {}
