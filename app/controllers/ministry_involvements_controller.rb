@@ -73,8 +73,22 @@ class MinistryInvolvementsController < ApplicationController
       return
     end
     @student_before = !is_staff_somewhere(@person)
+
     # If this person was already on this ministry, update with the new role
-    mi = MinistryInvolvement.find(:first, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
+    mis = MinistryInvolvement.find(:all, :conditions => {_(:person_id, :ministry_involvement) => @person.id, _(:ministry_id, :ministry_involvement) => params[:ministry_involvement][:ministry_id] } )
+
+    # handle case where there are multiple mis for this ministry
+    # we might lose history and the proper start date, but this case is rare enough
+    # that I think it's worth it -AR
+    if mis.length > 1
+      first = true
+      for mi in mis
+        first ? first = false : mi.delete
+      end
+      mi = mis.first
+    end
+
+    # update the mi
     if mi
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
       mi.start_date ||= Date.today
