@@ -39,7 +39,7 @@
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
-          <%- if @is_staff_somewhere[@me.id] %>
+          <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
           <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change", :url => switch_list_ministries_url %></div>
             <div id="switch_ministries_list" style="display:none">
               &nbsp;
