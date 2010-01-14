@@ -19,7 +19,7 @@ set :keep_releases, 3
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, if ma? then 'dev' elsif stage? then 'c4c.staging' else 'c4c.dev' end
+set :branch, if prod? then 'c4c.prod' elsif stage? then 'c4c.staging' else 'c4c.dev' end
 set :deploy_via, :remote_cache
 path = if ma?
          'mt.ministryhacks.com'
