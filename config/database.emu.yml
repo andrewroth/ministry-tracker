@@ -18,11 +18,11 @@ production:
   <<: *defaults
 
 ciministry_development:
-  database: c4c_intranet_prod
+  database: c4c_intranet_dev
   <<: *defaults
 
 ciministry_production:
-  database: c4c_intranet_prod
+  database: c4c_intranet_dev
   <<: *defaults
 
 authservice_development:
