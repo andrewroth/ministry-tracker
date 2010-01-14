@@ -19,7 +19,7 @@ set :keep_releases, 3
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, if ma? then 'dev' elsif stage? then 'emu' else 'c4c.dev' end
+set :branch, if prod? then 'c4c.prod' elsif stage? then 'c4c.staging' else 'c4c.dev' end
 set :deploy_via, :remote_cache
 path = if ma?
          'mt.ministryhacks.com'
@@ -59,7 +59,7 @@ deploy.task :after_symlink do
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
   link_shared "public/#{profile_pic_prefix}.profile_pictures"
 
-  sudo "/opt/ruby/bin/god restart dj-moose"
+  sudo "/opt/ruby/bin/god restart dj-#{if stage? then 'emu' elsif dev? then 'dev' elsif prod? then 'pulse' end}"
 end
 
 namespace :deploy do
