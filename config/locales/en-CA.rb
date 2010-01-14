@@ -21,6 +21,7 @@
     :help_header => "Help",
     :alternate_phone => 'Cell Phone',
     
+    :please_login => 'Sign In',
     :analytics => %|
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -81,12 +82,12 @@
       },
       :time_with_zone => {
         :formats => {
-          :default => lambda { |time| "%Y-%m-%d %H:%M:%S #{time.formatted_offset(false, 'UTC')}" }
+          :default => lambda { |time| "%Y-%m-%d %H:%M:%S %Z" }
         }
       },
       :datetime => {
         :formats => {
-          :default => "%Y-%m-%dT%H:%M:%S%Z",
+          :default => "%Y-%m-%d %H:%M:%S %Z",
         }
       },
       :am => 'am',

@@ -13,9 +13,11 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  before_filter CASClient::Frameworks::Rails::GatewayFilter unless Rails.env.test?
+  if !Rails.env.test? && (!Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen])
+    before_filter CASClient::Frameworks::Rails::GatewayFilter
+  end
    # before_filter :fake_login
-  before_filter :login_required, :get_person, :get_ministry, :ensure_has_ministry_involvement, :set_locale#, :get_bar
+  before_filter :login_required, :get_person, :force_campus_set, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all
@@ -53,8 +55,16 @@ class ApplicationController < ActionController::Base
       date.to_formatted_s(format)
     end
 
-    def get_ministry_involvement(ministry)
-      @ministry_involvement = @person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+    def get_my_ministry_involvement(ministry = get_ministry)
+      get_ministry_involvement(ministry, @me)
+    end
+
+    def get_my_role(ministry = get_ministry)
+      get_my_ministry_involvement(ministry).try(:ministry_role)
+    end
+
+    def get_ministry_involvement(ministry, person = @person)
+      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -76,8 +86,8 @@ class ApplicationController < ActionController::Base
       return true if is_ministry_admin(ministry, person)
       ministry ||= @ministry || get_ministry
       person ||= (@me || get_person)
-      involvement = person.ministry_involvements.detect {|mi| mi.ministry_id == ministry.id}
-      return ministry.staff.include?(person) || (involvement && involvement.admin?)
+      involvement = get_ministry_involvement(ministry)
+      return (involvement && involvement.try(:ministry_role).is_a?(StaffRole)) || ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
     
     def is_ministry_leader_somewhere(person = nil)
@@ -85,10 +95,19 @@ class ApplicationController < ActionController::Base
       return false unless person
       @is_ministry_leader ||= {}
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
-                                          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1)", 
-                                            @my.id, get_ministry.root.leader_roles_ids]).nil?
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
+         person.id, get_ministry.root.leader_roles_ids]).nil?
     end
     
+    def is_staff_somewhere(person = nil)
+      person ||= (@me || get_person)
+      return false unless person
+      @is_staff_somewhere ||= {}
+      @is_staff_somewhere[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
+         person.id, Ministry.first.root.staff_role_ids]).nil?
+    end
+ 
     def can_manage
       unless session[:can_manage]
         session[:can_manage] = authorized?(:new, :ministries) || authorized?(:edit, :ministries) ||
@@ -108,6 +127,7 @@ class ApplicationController < ActionController::Base
     def is_ministry_admin(ministry = nil, person = nil)
       session[:admins] ||= {}
       ministry ||= current_ministry
+      return false unless ministry
       session[:admins][ministry.id] ||= {}
       person ||= (@me || get_person)
       unless session[:admins][ministry.id][person.id]
@@ -128,19 +148,22 @@ class ApplicationController < ActionController::Base
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new]
+      :campus_involvements => [:new, :edit, :index],
+      :ministry_involvements => [:new, :edit, :index]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
       
       ministry ||= get_ministry
+      return false unless ministry
+
       unless @user_permissions && @user_permissions[ministry]
         @user_permissions ||= {}
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
         if session[:ministry_role_id].nil?
-          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?)", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+          mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
           session[:ministry_role_id] = mi ? mi.ministry_role_id : false
         end
         if session[:ministry_role_id]
@@ -174,7 +197,7 @@ class ApplicationController < ActionController::Base
             return true
           end
         when :profile_pictures, :timetables
-          if params[:person_id] && params[:person_id] == @my.id.to_s
+          if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
             return true
           elsif controller.to_sym == :timetables && params[:person_id] &&
             @me.is_leading_group_with?(Person.find(params[:person_id]))
@@ -194,15 +217,18 @@ class ApplicationController < ActionController::Base
         when :group_involvements
           if params[:id] || @gi
             @gi ||= GroupInvolvement.find_by_id(params[:id])
-            @group ||= @gi.try(:group) || Group.find(params[:group_id])
-            if @group.is_leader(@me) || @group.is_co_leader(@me)
+            @group ||= @gi.try(:group) || (params[:group_id] && Group.find(params[:group_id]))
+            if @group && (@group.is_leader(@me) || @group.is_co_leader(@me))
               return true
             end
           end
-        when :campus_involvements
-          if (params[:person_id] && params[:controller] == "campus_involvements") && params[:person_id] == @my.id.to_s 
+        when :campus_involvements, :ministry_involvements
+          if params[:person_id] == @my.id.to_s 
             return true
           end   
+          if @person == @me
+            return true
+          end
         end # case
       end # if
 
@@ -302,15 +328,20 @@ class ApplicationController < ActionController::Base
       @person ||= get_person
       raise "no person" unless @person
       unless @ministry
-        @ministry = @person.ministry_tree.detect {|m| m.id == session[:ministry_id].to_i } if session[:ministry_id]
-        @ministry ||= @person.ministries.first
+        @ministry = Ministry.find :first, :conditions => { :id => session[:ministry_id] } if session[:ministry_id].present?
+        # security feature: restrict students
+        if @ministry && !is_staff_somewhere
+          @ministry = @person.ministries.find_by_id session[:ministry_id]
+        end
+        @ministry ||= @person.most_nested_ministry
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
         # Looks like we have to give them some dummy information. BUG 1857 
-        @ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
+        #@ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
+        return unless @ministry # at this point we can abort, since it should force them to choose a campus
 
         # if we currently have the top level ministry, great. If not, get it.
         if @ministry.root?
@@ -345,34 +376,20 @@ class ApplicationController < ActionController::Base
     end
 
     def get_person_campus_groups
-      groups = Group.find :all, :conditions => {:ministry_id => @ministry.id}, :include => [:group_type, :group_involvements, :campus]
-      my_campuses_ids = @my.active_campuses.collect &:id
+      groups = Group.find :all, :conditions => {:ministry_id => get_ministry.id}, :include => [:group_type, :group_involvements, :campus]
+      my_campuses_ids = get_person_campuses.collect &:id
       @person_campus_groups = groups.select { |g| 
         g.campus.nil? || my_campuses_ids.include?(g.campus.id)
       }.sort{ |g1, g2| g1.name.to_s <=> g2.name.to_s }
     end
 
-    def ensure_has_ministry_involvement
-      if @me && @me.ministry_involvements.empty?
-        associate_person_with_default_ministry(@me)
-      end
+    def get_person_campuses
+      @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
-private
-  # Ensures that the _person_ is involved in the 'No Ministry' ministry
-  # BUG 1857
-  def associate_person_with_default_ministry(person)
-    if Cmt::CONFIG[:associate_with_default_ministry]
-      default_ministry = Cmt::CONFIG[:default_ministry_name]
-    else
-      default_ministry = 'No Ministry'
+    def force_campus_set
+      if !is_staff_somewhere && @my.campus_involvements.empty?
+        redirect_to set_initial_campus_person_url(@person.id)
+      end
     end
-    # Ensure the default ministry exists
-    ministry = Ministry.find_or_create_by_name(default_ministry)
-    sr = StudentRole.find_by_name 'Student' 
-    sr ||= StudentRole.find :last, :order => "position"
-    person.ministry_involvements.create! :ministry_id => ministry.id, :ministry_role_id => sr.id
-    
-    ministry
-  end
 end

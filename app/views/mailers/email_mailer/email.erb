@@ -1,3 +1,1 @@
-<%= @email.salutation %> <%= @person.first_name %>,
-
-<%= @email.body %>
+<%= @email.render_body(@person) %>

@@ -10,11 +10,13 @@ require 'person_methods'
 #Question: What is the use of primary_campus_id and its implications?
 #
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
-  skip_before_filter :authorization_filter, :only => [:set_current_address_states, :set_permanent_address_states,  
-                                                      :get_campus_states]
+  free_actions = [:set_current_address_states, :set_permanent_address_states,  
+                  :get_campus_states, :set_initial_campus, :get_campuses_for_state]
+  skip_before_filter :authorization_filter, :only => free_actions
+  skip_before_filter :force_campus_set, :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -42,10 +44,10 @@ class PeopleController < ApplicationController
   # at least for readability!
   #
   # Sets up pagination for results (TODO: this can be put in a method!)
-
   def directory
     get_view
-    my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
+    #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
+    get_ministries
     get_campuses
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"
@@ -161,6 +163,7 @@ class PeopleController < ApplicationController
       
       build_sql(tables_clause)
       @people = ActiveRecord::Base.connection.select_all(@sql)
+      post_process_directory(@people)
     else
       @people = []
       @count = 0
@@ -282,26 +285,19 @@ class PeopleController < ApplicationController
     permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
 
-    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
+    #get_possible_responsible_people
     setup_vars
     setup_campuses
-    respond_to do |format|
-      format.html {
-        
-      }
-      format.js {
-        render :update do |page|
-          page[:info].hide
-          page[:edit_info].replace_html :partial => 'edit',
-            :locals => {
-            :current_address_country => current_address_country,
-            :permanent_address_country => permanent_address_country,
-            :countries => countries,
-            :current_address_states => current_address_states,
-            :permanent_address_states => permanent_address_states }
-          page[:edit_info].show
-        end
-      }
+    render :update do |page|
+      page[:info].hide
+      page[:edit_info].replace_html :partial => 'edit',
+        :locals => {
+          :current_address_country => current_address_country,
+          :permanent_address_country => permanent_address_country,
+          :countries => countries,
+          :current_address_states => current_address_states,
+          :permanent_address_states => permanent_address_states }
+      page[:edit_info].show
     end
   end
 
@@ -409,33 +405,6 @@ class PeopleController < ApplicationController
       @person.user.update_attributes(params[:user])
     end
     
-    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].present? &&
-       (@person.primary_campus_involvement.nil? || params[:primary_campus_involvement][:campus_id].to_i != @person.primary_campus.id)
-      # if @person.primary_campus_involvement
-      #   @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
-      #   
-      #   # @person.update_attribute(:primary_campus_involvement_id, nil)
-      # end
-      if @campus_involvement = @person.campus_involvements.find(:first, :conditions => {_(:campus_id, :campus_involvement) => params[:primary_campus_involvement][:campus_id]})
-        @campus_involvement.update_attribute(:end_date, nil)
-        @person.primary_campus_involvement = @campus_involvement
-      else
-        params[:primary_campus_involvement][:start_date] = Time.now
-        params[:primary_campus_involvement][:added_by_id] = @my.id
-        params[:primary_campus_involvement][:ministry_id] = @ministry.id
-        params[:primary_campus_involvement][:person_id] = @person.id
-        @person.primary_campus_involvement = CampusInvolvement.new(params[:primary_campus_involvement])
-        @update_involvements = true
-      end
-    end
-    if params[:primary_campus_involvement] && params[:primary_campus_involvement][:campus_id].blank?
-      if @person.primary_campus_involvement
-        @person.primary_campus_involvement.update_attribute(:end_date, Time.now)
-        @person.update_attribute(:primary_campus_involvement_id, nil)
-        @update_involvements = true
-      end
-    end
-     
     setup_vars
 
     respond_to do |format|
@@ -499,6 +468,23 @@ class PeopleController < ApplicationController
     end
   end
   
+  def set_initial_campus
+    if request.method == :put
+      ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
+      if ministry_campus
+        ministry = ministry_campus.ministry
+      else
+        ministry = Cmt::CONFIG[:default_ministry_name]
+        ministry ||= Ministry.first
+        throw "add some ministries" unless ministry
+      end
+      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
+      @campus_involvement.find_or_create_ministry_involvement
+    end
+
+    setup_campuses
+  end
+
   # Change which ministry we are now viewing in our session
   # NOTE: there is security checking done in ApplicationController::get_ministry
   def change_ministry_and_goto_directory
@@ -539,7 +525,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.js  do
         render :update do |page|
-          page[:addStudent].replace(:partial => 'students/ajax_form', :locals => {:person => Person.new})
+          page[:dialog].replace(:partial => 'students/ajax_form', :locals => {:person => Person.new})
         end
       end
     end
@@ -640,6 +626,9 @@ class PeopleController < ApplicationController
       @profile_picture.person_id = @person.id
       @current_address = @person.current_address || Address.new(_(:type, :address) => 'current')
       @perm_address = @person.permanent_address || Address.new(_(:type, :address) => 'permanent')
+      #@show_ministries_list = get_ministry_involvement(get_ministry).try(:ministry_role).is_a?(StaffRole)
+      @staff = is_staff_somewhere(@person)
+      @student = !@staff
     end
     
     def set_dorms
@@ -743,22 +732,33 @@ class PeopleController < ApplicationController
     end
     
     def get_campuses
-      if @my_campuses
-        @campuses = @my_campuses & current_ministry.campuses
+      return @campuses if @campuses
+      if is_staff_somewhere
+        @campuses = get_ministries.collect(&:campuses).flatten
       else
-        @campuses = current_ministry.campuses
+        @campuses = my_campuses
       end
     end
     
-    def add_involvement_conditions(conditions)
-      is_staff = get_ministry_involvement(current_ministry).try(:ministry_role).class == StaffRole
+    def get_ministries(ministry = nil)
+      if !is_staff_somewhere
+        @ministries = [ get_ministry ]
+      elsif ministry # recursive case
+        [ ministry ] + ministry.children.collect{ |m| get_ministries(m) }
+      else
+        @ministries = get_ministries(get_ministry).flatten
+      end
+    end
 
+    def add_involvement_conditions(conditions)
       # figure out which campuses to query based on the campuses listed for the current ministry
       # Check ministry
       ministry_condition = ''
       if params[:ministry]
-        # Only consider ministry ids that this person is involved in (stop deviousness)
-        params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
+        # Only consider ministry ids that this person is involved in (for students)
+        unless is_staff_somewhere
+          params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
+        end
         unless params[:ministry].empty?
           ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))}) AND MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
           @search_for << Ministry.find(:all, :conditions => "id in(#{quote_string(params[:ministry].join(','))})").collect(&:name).join(', ')
@@ -775,19 +775,19 @@ class PeopleController < ApplicationController
         # Only consider campus ids that this person is allowed to see (stop deviousness)
         params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
         unless params[:campus].empty?
-          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
+          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
           @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
           @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
           @advanced = true
         end
-      else
+      elsif !params[:ministry].present?
         campus_ids = @campuses.collect &:id # note that @campuses is restricted to campus involvements in this ministry if the person is a student (see get_campuses)
-        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
+        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
       end
       
       if campus_condition.present?
         # students should not have access to everyone in the ministry
-        if is_staff
+        if is_staff_somewhere
           conditions << ('(' + ministry_condition + ' OR ' + campus_condition + ')')
         else
           conditions << campus_condition
@@ -799,4 +799,20 @@ class PeopleController < ApplicationController
       return conditions
     end
     
+    # does some post-processing on the people returned by directory.  I found this way
+    # easier than getting the SQL right in some specific cases.  In particular, for people
+    # with multiple campus involvements, the directory code is difficult to work with.
+    # It auto adds a join on people and campus involvements.  It's really a pain to get
+    # the campuses right in SQL, so it's done here.
+    def post_process_directory(people)
+      people_ids = {}
+      people.reject!{ |person|
+        if people_ids[person['person_id']]
+          true
+        else
+          people_ids[person['person_id']] = true
+          false
+        end
+      }
+    end
 end

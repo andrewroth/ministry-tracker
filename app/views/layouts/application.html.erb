@@ -39,24 +39,29 @@
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
+          <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
+          <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change", :url => switch_list_ministries_url %></div>
+            <div id="switch_ministries_list" style="display:none">
+              &nbsp;
+            </div>
+          <%- end -%>
 		    </div>
   			<div class="clear"></div>
 			</div>
 			
 			<div id="greenbar">	
-        <h1 id="title"><%= I18n.t(:slogan, :default => (@ministry ? @ministry.name : 'Campus Movement Tracker')) %></h1>
+        <h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
         <%= tabnav :main %>
 			</div>
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-  		    <div id="username">Please Login</div>
+          <div id="username"><%= link_to I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller) %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>
 			<div id="greenbar">	
-  			<h1 id="title"><%= @ministry && Cmt::CONFIG[:ministry_in_banner] ? @ministry.name : 
-			                     I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
+  			<h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
   			<%= render :partial => 'tabnav/auth' %>
 			</div>
 			<%- end -%>
@@ -72,7 +77,7 @@
 			</div>
 		</div> <!-- Wrapper -->
 		
-    <div id="addStudent" style="display:none"></div>
+    <div id="dialog" style="display:none"></div>
 		<div id="footer">
 		<table width="100%">
 			<tr>

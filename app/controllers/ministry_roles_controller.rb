@@ -11,6 +11,7 @@ class MinistryRolesController < ApplicationController
   skip_before_filter CASClient::Frameworks::Rails::GatewayFilter, :only => :show
   skip_before_filter :login_required, :only => :show
   skip_before_filter :get_ministry, :only => :show
+  skip_before_filter :force_campus_set, :only => :show
   
   def index
     # Force the user to be looking at the root ministry

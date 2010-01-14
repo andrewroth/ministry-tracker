@@ -2,6 +2,10 @@
   <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
 <%- end -%>
 
+<%- if authorized?(:new, :emails) -%>
+<%= link_to_remote 'Email', { :url => email_group_url(@group), :method => :post, :with => "#{data}" }, { :class => 'small' } %>
+<%- end -%>
+
 <%- if authorized?(:new, :group_involvements) -%>
   <%= link_to_remote 'Remove', {:url => group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :method => :delete, 
     :with => "#{data}", 

@@ -1,0 +1,4 @@
+unless params[:already] == 'true'
+  page.insert_html :before, :"new_#{@singular}_li", :partial => 'new'
+  page[:"add_#{@singular}_button"].hide
+end

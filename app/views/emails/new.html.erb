@@ -1,6 +1,13 @@
 <h1>New email</h1>
 
 <% form_for(@email) do |f| %>
+  <%- if @people -%>
+  <p>
+  <label>To</label>
+  <span><%= @people.collect(&:email).join(", ") %></span>
+  </p>
+  <%- end -%>
+
   <%= f.error_messages %>
   <%= f.hidden_field :search_id %>
   <%= f.hidden_field :people_ids %>
@@ -9,8 +16,7 @@
     <%= f.text_field :subject %>
   </p>
   <p>
-    <%= f.label :salutation %>
-    <%= f.text_field :salutation %>
+    Use {{first_name}} and {{last_name}} in the body to substitute the recipients' first and last names, respectively.
   </p>
   <p>
     <%= f.label :body %>

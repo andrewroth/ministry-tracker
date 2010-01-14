@@ -1,6 +1,6 @@
 if params[:modalbox]
   # is this still used?
-  page['addStudent'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
+  page['dialog'].replace(render(:partial => 'students/ajax_form', :locals => {:person => @person}))
   page.call("show_add_student")
 else
   if @group.errors.empty?

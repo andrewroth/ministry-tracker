@@ -32,10 +32,9 @@ class Group < ActiveRecord::Base
   def is_co_leader(p) in_association(co_leaders, p) end
   def is_member(p) in_association(members, p) end
   def is_interested(p) in_association(interesteds, p) end
-  def has_requested(p) in_association(requests, p) end
+  def has_requested(p) in_association(requesters, p) end
 
   def in_association(a, p)
-    #a.find(:first, :conditions => { :id => p.id }).present?
     a.include?(p)
   end
 end
