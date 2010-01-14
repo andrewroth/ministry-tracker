@@ -78,6 +78,8 @@
     <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
   </div>
 
+  <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
+
   <%= render :partial => 'timetable' %>
 <%- else -%>
   Nothing to see here. Please move on.
@@ -89,6 +91,27 @@
   var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>']
   var direction = 'on';
   
+  function clear_timetable() {
+    var answer = confirm("Are you sure you want to set every time on your timetable to 'good'?");
+    if (answer == false) {
+      return;
+    }
+
+    css_before = css;
+    css = 'good';
+    for (i = 0; i < 7; i++) {
+      // Set all classes to good, and remove all classes that aren't good
+      for (c_index = 0; c_index < possible_classes.length; c_index++) {
+        if (possible_classes[c_index] != '<%= Timetable::GOOD_CLASS %>') {
+          $('.day_'+i).removeClass(possible_classes[c_index]);
+        } else {
+          $('.day_'+i).addClass(possible_classes[c_index]);
+        }
+      }
+    }
+    css = css_before;
+  }
+
   $(".statusheadwrap a").click(function() {
     $('.headselected').removeClass('headselected');
     css = $(this).attr('rel');
@@ -102,6 +125,7 @@
     }
     $(this).addClass(css)
   });
+
   $('table#schedule td:not(.time)').mouseover(function() {
     if(down) {
       for(i=0; i < possible_classes.length; i++) {

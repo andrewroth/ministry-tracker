@@ -1110,3 +1110,11 @@ div.choose_ministry_tree {
   position: absolute;
   z-index: 500;
 }
+
+.statusheadwrap {
+  float: left;
+}
+
+#clear_timetable {
+  float: right;
+}
