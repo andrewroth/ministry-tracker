@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
-    unless request.domain =~ /pulse/
+    unless request.domain(2) =~ /pulse/
       # to help with testing - remove before final release
       p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)
       if p && p.user
