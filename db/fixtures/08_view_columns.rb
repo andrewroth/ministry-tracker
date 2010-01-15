@@ -74,11 +74,12 @@ end
   #end
 
   # on pulse since
-  ViewColumn.seed(:view_id, :column_id) do |vc|
-    vc.view_id = v_id
-    vc.column_id = 12
-  end
+  #ViewColumn.seed(:view_id, :column_id) do |vc|
+  #  vc.view_id = v_id
+  #  vc.column_id = 12
+  #end
 
+  # timetable last updated
   ViewColumn.seed(:view_id, :column_id) do |vc|
     vc.view_id = v_id
     vc.column_id = 13
