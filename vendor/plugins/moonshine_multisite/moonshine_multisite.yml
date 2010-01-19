@@ -18,7 +18,7 @@
       :user: deploy
       :group: www-data
       :server: pat.powertochange.org
-      :lan_ip: 192.168.1.112
+      :lan_ip: 192.168.242.174
       :domain: campusforchrist.org
       :time_zone: PST
       :private_path: /home/deploy/private_repo2
@@ -26,10 +26,11 @@
       :private_user: deploy
       :ssl: true
       :certs:
-        - "app/manifests/assets/private/certs/campusforchrist.org.cert": "/etc/apache2/certs/campusforchrist.org.cert"
-        - "app/manifests/assets/private/certs/campusforchrist.org.key": "/etc/apache2/certs/campusforchrist.org.key"
+        "app/manifests/assets/private/certs/campusforchrist.org.cert": "/etc/apache2/certs/campusforchrist.org.cert"
+        "app/manifests/assets/private/certs/campusforchrist.org.key": "/etc/apache2/certs/campusforchrist.org.key"
       :ruby: ree187 
       :utility: /var/www/c4c_utility.campusforchrist.org/current
+      :skip_deploy: false
     :stage_moonshines:
       :pulse:
         :prod: 
@@ -64,6 +65,8 @@
       :moonshine:
         :domain: local
         :ssl: false
+        :passenger:
+          :rails_env: development
       :stage_moonshines:
         :pulse:
           :prod: 
@@ -98,7 +101,7 @@
       :user: deploy
       :group: www-data
       :server: pat.powertochange.org
-      :lan_ip: 192.168.1.112
+      :lan_ip: 192.168.242.175
       :domain: powertochange.org
       :time_zone: PST
       :private_path: /home/deploy/private_repo2
@@ -108,8 +111,9 @@
       :ruby: ree187 
       :utility: /var/www/c4c_utility.campusforchrist.org/current
       :certs:
-        - "app/manifests/assets/private/certs/powertochange.org.cert": "/etc/apache2/certs/powertochange.org.cert"
-        - "app/manifests/assets/private/certs/powertochange.org.key": "/etc/apache2/certs/campusforchrist.org.key"
+        "app/manifests/assets/private/certs/powertochange.org.cert": "/etc/apache2/certs/powertochange.org.cert"
+        "app/manifests/assets/private/certs/powertochange.org.key": "/etc/apache2/certs/powertochange.org.key"
+      :skip_deploy: false
     :stage_moonshines:
       :pat:
         :prod: 
@@ -127,6 +131,8 @@
       :moonshine:
         :domain: local
         :ssl: false
+        :passenger:
+          :rails_env: development
       :stage_moonshines:
         :pat:
           :staging:
