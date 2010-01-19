@@ -1,6 +1,6 @@
 <%- archived = campus_involvement.end_date.present? -%>
 <div<%= ' class="archived_text"' if archived %>>
 <%= link_to_remote image_tag('delete.png'), :url => person_campus_involvement_url(@person.id, campus_involvement.id, :from_profile => @from_profile), :method => :delete, :confirm => (archived ? "Are you sure you want to delete this archived involvement?  Please delete this archived involvement only if it's inaccurate, so that we can collect accurate statistics." : "Are you sure you want to archive this involvement?" ) %> 
-<%= campus_involvement.try(:school_year).try(:name) || '&lt;no school year set&gt;'%> <%= campus_involvement.find_or_create_ministry_involvement.ministry_role.name %> at <%= campus_involvement.campus.name %>
+<% if @student %><%= campus_involvement.find_or_create_ministry_involvement.ministry_role.name %> <% end %> <%= campus_involvement.campus.name %> <%= campus_involvement.try(:school_year).try(:name) || '&lt;no school year set&gt;'%>
 <%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_campus_involvement_url(@person.id, campus_involvement.id, :from_manage => true), :method => :get %>
 </div>

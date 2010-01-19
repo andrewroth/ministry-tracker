@@ -138,9 +138,8 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def handle_campus_involvement
-    current_role = get_ministry_involvement(get_ministry).try(:ministry_role) || 
-      @campus_involvement.find_or_create_ministry_involvement.ministry_role
-    yield current_role.nil? || current_role.is_a?(StudentRole)
+    set_student
+    yield @student
   end
 
   protected
@@ -178,7 +177,10 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def set_student
-    @staff = is_staff_somewhere(@person)
-    @student = !@staff
+    current_role = get_ministry_involvement(get_ministry).try(:ministry_role) ||
+      @campus_involvement.find_or_create_ministry_involvement.ministry_role
+    @student = current_role.nil? || current_role.is_a?(StudentRole)
+    @staff = !@student
   end
+
 end
