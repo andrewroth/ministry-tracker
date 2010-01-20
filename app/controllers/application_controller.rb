@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     before_filter CASClient::Frameworks::Rails::Filter
   when Cmt::CONFIG[:gcx_direct_logins]
     before_filter CASClient::Frameworks::Rails::GatewayFilter 
-  end unless !Rails.env.test?
+  end unless Rails.env.test?
    # before_filter :fake_login
   before_filter :login_required, :get_person, :force_campus_set, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
