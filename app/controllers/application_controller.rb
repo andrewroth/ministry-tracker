@@ -15,9 +15,9 @@ class ApplicationController < ActionController::Base
 		:get_people_responsible_for
 		
 	case
-  when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen]
+  when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen_directly]
     before_filter CASClient::Frameworks::Rails::Filter
-  when Cmt::CONFIG[:gcx_direct_logins]
+  when Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:gcx_greenscreen_from_link]
     before_filter CASClient::Frameworks::Rails::GatewayFilter 
   end unless Rails.env.test?
    # before_filter :fake_login
