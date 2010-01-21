@@ -181,12 +181,51 @@ class Person < ActiveRecord::Base
       best_a
     end
 
+    def map_cim_hrdb_to_mt(options = {})
+      c4c = Ministry.find_by_name 'Campus for Christ'
+
+      # assume if they already have involvements they're properly set up on the pulse
+      return if ministry_involvements.present? || campus_involvements.present?
+
+      # staff *must* have a cim_hrdb_staff entry
+      if cim_hrdb_staff && cim_hrdb_staff.is_active == 1
+        # look for a Staff assignment to determine campus
+        staff_assign = Assignmentstatus.find_by_assignmentstatus_desc("Staff")
+        campus = assignments.find_by_assignmentstatus_id(staff_assign).try(:campus)
+
+        if campus
+          mc = MinistryCampus.find(:last, :conditions => { :campus_id => campus.id })
+          ministry = mc.try(:ministry)
+          
+          if ministry
+            # finally, they have everything needed to be marked staff on the pulse
+            staff_role = StaffRole.find_by_name('Staff')
+            c4c_mi = ministry_involvements.find_or_create_by_ministry_id(c4c.id)
+            c4c_mi.ministry_role_id = staff_role
+            c4c_mi.start_date = Date.today
+            c4c_mi.end_date = nil
+            c4c_mi.save!
+
+            # add staff team role
+            unless ministry == c4c
+              staff_team_role = StaffRole.find_by_name('Staff Team')
+              team_mi = ministry_involvements.find_or_create_by_ministry_id(ministry.id)
+              team_mi.ministry_role_id = staff_team_role
+              team_mi.start_date = Date.today
+              team_mi.end_date = nil
+              team_mi.save!
+            end
+          end
+        end
+      end
+    end
+
     # import information from the ciministry hrdb to the movement tracker database
     #
     # when secure flag is on, it will import staff with a cim_hrdb_assignment (as staff)
     # only if they cim_hrdb_staff entry
     #
-    def map_cim_hrdb_to_mt(options = {})
+    def map_cim_hrdb_to_mt_old(options = {})
       options = { :secure => true
       }.merge(options)
 
