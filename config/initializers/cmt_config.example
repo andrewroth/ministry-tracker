@@ -10,7 +10,11 @@ module Cmt
     # This will show a link on the login page.  If the direct GCX or
     # local logins are also allowed, both the form and link will be
     # displayed.
-    :gcx_greenscreen => false,
+    :gcx_greenscreen_directly => false,
+
+    # Show the login page with a link back to the greenscreen.
+    # Note: Don't set both gcx_greenscreen_directly and gcx_greenscreen_from_link true.
+    :gcx_greenscreen_from_link => true,
     
     # Disable GCX Import functionality
     :gcx_import_disabled => false,
