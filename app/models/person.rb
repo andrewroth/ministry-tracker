@@ -213,6 +213,10 @@ end
     @primary_email
   end
   
+  def email
+    self[:email] || primary_email
+  end
+  
   # def all_ministries
   #   (self.ministries + self.campus_ministries).uniq.sort
   # end

@@ -13,9 +13,14 @@ class ApplicationController < ActionController::Base
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
-  if !Rails.env.test? && (!Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen])
-    before_filter CASClient::Frameworks::Rails::GatewayFilter
-  end
+		
+	case
+  when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen]
+    before_filter CASClient::Frameworks::Rails::Filter
+  when Cmt::CONFIG[:gcx_direct_logins]
+    before_filter CASClient::Frameworks::Rails::GatewayFilter 
+  end unless Rails.env.test?
+
    # before_filter :fake_login
   before_filter :login_required, :get_person, :force_campus_set, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
