@@ -71,21 +71,18 @@ end
 Ministry.seed(:name) do |ministry|
   ministry.id = 11
   ministry.name = 'Ontario and Atlantic Region'
-  ministry.ministries_count = 6
   ministry.parent_id = 2
 end
 
 Ministry.seed(:name) do |ministry|
   ministry.id = 12
   ministry.name = 'Western Region'
-  ministry.ministries_count = 5
   ministry.parent_id = 2
 end
 
 Ministry.seed(:name) do |ministry|
   ministry.id = 13
   ministry.name = 'Quebec'
-  ministry.ministries_count = 3
   ministry.parent_id = 2
 end
 
@@ -199,4 +196,95 @@ Ministry.seed(:name) do |ministry|
   ministry.name = 'Sherbrooke'
   ministry.ministries_count = 0
   ministry.parent_id = 13
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 30
+  ministry.name = "Queen's"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontari & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 31
+  ministry.name = "Windsor"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontari & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 32
+  ministry.name = "U du Q"
+  ministry.ministries_count = 0
+  ministry.parent_id = 13 # Quebec
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 33
+  ministry.name = "U of R"
+  ministry.ministries_count = 0
+  ministry.parent_id = 12 # Western Region
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 34
+  ministry.name = "Brock"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 35
+  ministry.name = "Fanshawe"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 36
+  ministry.name = "MTA"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 37
+  ministry.name = "COTR"
+  ministry.ministries_count = 0
+  ministry.parent_id = 12 # Western Region
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 38
+  ministry.name = "Sheridan"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 39
+  ministry.name = "Trent"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 40
+  ministry.name = "LakeU"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 41
+  ministry.name = "TWU"
+  ministry.ministries_count = 0
+  ministry.parent_id = 12 # Western Region
+end
+
+Ministry.seed(:name) do |ministry|
+  ministry.id = 42
+  ministry.name = "UOIT"
+  ministry.ministries_count = 0
+  ministry.parent_id = 11 # Ontario & Maritimes
 end
