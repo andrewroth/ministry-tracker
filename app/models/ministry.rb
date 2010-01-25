@@ -211,9 +211,11 @@ class Ministry < ActiveRecord::Base
 
     if view
       new_view = view.clone
-      views << view
+      new_view.ministry_id = self.id
+      new_view.save!
+      views << new_view
       view.view_columns.each do |view_column|
-        new_view.view_columns << view_column.clone
+        new_view.view_columns.create! :column_id => view_column.id
       end
     #if that doesn't exist, make a new view will have every column
     else
