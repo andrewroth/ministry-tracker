@@ -2,7 +2,7 @@ def ma?
   ENV['system'] == 'ma'
 end
 
-ENV['target'] ||= 'emu'
+ENV['target'] ||= 'moose'
 set :moonshine_apply, false
 
 def stage?() %w(emu stage).include?(ENV['target']) end
