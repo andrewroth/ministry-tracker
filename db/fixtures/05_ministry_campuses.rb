@@ -339,3 +339,73 @@ MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
   ministry_campus.ministry_id = 29
   ministry_campus.campus_id = 64
 end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 29
+  ministry_campus.campus_id = 64
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 30 # queen's
+  ministry_campus.campus_id = 48
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 31
+  ministry_campus.campus_id = 55
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 32
+  ministry_campus.campus_id = 63
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 33
+  ministry_campus.campus_id = 67
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 34
+  ministry_campus.campus_id = 72
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 35
+  ministry_campus.campus_id = 74
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 36
+  ministry_campus.campus_id = 75
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 37
+  ministry_campus.campus_id = 76
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 38
+  ministry_campus.campus_id = 77
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 39
+  ministry_campus.campus_id = 80
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 40
+  ministry_campus.campus_id = 84
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 41
+  ministry_campus.campus_id = 88
+end
+
+MinistryCampus.seed(:ministry_id, :campus_id) do |ministry_campus|
+  ministry_campus.ministry_id = 42
+  ministry_campus.campus_id = 141
+end
