@@ -119,7 +119,6 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def update_campus_involvement
-    debugger
     handle_campus_involvement do |is_student|
       if is_student
         update_student_campus_involvement
