@@ -151,7 +151,7 @@ class GroupInvolvementsController < ApplicationController
     def ensure_request_matches_group
       @gi_request = @gi # actually the id is the request to be accepted/denied
       @gi = @gi.group.group_involvements.find_by_person_id @me.id
-      unless @gi && @gi_request
+      unless (@gi && @gi_request) || is_staff_somewhere
         flash[:notice] = "You don't have permission to do this"
         access_denied
       end
