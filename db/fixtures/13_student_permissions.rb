@@ -19,10 +19,5 @@ end
 
 MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
   rp.ministry_role_id = ministry_role_id
-  rp.permission_id = p_id :ministries, :switch_list
-end
-
-MinistryRolePermission.seed(:ministry_role_id, :permission_id) do |rp|
-  rp.ministry_role_id = ministry_role_id
-  rp.permission_id = p_id :ministries, :switch_apply
+  rp.permission_id = p_id :group_involvements, :destroy_own
 end

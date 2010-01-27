@@ -77,6 +77,12 @@ Permission.seed(:controller, :action) do |p|
 end
 
 Permission.seed(:controller, :action) do |p|
+  p.controller = 'group_involvements'
+  p.action = 'destroy_own'
+  p.description = 'Person can remove themselves from a group'
+end
+
+Permission.seed(:controller, :action) do |p|
   p.controller = 'people'
   p.action = 'directory'
   p.description = 'View Directory'
