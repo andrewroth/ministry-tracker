@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
   has_many :accountadmin_vieweraccessgroups
-  has_many :accountadmin_accountadminaccess
+  has_many :accountadmin_accountadminaccesses
   belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
 
 

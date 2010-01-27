@@ -1,8 +1,14 @@
 class AccountadminAccountadminaccess < ActiveRecord::Base
   load_mappings
 
-  belongs_to :users, :foreign_key => :viewer_id
+  belongs_to :user, :foreign_key => :viewer_id
+  belongs_to :cim_hrdb_priv, :foreign_key => _(:privilege_id)
 
-  validates_presence_of _(:viewer_id), _(:privilege)
-  validates_length_of _(:privilege), :maximum => 1
+  validates_presence_of :viewer_id, _(:privilege_id)
+  validate :ensure_user_exists
+
+  def ensure_user_exists
+    errors.add('Viewer ID') unless User.find(:first, :conditions => ["#{_(:id, :user)} = ?", self.viewer_id])
+  end
+
 end

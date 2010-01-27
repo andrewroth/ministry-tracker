@@ -47,7 +47,7 @@ class AccountadminAccountgroupsController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_accountgroup.save
-        flash[:notice] = 'AccountadminAccountgroup was successfully created.'
+        flash[:notice] = 'Account group was successfully created.'
         format.html { redirect_to(@accountadmin_accountgroup) }
         format.xml  { render :xml => @accountadmin_accountgroup, :status => :created, :location => @accountadmin_accountgroup }
       else
@@ -64,7 +64,7 @@ class AccountadminAccountgroupsController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_accountgroup.update_attributes(params[:accountadmin_accountgroup])
-        flash[:notice] = 'AccountadminAccountgroup was successfully updated.'
+        flash[:notice] = 'Account group was successfully updated.'
         format.html { redirect_to(@accountadmin_accountgroup) }
         format.xml  { head :ok }
       else
