@@ -1,0 +1,24 @@
+<h1>Listing accountadmin_languages</h1>
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Code</th>
+    <th>English value</th>
+  </tr>
+
+<% @accountadmin_languages.each do |accountadmin_language| %>
+  <tr>
+    <td><%=h accountadmin_language.key %></td>
+    <td><%=h accountadmin_language.code %></td>
+    <td><%=h accountadmin_language.english_value %></td>
+    <td><%= link_to 'Show', accountadmin_language %></td>
+    <td><%= link_to 'Edit', edit_accountadmin_language_path(accountadmin_language) %></td>
+    <td><%= link_to 'Destroy', accountadmin_language, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New accountadmin_language', new_accountadmin_language_path %>

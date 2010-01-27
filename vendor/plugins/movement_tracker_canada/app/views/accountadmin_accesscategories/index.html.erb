@@ -1,0 +1,22 @@
+<h1>Listing accountadmin_accesscategories</h1>
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>English Value</th>
+  </tr>
+
+<% @accountadmin_accesscategories.each do |accountadmin_accesscategory| %>
+  <tr>
+    <td><%=h accountadmin_accesscategory.key %></td>
+    <td><%=h accountadmin_accesscategory.english_value %></td>
+    <td><%= link_to 'Show', accountadmin_accesscategory %></td>
+    <td><%= link_to 'Edit', edit_accountadmin_accesscategory_path(accountadmin_accesscategory) %></td>
+    <td><%= link_to 'Destroy', accountadmin_accesscategory, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New accountadmin_accesscategory', new_accountadmin_accesscategory_path %>

@@ -1,4 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.resources :accountadmin_users
+
+  map.resources :accountadmin_accountadminaccesses
+
+  map.resources :accountadmin_languages
+
+  map.resources :accountadmin_accountgroups
+
+  map.resources :accountadmin_accessgroups
+
+  map.resources :accountadmin_accesscategories
+
   map.resources :involvement_histories
 
   map.resources :emails

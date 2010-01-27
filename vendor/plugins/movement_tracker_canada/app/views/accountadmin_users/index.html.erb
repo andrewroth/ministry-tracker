@@ -1,0 +1,42 @@
+<h1>Listing users</h1>
+
+<%#*<table>%>
+  <%#*<tr>%>
+    <%#*<th>Guid</th>%>
+    <%#*<th>Account group</th>%>
+    <%#*<th>User</th>%>
+    <%#*<th>Language</th>%>
+    <%#*<th>Is active</th>%>
+    <%#*<th>Last login</th>%>
+    <%#*<th>Remember token</th>%>
+    <%#*<th>Remember token expires at</th>%>
+    <%#*<th>Email validated</th>%>
+    <%#*<th>Developer</th>%>
+    <%#*<th>Facebook hash</th>%>
+    <%#*<th>Facebook username</th>%>
+  <%#*</tr>%>
+
+<%# @users.each do |user| %>
+  <%#*<tr>%>
+    <%#*<td><%=h user.guid %></td>%>
+    <%#*<td><%=h user.accountgroup_id %></td>%>
+    <%#*<td><%=h user.username %></td>%>
+    <%#*<td><%=h user.language_id %></td>%>
+    <%#*<td><%=h user.viewer_isActive %></td>%>
+    <%#*<td><%=h user.last_login %></td>%>
+    <%#*<td><%=h user.remember_token %></td>%>
+    <%#*<td><%=h user.remember_token_expires_at %></td>%>
+    <%#*<td><%=h user.email_validated %></td>%>
+    <%#*<td><%=h user.developer %></td>%>
+    <%#*<td><%=h user.facebook_hash %></td>%>
+    <%#*<td><%=h user.facebook_username %></td>%>
+    <%#*<td><%= link_to 'Show', accountadmin_user_path(user) %></td>%>
+    <%#*<td><%= link_to 'Edit', edit_accountadmin_user_path(user) %></td>%>
+    <%#*<td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>%>
+  <%#*</tr>%>
+<%# end %>
+<%#*</table>%>
+
+<br />
+
+<%= link_to 'New user', new_accountadmin_user_path %>

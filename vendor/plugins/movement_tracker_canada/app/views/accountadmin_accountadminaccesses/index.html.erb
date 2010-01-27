@@ -1,0 +1,22 @@
+<h1>Listing accountadmin_accountadminaccesses</h1>
+
+<table>
+  <tr>
+    <th>Viewer</th>
+    <th>Privilege</th>
+  </tr>
+
+<% @accountadmin_accountadminaccesses.each do |accountadmin_accountadminaccess| %>
+  <tr>
+    <td><%=h accountadmin_accountadminaccess.viewer_id %></td>
+    <td><%=h accountadmin_accountadminaccess.privilege %></td>
+    <td><%= link_to 'Show', accountadmin_accountadminaccess %></td>
+    <td><%= link_to 'Edit', edit_accountadmin_accountadminaccess_path(accountadmin_accountadminaccess) %></td>
+    <td><%= link_to 'Destroy', accountadmin_accountadminaccess, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New accountadmin_accountadminaccess', new_accountadmin_accountadminaccess_path %>
