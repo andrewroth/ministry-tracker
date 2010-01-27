@@ -95,5 +95,5 @@ end
 Column.seed(:title) do |c|
   c.title = 'Timetable Updated'
   c.from_clause = 'Timetable'
-  c.select_clause = "(CONVERT_TZ(timetable.updated_at, '+00:00', '-08:00'))"
+  c.select_clause = "(CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00'))"
 end
