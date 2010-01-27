@@ -115,6 +115,7 @@ cim_hrdb_admin:
 
 cim_hrdb_priv:
   id: priv_id
+  accesslevel: priv_accesslevel
 cim_hrdb_staff:
   id: staff_id
 cim_hrdb_person_year:
@@ -126,7 +127,7 @@ accountadmin_accessgroup:
 
 accountadmin_accountadminaccess:
   id: accountadminaccess_id
-  privilege: accountadminaccess_privilege
+  privilege_id: accountadminaccess_privilege
 
 accountadmin_accesscategory:
   id: accesscategory_id

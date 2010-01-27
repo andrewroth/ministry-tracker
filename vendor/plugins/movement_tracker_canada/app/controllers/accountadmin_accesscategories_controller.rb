@@ -47,7 +47,7 @@ class AccountadminAccesscategoriesController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_accesscategory.save
-        flash[:notice] = 'AccountadminAccesscategory was successfully created.'
+        flash[:notice] = 'Access category was successfully created.'
         format.html { redirect_to(@accountadmin_accesscategory) }
         format.xml  { render :xml => @accountadmin_accesscategory, :status => :created, :location => @accountadmin_accesscategory }
       else
@@ -64,7 +64,7 @@ class AccountadminAccesscategoriesController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_accesscategory.update_attributes(params[:accountadmin_accesscategory])
-        flash[:notice] = 'AccountadminAccesscategory was successfully updated.'
+        flash[:notice] = 'Access category was successfully updated.'
         format.html { redirect_to(@accountadmin_accesscategory) }
         format.xml  { head :ok }
       else

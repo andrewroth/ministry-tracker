@@ -1,11 +1,16 @@
 <p>
-  <b>Viewer:</b>
+  <b>Viewer ID:</b>
   <%=h @accountadmin_accountadminaccess.viewer_id %>
 </p>
 
 <p>
+  <b>Username:</b>
+  <%=h @accountadmin_accountadminaccess.user.viewer_userID %>
+</p>
+
+<p>
   <b>Privilege:</b>
-  <%=h @accountadmin_accountadminaccess.privilege %>
+  <%=h @accountadmin_accountadminaccess.cim_hrdb_priv.accesslevel %>
 </p>
 
 

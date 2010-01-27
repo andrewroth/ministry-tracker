@@ -1,15 +1,15 @@
-<h1>New accountadmin_accountadminaccess</h1>
-
+<h1>New Account Admin Access</h1>
+<br/>
 <% form_for(@accountadmin_accountadminaccess) do |f| %>
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :viewer_id %><br />
+    <%= f.label :viewer_id, "Viewer ID" %><br />
     <%= f.text_field :viewer_id %>
   </p>
   <p>
-    <%= f.label :privilege %><br />
-    <%= f.text_field :privilege %>
+    <%= f.label _(:privilege_id, :accountadmin_accountadminaccess), "Privilege" %><br />
+    <%= f.collection_select _(:privilege_id, :accountadmin_accountadminaccess), CimHrdbPriv.all, _(:id, :cim_hrdb_priv), _(:accesslevel, :cim_hrdb_priv) %>
   </p>
   <p>
     <%= f.submit 'Create' %>

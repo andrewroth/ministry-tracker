@@ -47,7 +47,7 @@ class AccountadminLanguagesController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_language.save
-        flash[:notice] = 'AccountadminLanguage was successfully created.'
+        flash[:notice] = 'Language was successfully created.'
         format.html { redirect_to(@accountadmin_language) }
         format.xml  { render :xml => @accountadmin_language, :status => :created, :location => @accountadmin_language }
       else
@@ -64,7 +64,7 @@ class AccountadminLanguagesController < ApplicationController
 
     respond_to do |format|
       if @accountadmin_language.update_attributes(params[:accountadmin_language])
-        flash[:notice] = 'AccountadminLanguage was successfully updated.'
+        flash[:notice] = 'Language was successfully updated.'
         format.html { redirect_to(@accountadmin_language) }
         format.xml  { head :ok }
       else

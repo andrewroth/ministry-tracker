@@ -43,11 +43,11 @@ class AccountadminAccountadminaccessesController < ApplicationController
   # POST /accountadmin_accountadminaccesses
   # POST /accountadmin_accountadminaccesses.xml
   def create
-    @accountadmin_accountadminaccess = AccountadminAccountadminaccess.new(params[:accountadmin_adminaccess])
+    @accountadmin_accountadminaccess = AccountadminAccountadminaccess.new(params[:accountadmin_accountadminaccess])
 
     respond_to do |format|
       if @accountadmin_accountadminaccess.save
-        flash[:notice] = 'AccountadminAccountadminaccess was successfully created.'
+        flash[:notice] = 'Account admin access was successfully created.'
         format.html { redirect_to(@accountadmin_accountadminaccess) }
         format.xml  { render :xml => @accountadmin_accountadminaccess, :status => :created, :location => @accountadmin_accountadminaccess }
       else
@@ -63,8 +63,8 @@ class AccountadminAccountadminaccessesController < ApplicationController
     @accountadmin_accountadminaccess = AccountadminAccountadminaccess.find(params[:id])
 
     respond_to do |format|
-      if @accountadmin_accountadminaccess.update_attributes(params[:accountadmin_adminaccess])
-        flash[:notice] = 'AccountadminAccountadminaccess was successfully updated.'
+      if @accountadmin_accountadminaccess.update_attributes(params[:accountadmin_accountadminaccess])
+        flash[:notice] = 'Account admin access was successfully updated.'
         format.html { redirect_to(@accountadmin_accountadminaccess) }
         format.xml  { head :ok }
       else
