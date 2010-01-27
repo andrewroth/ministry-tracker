@@ -100,6 +100,14 @@ class GroupInvolvementsController < ApplicationController
     end
   end
   
+  def destroy_own
+    @gi = GroupInvolvement.find(params[:id])
+    @group = @gi.try(:group)
+    if @gi && @group && @gi.person == @me
+      @gi.destroy
+    end
+  end
+
   protected
 
   def act_on_members
