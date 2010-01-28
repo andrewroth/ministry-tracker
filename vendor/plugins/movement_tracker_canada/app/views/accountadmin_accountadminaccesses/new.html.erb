@@ -8,8 +8,9 @@
     <%= f.text_field :viewer_id %>
   </p>
   <p>
-    <%= f.label _(:privilege_id, :accountadmin_accountadminaccess), "Privilege" %><br />
-    <%= f.collection_select _(:privilege_id, :accountadmin_accountadminaccess), CimHrdbPriv.all, _(:id, :cim_hrdb_priv), _(:accesslevel, :cim_hrdb_priv) %>
+    <%= f.label _(:privilege, :accountadmin_accountadminaccess), "Privilege" %><br />
+    <%= f.select _(:privilege, :accountadmin_accountadminaccess), [[AccountadminAccountadminaccess::PRIV[:group][:human], AccountadminAccountadminaccess::PRIV[:group][:id]],
+                                                                   [AccountadminAccountadminaccess::PRIV[:site][:human], AccountadminAccountadminaccess::PRIV[:site][:id]]] %>
   </p>
   <p>
     <%= f.submit 'Create' %>
