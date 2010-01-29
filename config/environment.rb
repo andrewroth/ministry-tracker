@@ -43,7 +43,7 @@ Rails::Initializer.run do |config|
   # config.gem 'rfacebook'
   config.gem 'liquid'
 
-  unless Rails.env == 'development'
+  unless RAILS_ENV == 'development'
     #config.active_record.default_timezone = 'Pacific Time (US & Canada)'
     config.time_zone = 'Pacific Time (US & Canada)'
   end
