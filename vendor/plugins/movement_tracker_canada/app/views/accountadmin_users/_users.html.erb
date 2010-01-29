@@ -1,0 +1,32 @@
+<br/>
+<hr></hr>
+<br/>
+<% if @users and @query and @users.size > 0 %>
+  Found <b><%= @users.size %></b> users for <b>'<%=h @query %>'</b>:
+  <br/>
+  <br/>
+  <table>
+    <tr>
+      <th>Account group</th>
+      <th>User name</th>
+      <th>Is active</th>
+      <th>Last login</th>
+    </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%=h user.accountadmin_accountgroup.english_value %></td>
+      <td><%=h user.username %></td>
+      <td><%=h user.human_is_active %></td>
+      <td><%=h user.last_login %></td>
+      <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_user_path(user) %></td>
+      <td><%= link_to 'Destroy', accountadmin_user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<% elsif @query %>
+  Your search <b>'<%=h @query %>'</b> did not match any users.
+<% else %>
+  Your search did not match any users.
+<% end %>

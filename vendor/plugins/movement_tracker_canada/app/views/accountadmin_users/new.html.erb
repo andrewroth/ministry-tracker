@@ -1,6 +1,6 @@
 <h1>New User</h1>
 <br/>
-<% form_for(@user) do |f| %>
+<% form_for(@user, :url => accountadmin_users_path, :action => 'create') do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -9,23 +9,19 @@
   </p>
   <p>
     <%= f.label :accountgroup_id %><br />
-    <%= f.text_field :accountgroup_id %>
+    <%= f.collection_select :accountgroup_id, AccountadminAccountgroup.all, :id, :english_value %>
   </p>
   <p>
     <%= f.label :username %><br />
     <%= f.text_field :username %>
   </p>
   <p>
-    <%= f.label :password %><br />
-    <%= f.text_field :password %>
-  </p>
-  <p>
     <%= f.label :language_id %><br />
-    <%= f.text_field :language_id %>
+    <%= f.collection_select :language_id, AccountadminLanguage.all, :id, :english_value %>
   </p>
   <p>
-    <%= f.label :viewer_isActive %><br />
-    <%= f.check_box :viewer_isActive %>
+    <%= f.label :is_active %><br />
+    <%= f.check_box :is_active %>
   </p>
   <p>
     <%= f.label :last_login %><br />

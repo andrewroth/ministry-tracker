@@ -71,6 +71,7 @@ user:
   last_login: viewer_lastLogin
   username: viewer_userID
   password: viewer_passWord
+  is_active: viewer_isActive
   
 person:
   id: person_id
@@ -127,7 +128,7 @@ accountadmin_accessgroup:
 
 accountadmin_accountadminaccess:
   id: accountadminaccess_id
-  privilege_id: accountadminaccess_privilege
+  privilege: accountadminaccess_privilege
 
 accountadmin_accesscategory:
   id: accesscategory_id

@@ -1,7 +1,8 @@
 class AccountadminAccessgroup < ActiveRecord::Base
   load_mappings
 
-  has_many :accountadmin_vieweraccessgroup
+  has_many :users, :through => :accountadmin_vieweraccessgroup
+  has_many :accountadmin_vieweraccessgroups
   belongs_to :accountadmin_accesscategory, :foreign_key => :accesscategory_id
 
   validates_presence_of _(:key), _(:accesscategory_id)

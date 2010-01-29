@@ -1,0 +1,27 @@
+<hr></hr><br/>
+<% if @users and @users.size > 0 %>
+  <p>Found <b><%= @users.size %></b> users in this access group:</p>
+  <table>
+    <tr>
+      <th>Account group</th>
+      <th>User name</th>
+      <th>Is active</th>
+      <th>Last login</th>
+    </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%=h user.accountadmin_accountgroup.english_value %></td>
+      <td><%=h user.username %></td>
+      <td><%=h user.human_is_active %></td>
+      <td><%=h user.last_login %></td>
+      <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_user_path(user) %></td>
+      <td><%= link_to 'Destroy', accountadmin_users_path, :confirm => 'Are you sure?' %></td>
+    </tr>
+  <% end %>
+  </table>
+<% else %>
+  Found no users in this access group.
+<% end %>
+<br/>

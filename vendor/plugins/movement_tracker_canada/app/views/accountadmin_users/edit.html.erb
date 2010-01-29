@@ -1,6 +1,6 @@
 <h1>Editing User</h1>
 <br/>
-<% form_for(@user) do |f| %>
+<% form_for(@user, :url => accountadmin_user_path(@user), :action => 'update') do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -9,7 +9,7 @@
   </p>
   <p>
     <%= f.label :accountgroup_id %><br />
-    <%= f.text_field :accountgroup_id %>
+    <%= f.collection_select :accountgroup_id, AccountadminAccountgroup.all, :id, :english_value %>
   </p>
   <p>
     <%= f.label :username %><br />
@@ -17,11 +17,11 @@
   </p>
   <p>
     <%= f.label :language_id %><br />
-    <%= f.text_field :language_id %>
+    <%= f.collection_select :language_id, AccountadminLanguage.all, :id, :english_value %>
   </p>
   <p>
-    <%= f.label :viewer_isActive %><br />
-    <%= f.check_box :viewer_isActive %>
+    <%= f.label :is_active %><br />
+    <%= f.check_box :is_active %>
   </p>
   <p>
     <%= f.label :last_login %><br />
@@ -54,6 +54,14 @@
   <p>
     <%= f.submit 'Update' %>
   </p>
+  <%#*<p>%>
+  <%#*<fieldset>%>
+    <%#*<legend>Access groups</legend>%>
+    <%# @access_groups.each do |access_group| %>
+      <%#= f.checkbox(access_group[:name], access_group[:value], access_group[:checked]) %>
+    <%# end %>
+  <%#*</fieldset>%>
+  <%#*</p>%>
 <% end %>
 
 <%= link_to 'Show', accountadmin_user_path(@user) %> |

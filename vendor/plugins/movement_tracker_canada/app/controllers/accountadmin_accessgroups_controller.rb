@@ -18,6 +18,8 @@ class AccountadminAccessgroupsController < ApplicationController
   def show
     @accountadmin_accessgroup = AccountadminAccessgroup.find(params[:id])
 
+    @users = User.all(:joins => :accountadmin_vieweraccessgroups, :conditions => ["#{AccountadminVieweraccessgroup.table_name}.#{:accessgroup_id} = ?", @accountadmin_accessgroup.id])
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @accountadmin_accessgroup }

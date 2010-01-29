@@ -5,7 +5,7 @@
 
 <p>
   <b>Account group:</b>
-  <%=h @user.accountgroup_id %>
+  <%=h @user.accountadmin_accountgroup.english_value %>
 </p>
 
 <p>
@@ -15,12 +15,12 @@
 
 <p>
   <b>Language:</b>
-  <%=h @user.language_id %>
+  <%=h @user.accountadmin_language.english_value %>
 </p>
 
 <p>
   <b>Is active:</b>
-  <%=h @user.viewer_isActive %>
+  <%=h @user.human_is_active %>
 </p>
 
 <p>

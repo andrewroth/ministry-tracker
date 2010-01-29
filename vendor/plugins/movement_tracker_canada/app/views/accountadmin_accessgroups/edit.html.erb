@@ -4,7 +4,7 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :accesscategory_id %><br />
+    <%= f.label :accesscategory_id, "Access category" %><br />
     <%= f.collection_select :accesscategory_id, AccountadminAccesscategory.all, :id, :english_value %>
   </p>
   <p>

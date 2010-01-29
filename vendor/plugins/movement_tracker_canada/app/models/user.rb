@@ -3,9 +3,14 @@ require_model 'user'
 class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
-  has_many :accountadmin_vieweraccessgroups
+  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroup
+  has_many :accountadmin_vieweraccessgroups, :foreign_key => :viewer_id
   has_many :accountadmin_accountadminaccesses
   belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
+  belongs_to :accountadmin_language, :foreign_key => :language_id
+
+  validates_presence_of _(:last_login)
+  validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
 
 
   def created_at=(v) end
@@ -76,5 +81,9 @@ class User < ActiveRecord::Base
     end
 
     u
+  end
+
+  def human_is_active()
+    return self.is_active == 0 ? "no" : "yes"
   end
 end

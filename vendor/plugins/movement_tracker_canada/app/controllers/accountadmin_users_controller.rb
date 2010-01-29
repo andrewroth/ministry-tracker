@@ -5,11 +5,24 @@ class AccountadminUsersController < ApplicationController
   # GET /accountadmin_users
   # GET /accountadmin_users.xml
   def index
-    @users = User.all
+    @query = params[:search][:query] if params[:search]
+
+    instantiate_users_from_query(@query)
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @users }
+    end
+  end
+
+  def search
+    @query = params[:search][:query]
+
+    instantiate_users_from_query(@query)
+
+    respond_to do |format|
+      format.js if request.xhr?
+      format.html
     end
   end
 
@@ -46,9 +59,22 @@ class AccountadminUsersController < ApplicationController
     @user = User.new(params[:user])
 
     respond_to do |format|
+      @user.guid = params[:user][:guid]
+      @user.accountgroup_id = params[:user][:accountgroup_id]
+      @user.viewer_userID = params[:user][:username]
+      @user.language_id = params[:user][:language_id]
+      @user.viewer_isActive = params[:user][:is_active]
+      @user.viewer_lastLogin = params[:user][:last_login]
+      @user.remember_token = params[:user][:remember_token]
+      @user.remember_token_expires_at = params[:user][:remember_token_expires_at]
+      @user.email_validated = params[:user][:email_validated]
+      @user.developer = params[:user][:developer]
+      @user.facebook_hash = params[:user][:facebook_hash]
+      @user.facebook_username = params[:user][:facebook_username]
+
       if @user.save
         flash[:notice] = 'User was successfully created.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to(accountadmin_user_path(@user)) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -63,9 +89,22 @@ class AccountadminUsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      @user.guid = params[:user][:guid]
+      @user.accountgroup_id = params[:user][:accountgroup_id]
+      @user.viewer_userID = params[:user][:username]
+      @user.language_id = params[:user][:language_id]
+      @user.viewer_isActive = params[:user][:is_active]
+      @user.viewer_lastLogin = params[:user][:last_login]
+      @user.remember_token = params[:user][:remember_token]
+      @user.remember_token_expires_at = params[:user][:remember_token_expires_at]
+      @user.email_validated = params[:user][:email_validated]
+      @user.developer = params[:user][:developer]
+      @user.facebook_hash = params[:user][:facebook_hash]
+      @user.facebook_username = params[:user][:facebook_username]
+      
+      if @user.save
         flash[:notice] = 'User was successfully updated.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to(accountadmin_user_path(@user)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -81,8 +120,26 @@ class AccountadminUsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      flash[:notice] = 'User was successfully deleted.'
+      format.html { redirect_to(accountadmin_users_url) }
       format.xml  { head :ok }
     end
   end
+
+
+  private
+
+  def instantiate_users_from_query(search_query)
+    @users = nil
+
+    if search_query then
+      @users = User.all(:joins => :accountadmin_accountgroup,
+                        :conditions => ["#{_(:username, :user)} like ? " +
+                                        "or #{_(:guid, :user)} like ? " +
+                                        "or #{_(:viewer_id, :user)} like ? " +
+                                        "or #{_(:english_value, :accountadmin_accountgroup)} like ?",
+                                        "%#{search_query}%", "%#{search_query}%", "%#{search_query}%", "%#{search_query}%"])
+    end
+  end
+
 end

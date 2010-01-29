@@ -1,6 +1,8 @@
 class AccountadminLanguage < ActiveRecord::Base
   load_mappings
 
+  has_many :users
+
   validates_presence_of _(:key), _(:code)
   validates_uniqueness_of _(:key), _(:code)
   validates_length_of _(:key), :maximum => 25
