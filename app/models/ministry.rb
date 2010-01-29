@@ -215,7 +215,7 @@ class Ministry < ActiveRecord::Base
       new_view.save!
       views << new_view
       view.view_columns.each do |view_column|
-        new_view.view_columns.create! :column_id => view_column.id
+        new_view.view_columns.create! :column_id => view_column.column_id
       end
     #if that doesn't exist, make a new view will have every column
     else

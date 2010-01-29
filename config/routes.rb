@@ -66,7 +66,8 @@ ActionController::Routing::Routes.draw do |map|
                                      :member => {:accept_request => :post,
                                                  :decline_request => :post,
                                                  :transfer => :post,
-                                                 :change_level => :post}
+                                                 :change_level => :post,
+                                                 :destroy_own => :delete}
 
   map.resources :groups, :member => {:find_times => :post,
                                      :compare_timetables => :any,
