@@ -272,12 +272,12 @@ class GroupsController < ApplicationController
       @campuses = get_ministry.campuses
     else
       get_person_campuses
-      @campuses = @person_campuses & get_ministry.campuses
+      @campuses = @person_campuses
     end
 
     requested_campus = Campus.find(:first, :conditions => { 
         Campus._(:id) => (params[:campus_id] || session[:group_campus_filter_id])
-      })
+      }) || @campuses.first
     @campus = @campuses.detect{ |c| c == requested_campus }
     session[:group_campus_filter_id] = @campus.try(:id)
 
@@ -289,6 +289,10 @@ class GroupsController < ApplicationController
     if @campus || @campuses.present?
       conditions += " OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     end
-    @groups = get_ministry.groups.find(:all, :conditions => conditions)
+    if is_staff_somewhere
+      @groups = get_ministry.groups.find(:all, :conditions => conditions)
+    else
+      @groups = Group.find(:all, :conditions => conditions)
+    end
   end
 end

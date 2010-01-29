@@ -4,6 +4,13 @@
     <% gis.each do |gi| -%>
       <% group = gi.group -%>
       <li id="group_<%= group.id %>">
+        <% if authorized?(:destroy_own, :group_involvements) %>
+          <%= link_to_remote(image_tag('delete.png'), :url => destroy_own_group_involvement_url(gi.id),
+                           :confirm => "Are you sure you want to leave #{group.name}?",
+                           :method => :delete,
+                           :before => "$('#spinner').show()") %>
+        <% end %>
+
         <%= link_to group.name, group_url(group) %> (<%= gi.level.capitalize -%>)
       </li>
     <% end -%>
