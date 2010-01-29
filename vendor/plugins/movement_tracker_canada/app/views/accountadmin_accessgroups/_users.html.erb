@@ -1,5 +1,5 @@
 <hr></hr><br/>
-<% if @users and @users.size > 0 %>
+<% if @users and @users.size > 0 and @users.size < User::MAX_SEARCH_RESULTS %>
   <p>Found <b><%= @users.size %></b> users in this access group:</p>
   <table>
     <tr>
@@ -21,6 +21,8 @@
     </tr>
   <% end %>
   </table>
+<% elsif @users and @users.size >= User::MAX_SEARCH_RESULTS %>
+  There are too many users in this access group (over <b><%= User::MAX_SEARCH_RESULTS %></b>).
 <% else %>
   Found no users in this access group.
 <% end %>

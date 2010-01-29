@@ -7,7 +7,7 @@ class AccountadminUsersController < ApplicationController
   def index
     @query = params[:search][:query] if params[:search]
 
-    instantiate_users_from_query(@query)
+    @users = get_users_from_query(@query)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -18,7 +18,7 @@ class AccountadminUsersController < ApplicationController
   def search
     @query = params[:search][:query]
 
-    instantiate_users_from_query(@query)
+    @users = get_users_from_query(@query)
 
     respond_to do |format|
       format.js if request.xhr?
@@ -129,17 +129,20 @@ class AccountadminUsersController < ApplicationController
 
   private
 
-  def instantiate_users_from_query(search_query)
-    @users = nil
+  def get_users_from_query(search_query)
+    users = nil
 
     if search_query then
-      @users = User.all(:joins => :accountadmin_accountgroup,
-                        :conditions => ["#{_(:username, :user)} like ? " +
-                                        "or #{_(:guid, :user)} like ? " +
-                                        "or #{_(:viewer_id, :user)} like ? " +
-                                        "or #{_(:english_value, :accountadmin_accountgroup)} like ?",
-                                        "%#{search_query}%", "%#{search_query}%", "%#{search_query}%", "%#{search_query}%"])
+      users = User.all(:joins => :accountadmin_accountgroup,
+                       :limit => User::MAX_SEARCH_RESULTS,
+                       :conditions => ["#{_(:username, :user)} like ? " +
+                                       "or #{_(:guid, :user)} like ? " +
+                                       "or #{_(:viewer_id, :user)} like ? " +
+                                       "or #{_(:english_value, :accountadmin_accountgroup)} like ? ",
+                                       "%#{search_query}%", "%#{search_query}%", "%#{search_query}%", "%#{search_query}%"])
     end
+
+    users
   end
 
 end

@@ -1,7 +1,7 @@
 <br/>
 <hr></hr>
 <br/>
-<% if @users and @query and @users.size > 0 %>
+<% if @users and @query and @users.size > 0 and @users.size < User::MAX_SEARCH_RESULTS %>
   Found <b><%= @users.size %></b> users for <b>'<%=h @query %>'</b>:
   <br/>
   <br/>
@@ -25,6 +25,8 @@
     </tr>
   <% end %>
   </table>
+<% elsif @users and @users.size >= User::MAX_SEARCH_RESULTS %>
+  Your search returned too many users (over <b><%= User::MAX_SEARCH_RESULTS %></b>).
 <% elsif @query %>
   Your search <b>'<%=h @query %>'</b> did not match any users.
 <% else %>

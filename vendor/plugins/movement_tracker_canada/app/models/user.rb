@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   validates_presence_of _(:last_login)
   validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
 
+  MAX_SEARCH_RESULTS = 1000
+
 
   def created_at=(v) end
 
