@@ -1,14 +1,9 @@
-#require 'ruby-debug'
-
 class AddEnglishValueToAccountadmin < ActiveRecord::Migration
 
-  #MODELS = [AccountadminAccesscategory, AccountadminAccessgroup, AccountadminAccountgroup, AccountadminLanguage]
-  MODELS = [AccountadminAccountgroup]
+  MODELS = [AccountadminAccesscategory, AccountadminAccessgroup, AccountadminAccountgroup, AccountadminLanguage]
 
   def self.up
 
-#    debugger
-    
     MODELS.each do |model|
       add_column model.table_name, :english_value, :text
       model.reset_column_information
