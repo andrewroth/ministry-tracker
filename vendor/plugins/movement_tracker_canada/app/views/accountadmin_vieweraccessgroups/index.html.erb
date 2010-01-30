@@ -1,0 +1,36 @@
+<h1>Assigning Access Groups</h1>
+<br/>
+<p><b><%= @user.username %></b></p>
+<br/>
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Access group</th>
+  </tr>
+  <tr><td><br/></td></tr>
+
+  <% @accountadmin_accesscategories.each do |accesscategory| %>
+    <tr>
+      <td><%= accesscategory.english_value %></td>
+      <td>
+      <% @accountadmin_accessgroups.each do |accessgroup| %>
+        <% if accessgroup.accesscategory_id == accesscategory.id %>
+          
+          <%= check_box_tag accessgroup.id, "", @accessgroup_checked[accessgroup.id]  %>
+          <%= observe_field accessgroup.id, :url => {:action => 'change', :accessgroup_id => accessgroup.id, :user_id => @user.id}, :before => "$('#spinner#{accessgroup.id}').show()", :complete => "$('#spinner#{accessgroup.id}').hide()" %>
+
+          <%= accessgroup.english_value %>
+          <%= spinner(accessgroup.id) %>
+          <br/>
+        <% end %>
+      <% end %>
+      </td>
+    </tr>
+    <tr><td><br/></td></tr>
+  <% end %>
+
+</table>
+
+<br />
+
+<%= link_to 'Show', accountadmin_user_path(@user) %> | <%= link_to 'Back', accountadmin_users_path %>

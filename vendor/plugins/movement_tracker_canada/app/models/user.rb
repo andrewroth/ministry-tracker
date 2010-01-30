@@ -3,8 +3,8 @@ require_model 'user'
 class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
-  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroup
-  has_many :accountadmin_vieweraccessgroups, :foreign_key => :viewer_id
+  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroup, :class_name => 'AccountadminAccessgroup'
+  has_many :accountadmin_vieweraccessgroups, :foreign_key => :viewer_id, :class_name => 'AccountadminVieweraccessgroup'
   has_many :accountadmin_accountadminaccesses
   belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
   belongs_to :accountadmin_language, :foreign_key => :language_id
@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates_presence_of _(:last_login)
   validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
 
-  MAX_SEARCH_RESULTS = 1000
+  MAX_SEARCH_RESULTS = 100
 
 
   def created_at=(v) end

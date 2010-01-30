@@ -9,6 +9,7 @@
     <tr>
       <th>Account group</th>
       <th>User name</th>
+      <th></th>
       <th>Is active</th>
       <th>Last login</th>
     </tr>
@@ -17,6 +18,7 @@
     <tr>
       <td><%=h user.accountadmin_accountgroup.english_value %></td>
       <td><%=h user.username %></td>
+      <td><%= link_to 'Access groups', accountadmin_user_accountadmin_vieweraccessgroups_url(user) %></td>
       <td><%=h user.human_is_active %></td>
       <td><%=h user.last_login %></td>
       <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
