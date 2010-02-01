@@ -65,12 +65,11 @@
   <th>Valid from</th>
   <td class="date">
     <%=
-    start_year = Date.today.year - 5
-    end_year = start_year + 5
-    date_select :"#{prefix}_address", :start_date, {
+    date_select :"#{prefix}_address", :start_date_localised, {
       :include_blank => true,
       :start_year => start_year,
-      :end_year => end_year }
+      :end_year => end_year,
+      :ifFormat => (I18n.t 'date.formats.default')};
     %>
   </td>
 </tr>
@@ -80,10 +79,11 @@
     <%=
     start_year = Date.today.year - 5
     end_year = start_year + 5
-    date_select :"#{prefix}_address", :end_date, {
+    date_select :"#{prefix}_address", :end_date_localised, {
       :include_blank => true,
       :start_year => start_year,
-      :end_year => end_year }
+      :end_year => end_year,
+      :ifFormat => (I18n.t 'date.formats.default')};
     %>
   </td>
 </tr>

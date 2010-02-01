@@ -38,4 +38,29 @@ class Address < ActiveRecord::Base
       save!
     end
   end
+  
+  # i18n format
+  def start_date_localised
+    self.start_date
+  end
+  
+  def start_date_localised=(value)
+    if value.empty?
+        self.start_date = value
+    else
+        self.start_date = Date.strptime(value, (I18n.t 'date.formats.default'))
+    end
+  end
+  
+  def end_date_localised
+    self.end_date
+  end
+  
+  def end_date_localised=(value)
+    if value.empty?
+        self.end_date = value
+    else
+        self.end_date = Date.strptime(value, (I18n.t 'date.formats.default'))
+    end
+  end
 end
