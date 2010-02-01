@@ -34,7 +34,9 @@ class AccountadminVieweraccessgroupsController < ApplicationController
     @join = @accessgroup.accountadmin_vieweraccessgroups.find(:first, :conditions => {:viewer_id => @user.id})
 
     if @join then
-      if !@join.destroy then
+      if @join.destroy then
+        render(:text => "success")
+      else
         flash[:notice] = 'OOPS! Could not remove the access group!'
         render(:update) { |page| page.redirect_to accountadmin_user_accountadmin_vieweraccessgroups_url(@user)}
       end
@@ -43,7 +45,9 @@ class AccountadminVieweraccessgroupsController < ApplicationController
       @join.viewer_id = params[:user_id]
       @join.accessgroup_id = params[:accessgroup_id]
 
-      if !@join.save then
+      if @join.save then
+        render(:text => "success")
+      else
         flash[:notice] = 'OOPS! Could not add the access group!'
         render(:update) { |page| page.redirect_to accountadmin_user_accountadmin_vieweraccessgroups_url(@user)}
       end
