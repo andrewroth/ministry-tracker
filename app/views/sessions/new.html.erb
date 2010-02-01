@@ -1,5 +1,5 @@
 <%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
-<%- if Cmt::CONFIG[:gcx_greenscreen] -%>
+<%- if Cmt::CONFIG[:gcx_greenscreen_from_link] -%>
   <%- unless show_form %><br /><%- end -%>
   <div class='login_sector' style='text-align: center'>
     <br/>

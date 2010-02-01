@@ -64,7 +64,8 @@ class CampusInvolvementsController < ApplicationController
 
   def update_staff_campus_involvement
     record_history = @campus_involvement.school_year_id != params[:school_year_id]
-    @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
+    @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id],
+      :campus_id => params[:campus_involvement][:campus_id]
   end
 
   # record the mi history as well
@@ -87,13 +88,16 @@ class CampusInvolvementsController < ApplicationController
     # record history
     record_history = !@campus_involvement.new_record? && 
       (@campus_involvement.school_year_id.to_s != params[:campus_involvement][:school_year_id] || 
-      @campus_ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id])
+      @campus_ministry_involvement.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id] || 
+      @campus_involvement.campus_id.to_s != params[:campus_involvement][:campus_id])
     if record_history
       @history = @campus_involvement.new_student_history
       @history.ministry_role_id = @campus_ministry_involvement.ministry_role_id
     end
     # update the records
-    @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
+    @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id],
+      :campus_id => params[:campus_involvement][:campus_id]
+
     if ministry_role_being_updated
       @campus_ministry_involvement.ministry_role = requested_role
       @campus_ministry_involvement.save!

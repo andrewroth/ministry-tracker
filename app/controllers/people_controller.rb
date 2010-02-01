@@ -481,6 +481,9 @@ class PeopleController < ApplicationController
       @campus_involvement.find_or_create_ministry_involvement
     end
 
+    # assume they are not staff at all
+    @is_staff_somewhere ||= {}
+
     setup_campuses
   end
 
