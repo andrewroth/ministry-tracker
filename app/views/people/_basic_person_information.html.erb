@@ -17,10 +17,11 @@
 			<%=
 				start_year = Date.today.year
   	        	end_year = start_year - 100
-    	      	f.date_select :birth_date, {
+    	      	f.date_select :birth_date_localised, {
     	        	:include_blank => true,
     	        	:start_year => start_year,
-    	        	:end_year => end_year }
+    	        	:end_year => end_year,
+    	        	:ifFormat => (I18n.t 'date.formats.default')};
           	%>
 		</td>
 	</tr>
