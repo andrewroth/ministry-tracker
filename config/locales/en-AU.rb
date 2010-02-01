@@ -1,7 +1,6 @@
 {
   :'en-AU' => {
     # General stuff
-    :app_name => 'Pulse',
     :staff => 'missionary',
     :staff_member => 'missionary',
     :staff_member_plural => 'missionaries',
@@ -10,10 +9,6 @@
     :staff_plural => 'missionaries',
     :Staff => 'Missionary',
     :Staff_plural => 'Missionaries',
-    :zip => 'post code',
-    :zip_plural => 'post codes',
-    :Zip => 'Post Code',
-    :Zip_plural => 'Post Codes',
     # Date and Time Formats
     :date => {
       :formats => {
@@ -28,7 +23,7 @@
       :abbr_day_names => Date::ABBR_DAYNAMES,
       :month_names => Date::MONTHNAMES,
       :abbr_month_names => Date::ABBR_MONTHNAMES,
-      :order => [:day, :month, :year]
+      :order => [:year, :month, :day]
     },
     :time => {
       :day_names => Date::DAYNAMES,

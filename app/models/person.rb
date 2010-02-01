@@ -425,20 +425,6 @@ end
     end
   end
 
-
-  # i18n format
-  def birth_date_localised
-    self.birth_date
-  end
-  
-  def birth_date_localised=(value)
-    if value.empty?
-        self.birth_date = value
-    else
-        self.birth_date = Date.strptime(value, (I18n.t 'date.formats.default'))
-    end
-  end
-  
   protected
   def update_stamp
     self.updated_at = Time.now
