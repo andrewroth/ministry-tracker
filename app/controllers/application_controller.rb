@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
 		:get_people_responsible_for
 		
-	case
+  case
   when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen]
     before_filter CASClient::Frameworks::Rails::Filter
   when Cmt::CONFIG[:gcx_direct_logins]
