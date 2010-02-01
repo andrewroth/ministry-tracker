@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :accountadmin_users
+  map.resources :accountadmin_users do |accountadmin_user|
+    accountadmin_user.resources :accountadmin_vieweraccessgroups
+  end
 
   map.resources :accountadmin_accountadminaccesses
 
