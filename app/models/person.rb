@@ -425,17 +425,12 @@ end
     end
   end
 
-
   # i18n format
-  def birth_date_localised
-    self.birth_date
-  end
-  
-  def birth_date_localised=(value)
-    if value.empty?
-        self.birth_date = value
+  def birth_date=(value)
+    if value.is_a?(String) && !value.blank?
+      self[:birth_date] = Date.strptime(value, (I18n.t 'date.formats.default'))
     else
-        self.birth_date = Date.strptime(value, (I18n.t 'date.formats.default'))
+      self[:birth_date] = value
     end
   end
   
