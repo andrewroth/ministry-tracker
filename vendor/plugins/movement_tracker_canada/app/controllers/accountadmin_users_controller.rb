@@ -119,8 +119,9 @@ class AccountadminUsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
+
     respond_to do |format|
-      flash[:notice] = 'User was successfully deleted.'
+      flash[:notice] = @user.errors.empty? ? 'User was successfully deleted.' : "WARNING: Couldn't delete user because it's " + @user.errors.first.to_s
       format.html { redirect_to(accountadmin_users_url) }
       format.xml  { head :ok }
     end

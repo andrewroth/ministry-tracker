@@ -80,6 +80,8 @@ class AccountadminLanguagesController < ApplicationController
     @accountadmin_language = AccountadminLanguage.find(params[:id])
     @accountadmin_language.destroy
 
+    flash[:notice] = "WARNING: Couldn't delete language because it's " + @accountadmin_language.errors.first.to_s unless @accountadmin_language.errors.empty?
+
     respond_to do |format|
       format.html { redirect_to(accountadmin_languages_url) }
       format.xml  { head :ok }

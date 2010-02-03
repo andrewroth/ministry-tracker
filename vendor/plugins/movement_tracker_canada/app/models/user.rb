@@ -3,14 +3,17 @@ require_model 'user'
 class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
-  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroup, :class_name => 'AccountadminAccessgroup'
+  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroups, :class_name => 'AccountadminAccessgroup'
   has_many :accountadmin_vieweraccessgroups, :foreign_key => :viewer_id, :class_name => 'AccountadminVieweraccessgroup'
-  has_many :accountadmin_accountadminaccesses
+  has_many :accountadmin_accountadminaccesses, :foreign_key => :viewer_id
   belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
   belongs_to :accountadmin_language, :foreign_key => :language_id
 
   validates_presence_of _(:last_login)
   validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
+
+  validates_no_association_data :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
+  
 
   MAX_SEARCH_RESULTS = 100
 
