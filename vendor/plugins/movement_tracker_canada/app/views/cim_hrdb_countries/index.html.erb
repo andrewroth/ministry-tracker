@@ -1,0 +1,22 @@
+<h1>Listing countries</h1>
+<br/>
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Short description</th>
+  </tr>
+
+<% @countries.each do |country| %>
+  <tr>
+    <td><%=h country.desc %></td>
+    <td><%=h country.short_desc %></td>
+    <td><%= link_to 'Show', cim_hrdb_country_path(country) %></td>
+    <td><%= link_to 'Edit', edit_cim_hrdb_country_path(country) %></td>
+    <td><%= link_to 'Destroy', cim_hrdb_country_path(country), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New country', new_cim_hrdb_country_path %>

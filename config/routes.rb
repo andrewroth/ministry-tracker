@@ -1,17 +1,32 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.resources :year_in_schools
+
+  map.resources :titles
+
+  map.resources :regions
+
+  map.resources :states
+
+  map.resources :genders
+
+  map.resources :cim_hrdb_countries
+
+  map.resources :cim_hrdb_ministries
+
+  map.resources :cim_hrdb_campuses
+
+  map.resources :cim_hrdb_states
+
+  map.resources :assignmentstatuses
+
   map.resources :accountadmin_users do |accountadmin_user|
     accountadmin_user.resources :accountadmin_vieweraccessgroups
   end
-
   map.resources :accountadmin_accountadminaccesses
-
   map.resources :accountadmin_languages
-
   map.resources :accountadmin_accountgroups
-
   map.resources :accountadmin_accessgroups
-
   map.resources :accountadmin_accesscategories
 
   map.resources :involvement_histories

@@ -1,0 +1,21 @@
+<h1>Listing Assignment Statuses</h1>
+<br/>
+
+<table>
+  <tr>
+    <th>Description</th>
+  </tr>
+
+<% @assignmentstatuses.each do |assignmentstatus| %>
+  <tr>
+    <td><%=h assignmentstatus.assignmentstatus_desc %></td>
+    <td><%= link_to 'Show', assignmentstatus %></td>
+    <td><%= link_to 'Edit', edit_assignmentstatus_path(assignmentstatus) %></td>
+    <td><%= link_to 'Destroy', assignmentstatus, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New assignment status', new_assignmentstatus_path %>

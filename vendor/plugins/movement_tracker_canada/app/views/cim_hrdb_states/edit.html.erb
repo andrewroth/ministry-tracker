@@ -1,0 +1,25 @@
+<h1>Editing Province</h1>
+<br/>
+<% form_for(@state, :url => cim_hrdb_state_path(@state), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name, "Description" %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :abbrev, "Short description" %><br />
+    <%= f.text_field :abbrev %>
+  </p>
+  <p>
+    <%= f.label :country_id, "Country" %><br />
+    <%= f.collection_select :country_id, Country.all, :id, :name %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Show', cim_hrdb_state_path(@state) %> |
+<%= link_to 'Back', cim_hrdb_states_path %>

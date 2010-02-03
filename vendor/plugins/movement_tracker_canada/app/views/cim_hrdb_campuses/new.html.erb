@@ -1,0 +1,39 @@
+<h1>New Campus</h1>
+<br/>
+<% form_for(@campus, :url => cim_hrdb_campuses_path, :action => 'create') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :campus_desc, "Description" %><br />
+    <%= f.text_field :campus_desc %>
+  </p>
+  <p>
+    <%= f.label :campus_shortDesc, "Short description" %><br />
+    <%= f.text_field :campus_shortDesc %>
+  </p>
+  <p>
+    <%= f.label :region_id, "Region" %><br />
+    <%= f.collection_select :region_id, Region.all, :id, :desc %>
+  </p>
+  <p>
+    <%= f.label :campus_website, "Website" %><br />
+    <%= f.text_field :campus_website %>
+  </p>
+  <p>
+    <%= f.label :campus_facebookgroup, "Facebook group" %><br />
+    <%= f.text_field :campus_facebookgroup %>
+  </p>
+  <p>
+    <%= f.label :campus_gcxnamespace, "GCX namespace" %><br />
+    <%= f.text_field :campus_gcxnamespace %>
+  </p>
+  <p>
+    <%= f.label :state_id, "Province" %><br />
+    <%= f.collection_select :state_id, State.all, :id, :name, :include_blank => "" %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', cim_hrdb_campuses_path %>

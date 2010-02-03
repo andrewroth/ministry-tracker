@@ -1,0 +1,21 @@
+<h1>Editing country</h1>
+<br/>
+<% form_for(@country, :url => cim_hrdb_country_path(@country), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :desc, "Description" %><br />
+    <%= f.text_field :desc %>
+  </p>
+  <p>
+    <%= f.label :short_desc, "Short description" %><br />
+    <%= f.text_field :short_desc %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Show', cim_hrdb_country_path(@country) %> |
+<%= link_to 'Back', cim_hrdb_countries_path %>

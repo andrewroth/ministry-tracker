@@ -1,0 +1,15 @@
+<h1>Editing Year in School</h1>
+<br/>
+<% form_for(@year_in_school) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :desc, "Description" %><br />
+    <%= f.text_field :desc %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Show', @year_in_school %> |
+<%= link_to 'Back', year_in_schools_path %>

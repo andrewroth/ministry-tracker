@@ -1,0 +1,24 @@
+<h1>Listing Provinces</h1>
+<br/>
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Short description</th>
+    <th>Country</th>
+  </tr>
+
+<% @states.each do |state| %>
+  <tr>
+    <td><%=h state.name %></td>
+    <td><%=h state.abbrev %></td>
+    <td><%=h state.country.name %></td>
+    <td><%= link_to 'Show', cim_hrdb_state_path(state) %></td>
+    <td><%= link_to 'Edit', edit_cim_hrdb_state_path(state) %></td>
+    <td><%= link_to 'Destroy', cim_hrdb_state_path(state), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New province', new_cim_hrdb_state_path %>

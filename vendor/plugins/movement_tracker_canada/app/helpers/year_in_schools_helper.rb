@@ -1,0 +1,2 @@
+module YearInSchoolsHelper
+end

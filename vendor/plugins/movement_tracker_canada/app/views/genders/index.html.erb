@@ -1,0 +1,20 @@
+<h1>Listing Genders</h1>
+<br/>
+<table>
+  <tr>
+    <th>Description</th>
+  </tr>
+
+<% @genders.each do |gender| %>
+  <tr>
+    <td><%=h gender.desc %></td>
+    <td><%= link_to 'Show', gender %></td>
+    <td><%= link_to 'Edit', edit_gender_path(gender) %></td>
+    <td><%= link_to 'Destroy', gender, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New gender', new_gender_path %>
