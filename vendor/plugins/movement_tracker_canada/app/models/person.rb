@@ -1,15 +1,17 @@
 require_model 'person'
 
 class Person < ActiveRecord::Base
+  unloadable
+
   CIM_MALE_GENDER_ID = 1
   CIM_FEMALE_GENDER_ID = 2
   US_MALE_GENDER_ID = 1
   US_FEMALE_GENDER_ID = 0
 
+  MAX_SEARCH_RESULTS = 100
+
 #  doesnt_implement_attributes :major => '', :minor => '', :url => '', :staff_notes => '', :updated_at => '', :updated_by => ''
 
-  has_many :person_years, :foreign_key => _(:id, :year_in_school)
-  has_many :year_in_schools, :through => :person_years
   has_many :cim_hrdb_admins, :class_name => 'CimHrdbAdmin'
 
   has_one :access
@@ -22,7 +24,8 @@ class Person < ActiveRecord::Base
   belongs_to :gender_, :class_name => "Gender", :foreign_key => :gender_id
 
   has_one :cim_hrdb_staff
-  has_one :cim_hrdb_person_year
+  has_many :cim_hrdb_person_years
+  has_many :cim_hrdb_school_years, :through => :cim_hrdb_person_years, :source => :school_year
 
   has_one :person_extra_ref, :class_name => 'PersonExtra'
 
@@ -62,14 +65,6 @@ class Person < ActiveRecord::Base
   end
 
   def user=(val)
-    throw "not implemented"
-  end
-
-  def year_in_school
-    if year_in_schools.empty? then '' else year_in_schools.first.year_id end
-  end
-
-  def year_in_school=(val)
     throw "not implemented"
   end
 

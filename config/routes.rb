@@ -1,6 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :year_in_schools
+  map.resources :cim_hrdb_people do |cim_hrdb_person|
+    cim_hrdb_person.resources :cim_hrdb_assignments
+  end
+  map.resources :cim_hrdb_person_years
+  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_ministries
+  map.resources :cim_hrdb_campuses
+  map.resources :cim_hrdb_states
+  map.resources :cim_hrdb_staff
 
   map.resources :titles
 
@@ -9,14 +17,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :states
 
   map.resources :genders
-
-  map.resources :cim_hrdb_countries
-
-  map.resources :cim_hrdb_ministries
-
-  map.resources :cim_hrdb_campuses
-
-  map.resources :cim_hrdb_states
 
   map.resources :assignmentstatuses
 

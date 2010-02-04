@@ -52,6 +52,27 @@
       <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_users" %>>
       <%= link_to 'Users', accountadmin_users_path %></li>
   	</ul>
+
+    <br/><br/>
+    <h3>HRDB</h3>
+    <ul class="right-menu-list">
+      <li<%= ' class="highlighted"' if params[:controller] == "assignmentstatuses" %>>
+      <%= link_to 'Assignment Statuses', assignmentstatuses_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_campuses" %>>
+      <%= link_to 'Campuses', cim_hrdb_campuses_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_countries" %>>
+      <%= link_to 'Countries', cim_hrdb_countries_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "genders" %>>
+      <%= link_to 'Genders', genders_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_people" %>>
+      <%= link_to 'People', cim_hrdb_people_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_states" %>>
+      <%= link_to 'Provinces', cim_hrdb_states_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "regions" %>>
+      <%= link_to 'Regions', regions_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "titles" %>>
+      <%= link_to 'Titles', titles_path %></li>
+  	</ul>
     <%- end -%>
 
 

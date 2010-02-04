@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, person_year, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label
 
 tables:
   user: accountadmin_viewer
@@ -20,7 +20,6 @@ tables:
   accountadmin_vieweraccessgroup: accountadmin_vieweraccessgroup
   access: cim_hrdb_access
   campus: cim_hrdb_campus
-  person_year: cim_hrdb_person_year
   school_year: cim_hrdb_year_in_school
   year_in_school: cim_hrdb_year_in_school
   assignment: cim_hrdb_assignment
@@ -48,8 +47,6 @@ school_year:
 year_in_school:
   id: year_id
   desc: year_desc
-person_year:
-  id: year_id
 assignment:
   id: assignment_id
 assignmentstatus:
@@ -133,7 +130,7 @@ cim_hrdb_priv:
 cim_hrdb_staff:
   id: staff_id
 cim_hrdb_person_year:
-  id: year_desc
+  id: personyear_id
 
 accountadmin_accessgroup:
   id: accessgroup_id
