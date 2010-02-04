@@ -31,6 +31,10 @@ class Person < ActiveRecord::Base
 
   belongs_to :title, :foreign_key => :title_id
 
+  belongs_to :state, :foreign_key => :province_id
+
+  belongs_to :country, :foreign_key => :country_id
+
   def created_at=(v) end # noop since it would have set the id to the timestamp
 
   def person_extra() 

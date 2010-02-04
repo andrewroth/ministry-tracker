@@ -7,8 +7,9 @@ class Country < ActiveRecord::Base
   set_primary_key "country_id"
   has_many :states, :foreign_key => :country_id
   has_many :regions, :foreign_key => :country_id
+  has_many :people
 
-  validates_no_association_data :states, :regions
+  validates_no_association_data :states, :regions, :people
 
   def country() country_desc end
   def is_closed() 
