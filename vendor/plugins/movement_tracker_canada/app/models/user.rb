@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates_presence_of _(:last_login)
   validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
 
-  validates_no_association_data :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
+  validates_no_association_data :access, :persons, :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
   
 
   MAX_SEARCH_RESULTS = 100

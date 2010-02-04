@@ -80,6 +80,11 @@ class TitlesController < ApplicationController
     @title = Title.find(params[:id])
     @title.destroy
 
+    unless @title.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete title because:"
+      @title.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(titles_url) }
       format.xml  { head :ok }

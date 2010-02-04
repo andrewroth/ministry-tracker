@@ -80,6 +80,11 @@ class GendersController < ApplicationController
     @gender = Gender.find(params[:id])
     @gender.destroy
 
+    unless @gender.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete gender because:"
+      @gender.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(genders_url) }
       format.xml  { head :ok }

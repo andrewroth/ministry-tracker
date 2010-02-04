@@ -29,6 +29,8 @@ class Person < ActiveRecord::Base
 
   has_one :person_extra_ref, :class_name => 'PersonExtra'
 
+  belongs_to :title, :foreign_key => :title_id
+
   def created_at=(v) end # noop since it would have set the id to the timestamp
 
   def person_extra() 

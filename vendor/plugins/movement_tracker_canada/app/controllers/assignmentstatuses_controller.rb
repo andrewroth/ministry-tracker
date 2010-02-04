@@ -80,6 +80,11 @@ class AssignmentstatusesController < ApplicationController
     @assignmentstatus = Assignmentstatus.find(params[:id])
     @assignmentstatus.destroy
 
+    unless @assignmentstatus.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete assignment status because:"
+      @assignmentstatus.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(assignmentstatuses_url) }
       format.xml  { head :ok }

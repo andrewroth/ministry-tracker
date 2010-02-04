@@ -80,6 +80,11 @@ class CimHrdbStatesController < ApplicationController
     @state = State.find(params[:id])
     @state.destroy
 
+    unless @state.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete province because:"
+      @state.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(cim_hrdb_states_url) }
       format.xml  { head :ok }

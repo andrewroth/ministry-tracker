@@ -80,6 +80,11 @@ class RegionsController < ApplicationController
     @region = Region.find(params[:id])
     @region.destroy
 
+    unless @region.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete region status because:"
+      @region.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(regions_url) }
       format.xml  { head :ok }

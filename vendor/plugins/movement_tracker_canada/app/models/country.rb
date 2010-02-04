@@ -8,6 +8,8 @@ class Country < ActiveRecord::Base
   has_many :states, :foreign_key => :country_id
   has_many :regions, :foreign_key => :country_id
 
+  validates_no_association_data :states, :regions
+
   def country() country_desc end
   def is_closed() 
     nil 

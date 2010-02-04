@@ -80,6 +80,11 @@ class CimHrdbCountriesController < ApplicationController
     @country = Country.find(params[:id])
     @country.destroy
 
+    unless @country.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete country because:"
+      @country.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(cim_hrdb_countries_url) }
       format.xml  { head :ok }

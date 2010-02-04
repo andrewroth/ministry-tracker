@@ -6,4 +6,6 @@ class Campus < ActiveRecord::Base
 
   belongs_to :region, :foreign_key => :region_id
   belongs_to :state, :foreign_key => _(:state_id)
+
+  validates_no_association_data :people, :campus_involvements, :groups, :ministry_campuses, :ministries, :dorms
 end

@@ -80,6 +80,11 @@ class CimHrdbCampusesController < ApplicationController
     @campus = Campus.find(params[:id])
     @campus.destroy
 
+    unless @campus.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete campus because:"
+      @campus.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
     respond_to do |format|
       format.html { redirect_to(cim_hrdb_campuses_url) }
       format.xml  { head :ok }
