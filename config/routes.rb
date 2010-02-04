@@ -2,8 +2,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :cim_hrdb_people do |cim_hrdb_person|
     cim_hrdb_person.resources :cim_hrdb_assignments
+    cim_hrdb_person.resources :cim_hrdb_person_years
   end
-  map.resources :cim_hrdb_person_years
   map.resources :cim_hrdb_countries
   map.resources :cim_hrdb_ministries
   map.resources :cim_hrdb_campuses

@@ -1,0 +1,16 @@
+<h1>People</h1>
+<br/>
+<% form_remote_tag :url => {:action => 'search'}, :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do %>
+  <p>Search for people by entering part of their name or ID.</p>
+  <p>
+    <%= text_field :search, :query %>
+    <%= submit_tag 'Search' %>
+    <%= spinner('p') %>
+  </p>
+<% end %>
+
+<div id="people">
+  <% if @people %>
+    <%= render(:partial => "people" , :object => @people) %>
+  <% end %>
+</div>

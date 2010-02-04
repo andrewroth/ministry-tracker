@@ -1,0 +1,1 @@
+page.replace_html("people", :partial => "people", :object => [@people, @query])

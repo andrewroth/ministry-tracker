@@ -1,0 +1,20 @@
+<h1>Editing Assignment</h1>
+<br/>
+<% form_for(@cim_hrdb_assignment, :url => cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, @cim_hrdb_assignment), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :campus_id %><br />
+    <%= f.collection_select :campus_id, Campus.all, :id, :desc %>
+  </p>
+  <p>
+    <%= f.label :assignmentstatus_id, "Status" %><br />
+    <%= f.collection_select :assignmentstatus_id, Assignmentstatus.all, :id, :desc %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', edit_cim_hrdb_person_path(@cim_hrdb_person) %>

@@ -1,0 +1,27 @@
+<hr></hr>
+<br/>
+<% if @people and @query and @people.size > 0 and @people.size < Person::MAX_SEARCH_RESULTS %>
+  Found <%= pluralize(@people.size, "person") %> for <b>'<%=h @query %>'</b>:
+  <br/>
+  <br/>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+
+  <% @people.each do |person| %>
+    <tr>
+      <td><%=h person.id %></td>
+      <td><%=h person.first_name + " " + person.last_name %></td>
+      <td><%= link_to 'Edit', edit_cim_hrdb_person_path(person) %></td>
+    </tr>
+  <% end %>
+  </table>
+<% elsif @people and @people.size >= Person::MAX_SEARCH_RESULTS %>
+  Your search returned too many people (over <b><%= Person::MAX_SEARCH_RESULTS %></b>).
+<% elsif @query %>
+  Your search <b>'<%=h @query %>'</b> did not match any people.
+<% else %>
+  Your search did not match any people.
+<% end %>

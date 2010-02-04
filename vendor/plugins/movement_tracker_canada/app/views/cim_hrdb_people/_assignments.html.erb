@@ -1,0 +1,23 @@
+<br/>
+<% if @cim_hrdb_assignments and @cim_hrdb_assignments.size > 0 %>
+  <table>
+    <tr>
+      <th>Campus</th>
+      <th>Status</th>
+    </tr>
+
+  <% @cim_hrdb_assignments.each do |assignment| %>
+    <tr>
+      <td><%=h assignment.campus.desc %></td>
+      <td><%=h assignment.assignmentstatus.desc %></td>
+      <td><%= link_to 'Edit', edit_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment) %></td>
+      <td><%= link_to 'Destroy', cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+<% else %>
+  <br/>This person has no assignments.<br/>
+<% end %>
+<br/>
+<%= link_to 'New assignment', new_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person) %>
+<br/>
