@@ -84,7 +84,10 @@ class AccountadminAccessgroupsController < ApplicationController
     @accountadmin_accessgroup = AccountadminAccessgroup.find(params[:id])
     @accountadmin_accessgroup.destroy
 
-    flash[:notice] = "WARNING: Couldn't delete access group because it's " + @accountadmin_accessgroup.errors.first.to_s unless @accountadmin_accessgroup.errors.empty?
+    unless @accountadmin_accessgroup.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete access group because:"
+      @accountadmin_accessgroup.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
     
     respond_to do |format|
       format.html { redirect_to(accountadmin_accessgroups_url) }

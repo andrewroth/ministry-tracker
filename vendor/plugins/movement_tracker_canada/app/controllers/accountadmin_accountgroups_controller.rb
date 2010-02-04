@@ -80,7 +80,10 @@ class AccountadminAccountgroupsController < ApplicationController
     @accountadmin_accountgroup = AccountadminAccountgroup.find(params[:id])
     @accountadmin_accountgroup.destroy
 
-    flash[:notice] = "WARNING: Couldn't delete account group because it's " + @accountadmin_accountgroup.errors.first.to_s unless @accountadmin_accountgroup.errors.empty?
+    unless @accountadmin_accountgroup.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete account group because:"
+      @accountadmin_accountgroup.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
 
     respond_to do |format|
       format.html { redirect_to(accountadmin_accountgroups_url) }

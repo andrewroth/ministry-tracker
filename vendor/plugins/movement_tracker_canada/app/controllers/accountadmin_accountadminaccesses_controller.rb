@@ -80,7 +80,10 @@ class AccountadminAccountadminaccessesController < ApplicationController
     @accountadmin_accountadminaccess = AccountadminAccountadminaccess.find(params[:id])
     @accountadmin_accountadminaccess.destroy
 
-    flash[:notice] = "WARNING: Couldn't delete account admin access because it's " + @accountadmin_accountadminaccess.errors.first.to_s unless @accountadmin_accountadminaccess.errors.empty?
+    unless @accountadmin_accountadminaccess.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete account admin access because:"
+      @accountadmin_accountadminaccess.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
 
     respond_to do |format|
       format.html { redirect_to(accountadmin_accountadminaccesses_url) }

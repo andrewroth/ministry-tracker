@@ -119,9 +119,14 @@ class AccountadminUsersController < ApplicationController
     @user = User.find(params[:id])
     @user.destroy
 
-
     respond_to do |format|
-      flash[:notice] = @user.errors.empty? ? 'User was successfully deleted.' : "WARNING: Couldn't delete user because it's " + @user.errors.first.to_s
+      if @user.errors.empty?
+        flash[:notice] = 'User was successfully deleted.'
+      else
+        flash[:notice] = "WARNING: Couldn't delete user because:"
+        @user.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+      end
+
       format.html { redirect_to(accountadmin_users_url) }
       format.xml  { head :ok }
     end
@@ -131,19 +136,17 @@ class AccountadminUsersController < ApplicationController
   private
 
   def get_users_from_query(search_query)
-    users = nil
-
     if search_query then
-      users = User.all(:joins => :accountadmin_accountgroup,
-                       :limit => User::MAX_SEARCH_RESULTS,
-                       :conditions => ["#{_(:username, :user)} like ? " +
-                                       "or #{_(:guid, :user)} like ? " +
-                                       "or #{_(:viewer_id, :user)} like ? " +
-                                       "or #{_(:english_value, :accountadmin_accountgroup)} like ? ",
-                                       "%#{search_query}%", "%#{search_query}%", "%#{search_query}%", "%#{search_query}%"])
+      User.all(:joins => :accountadmin_accountgroup,
+               :limit => User::MAX_SEARCH_RESULTS,
+               :conditions => ["#{_(:username, :user)} like ? " +
+                               "or #{_(:guid, :user)} like ? " +
+                               "or #{_(:viewer_id, :user)} like ? " +
+                               "or #{_(:english_value, :accountadmin_accountgroup)} like ? ",
+                               "%#{search_query}%", "%#{search_query}%", "%#{search_query}%", "%#{search_query}%"])
+    else
+      nil
     end
-
-    users
   end
 
 end

@@ -80,7 +80,10 @@ class AccountadminAccesscategoriesController < ApplicationController
     @accountadmin_accesscategory = AccountadminAccesscategory.find(params[:id])
     @accountadmin_accesscategory.destroy
 
-    flash[:notice] = "WARNING: Couldn't delete access category because it's " + @accountadmin_accesscategory.errors.first.to_s unless @accountadmin_accesscategory.errors.empty?
+    unless @accountadmin_accesscategory.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete access category because:"
+      @accountadmin_accesscategory.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
 
     respond_to do |format|
       format.html { redirect_to(accountadmin_accesscategories_url) }

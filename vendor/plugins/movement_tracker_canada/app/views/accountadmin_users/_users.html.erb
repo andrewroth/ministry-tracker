@@ -2,7 +2,7 @@
 <hr></hr>
 <br/>
 <% if @users and @query and @users.size > 0 and @users.size < User::MAX_SEARCH_RESULTS %>
-  Found <b><%= @users.size %></b> users for <b>'<%=h @query %>'</b>:
+  Found <%= pluralize(@users.size, "user") %> for <b>'<%=h @query %>'</b>:
   <br/>
   <br/>
   <table>
