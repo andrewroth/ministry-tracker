@@ -1,18 +1,21 @@
 <h1>Listing Genders</h1>
 <br/>
-<table>
-  <tr>
-    <th>Description</th>
-  </tr>
-
-<% @genders.each do |gender| %>
-  <tr>
-    <td><%=h gender.desc %></td>
-    <td><%= link_to 'Show', gender %></td>
-    <td><%= link_to 'Edit', edit_gender_path(gender) %></td>
-    <td><%= link_to 'Destroy', gender, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @genders.each do |gender| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= gender_path(gender) %>><%=h gender.desc %></td>
+      <td><%= link_to 'Show', gender %></td>
+      <td><%= link_to 'Edit', edit_gender_path(gender) %></td>
+      <td><%= link_to 'Destroy', gender, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br />

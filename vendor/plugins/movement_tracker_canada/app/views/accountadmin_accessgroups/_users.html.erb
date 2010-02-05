@@ -1,23 +1,26 @@
 <hr></hr><br/>
 <% if @users and @users.size > 0 and @users.size < User::MAX_SEARCH_RESULTS %>
   <p>Found <b><%= @users.size %></b> users in this access group:</p>
-  <table>
-    <tr>
-      <th>Account group</th>
-      <th>User name</th>
-      <th>Is active</th>
-      <th>Last login</th>
-    </tr>
-
-  <% @users.each do |user| %>
-    <tr>
-      <td><%=h user.accountadmin_accountgroup.english_value %></td>
-      <td><%=h user.username %></td>
-      <td><%=h user.human_is_active %></td>
-      <td><%=h user.last_login %></td>
-      <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
-    </tr>
-  <% end %>
+  <table class="directorytable">
+    <thead>
+      <tr>
+        <th>Account group</th>
+        <th>User name</th>
+        <th>Is active</th>
+        <th>Last login</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.accountadmin_accountgroup.english_value %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.username %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.human_is_active %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.last_login %></td>
+        <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
+      </tr>
+      <% end %>
+    </tbody>
   </table>
 <% elsif @users and @users.size >= User::MAX_SEARCH_RESULTS %>
   There are too many users in this access group (over <b><%= User::MAX_SEARCH_RESULTS %></b>).

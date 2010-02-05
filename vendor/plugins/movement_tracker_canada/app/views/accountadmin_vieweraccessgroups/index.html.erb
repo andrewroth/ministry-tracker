@@ -2,15 +2,16 @@
 <br/>
 <p><b><%= @user.username %></b></p>
 <br/>
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Access group</th>
-  </tr>
-  <tr><td><br/></td></tr>
-
-  <% @accountadmin_accesscategories.each do |accesscategory| %>
+<table class="directorytable">
+  <thead>
     <tr>
+      <th>Category</th>
+      <th>Access group</th>
+    </tr>
+    <tr><td><br/></td></tr>
+
+    <% @accountadmin_accesscategories.each do |accesscategory| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
       <td><%= accesscategory.english_value %></td>
       <td>
       <% @accountadmin_accessgroups.each do |accessgroup| %>
@@ -27,8 +28,9 @@
       </td>
     </tr>
     <tr><td><br/></td></tr>
-  <% end %>
+    <% end %>
 
+  </thead>
 </table>
 
 <br />

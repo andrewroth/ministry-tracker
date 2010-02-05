@@ -4,20 +4,24 @@
   Found <%= pluralize(@people.size, "person") %> for <b>'<%=h @query %>'</b>:
   <br/>
   <br/>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-    </tr>
-
-  <% @people.each do |person| %>
-    <tr>
-      <td><%=h person.id %></td>
-      <td><%=h person.first_name + " " + person.last_name %></td>
-      <td><%= link_to 'Edit', edit_cim_hrdb_person_path(person) %></td>
-    </tr>
-  <% end %>
+  <table class="directorytable">
+    <thead>
+      <tr>
+        <th>Person ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @people.each do |person| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= cim_hrdb_person_path(person) %>><%=h person.id %></td>
+        <td class="person_row" person_link=<%= cim_hrdb_person_path(person) %>><%=h person.first_name + " " + person.last_name %></td>
+        <td><%= link_to 'Edit', edit_cim_hrdb_person_path(person) %></td>
+      </tr>
+      <% end %>
+    </tbody>
   </table>
+
 <% elsif @people and @people.size >= Person::MAX_SEARCH_RESULTS %>
   Your search returned too many people (over <b><%= Person::MAX_SEARCH_RESULTS %></b>).
 <% elsif @query %>

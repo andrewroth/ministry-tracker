@@ -5,27 +5,30 @@
   Found <%= pluralize(@users.size, "user") %> for <b>'<%=h @query %>'</b>:
   <br/>
   <br/>
-  <table>
-    <tr>
-      <th>Account group</th>
-      <th>User name</th>
-      <th></th>
-      <th>Is active</th>
-      <th>Last login</th>
-    </tr>
-
-  <% @users.each do |user| %>
-    <tr>
-      <td><%=h user.accountadmin_accountgroup.english_value %></td>
-      <td><%=h user.username %></td>
-      <td><%= link_to 'Access groups', accountadmin_user_accountadmin_vieweraccessgroups_url(user) %></td>
-      <td><%=h user.human_is_active %></td>
-      <td><%=h user.last_login %></td>
-      <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
-      <td><%= link_to 'Edit', edit_accountadmin_user_path(user) %></td>
-      <td><%= link_to 'Destroy', accountadmin_user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
-  <% end %>
+  <table class="directorytable">
+    <thead>
+      <tr>
+        <th>Account group</th>
+        <th>User name</th>
+        <th></th>
+        <th>Is active</th>
+        <th>Last login</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.accountadmin_accountgroup.english_value %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.username %></td>
+        <td><%= link_to 'Access groups', accountadmin_user_accountadmin_vieweraccessgroups_url(user) %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.human_is_active %></td>
+        <td class="person_row" person_link=<%= accountadmin_user_path(user) %>><%=h user.last_login %></td>
+        <td><%= link_to 'Show', accountadmin_user_path(user) %></td>
+        <td><%= link_to 'Edit', edit_accountadmin_user_path(user) %></td>
+        <td><%= link_to 'Destroy', accountadmin_user_path(user), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+    </tbody>
   </table>
 <% elsif @users and @users.size >= User::MAX_SEARCH_RESULTS %>
   Your search returned too many users (over <b><%= User::MAX_SEARCH_RESULTS %></b>).

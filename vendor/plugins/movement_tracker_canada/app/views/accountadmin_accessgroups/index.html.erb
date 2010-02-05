@@ -1,22 +1,25 @@
 <h1>Listing Access Groups</h1>
 <br/>
-<table>
-  <tr>
-    <th>Access Category</th>
-    <th>Key</th>
-    <th>English value</th>
-  </tr>
-
-<% @accountadmin_accessgroups.each do |accountadmin_accessgroup| %>
-  <tr>
-    <td><%=h accountadmin_accessgroup.accountadmin_accesscategory.english_value %></td>
-    <td><%=h accountadmin_accessgroup.key %></td>
-    <td><%=h accountadmin_accessgroup.english_value %></td>
-    <td><%= link_to 'Show', accountadmin_accessgroup %></td>
-    <td><%= link_to 'Edit', edit_accountadmin_accessgroup_path(accountadmin_accessgroup) %></td>
-    <td><%= link_to 'Destroy', accountadmin_accessgroup, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Access Category</th>
+      <th>Key</th>
+      <th>English value</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @accountadmin_accessgroups.each do |accountadmin_accessgroup| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= accountadmin_accessgroup_path(accountadmin_accessgroup) %>><%=h accountadmin_accessgroup.accountadmin_accesscategory.english_value %></td>
+      <td class="person_row" person_link=<%= accountadmin_accessgroup_path(accountadmin_accessgroup) %>><%=h accountadmin_accessgroup.key %></td>
+      <td class="person_row" person_link=<%= accountadmin_accessgroup_path(accountadmin_accessgroup) %>><%=h accountadmin_accessgroup.english_value %></td>
+      <td><%= link_to 'Show', accountadmin_accessgroup %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_accessgroup_path(accountadmin_accessgroup) %></td>
+      <td><%= link_to 'Destroy', accountadmin_accessgroup, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
 </table>
 
 <br />
