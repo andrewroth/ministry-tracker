@@ -65,6 +65,8 @@
   <th>Valid from</th>
   <td class="date">
     <%=
+    start_year = Date.today.year - 5
+    end_year = start_year + 5
     date_select :"#{prefix}_address", :start_date, {
       :include_blank => true,
       :start_year => start_year,
@@ -77,8 +79,6 @@
   <th>Valid until</th>
   <td class="date">
     <%=
-    start_year = Date.today.year - 5
-    end_year = start_year + 5
     date_select :"#{prefix}_address", :end_date, {
       :include_blank => true,
       :start_year => start_year,
