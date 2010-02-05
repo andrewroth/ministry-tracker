@@ -23,14 +23,14 @@ class EmailsControllerTest < ActionController::TestCase
 
   test "should create email" do
     assert_difference('Email.count') do
-      post :create, :email => {:subject => 'test', :salutation => 'hi', :body => 'foo bar' }
+      post :create, :email => {:subject => 'test', :body => 'foo bar' }
     end
     assert_response :redirect
   end
 
   test "should NOT create email" do
     assert_no_difference('Email.count') do
-      post :create, :email => {:subject => '', :salutation => 'hi', :body => 'foo bar' }
+      post :create, :email => {:subject => '', :body => 'foo bar' }
     end
 
     assert_response :success, @response.body

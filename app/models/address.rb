@@ -38,4 +38,21 @@ class Address < ActiveRecord::Base
       save!
     end
   end
+  
+  # i18n format
+  def start_date=(value)
+    if value.is_a?(String) && !value.blank?
+      self[:start_date] = Date.strptime(value, (I18n.t 'date.formats.default'))
+    else
+      self[:start_date] = value
+    end
+  end
+
+  def end_date=(value)
+    if value.is_a?(String) && !value.blank?
+      self[:end_date] = Date.strptime(value, (I18n.t 'date.formats.default'))
+    else
+      self[:end_date] = value
+    end
+  end
 end

@@ -56,7 +56,7 @@ exists:
 
 top_staff:
     id: 10
-    ministry_id: 4
+    ministry_id: 1
     name: Staff
     position: 1
     type: StaffRole
