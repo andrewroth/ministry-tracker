@@ -13,7 +13,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     @response   = ActionController::TestResponse.new
   end
 
-  def test_destroy_with_permission
+  test "destroy with permission" do
     login
     xhr :delete, :destroy, :id => 1
     assert_response :success
@@ -21,7 +21,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     assert_template 'destroy'
   end
   
-  def test_destroy_WITHOUT_permission
+  test "destroy WITHOUT permission" do
     login('sue@student.org')
     assert_no_difference "CampusInvolvement.count" do
       xhr :delete, :destroy, :id => 1
@@ -30,14 +30,14 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     assert_template ''
   end
 
-  def test_index
+  test "index" do
     login
     xhr :get, :index
     assert_not_nil(assigns(:campus_involvements))
     assert_not_nil(assigns(:involvement_history))
   end
 
-  def test_update_staff_campus_involvement
+  test "update staff campus involvement" do
     login
 
     histories_before = Person.find(50000).involvement_history.count
@@ -46,30 +46,28 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     assert_equal(histories_after, histories_before)
   end
 
-  def test_update_student_campus_involvement_first_involvement
+  test "update student campus involvement first involvement" do
     login 'sue@student.org'
-    histories_before = Person.find(2000).involvement_history.count
-    xhr :post, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }
-    histories_after = Person.find(2000).involvement_history.count
-    assert_equal(histories_before + 1, histories_after)
+    assert_difference "Person.find(2000).involvement_history.count", 1 do
+      xhr :post, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2, :campus_id => 1 }
+    end
     history = Person.find(2000).involvement_history.last
     campus_involvement = CampusInvolvement.find 1002
     assert_equal(history.start_date, campus_involvement.start_date)
     assert_equal(Date.today, history.end_date)
   end
 
-  def test_students_restricted_to_creating_under_their_role
+  test "students_restricted_to_creating_under_their_role" do
     login 'sue@student.org'
     xhr :post, :update, :id => 1002, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }, :ministry_involvement => { :ministry_role_id => StaffRole.first.id }
     assert_equal StudentRole, CampusInvolvement.find(1002).find_or_create_ministry_involvement.ministry_role.class
   end
 
-  def test_update_student_campus_involvement_second_involvement
+  test "update_student_campus_involvement_second_involvement" do
     login 'sue@student.org'
-    histories_before = Person.find(2000).involvement_history.count
-    xhr :get, :update, :id => 1004, :person_id => 2000, :campus_involvement => { :school_year_id => 2 }
-    histories_after = Person.find(2000).involvement_history.count
-    assert_equal(histories_before + 1, histories_after)
+    assert_difference "Person.find(2000).involvement_history.count", 1 do
+      xhr :get, :update, :id => 1004, :person_id => 2000, :campus_involvement => { :school_year_id => 2, :campus_id => 2 }
+    end
     history = Person.find(2000).involvement_history.last
     campus_involvement = CampusInvolvement.find 1002
     assert_equal(Date.parse('2009-10-20'), history.start_date)
