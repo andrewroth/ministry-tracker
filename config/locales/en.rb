@@ -25,7 +25,6 @@
         :long_ordinal => lambda { |date| "%B #{date.day.ordinalize}, %Y" },
         :short_ordinal => lambda { |date| "%B #{date.day.ordinalize}" },    
       },
-      
       :order => [ :year, :month, :day ],
       :day_names => Date::DAYNAMES,
       :abbr_day_names => Date::ABBR_DAYNAMES,

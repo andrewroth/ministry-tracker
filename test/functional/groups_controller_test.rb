@@ -9,13 +9,13 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    assert_equal [ Group.first ], assigns('groups')
+    assert_equal [ groups(:group_1) ], assigns('groups')
   end
 
   def test_join
     get :join
     assert_response :success
-    assert_equal [ Group.first ], assigns('groups')
+    assert_equal [ groups(:group_1) ], assigns('groups')
   end
 
   def test_join_request_campus_chosen
