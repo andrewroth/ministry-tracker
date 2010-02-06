@@ -1,20 +1,23 @@
 <h1>Listing Regions</h1>
 <br/>
-<table>
-  <tr>
-    <th>Description</th>
-    <th>Country</th>
-  </tr>
-
-<% @regions.each do |region| %>
-  <tr>
-    <td><%=h region.desc %></td>
-    <td><%=h region.country.desc %></td>
-    <td><%= link_to 'Show', region %></td>
-    <td><%= link_to 'Edit', edit_region_path(region) %></td>
-    <td><%= link_to 'Destroy', region, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @regions.each do |region| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= region_path(region) %>><%=h region.desc %></td>
+      <td class="person_row" person_link=<%= region_path(region) %>><%=h region.country.desc %></td>
+      <td><%= link_to 'Show', region %></td>
+      <td><%= link_to 'Edit', edit_region_path(region) %></td>
+      <td><%= link_to 'Destroy', region, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br />

@@ -1,20 +1,23 @@
 <h1>Listing Access Categories</h1>
 <br/>
-<table>
-  <tr>
-    <th>Key</th>
-    <th>English value</th>
-  </tr>
-
-<% @accountadmin_accesscategories.each do |accountadmin_accesscategory| %>
-  <tr>
-    <td><%=h accountadmin_accesscategory.key %></td>
-    <td><%=h accountadmin_accesscategory.english_value %></td>
-    <td><%= link_to 'Show', accountadmin_accesscategory %></td>
-    <td><%= link_to 'Edit', edit_accountadmin_accesscategory_path(accountadmin_accesscategory) %></td>
-    <td><%= link_to 'Destroy', accountadmin_accesscategory, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>English value</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @accountadmin_accesscategories.each do |accountadmin_accesscategory| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= accountadmin_accesscategory_path(accountadmin_accesscategory) %>><%=h accountadmin_accesscategory.key %></td>
+      <td class="person_row" person_link=<%= accountadmin_accesscategory_path(accountadmin_accesscategory) %>><%=h accountadmin_accesscategory.english_value %></td>
+      <td><%= link_to 'Show', accountadmin_accesscategory %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_accesscategory_path(accountadmin_accesscategory) %></td>
+      <td><%= link_to 'Destroy', accountadmin_accesscategory, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
 </table>
 
 <br />

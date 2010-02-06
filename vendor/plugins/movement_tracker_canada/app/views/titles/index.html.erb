@@ -1,18 +1,21 @@
 <h1>Listing Titles</h1>
 <br/>
-<table>
-  <tr>
-    <th>Description</th>
-  </tr>
-
-<% @titles.each do |title| %>
-  <tr>
-    <td><%=h title.desc %></td>
-    <td><%= link_to 'Show', title %></td>
-    <td><%= link_to 'Edit', edit_title_path(title) %></td>
-    <td><%= link_to 'Destroy', title, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @titles.each do |title| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= title_path(title) %>><%=h title.desc %></td>
+      <td><%= link_to 'Show', title %></td>
+      <td><%= link_to 'Edit', edit_title_path(title) %></td>
+      <td><%= link_to 'Destroy', title, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br />

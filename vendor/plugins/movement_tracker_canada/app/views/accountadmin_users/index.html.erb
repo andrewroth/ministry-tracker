@@ -1,19 +1,17 @@
+<%= javascript_include_tag "jquery.livequery.js" %>
+<%= javascript_include_tag "will_paginate_helpers.js" %>
+
 <h1>Users</h1>
 <br/>
-<% form_remote_tag :url => {:action => 'search'}, :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do %>
+<% form_remote_tag :url => {:action => 'search'}, :method => 'get', :before => "$('#spinners').show()", :complete => "$('#spinners').hide()" do %>
   <p>Search for users by entering part of their user name, account group, GUID or viewer ID.</p>
   <p>
-    <%= text_field :search, :query %>
+    <%= text_field_tag :search %>
     <%= submit_tag 'Search' %>
-    <%= spinner('p') %>
+    <%= spinner('s') %>
   </p>
 <% end %>
 
 <%= link_to 'New user', new_accountadmin_user_path %>
   
-<div id="users">
-  <% if @users %>
-    <%= render(:partial => "users" , :object => @users) %>
-  <% end %>
-</div>
-
+<%= render(:partial => "users" , :object => @users) %>

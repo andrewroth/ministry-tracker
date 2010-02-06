@@ -5,9 +5,8 @@ class AccountadminUsersController < ApplicationController
   # GET /accountadmin_users
   # GET /accountadmin_users.xml
   def index
-    @query = params[:search][:query] if params[:search]
-
-    @users = get_users_from_query(@query)
+    @search = params[:search]
+    @users = User.search(params[:search], params[:page], params[:per_page]) if @search
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,13 +15,18 @@ class AccountadminUsersController < ApplicationController
   end
 
   def search
-    @query = params[:search][:query]
-
-    @users = get_users_from_query(@query)
+    @search = params[:search]
+    @users = User.search(params[:search], params[:page], params[:per_page]) if @search
 
     respond_to do |format|
-      format.js if request.xhr?
       format.html
+      format.js {
+        render :update do |page|
+          # 'page.replace' will replace full "results" block...works for this example
+          # 'page.replace_html' will replace "results" inner html...useful elsewhere
+          page.replace 'users', :partial => 'users'
+        end
+      }
     end
   end
 
@@ -137,6 +141,8 @@ class AccountadminUsersController < ApplicationController
 
   def get_users_from_query(search_query)
     if search_query then
+
+
       User.all(:joins => :accountadmin_accountgroup,
                :limit => User::MAX_SEARCH_RESULTS,
                :conditions => ["#{_(:username, :user)} like ? " +

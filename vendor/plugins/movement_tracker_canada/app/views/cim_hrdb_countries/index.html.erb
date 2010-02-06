@@ -1,20 +1,23 @@
 <h1>Listing Countries</h1>
 <br/>
-<table>
-  <tr>
-    <th>Description</th>
-    <th>Short description</th>
-  </tr>
-
-<% @countries.each do |country| %>
-  <tr>
-    <td><%=h country.desc %></td>
-    <td><%=h country.short_desc %></td>
-    <td><%= link_to 'Show', cim_hrdb_country_path(country) %></td>
-    <td><%= link_to 'Edit', edit_cim_hrdb_country_path(country) %></td>
-    <td><%= link_to 'Destroy', cim_hrdb_country_path(country), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Short description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @countries.each do |country| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= cim_hrdb_country_path(country) %>><%=h country.desc %></td>
+      <td class="person_row" person_link=<%= cim_hrdb_country_path(country) %>><%=h country.short_desc %></td>
+      <td><%= link_to 'Show', cim_hrdb_country_path(country) %></td>
+      <td><%= link_to 'Edit', edit_cim_hrdb_country_path(country) %></td>
+      <td><%= link_to 'Destroy', cim_hrdb_country_path(country), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br />

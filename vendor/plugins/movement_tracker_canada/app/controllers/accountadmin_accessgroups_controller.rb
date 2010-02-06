@@ -18,9 +18,7 @@ class AccountadminAccessgroupsController < ApplicationController
   def show
     @accountadmin_accessgroup = AccountadminAccessgroup.find(params[:id])
 
-    @users = User.all(:joins => :accountadmin_vieweraccessgroups,
-                      :limit => User::MAX_SEARCH_RESULTS,
-                      :conditions => ["#{AccountadminVieweraccessgroup.table_name}.#{:accessgroup_id} = ?", @accountadmin_accessgroup.id])
+    @users = @accountadmin_accessgroup.get_users(params[:page], params[:per_page])
 
     respond_to do |format|
       format.html # show.html.erb

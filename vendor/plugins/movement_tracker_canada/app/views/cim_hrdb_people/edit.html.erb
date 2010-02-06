@@ -7,22 +7,24 @@
   <p>
     <%= check_box_tag :is_active, "", @cim_hrdb_person.cim_hrdb_staff.boolean_is_active %>
     <%= observe_field :is_active, :url => {:action => 'change', :controller => "cim_hrdb_staff", :person_id => @cim_hrdb_person.id, :staff_id => @cim_hrdb_person.cim_hrdb_staff.staff_id}, :before => "$('#spinneria').show()", :complete => "$('#spinneria').hide()" %>
-    <b>Is active</b>
+    <b>Is active staff</b>
     <%= spinner('ia') %>
   </p>
 <% end %>
 
-<hr><br/></hr>
+<br/>
 <p>
   <b>Year in School:</b>
   <%= render(:partial => "person_year" , :object => @person_years) %>
 </p>
 <br/>
-<hr><br/></hr>
+
+<br/>
 <p>
   <b>Assignments:</b>
   <%= render(:partial => "assignments" , :object => @assignments) %>
 </p>
 <br/>
-<hr><br/></hr>
+
+<br/>
 <%= link_to 'Back', cim_hrdb_people_path %>

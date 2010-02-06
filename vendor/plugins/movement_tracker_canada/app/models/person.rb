@@ -378,4 +378,16 @@ class Person < ActiveRecord::Base
       self.cim_hrdb_person_year.try(:destroy)
       self.destroy
     end
+
+    def self.search(search, page, per_page)
+      if search then
+        Person.paginate(:page => page,
+                        :per_page => per_page,
+                        :conditions => ["concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
+                                        "or #{_(:id, :person)} like ? ",
+                                        "%#{search}%", "%#{search}%"])
+      else
+        nil
+      end
+    end
 end
