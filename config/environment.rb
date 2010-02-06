@@ -42,8 +42,7 @@ Rails::Initializer.run do |config|
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
   config.gem 'liquid'
-  config.gem 'mislav-will_paginate', :version => '~> 2.3.2', :lib => 'will_paginate', :source => 'http://gems.github.com'
-
+  config.gem 'will_paginate'
 
   unless RAILS_ENV == 'development'
     #config.active_record.default_timezone = 'Pacific Time (US & Canada)'
