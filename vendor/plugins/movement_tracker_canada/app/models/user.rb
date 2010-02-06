@@ -15,9 +15,6 @@ class User < ActiveRecord::Base
   validates_no_association_data :access, :persons, :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
   
 
-  MAX_SEARCH_RESULTS = 100
-
-
   def created_at=(v) end
 
   def person
@@ -90,5 +87,20 @@ class User < ActiveRecord::Base
 
   def human_is_active()
     return self.is_active == 0 ? "no" : "yes"
+  end
+
+  def self.search(search, page, per_page)
+    if search then
+      User.paginate(:page => page,
+                    :per_page => per_page,
+                    :joins => :accountadmin_accountgroup,
+                    :conditions => ["#{_(:username, :user)} like ? " +
+                                    "or #{_(:guid, :user)} like ? " +
+                                    "or #{_(:viewer_id, :user)} like ? " +
+                                    "or #{_(:english_value, :accountadmin_accountgroup)} like ? ",
+                                    "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%"])
+    else
+      nil
+    end
   end
 end

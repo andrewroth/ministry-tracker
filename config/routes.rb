@@ -1,5 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.connect 'cim_hrdb_people/search',
+              :conditions => { :method => :get },
+              :controller => "cim_hrdb_people",
+              :action => "search"
   map.resources :cim_hrdb_people do |cim_hrdb_person|
     cim_hrdb_person.resources :cim_hrdb_assignments
     cim_hrdb_person.resources :cim_hrdb_person_years
@@ -20,6 +24,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assignmentstatuses
 
+  map.connect 'accountadmin_users/search',
+              :conditions => { :method => :get },
+              :controller => "accountadmin_users",
+              :action => "search"
   map.resources :accountadmin_users do |accountadmin_user|
     accountadmin_user.resources :accountadmin_vieweraccessgroups
   end

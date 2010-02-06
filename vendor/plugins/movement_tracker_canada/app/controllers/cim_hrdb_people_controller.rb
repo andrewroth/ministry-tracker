@@ -14,13 +14,18 @@ class CimHrdbPeopleController < ApplicationController
   end
 
   def search
-    @query = params[:search][:query]
-
-    @people = get_people_from_query(@query)
+    @search = params[:search]
+    @people = Person.search(params[:search], params[:page], params[:per_page]) if @search
 
     respond_to do |format|
-      format.js if request.xhr?
       format.html
+      format.js {
+        render :update do |page|
+          # 'page.replace' will replace full "results" block...works for this example
+          # 'page.replace_html' will replace "results" inner html...useful elsewhere
+          page.replace 'people', :partial => 'people'
+        end
+      }
     end
   end
 
@@ -96,20 +101,6 @@ class CimHrdbPeopleController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(cim_hrdb_people_url) }
       format.xml  { head :ok }
-    end
-  end
-
-
-  private
-
-  def get_people_from_query(search_query)
-    if search_query then
-      Person.all(:limit => User::MAX_SEARCH_RESULTS,
-                 :conditions => ["concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
-                                 "or #{_(:id, :person)} like ? ",
-                                 "%#{search_query}%", "%#{search_query}%"])
-    else
-      nil
     end
   end
 

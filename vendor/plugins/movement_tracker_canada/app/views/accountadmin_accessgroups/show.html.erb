@@ -16,9 +16,5 @@
 <%= link_to 'Edit', edit_accountadmin_accessgroup_path(@accountadmin_accessgroup) %> |
 <%= link_to 'Back', accountadmin_accessgroups_path %>
 
-<% if @users %>
-<p>
-  <%= render(:partial => "users" , :object => @users) %>
-</p>
-<% end %>
+<%= render(:partial => "users" , :object => @users) %>
 

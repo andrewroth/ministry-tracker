@@ -1,16 +1,16 @@
+<%= javascript_include_tag "jquery.livequery.js" %>
+<%= javascript_include_tag "will_paginate_helpers.js" %>
+
 <h1>People</h1>
 <br/>
-<% form_remote_tag :url => {:action => 'search'}, :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do %>
+
+<% form_remote_tag :url => {:action => 'search'}, :method => 'get', :before => "$('#spinners').show()", :complete => "$('#spinners').hide()" do %>
   <p>Search for people by entering part of their name or person ID.</p>
   <p>
-    <%= text_field :search, :query %>
+    <%= text_field_tag :search %>
     <%= submit_tag 'Search' %>
-    <%= spinner('p') %>
+    <%= spinner('s') %>
   </p>
 <% end %>
 
-<div id="people">
-  <% if @people %>
-    <%= render(:partial => "people" , :object => @people) %>
-  <% end %>
-</div>
+<%= render(:partial => "people" , :object => @people) %>
