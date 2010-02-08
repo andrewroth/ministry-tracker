@@ -13,6 +13,8 @@
           <%= link_to(group.name, group) %>, Interested
         <%- elsif group.has_requested(@me) -%>
           <%= link_to(group.name, group) %>, Awaiting join request decision
+        <%- else -%>
+          <%= link_to(group.name, group) %>
         <%- end -%>
       </li>
     <%- end -%>

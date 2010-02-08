@@ -1,0 +1,2 @@
+page["group_#{@group.id}"].fade();
+page.hide('spinner')

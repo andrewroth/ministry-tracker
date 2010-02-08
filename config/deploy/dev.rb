@@ -2,7 +2,7 @@ def ma?
   ENV['system'] == 'ma'
 end
 
-ENV['target'] ||= 'emu'
+ENV['target'] ||= 'moose'
 set :moonshine_apply, false
 
 def stage?() %w(emu stage).include?(ENV['target']) end
@@ -59,7 +59,7 @@ deploy.task :after_symlink do
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
   link_shared "public/#{profile_pic_prefix}.profile_pictures"
 
-  sudo "/opt/ruby/bin/god restart dj-#{if stage? then 'emu' elsif dev? then 'dev' elsif prod? then 'pulse' end}"
+  #sudo "/opt/ruby/bin/god restart dj-#{if stage? then 'emu' elsif dev? then 'dev' elsif prod? then 'pulse' end}"
 end
 
 namespace :deploy do
