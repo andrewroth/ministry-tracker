@@ -217,9 +217,10 @@ end
     self[:email] || primary_email
   end
   
-  # def all_ministries
-  #   (self.ministries + self.campus_ministries).uniq.sort
-  # end
+  def email=(value)
+    current_address ||= self.addresses.new(:address_type => 'current')
+    current_address.email = value
+  end
   
   def ministry_tree
     res =  lambda {
@@ -425,6 +426,15 @@ end
     end
   end
 
+  # i18n format
+  def birth_date=(value)
+    if value.is_a?(String) && !value.blank?
+      self[:birth_date] = Date.strptime(value, (I18n.t 'date.formats.default'))
+    else
+      self[:birth_date] = value
+    end
+  end
+  
   protected
   def update_stamp
     self.updated_at = Time.now

@@ -3,6 +3,17 @@ require_model 'user'
 class User < ActiveRecord::Base
   has_one :access, :foreign_key => :viewer_id
   has_many :persons, :through => :access
+  has_many :accountadmin_accessgroups, :through => :accountadmin_vieweraccessgroups, :class_name => 'AccountadminAccessgroup'
+  has_many :accountadmin_vieweraccessgroups, :foreign_key => :viewer_id, :class_name => 'AccountadminVieweraccessgroup'
+  has_many :accountadmin_accountadminaccesses, :foreign_key => :viewer_id
+  belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
+  belongs_to :accountadmin_language, :foreign_key => :language_id
+
+  validates_presence_of _(:last_login)
+  validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
+
+  validates_no_association_data :access, :persons, :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
+  
 
   def created_at=(v) end
 
@@ -72,5 +83,24 @@ class User < ActiveRecord::Base
     end
 
     u
+  end
+
+  def human_is_active()
+    return self.is_active == 0 ? "no" : "yes"
+  end
+
+  def self.search(search, page, per_page)
+    if search then
+      User.paginate(:page => page,
+                    :per_page => per_page,
+                    :joins => :accountadmin_accountgroup,
+                    :conditions => ["#{_(:username, :user)} like ? " +
+                                    "or #{_(:guid, :user)} like ? " +
+                                    "or #{_(:viewer_id, :user)} like ? " +
+                                    "or #{_(:english_value, :accountadmin_accountgroup)} like ? ",
+                                    "%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%"])
+    else
+      nil
+    end
   end
 end

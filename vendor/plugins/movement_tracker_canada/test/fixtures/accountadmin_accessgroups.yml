@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  accesscategory_id: 1
+  key: MyString
+  english_value: MyText
+
+two:
+  accesscategory_id: 1
+  key: MyString
+  english_value: MyText

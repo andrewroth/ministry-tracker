@@ -1,0 +1,21 @@
+<h1>Editing Account Admin Access</h1>
+<br/>
+<% form_for(@accountadmin_accountadminaccess) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :viewer_id, "Viewer ID" %><br />
+    <%= f.text_field :viewer_id %>
+  </p>
+  <p>
+    <%= f.label _(:privilege, :accountadmin_accountadminaccess), "Privilege" %><br />
+    <%= f.select _(:privilege, :accountadmin_accountadminaccess), [[AccountadminAccountadminaccess::PRIV[:group][:human], AccountadminAccountadminaccess::PRIV[:group][:id]],
+                                                                   [AccountadminAccountadminaccess::PRIV[:site][:human], AccountadminAccountadminaccess::PRIV[:site][:id]]] %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @accountadmin_accountadminaccess %> |
+<%= link_to 'Back', accountadmin_accountadminaccesses_path %>

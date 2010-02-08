@@ -1,0 +1,20 @@
+<h1>Editing Year in School</h1>
+<br/>
+<% form_for(@cim_hrdb_person_year, :url => cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person.person_id, @cim_hrdb_person_year), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :year_id %><br />
+    <%= f.collection_select :year_id, YearInSchool.all, :id, :desc %>
+  </p>
+  <p>
+    <%= f.label :grad_date %><br />
+    <%= f.date_select :grad_date %>
+  </p>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', edit_cim_hrdb_person_path(@cim_hrdb_person.person_id) %>

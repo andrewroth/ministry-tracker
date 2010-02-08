@@ -1,0 +1,27 @@
+<h1>Listing Account Admin Accesses</h1>
+<br/>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Viewer ID</th>
+      <th>Username</th>
+      <th>Privilege</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @accountadmin_accountadminaccesses.each do |accountadmin_accountadminaccess| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= accountadmin_accountadminaccess_path(accountadmin_accountadminaccess) %>><%=h accountadmin_accountadminaccess.viewer_id %></td>
+      <td class="person_row" person_link=<%= accountadmin_accountadminaccess_path(accountadmin_accountadminaccess) %>><%=h accountadmin_accountadminaccess.user.viewer_userID %></td>
+      <td class="person_row" person_link=<%= accountadmin_accountadminaccess_path(accountadmin_accountadminaccess) %>><%=h accountadmin_accountadminaccess.human_privilege %></td>
+      <td><%= link_to 'Show', accountadmin_accountadminaccess %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_accountadminaccess_path(accountadmin_accountadminaccess) %></td>
+      <td><%= link_to 'Destroy', accountadmin_accountadminaccess, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New account admin access', new_accountadmin_accountadminaccess_path %>

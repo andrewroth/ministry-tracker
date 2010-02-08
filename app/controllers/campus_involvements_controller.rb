@@ -62,6 +62,43 @@ class CampusInvolvementsController < ApplicationController
     render :template => 'involvements/edit'
   end
 
+  def update
+    @campus_involvement = @person.campus_involvements.find params[:id]
+    update_campus_involvement
+    render :template => 'involvements/update'
+  end
+
+  def update_campus_involvement
+    handle_campus_involvement do |is_student|
+      if is_student
+        update_student_campus_involvement
+      else
+        update_staff_campus_involvement
+      end
+    end
+  end
+
+  def destroy_campus_involvement
+    handle_campus_involvement do |is_student|
+      if is_student
+        @history = @campus_involvement.new_student_history
+        @history.ministry_role_id = @ministry_involvement.ministry_role_id
+        @history.save!
+        @campus_involvement.last_history_update_date = Date.today
+      end
+      @campus_involvement.end_date = Date.today
+      @campus_involvement.save!
+    end
+  end
+
+  def handle_campus_involvement
+    set_student
+    yield @student
+  end
+
+  protected
+  
+  
   def update_staff_campus_involvement
     record_history = @campus_involvement.school_year_id != params[:school_year_id]
     @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id],
@@ -111,42 +148,6 @@ class CampusInvolvementsController < ApplicationController
     end
     logger.info "@campus_involvement.object_id = #{@campus_involvement.object_id}"
   end
-
-  def update
-    @campus_involvement = @person.campus_involvements.find params[:id]
-    update_campus_involvement
-    render :template => 'involvements/update'
-  end
-
-  def update_campus_involvement
-    handle_campus_involvement do |is_student|
-      if is_student
-        update_student_campus_involvement
-      else
-        update_staff_campus_involvement
-      end
-    end
-  end
-
-  def destroy_campus_involvement
-    handle_campus_involvement do |is_student|
-      if is_student
-        @history = @campus_involvement.new_student_history
-        @history.ministry_role_id = @ministry_involvement.ministry_role_id
-        @history.save!
-        @campus_involvement.last_history_update_date = Date.today
-      end
-      @campus_involvement.end_date = Date.today
-      @campus_involvement.save!
-    end
-  end
-
-  def handle_campus_involvement
-    set_student
-    yield @student
-  end
-
-  protected
 
   def set_campuses
     if Cmt::CONFIG[:campus_scope_country]

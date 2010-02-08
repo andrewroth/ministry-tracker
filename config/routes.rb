@@ -1,4 +1,42 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.connect 'cim_hrdb_people/search',
+              :conditions => { :method => :get },
+              :controller => "cim_hrdb_people",
+              :action => "search"
+  map.resources :cim_hrdb_people do |cim_hrdb_person|
+    cim_hrdb_person.resources :cim_hrdb_assignments
+    cim_hrdb_person.resources :cim_hrdb_person_years
+  end
+  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_ministries
+  map.resources :cim_hrdb_campuses
+  map.resources :cim_hrdb_states
+  map.resources :cim_hrdb_staff
+
+  map.resources :titles
+
+  map.resources :regions
+
+  map.resources :states
+
+  map.resources :genders
+
+  map.resources :assignmentstatuses
+
+  map.connect 'accountadmin_users/search',
+              :conditions => { :method => :get },
+              :controller => "accountadmin_users",
+              :action => "search"
+  map.resources :accountadmin_users do |accountadmin_user|
+    accountadmin_user.resources :accountadmin_vieweraccessgroups
+  end
+  map.resources :accountadmin_accountadminaccesses
+  map.resources :accountadmin_languages
+  map.resources :accountadmin_accountgroups
+  map.resources :accountadmin_accessgroups
+  map.resources :accountadmin_accesscategories
+
   map.resources :involvement_histories
 
   map.resources :emails

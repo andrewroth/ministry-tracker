@@ -1,0 +1,17 @@
+<h1>Editing Assignment Status</h1>
+<br/>
+
+<% form_for(@assignmentstatus) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :assignmentstatus_desc, "Description" %><br />
+    <%= f.text_field :assignmentstatus_desc %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @assignmentstatus %> |
+<%= link_to 'Back', assignmentstatuses_path %>
