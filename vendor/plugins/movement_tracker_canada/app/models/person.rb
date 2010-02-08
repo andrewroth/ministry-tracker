@@ -201,7 +201,7 @@ class Person < ActiveRecord::Base
             # finally, they have everything needed to be marked staff on the pulse
             staff_role = StaffRole.find_by_name('Staff')
             c4c_mi = ministry_involvements.find_or_create_by_ministry_id(c4c.id)
-            c4c_mi.ministry_role_id = staff_role
+            c4c_mi.ministry_role_id = staff_role.id
             c4c_mi.start_date = Date.today
             c4c_mi.end_date = nil
             c4c_mi.save!
@@ -210,7 +210,7 @@ class Person < ActiveRecord::Base
             unless ministry == c4c
               staff_team_role = StaffRole.find_by_name('Staff Team')
               team_mi = ministry_involvements.find_or_create_by_ministry_id(ministry.id)
-              team_mi.ministry_role_id = staff_team_role
+              team_mi.ministry_role_id = staff_team_role.id
               team_mi.start_date = Date.today
               team_mi.end_date = nil
               team_mi.save!
