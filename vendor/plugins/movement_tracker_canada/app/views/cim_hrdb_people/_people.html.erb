@@ -1,0 +1,42 @@
+<div id="people">
+
+  <hr></hr>
+  <br/>
+  <% if @people and @search and @people.size > 0 %>
+
+    Found <%= pluralize(@people.total_entries, "person") %> for <b>'<%=h @search %>'</b>:
+    <br/>
+    <br/>
+    <div id='profileCaption'>
+      <p>
+      <% if @people.total_pages > 1 %>
+        <%= link_to_remote 'Show all results on one page', :url => { :action => 'search', :search => @search, :per_page => "#{@people.total_entries}" }, :before => "$('#spinnerall').show()" %>
+        <%= spinner('all') %>
+      <% end %>
+      </p>
+      <%= will_paginate @people %>
+    </div>
+    <table class="directorytable">
+      <thead>
+        <tr>
+          <th>Person ID</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @people.each do |person| %>
+        <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="person_row" person_link=<%= cim_hrdb_person_path(person) %>><%=h person.id %></td>
+          <td class="person_row" person_link=<%= cim_hrdb_person_path(person) %>><%=h person.first_name + " " + person.last_name %></td>
+          <td><%= link_to 'Edit', edit_cim_hrdb_person_path(person) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div id='profileCaption'><%= will_paginate @people %></div>
+
+  <% elsif @search %>
+    Your search <b>'<%=h @search %>'</b> did not match any people.
+  <% end %>
+
+</div>

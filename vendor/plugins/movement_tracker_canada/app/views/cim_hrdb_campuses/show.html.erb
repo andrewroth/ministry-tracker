@@ -1,0 +1,41 @@
+<br/>
+<p>
+  <b>Description:</b>
+  <%=h @campus.campus_desc %>
+</p>
+
+<p>
+  <b>Short description:</b>
+  <%=h @campus.campus_shortDesc %>
+</p>
+
+<p>
+  <b>Region:</b>
+  <%=h @campus.region.desc %>
+</p>
+
+<p>
+  <b>Website:</b>
+  <%=h @campus.campus_website %>
+</p>
+
+<p>
+  <b>Facebook group:</b>
+  <%=h @campus.campus_facebookgroup %>
+</p>
+
+<p>
+  <b>GCX namespace:</b>
+  <%=h @campus.campus_gcxnamespace %>
+</p>
+
+<p>
+  <b>Province:</b>
+  <% if @campus.state_id %>
+  <%=h @campus.state.name %>
+  <% end %>
+</p>
+
+<br/>
+<%= link_to 'Edit', edit_cim_hrdb_campus_path(@campus) %> |
+<%= link_to 'Back', cim_hrdb_campuses_path %>

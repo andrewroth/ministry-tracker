@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  unloadable
   load_mappings
 
   belongs_to :assignmentstatus

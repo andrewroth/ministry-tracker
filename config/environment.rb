@@ -37,15 +37,18 @@ Rails::Initializer.run do |config|
   config.gem  'mechanize'
   config.gem  'erubis'
   config.gem  'aws-s3', :lib => 'aws/s3'
-  config.gem  'aaronchi-jrails', :lib => 'jrails'
+  config.gem  'jrails'
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
   config.gem 'liquid'
-  
-  #config.active_record.default_timezone = 'Pacific Time (US & Canada)'
-  config.time_zone = 'Pacific Time (US & Canada)'
+  config.gem 'will_paginate'
 
+  unless RAILS_ENV == 'development'
+    #config.active_record.default_timezone = 'Pacific Time (US & Canada)'
+    config.time_zone = 'Pacific Time (US & Canada)'
+  end
+  
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
   config.action_controller.session_store = :active_record_store

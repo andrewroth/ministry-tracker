@@ -1,0 +1,24 @@
+<h1>Listing Assignment Statuses</h1>
+<br/>
+
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @assignmentstatuses.each do |assignmentstatus| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= assignmentstatus_path(assignmentstatus) %>><%=h assignmentstatus.assignmentstatus_desc %></td>
+      <td><%= link_to 'Show', assignmentstatus %></td>
+      <td><%= link_to 'Edit', edit_assignmentstatus_path(assignmentstatus) %></td>
+      <td><%= link_to 'Destroy', assignmentstatus, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New assignment status', new_assignmentstatus_path %>

@@ -1,0 +1,18 @@
+<p>
+  <b>Viewer ID:</b>
+  <%=h @accountadmin_accountadminaccess.viewer_id %>
+</p>
+
+<p>
+  <b>Username:</b>
+  <%=h @accountadmin_accountadminaccess.user.viewer_userID %>
+</p>
+
+<p>
+  <b>Privilege:</b>
+  <%=h @accountadmin_accountadminaccess.human_privilege %>
+</p>
+
+
+<%= link_to 'Edit', edit_accountadmin_accountadminaccess_path(@accountadmin_accountadminaccess) %> |
+<%= link_to 'Back', accountadmin_accountadminaccesses_path %>

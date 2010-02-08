@@ -1,0 +1,27 @@
+<br/>
+<% if @cim_hrdb_person_years and @cim_hrdb_person_years.size > 0 %>
+  <table class="directorytable">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Grad date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cim_hrdb_person_years.each do |cim_hrdb_person_year| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= edit_cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person, cim_hrdb_person_year) %>><%=h cim_hrdb_person_year.school_year.name %></td>
+        <td class="person_row" person_link=<%= edit_cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person, cim_hrdb_person_year) %>><%=h cim_hrdb_person_year.grad_date %></td>
+        <td><%= link_to 'Edit', edit_cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person, cim_hrdb_person_year) %></td>
+        <td><%= link_to 'Destroy', cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person, cim_hrdb_person_year), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <br/>This person has no year in school.<br/>
+<% end %>
+<br/>
+<%= link_to 'New year in school', new_cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person) %>
+<br/>

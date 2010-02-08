@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  viewer_id: 1
+  accountadminaccess_privilege: 1
+
+two:
+  viewer_id: 1
+  accountadminaccess_privilege: 1

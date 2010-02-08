@@ -1,0 +1,16 @@
+<br/>
+<p>
+  <b>Description:</b>
+  <%=h @state.name %>
+</p>
+<p>
+  <b>Short description:</b>
+  <%=h @state.abbrev %>
+</p>
+<p>
+  <b>Country:</b>
+  <%=h @state.country.name %>
+</p>
+<br/>
+<%= link_to 'Edit', edit_cim_hrdb_state_path(@state) %> |
+<%= link_to 'Back', cim_hrdb_states_path %>

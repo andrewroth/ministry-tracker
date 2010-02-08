@@ -1,0 +1,12 @@
+<br/>
+<p>
+  <b>Description:</b>
+  <%=h @region.desc %>
+</p>
+<p>
+  <b>Country:</b>
+  <%=h @region.country.desc %>
+</p>
+<br/>
+<%= link_to 'Edit', edit_region_path(@region) %> |
+<%= link_to 'Back', regions_path %>

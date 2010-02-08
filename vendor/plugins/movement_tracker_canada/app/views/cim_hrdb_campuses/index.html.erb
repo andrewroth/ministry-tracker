@@ -1,0 +1,31 @@
+<h1>Listing Campuses</h1>
+<br/>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Region</th>
+      <th>Province</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @campuses.each do |campus| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= cim_hrdb_campus_path(campus) %>><%=h campus.campus_desc %></td>
+        <td class="person_row" person_link=<%= cim_hrdb_campus_path(campus) %>><%=h campus.region.desc %></td>
+        <td class="person_row" person_link=<%= cim_hrdb_campus_path(campus) %>>
+        <% if campus.state_id %>
+          <%=h campus.state.name %>
+        <% end %>
+        </td>
+        <td><%= link_to 'Show', cim_hrdb_campus_path(campus) %></td>
+        <td><%= link_to 'Edit', edit_cim_hrdb_campus_path(campus) %></td>
+        <td><%= link_to 'Destroy', cim_hrdb_campus_path(campus), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New campus', new_cim_hrdb_campus_path %>
