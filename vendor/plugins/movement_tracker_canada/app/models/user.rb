@@ -103,4 +103,15 @@ class User < ActiveRecord::Base
       nil
     end
   end
+
+  def in_access_group(*ids)
+    
+    return false unless ids
+
+    id_array = []
+    ids.each { |id| id_array << id.to_i if id.to_i }
+
+    AccountadminVieweraccessgroup.all(:first, :conditions => {:viewer_id => self.id, :accessgroup_id => id_array}).empty? ? false : true
+  end
+
 end

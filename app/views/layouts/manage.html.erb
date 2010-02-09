@@ -60,8 +60,6 @@
       <%= link_to 'Assignment Statuses', assignmentstatuses_path %></li>
       <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_campuses" %>>
       <%= link_to 'Campuses', cim_hrdb_campuses_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_countries" %>>
-      <%= link_to 'Countries', cim_hrdb_countries_path %></li>
       <li<%= ' class="highlighted"' if params[:controller] == "genders" %>>
       <%= link_to 'Genders', genders_path %></li>
       <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_people" %>>
@@ -83,6 +81,8 @@
     <ul class="right-menu-list">
       <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
       <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "countries" %>>
+      <%= link_to 'Countries', countries_path %></li>
       <li<%= ' class="highlighted"' if params[:controller] == "school_years" %>>
       <%= link_to 'School Years', school_years_path %></li>
       <%- if current_user.developer? -%>

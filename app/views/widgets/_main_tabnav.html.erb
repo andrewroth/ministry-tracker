@@ -21,21 +21,46 @@ render_tabnav :main,
       t.links_to link
       t.new_window true
     end
-  end 
+  end
 
   
-	if authorized?(:index, :manage)
+  if authorized?(:index, :manage)
     add_tab do |t|
-     t.named 'Manage'
-     t.titled 'Manage your world'
-     t.links_to :controller => 'manage'
-     t.highlights_on :controller => "ministries"
-     t.highlights_on :controller => "staff"
-     t.highlights_on :controller => "groups", :action => 'index'
-     t.highlights_on :controller => "customize"
-     t.highlights_on :controller => "ministry_roles"
-     t.highlights_on :controller => "school_years"
+      t.named 'Manage'
+      t.titled 'Manage your world'
+      t.links_to :controller => 'manage'
+      t.highlights_on :controller => "ministries"
+      t.highlights_on :controller => "staff"
+      t.highlights_on :controller => "groups", :action => 'index'
+      t.highlights_on :controller => "customize"
+      t.highlights_on :controller => "ministry_roles"
+      t.highlights_on :controller => "countries"
+      t.highlights_on :controller => "school_years"
+
+      t.highlights_on :controller => "accountadmin_accesscategories"
+      t.highlights_on :controller => "accountadmin_accessgroups"
+      t.highlights_on :controller => "accountadmin_accountadminaccesses"
+      t.highlights_on :controller => "accountadmin_accountgroups"
+      t.highlights_on :controller => "accountadmin_languages"
+      t.highlights_on :controller => "accountadmin_users"
+      t.highlights_on :controller => "assignmentstatuses"
+      t.highlights_on :controller => "cim_hrdb_campuses"
+      t.highlights_on :controller => "genders"
+      t.highlights_on :controller => "cim_hrdb_people"
+      t.highlights_on :controller => "cim_hrdb_states"
+      t.highlights_on :controller => "regions"
+      t.highlights_on :controller => "titles"
     end #if can_manage
+  end
+
+  if authorized?(:index, :stats)
+    add_tab do |t|
+      t.named 'Stats'
+      t.titled ""
+      t.links_to :controller => 'manage'
+      #t.links_to :controller => 'stats'
+      t.highlights_on :controller => "stats"
+    end
   end
   
   # @groups = @my.groups.collect {|group| group}

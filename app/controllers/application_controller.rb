@@ -154,11 +154,12 @@ class ApplicationController < ActionController::Base
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
-      :ministry_involvements => [:new, :edit, :index]
+      :ministry_involvements => [:new, :edit, :index],
+      :stats => [:index]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
-      return true if is_ministry_admin
+#      return true if is_ministry_admin
       
       ministry ||= get_ministry
       return false unless ministry
@@ -234,6 +235,8 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
+        when :stats
+          return true if @person.user.in_access_group(41,42,43,44,45)
         end # case
       end # if
 
