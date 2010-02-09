@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, week, weeklyreport, year
 
 tables:
   user: accountadmin_viewer
@@ -35,6 +35,15 @@ tables:
   cim_hrdb_staff: cim_hrdb_staff
   cim_hrdb_person_year: cim_hrdb_person_year
   site_multilingual_label: site_multilingual_label
+  month: cim_stats_month
+  prc: cim_stats_prc
+  prcmethod: cim_stats_prcmethod
+  semester: cim_stats_semester
+  week: cim_stats_week
+  weeklyreport: cim_stats_weeklyreport
+  year: cim_stats_year
+
+
 
 # ciministry
 #year_in_school:
@@ -165,3 +174,62 @@ site_multilingual_label:
   key: label_key
   label: label_label
   moddate: label_moddate
+
+year:
+  id: year_id
+  description: year_desc
+
+prc:
+  id: prc_id
+  first_name: prc_firstName
+  method_id: prcMethod_id
+  witness_name: prc_witnessName
+  semester_id: semester_id
+  campus_id: campus_id
+  notes: prc_notes
+  date: prc_date
+  integrated_believer: prc_7upCompleted
+
+prcmethod:
+  id: prcMethod_id
+  description: prcMethod_desc
+
+semester:
+  id: semester_id
+  description: semester_desc
+  start_date: semester_startDate
+  year_id: year_id
+
+month:
+  id: month_id
+  description: month_desc
+  number: month_number
+  year_id: year_id
+  calendar_year: month_calendaryear
+  semester_id: semester_id
+
+weeklyreport:
+  id: weeklyReport_id
+  spiritual_conversations: weeklyReport_1on1SpConv
+  gospel_presentations: weeklyReport_1on1GosPres
+  holyspirit_presentations: weeklyReport_1on1HsPres
+  staff_id: staff_id
+  week_id: week_id
+  campus_id: campus_id
+  followup_completed: weeklyReport_7upCompleted
+  spiritual_conversations_student: weeklyReport_1on1SpConvStd
+  gospel_presentations_student: weeklyReport_1on1GosPresStd
+  holyspirt_presentations_student: weeklyReport_1on1HsPresStd
+  followup_completed_student: weeklyReport_7upCompletedStd
+  cj_video: weeklyReport_cjVideo
+  mda: weeklyReport_mda
+  other_evmats: weeklyReport_otherEVMats
+  rlk: weeklyReport_rlk
+  siq: weeklyReport_siq
+  notes: weeklyReport_notes
+
+week:
+  id: week_id
+  end_date: week_endDate
+  semester_id: semester_id
+  month_id: month_id

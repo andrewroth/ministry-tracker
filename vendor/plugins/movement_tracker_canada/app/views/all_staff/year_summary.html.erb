@@ -1,0 +1,59 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Campus Ministry Summary</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :year, :url => { :action => :year_summary} do |form| %>
+        <fieldset>
+            <legend>
+                <span class="title1">Please Select a Year and Campus</span>
+            </legend>
+            <p>
+                <%= form.label :year, "Year:" %>
+                <%= form.select :year, @years, :selected => @yearSelected %>
+            </p>
+            <p>
+                <%= form.label :campus, "Campus:" %>
+				<% if @campusSelected.present? %>
+                <%= form.select :campus, @campuses, :selected => @campusSelected %>
+				<% else %>
+				<%= form.select :campus, @campuses, :selected => :first %>
+				<% end %>
+            </p>
+            <p>
+                <%= submit_tag "Submit" , :class => "submit" %>
+            </p>
+        </fieldset>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center"<% if @campusID.nil? %> style="display: none"<% end %> ><% if !@campusID.nil? %>
+    <p>
+        <span class="title1">Personal Ministry Stats for <%= sprintf("%s", @campusSelected) %></span>
+    </p>
+    <p>
+        <%= render :partial => "year_summary_personal" %>
+        <br/>
+    </p>
+    <p>
+        <span class="title1">Indicated Decisions in <%= sprintf("%s", @campusSelected) %></span>
+    </p>
+    <p>
+        <%= render :partial => "year_summary_indicated" %>
+        <br/>
+    </p>
+    <% end %>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

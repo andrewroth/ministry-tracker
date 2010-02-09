@@ -1,4 +1,5 @@
 class Week < ActiveRecord::Base
+  unloadable
   
   load_mappings
   has_many :weekly_reports, :class_name => 'Weeklyreport', :foreign_key => _(:id)

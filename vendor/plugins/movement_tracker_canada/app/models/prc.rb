@@ -1,4 +1,5 @@
 class Prc < ActiveRecord::Base
+  unloadable
   
   load_mappings
   belongs_to :campus, :class_name => 'Campus', :foreign_key => _(:id, :campus)

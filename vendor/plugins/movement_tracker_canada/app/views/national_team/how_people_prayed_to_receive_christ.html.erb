@@ -1,0 +1,43 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">How People Came to Know Christ</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :year, :url => { :action => :how_people_prayed_to_receive_christ } do |form| %>
+        <fieldset>
+            <legend>
+                <span class="title1">Please Select a Year</span>
+            </legend>
+            <p>
+                <%= form.label :year, "Year:" %>
+                <%= form.select :year, @years, :selected => @yearSelected %>
+            </p>
+            <p>
+                <%= submit_tag "Submit" , :class => "submit" %>
+            </p>
+        </fieldset>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center">
+    <p>
+        <span class="title1">Total Stats for <%= sprintf("%s", @yearSelected) %></span>
+    </p>
+    <p>
+        <%= render :partial => "how_people_prayed_to_receive_christ_total" %>
+        <br/>
+    </p>
+  </div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

@@ -1,0 +1,81 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Submit Weekly Stats</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form2">
+    <p>
+        <% form_for :stats, :url => { :action => :submit_weekly_stats } do |form| %>
+        Please enter your stats from this week. First, select the week. Second, select the campus. Definitions can be found below.
+        <br/>
+        <br/>
+        <p>
+            <%= form.label :week, "Week Ending:" %>
+            <%= form.select :week, @weeks, :selected => @weekSelected %>
+        </p>
+        <p>
+            <%= form.label :campus, "Campus:" %>
+            <%= form.select :campus, @campuses, :prompt => "Select a Campus" %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :sp_conv, "# 1-1 Spiritual Conversations:", :value => "0" %></span>
+            <%= form.text_field :sp_conv, :size => 4 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :sp_conv_std, "# 1-1 Spiritual Conversations (By Disciples):", :value => "0" %></span>
+            <%= form.text_field :sp_conv_std, :size => 4 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :gos_pres, "# 1-1 Gospel Presentations:", :value => "0" %></span>
+            <%= form.text_field :gos_pres, :size => 4 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :gos_pres_std, "# 1-1 Gospel Presentations (By Disciples):", :value => "0" %></span>
+            <%= form.text_field :gos_pres_std, :size => 4 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :hs_pres, "# 1-1 Holy Spirit Presentations:", :value => "0" %></span>
+            <%= form.text_field :hs_pres, :size => 4 %>
+        </p>
+        <p>
+            <%= submit_tag "Update" , :class => "submit" %>
+        </p>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<p>
+    <span class="text"><span class="bold">Spiritual Conversation, Staff:</span> Able to speak about God, spiritual questions, but were not able to share four points of Gospel and explain how someone could pray to receive Christ. However, if doing a survey and the conversation does not go beyond the content of the survey questions, this would not be a spiritual conversation. If two staff together, the main 'sharer' should record. If staff and student, staff should record as "spiritual conversation, staff" regardless of who did most of the sharing.
+        <br/>
+        <br/>
+        <span class="bold">Spiritual Conversation, Disciple:</span> Able to speak about God, spiritual questions, but were not able to share four points of Gospel and explain how someone could pray to receive Christ. However if doing a survey and the conversation does not go beyond the content of the survey questions, this would not be a spiritual conversation. This would be one student alone or a couple of students together but no staff present.
+        <br/>
+        <br/>
+        <span class="bold">Gospel Presentation, Staff:</span> The four points of the Gospel and how someone can pray to receive Christ were clearly presented. If two staff together, the main 'sharer' should record. If staff and student, staff should record as "gospel presentation, staff" regardless of who did most of the sharing.
+        <br/>
+        <br/>
+        <span class="bold">Gospel Presentation, Disciple:</span> The four points of the Gospel and how someone can pray to receive Christ were clearly presented. This would be one student alone or a couple of students together but no staff present.
+        <br/>
+        <br/>
+        <span class="bold">Holy Spirit presentation, Staff:</span> This is a one to one presentation of the ministry of the Holy Spirit, including an opportunity to pray to be filled and an explanation of spiritual breathing. If staff and student, staff should record as "Holy Spirit presentation, staff" regardless of who did most of the sharing.
+        <br/>
+        <br/>
+        <span class="bold">Holy Spirit presentation, Disciple:</span> This is a one to one presentation of the ministry of the Holy Spirit, including an opportunity to pray to be filled and an explanation of spiritual breathing.
+        <br/>
+        <br/>
+        <span class="bold">Follow-up, Staff:</span> Number who completed the basic fourth follow-up lessons this week.
+        <br/>
+        <br/>
+        <span class="bold">Follow-up, Disciple:</span> Number who completed the basic fourth follow-up lessons this week.
+    </span>
+</p>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

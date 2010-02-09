@@ -1,0 +1,75 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Summary by Month</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :semester, :url => { :action => :summary_by_month} do |form| %>
+        <fieldset>
+            <legend>
+                <span class="title1">Please Select a Semester</span>
+            </legend>
+            <p>
+                <%= form.label :semester, "Semester:" %>
+                <%= form.select :semester, @semesters, :selected => @semesterSelected %>
+            </p>
+            <p>
+                <%= submit_tag "Submit" , :class => "submit" %>
+            </p>
+        </fieldset>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center">
+    <p>
+        <span class="title1">Total Stats for <%= sprintf("%s", @semesterSelected) %></span>
+    </p>
+    <p>
+        <%= render :partial => "summary_by_month_total" %>
+        <br/>
+    </p>
+    <p>
+        <span class="title1">Total Stats by Month</span>
+    </p>
+    <p>
+        <% @region_id = national_region %>
+        <%= render :partial => "summary_by_month_total_by_region" %>
+        <br/>
+    </p>
+    <p>
+        <span class="title1">Ontario and Atlantic Stats by Month</span>
+    </p>
+    <p>
+        <% @region_id = oa_region %>
+        <%= render :partial => "summary_by_month_total_by_region" %>
+        <br/>
+    </p>
+    <p>
+        <span class="title1">West Stats by Month</span>
+    </p>
+    <p>
+        <% @region_id = west_region %>
+        <%= render :partial => "summary_by_month_total_by_region" %>
+        <br/>
+    </p>
+    <p>
+        <span class="title1">Quebec Stats by Month</span>
+    </p>
+    <p>
+        <% @region_id = quebec_region %>
+        <%= render :partial => "summary_by_month_total_by_region" %>
+        <br/>
+    </p>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

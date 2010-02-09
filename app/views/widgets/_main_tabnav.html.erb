@@ -57,8 +57,7 @@ render_tabnav :main,
     add_tab do |t|
       t.named 'Stats'
       t.titled ""
-      t.links_to :controller => 'manage'
-      #t.links_to :controller => 'stats'
+      t.links_to :controller => 'stats'
       t.highlights_on :controller => "stats"
     end
   end

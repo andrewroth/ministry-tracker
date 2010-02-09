@@ -1,4 +1,5 @@
 class Weeklyreport < ActiveRecord::Base
+  unloadable
   
   set_primary_key  _(:id)
   load_mappings

@@ -1,0 +1,54 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+            <span class="title1">Method</span>
+        </td>
+        <td>
+            <span class="title1">Number</span>
+        </td>
+        <td>
+            <span class="title1">Percent</span>
+        </td>
+        <td>
+            <span class="title1">Completed Follow-up</span>
+        </td>
+        <td>
+            <span class="title1">% Completed Follow-up</span>
+        </td>
+    </tr>
+    <% i = 0 %>
+    <% @methods.each do |method| %>
+    <% if i != 0 && !(Prcmethod.find_by_prcMethod_id i).nil? %>
+    <tr>
+        <td>
+            <%= (Prcmethod.find_by_prcMethod_id i).prcMethod_desc %>
+        </td>
+        <td>
+            <center>
+                <%= method %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <% if @total != 0 %>
+                <%= (method*100)/@total %>
+                <% end %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= @completed[i] %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <% if method != 0 %>
+                <%= (@completed[i]*100)/method %>
+                <% end %>
+            </center>
+        </td>
+    </tr>
+    <% end %>
+    <% i += 1 %>
+    <% end %>
+</table>

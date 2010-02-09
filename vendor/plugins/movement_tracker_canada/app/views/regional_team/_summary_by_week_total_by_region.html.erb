@@ -1,0 +1,139 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <% i = 1 %>
+        <% @weeks.each do |month| -%>
+        <td>
+            <span class="title1"><%= sprintf "Week %s", i %></span>
+        </td>
+        <% i+= 1 %>
+        <% end %>
+        <td>
+            <span class="title1">Total</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Staff
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_stats_week(week.id,@region_id,sp_conv) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Students
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_stats_week(week.id,@region_id,sp_conv_std) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Staff
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_stats_week(week.id,@region_id,gos_pres) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Students
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_stats_week(week.id,@region_id,gos_pres_std) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Holy Spirit Presentations by Staff
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_stats_week(week.id,@region_id,hs_pres) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            Indicated Decisions
+        </td>
+        <% total = 0 %>
+        <% @weeks.each do |week| -%>
+        <% start_date = Week.find_start_date(week.id) %>
+        <% end_date = Week.find_end_date(week.id) %>
+        <% result = Prc.count_by_date(start_date,end_date,@region_id) %>
+        <% total += result %>
+        <td>
+            <center>
+                <%= sprintf "%s", result %>
+            </center>
+        </td>
+        <% end %>
+        <td>
+            <center>
+                <%= sprintf "%s", total %>
+            </center>
+        </td>
+    </tr>
+</table>

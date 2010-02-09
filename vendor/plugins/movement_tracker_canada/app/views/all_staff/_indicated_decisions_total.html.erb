@@ -1,0 +1,37 @@
+<table class="t1">
+    <tr>
+        <td width="150">
+            <span class="bold">Person who indicated decision</span>
+        </td>
+        <td width="150">
+            <span class="bold">Person who shared the gospel</span>
+        </td>
+        <td width="100">
+            <span class="bold">Method ID</span>
+        </td>
+        <td width="150">
+            <span class="bold">Integrated Believer?</span>
+        </td>
+        <td class="t2">
+        </td>
+    </tr>
+    <% @decisions.each do |decision| %>
+    <tr>
+        <td width="150">
+            <%= decision.first_name %>
+        </td>
+        <td width="150">
+            <%= decision.witness_name %>
+        </td>
+        <td width="100">
+            <%= Prcmethod.find_method_description(decision.method_id) %> 
+        </td>
+        <td width="150">
+            <%= decision.integrated_believer %>
+        </td>
+		<td width="75">
+			<%= link_to "Edit", :action => :edit, :id => decision.id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected, :delete => 0 %> | <%= link_to "Delete", :action => :edit, :id => decision.id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected, :delete => 1 %>
+		</td>
+    </tr>
+    <% end %>
+</table>

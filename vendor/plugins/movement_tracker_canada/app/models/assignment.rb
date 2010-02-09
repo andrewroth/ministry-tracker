@@ -10,7 +10,7 @@ class Assignment < ActiveRecord::Base
   # This method will return all staff assigned to a specific campus_id
   def self.find_staff_on_campus(campus_id)
     # Need to find the status_id of "Staff" to know what to associate it with
-    status_id = Status.find_status_id("Staff")
+    status_id = Assignmentstatus.find_status_id("Staff")
     find(:all, :conditions => {_(:campus_id) => campus_id, _(:status_id) => status_id})
   end
 

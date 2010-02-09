@@ -1,0 +1,173 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <td>
+            <span class="title1">Ontario and Atlantic</span>
+        </td>
+        <td>
+            <span class="title1">West</span>
+        </td>
+        <td>
+            <span class="title1">Quebec</span>
+        </td>
+        <td>
+            <span class="title1">National Total</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,oa_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,west_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,quebec_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,national_region,sp_conv) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Students
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,oa_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,west_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,quebec_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,national_region,sp_conv_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,oa_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,west_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,quebec_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,national_region,gos_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Students
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,oa_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,west_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,quebec_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,national_region,gos_pres_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Holy Spirit Presentations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,oa_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,west_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,quebec_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_semester(@semesterID,national_region,hs_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            Indicated Decisions
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Prc.count_by_semester(@semesterID,oa_region) %>
+            </center>
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Prc.count_by_semester(@semesterID,west_region) %>
+            </center>
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Prc.count_by_semester(@semesterID,quebec_region) %>
+            </center>
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Prc.count_by_semester(@semesterID,national_region) %>
+            </center>
+        </td>
+    </tr>
+</table>

@@ -1,4 +1,5 @@
 class Title < ActiveRecord::Base
+  unloadable
   load_mappings
 
   has_many :people

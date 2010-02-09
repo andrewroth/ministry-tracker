@@ -1,0 +1,70 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Indicated Decisions</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form3">
+    <p>
+    <% form_for :continue, :url => { :action => :decisions } do |form| %>
+	<p>
+    Use this page to enter info related to people indicating decisions for Christ.
+    <br/>
+    Semester: <span class="bold"><%= @semesterSelected %></span>
+    <br/>
+    <%= form.hidden_field :semester, :value => @semesterSelected %>
+    Campus: <span class="bold"><%= @campusSelected %></span>
+    <%= form.hidden_field :campus, :value => @campusSelected %>
+	</p>
+    <p>
+        <p>
+            <span class="bold"><%= form.label :decision, "Person who indicated decision:" %></span>
+            <%= form.text_field :decision, :size => 40 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :shared, "Person who shared the gospel:" %></span>
+            <%= form.text_field :shared, :size => 40 %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :date, "Date:" %></span>
+            <%= form.select :day, @days, :prompt => "Day" %>
+            <%= form.select :month, @months, :prompt => "Month" %>
+            <%= form.select :year, @years, :prompt => "Year" %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :notes, "Notes:" %></span>
+            <%= form.text_area :notes, :size => "50x5" %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :date, "Method:" %></span>
+            <%= form.select :method, @methods, :prompt => "Method" %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :believer, "Integrated Believer:" %></span>
+            <%= form.check_box :believer %>
+        </p>
+        <p>
+            <%= submit_tag "ADD" , :class => "submit" %>
+        </p>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center"<% if @decisions.nil? %> style="display: none"<% end %> ><% if @decisions.present? %>
+    <p>
+    	<span class="title1">Indicated Decisions at <%= @campusSelected %> staff during <%= @semesterSelected %></span>
+	<p>
+        <%= render :partial => "indicated_decisions_total" %>
+        <br/>
+    </p>
+    <% end %>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

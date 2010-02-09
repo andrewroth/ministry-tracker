@@ -1,0 +1,78 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Indicated Decisions</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form3">
+    <p>
+    <% form_for :update, :url => { :action => :edit } do |form| %>
+    <p>
+        <%= form.hidden_field :id, :value => @decision.id %>
+        Use this page to enter info related to people indicating decisions for Christ.
+        <br/>
+        Semester: <span class="bold"><%= @semesterSelected %></span>
+        <br/>
+        <%= form.hidden_field :semester, :value => @semesterSelected %>
+        Campus: <span class="bold"><%= @campusSelected %></span>
+        <%= form.hidden_field :campus, :value => @campusSelected %>
+    </p>
+    <p>
+        <p>
+            <span class="bold"><%= form.label :decision, "Person who indicated decision:" %></span>
+            <%= form.text_field :decision, :size => 40, :value => @decision.first_name %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :shared, "Person who shared the gospel:" %></span>
+            <%= form.text_field :shared, :size => 40, :value => @decision.witness_name %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :date, "Date:" %></span>
+            <%= form.select :day, @days, :prompt => "Day", :selected => @decision.date.day %>
+            <%= form.select :month, @months, :prompt => "Month", :selected => Date::MONTHNAMES[@decision.date.month] %>
+            <%= form.select :year, @years, :prompt => "Year", :selected => @decision.date.year %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :notes, "Notes:" %></span>
+            <%= form.text_area :notes, :size => "50x5", :value => @decision.notes %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :date, "Method:" %></span>
+            <%= form.select :method, @methods, :prompt => "Method", :selected => Prcmethod.find_method_description(@decision.method_id) %>
+        </p>
+        <p>
+            <span class="bold"><%= form.label :believer, "Integrated Believer:" %></span>
+            <% if @decision.integrated_believer == 1 %><% boolean = true %><% end %>
+            <%= form.check_box :believer, :checked => boolean %>
+        </p>
+        <p>
+            <% if @delete == 0 %>
+			<%= submit_tag "Update", :class => "submit" %>
+			<% end %>
+			<% end %>
+			<% if @delete == 1 %>
+			<%= button_to "Delete?", :action => "delete", :id => @decision.id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected %>
+			<% end %>
+			<%= button_to "Cancel", :action => "decisions", :decisions => {"campus" => @campusSelected, "semester" => @semesterSelected} %>
+        </p>
+        <br/>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center"<% if @decisions.nil? %> style="display: none"<% end %> ><% if @decisions.present? %>
+    <p>
+    <span class="title1">Indicated Decisions at <%= @campusSelected %>staff during <%= @semesterSelected %></span>
+    <p>
+        <%= render :partial => "indicated_decisions_total" %>
+        <br/>
+    </p>
+    <% end %>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

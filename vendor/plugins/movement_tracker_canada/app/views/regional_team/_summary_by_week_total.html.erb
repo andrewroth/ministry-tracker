@@ -1,0 +1,171 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <td>
+            <span class="title1">Ontario and Atlantic</span>
+        </td>
+        <td>
+            <span class="title1">West</span>
+        </td>
+        <td>
+            <span class="title1">Quebec</span>
+        </td>
+        <td>
+            <span class="title1">National Total</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,oa_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,west_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,quebec_region,sp_conv) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,national_region,sp_conv) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Students
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,oa_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,west_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,quebec_region,sp_conv_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,national_region,sp_conv_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,oa_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,west_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,quebec_region,gos_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,national_region,gos_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Students
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,oa_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,west_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,quebec_region,gos_pres_std) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,national_region,gos_pres_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Holy Spirit Presentations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,oa_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,west_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,quebec_region,hs_pres) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Week.find_stats_month(@monthID,national_region,hs_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            Indicated Decisions
+        </td>
+        <% start_date = Month.find_start_date(@monthID) %>
+        <% end_date = Month.find_end_date(@monthID) %>
+        <td>
+            <center>
+                <%= sprintf "%s", Prc.count_by_date(start_date,end_date,oa_region) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Prc.count_by_date(start_date,end_date,west_region) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Prc.count_by_date(start_date,end_date,quebec_region) %>
+            </center>
+        </td>
+        <td>
+            <center>
+                <%= sprintf "%s", Prc.count_by_date(start_date,end_date,national_region) %>
+            </center>
+        </td>
+    </tr>
+</table>

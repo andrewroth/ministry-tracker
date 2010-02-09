@@ -6,6 +6,9 @@ RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+#Constants file for cim_stats
+require File.join(File.dirname(__FILE__), 'constants')
+
 # For emailer use
 DEVELOPMENT_HOST = 'localhost:3000'
 TEST_HOST = 'localhost:3000'

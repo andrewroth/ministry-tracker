@@ -1,0 +1,153 @@
+<table class="t3" style="font-size: 8pt;">
+    <tr>
+        <td class="t4">
+        </td>
+        <% @campuses.each do |campus| %>
+        <td class="t4">
+            <center>
+                <span class=""><%= campus %></span>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <span class="">Total</span>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Campus Summary
+        </td>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%=link_to "View", :controller => "all_staff", :action => "year_summary", :year => {'year' => @yearSelected, 'campus' => Campus.find_campus_description(campusID) } %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Spiritual Conversations by Staff
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Week.find_stats_semester_campus(@semesterID,campusID,sp_conv) %>
+                <% total += stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Spiritual Conversations by Students
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Week.find_stats_semester_campus(@semesterID,campusID,sp_conv_std) %>
+                <% total += stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Gospel Presentations by Staff
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Week.find_stats_semester_campus(@semesterID,campusID,gos_pres) %>
+                <% total += stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Gospel Presentations by Students
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Week.find_stats_semester_campus(@semesterID,campusID,gos_pres_std) %>
+                <% total += stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Holy Spirit Presentations
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Week.find_stats_semester_campus(@semesterID,campusID,hs_pres) %>
+                <% total += stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="t4">
+            Indicated Decisions
+        </td>
+        <% total = 0 %>
+        <% @campuses.each do |campus| %>
+        <% campusID = Campus.find_campus_id_from_short(campus) %>
+        <td class="t4">
+            <center>
+                <%= stat = Prc.count_by_semester_and_campus(@semesterID,campusID) %>
+                <% total+= stat %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+</table>

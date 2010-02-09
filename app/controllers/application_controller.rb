@@ -155,7 +155,8 @@ class ApplicationController < ActionController::Base
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
       :ministry_involvements => [:new, :edit, :index],
-      :stats => [:index]
+      :stats => [:index],
+      :all_staff => [:year_summary, :submit_weekly_stats, :semester_at_a_glance, :indicated_decisions, :delete, :edit, :decisions]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -235,7 +236,7 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
-        when :stats
+        when :stats, :all_staff
           return true if @person.user.in_access_group(41,42,43,44,45)
         end # case
       end # if

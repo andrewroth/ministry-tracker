@@ -1,0 +1,51 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Semester at a Glance</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :semester, :url => { :action => :semester_at_a_glance } do |form| %>
+        <fieldset>
+            <legend>
+                <span class="title1">Please Select a Semester and Campus</span>
+            </legend>
+            <p>
+                <%= form.label :semester, "Semester:" %>
+                <%= form.select :semester, @semesters, :selected => @semesterSelected %>
+            </p>
+            <p>
+                <%= form.label :campus, "Campus:" %>
+				<% if @campusSelected.present? %>
+                <%= form.select :campus, @campuses, :selected => @campusSelected %>
+				<% else %>
+				<%= form.select :campus, @campuses, :selected => :first %>
+				<% end %>
+            </p>
+            <p>
+                <%= submit_tag "Submit" , :class => "submit" %>
+            </p>
+        </fieldset>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center"<% if @campusID.nil? %> style="display: none"<% end %> ><% if @campusID.present? %>
+    <p>
+    	<span class="title1">Stats for <%= @campusSelected %> during <%= @semesterSelected %></span>
+	<p>
+        <%= render :partial => "semester_at_a_glance_total" %>
+        <br/>
+    </p>
+    <% end %>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

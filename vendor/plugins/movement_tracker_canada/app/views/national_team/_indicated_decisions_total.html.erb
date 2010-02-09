@@ -1,0 +1,25 @@
+<table class="t1">
+    <tr>
+        <td>
+            <span class="title1">Campus</span>
+        </td>
+        <td>
+            <span class="title1">Total</span>
+        </td>
+    </tr>
+    <% start_date = Semester.find_start_date(@semesterID) %>
+    <% end_date = Semester.find_end_date(@semesterID) %>
+    <% @campuses.each do |campus| %>
+    <% campusID = Campus.find_campus_id(campus) %>
+    <tr>
+        <td>
+            <%= campus %>
+        </td>
+        <td>
+        	<center>
+            <%= Prc.count_by_campus(start_date, end_date, campusID) %>
+			</center>
+        </td>
+    </tr>
+	<% end %>
+</table>

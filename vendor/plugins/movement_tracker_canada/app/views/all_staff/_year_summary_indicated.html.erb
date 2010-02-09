@@ -1,0 +1,45 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <% semesters = Semester.find_semesters_by_year(@yearID) %>
+        <td>
+            <center>
+                <span class="bold"><a><%= semesters[0].description %></a></span>
+            </center>
+        </td>
+        <td>
+            <center>
+                <span class="bold"><a><%= semesters[1].description %></a></span>
+            </center>
+        </td>
+        <td>
+            <center>
+                <span class="bold">Total</span>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Indicated Decisions
+        </td>
+        <% total = 0 %>
+        <td>
+            <center>
+                <%= stat = Prc.count_by_semester_and_campus(semesters[0].id, @campusID) %>
+            </center>
+            <% total += stat %>
+        </td>
+        <td>
+            <center>
+                <%= stat = Prc.count_by_semester_and_campus(semesters[1].id, @campusID) %>
+            </center>
+            <% total += stat %>
+        </td>
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+</table>

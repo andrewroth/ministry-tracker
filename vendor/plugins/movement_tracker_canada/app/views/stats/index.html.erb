@@ -1,0 +1,56 @@
+<!-- Stats Index Page -->
+<p>
+    <span class="heading">Stats</span>
+</p>
+<p>
+    <span class="text">Your homepage for navigating the campus ministry stats system.</span>
+</p>
+<!-- Check all staff access level -->
+<% if @allstaff_access %>
+<span class="bold">All Staff (Personal Ministry)</span>
+<br/>
+<span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>
+<br/>
+<span class="text"><a href="/all_staff/indicated_decisions">Indicated Decisions</a></span>
+<br/>
+<span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
+<br/>
+<span class="text"><a href="/all_staff/year_summary">Year Summary</a></span>
+<br/>
+<br/>
+<% end %>
+<!--
+<span class="bold">Campus Stats Coordinator</span>
+<br/>
+<br/> -->
+<!-- Check all campus director access level -->
+<% if @campusdirector_access %>
+<span class="bold">Campus Directors</span>
+<br/>
+<span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
+<br/>
+<span class="text"><a href="/campus_directors/monthly_summary_by_campus">Monthly Summary by Campus</a></span>
+<br/>
+<br/>
+<% end %>
+<!-- Check regional team access level -->
+<% if @regional_access %>
+<span class="bold">Regional Team</span>
+<br/>
+<span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>
+<br/>
+<span class="text"><a href="/regional_team/summary_by_month">Regional Semester Summary by Month</a></span>
+<br/>
+<span class="text"><a href="/regional_team/summary_by_week">Regional Monthly Summary by Week</a></span>
+<br/>
+<br/>
+<% end %>
+<!-- Check national team access level -->
+<% if @national_access %>
+<span class="bold">National Team</span>
+<br/>
+<span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>
+<br/>
+<span class="text"><a href="/national_team/how_people_prayed_to_receive_christ">How People Came to Know Christ</a></span>
+<br/>
+<% end %>

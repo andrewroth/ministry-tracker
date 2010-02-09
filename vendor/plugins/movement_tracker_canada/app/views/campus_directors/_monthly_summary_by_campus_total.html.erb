@@ -1,0 +1,99 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <td>
+            <center>
+                <span class="title1">Total</span>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Staff
+        </td>
+        <td>
+            <center>
+                <%= sp1 = Weeklyreport.find_stats_campus(@monthID,@campusID,sp_conv) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Spiritual Conversations by Students
+        </td>
+        <td>
+            <center>
+                <%= sp2 = Weeklyreport.find_stats_campus(@monthID,@campusID,sp_conv_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="title2">Total Spiritual Conversations</span>
+        </td>
+        <td>
+            <center>
+                <%= total = sp1 + sp2 %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            Gospel Presentations by Staff
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= gp1 = Weeklyreport.find_stats_campus(@monthID,@campusID,gos_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Gospel Presentations by Students
+        </td>
+        <td>
+            <center>
+                <%= gp2 = Weeklyreport.find_stats_campus(@monthID,@campusID,gos_pres_std) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="title2">Total Gospel Presentations</span>
+        </td>
+        <td>
+            <center>
+                <%= total = gp1 + gp2 %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            <span class="title1">Holy Spirit Presentations</span>
+        </td>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Weeklyreport.find_stats_campus(@monthID,@campusID,hs_pres) %>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <br/>
+            <span class="title1">Indicated Decisions</span>
+        </td>
+        <% start_date = Month.find_start_date(@monthID) %>
+        <% end_date = Month.find_end_date(@monthID) %>
+        <td>
+            <br/>
+            <center>
+                <%= sprintf "%s", Prc.count_by_campus(start_date,end_date,@campusID) %>
+            </center>
+        </td>
+    </tr>
+</table>

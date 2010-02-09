@@ -1,0 +1,52 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Summary by Campus</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :region, :url => { :action => :summary_by_campus } do |form| %>
+        <fieldset>
+            <legend>
+                <span class="title1">Please Select a Semester and Region</span>
+            </legend>
+            <p>
+                <%= form.label :semester, "Semester:" %>
+                <%= form.select( :semester, @semesters, :selected => @curSemester ) %>
+            </p>
+            <p>
+                <%= form.label :region, "Region:" %>
+				<% if @regionSelected.present? %>
+                <%= form.select :region, @regions, :selected => @regionSelected %>
+				<% else %>
+				<%= form.select :region, @regions, :selected => :first %>
+				<% end %>
+            </p>
+            <p>
+                <%= submit_tag "Submit" , :class => "submit" %>
+            </p>
+        </fieldset>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<!-- Main Content - Start -->
+<div id="results" align="center"<% if @regionID.nil? %> style="display: none"<% end %> ><% if !@regionID.nil? %>
+    <p>
+        <span class="title1">Stats for <%= sprintf("%s", @regionSelected) %> during <%= sprintf("%s", @semesterSelected) %></span>
+    </p>
+    <p>
+        <%= render :partial => "summary_by_campus_total" %>
+        <br/>
+    </p>
+    <% end %>
+</div>
+<!-- Main Content - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>
