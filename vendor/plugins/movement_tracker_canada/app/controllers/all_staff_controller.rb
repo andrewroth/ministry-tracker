@@ -59,7 +59,7 @@ class AllStaffController < ApplicationController
       semester_id = Week.find_semester_id(week_id)
       semesterSelected = Semester.find_semester_description(semester_id)
       
-      staff_id = @person.staff.id
+      staff_id = @person.cim_hrdb_staff.id
       
       # submit stats and redirect
       Weeklyreport.submit_stats(week_id, campus_id, staff_id, sp_conv, sp_conv_std, gos_pres, gos_pres_std, hs_pres) 
