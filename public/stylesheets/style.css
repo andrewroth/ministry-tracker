@@ -1136,3 +1136,13 @@ fieldset {
 	padding: 20px;
 	display: inline;
 }
+
+#results .title1 {
+	color: #1F429B;
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+.bold label {
+	width: 270px;
+}
