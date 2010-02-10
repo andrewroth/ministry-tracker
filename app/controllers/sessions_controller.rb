@@ -69,7 +69,7 @@ class SessionsController < ApplicationController
           form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
           cas_url = 'https://signin.mygcx.org/cas/login'
           begin
-            agent = WWW::Mechanize.new
+            agent = Mechanize.new
             page = agent.post(cas_url, form_params)
             result_query = page.uri.query
           rescue Errno::ECONNREFUSED
