@@ -1146,3 +1146,16 @@ fieldset {
 .bold label {
 	width: 270px;
 }
+
+#results .highlight {
+	background-color: #FFE88C;
+}
+
+#results .t1 {
+	border: dotted 2px #6984C7;/*#FFCB05;*/
+	
+}
+
+#results .t1 tr td {
+	padding: 3px;
+}
