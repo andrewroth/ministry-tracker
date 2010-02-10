@@ -35,7 +35,7 @@ Rails::Initializer.run do |config|
   config.gem  'mechanize'
   config.gem  'erubis'
   config.gem  'aws-s3', :lib => 'aws/s3'
-  config.gem  'aaronchi-jrails', :lib => 'jrails'
+  config.gem  'jrails'
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
   # config.gem 'rfacebook'
