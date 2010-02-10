@@ -1,4 +1,5 @@
 class CampusDirectorsController < ApplicationController
+  unloadable
   
   # monthly_summary_by_campus
   def monthly_summary_by_campus

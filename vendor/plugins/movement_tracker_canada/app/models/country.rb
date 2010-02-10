@@ -18,6 +18,6 @@ class Country < ActiveRecord::Base
 
   # This method will return the county id associated with a given description
   def self.find_country_id(description)
-    find(:first, :conditions => ["#{_(:description)} <= ?",description]).id
+    find(:first, :conditions => ["#{_(:desc)} <= ?",description]).id
   end
 end

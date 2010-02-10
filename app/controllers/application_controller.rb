@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
       :all_staff => [:year_summary, :submit_weekly_stats, :semester_at_a_glance, :indicated_decisions, :delete, :edit, :decisions],
       :campus_directors => [:monthly_summary_by_campus],
       :national_team => [:how_people_prayed_to_receive_christ, :indicated_decisions],
-      :regional_team => [:summary_by_week, :summary_by_month]
+      :regional_team => [:summary_by_week, :summary_by_month, :summary_by_campus]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)

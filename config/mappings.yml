@@ -184,8 +184,6 @@ prc:
   first_name: prc_firstName
   method_id: prcMethod_id
   witness_name: prc_witnessName
-  semester_id: semester_id
-  campus_id: campus_id
   notes: prc_notes
   date: prc_date
   integrated_believer: prc_7upCompleted
@@ -198,24 +196,18 @@ semester:
   id: semester_id
   description: semester_desc
   start_date: semester_startDate
-  year_id: year_id
 
 month:
   id: month_id
   description: month_desc
   number: month_number
-  year_id: year_id
   calendar_year: month_calendaryear
-  semester_id: semester_id
 
 weeklyreport:
   id: weeklyReport_id
   spiritual_conversations: weeklyReport_1on1SpConv
   gospel_presentations: weeklyReport_1on1GosPres
   holyspirit_presentations: weeklyReport_1on1HsPres
-  staff_id: staff_id
-  week_id: week_id
-  campus_id: campus_id
   followup_completed: weeklyReport_7upCompleted
   spiritual_conversations_student: weeklyReport_1on1SpConvStd
   gospel_presentations_student: weeklyReport_1on1GosPresStd
@@ -231,5 +223,3 @@ weeklyreport:
 week:
   id: week_id
   end_date: week_endDate
-  semester_id: semester_id
-  month_id: month_id
