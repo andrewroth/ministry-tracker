@@ -1,6 +1,6 @@
 /*
 Codename: Campus Movement Tracker
-Author: David T Sudarma (Follower), Caleb Wright (Follower), Josh Starcher (Cult Leader)
+Author: David T Sudarma (Follower), Caleb Wright (Follower), Jacques Robitaille (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
 Orange Block:      #FFCB05
@@ -1117,4 +1117,22 @@ div.choose_ministry_tree {
 
 #clear_timetable {
   float: right;
+}
+
+/************************************************/
+/* Stats section                                */
+.heading {
+	color: #1F429B;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+legend .title1 {
+	padding: 5px;
+	font-weight: bold;
+}
+
+fieldset {
+	padding: 20px;
+	display: inline;
 }
