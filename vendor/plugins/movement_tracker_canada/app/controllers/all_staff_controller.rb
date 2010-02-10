@@ -34,7 +34,8 @@ class AllStaffController < ApplicationController
       
       # Error Checking
       error_message = "Please make sure a campus is selected and that each stat box has a valid numerical value."
-      if params[:stats]['week'].nil? or params[:stats]['campus'].nil? or params[:stats]['sp_conv'].nil? or params[:stats]['sp_conv_std'].nil? or params[:stats]['gos_pres'].nil? or params[:stats]['gos_pres_std'].nil? or params[:stats]['hs_pres'].nil?
+      if params[:stats]['week'].nil? or params[:stats]['campus'].nil? or params[:stats]['sp_conv'].nil? or params[:stats]['sp_conv_std'].nil? or params[:stats]['gos_pres'].nil? or params[:stats]['gos_pres_std'].nil? or params[:stats]['hs_pres'].nil? or
+         params[:stats]['week'] == "" or params[:stats]['campus'] == "" or params[:stats]['sp_conv'] == "" or params[:stats]['sp_conv_std'] == "" or params[:stats]['gos_pres'] == "" or params[:stats]['gos_pres_std'] == "" or params[:stats]['hs_pres'] == ""
         # redirect_with_flash
         flash[:notice] = error_message
         redirect_to :action => 'submit_weekly_stats' and return
@@ -48,7 +49,7 @@ class AllStaffController < ApplicationController
       # End Error Checking
       
       # get all parameters
-      week_id = Week.find_week_id(params[:stats]['week'])
+      week_id = Week.find_week_id(Date.parse(params[:stats]['week']))
       campusSelected = params[:stats]['campus']
       campus_id = Campus.find_campus_id(campusSelected)
       sp_conv = Integer(params[:stats]['sp_conv'])
@@ -139,7 +140,8 @@ class AllStaffController < ApplicationController
       
       error_message = "Please make sure all required fields are filled in."
       # Error Checking
-      if params[:update]['method'].nil? or params[:update]['day'].nil? or params[:update]['month'].nil? or params[:update]['year'].nil? or params[:update]['decision'].nil? or params[:update]['shared'].nil?
+      if params[:update]['method'].nil? or params[:update]['day'].nil? or params[:update]['month'].nil? or params[:update]['year'].nil? or params[:update]['decision'].nil? or params[:update]['shared'].nil? or
+         params[:update]['method'] == "" or params[:update]['day'] == "" or params[:update]['month'] == "" or params[:update]['year'] == "" or params[:update]['decision'] == "" or params[:update]['shared'] == ""
         # redirect_with_flash
         flash[:notice] = error_message
         redirect_to :action => :edit, :id => id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected, :delete => 0 and return
@@ -204,7 +206,8 @@ class AllStaffController < ApplicationController
       
       error_message = "Please make sure all required fields are filled in."
       #Error Checking
-      if params[:continue]['method'].nil? or params[:continue]['day'].nil? or params[:continue]['month'].nil? or params[:continue]['year'].nil? or params[:continue]['decision'].nil? or params[:continue]['shared'].nil?
+      if params[:continue]['method'].nil? or params[:continue]['day'].nil? or params[:continue]['month'].nil? or params[:continue]['year'].nil? or params[:continue]['decision'].nil? or params[:continue]['shared'].nil? or
+         params[:continue]['method'] == "" or params[:continue]['day'] == "" or params[:continue]['month'] == "" or params[:continue]['year'] == "" or params[:continue]['decision'] == "" or params[:continue]['shared'] == ""
         # redirect_with_flash
         flash[:notice] = error_message
         redirect_to :action => 'decisions', :decisions =>{'semester' => @semesterSelected, 'campus' => @campusSelected} and return
