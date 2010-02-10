@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
       :all_staff => [:year_summary, :submit_weekly_stats, :semester_at_a_glance, :indicated_decisions, :delete, :edit, :decisions],
       :campus_directors => [:monthly_summary_by_campus],
       :national_team => [:how_people_prayed_to_receive_christ, :indicated_decisions],
-      :regional_team => [:summary_by_week, :summary_by_month]
+      :regional_team => [:summary_by_week, :summary_by_month, :summary_by_campus]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -239,8 +239,8 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
-        when :stats, :all_staff
-          return true if @person.user.in_access_group(41,42,43,44,45)
+        when :stats, :all_staff, :campus_directors, :national_team, :regional_team
+          return true if @me.user.in_access_group(41,42,43,44,45)
         end # case
       end # if
 
