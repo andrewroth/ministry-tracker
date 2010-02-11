@@ -62,5 +62,9 @@ class Prc < ActiveRecord::Base
   def self.delete_by_id(id)
     delete(id)
   end
+
+  def human_integrated_believer()
+    self.integrated_believer == 1 ? 'yes' : 'no'
+  end
   
 end

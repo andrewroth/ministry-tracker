@@ -27,7 +27,7 @@
             <%= Prcmethod.find_method_description(decision.method_id) %> 
         </td>
         <td width="150">
-            <%= decision.integrated_believer %>
+            <%= decision.human_integrated_believer %>
         </td>
 		<td width="75">
 			<%= link_to "Edit", :action => :edit, :id => decision.id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected, :delete => 0 %> | <%= link_to "Delete", :action => :edit, :id => decision.id, :semesterSelected => @semesterSelected, :campusSelected => @campusSelected, :delete => 1 %>
