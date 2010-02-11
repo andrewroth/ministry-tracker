@@ -1,5 +1,4 @@
 <table border="0" cellspacing="5" cellpadding="5">
-  <tr><th>&nbsp;</th><th>Section</th><th>Task</th><th>Description</th></tr>
   <%- @permissions.each do |permission| -%>
     <%= render :partial => 'ministry_role_permissions/ministry_role_permission', :locals => {:permission => permission, :ministry_role => @ministry_role} %>
   <%- end -%>

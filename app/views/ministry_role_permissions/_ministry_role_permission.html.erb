@@ -1,4 +1,14 @@
+
+<%- if @section != permission.controller 
+      @section = permission.controller
+-%>
+ 
+   <tr>
+    <td colspan="4"><span class="title1"><%= permission.controller %></span></td>
+  </tr>
+<%- end -%>
   <tr id="<%= "mrp_#{ministry_role.id}_#{permission.id}" %>">
+    <td>&nbsp;&nbsp;&nbsp;</td>
     <td>
       <%- if mrp = ministry_role.ministry_role_permissions.detect {|rp| rp.permission_id == permission.id} -%>
         <%= link_to_remote(image_tag('silk/check_yes.png'), :url => ministry_role_permission_path(mrp),
@@ -11,7 +21,6 @@
       <%- end -%>
 
     </td>
-    <td><%= permission.controller %></td>
     <td><%= permission.action %></td>
     <td><%= permission.description %><%= spinner("#{ministry_role.id}_#{permission.id}") %></td>
   </tr>
