@@ -19,8 +19,8 @@ class Weeklyreport < ActiveRecord::Base
   end
   
   # This method is used to check whether a staff has submitted stats for a specific week
-  def self.check_submitted(week_id, staff_id)
-    find(:first, :conditions => {_(:week_id) => week_id, _(:staff_id) => staff_id})
+  def self.check_submitted(week_id, staff_id, campus_id)
+    find(:first, :conditions => {_(:week_id) => week_id, _(:staff_id) => staff_id, _(:campus_id) => campus_id})
   end
   
   # This method is used to insert a new weekly stats report

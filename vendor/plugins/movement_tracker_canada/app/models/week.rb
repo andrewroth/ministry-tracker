@@ -6,9 +6,9 @@ class Week < ActiveRecord::Base
   belongs_to :campus, :class_name => 'Campus'
   
   # This method will return the given stat total associated with a given staff id
-  def self.find_stats_staff(week_id,staff_id,stat)
+  def self.find_stats_staff(week_id,staff_id,stat,campus_id)
     week = find(:first, :conditions => {_(:id) => week_id})
-    result = week.weekly_reports.find(:all, :conditions => [ "#{_(:staff_id)} = ?", staff_id ])
+    result = week.weekly_reports.find(:all, :conditions => [ "#{_(:staff_id)} = ? AND #{_(:campus_id)} = ?", staff_id, campus_id ])
     result.sum(&stat) # sum the specific stat
   end
   
