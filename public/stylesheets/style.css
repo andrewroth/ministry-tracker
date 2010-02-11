@@ -1137,7 +1137,7 @@ fieldset {
 	display: inline;
 }
 
-#results .title1 {
+.title1 {
 	color: #1F429B;
 	font-size: 1.25em;
 	font-weight: bold;

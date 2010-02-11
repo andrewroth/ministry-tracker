@@ -9,7 +9,7 @@
 <% #if @allstaff_access 
    if true
 %>
-<span class="bold">All Staff (Personal Ministry)</span>
+<span class="title1">All Staff (Personal Ministry)</span>
 <br/>
 <span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>
 <br/>
@@ -22,14 +22,14 @@
 <br/>
 <% end %>
 <!--
-<span class="bold">Campus Stats Coordinator</span>
+<span class="title1">Campus Stats Coordinator</span>
 <br/>
 <br/> -->
 <!-- Check all campus director access level -->
 <% #if @campusdirector_access 
 	if true
 %>
-<span class="bold">Campus Directors</span>
+<span class="title1">Campus Directors</span>
 <br/>
 <span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
 <br/>
@@ -41,7 +41,7 @@
 <% #if @regional_access 
 	if true
 %>
-<span class="bold">Regional Team</span>
+<span class="title1">Regional Team</span>
 <br/>
 <span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>
 <br/>
@@ -55,7 +55,7 @@
 <% #if @national_access 
 	if true
 %>
-<span class="bold">National Team</span>
+<span class="title1">National Team</span>
 <br/>
 <span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>
 <br/>
