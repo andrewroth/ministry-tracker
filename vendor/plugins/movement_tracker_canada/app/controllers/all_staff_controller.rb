@@ -92,7 +92,7 @@ class AllStaffController < ApplicationController
       @semesterID = Semester.find_semester_id(@semesterSelected)
       @staff = Weeklyreport.find_staff(@semesterID, @campusID)
       @weeks = Week.find_weeks_in_semester(@semesterID)
-      @months = Month.find_months_by_semester(@semesterID)      
+      @months = Month.find_months_by_semester(@semesterID)
     end
     
     # Initialize Variables Used by View   
