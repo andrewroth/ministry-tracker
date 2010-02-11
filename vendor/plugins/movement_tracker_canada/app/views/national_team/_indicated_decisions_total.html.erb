@@ -11,7 +11,7 @@
     <% end_date = Semester.find_end_date(@semesterID) %>
     <% @campuses.each do |campus| %>
     <% campusID = Campus.find_campus_id(campus) %>
-    <tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td>
             <%= campus %>
         </td>

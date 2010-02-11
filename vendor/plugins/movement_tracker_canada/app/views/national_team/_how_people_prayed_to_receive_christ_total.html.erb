@@ -19,7 +19,7 @@
     <% i = 0 %>
     <% @methods.each do |method| %>
     <% if i != 0 && !(Prcmethod.find_by_prcMethod_id i).nil? %>
-    <tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td>
             <%= (Prcmethod.find_by_prcMethod_id i).prcMethod_desc %>
         </td>
