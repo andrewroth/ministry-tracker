@@ -3,39 +3,37 @@
         <td class="t2">
         </td>
         <% semesters = Semester.find_semesters_by_year(@yearID) %>
-        <td>
-            <center>
-                <span class="bold"><%=link_to "#{semesters[0].description}", :action => "semester_at_a_glance", :semester => { 'campus' => @campusSelected, 'semester' => "#{semesters[0].description}"} %></span>
-            </center>
-        </td>
-        <td>
-            <center>
-                <span class="bold"><%=link_to "#{semesters[1].description}", :action => "semester_at_a_glance", :semester => { 'campus' => @campusSelected, 'semester' => "#{semesters[1].description}"} %></span>
-            </center>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                  <span class="bold"><%=link_to "#{semester.description}", :action => "semester_at_a_glance", :semester => { 'campus' => @campusSelected, 'semester' => "#{semester.description}"} %></span>
+              </center>
+          </td>
+        <% end %>
+
         <td>
             <center>
                 <span class="bold">Total</span>
             </center>
         </td>
+
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td>
             Spiritual Conversations by Staff
         </td>
         <% total = 0 %>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[0].id, @campusID, sp_conv) %>
-            </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[1].id, @campusID, sp_conv) %>
-            </center>
-            <% total += stat %>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                  <%= stat = Week.find_stats_semester_campus(semester.id, @campusID, sp_conv) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
         <td>
             <center>
                 <%= total %>
@@ -47,18 +45,16 @@
             Spiritual Conversations by Students
         </td>
         <% total = 0 %>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[0].id, @campusID, sp_conv_std) %>
-            </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[1].id, @campusID, sp_conv_std) %>
-            </center>
-            <% total += stat %>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campus(semester.id, @campusID, sp_conv_std) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
         <td>
             <center>
                 <%= total %>
@@ -70,18 +66,16 @@
             Gospel Presentations by Staff
         </td>
         <% total = 0 %>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[0].id, @campusID, gos_pres) %>
-            </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[1].id, @campusID, gos_pres) %>
-            </center>
-            <% total += stat %>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campus(semester.id, @campusID, gos_pres) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
         <td>
             <center>
                 <%= total %>
@@ -93,18 +87,16 @@
             Gospel Presentations by Students
         </td>
         <% total = 0 %>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[0].id, @campusID, gos_pres_std) %>
-            </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[1].id, @campusID, gos_pres_std) %>
-            </center>
-            <% total += stat %>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campus(semester.id, @campusID, gos_pres_std) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
         <td>
             <center>
                 <%= total %>
@@ -116,18 +108,16 @@
             Holy Spirit Presentations
         </td>
         <% total = 0 %>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[0].id, @campusID, hs_pres) %>
-            </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Week.find_stats_semester_campus(semesters[1].id, @campusID, hs_pres) %>
-            </center>
-            <% total += stat %>
-        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campus(semester.id, @campusID, hs_pres) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+        
         <td>
             <center>
                 <%= total %>

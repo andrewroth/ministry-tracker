@@ -3,16 +3,15 @@
         <td class="t2">
         </td>
         <% semesters = Semester.find_semesters_by_year(@yearID) %>
-        <td>
+
+        <% semesters.each do |semester| %>
+          <td>
             <center>
-                <span class="bold"><a><%= semesters[0].description %></a></span>
+                <span class="bold"><a><%= semester.description %></a></span>
             </center>
-        </td>
-        <td>
-            <center>
-                <span class="bold"><a><%= semesters[1].description %></a></span>
-            </center>
-        </td>
+          </td>
+        <% end %>
+        
         <td>
             <center>
                 <span class="bold">Total</span>
@@ -24,18 +23,16 @@
             Indicated Decisions
         </td>
         <% total = 0 %>
-        <td>
+
+        <% semesters.each do |semester| %>
+          <td>
             <center>
-                <%= stat = Prc.count_by_semester_and_campus(semesters[0].id, @campusID) %>
+                <%= stat = Prc.count_by_semester_and_campus(semester.id, @campusID) %>
             </center>
-            <% total += stat %>
-        </td>
-        <td>
-            <center>
-                <%= stat = Prc.count_by_semester_and_campus(semesters[1].id, @campusID) %>
-            </center>
-            <% total += stat %>
-        </td>
+          </td>
+          <% total += stat %>
+        <% end %>
+
         <td>
             <center>
                 <%= total %>
