@@ -163,7 +163,7 @@ class ApplicationController < ActionController::Base
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
-      return true if is_ministry_admin
+#      return true if is_ministry_admin
       
       ministry ||= get_ministry
       return false unless ministry
@@ -239,8 +239,18 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
-        when :stats, :all_staff, :campus_directors, :national_team, :regional_team
+
+        when :national_team
+          return true if @me.user.in_access_group(45)
+        when :regional_team
+          return true if @me.user.in_access_group(44,45)
+        when :campus_directors
+          return true if @me.user.in_access_group(43,44,45)
+        when :all_staff
           return true if @me.user.in_access_group(41,42,43,44,45)
+        when :stats
+          return true if @me.user.in_access_group(41,42,43,44,45)
+          
         end # case
       end # if
 

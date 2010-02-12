@@ -7,15 +7,17 @@ class Weeklyreport < ActiveRecord::Base
   belongs_to :campus, :class_name => 'Campus'
   
   # This method will return all the given stat total during a given month on a given campus
-  def self.find_stats_campus(month_id,campus_id,stat)
+  def self.find_stats_campus(month_id, campus_id, stat)
     result = find(:all, :joins => :week, :conditions => ["#{_(:campus_id)} = ? AND #{_(:month_id, :week)} = ?",campus_id,month_id] )
     total = result.sum(&stat) # sum the specific stat
     total
   end
   
-  # This method will return the staff ids that have submitted stats during the given semester
-  def self.find_staff(semester_id,campus_id)
-    find(:all, :joins => :week, :select => 'DISTINCT staff_id', :conditions => ["#{__(:semester_id, :week)} = ? AND #{_(:campus_id)} = ?", semester_id, campus_id])
+  # This method will return the staff id(s) that have submitted stats during the given semester
+  def self.find_staff(semester_id, campus_id, staff_id = nil)
+    conditions = "#{__(:semester_id, :week)} = #{semester_id} AND #{_(:campus_id)} = #{campus_id}"
+    conditions += " AND #{:staff_id} = #{staff_id}" if staff_id
+    find(:all, :joins => :week, :select => 'DISTINCT staff_id', :conditions => conditions)
   end
   
   # This method is used to check whether a staff has submitted stats for a specific week
