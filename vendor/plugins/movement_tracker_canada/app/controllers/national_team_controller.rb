@@ -57,8 +57,8 @@ class NationalTeamController < ApplicationController
     @completed = Array.new(Prcmethod.last.id+1){0}
 
     semesters = Semester.find_semesters_by_year(yearID) # find all semesters in a year
-    year_start = Date.parse_date( semesters.first.start_date )
-    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).start_date )
+    year_start = Date.parse_date( semesters.first.semester_startDate )
+    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
 
     prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ?", year_start, year_end]) # all prcs in the year
     @total = prcs.size

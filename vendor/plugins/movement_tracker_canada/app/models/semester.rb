@@ -26,12 +26,12 @@ class Semester < ActiveRecord::Base
   
   # This method will return the start date of a given semester id
   def self.find_start_date(semester_id)
-    find(:first, :conditions => {_(:id) => semester_id} ).start_date
+    find(:first, :conditions => {_(:id) => semester_id} ).semester_startDate
   end
   
   # This method will return the end date of a given semester id
   def self.find_end_date(semester_id)
-    find(:first, :conditions => {_(:id) => (semester_id+1)} ).start_date
+    find(:first, :conditions => {_(:id) => (semester_id+1)} ).semester_startDate
   end
   
   # This method will return all the semesters associated with a given year
