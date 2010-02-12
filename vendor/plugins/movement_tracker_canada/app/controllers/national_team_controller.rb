@@ -21,11 +21,6 @@ class NationalTeamController < ApplicationController
     
     @years = Year.find_years(current_id)
     
-    # initialize variables for calculations
-    @methods = Array.new(14){0}
-    @completed = Array.new(14){0}
-    @total = 0 
-
     # calculate the totals and percentages of the various indicated decisions methods
     calculations(@yearID) 
     
@@ -58,17 +53,21 @@ class NationalTeamController < ApplicationController
   
   # calculations method
   def calculations(yearID)
+    @methods = Array.new(Prcmethod.last.id+1){0}
+    @completed = Array.new(Prcmethod.last.id+1){0}
+
     semesters = Semester.find_semesters_by_year(yearID) # find all semesters in a year
-    semesters.each do |semester| # for each semester total the different calculations and methods
-      prcs = semester.prc
-      prcs.each do |prc|
-        @total += 1
-        @methods[prc.prcMethod_id] += 1
-        if prc.prc_7upCompleted == 1
-          @completed[prc.prcMethod_id] += 1
-        end
-      end
+    year_start = Date.parse_date( semesters.first.start_date )
+    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).start_date )
+
+    prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ?", year_start, year_end]) # all prcs in the year
+    @total = prcs.size
+
+    prcs.each do |prc|
+      @methods[prc.prcMethod_id] += 1
+      @completed[prc.prcMethod_id] += 1 if prc.prc_7upCompleted == 1
     end
+
   end # end of calculations method
   
 end

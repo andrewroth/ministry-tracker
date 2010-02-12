@@ -148,21 +148,25 @@
         <% start_date = Month.find_start_date(@monthID) %>
         <% end_date = Month.find_end_date(@monthID) %>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", Prc.count_by_date(start_date,end_date,oa_region) %>
             </center>
         </td>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", Prc.count_by_date(start_date,end_date,west_region) %>
             </center>
         </td>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", Prc.count_by_date(start_date,end_date,quebec_region) %>
             </center>
         </td>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", Prc.count_by_date(start_date,end_date,national_region) %>
             </center>

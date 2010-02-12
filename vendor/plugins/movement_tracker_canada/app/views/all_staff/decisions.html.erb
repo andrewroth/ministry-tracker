@@ -52,11 +52,11 @@
     </p>
 </div>
 <!-- Form - End -->
-
+<br/>
 <!-- Main Content - Start -->
 <div id="results" align="center"<% if @decisions.nil? %> style="display: none"<% end %> ><% if @decisions.present? %>
     <p>
-    	<span class="title1">Indicated Decisions at <%= @campusSelected %> staff during <%= @semesterSelected %></span>
+    	<span class="title1">Indicated Decisions at <%= @campusSelected %> during <%= @semesterSelected %></span>
 	<p>
         <%= render :partial => "indicated_decisions_total" %>
         <br/>
