@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
   belongs_to :accountadmin_accountgroup, :foreign_key => :accountgroup_id
   belongs_to :accountadmin_language, :foreign_key => :language_id
 
-  validates_presence_of _(:last_login)
   validates_uniqueness_of _(:username), :case_sensitive => false, :message => "(username) has already been taken"
 
   validates_no_association_data :access, :persons, :accountadmin_accessgroups, :accountadmin_vieweraccessgroups, :accountadmin_accountadminaccesses
