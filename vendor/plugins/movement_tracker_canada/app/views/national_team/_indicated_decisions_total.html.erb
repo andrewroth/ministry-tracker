@@ -9,17 +9,25 @@
     </tr>
     <% start_date = Semester.find_start_date(@semesterID) %>
     <% end_date = Semester.find_end_date(@semesterID) %>
+    <% total = 0 %>
     <% @campuses.each do |campus| %>
-    <% campusID = Campus.find_campus_id(campus) %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
-            <%= campus %>
-        </td>
-        <td>
-        	<center>
-            <%= Prc.count_by_campus(start_date, end_date, campusID) %>
-			</center>
-        </td>
-    </tr>
+      <% campusID = Campus.find_campus_id(campus) %>
+      <% campus_total = Prc.count_by_campus(start_date, end_date, campusID) %>
+      <% total += campus_total %>
+
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td>
+              <%= campus %>
+          </td>
+          <td>
+              <center>
+                  <%= campus_total %>
+              </center>
+          </td>
+      </tr>
 	<% end %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td>Total</td>
+      <td><center><%= total %></center></td>
+    </tr>
 </table>

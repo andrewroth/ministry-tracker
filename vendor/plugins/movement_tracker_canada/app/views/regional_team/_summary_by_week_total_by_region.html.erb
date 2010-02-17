@@ -125,12 +125,14 @@
         <% result = Prc.count_by_date(start_date,end_date,@region_id) %>
         <% total += result %>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", result %>
             </center>
         </td>
         <% end %>
         <td>
+            <br/>
             <center>
                 <%= sprintf "%s", total %>
             </center>

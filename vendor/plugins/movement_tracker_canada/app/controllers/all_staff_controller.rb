@@ -90,7 +90,10 @@ class AllStaffController < ApplicationController
       @semesterSelected = params[:semester]['semester']
       @campusID = Campus.find_campus_id(@campusSelected) 
       @semesterID = Semester.find_semester_id(@semesterSelected)
-      @staff = Weeklyreport.find_staff(@semesterID, @campusID)
+
+      @staffID = authorized?(:monthly_summary_by_campus, :campus_directors) ? nil : @me.cim_hrdb_staff.id
+      @staff = Weeklyreport.find_staff(@semesterID, @campusID, @staffID)
+
       @weeks = Week.find_weeks_in_semester(@semesterID)
       @months = Month.find_months_by_semester(@semesterID)
     end

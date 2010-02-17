@@ -13,6 +13,7 @@ class CimHrdbStaff < ActiveRecord::Base
 
   # This method will return the person id associated with a given staff id
   def self.find_person_id(staff_id)
-    find(:first, :conditions => {_(:id) => staff_id})["#{_(:person_id)}"]
+    staff = find(:first, :conditions => {_(:id) => staff_id})
+    staff ? staff["#{_(:person_id)}"] : nil
   end
 end

@@ -435,6 +435,10 @@ end
     end
   end
   
+  def is_student
+    ministry_involvements.detect{ |mi| mi.ministry_role.is_a?(StaffRole) && mi.end_date.nil? }.nil?
+  end
+  
   protected
   def update_stamp
     self.updated_at = Time.now
@@ -456,4 +460,5 @@ end
       end
     end
   end
+
 end  

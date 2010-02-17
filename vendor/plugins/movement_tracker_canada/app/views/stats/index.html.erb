@@ -6,9 +6,7 @@
     <span class="text">Your homepage for navigating the campus ministry stats system.</span>
 </p>
 <!-- Check all staff access level -->
-<% #if @allstaff_access 
-   if true
-%>
+<% if @allstaff_access %>
 <span class="title1">All Staff (Personal Ministry)</span>
 <br/>
 <span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>
@@ -26,9 +24,7 @@
 <br/>
 <br/> -->
 <!-- Check all campus director access level -->
-<% #if @campusdirector_access 
-	if true
-%>
+<% if @campusdirector_access %>
 <span class="title1">Campus Directors</span>
 <br/>
 <span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
@@ -38,9 +34,7 @@
 <br/>
 <% end %>
 <!-- Check regional team access level -->
-<% #if @regional_access 
-	if true
-%>
+<% if @regional_access %>
 <span class="title1">Regional Team</span>
 <br/>
 <span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>
@@ -52,9 +46,7 @@
 <br/>
 <% end %>
 <!-- Check national team access level -->
-<% #if @national_access 
-	if true
-%>
+<% if @national_access %>
 <span class="title1">National Team</span>
 <br/>
 <span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>

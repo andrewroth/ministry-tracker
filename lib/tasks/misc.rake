@@ -7,6 +7,41 @@ namespace :cmt do
       puts "Rebuilt #{rebuilt.length} views"
     end
   end
+
+
+  task :remove_staff_involvement_from_students => :environment do
+    students = Person.all(:joins => {:ministry_involvements => :ministry_role}, :conditions => [ "#{MinistryRole.table_name}.type = ? and #{MinistryInvolvement.table_name}.end_date IS NULL", "StudentRole" ])
+
+    involvements_to_remove = MinistryInvolvement.all(:joins => [:person, :ministry_role],
+                                                     :select => "#{Person.table_name}.person_id, #{Person.table_name}.person_fname, #{Person.table_name}.person_lname, #{MinistryInvolvement.table_name}.id AS ministry_involvement_id",
+                                                     :conditions => [ "#{MinistryRole.table_name}.type = ? and #{MinistryInvolvement.table_name}.end_date IS NULL and #{Person.table_name}.person_id IN (?)", "StaffRole", students ])
+
+    if involvements_to_remove.size == 0
+      puts "Found no students with staff involvements."
+      exit
+    end
+
+    puts "\nThe following " + involvements_to_remove.size.to_s + " people have student ministry involvements AND staff ministry involvements:\n\n"
+    involvements_to_remove.each do |involvement|
+      puts involvement.person_id.to_s + " " + involvement.person_fname.to_s + " " + involvement.person_lname.to_s
+    end
+
+    puts "\nType 'yes' to remove these people's staff ministry involvements, type 'no' to cancel."
+    response = STDIN.gets
+    if response.to_s.upcase == "YES\n"
+      puts "Removing staff involvements..."
+
+      involvements_to_remove.each do |involvement|
+        MinistryInvolvement.find(involvement.ministry_involvement_id).destroy
+      end
+
+      puts "Done."
+    else
+      puts "Cancelled the task, no records modified."
+    end
+
+  end
+
 end
 
 namespace :db do
