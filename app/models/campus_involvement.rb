@@ -39,8 +39,8 @@ class CampusInvolvement < ActiveRecord::Base
       mi = ministry.ministry_involvements.create :person => person, :ministry_role => MinistryRole.default_student_role
     elsif mi.ministry_role_id.nil? || !mi.try(:ministry_role).is_a?(StudentRole)
       mi.ministry_role_id = MinistryRole.default_student_role.id
-      mi.save
     end
+    mi.save
     @ministry_involvement = mi
   end
 end
