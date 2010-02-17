@@ -1,15 +1,14 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
-$:.unshift(File.dirname(__FILE__) + '/../../rspec/lib')
 
 require 'rubygems'
-require 'active_record'
-gem 'sqlite3-ruby'
-
-require File.dirname(__FILE__) + '/../init'
 require 'spec'
-  
-ActiveRecord::Base.logger = Logger.new('/tmp/dj.log')
-ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => '/tmp/jobs.sqlite')
+require 'active_record'
+require 'delayed_job'
+
+logger = Logger.new('/tmp/dj.log')
+ActiveRecord::Base.logger = logger
+Delayed::Worker.logger = logger
+ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 ActiveRecord::Migration.verbose = false
 
 ActiveRecord::Schema.define do
@@ -32,7 +31,6 @@ ActiveRecord::Schema.define do
 
 end
 
-
 # Purely useful for test cases...
 class Story < ActiveRecord::Base
   def tell; text; end       
@@ -40,3 +38,6 @@ class Story < ActiveRecord::Base
   
   handle_asynchronously :whatever
 end
+
+require 'sample_jobs'
+require 'shared_backend_spec'
