@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'factory_girl'
 
 class ActiveSupport::TestCase
   include ActionController::TestProcess
@@ -43,6 +44,18 @@ class ActiveSupport::TestCase
     @person = @user.person
   end
   
+  def setup_campus_involvements    
+    1.upto(1001) do |i| 
+      Factory.next :campusinvolvement
+    end
+  end 
+  
+  def setup_people    
+    1.upto(1001) do |i| 
+      Factory.next :person
+    end
+  end 
+ 
   protected
     def upload_file(options = {})
       use_temp_file options[:filename] do |file|
