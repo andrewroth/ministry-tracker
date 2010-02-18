@@ -27,3 +27,8 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 config.gem 'factory_girl'
+
+class Factory
+  undef id
+  undef type
+end
