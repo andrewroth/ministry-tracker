@@ -28,7 +28,14 @@ config.action_mailer.delivery_method = :test
 
 config.gem 'factory_girl'
 
+# Our factory_girl improvements
 class Factory
   undef id
   undef type
+
+  class Sequence
+    def reset
+      @value = 0
+    end
+  end
 end
