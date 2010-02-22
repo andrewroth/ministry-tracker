@@ -49,7 +49,8 @@ class PeopleControllerTest < ActionController::TestCase
     login('staff_on_ministry_with_no_campus')
     session[:ministry_id] = ministries(:top).id
     get :directory
-    assert ppl = assigns(:people)
+    assert_response :success, @response.body
+    assert(ppl = assigns(:people), "@people wasn't assigned")
     assert(ppl.detect {|p| p['person_id'].to_i == people(:staff_on_ministry_with_no_campus).id}, "staff_on_ministry_with_no_campus didn't show up.")
   end
   

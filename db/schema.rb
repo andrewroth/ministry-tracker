@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091104204904) do
+ActiveRecord::Schema.define(:version => 20100109055730) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20091104204904) do
 
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
   add_index "campus_involvements", ["ministry_id"], :name => "index_campus_involvements_on_ministry_id"
+  add_index "campus_involvements", ["person_id", "campus_id", "end_date"], :name => "index_campus_involvements_on_p_id_and_c_id_and_end_date", :unique => true
   add_index "campus_involvements", ["person_id"], :name => "person_id"
 
   create_table "campuses", :force => true do |t|
@@ -279,7 +280,6 @@ ActiveRecord::Schema.define(:version => 20091104204904) do
   end
 
   create_table "emails", :force => true do |t|
-    t.string   "salutation",          :default => "Hi"
     t.string   "subject"
     t.text     "body"
     t.text     "people_ids"

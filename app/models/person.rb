@@ -217,9 +217,10 @@ end
     self[:email] || primary_email
   end
   
-  # def all_ministries
-  #   (self.ministries + self.campus_ministries).uniq.sort
-  # end
+  def email=(value)
+    current_address ||= self.addresses.new(:address_type => 'current')
+    current_address.email = value
+  end
   
   def ministry_tree
     res =  lambda {
