@@ -7,10 +7,10 @@ Factory.define :person_1, :class => Person do |p|
   p.preferred_name 'Josh'
   p.year_in_school 'Alumni'
   p.level_of_school 'Undergrad'
-  p.graduation_date '2004-06-15'
+  p.graduation_date '06/15/2004'
   p.major 'Philosophy'
   p.minor 'Computer Science'
-  p.birth_date '1982-07-07'
+  p.birth_date '07/07/1982'
   p.bio "I\'m an MK"
   p.gender '1'
 end
@@ -29,10 +29,18 @@ Factory.define :person_3, :class => Person do |p|
   p.gender 'F'
 end
 
+Factory.sequence :person_id do |n|
+  n
+end
+
+Factory.sequence :last_name do |n|
+  "A#{n}"
+end
+
 Factory.define :person, :class => Person do |c|
-  c.sequence(:id) {|n| n }
+  c.id { Factory.next(:person_id) }
   c.first_name 'A'
-  c.sequence(:last_name) {|n| "A#{n}" }
+  c.last_name { Factory.next(:last_name) }
 end
 
 Factory.define :person_5, :class => Person do |p|
