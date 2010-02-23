@@ -56,6 +56,7 @@ class CimHrdbPeopleController < ApplicationController
     @cim_hrdb_person = Person.find(params[:id])
     @cim_hrdb_assignments = Assignment.all(:conditions => {:person_id => @cim_hrdb_person.id})
     @cim_hrdb_person_years = CimHrdbPersonYear.all(:conditions => {:person_id => @cim_hrdb_person.id})
+    @is_active_staff = @cim_hrdb_person.cim_hrdb_staff.nil? ? false : @cim_hrdb_person.cim_hrdb_staff.boolean_is_active
   end
 
   # POST /cim_hrdb_people
