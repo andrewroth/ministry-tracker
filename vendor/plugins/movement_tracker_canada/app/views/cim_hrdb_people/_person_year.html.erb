@@ -20,7 +20,7 @@
   </table>
 
 <% else %>
-  <br/>This person has no year in school.<br/>
+  <br/><%= @cim_hrdb_person.first_name %> has no year in school.<br/>
 <% end %>
 <br/>
 <%= link_to 'New year in school', new_cim_hrdb_person_cim_hrdb_person_year_path(@cim_hrdb_person) %>

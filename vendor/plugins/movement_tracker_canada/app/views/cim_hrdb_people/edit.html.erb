@@ -3,14 +3,13 @@
 <h2><%=h @cim_hrdb_person.id.to_s + " - " + @cim_hrdb_person.first_name + " " + @cim_hrdb_person.last_name %></h2>
 <br/>
 
-<% if @cim_hrdb_person.cim_hrdb_staff %>
-  <p>
-    <%= check_box_tag :is_active, "", @cim_hrdb_person.cim_hrdb_staff.boolean_is_active %>
-    <%= observe_field :is_active, :url => {:action => 'change', :controller => "cim_hrdb_staff", :person_id => @cim_hrdb_person.id, :staff_id => @cim_hrdb_person.cim_hrdb_staff.staff_id}, :before => "$('#spinneria').show()", :complete => "$('#spinneria').hide()" %>
-    <b>Is active staff</b>
-    <%= spinner('ia') %>
-  </p>
-<% end %>
+<%= "<p>" + @cim_hrdb_person.first_name + " has never been granted staff access, to do so now check the box below:</p>" if @cim_hrdb_person.cim_hrdb_staff.nil? %>
+<p>
+  <%= check_box_tag :is_active, "", @is_active_staff %>
+  <%= observe_field :is_active, :url => {:action => 'change_or_add', :controller => "cim_hrdb_staff", :person_id => @cim_hrdb_person.id}, :before => "$('#spinneria').show()", :complete => "$('#spinneria').hide()" %>
+  <b>Is active staff</b>
+  <%= spinner('ia') %>
+</p>
 
 <br/>
 <p>
