@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
       return true if is_ministry_admin(ministry, person)
       ministry ||= @ministry || get_ministry
       person ||= (@me || get_person)
-      involvement = get_ministry_involvement(ministry)
+      involvement = get_ministry_involvement(ministry, person)
       return (involvement && involvement.try(:ministry_role).is_a?(StaffRole)) || ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
     

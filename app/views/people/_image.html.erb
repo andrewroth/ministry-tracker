@@ -3,15 +3,18 @@
   
   <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
     <%= image_tag 'no_photo.png', :size => '200x200' %>
+      <%- if authorized?(:edit, :people) -%>
 	  <div id="profileCaption">
 	    <%= link_to_function image_tag("add.png") + 'Add Picture', "show_upload_picture()"  %>
 	  </div>
+	  <%- end -%>
 	<%- else -%>
 	 <%= image_tag 'photo_coming.png', :size => '200x200' %>
 	<%- end -%>
 <%- else -%>
   <%= image_tag(@person.profile_picture.public_filename(:medium)) %>
   <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
+      <%- if authorized?(:edit, :people) -%>
 	  <div id="profileCaption">
 	    <%= link_to_function image_tag("pencil.png") + 'Change', "show_upload_picture()"  %>
   	  <%= link_to_remote(image_tag("delete.png") + 'Delete', :url => profile_picture_url(:id => @person.profile_picture.try(:id), 
@@ -19,6 +22,7 @@
   	                                                       :method => :delete,
   	                                                       :before => "$('#spinner').show()") %>
 	  </div>
+	  <%- end -%>
 	<%- end -%>
 <%- end -%>
 </div>
