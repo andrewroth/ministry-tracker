@@ -59,7 +59,19 @@ class ActiveSupport::TestCase
       Factory.next :person
     end
   end 
- 
+
+  def setup_ministry_roles
+    Factory(:ministryrole_1)
+    Factory(:ministryrole_2)
+    Factory(:ministryrole_3)
+    Factory(:ministryrole_4)
+    Factory(:ministryrole_5)
+    Factory(:ministryrole_6)
+    Factory(:ministryrole_7)
+    Factory(:ministryrole_8)
+    Factory(:ministryrole_9)
+  end
+
   protected
     def upload_file(options = {})
       use_temp_file options[:filename] do |file|

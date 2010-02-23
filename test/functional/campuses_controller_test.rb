@@ -6,6 +6,18 @@ class CampusesController; def rescue_action(e) raise e end; end
 
 class CampusesControllerTest < ActionController::TestCase
   def setup
+    Factory(:user_1)
+    Factory(:person_1)
+    Factory(:campusinvolvement_3)
+    Factory(:ministry_1)
+    Factory(:ministry_2)
+    Factory(:ministryinvolvement_1)
+    Factory(:ministryinvolvement_2)
+    Factory(:campus_1)
+    Factory(:campus_2)
+    Factory(:country_1)
+    setup_ministry_roles
+
     login
   end
 
