@@ -7,6 +7,95 @@ namespace :cmt do
       puts "Rebuilt #{rebuilt.length} views"
     end
   end
+
+
+  desc "add c4c staff ministry involvement to all active staff in cim_hrdb_staff"
+  task :add_missing_staff_ministry_involvements => :environment do
+    c4c = Ministry.find_by_name 'Campus for Christ'
+    people_with_staff_involvements = MinistryInvolvement.all(:joins => [:ministry_role, :person],
+                                                             :select => "DISTINCT #{Person.table_name}.person_id",
+                                                             :conditions => ["#{MinistryRole.table_name}.type = ? AND #{MinistryInvolvement.table_name}.ministry_id = ? AND #{MinistryInvolvement.table_name}.end_date IS NULL", "StaffRole", c4c.id])
+
+    staff_needing_involvements = CimHrdbStaff.all(:conditions => ["#{CimHrdbStaff.table_name}.is_active = 1 AND #{CimHrdbStaff.table_name}.person_id NOT IN (?)", people_with_staff_involvements.map { |p| p.person_id } ])
+
+    if staff_needing_involvements.size == 0
+      puts "Found no staff with missing staff involvements."
+      exit
+    end
+
+    puts "\nThe following " + staff_needing_involvements.size.to_s + " people, who are active staff in cim_hrdb_staff, were found to not have a Campus for Christ staff ministry involvement:\n\n"
+    staff_needing_involvements.each do |staff|
+      puts staff.person_id.to_s + " " + staff.person.person_fname.to_s + " " + staff.person.person_lname.to_s
+    end
+
+    puts "\nType 'yes' to add a Campus for Christ staff ministry involvement the these people, type 'no' to cancel."
+    response = STDIN.gets
+    if response.to_s.upcase == "YES\n"
+      puts "Adding missing staff involvements..."
+
+      staff_needing_involvements.each do |staff|
+        staff.person.map_cim_hrdb_to_mt
+      end
+
+      puts "Done."
+    else
+      puts "Cancelled the task, no records modified."
+      exit
+    end
+  end
+
+
+  desc "remove staff ministry involvement from students that aren't staff"
+  task :remove_staff_involvement_from_students => :environment do
+    puts "\nType 'yes' to check the cim_hrdb_staff table for people who are legitimately staff, otherwise type 'no' (you probably want to type 'yes')."
+    response = STDIN.gets
+
+    if response.to_s.upcase == "NO\n"
+      # find all people that have a ministry involvement of type StudentRole
+      students = Person.all(:joins => {:ministry_involvements => :ministry_role},
+                            :conditions => [ "#{MinistryRole.table_name}.type = ? AND #{MinistryInvolvement.table_name}.end_date IS NULL", "StudentRole" ])
+
+      msg = " people have student ministry involvements AND staff ministry involvements:\n\n"
+
+    else
+      # find all people that have a ministry involvement of type StudentRole and are EITHER not present in the cim_hrdb_staff table OR are present in cim_hrdb_staff table but is_active = 0
+      students = Person.all(:include => {:cim_hrdb_staff => [], :ministry_involvements => :ministry_role},
+                            :conditions => [ "(#{CimHrdbStaff.table_name}.staff_id IS NULL OR #{CimHrdbStaff.table_name}.is_active = 0) AND #{MinistryRole.table_name}.type = ? AND #{MinistryInvolvement.table_name}.end_date IS NULL", "StudentRole" ])
+                          
+      msg = " people have student ministry involvements AND staff ministry involvements AND are EITHER not in the cim_hrdb_staff table OR are in the cim_hrdb_staff table but is_active is false:\n\n"
+    end
+
+    # of the students previously found, find those that have a ministry involvement of type StaffRole
+    involvements_to_remove = MinistryInvolvement.all(:joins => [:person, :ministry_role],
+                                                     :select => "#{Person.table_name}.person_id, #{Person.table_name}.person_fname, #{Person.table_name}.person_lname, #{MinistryInvolvement.table_name}.id AS ministry_involvement_id",
+                                                     :conditions => [ "#{MinistryRole.table_name}.type = ? AND #{MinistryInvolvement.table_name}.end_date IS NULL AND #{Person.table_name}.person_id IN (?)", "StaffRole", students.map { |p| p.person_id } ])
+
+    if involvements_to_remove.size == 0
+      puts "Found no students with staff involvements."
+      exit
+    end
+
+    puts "\nThe following " + involvements_to_remove.size.to_s + msg
+    involvements_to_remove.each do |involvement|
+      puts involvement.person_id.to_s + " " + involvement.person_fname.to_s + " " + involvement.person_lname.to_s
+    end
+
+    puts "\nType 'yes' to remove these people's staff ministry involvements, type 'no' to cancel."
+    response = STDIN.gets
+    if response.to_s.upcase == "YES\n"
+      puts "Removing staff involvements..."
+
+      involvements_to_remove.each do |involvement|
+        MinistryInvolvement.find(involvement.ministry_involvement_id).destroy
+      end
+
+      puts "Done."
+    else
+      puts "Cancelled the task, no records modified."
+      exit
+    end
+  end
+
 end
 
 namespace :db do

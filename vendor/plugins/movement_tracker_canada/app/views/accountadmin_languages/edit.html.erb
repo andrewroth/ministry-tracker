@@ -1,0 +1,24 @@
+<h1>Editing Language</h1>
+<br/>
+<% form_for(@accountadmin_language) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :key %><br />
+    <%= f.text_field :key %>
+  </p>
+  <p>
+    <%= f.label :code %><br />
+    <%= f.text_field :code %>
+  </p>
+  <p>
+    <%= f.label :english_value %><br />
+    <%= f.text_area :english_value %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @accountadmin_language %> |
+<%= link_to 'Back', accountadmin_languages_path %>

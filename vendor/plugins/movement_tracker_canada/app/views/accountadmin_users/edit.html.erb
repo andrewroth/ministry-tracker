@@ -1,0 +1,68 @@
+<h1>Editing User</h1>
+<br/>
+<% form_for(@user, :url => accountadmin_user_path(@user), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :guid %><br />
+    <%= f.text_field :guid %>
+  </p>
+  <p>
+    <%= f.label :accountgroup_id %><br />
+    <%= f.collection_select :accountgroup_id, AccountadminAccountgroup.all, :id, :english_value %>
+  </p>
+  <p>
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :language_id %><br />
+    <%= f.collection_select :language_id, AccountadminLanguage.all, :id, :english_value %>
+  </p>
+  <p>
+    <%= f.label :is_active %><br />
+    <%= f.check_box :is_active %>
+  </p>
+  <p>
+    <%= f.label :last_login %><br />
+    <%= f.date_select :last_login %>
+  </p>
+  <p>
+    <%= f.label :remember_token %><br />
+    <%= f.text_field :remember_token %>
+  </p>
+  <p>
+    <%= f.label :remember_token_expires_at %><br />
+    <%= f.datetime_select :remember_token_expires_at %>
+  </p>
+  <p>
+    <%= f.label :email_validated %><br />
+    <%= f.check_box :email_validated %>
+  </p>
+  <p>
+    <%= f.label :developer %><br />
+    <%= f.check_box :developer %>
+  </p>
+  <p>
+    <%= f.label :facebook_hash %><br />
+    <%= f.text_field :facebook_hash %>
+  </p>
+  <p>
+    <%= f.label :facebook_username %><br />
+    <%= f.text_field :facebook_username %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+  <%#*<p>%>
+  <%#*<fieldset>%>
+    <%#*<legend>Access groups</legend>%>
+    <%# @access_groups.each do |access_group| %>
+      <%#= f.checkbox(access_group[:name], access_group[:value], access_group[:checked]) %>
+    <%# end %>
+  <%#*</fieldset>%>
+  <%#*</p>%>
+<% end %>
+
+<%= link_to 'Show', accountadmin_user_path(@user) %> |
+<%= link_to 'Back', accountadmin_users_path %>

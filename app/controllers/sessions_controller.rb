@@ -16,6 +16,22 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
+    unless request.domain(2) =~ /pulse/
+      # to help with testing - remove before final release
+      p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)
+      if p && p.user
+        self.current_user = p.user
+        session[:ministry_role_id] = nil
+        redirect_to :controller => 'dashboard', :action => 'index'
+        return
+      elsif params[:login].present?
+        self.current_user = User.find_by_viewer_userID params[:login]
+        session[:ministry_role_id] = nil
+        redirect_to :controller => 'dashboard', :action => 'index'
+        return
+      end
+    end
+
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback

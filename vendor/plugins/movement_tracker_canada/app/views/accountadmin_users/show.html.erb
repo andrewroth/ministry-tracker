@@ -1,0 +1,63 @@
+<p>
+  <b>Guid:</b>
+  <%=h @user.guid %>
+</p>
+
+<p>
+  <b>Account group:</b>
+  <%=h @user.accountadmin_accountgroup.english_value %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%=h @user.username %>
+</p>
+
+<p>
+  <b>Language:</b>
+  <%=h @user.accountadmin_language.english_value %>
+</p>
+
+<p>
+  <b>Is active:</b>
+  <%=h @user.human_is_active %>
+</p>
+
+<p>
+  <b>Last login:</b>
+  <%=h @user.last_login %>
+</p>
+
+<p>
+  <b>Remember token:</b>
+  <%=h @user.remember_token %>
+</p>
+
+<p>
+  <b>Remember token expires at:</b>
+  <%=h @user.remember_token_expires_at %>
+</p>
+
+<p>
+  <b>Email validated:</b>
+  <%=h @user.email_validated %>
+</p>
+
+<p>
+  <b>Developer:</b>
+  <%=h @user.developer %>
+</p>
+
+<p>
+  <b>Facebook hash:</b>
+  <%=h @user.facebook_hash %>
+</p>
+
+<p>
+  <b>Facebook username:</b>
+  <%=h @user.facebook_username %>
+</p>
+
+
+<%= link_to 'Edit', edit_accountadmin_user_path(@user) %> |
+<%= link_to 'Back', accountadmin_users_path %>

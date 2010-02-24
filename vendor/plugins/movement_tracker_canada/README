@@ -1,0 +1,4 @@
+== App/Models ==
+
+These models wrap and extend the existing models.  This is to provide a mapping from the existing movement tracker schema to the internal canadian hrdb.
+

@@ -1,0 +1,18 @@
+require_model 'country'
+
+class Country < ActiveRecord::Base
+  unloadable
+  load_mappings
+
+  set_primary_key "country_id"
+  has_many :states, :foreign_key => :country_id
+  has_many :regions, :foreign_key => :country_id
+  has_many :people
+
+  validates_no_association_data :states, :regions, :people
+
+  def country() country_desc end
+  def is_closed() 
+    nil 
+  end
+end

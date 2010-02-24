@@ -1,0 +1,14 @@
+<h1>New Title</h1>
+<br/>
+<% form_for(@title) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :desc, "Description" %><br />
+    <%= f.text_field :desc %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', titles_path %>

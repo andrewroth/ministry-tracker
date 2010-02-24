@@ -1,0 +1,27 @@
+<h1>Listing Languages</h1>
+<br/>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Code</th>
+      <th>English value</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @accountadmin_languages.each do |accountadmin_language| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= accountadmin_language_path(accountadmin_language) %>><%=h accountadmin_language.key %></td>
+      <td class="person_row" person_link=<%= accountadmin_language_path(accountadmin_language) %>><%=h accountadmin_language.code %></td>
+      <td class="person_row" person_link=<%= accountadmin_language_path(accountadmin_language) %>><%=h accountadmin_language.english_value %></td>
+      <td><%= link_to 'Show', accountadmin_language %></td>
+      <td><%= link_to 'Edit', edit_accountadmin_language_path(accountadmin_language) %></td>
+      <td><%= link_to 'Destroy', accountadmin_language, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New language', new_accountadmin_language_path %>

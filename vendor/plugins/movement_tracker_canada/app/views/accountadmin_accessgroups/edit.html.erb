@@ -1,0 +1,24 @@
+<h1>Editing Access Group</h1>
+<br/>
+<% form_for(@accountadmin_accessgroup) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :accesscategory_id, "Access category" %><br />
+    <%= f.collection_select :accesscategory_id, AccountadminAccesscategory.all, :id, :english_value %>
+  </p>
+  <p>
+    <%= f.label :key %><br />
+    <%= f.text_field :key %>
+  </p>
+  <p>
+    <%= f.label :english_value %><br />
+    <%= f.text_area :english_value %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @accountadmin_accessgroup %> |
+<%= link_to 'Back', accountadmin_accessgroups_path %>

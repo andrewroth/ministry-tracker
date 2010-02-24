@@ -39,21 +39,24 @@
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
+          <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
+          <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change", :url => switch_list_ministries_url %></div>
+            <div id="switch_ministries_list" style="display:none">
+              &nbsp;
+            </div>
+          <%- end -%>
 		    </div>
   			<div class="clear"></div>
 			</div>
 			
 			<div id="greenbar">	
-        <h1 id="title"><%= @ministry.try(:name) == Cmt::CONFIG[:default_ministry_name] ? I18n.t(:slogan, :default => 'Campus Movement Tracker') : @ministry.try(:name) %><%- if @is_staff_somewhere[@me.id] %> <%= link_to_remote "&#92;&#47;", :url => switch_list_ministries_url %><%- end -%></h1>
+        <h1 id="title"><%= I18n.t(:slogan, :default => 'Campus Movement Tracker') %></h1>
         <%= tabnav :main %>
-        <div id="switch_ministries_list" style="display:none">
-          &nbsp;
-        </div>
 			</div>
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-          <div id="username"><%= I18n.t(:please_login, :default => 'Please Login') %></div>
+          <div id="username"><%= link_to I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller) %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>

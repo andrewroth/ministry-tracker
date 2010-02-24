@@ -1,0 +1,27 @@
+<h1>Listing Provinces</h1>
+<br/>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Short description</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @states.each do |state| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="person_row" person_link=<%= cim_hrdb_state_path(state) %>><%=h state.name %></td>
+      <td class="person_row" person_link=<%= cim_hrdb_state_path(state) %>><%=h state.abbrev %></td>
+      <td class="person_row" person_link=<%= cim_hrdb_state_path(state) %>><%=h state.country.name %></td>
+      <td><%= link_to 'Show', cim_hrdb_state_path(state) %></td>
+      <td><%= link_to 'Edit', edit_cim_hrdb_state_path(state) %></td>
+      <td><%= link_to 'Destroy', cim_hrdb_state_path(state), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New province', new_cim_hrdb_state_path %>

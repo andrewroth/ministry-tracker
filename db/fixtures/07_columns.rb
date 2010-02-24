@@ -12,37 +12,35 @@ end
 
 Column.seed(:title) do |c|
   c.title = 'Street'
-  c.from_clause = 'CurrentAddress'
-  c.select_clause = 'address1'
-  c.join_clause = "address_type = 'current'"
+  c.from_clause = 'Person'
+  c.select_clause = 'person_local_addr'
 end
 
 Column.seed(:title) do |c|
   c.title = 'City'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'city'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
   c.title = 'State'
-  c.from_clause = 'CurrentAddress'
-  c.select_clause = 'state'
-  c.join_clause = "address_type = 'current'"
+  c.select_clause = 'province_shortDesc'
+  c.from_clause = 'State'
+  c.source_model = 'Person'
+  c.source_column = 'province_id'
+  c.foreign_key = 'id'
 end
 
 Column.seed(:title) do |c|
   c.title = 'Zip'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'zip'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
   c.title = 'Email'
-  c.from_clause = 'CurrentAddress'
+  c.from_clause = 'Person'
   c.select_clause = 'email'
-  c.join_clause = "address_type = 'current'"
 end
 
 Column.seed(:title) do |c|
@@ -53,23 +51,16 @@ Column.seed(:title) do |c|
 end
 
 Column.seed(:title) do |c|
-  c.title = 'Website'
-  c.from_clause = 'Person'
-  c.select_clause = 'url'
-  c.column_type = 'url'
-end
-
-Column.seed(:title) do |c|
   c.title = 'Campus'
   c.from_clause = 'Campus'
-  c.select_clause = 'abbrv'
+  c.select_clause = 'campus_shortDesc'
   c.source_model = 'CampusInvolvement'
   c.source_column = 'campus_id'
   c.foreign_key = 'id'
 end
 
 Column.seed(:title) do |c|
-  c.title = 'School Year'
+  c.title = 'SchoolYear'
   c.from_clause = 'SchoolYear'
   c.select_clause = 'name'
   c.source_model = 'CampusInvolvement'
@@ -77,17 +68,32 @@ Column.seed(:title) do |c|
   c.foreign_key = 'id'
 end
 
+# We don't need websites for Emu
+#
+# Column.seed(:title) do |c|
+#   c.title = 'Website'
+#   c.from_clause = 'Person'
+#   c.select_clause = 'url'
+#   c.column_type = 'url'
+# end
+
 Column.seed(:title) do |c|
   c.title = 'Last Login'
   c.from_clause = 'User'
   c.select_clause = 'last_login'
-  c.source_model = 'Person'
-  c.source_column = 'user_id'
-  c.foreign_key = 'id'
+  c.source_model = 'Access'
+  c.source_column = 'viewer_id'
+  c.foreign_key = 'viewer_id'
 end
 
 Column.seed(:title) do |c|
   c.title = 'On Pulse Since'
   c.from_clause = 'MinistryInvolvement'
   c.select_clause = 'start_date'
+end
+
+Column.seed(:title) do |c|
+  c.title = 'Timetable Updated'
+  c.from_clause = 'Timetable'
+  c.select_clause = "(CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00'))"
 end

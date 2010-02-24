@@ -1,0 +1,26 @@
+<br/>
+<% if @cim_hrdb_assignments and @cim_hrdb_assignments.size > 0 %>
+  <table class="directorytable">
+    <thead>
+    <tr>
+      <th>Campus</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @cim_hrdb_assignments.each do |assignment| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row" person_link=<%= edit_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment) %>><%=h assignment.campus.desc %></td>
+        <td class="person_row" person_link=<%= edit_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment) %>><%=h assignment.assignmentstatus.desc %></td>
+        <td><%= link_to 'Edit', edit_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment) %></td>
+        <td><%= link_to 'Destroy', cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person, assignment), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <br/><%= @cim_hrdb_person.first_name %> has no assignments.<br/>
+<% end %>
+<br/>
+<%= link_to 'New assignment', new_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person) %>
+<br/>
