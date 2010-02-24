@@ -1,0 +1,16 @@
+
+development:
+  api_key: YOUR_API_KEY_HERE
+  secret_key: YOUR_API_SECRET_HERE
+  canvas_page_name: yourAppName
+  callback_url: http://path/to/your/callback/
+  pretty_errors: true
+  set_asset_host_to_callback_url: false
+  tunnel:
+    public_host_username: yourLoginName
+    public_host: www.yourexternaldomain.com
+    public_port: 8888
+    local_port: 3000
+    ssh_port: 22
+    server_alive_interval: 0
+

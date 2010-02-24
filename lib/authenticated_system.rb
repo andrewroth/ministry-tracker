@@ -10,7 +10,7 @@ module AuthenticatedSystem
     # Accesses the current user from the session.  Set it to :false if login fails
     # so that future calls do not hit the database.
     def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || :false)
+      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_fb || :false)
     end
     
     # Store the given user in the session.
@@ -65,7 +65,11 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to :controller => '/sessions', :action => 'new'
+          if facebook_session
+            redirect_to prompt_for_email_users_path
+          else
+            redirect_to :controller => '/sessions', :action => 'new'
+          end
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"
@@ -125,6 +129,13 @@ module AuthenticatedSystem
         self.current_user = u
       end
     end
+    
+    def login_from_fb
+      if facebook_session
+        self.current_user = User.find_by_fb_user(facebook_session.user)
+      end
+    end
+
     
     def logout_keeping_session!
       # Kill server-side auth cookie

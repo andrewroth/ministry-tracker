@@ -1,0 +1,10 @@
+<% form_tag(link_fb_user_users_path) do %>
+  <div>Welcome! Before you go any further, we need to get your email address. Don't worry, we're not going to spam you! We just need to know how to communicate with you.</div>
+  <div id='errors'>
+    <%= error_messages_for 'user' %>
+  </div>
+  <br/>
+  <%= label_tag :email, 'Your email:' %>
+  <%= text_field_tag :email, params[:email] %>
+  <%= submit_tag 'Save' %>
+<% end %>

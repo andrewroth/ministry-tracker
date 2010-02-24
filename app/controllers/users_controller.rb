@@ -1,7 +1,6 @@
-# CRUD for users
-
 class UsersController < ApplicationController
   filter_parameter_logging :password
+  skip_before_filter :login_required, CASClient::Frameworks::Rails::GatewayFilter, :authorization_filter, :get_ministry, :force_required_data, :only => [:prompt_for_email, :link_fb_user]
   # GET /users
   # GET /users.xml
   def index
@@ -89,4 +88,32 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def prompt_for_email
+    unless facebook_session
+      redirect_to '/' and return
+    end
+    
+  end
+  
+  def link_fb_user
+    unless params[:email] =~ Authentication.email_regex
+      flash[:warning] = "We really need you to enter a valid email address"
+      render :prompt_for_email and return
+    end
+    if facebook_session
+      if !current_user || current_user == :false
+        #register with fb
+        self.current_user = User.create_from_fb_connect(facebook_session.user, params[:email])
+        redirect_to set_initial_campus_person_url(current_user.person)
+      else
+        #connect accounts
+        self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
+        redirect_to person_path(current_user.person)
+      end
+    else
+      redirect_to '/'
+    end
+  end
+
 end

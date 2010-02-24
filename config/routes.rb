@@ -92,7 +92,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :addresses
 
-  map.resources :users
+  map.resources :users, :collection => {:link_fb_user => :get, :prompt_for_email => :get}
   
   map.resource  :session
   

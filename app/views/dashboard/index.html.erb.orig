@@ -1,0 +1,271 @@
+<div id="sidebar">
+	<div id="gettingstarted">
+		<b>Getting Started: </b><br>
+	  	<%= link_to image_tag('groupbutton.png'), :controller => "groups", :action => "join"%><br>
+	  	<%= link_to image_tag('timetablebutton.png'), person_timetable_path(@me.id, 
+	                (@my.timetable || Timetable.create(:person_id => @me.id)).id) %>
+	</div>
+	
+	<%- if authorized?(:directory, :people) -%>
+    <div class="dashmodule">
+     	<div class="moduletitle">
+        	<h2>Recent Searches</h2>
+        	<div class="modulecontrols">
+          		<a href="" class="minmodule"></a>
+          		<a href="" class="movemodule"></a>
+          		<a href="" class="closemodule"></a>
+        	</div>
+      	</div>
+      	<div class="modulecontent">        
+        	<div class="lightgray">
+          		<ul class="searchicon">
+            		<% @my.searches.each do |search| %>
+              			<li><%= link_to(search.description, directory_people_path(:search_id => search.id, :format => :html)) %></li>
+            		<% end %>
+          		</ul>
+        	</div>
+		</div>
+	</div>
+    <%- end -%>
+
+    <div class="dashmodule">
+      	<div class="moduletitle">
+        	<h2>Quick Tools</h2>
+        	<div class="modulecontrols">
+          		<a href="" class="minmodule"></a>
+          		<a href="" class="movemodule"></a>
+          		<a href="" class="closemodule"></a>
+        	</div>
+      	</div>
+      	<div class="modulecontent">
+        	<ul>
+          		<li>
+            		<%= link_to('Go to your profile', person_url(@me.id)) %>
+          		</li>
+          		<li>
+            		<%= link_to('Enter your timetable', edit_person_timetable_path(@me.id, 
+                  	(@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
+          		</li>
+          		
+				<%- if authorized?(:new, :people) -%>
+          		<li>
+            		<%= link_to_remote('Add a student', :url => '/people/add_student',
+		                                        :loading => "$('#spinneradd_student').show();",
+                                                :complete => "$('#spinneradd_student').hide();
+                                                                show_add_student()",
+                        											 	 :method => :get) %>
+        			<%= spinner('add_student') %>
+          		</li>
+          		<%- end -%>
+          		
+				<%- if authorized?(:new, :groups) -%>
+            		<li><%= link_to('Create a group', groups_path) %></li>
+          		<%- end -%>
+          		
+				<%- if authorized?(:new, :ministries) -%>
+            		<li><%= link_to('Create a ministry', '/manage') %></li>
+          		<%- end -%>
+          		
+				<%- if authorized?(:directory, :people) -%>
+            		<li><%= link_to('Go to the directory', directory_people_path(:format => :html)) %></li>
+          		<%- end -%>
+        	</ul>
+      	</div>
+	</div>
+
+    <div class="dashmodule">
+      	<div class="moduletitle">
+        	<h2>My Groups
+				<%= spinner('gt') %></h2>
+        	<div class="modulecontrols">
+          		<a href="" class="minmodule"></a>
+          		<a href="" class="movemodule"></a>
+          		<a href="" class="closemodule"></a>
+        	</div>
+      	</div>
+			
+      	<div id = "groups">
+      		<%= render :partial => "dashboard/groups" %>
+      	</div>
+	</div>
+    
+    <% if is_ministry_leader %>
+    <div class="dashmodule">
+      	<div class="moduletitle">
+        	<h2>Statistics</h2>
+        	<div class="modulecontrols">
+          		<a href="" class="minmodule"></a>
+          		<a href="" class="movemodule"></a>
+          		<a href="" class="closemodule"></a>
+        	</div>
+      	</div>
+      	<div class="modulecontent">
+      		<ul>
+        		<li>People in your ministries: <%= @people_in_ministries %></li>
+        		<% @ministry.group_types.each do |gt| %>
+          			<li>Number of <%= gt.group_type.pluralize %>: <%= gt.groups.count %></li>
+        		<% end %>
+        		<li>Ministries Involved: <%= @movement_count %></li>
+      		</ul>
+      		
+			<% if @newest_people %>
+      		<br>
+      		<h6>Newest People</h6>
+      		<div class="lightgray">
+        		<ul class="searchicon">
+          			<% @newest_people.each do |person| %>
+            			<li><%= link_to(person.full_name, person) %></li>
+          			<% end %>
+        		</ul>
+      		</div>
+      		<% end %>
+		</div>
+	</div>
+    <% end %>
+</div>
+<div id="wrap">
+	<div id="timetable_link"></div>
+	<% @site_title = 'Dashboard' -%>
+	<%- help_block do -%>
+  	<h3>The Dashboard. </h3> 
+  	<br>
+  	The Dashboard gives you quick access point to pretty much everything on the Movement Tracker.
+  	<br /><br />
+  	<%- if authorized?(:directory, :people) -%>
+  		<h4>Search the Directory</h4>
+  		Immediately below is your <b>recent searches</b>. Click on them to re-display a previous search.
+  		<br /><br />
+  	<%- end -%>
+  	
+	<h4>Quick Tools</h4>
+    <b>Go to your profile</b> to view your profile (ie. addresses, campuses you're at, etc.), then click the 'Edit Information' button to edit it.
+    <br/>
+    <b>Enter your timetable</b> to mark which times you're free at, which can then be used to schedule group meeting times.
+    <br/>
+    
+	<%- if authorized?(:new, :people) -%>
+    	<b>Add a student</b> to ministry you are currently viewing.
+    	<br />
+    <%- end -%>
+    <%- if authorized?(:new, :groups) -%>
+    	<b>Create a group</b> to track groups of people meeting weekly within your ministry.
+    	<br />
+    <%- end -%>
+    <%- if authorized?(:new, :ministries) -%>
+    	<b>Create a ministry</b>: Ministries are where the action happens, use this when starting new campus ministries
+    	<br />
+    <%- end -%>
+    <%- if authorized?(:new, :groups) -%>
+    	Go to your <b>directory</b> to display a list of all people involved in this ministry.
+    	<br />
+    <%- end -%>
+    <br />
+   	<h4>My Groups</h4>
+   	Click any of the groups you are registered for to view its details.
+   	<br />
+   	
+	<%- if authorized?(:join, :groups) -%>
+   		<b>Join a group</b> to see a list of groups available, that you can join or mark as being interested.
+   		<br />
+   	<%- end -%>
+   	<%- if is_ministry_leader -%>
+   		<br />
+   		<h4>Statistics</h4>
+   		This can be a helpful reference to see how many meetings you have each week, new people, etc.
+   		<br>
+   	<%- end -%>
+	<% end %>
+
+	<div class="welcome">
+		<div class="sectionHeader">
+  			<h2>Welcome to the <%= I18n.t(:app_name)%></h2>
+		</div>
+		<br/>
+		
+		<%- if @ministry -%>
+
+		<div class="hidememessage" style="display:none;">
+			<p>The "Profile" tab is all about you. It's where you keep your personal information 
+				up to date. It's also a launching point for managing the different areas of ministry
+				you're responsible for.</p>
+			<p>This "Dashboard" area will keep you informed of new features we have added to 
+				this system, along with any other information we think would be helpful to you.</p>
+			
+			<%- if authorized?(:directory, :people) -%>
+			<p>The directory tab lists everyone involved on your campus.</p>
+			<%- end -%>
+			<div class="closebox" style="display:none;">
+  				<a href="">Hide this message</a>
+			</div>
+		</div>
+
+		<div id="dashwrap">
+			<div id="col_1">
+  			</div><!-- col 1 -->
+  
+  			<div id="col_2">  
+  			</div><!-- col2 -->
+			
+<<<<<<< HEAD
+      <div id = "groups">
+      	<%= render :partial => "dashboard/groups" %>
+      </div>
+    </div>
+  
+    
+    
+    <% if is_ministry_leader %>
+    <div class="dashmodule">
+      <div class="moduletitle">
+        <h2>Statistics</h2>
+        <div class="modulecontrols">
+          <a href="" class="minmodule"></a>
+          <a href="" class="movemodule"></a>
+          <a href="" class="closemodule"></a>
+        </div>
+      </div>
+      <div class="modulecontent">
+      <ul>
+        <li><%= pluralize(@people_in_ministries, "person") %> in <%= @ministry.name %> ministry</li>
+        <% @ministry.groups.group_by(&:group_type).each do |gt, groups| %>
+          <li><%= pluralize(groups.length, gt.group_type) %></li>
+        <% end %>
+      </ul>
+      <% if @newest_people %>
+      <br>
+      <h6>Newest People</h6>
+      <div class="lightgray">
+        <ul class="searchicon">
+          <% @newest_people.each do |person| %>
+            <li><%= link_to(person.full_name, person) %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
+      
+      </div>
+    </div>
+    <% end %>
+  
+  <div class="clear"></div>
+  
+  </div><!-- col2 -->
+
+<div class="clear"></div>
+</div>
+
+
+
+=======
+			<div class="clear"></div>
+		</div>
+	</div>
+>>>>>>> 7db6d538555685c42048b17be810423879912787
+<%- else -%>
+<p>You currently aren't associated with any ministry. This could be because the leader of your ministry hasn't put you in the system.
+	It could also be because the email address your leader has for you is different from the email address you used to log in.
+	<!-- If you think this is the case, please <%#= link_to_remote "click here to try other email addresses." %> -->
+	</p>
+
+<%- end -%>
+</div>
