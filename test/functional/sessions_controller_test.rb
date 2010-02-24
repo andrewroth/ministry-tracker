@@ -7,6 +7,7 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test 'new but already logged in' do
+    setup_default_user
     login
     get :new
     assert_response :redirect
@@ -18,6 +19,7 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test 'log in with local user' do
+    setup_default_user
     post :create, :username => 'josh.starcher@example.com', :password => 'test', :remember_me => 1, :format => 'html'
     assert_response :redirect
     assert_redirected_to '/'
@@ -25,8 +27,8 @@ class SessionsControllerTest < ActionController::TestCase
   
   test 'log in with bad username' do
     post :create, :username => 'josh.bad@example.com', :password => 'test', :remember_me => 1, :format => 'html'
-   assert_response :success, @response.body
-   assert_template 'new'
+    assert_response :success, @response.body
+    assert_template 'new'
   end
   
   test 'log in with missing param' do
@@ -36,6 +38,7 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test 'log out' do
+    setup_default_user
     login
     delete :destroy
     assert_response :redirect
