@@ -5,9 +5,20 @@ require 'campus_involvements_controller'
 class CampusInvolvementsController; def rescue_action(e) raise e end; end
 
 class CampusInvolvementsControllerTest < ActionController::TestCase
-  fixtures CampusInvolvement.table_name, MinistryInvolvement.table_name, Person.table_name, MinistryRole.table_name
 
   def setup
+    Factory.sequences[:campusinvolvement_id].reset
+    Factory.sequences[:campusinvolvement_person_id].reset
+    Factory(:campusinvolvement)
+
+    setup_default_user
+    Factory(:user_3)
+    Factory(:person_3)
+    Factory(:campusinvolvement_2)
+    Factory(:campusinvolvement_4)
+    Factory(:ministryinvolvement_4)
+    setup_ministry_roles
+
     @controller = CampusInvolvementsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

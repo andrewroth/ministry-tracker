@@ -6,6 +6,8 @@ class ContactsController; def rescue_action(e) raise e end; end
 
 class ContactsControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
+    
     @controller = ContactsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

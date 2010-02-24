@@ -2,10 +2,11 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 
 class EmailTemplatesControllerTest < ActionController::TestCase
-  fixtures :email_templates
-  fixtures :correspondence_types
 
   def setup
+    setup_default_user
+    Factory(:correspondencetype_1)
+
     login
   end
 

@@ -1,12 +1,18 @@
+Factory.sequence :campusinvolvement_id do |n|
+  n
+end
+
+Factory.sequence :campusinvolvement_person_id do |n|
+  n
+end
 
 Factory.define :campusinvolvement, :class => CampusInvolvement do |c|
-  c.sequence(:id) {|n| n }
-  c.sequence(:person_id) {|n| n }
+  c.id { Factory.next(:campusinvolvement_id) }
+  c.person_id { Factory.next(:campusinvolvement_person_id) }
   c.campus_id '1'
   c.ministry_id '1'
   c.school_year_id '1'
 end
-
 
 Factory.define :campusinvolvement_2, :class => CampusInvolvement do |c|
   c.id '1002'

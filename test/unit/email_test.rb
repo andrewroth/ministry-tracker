@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class EmailTest < ActiveSupport::TestCase
 
   def setup
-    Factory.sequences[:person_id].reset
-    Factory.sequences[:last_name].reset
+    Factory.sequences[:person_person_id].reset
+    Factory.sequences[:person_last_name].reset
 
     @person = Factory(:person)
     @person_1 = Factory(:person_1)

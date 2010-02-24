@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class CustomizeControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
     login
   end
   

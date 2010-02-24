@@ -29,18 +29,18 @@ Factory.define :person_3, :class => Person do |p|
   p.gender 'F'
 end
 
-Factory.sequence :person_id do |n|
+Factory.sequence :person_person_id do |n|
   n
 end
 
-Factory.sequence :last_name do |n|
+Factory.sequence :person_last_name do |n|
   "A#{n}"
 end
 
 Factory.define :person, :class => Person do |c|
-  c.id { Factory.next(:person_id) }
+  c.id { Factory.next(:person_person_id) }
   c.first_name 'A'
-  c.last_name { Factory.next(:last_name) }
+  c.last_name { Factory.next(:person_last_name) }
 end
 
 Factory.define :person_5, :class => Person do |p|

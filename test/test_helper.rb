@@ -47,6 +47,21 @@ class ActiveSupport::TestCase
     @request.session[:ministry_id] = 1
     @person = @user.person
   end
+
+  def setup_default_user
+    Factory(:user_1)
+    Factory(:person_1)
+    Factory(:campusinvolvement_3)
+    Factory(:ministry_1)
+    Factory(:ministry_2)
+    Factory(:ministryinvolvement_1)
+    Factory(:ministryinvolvement_2)
+    Factory(:campus_1)
+    Factory(:campus_2)
+    Factory(:ministrycampus_1)
+    Factory(:ministrycampus_2)
+    Factory(:country_1)
+  end
   
   def setup_campus_involvements    
     1.upto(1001) do |i| 
@@ -70,6 +85,30 @@ class ActiveSupport::TestCase
     Factory(:ministryrole_7)
     Factory(:ministryrole_8)
     Factory(:ministryrole_9)
+  end
+
+  def setup_groups
+    Factory(:grouptype_1)
+    Factory(:grouptype_2)
+    Factory(:grouptype_3)
+
+    Factory(:group_1)
+    Factory(:group_2)
+    Factory(:group_3)
+    Factory(:group_4)
+
+    Factory(:person_3)
+
+    Factory.sequences[:person_person_id].reset
+    Factory.sequences[:person_last_name].reset
+    50.times{ Factory(:person) }
+
+    Factory(:groupinvolvement_1)
+    Factory(:groupinvolvement_2)
+    Factory(:groupinvolvement_3)
+    Factory(:groupinvolvement_4)
+    Factory(:groupinvolvement_5)
+    Factory(:groupinvolvement_6)
   end
 
   protected
