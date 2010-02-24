@@ -5,9 +5,10 @@ require 'staff_controller'
 class StaffController; def rescue_action(e) raise e end; end
 
 class StaffControllerTest < ActionController::TestCase
-  fixtures Person.table_name, MinistryInvolvement.table_name, Ministry.table_name, MinistryRole.table_name
 
   def setup
+    setup_default_user
+
     @controller = StaffController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -43,6 +44,7 @@ class StaffControllerTest < ActionController::TestCase
   end
   
   test "search for people to add by email" do
+    Factory(:address_1)
     xhr :post, :search_to_add, :search => 'josh.starcher@'
     assert results = assigns(:results)
     assert(results.length > 0)

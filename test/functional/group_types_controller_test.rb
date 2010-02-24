@@ -1,9 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class GroupTypesControllerTest < ActionController::TestCase
-  fixtures GroupInvolvement.table_name, Group.table_name, GroupType.table_name
   
   def setup
+    setup_default_user
+    Factory(:grouptype_1)
+    Factory(:grouptype_2)
+    Factory(:grouptype_3)
     login
   end
 

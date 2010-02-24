@@ -5,9 +5,10 @@ require 'users_controller'
 class UsersController; def rescue_action(e) raise e end; end
 
 class UsersControllerTest < ActionController::TestCase
-  fixtures User.table_name
 
   def setup
+    setup_default_user
+    
     @controller = UsersController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
