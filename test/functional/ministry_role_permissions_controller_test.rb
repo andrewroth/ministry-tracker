@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MinistryRolePermissionsControllerTest < ActionController::TestCase
-  fixtures MinistryRolePermission.table_name
   def setup
+    setup_default_user
     login
   end
 

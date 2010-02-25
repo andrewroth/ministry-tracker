@@ -30,8 +30,8 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
   end
   
   def test_transfer
-    group1 = Factory.build(:group_3)
-    group2 = Factory.build(:group_4)
+    group1 = factory(:group_3)
+    group2 = factory(:group_4)
     old_count_1 = group1.group_involvements.count
     old_count_2 = group2.group_involvements.count
     xhr :post, :transfer, :id => group2.id, :transfer_to => group1.id, :members => [50000], :level => 'leader'

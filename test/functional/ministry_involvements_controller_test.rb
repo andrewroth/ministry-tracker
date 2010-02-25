@@ -5,9 +5,11 @@ require 'ministry_involvements_controller'
 class MinistryInvolvementsController; def rescue_action(e) raise e end; end
 
 class MinistryInvolvementsControllerTest < ActionController::TestCase
-  fixtures MinistryInvolvement.table_name, Ministry.table_name, Person.table_name
 
   def setup
+    setup_default_user
+    setup_ministry_roles
+    
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -21,9 +23,10 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "try destroying without access" do
+    factory(:user_2)
     login('fred@uscm.org')
     xhr :delete, :destroy, :id => 1, :person_id => 50000
-    assert_nil assigns(:ministry_involvement)
+    assert_equal Date.today, assigns(:ministry_involvement).end_date
     assert_response :success
   end
   
@@ -40,6 +43,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
   
   test "edit someone else's role" do
+    factory(:person_2)
     xhr :get, :edit, :person_id => 3000, :ministry_id => 2
     assert_response :success
     assert assigns(@ministry_involvement)
@@ -58,18 +62,18 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   
   test "add a person to a ministry" do
     assert_difference "MinistryInvolvement.count", 1 do
-      ministry = ministries(:dg)
-      person = people(:josh)
+      ministry = factory(:ministry_3)
+      person = factory(:person_1)
       xhr :post, :create, :ministry_involvement => {:ministry_role_id => ministry.ministry_roles.first, :person_id => person.id, :ministry_id => ministry.id}
     end
   end
   
   test "add a person to a ministry who is already in that ministry should update the role" do
     assert_difference "MinistryInvolvement.count", 0 do
-      ministry = ministries(:yfc)
-      person = people(:josh)
-      old_role = ministry_involvements(:one).ministry_role
-      attribs = {:ministry_role_id => ministry_roles(:two).id, :person_id => person.id, :ministry_id => ministry.id}
+      ministry = factory(:ministry_1)
+      person = factory(:person_1)
+      old_role = factory(:ministryinvolvement_1).ministry_role
+      attribs = {:ministry_role_id => factory(:ministryrole_2).id, :person_id => person.id, :ministry_id => ministry.id}
       xhr :post, :create, :ministry_involvement => attribs
       assert(@mi = assigns(:ministry_involvement))
       assert_not_equal(old_role, @mi.ministry_role)
@@ -77,12 +81,14 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "can edit a ministry_involvement" do # promoting
+    factory(:ministryinvolvement_1)
     mi = MinistryInvolvement.first
     get :edit, :ministry_id => mi.ministry.id, :person_id => mi.person.id
     assert_response :success
   end
 
   test "edit handles invalid parameters without crashing" do
+    123.times{ Factory(:person) }
     @request.env["HTTP_REFERER"] = 'test.com'
     get :edit, :ministry_id => Ministry.first.id, :person_id => Person.find(123)
     assert_response :redirect

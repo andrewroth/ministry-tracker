@@ -26,7 +26,7 @@ end
 
 Factory.define :user_5, :class => User do |u|
   u.id '5'
-  u.username 'ministry_leader_user_with_no_permanent_address'
+  u.username 'min_leader_with_no_permanent_address'
   u.password  User.encrypt('test') 
   u.guid '253b648c-3537-464c-b97a-e2d7e2c748b8'
 end

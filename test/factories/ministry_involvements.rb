@@ -25,14 +25,14 @@ Factory.define :ministryinvolvement_4, :class => MinistryInvolvement do |m|
   m.id '4'
   m.person_id '2000'
   m.ministry_id '1'
-  m.ministry_role_id '4 # sue student ministry leader'
+  m.ministry_role_id '4' # sue student ministry leader
 end
 
 Factory.define :ministryinvolvement_5, :class => MinistryInvolvement do |m|
   m.id '5'
   m.person_id '4001'
   m.ministry_id '7'
-  m.ministry_role_id '4 # ministry leader'
+  m.ministry_role_id '4' # ministry leader
 end
 
 Factory.define :ministryinvolvement_6, :class => MinistryInvolvement do |m|
