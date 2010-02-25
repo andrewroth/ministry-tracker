@@ -53,8 +53,9 @@ class ActiveSupport::TestCase
     begin
       f.class.find(f.id)
     rescue ActiveRecord::RecordNotFound
-      Factory(name)
+      Factory.create(name)
     end
+    f
   end
 
   def setup_default_user
