@@ -57,6 +57,57 @@ class ActiveSupport::TestCase
     end
   end
 
+  def setup_users
+    factory(:user_1)
+    factory(:user_3)
+  end
+
+  def setup_addresses
+    factory(:address_1)
+    factory(:address_2)
+    factory(:address_3)
+  end
+
+  def setup_ministry_involvements
+    factory(:ministryinvolvement_1)
+    factory(:ministryinvolvement_2)
+  end
+
+  def setup_school_years
+    factory(:schoolyear_1)
+    factory(:schoolyear_2)
+  end
+
+  def setup_generic_person
+    return Factory(:person)
+  end
+  
+  def setup_people
+    reset_people_sequences
+    @personfirst = setup_generic_person
+    @person2 = setup_generic_person
+    @josh = factory(:person_1)
+    @sue = factory(:person_3)
+    factory(:person_111)
+  end
+  
+  def setup_campuses
+    factory(:campus_1)
+    factory(:campus_2)
+    factory(:campus_3)
+  end
+
+
+  def setup_ministries
+    @ministry_yfc = factory(:ministry_1)
+    factory(:ministry_2)
+    factory(:ministry_3)
+    factory(:ministry_4)
+    factory(:ministry_5)
+    factory(:ministry_6)
+    factory(:ministry_7)
+  end
+
   def setup_default_user
     factory(:user_1)
     factory(:person_1)
@@ -72,20 +123,19 @@ class ActiveSupport::TestCase
     factory(:country_1)
   end
   
-  def setup_campus_involvements    
-    1.upto(1001) do |i| 
-      Factory.next :campusinvolvement
+  def setup_n_campus_involvements(n)
+    reset_campus_involvements_sequences
+    1.upto(n + 1) do |i| 
+      Factory(:campusinvolvement)
     end
   end 
   
-  def setup_people    
-    1.upto(1001) do |i| 
-      Factory.next :person
-    end
+  def setup_campus_involvements    
+    setup_n_campus_involvements(1000)
   end 
-
+  
   def setup_ministry_roles
-    factory(:ministryrole_1)
+    @ministry_role_one = factory(:ministryrole_1)
     factory(:ministryrole_2)
     factory(:ministryrole_3)
     factory(:ministryrole_4)
@@ -94,6 +144,16 @@ class ActiveSupport::TestCase
     factory(:ministryrole_7)
     factory(:ministryrole_8)
     factory(:ministryrole_9)
+  end
+
+  def reset_campus_involvements_sequences
+    Factory.sequences[:campusinvolvement_person_id].reset
+    Factory.sequences[:campusinvolvement_id].reset
+  end
+
+  def reset_people_sequences
+    Factory.sequences[:person_person_id].reset
+    Factory.sequences[:person_last_name].reset
   end
 
   def setup_groups
@@ -108,8 +168,7 @@ class ActiveSupport::TestCase
 
     factory(:person_3)
 
-    Factory.sequences[:person_person_id].reset
-    Factory.sequences[:person_last_name].reset
+    setup_people
     50.times{ factory(:person) }
 
     factory(:groupinvolvement_1)
