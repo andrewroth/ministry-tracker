@@ -48,19 +48,28 @@ class ActiveSupport::TestCase
     @person = @user.person
   end
 
+  def factory(name)
+    id = Factory.build(name).id
+    begin
+      Factory.build(name).class.find(id)
+    rescue ActiveRecord::RecordNotFound
+      Factory(name)
+    end
+  end
+
   def setup_default_user
-    Factory(:user_1)
-    Factory(:person_1)
-    Factory(:campusinvolvement_3)
-    Factory(:ministry_1)
-    Factory(:ministry_2)
-    Factory(:ministryinvolvement_1)
-    Factory(:ministryinvolvement_2)
-    Factory(:campus_1)
-    Factory(:campus_2)
-    Factory(:ministrycampus_1)
-    Factory(:ministrycampus_2)
-    Factory(:country_1)
+    factory(:user_1)
+    factory(:person_1)
+    factory(:campusinvolvement_3)
+    factory(:ministry_1)
+    factory(:ministry_2)
+    factory(:ministryinvolvement_1)
+    factory(:ministryinvolvement_2)
+    factory(:campus_1)
+    factory(:campus_2)
+    factory(:ministrycampus_1)
+    factory(:ministrycampus_2)
+    factory(:country_1)
   end
   
   def setup_campus_involvements    
@@ -76,39 +85,39 @@ class ActiveSupport::TestCase
   end 
 
   def setup_ministry_roles
-    Factory(:ministryrole_1)
-    Factory(:ministryrole_2)
-    Factory(:ministryrole_3)
-    Factory(:ministryrole_4)
-    Factory(:ministryrole_5)
-    Factory(:ministryrole_6)
-    Factory(:ministryrole_7)
-    Factory(:ministryrole_8)
-    Factory(:ministryrole_9)
+    factory(:ministryrole_1)
+    factory(:ministryrole_2)
+    factory(:ministryrole_3)
+    factory(:ministryrole_4)
+    factory(:ministryrole_5)
+    factory(:ministryrole_6)
+    factory(:ministryrole_7)
+    factory(:ministryrole_8)
+    factory(:ministryrole_9)
   end
 
   def setup_groups
-    Factory(:grouptype_1)
-    Factory(:grouptype_2)
-    Factory(:grouptype_3)
+    factory(:grouptype_1)
+    factory(:grouptype_2)
+    factory(:grouptype_3)
 
-    Factory(:group_1)
-    Factory(:group_2)
-    Factory(:group_3)
-    Factory(:group_4)
+    factory(:group_1)
+    factory(:group_2)
+    factory(:group_3)
+    factory(:group_4)
 
-    Factory(:person_3)
+    factory(:person_3)
 
     Factory.sequences[:person_person_id].reset
     Factory.sequences[:person_last_name].reset
-    50.times{ Factory(:person) }
+    50.times{ factory(:person) }
 
-    Factory(:groupinvolvement_1)
-    Factory(:groupinvolvement_2)
-    Factory(:groupinvolvement_3)
-    Factory(:groupinvolvement_4)
-    Factory(:groupinvolvement_5)
-    Factory(:groupinvolvement_6)
+    factory(:groupinvolvement_1)
+    factory(:groupinvolvement_2)
+    factory(:groupinvolvement_3)
+    factory(:groupinvolvement_4)
+    factory(:groupinvolvement_5)
+    factory(:groupinvolvement_6)
   end
 
   protected
