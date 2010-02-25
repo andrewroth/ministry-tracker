@@ -49,9 +49,9 @@ class ActiveSupport::TestCase
   end
 
   def factory(name)
-    id = Factory.build(name).id
+    f = Factory.build(name)
     begin
-      Factory.build(name).class.find(id)
+      f.class.find(f.id)
     rescue ActiveRecord::RecordNotFound
       Factory(name)
     end
