@@ -8,14 +8,18 @@ class PersonTest < ActiveSupport::TestCase
 
   def setup
     setup_n_campus_involvements(10)
+    setup_addresses
     setup_campuses
     setup_ministries
     setup_school_years
     setup_ministry_roles
-    setup_ministry_involvements
     setup_users
-    setup_addresses
+    setup_ministry_involvements
     setup_groups
+    @josh = Person.find(50000)
+    @sue = Person.find(2000)
+    @personfirst = Person.find(1)
+    @person2 = Person.find(2)    
   end
   
   def test_relationships

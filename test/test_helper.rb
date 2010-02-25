@@ -85,10 +85,8 @@ class ActiveSupport::TestCase
   
   def setup_people
     reset_people_sequences
-    @personfirst = setup_generic_person
-    @person2 = setup_generic_person
-    @josh = factory(:person_1)
-    @sue = factory(:person_3)
+    factory(:person_1)
+    factory(:person_3)
     factory(:person_111)
   end
   
@@ -97,7 +95,6 @@ class ActiveSupport::TestCase
     factory(:campus_2)
     factory(:campus_3)
   end
-
 
   def setup_ministries
     @ministry_yfc = factory(:ministry_1)
@@ -170,7 +167,7 @@ class ActiveSupport::TestCase
     factory(:person_3)
 
     setup_people
-    50.times{ factory(:person) }
+    50.times{ Factory(:person) }
 
     factory(:groupinvolvement_1)
     factory(:groupinvolvement_2)
