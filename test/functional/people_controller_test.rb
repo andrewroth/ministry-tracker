@@ -142,6 +142,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should re-create staff" do
+    factory(:address_1)
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                   :current_address => {:email => "josh.starcher@uscm.org"},
@@ -175,6 +176,7 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   test "should re-create student" do
+    factory(:address_1)
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                     :current_address => {:email => "josh.starcher@uscm.org"},
@@ -266,6 +268,7 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should end a person's campus involvements with no ministry involvements" do
     @request.env["HTTP_REFERER"] = directory_people_path
+    reset_people_sequences
     Factory(:person)
     delete :destroy, :id => 1
     assert person = assigns(:person)
