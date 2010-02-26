@@ -8,7 +8,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
 
   def setup
     reset_campus_involvements_sequences
-    factory(:campusinvolvement)
+    Factory(:campusinvolvement)
 
     setup_default_user
     factory(:user_3)

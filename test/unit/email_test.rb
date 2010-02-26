@@ -5,7 +5,7 @@ class EmailTest < ActiveSupport::TestCase
   def setup
     reset_people_sequences
 
-    @person = factory(:person)
+    @person = Factory(:person)
     @person_1 = factory(:person_1)
     @email_1 = factory(:email_1)
     @email_2 = factory(:email_2)
