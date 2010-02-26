@@ -10,5 +10,4 @@ Factory.define :schoolyear_2, :class => SchoolYear do |s|
   s.name 'Sophomore'
   s.level 'Undergrad'
   s.position '2'
-  s.column 'value'
 end

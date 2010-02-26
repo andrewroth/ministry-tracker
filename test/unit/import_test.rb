@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ImportTest < ActiveSupport::TestCase
 
   def setup
-    @campus = Factory(:campus_1)
-    @ministry = Factory(:ministry_1)
-    @josh = Factory(:person_1)
+    @campus = factory(:campus_1)
+    @ministry = factory(:ministry_1)
+    @josh = factory(:person_1)
     setup_ministry_roles
   end
 

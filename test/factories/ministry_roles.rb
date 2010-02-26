@@ -1,4 +1,4 @@
-Factory.define :ministryrole_1, :class => MinistryRole do |m|
+Factory.define :ministryrole_1, :class => StaffRole do |m|
   m.id '1'
   m.ministry_id '1'
   m.name 'Admin'
@@ -6,7 +6,7 @@ Factory.define :ministryrole_1, :class => MinistryRole do |m|
   m.type 'StaffRole'
 end
 
-Factory.define :ministryrole_2, :class => MinistryRole do |m|
+Factory.define :ministryrole_2, :class => StaffRole do |m|
   m.id '2'
   m.name 'Campus Coordinator'
   m.ministry_id '1'
@@ -14,7 +14,7 @@ Factory.define :ministryrole_2, :class => MinistryRole do |m|
   m.type 'StaffRole'
 end
 
-Factory.define :ministryrole_3, :class => MinistryRole do |m|
+Factory.define :ministryrole_3, :class => StudentRole do |m|
   m.id '4'
   m.ministry_id '1'
   m.name 'Ministry Leader'
@@ -24,7 +24,7 @@ Factory.define :ministryrole_3, :class => MinistryRole do |m|
   m.involved 'true'
 end
 
-Factory.define :ministryrole_4, :class => MinistryRole do |m|
+Factory.define :ministryrole_4, :class => StudentRole do |m|
   m.id '5'
   m.ministry_id '1'
   m.name 'Student Leader'
@@ -33,7 +33,7 @@ Factory.define :ministryrole_4, :class => MinistryRole do |m|
   m.involved 'true'
 end
 
-Factory.define :ministryrole_5, :class => MinistryRole do |m|
+Factory.define :ministryrole_5, :class => OtherRole do |m|
   m.id '6'
   m.ministry_id '1'
   m.name 'Random Person'
@@ -41,7 +41,7 @@ Factory.define :ministryrole_5, :class => MinistryRole do |m|
   m.type 'OtherRole'
 end
 
-Factory.define :ministryrole_6, :class => MinistryRole do |m|
+Factory.define :ministryrole_6, :class => StudentRole do |m|
   m.id '7'
   m.ministry_id '1'
   m.name 'Student'
@@ -49,7 +49,7 @@ Factory.define :ministryrole_6, :class => MinistryRole do |m|
   m.type 'StudentRole'
 end
 
-Factory.define :ministryrole_7, :class => MinistryRole do |m|
+Factory.define :ministryrole_7, :class => OtherRole do |m|
   m.id '8'
   m.ministry_id '3'
   m.name 'Chicago Role'
@@ -57,7 +57,7 @@ Factory.define :ministryrole_7, :class => MinistryRole do |m|
   m.type 'OtherRole'
 end
 
-Factory.define :ministryrole_8, :class => MinistryRole do |m|
+Factory.define :ministryrole_8, :class => OtherRole do |m|
   m.id '9'
   m.ministry_id '6'
   m.name 'Will I Exist?'
@@ -65,7 +65,7 @@ Factory.define :ministryrole_8, :class => MinistryRole do |m|
   m.type 'OtherRole'
 end
 
-Factory.define :ministryrole_9, :class => MinistryRole do |m|
+Factory.define :ministryrole_9, :class => StaffRole do |m|
   m.id '10'
   m.ministry_id '1'
   m.name 'Staff'

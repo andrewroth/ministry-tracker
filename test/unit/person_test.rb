@@ -1,19 +1,31 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  fixtures Person.table_name, CustomValue.table_name, TrainingAnswer.table_name, Address.table_name, User.table_name,
-    Ministry.table_name, GroupInvolvement.table_name, GroupType.table_name, Group.table_name
+#  Person, CustomValue, TrainingAnswer, 
+#  Address, User,
+#  Ministry, GroupInvolvement, GroupType, Group
+
 
   def setup
+    setup_n_campus_involvements(10)
+    setup_addresses
+    setup_campuses
+    setup_ministries
+    setup_school_years
+    setup_ministry_roles
+    setup_users
+    setup_ministry_involvements
+    setup_groups
     @josh = Person.find(50000)
     @sue = Person.find(2000)
+    @personfirst = Person.find(1)
+    @person2 = Person.find(2)    
   end
   
   def test_relationships
-    p = Person.find(:first)
-    assert_not_nil(p.campus_involvements)
-    assert_not_nil(p.campuses)
-    assert_not_nil(p.ministries)
+    assert_not_nil(@personfirst.campus_involvements)
+    assert_not_nil(@personfirst.campuses)
+    assert_not_nil(@personfirst.ministries)
   end
   
   def test_human_gender
@@ -36,9 +48,8 @@ class PersonTest < ActiveSupport::TestCase
   end
   
   def test_create_value
-    p = Person.find(:first)
-    p.create_value(1, 'hello world')
-    assert_equal p.get_value(1), 'hello world'
+    @personfirst.create_value(1, 'hello world')
+    assert_equal @personfirst.get_value(1), 'hello world'
   end
   
   def test_set_new_value
@@ -48,20 +59,20 @@ class PersonTest < ActiveSupport::TestCase
   end
   
   def test_set_existing_new_value
-    p = Person.find(:first)
+    p = @personfirst
     p.create_value(1, 'hello world')
     p.set_value(1, 'goodbye world')
     assert_equal p.get_value(1), 'goodbye world'
   end
 
   def test_set_training_date
-    p = Person.find(:first)
+    p = @personfirst
     a = p.set_training_answer(1, Date.today, 'josh')
     assert_equal p.get_training_answer(1), a
   end
   
   def test_change_training_date
-    p = Person.find(:first)
+    p = @personfirst
     p.set_training_answer(1, Date.today, 'josh')
     a = p.set_training_answer(1, Date.today, 'todd')
     assert_equal p.get_training_answer(1).approved_by, 'todd'
@@ -97,48 +108,45 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test "group_involvements_by_group_type should filter by ministry" do
-    person = Person.find 50000
+    person = @josh
     assert_equal 2, person.ministry_involvements.length
     assert_equal 1, person.group_group_involvements(:all, :ministry => Ministry.first).length
   end
 
   test "is_leading_group_with? works" do
-    person = Person.find 50000
-    assert_equal true, person.is_leading_group_with?(Person.find(2))
+    assert_equal true, @josh.is_leading_group_with?(@person2)
   end
   
   test "is_leading_mentor_priority_group_with? works" do
-    person = Person.find 50000
-    assert_equal true, person.is_leading_mentor_priority_group_with?(Person.find(2))
+    assert_equal true, @josh.is_leading_mentor_priority_group_with?(@person2)
     gt = Group.find(3).group_type
     gt.mentor_priority = false
     gt.save!
-    assert_equal false, person.is_leading_mentor_priority_group_with?(Person.find(2))
+    assert_equal false, @josh.is_leading_mentor_priority_group_with?(@person2)
   end
 
   test "his - her" do
-    assert_equal('his', people(:josh).hisher)
-    assert_equal('her', people(:sue).hisher)
+    assert_equal('his', @josh.hisher)
+    assert_equal('her', @sue.hisher)
   end
   
   test "him - her" do
-    assert_equal('him', people(:josh).himher)
-    assert_equal('her', people(:sue).himher)
+    assert_equal('him', @josh.himher)
+    assert_equal('her', @sue.himher)
   end
   
   test "he - she" do
-    assert_equal('he', people(:josh).heshe)
-    assert_equal('she', people(:sue).heshe)
+    assert_equal('he', @josh.heshe)
+    assert_equal('she', @sue.heshe)
   end
   
   test "person's role in a ministry" do
-    assert_equal(ministry_roles(:one), people(:josh).role(ministries(:yfc)))
+    assert_equal(@ministry_role_one, @josh.role(@ministry_yfc))
   end
 
   test "add_or_update_campus adds a campus" do
-    @person = Person.first
     assert_difference('CampusInvolvement.count', 1) do
-      @person.add_or_update_campus Campus.last.id, SchoolYear.first.id, Ministry.first.id, Person.last
+      @personfirst.add_or_update_campus Campus.last.id, SchoolYear.first.id, Ministry.first.id, Person.last
     end
   end
 

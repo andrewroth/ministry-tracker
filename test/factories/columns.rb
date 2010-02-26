@@ -22,7 +22,7 @@ end
 
 Factory.define :column_4, :class => Column do |c|
   c.id '4'
-  c.title 'Email'
+  c.title 'Email2'
   c.select_clause 'email'
   c.from_clause 'EmergencyAddress'
   c.join_clause 'EmergencyAddress.address_type = \'emergency1\''

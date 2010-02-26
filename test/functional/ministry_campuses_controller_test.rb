@@ -5,9 +5,9 @@ require 'ministry_campuses_controller'
 class MinistryCampusesController; def rescue_action(e) raise e end; end
 
 class MinistryCampusesControllerTest < ActionController::TestCase
-  fixtures MinistryCampus.table_name, Campus.table_name, Ministry.table_name
 
   def setup
+    setup_default_user
     @controller = MinistryCampusesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -33,7 +33,6 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   def test_new_with_campus_scope_country
     Cmt::CONFIG[:campus_scope_country] = 'US'
     xhr :get, :new, :ministry_id => 1
-    puts @campuses.inspect
   end
 
   def test_create

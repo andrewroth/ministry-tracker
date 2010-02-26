@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class MinistriesControllerTest < ActionController::TestCase
 
   def setup
+    setup_default_user
+    setup_ministry_roles
     login
   end
 
@@ -56,7 +58,7 @@ class MinistriesControllerTest < ActionController::TestCase
   end
   
   def test_delete_ministry
-    ministry = ministries(:dg)
+    ministry = Factory(:ministry_3)
     @request.session[:ministry_id] = ministry.id
     xhr :delete, :destroy, :id => ministry.id
     assert_response :success
@@ -68,6 +70,8 @@ class MinistriesControllerTest < ActionController::TestCase
   end
   
   def test_delete_removes_only_ministrys_roles
+    Factory(:ministry_3)
+    Factory(:ministry_7)
     xhr :delete, :destroy, :id => 3
     assert_response :success
     assert_nil Ministry.find_by_id(3)

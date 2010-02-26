@@ -3,16 +3,15 @@ require File.dirname(__FILE__) + '/../test_helper'
 class EmailTest < ActiveSupport::TestCase
 
   def setup
-    Factory.sequences[:person_person_id].reset
-    Factory.sequences[:person_last_name].reset
+    reset_people_sequences
 
     @person = Factory(:person)
-    @person_1 = Factory(:person_1)
-    @email_1 = Factory(:email_1)
-    @email_2 = Factory(:email_2)
-    Factory(:search_1)
-    Factory(:address_1)
-    Factory(:address_2)
+    @person_1 = factory(:person_1)
+    @email_1 = factory(:email_1)
+    @email_2 = factory(:email_2)
+    factory(:search_1)
+    factory(:address_1)
+    factory(:address_2)
   end
 
   test "send email to list of people" do

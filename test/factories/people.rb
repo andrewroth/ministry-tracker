@@ -46,6 +46,7 @@ end
 Factory.define :person_5, :class => Person do |p|
   p.id '4000'
   p.user_id '4'
+  p.first_name 'NoMinInvolvements'
 end
 
 Factory.define :person_6, :class => Person do |p|
@@ -61,3 +62,11 @@ Factory.define :person_7, :class => Person do |p|
   p.first_name '\'Ministry\''
   p.last_name '\'Leader\''
 end
+
+Factory.define :person_111, :class => Person do |p|
+  p.id '111'
+  p.first_name 'Random'
+  p.last_name 'Person'
+end
+
+

@@ -1,9 +1,22 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ViewColumnTest < ActiveSupport::TestCase
-  fixtures ViewColumn.table_name, View.table_name, Column.table_name
+
+
 
   def test_create_view_column
+    Factory(:column_1)
+    Factory(:column_2)
+    Factory(:column_3)
+    Factory(:column_4)
+  
+    Factory(:view_1)
+    Factory(:view_2)
+
+    Factory(:viewcolumn_1)
+    Factory(:viewcolumn_2)
+    Factory(:viewcolumn_3)
+    
     view = View.find(:first)
     view.build_query_parts!
     old_tables = view.tables_clause

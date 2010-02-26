@@ -48,67 +48,133 @@ class ActiveSupport::TestCase
     @person = @user.person
   end
 
-  def setup_default_user
-    Factory(:user_1)
-    Factory(:person_1)
-    Factory(:campusinvolvement_3)
-    Factory(:ministry_1)
-    Factory(:ministry_2)
-    Factory(:ministryinvolvement_1)
-    Factory(:ministryinvolvement_2)
-    Factory(:campus_1)
-    Factory(:campus_2)
-    Factory(:ministrycampus_1)
-    Factory(:ministrycampus_2)
-    Factory(:country_1)
+  def factory(name)
+    f = Factory.build(name)
+    begin
+      f.class.find(f.id)
+    rescue ActiveRecord::RecordNotFound
+      Factory.create(name)
+    end
+    f
+  end
+
+  def setup_users
+    factory(:user_1)
+    factory(:user_3)
+  end
+
+  def setup_addresses
+    factory(:address_1)
+    factory(:address_2)
+    factory(:address_3)
+  end
+
+  def setup_ministry_involvements
+    factory(:ministryinvolvement_1)
+    factory(:ministryinvolvement_2)
+  end
+
+  def setup_school_years
+    factory(:schoolyear_1)
+    factory(:schoolyear_2)
+  end
+
+  def setup_generic_person
+    return Factory(:person)
   end
   
-  def setup_campus_involvements    
-    1.upto(1001) do |i| 
-      Factory.next :campusinvolvement
+  def setup_people
+    reset_people_sequences
+    factory(:person_1)
+    factory(:person_3)
+    factory(:person_111)
+  end
+  
+  def setup_campuses
+    factory(:campus_1)
+    factory(:campus_2)
+    factory(:campus_3)
+  end
+
+  def setup_ministries
+    @ministry_yfc = factory(:ministry_1)
+    factory(:ministry_2)
+    factory(:ministry_3)
+    factory(:ministry_4)
+    factory(:ministry_5)
+    factory(:ministry_6)
+    factory(:ministry_7)
+  end
+
+  def setup_default_user
+    factory(:user_1)
+    factory(:person_1)
+    factory(:campusinvolvement_3)
+    factory(:ministry_1)
+    factory(:ministry_2)
+    factory(:ministryinvolvement_1)
+    factory(:ministryinvolvement_2)
+    factory(:campus_1)
+    factory(:campus_2)
+    factory(:ministrycampus_1)
+    factory(:ministrycampus_2)
+    factory(:country_1)
+  end
+  
+  def setup_n_campus_involvements(n)
+    reset_campus_involvements_sequences
+    1.upto(n + 1) do |i| 
+      Factory(:campusinvolvement)
     end
   end 
   
-  def setup_people    
-    1.upto(1001) do |i| 
-      Factory.next :person
-    end
+  def setup_campus_involvements    
+    setup_n_campus_involvements(1000)
   end 
-
+  
   def setup_ministry_roles
-    Factory(:ministryrole_1)
-    Factory(:ministryrole_2)
-    Factory(:ministryrole_3)
-    Factory(:ministryrole_4)
-    Factory(:ministryrole_5)
-    Factory(:ministryrole_6)
-    Factory(:ministryrole_7)
-    Factory(:ministryrole_8)
-    Factory(:ministryrole_9)
+    @ministry_role_one = factory(:ministryrole_1)
+    factory(:ministryrole_2)
+    factory(:ministryrole_3)
+    factory(:ministryrole_4)
+    factory(:ministryrole_5)
+    factory(:ministryrole_6)
+    factory(:ministryrole_7)
+    factory(:ministryrole_8)
+    factory(:ministryrole_9)
+  end
+
+  def reset_campus_involvements_sequences
+    Factory.sequences[:campusinvolvement_person_id].reset
+    Factory.sequences[:campusinvolvement_id].reset
+  end
+
+  def reset_people_sequences
+    Factory.sequences[:person_person_id].reset
+    Factory.sequences[:person_last_name].reset
   end
 
   def setup_groups
-    Factory(:grouptype_1)
-    Factory(:grouptype_2)
-    Factory(:grouptype_3)
+    factory(:grouptype_1)
+    factory(:grouptype_2)
+    factory(:grouptype_3)
 
-    Factory(:group_1)
-    Factory(:group_2)
-    Factory(:group_3)
-    Factory(:group_4)
+    factory(:group_1)
+    factory(:group_2)
+    factory(:group_3)
+    factory(:group_4)
 
-    Factory(:person_3)
+    factory(:person_3)
 
-    Factory.sequences[:person_person_id].reset
-    Factory.sequences[:person_last_name].reset
+    setup_people
     50.times{ Factory(:person) }
 
-    Factory(:groupinvolvement_1)
-    Factory(:groupinvolvement_2)
-    Factory(:groupinvolvement_3)
-    Factory(:groupinvolvement_4)
-    Factory(:groupinvolvement_5)
-    Factory(:groupinvolvement_6)
+    factory(:groupinvolvement_1)
+    factory(:groupinvolvement_2)
+    factory(:groupinvolvement_3)
+    factory(:groupinvolvement_4)
+    factory(:groupinvolvement_5)
+    factory(:groupinvolvement_6)
   end
 
   protected

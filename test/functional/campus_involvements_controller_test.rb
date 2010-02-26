@@ -7,16 +7,15 @@ class CampusInvolvementsController; def rescue_action(e) raise e end; end
 class CampusInvolvementsControllerTest < ActionController::TestCase
 
   def setup
-    Factory.sequences[:campusinvolvement_id].reset
-    Factory.sequences[:campusinvolvement_person_id].reset
+    reset_campus_involvements_sequences
     Factory(:campusinvolvement)
 
     setup_default_user
-    Factory(:user_3)
-    Factory(:person_3)
-    Factory(:campusinvolvement_2)
-    Factory(:campusinvolvement_4)
-    Factory(:ministryinvolvement_4)
+    factory(:user_3)
+    factory(:person_3)
+    factory(:campusinvolvement_2)
+    factory(:campusinvolvement_4)
+    factory(:ministryinvolvement_4)
     setup_ministry_roles
 
     @controller = CampusInvolvementsController.new

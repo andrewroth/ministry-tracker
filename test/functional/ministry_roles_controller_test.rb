@@ -5,9 +5,10 @@ require 'ministry_roles_controller'
 class MinistryRolesController; def rescue_action(e) raise e end; end
 
 class MinistryRolesControllerTest < ActionController::TestCase
-  fixtures MinistryRole.table_name
 
   def setup
+    setup_default_user
+    setup_ministry_roles
     @controller = MinistryRolesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -39,7 +40,7 @@ class MinistryRolesControllerTest < ActionController::TestCase
   # this checks to see if, when you create a new ministry_role when @ministry = 2, 
   # that your ministry_role.ministry_id is the root of that ministry
   def test_create_different_ministry_id
-    ministry = ministries(:chicago)
+    ministry = factory(:ministry_2)
     session[:ministry_id] = ministry.id
     assert_difference("MinistryRole.count") do
       xhr :post, :create, :ministry_role => {:type => 'StaffRole', :name => 'Admin'}
