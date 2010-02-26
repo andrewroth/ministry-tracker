@@ -29,7 +29,10 @@ namespace :db do
         abcs = ActiveRecord::Base.configurations
         ENV['in'] = abcs['ciministry_development']['database']
         ENV['out'] = abcs['ciministry_test']['database']
-        drop_database(abcs['ciministry_test'])
+        begin
+          drop_database(abcs['ciministry_test'])
+        rescue
+        end
         create_database(abcs['ciministry_test'])
         Rake::Task["db:test:clone_structure"].invoke
       end
