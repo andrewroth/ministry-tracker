@@ -33,5 +33,5 @@ unless config
 end
 
 puts "database config file: branch '#{git_branch}' -> '#{config}'"
-File.read(Rails.root.join('config', config)).chomp
+ERB.new(File.read(Rails.root.join('config', config)).chomp).result
 %>
