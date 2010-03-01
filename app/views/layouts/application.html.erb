@@ -23,20 +23,27 @@
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
-    <%= javascript_include_tag "jscalendar-1.0/calendar.js" %>
-		<%= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js" %>
-		<%= javascript_include_tag "jscalendar-1.0/calendar-setup.js" %>
+    <%= javascript_include_tag "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => 'calendar' %>
+    
+    <%= fb_connect_javascript_tag %>
 		
 	</head>	
 	<body>
+    <%= init_fb_connect('XFBML', :js => :jquery) %>
 		<div id="outer">
-    <%= connexion_bar %>
+    <%= connexion_bar if Cmt::CONFIG[:gcx_connexion_bar] %>
 
 		<div id="wrapper">
       
 		  <% if logged_in? %>
 		  <div id="userbar">
-		    <%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>&nbsp;&nbsp;&nbsp;
+    		<% if facebook_session %>
+	  	    <a href="#" class="logoutbutton" onclick="try {
+            FB.Connect.logoutAndRedirect('<%= logout_url %>');
+            } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
+	  	  <% else %>
+		    	<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>
+	    	<% end %>&nbsp;&nbsp;&nbsp;
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
