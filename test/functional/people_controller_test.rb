@@ -40,30 +40,30 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "A user should be able to see a directory a directory on a ministry with no campuses" do
-    factory(:user_6)
-    factory(:person_7)
-    factory(:ministryinvolvement_6)
-    factory(:ministry_4)
+    Factory(:user_6)
+    Factory(:person_7)
+    Factory(:ministryinvolvement_6)
+    Factory(:ministry_4)
 
     login('staff_on_ministry_with_no_campus')
-    @request.session[:ministry_id] = factory(:ministry_5).id #under_top is under top, which I am a member of
+    @request.session[:ministry_id] = Factory(:ministry_5).id #under_top is under top, which I am a member of
     get :directory
     assert_response :success
     assert assigns(:people)
   end
   
   test "A person with no campus involvements should still show in the directory" do
-    factory(:user_6)
-    factory(:person_7)
-    factory(:ministryinvolvement_6)
-    factory(:ministry_4)
+    Factory(:user_6)
+    Factory(:person_7)
+    Factory(:ministryinvolvement_6)
+    Factory(:ministry_4)
 
     login('staff_on_ministry_with_no_campus')
-    session[:ministry_id] = factory(:ministry_4).id
+    session[:ministry_id] = Factory(:ministry_4).id
     get :directory
     assert_response :success, @response.body
     assert(ppl = assigns(:people), "@people wasn't assigned")
-    assert(ppl.detect {|p| p['person_id'].to_i == factory(:person_7).id}, "staff_on_ministry_with_no_campus didn't show up.")
+    assert(ppl.detect {|p| p['person_id'].to_i == Factory(:person_7).id}, "staff_on_ministry_with_no_campus didn't show up.")
   end
   
   test "perform search by firstname" do
@@ -116,13 +116,13 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should restrict students directory to their campuses" do
-    factory(:user_3)
-    factory(:person_3)
-    factory(:ministryinvolvement_4)
-    factory(:campus_1)
-    factory(:campus_2)
-    factory(:campusinvolvement_2)
-    factory(:campusinvolvement_4)
+    Factory(:user_3)
+    Factory(:person_3)
+    Factory(:ministryinvolvement_4)
+    Factory(:campus_1)
+    Factory(:campus_2)
+    Factory(:campusinvolvement_2)
+    Factory(:campusinvolvement_4)
     
     login 'sue@student.org'
     get :directory
@@ -142,7 +142,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should re-create staff" do
-    factory(:address_1)
+    Factory(:address_1)
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                   :current_address => {:email => "josh.starcher@uscm.org"},
@@ -176,7 +176,7 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   test "should re-create student" do
-    factory(:address_1)
+    Factory(:address_1)
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                     :current_address => {:email => "josh.starcher@uscm.org"},
@@ -196,7 +196,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_show_person" do
-    get :show, :id => factory(:person_1).id
+    get :show, :id => Factory(:person_1).id
     
     assert_template :show
     assert_template :partial => '_view', :count => 1
@@ -204,7 +204,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_show_rp" do
-    get :show, :id => factory(:person_3).id
+    get :show, :id => Factory(:person_3).id
     
     assert_template :show
     assert_template :partial => '_view', :count => 1
@@ -217,14 +217,14 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_get_edit_for_someone_in_my_group" do
-    factory(:user_3)
-    factory(:person_3)
-    factory(:ministryinvolvement_4)
-    factory(:ministry_1)
-    factory(:campus_1)
-    factory(:campus_2)
-    factory(:campusinvolvement_2)
-    factory(:campusinvolvement_4)
+    Factory(:user_3)
+    Factory(:person_3)
+    Factory(:ministryinvolvement_4)
+    Factory(:ministry_1)
+    Factory(:campus_1)
+    Factory(:campus_2)
+    Factory(:campusinvolvement_2)
+    Factory(:campusinvolvement_4)
     setup_groups
     login('sue@student.org') # leading group 3; sue is a student ministry leader
     get :edit, :id => 50 # member in group 3
@@ -242,12 +242,12 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should update person" do
-    factory(:person_2)
+    Factory(:person_2)
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
                        :perm_address => {:phone => '555-555-5555', :address1 => 'here'},
                        :primary_campus_id => 1, :primary_campus_involvement => {},
-                       :responsible_person_id => factory(:person_2).id
+                       :responsible_person_id => Factory(:person_2).id
     assert_template '_view'
   end
   
@@ -259,7 +259,7 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should end a person's involvements" do
     @request.env["HTTP_REFERER"] = directory_people_path
-    delete :destroy, :id => factory(:person_3).id
+    delete :destroy, :id => Factory(:person_3).id
     assert person = assigns(:person)
     assert(!person.ministry_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a ministry involvement without an end date")
     assert(!person.campus_involvements.reload.collect(&:end_date).collect(&:nil?).include?(true), "There's a campus involvement without an end date")
@@ -282,36 +282,38 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "change to a ministry that is under my assigned level" do
-    xhr :post, :change_ministry_and_goto_directory, :current_ministry => factory(:ministry_3).id
+    xhr :post, :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_3).id
     assert_response :success
     assert_equal(3, session[:ministry_id])
     
     get :directory
-    assert_equal(factory(:ministry_3), assigns(:ministry))
+    assert_equal(Factory(:ministry_3), assigns(:ministry))
   end
   
   test "change to a ministry that is NOT under my assigned level should default to my first ministry for student" do
-    factory(:user_5)
-    factory(:person_6)
-    factory(:ministryinvolvement_5)
-    factory(:ministry_5)
+    Factory(:user_5)
+    Factory(:person_6)
+    Factory(:ministryinvolvement_5)
+    Factory(:ministry_5)
+    Factory(:campusinvolvement_5)
+    Factory(:campus_1)
     login 'min_leader_with_no_permanent_address'
-    get :change_ministry_and_goto_directory, :current_ministry => factory(:ministry_4).id
+    get :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_4).id
     assert_response :redirect
-    assert_not_equal(factory(:ministry_4), assigns(:ministry))
-    assert_equal(factory(:person_6).ministries.first, assigns(:ministry))
+    assert_not_equal(Factory(:ministry_4), assigns(:ministry))
+    assert_equal(Factory(:person_6).ministries.first, assigns(:ministry))
   end
 
   test "change to a ministry that is NOT under my assigned level should still work for staff" do
-    get :change_ministry_and_goto_directory, :current_ministry => factory(:ministry_4).id
+    get :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_4).id
     assert_response :redirect
-    assert_equal(factory(:ministry_4), assigns(:ministry))
+    assert_equal(Factory(:ministry_4), assigns(:ministry))
   end
  
   
   test "user with no ministry involvements should be redirected to set their initial campus" do
-    factory(:user_4)
-    factory(:person_5)
+    Factory(:user_4)
+    Factory(:person_5)
     login('user_with_no_ministry_involvements')
   
     get :directory
@@ -322,17 +324,17 @@ class PeopleControllerTest < ActionController::TestCase
   test "ministry leader with no permanent address should render when updating notes" do
   
     # setup session
-    ministry = factory(:ministry_5)
+    ministry = Factory(:ministry_5)
     
-    user = factory(:user_5)
+    user = Factory(:user_5)
     @request.session[:user] = user.id
     @request.session[:ministry_id] = ministry.id
     
-    person = factory(:person_6)
-    factory(:ministryinvolvement_5)
-    factory(:campusinvolvement_5)
-    factory(:campus_1)
-    factory(:ministry_4)
+    person = Factory(:person_6)
+    Factory(:ministryinvolvement_5)
+    Factory(:campusinvolvement_5)
+    Factory(:campus_1)
+    Factory(:ministry_4)
   
     # make sure it renders properly
     get :show, :id => person.id

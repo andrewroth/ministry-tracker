@@ -25,7 +25,7 @@ class MinistryRolePermissionsControllerTest < ActionController::TestCase
   end
 
   test "should destroy ministry_role_permission" do
-    factory(:ministryrolepermission_1)
+    Factory(:ministryrolepermission_1)
     assert_difference('MinistryRolePermission.count', -1) do
       delete :destroy, :id =>1
     end

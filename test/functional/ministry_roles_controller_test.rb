@@ -40,7 +40,7 @@ class MinistryRolesControllerTest < ActionController::TestCase
   # this checks to see if, when you create a new ministry_role when @ministry = 2, 
   # that your ministry_role.ministry_id is the root of that ministry
   def test_create_different_ministry_id
-    ministry = factory(:ministry_2)
+    ministry = Factory(:ministry_2)
     session[:ministry_id] = ministry.id
     assert_difference("MinistryRole.count") do
       xhr :post, :create, :ministry_role => {:type => 'StaffRole', :name => 'Admin'}
