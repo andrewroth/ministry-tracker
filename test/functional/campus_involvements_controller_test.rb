@@ -11,11 +11,11 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     Factory(:campusinvolvement)
 
     setup_default_user
-    factory(:user_3)
-    factory(:person_3)
-    factory(:campusinvolvement_2)
-    factory(:campusinvolvement_4)
-    factory(:ministryinvolvement_4)
+    Factory(:user_3)
+    Factory(:person_3)
+    Factory(:campusinvolvement_2)
+    Factory(:campusinvolvement_4)
+    Factory(:ministryinvolvement_4)
     setup_ministry_roles
 
     @controller = CampusInvolvementsController.new
