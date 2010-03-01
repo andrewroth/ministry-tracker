@@ -2,6 +2,8 @@ require 'zlib'
 require 'digest/md5'
 require 'base64'
 class User < ActiveRecord::Base
+  include Authentication
+  
   load_mappings
   # Virtual attribute for the unencrypted password
   attr_accessor :plain_password, :password_confirmation
@@ -156,9 +158,6 @@ class User < ActiveRecord::Base
     return !fb_user_id.nil? && fb_user_id > 0
   end
 
-
-
-
   def self.find_or_create_from_cas(ticket)
     # Look for a user with this guid
     receipt = ticket.response
@@ -227,24 +226,9 @@ class User < ActiveRecord::Base
       self.plain_password = self.password_confirmation = newpass
     end
 
-    def register_facebook_hash(hash)
-      fbsession = RFacebook::FacebookWebSession.new(FACEBOOK["key"], FACEBOOK["secret"])
-      email_hashes = [{:email_hash => hash}]
-      hit_facebook(email_hashes, fbsession)
-    end
-    
-    def hit_facebook(email_hashes, fbsession)
-      res = fbsession.connect_registerUsers(:accounts => email_hashes.to_json)
-      logger.debug('hash registered on facebook')
-    rescue Timeout::Error
-      puts 'Timed out. Sleeping...'
-      sleep(15) # Thottle the requests so facebook doesn't get angry
-      hit_facebook(email_hashes, fbsession)
-    end
-    
     def create_facebook_hash
       #not everyone will be using the facebook stuff, so wrap this is a rescue block
-      begin
+      if Cmt::CONFIG[:facebook_connectivity_enabled]
         email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
         crc = Zlib.crc32(email)
         md5 = Digest::MD5.hexdigest(email)
@@ -253,7 +237,7 @@ class User < ActiveRecord::Base
           register_facebook_hash(hash)
         end
         self.facebook_hash = hash
-      rescue; end
+      end
     end
     
 end

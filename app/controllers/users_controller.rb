@@ -100,18 +100,39 @@ class UsersController < ApplicationController
       flash[:warning] = "We really need you to enter a valid email address"
       render :prompt_for_email and return
     end
-    if facebook_session
-      if !current_user || current_user == :false
-        #register with fb
-        self.current_user = User.create_from_fb_connect(facebook_session.user, params[:email])
-        redirect_to set_initial_campus_person_url(current_user.person)
+    if params[:send_email] == '1'
+      UserMailer.deliver_confirm_email(params[:email])
+      flash[:notice] = "Please check your email for your confirmation code. Copy/paste it in the field below."
+      render :confirmation_email_sent and return
+    end
+    if params[:code].present? && params[:code] == User.secure_digest(params[:email])
+      if facebook_session && params[:send_email] == '0'
+        if !current_user || current_user == :false
+          #register with fb
+          self.current_user = User.create_from_fb_connect(facebook_session.user, params[:email])
+        else
+          #connect accounts
+          self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
+        end
+        respond_to do |wants|
+          wants.js do
+            render :update do |page|
+              page.redirect_to person_path(current_user.person)
+            end
+          end
+        end
+        
       else
-        #connect accounts
-        self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
-        redirect_to person_path(current_user.person)
+        render :nothing => true
       end
     else
-      redirect_to '/'
+      respond_to do |wants|
+        wants.js do
+          render :update do |page|
+            update_flash(page, "Your code doesn't match. Please try copy/pasting it again, make sure you haven't changed your email address, and if that doesn't work try resending the email.", :warning)
+          end
+        end
+      end
     end
   end
 
