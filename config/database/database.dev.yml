@@ -5,9 +5,13 @@ File.read(file).chomp
 %>
 
 development:
-  database: mt
+  database: utopian_pulse_dev
+  <<: *defaults
+
+test:
+  database: utopian_pulse_test
   <<: *defaults
 
 production:
-  database: mt
+  database: utopian_pulse_dev
   <<: *defaults
