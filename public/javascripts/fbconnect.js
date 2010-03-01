@@ -43,7 +43,7 @@ function facebook_onlogin_ready() {
   //
   // However, a more complex app could use this function to do AJAX calls
   // and/or in-place replacement of page contents to avoid a full page refresh.
-		window.location = "/users/link_user_accounts";
+		window.location = "/people/me";
 	
   // refresh_page();
 }

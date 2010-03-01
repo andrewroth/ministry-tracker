@@ -256,6 +256,11 @@ class PeopleController < ApplicationController
     end
   end
   
+  def me
+    @person = current_user.person
+    show
+  end
+  
   def setup_new
     @person = Person.new
     @current_address = CurrentAddress.new

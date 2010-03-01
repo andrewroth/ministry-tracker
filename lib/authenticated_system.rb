@@ -152,6 +152,7 @@ module AuthenticatedSystem
       session[:ministry_id] = nil
       session[:ministry_role_id] = nil
       session[:can_manage] = nil
+      session[:facebook_session] = nil
       # Log out of SSO if we're in it
       if need_cas_logout
         CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)

@@ -93,7 +93,6 @@ class UsersController < ApplicationController
     unless facebook_session
       redirect_to '/' and return
     end
-    
   end
   
   def link_fb_user

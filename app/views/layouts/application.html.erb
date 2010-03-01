@@ -17,7 +17,8 @@
 		<%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
 		<%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json', 
 		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
-
+    <%= yield :javascripts %>
+    
 		<%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>

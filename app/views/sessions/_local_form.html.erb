@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "fbconnect" %>
+<% end %>
 <script type="text/javascript" charset="utf-8">
   function log_in() {
     $('#spinner').show();
@@ -44,8 +47,6 @@
 <% unless params[:fb_user] %>
 <div class="login_sector_fb">
 <div class="login_prompt">Or <b>login</b> with Facebook:</div>
-  <%= fb_connect_javascript_tag %>
-  <%= init_fb_connect('XFBML', :js => :jquery) %>
   <%= fb_login_button('facebook_onlogin_ready()')%>
 
 </div>
