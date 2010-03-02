@@ -95,6 +95,7 @@ class User < ActiveRecord::Base
     if u && !u.person
       u.create_person_from_fb(fb_user)
     end
+    u.update_attribute(:fb_user_id, fb_user.uid) if u && !u.fb_user_id
     u
   rescue Facebooker::Session::SessionExpired
     nil
@@ -148,9 +149,10 @@ class User < ActiveRecord::Base
   #We need this so Facebook can find friends on our local application even if they have not connect through connect
   #We then use the email hash in the database to later identify a user from Facebook with a local user
   def register_user_to_fb
-    users = {:email => username, :account_id => id}
+    email = facebook_username.present? ? facebook_username : username
+    users = {:email => email, :account_id => id}
     Facebooker::User.register([users])
-    self.facebook_hash = Facebooker::User.hash_email(username)
+    self.facebook_hash = Facebooker::User.hash_email(email)
     save(false)
   end
   
@@ -225,19 +227,11 @@ class User < ActiveRecord::Base
       1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
       self.plain_password = self.password_confirmation = newpass
     end
-
+    
     def create_facebook_hash
-      #not everyone will be using the facebook stuff, so wrap this is a rescue block
-      if Cmt::CONFIG[:facebook_connectivity_enabled]
-        email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
-        crc = Zlib.crc32(email)
-        md5 = Digest::MD5.hexdigest(email)
-        hash = "#{crc}_#{md5}"
-        if self.facebook_hash != hash 
-          register_facebook_hash(hash)
-        end
-        self.facebook_hash = hash
+      if changed.include?('username') || changed.include?('facebook_username')
+        register_user_to_fb
       end
     end
-    
+
 end

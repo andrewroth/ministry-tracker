@@ -949,6 +949,7 @@ ActiveRecord::Schema.define(:version => 20100222210748) do
     t.integer   "fb_user_id",                :limit => 8
   end
 
+  add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true
 
   create_table "view_columns", :force => true do |t|
