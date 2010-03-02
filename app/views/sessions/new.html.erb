@@ -14,15 +14,10 @@
   <div class='login_info'>
     <%= I18n.t :GCX_login_info, :default => '' %>
   </div>
-  <%- if show_form -%>
-    <br/>
-    <div id="local_form">
-      <%= render :partial => 'local_form' %>
-    </div> 
-  <%- end -%>
-<%- else -%>
+<%- end-%>
+<%- if show_form -%>
+  <br/>
   <div id="local_form">
-    <br/>
     <%= render :partial => 'local_form' %>
   </div> 
-<%- end-%>
+<%- end -%>
