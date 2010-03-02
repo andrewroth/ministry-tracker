@@ -31,6 +31,6 @@ production:
   api_key: e076e645c22bca95d7f5dab73e73dd1f
   secret_key: e60c87ce12ee72ce7e7f50de2479b0a9
   canvas_page_name: ccc-involvement
-  callback_url: http://mt.int.uscm.org/facebook/
+  callback_url: http://mt.uscm.org/
   pretty_errors: true
-  set_asset_host_to_callback_url: false
+  set_asset_host_to_callback_url: true
