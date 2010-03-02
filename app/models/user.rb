@@ -11,9 +11,8 @@ class User < ActiveRecord::Base
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of       _(:username), :within => 6..40
   validates_uniqueness_of   _(:username), :case_sensitive => false, :on => :create
-  before_save :encrypt_password, :create_facebook_hash
+  before_save :encrypt_password, :register_user_to_fb
   before_create :stamp_created_on
-  after_create :register_user_to_fb
 
   
   has_one :person, :class_name => 'Person', :foreign_key => _(:user_id, :person)
@@ -148,12 +147,13 @@ class User < ActiveRecord::Base
   #The Facebook registers user method is going to send the users email hash and our account id to Facebook
   #We need this so Facebook can find friends on our local application even if they have not connect through connect
   #We then use the email hash in the database to later identify a user from Facebook with a local user
-  def register_user_to_fb
-    email = facebook_username.present? ? facebook_username : username
-    users = {:email => email, :account_id => id}
-    Facebooker::User.register([users])
-    self.facebook_hash = Facebooker::User.hash_email(email)
-    save(false)
+  def register_user_to_fb(force = false)
+    if force || changed.include?('username') || changed.include?('facebook_username')
+      email = facebook_username.present? ? facebook_username : username
+      users = {:email => email, :account_id => id}
+      Facebooker::User.register([users]) unless Rails.env.test?
+      self.facebook_hash = Facebooker::User.hash_email(email)
+    end
   end
   
   def facebook_user?
@@ -228,10 +228,4 @@ class User < ActiveRecord::Base
       self.plain_password = self.password_confirmation = newpass
     end
     
-    def create_facebook_hash
-      if changed.include?('username') || changed.include?('facebook_username')
-        register_user_to_fb
-      end
-    end
-
 end
