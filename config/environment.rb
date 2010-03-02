@@ -75,6 +75,7 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
   
   if File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example')) && !File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
+    require 'fileutils'
     FileUtils.cp(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example'), File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
   end
 end
