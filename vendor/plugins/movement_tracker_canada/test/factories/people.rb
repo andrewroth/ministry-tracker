@@ -1,4 +1,3 @@
-=begin
 Factory.define :person_1, :class => Person, :singleton => true do |p|
   p.id '50000'
   p.user_id '1'
@@ -6,7 +5,6 @@ Factory.define :person_1, :class => Person, :singleton => true do |p|
   p.last_name 'Starcher'
   p.middle_name 'Lee'
   p.preferred_name 'Josh'
-  p.year_in_school 'Alumni'
   p.level_of_school 'Undergrad'
   p.graduation_date '06/15/2004'
   p.major 'Philosophy'
@@ -19,6 +17,7 @@ end
 Factory.define :person_2, :class => Person, :singleton => true do |p|
   p.id '3000'
   p.first_name 'fred'
+  p.last_name 'anderson'
   p.user_id '2'
   p.gender 'M'
 end
@@ -26,6 +25,7 @@ end
 Factory.define :person_3, :class => Person, :singleton => true do |p|
   p.id '2000'
   p.first_name 'sue'
+  p.last_name 'johnson'
   p.user_id '3'
   p.gender 'F'
 end
@@ -47,7 +47,8 @@ end
 Factory.define :person_5, :class => Person, :singleton => true do |p|
   p.id '4000'
   p.user_id '4'
-  p.first_name 'NoMinInvolvements'
+  p.first_name 'NoMinistry'
+  p.last_name 'Involvements'
 end
 
 Factory.define :person_6, :class => Person, :singleton => true do |p|
@@ -69,5 +70,5 @@ Factory.define :person_111, :class => Person, :singleton => true do |p|
   p.first_name 'Random'
   p.last_name 'Person'
 end
-=end
+
 

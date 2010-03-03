@@ -55,7 +55,13 @@ class Person < ActiveRecord::Base
   def after_save
     person_extra.save!
   end
-  
+
+  def user_id=(val) '' end
+  def year_in_school=(val) '' end
+  def level_of_school=(val) '' end
+  def graduation_date=(val) '' end
+  def bio=(val) '' end
+
   def first_name=(val="")
     self.person_legal_fname ||= ""
     self.person_fname = val

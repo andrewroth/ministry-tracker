@@ -8,17 +8,17 @@ class GroupsControllerTest < ActionController::TestCase
 
     login
   end
-  
+
   def test_index
     get :index
     assert_response :success
-    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
+    assert_equal [ Factory(:group_1), Factory(:group_2) ], assigns('groups')
   end
 
   def test_join
     get :join
     assert_response :success
-    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
+    assert_equal [ Factory(:group_1), Factory(:group_2) ], assigns('groups')
   end
 
   def test_join_request_campus_chosen

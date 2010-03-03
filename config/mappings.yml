@@ -59,6 +59,8 @@ country:
   abbrev: country_shortDesc
   desc: country_desc
   short_desc: country_shortDesc
+  iso_code: country_shortDesc
+  code: country_shortDesc
 emerg:
   id: emerg_id
 gender:

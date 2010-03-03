@@ -1,3 +1,4 @@
+=begin
 Factory.define :ministryrolepermission_1, :class => MinistryRolePermission do |m|
   m.id '1'
   m.ministry_role_id '1'
@@ -9,3 +10,4 @@ Factory.define :ministryrolepermission_2, :class => MinistryRolePermission do |m
   m.ministry_role_id '2'
   m.permission_id '1'
 end
+=end

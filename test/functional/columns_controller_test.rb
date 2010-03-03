@@ -10,7 +10,7 @@ class ColumnsControllerTest < ActionController::TestCase
     setup_default_user
     setup_ministry_roles
     Factory(:column_1)
-    
+
     @controller = ColumnsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

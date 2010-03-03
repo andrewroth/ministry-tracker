@@ -1,4 +1,3 @@
-=begin
 Factory.define :permission_1, :class => Permission do |p|
   p.id '1'
   p.action 'foo'
@@ -19,4 +18,10 @@ Factory.define :permission_3, :class => Permission do |p|
   p.controller 'people'
   p.description 'permission three'
 end
-=end
+
+Factory.define :permission_4, :class => Permission do |p|
+  p.id '4'
+  p.action 'directory'
+  p.controller 'people'
+  p.description 'View Directory'
+end

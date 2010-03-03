@@ -41,8 +41,11 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "A user should be able to see a directory a directory on a ministry with no campuses" do
     Factory(:user_6)
+    Factory(:access_6)
     Factory(:person_7)
     Factory(:ministryinvolvement_6)
+    Factory(:ministryrolepermission_5)
+    Factory(:permission_4)
     Factory(:ministry_4)
 
     login('staff_on_ministry_with_no_campus')
@@ -54,8 +57,11 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "A person with no campus involvements should still show in the directory" do
     Factory(:user_6)
+    Factory(:access_6)
     Factory(:person_7)
     Factory(:ministryinvolvement_6)
+    Factory(:ministryrolepermission_5)
+    Factory(:permission_4)
     Factory(:ministry_4)
 
     login('staff_on_ministry_with_no_campus')
@@ -118,12 +124,15 @@ class PeopleControllerTest < ActionController::TestCase
   test "should restrict students directory to their campuses" do
     Factory(:user_3)
     Factory(:person_3)
+    Factory(:access_3)
     Factory(:ministryinvolvement_4)
+    Factory(:ministryrolepermission_4)
+    Factory(:permission_4)
     Factory(:campus_1)
     Factory(:campus_2)
     Factory(:campusinvolvement_2)
     Factory(:campusinvolvement_4)
-    
+
     login 'sue@student.org'
     get :directory
     assert_equal @person.campuses, assigns(:campuses)
@@ -143,9 +152,10 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should re-create staff" do
     Factory(:address_1)
+    Factory(:accessgroup_1)
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                  :current_address => {:email => "josh.starcher@uscm.org"},
+                  :current_address => {:email => "josh.starcher@example.com"},
                   :ministry_involvement => { :ministry_role_id => StaffRole.first.id },
                   :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
     assert_equal old_count, Person.count
@@ -153,6 +163,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should create student" do
+    Factory(:accessgroup_1)
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
                     :current_address => {:email => "josh.starcsher@gmail.org"}, 
@@ -177,9 +188,10 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should re-create student" do
     Factory(:address_1)
+    Factory(:accessgroup_1)
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
-                    :current_address => {:email => "josh.starcher@uscm.org"},
+                    :current_address => {:email => "josh.starcher@example.com"},
                     :ministry_involvement => { :ministry_role_id => StudentRole.first.id },
                     :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
       assert person = assigns(:person)
@@ -219,6 +231,7 @@ class PeopleControllerTest < ActionController::TestCase
   test "should_get_edit_for_someone_in_my_group" do
     Factory(:user_3)
     Factory(:person_3)
+    Factory(:access_3)
     Factory(:ministryinvolvement_4)
     Factory(:ministry_1)
     Factory(:campus_1)
@@ -292,6 +305,7 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "change to a ministry that is NOT under my assigned level should default to my first ministry for student" do
     Factory(:user_5)
+    Factory(:access_5)
     Factory(:person_6)
     Factory(:ministryinvolvement_5)
     Factory(:ministry_5)
@@ -314,6 +328,7 @@ class PeopleControllerTest < ActionController::TestCase
   test "user with no ministry involvements should be redirected to set their initial campus" do
     Factory(:user_4)
     Factory(:person_5)
+    Factory(:access_4)
     login('user_with_no_ministry_involvements')
   
     get :directory
@@ -325,7 +340,8 @@ class PeopleControllerTest < ActionController::TestCase
   
     # setup session
     ministry = Factory(:ministry_5)
-    
+
+    Factory(:access_5)
     user = Factory(:user_5)
     @request.session[:user] = user.id
     @request.session[:ministry_id] = ministry.id

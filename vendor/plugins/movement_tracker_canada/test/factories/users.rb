@@ -1,4 +1,3 @@
-=begin
 Factory.define :user_1, :class => User, :singleton => true do |u|
   u.id '1'
   u.username 'josh.starcher@example.com'
@@ -11,6 +10,7 @@ Factory.define :user_2, :class => User, :singleton => true do |u|
   u.id '2'
   u.username 'fred@uscm.org'
   u.password 'test'
+  u.guid ''
   u.last_login Date.today
 end
 
@@ -18,6 +18,7 @@ Factory.define :user_3, :class => User, :singleton => true do |u|
   u.id '3'
   u.username 'sue@student.org'
   u.password 'bob'
+  u.guid ''
   u.last_login Date.today
 end
 
@@ -44,4 +45,3 @@ Factory.define :user_6, :class => User, :singleton => true do |u|
   u.guid '253b648c-3537-464c-b97a-e2d7e2c748b9'
   u.last_login Date.today
 end
-=end
