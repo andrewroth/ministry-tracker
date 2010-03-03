@@ -40,7 +40,6 @@ Rails::Initializer.run do |config|
   config.gem  'jrails'
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
-  # config.gem 'rfacebook'
   config.gem 'liquid'
   config.gem 'will_paginate'
 
@@ -84,6 +83,7 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :de
   
   if File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example')) && !File.exists?(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
+    require 'fileutils'
     FileUtils.cp(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example'), File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
   end
 
