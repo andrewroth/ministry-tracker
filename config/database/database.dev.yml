@@ -1,4 +1,4 @@
-<%= 
+<%=
 dbh = "#{Rails.root}/config/database/database_header.yml"; dbhd = dbh+".default";
 file = File.exists?(dbh) ? dbh : dbhd
 File.read(file).chomp

@@ -9,6 +9,8 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
+require 'tasks/facebooker'
+
 namespace :test do
   desc "Generate code coverage with rcov"
   task :coverage do

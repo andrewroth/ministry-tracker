@@ -4,6 +4,10 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
+  
+  before_filter :set_facebook_session
+  helper_method :facebook_session
+
   # include ExceptionNotifiable
   # self.error_layout = false
   
@@ -22,7 +26,7 @@ class ApplicationController < ActionController::Base
   end unless Rails.env.test?
 
    # before_filter :fake_login
-  before_filter :login_required, :get_person, :force_campus_set, :get_ministry, :set_locale#, :get_bar
+  before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all
@@ -112,6 +116,7 @@ class ApplicationController < ActionController::Base
          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
          person.id, Ministry.first.root.staff_role_ids]).nil?
     end
+    helper_method :is_staff_somewhere
  
     def can_manage
       unless session[:can_manage]
@@ -194,7 +199,7 @@ class ApplicationController < ActionController::Base
         AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym].include?(action.to_sym)
         case controller.to_sym
         when :people
-          if action == 'edit' && @me.is_leading_mentor_priority_group_with?(Person.find(params[:id]))
+          if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
             return true
           end
 
@@ -392,9 +397,24 @@ class ApplicationController < ActionController::Base
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
+    def force_required_data
+      return false unless force_email_set
+      return false unless force_campus_set
+    end
+    
+    def force_email_set
+      if current_user && (current_user.username.nil? || current_user.username == current_user.facebook_hash)
+        redirect_to prompt_for_email_users_path
+        return false
+      end
+      true
+    end
+    
     def force_campus_set
       if !is_staff_somewhere && @my.campus_involvements.empty?
         redirect_to set_initial_campus_person_url(@person.id)
+        return false
       end
+      true
     end
 end
