@@ -154,6 +154,10 @@ class User < ActiveRecord::Base
     end
     u
   end
+
+  def self.find_by_username(username)
+    User.find(:first, :conditions => {_(:username) => username})
+  end
   
   protected
     # not sure why but cas sometimes sends the extra attributes as underscored
@@ -210,5 +214,7 @@ class User < ActiveRecord::Base
         self.facebook_hash = hash
       rescue; end
     end
+
+
     
 end
