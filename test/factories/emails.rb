@@ -1,4 +1,4 @@
-Factory.define :email_1, :class => Email do |e|
+Factory.define :email_1, :class => Email, :singleton => true do |e|
   e.subject 'test'
   e.body "{{first_name}} {{last_name}}"
   e.sender_id '50000'
@@ -7,7 +7,7 @@ Factory.define :email_1, :class => Email do |e|
   e.updated_at  Time.now.to_s(:db) 
 end
 
-Factory.define :email_2, :class => Email do |e|
+Factory.define :email_2, :class => Email, :singleton => true do |e|
   e.subject 'test'
   e.body 'foob ar'
   e.sender_id '50000'
