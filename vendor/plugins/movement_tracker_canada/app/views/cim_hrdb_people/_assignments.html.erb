@@ -19,7 +19,7 @@
     </tbody>
   </table>
 <% else %>
-  <br/>This person has no assignments.<br/>
+  <br/><%= @cim_hrdb_person.first_name %> has no assignments.<br/>
 <% end %>
 <br/>
 <%= link_to 'New assignment', new_cim_hrdb_person_cim_hrdb_assignment_path(@cim_hrdb_person) %>
