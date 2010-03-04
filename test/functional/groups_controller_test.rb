@@ -3,19 +3,22 @@ require File.dirname(__FILE__) + '/../test_helper'
 class GroupsControllerTest < ActionController::TestCase
  
   def setup
+    setup_default_user
+    setup_groups
+
     login
   end
   
   def test_index
     get :index
     assert_response :success
-    assert_equal [ groups(:group_1) ], assigns('groups')
+    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
   end
 
   def test_join
     get :join
     assert_response :success
-    assert_equal [ groups(:group_1) ], assigns('groups')
+    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
   end
 
   def test_join_request_campus_chosen

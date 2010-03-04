@@ -5,9 +5,12 @@ require 'columns_controller'
 class ColumnsController; def rescue_action(e) raise e end; end
 
 class ColumnsControllerTest < ActionController::TestCase
-  fixtures Column.table_name
 
   def setup
+    setup_default_user
+    setup_ministry_roles
+    Factory(:column_1)
+    
     @controller = ColumnsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

@@ -25,3 +25,17 @@ config.action_mailer.delivery_method = :test
 # This is necessary if your schema can't be completely dumped by the schema dumper,
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
+
+config.gem 'sheldond_fgs', :lib => 'factory_girl'
+
+# Our factory_girl improvements
+class Factory
+  undef id
+  undef type
+
+  class Sequence
+    def reset
+      @value = 0
+    end
+  end
+end

@@ -5,8 +5,9 @@ require 'developers_controller'
 class DevelopersController; def rescue_action(e) raise e end; end
 
 class DevelopersControllerTest < ActionController::TestCase
-  fixtures User.table_name
+
   def setup
+    setup_default_user
     @controller = DevelopersController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

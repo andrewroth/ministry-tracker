@@ -1,6 +1,6 @@
 <div id="searchBox">
   <div id="basic_search"
-    <%= 'style="display:none"' if @advanced %> >
+    <%= 'style="display:none"' if @advanced and authorized?(:advanced) %> >
     <%- form_tag directory_people_url(:format => 'html') do -%>
 	    Search by name or email:
 	    <%= text_field_tag "search"%>
@@ -12,7 +12,7 @@
 	  <%- end -%>
 	</div>
   
-  <div id="advanced_search" <%= 'style="display:none"' unless @advanced %>>
+  <div id="advanced_search" <%= 'style="display:none"' unless @advanced and authorized?(:advanced) %>>
     <%= render :partial => 'advanced_search' %>	 
 	</div>
 	&nbsp;&nbsp;

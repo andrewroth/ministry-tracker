@@ -5,9 +5,12 @@ require 'training_categories_controller'
 class TrainingCategoriesController; def rescue_action(e) raise e end; end
 
 class TrainingCategoriesControllerTest < ActionController::TestCase
-  fixtures TrainingCategory.table_name
 
   def setup
+    setup_default_user
+    Factory(:trainingcategory_1)
+    Factory(:trainingcategory_2)
+    
     @controller = TrainingCategoriesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -60,7 +63,7 @@ class TrainingCategoriesControllerTest < ActionController::TestCase
 
   def test_should_destroy_training_category
     assert_difference('TrainingCategory.count', -1) do
-      delete :destroy, :id => training_categories(:empty).id
+      delete :destroy, :id => Factory.build(:trainingcategory_2).id
     end
 
     assert_redirected_to training_categories_path
