@@ -58,9 +58,4 @@ class SchoolYearsControllerTest < ActionController::TestCase
     assert_response :success, @response.body
   end
   
-  test "should change the order of the school years" do
-    first = SchoolYear.first
-    xhr :post, :reorder, :school_years => ['2','1']
-    assert_not_equal(first, SchoolYear.first)
-  end
 end

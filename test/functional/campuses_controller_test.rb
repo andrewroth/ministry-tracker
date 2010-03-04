@@ -20,7 +20,10 @@ class CampusesControllerTest < ActionController::TestCase
   end
   
   test "change to valid country" do
-    xhr :post, :change_country, :country => 'US'
+    Factory(:state_1)
+    Factory(:state_2)
+
+    xhr :post, :change_country, :country => 'USA'
     assert assigns['states'].length > 0
     assert_response :success
   end
@@ -32,7 +35,8 @@ class CampusesControllerTest < ActionController::TestCase
   end
   
   test "change to valid state" do
-    xhr :post, :change_state, :country => 'US', :state => 'CA'
+    Factory(:state_1)
+    xhr :post, :change_state, :country => 'USA', :state => 'CA'
     assert assigns['campuses'].length > 0
     assert_response :success 
   end

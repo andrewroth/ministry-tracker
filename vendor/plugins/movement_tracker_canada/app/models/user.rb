@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   def person
     persons.first
   end
-#
+
 #  def username=(val)
 #    # don't let usernames be set to viewer_userID
 #  end

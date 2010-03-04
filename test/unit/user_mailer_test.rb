@@ -18,6 +18,7 @@ class UserMailerTest < ActionMailer::TestCase
   
   def load_users
     Factory(:user_1)
+    Factory(:access_1)
   end
 
   @data_loaded = false

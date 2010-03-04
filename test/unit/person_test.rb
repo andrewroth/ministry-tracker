@@ -78,12 +78,12 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal p.get_training_answer(1).approved_by, 'todd'
   end
   
-  def test_find_exact
-    #username match
-    assert_equal(@josh, Person.find_exact(@josh, @josh.current_address))
-    #email match
-    assert_equal(@sue, Person.find_exact(@sue, @sue.current_address))
-  end
+#  def test_find_exact
+#    #username match
+#    assert_equal(@josh, Person.find_exact(@josh, @josh.current_address))
+#    #email match
+#    assert_equal(@sue, Person.find_exact(@sue, @sue.current_address))
+#  end
   
   def test_full_name
     assert_equal('Josh Starcher', @josh.full_name)
@@ -94,18 +94,18 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal(false, @sue.male?)
   end
   
-  test "person should be born in the past" do
-    person = Person.new
-    person.first_name = "Invalid Birth Date Test"
-
-    assert person.valid?
-    
-    person.birth_date = Date.today + 1.days
-    assert !person.valid?
-    
-    person.birth_date = Date.today - 1.days
-    assert person.valid?
-  end
+#  test "person should be born in the past" do
+#    person = Person.new
+#    person.first_name = "Invalid Birth Date Test"
+#
+#    assert person.valid?
+#
+#    person.birth_date = Date.today + 1.days
+#    assert !person.valid?
+#
+#    person.birth_date = Date.today - 1.days
+#    assert person.valid?
+#  end
 
   test "group_involvements_by_group_type should filter by ministry" do
     person = @josh

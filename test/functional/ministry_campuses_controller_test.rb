@@ -31,7 +31,7 @@ class MinistryCampusesControllerTest < ActionController::TestCase
   end
   
   def test_new_with_campus_scope_country
-    Cmt::CONFIG[:campus_scope_country] = 'US'
+    Cmt::CONFIG[:campus_scope_country] = 'USA'
     xhr :get, :new, :ministry_id => 1
   end
 

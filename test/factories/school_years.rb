@@ -1,3 +1,4 @@
+=begin
 Factory.define :schoolyear_1, :class => SchoolYear do |s|
   s.id '1'
   s.name 'Freshman'
@@ -11,3 +12,4 @@ Factory.define :schoolyear_2, :class => SchoolYear do |s|
   s.level 'Undergrad'
   s.position '2'
 end
+=end
