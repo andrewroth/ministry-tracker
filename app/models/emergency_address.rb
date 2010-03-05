@@ -2,5 +2,5 @@
 # can own multiple addresses?
 class EmergencyAddress < Address
   load_mappings
-  include Common::EmergencyAddress
+  include Common::Core::EmergencyAddress
 end

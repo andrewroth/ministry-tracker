@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
   load_mappings
-  include Common::User
+  include Common::Core::User
 end

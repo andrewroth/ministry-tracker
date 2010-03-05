@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
   load_mappings
-  include Common::Person
+  include Common::Core::Person
 
   # Summer Projects
   has_many :summer_project_applications, :order =>  "#{SummerProjectApplication.table_name}.#{_(:created_at, :summer_project_application)}"

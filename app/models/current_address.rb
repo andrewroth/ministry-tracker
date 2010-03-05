@@ -2,5 +2,5 @@
 # Question: Why?
 class CurrentAddress < Address
   load_mappings
-  include Common::CurrentAddress
+  include Common::Core::CurrentAddress
 end
