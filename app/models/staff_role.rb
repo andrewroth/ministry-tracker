@@ -1,4 +1,4 @@
 class StaffRole < MinistryRole
   load_mappings
-  include Common::StaffRole
+  include Common::Core::StaffRole
 end

@@ -1,6 +1,6 @@
 class Ministry < ActiveRecord::Base
   load_mappings
-  include Common::Ministry
+  include Common::Core::Ministry
 
   has_many :views, :order => View.table_name + '.' + _(:title, 'view'), :dependent => :destroy
 

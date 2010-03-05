@@ -1,4 +1,4 @@
 class Address < ActiveRecord::Base
-  include Common::Address
+  include Common::Core::Address
   load_mappings
 end

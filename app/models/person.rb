@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
   load_mappings
-  include Common::Person
+  include Common::Core::Person
 
   # Training Questions
   has_many :training_answers, :class_name => "TrainingAnswer", :foreign_key => _(:person_id, :training_answer)

@@ -1,4 +1,4 @@
 class PermanentAddress < Address
   load_mappings
-  include Common::PermanentAddress
+  include Common::Core::PermanentAddress
 end
