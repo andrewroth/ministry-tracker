@@ -38,8 +38,37 @@ class Person < ActiveRecord::Base
     :conditions => { _(:requested, :group_involvement) => true }
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
+              
+  # genderization for personafication in templates
+  alias_method :get_custom_value_hash, :custom_value_hash
+  alias_method :get_training_answer_hash, :training_answer_hash
+  
 
+  def custom_value_hash
+    if @custom_value_hash.nil?
+      @custom_value_hash = {}
+      custom_values.each {|cv| @custom_value_hash[cv.custom_attribute_id] = cv.value }
+    end
+    @custom_value_hash
+  end
 
+  def training_answer_hash
+    if @training_answer_hash.nil?
+      @training_answer_hash = {}
+      training_answers.each {|ta| @training_answer_hash[ta.training_question_id] = ta }
+    end
+  end
+
+  # Get the value of a custom_attribute
+  def get_value(attribute_id)
+    get_custom_value_hash
+    return @custom_value_hash[attribute_id]
+  end
+
+  def get_training_answer(question_id)
+    get_training_answer_hash
+    return @training_answer_hash[question_id]
+  end
   
   def group_group_involvements(filter, options = {})
     case filter
