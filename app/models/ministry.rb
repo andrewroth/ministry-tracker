@@ -52,4 +52,17 @@ class Ministry < ActiveRecord::Base
     new_view.save!
     new_view
   end
+
+  def all_group_types
+    @all_group_types ||= ::GroupType.find(:all, :conditions => ["ministry_id IN (?)", ancestor_ids], :order => _(:group_type, :group_type))
+  end
+
+  def mandated_training_questions
+    @mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} IN(?)", ancestor_ids], :include => :training_question).collect(&:training_question)
+  end
+
+  def self_mandated_training_questions
+    @self_mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} = ?", self.id], :include => :training_question).collect(&:training_question)
+  end
+
 end
