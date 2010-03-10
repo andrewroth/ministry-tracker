@@ -23,8 +23,8 @@ class AddressTest < ActiveSupport::TestCase
   def test_to_liquid
     a = Factory(:address_1)
     a.to_liquid
-    assert_equal('email', a.email)
-    assert_equal('phone', a.phone)
+    assert_equal('josh.starcher@uscm.org', a.email)
+    assert_equal('847-980-1420', a.phone)
   end
 
   def test_sanify
