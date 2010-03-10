@@ -1,5 +1,5 @@
-<% remote_form_for @person, :url => set_initial_campus_person_url(@person.id) do %>
-  <div class='.center'>Please choose your campus.</div>
+<% remote_form_for @person, :url => set_initial_campus_person_url(@person.id), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do %>
+  <div>Please choose your campus. <%= spinner('p') %></div>
   <div id='errors'>
     <%= error_messages_for 'campus_involvement' %>
   </div>
