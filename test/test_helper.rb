@@ -51,7 +51,7 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   def login(username = 'josh.starcher@example.com')
-    @user = User.find(:first, :conditions => {:username => username})
+    @user = User.find(:first, :conditions => { User._(:username) => username})
     @request.session[:user] = @user.id
     @request.session[:ministry_id] = 1
     @person = @user.person
