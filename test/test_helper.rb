@@ -44,14 +44,14 @@ class ActiveSupport::TestCase
   def logger
     RAILS_DEFAULT_LOGGER
   end
-  
+
   def teardown
     teardown_everything
   end
 
   # Add more helper methods to be used by all tests here...
   def login(username = 'josh.starcher@example.com')
-    @user = User.find_by_username(username)
+    @user = User.find(:first, :conditions => {:username => username})
     @request.session[:user] = @user.id
     @request.session[:ministry_id] = 1
     @person = @user.person
@@ -88,7 +88,7 @@ class ActiveSupport::TestCase
     Factory(:person_3)
     Factory(:person_111)
   end
-
+  
   def setup_campuses
     Factory(:campus_1)
     Factory(:campus_2)
@@ -120,7 +120,7 @@ class ActiveSupport::TestCase
     Factory(:ministrycampus_2)
     Factory(:country_1)
   end
-
+  
   def setup_n_campus_involvements(n)
     reset_campus_involvements_sequences
     1.upto(n + 1) do |i| 
@@ -186,7 +186,6 @@ class ActiveSupport::TestCase
     reset_all_sequences
     ActiveRecord::Base.send(:subclasses).each { |m| m.delete_all unless m.abstract_class }
   end
-
 
   protected
     def upload_file(options = {})

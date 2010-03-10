@@ -11,9 +11,8 @@ class User < ActiveRecord::Base
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of       _(:username), :within => 6..40
   validates_uniqueness_of   _(:username), :case_sensitive => false, :on => :create
-  before_save :encrypt_password, :create_facebook_hash
+  before_save :encrypt_password, :register_user_to_fb
   before_create :stamp_created_on
-  after_create :register_user_to_fb
 
   
   has_one :person, :class_name => 'Person', :foreign_key => _(:user_id, :person)
@@ -95,6 +94,7 @@ class User < ActiveRecord::Base
     if u && !u.person
       u.create_person_from_fb(fb_user)
     end
+    u.update_attribute(:fb_user_id, fb_user.uid) if u && !u.fb_user_id
     u
   rescue Facebooker::Session::SessionExpired
     nil
@@ -103,12 +103,11 @@ class User < ActiveRecord::Base
   #Take the data returned from facebook and create a new user from it.
   #We don't get the email from Facebook and because a facebooker can only login through Connect we just generate a unique login name for them.
   #If you were using username to display to people you might want to get them to select one after registering through Facebook Connect
-  def self.create_from_fb_connect(fb_user, username = nil)
-    u = User.find(:first, :conditions => {_(:username, :user) => username} ) if username
+  def self.create_from_fb_connect(fb_user, username)
+    u = User.find(:first, :conditions => {_(:username) => username} ) 
     if u
       u.facebook_hash = fb_user.email_hashes.first
       u.fb_user_id = fb_user.uid
-      u.username = username if username
     else
       u = User.create(_(:username) => username || fb_user.email_hashes.first, _(:last_login) => Time.zone.now, _(:fb_user_id) => fb_user.uid, _(:facebook_hash) => fb_user.email_hashes.first)
     end
@@ -147,11 +146,13 @@ class User < ActiveRecord::Base
   #The Facebook registers user method is going to send the users email hash and our account id to Facebook
   #We need this so Facebook can find friends on our local application even if they have not connect through connect
   #We then use the email hash in the database to later identify a user from Facebook with a local user
-  def register_user_to_fb
-    users = {:email => username, :account_id => id}
-    Facebooker::User.register([users])
-    self.facebook_hash = Facebooker::User.hash_email(username)
-    save(false)
+  def register_user_to_fb(force = false)
+    if force || changed.include?('username') || changed.include?('facebook_username')
+      email = facebook_username.present? ? facebook_username : username
+      users = {:email => email, :account_id => id}
+      Facebooker::User.register([users]) unless Rails.env.test?
+      self.facebook_hash = Facebooker::User.hash_email(email)
+    end
   end
   
   def facebook_user?
@@ -198,10 +199,6 @@ class User < ActiveRecord::Base
     end
     u
   end
-
-  def self.find_by_username(username)
-    User.find(:first, :conditions => {_(:username) => username})
-  end
   
   protected
     # not sure why but cas sometimes sends the extra attributes as underscored
@@ -229,21 +226,5 @@ class User < ActiveRecord::Base
       1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
       self.plain_password = self.password_confirmation = newpass
     end
-
-    def create_facebook_hash
-      #not everyone will be using the facebook stuff, so wrap this is a rescue block
-      if Cmt::CONFIG[:facebook_connectivity_enabled]
-        email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
-        crc = Zlib.crc32(email)
-        md5 = Digest::MD5.hexdigest(email)
-        hash = "#{crc}_#{md5}"
-        if self.facebook_hash != hash 
-          register_facebook_hash(hash)
-        end
-        self.facebook_hash = hash
-      end
-    end
-
-
     
 end

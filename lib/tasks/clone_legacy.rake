@@ -34,6 +34,12 @@ namespace :db do
         create_database(abcs['ciministry_test'])
         
         Rake::Task["db:test:clone_structure:legacy"].invoke
+        
+        ActiveRecord::Base.connection.execute "USE #{ENV['out']}" 
+        ActiveRecord::Base.connection.execute "ALTER TABLE `c4c_intranet_test`.`accountadmin_viewer` DROP  FOREIGN KEY `FK_viewer_grp`;" 
+        ActiveRecord::Base.connection.execute "ALTER TABLE `c4c_intranet_test`.`cim_hrdb_campus` DROP FOREIGN KEY `FK_campus_region`;"
+        ActiveRecord::Base.connection.execute "ALTER TABLE `c4c_intranet_test`.`cim_hrdb_access`  DROP FOREIGN KEY `FK_access_person`;"
+        ActiveRecord::Base.connection.execute "ALTER TABLE `c4c_intranet_test`.`cim_hrdb_emerg`  DROP FOREIGN KEY `FK_emerg_person`;"
       end
     end
   end

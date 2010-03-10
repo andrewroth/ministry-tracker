@@ -82,12 +82,11 @@ class CampusInvolvementsController < ApplicationController
     handle_campus_involvement do |is_student|
       if is_student
         @history = @campus_involvement.new_student_history
-        @history.ministry_role_id = @ministry_involvement.ministry_role_id
         @history.save!
         @campus_involvement.last_history_update_date = Date.today
       end
       @campus_involvement.end_date = Date.today
-      @campus_involvement.save!
+      @campus_involvement.save(false)
     end
   end
 
