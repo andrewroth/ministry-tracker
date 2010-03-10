@@ -8,8 +8,8 @@ class PermissionsControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
-    factory(:permission_1)
-    factory(:permission_2)
+    Factory(:permission_1)
+    Factory(:permission_2)
 
     @controller = PermissionsController.new
     @request    = ActionController::TestRequest.new
