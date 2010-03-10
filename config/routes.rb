@@ -92,7 +92,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :addresses
 
-  map.resources :users
+  map.resources :users, :collection => {:link_fb_user => :get, :prompt_for_email => :get}
   
   map.resource  :session
   
@@ -100,17 +100,18 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :people,  :member => {:import_gcx_profile => :any,
                                       :set_initial_campus => :any},
-                          :collection => {:directory => :any,
+                          :collection => {:directory                          => :any,
+                                          :me                                 => :get,
                                           :change_ministry_and_goto_directory => :any,
-                                          :change_view => :any,
-                                          :search => :any,
-                                          :add_student => :any,
-                                          :advanced => :get,
-                                          :advanced_search => :post,
-                                          :get_campus_states => :any,
-                                          :get_campuses_for_state => :any,
-                                          :set_current_address_states => :get,
-                                          :set_permanent_address_states => :get,
+                                          :change_view                        => :any,
+                                          :search                             => :any,
+                                          :add_student                        => :any,
+                                          :advanced                           => :get,
+                                          :advanced_search                    => :post,
+                                          :get_campus_states                  => :any,
+                                          :get_campuses_for_state             => :any,
+                                          :set_current_address_states         => :get,
+                                          :set_permanent_address_states       => :get,
                                           :perform_task => :post},
                          :has_many => [:timetables] do |person|
     person.resources :campus_involvements

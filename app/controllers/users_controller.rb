@@ -1,7 +1,6 @@
-# CRUD for users
-
 class UsersController < ApplicationController
   filter_parameter_logging :password
+  skip_before_filter :login_required, CASClient::Frameworks::Rails::GatewayFilter, :authorization_filter, :get_ministry, :force_required_data, :only => [:prompt_for_email, :link_fb_user]
   # GET /users
   # GET /users.xml
   def index
@@ -89,4 +88,52 @@ class UsersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def prompt_for_email
+    unless facebook_session
+      redirect_to '/' and return
+    end
+  end
+  
+  def link_fb_user
+    unless params[:email] =~ Authentication.email_regex
+      flash[:warning] = "We really need you to enter a valid email address"
+      render :prompt_for_email and return
+    end
+    if params[:send_email] == '1'
+      UserMailer.deliver_confirm_email(params[:email])
+      flash[:notice] = "Please check your email for your confirmation code. Copy/paste it in the field below."
+      render :confirmation_email_sent and return
+    end
+    if params[:code].present? && params[:code] == User.secure_digest(params[:email])
+      if facebook_session && params[:send_email] == '0'
+        if !current_user || current_user == :false
+          #register with fb
+          self.current_user = User.create_from_fb_connect(facebook_session.user, params[:email])
+        else
+          #connect accounts
+          self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
+        end
+        respond_to do |wants|
+          wants.js do
+            render :update do |page|
+              page.redirect_to person_path(current_user.person)
+            end
+          end
+        end
+        
+      else
+        render :nothing => true
+      end
+    else
+      respond_to do |wants|
+        wants.js do
+          render :update do |page|
+            update_flash(page, "Your code doesn't match. Please try copy/pasting it again, make sure you haven't changed your email address, and if that doesn't work try resending the email.", :warning)
+          end
+        end
+      end
+    end
+  end
+
 end

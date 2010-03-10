@@ -2,6 +2,8 @@ require 'zlib'
 require 'digest/md5'
 require 'base64'
 class User < ActiveRecord::Base
+  include Authentication
+  
   load_mappings
   # Virtual attribute for the unencrypted password
   attr_accessor :plain_password, :password_confirmation
@@ -9,14 +11,15 @@ class User < ActiveRecord::Base
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of       _(:username), :within => 6..40
   validates_uniqueness_of   _(:username), :case_sensitive => false, :on => :create
-  before_save :encrypt_password, :create_facebook_hash
+  before_save :encrypt_password, :register_user_to_fb
   before_create :stamp_created_on
+
   
   has_one :person, :class_name => 'Person', :foreign_key => _(:user_id, :person)
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :username, :plain_password, :password_confirmation, :guid, :facebook_username
+  attr_accessible :username, :plain_password, :password_confirmation, :guid, :facebook_username, :last_login, :fb_user_id, :facebook_hash
 
   #liquid_methods :created_at
   def to_liquid
@@ -83,37 +86,79 @@ class User < ActiveRecord::Base
     self.remember_token            = nil
     save(false)
   end
-  
-  def self.find_from_facebook(fbsession)
-    fuser = fbsession.users_getInfo(:uids => fbsession.session_user_id,
-                                     :fields => ["first_name","last_name", "email_hashes"])
-    first_name = fuser.first_name
-    last_name = fuser.last_name
-    facebook_hash = fuser.email_hashes.email_hashes_elt
-    if facebook_hash.blank?
-      logger.debug('no facebook hash!')
-      return nil 
-    end
-    u = User.find(:first, :conditions => _(:facebook_hash, :user) + " = '#{facebook_hash}'")
-    return nil unless u
 
+  #find the user in the database, first by the facebook user id and if that fails through the email hash
+  def self.find_by_fb_user(fb_user)
+    u = User.find(:first, :conditions => {_(:fb_user_id, :user)  => fb_user.uid}) ||  User.find(:first, :conditions => {_(:facebook_hash, :user)  => fb_user.email_hashes}) 
     # make sure we have a person
-    unless u.person
-      # Try to find a person with the same email address who doesn't already have a user account
-      address = CurrentAddress.find(:first, :conditions => _(:email, :address) + " = '#{u.username}'")
-      person = address.person if address && address.person.user.nil?
-      
-      # Attach the found person to the user, or create a new person
-      new_person = first_name ? Person.new(:first_name => first_name, :last_name => last_name) : Person.new
-      u.person = person || new_person
-      
-      # Create a current address record if we don't already have one.
-      u.person.current_address ||= CurrentAddress.new(:email => receipt.user)
-      u.person.save(false)
+    if u && !u.person
+      u.create_person_from_fb(fb_user)
     end
+    u.update_attribute(:fb_user_id, fb_user.uid) if u && !u.fb_user_id
+    u
+  rescue Facebooker::Session::SessionExpired
+    nil
+  end
+  
+  #Take the data returned from facebook and create a new user from it.
+  #We don't get the email from Facebook and because a facebooker can only login through Connect we just generate a unique login name for them.
+  #If you were using username to display to people you might want to get them to select one after registering through Facebook Connect
+  def self.create_from_fb_connect(fb_user, username)
+    u = User.find(:first, :conditions => {_(:username) => username} ) 
+    if u
+      u.facebook_hash = fb_user.email_hashes.first
+      u.fb_user_id = fb_user.uid
+    else
+      u = User.create(_(:username) => username || fb_user.email_hashes.first, _(:last_login) => Time.zone.now, _(:fb_user_id) => fb_user.uid, _(:facebook_hash) => fb_user.email_hashes.first)
+    end
+    u.create_person_from_fb(fb_user) unless u.person
+    u.save(false)
     u
   end
   
+  #We are going to connect this user object with a facebook id. But only ever one account.
+  def link_fb_connect(fb_user_id)
+    unless fb_user_id.nil?
+      #check for existing account
+      existing_fb_user = User.find_by_fb_user_id(fb_user_id)
+      #merge the existing account
+      unless existing_fb_user.nil?
+        merge_with(existing_fb_user)
+      end
+      #link the new one
+      self.fb_user_id = fb_user_id
+      save(false)
+    end
+  end
+  
+  def create_person_from_fb(fb_user)
+    # Attach the found person to the user, or create a new person
+    new_person = Person.new(_(:first_name, :person) => fb_user.first_name, _(:last_name, :person) => fb_user.last_name)
+    self.person = new_person
+    
+    # Create a current address record if we don't already have one.
+    person.current_address ||= CurrentAddress.new(_(:city, :address) => fb_user.current_location.city,
+                                                  _(:country, :address) => CmtGeo.lookup_country_code(fb_user.current_location.country),
+                                                  _(:state, :address) => Carmen::state_name(fb_user.current_location.state))
+    person.save(false)
+  end
+  
+  #The Facebook registers user method is going to send the users email hash and our account id to Facebook
+  #We need this so Facebook can find friends on our local application even if they have not connect through connect
+  #We then use the email hash in the database to later identify a user from Facebook with a local user
+  def register_user_to_fb(force = false)
+    if force || changed.include?('username') || changed.include?('facebook_username')
+      email = facebook_username.present? ? facebook_username : username
+      users = {:email => email, :account_id => id}
+      Facebooker::User.register([users]) unless Rails.env.test?
+      self.facebook_hash = Facebooker::User.hash_email(email)
+    end
+  end
+  
+  def facebook_user?
+    return !fb_user_id.nil? && fb_user_id > 0
+  end
+
   def self.find_or_create_from_cas(ticket)
     # Look for a user with this guid
     receipt = ticket.response
@@ -180,35 +225,6 @@ class User < ActiveRecord::Base
       newpass = ""
       1.upto(len) { |i| newpass << chars[rand(chars.size-1)] }
       self.plain_password = self.password_confirmation = newpass
-    end
-
-    def register_facebook_hash(hash)
-      fbsession = RFacebook::FacebookWebSession.new(FACEBOOK["key"], FACEBOOK["secret"])
-      email_hashes = [{:email_hash => hash}]
-      hit_facebook(email_hashes, fbsession)
-    end
-    
-    def hit_facebook(email_hashes, fbsession)
-      res = fbsession.connect_registerUsers(:accounts => email_hashes.to_json)
-      logger.debug('hash registered on facebook')
-    rescue Timeout::Error
-      puts 'Timed out. Sleeping...'
-      sleep(15) # Thottle the requests so facebook doesn't get angry
-      hit_facebook(email_hashes, fbsession)
-    end
-    
-    def create_facebook_hash
-      #not everyone will be using the facebook stuff, so wrap this is a rescue block
-      begin
-        email = self.facebook_username.present? ? self.facebook_username.downcase : self.username.downcase
-        crc = Zlib.crc32(email)
-        md5 = Digest::MD5.hexdigest(email)
-        hash = "#{crc}_#{md5}"
-        if self.facebook_hash != hash 
-          register_facebook_hash(hash)
-        end
-        self.facebook_hash = hash
-      rescue; end
     end
     
 end

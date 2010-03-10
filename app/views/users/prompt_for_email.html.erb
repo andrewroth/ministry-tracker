@@ -1,0 +1,25 @@
+<% form_remote_tag(:url => link_fb_user_users_path, :before => "$('#spinner').show();", :complete => "$('#spinner').hide();") do %>
+  <div>
+    <p>Welcome! Before you go any further, we need to get your email address. Don't worry, we're not going to spam you! We just need to know how to communicate with you.
+      <br/>
+      If you've uses this website previously, please enter the email address you've used to log in with in the past so we can link up your account properly.
+    </p>
+  </div>
+  <div id='errors'>
+    <%= error_messages_for 'user' %>
+  </div>
+  <br/>
+  <div>
+  <%= hidden_field_tag :send_email, :value => 1 %>
+  <%= label_tag :email, 'Your email:' %>
+  <%= text_field_tag :email, params[:email] %>
+  <%= submit_tag 'Submit', :id => "submit", :onclick => "$('#send_email').val(1);$(this).val('Resend')" %>
+  <%= spinner %>
+  </div>
+  <br/>
+  <div id="confirmation" style="display:none">
+    <%= label_tag :code, 'Paste your code here:' %>
+    <%= text_field_tag :code, params[:code] %>
+    <%= submit_tag 'Confirm', :id => 'confirm', :onclick => "$('#send_email').val(0)" %>
+  </div>
+<% end %>

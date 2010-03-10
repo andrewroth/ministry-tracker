@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "fbconnect" %>
+<% end %>
 <script type="text/javascript" charset="utf-8">
   function log_in() {
     $('#spinner').show();
@@ -39,17 +42,13 @@
    <p><%= submit_to_remote 'login_btn', 'Log in', :url => { :action => 'create' }, :before => "$('#spinner').show()" %> <%= spinner %></p>
   </form>
   <% end -%>
-  </div>
-  <!-- <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+</div>
+  
+<% unless params[:fb_user] %>
 <div class="login_sector_fb">
 <div class="login_prompt">Or <b>login</b> with Facebook:</div>
-<fb:login-button size="medium" background="light" length="long" onlogin="facebook_onlogin_ready();"></fb:login-button>
-</div> -->
+  <%= fb_login_button('facebook_onlogin_ready()')%>
+
 </div>
- 
-<!-- <script src="/javascripts/fbconnect.js" type="text/javascript"></script>
-<script type="text/javascript">
-FB.init("<%#= FACEBOOK["key"] %>", "/facebook/xd_receiver.htm");
-</script>
-<script type="text/javascript">//window.onload = function() { facebook_onload(false); };</script> -->
- 
+</div>
+<% end %>
