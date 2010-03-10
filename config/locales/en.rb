@@ -11,9 +11,9 @@
       pageTracker._trackPageview();
     </script>" +
     '<!-- Woopra Code Start -->
+    <script type="text/javascript" src="//static.woopra.com/js/woopra.v2.js"></script>
     <script type="text/javascript">
-    var _woopraScript = document.location.protocol + "//static.woopra.com/js/woopra.js";
-    document.write(unescape("%3Cscript src=\'"+_woopraScript+"\' type=\'text/javascript\'%3E%3C/script%3E"));
+    woopraTracker.track();
     </script>
     <!-- Woopra Code End -->',
     :date => {

@@ -1,0 +1,2 @@
+update_flash(page, flash[:notice])
+page[:confirmation].show
