@@ -17,6 +17,10 @@ class ImportTest < ActiveSupport::TestCase
   end
 
   test "create from xls file" do
+    # Don't know why, but I get an error when doing rake test without this delete_all
+    # Oddly, it works fine when I manually run the command rake test runs
+    Person.delete_all
+
     import = create_import('files/sample_import.xls')
     successful, unsuccessful = import.run!(Campus.first.id, Ministry.first, @josh)
     assert_equal(1, successful.length)
