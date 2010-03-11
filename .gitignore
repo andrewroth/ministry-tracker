@@ -4,6 +4,7 @@ tmp/**/*
 config/database.yml
 config/amazon_s3.yml
 config/memcached.yml
+config/facebooker.yml
 .DS_Store
 doc/api
 coverage
@@ -12,7 +13,6 @@ public/javascripts/all.js
 public/stylesheets/all.css
 config/initializers/uscm_prod.rb
 config/initializers/cache_money.rb
-config/facebook.yml
 query_trace
 nbproject/
 *.swp

@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  fixtures User.table_name
   
   def setup
-    @user = User.find(:first)
+    @user = Factory(:user_1)
   end
+
   def test_authenticate
     u = User.authenticate('josh.starcher@example.com', 'test')
     assert u.is_a?(User)

@@ -1,9 +1,19 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
-  fixtures Person.table_name, CustomAttribute.table_name
   
-  
+  def setup_custom_attributes
+    Factory(:customattribute_1)
+    Factory(:customattribute_2)
+    Factory(:customattribute_3)
+    Factory(:customattribute_4)
+  end
+
+  def setup
+    setup_people
+    setup_custom_attributes
+  end
+
   def test_spinner
     assert_tag_in(spinner, :img)
   end

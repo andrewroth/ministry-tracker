@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MinistryRolePermissionsControllerTest < ActionController::TestCase
-  fixtures MinistryRolePermission.table_name
   def setup
+    setup_default_user
     login
   end
 
@@ -25,6 +25,7 @@ class MinistryRolePermissionsControllerTest < ActionController::TestCase
   end
 
   test "should destroy ministry_role_permission" do
+    Factory(:ministryrolepermission_1)
     assert_difference('MinistryRolePermission.count', -1) do
       delete :destroy, :id =>1
     end

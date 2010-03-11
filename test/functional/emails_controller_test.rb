@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class EmailsControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
     login
   end
   
@@ -38,7 +39,7 @@ class EmailsControllerTest < ActionController::TestCase
   end
 
   test "should show email" do
-    get :show, :id => emails(:one).to_param
+    get :show, :id => Factory(:email_1).to_param
     assert_response :success
   end
 end

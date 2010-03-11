@@ -43,6 +43,8 @@ Rails::Initializer.run do |config|
   # config.gem  'rubycas-client'
   config.gem 'liquid'
   config.gem 'will_paginate'
+  
+  config.time_zone = 'UTC'
 
   unless RAILS_ENV == 'development'
     #config.active_record.default_timezone = 'Pacific Time (US & Canada)'

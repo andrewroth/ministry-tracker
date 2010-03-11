@@ -2,6 +2,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class SchoolYearsControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
+    Factory(:schoolyear_1)
+    Factory(:schoolyear_2)
     login
   end
   
@@ -31,25 +34,25 @@ class SchoolYearsControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
-    xhr :get, :edit, :id => school_years(:freshman).to_param
+    xhr :get, :edit, :id => Factory.build(:schoolyear_1).to_param
     assert_response :success
   end
 
   test "should update school_year" do
-    xhr :put, :update, :id => school_years(:freshman).to_param, :school_year => { :name => 'foo' }
+    xhr :put, :update, :id => Factory.build(:schoolyear_1).to_param, :school_year => { :name => 'foo' }
     assert_response :success, @response.body
     assert_equal([], assigns(:school_year).errors.full_messages)
   end
 
   test "should NOT update school_year" do
-    xhr :put, :update, :id => school_years(:freshman).to_param, :school_year => {:name => '' }
+    xhr :put, :update, :id => Factory.build(:schoolyear_1).to_param, :school_year => {:name => '' }
     assert_response :success, @response.body
     assert_equal(1, assigns(:school_year).errors.length)
   end
 
   test "should destroy school_year" do
     assert_difference('SchoolYear.count', -1) do
-      xhr :delete, :destroy, :id => school_years(:freshman).to_param
+      xhr :delete, :destroy, :id => Factory.build(:schoolyear_1).to_param
     end
 
     assert_response :success, @response.body
