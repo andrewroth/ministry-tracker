@@ -39,11 +39,6 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
               
-  # genderization for personafication in templates
-  alias_method :get_custom_value_hash, :custom_value_hash
-  alias_method :get_training_answer_hash, :training_answer_hash
-  
-
   def custom_value_hash
     if @custom_value_hash.nil?
       @custom_value_hash = {}
@@ -59,7 +54,11 @@ class Person < ActiveRecord::Base
     end
   end
 
-  # Get the value of a custom_attribute
+  # genderization for personafication in templates
+  alias_method :get_custom_value_hash, :custom_value_hash
+  alias_method :get_training_answer_hash, :training_answer_hash
+
+   # Get the value of a custom_attribute
   def get_value(attribute_id)
     get_custom_value_hash
     return @custom_value_hash[attribute_id]
