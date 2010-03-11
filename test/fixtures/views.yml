@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-default:
-  id: 1
-  title: default
-  ministry_id: 1
-secondary:
-  id: 2
-  title: secondary
-  ministry_id: 1

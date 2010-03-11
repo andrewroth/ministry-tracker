@@ -5,9 +5,11 @@ require 'custom_attributes_controller'
 class CustomAttributesController; def rescue_action(e) raise e end; end
 
 class CustomAttributesControllerTest < ActionController::TestCase
-  fixtures CustomAttribute.table_name
 
   def setup
+    setup_default_user
+    Factory(:customattribute_1)
+
     @controller = CustomAttributesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

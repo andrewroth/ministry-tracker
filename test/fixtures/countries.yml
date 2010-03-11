@@ -1,6 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-usa:
-  id: 1
-  country: United States
-  iso_code: US
-  code: USA

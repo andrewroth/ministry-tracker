@@ -6,6 +6,9 @@ class CampusesController; def rescue_action(e) raise e end; end
 
 class CampusesControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
+    setup_ministry_roles
+
     login
   end
 

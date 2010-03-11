@@ -5,9 +5,13 @@ require 'view_columns_controller'
 class ViewColumnsController; def rescue_action(e) raise e end; end
 
 class ViewColumnsControllerTest < ActionController::TestCase
-  fixtures ViewColumn.table_name, View.table_name, Column.table_name
 
   def setup
+    setup_default_user
+    Factory(:view_1)
+    Factory(:column_1)
+    Factory(:viewcolumn_1)
+    
     @controller = ViewColumnsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

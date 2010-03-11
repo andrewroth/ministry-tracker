@@ -108,6 +108,9 @@ class SessionsController < ApplicationController
             wants.js { }
             wants.html { render :action => :new }
           end
+        else
+          flash[:warning] = "Local logins are disabled."
+          wants.html { render :action => :new }
         end
       end
     end
