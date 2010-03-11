@@ -48,6 +48,19 @@ class ActiveSupport::TestCase
     @person = @user.person
   end
 
+  def reset_all_sequences
+    Factory.sequences.values.each { |s| s.reset }
+  end
+
+  def teardown
+    teardown_everything
+  end
+
+  def teardown_everything
+    reset_all_sequences
+    ActiveRecord::Base.send(:subclasses).each { |m| m.delete_all unless m.abstract_class }
+  end
+
   def setup_users
     Factory(:user_1)
     Factory(:user_3)
@@ -165,6 +178,12 @@ class ActiveSupport::TestCase
     Factory(:groupinvolvement_4)
     Factory(:groupinvolvement_5)
     Factory(:groupinvolvement_6)
+  end
+
+  def setup_ministry_campuses
+    Factory(:ministrycampus_1)
+    Factory(:ministrycampus_2)
+    Factory(:ministrycampus_3)
   end
 
   protected
