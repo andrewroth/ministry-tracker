@@ -1,7 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MinistryRoleTest < ActiveSupport::TestCase
-  fixtures MinistryRole.table_name
+
+  def setup
+    setup_ministry_roles
+  end
 
   def test_comparison
     assert MinistryRole.new(:position => 1) <=> MinistryRole.new(:position => 2)

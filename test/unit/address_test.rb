@@ -1,17 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AddressTest < ActiveSupport::TestCase
-  fixtures Address.table_name
 
   def test_mailing
-    a = Address.find(1)
+    a = Factory(:address_1)
     assert_equal "108 E. Burlington Ave.<br />Westmont, WY 60559", a.mailing
-    a = Address.find(2)
+    a = Factory(:address_2)
     assert_equal ' ', a.mailing
   end
   
   def test_mailing_one_line
-    a = Address.find(1)
+    a = Factory(:address_1)
     assert_equal "108 E. Burlington Ave., Westmont, WY 60559", a.mailing_one_line
   end
   

@@ -1,7 +1,4 @@
 class PermanentAddress < Address
-  before_create :set_address_type
-  
-  def set_address_type
-    self.address_type = "permanent"
-  end
+  load_mappings
+  include Common::Core::PermanentAddress
 end

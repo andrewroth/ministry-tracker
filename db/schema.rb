@@ -106,33 +106,6 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
     t.datetime "updated_at"
   end
 
-  create_table "correspondence_types", :force => true do |t|
-    t.string  "name"
-    t.integer "overdue_lifespan"
-    t.integer "expiry_lifespan"
-    t.string  "actions_now_task"
-    t.string  "actions_overdue_task"
-    t.string  "actions_followup_task"
-    t.text    "redirect_params"
-    t.string  "redirect_target_id_type"
-  end
-
-  create_table "correspondences", :force => true do |t|
-    t.integer  "correspondence_type_id"
-    t.integer  "person_id"
-    t.string   "receipt"
-    t.string   "state"
-    t.date     "visited"
-    t.date     "completed"
-    t.date     "overdue_at"
-    t.date     "expire_at"
-    t.text     "token_params"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "correspondences", ["receipt"], :name => "index_correspondences_on_receipt"
-
   create_table "counties", :force => true do |t|
     t.string "name"
     t.string "state"
@@ -464,272 +437,16 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
   end
 
   create_table "stint_applications", :force => true do |t|
-<<<<<<< HEAD:db/schema.rb
     t.integer  "stint_location_id"
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-=======
-    t.integer  "oldApplicationID"
-    t.integer  "locationA"
-    t.string   "locationAExplanation",                    :limit => 90
-    t.integer  "locationB"
-    t.string   "locationBExplanation",                    :limit => 90
-    t.integer  "locationC"
-    t.string   "locationCExplanation",                    :limit => 90
-    t.string   "availableMonth",                          :limit => 2
-    t.string   "availableYear",                           :limit => 4
-    t.integer  "hasMinistryConflict"
-    t.text     "ministryConflictExplanation",             :limit => 2147483647
-    t.integer  "hasSpecificLocation"
-    t.string   "specificLocationRecruiterName",           :limit => 50
-    t.text     "teamMembers",                             :limit => 2147483647
-    t.integer  "isDating"
-    t.text     "datingLocation",                          :limit => 2147483647
-    t.integer  "hasCampusPartnership"
-    t.integer  "isDatingStint"
-    t.text     "datingStintName",                         :limit => 2147483647
-    t.string   "language1",                               :limit => 50
-    t.string   "language1YearsStudied",                   :limit => 20
-    t.integer  "language1Fluency"
-    t.string   "language2",                               :limit => 50
-    t.string   "language2YearsStudied",                   :limit => 20
-    t.integer  "language2Fluency"
-    t.text     "previousMinistryExperience",              :limit => 2147483647
-    t.text     "ministryTraining",                        :limit => 2147483647
-    t.text     "evangelismAttitude",                      :limit => 2147483647
-    t.integer  "isEvangelismTrainable"
-    t.text     "participationExplanation",                :limit => 2147483647
-    t.integer  "isFamiliarFourSpiritualLaws"
-    t.integer  "hasExperienceFourSpiritualLaws"
-    t.integer  "confidenceFourSpiritualLaws"
-    t.integer  "isFamiliarLifeAtLarge"
-    t.integer  "hasExperienceLifeAtLarge"
-    t.integer  "confidenceLifeAtLarge"
-    t.integer  "isFamiliarPersonalTestimony"
-    t.integer  "hasExperiencePersonalTestimony"
-    t.integer  "confidencePersonalTestimony"
-    t.integer  "isFamiliarExplainingGospel"
-    t.integer  "hasExperienceExplainingGospel"
-    t.integer  "confidenceExplainingGospel"
-    t.integer  "isFamiliarSharingFaith"
-    t.integer  "hasExperienceSharingFaith"
-    t.integer  "confidenceSharingFaith"
-    t.integer  "isFamiliarHolySpiritBooklet"
-    t.integer  "hasExperienceHolySpiritBooklet"
-    t.integer  "confidenceHolySpiritBooklet"
-    t.integer  "isFamiliarFollowUp"
-    t.integer  "hasExperienceFollowUp"
-    t.integer  "confidenceFollowUp"
-    t.integer  "isFamiliarHelpGrowInFaith"
-    t.integer  "hasExperienceHelpGrowInFaith"
-    t.integer  "confidenceHelpGrowInFaith"
-    t.integer  "isFamiliarTrainShareFaith"
-    t.integer  "hasExperienceTrainShareFaith"
-    t.integer  "confidenceTrainShareFaith"
-    t.integer  "isFamiliarOtherReligions"
-    t.integer  "hasExperienceOtherReligions"
-    t.integer  "confidenceOtherReligions"
-    t.text     "leadershipPositions",                     :limit => 2147483647
-    t.integer  "hasLedDiscipleshipGroup"
-    t.string   "discipleshipGroupSize",                   :limit => 50
-    t.text     "leadershipEvaluation",                    :limit => 2147483647
-    t.integer  "conversionMonth"
-    t.integer  "conversionYear"
-    t.string   "memberChurchDenomination",                :limit => 75
-    t.string   "memberChurchDuration",                    :limit => 50
-    t.string   "attendingChurchDenomination",             :limit => 50
-    t.string   "attendingChurchDuration",                 :limit => 50
-    t.text     "attendingChurchInvolvement",              :limit => 2147483647
-    t.text     "quietTimeQuantity",                       :limit => 2147483647
-    t.text     "quietTimeDescription",                    :limit => 2147483647
-    t.text     "explanationOfSalvation",                  :limit => 2147483647
-    t.text     "explanationOfSpiritFilled",               :limit => 2147483647
-    t.integer  "hasInvolvementSpeakingTongues"
-    t.text     "differenceIndwellingFilled",              :limit => 2147483647
-    t.integer  "hasCrimeConviction"
-    t.text     "crimeConvictionExplanation",              :limit => 2147483647
-    t.integer  "hasDrugUse"
-    t.integer  "isTobaccoUser"
-    t.integer  "isWillingChangeHabits"
-    t.text     "authorityResponseExplanation",            :limit => 2147483647
-    t.text     "alcoholUseFrequency",                     :limit => 2147483647
-    t.text     "alcoholUseDecision",                      :limit => 2147483647
-    t.integer  "isWillingRefrainAlcohol"
-    t.text     "unwillingRefrainAlcoholExplanation",      :limit => 2147483647
-    t.text     "drugUseExplanation",                      :limit => 2147483647
-    t.text     "tobaccoUseExplanation",                   :limit => 2147483647
-    t.integer  "isWillingAbstainTobacco"
-    t.integer  "hasRequestedPhoneCall"
-    t.string   "contactPhoneNumber",                      :limit => 50
-    t.string   "contactBestTime",                         :limit => 50
-    t.string   "contactTimeZone",                         :limit => 50
-    t.text     "sexualInvolvementExplanation",            :limit => 2147483647
-    t.integer  "hasSexualGuidelines"
-    t.text     "sexualGuidelineExplanation",              :limit => 2147483647
-    t.integer  "isCurrentlyDating"
-    t.text     "currentlyDatingLocation",                 :limit => 2147483647
-    t.integer  "hasHomosexualInvolvement"
-    t.text     "homosexualInvolvementExplanation",        :limit => 2147483647
-    t.integer  "hasRecentPornographicInvolvement"
-    t.integer  "pornographicInvolvementMonth"
-    t.integer  "pornographicInvolvementYear"
-    t.text     "pornographicInvolvementExplanation",      :limit => 2147483647
-    t.integer  "hasRecentSexualImmorality"
-    t.integer  "sexualImmoralityMonth"
-    t.integer  "sexualImmoralityYear"
-    t.text     "sexualImmoralityExplanation",             :limit => 2147483647
-    t.integer  "hasOtherDateSinceImmorality"
-    t.text     "singleImmoralityResultsExplanation",      :limit => 2147483647
-    t.text     "marriedImmoralityResultsExplanation",     :limit => 2147483647
-    t.text     "immoralityLifeChangeExplanation",         :limit => 2147483647
-    t.text     "immoralityCurrentStrugglesExplanation",   :limit => 2147483647
-    t.text     "additionalMoralComments",                 :limit => 2147483647
-    t.integer  "isAwareMustRaiseSupport"
-    t.integer  "isInDebt"
-    t.string   "debtNature1",                             :limit => 50
-    t.string   "debtTotal1",                              :limit => 50
-    t.string   "debtMonthlyPayment1",                     :limit => 50
-    t.string   "debtNature2",                             :limit => 50
-    t.string   "debtTotal2",                              :limit => 50
-    t.string   "debtMonthlyPayment2",                     :limit => 50
-    t.string   "debtNature3",                             :limit => 50
-    t.string   "debtTotal3",                              :limit => 50
-    t.string   "debtMonthlyPayment3",                     :limit => 50
-    t.integer  "hasOtherFinancialResponsibility"
-    t.text     "otherFinancialResponsibilityExplanation", :limit => 2147483647
-    t.text     "debtPaymentPlan",                         :limit => 2147483647
-    t.text     "debtPaymentTimeframe",                    :limit => 2147483647
-    t.text     "developingPartnersExplanation",           :limit => 2147483647
-    t.integer  "isWillingDevelopPartners"
-    t.text     "unwillingDevelopPartnersExplanation",     :limit => 2147483647
-    t.integer  "isCommittedDevelopPartners"
-    t.text     "uncommittedDevelopPartnersExplanation",   :limit => 2147483647
-    t.text     "personalTestimonyGrowth",                 :limit => 2147483647
-    t.text     "internshipParticipationExplanation",      :limit => 2147483647
-    t.text     "internshipObjectives",                    :limit => 2147483647
-    t.text     "currentMinistryDescription",              :limit => 2147483647
-    t.text     "personalStrengthA",                       :limit => 2147483647
-    t.text     "personalStrengthB",                       :limit => 2147483647
-    t.text     "personalStrengthC",                       :limit => 2147483647
-    t.text     "personalDevelopmentA",                    :limit => 2147483647
-    t.text     "personalDevelopmentB",                    :limit => 2147483647
-    t.text     "personalDevelopmentC",                    :limit => 2147483647
-    t.text     "personalDescriptionA",                    :limit => 2147483647
-    t.text     "personalDescriptionB",                    :limit => 2147483647
-    t.text     "personalDescriptionC",                    :limit => 2147483647
-    t.text     "familyRelationshipDescription",           :limit => 2147483647
-    t.string   "electronicSignature",                     :limit => 90
-    t.string   "ssn",                                     :limit => 50
-    t.integer  "fk_ssmUserID"
-    t.integer  "person_id",                                                                                    :null => false
-    t.boolean  "isPaid"
-    t.integer  "appFee",                                  :limit => 18,         :precision => 18, :scale => 0
-    t.datetime "dateAppLastChanged"
-    t.datetime "dateAppStarted"
-    t.datetime "dateSubmitted"
-    t.boolean  "isSubmitted"
-    t.string   "appStatus",                               :limit => 15
-    t.integer  "assignedToProject"
-    t.integer  "stint_location_id",                       :limit => 10,         :precision => 10, :scale => 0
-    t.string   "siYear",                                  :limit => 50
-    t.datetime "submitDate"
-    t.string   "status",                                  :limit => 22
-    t.string   "appType",                                 :limit => 64
-    t.integer  "apply_id"
->>>>>>> emu:db/schema.rb
   end
 
   create_table "stint_locations", :force => true do |t|
     t.string   "name"
-<<<<<<< HEAD:db/schema.rb
     t.datetime "created_at"
     t.datetime "updated_at"
-=======
-    t.string   "partnershipRegion",             :limit => 50
-    t.string   "history",                       :limit => 8000
-    t.string   "city"
-    t.string   "country"
-    t.string   "details",                       :limit => 8000
-    t.string   "status"
-    t.string   "destinationGatewayCity"
-    t.datetime "departDateFromGateCity"
-    t.datetime "arrivalDateAtLocation"
-    t.string   "locationGatewayCity"
-    t.datetime "departDateFromLocation"
-    t.datetime "arrivalDateAtGatewayCity"
-    t.integer  "flightBudget"
-    t.string   "gatewayCitytoLocationFlightNo"
-    t.string   "locationToGatewayCityFlightNo"
-    t.string   "inCountryContact"
-    t.string   "scholarshipAccountNo"
-    t.string   "operatingAccountNo"
-    t.string   "AOA"
-    t.string   "MPTA"
-    t.integer  "staffCost"
-    t.integer  "studentCost"
-    t.text     "studentCostExplaination"
-    t.boolean  "insuranceFormsReceived"
-    t.boolean  "CAPSFeePaid"
-    t.boolean  "adminFeePaid"
-    t.string   "storiesXX"
-    t.string   "stats"
-    t.boolean  "secure"
-    t.boolean  "projEvalCompleted"
-    t.integer  "evangelisticExposures"
-    t.integer  "receivedChrist"
-    t.integer  "jesusFilmExposures"
-    t.integer  "jesusFilmReveivedChrist"
-    t.integer  "coverageActivitiesExposures"
-    t.integer  "coverageActivitiesDecisions"
-    t.integer  "holySpiritDecisions"
-    t.string   "website"
-    t.string   "destinationAddress"
-    t.string   "destinationPhone"
-    t.string   "siYear"
-    t.integer  "fk_isCoord"
-    t.integer  "fk_isAPD"
-    t.integer  "fk_isPD"
-    t.string   "projectType",                   :limit => 1
-    t.datetime "studentStartDate"
-    t.datetime "studentEndDate"
-    t.datetime "staffStartDate"
-    t.datetime "staffEndDate"
-    t.datetime "leadershipStartDate"
-    t.datetime "leadershipEndDate"
-    t.datetime "createDate"
-    t.binary   "lastChangedDate",               :limit => 8
-    t.integer  "lastChangedBy"
-    t.string   "displayLocation"
-    t.boolean  "partnershipRegionOnly"
-    t.integer  "internCost"
-    t.boolean  "onHold"
-    t.integer  "maxNoStaffPMale"
-    t.integer  "maxNoStaffPFemale"
-    t.integer  "maxNoStaffPCouples"
-    t.integer  "maxNoStaffPFamilies"
-    t.integer  "maxNoStaffP"
-    t.integer  "maxNoInternAMale"
-    t.integer  "maxNoInternAFemale"
-    t.integer  "maxNoInternACouples"
-    t.integer  "maxNoInternAFamilies"
-    t.integer  "maxNoInternA"
-    t.integer  "maxNoInternPMale"
-    t.integer  "maxNoInternPFemale"
-    t.integer  "maxNoInternPCouples"
-    t.integer  "maxNoInternPFamilies"
-    t.integer  "maxNoInternP"
-    t.integer  "maxNoStudentAMale"
-    t.integer  "maxNoStudentAFemale"
-    t.integer  "maxNoStudentACouples"
-    t.integer  "maxNoStudentAFamilies"
-    t.integer  "maxNoStudentA"
-    t.integer  "maxNoStudentPMale"
-    t.integer  "maxNoStudentPFemale"
-    t.integer  "maxNoStudentPCouples"
-    t.integer  "maxNoStudentPFamilies"
-    t.integer  "maxNoStudentP"
->>>>>>> emu:db/schema.rb
   end
 
   create_table "summer_project_applications", :force => true do |t|
@@ -786,7 +503,6 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
   end
 
   create_table "users", :force => true do |t|
-<<<<<<< HEAD:db/schema.rb
     t.string   "username"
     t.string   "password"
     t.datetime "last_login"
@@ -800,24 +516,9 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
     t.boolean  "developer"
     t.string   "facebook_hash"
     t.string   "facebook_username"
-=======
-    t.string    "username"
-    t.string    "password"
-    t.date      "last_login"
-    t.boolean   "system_admin"
-    t.string    "remember_token"
-    t.timestamp "remember_token_expires_at"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.string    "guid"
-    t.boolean   "email_validated"
-    t.boolean   "developer"
-    t.string    "facebook_hash"
-    t.string    "facebook_username"
-    t.integer   "fb_user_id",                :limit => 8
->>>>>>> emu:db/schema.rb
   end
 
+  add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true
 
   create_table "view_columns", :force => true do |t|

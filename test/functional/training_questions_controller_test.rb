@@ -1,8 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TrainingQuestionsControllerTest < ActionController::TestCase
-  fixtures TrainingQuestion.table_name, Ministry.table_name, TrainingCategory.table_name
   def setup
+    setup_default_user
+    Factory(:trainingquestion_1)
+    Factory(:trainingcategory_1)
+    
     login
   end
 
