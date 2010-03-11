@@ -1,3 +1,3 @@
 class PersonExtra < ActiveRecord::Base
-  belongs_to :person
+  include Common::Core::Ca::PersonExtra
 end

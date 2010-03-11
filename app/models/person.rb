@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
   load_mappings
   include Common::Core::Person
+  include Common::Core::Ca::Person
 
   # Training Questions
   has_many :training_answers, :class_name => "TrainingAnswer", :foreign_key => _(:person_id, :training_answer)
@@ -39,11 +40,7 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
               
-  # genderization for personafication in templates
-  alias_method :get_custom_value_hash, :custom_value_hash
-  alias_method :get_training_answer_hash, :training_answer_hash
   
-
   def custom_value_hash
     if @custom_value_hash.nil?
       @custom_value_hash = {}
@@ -58,6 +55,10 @@ class Person < ActiveRecord::Base
       training_answers.each {|ta| @training_answer_hash[ta.training_question_id] = ta }
     end
   end
+
+  # genderization for personafication in templates
+  alias_method :get_custom_value_hash, :custom_value_hash
+  alias_method :get_training_answer_hash, :training_answer_hash
 
   # Get the value of a custom_attribute
   def get_value(attribute_id)

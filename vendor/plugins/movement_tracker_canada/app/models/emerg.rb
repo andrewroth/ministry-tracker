@@ -1,5 +1,5 @@
 class Emerg < ActiveRecord::Base
   load_mappings
 
-  belongs_to :person
+  include Legacy::Hrdb::Emerg
 end
