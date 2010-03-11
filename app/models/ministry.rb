@@ -53,11 +53,11 @@ class Ministry < ActiveRecord::Base
   end 
   
   def staff
-    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", staff_role_ids, self.id], :joins => :ministry_involvements, :order => _(:first_name, :person))
+    @staff ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:end_date, :ministry_involvement)} is NULL AND #{_(:involved, :ministry_role)} is true AND #{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} = ?", staff_role_ids, self.id], :joins => { :ministry_involvements => :ministry_role }, :order => _(:first_name, :person))
   end
   
   def leaders
-    @leaders ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:ministry_id, :ministry_involvement)} = ?", leader_role_ids, self.id], :joins => :ministry_involvements, :order => _(:first_name, :person))
+    @leaders ||= Person.find(:all, :conditions => ["#{_(:ministry_role_id, :ministry_involvement)} IN (?) AND #{_(:end_date, :ministry_involvement)} is NULL AND #{_(:involved, :ministry_role)} is true AND #{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} = ?", leader_role_ids, self.id], :joins => { :ministry_involvements => :ministry_role }, :order => _(:first_name, :person))
   end
   
   def ministry_roles
