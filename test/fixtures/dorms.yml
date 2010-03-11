@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-mine:
-  id: 1
-  campus_id: 1
-  name: 'Mine'
-yours:
-  id: 2
-  campus_id: 2
-  name: 'Yours'
