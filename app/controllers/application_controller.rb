@@ -5,8 +5,10 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
   
-  before_filter :set_facebook_session
-  helper_method :facebook_session
+  if Cmt::CONFIG[:facebook_connectivity_enabled]
+    before_filter :set_facebook_session
+    helper_method :facebook_session
+  end
 
   # include ExceptionNotifiable
   # self.error_layout = false

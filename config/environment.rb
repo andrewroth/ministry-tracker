@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
   config.gem 'liquid'
   config.gem 'will_paginate'
   config.gem 'facebooker'
+  config.gem 'will_paginate'
   
   config.time_zone = 'UTC'
 
