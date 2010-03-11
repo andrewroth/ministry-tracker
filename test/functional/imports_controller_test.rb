@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ImportsControllerTest < ActionController::TestCase
-  fixtures Campus.table_name
   def setup
+    setup_default_user
     login
   end
   

@@ -5,9 +5,13 @@ require 'dorms_controller'
 class DormsController; def rescue_action(e) raise e end; end
 
 class DormsControllerTest < ActionController::TestCase
-  fixtures Dorm.table_name, Group.table_name, Campus.table_name, MinistryCampus.table_name
 
   def setup
+    setup_default_user
+    Factory(:dorm_1)
+    Factory(:dorm_2)
+    setup_ministry_roles
+
     @controller = DormsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

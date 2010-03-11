@@ -5,9 +5,11 @@ require 'views_controller'
 class ViewsController; def rescue_action(e) raise e end; end
 
 class ViewsControllerTest < ActionController::TestCase
-  fixtures View.table_name, Ministry.table_name, ViewColumn.table_name
 
   def setup
+    setup_default_user
+    Factory(:view_1)
+
     @controller = ViewsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -86,6 +88,9 @@ class ViewsControllerTest < ActionController::TestCase
   end
   
   def test_reorder
+    Factory(:viewcolumn_1)
+    Factory(:viewcolumn_2)
+    Factory(:viewcolumn_3)
     old_order = View.find(1).view_columns.collect(&:id).map(&:to_s)
     new_order = ["2", "3", "1"]
     put :reorder, :id => 1, :column_list => new_order

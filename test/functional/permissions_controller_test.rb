@@ -5,9 +5,12 @@ require 'permissions_controller'
 class PermissionsController; def rescue_action(e) raise e end; end
 
 class PermissionsControllerTest < ActionController::TestCase
-  fixtures Permission.table_name, Ministry.table_name
 
   def setup
+    setup_default_user
+    Factory(:permission_1)
+    Factory(:permission_2)
+
     @controller = PermissionsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

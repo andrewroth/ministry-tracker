@@ -7,6 +7,7 @@ class FilesController; def rescue_action(e) raise e end; end
 
 class FilesControllerTest < ActionController::TestCase
   def setup
+    setup_default_user
     @controller = FilesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
