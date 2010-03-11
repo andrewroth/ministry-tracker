@@ -1,0 +1,11 @@
+# This file is used by database reloader (copy database.reloader.yml 
+# to database.yml to use)
+#
+# The entries here can be regular expressions, designated by the /
+# at the beginning and end of the string, or text strings.  Matching
+# is done in order listed here and stops on the first match.
+#
+- /dev/: database/database.dev.yml
+- /emu|c4c.staging/: database/database.c4c_pulse_staging.yml
+- /moose|c4c.dev/: database/database.c4c_pulse_dev.yml
+- /pulse|c4c.prod/: database/database.c4c_pulse_prod.yml

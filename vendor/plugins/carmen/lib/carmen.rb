@@ -42,7 +42,7 @@ module Carmen
   end
   
   # Returns the state name corresponding to the supplied state code within the specified country
-  #  Carmen::state_code('New Hampshire') => 'NH'
+  #  Carmen::state_name('New Hampshire') => 'NH'
   def self.state_name(state_code, country_code = Carmen.default_country)
     search_collection(self.states(country_code), state_code, 1, 0)
   end

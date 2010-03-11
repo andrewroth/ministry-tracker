@@ -8,6 +8,14 @@ class UserMailer < ActionMailer::Base
     end
     created(person, ministry, added_by, password)
   end
+  
+  def confirm_email(email)
+    @recipients  = "#{email}"
+    from         = Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email confirmation code"
+    @sent_on     = Time.now
+    @body[:code] = User.secure_digest(email)
+  end
   # 
   # def created_staff(person, ministry, added_by, password = nil)
   #   created(person, ministry, added_by, password)
@@ -16,8 +24,8 @@ class UserMailer < ActionMailer::Base
   protected
   def created(person, ministry, added_by, password)
     @recipients  = person.user.username
-    @from        = "'Campus Movement Tracker' <noreply@ministrytracker.org>"
-    @subject     = "[MT] An account has been created for you"
+    from         = Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} An account has been created for you"
     @sent_on     = Time.now
     @body[:person] = person
     @body[:user] = person.user

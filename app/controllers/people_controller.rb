@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state]
   skip_before_filter :authorization_filter, :only => free_actions
-  skip_before_filter :force_campus_set, :only => free_actions
+  skip_before_filter :force_required_data, :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -255,6 +255,11 @@ class PeopleController < ApplicationController
       format.html { render :action => :show }# show.rhtml
       format.xml  { render :xml => @person.to_xml }
     end
+  end
+  
+  def me
+    @person = current_user.person
+    show
   end
   
   def setup_new

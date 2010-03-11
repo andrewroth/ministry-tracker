@@ -1,0 +1,1 @@
+update_flash(page, flash[:warning], 'warning')

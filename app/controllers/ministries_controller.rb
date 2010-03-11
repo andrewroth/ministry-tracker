@@ -11,7 +11,7 @@ class MinistriesController < ApplicationController
   layout 'manage'
   skip_before_filter :authorization_filter, :only => [:edit]
   skip_before_filter :get_ministry, :only => [:edit]
-  skip_before_filter :force_campus_set, :only => [:edit]
+  skip_before_filter :force_required_data, :only => [:edit]
 
   def index
     setup_ministries
