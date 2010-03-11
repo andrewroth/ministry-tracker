@@ -3,6 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require 'factory_girl'
 
+Dir[Rails.root.join("vendor/plugins/mh_common/test/factories/*")].each do |file|
+  require file
+end
+
 class ActiveSupport::TestCase
   include ActionController::TestProcess
   # Transactional fixtures accelerate your tests by wrapping each test method
