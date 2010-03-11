@@ -40,6 +40,7 @@ Rails::Initializer.run do |config|
   # config.gem  'rubycas-client'
   config.gem 'liquid'
   config.gem 'facebooker'
+  config.gem 'will_paginate'
   
   config.time_zone = 'UTC'
 
