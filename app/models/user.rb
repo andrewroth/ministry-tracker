@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   # validates_format_of       :username, :message => "must be an email address", :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
   validates_length_of       _(:username), :within => 6..40
   validates_uniqueness_of   _(:username), :case_sensitive => false, :on => :create
-  before_save :encrypt_password, :register_user_to_fb
+  before_save :encrypt_password
+  before_save :register_user_to_fb if Cmt::CONFIG[:facebook_connectivity_enabled]
   before_create :stamp_created_on
 
   
