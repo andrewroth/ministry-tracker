@@ -5,5 +5,6 @@
 # at the beginning and end of the string, or text strings.  Matching
 # is done in order listed here and stops on the first match.
 #
+- /c4c/: database/database.c4c_pulse_dev.yml
 - /dev/: database/database.dev.yml
-- /common/: database/database.dev.yml
+#- /common/: database/database.dev.yml
