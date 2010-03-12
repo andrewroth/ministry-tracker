@@ -3,10 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require 'factory_girl'
 
-Dir[Rails.root.join("vendor/plugins/movement_tracker_canada/test/factories/*")].each do |file|
+Dir[Rails.root.join("vendor/plugins/mh_common/test/factories/*")].each do |file|
   require file
 end
-
 
 class ActiveSupport::TestCase
   include ActionController::TestProcess
@@ -55,6 +54,19 @@ class ActiveSupport::TestCase
     @request.session[:user] = @user.id
     @request.session[:ministry_id] = 1
     @person = @user.person
+  end
+
+  def reset_all_sequences
+    Factory.sequences.values.each { |s| s.reset }
+  end
+
+  def teardown
+    teardown_everything
+  end
+
+  def teardown_everything
+    reset_all_sequences
+    ActiveRecord::Base.send(:subclasses).each { |m| m.delete_all unless m.abstract_class }
   end
 
   def setup_users
@@ -177,7 +189,6 @@ class ActiveSupport::TestCase
     Factory(:groupinvolvement_6)
   end
 
-
   def reset_all_sequences
     Factory.sequences.values.each { |s| s.reset }
   end
@@ -185,6 +196,12 @@ class ActiveSupport::TestCase
   def teardown_everything
     reset_all_sequences
     ActiveRecord::Base.send(:subclasses).each { |m| m.delete_all unless m.abstract_class }
+  end
+
+  def setup_ministry_campuses
+    Factory(:ministrycampus_1)
+    Factory(:ministrycampus_2)
+    Factory(:ministrycampus_3)
   end
 
   protected
