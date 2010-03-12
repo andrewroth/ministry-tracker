@@ -13,6 +13,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     setup_default_user
     Factory(:user_3)
     Factory(:person_3)
+    Factory(:access_3)
     Factory(:campusinvolvement_2)
     Factory(:campusinvolvement_4)
     Factory(:ministryinvolvement_4)

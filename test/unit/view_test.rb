@@ -18,7 +18,8 @@ class ViewTest < ActiveSupport::TestCase
     
     v = View.find(:first)
     assert tables = v.build_query_parts!
+    puts tables.inspect
     assert(v.tables_clause.length > 0)
-    assert_equal(5, tables.size)
+    assert_equal(6, tables.size)
   end
 end

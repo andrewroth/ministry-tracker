@@ -50,7 +50,6 @@ tables:
 #  id: year_id
 school_year:
   id: year_id
-  position: year_id
   name: year_desc
   level: year_id
 year_in_school:
@@ -68,6 +67,8 @@ country:
   abbrev: country_shortDesc
   desc: country_desc
   short_desc: country_shortDesc
+  iso_code: country_shortDesc
+  code: country_shortDesc
 emerg:
   id: emerg_id
 gender:

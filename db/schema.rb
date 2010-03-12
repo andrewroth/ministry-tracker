@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100210202651) do
+ActiveRecord::Schema.define(:version => 20100303202104) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -106,6 +106,33 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
     t.datetime "updated_at"
   end
 
+  create_table "correspondence_types", :force => true do |t|
+    t.string  "name"
+    t.integer "overdue_lifespan"
+    t.integer "expiry_lifespan"
+    t.string  "actions_now_task"
+    t.string  "actions_overdue_task"
+    t.string  "actions_followup_task"
+    t.text    "redirect_params"
+    t.string  "redirect_target_id_type"
+  end
+
+  create_table "correspondences", :force => true do |t|
+    t.integer  "correspondence_type_id"
+    t.integer  "person_id"
+    t.string   "receipt"
+    t.string   "state"
+    t.date     "visited"
+    t.date     "completed"
+    t.date     "overdue_at"
+    t.date     "expire_at"
+    t.text     "token_params"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "correspondences", ["receipt"], :name => "index_correspondences_on_receipt"
+
   create_table "counties", :force => true do |t|
     t.string "name"
     t.string "state"
@@ -190,6 +217,8 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
     t.string   "css_class"
     t.decimal  "weight",       :precision => 4, :scale => 2
   end
+
+  add_index "free_times", ["timetable_id"], :name => "free_times_timetable_id"
 
   create_table "group_involvements", :force => true do |t|
     t.integer "person_id"
@@ -518,7 +547,6 @@ ActiveRecord::Schema.define(:version => 20100210202651) do
     t.string   "facebook_username"
   end
 
-  add_index "users", ["fb_user_id"], :name => "index_users_on_fb_user_id"
   add_index "users", ["guid"], :name => "index_users_on_guid", :unique => true
 
   create_table "view_columns", :force => true do |t|
