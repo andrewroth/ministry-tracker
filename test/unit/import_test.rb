@@ -17,6 +17,7 @@ class ImportTest < ActiveSupport::TestCase
   end
 
   test "create from xls file" do
+    Person.delete_all
     import = create_import('files/sample_import.xls')
     successful, unsuccessful = import.run!(Campus.first.id, Ministry.first, @josh)
     assert_equal(1, successful.length)
