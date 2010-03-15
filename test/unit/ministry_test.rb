@@ -15,7 +15,7 @@ class MinistryTest < ActiveSupport::TestCase
   end
 
   def test_create_first_view
-    new_ministry = Ministry.create(:name => 'new')
-    assert_equal(View.first.title, new_ministry.views.first.title)
+    new_ministry = Ministry.create!(:name => 'new')
+    assert_equal(View.last.title, new_ministry.views.first.title)
   end
 end
