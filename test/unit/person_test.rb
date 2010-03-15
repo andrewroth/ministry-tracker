@@ -54,18 +54,18 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal p.get_training_answer(1).approved_by, 'todd'
   end
   
-  test "person should be born in the past" do
-    person = Person.new
-    person.first_name = "Invalid Birth Date Test"
-
-    assert person.valid?
-    
-    person.birth_date = Date.today + 1.days
-    assert !person.valid?
-    
-    person.birth_date = Date.today - 1.days
-    assert person.valid?
-  end
+#  test "person should be born in the past" do
+#    person = Person.new
+#    person.first_name = "Invalid Birth Date Test"
+#
+#    assert person.valid?
+#
+#    person.birth_date = Date.today + 1.days
+#    assert !person.valid?
+#
+#    person.birth_date = Date.today - 1.days
+#    assert person.valid?
+#  end
 
   test "group_involvements_by_group_type should filter by ministry" do
     person = @josh
