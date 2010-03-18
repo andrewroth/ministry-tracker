@@ -72,6 +72,9 @@ class MinistryInvolvementsController < ApplicationController
       redirect_to :back
       return
     end
+    person_id = params[:ministry_involvement] && params[:ministry_involvement][:person_id] ? params[:ministry_involvement][:person_id] : params[:person_id]
+    @person = Person.find(person_id)
+
     @student_before = !is_staff_somewhere(@person)
 
     # If this person was already on this ministry, update with the new role
