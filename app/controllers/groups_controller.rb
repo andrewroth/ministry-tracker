@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if group_save
         flash[:notice] = @group.class.to_s.titleize + ' was successfully created.'
-        format.html { redirect_to groups_url }
+        format.html { redirect_to group_url(@group) }
         format.js   { index }
         format.xml  { head :created, :location => groups_url(@group) }
       else
