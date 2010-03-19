@@ -1,83 +1,65 @@
+<% group = f.object %>
 <%= error_messages_for 'group' %>
-<%- remote_form_for group do |f| -%>
-  <%= hidden_field_tag :member_ids, @members.join(',') if @members.present? %>
-  <%= hidden_field_tag :leader_ids, @leaders.join(',') if @leaders.present? %>
-  <%= hidden_field_tag :co_leader_ids, @co_leaders.join(',') if @co_leaders.present? %>
-  <table border="0" cellspacing="5" cellpadding="5">
-    		<tr><th colspan="2" class="title"><%= group.new_record? ? 'Create a New Group' : 'Editing ' + group.name %></th></tr>
-    <tr>
-      <td style="vertical-align:top;">
-    	<table border="0" cellspacing="5" cellpadding="5">
-    	  <tr>
-    	    <td>Type: </td>
-          <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
-    	  </tr>
-    		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
-    		<tr>
-    			<td>Campus: </td>
-    			<td>
-    				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
-    				<%= spinner('c') %>
-    				<%= observe_field(:group_campus_id, :url => list_dorms_url(), 
-    				                                    :update => 'group_dorm_id', 
-    				                                    :with => "campus_id",
-    				                                    :loading => "$('#spinnerc').show()",
-    				                                    :complete => "$('#spinnerc').hide()") %>
-    			</td>
-    		</tr>
-    		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
-     		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
-    		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
-    		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
-    		<tr><td><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
-    	</table>
-  	  </td>
-  	  <td style="vertical-align:top;">
-  	    <table border="0" cellspacing="5" cellpadding="5">
-      		<tr><td><%= I18n.t :Zip, :default => 'Zip' %>: </td><td><%= f.text_field :zip %></td></tr>
-          <tr><td>Country: </td><td><%= f.select :country, ['United States', 'Canada','Australia'] %></td></tr>
-      		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
-      		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
-          <tr><td>
-              Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
-      		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
-      		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
-  	    </table>
-  	  </td>
-  	</tr>
-    <tr>
-      <td colspan='2'>
-        <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
-        Join requests must be approved
-        <br/>
-        <%= check_box_tag(:isleader, 1, true)%>
-        Make me the leader of this group
-       </td>
-     </tr>
-  </table>
-	<%= submit_tag 'Save' %> or 
-	<%- if params[:action] == 'new' -%>
-		<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
-	 															:class => 'cancel'%>
-	<%- else -%>
-		<%= link_to_function 'cancel', "$('#address_form').fadeOut();$('#address').show()",
-	 															:class => 'cancel'%>
-	<%- end -%>
+<%= hidden_field_tag :member_ids, @members.join(',') if @members.present? %>
+<%= hidden_field_tag :leader_ids, @leaders.join(',') if @leaders.present? %>
+<%= hidden_field_tag :co_leader_ids, @co_leaders.join(',') if @co_leaders.present? %>
+<table border="0" cellspacing="5" cellpadding="5">
+  		<tr><th colspan="2" class="title"><%= group.new_record? ? 'Create a New Group' : 'Editing ' + group.name %></th></tr>
+  <tr>
+    <td style="vertical-align:top;">
+  	<table border="0" cellspacing="5" cellpadding="5">
+  	  <tr>
+  	    <td>Type: </td>
+        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
+  	  </tr>
+  		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
+  		<tr>
+  			<td>Campus: </td>
+  			<td>
+  				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
+  				<%= spinner('c') %>
+  				<%= observe_field(:group_campus_id, :url => list_dorms_url(), 
+  				                                    :update => 'group_dorm_id', 
+  				                                    :with => "campus_id",
+  				                                    :loading => "$('#spinnerc').show()",
+  				                                    :complete => "$('#spinnerc').hide()") %>
+  			</td>
+  		</tr>
+  		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
+   		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
+  		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
+  		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
+  		<tr><td><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
+  	</table>
+	  </td>
+	  <td style="vertical-align:top;">
+	    <table border="0" cellspacing="5" cellpadding="5">
+    		<tr><td><%= I18n.t :Zip, :default => 'Zip' %>: </td><td><%= f.text_field :zip %></td></tr>
+        <tr><td>Country: </td><td><%= f.select :country, ['United States', 'Canada','Australia'] %></td></tr>
+    		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
+    		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
+        <tr><td>
+            Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
+    		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
+    		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
+	    </table>
+	  </td>
+	</tr>
+  <tr>
+    <td colspan='2'>
+      <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
+      Join requests must be approved
+      <br/>
+      <%= check_box_tag(:isleader, 1, true)%>
+      Make me the leader of this group
+     </td>
+   </tr>
+</table>
+<%= submit_tag 'Save' %> or 
+<%- if params[:action] == 'new' -%>
+	<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
+ 															:class => 'cancel'%>
+<%- else -%>
+	<%= link_to_function 'cancel', "$('#address_form').fadeOut();$('#address').show()",
+ 															:class => 'cancel'%>
 <%- end -%>
-<% unless group.new_record? || !Cmt::CONFIG[:find_common_times_enabled] %>
-<div id="timePicker" class="thickbox" style="display:none">
-  <p>
-  <%- form_remote_tag :url => find_times_group_path(group.id), :method => :post do -%>
-    What days would you like to search? <br/>
-    <%- 7.times do |i| -%>
-      <%= Date::ABBR_DAYNAMES[i] %> <%= check_box_tag 'days[]', i, (1..5).to_a.include?(i) %> &nbsp;
-    <%- end -%><br/><br/>
-    What time range would you like to search within?<br/>
-    Between <%= select_tag :range_start, options_for_select(times(Timetable::EARLIEST, Timetable::LATEST), 18.hours) %> and 
-            <%= select_tag :range_end, options_for_select(times(Timetable::EARLIEST, Timetable::LATEST), 20.hours) %><br/><br/>
-    Length of Meeting: <%= text_field_tag :length, '', :size => 3 %> hour(s)<br/><br/>
-    <%= submit_tag 'Submit' %><br/>
-  <%- end -%>
-  </p>
-</div>
-<% end %>

@@ -1,0 +1,6 @@
+<% form_for @group do |f| %>
+  <% params[:person].each do |p| %>
+    <%= hidden_field_tag "person[]", p %>
+  <% end %>
+  <%= render 'form', :f => f %>
+<% end %>
