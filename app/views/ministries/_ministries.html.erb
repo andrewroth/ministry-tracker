@@ -17,7 +17,7 @@
 												 {:class => "action-button"} %>
 		<% end %>
 		<%= spinner %>
-		<% if @my.ministries.length > 1 %>
+		<% if @my.ministries.length > 1 || is_admin?%>
 		  <%- if is_admin? -%>
     	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.self_plus_descendants.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
