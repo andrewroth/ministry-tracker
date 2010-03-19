@@ -56,7 +56,7 @@ class GroupsController < ApplicationController
   def new
     @group = Group.new :country => Cmt::CONFIG[:default_country]
     respond_to do |format|
-      format.html { render :layout => false }
+      format.html 
       format.js
     end
   end
@@ -72,11 +72,15 @@ class GroupsController < ApplicationController
       @gi.save!
       @group = @gi.group
     end
+    # If an array of people have been passed in, add them as members
+    Array.wrap(params[:person]).each do |person_id|
+      GroupInvolvement.create!(:person_id => person_id, :group_id => @group.id, :level => "member", :requested => false)
+    end
     @group_type = @group.group_type
     respond_to do |format|
       if group_save
         flash[:notice] = @group.class.to_s.titleize + ' was successfully created.'
-        format.html { redirect_to groups_url }
+        format.html { redirect_to group_url(@group) }
         format.js   { index }
         format.xml  { head :created, :location => groups_url(@group) }
       else

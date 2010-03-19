@@ -84,7 +84,7 @@
   <% end %>
 
   <%- if authorized?(:email) -%>
-    <%= select_tag(:perform_action, options_for_select([['Perform Action on Selected',''],['Send Email',new_email_path]])) %>
+    <%= select_tag(:perform_action, options_for_select([['Perform Action with Selected',''],['Send Email',new_email_path],['Create Group', new_group_path]])) %>
     <%= observe_field :perform_action, :function => "performAction()" %>
   <%- end -%>
 </p>
