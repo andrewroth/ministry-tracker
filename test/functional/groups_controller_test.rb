@@ -107,4 +107,37 @@ class GroupsControllerTest < ActionController::TestCase
     login
     get :compare_timetables, :id => 1
   end
+
+  def test_set_start_time
+    get :set_start_time, :time => 59400, :day => 1, :id => 1
+    assert_equal(59400, ::Group.find(1).start_time)
+    assert_equal(1, ::Group.find(1).day)
+
+    get :set_end_time, :time => 66600, :day => 1, :id => 1
+    get :set_start_time, :time => 72000, :day => 1, :id => 1
+    assert_equal(59400, ::Group.find(1).start_time)
+    assert_equal(1, ::Group.find(1).day)
+  end
+
+  def test_set_end_time
+    get :set_end_time, :time => 59400, :day => 4, :id => 1
+    assert_equal(nil, ::Group.find(1).end_time)
+    assert_equal(nil, ::Group.find(1).day)
+
+    get :set_start_time, :time => 59400, :day => 4, :id => 1
+    get :set_end_time, :time => 66600, :day => 4, :id => 1
+    assert_equal(66600, ::Group.find(1).end_time)
+    assert_equal(4, ::Group.find(1).day)
+
+    get :set_end_time, :time => 43200, :day => 4, :id => 1
+    assert_equal(59400, ::Group.find(1).start_time)
+    assert_equal(4, ::Group.find(1).day)
+  end
+
+  def test_get_campus
+    Factory(:campus_2)
+    xhr :get, :get_campus, :campus_id => 2, :gt_id => 3
+    puts assigns["campus"]
+    puts assigns["gt"]
+  end
 end

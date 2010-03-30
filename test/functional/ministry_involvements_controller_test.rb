@@ -93,4 +93,15 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     get :edit, :ministry_id => Ministry.first.id, :person_id => Person.find(123)
     assert_response :redirect
   end
+
+  def test_index
+    xhr :get, :index
+    assert_not_nil(assigns["ministry_involvements"])
+    assert_not_nil(assigns["involvement_history"])
+  end
+
+  def test_new
+    xhr :get, :new
+    assert_not_nil(assigns["ministry_involvement"])
+  end
 end
