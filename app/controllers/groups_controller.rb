@@ -132,7 +132,7 @@ class GroupsController < ApplicationController
       if gi.person.nil? || gi.requested
         true
       elsif !gi.person.free_times.present?
-        @notices << "<i>" + gi.person.full_name + "</i> has not submitted his timetable. Hence will be excluded from comparison."
+        @notices << "<i>" + gi.person.full_name + "</i> has not submitted their timetable. Hence, they will be excluded from comparison."
         true
       else
         false
