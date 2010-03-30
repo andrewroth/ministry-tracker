@@ -53,6 +53,7 @@ render_tabnav :main,
     end #if can_manage
   end
 
+=begin
   if authorized?(:index, :stats)
     add_tab do |t|
       t.named 'Stats'
@@ -65,6 +66,7 @@ render_tabnav :main,
       t.highlights_on :controller => "regional_team"
     end
   end
+=end
   
   # @groups = @my.groups.collect {|group| group}
   # add_tab do |t|
