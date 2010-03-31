@@ -19,7 +19,7 @@ set :keep_releases, 3
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, if prod? then 'pulse' elsif stage? then 'emu_cdm' else 'moose_cdm' end
+set :branch, if prod? then 'pulse_cdm' elsif stage? then 'emu_cdm' else 'moose_cdm' end
 set :deploy_via, :checkout
 path = if ma?
          'mt.ministryhacks.com'
