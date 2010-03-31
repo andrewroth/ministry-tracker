@@ -62,6 +62,10 @@ class ActiveSupport::TestCase
   def setup_ministry_involvements
     Factory(:ministryinvolvement_1)
     Factory(:ministryinvolvement_2)
+    Factory(:ministryinvolvement_3)
+    Factory(:ministryinvolvement_4)
+    Factory(:ministryinvolvement_5)
+    Factory(:ministryinvolvement_6)
   end
 
   def setup_school_years
@@ -76,7 +80,11 @@ class ActiveSupport::TestCase
   def setup_people
     reset_people_sequences
     Factory(:person_1)
+    Factory(:person_2)
     Factory(:person_3)
+    Factory(:person_5)
+    Factory(:person_6)
+    Factory(:person_7)
     Factory(:person_111)
   end
   
@@ -120,6 +128,11 @@ class ActiveSupport::TestCase
   
   def setup_campus_involvements    
     setup_n_campus_involvements(1000)
+    Factory(:campusinvolvement_2)
+    Factory(:campusinvolvement_3)
+    Factory(:campusinvolvement_4)
+    Factory(:campusinvolvement_6)
+    Factory(:campusinvolvement_7)
   end 
   
   def setup_ministry_roles
@@ -142,6 +155,23 @@ class ActiveSupport::TestCase
   def reset_people_sequences
     Factory.sequences[:person_person_id].reset
     Factory.sequences[:person_last_name].reset
+  end
+
+  def reset_ministry_involvements_sequences
+    Factory.sequences[:ministryinvolvement_ministryinvolvement_id].reset
+    Factory.sequences[:ministryinvolvement_person_id].reset
+  end
+
+  def setup_n_ministry_involvements(n)
+    reset_ministry_involvements_sequences
+    n.times { Factory(:ministryinvolvement) }
+  end
+
+  def setup_n_people(n)
+    reset_people_sequences
+    1.upto(n + 1) do |i|
+      Factory(:person)
+    end
   end
 
   def setup_groups

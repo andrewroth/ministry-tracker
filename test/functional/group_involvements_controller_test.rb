@@ -48,7 +48,6 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     xhr :post, :change_level, :id => 2, :members => [1], :level => 'leader'
     assert_no_difference "::GroupInvolvement.find(3).group_id" do
       xhr :post, :transfer, :id => 2, :transfer_to => 1, :members => [50000], :level => 'leader'
-      puts assigns["member_notices"]
     end
   end
 

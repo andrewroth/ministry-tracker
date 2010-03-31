@@ -8,7 +8,7 @@ class GroupsControllerTest < ActionController::TestCase
 
     login
   end
-  
+
   def test_index
     get :index
     assert_response :success
@@ -79,6 +79,28 @@ class GroupsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:group) 
   end
   
+  def test_create_with_members
+    Factory(:person_2)
+    Factory(:person_3)
+    login
+    old_count = Group.count
+    post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
+                                :state => 'IL', :country => 'United States',
+                                :email => 'asdf', :group_type_id => 1 },
+                                :person => [2000, 3000]
+    assert_equal old_count+1, Group.count
+    assert_equal(2, Group.last.members.size)
+  end
+
+  def test_create_leader
+    login
+    old_count = Group.count
+    post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
+                                :state => 'IL', :country => 'United States',
+                                :email => 'asdf', :group_type_id => 1 }, :isleader => "1"
+    assert_equal old_count+1, Group.count
+    assert_not_equal([], ::GroupInvolvement.all(:conditions => { :person_id => 50000, :group_id => Group.last.id }) )
+  end
   
   def test_should_create
     login
@@ -134,10 +156,4 @@ class GroupsControllerTest < ActionController::TestCase
     assert_equal(4, ::Group.find(1).day)
   end
 
-  def test_get_campus
-    Factory(:campus_2)
-    xhr :get, :get_campus, :campus_id => 2, :gt_id => 3
-    puts assigns["campus"]
-    puts assigns["gt"]
-  end
 end
