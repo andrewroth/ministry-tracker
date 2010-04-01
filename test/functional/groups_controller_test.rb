@@ -127,7 +127,35 @@ class GroupsControllerTest < ActionController::TestCase
 
   def test_compare_timetables
     login
-    get :compare_timetables, :id => 1
+    setup_timetables
+    setup_people
+    get :compare_timetables, :id => 3
+
+    assigns["comparison_map"][1].each do |time_slot|
+      sec = time_slot.first.first
+
+      if sec >= 23400 and sec <=75600
+        assert_equal([::Person.find(50000)], time_slot[sec]["bads"])
+      end
+
+      if sec >= 43200 and sec <= 50400
+        assert_equal([::Person.find(2000)], time_slot[sec]["goods"])
+      end
+    end
+
+    get :compare_timetables, :id => 3, :members => [2, 50, 50000, 2000]
+
+    assigns["comparison_map"][1].each do |time_slot|
+      sec = time_slot.first.first
+
+      if sec >= 23400 and sec <=75600
+        assert_equal([::Person.find(50000)], time_slot[sec]["bads"])
+      end
+
+      if sec >= 43200 and sec <= 50400
+        assert_equal([::Person.find(2000)], time_slot[sec]["goods"])
+      end
+    end
   end
 
   def test_set_start_time

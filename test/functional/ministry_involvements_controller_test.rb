@@ -22,6 +22,16 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "try destroying default ministry" do
+    Factory(:person_2)
+    Factory(:user_2)
+    login 'fred@uscm.org'
+
+    mi = Factory(:ministryinvolvement_7)
+    Cmt::CONFIG[:default_ministry_name] = mi.ministry.name
+    xhr :delete, :destroy, :id => 7, :person_id => 3000
+  end
+
   test "try destroying without access" do
     Factory(:user_2)
     login('fred@uscm.org')
@@ -29,37 +39,37 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert_equal Date.today, assigns(:ministry_involvement).end_date
     assert_response :success
   end
-  
+
   # test "destroy only one ministry" do
   #   xhr :delete, :destroy, :id => 1, :person_id => 3000
   #   assert_nil assigns(:ministry_involvement)
   #   assert_response :success
   # end
-  
+
   test "edit own role" do
     xhr :get, :edit, :person_id => 50000, :ministry_id => 2
     assert_response :success
     assert_template 'edit'
   end
-  
+
   test "edit someone else's role" do
     Factory(:person_2)
     xhr :get, :edit, :person_id => 3000, :ministry_id => 2
     assert_response :success
     assert assigns(@ministry_involvement)
   end
-  
+
   test "edit with bad parameters" do
     assert_raise(RuntimeError) { xhr :get, :edit }
   end
-  
+
   test "update role" do
     old_mi = MinistryInvolvement.find(1)
     xhr :put, :update, :id => old_mi.id, :ministry_involvement => {:ministry_role_id => 4}
     assert mi = assigns(:ministry_involvement)
     assert_not_equal old_mi.ministry_role, mi.ministry_role
   end
-  
+
   test "add a person to a ministry" do
     assert_difference "MinistryInvolvement.count", 1 do
       ministry = Factory(:ministry_3)
@@ -67,7 +77,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
       xhr :post, :create, :ministry_involvement => {:ministry_role_id => ministry.ministry_roles.first, :person_id => person.id, :ministry_id => ministry.id}
     end
   end
-  
+
   test "add a person to a ministry who is already in that ministry should update the role" do
     assert_difference "MinistryInvolvement.count", 0 do
       ministry = Factory(:ministry_1)

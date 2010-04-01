@@ -197,6 +197,15 @@ class ActiveSupport::TestCase
     Factory(:groupinvolvement_6)
   end
 
+  def setup_timetables
+    Factory(:timetable_1)
+    Factory(:timetable_2)
+    Factory(:freetime_1)
+    Factory(:freetime_2)
+    Factory(:freetime_3)
+    Factory(:freetime_4)
+  end
+
   protected
     def upload_file(options = {})
       use_temp_file options[:filename] do |file|
