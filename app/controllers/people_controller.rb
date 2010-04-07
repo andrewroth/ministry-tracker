@@ -478,7 +478,7 @@ class PeopleController < ApplicationController
       if ministry_campus
         ministry = ministry_campus.ministry
       else
-        ministry = Cmt::CONFIG[:default_ministry_name]
+        ministry = Ministry.find(:first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] })
         ministry ||= Ministry.first
         throw "add some ministries" unless ministry
       end
