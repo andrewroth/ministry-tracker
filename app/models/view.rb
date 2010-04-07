@@ -1,5 +1,8 @@
 class View < ActiveRecord::Base
   load_mappings
+
+  include Pulse::Ca::View
+
   has_many :view_columns, :order => :position, :dependent => :destroy, :include => :column
   has_many :columns, :through => :view_columns, :order => ViewColumn.table_name + '.' + _(:position, :view_column)
   belongs_to :ministry
