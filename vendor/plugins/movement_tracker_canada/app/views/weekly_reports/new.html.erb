@@ -8,7 +8,7 @@
     <%= f.error_messages %>
     <p>
       <%= f.label :week, "Week ending on:" %>
-      <%= f.collection_select :week_id, Week.all, :week_id, :week_endDate %>
+      <%= f.collection_select :week_id, @weeks, :week_id, :week_endDate %>
     </p>
     <p>
       <%= f.label :campus, "Campus:" %>

@@ -29,7 +29,11 @@ class WeeklyReportsController < ApplicationController
     @weekly_report = WeeklyReport.new
 
     @weekly_report.week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
-    @weeks = Week.find_weeks()
+    @weeks = Week.all(:order => :week_endDate)
+
+    @weeks.each do |w|
+      puts w.inspect
+    end
 
     mi = @person.highest_ministry_involvement_with_role(role_granting_authorization(:new, :weekly_reports))
     @campuses = mi.ministry.unique_campuses
