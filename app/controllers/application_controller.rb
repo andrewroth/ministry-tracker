@@ -161,12 +161,7 @@ class ApplicationController < ActionController::Base
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
-      :ministry_involvements => [:new, :edit, :index],
-      :stats => [:index],
-      :all_staff => [:year_summary, :submit_weekly_stats, :semester_at_a_glance, :indicated_decisions, :delete, :edit, :decisions],
-      :campus_directors => [:monthly_summary_by_campus],
-      :national_team => [:how_people_prayed_to_receive_christ, :indicated_decisions],
-      :regional_team => [:summary_by_week, :summary_by_month, :summary_by_campus]
+      :ministry_involvements => [:new, :edit, :index]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -246,17 +241,6 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
-
-        when :national_team
-          return true if @me.user.in_access_group(45)
-        when :regional_team
-          return true if @me.user.in_access_group(44,45)
-        when :campus_directors
-          return true if @me.user.in_access_group(43,44,45)
-        when :all_staff
-          return true if @me.user.in_access_group(41,42,43,44,45)
-        when :stats
-          return true if @me.user.in_access_group(41,42,43,44,45)
           
         end # case
       end # if
