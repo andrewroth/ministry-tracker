@@ -269,6 +269,35 @@ class ApplicationController < ActionController::Base
       
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
+
+    def role_granting_authorization(action = nil, controller = nil, ministry = nil)
+      if authorized?(action, controller, ministry)
+        #if is admin...
+
+        #else...
+
+        ministry ||= get_ministry
+        return false unless ministry
+
+        action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
+        action = action == 'update' ? 'edit' : action
+        controller ||= controller_name.to_s
+
+        # Make sure we're always using strings
+        action = action.to_s
+        controller = controller.to_s
+
+
+        my_role_ids = @my.ministry_involvements.collect{ |mi| mi.ministry_role_id }
+
+        mrps = ::MinistryRolePermission.all(:joins => :permission,
+          :conditions => ["#{::Permission.table_name}.#{_(:action, :permission)} = ? AND #{::Permission.table_name}.#{_(:controller, :permission)} = ? AND ministry_role_id IN (?)", action.to_s, controller.to_s, my_role_ids ] )
+
+        ::MinistryRole.all(:first, :conditions => ["id IN (?)", mrps.collect {|mrp| mrp.ministry_role_id } ], :order => "#{::MinistryRole.table_name}.position ASC").first
+      else
+        nil
+      end
+    end
     
 #    def authorization_allowed_for_owner
 #      unless self.respond_to?(:is_owner) && is_owner
