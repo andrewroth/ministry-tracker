@@ -120,9 +120,6 @@ class AllStaffController < ApplicationController
   
   # delete action
   def delete
-    puts ""
-    puts "Hello!"
-    puts ""
       # delete the record
       Prc.delete_by_id(params[:id])
       @semesterSelected = params[:semesterSelected]

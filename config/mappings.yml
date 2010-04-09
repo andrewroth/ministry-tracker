@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, week, weeklyreport, year
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, week, weekly_report, year
 
 tables:
   user: accountadmin_viewer
@@ -40,7 +40,7 @@ tables:
   prcmethod: cim_stats_prcmethod
   semester: cim_stats_semester
   week: cim_stats_week
-  weeklyreport: cim_stats_weeklyreport
+  weekly_report: cim_stats_weeklyreport
   year: cim_stats_year
 
 
@@ -206,7 +206,7 @@ month:
   number: month_number
   calendar_year: month_calendaryear
 
-weeklyreport:
+weekly_report:
   id: weeklyReport_id
   spiritual_conversations: weeklyReport_1on1SpConv
   gospel_presentations: weeklyReport_1on1GosPres

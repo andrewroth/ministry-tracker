@@ -1,56 +1,91 @@
-<!-- Stats Index Page -->
-<p>
-    <span class="heading">Stats</span>
-</p>
-<p>
-    <span class="text">Your homepage for navigating the campus ministry stats system.</span>
-</p>
-<!-- Check all staff access level -->
-<% if @allstaff_access %>
-<span class="title1">All Staff (Personal Ministry)</span>
-<br/>
-<span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>
-<br/>
-<span class="text"><a href="/all_staff/indicated_decisions">Indicated Decisions</a></span>
-<br/>
-<span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
-<br/>
-<span class="text"><a href="/all_staff/year_summary">Year Summary</a></span>
-<br/>
-<br/>
-<% end %>
-<!--
-<span class="title1">Campus Stats Coordinator</span>
-<br/>
-<br/> -->
-<!-- Check all campus director access level -->
-<% if @campusdirector_access %>
-<span class="title1">Campus Directors</span>
-<br/>
-<span class="text"><a href="/all_staff/semester_at_a_glance">Semester At A Glance</a></span>
-<br/>
-<span class="text"><a href="/campus_directors/monthly_summary_by_campus">Monthly Summary by Campus</a></span>
-<br/>
-<br/>
-<% end %>
-<!-- Check regional team access level -->
-<% if @regional_access %>
-<span class="title1">Regional Team</span>
-<br/>
-<span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>
-<br/>
-<span class="text"><a href="/regional_team/summary_by_month">Regional Semester Summary by Month</a></span>
-<br/>
-<span class="text"><a href="/regional_team/summary_by_week">Regional Monthly Summary by Week</a></span>
-<br/>
-<br/>
-<% end %>
-<!-- Check national team access level -->
-<% if @national_access %>
-<span class="title1">National Team</span>
-<br/>
-<span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>
-<br/>
-<span class="text"><a href="/national_team/how_people_prayed_to_receive_christ">How People Came to Know Christ</a></span>
-<br/>
-<% end %>
+<h1 id="statsTitle">Statistics</h1>
+
+
+
+<div id="newWeeklyReportLink">
+  <div class="butNormal"><%= link_to "Submit your weekly numbers", new_weekly_report_path %></div>
+</div>
+
+<div class="statsBox">
+  <h2 class="statsBoxTitle">Team Member Reports</h2>
+  <ul class="statsLinkList">
+    <li class="statsListLink"><%= link_to "Semester at a glance", new_weekly_report_path %></li>
+  </ul>
+</div>
+
+<div class="statsBox">
+  <h2 class="statsBoxTitle">Team Leader Reports</h2>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%#*<!-- Stats Index Page -->%>
+<%#*<p>%>
+    <%#*<span class="heading">Stats</span>%>
+<%#*</p>%>
+<%#*<p>%>
+    <%#*<span class="text">Your homepage for navigating the campus ministry stats system.</span>%>
+<%#*</p>%>
+<%#*<!-- Check all staff access level -->%>
+<%# if @allstaff_access %>
+<%#*<span class="title1">Team Member Stats</span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/all_staff/indicated_decisions">Indicated Decisions</a></span>%>
+<%# unless @team_leader_access %>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/all_staff/semester_at_a_glance">Semester at a Glance</a></span>%>
+<%# end %>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/all_staff/year_summary">Year Summary</a></span>%>
+<%#*<br/>%>
+<%#*<br/>%>
+<%# end %>
+<%#*<!--%>
+<%#*<span class="title1">Campus Stats Coordinator</span>%>
+<%#*<br/>%>
+<%#*<br/> -->%>
+<%#*<!-- Check all campus director access level -->%>
+<%# if @campusdirector_access %>
+<%#*<span class="title1">Team Leader Stats</span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/all_staff/semester_at_a_glance">Semester at a Glance</a></span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/campus_directors/monthly_summary_by_campus">Monthly Summary by Campus</a></span>%>
+<%#*<br/>%>
+<%#*<br/>%>
+<%# end %>
+<%#*<!-- Check regional team access level -->%>
+<%# if @regional_access %>
+<%#*<span class="title1">Regional Team</span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/regional_team/summary_by_month">Regional Semester Summary by Month</a></span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/regional_team/summary_by_week">Regional Monthly Summary by Week</a></span>%>
+<%#*<br/>%>
+<%#*<br/>%>
+<%# end %>
+<%#*<!-- Check national team access level -->%>
+<%# if @national_access %>
+<%#*<span class="title1">National Team</span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>%>
+<%#*<br/>%>
+<%#*<span class="text"><a href="/national_team/how_people_prayed_to_receive_christ">How People Came to Know Christ</a></span>%>
+<%#*<br/>%>
+<%# end %>

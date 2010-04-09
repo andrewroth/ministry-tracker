@@ -1121,10 +1121,62 @@ div.choose_ministry_tree {
 
 /************************************************/
 /* Stats section                                */
-.heading {
+#statsTitle {
 	color: #1F429B;
-	font-size: 1.5em;
-	font-weight: bold;
+    border-bottom:1px dotted #1F429B;
+    margin-bottom:10px;
+}
+
+#newWeeklyReportLink {
+  margin: 1.5em 2em 0.5em 2em;
+  padding: 0.7em 0.7em 0.7em 0.7em;
+}
+
+.statsBox {
+  float: left;
+  margin: 1em 1em 1em 1em;
+  padding: 0.7em 0.7em 0.7em 0.7em;
+  border: 1px solid #CCCCCC;
+  -moz-border-radius: 7px 7px 7px 7px;
+}
+
+.statsBox:hover {
+  border: 1px solid #1F429B;
+}
+
+.statsListLink {
+  font-size: 1.25em;
+  padding: 0.25em 0 0 1em;
+}
+
+.statsBox label {
+  width: 22em;
+  float: left;
+  text-align: right;
+}
+
+.statsBox text_field {
+  float: left;
+}
+
+div #newWeeklyReportFormContainer {
+  width: 44em;
+}
+
+div .backLink {
+  float: left;
+  width: 100%;
+  margin: 0.5em 1em 0.5em 1em;
+}
+
+div #statsDescriptions {
+  float: left;
+  width: 100%;
+  margin: 0.5em 1em 0.5em 1em;
+}
+
+.center {
+  text-align: center;
 }
 
 legend .title1 {

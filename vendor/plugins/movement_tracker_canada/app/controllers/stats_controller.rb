@@ -9,4 +9,5 @@ class StatsController < ApplicationController
     @allstaff_access = authorized?(:year_summary, :all_staff) ? true : false
     
   end
+
 end
