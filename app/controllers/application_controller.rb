@@ -254,11 +254,17 @@ class ApplicationController < ActionController::Base
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
 
+    def ministry_involvement_granting_authorization(action = nil, controller = nil, ministry = nil)
+      if is_ministry_admin
+        mi = ::MinistryInvolvement.build_highest_ministry_involvement_possible(@me)
+      else
+        mi = @me.highest_ministry_involvement_with_particular_role(role_granting_authorization(action, controller, ministry))
+      end
+      mi
+    end
+
     def role_granting_authorization(action = nil, controller = nil, ministry = nil)
       if authorized?(action, controller, ministry)
-        #if is admin...
-
-        #else...
 
         ministry ||= get_ministry
         return false unless ministry
@@ -278,6 +284,7 @@ class ApplicationController < ActionController::Base
           :conditions => ["#{::Permission.table_name}.#{_(:action, :permission)} = ? AND #{::Permission.table_name}.#{_(:controller, :permission)} = ? AND ministry_role_id IN (?)", action.to_s, controller.to_s, my_role_ids ] )
 
         ::MinistryRole.all(:first, :conditions => ["id IN (?)", mrps.collect {|mrp| mrp.ministry_role_id } ], :order => "#{::MinistryRole.table_name}.position ASC").first
+
       else
         nil
       end
