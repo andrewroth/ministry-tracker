@@ -53,20 +53,17 @@ render_tabnav :main,
     end #if can_manage
   end
 
-=begin
+
   if authorized?(:index, :stats)
     add_tab do |t|
       t.named 'Stats'
-      t.titled ""
+      t.titled "Measuring the movement"
       t.links_to :controller => 'stats'
       t.highlights_on :controller => "stats"
-      t.highlights_on :controller => "all_staff"
-      t.highlights_on :controller => "campus_directors"
-      t.highlights_on :controller => "national_team"
-      t.highlights_on :controller => "regional_team"
+      t.highlights_on :controller => "weekly_reports"
     end
   end
-=end
+
   
   # @groups = @my.groups.collect {|group| group}
   # add_tab do |t|
