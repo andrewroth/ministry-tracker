@@ -6,15 +6,15 @@
   <div class="butNormal"><%= link_to "Submit your weekly numbers", new_weekly_report_path %></div>
 </div>
 
-<div class="statsBox">
-  <h2 class="statsBoxTitle">Team Member Reports</h2>
+<div id="statsLinkBox" class="statsFormBox">
+  <h2 class="statsLinkBoxTitle">Team Member Reports</h2>
   <ul class="statsLinkList">
-    <li class="statsListLink"><%= link_to "Semester at a glance", new_weekly_report_path %></li>
+    <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
   </ul>
 </div>
 
-<div class="statsBox">
-  <h2 class="statsBoxTitle">Team Leader Reports</h2>
+<div id="statsLinkBox" class="statsFormBox">
+  <h2 class="statsLinkBoxTitle">Team Leader Reports</h2>
 </div>
 
 

@@ -1,0 +1,232 @@
+
+<% if @staff %>
+  <p><a href="#totals">Go to Totals</a></p><br/>
+  <% sp_conv_total = 0; sp_conv_std_total = 0; gos_pres_total = 0; gos_pres_std_total = 0; hs_pres_total = 0; submitted_total = 0 %>
+
+  <% @staff.each do |s| %>
+    <% if s['staff_id'] > -1 %>
+      <% person_id = CimHrdbStaff.find_person_id(s['staff_id']) %>
+    <% end %>
+    <% employee = Person.find_person(person_id) %>
+    <% if !employee.nil? %>
+      <span class="bold">Staff Name:</span>
+      <span class="text"><%= "#{employee.first_name} #{employee.last_name}" %></span>
+      <br/>
+      <br/>
+      <table class="t1" style="font-size: 8pt;">
+          <tr>
+              <td class="t2">
+              </td>
+              <% @months.each do |month| %>
+                <% number_weeks = Week.find_weeks_in_month(month.id).length %>
+                <% if number_weeks == 5 %>
+                  <td colspan="5">
+                <% else %>
+                  <td colspan="4">
+                <% end %>
+                <center>
+                <%= month.description.split(" ")[0] %>
+                </center>
+                </td>
+              <% end %>
+          </tr>
+          <tr>
+              <td class="t2">
+              </td>
+              <% @weeks.each do |week| %>
+                <td>
+                <center>
+                <%= week.end_date.day %>
+                </center>
+                </td>
+              <% end %>
+              <td>
+                  <center>
+                      Total
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Spiritual Conversations</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+                <td class="t5">
+                  <center>
+                    <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv,@campusID) %>
+                    <% total += stat %>
+                  </center>
+                </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% sp_conv_total += total %>
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Spiritual Conversations by Disciples</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+              <td class="t5">
+                  <center>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv_std,@campusID) %>
+                      <% total += stat %>
+                  </center>
+              </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% sp_conv_std_total += total %>
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Gospel Presentations</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+              <td class="t5">
+                  <center>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres,@campusID) %>
+                      <% total += stat %>
+                  </center>
+              </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% gos_pres_total += total %>
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Gospel Presentations by Disciples</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+              <td class="t5">
+                  <center>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres_std,@campusID) %>
+                      <% total += stat %>
+                  </center>
+              </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% gos_pres_std_total += total %>
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Holy Spirit Presentations</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+              <td class="t5">
+                  <center>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],hs_pres,@campusID) %>
+                      <% total += stat %>
+                  </center>
+              </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% hs_pres_total += total %>
+                  </center>
+              </td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+              <td class="t5">
+                  <span class="bold">Submitted</span>
+              </td>
+              <% total = 0 %>
+              <% @weeks.each do |week| %>
+              <td class="t5">
+                  <center>
+                      <% if !WeeklyReport.check_submitted(week.id,s['staff_id'],@campusID).nil? %>
+                      x<% total += 1 %>
+                      <% else %>
+                      -<% end %>
+                  </center>
+              </td>
+              <% end %>
+              <td class="t5">
+                  <center>
+                      <%= total %>
+                      <% submitted_total += total %>
+                  </center>
+              </td>
+          </tr>
+      </table>
+      <br/>
+      <br/>
+    <% end %>
+  <% end %>
+<% end %>
+    
+<a name="totals">
+<span class="title1">Totals</span>
+</a>
+<br/>
+<br/>
+<table class="t1" style="font-size: 8pt;">
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Spritual Conversations
+        </td>
+        <td class="t5">
+            <%= sp_conv_total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Spritual Conversations by Disciples
+        </td>
+        <td class="t5">
+            <%= sp_conv_std_total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Gospel Presentations
+        </td>
+        <td class="t5">
+            <%= gos_pres_total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Gospel Presentations by Disciples
+        </td>
+        <td class="t5">
+            <%= gos_pres_std_total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Holy Spirit Presentations
+        </td class="t5">
+        <td class="t5">
+            <%= hs_pres_total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="t5">
+            Submitted
+        </td>
+        <td class="t5">
+            <%= submitted_total %>
+        </td>
+    </tr>
+</table>

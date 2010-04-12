@@ -1122,9 +1122,9 @@ div.choose_ministry_tree {
 /************************************************/
 /* Stats section                                */
 #statsTitle {
-	color: #1F429B;
-    border-bottom:1px dotted #1F429B;
-    margin-bottom:10px;
+  color: #1F429B;
+  border-bottom:1px dotted #1F429B;
+  margin-bottom:10px;
 }
 
 #newWeeklyReportLink {
@@ -1132,15 +1132,41 @@ div.choose_ministry_tree {
   padding: 0.7em 0.7em 0.7em 0.7em;
 }
 
-.statsBox {
+#statsLinkBox {
   float: left;
+}
+
+.statsFormBox {
   margin: 1em 1em 1em 1em;
   padding: 0.7em 0.7em 0.7em 0.7em;
   border: 1px solid #CCCCCC;
+  text-align: center;
   -moz-border-radius: 7px 7px 7px 7px;
+  -webkit-border-radius: 7px 7px 7px 7px;
 }
 
-.statsBox:hover {
+.statsFormBox label {
+  line-height: 1em;
+  text-align: right;
+}
+
+.statsFormBox select {
+  height: auto;
+  width: auto;
+}
+
+.statsFormField {
+  text-align: left;
+  height: 2em;
+}
+
+.statsSpinner {
+  position: relative;
+  top: 0.7em;
+  left: 0.7em;
+}
+
+.statsFormBox:hover {
   border: 1px solid #1F429B;
 }
 
@@ -1149,30 +1175,57 @@ div.choose_ministry_tree {
   padding: 0.25em 0 0 1em;
 }
 
-.statsBox label {
-  width: 22em;
+.statsFormBox text_field {
   float: left;
+}
+
+#newWeeklyReportFormContainer label {
+  float: left;
+  width: 18em;
   text-align: right;
 }
 
-.statsBox text_field {
-  float: left;
-}
-
-div #newWeeklyReportFormContainer {
-  width: 44em;
+#newWeeklyReportFormContainer {
+  width: 42em;
 }
 
 div .backLink {
+  text-align: left;
   float: left;
   width: 100%;
   margin: 0.5em 1em 0.5em 1em;
 }
 
-div #statsDescriptions {
+div .backLink a {
+  padding-left: 20px;
+  background-image: url(/images/silk/arrow_left.png);
+  background-repeat: no-repeat;
+}
+
+#statsDescriptions {
   float: left;
-  width: 100%;
   margin: 0.5em 1em 0.5em 1em;
+  padding: 1em 1em 1em 1em;
+}
+
+.statsFormContainer {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45em;
+}
+
+.statsContainer {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50em;
+}
+
+#results {
+  width: 50em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .center {
@@ -1180,35 +1233,33 @@ div #statsDescriptions {
 }
 
 legend .title1 {
-	padding: 5px;
-	font-weight: bold;
+  padding: 5px;
+  font-weight: bold;
 }
 
 fieldset {
-	padding: 20px;
-	display: inline;
+  padding: 20px;
+  display: inline;
 }
 
-.title1 {
-	color: #1F429B;
-	font-size: 1.25em;
-	font-weight: bold;
+.statsTitle {
+  color: #1F429B;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .bold label {
-	width: 270px;
+  width: 270px;
 }
 
 #results .highlight {
-	background-color: #FFE88C;
+  background-color: #FFE88C;
 }
 
 #results .t1 {
-
-	border: dotted 2px #6984C7;/*#FFCB05;*/
-	
+  border: dotted 2px #6984C7;/*#FFCB05;*/
 }
 
 #results .t1 tr td {
-	padding: 3px 1px;
+  padding: 3px 1px;
 }

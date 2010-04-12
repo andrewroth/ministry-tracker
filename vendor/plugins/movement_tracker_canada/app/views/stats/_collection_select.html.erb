@@ -1,0 +1,5 @@
+<select name="<%=@form_name%>[<%=@select_value%>]" id="<%=@form_name%>_<%=@select_value%>">
+  <% @options.each do |option| %>
+    <option value="<%= option[:key] %>"><%= option[:value] %></option>
+  <% end %>
+</select>
