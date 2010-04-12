@@ -1,6 +1,8 @@
 class StatsController < ApplicationController
   unloadable
-  
+
+  skip_before_filter :authorization_filter, :only => [:campuses_collection_select]
+
   def index
     
 #    @national_access = authorized?(:how_people_prayed_to_receive_christ, :national_team) ? true : false
@@ -12,8 +14,6 @@ class StatsController < ApplicationController
 
 
   def campuses_collection_select
-    params.each {|p| puts p.inspect}
-
     ministry = Ministry.find(params[:ministry])
     campuses = ministry.unique_campuses
 
