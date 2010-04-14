@@ -15,7 +15,7 @@ class StatsController < ApplicationController
 
   def campuses_collection_select
     ministry = Ministry.find(params[:ministry])
-    campuses = ministry.unique_campuses
+    campuses = ministry.unique_campuses.sort { |x, y| x.campus_desc <=> y.campus_desc }
 
     if campuses.size > 0
       @options = campuses.size > 1 ? [{:key => "0", :value => "Report all campuses under #{ministry.name}"}] : []
@@ -29,6 +29,7 @@ class StatsController < ApplicationController
 
     @form_name = 'semester'
     @select_value = 'campus_id'
+    @selected_key = params[:campus_id]
 
     render :partial => "collection_select"
   end
@@ -36,42 +37,84 @@ class StatsController < ApplicationController
 
   def semester_at_a_glance
 
-    # find the current month
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
 
-    if params[:semester].nil?
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
 
-      @ministry_id = nil
+    if params[:report].nil?
+
+      @ministry_id = get_ministry.id
       @semester_id = Month.find_semester_id(cur_month)
-      @semester_selected = Semester.find_semester_description(@semester_id)
+      @campus_id = "0"
 
-    else # else set the appropriate variables to the parameters
+    else # set the appropriate variables to the parameters
 
-      @ministry_selected = params[:semester]['ministry']
-      @semester_selected = params[:semester]['semester']
-      @campus_id = Campus.find_campus_id(@campus_selected)
-      @semester_id = Semester.find_semester_id(@semester_selected)
+      @ministry_id = params[:report]['ministry']
+      @campus_id = params[:report]['campus_id']
+      @semester_id = Semester.find_semester_id(params[:report]['semester'])
 
-      @staff_id = authorized?(:monthly_summary_by_campus, :campus_directors) ? nil : @me.cim_hrdb_staff.id
+      @staff_id = authorized?(:index, :stats) ? nil : @me.cim_hrdb_staff.id
       @staff = WeeklyReport.find_staff(@semester_id, @campus_id, @staff_id)
 
       @weeks = Week.find_weeks_in_semester(@semester_id)
       @months = Month.find_months_by_semester(@semester_id)
 
+      flash[:notice] = @staff.size == 0 ? "Sorry, no stats were found for your selection!" : nil
     end
 
-    # Initialize Variables Used by View
-    @mi = ministry_involvement_granting_authorization(:semester_at_a_glance, :stats)
 
-    @ministries = @mi.ministry.myself_and_descendants
-    @campuses = @mi.ministry.unique_campuses
-
+    @semester_selected = Semester.find_semester_description(@semester_id)
 
     # the code below ensures that months that haven't occurred yet aren't listed
     cur_id = Month.find_semester_id(cur_month)
     @semesters = Semester.find_semesters(cur_id)
     @cur_semester = Semester.find_semester_description(cur_id)
     
+  end
+
+
+  def summary_by_campus
+
+    # find the current month
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+
+    if params[:report].nil?
+
+      @ministry_id = get_ministry.id
+      @semester_id = Month.find_semester_id(cur_month)
+
+    else
+      @ministry_id = params[:report]['ministry']
+      @ministry_selected = Ministry.find(@ministry_id)
+      
+      @semester_id = Semester.find_semester_id(params[:report]['semester'])
+
+      @campuses = @ministry_selected.unique_campuses.sort { |x, y| x.campus_desc <=> y.campus_desc }
+      
+      flash[:notice] = @campuses.size == 0 ? "Sorry, no stats were found for your selection!" : nil
+    end
+
+    @semester_selected = Semester.find_semester_description(@semester_id)
+
+    # the code below ensures that months that haven't occurred yet aren't listed
+    cur_id = Month.find_semester_id(cur_month)
+    @semesters = Semester.find_semesters(cur_id)
+    @cur_semester = Semester.find_semester_description(cur_id)
+    @year_selected = Year.find_year_description(Semester.find_semester_year(@semester_id))
+
+  end
+
+
+  private
+
+  def my_ministries_for_stats
+    unless is_ministry_admin
+      @me.ministries_involved_in_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+    else
+      ::Ministry.first.myself_and_descendants
+    end
   end
 
 end

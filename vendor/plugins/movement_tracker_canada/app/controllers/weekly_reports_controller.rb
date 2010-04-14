@@ -31,9 +31,8 @@ class WeeklyReportsController < ApplicationController
     @weekly_report.week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
     @weeks = Week.all(:order => :week_endDate)
 
-    mi = ministry_involvement_granting_authorization(:new, :weekly_reports)
-
-    @campuses = mi.ministry.unique_campuses
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+    @weekly_report.campus_id = get_ministry.unique_campuses.first.id
 
     respond_to do |format|
       format.html # new.html.erb

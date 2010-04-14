@@ -1141,6 +1141,7 @@ div.choose_ministry_tree {
   padding: 0.7em 0.7em 0.7em 0.7em;
   border: 1px solid #CCCCCC;
   text-align: center;
+  background-color: #FCFCFC;
   -moz-border-radius: 7px 7px 7px 7px;
   -webkit-border-radius: 7px 7px 7px 7px;
 }
@@ -1156,6 +1157,7 @@ div.choose_ministry_tree {
 }
 
 .statsFormField {
+  margin-bottom: 10px;
   text-align: left;
   height: 2em;
 }
@@ -1189,17 +1191,9 @@ div.choose_ministry_tree {
   width: 42em;
 }
 
-div .backLink {
-  text-align: left;
-  float: left;
-  width: 100%;
-  margin: 0.5em 1em 0.5em 1em;
-}
-
-div .backLink a {
-  padding-left: 20px;
-  background-image: url(/images/silk/arrow_left.png);
-  background-repeat: no-repeat;
+#statsTotalsTitle {
+  color: #1F429B;
+  font-weight: bolder;
 }
 
 #statsDescriptions {
@@ -1222,10 +1216,21 @@ div .backLink a {
   width: 50em;
 }
 
-#results {
-  width: 50em;
+.statsContainer .tableTitle {
+  font-size: 130%;
+  margin-bottom: 0.25em;
+}
+
+.statsContainer {
+  width: 55em;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
+}
+
+.statsContainer table {
+  -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
 }
 
 .center {
@@ -1256,10 +1261,55 @@ fieldset {
   background-color: #FFE88C;
 }
 
+#statsTotalsTable {
+  width: 22em;
+  margin-left: auto;
+  margin-right: auto;
+
+  border: solid 2px #6984C7;
+  font-size: small;
+  padding: 5px 2px;
+}
+
+#statsTotalsTable tr td {
+  padding: 3px 5px;
+}
+
 #results .t1 {
   border: dotted 2px #6984C7;/*#FFCB05;*/
+  font-size: small;
+  padding: 5px 2px;
 }
 
 #results .t1 tr td {
-  padding: 3px 1px;
+  padding: 3px 5px;
+}
+
+table .t1 {
+  font-size: small;
+}
+
+div .backLink {
+  text-align: left;
+  float: left;
+  width: 100%;
+  margin: 0.5em 1em 0.5em 1em;
+}
+
+.backLink a {
+  padding-left: 20px;
+  background-image: url(/images/silk/arrow_left.png);
+  background-repeat: no-repeat;
+}
+
+.upLink a {
+  padding-left: 17px;
+  background-image: url(/images/silk/arrow_up.png);
+  background-repeat: no-repeat;
+}
+
+.downLink a {
+  padding-left: 17px;
+  background-image: url(/images/silk/arrow_down.png);
+  background-repeat: no-repeat;
 }

@@ -1,7 +1,10 @@
 
 <% if @staff %>
-  <p><a href="#totals">Go to Totals</a></p><br/>
   <% sp_conv_total = 0; sp_conv_std_total = 0; gos_pres_total = 0; gos_pres_std_total = 0; hs_pres_total = 0; submitted_total = 0 %>
+
+  <% if @staff.size > 1 %> <p><div class="downLink"><a href="#totals">Jump to Totals</a></div></p> <% end %>
+
+  <br/>
 
   <% @staff.each do |s| %>
     <% if s['staff_id'] > -1 %>
@@ -9,11 +12,8 @@
     <% end %>
     <% employee = Person.find_person(person_id) %>
     <% if !employee.nil? %>
-      <span class="bold">Staff Name:</span>
-      <span class="text"><%= "#{employee.first_name} #{employee.last_name}" %></span>
-      <br/>
-      <br/>
-      <table class="t1" style="font-size: 8pt;">
+      <div class="tableTitle"><%= "#{employee.first_name} #{employee.last_name}" %></div>
+      <table class="t1">
           <tr>
               <td class="t2">
               </td>
@@ -54,7 +54,7 @@
               <% @weeks.each do |week| %>
                 <td class="t5">
                   <center>
-                    <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv,@campusID) %>
+                    <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv,@campus_id) %>
                     <% total += stat %>
                   </center>
                 </td>
@@ -74,7 +74,7 @@
               <% @weeks.each do |week| %>
               <td class="t5">
                   <center>
-                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv_std,@campusID) %>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],sp_conv_std,@campus_id) %>
                       <% total += stat %>
                   </center>
               </td>
@@ -94,7 +94,7 @@
               <% @weeks.each do |week| %>
               <td class="t5">
                   <center>
-                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres,@campusID) %>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres,@campus_id) %>
                       <% total += stat %>
                   </center>
               </td>
@@ -114,7 +114,7 @@
               <% @weeks.each do |week| %>
               <td class="t5">
                   <center>
-                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres_std,@campusID) %>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],gos_pres_std,@campus_id) %>
                       <% total += stat %>
                   </center>
               </td>
@@ -134,7 +134,7 @@
               <% @weeks.each do |week| %>
               <td class="t5">
                   <center>
-                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],hs_pres,@campusID) %>
+                      <%= stat = Week.find_stats_staff(week.id,s['staff_id'],hs_pres,@campus_id) %>
                       <% total += stat %>
                   </center>
               </td>
@@ -154,7 +154,7 @@
               <% @weeks.each do |week| %>
               <td class="t5">
                   <center>
-                      <% if !WeeklyReport.check_submitted(week.id,s['staff_id'],@campusID).nil? %>
+                      <% if !WeeklyReport.check_submitted(week.id,s['staff_id'],@campus_id).nil? %>
                       x<% total += 1 %>
                       <% else %>
                       -<% end %>
@@ -176,11 +176,9 @@
 <% end %>
     
 <a name="totals">
-<span class="title1">Totals</span>
+<div id="statsTotalsTitle" class="tableTitle">Totals</div>
 </a>
-<br/>
-<br/>
-<table class="t1" style="font-size: 8pt;">
+<table id="statsTotalsTable">
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td class="t5">
             Spritual Conversations

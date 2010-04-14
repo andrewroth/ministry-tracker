@@ -19,16 +19,16 @@ class AddStatsPermissions < ActiveRecord::Migration
 #                      { :description => "View Summary by Month", :controller => "regional_team", :action => "summary_by_month" },
 #                      { :description => "View Summary by Campus", :controller => "regional_team", :action => "summary_by_campus" } ]
 
-  NEW_PERMISSIONS = [ { :description => "View Stats Tab", :controller => "stats", :action => "index" },
-                      { :description => "Submit Weekly Stats Numbers", :controller => "weekly_reports", :action => "new" },
-                      { :description => "View Semester at a Glance report", :controller => "stats", :action => "semester_at_a_glance" } ]
+  NEW_PERMISSIONS = [{ :description => "View Stats Tab", :controller => "stats", :action => "index" },
+                     { :description => "Submit Weekly Stats Numbers", :controller => "weekly_reports", :action => "new" },
+                     { :description => "View Semester at a Glance report", :controller => "stats", :action => "semester_at_a_glance" }]
 
-  NEW_MINISTRY_ROLE_PERMISSIONS = [ { :ministry_role_id => 1,  :controller => "stats", :action => "index" },
-                                    { :ministry_role_id => 13, :controller => "stats", :action => "index" },
-                                    { :ministry_role_id => 1,  :controller => "weekly_reports", :action => "new" },
-                                    { :ministry_role_id => 13, :controller => "weekly_reports", :action => "new" },
-                                    { :ministry_role_id => 1,  :controller => "stats", :action => "semester_at_a_glance" },
-                                    { :ministry_role_id => 13, :controller => "stats", :action => "semester_at_a_glance" }]
+  NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_id => 1,  :controller => "stats", :action => "index" },
+                                   { :ministry_role_id => 13, :controller => "stats", :action => "index" },
+                                   { :ministry_role_id => 1,  :controller => "weekly_reports", :action => "new" },
+                                   { :ministry_role_id => 13, :controller => "weekly_reports", :action => "new" },
+                                   { :ministry_role_id => 1,  :controller => "stats", :action => "semester_at_a_glance" },
+                                   { :ministry_role_id => 13, :controller => "stats", :action => "semester_at_a_glance" }]
 
   def self.up
     NEW_PERMISSIONS.each do |permission|

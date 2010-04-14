@@ -1,4 +1,4 @@
-<h1 id="statsTitle">Statistics</h1>
+<a name="top"><h1 id="statsTitle">Statistics</h1></a>
 <div class="backLink"><a href="/stats">Go back</a></div>
 
 <br/>
@@ -8,10 +8,11 @@
     <h2 class="statsFormBoxTitle">Semester at a glance</h2>
     <br/>
 
-    <% form_for :semester, :url => { :action => :semester_at_a_glance }, :html => { :name => 'reportForm' } do |form| %>
+    <% form_for :report, :url => { :action => :semester_at_a_glance }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()"} do |form| %>
+
       <p class="statsFormField">
         <%= form.label :ministry, "Ministry:" %>
-        <%= form.collection_select :ministry, @ministries, :id, :name %>
+        <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id.to_i %>
         <%= observe_field 'semester_ministry', :url => {:action => 'campuses_collection_select'},
                                                :with => 'ministry',
                                                :update => 'campusesSelect',
@@ -19,7 +20,7 @@
                                                :complete => "$('#semester_campus_id').show(); $('#spinnercampus').hide(); document.reportForm.commit.disabled=false" %>
       </p>
       <p class="statsFormField">
-        <%= form.label :campus, "Campus:" %>
+        <%= form.label :campus_id, "Campus:" %>
 
         <% javascript_tag do %>
           $(document).ready(function() {
@@ -27,7 +28,7 @@
             ministry_id = ministry_select.options[ministry_select.selectedIndex].value;
 
             <%= remote_function(:update => "campusesSelect",
-                                :with => "'ministry=' + ministry_id",
+                                :with => "'ministry=' + ministry_id + '&campus_id=' + #{@campus_id}",
                                 :url => url_for(:controller => "stats", :action => "campuses_collection_select"),
                                 :before => "document.reportForm.commit.disabled=true; $('#semester_campus_id').hide(); $('#spinnercampus').show()",
                                 :complete => "$('#semester_campus_id').show(); $('#spinnercampus').hide(); document.reportForm.commit.disabled=false") %>
@@ -45,6 +46,7 @@
       <p>
         <%= submit_tag "Show report" , :class => "submit", :disabled => true %>
       </p>
+      <%= spinner('submit') %>
     <% end %>
 
   </div>
@@ -52,12 +54,14 @@
 
 <br/>
 
-<div id="results" class="statsContainer" <% if @campus_id.nil? %> style="display: none"<% end %> >
-  <% if @campus_id.present? %>
-    <p><span class="statsTitle">Stats for <%= @campus_selected %> during <%= @semester_selected %></span></p>
+<div id="results" class="statsContainer" <% unless @staff.present? %> style="display: none"<% end %> >
+  <% if @staff.present? %>
+
+    <p><span class="statsTitle">Stats for <%= @campus_id %> during <%= @semester_selected %></span></p>
     <%= render :partial => "semester_at_a_glance_total" %>
     <br/>
-    <div class="backLink"><a href="/stats">Go back</a></div>
+    <% if @staff.size > 1 %> <p><div class="upLink"><a href="#top">Jump to Top</a></div></p> <% end %>
+
   <% end %>
 </div>
 

@@ -1,0 +1,50 @@
+<a name="top"><h1 id="statsTitle">Statistics</h1></a>
+<div class="backLink"><a href="/stats">Go back</a></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Summary by Campus</h2>
+    <br/>
+
+    <div class="statsForm">
+      <% form_for :report, :url => { :action => :summary_by_campus }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
+
+        <p class="statsFormField">
+          <%= form.label :ministry, "Ministry:" %>
+          <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id.to_i %>
+        </p>
+
+        <p class="statsFormField">
+          <%= form.label :semester, "Semester:" %>
+          <%= form.select :semester, @semesters, :selected => @semester_selected %>
+        </p>
+
+        <p>
+          <%= submit_tag "Show report" , :class => "submit" %>
+        </p>
+        <%= spinner('submit') %>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<br/>
+<div id="results" class="statsContainer" <% unless @campuses.present? %> style="display: none"<% end %> >
+  <% if @campuses.present? %>
+    <p>
+      <span class="statsTitle">Stats for <%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @semester_selected) %></span>
+    </p>
+    <p>
+      <%= render :partial => "summary_by_campus_total" %>
+      <br/>
+    </p>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 <select name="<%=@form_name%>[<%=@select_value%>]" id="<%=@form_name%>_<%=@select_value%>">
   <% @options.each do |option| %>
-    <option value="<%= option[:key] %>"><%= option[:value] %></option>
+    <option <% if option[:key].to_s == @selected_key.to_s then %>selected="selected"<% end %> value="<%= option[:key] %>"><%= option[:value] %></option>
   <% end %>
 </select>
