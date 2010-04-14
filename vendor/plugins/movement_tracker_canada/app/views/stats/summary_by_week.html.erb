@@ -40,7 +40,7 @@
 <div id="results" class="statsContainer" <% unless @ministry_selected.present? %> style="display: none"<% end %> >
   <% if @ministry_selected.present? %>
     <p>
-      <span class="statsTitle"><%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @semester_selected) %></span>
+      <span class="statsTitle"><%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @month_selected) %></span>
     </p>
     <p>
       <%= render :partial => "summary_by_week_total" %>
