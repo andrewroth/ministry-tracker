@@ -5,11 +5,11 @@
 
 <div class="statsFormContainer">
   <div class="statsFormBox">
-    <h2 class="statsFormBoxTitle">Summary by Campus</h2>
+    <h2 class="statsFormBoxTitle">Summary by Month</h2>
     <br/>
 
     <div class="statsForm">
-      <% form_for :report, :url => { :action => :summary_by_campus }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
+      <% form_for :report, :url => { :action => :summary_by_month }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
 
         <p class="statsFormField">
           <%= form.label :ministry, "Ministry:" %>
@@ -37,13 +37,13 @@
 
 
 <br/>
-<div id="results" class="statsContainer" <% unless @campuses.present? %> style="display: none"<% end %> >
-  <% if @campuses.present? %>
+<div id="results" class="statsContainer" <% unless @ministry_selected.present? %> style="display: none"<% end %> >
+  <% if @ministry_selected.present? %>
     <p>
       <span class="statsTitle"><%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @semester_selected) %></span>
     </p>
     <p>
-      <%= render :partial => "summary_by_campus_total" %>
+      <%= render :partial => "summary_by_month_total" %>
       <br/>
     </p>
   <% end %>

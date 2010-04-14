@@ -107,6 +107,35 @@ class StatsController < ApplicationController
   end
 
 
+  def summary_by_month
+    
+    # find the current month
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+
+    if params[:report].nil?
+      @semester_id = Month.find_semester_id(@cur_month)
+      @semester_selected = Semester.find_semester_description(@semester_id)
+    else
+      @ministry_id = params[:report]['ministry']
+      @ministry_selected = Ministry.find(@ministry_id)
+      
+      @semester_selected = params[:report]['semester']
+      @semester_id = Semester.find_semester_id(@semester_selected)
+    end
+
+    # Initialize Variables Used by View
+
+    @months = Month.find_months_by_semester(@semester_id)
+
+    # the code below ensures that semesters that haven't occurred yet aren't listed
+    cur_id = Month.find_semester_id(@cur_month)
+    @semesters = Semester.find_semesters(cur_id)
+
+  end
+
+
   private
 
   def my_ministries_for_stats
