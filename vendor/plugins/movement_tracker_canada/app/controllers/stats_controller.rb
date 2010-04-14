@@ -115,6 +115,8 @@ class StatsController < ApplicationController
     @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
 
     if params[:report].nil?
+      @ministry_id = get_ministry.id
+
       @semester_id = Month.find_semester_id(@cur_month)
       @semester_selected = Semester.find_semester_description(@semester_id)
     else
@@ -132,6 +134,36 @@ class StatsController < ApplicationController
     # the code below ensures that semesters that haven't occurred yet aren't listed
     cur_id = Month.find_semester_id(@cur_month)
     @semesters = Semester.find_semesters(cur_id)
+
+  end
+
+
+  def summary_by_week
+
+    # find the current month
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+
+    if params[:report].nil?
+      @ministry_id = get_ministry.id
+
+      @month_selected = @cur_month
+    else
+      @ministry_id = params[:report]['ministry']
+      @ministry_selected = Ministry.find(@ministry_id)
+      
+      @month_selected = params[:report]['month']
+    end
+
+    # Initialize Variables Used by View
+
+    @month_id = Month.find_month_id(@month_selected)
+    @weeks = Week.find_weeks_in_month(@month_id)
+
+    # the code below ensures that months that haven't occurred yet aren't listed
+    cur_id = Month.find_month_id(@cur_month)
+    @months = Month.find_months(cur_id)
 
   end
 

@@ -1,0 +1,50 @@
+<a name="top"><h1 id="statsTitle">Statistics</h1></a>
+<div class="backLink"><a href="/stats">Go back</a></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Summary by Week</h2>
+    <br/>
+
+    <div class="statsForm">
+      <% form_for :report, :url => { :action => :summary_by_week }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
+
+        <p class="statsFormField">
+          <%= form.label :ministry, "Ministry:" %>
+          <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id.to_i %>
+        </p>
+
+        <p class="statsFormField">
+          <%= form.label :month, "Month:" %>
+          <%= form.select :month, @months, :selected => @month_selected %>
+        </p>
+
+        <p>
+          <%= submit_tag "Show report" , :class => "submit" %>
+        </p>
+        <%= spinner('submit') %>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<br/>
+<div id="results" class="statsContainer" <% unless @ministry_selected.present? %> style="display: none"<% end %> >
+  <% if @ministry_selected.present? %>
+    <p>
+      <span class="statsTitle"><%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @semester_selected) %></span>
+    </p>
+    <p>
+      <%= render :partial => "summary_by_week_total" %>
+      <br/>
+    </p>
+  <% end %>
+</div>
