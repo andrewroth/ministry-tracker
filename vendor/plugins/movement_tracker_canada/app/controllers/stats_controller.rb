@@ -3,6 +3,12 @@ class StatsController < ApplicationController
 
   skip_before_filter :authorization_filter, :only => [:campuses_collection_select]
 
+
+  NO_CAMPUSES_UNDER_MINISTRY = -1
+  ALL_CAMPUSES_UNDER_MINISTRY = 0
+
+
+
   def index
     
 #    @national_access = authorized?(:how_people_prayed_to_receive_christ, :national_team) ? true : false
@@ -18,13 +24,13 @@ class StatsController < ApplicationController
     campuses = ministry.unique_campuses.sort { |x, y| x.campus_desc <=> y.campus_desc }
 
     if campuses.size > 0
-      @options = campuses.size > 1 ? [{:key => "0", :value => "Report all campuses under #{ministry.name}"}] : []
+      @options = campuses.size > 1 ? [{:key => ALL_CAMPUSES_UNDER_MINISTRY, :value => "Report all campuses under #{ministry.name}"}] : []
 
       campuses.each do |campus|
         @options << { :key => campus.id, :value => campus.campus_desc }
       end
     else
-      @options = [{:key => "-1", :value => "There are no campuses under #{ministry.name}"}]
+      @options = [{:key => NO_CAMPUSES_UNDER_MINISTRY, :value => "There are no campuses under #{ministry.name}"}]
     end
 
     @form_name = 'report'
@@ -45,7 +51,7 @@ class StatsController < ApplicationController
 
       @ministry_id = get_ministry.id
       @semester_id = Month.find_semester_id(cur_month)
-      @campus_id = "0"
+      @campus_id = ALL_CAMPUSES_UNDER_MINISTRY
 
     else # set the appropriate variables to the parameters
 
@@ -54,10 +60,10 @@ class StatsController < ApplicationController
 
       @campus_id = params[:report]['campus_id']
       case @campus_id.to_i
-      when 0
+      when ALL_CAMPUSES_UNDER_MINISTRY
         @campus_selected_description = "All campuses under #{@ministry_selected.name}"
         @campuses_selected = @ministry_selected.unique_campuses
-      when -1
+      when NO_CAMPUSES_UNDER_MINISTRY
         @campus_selected = nil
         @campuses_selected = nil
       else
@@ -231,6 +237,49 @@ class StatsController < ApplicationController
     # Initialize Variables Used by View
 
     @years = Year.find_years(current_year_id)
+  end
+
+
+  def year_summary
+
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    current_year_id = Month.find_year_id(cur_month)
+
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+    
+    if params[:report].nil?
+
+      @ministry_id = get_ministry.id
+      @campus_id = ALL_CAMPUSES_UNDER_MINISTRY
+      @year_id = current_year_id
+      @year_selected = Year.find_year_description(@year_id)
+
+    else
+
+      @ministry_id = params[:report]['ministry']
+      @ministry_selected = Ministry.find(@ministry_id)
+
+      @campus_id = params[:report]['campus_id']
+      case @campus_id.to_i
+      when ALL_CAMPUSES_UNDER_MINISTRY
+        @campus_selected_description = "All campuses under #{@ministry_selected.name}"
+        @campuses_selected = @ministry_selected.unique_campuses
+      when NO_CAMPUSES_UNDER_MINISTRY
+        @campus_selected = nil
+        @campuses_selected = nil
+      else
+        @campus_selected_description = Campus.find(@campus_id).campus_desc
+        @campuses_selected = [Campus.find(@campus_id)]
+      end
+
+      @year_selected = params[:report]['year']
+      @year_id = Year.find_year_id(@year_selected)
+    end
+
+    # Initialize Variables Used by View
+
+    @years = Year.find_years(current_year_id)
+    @campuses = Campus.find_campuses()
   end
 
 

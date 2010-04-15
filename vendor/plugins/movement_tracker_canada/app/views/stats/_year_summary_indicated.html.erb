@@ -1,0 +1,42 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <% semesters = Semester.find_semesters_by_year(@year_id) %>
+
+        <% semesters.each do |semester| %>
+          <td>
+            <center>
+                <span class="bold"><a><%= semester.description %></a></span>
+            </center>
+          </td>
+        <% end %>
+        
+        <td>
+            <center>
+                <span class="bold">Total</span>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Indicated Decisions
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+            <center>
+                <%= stat = Prc.count_by_semester_and_ministry(semester.id, @ministry_id) %>
+            </center>
+          </td>
+          <% total += stat %>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+</table>

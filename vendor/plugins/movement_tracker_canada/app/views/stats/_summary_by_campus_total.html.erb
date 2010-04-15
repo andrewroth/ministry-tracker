@@ -15,21 +15,21 @@
             </center>
         </td>
     </tr>
-    <%#*<tr>%>
-        <%#*<td class="t4">%>
-            <%#*Campus Summary%>
-        <%#*</td>%>
-        <%# @campuses.each do |campus| %>
-        <%# campus_id = campus.id %>
-        <%#*<td class="t4">%>
-            <%#*<center>%>
-                <%#=link_to "View", :controller => "all_staff", :action => "year_summary", :year => {'year' => @year_selected, 'campus' => Campus.find_campus_description(campus_id) } %>
-            <%#*</center>%>
-        <%#*</td>%>
-        <%# end %>
-        <%#*<td class="t4">%>
-        <%#*</td>%>
-    <%#*</tr>%>
+    <tr>
+        <td class="t4">
+            Campus Summary
+        </td>
+        <% @campuses.each do |campus| %>
+        <% campus_id = campus.id %>
+        <td class="t4">
+            <center>
+                <%=link_to "View", :controller => "stats", :action => "year_summary", :report => { 'ministry' => @ministry_id, 'year' => @year_selected, 'campus_id' => campus_id } %>
+            </center>
+        </td>
+        <% end %>
+        <td class="t4">
+        </td>
+    </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td class="t4">
             Spiritual Conversations by Staff
