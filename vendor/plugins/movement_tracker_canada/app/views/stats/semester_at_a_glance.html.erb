@@ -56,16 +56,30 @@
 <div id="results" class="statsContainer" <% unless @staff_hash.present? %> style="display: none"<% end %> >
   <% if @staff_hash.present? %>
 
+    <% if @campuses_selected.size > 1 %>
+
+      <div id="statsCampusJumpLinks">
+        <br/>
+        <p>Jump to a specific campus' stats:</p>
+        <% @campuses_selected.each do |campus| %>
+          <p><a href="#resultsFor<%=  campus.campus_desc %>"><%=  campus.campus_desc %></a></p>
+        <% end %>
+      </div>
+      
+    <% end %>
+
     <% @campuses_selected.each do |campus| %>
 
       <% @staff = @staff_hash[campus.id] %>
       <% @campus_id = campus.id %>
       <% @campus_desc = campus.campus_desc %>
 
+      <a name="resultsFor<%=@campus_desc%>"></a>
       <div class="campusSemesterStats">
-      <p><span class="statsTitle"><%= @campus_desc %> during <%= @semester_selected %></span></p>
-      <%= render :partial => "semester_at_a_glance_total" %>
+        <p><span class="statsTitle"><%= @campus_desc %> during <%= @semester_selected %></span></p>
+        <%= render :partial => "semester_at_a_glance_total" %>
       </div>
+      
 
     <% end %>
 

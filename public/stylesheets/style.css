@@ -1156,6 +1156,10 @@ div.choose_ministry_tree {
   -webkit-border-radius: 7px 7px 7px 7px;
 }
 
+.statsFormBoxTitle {
+  font-size: 160%;
+}
+
 .statsFormBox label {
   line-height: 1em;
   text-align: right;
@@ -1227,7 +1231,7 @@ div.choose_ministry_tree {
 }
 
 .statsContainer .tableTitle {
-  font-size: 120%;
+  font-size: 125%;
   margin-bottom: 0.25em;
 }
 
@@ -1252,7 +1256,7 @@ fieldset {
 
 .statsTitle {
   color: #1F429B;
-  font-size: 140%;
+  font-size: 160%;
   font-weight: bold;
 }
 
