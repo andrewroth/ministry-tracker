@@ -16,6 +16,8 @@
             <span class="title1">Percent Completed Follow-up</span>
         </td>
     </tr>
+    <% methodTotal = 0 %>
+    <% completedTotal = 0 %>
     <% @methods.each_with_index do |method, i| %>
         <% if i != 0 && !(Prcmethod.find_by_prcMethod_id i).nil? %>
             <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -25,6 +27,7 @@
                 <td>
                     <center>
                         <%= method %>
+                        <% methodTotal += method %>
                     </center>
                 </td>
                 <td>
@@ -39,6 +42,7 @@
                 <td>
                     <center>
                         <%= @completed[i] %>
+                        <% completedTotal += @completed[i] %>
                     </center>
                 </td>
                 <td>
@@ -53,4 +57,22 @@
             </tr>
         <% end %>
     <% end %>
+    <tr>
+      <td>
+        <br/>
+        Totals:
+      </td>
+      <td>
+        <br/>
+        <%= methodTotal %>
+      </td>
+      <td>
+      </td>
+      <td>
+        <br/>
+        <%= completedTotal %>
+      </td>
+      <td>
+      </td>
+    </tr>
 </table>

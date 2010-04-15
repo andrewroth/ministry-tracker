@@ -27,7 +27,7 @@ class StatsController < ApplicationController
       @options = [{:key => "-1", :value => "There are no campuses under #{ministry.name}"}]
     end
 
-    @form_name = 'semester'
+    @form_name = 'report'
     @select_value = 'campus_id'
     @selected_key = params[:campus_id]
 
@@ -50,16 +50,33 @@ class StatsController < ApplicationController
     else # set the appropriate variables to the parameters
 
       @ministry_id = params[:report]['ministry']
+      @ministry_selected = Ministry.find(@ministry_id)
+
       @campus_id = params[:report]['campus_id']
+      case @campus_id.to_i
+      when 0
+        @campus_selected_description = "All campuses under #{@ministry_selected.name}"
+        @campuses_selected = @ministry_selected.unique_campuses
+      when -1
+        @campus_selected = nil
+        @campuses_selected = nil
+      else
+        @campus_selected_description = Campus.find(@campus_id).campus_desc
+        @campuses_selected = [Campus.find(@campus_id)]
+      end
+
       @semester_id = Semester.find_semester_id(params[:report]['semester'])
 
       @staff_id = authorized?(:index, :stats) ? nil : @me.cim_hrdb_staff.id
-      @staff = WeeklyReport.find_staff(@semester_id, @campus_id, @staff_id)
+      @staff_hash = {}
+      @campuses_selected.each do |campus|
+        @staff_hash.merge!( { campus.id => WeeklyReport.find_staff(@semester_id, campus.id, @staff_id) } )
+      end
 
       @weeks = Week.find_weeks_in_semester(@semester_id)
       @months = Month.find_months_by_semester(@semester_id)
 
-      flash[:notice] = @staff.size == 0 ? "Sorry, no stats were found for your selection!" : nil
+      flash[:notice] = @staff_hash.size == 0 ? "Sorry, no stats were found for your selection!" : nil
     end
 
 

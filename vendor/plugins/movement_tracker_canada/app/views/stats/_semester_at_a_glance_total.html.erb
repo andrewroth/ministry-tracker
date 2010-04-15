@@ -1,8 +1,8 @@
 
-<% if @staff %>
+<% if @staff.present? %>
   <% sp_conv_total = 0; sp_conv_std_total = 0; gos_pres_total = 0; gos_pres_std_total = 0; hs_pres_total = 0; submitted_total = 0 %>
 
-  <% if @staff.size > 1 %> <p><div class="downLink"><a href="#totals">Jump to Totals</a></div></p> <% end %>
+  <% if @staff.size > 1 %> <p><div class="downLink"><a href="#totals<%=@campus_desc%>">Jump to Totals</a></div></p><br/> <% end %>
 
   <br/>
 
@@ -12,7 +12,7 @@
     <% end %>
     <% employee = Person.find_person(person_id) %>
     <% if !employee.nil? %>
-      <div class="tableTitle"><%= "#{employee.first_name} #{employee.last_name}" %></div>
+      <div class="tableTitle"><%= "#{employee.first_name.capitalize} #{employee.last_name.capitalize}" %></div>
       <table class="t1">
           <tr>
               <td class="t2">
@@ -170,61 +170,67 @@
           </tr>
       </table>
       <br/>
-      <br/>
     <% end %>
   <% end %>
-<% end %>
+
+
+  <a name="totals<%=@campus_desc%>">
+  <br/>
+  <div id="statsTotalsTitle" class="tableTitle">Totals for <%= @campus_desc %> during <%= @semester_selected %></div>
+  </a>
+  <table id="statsTotalsTable">
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Spritual Conversations
+          </td>
+          <td class="t5">
+              <%= sp_conv_total %>
+          </td>
+      </tr>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Spritual Conversations by Disciples
+          </td>
+          <td class="t5">
+              <%= sp_conv_std_total %>
+          </td>
+      </tr>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Gospel Presentations
+          </td>
+          <td class="t5">
+              <%= gos_pres_total %>
+          </td>
+      </tr>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Gospel Presentations by Disciples
+          </td>
+          <td class="t5">
+              <%= gos_pres_std_total %>
+          </td>
+      </tr>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Holy Spirit Presentations
+          </td class="t5">
+          <td class="t5">
+              <%= hs_pres_total %>
+          </td>
+      </tr>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+          <td class="t5">
+              Submitted
+          </td>
+          <td class="t5">
+              <%= submitted_total %>
+          </td>
+      </tr>
+  </table>
+
+<% else %>
+
+  <p>Sorry, no stats for this campus and semester were found.</p>
     
-<a name="totals">
-<div id="statsTotalsTitle" class="tableTitle">Totals</div>
-</a>
-<table id="statsTotalsTable">
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Spritual Conversations
-        </td>
-        <td class="t5">
-            <%= sp_conv_total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Spritual Conversations by Disciples
-        </td>
-        <td class="t5">
-            <%= sp_conv_std_total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Gospel Presentations
-        </td>
-        <td class="t5">
-            <%= gos_pres_total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Gospel Presentations by Disciples
-        </td>
-        <td class="t5">
-            <%= gos_pres_std_total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Holy Spirit Presentations
-        </td class="t5">
-        <td class="t5">
-            <%= hs_pres_total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="t5">
-            Submitted
-        </td>
-        <td class="t5">
-            <%= submitted_total %>
-        </td>
-    </tr>
-</table>
+<% end %>
