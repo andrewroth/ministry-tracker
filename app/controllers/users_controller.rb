@@ -90,7 +90,7 @@ class UsersController < ApplicationController
   end
   
   def prompt_for_email
-    unless facebook_session
+    unless !Cmt::CONFIG[:facebook_connectivity_enabled] || facebook_session
       redirect_to '/' and return
     end
   end

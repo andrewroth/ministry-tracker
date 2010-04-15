@@ -11,7 +11,106 @@ class PeopleControllerTest < ActionController::TestCase
     setup_ministry_roles
     login
   end
-  
+
+  def test_update
+    xhr :get, :update,
+        :id => 50000,
+        :user => { :guid => "test" },
+        :person => { :middle_name => "new middle name" },
+        :primary_campus_involvement => { :start_date => '2010-03-31' }
+
+    assert_equal("test", ::User.all(:conditions => {:id => 1}).first.guid)
+    assert_equal("new middle name", ::Person.all(:conditions => {:id => 50000}).first.middle_name)
+    assert_equal("03/31/2010", ::CampusInvolvement.all(:conditions => {:id => 1003}).first.start_date.to_s)
+  end
+
+  def test_set_current_address_states
+    xhr :get, :set_current_address_states, :current_address_country => 'US'
+    assert_not_nil(assigns["current_address_states"])
+    assert_equal(51, assigns["current_address_states"].size)
+  end
+
+  def test_set_permanent_address_states
+    xhr :get, :set_permanent_address_states, :perm_address_country => 'US'
+    assert_not_nil(assigns["permanent_address_states"])
+    assert_equal(51, assigns["permanent_address_states"].size)
+  end
+
+  def test_get_campus_states
+    setup_campuses
+    xhr :get, :get_campus_states, :primary_campus_country => 'US'
+    assert_not_nil(assigns["campus_states"])
+    assert_equal(51, assigns["campus_states"].size)
+  end
+
+  def test_me
+    xhr :get, :me
+    assert_not_nil(assigns["person"])
+    assert_equal(50000, assigns["person"].id)
+  end
+
+  def test_get_campuses_for_state
+    setup_campuses
+
+    xhr :get, :get_campuses_for_state, :primary_campus_state => 'CA', :primary_campus_country => 'US'
+
+    assigns["campuses"].each do |campus|
+      assert_equal("CA", campus.state)
+      assert_equal("USA", campus.country)
+    end
+  end
+
+  def test_set_initial_campus
+    Factory(:ministry_1)
+    Factory(:campus_1)
+    xhr :put, :set_initial_campus, :primary_campus_involvement => { :campus_id => 1 }
+    assert_not_nil(assigns["campus_involvement"])
+    assert_equal(50000, assigns["campus_involvement"].person_id)
+    assert_equal(1, assigns["campus_involvement"].campus_id)
+
+    MinistryCampus.all.each {|mc| mc.destroy}
+    xhr :put, :set_initial_campus, :primary_campus_involvement => { :campus_id => 1 }
+    assert_not_nil(assigns["campus_involvement"])
+    assert_equal(50000, assigns["campus_involvement"].person_id)
+    assert_equal(1, assigns["campus_involvement"].campus_id)
+  end
+
+  def test_directory
+    Factory(:search_1)
+    get :directory, :search_id => 1
+
+    assert_response :success
+    assert_equal("50000", assigns["people"][0]["person_id"])
+    assert_equal(1, assigns["people"].size)
+
+    Factory(:address_1)
+    get :directory, :school_year => ["1"], :gender => ["1"], :first_name => "Josh", :last_name => "Starcher", :email => "josh.starcher@uscm.org"
+    assert_response :success
+    assert_equal("50000", assigns["people"][0]["person_id"])
+  end
+
+  def test_directory_too_many_search_results
+    setup_n_people(2000)
+    setup_n_ministry_involvements(2000)
+    get :directory
+    assert_response :success
+    assert_not_nil(assigns["people"])
+  end
+
+  def test_directory_ministry_and_campus
+    setup_people
+    setup_ministry_involvements
+    setup_campus_involvements
+
+    get :directory, :ministry => [1]
+    assert_not_nil(assigns["people"])
+    assert_equal(2, assigns["people"].size)
+
+    get :directory, :campus => [1]
+    assert_not_nil(assigns["people"])
+    assert_equal(3, assigns["people"].size)
+  end
+
   test "full directory" do
     get :directory
     assert_response :success
@@ -88,6 +187,18 @@ class PeopleControllerTest < ActionController::TestCase
     post :directory, :first => 'Z', :finish => ''
     assert_response :success
     assert assigns(:people)
+  end
+
+  test "search filter ids" do
+    setup_n_people(5)
+    setup_n_ministry_involvements(5)
+
+    xhr :post, :search, :search => 'A', :filter_ids => [1,2,3], :context => 'group_involvements'
+    
+    assert_response :success
+    assert_not_nil(assigns["people"])
+    assert_equal(4, assigns["people"][0].id)
+    assert_equal(5, assigns["people"][1].id)
   end
   
   test "search full name" do
@@ -233,6 +344,7 @@ class PeopleControllerTest < ActionController::TestCase
 
   test "should_show_possible_responsible_people" do
     if Cmt::CONFIG[:rp_system_enabled]
+      Factory(:person_3)
       get :edit, :id => 2000
       assert_response :success
       assert_not_nil assigns(:possible_responsible_people)

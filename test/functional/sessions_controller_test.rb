@@ -21,8 +21,13 @@ class SessionsControllerTest < ActionController::TestCase
   test 'log in with local user' do
     setup_default_user
     post :create, :username => 'josh.starcher@example.com', :password => 'test', :remember_me => 1, :format => 'html'
-    assert_response :redirect
-    assert_redirected_to '/'
+    if !Cmt::CONFIG[:local_direct_logins] && !Cmt::CONFIG[:local_direct_logins] && !Cmt::CONFIG[:gcx_direct_logins]
+      assert_response :success, @response.body
+      assert_template 'new'
+    else
+      assert_response :redirect
+      assert_redirected_to '/'
+    end
   end
   
   test 'log in with bad username' do

@@ -17,7 +17,7 @@
       width: 400,
       height: 200,
 
-      root: <%= Ministry.first.to_hash_with_children.to_json %>
+      root: <%= get_ministry.root.to_hash_with_children.to_json %>
     });
 
     // render the tree

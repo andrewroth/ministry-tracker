@@ -39,3 +39,11 @@ Factory.define :groupinvolvement_6, :class => GroupInvolvement, :singleton => tr
   g.group_id '3'
   g.level 'leader'
 end
+
+Factory.define :groupinvolvement_7, :class => GroupInvolvement do |g|
+  g.id '7'
+  g.person_id '50000'
+  g.group_id '2'
+  g.level 'member'
+  g.requested '1'
+end
