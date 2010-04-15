@@ -269,17 +269,20 @@ class GroupsController < ApplicationController
 
   def setup_campuses_filter
     if is_staff_somewhere
-      @campuses = get_ministry.campuses
+      @campuses = get_ministry.unique_ministry_campuses(false).collect(&:campus).uniq
     else
       get_person_campuses
       @campuses = @person_campuses
     end
 
-    requested_campus = Campus.find(:first, :conditions => { 
+    if params[:campus_id].present?
+      requested_campus = Campus.find(:first, :conditions => { 
         Campus._(:id) => (params[:campus_id] || session[:group_campus_filter_id])
       }) || @campuses.first
-    @campus = @campuses.detect{ |c| c == requested_campus }
-    session[:group_campus_filter_id] = @campus.try(:id)
+
+      @campus = @campuses.detect{ |c| c == requested_campus }
+      session[:group_campus_filter_id] = @campus.try(:id)
+    end
 
     @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + @campuses.collect{ |c| [ c.name, c.id ] }
   end
@@ -290,7 +293,9 @@ class GroupsController < ApplicationController
       conditions += " OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     end
     if is_staff_somewhere
-      @groups = get_ministry.groups.find(:all, :conditions => conditions)
+      ministry_ids = get_ministry.descendants.collect(&:id) << get_ministry.id
+      conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
+      @groups = Group.find(:all, :conditions => conditions)
     else
       @groups = Group.find(:all, :conditions => conditions)
     end
