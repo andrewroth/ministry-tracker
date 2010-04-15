@@ -293,7 +293,8 @@ class GroupsController < ApplicationController
       conditions += " OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     end
     if is_staff_somewhere
-      conditions += " AND ministry_id in (#{get_ministry.descendants.collect(&:id).join(",")})"
+      ministry_ids = get_ministry.descendants.collect(&:id) << get_ministry.id
+      conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
       @groups = Group.find(:all, :conditions => conditions)
     else
       @groups = Group.find(:all, :conditions => conditions)
