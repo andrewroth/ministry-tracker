@@ -27,7 +27,7 @@
         <% semesters.each do |semester| %>
           <td>
             <center>
-                <%= stat = Prc.count_by_semester_and_ministry(semester.id, @ministry_id) %>
+                <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
             </center>
           </td>
           <% total += stat %>
