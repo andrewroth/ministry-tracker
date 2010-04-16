@@ -19,6 +19,16 @@ class StatsController < ApplicationController
   end
 
 
+  def indicated_decisions
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    cur_id = Month.find_semester_id(@cur_month)
+    @semesters = Semester.find_semesters(cur_id)
+    @semester_id = Month.find_semester_id(@cur_month)
+    @semester_selected = Semester.find_semester_description(@semester_id)
+    @campuses = Campus.find_campuses()
+  end
+
+
   def campuses_collection_select
     ministry = Ministry.find(params[:ministry])
     campuses = ministry.unique_campuses.sort { |x, y| x.campus_desc <=> y.campus_desc }

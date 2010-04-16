@@ -1139,7 +1139,6 @@ div.choose_ministry_tree {
 .campusSemesterStats {
   margin: 3em 0 3em 0;
   padding: 3em 3em 3em 3em;
-  border: 1px solid #F7F7F7;
   text-align: center;
   background-color: #F7F7F7;
   -moz-border-radius: 17px 17px 17px 17px;
@@ -1149,7 +1148,7 @@ div.choose_ministry_tree {
 .statsFormBox {
   margin: 1em 1em 1em 1em;
   padding: 0.7em 0.7em 0.7em 0.7em;
-  border: 1px solid #CCCCCC;
+  border: 2px solid #CCCCCC;
   text-align: center;
   background-color: #FCFCFC;
   -moz-border-radius: 7px 7px 7px 7px;
@@ -1183,7 +1182,8 @@ div.choose_ministry_tree {
 }
 
 .statsFormBox:hover {
-  border: 1px solid #1F429B;
+  border: solid 2px #6984C7;
+  /*border: 1px solid #1F429B;*/
 }
 
 .statsListLink {

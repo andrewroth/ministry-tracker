@@ -49,8 +49,6 @@ class WeeklyReportsController < ApplicationController
   # POST /weekly_reports.xml
   def create
 
-#    make sure the report is for my staff id and that I have a min inv at this campus with a role that allows me to submit stats, do this in before filter?
-
     staff_id = @person.cim_hrdb_staff.id
     @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => params[:weekly_report][:week_id], :staff_id => staff_id, :campus_id => params[:weekly_report][:campus_id] })
 

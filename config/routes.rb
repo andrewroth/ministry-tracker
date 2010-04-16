@@ -2,6 +2,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :weekly_reports
 
+  map.resources :prcs
+
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },
               :controller => "cim_hrdb_people",

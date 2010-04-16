@@ -1,0 +1,33 @@
+<!-- Title - Start-->
+<p>
+    <span class="heading">Indicated Decisions</span>
+</p>
+<!-- Title - End -->
+
+<!-- Form - Start -->
+<div class="form1">
+    <p>
+        <% form_for :decisions, :url => { :action => :decisions } do |form| %>
+        Select the semester and campus you want to see indicated decisions for.
+        <br/>
+        <br/>
+        <p>
+            <%= form.label :semester, "Semester:" %>
+            <%= form.select :semester, @semesters, :selected => @semester_selected %>
+        </p>
+        <p>
+            <%= form.label :campus, "Campus:" %>
+            <%= form.select :campus, @campuses, :selected => :first %>
+        </p>
+        <p>
+            <%= submit_tag "Continue" , :class => "submit" %>
+        </p>
+        <br/>
+        <% end %>
+    </p>
+</div>
+<!-- Form - End -->
+
+<p>
+    <span class="text"><a href="/stats">Go Back</a></span>
+</p>

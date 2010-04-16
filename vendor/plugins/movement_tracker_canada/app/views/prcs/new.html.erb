@@ -1,0 +1,57 @@
+<h1 id="statsTitle">Statistics</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div id="newWeeklyReportFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Submit indicated decision</h2>
+    <br/>
+
+    <% form_for(@prc) do |form| %>
+      <%= form.error_messages %>
+      <p class="statsFormField">
+        <%= form.label :campus_id, "Campus:" %>
+        <%= form.collection_select :campus_id, @campuses, :campus_id, :campus_desc %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :semester_id, "Semester:" %>
+        <%= form.select :semester_id, @semesters %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :first_name, "Person who indicated decision:" %>
+        <%= form.text_field :first_name %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :witness_name, "Person who shared the gospel:" %>
+        <%= form.text_field :witness_name %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :date, "Date:" %>
+        <%= form.date_select :date %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :notes, "Notes:" %>
+        <%= form.text_area :notes %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :method_id, "Method:" %>
+        <%= form.select :method_id, @methods, :prompt => "Method" %>
+      </p>
+      <p class="statsFormField">
+        <%= form.label :integrated_believer, "Integrated believer:" %>
+        <%= form.check_box :integrated_believer %>
+      </p>
+      <p>
+        <br/>
+        <div class="center"><%= form.submit "Submit" %></div>
+      </p>
+    <% end %>
+      
+    <br/>
+  </div>
+</div>
+
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
