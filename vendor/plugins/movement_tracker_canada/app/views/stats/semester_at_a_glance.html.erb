@@ -61,8 +61,8 @@
       <div id="statsCampusJumpLinks">
         <br/>
         <p>Jump to a specific campus' stats:</p>
-        <% @campuses_selected.each do |campus| %>
-          <p><a href="#resultsFor<%=  campus.campus_desc %>"><%=  campus.campus_desc %></a></p>
+        <% @campuses_selected.each_with_index do |campus, i| %>
+          <a href="#resultsFor<%=  campus.campus_desc %>"><%=  campus.campus_desc %></a><%="," unless i == @campuses_selected.size-1 %>
         <% end %>
       </div>
       
