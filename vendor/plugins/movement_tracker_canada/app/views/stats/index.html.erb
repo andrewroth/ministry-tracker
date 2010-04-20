@@ -2,6 +2,18 @@
 
 <h1 id="statsTitle">Statistics</h1>
 
+
+
+
+
+
+
+
+
+
+
+
+
 <br/>
 
 <div class="statsFormContainer">
@@ -77,3 +89,23 @@
   <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;">WEEK RESULTS</div>
 
 </div>
+
+
+
+
+
+
+
+
+
+<div id="statsLinkBox" class="statsFormBox">
+  <h2 class="statsLinkBoxTitle">Team Member Reports</h2>
+  <ul class="statsLinkList">
+    <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
+    <li class="statsListLink"><%= link_to "Summary by campus", url_for(:controller => :stats, :action => :summary_by_campus) %></li>
+    <li class="statsListLink"><%= link_to "Summary by month", url_for(:controller => :stats, :action => :summary_by_month) %></li>
+    <li class="statsListLink"><%= link_to "Summary by week", url_for(:controller => :stats, :action => :summary_by_week) %></li>
+    <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
+    <li class="statsListLink"><%= link_to "Year summary", url_for(:controller => :stats, :action => :year_summary) %></li>
+  </ul>
+</div
