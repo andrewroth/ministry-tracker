@@ -1183,7 +1183,6 @@ div.choose_ministry_tree {
 
 .statsFormBox:hover {
   border: solid 2px #6984C7;
-  /*border: 1px solid #1F429B;*/
 }
 
 .statsListLink {
@@ -1238,6 +1237,29 @@ div.choose_ministry_tree {
 .statsContainer table {
   -moz-border-radius: 10px 10px 10px 10px;
   -webkit-border-radius: 10px 10px 10px 10px;
+}
+
+.statsReportTab {
+  float: left;
+  border: solid 2px #CCCCCC;
+  background-color: #FCFCFC;
+  padding: 5px;
+  margin-right: 1em;
+  -moz-border-radius: 5px 5px 0px 0px;
+  -webkit-border-radius: 5px 5px 0px 0px;
+}
+
+.statsTabActive {
+  border: solid 2px #6984C7;
+  background-color: #F7F7F7;
+}
+
+#statsReportTimeTabs {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 20em;
+  height: 4em;
 }
 
 .center {

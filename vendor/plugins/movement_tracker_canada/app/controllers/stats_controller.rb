@@ -8,14 +8,39 @@ class StatsController < ApplicationController
   ALL_CAMPUSES_UNDER_MINISTRY = 0
 
 
-
   def index
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+
+    session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
+    @ministry_id =  session[:stats_ministry_id].to_i
+
+    session[:stats_summary] = true unless session[:stats_summary].present?
+    @summary = session[:stats_summary] == "true" ? true : false
+
+    session[:stats_time] = "semester" unless session[:stats_time].present?
+    @time = session[:stats_time]
     
-#    @national_access = authorized?(:how_people_prayed_to_receive_christ, :national_team) ? true : false
-#    @regional_access = authorized?(:summary_by_week, :regional_team) ? true : false
-#    @campusdirector_access = authorized?(:monthly_summary_by_campus, :campus_directors) ? true : false
-#    @allstaff_access = authorized?(:year_summary, :all_staff) ? true : false
-    
+  end
+
+
+  def select_report
+    ministry = Ministry.find(params['ministry'])
+    session[:stats_ministry_id] = ministry.id
+
+    session[:stats_summary] = params['summary']
+
+    session[:stats_time] = params['time']
+    @time = session[:stats_time]
+    @results_partial = "test"
+
+    @selected_results_div_id = "stats#{@time.capitalize}Results"
+    @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
+
+    @test = "You selected <br/> #{ministry.name} <br/> #{session[:stats_summary]} <br/> #{@time} "
+
+    respond_to do |format|
+      format.js
+    end
   end
 
 

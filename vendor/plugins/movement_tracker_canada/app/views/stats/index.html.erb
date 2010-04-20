@@ -1,97 +1,79 @@
+<%= javascript_include_tag "stats.js" %>
+
 <h1 id="statsTitle">Statistics</h1>
 
+<br/>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <h2 class="statsFormBoxTitle"></h2>
+
+    <br/>
+
+    <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
+
+      <p class="statsFormField">
+        <%= form.label :ministry, "Ministry:" %>
+        <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id %>
+        <%= observe_field 'report_ministry', :url => {:action => "select_report"},
+                                             :with => "getWithStringForReportForm()",
+                                             :before => "beginLoadingStatsTab()",
+                                             :complete => "completeLoadingStatsTab()" %>
+      </p>
+
+      <p class="statsFormField">
+        <%= form.radio_button :summary, "summary", :checked => @summary %>
+        <%= form.label :summary_summary, "Summary" %>
+        <%= observe_field 'report_summary_summary', :url => {:action => "select_report"},
+                                                    :with => "getWithStringForReportForm()",
+                                                    :before => "beginLoadingStatsTab()",
+                                                    :complete => "completeLoadingStatsTab()" %>
+
+        <%= form.radio_button :summary, "campus", :checked => !@summary %>
+        <%= form.label :summary_campus, "Campus drill-down" %>
+        <%= observe_field 'report_summary_campus', :url => {:action => "select_report"},
+                                                   :with => "getWithStringForReportForm()",
+                                                   :before => "beginLoadingStatsTab()",
+                                                   :complete => "completeLoadingStatsTab()" %>
+      </p>
+
+    <% end %>
+
+    <br/>
+  </div>
 
 
-<div id="newWeeklyReportLink">
-  <div class="butNormal"><%= link_to "Submit your weekly numbers", new_weekly_report_path %></div>
 </div>
 
-<div id="statsLinkBox" class="statsFormBox">
-  <h2 class="statsLinkBoxTitle">Team Member Reports</h2>
-  <ul class="statsLinkList">
-    <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
-    <li class="statsListLink"><%= link_to "Indicated decisions", url_for(:controller => :stats, :action => :indicated_decisions) %></li>
-    <li class="statsListLink"><%= link_to "Summary by campus", url_for(:controller => :stats, :action => :summary_by_campus) %></li>
-    <li class="statsListLink"><%= link_to "Summary by month", url_for(:controller => :stats, :action => :summary_by_month) %></li>
-    <li class="statsListLink"><%= link_to "Summary by week", url_for(:controller => :stats, :action => :summary_by_week) %></li>
-    <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
-    <li class="statsListLink"><%= link_to "Year summary", url_for(:controller => :stats, :action => :year_summary) %></li>
-  </ul>
+
+<div id="statsReportTimeTabs">
+  <div id="statsReportTabYear" class="statsReportTab" title="year">
+    <%=  link_to_remote("Year", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'year')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()" ) %>
+  </div>
+
+
+  <div id="statsReportTabSemester" class="statsReportTab statsTabActive" title="semester">
+    <%=  link_to_remote("Semester", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'semester')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  </div>
+
+
+  <div id="statsReportTabMonth" class="statsReportTab" title="month">
+    <%=  link_to_remote("Month", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'month')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  </div>
+
+
+  <div id="statsReportTabWeek" class="statsReportTab" title="week">
+    <%=  link_to_remote("Week", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'week')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  </div>
 </div>
 
-<div id="statsLinkBox" class="statsFormBox">
-  <h2 class="statsLinkBoxTitle">Team Leader Reports</h2>
+
+<div id="results" class="statsContainer">
+
+  <%=spinner('StatsResults')%>
+  <div id="statsYearResults" class="statsReportTabContainer" style="display: none;">YEAR RESULTS</div>
+  <div id="statsSemesterResults" class="statsReportTabContainer" style="display: none;">SEMESTER RESULTS</div>
+  <div id="statsMonthResults" class="statsReportTabContainer" style="display: none;">MONTH RESULTS</div>
+  <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;">WEEK RESULTS</div>
+
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%#*<!-- Stats Index Page -->%>
-<%#*<p>%>
-    <%#*<span class="heading">Stats</span>%>
-<%#*</p>%>
-<%#*<p>%>
-    <%#*<span class="text">Your homepage for navigating the campus ministry stats system.</span>%>
-<%#*</p>%>
-<%#*<!-- Check all staff access level -->%>
-<%# if @allstaff_access %>
-<%#*<span class="title1">Team Member Stats</span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/all_staff/submit_weekly_stats">Submit Weekly Stats</a></span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/all_staff/indicated_decisions">Indicated Decisions</a></span>%>
-<%# unless @team_leader_access %>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/all_staff/semester_at_a_glance">Semester at a Glance</a></span>%>
-<%# end %>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/all_staff/year_summary">Year Summary</a></span>%>
-<%#*<br/>%>
-<%#*<br/>%>
-<%# end %>
-<%#*<!--%>
-<%#*<span class="title1">Campus Stats Coordinator</span>%>
-<%#*<br/>%>
-<%#*<br/> -->%>
-<%#*<!-- Check all campus director access level -->%>
-<%# if @campusdirector_access %>
-<%#*<span class="title1">Team Leader Stats</span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/all_staff/semester_at_a_glance">Semester at a Glance</a></span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/campus_directors/monthly_summary_by_campus">Monthly Summary by Campus</a></span>%>
-<%#*<br/>%>
-<%#*<br/>%>
-<%# end %>
-<%#*<!-- Check regional team access level -->%>
-<%# if @regional_access %>
-<%#*<span class="title1">Regional Team</span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/regional_team/summary_by_campus">Regional Semester Summary by Campus</a></span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/regional_team/summary_by_month">Regional Semester Summary by Month</a></span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/regional_team/summary_by_week">Regional Monthly Summary by Week</a></span>%>
-<%#*<br/>%>
-<%#*<br/>%>
-<%# end %>
-<%#*<!-- Check national team access level -->%>
-<%# if @national_access %>
-<%#*<span class="title1">National Team</span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/national_team/indicated_decisions">Indicated Decisions</a></span>%>
-<%#*<br/>%>
-<%#*<span class="text"><a href="/national_team/how_people_prayed_to_receive_christ">How People Came to Know Christ</a></span>%>
-<%#*<br/>%>
-<%# end %>
