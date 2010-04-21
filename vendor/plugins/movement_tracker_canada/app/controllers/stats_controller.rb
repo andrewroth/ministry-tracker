@@ -396,7 +396,7 @@ class StatsController < ApplicationController
 
     @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", @cur_month_id])
 
-    @report_description = "#{@ministry.name} during #{@cur_month}"
+    @report_description = "#{@ministry.name} during #{Month.find(:first, :conditions => {:month_id => @month_id}).description}"
     @results_partial = "summary_by_month"
     @tab_select_partial = "select_month"
   end
