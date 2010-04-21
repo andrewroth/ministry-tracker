@@ -1164,10 +1164,6 @@ div.choose_ministry_tree {
   -webkit-border-radius: 7px;
 }
 
-.statsFormBox:hover, .statsSubFormBox:hover, .statsReportTab:hover {
-  border: solid 2px #6C87CC;
-}
-
 .statsFormBoxTitle {
   font-size: 130%;
   margin-bottom: 0.5em;
@@ -1189,7 +1185,7 @@ div.choose_ministry_tree {
 }
 
 div .statsRadioButton {
-  width: 12em;
+  width: 11em;
   float: left;
   text-align: left;
 }
@@ -1200,15 +1196,15 @@ div .statsRadioButton {
 }
 
 .statsRadioButton label {
-  width: 9em;
   float: left;
+  width: auto;
   text-align: left;
   padding: 0.1em 0 0 0;
 }
 
 #statsRadioButtonContainer {
-  width: 25em;
-  margin: 0 auto 0 auto;
+  width: 22em;
+  margin: 0 auto 1em auto;
 }
 
 .statsFormField {
@@ -1284,9 +1280,13 @@ div .statsRadioButton {
   border: solid 2px #CCCCCC;
   background-color: #FCFCFC;
   padding: 5px;
-  margin: 0 0.7em 0 0.7em;
+  margin: 0 0 0 1.7em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+}
+
+.statsReportTab:hover {
+  border: solid 2px #6C87CC;
 }
 
 .statsTabActive {
@@ -1306,8 +1306,8 @@ div .statsRadioButton {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: 22em;
-  height: 4em;
+  width: 25em;
+  height: 3em;
 }
 
 .statsReportTabContainer {
