@@ -1,0 +1,192 @@
+<div class="statsSubFormContainer">
+  <div class="statsSubFormBox">
+    <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
+      <br/>
+      <p class="statsFormField">
+        <%= form.label :year, "Year:" %>
+        <%= form.collection_select :year, @years, :id, :description, :selected => @year_id.to_i %>
+        <%= observe_field 'report_year', :url => {:action => "select_report"},
+                                         :with => "getWithStringForReportForm() + '&year=' + value",
+                                         :before => "beginLoadingStatsTab()",
+                                         :complete => "completeLoadingStatsTab()" %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+
+<p><span class="statsTitle"><%= @report_description %></span></p>
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <% semesters = Semester.find_semesters_by_year(@year_id) %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                  <span class="bold"><%=link_to "#{semester.description}", :action => "semester_at_a_glance", :report => { 'ministry' => @ministry_id, 'campus_id' => @campus_id, 'semester' => "#{semester.description}"} %></span>
+              </center>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <span class="bold">Total</span>
+            </center>
+        </td>
+
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Spiritual Conversations by Staff
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                  <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Spiritual Conversations by Students
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv_std) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Gospel Presentations by Staff
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Gospel Presentations by Students
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres_std) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Holy Spirit Presentations
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <center>
+                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, hs_pres) %>
+              </center>
+              <% total += stat %>
+          </td>
+        <% end %>
+        
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+</table>
+
+<br/>
+<br/>
+
+<p><span class="statsSubTitle">Indicated Decisions</span></p>
+<table class="t1">
+    <tr>
+        <td class="t2">
+        </td>
+        <% semesters = Semester.find_semesters_by_year(@year_id) %>
+
+        <% semesters.each do |semester| %>
+          <td>
+            <center>
+                <span class="bold"><a><%= semester.description %></a></span>
+            </center>
+          </td>
+        <% end %>
+
+        <td>
+            <center>
+                <span class="bold">Total</span>
+            </center>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td>
+            Indicated Decisions
+        </td>
+        <% total = 0 %>
+
+        <% semesters.each do |semester| %>
+          <td>
+            <center>
+                <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
+            </center>
+          </td>
+          <% total += stat %>
+        <% end %>
+
+        <td>
+            <center>
+                <%= total %>
+            </center>
+        </td>
+    </tr>
+</table>

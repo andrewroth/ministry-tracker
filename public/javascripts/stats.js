@@ -1,6 +1,6 @@
 
 // generate the string for observe_field's :with
-function getWithStringForReportForm(ministry, summary, time) {
+function getWithStringForReportForm(time, ministry, summary) {
 
   if(summary == undefined || summary == null) {
     summary = document.getElementById('report_summary_summary').checked;
@@ -21,10 +21,22 @@ function getWithStringForReportForm(ministry, summary, time) {
 
 function beginLoadingStatsTab() {
   jQuery('.statsReportTabContainer').hide();
-  jQuery('.statsTabContainerActive').visualEffect('blind_up');
-  jQuery('#spinnerStatsResults').show();
+  jQuery('.statsTabContainerActive').visualEffect('drop_out');
+  jQuery('#statsSpinnerContainer').visualEffect('appear');
 }
 
 function completeLoadingStatsTab() {
-  jQuery('#spinnerStatsResults').hide();
+  jQuery('#statsSpinnerContainer').hide();
 }
+
+
+$(document).ready(function() {
+  beginLoadingStatsTab();
+  jQuery.ajax({
+    complete: function(request){ completeLoadingStatsTab() },
+    data: getWithStringForReportForm(),
+    dataType:'script',
+    type:'post',
+    url:'/stats/select_report'})
+});
+

@@ -1129,7 +1129,7 @@ div.choose_ministry_tree {
 
 #newWeeklyReportLink {
   margin: 1.5em 2em 0.5em 2em;
-  padding: 0.7em 0.7em 0.7em 0.7em;
+  padding: 0.7em;
 }
 
 #statsLinkBox {
@@ -1138,35 +1138,77 @@ div.choose_ministry_tree {
 
 .campusSemesterStats {
   margin: 3em 0 3em 0;
-  padding: 3em 3em 3em 3em;
+  padding: 3em;
   text-align: center;
   background-color: #F7F7F7;
-  -moz-border-radius: 17px 17px 17px 17px;
-  -webkit-border-radius: 17px 17px 17px 17px;
+  -moz-border-radius: 17px;
+  -webkit-border-radius: 17px;
 }
 
-.statsFormBox {
-  margin: 1em 1em 1em 1em;
-  padding: 0.7em 0.7em 0.7em 0.7em;
+.statsSubFormBox {
+  margin: 1em;
   border: 2px solid #CCCCCC;
   text-align: center;
   background-color: #FCFCFC;
-  -moz-border-radius: 7px 7px 7px 7px;
-  -webkit-border-radius: 7px 7px 7px 7px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+}
+
+.statsFormBox {
+  margin: 1em;
+  padding: 0.7em;
+  border: 2px solid #CCCCCC;
+  text-align: center;
+  background-color: #FCFCFC;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+}
+
+.statsFormBox:hover, .statsSubFormBox:hover, .statsReportTab:hover {
+  border: solid 2px #6C87CC;
 }
 
 .statsFormBoxTitle {
-  font-size: 160%;
+  font-size: 130%;
+  margin-bottom: 0.5em;
 }
 
-.statsFormBox label {
+.statsFormField label {
   line-height: 1em;
   text-align: right;
+  width: 7em;
 }
 
-.statsFormBox select {
+.statsFormField select {
   height: auto;
   width: auto;
+}
+
+.statsFormBox text_field {
+  float: left;
+}
+
+div .statsRadioButton {
+  width: 12em;
+  float: left;
+  text-align: left;
+}
+
+.statsRadioButton input {
+  float: left;
+  margin-right: 0.5em;
+}
+
+.statsRadioButton label {
+  width: 9em;
+  float: left;
+  text-align: left;
+  padding: 0.1em 0 0 0;
+}
+
+#statsRadioButtonContainer {
+  width: 25em;
+  margin: 0 auto 0 auto;
 }
 
 .statsFormField {
@@ -1181,17 +1223,9 @@ div.choose_ministry_tree {
   left: 0.7em;
 }
 
-.statsFormBox:hover {
-  border: solid 2px #6984C7;
-}
-
 .statsListLink {
   font-size: 1.25em;
   padding: 0.25em 0 0 1em;
-}
-
-.statsFormBox text_field {
-  float: left;
 }
 
 #newWeeklyReportFormContainer label {
@@ -1212,14 +1246,20 @@ div.choose_ministry_tree {
 #statsDescriptions {
   float: left;
   margin: 0.5em 1em 0.5em 1em;
-  padding: 1em 1em 1em 1em;
+  padding: 1em;
+}
+
+.statsSubFormContainer {
+  text-align: center;
+  margin: 0 auto 2em auto;
+  width: 20em;
 }
 
 .statsFormContainer {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  width: 45em;
+  width: 30em;
 }
 
 .statsContainer {
@@ -1235,8 +1275,8 @@ div.choose_ministry_tree {
 }
 
 .statsContainer table {
-  -moz-border-radius: 10px 10px 10px 10px;
-  -webkit-border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 
 .statsReportTab {
@@ -1244,22 +1284,39 @@ div.choose_ministry_tree {
   border: solid 2px #CCCCCC;
   background-color: #FCFCFC;
   padding: 5px;
-  margin-right: 1em;
-  -moz-border-radius: 5px 5px 0px 0px;
-  -webkit-border-radius: 5px 5px 0px 0px;
+  margin: 0 0.7em 0 0.7em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 .statsTabActive {
-  border: solid 2px #6984C7;
-  background-color: #F7F7F7;
+  border: solid 2px #1F429B;
+  background-color: #F5F5F5;
+}
+
+#statsSpinnerContainer {
+  display: none;
+  padding: 1em 0 1em 0;
+  float: left;
+  width: 100%;
+  text-align: center;
 }
 
 #statsReportTimeTabs {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: 20em;
+  width: 22em;
   height: 4em;
+}
+
+.statsReportTabContainer {
+  display: none;
+  padding: 1em 3em 3em 3em;
+  text-align: center;
+  background-color: #F5F5F5;
+  -moz-border-radius: 17px;
+  -webkit-border-radius: 17px;
 }
 
 .center {
@@ -1274,6 +1331,12 @@ legend .title1 {
 fieldset {
   padding: 20px;
   display: inline;
+}
+
+.statsSubTitle {
+  color: #1F429B;
+  font-size: 130%;
+  font-weight: bold;
 }
 
 .statsTitle {
@@ -1295,7 +1358,7 @@ fieldset {
   margin-left: auto;
   margin-right: auto;
 
-  border: solid 2px #6984C7;
+  border: solid 2px #6C87CC;
   font-size: small;
   padding: 5px 2px;
 }
@@ -1305,7 +1368,7 @@ fieldset {
 }
 
 #results .t1 {
-  border: dotted 2px #6984C7;/*#FFCB05;*/
+  border: dotted 2px #6C87CC;/*#FFCB05;*/
   font-size: small;
   padding: 5px 2px;
 }

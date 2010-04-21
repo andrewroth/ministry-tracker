@@ -14,29 +14,42 @@ class StatsController < ApplicationController
     session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
     @ministry_id =  session[:stats_ministry_id].to_i
 
-    session[:stats_summary] = true unless session[:stats_summary].present?
+    session[:stats_summary] = "true" unless session[:stats_summary].present?
     @summary = session[:stats_summary] == "true" ? true : false
 
     session[:stats_time] = "semester" unless session[:stats_time].present?
     @time = session[:stats_time]
-    
+
+    @selected_results_div_id = "stats#{@time.capitalize}Results"
+    @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
   end
 
 
   def select_report
-    ministry = Ministry.find(params['ministry'])
-    session[:stats_ministry_id] = ministry.id
+    @ministry = Ministry.find(params['ministry'])
+    @ministry_id = session[:stats_ministry_id] = @ministry.id
 
     session[:stats_summary] = params['summary']
+    @summary = session[:stats_summary] == "true" ? true : false
 
-    session[:stats_time] = params['time']
-    @time = session[:stats_time]
-    @results_partial = "test"
+    @time = session[:stats_time] = params['time']
 
     @selected_results_div_id = "stats#{@time.capitalize}Results"
     @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
 
-    @test = "You selected <br/> #{ministry.name} <br/> #{session[:stats_summary]} <br/> #{@time} "
+
+    case
+    when @summary && @time == 'year'
+      setup_summary_by_year
+    when @summary && @time == 'semester'
+      setup_summary_by_semester
+    when @summary && @time == 'month'
+
+    when !@summary && @time == 'year'
+    when !@summary && @time == 'semester'
+    when !@summary && @time == 'month'
+    when !@summary && @time == 'week'
+    end
 
     respond_to do |format|
       format.js
@@ -260,7 +273,9 @@ class StatsController < ApplicationController
       year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
 
       campus_ids = Ministry.find(@ministry_id).unique_campuses.collect {|c| c.id}
+      puts "---------------------------------------------------------------------------------------------------------------"
       prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, campus_ids])
+      puts "---------------------------------------------------------------------------------------------------------------"
       @total = prcs.size
 
       prcs.each do |prc|
@@ -326,6 +341,44 @@ class StatsController < ApplicationController
     else
       ::Ministry.first.myself_and_descendants
     end
+  end
+
+
+
+  def setup_summary_by_year
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    current_year_id = Month.find_year_id(cur_month)
+
+    @campuses_selected = @ministry.unique_campuses
+
+    session[:stats_year] = params[:year] if params[:year].present?
+    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    @year_id = session[:stats_year]
+    
+
+    @years = Year.all
+    @campuses = Campus.find_campuses()
+
+    @report_description = "#{@ministry.name} during #{Year.find(@year_id).description}"
+    @results_partial = "summary_by_year"
+  end
+
+
+  def setup_summary_by_semester
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+
+    session[:stats_semester] = params[:semester] if params[:semester].present?
+    session[:stats_semester] = Month.find_semester_id(@cur_month) unless session[:stats_semester].present?
+    @semester_id = session[:stats_semester]
+
+    @months = Month.find_months_by_semester(@semester_id)
+
+    # ensures that semesters that haven't occurred yet aren't listed
+    cur_semester_id = Month.find_semester_id(@cur_month)
+    @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
+
+    @report_description = "#{@ministry.name} during #{Semester.find(:first, :conditions => {:semester_id => @semester_id}).description}"
+    @results_partial = "summary_by_semester"
   end
 
 end

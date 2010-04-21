@@ -1,54 +1,48 @@
 <%= javascript_include_tag "stats.js" %>
 
+
 <h1 id="statsTitle">Statistics</h1>
 
 
-
-
-
-
-
-
-
-
-
-
-
-<br/>
-
 <div class="statsFormContainer">
   <div class="statsFormBox">
-    <h2 class="statsFormBoxTitle"></h2>
+    <h2 class="statsFormBoxTitle">Team Member Report</h2>
 
     <br/>
 
     <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
-
       <p class="statsFormField">
-        <%= form.label :ministry, "Ministry:" %>
+        <%= form.label :ministry, "Team:" %>
         <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id %>
         <%= observe_field 'report_ministry', :url => {:action => "select_report"},
                                              :with => "getWithStringForReportForm()",
                                              :before => "beginLoadingStatsTab()",
                                              :complete => "completeLoadingStatsTab()" %>
       </p>
+      
+      <br/>
 
-      <p class="statsFormField">
-        <%= form.radio_button :summary, "summary", :checked => @summary %>
-        <%= form.label :summary_summary, "Summary" %>
-        <%= observe_field 'report_summary_summary', :url => {:action => "select_report"},
-                                                    :with => "getWithStringForReportForm()",
-                                                    :before => "beginLoadingStatsTab()",
-                                                    :complete => "completeLoadingStatsTab()" %>
+      <div id="statsRadioButtonContainer">
+        <div class="statsRadioButton">
+          <%= form.radio_button :summary, "summary", :checked => @summary %>
+          <%= form.label :summary_summary, "Summary" %>
+          <%= observe_field 'report_summary_summary', :url => {:action => "select_report"},
+                                                      :with => "getWithStringForReportForm()",
+                                                      :before => "beginLoadingStatsTab()",
+                                                      :complete => "completeLoadingStatsTab()" %>
+        </div>
 
-        <%= form.radio_button :summary, "campus", :checked => !@summary %>
-        <%= form.label :summary_campus, "Campus drill-down" %>
-        <%= observe_field 'report_summary_campus', :url => {:action => "select_report"},
-                                                   :with => "getWithStringForReportForm()",
-                                                   :before => "beginLoadingStatsTab()",
-                                                   :complete => "completeLoadingStatsTab()" %>
-      </p>
-
+        <div class="statsRadioButton">
+          <%= form.radio_button :summary, "campus", :checked => !@summary %>
+          <%= form.label :summary_campus, "Campus drill-down" %>
+          <%= observe_field 'report_summary_campus', :url => {:action => "select_report"},
+                                                     :with => "getWithStringForReportForm()",
+                                                     :before => "beginLoadingStatsTab()",
+                                                     :complete => "completeLoadingStatsTab()" %>
+        </div>
+      </div>
+      
+      <br/>
     <% end %>
 
     <br/>
@@ -59,35 +53,33 @@
 
 
 <div id="statsReportTimeTabs">
-  <div id="statsReportTabYear" class="statsReportTab" title="year">
-    <%=  link_to_remote("Year", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'year')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()" ) %>
+  <div id="statsReportTabYear" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabYear" %>" title="year">
+    <%=  link_to_remote("Year", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('year')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()" ) %>
   </div>
 
 
-  <div id="statsReportTabSemester" class="statsReportTab statsTabActive" title="semester">
-    <%=  link_to_remote("Semester", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'semester')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  <div id="statsReportTabSemester" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabSemester" %>" title="semester">
+    <%=  link_to_remote("Semester", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('semester')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
   </div>
 
 
-  <div id="statsReportTabMonth" class="statsReportTab" title="month">
-    <%=  link_to_remote("Month", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'month')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  <div id="statsReportTabMonth" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabMonth" %>" title="month">
+    <%=  link_to_remote("Month", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('month')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
   </div>
 
 
-  <div id="statsReportTabWeek" class="statsReportTab" title="week">
-    <%=  link_to_remote("Week", :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, null, 'week')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+  <div id="statsReportTabWeek" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabWeek" %>" title="week">
+    <%=  link_to_remote("Week", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('week')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
   </div>
 </div>
 
 
 <div id="results" class="statsContainer">
-
-  <%=spinner('StatsResults')%>
-  <div id="statsYearResults" class="statsReportTabContainer" style="display: none;">YEAR RESULTS</div>
-  <div id="statsSemesterResults" class="statsReportTabContainer" style="display: none;">SEMESTER RESULTS</div>
-  <div id="statsMonthResults" class="statsReportTabContainer" style="display: none;">MONTH RESULTS</div>
-  <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;">WEEK RESULTS</div>
-
+  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+  <div id="statsYearResults" class="statsReportTabContainer" style="display: none;"></div>
+  <div id="statsSemesterResults" class="statsReportTabContainer" style="display: none;"></div>
+  <div id="statsMonthResults" class="statsReportTabContainer" style="display: none;"></div>
+  <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;"></div>
 </div>
 
 
@@ -97,7 +89,7 @@
 
 
 
-
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <div id="statsLinkBox" class="statsFormBox">
   <h2 class="statsLinkBoxTitle">Team Member Reports</h2>
   <ul class="statsLinkList">
@@ -108,4 +100,4 @@
     <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
     <li class="statsListLink"><%= link_to "Year summary", url_for(:controller => :stats, :action => :year_summary) %></li>
   </ul>
-</div
+</div>
