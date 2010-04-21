@@ -46,32 +46,33 @@
     <% end %>
 
     <br/>
-<div id="statsReportTimeTabs">
-  <div id="statsReportTabYear" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabYear" %>" title="year">
-    <%=  link_to_remote("Year", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('year')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()" ) %>
-  </div>
+
+    <div id="statsReportTimeTabs">
+      <div id="statsReportTabYear" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabYear" %>" title="year">
+        <%= time_tab_link_to_remote("year") %>
+      </div>
 
 
-  <div id="statsReportTabSemester" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabSemester" %>" title="semester">
-    <%=  link_to_remote("Semester", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('semester')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
-  </div>
+      <div id="statsReportTabSemester" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabSemester" %>" title="semester">
+        <%= time_tab_link_to_remote("semester") %>
+      </div>
 
 
-  <div id="statsReportTabMonth" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabMonth" %>" title="month">
-    <%=  link_to_remote("Month", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('month')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
-  </div>
+      <div id="statsReportTabMonth" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabMonth" %>" title="month">
+        <%= time_tab_link_to_remote("month") %>
+      </div>
 
 
-  <div id="statsReportTabWeek" class="statsReportTab <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabWeek" %>" title="week">
-    <%=  link_to_remote("Week", :url => {:action => "select_report"}, :with => "getWithStringForReportForm('week')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()") %>
+      <div id="statsReportTabWeek" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabWeek" %>" title="week">
+        <%= time_tab_link_to_remote("week") %>
+      </div>
+    </div>
+
   </div>
 </div>
-  </div>
 
 
-</div>
-
-
+<br/>
 
 
 <div id="results" class="statsContainer">

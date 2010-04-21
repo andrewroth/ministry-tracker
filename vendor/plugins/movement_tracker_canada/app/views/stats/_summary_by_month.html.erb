@@ -4,10 +4,12 @@
     <tr>
         <td class="t2">
         </td>
-        <% @months.each do |month| -%>
+        <% i = 1 %>
+        <% @weeks.each do |week| -%>
         <td>
-            <span class="title1"><%= sprintf "%s", month.description %></span>
+            <span class="title1"><%= sprintf "Week %s", i %></span>
         </td>
+        <% i+= 1 %>
         <% end %>
         <td>
             <span class="title1">Total</span>
@@ -18,8 +20,8 @@
             Spiritual Conversations by Staff
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@ministry_id,sp_conv) %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,sp_conv) %>
         <% total += result %>
         <td>
             <center>
@@ -38,8 +40,8 @@
             Spiritual Conversations by Students
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@ministry_id,sp_conv_std) %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,sp_conv_std) %>
         <% total += result %>
         <td>
             <center>
@@ -58,8 +60,8 @@
             Gospel Presentations by Staff
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@ministry_id,gos_pres) %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,gos_pres) %>
         <% total += result %>
         <td>
             <center>
@@ -78,8 +80,8 @@
             Gospel Presentations by Students
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@ministry_id,gos_pres_std) %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,gos_pres_std) %>
         <% total += result %>
         <td>
             <center>
@@ -98,8 +100,8 @@
             Holy Spirit Presentations by Staff
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@ministry_id,hs_pres) %>
+        <% @weeks.each do |week| -%>
+        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,hs_pres) %>
         <% total += result %>
         <td>
             <center>
@@ -119,9 +121,9 @@
             Indicated Decisions
         </td>
         <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% start_date = Month.find_start_date(month.id) %>
-        <% end_date = Month.find_end_date(month.id) %>
+        <% @weeks.each do |week| -%>
+        <% start_date = Week.find_start_date(week.id) %>
+        <% end_date = Week.find_end_date(week.id) %>
         <% result = Prc.count_by_date_per_ministry(start_date,end_date,@ministry_id) %>
         <% total += result %>
         <td>

@@ -44,7 +44,7 @@ class StatsController < ApplicationController
     when @summary && @time == 'semester'
       setup_summary_by_semester
     when @summary && @time == 'month'
-
+      setup_summary_by_month
     when !@summary && @time == 'year'
     when !@summary && @time == 'semester'
     when !@summary && @time == 'month'
@@ -361,6 +361,7 @@ class StatsController < ApplicationController
 
     @report_description = "#{@ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
+    @tab_select_partial = "select_year"
   end
 
 
@@ -379,6 +380,25 @@ class StatsController < ApplicationController
 
     @report_description = "#{@ministry.name} during #{Semester.find(:first, :conditions => {:semester_id => @semester_id}).description}"
     @results_partial = "summary_by_semester"
+    @tab_select_partial = "select_semester"
+  end
+
+
+  def setup_summary_by_month
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    @cur_month_id = Month.find_month_id(@cur_month)
+
+    session[:stats_month] = params[:month] if params[:month].present?
+    session[:stats_month] = @cur_month_id unless session[:stats_month].present?
+    @month_id = session[:stats_month]
+
+    @weeks = Week.find_weeks_in_month(@month_id)
+
+    @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", @cur_month_id])
+
+    @report_description = "#{@ministry.name} during #{@cur_month}"
+    @results_partial = "summary_by_month"
+    @tab_select_partial = "select_month"
   end
 
 end

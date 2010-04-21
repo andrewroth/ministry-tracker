@@ -1145,15 +1145,6 @@ div.choose_ministry_tree {
   -webkit-border-radius: 17px;
 }
 
-.statsSubFormBox {
-  margin: 1em;
-  border: 2px solid #CCCCCC;
-  text-align: center;
-  background-color: #FCFCFC;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
-}
-
 .statsFormBox {
   margin: 1em;
   padding: 0.7em;
@@ -1178,6 +1169,16 @@ div.choose_ministry_tree {
 .statsFormField select {
   height: auto;
   width: auto;
+}
+
+.statsFormField {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.statsReportTab label {
+  width: auto;
+  /*color: #1F429B;*/
 }
 
 .statsFormBox text_field {
@@ -1205,12 +1206,6 @@ div .statsRadioButton {
 #statsRadioButtonContainer {
   width: 22em;
   margin: 0 auto 1em auto;
-}
-
-.statsFormField {
-  margin-bottom: 10px;
-  text-align: left;
-  height: 2em;
 }
 
 .statsSpinner {
@@ -1245,17 +1240,11 @@ div .statsRadioButton {
   padding: 1em;
 }
 
-.statsSubFormContainer {
-  text-align: center;
-  margin: 0 auto 2em auto;
-  width: 20em;
-}
-
 .statsFormContainer {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  width: 30em;
+  width: 37em;
 }
 
 .statsContainer {
@@ -1285,13 +1274,14 @@ div .statsRadioButton {
   -webkit-border-radius: 5px;
 }
 
-.statsReportTab:hover {
+.statsReportTab:hover:not(.statsTabActive) {
   border: solid 2px #6C87CC;
 }
 
 .statsTabActive {
   border: solid 2px #1F429B;
-  background-color: #F5F5F5;
+  padding: 7px;
+  /*background-color: #F5F5F5;*/
 }
 
 #statsSpinnerContainer {
@@ -1306,8 +1296,8 @@ div .statsRadioButton {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: 25em;
-  height: 3em;
+  width: 36em;
+  height: 4em;
 }
 
 .statsReportTabContainer {

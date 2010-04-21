@@ -1,3 +1,13 @@
+$(document).ready(function() {
+  beginLoadingStatsTab();
+  jQuery.ajax({
+    complete: function(request){ completeLoadingStatsTab() },
+    data: getWithStringForReportForm(),
+    dataType:'script',
+    type:'post',
+    url:'/stats/select_report'})
+});
+
 
 // generate the string for observe_field's :with
 function getWithStringForReportForm(time, ministry, summary) {
@@ -28,15 +38,4 @@ function beginLoadingStatsTab() {
 function completeLoadingStatsTab() {
   jQuery('#statsSpinnerContainer').hide();
 }
-
-
-$(document).ready(function() {
-  beginLoadingStatsTab();
-  jQuery.ajax({
-    complete: function(request){ completeLoadingStatsTab() },
-    data: getWithStringForReportForm(),
-    dataType:'script',
-    type:'post',
-    url:'/stats/select_report'})
-});
 

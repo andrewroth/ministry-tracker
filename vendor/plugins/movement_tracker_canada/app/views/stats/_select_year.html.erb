@@ -1,0 +1,8 @@
+<% form_for :report, :html => { :name => 'reportForm' } do |form| %>
+  <%= form.label :year, "Year" %>
+  <%= form.collection_select :year, @years, :id, :description, :selected => @year_id.to_i %>
+  <%= observe_field 'report_year', :url => {:action => "select_report"},
+                                   :with => "getWithStringForReportForm() + '&year=' + value",
+                                   :before => "beginLoadingStatsTab()",
+                                   :complete => "completeLoadingStatsTab()" %>
+<% end %>
