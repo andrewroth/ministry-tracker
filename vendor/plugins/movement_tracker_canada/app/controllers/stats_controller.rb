@@ -347,15 +347,17 @@ class StatsController < ApplicationController
 
     @time = session[:stats_time]
 
+
+
     # if a ministry has only one campus disable campus drill-down and force summary reports only (which means no week report either)
     @oneCampusMinistry = @ministry.unique_campuses.size <= 1 ? true : false
     if @oneCampusMinistry
       @summary = true
       session[:stats_summary] = DEFAULT_SUMMARY
+    end
 
-      if @time == "week"
-        @time = session[:stats_time] = DEFAULT_REPORT_TIME
-      end
+    if @time == "week" && @summary
+      @time = session[:stats_time] = DEFAULT_REPORT_TIME
     end
 
     @selected_results_div_id = "stats#{@time.capitalize}Results"
@@ -503,6 +505,30 @@ class StatsController < ApplicationController
     @tab_select_partial = "select_month"
   end
 
+
+  def setup_campus_by_week
+    today = "#{Time.now.year()}-#{Time.now.month()}-#{Time.now.day()}"
+    cur_week = Week.all(:conditions => ["#{_(:end_date, :week)} >= ?", today], :order => "week_endDate asc").first
+
+    session[:stats_week] = params[:week] if params[:week].present?
+    session[:stats_week] = cur_week.id unless session[:stats_week].present?
+    @week_id = session[:stats_week]
+    week = Week.find(@week_id)
+    
+    first_week_end_date = week.end_date
+    last_week_end_date =  week.end_date
+
+    @campuses = @ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    @campus_stats = get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
+    @campus_prcs = get_campus_prcs_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
+
+
+    @weeks = Week.all(:conditions => ["#{_(:end_date, :week)} <= ?", cur_week.end_date], :order => :week_endDate)
+
+    @report_description = "Campuses under #{@ministry.name} during week ending on #{week.end_date}"
+    @results_partial = "campuses_by_week_range"
+    @tab_select_partial = "select_week"
+  end
 
 
   def get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, campuses)
