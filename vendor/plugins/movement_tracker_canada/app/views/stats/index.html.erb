@@ -20,9 +20,9 @@
                                              :complete => "completeLoadingStatsTab()" %>
       </p>
       
-      <br/>
 
-      <div id="statsRadioButtonContainer">
+      <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @oneCampusMinistry and false %>>
+        <br/>
         <div id="summaryRadioButton" class="statsRadioButton">
           <%= form.radio_button :summary, "summary", :checked => @summary %>
           <%= form.label :summary_summary, "Summary" %>
@@ -40,9 +40,9 @@
                                                      :before => "beginLoadingStatsTab()",
                                                      :complete => "completeLoadingStatsTab()" %>
         </div>
+        <br/>
       </div>
       
-      <br/>
     <% end %>
 
     <br/>
@@ -63,7 +63,7 @@
       </div>
 
 
-      <div id="statsReportTabWeek" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabWeek" %>" title="week">
+      <div id="statsReportTabWeek" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "statsReportTabWeek" %> <%= "notDisplayed" if @summary %>" title="week">
         <%= time_tab_link_to_remote("week") %>
       </div>
     </div>

@@ -1,4 +1,25 @@
 
+# if only one campus under selected ministry force summary report and hide the radio buttons
+if @oneCampusMinistry
+  page << "jQuery('#statsRadioButtonContainer').addClass('notDisplayed')"
+else
+  page << "jQuery('#statsRadioButtonContainer').removeClass('notDisplayed')"
+end
+
+
+# update selected radio button in case server changes @summary value
+page["report_summary_summary"].attr("checked", @summary)
+
+
+# there's no week summary report, hide the link
+if @summary
+  page << "jQuery('#statsReportTabWeek').addClass('notDisplayed')"
+else
+  page << "jQuery('#statsReportTabWeek').removeClass('notDisplayed')"
+end
+
+
+# update tab styles to reflect selected tab
 page << "jQuery('.statsReportTab').removeClass('statsTabActive')"
 page << "jQuery('.statsReportTabContainer').removeClass('statsTabContainerActive')"
 
@@ -10,6 +31,8 @@ page.replace_html("statsReportTabSemester", time_tab_link_to_remote("semester"))
 page.replace_html("statsReportTabMonth", time_tab_link_to_remote("month"))
 page.replace_html("statsReportTabWeek", time_tab_link_to_remote("week"))
 
+
+# replace tab content
 page.replace_html(@selected_time_tab_id, :partial => @tab_select_partial)
 
 page.replace_html(@selected_results_div_id, :partial => @results_partial)

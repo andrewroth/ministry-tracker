@@ -1,0 +1,46 @@
+
+<p><span class="statsTitle"><%= @report_description %></span></p>
+<table class="t1">
+  <tr>
+      <td class="t4"></td>
+      <td class="t4">Spiritual Conversations by Staff</td>
+      <td class="t4">Spiritual Conversations by Students</td>
+      <td class="t4">Gospel Presentations by Staff</td>
+      <td class="t4">Gospel Presentations by Students</td>
+      <td class="t4">Holy Spirit Presentations</td>
+      <td class="t4">Indicated Decisions</td>
+  </tr>
+
+  <% total_stats = {gos_pres => 0, gos_pres_std => 0, sp_conv => 0, sp_conv_std => 0, hs_pres => 0, "prcs" => 0} %>
+
+  <% @campuses.each do |campus| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="t4"><%= campus.short_desc %></td>
+      <td class="t4"><%= @campus_stats[campus.id][sp_conv] %></td>
+      <td class="t4"><%= @campus_stats[campus.id][sp_conv_std] %></td>
+      <td class="t4"><%= @campus_stats[campus.id][gos_pres] %></td>
+      <td class="t4"><%= @campus_stats[campus.id][gos_pres_std] %></td>
+      <td class="t4"><%= @campus_stats[campus.id][hs_pres] %></td>
+      <td class="t4"><%= @campus_prcs[campus.id] %></td>
+
+      
+      <% total_stats[sp_conv] += @campus_stats[campus.id][sp_conv] %>
+      <% total_stats[sp_conv_std] += @campus_stats[campus.id][sp_conv_std] %>
+      <% total_stats[gos_pres] += @campus_stats[campus.id][gos_pres] %>
+      <% total_stats[gos_pres_std] += @campus_stats[campus.id][gos_pres_std] %>
+      <% total_stats[hs_pres] += @campus_stats[campus.id][hs_pres] %>
+      <% total_stats["prcs"] += @campus_prcs[campus.id] %>
+    </tr>
+  <% end %>
+
+  <tr><td><br/></td></tr>
+  <tr class="highlight">
+    <td class="t4">Totals:</td>
+    <td class="t4"><%= total_stats[sp_conv] %></td>
+    <td class="t4"><%= total_stats[sp_conv_std] %></td>
+    <td class="t4"><%= total_stats[gos_pres] %></td>
+    <td class="t4"><%= total_stats[gos_pres_std] %></td>
+    <td class="t4"><%= total_stats[hs_pres] %></td>
+    <td class="t4"><%= total_stats["prcs"] %></td>
+  </tr>
+</table>

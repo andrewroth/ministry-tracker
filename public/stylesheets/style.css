@@ -1148,7 +1148,7 @@ div.choose_ministry_tree {
 .statsFormBox {
   margin: 1em;
   padding: 0.7em;
-  border: 2px solid #CCCCCC;
+  border: 2px solid #F5F5FA;
   text-align: center;
   background-color: #FCFCFC;
   -moz-border-radius: 7px;
@@ -1163,7 +1163,7 @@ div.choose_ministry_tree {
 .statsFormField label {
   line-height: 1em;
   text-align: right;
-  width: 7em;
+  width: 11em;
 }
 
 .statsFormField select {
@@ -1266,7 +1266,7 @@ div .statsRadioButton {
 
 .statsReportTab {
   float: left;
-  border: solid 2px #CCCCCC;
+  border: solid 2px #F5F5FA;
   background-color: #FCFCFC;
   padding: 5px;
   margin: 0 0 0 1.7em;
@@ -1275,13 +1275,13 @@ div .statsRadioButton {
 }
 
 .statsReportTab:hover:not(.statsTabActive) {
-  border: solid 2px #6C87CC;
+  border: solid 2px #FFCB05;
 }
 
 .statsTabActive {
   border: solid 2px #1F429B;
   padding: 7px;
-  /*background-color: #F5F5F5;*/
+  /*background-color: #F5F5FA;*/
 }
 
 #statsSpinnerContainer {
@@ -1302,9 +1302,9 @@ div .statsRadioButton {
 
 .statsReportTabContainer {
   display: none;
-  padding: 1em 3em 3em 3em;
+  padding: 3em;
   text-align: center;
-  background-color: #F5F5F5;
+  background-color: #F5F5FA;
   -moz-border-radius: 17px;
   -webkit-border-radius: 17px;
 }
@@ -1394,4 +1394,8 @@ div .backLink {
   padding-left: 17px;
   background-image: url(/images/silk/arrow_down.png);
   background-repeat: no-repeat;
+}
+
+.notDisplayed {
+  display: none;
 }

@@ -113,9 +113,9 @@
             </center>
         </td>
     </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+    <tr><td><br/></td></tr>
+    <tr class='highlight'>
         <td>
-            <br/>
             Indicated Decisions
         </td>
         <% total = 0 %>
@@ -125,14 +125,12 @@
         <% result = Prc.count_by_date_per_ministry(start_date,end_date,@ministry_id) %>
         <% total += result %>
         <td>
-            <br/>
             <center>
                 <%= sprintf "%s", result %>
             </center>
         </td>
         <% end %>
         <td>
-            <br/>
             <center>
                 <%= sprintf "%s", total %>
             </center>

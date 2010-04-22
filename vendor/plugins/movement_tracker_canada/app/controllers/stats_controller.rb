@@ -7,36 +7,25 @@ class StatsController < ApplicationController
   NO_CAMPUSES_UNDER_MINISTRY = -1
   ALL_CAMPUSES_UNDER_MINISTRY = 0
 
+  DEFAULT_REPORT_TIME = 'semester'
+  DEFAULT_SUMMARY = 'true'
+
 
   def index
-    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
-
     session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
-    @ministry_id =  session[:stats_ministry_id].to_i
+    session[:stats_summary] = DEFAULT_SUMMARY unless session[:stats_summary].present?
+    session[:stats_time] = DEFAULT_REPORT_TIME unless session[:stats_time].present?
 
-    session[:stats_summary] = "true" unless session[:stats_summary].present?
-    @summary = session[:stats_summary] == "true" ? true : false
-
-    session[:stats_time] = "semester" unless session[:stats_time].present?
-    @time = session[:stats_time]
-
-    @selected_results_div_id = "stats#{@time.capitalize}Results"
-    @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
+    setup_stats_report_from_session
   end
 
 
   def select_report
-    @ministry = Ministry.find(params['ministry'])
-    @ministry_id = session[:stats_ministry_id] = @ministry.id
-
+    session[:stats_ministry_id] = Ministry.find(params['ministry']).id
     session[:stats_summary] = params['summary']
-    @summary = session[:stats_summary] == "true" ? true : false
+    session[:stats_time] = params['time']
 
-    @time = session[:stats_time] = params['time']
-
-    @selected_results_div_id = "stats#{@time.capitalize}Results"
-    @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
-
+    setup_stats_report_from_session
 
     case
     when @summary && @time == 'year'
@@ -46,9 +35,13 @@ class StatsController < ApplicationController
     when @summary && @time == 'month'
       setup_summary_by_month
     when !@summary && @time == 'year'
+      setup_campus_by_year
     when !@summary && @time == 'semester'
+      setup_campus_by_semester
     when !@summary && @time == 'month'
+      setup_campus_by_month
     when !@summary && @time == 'week'
+      setup_campus_by_week
     end
 
     respond_to do |format|
@@ -344,6 +337,31 @@ class StatsController < ApplicationController
   end
 
 
+  def setup_stats_report_from_session
+    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+
+    @ministry_id =  session[:stats_ministry_id].to_i
+    @ministry = Ministry.find(@ministry_id)
+
+    @summary = session[:stats_summary] == DEFAULT_SUMMARY ? true : false
+
+    @time = session[:stats_time]
+
+    # if a ministry has only one campus disable campus drill-down and force summary reports only (which means no week report either)
+    @oneCampusMinistry = @ministry.unique_campuses.size <= 1 ? true : false
+    if @oneCampusMinistry
+      @summary = true
+      session[:stats_summary] = DEFAULT_SUMMARY
+
+      if @time == "week"
+        @time = session[:stats_time] = DEFAULT_REPORT_TIME
+      end
+    end
+
+    @selected_results_div_id = "stats#{@time.capitalize}Results"
+    @selected_time_tab_id = "statsReportTab#{@time.capitalize}"
+  end
+
 
   def setup_summary_by_year
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
@@ -355,11 +373,9 @@ class StatsController < ApplicationController
     session[:stats_year] = current_year_id unless session[:stats_year].present?
     @year_id = session[:stats_year]
     
-
     @years = Year.all
-    @campuses = Campus.find_campuses()
 
-    @report_description = "#{@ministry.name} during #{Year.find(@year_id).description}"
+    @report_description = "Summary of #{@ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
     @tab_select_partial = "select_year"
   end
@@ -378,7 +394,7 @@ class StatsController < ApplicationController
     cur_semester_id = Month.find_semester_id(@cur_month)
     @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
 
-    @report_description = "#{@ministry.name} during #{Semester.find(:first, :conditions => {:semester_id => @semester_id}).description}"
+    @report_description = "Summary of #{@ministry.name} during #{Semester.find(:first, :conditions => {:semester_id => @semester_id}).description}"
     @results_partial = "summary_by_semester"
     @tab_select_partial = "select_semester"
   end
@@ -396,9 +412,124 @@ class StatsController < ApplicationController
 
     @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", @cur_month_id])
 
-    @report_description = "#{@ministry.name} during #{Month.find(:first, :conditions => {:month_id => @month_id}).description}"
+    @report_description = "Summary of #{@ministry.name} during #{Month.find(:first, :conditions => {:month_id => @month_id}).description}"
     @results_partial = "summary_by_month"
     @tab_select_partial = "select_month"
   end
 
+
+  def setup_campus_by_year
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    current_year_id = Month.find_year_id(cur_month)
+
+
+    session[:stats_year] = params[:year] if params[:year].present?
+    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    @year_id = session[:stats_year]
+
+
+    year = Year.find(@year_id)
+    
+    first_end_date = year.months.first.weeks.all(:order => "week_endDate asc").first.end_date
+
+    if(year.months.last.weeks.empty?)
+      last_end_date = Week.all(:order => "week_endDate asc").last.end_date
+    else
+      last_end_date = year.months.last.weeks.all(:order => "week_endDate asc").last.end_date
+    end
+
+    @campuses = @ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    @campus_stats = get_campus_stats_hash_for_date_range(first_end_date, last_end_date, @campuses)
+    @campus_prcs = get_campus_prcs_hash_for_date_range(first_end_date, last_end_date, @campuses)
+
+    @years = Year.all
+
+    @report_description = "Campuses under #{@ministry.name} during #{year.description}"
+    @results_partial = "campuses_by_week_range"
+    @tab_select_partial = "select_year"
+  end
+
+
+  def setup_campus_by_semester
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+
+    session[:stats_semester] = params[:semester] if params[:semester].present?
+    session[:stats_semester] = Month.find_semester_id(@cur_month) unless session[:stats_semester].present?
+    @semester_id = session[:stats_semester]
+
+
+    semester = Semester.find(@semester_id)
+
+    first_end_date = semester.weeks.all(:order => "week_endDate asc").first.end_date
+    last_end_date =  semester.weeks.all(:order => "week_endDate asc").last.end_date
+
+    @campuses = @ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    @campus_stats = get_campus_stats_hash_for_date_range(first_end_date, last_end_date, @campuses)
+    @campus_prcs = get_campus_prcs_hash_for_date_range(first_end_date, last_end_date, @campuses)
+
+    # ensures that semesters that haven't occurred yet aren't listed
+    cur_semester_id = Month.find_semester_id(@cur_month)
+    @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
+
+    @report_description = "Campuses under #{@ministry.name} during #{semester.description}"
+    @results_partial = "campuses_by_week_range"
+    @tab_select_partial = "select_semester"
+  end
+
+
+  def setup_campus_by_month
+    @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    @cur_month_id = Month.find_month_id(@cur_month)
+
+    session[:stats_month] = params[:month] if params[:month].present?
+    session[:stats_month] = @cur_month_id unless session[:stats_month].present?
+    @month_id = session[:stats_month]
+
+    month = Month.find(@month_id)
+
+    first_week_end_date = month.weeks.all(:order => "week_endDate asc").first.end_date
+    last_week_end_date =  month.weeks.all(:order => "week_endDate asc").last.end_date
+
+    @campuses = @ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    @campus_stats = get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
+    @campus_prcs = get_campus_prcs_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
+
+
+    @weeks = Week.find_weeks_in_month(@month_id)
+    @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", @cur_month_id])
+
+    @report_description = "Campuses under #{@ministry.name} during #{month.description}"
+    @results_partial = "campuses_by_week_range"
+    @tab_select_partial = "select_month"
+  end
+
+
+
+  def get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, campuses)
+    campus_stats = {}
+
+    campuses.each do |campus|
+      stats = ::WeeklyReport.find_all_stats_by_date_range_and_campus(first_week_end_date, last_week_end_date, campus.id)
+
+      campus_stats.merge!({campus.id => stats})
+    end
+
+    campus_stats
+  end
+
+
+  def get_campus_prcs_hash_for_date_range(first_week_end_date, last_week_end_date, campuses)
+    campus_prcs = {}
+
+    # since we're working with the end dates of weeks we need to get the week previous to the first week to include all PRCs in the first week
+    first_week_end_date = Week.all(:conditions => ["#{_(:end_date, :week)} < ?", first_week_end_date], :order => "week_endDate asc").last.end_date
+
+    campuses.each do |campus|
+      prcs = ::Prc.count_by_campus(first_week_end_date, last_week_end_date, campus.id)
+
+      campus_prcs.merge!({campus.id => prcs})
+    end
+
+    campus_prcs
+  end
 end
