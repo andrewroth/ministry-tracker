@@ -1,0 +1,50 @@
+<%- uid = Time.now.to_i -%>
+
+<div id='stats_chosen_ministry'>
+  Ministry Team:
+  <%= link_to_function @stats_ministry.name, "", :id => 'stats_choose_ministry_link' %>
+</div>
+
+<%= hidden_field_tag 'report[ministry]', @stats_ministry_id %>
+<div id='stats_choose_ministry_tree_<%=uid%>' class='stats_choose_ministry_tree' style='display:none'></div>
+<script>
+  Ext.onReady(function(){
+    // shorthand
+    var Tree = Ext.tree;
+
+    var tree = new Tree.TreePanel({
+      useArrows: true,
+      autoScroll: true,
+      animate: true,
+      enableDD: false,
+      containerScroll: true,
+      border: true,
+      width: 275,
+      height: 300,
+
+      root: <%= get_hash_for_stats_ministry_selection_tree %>
+    });
+
+    // render the tree
+    tree.render('stats_choose_ministry_tree_<%=uid%>');
+    tree.getRootNode().expand();
+
+    // handle clicks
+    tree.on('click', function(node, e) {
+      $('#report_ministry')[0].value = node.id;
+      $('#stats_choose_ministry_link').html(node.text);
+      selectReport();
+      return false;
+    }, this);
+  });
+
+  $("#stats_choose_ministry_link").click(function(e) {
+    $('#stats_choose_ministry_tree_<%=uid%>').slideDown();
+    return false;
+  });
+  $(document).click(function(e) {
+    if ($('#stats_choose_ministry_tree_<%=uid%>').is(':visible')) {
+      $('#stats_choose_ministry_tree_<%=uid%>').slideUp();
+    }
+  });
+</script>

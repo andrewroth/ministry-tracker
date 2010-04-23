@@ -1,4 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function(){selectReport()});
+
+
+function selectReport() {
   beginLoadingStatsTab();
   jQuery.ajax({
     complete: function(request){ completeLoadingStatsTab() },
@@ -6,8 +9,7 @@ $(document).ready(function() {
     dataType:'script',
     type:'post',
     url:'/stats/select_report'})
-});
-
+}
 
 // generate the string for observe_field's :with
 function getWithStringForReportForm(time, ministry, summary) {
@@ -17,12 +19,13 @@ function getWithStringForReportForm(time, ministry, summary) {
   }
 
   if(time == undefined || time == null) {
-    time = jQuery(".statsTabActive")[0].title;
+    time = jQuery(".statsTabActive")[0].id;
   }
 
   if(ministry == undefined || ministry == null) {
-    ministry_select = document.getElementById('report_ministry');
-    ministry = ministry_select.options[ministry_select.selectedIndex].value;
+    ministry = jQuery("#report_ministry")[0].value;
+//    ministry_select = document.getElementById('report_ministry');
+//    ministry = ministry_select.options[ministry_select.selectedIndex].value;
   }
 
   return 'ministry=' + ministry + '&summary=' + summary + '&time=' + time

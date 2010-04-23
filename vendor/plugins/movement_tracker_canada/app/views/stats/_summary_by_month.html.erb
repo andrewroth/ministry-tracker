@@ -21,7 +21,7 @@
         </td>
         <% total = 0 %>
         <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,sp_conv) %>
+        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,sp_conv) %>
         <% total += result %>
         <td>
             <center>
@@ -41,7 +41,7 @@
         </td>
         <% total = 0 %>
         <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,sp_conv_std) %>
+        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,sp_conv_std) %>
         <% total += result %>
         <td>
             <center>
@@ -61,7 +61,7 @@
         </td>
         <% total = 0 %>
         <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,gos_pres) %>
+        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,gos_pres) %>
         <% total += result %>
         <td>
             <center>
@@ -81,7 +81,7 @@
         </td>
         <% total = 0 %>
         <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,gos_pres_std) %>
+        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,gos_pres_std) %>
         <% total += result %>
         <td>
             <center>
@@ -101,7 +101,7 @@
         </td>
         <% total = 0 %>
         <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@ministry_id,hs_pres) %>
+        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,hs_pres) %>
         <% total += result %>
         <td>
             <center>
@@ -124,7 +124,7 @@
         <% @weeks.each do |week| -%>
         <% start_date = Week.find_start_date(week.id) %>
         <% end_date = Week.find_end_date(week.id) %>
-        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@ministry_id) %>
+        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
         <% total += result %>
         <td>
             <br/>
