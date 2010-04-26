@@ -12,7 +12,7 @@
 
       <p class="statsFormField">
         <%= form.label :ministry, "Ministry:" %>
-        <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id.to_i %>
+        <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @stats_ministry_id.to_i %>
         <%= observe_field 'report_ministry', :url => {:action => 'campuses_collection_select'},
                                              :with => 'ministry',
                                              :update => 'campusesSelect',

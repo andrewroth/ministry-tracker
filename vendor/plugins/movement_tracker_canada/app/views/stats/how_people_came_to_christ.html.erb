@@ -13,7 +13,7 @@
 
         <p class="statsFormField">
           <%= form.label :ministry, "Ministry:" %>
-          <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @ministry_id.to_i %>
+          <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @stats_ministry_id.to_i %>
         </p>
 
         <p class="statsFormField">
@@ -37,10 +37,10 @@
 
 
 <br/>
-<div id="results" class="statsContainer" <% unless @ministry_selected.present? %> style="display: none"<% end %> >
-  <% if @ministry_selected.present? %>
+<div id="results" class="statsContainer" <% unless @stats_ministry_selected.present? %> style="display: none"<% end %> >
+  <% if @stats_ministry_selected.present? %>
     <p>
-      <span class="statsTitle"><%= sprintf("%s", @ministry_selected.name) %> during <%= sprintf("%s", @year_selected) %></span>
+      <span class="statsTitle"><%= sprintf("%s", @stats_ministry_selected.name) %> during <%= sprintf("%s", @year_selected) %></span>
     </p>
     <p>
       <%= render :partial => "how_people_came_to_christ" %>
