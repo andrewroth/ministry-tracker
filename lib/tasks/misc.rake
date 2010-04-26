@@ -9,6 +9,35 @@ namespace :cmt do
   end
 
 
+  desc "change cim_stats_prc semester_id to match their date"
+  task :update_prc_semesters_to_match_date => :environment do
+
+    puts "\nType 'yes' to find records in '#{Prc.table_name}' that have a date which does not match the semester given by their semester_id and then change the semester_id to match the date, leaving the date unchanged."
+    response = STDIN.gets
+    if response.to_s.upcase == "YES\n"
+
+      puts "Searching through '#{Prc.table_name}'..."
+
+      count = 0
+      
+      Prc.all.each do |prc|
+        proper_semester = ::Semester.find_semester_from_date(prc.date)
+        unless prc.semester_id == proper_semester.id
+          count += 1
+          prc.semester_id = proper_semester.id
+          prc.save
+        end
+      end
+
+      puts "Corrected #{count} records."
+
+    else
+      puts "Cancelled the task, no records modified."
+      exit
+    end
+  end
+
+
   desc "add c4c staff ministry involvement to all active staff in cim_hrdb_staff"
   task :add_missing_staff_ministry_involvements => :environment do
     c4c = Ministry.find_by_name 'Campus for Christ'
