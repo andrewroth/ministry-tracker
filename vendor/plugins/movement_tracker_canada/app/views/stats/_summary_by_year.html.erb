@@ -1,176 +1,129 @@
 
-<p><span class="statsTitle"><%= @report_description %></span></p>
-<table class="t1">
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
     <tr>
-        <td class="t2">
+        <td>
         </td>
         <% semesters = Semester.find_semesters_by_year(@year_id) %>
 
         <% semesters.each do |semester| %>
-          <td>
-              <center>
-                  <span class="bold"><%=link_to "#{semester.description}", :action => "semester_at_a_glance", :report => { 'ministry' => @ministry_id, 'campus_id' => @campus_id, 'semester' => "#{semester.description}"} %></span>
-              </center>
+          <td class="statsTableTitle">
+            <%=  semester.description %>
+            <%#=link_to "#{semester.description}", :action => "semester_at_a_glance", :report => { 'ministry' => @ministry_id, 'campus_id' => @campus_id, 'semester' => "#{semester.description}"} %>
           </td>
         <% end %>
 
-        <td>
-            <center>
-                <span class="bold">Total</span>
-            </center>
+        <td class="statsTableTitle">
+            Total
         </td>
 
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Spiritual Conversations by Staff
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-              <center>
-                  <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv) %>
-              </center>
+              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv) %>
               <% total += stat %>
           </td>
         <% end %>
 
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Spiritual Conversations by Students
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-              <center>
-                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv_std) %>
-              </center>
+              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv_std) %>
               <% total += stat %>
           </td>
         <% end %>
 
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Gospel Presentations by Staff
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-              <center>
-                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres) %>
-              </center>
+              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres) %>
               <% total += stat %>
           </td>
         <% end %>
 
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Gospel Presentations by Students
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-              <center>
-                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres_std) %>
-              </center>
+              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres_std) %>
               <% total += stat %>
           </td>
         <% end %>
 
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Holy Spirit Presentations
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-              <center>
-                <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, hs_pres) %>
-              </center>
+              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, hs_pres) %>
               <% total += stat %>
           </td>
         <% end %>
         
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
-</table>
 
-<br/>
-<br/>
-
-<p><span class="statsSubTitle">Indicated Decisions</span></p>
-<table class="t1">
     <tr>
-        <td class="t2">
-        </td>
-        <% semesters = Semester.find_semesters_by_year(@year_id) %>
-
-        <% semesters.each do |semester| %>
-          <td>
-            <center>
-                <span class="bold"><a><%= semester.description %></a></span>
-            </center>
-          </td>
-        <% end %>
-
         <td>
-            <center>
-                <span class="bold">Total</span>
-            </center>
+            <br/>
         </td>
     </tr>
     <tr class="highlight">
-        <td>
+        <td class="statsTableTitle">
             Indicated Decisions
         </td>
         <% total = 0 %>
 
         <% semesters.each do |semester| %>
           <td>
-            <center>
-                <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
-            </center>
+              <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
           </td>
           <% total += stat %>
         <% end %>
 
         <td>
-            <center>
-                <%= total %>
-            </center>
+            <%= total %>
         </td>
     </tr>
 </table>

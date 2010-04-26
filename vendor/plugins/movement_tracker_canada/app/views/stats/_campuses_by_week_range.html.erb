@@ -1,27 +1,27 @@
 
-<p><span class="statsTitle"><%= @report_description %></span></p>
-<table class="t1">
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
   <tr>
-      <td class="t4"></td>
-      <td class="t4">Spiritual Conversations by Staff</td>
-      <td class="t4">Spiritual Conversations by Students</td>
-      <td class="t4">Gospel Presentations by Staff</td>
-      <td class="t4">Gospel Presentations by Students</td>
-      <td class="t4">Holy Spirit Presentations</td>
-      <td class="t4">Indicated Decisions</td>
+      <td class="statsTableTitle"></td>
+      <td class="statsTableTitle">Spiritual Conversations by Staff</td>
+      <td class="statsTableTitle">Spiritual Conversations by Students</td>
+      <td class="statsTableTitle">Gospel Presentations by Staff</td>
+      <td class="statsTableTitle">Gospel Presentations by Students</td>
+      <td class="statsTableTitle">Holy Spirit Presentations</td>
+      <td class="statsTableTitle">Indicated Decisions</td>
   </tr>
 
   <% total_stats = {gos_pres => 0, gos_pres_std => 0, sp_conv => 0, sp_conv_std => 0, hs_pres => 0, "prcs" => 0} %>
 
   <% @campuses.each do |campus| %>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-      <td class="t4"><%= campus.short_desc %></td>
-      <td class="t4"><%= @campus_stats[campus.id][sp_conv] %></td>
-      <td class="t4"><%= @campus_stats[campus.id][sp_conv_std] %></td>
-      <td class="t4"><%= @campus_stats[campus.id][gos_pres] %></td>
-      <td class="t4"><%= @campus_stats[campus.id][gos_pres_std] %></td>
-      <td class="t4"><%= @campus_stats[campus.id][hs_pres] %></td>
-      <td class="t4"><%= @campus_prcs[campus.id] %></td>
+      <td class="statsTableTitle"><%= campus.short_desc %></td>
+      <td><%= @campus_stats[campus.id][sp_conv] %></td>
+      <td><%= @campus_stats[campus.id][sp_conv_std] %></td>
+      <td><%= @campus_stats[campus.id][gos_pres] %></td>
+      <td><%= @campus_stats[campus.id][gos_pres_std] %></td>
+      <td><%= @campus_stats[campus.id][hs_pres] %></td>
+      <td><%= @campus_prcs[campus.id] %></td>
 
       
       <% total_stats[sp_conv] += @campus_stats[campus.id][sp_conv] %>
@@ -35,12 +35,12 @@
 
   <tr><td><br/></td></tr>
   <tr class="highlight">
-    <td class="t4">Totals:</td>
-    <td class="t4"><%= total_stats[sp_conv] %></td>
-    <td class="t4"><%= total_stats[sp_conv_std] %></td>
-    <td class="t4"><%= total_stats[gos_pres] %></td>
-    <td class="t4"><%= total_stats[gos_pres_std] %></td>
-    <td class="t4"><%= total_stats[hs_pres] %></td>
-    <td class="t4"><%= total_stats["prcs"] %></td>
+    <td class="statsTableTitle">Totals:</td>
+    <td><%= total_stats[sp_conv] %></td>
+    <td><%= total_stats[sp_conv_std] %></td>
+    <td><%= total_stats[gos_pres] %></td>
+    <td><%= total_stats[gos_pres_std] %></td>
+    <td><%= total_stats[hs_pres] %></td>
+    <td><%= total_stats["prcs"] %></td>
   </tr>
 </table>

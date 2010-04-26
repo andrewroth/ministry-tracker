@@ -1149,10 +1149,14 @@ div.choose_ministry_tree {
   margin: 1em;
   padding: 0.7em;
   text-align: center;
-  background-color: #FCFCFC;
-  border: 2px solid #F5F5FA;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
+  background-color: #FAFAFA;
+  border: 2px solid white;
+  -moz-border-radius: 60px;
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+  -moz-box-shadow: 0 0 10em white inset;
+  -webkit-box-shadow: 0 0 10em white inset;
+  box-shadow: 0 0 10em white inset;
 }
 
 .statsFormBoxTitle {
@@ -1194,6 +1198,7 @@ div .statsRadioButton {
 .statsRadioButton input {
   float: left;
   margin-right: 0.5em;
+  cursor: pointer;
 }
 
 .statsRadioButton label {
@@ -1201,6 +1206,13 @@ div .statsRadioButton {
   width: auto;
   text-align: left;
   padding: 0;
+  color: #1F429B;
+  cursor: pointer;
+}
+
+.statsRadioButton label:hover {
+  color: #ECAC00;
+  text-decoration: underline;
 }
 
 #statsRadioButtonContainer {
@@ -1212,11 +1224,6 @@ div .statsRadioButton {
   position: relative;
   top: 0.7em;
   left: 0.7em;
-}
-
-.statsListLink {
-  font-size: 1.25em;
-  padding: 0.25em 0 0 1em;
 }
 
 #newWeeklyReportFormContainer label {
@@ -1266,7 +1273,8 @@ div .statsRadioButton {
 
 .statsReportTab {
   float: left;
-  border: solid 2px #F5F5FA;
+  border: solid 2px #ADC9DB;
+  /*border: solid 2px #E6E6F2;*/
   background-color: #FCFCFC;
   padding: 5px;
   margin: 0 0 0 1.7em;
@@ -1275,13 +1283,12 @@ div .statsRadioButton {
 }
 
 .statsReportTab:hover:not(.statsTabActive) {
-  border: solid 2px #FFCB05;
+  border: solid 2px #ECAC00;
 }
 
 .statsTabActive {
-  border: solid 2px #1F429B;
+  border: solid 2px #4C6CBF;
   padding: 7px;
-  /*background-color: #F5F5FA;*/
 }
 
 #statsSpinnerContainer {
@@ -1303,9 +1310,13 @@ div .statsRadioButton {
   display: none;
   padding: 3em;
   text-align: center;
-  background-color: #F5F5FA;
+  background-color: #FCFCFF;
   -moz-border-radius: 17px;
   -webkit-border-radius: 17px;
+  border-radius: 17px;
+  -moz-box-shadow: 0 0 5em #E1E6F2 inset;
+  -webkit-box-shadow: 0 0 5em #E1E6F2 inset;
+  box-shadow: 0 0 5em #E1E6F2 inset;
 }
 
 .center {
@@ -1332,6 +1343,7 @@ fieldset {
   color: #1F429B;
   font-size: 160%;
   font-weight: bold;
+  margin-bottom: 1em;
 }
 
 .bold label {
@@ -1356,17 +1368,29 @@ fieldset {
   padding: 3px 5px;
 }
 
-#results .t1 {
-  border: dotted 2px #6C87CC;/*#FFCB05;*/
+#results .statsTable {
+  /*border: dotted 2px #6C87CC;*/
+  border-collapse: collapse;
   font-size: small;
-  padding: 5px 2px;
 }
 
-#results .t1 tr td {
-  padding: 3px 5px;
+#results .statsTable tr td {
+  padding: 5px 5px;
 }
 
-table .t1 {
+#results .highlight {
+  -moz-box-shadow: 0 0 1em #FFEA99;
+  -webkit-box-shadow: 0 0 1em #FFEA99;
+  box-shadow: 0 0 1em #FFEA99;
+  background-color: #FFEA99;
+}
+
+#results .statsTableTitle {
+  color: #474E66;
+  vertical-align: middle;
+}
+
+table .statsTable {
   font-size: small;
 }
 
@@ -1405,8 +1429,12 @@ div .backLink {
   z-index: 500;
   margin-left: 5em;
   border: 4px solid #F5F5FA;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  -moz-box-shadow: 0 .25em 1em grey;
+  -webkit-box-shadow: 0 .25em 1em grey;
+  box-shadow: 0 .25em 1em grey;
 }
 
 #stats_chosen_ministry {
@@ -1421,8 +1449,4 @@ div .backLink {
   background-image: url(/images/widgets/rarrowdown.gif);
   background-repeat: no-repeat;
   background-position: right center;
-}
-
-#stats_choose_ministry_link:hover {
-  background-image: url(/images/widgets/arrowdown.gif);
 }

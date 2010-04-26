@@ -1,20 +1,20 @@
 
 <p><span class="statsTitle"><%= @report_description %></span></p>
-<table class="t1">
+<table class="statsTable">
     <tr>
-        <td class="t2">
+        <td>
         </td>
         <% @months.each do |month| -%>
-        <td>
-            <span class="title1"><%= sprintf "%s", month.description %></span>
-        </td>
+            <td>
+                <span class="statsTableTitle"><%= sprintf "%s", month.description %></span>
+            </td>
         <% end %>
         <td>
-            <span class="title1">Total</span>
+            <span class="statsTableTitle">Total</span>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Spiritual Conversations by Staff
         </td>
         <% total = 0 %>
@@ -22,19 +22,15 @@
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Spiritual Conversations by Students
         </td>
         <% total = 0 %>
@@ -42,19 +38,15 @@
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv_std) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Gospel Presentations by Staff
         </td>
         <% total = 0 %>
@@ -62,19 +54,15 @@
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Gospel Presentations by Students
         </td>
         <% total = 0 %>
@@ -82,19 +70,15 @@
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres_std) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td>
+        <td class="statsTableTitle">
             Holy Spirit Presentations by Staff
         </td>
         <% total = 0 %>
@@ -102,20 +86,16 @@
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,hs_pres) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
     <tr><td><br/></td></tr>
     <tr class='highlight'>
-        <td>
+        <td class="statsTableTitle">
             Indicated Decisions
         </td>
         <% total = 0 %>
@@ -125,15 +105,11 @@
         <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
         <% total += result %>
         <td>
-            <center>
-                <%= sprintf "%s", result %>
-            </center>
+            <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
-            <center>
-                <%= sprintf "%s", total %>
-            </center>
+            <%= sprintf "%s", total %>
         </td>
     </tr>
 </table>

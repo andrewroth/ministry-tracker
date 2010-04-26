@@ -39,7 +39,12 @@
   });
 
   $("#stats_choose_ministry_link").click(function(e) {
-    $('#stats_choose_ministry_tree_<%=uid%>').slideDown();
+    if ($('#stats_choose_ministry_tree_<%=uid%>').is(':visible')) {
+      $('#stats_choose_ministry_tree_<%=uid%>').slideUp();
+    }
+    else {
+      $('#stats_choose_ministry_tree_<%=uid%>').slideDown();
+    }
     return false;
   });
   $(document).click(function(e) {
