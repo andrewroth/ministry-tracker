@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, week, weekly_report, year
+  <%= "ciministry_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, week, weekly_report, year
 
 tables:
   user: accountadmin_viewer
@@ -39,6 +39,7 @@ tables:
   prc: cim_stats_prc
   prcmethod: cim_stats_prcmethod
   semester: cim_stats_semester
+  semester_report: cim_stats_semesterreport
   week: cim_stats_week
   weekly_report: cim_stats_weeklyreport
   year: cim_stats_year
@@ -96,8 +97,6 @@ person:
   created_at: person_id
   first_name: person_fname
   last_name: person_lname
-  preferred_first_name: person_fname
-  preferred_last_name: person_lname
   middle_name: person_mname
   preferred_name: person_fname
   email: person_email
@@ -226,3 +225,18 @@ weekly_report:
 week:
   id: week_id
   end_date: week_endDate
+  
+semester_report:
+  id: semesterreport_id
+  average_hours_prayer: semesterreport_avgPrayer
+  average_attendance_weekly_meetings: semesterreport_avgWklyMtg
+  number_challenged_staff: semesterreport_numStaffChall
+  number_challenged_internships: semesterreport_numInternChall
+  number_frosh_involved: semesterreport_numFrosh
+  number_staff_led_dg: semesterreport_numStaffDG
+  number_in_staff_led_dg: semesterreport_numInStaffDG
+  number_student_led_dg: semesterreport_numStudentDG
+  number_in_student_led_dg: semesterreport_numInStudentDG
+  number_sp_mult_in_staff_led_dg: semesterreport_numSpMultStaffDG
+  number_sp_mult_in_student_led_dg: semesterreport_numSpMultStdDG
+  
