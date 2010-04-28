@@ -96,6 +96,8 @@ person:
   created_at: person_id
   first_name: person_fname
   last_name: person_lname
+  preferred_first_name: person_fname
+  preferred_last_name: person_lname
   middle_name: person_mname
   preferred_name: person_fname
   email: person_email
