@@ -3,7 +3,7 @@
 
 <h1 id="statsTitle">Statistics</h1>
 
-<div id="statsLinkBox" class="statsFormBox">
+<div id="statsLinkBox" class="statsFormBox <%= "notDisplayed" unless @show_additional_report_links %>">
   <ul class="statsLinkList">
     <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
     <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
@@ -12,15 +12,13 @@
 
 <div class="statsFormContainer">
   <div class="statsFormBox">
-    <h2 class="statsFormBoxTitle">Team Member Report</h2>
-
     <br/>
 
     <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
       
       <%= render :partial => "choose_ministry" %>
 
-      <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @oneCampusMinistry %>>
+      <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
         <br/>
         <div id="summaryRadioButton" class="statsRadioButton">
           <%= form.radio_button :summary, "summary", :checked => @stats_summary %>
@@ -82,11 +80,4 @@
   <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;"></div>
   <br/>
 </div>
-
-
-
-
-
-
-
 

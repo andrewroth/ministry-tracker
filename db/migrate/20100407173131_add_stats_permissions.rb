@@ -1,11 +1,18 @@
 class AddStatsPermissions < ActiveRecord::Migration
 
   NEW_PERMISSIONS = [{ :description => "View Stats Tab", :controller => "stats", :action => "index" },
+                     { :description => "Campus Drill Down", :controller => "stats", :action => "campus_drill_down" },
+                     { :description => "Semester at a Glance", :controller => "stats", :action => "semester_at_a_glance" },
+                     { :description => "How People Came to Christ", :controller => "stats", :action => "how_people_came_to_christ" },
                      { :description => "Submit Weekly Stats", :controller => "weekly_reports", :action => "new" },
                      { :description => "Submit Semester Stats", :controller => "semester_reports", :action => "new" }]
 
   NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_id => 1,  :controller => "stats", :action => "index" },
                                    { :ministry_role_id => 13, :controller => "stats", :action => "index" },
+                                   { :ministry_role_id => 1,  :controller => "stats", :action => "campus_drill_down" },
+                                   { :ministry_role_id => 13, :controller => "stats", :action => "campus_drill_down" },
+                                   { :ministry_role_id => 1,  :controller => "stats", :action => "semester_at_a_glance" },
+                                   { :ministry_role_id => 1,  :controller => "stats", :action => "how_people_came_to_christ" },
                                    { :ministry_role_id => 1,  :controller => "weekly_reports", :action => "new" },
                                    { :ministry_role_id => 13, :controller => "weekly_reports", :action => "new" },
                                    { :ministry_role_id => 1,  :controller => "semester_reports", :action => "new" },

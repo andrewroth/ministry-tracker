@@ -1,7 +1,7 @@
 class StatsController < ApplicationController
   unloadable
 
-  skip_before_filter :authorization_filter, :only => [:campuses_collection_select]
+  skip_before_filter :authorization_filter, :only => [:select_report, :campuses_collection_select]
 
 
   NO_CAMPUSES_UNDER_MINISTRY = -1
@@ -340,6 +340,7 @@ class StatsController < ApplicationController
 
     @stats_ministry_id =  session[:stats_ministry_id].to_i
     @stats_ministry = Ministry.find(@stats_ministry_id)
+    @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me)
 
     @stats_summary = session[:stats_summary] == DEFAULT_SUMMARY ? true : false
 
@@ -347,16 +348,23 @@ class StatsController < ApplicationController
 
 
 
-    # if a ministry has only one campus disable campus drill-down and force summary reports only (which means no week report either)
+    # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
-    if @oneCampusMinistry
+    @drillDownAccess = @me.has_permission_from_ministry_or_higher("campus_drill_down", "stats", @stats_ministry)
+
+    @hide_radios = false
+
+    if !is_ministry_admin && (@oneCampusMinistry || !@drillDownAccess)
       @stats_summary = true
       session[:stats_summary] = DEFAULT_SUMMARY
+      @hide_radios = true
     end
 
     if @stats_time == "week" && @stats_summary
       @stats_time = session[:stats_time] = DEFAULT_REPORT_TIME
     end
+
+    @show_additional_report_links = (authorized?("semester_at_a_glance", "stats") || authorized?("how_people_came_to_christ", "stats")) ? true : false
 
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time

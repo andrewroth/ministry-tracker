@@ -32,11 +32,7 @@
                 </td>
                 <td>
                     <center>
-                        <% if @total != 0 %>
-                            <%= (method*100)/@total %>%
-                        <% else %>
-                            0%
-                        <% end %>
+                        <%= @total != 0 ? (method*100)/@total : "0" %>%
                     </center>
                 </td>
                 <td>
@@ -47,11 +43,7 @@
                 </td>
                 <td>
                     <center>
-                        <% if method != 0 %>
-                            <%= (@completed[i]*100)/method %>%
-                        <% else %>
-                            0%
-                        <% end %>
+                        <%= method != 0 ? (@completed[i]*100)/method : "0" %>%
                     </center>
                 </td>
             </tr>
@@ -74,7 +66,7 @@
       </td>
       <td>
         <br/>
-        <%= (completedTotal*100) / methodTotal %>%
+        <%= methodTotal != 0 ? (completedTotal*100) / methodTotal : "0" %>%
       </td>
     </tr>
 </table>
