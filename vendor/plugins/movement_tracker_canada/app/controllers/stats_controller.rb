@@ -340,7 +340,8 @@ class StatsController < ApplicationController
 
     @stats_ministry_id =  session[:stats_ministry_id].to_i
     @stats_ministry = Ministry.find(@stats_ministry_id)
-    @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me)
+    # make sure they have access to the ministry that was selected
+    @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me) || is_ministry_admin
 
     @stats_summary = session[:stats_summary] == DEFAULT_SUMMARY ? true : false
 
