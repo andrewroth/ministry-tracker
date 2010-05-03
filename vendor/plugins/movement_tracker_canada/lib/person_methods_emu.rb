@@ -47,6 +47,8 @@ module PersonMethodsEmu
       # manually set these because with the custom column mapping RAILS doesn't always set them automatically
       person.created_at = Time.now
       person.updated_at = Time.now
+      person.person_legal_fname = ""
+      person.person_legal_lname = ""
       person.save!
       # add address
       person.current_address.update_attributes(params[:current_address])
