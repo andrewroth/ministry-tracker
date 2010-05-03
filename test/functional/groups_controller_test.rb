@@ -12,13 +12,13 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    assert_equal [ Factory(:group_1), Factory(:group_2) ], assigns('groups')
+    assert_equal [ Group.find(1), Group.find(2), Group.find(3), Group.find(4) ], assigns("groups")
   end
 
   def test_join
     get :join
     assert_response :success
-    assert_equal [ Factory(:group_1), Factory(:group_2) ], assigns('groups')
+    assert_equal [ Group.find(1), Group.find(2), Group.find(3), Group.find(4) ], assigns("groups")
   end
 
   def test_join_request_campus_chosen
