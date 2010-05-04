@@ -30,18 +30,11 @@ class SemesterReportsController < ApplicationController
     current_semester_id = Month.find_semester_id("#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}")
     current_campus_id = get_ministry.unique_campuses.first.id
     
-    semester_reports = SemesterReport.find(:all, :conditions => { :semester_id => current_semester_id, :campus_id => current_campus_id })
-  
-  
-    if semester_reports.any?
-      @semester_report = semester_reports[0]
-      @semester_report.semester_id = current_semester_id
-      @semester_report.campus_id = current_campus_id
-    else
-      @semester_report = SemesterReport.new
-      @semester_report.semester_id = current_semester_id
-      @semester_report.campus_id = current_campus_id
-    end
+    @semester_report = SemesterReport.find(:first, :conditions => { :semester_id => current_semester_id, :campus_id => current_campus_id })
+    @semester_report ||= SemesterReport.new 
+
+    @semester_report.semester_id = current_semester_id
+    @semester_report.campus_id = current_campus_id
     
     @semesters = Semester.all(:order => :semester_startDate)
 
@@ -88,10 +81,17 @@ class SemesterReportsController < ApplicationController
   # PUT /semester_reports/1
   # PUT /semester_reports/1.xml
   def update
-    @semester_report = SemesterReport.find(params[:id])
+    @semester_report = SemesterReport.find(:first, :conditions => { :semester_id => params[:semester_report][:semester_id], :campus_id => params[:semester_report][:campus_id] })
+
+    if @semester_report
+      success_update = true if @semester_report.update_attributes(params[:semester_report])
+    else
+      success_update = true if @semester_report = SemesterReport.new(params[:semester_report])
+    end
 
     respond_to do |format|
-      if @semester_report.update_attributes(params[:semester_report])
+      if success_update
+        @semester_report.save!
         flash[:notice] = 'Your semester numbers were successfully submitted.'
         format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
         format.xml  { head :ok }

@@ -17,16 +17,20 @@
         <td class="statsTableTitle">
             Spiritual Conversations by Staff
         </td>
-        <% total = 0 %>
+        <% total = 0 
+           totalSection = Hash.new
+        %>
         <% @months.each do |month| -%>
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv) %>
         <% total += result %>
+        <% totalSection[month.id] = result %>
         <td>
             <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
             <%= sprintf "%s", total %>
+            <% totalSection[:total] = total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -37,12 +41,28 @@
         <% @months.each do |month| -%>
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv_std) %>
         <% total += result %>
+        <% totalSection[month.id] += result %>
         <td>
             <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
             <%= sprintf "%s", total %>
+            <% totalSection[:total] += total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+        <td class="statsTableTitle">
+            Spiritual Conversations Total
+        </td>
+        <% total = 0 %>
+        <% @months.each do |month| -%>
+        <td>
+        <%= totalSection[month.id] %>
+        </td>
+        <% end %>
+        <td>
+            <%= totalSection[:total] %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -53,12 +73,14 @@
         <% @months.each do |month| -%>
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres) %>
         <% total += result %>
+        <% totalSection[month.id] = result %>
         <td>
             <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
             <%= sprintf "%s", total %>
+            <% totalSection[:total] = total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -69,12 +91,28 @@
         <% @months.each do |month| -%>
         <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres_std) %>
         <% total += result %>
+        <% totalSection[month.id] += result %>
         <td>
             <%= sprintf "%s", result %>
         </td>
         <% end %>
         <td>
             <%= sprintf "%s", total %>
+            <% totalSection[:total] += total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+        <td class="statsTableTitle">
+            Gospel Presentations Total
+        </td>
+        <% total = 0 %>
+        <% @months.each do |month| -%>
+        <td>
+        <%= totalSection[month.id] %>
+        </td>
+        <% end %>
+        <td>
+            <%= totalSection[:total] %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">

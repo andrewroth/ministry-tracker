@@ -1224,6 +1224,10 @@ div .statsRadioButton {
   left: 0.7em;
 }
 
+.statsTableTotal {
+  font-weight: bold;
+}
+
 #newWeeklyReportFormContainer label {
   float: left;
   width: 18em;

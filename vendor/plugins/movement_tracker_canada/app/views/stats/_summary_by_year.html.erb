@@ -22,17 +22,21 @@
         <td class="statsTableTitle">
             Spiritual Conversations by Staff
         </td>
-        <% total = 0 %>
+        <% total = 0 
+           totalSection = Hash.new
+        %>
 
         <% semesters.each do |semester| %>
           <td>
               <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv) %>
               <% total += stat %>
+              <% totalSection[semester.id] = stat %>
           </td>
         <% end %>
 
         <td>
             <%= total %>
+            <% totalSection[:total] = total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -45,11 +49,28 @@
           <td>
               <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv_std) %>
               <% total += stat %>
+              <% totalSection[semester.id] += stat %>
           </td>
         <% end %>
 
         <td>
             <%= total %>
+            <% totalSection[:total] += total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+        <td class="statsTableTitle">
+            Spiritual Conversations Total
+        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <%= totalSection[semester.id] %>
+          </td>
+        <% end %>
+
+        <td>
+            <%= totalSection[:total] %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -62,11 +83,13 @@
           <td>
               <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres) %>
               <% total += stat %>
+              <% totalSection[semester.id] = stat %>
           </td>
         <% end %>
 
         <td>
             <%= total %>
+            <% totalSection[:total] = total %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -79,11 +102,28 @@
           <td>
               <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres_std) %>
               <% total += stat %>
+              <% totalSection[semester.id] += stat %>
           </td>
         <% end %>
 
         <td>
             <%= total %>
+            <% totalSection[:total] += total %>
+        </td>
+    </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+        <td class="statsTableTitle">
+            Gospel Presentations Total
+        </td>
+
+        <% semesters.each do |semester| %>
+          <td>
+              <%= totalSection[semester.id] %>
+          </td>
+        <% end %>
+
+        <td>
+            <%= totalSection[:total] %>
         </td>
     </tr>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
