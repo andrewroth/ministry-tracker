@@ -376,6 +376,8 @@ class StatsController < ApplicationController
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
     current_year_id = Month.find_year_id(cur_month)
 
+    @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
+
     @campuses_selected = @stats_ministry.unique_campuses
 
     session[:stats_year] = params[:year] if params[:year].present?

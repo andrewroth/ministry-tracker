@@ -1,7 +1,9 @@
 class AddViewSemesterHighlightsPermission < ActiveRecord::Migration
  NEW_PERMISSIONS = [{ :description => "View Semester Highlights Stats", :controller => "stats", :action => "semester_highlights" }]
 
-  NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Leader",  :permission_index => 0 }]
+  NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Leader",  :permission_index => 0 },
+                                   { :ministry_role_name => "Campus Coordinator",  :permission_index => 0 }
+                                   ]
 
   def self.up
     NEW_PERMISSIONS.each do |permission|
