@@ -36,7 +36,7 @@ class MinistryRolesController < ApplicationController
   def show
     if params[:person_id] || params[:guid]
       if params[:guid]
-        @user = User.find(:first, :conditions => {_(:guid, :user) => params[:guid]}, :include => :person)
+        @user = User.find(:first, :conditions => {_(:guid, :user) => params[:guid]})
         @person = @user.person
       else
         @person = Person.find(params[:person_id])
