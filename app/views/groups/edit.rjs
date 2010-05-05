@@ -1,4 +1,6 @@
-page[:address_form].replace_html(:partial => 'form', :locals => {:group => @group})
+form_for @group do |f|
+  page[:address_form].replace_html(:partial => 'form', :locals => {:group => @group, :f => f})
+end
 page[:address_form].show
 page[:address].hide
 page[:address_form].visual_effect("highlight")

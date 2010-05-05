@@ -12,8 +12,6 @@ class Ministry < ActiveRecord::Base
   has_many :training_questions, :order => "activity", :dependent => :destroy
   after_create :create_first_view
 
-
-
   def all_training_categories
     @all_training_categories ||= Array.wrap(ancestors.collect(&:training_categories)).flatten.uniq
     return @all_training_categories

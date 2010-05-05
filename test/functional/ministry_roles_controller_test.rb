@@ -14,7 +14,17 @@ class MinistryRolesControllerTest < ActionController::TestCase
     @response   = ActionController::TestResponse.new
     login
   end
-  
+
+  def test_show
+    get :show, :person_id => '50000', :ministry_id => 1
+    assert_response :success
+    assert_equal(1, assigns["ministry_role"].id)
+
+    get :show, :guid => 'F167605D-94A4-7121-2A58-8D0F2CA6E026', :ministry_id => 1
+    assert_response :success
+    assert_equal(1, assigns["ministry_role"].id)
+  end
+
   def test_index
     get :index
     assert_response :success, @response.body

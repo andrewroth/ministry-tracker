@@ -214,7 +214,7 @@ class PeopleController < ApplicationController
 	   		conditions[1] << name+'%' 
 	   	end
 	   	if params[:filter_ids].present?
-	   	  conditions[0] << "#{_(:id, :person)} NOT IN(?)"
+	   	  conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
 	   	  conditions[1] << params[:filter_ids]
    	  end
    	  
@@ -479,7 +479,7 @@ class PeopleController < ApplicationController
       if ministry_campus
         ministry = ministry_campus.ministry
       else
-        ministry = Cmt::CONFIG[:default_ministry_name]
+        ministry = Ministry.find(:first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] })
         ministry ||= Ministry.first
         throw "add some ministries" unless ministry
       end

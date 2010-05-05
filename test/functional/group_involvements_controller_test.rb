@@ -27,6 +27,9 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     assert_difference "GroupInvolvement.count", -1 do
       xhr :delete, :destroy, :id => 3, :members => [50000]
     end
+
+    xhr :delete, :destroy, :id => 1, :members => [50000]
+    assert_not_nil(::GroupInvolvement.find(1))
   end
   
   def test_transfer
@@ -37,6 +40,34 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     xhr :post, :transfer, :id => group2.id, :transfer_to => group1.id, :members => [50000], :level => 'leader'
     assert_equal old_count_1 + 1, group1.group_involvements.count
     assert_equal old_count_2 - 1, group2.group_involvements.count
+
+    assert_no_difference "::GroupInvolvement.find(1).group_id" do
+      xhr :post, :transfer, :id => 1, :transfer_to => 2, :members => [50000], :level => 'leader'
+    end
+
+    xhr :post, :change_level, :id => 2, :members => [1], :level => 'leader'
+    assert_no_difference "::GroupInvolvement.find(3).group_id" do
+      xhr :post, :transfer, :id => 2, :transfer_to => 1, :members => [50000], :level => 'leader'
+    end
+  end
+
+  def test_change_level
+    # test change only leader to memeber
+    xhr :post, :change_level, :id => 1, :members => [50000], :level => 'member'
+    assert_equal('leader', ::GroupInvolvement.find(1).level)
+
+    xhr :post, :change_level, :id => 3, :members => [2000], :level => 'member'
+    assert_equal('member', ::GroupInvolvement.find(6).level)
+
+    xhr :post, :change_level, :id => 3, :members => [2000], :level => 'invalid level'
+
+    xhr :post, :change_level, :id => 3, :members => [2000], :level => 'Leader'
+    assert_equal('leader', ::GroupInvolvement.find(6).level)
+  end
+
+  def test_destroy_own
+    xhr :post, :destroy_own, :id => 1
+    assert_raise(ActiveRecord::RecordNotFound) {::GroupInvolvement.find(1)}
   end
 
   def test_join_interested
@@ -61,4 +92,17 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
     end
     assert_match /invalid level/, @response.body
   end
+
+  def test_accept_request
+    Factory(:groupinvolvement_7)
+    xhr :post, :accept_request, :id => 7
+    assert_equal(false, ::GroupInvolvement.all(:conditions => {:id => 7}).first.requested)
+  end
+
+  def test_decline_request
+    Factory(:groupinvolvement_7)
+    xhr :post, :decline_request, :id => 7
+    assert_raise(ActiveRecord::RecordNotFound) {::GroupInvolvement.find(7)}
+  end
+
 end
