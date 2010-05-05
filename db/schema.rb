@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20100422155152) do
   add_index "campus_involvements", ["campus_id"], :name => "index_campus_involvements_on_campus_id"
   add_index "campus_involvements", ["ministry_id"], :name => "index_campus_involvements_on_ministry_id"
   add_index "campus_involvements", ["person_id", "campus_id", "end_date"], :name => "index_campus_involvements_on_p_id_and_c_id_and_end_date", :unique => true
+  add_index "campus_involvements", ["person_id", "campus_id"], :name => "index_campus_involvements_on_person_id_and_campus_id", :unique => true
   add_index "campus_involvements", ["person_id"], :name => "index_campus_involvements_on_person_id"
 
   create_table "campuses", :force => true do |t|
@@ -106,33 +107,6 @@ ActiveRecord::Schema.define(:version => 20100422155152) do
     t.datetime "updated_at"
   end
 
-  create_table "correspondence_types", :force => true do |t|
-    t.string  "name"
-    t.integer "overdue_lifespan"
-    t.integer "expiry_lifespan"
-    t.string  "actions_now_task"
-    t.string  "actions_overdue_task"
-    t.string  "actions_followup_task"
-    t.text    "redirect_params"
-    t.string  "redirect_target_id_type"
-  end
-
-  create_table "correspondences", :force => true do |t|
-    t.integer  "correspondence_type_id"
-    t.integer  "person_id"
-    t.string   "receipt"
-    t.string   "state"
-    t.date     "visited"
-    t.date     "completed"
-    t.date     "overdue_at"
-    t.date     "expire_at"
-    t.text     "token_params"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "correspondences", ["receipt"], :name => "index_correspondences_on_receipt"
-
   create_table "counties", :force => true do |t|
     t.string "name"
     t.string "state"
@@ -184,19 +158,6 @@ ActiveRecord::Schema.define(:version => 20100422155152) do
   end
 
   add_index "dorms", ["campus_id"], :name => "index_dorms_on_campus_id"
-
-  create_table "email_templates", :force => true do |t|
-    t.integer  "correspondence_type_id"
-    t.string   "outcome_type"
-    t.string   "subject",                :null => false
-    t.string   "from",                   :null => false
-    t.string   "bcc"
-    t.string   "cc"
-    t.text     "body",                   :null => false
-    t.text     "template"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "emails", :force => true do |t|
     t.string   "subject"
@@ -470,10 +431,6 @@ ActiveRecord::Schema.define(:version => 20100422155152) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "test_table", :id => false, :force => true do |t|
-    t.integer "test_id"
   end
 
   create_table "timetables", :force => true do |t|
