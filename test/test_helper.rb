@@ -15,3 +15,16 @@ class ActiveSupport::TestCase
   include ActionController::TestProcess
   include Test::TestHelper
 end
+
+module Test
+  module TestHelper
+    def setup_timetables
+      Factory(:timetable_1)
+      Factory(:timetable_2)
+      Factory(:freetime_1)
+      Factory(:freetime_2)
+      Factory(:freetime_3)
+      Factory(:freetime_4)
+    end
+  end
+end

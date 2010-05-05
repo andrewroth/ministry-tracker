@@ -1,3 +1,5 @@
-page[:group].replace_html(:partial => 'form', :locals => {:group => @group})
+form_for @group do |f|
+  page[:group].replace_html(:partial => 'form', :locals => {:group => @group, :f => f})
+end
 page[:group].show
 page[:spinner].hide
