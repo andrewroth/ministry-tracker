@@ -15,86 +15,19 @@
             Total
         </td>
     </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Staff
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,sp_conv) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Students
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,sp_conv_std) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Staff
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,gos_pres) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Students
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,gos_pres_std) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Holy Spirit Presentations by Staff
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% result = Week.find_ministry_stats_week(week.id,@stats_ministry_id,hs_pres) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
+    <%= show_summary_by_week_stat("Spiritual Conversations by Staff", sp_conv, @weeks, @stats_ministry_id) %>
+    <%= show_summary_by_week_stat("Spiritual Conversations by Students", sp_conv_std, @weeks, @stats_ministry_id) %>
+
+    <%= show_totals_for_stat_group("Spiritual Conversations Total", @weeks) %>
+
+    <%= show_summary_by_week_stat("Gospel Presentations by Staff", gos_pres, @weeks, @stats_ministry_id) %>
+    <%= show_summary_by_week_stat("Gospel Presentations by Students", gos_pres_std, @weeks, @stats_ministry_id) %>
+
+    <%= show_totals_for_stat_group("Gospel Presentations Total", @weeks) %>
+
+    <%= show_summary_by_week_stat("Holy Spirit Presentations by Staff", hs_pres, @weeks, @stats_ministry_id) %>
+
+
     <tr><td><br/></td></tr>
     <tr class="highlight">
         <td class="statsTableTitle">

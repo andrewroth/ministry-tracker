@@ -1,4 +1,3 @@
-
 <p class="statsTitle"><%= @report_description %></p>
 <table class="statsTable">
     <tr>
@@ -18,319 +17,31 @@
         </td>
 
     </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Staff
-        </td>
-        <% total = 0 
-           totalSection = Hash.new
-        %>
 
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv) %>
-              <% total += stat %>
-              <% totalSection[semester.id] = stat %>
-          </td>
-        <% end %>
+    <%= show_stat_for_semesters("Spiritual Conversations by Staff", sp_conv, semesters, @campuses_selected) %>
+    <%= show_stat_for_semesters("Spiritual Conversations by Students", sp_conv_std, semesters, @campuses_selected) %>
 
-        <td>
-            <%= total %>
-            <% totalSection[:total] = total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Students
-        </td>
-        <% total = 0 %>
+    <%= show_totals_for_stat_group("Spiritual Conversations Total", semesters) %>
 
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, sp_conv_std) %>
-              <% total += stat %>
-              <% totalSection[semester.id] += stat %>
-          </td>
-        <% end %>
+    <%= show_stat_for_semesters("Gospel Presentations by Staff", gos_pres, semesters, @campuses_selected) %>
+    <%= show_stat_for_semesters("Gospel Presentations by Students", gos_pres_std, semesters, @campuses_selected) %>
 
-        <td>
-            <%= total %>
-            <% totalSection[:total] += total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
-        <td class="statsTableTitle">
-            Spiritual Conversations Total
-        </td>
+    <%= show_totals_for_stat_group("Gospel Presentations Total", semesters) %>
 
-        <% semesters.each do |semester| %>
-          <td>
-              <%= totalSection[semester.id] %>
-          </td>
-        <% end %>
+    <%= show_stat_for_semesters("Holy Spirit Presentations", hs_pres, semesters, @campuses_selected) %>
 
-        <td>
-            <%= totalSection[:total] %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Staff
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres) %>
-              <% total += stat %>
-              <% totalSection[semester.id] = stat %>
-          </td>
-        <% end %>
-
-        <td>
-            <%= total %>
-            <% totalSection[:total] = total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Students
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, gos_pres_std) %>
-              <% total += stat %>
-              <% totalSection[semester.id] += stat %>
-          </td>
-        <% end %>
-
-        <td>
-            <%= total %>
-            <% totalSection[:total] += total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
-        <td class="statsTableTitle">
-            Gospel Presentations Total
-        </td>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= totalSection[semester.id] %>
-          </td>
-        <% end %>
-
-        <td>
-            <%= totalSection[:total] %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Holy Spirit Presentations
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Week.find_stats_semester_campuses(semester.id, @campuses_selected, hs_pres) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
     <% if @semester_highlights_permission %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Average - hours of prayer:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :semesterreport_avgPrayer ) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Average weekly meetings attendance:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :average_attendance_weekly_meetings) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number challenged to staff:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_challenged_staff ) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number challenged to internships:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_challenged_internships) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number of frosh involved:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_frosh_involved) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number of staff-led DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_staff_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number in staff-led DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_in_staff_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number of student-led DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_student_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number in student-led DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_in_student_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number of spiritual multipliers in staff DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_sp_mult_in_staff_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Number of spiritual multipliers in student-led DGs:
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = semester.find_stats_semester_campuses(@campuses_selected, :number_sp_mult_in_student_led_dg) %>
-              <% total += stat %>
-          </td>
-        <% end %>
-        
-        <td>
-            <%= total %>
-        </td>
-    </tr>
+      <%= show_semester_highlight_stat("Average - hours of prayer", :semesterreport_avgPrayer, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Average weekly meetings attendance", :average_attendance_weekly_meetings, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number challenged to staff", :number_challenged_staff, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number challenged to internships", :number_challenged_internships, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of frosh involved", :number_frosh_involved, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of staff-led DGs", :number_staff_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number in staff-led DGs", :number_in_staff_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of student-led DGs", :number_student_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number in student-led DGs", :number_in_student_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of spiritual multipliers in staff DGs", :number_sp_mult_in_staff_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of spiritual multipliers in student-led DGs", :number_sp_mult_in_student_led_dg, semesters, @campuses_selected) %>
     <% end %>
     <tr>
         <td>

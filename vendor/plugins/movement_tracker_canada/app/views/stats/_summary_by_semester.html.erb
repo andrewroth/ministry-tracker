@@ -13,124 +13,19 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Staff
-        </td>
-        <% total = 0 
-           totalSection = Hash.new
-        %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv) %>
-        <% total += result %>
-        <% totalSection[month.id] = result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-            <% totalSection[:total] = total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Spiritual Conversations by Students
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,sp_conv_std) %>
-        <% total += result %>
-        <% totalSection[month.id] += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-            <% totalSection[:total] += total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
-        <td class="statsTableTitle">
-            Spiritual Conversations Total
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <td>
-        <%= totalSection[month.id] %>
-        </td>
-        <% end %>
-        <td>
-            <%= totalSection[:total] %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Staff
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres) %>
-        <% total += result %>
-        <% totalSection[month.id] = result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-            <% totalSection[:total] = total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Gospel Presentations by Students
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,gos_pres_std) %>
-        <% total += result %>
-        <% totalSection[month.id] += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-            <% totalSection[:total] += total %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
-        <td class="statsTableTitle">
-            Gospel Presentations Total
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <td>
-        <%= totalSection[month.id] %>
-        </td>
-        <% end %>
-        <td>
-            <%= totalSection[:total] %>
-        </td>
-    </tr>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="statsTableTitle">
-            Holy Spirit Presentations by Staff
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% result = Week.find_ministry_stats_month(month.id,@stats_ministry_id,hs_pres) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
+    <%= show_summary_by_month_stat("Spiritual Conversations by Staff", sp_conv, @months, @stats_ministry_id) %>
+    <%= show_summary_by_month_stat("Spiritual Conversations by Students", sp_conv_std, @months, @stats_ministry_id) %>
+
+    <%= show_totals_for_stat_group("Spiritual Conversations Total", @months) %>
+
+    <%= show_summary_by_month_stat("Gospel Presentations by Staff", gos_pres, @months, @stats_ministry_id) %>
+    <%= show_summary_by_month_stat("Gospel Presentations by Students", gos_pres_std, @months, @stats_ministry_id) %>
+
+    <%= show_totals_for_stat_group("Gospel Presentations Total", @months) %>
+
+    <%= show_summary_by_month_stat("Holy Spirit Presentations by Staff", hs_pres, @months, @stats_ministry_id) %>
+
+
     <tr><td><br/></td></tr>
     <tr class='highlight'>
         <td class="statsTableTitle">

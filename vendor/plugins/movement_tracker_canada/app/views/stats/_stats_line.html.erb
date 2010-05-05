@@ -1,0 +1,25 @@
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="statsTableTitle">
+            <%= title %>
+        </td>
+        <% total = 0 
+           @total_section ||= Hash.new
+        %>
+
+        <% stats_array.each_with_index do | stat, i | %>
+          <td>
+              <%= stat %>
+              <% total += stat 
+               @total_section[i] ||= 0
+               @total_section[i] += stat %>
+          </td>
+        <% end %>
+
+        <td>
+            <%= total %>
+            <% 
+            @total_section[:total] ||= 0
+            @total_section[:total] += total %>
+        </td>
+    </tr>
+
