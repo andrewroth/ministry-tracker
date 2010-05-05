@@ -1,3 +1,4 @@
+=begin
 Factory.define :state_1, :class => State do |c|
   c.id '1'
   c.name 'California'
@@ -9,3 +10,4 @@ Factory.define :state_2, :class => State do |c|
   c.name 'Wyoming'
   c.abbreviation 'WY'
 end
+=end
