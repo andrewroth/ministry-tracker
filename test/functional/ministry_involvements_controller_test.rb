@@ -25,6 +25,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   test "try destroying default ministry" do
     Factory(:person_2)
     Factory(:user_2)
+    Factory(:access_2)
+
     login 'fred@uscm.org'
 
     mi = Factory(:ministryinvolvement_7)
