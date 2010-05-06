@@ -32,7 +32,7 @@ class WeeklyReportsController < ApplicationController
     staff_id = @person.cim_hrdb_staff.id
     
     @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => week_id, :staff_id => staff_id, :campus_id => campus_id })
-    debugger
+   
     @weekly_report ||= WeeklyReport.new
 
     @weekly_report.week_id = week_id

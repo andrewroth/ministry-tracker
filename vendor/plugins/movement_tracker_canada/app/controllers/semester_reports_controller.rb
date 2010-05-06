@@ -90,8 +90,7 @@ class SemesterReportsController < ApplicationController
     end
 
     respond_to do |format|
-      if success_update
-        @semester_report.save!
+      if success_update && @semester_report.save
         flash[:notice] = 'Your semester numbers were successfully submitted.'
         format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
         format.xml  { head :ok }

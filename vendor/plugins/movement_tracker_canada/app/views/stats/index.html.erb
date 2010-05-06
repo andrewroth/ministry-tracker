@@ -7,6 +7,8 @@
   <ul class="statsLinkList">
     <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
     <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
+    <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
+    <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
   </ul>
 </div>
 
