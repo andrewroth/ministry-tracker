@@ -10,7 +10,7 @@
 
     <% form_for :report, :url => { :action => :semester_at_a_glance }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
 
-      <p class="statsFormField">
+      <div class="statsFormField statsSelectContainer">
         <%= form.label :ministry, "Ministry:" %>
         <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @stats_ministry_id.to_i %>
         <%= observe_field 'report_ministry', :url => {:action => 'campuses_collection_select'},
@@ -18,8 +18,8 @@
                                              :update => 'campusesSelect',
                                              :before => "document.reportForm.commit.disabled=true; $('#report_campus_id').hide(); $('#spinnercampus').show()",
                                              :complete => "$('#report_campus_id').show(); $('#spinnercampus').hide(); document.reportForm.commit.disabled=false" %>
-      </p>
-      <p class="statsFormField">
+      </div>
+      <div class="statsFormField statsSelectContainer">
         <%= form.label :campus_id, "Campus:" %>
 
         <% javascript_tag do %>
@@ -37,11 +37,11 @@
 
         <span id="campusesSelect"></span>
         <span class="statsSpinner"><%= spinner('campus') %></span>
-      </p>
-      <p class="statsFormField">
+      </div>
+      <div class="statsFormField statsSelectContainer">
         <%= form.label :semester, "Semester:" %>
         <%= form.select :semester, @semesters, :selected => @semester_selected %>
-      </p>
+      </div>
       <br/>
       <p>
         <%= submit_tag "Show report" , :class => "submit", :disabled => true %>

@@ -11,16 +11,17 @@
     <div class="statsForm">
       <% form_for :report, :url => { :action => :how_people_came_to_christ }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
 
-        <p class="statsFormField">
+        <div class="statsFormField statsSelectContainer">
           <%= form.label :ministry, "Ministry:" %>
           <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @stats_ministry_id.to_i %>
-        </p>
+        </div>
 
-        <p class="statsFormField">
+        <div class="statsFormField statsSelectContainer">
           <%= form.label :year, "Year:" %>
           <%= form.select :year, @years, :selected => @year_selected %>
-        </p>
+        </div>
 
+        <br/>
         <p>
           <%= submit_tag "Show report" , :class => "submit" %>
         </p>

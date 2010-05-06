@@ -87,7 +87,7 @@ class StatsController < ApplicationController
 
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
 
-    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+    @ministries = my_ministries_for_stats("semester_at_a_glance").sort { |x, y| x.name <=> y.name }
 
     if params[:report].nil?
 
@@ -240,7 +240,7 @@ class StatsController < ApplicationController
     # find the current year id
     current_year_id = Month.find_year_id(cur_month)
 
-    @ministries = my_ministries_for_stats.sort { |x, y| x.name <=> y.name }
+    @ministries = my_ministries_for_stats("how_people_came_to_christ").sort { |x, y| x.name <=> y.name }
 
     if params[:report].nil?
       
@@ -327,9 +327,9 @@ class StatsController < ApplicationController
 
   private
 
-  def my_ministries_for_stats
+  def my_ministries_for_stats(action)
     unless is_ministry_admin
-      @me.ministries_involved_in_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+      @me.ministries_involved_in_with_children(::MinistryRole::ministry_roles_that_grant_access("stats", action))
     else
       ::Ministry.first.myself_and_descendants
     end
@@ -384,7 +384,7 @@ class StatsController < ApplicationController
     session[:stats_year] = current_year_id unless session[:stats_year].present?
     @year_id = session[:stats_year]
     
-    @years = Year.all
+    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
 
     @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
@@ -453,7 +453,7 @@ class StatsController < ApplicationController
     @campus_stats = get_campus_stats_hash_for_date_range(first_end_date, last_end_date, @campuses)
     @campus_prcs = get_campus_prcs_hash_for_date_range(first_end_date, last_end_date, @campuses)
 
-    @years = Year.all.select{|y| y.months.any? && y.months.first.weeks.any?}
+    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id]).select{|y| y.months.any? && y.months.first.weeks.any?}
 
     @report_description = "Campuses under #{@stats_ministry.name} during #{year.description}"
     @results_partial = "campuses_by_week_range"
