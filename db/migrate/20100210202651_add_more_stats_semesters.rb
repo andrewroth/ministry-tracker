@@ -7,9 +7,12 @@ class AddMoreStatsSemesters < ActiveRecord::Migration
 
   def self.up
     NEW_SEMESTERS.each do |semester|
-      s = Semester.new(semester)
-      s.semester_id = semester[:semester_id]
-      s.save
+      s = Semester.find :first, :conditions => semester
+      unless s
+        s = Semester.new semester
+        s.semester_id = semester[:semester_id]
+        s.save
+      end
     end
   end
 
