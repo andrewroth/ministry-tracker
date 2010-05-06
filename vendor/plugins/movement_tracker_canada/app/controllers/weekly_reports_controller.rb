@@ -26,13 +26,20 @@ class WeeklyReportsController < ApplicationController
   # GET /weekly_reports/new
   # GET /weekly_reports/new.xml
   def new
-    @weekly_report = WeeklyReport.new
+    
+    week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
+    campus_id = get_ministry.unique_campuses.first.id
+    staff_id = @person.cim_hrdb_staff.id
+    
+    @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => week_id, :staff_id => staff_id, :campus_id => campus_id })
+    debugger
+    @weekly_report ||= WeeklyReport.new
 
-    @weekly_report.week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
+    @weekly_report.week_id = week_id
+    @weekly_report.campus_id = campus_id
     @weeks = Week.all(:order => :week_endDate)
 
     @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
-    @weekly_report.campus_id = get_ministry.unique_campuses.first.id
 
     respond_to do |format|
       format.html # new.html.erb
@@ -45,41 +52,19 @@ class WeeklyReportsController < ApplicationController
     @weekly_report = WeeklyReport.find(params[:id])
   end
 
-  # POST /weekly_reports
-  # POST /weekly_reports.xml
-  def create
-
-    staff_id = @person.cim_hrdb_staff.id
-    @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => params[:weekly_report][:week_id], :staff_id => staff_id, :campus_id => params[:weekly_report][:campus_id] })
-
+  def create_or_update
+    params[:weekly_report][:staff_id] = @person.cim_hrdb_staff.id
+    @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => params[:weekly_report][:week_id], :staff_id => params[:weekly_report][:staff_id], :campus_id => params[:weekly_report][:campus_id] })
+  
     if @weekly_report
-      @weekly_report.update_attributes(params[:weekly_report])
-      notice = 'Your weekly numbers were successfully re-submitted.'
+      success_update = true if @weekly_report.update_attributes(params[:weekly_report])
     else
-      @weekly_report = WeeklyReport.new(params[:weekly_report])
-      @weekly_report.staff_id = @person.cim_hrdb_staff.id
-      notice = 'Your weekly numbers were successfully submitted.'
+      success_update = true if @weekly_report = WeeklyReport.new(params[:weekly_report])
     end
-
+  
     respond_to do |format|
-      if @weekly_report.save
-        flash[:notice] = notice
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { render :xml => @weekly_report, :status => :created, :location => @weekly_report }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @weekly_report.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /weekly_reports/1
-  # PUT /weekly_reports/1.xml
-  def update
-    @weekly_report = WeeklyReport.find(params[:id])
-
-    respond_to do |format|
-      if @weekly_report.update_attributes(params[:weekly_report])
+      if success_update
+        @weekly_report.save!
         flash[:notice] = 'Your weekly numbers were successfully submitted.'
         format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
         format.xml  { head :ok }
@@ -88,6 +73,18 @@ class WeeklyReportsController < ApplicationController
         format.xml  { render :xml => @weekly_report.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  # POST /weekly_reports
+  # POST /weekly_reports.xml
+  def create
+    create_or_update
+  end
+
+  # PUT /weekly_reports/1
+  # PUT /weekly_reports/1.xml
+  def update
+    create_or_update
   end
 
   # DELETE /weekly_reports/1
