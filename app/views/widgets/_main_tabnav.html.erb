@@ -56,11 +56,12 @@ render_tabnav :main,
 
   if authorized?(:index, :stats)
     add_tab do |t|
-      t.named 'Stats'
+      t.named 'Insights'
       t.titled "Measuring the movement"
       t.links_to :controller => 'stats'
       t.highlights_on :controller => "stats"
       t.highlights_on :controller => "weekly_reports"
+      t.highlights_on :controller => "semester_reports"
     end
   end
 
