@@ -38,7 +38,7 @@ class SemesterReportsController < ApplicationController
     
     @semesters = Semester.all(:order => :semester_startDate)
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("semester_reports", "new"))
 
     respond_to do |format|
       format.html # new.html.erb

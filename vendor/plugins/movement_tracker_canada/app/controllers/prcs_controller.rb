@@ -34,7 +34,7 @@ class PrcsController < ApplicationController
 
     @semesters = Semester.find_semesters(cur_month_id)
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
     @prc.campus_id = get_ministry.unique_campuses.first.id
 
     @methods = Prcmethod.find_methods()

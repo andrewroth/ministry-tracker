@@ -39,7 +39,7 @@ class WeeklyReportsController < ApplicationController
     @weekly_report.campus_id = campus_id
     @weeks = Week.all(:order => :week_endDate)
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_stats_access)
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("weekly_reports", "new"))
 
     respond_to do |format|
       format.html # new.html.erb
