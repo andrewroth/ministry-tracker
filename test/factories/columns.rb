@@ -27,3 +27,13 @@ Factory.define :column_4, :class => Column, :singleton => true do |c|
   c.from_clause 'EmergencyAddress'
   c.join_clause 'EmergencyAddress.address_type = \'emergency1\''
 end
+
+Factory.define :column_5, :class => Column, :singleton => true do |c|
+  c.id '5'
+  c.title 'SchoolYear'
+  c.from_clause 'SchoolYear'
+  c.select_clause 'name'
+  c.source_model 'CampusInvolvement'
+  c.source_column 'school_year_id'
+  c.foreign_key 'id'
+end
