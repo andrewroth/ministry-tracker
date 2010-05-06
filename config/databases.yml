@@ -7,6 +7,7 @@
 #
 - emu_cdm: database/database.c4c_pulse_dev.yml
 - moose_cdm: database/database.c4c_pulse_dev.yml
+- pulse_cdm: database/database.c4c_pulse_prod.yml
 - /c4c.dev/: database/database.c4c_pulse_dev.yml
 - /c4c.prod/: database/database.c4c_pulse_prod.yml
 - /c4c.staging/: database/database.c4c_pulse_staging.yml
