@@ -1165,7 +1165,12 @@ div.choose_ministry_tree {
 .statsFormField label {
   line-height: 1em;
   text-align: right;
-  /*width: auto;*/
+}
+
+.statsFormField td label {
+  margin-bottom: 10px;
+  margin-right: 8px;
+  width: 100%;
 }
 
 .statsFormField select {
