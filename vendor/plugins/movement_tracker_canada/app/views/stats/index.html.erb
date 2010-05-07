@@ -3,12 +3,20 @@
 
 <h1 id="statsTitle">Measurements</h1>
 
-<div id="statsLinkBox" class="statsFormBox <%= "notDisplayed" unless @show_additional_report_links %>">
+<div id="statsLinkBox" class="statsFormBox">
   <ul class="statsLinkList">
-    <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
-    <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
-    <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
-    <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
+    <% if authorized?("new", "weekly_reports") %>
+      <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
+    <% end %>
+    <% if authorized?("new", "semester_reports") %>
+      <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
+    <% end %>
+    <% if authorized?("semester_at_a_glance", "stats") %>
+      <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
+    <% end %>
+    <% if authorized?("how_people_came_to_christ", "stats") %>
+      <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
+    <% end %>
   </ul>
 </div>
 
