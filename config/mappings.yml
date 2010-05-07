@@ -99,6 +99,8 @@ person:
   last_name: person_lname
   middle_name: person_mname
   preferred_name: person_fname
+  preferred_first_name: person_fname
+  preferred_last_name: person_lname
   email: person_email
   address1: person_local_addr
   city: person_local_city
