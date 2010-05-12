@@ -23,6 +23,19 @@ class SemesterReportsController < ApplicationController
     end
   end
 
+  def setup_for_record(semester_id, campus_id)
+    @semester_report = SemesterReport.find(:first, :conditions => { :semester_id => semester_id, :campus_id => campus_id })
+    @semester_report ||= SemesterReport.new 
+
+    @semester_report.semester_id = semester_id
+    @semester_report.campus_id = campus_id
+    
+    @semesters = Semester.all(:order => :semester_startDate)
+
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("semester_reports", "new"))
+
+  end
+
   # GET /semester_reports/new
   # GET /semester_reports/new.xml
   def new
@@ -30,16 +43,8 @@ class SemesterReportsController < ApplicationController
     current_semester_id = Month.find_semester_id("#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}")
     current_campus_id = get_ministry.unique_campuses.first.id
     
-    @semester_report = SemesterReport.find(:first, :conditions => { :semester_id => current_semester_id, :campus_id => current_campus_id })
-    @semester_report ||= SemesterReport.new 
-
-    @semester_report.semester_id = current_semester_id
-    @semester_report.campus_id = current_campus_id
+    setup_for_record(current_semester_id, current_campus_id)
     
-    @semesters = Semester.all(:order => :semester_startDate)
-
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("semester_reports", "new"))
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @semester_report }
@@ -117,4 +122,14 @@ class SemesterReportsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def select_semester_report
+    setup_for_record(params['semester_id'], params['campus_id'])
+  
+    respond_to do |format|
+      format.js
+    end
+  end
+
 end
+

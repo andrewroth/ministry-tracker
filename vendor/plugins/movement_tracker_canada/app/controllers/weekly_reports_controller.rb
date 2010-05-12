@@ -23,12 +23,7 @@ class WeeklyReportsController < ApplicationController
     end
   end
 
-  # GET /weekly_reports/new
-  # GET /weekly_reports/new.xml
-  def new
-    
-    week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
-    campus_id = get_ministry.unique_campuses.first.id
+  def setup_for_record(week_id, campus_id)
     staff_id = @person.cim_hrdb_staff.id
     
     @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => week_id, :staff_id => staff_id, :campus_id => campus_id })
@@ -40,6 +35,17 @@ class WeeklyReportsController < ApplicationController
     @weeks = Week.all(:order => :week_endDate)
 
     @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("weekly_reports", "new"))
+    
+  end
+
+  # GET /weekly_reports/new
+  # GET /weekly_reports/new.xml
+  def new
+    
+    week_id = Week.find_week_id("#{Time.now.at_end_of_week.yesterday.year}-#{Time.now.at_end_of_week.yesterday.month}-#{Time.now.at_end_of_week.yesterday.day}")
+    campus_id = get_ministry.unique_campuses.first.id
+
+    setup_for_record(week_id, campus_id)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -103,4 +109,15 @@ class WeeklyReportsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def select_weekly_report
+    setup_for_record(params['week_id'], params['campus_id'])
+  
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+
 end

@@ -1,0 +1,30 @@
+    <% form_for(weekly_report) do |f| %>
+      <%= f.error_messages %>
+      <%= f.hidden_field :week_id %>
+      <%= f.hidden_field :campus_id %>
+      <p class="statsFormField">
+        <%= f.label :spiritual_conversations, "Spiritual Conversations:" %>
+        <%= f.text_field :spiritual_conversations, :size => 4 %>
+      </p>
+      <p class="statsFormField">
+        <%= f.label :spiritual_conversations_student, "Spiritual Conversations by Disciples:" %>
+        <%= f.text_field :spiritual_conversations_student, :size => 4 %>
+      </p>
+      <p class="statsFormField">
+        <%= f.label :gospel_presentations, "Gospel Presentations:" %>
+        <%= f.text_field :gospel_presentations, :size => 4 %>
+      </p>
+      <p class="statsFormField">
+        <%= f.label :gospel_presentations_student, "Gospel Presentations by Disciples:" %>
+        <%= f.text_field :gospel_presentations_student, :size => 4 %>
+      </p>
+      <p class="statsFormField">
+        <%= f.label :holyspirit_presentations, "Holy Spirit Presentations:" %>
+        <%= f.text_field :holyspirit_presentations, :size => 4 %>
+      </p>
+      <p>
+        <br/>
+        <div class="center"><%= f.submit "Submit" %></div>
+      </p>
+      <br/>
+    <% end %>
