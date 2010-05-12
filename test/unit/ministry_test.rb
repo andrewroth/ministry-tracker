@@ -14,8 +14,8 @@ class MinistryTest < ActiveSupport::TestCase
     @m = Hash[*Ministry.all.collect{|m| [m.id, m]}.flatten]
   end
 
-  def test_create_first_view
-    new_ministry = Ministry.create!(:name => 'new')
-    assert_equal(View.last.title, new_ministry.views.first.title)
-  end
+  #def test_create_first_view
+  #  new_ministry = Ministry.create!(:name => 'new')
+  #  assert_equal(View.last.title, new_ministry.views.first.title)
+  #end
 end
