@@ -32,16 +32,14 @@
 
     <% if @semester_highlights_permission %>
       <%= show_semester_highlight_stat("Average - hours of prayer", :semesterreport_avgPrayer, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Average weekly meetings attendance", :average_attendance_weekly_meetings, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number challenged to staff", :number_challenged_staff, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number challenged to internships", :number_challenged_internships, semesters, @campuses_selected) %>
       <%= show_semester_highlight_stat("Number of frosh involved", :number_frosh_involved, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of staff-led DGs", :number_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number in staff-led DGs", :number_in_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of student-led DGs", :number_student_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number in student-led DGs", :number_in_student_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of spiritual multipliers in staff DGs", :number_sp_mult_in_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of spiritual multipliers in student-led DGs", :number_sp_mult_in_student_led_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of students in DGs", :total_students_in_dg, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Number of spiritual multipliers", :total_spiritual_multipliers, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Event exposures - Spiritual Conversations", :event_spiritual_conversations, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Event exposures - Gospel Presentations", :event_gospel_prensentations, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Media exposures - Spiritual Conversations", :media_spiritual_conversations, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Media exposures - Gospel Presentations", :media_gospel_prensentations, semesters, @campuses_selected) %>
+      <%= show_semester_highlight_stat("Total core students", :total_core_students, semesters, @campuses_selected) %>
     <% end %>
     <tr>
         <td>

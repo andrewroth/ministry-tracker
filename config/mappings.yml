@@ -241,4 +241,10 @@ semester_report:
   number_in_student_led_dg: semesterreport_numInStudentDG
   number_sp_mult_in_staff_led_dg: semesterreport_numSpMultStaffDG
   number_sp_mult_in_student_led_dg: semesterreport_numSpMultStdDG
-  
+  event_spiritual_conversations: semesterreport_eventSpirConversations
+  event_gospel_prensentations: semesterreport_eventGospPres
+  media_spiritual_conversations: semesterreport_mediaSpirConversations
+  media_gospel_prensentations: semesterreport_mediaGospPres
+  total_core_students: semesterreport_totalCoreStudents
+  total_students_in_dg: semesterreport_totalStudentInDG
+  total_spiritual_multipliers: semesterreport_totalSpMult
