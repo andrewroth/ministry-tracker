@@ -1,12 +1,12 @@
 class AddStatsColumsSemesterMonthlyReport < ActiveRecord::Migration
   def self.up
-    add_column SemesterReport.table_name, :semesterreport_eventSpirConversations, :integer
-    add_column SemesterReport.table_name, :semesterreport_eventGospPres, :integer
-    add_column SemesterReport.table_name, :semesterreport_mediaSpirConversations, :integer
-    add_column SemesterReport.table_name, :semesterreport_mediaGospPres, :integer
-    add_column SemesterReport.table_name, :semesterreport_totalCoreStudents, :integer
-    add_column SemesterReport.table_name, :semesterreport_totalStudentInDG, :integer
-    add_column SemesterReport.table_name, :semesterreport_totalSpMult, :integer
+    add_column SemesterReport.table_name, :semesterreport_eventSpirConversations, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_eventGospPres, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_mediaSpirConversations, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_mediaGospPres, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_totalCoreStudents, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_totalStudentInDG, :integer, :default => 0
+    add_column SemesterReport.table_name, :semesterreport_totalSpMult, :integer, :default => 0
  end
 
   def self.down
