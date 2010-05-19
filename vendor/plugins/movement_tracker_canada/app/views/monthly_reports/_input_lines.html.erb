@@ -1,10 +1,11 @@
-    <% form_for(semester_report) do |f| %>
+    <% debugger
+form_for(@monthly_report) do |f| %>
       <%= f.error_messages %>
-      <%= f.hidden_field :semester_id %>
+      <%= f.hidden_field :month_id %>
       <%= f.hidden_field :campus_id %>
       <table>
- <%
-stats_reports[:semester_report].each do | input_stat |
+<%
+stats_reports[:monthly_report].each do | input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], input_stat[:label] %></td>
@@ -13,8 +14,7 @@ stats_reports[:semester_report].each do | input_stat |
 
 <%
 end
-%>
-      </table>
+%>      </table>
       <p>
         <br/>
         <div class="center"><%= f.submit "Submit" %></div>

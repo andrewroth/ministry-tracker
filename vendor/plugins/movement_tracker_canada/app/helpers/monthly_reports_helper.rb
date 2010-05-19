@@ -1,0 +1,4 @@
+module MonthlyReportsHelper
+  unloadable
+
+end
