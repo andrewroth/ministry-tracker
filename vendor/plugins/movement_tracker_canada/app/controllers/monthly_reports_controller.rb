@@ -24,7 +24,6 @@ class MonthlyReportsController < ApplicationController
   end
 
   def setup_for_record(month_id, campus_id)
-debugger
     @monthly_report = MonthlyReport.find(:first, :conditions => { :month_id => month_id, :campus_id => campus_id })
     @monthly_report ||= MonthlyReport.new 
 

@@ -8,6 +8,9 @@
     <% if authorized?("new", "weekly_reports") %>
       <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
     <% end %>
+    <% if authorized?("new", "monthly_reports") %>
+      <li class="statsListLink"><%= link_to "Submit your monthly stats", url_for(:controller => :monthly_reports, :action => :new) %></li>
+    <% end %>
     <% if authorized?("new", "semester_reports") %>
       <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
     <% end %>

@@ -9,8 +9,7 @@
   <div id="newSemesterHighlightsFormContainer" class="statsFormBox">
     <h2 class="statsFormBoxTitle">Submit your monthly highlights</h2>
     <br/>
-    <% debugger
-        form_for(@monthly_report) do |f| %>
+    <% form_for(@monthly_report) do |f| %>
       <%= f.error_messages %>
       <table>
         <tr class="statsFormField">
