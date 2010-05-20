@@ -13,18 +13,17 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-    <%= show_summary_by_month_stat("Spiritual Conversations by Staff", sp_conv, @months, @stats_ministry_id) %>
-    <%= show_summary_by_month_stat("Spiritual Conversations by Students", sp_conv_std, @months, @stats_ministry_id) %>
+    <%= show_summary_weekly_stat_by_month("Spiritual Conversations by Staff", sp_conv, @months, @campus_ids) %>
+    <%= show_summary_weekly_stat_by_month("Spiritual Conversations by Students", sp_conv_std, @months, @campus_ids) %>
 
     <%= show_totals_for_stat_group("Spiritual Conversations Total", @months) %>
 
-    <%= show_summary_by_month_stat("Gospel Presentations by Staff", gos_pres, @months, @stats_ministry_id) %>
-    <%= show_summary_by_month_stat("Gospel Presentations by Students", gos_pres_std, @months, @stats_ministry_id) %>
+    <%= show_summary_weekly_stat_by_month("Gospel Presentations by Staff", gos_pres, @months, @campus_ids) %>
+    <%= show_summary_weekly_stat_by_month("Gospel Presentations by Students", gos_pres_std, @months, @campus_ids) %>
 
     <%= show_totals_for_stat_group("Gospel Presentations Total", @months) %>
 
-    <%= show_summary_by_month_stat("Holy Spirit Presentations by Staff", hs_pres, @months, @stats_ministry_id) %>
-
+    <%= show_summary_weekly_stat_by_month("Holy Spirit Presentations by Staff", hs_pres, @months, @campus_ids) %>
 
     <tr><td><br/></td></tr>
     <tr class='highlight'>
@@ -45,4 +44,12 @@
             <%= sprintf "%s", total %>
         </td>
     </tr>
+<%
+      if @monthly_report_permission 
+        stats_reports[:monthly_report].each do | input_stat |
+          %><%= show_summary_monthly_stat_by_month(input_stat[:label], input_stat[:column], @months, @campus_ids)%><%
+        end
+      end 
+
+%>
 </table>

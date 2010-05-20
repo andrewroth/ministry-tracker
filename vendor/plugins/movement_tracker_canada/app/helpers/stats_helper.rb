@@ -21,27 +21,43 @@ module StatsHelper
     }
   end
   
-  def show_stat_for_semesters(title, stat, semesters, selected_campuses)
+  def show_stat_for_semesters(title, stat, semesters, campus_ids)
     render :partial => 'stats/stats_line',
     :locals => {
         :title => title, 
-        :stats_array => semesters.collect { |semester|  Week.find_stats_semester_campuses(semester.id, selected_campuses, stat) } 
+        :stats_array => semesters.collect { |semester| semester.find_weekly_stats_campuses(campus_ids, stat) } 
     }
   end
 
-  def show_semester_highlight_stat(title, stat, semesters, selected_campuses)
+  def show_semester_highlight_stat(title, stat, semesters, campus_ids)
     render :partial => 'stats/stats_line',
     :locals => {
         :title => title, 
-        :stats_array => semesters.collect { |semester|  semester.find_stats_semester_campuses(selected_campuses, stat) } 
+        :stats_array => semesters.collect { |semester|  semester.find_stats_semester_campuses(campus_ids, stat) } 
     }
   end
 
-  def show_summary_by_month_stat(title, stat, months, ministry_id)
+  def show_summary_weekly_stat_by_month(title, stat, months, campus_ids)
     render :partial => 'stats/stats_line',
     :locals => {
         :title => title, 
-        :stats_array => months.collect { |month|  Week.find_ministry_stats_month(month.id, ministry_id,stat) } 
+        :stats_array => months.collect { |month| month.find_weekly_stats_campuses(campus_ids, stat) } 
+    }
+  end
+
+  def show_summary_monthly_stat_by_month(title, stat, months, campus_ids)
+    render :partial => 'stats/stats_line',
+    :locals => {
+        :title => title, 
+        :stats_array => months.collect { |month|  month.find_monthly_stats_campuses(campus_ids,stat) } 
+    }
+  end
+
+  def show_summary_monthly_stat_by_year(title, stat, semesters, campus_ids)
+    render :partial => 'stats/stats_line',
+    :locals => {
+        :title => title, 
+        :stats_array => semesters.collect { |semester|  semester.find_monthly_stats_campuses(campus_ids,stat) } 
     }
   end
 

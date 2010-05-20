@@ -56,27 +56,27 @@
   
   def stats_reports
       {:semester_report => [
-        {:column => :total_graduating_students_to_non_ministry, 
+        {:column => :semesterreport_totalSpMultGradNonMinistry, 
          :label => "Total spiritual multipliers graduating to non-ministry vocations"}, 
-        {:column => :total_graduating_students_to_full_time_c4c_staff, 
+        {:column => :semesterreport_totalFullTimeC4cStaff, 
          :label => "Total full time C4C staff"}, 
-        {:column => :total_graduating_students_to_full_time_p2c_non_c4c, 
+        {:column => :semesterreport_totalFullTimeP2cStaffNonC4c, 
          :label => "Total full time P2C staff (non-campus)"}, 
-        {:column => :total_graduating_students_to_one_year_internship, 
+        {:column => :semesterreport_totalPeopleOneYearInternship, 
          :label => "Total people doing one-year internships"}, 
-        {:column => :total_graduating_students_to_other_ministry, 
+        {:column => :semesterreport_totalPeopleOtherMinistry, 
          :label => "Total people doing other full time ministry"}
       ], 
         :weekly_report => [
-         {:column => :spiritual_conversations, 
+         {:column => :weeklyReport_1on1SpConv, 
          :label => "Spiritual Conversations:"}, 
-        {:column => :spiritual_conversations_student, 
+        {:column => :weeklyReport_1on1SpConvStd, 
          :label => "Spiritual Conversations by Disciples:"}, 
-        {:column => :gospel_presentations, 
+        {:column => :weeklyReport_1on1GosPres, 
          :label => "Gospel Presentations:"}, 
-        {:column => :gospel_presentations_student, 
+        {:column => :weeklyReport_1on1GosPresStd, 
          :label => "Gospel Presentations by Disciples:"}, 
-        {:column => :holyspirit_presentations, 
+        {:column => :weeklyReport_1on1HsPres, 
          :label => "Holy Spirit Presentations:"}
       ], 
         :monthly_report => [

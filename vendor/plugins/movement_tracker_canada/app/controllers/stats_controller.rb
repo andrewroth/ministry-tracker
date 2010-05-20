@@ -377,6 +377,8 @@ class StatsController < ApplicationController
     current_year_id = Month.find_year_id(cur_month)
 
     @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
+    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
+    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
 
     @campuses_selected = @stats_ministry.unique_campuses
 
@@ -400,6 +402,8 @@ class StatsController < ApplicationController
     @semester_id = session[:stats_semester]
 
     @months = Month.find_months_by_semester(@semester_id)
+    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
 
     # ensures that semesters that haven't occurred yet aren't listed
     cur_semester_id = Month.find_semester_id(@cur_month)

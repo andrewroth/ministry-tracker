@@ -19,16 +19,21 @@
     </tr>
 <%
       stats_reports[:weekly_report].each do | input_stat |
-        %><%= show_stat_for_semesters(input_stat[:label], input_stat[:column], semesters, @campuses_selected) %><%
-				if input_stat[:column] == :spiritual_conversations_student 
+        %><%= show_stat_for_semesters(input_stat[:label], input_stat[:column], semesters, @campus_ids) %><%
+				if input_stat[:column] == :weeklyReport_1on1SpConvStd 
           %><%= show_totals_for_stat_group("Spiritual Conversations Total", semesters) %><%
-        elsif input_stat[:column] == :gospel_presentations_student
+        elsif input_stat[:column] == :weeklyReport_1on1GosPresStd
            %><%= show_totals_for_stat_group("Gospel Presentations Total", semesters) %><%
         end
       end
+      if @monthly_report_permission 
+        stats_reports[:monthly_report].each do | input_stat |
+          %><%= show_summary_monthly_stat_by_year(input_stat[:label], input_stat[:column], semesters, @campus_ids)%><%
+        end
+      end 
       if @semester_highlights_permission 
         stats_reports[:semester_report].each do | input_stat |
-          %><%= show_semester_highlight_stat(input_stat[:label], input_stat[:column], semesters, @campuses_selected)%><%
+          %><%= show_semester_highlight_stat(input_stat[:label], input_stat[:column], semesters, @campus_ids)%><%
         end
       end 
 %>
