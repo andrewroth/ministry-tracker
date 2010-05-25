@@ -15,3 +15,15 @@ test:
 production:
   database: utopian_pulse_dev
   <<: *defaults
+
+cdm_development:
+  database: utopian_cdm_dev
+  <<: *defaults
+
+cdm_test:
+  database: utopian_cdm_test
+  <<: *defaults
+
+cdm_production:
+  database: utopian_cdm_dev
+  <<: *defaults
