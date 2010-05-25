@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100422155152) do
+ActiveRecord::Schema.define(:version => 20100525190119) do
 
   create_table "columns", :force => true do |t|
     t.string   "title"
@@ -146,6 +146,12 @@ ActiveRecord::Schema.define(:version => 20100422155152) do
     t.string   "thumbnail"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "ministry_role_permissions", :force => true do |t|
+    t.integer "permission_id"
+    t.integer "ministry_role_id"
+    t.string  "created_at"
   end
 
   create_table "permissions", :force => true do |t|
