@@ -15,18 +15,11 @@
             Total
         </td>
     </tr>
-    <%= show_summary_by_week_stat("Spiritual Conversations by Staff", sp_conv, @weeks, @stats_ministry_id) %>
-    <%= show_summary_by_week_stat("Spiritual Conversations by Students", sp_conv_std, @weeks, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Spiritual Conversations Total", @weeks) %>
-
-    <%= show_summary_by_week_stat("Gospel Presentations by Staff", gos_pres, @weeks, @stats_ministry_id) %>
-    <%= show_summary_by_week_stat("Gospel Presentations by Students", gos_pres_std, @weeks, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Gospel Presentations Total", @weeks) %>
-
-    <%= show_summary_by_week_stat("Holy Spirit Presentations by Staff", hs_pres, @weeks, @stats_ministry_id) %>
-
+<%
+      stat_report(:weekly_report).each do | key, input_stat |
+        %><%= show_stat_hash_line(@weeks, @campus_ids, input_stat) %><%
+      end
+%>
 
     <tr><td><br/></td></tr>
     <tr class="highlight">

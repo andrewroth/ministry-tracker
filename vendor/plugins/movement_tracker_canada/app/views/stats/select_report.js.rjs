@@ -29,6 +29,8 @@ page.replace_html("year", time_tab_link_to_remote("year"))
 page.replace_html("semester", time_tab_link_to_remote("semester"))
 page.replace_html("month", time_tab_link_to_remote("month"))
 page.replace_html("week", time_tab_link_to_remote("week"))
+page.replace_html("reportTypeTitle", report_types[:"#{@report_type}"][:label])
+page.replace_html("statsLinkBox", render(:partial => 'stats/stats_links'))
 
 
 # replace tab content

@@ -4,7 +4,8 @@
       <%= f.hidden_field :campus_id %>
       <table>
  <%
-stats_reports[:semester_report].each do | input_stat |
+lines = stats_reports[:semester_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], input_stat[:label] %></td>

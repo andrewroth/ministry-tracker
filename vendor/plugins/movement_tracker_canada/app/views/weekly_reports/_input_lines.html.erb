@@ -3,13 +3,16 @@
       <%= f.hidden_field :week_id %>
       <%= f.hidden_field :campus_id %>
  <%
-stats_reports[:weekly_report].each do | input_stat |
+lines = stats_reports[:weekly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
+  if input_stat[:column_type] == :database_column
 %>
       <p class="statsFormField">
         <%= f.label input_stat[:column], input_stat[:label] %>
         <%= f.text_field input_stat[:column], :size => 4 %>
       </p>
 <%
+  end
 end
 %>
       <p>

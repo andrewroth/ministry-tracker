@@ -54,49 +54,311 @@
     41
   end
   
+  def report_types
+    { 
+      :c4c => {:label => "Campus for Christ Report", :controller => :stats, :action => :index},
+      :p2c => {:label => "Power to Change Report", :controller => :stats, :action => :show_p2c_report},
+      :ccci => {:label => "Campus Crusade for Christ International Report", :controller => :stats, :action => :show_ccci_report}
+    }
+  end
+  
   def stats_reports
-      {:semester_report => [
-        {:column => :semesterreport_totalSpMultGradNonMinistry, 
-         :label => "Total spiritual multipliers graduating to non-ministry vocations"}, 
-        {:column => :semesterreport_totalFullTimeC4cStaff, 
-         :label => "Total full time C4C staff"}, 
-        {:column => :semesterreport_totalFullTimeP2cStaffNonC4c, 
-         :label => "Total full time P2C staff (non-campus)"}, 
-        {:column => :semesterreport_totalPeopleOneYearInternship, 
-         :label => "Total people doing one-year internships"}, 
-        {:column => :semesterreport_totalPeopleOtherMinistry, 
-         :label => "Total people doing other full time ministry"}
-      ], 
-        :weekly_report => [
-         {:column => :weeklyReport_1on1SpConv, 
-         :label => "Spiritual Conversations:"}, 
-        {:column => :weeklyReport_1on1SpConvStd, 
-         :label => "Spiritual Conversations by Disciples:"}, 
-        {:column => :weeklyReport_1on1GosPres, 
-         :label => "Gospel Presentations:"}, 
-        {:column => :weeklyReport_1on1GosPresStd, 
-         :label => "Gospel Presentations by Disciples:"}, 
-        {:column => :weeklyReport_1on1HsPres, 
-         :label => "Holy Spirit Presentations:"}
-      ], 
-        :monthly_report => [
-        {:column => :average_hours_prayer, 
-         :label => "Average - hours of prayer:"}, 
-        {:column => :number_frosh_involved, 
-         :label => "Number of frosh involved:"},
-        {:column => :total_students_in_dg, 
-         :label => "Number of students in DGs:"},
-        {:column => :total_spiritual_multipliers, 
-         :label => "Number of spiritual multipliers:"},
-        {:column => :event_spiritual_conversations, 
-         :label => "Event exposures - Spiritual Conversations:"},
-        {:column => :event_gospel_prensentations, 
-         :label => "Event exposures - Gospel Presentations:"},
-        {:column => :media_spiritual_conversations, 
-         :label => "Media exposures - Spiritual Conversations:"},
-        {:column => :media_gospel_prensentations, 
-         :label => "Media exposures - Gospel Presentations:"},
-        {:column => :total_core_students, 
-         :label => "Total core students:"}
-      ]}
+      {:semester_report => {
+          :tot_grad_non_ministry => {:column => :total_graduating_students_to_non_ministry, 
+           :label => "Total spiritual multipliers graduating to non-ministry vocations",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 1}, 
+          :tot_grad_c4c_staff => {:column => :total_graduating_students_to_full_time_c4c_staff, 
+           :label => "Total full time C4C staff",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 2}, 
+          :tot_grad_p2c_staff => {:column => :total_graduating_students_to_full_time_p2c_non_c4c, 
+           :label => "Total full time P2C staff (non-campus)",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 3}, 
+          :tot_grad_intern => {:column => :total_graduating_students_to_one_year_internship, 
+           :label => "Total people doing one-year internships",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 4}, 
+          :tot_grad_other_ministry => {:column => :total_graduating_students_to_other_ministry, 
+           :label => "Total people doing other full time ministry",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 5}
+      }, 
+        :weekly_report => {
+           :spirit_conversations => {:column => :weeklyReport_1on1SpConv, 
+             :label => "Spiritual Conversations:",
+             :collected => :weekly,
+             :column_type => :database_column,
+             :order => 1 
+           }, 
+           :spirit_conversations_disciples => {
+             :column => :weeklyReport_1on1SpConvStd, 
+             :label => "Spiritual Conversations by Disciples:",
+             :collected => :weekly,
+             :column_type => :database_column,
+             :order => 2
+           }, 
+           :spirit_conversations_total => {
+             :label => "Spiritual Conversations Total:",
+             :css_class => " statsTableTotal",
+             :column_type => :sum,
+             :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations},
+                              {:report => :weekly_report, :line => :spirit_conversations_disciples}],
+             :order => 3
+           }, 
+           :gospel_pres => {
+             :column => :weeklyReport_1on1GosPres, 
+             :label => "Gospel Presentations:",
+             :collected => :weekly,
+             :column_type => :database_column ,
+             :order => 4
+           }, 
+           :gospel_pres_disciples => {
+             :column => :weeklyReport_1on1GosPresStd, 
+             :label => "Gospel Presentations by Disciples:",
+             :collected => :weekly,
+             :column_type => :database_column,
+             :order => 5
+           }, 
+           :gospel_pres_total => {
+             :label => "Gospel Presentations Total:",
+             :css_class => " statsTableTotal",
+             :column_type => :sum,
+             :columns_sum => [{:report => :weekly_report, :line => :gospel_pres},
+                              {:report => :weekly_report, :line => :gospel_pres_disciples}],
+             :order => 6
+           }, 
+           :holy_spirit_pres => {
+             :column => :weeklyReport_1on1HsPres, 
+             :label => "Holy Spirit Presentations:",
+             :collected => :weekly,
+             :column_type => :database_column ,
+             :order => 7
+           }
+      }, 
+        :monthly_report => {
+          :avg_hours_prayer => {:column => :average_hours_prayer, 
+            :label => "Average - hours of prayer:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 1
+          }, 
+          :frosh => {:column => :number_frosh_involved, 
+            :label => "Number of frosh involved:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 2
+          },
+          :students_dg => {:column => :total_students_in_dg, 
+            :label => "Number of students in DGs:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 3
+          },
+          :spirit_mult => {:column => :total_spiritual_multipliers, 
+            :label => "Number of spiritual multipliers:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 4
+          },
+          :evt_spirit_conv => {:column => :event_spiritual_conversations, 
+            :label => "Event exposures - Spiritual Conversations:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 5
+          },
+          :evt_gos_pres => {:column => :event_gospel_prensentations, 
+            :label => "Event exposures - Gospel Presentations:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 6
+          },
+          :med_spirit_conv => {:column => :media_spiritual_conversations, 
+            :label => "Media exposures - Spiritual Conversations:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 7
+          },
+          :med_gos_pres => {:column => :media_gospel_prensentations, 
+            :label => "Media exposures - Gospel Presentations:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 8
+          },
+          :core_students => {:column => :total_core_students, 
+            :label => "Total core students:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 9
+          }
+      }, 
+        :monthly_p2c_special => {
+          :evang_studies => {:column => :montlyreport_p2c_numInEvangStudies, 
+            :label => "Number of people in evangelistic studies",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 1
+          }, 
+          :trained_to_share_in => {:column => :montlyreport_p2c_numTrainedToShareInP2c, 
+            :label => "Number of People *trained* to share their faith in the power of the Holy Spirit a. with P2C",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 2
+          }, 
+          :trained_to_share_out => {:column => :montlyreport_p2c_numTrainedToShareOutP2c, 
+            :label => "b. outside P2C",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 3
+          }, 
+          :sharing_in => {:column => :montlyreport_p2c_numSharingInP2c, 
+            :label => "Number of people who are sharing their faith a. with P2C",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 4
+          }, 
+          :sharing_out => {:column => :montlyreport_p2c_numSharingOutP2c, 
+            :label => "b. outside P2C",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 5
+          }, 
+          :commit_filled_hs => {:column => :montlyreport_p2c_numCommitFilledHS, 
+            :label => "Number of commitments to be filled with Holy Spirit or Lordship commitments",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 6
+          }
+      }, 
+      :ccci_report => {
+        :win_exposures => {
+          :label => "1. WIN - EXPOSURES",
+          :column_type => :sum,
+          :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
+                           {:report => :weekly_report, :line => :gospel_pres_total},
+                           {:report => :monthly_report, :line => :evt_gos_pres},
+                           {:report => :monthly_report, :line => :med_gos_pres}],
+          :order => 1
+        },
+        :win_decisions => {
+          :label => "2. WIN - DECISIONS",
+          :column_type => :sum,
+          :columns_sum => [],
+          :order => 2
+        },
+        :build_growth => {
+          :label => "3. BUILD - GROWTH GROUP MEMBERS",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
+          :order => 3
+        },
+        :build_group_members => {
+          :label => "4. BUILD - MOVEMENT (ACTION) GROUP MEMBERS",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_report, :line => :core_students}],
+          :order => 4
+        },
+        :send_group_leaders => {
+          :label => "5. SEND - MOVEMENT (ACTION) GROUP LEADERS",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
+          :order => 5
+        },
+        :send_laborers => {
+          :label => "6. SEND - LIFETIME LABORERS",
+          :column_type => :sum,
+          :columns_sum => [{:report => :semester_report, :line => :tot_grad_non_ministry},
+                           {:report => :semester_report, :line => :tot_grad_c4c_staff},
+                           {:report => :semester_report, :line => :tot_grad_p2c_staff},
+                           {:report => :semester_report, :line => :tot_grad_intern},
+                           {:report => :semester_report, :line => :tot_grad_other_ministry}],
+          :order => 6
+        },
+        :send_ccci_staff => {
+          :label => "7. SEND - FULL-TIME CAMPUS CRUSADE STAFF MEMBERS",
+          :column_type => :sum,
+          :columns_sum => [{:report => :semester_report, :line => :tot_grad_c4c_staff},
+                           {:report => :semester_report, :line => :tot_grad_p2c_staff},
+                           {:report => :semester_report, :line => :tot_grad_intern}],
+          :order => 7
+        }
+      },
+      :p2c_report => {
+        :people_exposed_to_gospel => {
+          :label => "1. Number of people exposed to the gospel",
+          :column_type => :sum,
+          :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
+                           {:report => :weekly_report, :line => :gospel_pres_total},
+                           {:report => :monthly_report, :line => :evt_gos_pres},
+                           {:report => :monthly_report, :line => :med_gos_pres}],
+          :order => 1
+        },
+        :indicated_decisions => {
+          :label => "2. Number of indicated decisions for Christ",
+          :column_type => :sum,
+          :columns_sum => [],
+          :order => 2
+        },
+        :people_in_studies => {
+          :label => "3. Number of people in evangelistic studies (i.e. discovery groups or individual sessions)",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :evang_studies}],
+          :order => 3
+        },
+        :integrated_new_believers => {
+          :label => "4. Integrated new believers",
+          :column_type => :sum,
+          :columns_sum => [],
+          :order => 4
+        },
+        :people_in_growth_groups => {
+          :label => "5. Number of people in growth groups",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
+          :order => 5
+        },
+        :commit_filled_hs => {
+          :label => "6. Number of commitments to be filled with Holy Spirit or Lordship commitments",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :commit_filled_hs}],
+          :order => 6
+        },
+        :sharing_in => {
+          :label => "7. Number of people who are sharing their faith a. with P2C",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_in}],
+          :order => 7
+        },
+        :sharing_out => {
+          :label => "b. outside P2C",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_out}],
+          :order => 8
+        },
+        :trained_to_share_in => {
+          :label => "8. Number of People *trained* to share their faith in the power of the Holy Spirit a. with P2C",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :trained_to_share_in}],
+          :order => 9
+        },
+        :trained_to_share_out => {
+          :label => "b. outside P2C",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_p2c_special, :line => :trained_to_share_out}],
+          :order => 10
+        },
+        :spirit_mult => {
+          :label => "9. Number of people actually leading others to do faith adventures (spiritual multipliers)",
+          :column_type => :sum,
+          :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
+          :order => 11
+        }
+      }
+    }
 end

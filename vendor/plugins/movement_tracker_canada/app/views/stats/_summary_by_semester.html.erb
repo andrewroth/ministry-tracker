@@ -13,18 +13,11 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-    <%= show_summary_weekly_stat_by_month("Spiritual Conversations by Staff", sp_conv, @months, @campus_ids) %>
-    <%= show_summary_weekly_stat_by_month("Spiritual Conversations by Students", sp_conv_std, @months, @campus_ids) %>
-
-    <%= show_totals_for_stat_group("Spiritual Conversations Total", @months) %>
-
-    <%= show_summary_weekly_stat_by_month("Gospel Presentations by Staff", gos_pres, @months, @campus_ids) %>
-    <%= show_summary_weekly_stat_by_month("Gospel Presentations by Students", gos_pres_std, @months, @campus_ids) %>
-
-    <%= show_totals_for_stat_group("Gospel Presentations Total", @months) %>
-
-    <%= show_summary_weekly_stat_by_month("Holy Spirit Presentations by Staff", hs_pres, @months, @campus_ids) %>
-
+<%
+      stat_report(:weekly_report).each do | key, input_stat |
+        %><%= show_stat_hash_line(@months, @campus_ids, input_stat) %><%
+      end
+%>
     <tr><td><br/></td></tr>
     <tr class='highlight'>
         <td class="statsTableTitle">
@@ -46,9 +39,9 @@
     </tr>
 <%
       if @monthly_report_permission 
-        stats_reports[:monthly_report].each do | input_stat |
-          %><%= show_summary_monthly_stat_by_month(input_stat[:label], input_stat[:column], @months, @campus_ids)%><%
-        end
+	      stat_report(:monthly_report).each do | key, input_stat |
+	        %><%= show_stat_hash_line(@months, @campus_ids, input_stat) %><%
+	      end
       end 
 
 %>

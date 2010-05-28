@@ -4,7 +4,18 @@
       <%= f.hidden_field :campus_id %>
       <table>
 <%
-stats_reports[:monthly_report].each do | input_stat |
+lines = stats_reports[:monthly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
+%>
+        <tr class="statsFormField">
+          <td><%= f.label input_stat[:column], input_stat[:label] %></td>
+          <td><%= f.text_field input_stat[:column], :size => 4 %></td>
+        </tr>
+
+<%
+end
+lines = stats_reports[:monthly_p2c_special].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], input_stat[:label] %></td>

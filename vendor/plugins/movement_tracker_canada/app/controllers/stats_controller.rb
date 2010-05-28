@@ -9,12 +9,14 @@ class StatsController < ApplicationController
 
   DEFAULT_REPORT_TIME = 'semester'
   DEFAULT_SUMMARY = 'true'
+  DEFAULT_REPORT_TYPE = :c4c 
 
 
   def index
     session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
     session[:stats_summary] = DEFAULT_SUMMARY unless session[:stats_summary].present?
     session[:stats_time] = DEFAULT_REPORT_TIME unless session[:stats_time].present?
+    session[:stats_report_type] = DEFAULT_REPORT_TYPE unless session[:stats_report_type].present?
 
     setup_stats_report_from_session
   end
@@ -24,25 +26,32 @@ class StatsController < ApplicationController
     session[:stats_ministry_id] = Ministry.find(params['ministry']).id
     session[:stats_summary] = params['summary']
     session[:stats_time] = params['time']
+    session[:stats_report_type] = params['report_type'] if params['report_type'].present?
 
     setup_stats_report_from_session
 
-    case
-    when @stats_summary && @stats_time == 'year'
-      setup_summary_by_year
-    when @stats_summary && @stats_time == 'semester'
-      setup_summary_by_semester
-    when @stats_summary && @stats_time == 'month'
-      setup_summary_by_month
-      
-    when !@stats_summary && @stats_time == 'year'
-      setup_campus_by_year
-    when !@stats_summary && @stats_time == 'semester'
-      setup_campus_by_semester
-    when !@stats_summary && @stats_time == 'month'
-      setup_campus_by_month
-    when !@stats_summary && @stats_time == 'week'
-      setup_campus_by_week
+    if @report_type == "ccci"
+      setup_ccci_report_by_year
+    elsif @report_type == "p2c"
+      setup_p2c_report_by_year
+    else
+      case
+        when @stats_summary && @stats_time == 'year'
+          setup_summary_by_year
+        when @stats_summary && @stats_time == 'semester'
+          setup_summary_by_semester
+        when @stats_summary && @stats_time == 'month'
+          setup_summary_by_month
+          
+        when !@stats_summary && @stats_time == 'year'
+          setup_campus_by_year
+        when !@stats_summary && @stats_time == 'semester'
+          setup_campus_by_semester
+        when !@stats_summary && @stats_time == 'month'
+          setup_campus_by_month
+        when !@stats_summary && @stats_time == 'week'
+          setup_campus_by_week
+        end
     end
 
     respond_to do |format|
@@ -346,7 +355,8 @@ class StatsController < ApplicationController
     @stats_summary = session[:stats_summary] == DEFAULT_SUMMARY ? true : false
 
     @stats_time = session[:stats_time]
-
+    @report_type = session[:stats_report_type] 
+    
 
 
     # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
@@ -390,6 +400,48 @@ class StatsController < ApplicationController
 
     @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
+    @tab_select_partial = "select_year"
+  end
+
+  def setup_ccci_report_by_year
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    current_year_id = Month.find_year_id(cur_month)
+
+    @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
+    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
+    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+
+    @campuses_selected = @stats_ministry.unique_campuses
+
+    session[:stats_year] = params[:year] if params[:year].present?
+    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    @year_id = session[:stats_year]
+    
+    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
+
+    @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
+    @results_partial = "ccci_report_by_year"
+    @tab_select_partial = "select_year"
+  end
+
+  def setup_p2c_report_by_year
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    current_year_id = Month.find_year_id(cur_month)
+
+    @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
+    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
+    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+
+    @campuses_selected = @stats_ministry.unique_campuses
+
+    session[:stats_year] = params[:year] if params[:year].present?
+    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    @year_id = session[:stats_year]
+    
+    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
+
+    @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
+    @results_partial = "p2c_report_by_year"
     @tab_select_partial = "select_year"
   end
 
