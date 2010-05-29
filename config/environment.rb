@@ -14,6 +14,8 @@ PRODUCTION_HOST = 'example.com'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
+  require "#{RAILS_ROOT}/vendor/plugins/git_branch_configs/init"
+
   # Skip frameworks you're not going to use (only works if using vendor/rails)
   # config.frameworks -= [ :action_web_service, :action_mailer ]
 
@@ -51,7 +53,7 @@ Rails::Initializer.run do |config|
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
   # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
+  config.active_record.schema_format = :sql
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
