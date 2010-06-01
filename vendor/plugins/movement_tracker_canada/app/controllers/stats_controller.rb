@@ -394,17 +394,20 @@ class StatsController < ApplicationController
 
     session[:stats_year] = params[:year] if params[:year].present?
     session[:stats_year] = current_year_id unless session[:stats_year].present?
+    
     @year_id = session[:stats_year]
+    year = Year.find(@year_id)
     
     @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
 
+    @period_model = year.semesters
     @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
     @tab_select_partial = "select_year"
   end
 
   def setup_ccci_report_by_year
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
     current_year_id = Month.find_year_id(cur_month)
 
     @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
@@ -415,10 +418,13 @@ class StatsController < ApplicationController
 
     session[:stats_year] = params[:year] if params[:year].present?
     session[:stats_year] = current_year_id unless session[:stats_year].present?
+    
     @year_id = session[:stats_year]
+    year = Year.find(@year_id)
     
     @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
 
+    @period_model = year.semesters
     @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "ccci_report_by_year"
     @tab_select_partial = "select_year"
@@ -436,11 +442,14 @@ class StatsController < ApplicationController
 
     session[:stats_year] = params[:year] if params[:year].present?
     session[:stats_year] = current_year_id unless session[:stats_year].present?
+    
     @year_id = session[:stats_year]
+    year = Year.find(@year_id)
     
     @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
 
-    @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
+    @period_model = year.semesters
+    @report_description = "Summary of #{@stats_ministry.name} during #{year.description}"
     @results_partial = "p2c_report_by_year"
     @tab_select_partial = "select_year"
   end
@@ -452,22 +461,43 @@ class StatsController < ApplicationController
     session[:stats_semester] = params[:semester] if params[:semester].present?
     session[:stats_semester] = Month.find_semester_id(@cur_month) unless session[:stats_semester].present?
     @semester_id = session[:stats_semester]
+    semester = Semester.find(@semester_id)
 
-    @months = Month.find_months_by_semester(@semester_id)
     @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
     @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
+    @period_model = @months = semester.months
 
     # ensures that semesters that haven't occurred yet aren't listed
     cur_semester_id = Month.find_semester_id(@cur_month)
     @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
 
-    @report_description = "Summary of #{@stats_ministry.name} during #{Semester.find(:first, :conditions => {:semester_id => @semester_id}).description}"
+    @report_description = "Summary of #{@stats_ministry.name} during #{semester.description}"
     @results_partial = "summary_by_semester"
     @tab_select_partial = "select_semester"
   end
 
 
   def setup_summary_by_month
+    cur_month_id = Month.find(:first, :conditions => { :month_calendaryear => Time.now.year(), :month_number => Time.now.month()}).id
+
+    session[:stats_month] = params[:month] if params[:month].present?
+    session[:stats_month] = cur_month_id unless session[:stats_month].present?
+    
+    cur_month = Month.find(session[:stats_month])
+
+    @period_model = @weeks = cur_month.weeks
+    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+
+    @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", cur_month_id])
+    @month_id = cur_month.id
+    
+    @report_description = "Summary of #{@stats_ministry.name} during #{cur_month.description}"
+    @results_partial = "summary_by_month"
+    @tab_select_partial = "select_month"
+  end
+
+  #old_setup_summary_by_month: marked for deletion
+  def old_setup_summary_by_month
     @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
     @cur_month_id = Month.find_month_id(@cur_month)
 

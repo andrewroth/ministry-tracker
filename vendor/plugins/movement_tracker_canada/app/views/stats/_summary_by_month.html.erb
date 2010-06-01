@@ -15,29 +15,6 @@
             Total
         </td>
     </tr>
-<%
-      stat_report(:weekly_report).each do | key, input_stat |
-        %><%= show_stat_hash_line(@weeks, @campus_ids, input_stat) %><%
-      end
-%>
-
-    <tr><td><br/></td></tr>
-    <tr class="highlight">
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% start_date = Week.find_start_date(week.id) %>
-        <% end_date = Week.find_end_date(week.id) %>
-        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
+    <%= show_summary_report(:weekly_report, true)%>
+    <%= show_summary_report(:indicated_decisions_report, true)%>
 </table>

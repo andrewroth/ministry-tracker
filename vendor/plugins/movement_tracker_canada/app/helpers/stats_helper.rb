@@ -18,6 +18,14 @@ module StatsHelper
     report_type_links_to_show.collect {| key | report_type_link_to_remote(key)}
   end
   
+  def show_summary_report(report_type, permission_granted)
+    render :partial => 'stats/show_specific_summary_report',
+    :locals => {
+        :report_symbol => report_type,
+        :permission_granted => permission_granted
+    }  
+  end
+  
   def show_report_type_list_links
     render :partial => 'stats/report_type_list_links'
   end
@@ -40,28 +48,25 @@ module StatsHelper
     evaluation
   end
 
-  def show_stat_hash_line(period_model_array, campus_ids, stat_hash)   
-    render :partial => 'stats/stats_line',
-    :locals => {
-        :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
-        :title => stat_hash[:label], 
-        :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash) } 
-    }
+  def show_stat_hash_line(period_model_array, campus_ids, stat_hash)
+    result = ""
+    if stat_hash[:column_type] == :blank_line
+      result = render(:partial => 'stats/blank_line')
+    else
+      result = render(:partial => 'stats/stats_line',
+                      :locals => {
+                          :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
+                          :title => stat_hash[:label], 
+                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash) } 
+                      })
+    end
+    result
   end
 
   def stat_report(report)
     stats_reports[report].sort { |a,b| a[1][:order] <=> b[1][:order]}
   end
 
-  def show_totals_for_stat_group(title, stat_array)
-    render :partial => 'stats/stats_line_total',
-    :locals => {
-        :special_css_class => "",
-        :title => title, 
-        :stats_array => stat_array
-    }
-  end
-  
   def show_stat_for_semesters(title, stat, semesters, campus_ids)
     render :partial => 'stats/stats_line',
     :locals => {

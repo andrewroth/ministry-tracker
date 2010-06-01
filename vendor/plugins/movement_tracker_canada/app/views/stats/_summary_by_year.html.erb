@@ -17,43 +17,8 @@
         </td>
 
     </tr>
-    <tr>
-        <td>
-            <br/>
-        </td>
-    </tr>
-<%
-      stat_report(:weekly_report).each do | key, input_stat |
-        %><%= show_stat_hash_line(semesters, @campus_ids, input_stat) %><%
-      end
-%>
-    <tr class="highlight">
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
-          </td>
-          <% total += stat %>
-        <% end %>
-
-        <td>
-            <%= total %>
-        </td>
-    </tr>
-<%
-      if @monthly_report_permission 
-        stat_report(:monthly_report).each do | key, input_stat |
-          %><%= show_summary_monthly_stat_by_year(input_stat[:label], input_stat[:column], semesters, @campus_ids)%><%
-        end
-      end 
-      if @semester_highlights_permission 
-        stat_report(:semester_report).each do | key, input_stat |
-          %><%= show_semester_highlight_stat(input_stat[:label], input_stat[:column], semesters, @campus_ids)%><%
-        end
-      end 
-%>
+    <%= show_summary_report(:weekly_report, true)%>
+    <%= show_summary_report(:indicated_decisions_report, true)%>
+    <%= show_summary_report(:monthly_report, @monthly_report_permission)%>
+    <%= show_summary_report(:semester_report, @semester_highlights_permission)%>
 </table>

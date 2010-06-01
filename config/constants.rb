@@ -62,6 +62,35 @@
     }
   end
   
+  def report_permissions
+    {
+      :semester_report => {
+       :editing => {:controller => :semester_report, :action => :new},
+       :reading => {:controller => :stats, :action => :semester_highlights}
+      }, 
+      :weekly_report => {
+       :editing => {:controller => :weekly_report, :action => :new},
+       :reading => {:controller => :stats, :action => :index}
+      }, 
+      :indicated_decisions_report => {
+       :reading => {:controller => :stats, :action => :index}
+      }, 
+      :monthly_report => {
+       :editing => {:controller => :monthly_report, :action => :new},
+       :reading => {:controller => :stats, :action => :monthly_report}
+      }, 
+      :monthly_p2c_special => {
+       :editing => {:controller => :monthly_report, :action => :new},
+      }, 
+      :ccci_report => {
+       :reading => {:controller => :stats, :action => :show_ccci_report}
+      },
+      :p2c_report => {
+       :reading => {:controller => :stats, :action => :show_p2c_report}
+      }
+    }
+  end
+  
   def stats_reports
       {:semester_report => {
           :tot_grad_non_ministry => {:column => :total_graduating_students_to_non_ministry, 
@@ -140,6 +169,18 @@
              :collected => :weekly,
              :column_type => :database_column ,
              :order => 7
+           }
+      },
+        :indicated_decisions_report => {
+           :blank_line => {
+             :column_type => :blank_line ,
+             :order => 0
+           },
+           :indicated_decisions => {
+             :label => "Indicated Decisions:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 1
            }
       }, 
         :monthly_report => {
@@ -249,7 +290,7 @@
         :win_decisions => {
           :label => "2. WIN - DECISIONS",
           :column_type => :sum,
-          :columns_sum => [],
+          :columns_sum => [{:report => :indicated_decisions_report, :line => :indicated_decisions}],
           :order => 2
         },
         :build_growth => {
@@ -302,7 +343,7 @@
         :indicated_decisions => {
           :label => "2. Number of indicated decisions for Christ",
           :column_type => :sum,
-          :columns_sum => [],
+          :columns_sum => [{:report => :indicated_decisions_report, :line => :indicated_decisions}],
           :order => 2
         },
         :people_in_studies => {

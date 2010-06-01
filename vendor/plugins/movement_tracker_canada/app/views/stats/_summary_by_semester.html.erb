@@ -13,36 +13,7 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-<%
-      stat_report(:weekly_report).each do | key, input_stat |
-        %><%= show_stat_hash_line(@months, @campus_ids, input_stat) %><%
-      end
-%>
-    <tr><td><br/></td></tr>
-    <tr class='highlight'>
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% start_date = Month.find_start_date(month.id) %>
-        <% end_date = Month.find_end_date(month.id) %>
-        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
-<%
-      if @monthly_report_permission 
-	      stat_report(:monthly_report).each do | key, input_stat |
-	        %><%= show_stat_hash_line(@months, @campus_ids, input_stat) %><%
-	      end
-      end 
-
-%>
+    <%= show_summary_report(:weekly_report, true)%>
+    <%= show_summary_report(:indicated_decisions_report, true)%>
+    <%= show_summary_report(:monthly_report, @monthly_report_permission)%>
 </table>
