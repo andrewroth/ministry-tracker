@@ -1,4 +1,3 @@
-<<<<<<< HEAD:db/development_structure.sql
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
@@ -43,7 +42,7 @@ CREATE TABLE `campus_involvements` (
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3621 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4116 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -84,25 +83,7 @@ CREATE TABLE `columns` (
   `source_column` varchar(255) DEFAULT NULL,
   `foreign_key` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-=======
-CREATE TABLE `columns` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `update_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `from_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `select_clause` text COLLATE utf8_unicode_ci,
-  `column_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `writeable` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `join_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `source_model` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `source_column` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `foreign_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conference_registrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -111,7 +92,6 @@ CREATE TABLE `conference_registrations` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conferences` (
@@ -167,22 +147,10 @@ CREATE TABLE `countries` (
   `is_closed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `conferences` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `custom_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ministry_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `name` varchar(255) DEFAULT NULL,
   `value_type` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -190,35 +158,19 @@ CREATE TABLE `custom_attributes` (
   PRIMARY KEY (`id`),
   KEY `index_custom_attributes_on_type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `value_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_custom_attributes_on_type` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `custom_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
   `custom_attribute_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `delayed_jobs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `priority` int(11) DEFAULT '0',
   `attempts` int(11) DEFAULT '0',
-<<<<<<< HEAD:db/development_structure.sql
   `handler` text,
   `last_error` varchar(255) DEFAULT NULL,
   `run_at` datetime DEFAULT NULL,
@@ -228,7 +180,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dorms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -260,35 +212,33 @@ CREATE TABLE `emails` (
   `body` text,
   `people_ids` text,
   `missing_address_ids` text,
-=======
-  `handler` text COLLATE utf8_unicode_ci,
-  `last_error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `run_at` datetime DEFAULT NULL,
-  `locked_at` datetime DEFAULT NULL,
-  `failed_at` datetime DEFAULT NULL,
-  `locked_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `emails` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subject` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `body` text COLLATE utf8_unicode_ci,
-  `people_ids` text COLLATE utf8_unicode_ci,
-  `missing_address_ids` text COLLATE utf8_unicode_ci,
->>>>>>> dev:db/development_structure.sql
   `search_id` int(11) DEFAULT NULL,
   `sender_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `emerg` (
+  `emerg_id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `passport_num` varchar(255) DEFAULT NULL,
+  `passport_origin` varchar(255) DEFAULT NULL,
+  `passport_expiry` varchar(255) DEFAULT NULL,
+  `notes` text,
+  `meds` text,
+  `health_coverage_state` varchar(255) DEFAULT NULL,
+  `health_number` varchar(255) DEFAULT NULL,
+  `medical_plan_number` varchar(255) DEFAULT NULL,
+  `medical_plan_carrier` varchar(255) DEFAULT NULL,
+  `doctor_name` varchar(255) DEFAULT NULL,
+  `doctor_phone` varchar(255) DEFAULT NULL,
+  `dentist_name` varchar(255) DEFAULT NULL,
+  `dentist_phone` varchar(255) DEFAULT NULL,
+  `blood_type` varchar(255) DEFAULT NULL,
+  `blood_rh_factor` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`emerg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `free_times` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -298,44 +248,26 @@ CREATE TABLE `free_times` (
   `timetable_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `css_class` varchar(255) DEFAULT NULL,
   `weight` decimal(4,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44900 DEFAULT CHARSET=utf8;
-=======
-  `css_class` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `weight` decimal(4,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+  PRIMARY KEY (`id`),
+  KEY `free_times_timetable_id` (`timetable_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=88375 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_involvements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
   `group_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `level` varchar(255) DEFAULT NULL,
   `requested` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2817 DEFAULT CHARSET=utf8;
-=======
-  `level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `requested` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=4139 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ministry_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `group_type` varchar(255) DEFAULT NULL,
-=======
-  `group_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
->>>>>>> dev:db/development_structure.sql
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `mentor_priority` tinyint(1) DEFAULT NULL,
@@ -344,7 +276,6 @@ CREATE TABLE `group_types` (
   `unsuitability_coleader` int(11) DEFAULT NULL,
   `unsuitability_participant` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `groups` (
@@ -358,21 +289,6 @@ CREATE TABLE `groups` (
   `country` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `zip` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
->>>>>>> dev:db/development_structure.sql
   `dorm_id` int(11) DEFAULT NULL,
   `ministry_id` int(11) DEFAULT NULL,
   `campus_id` int(11) DEFAULT NULL,
@@ -385,11 +301,7 @@ CREATE TABLE `groups` (
   KEY `index_groups_on_campus_id` (`campus_id`),
   KEY `index_groups_on_dorm_id` (`dorm_id`),
   KEY `index_groups_on_ministry_id` (`ministry_id`)
-<<<<<<< HEAD:db/development_structure.sql
-) ENGINE=InnoDB AUTO_INCREMENT=371 DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=463 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `imports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -398,7 +310,6 @@ CREATE TABLE `imports` (
   `size` int(11) DEFAULT NULL,
   `height` int(11) DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `content_type` varchar(255) DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   `thumbnail` varchar(255) DEFAULT NULL,
@@ -422,7 +333,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -442,7 +353,7 @@ CREATE TABLE `ministries` (
   `ministries_count` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministries_on_parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -450,7 +361,7 @@ CREATE TABLE `ministry_campuses` (
   `campus_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_ministry_campuses_on_ministry_id_and_campus_id` (`ministry_id`,`campus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_involvements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -464,25 +375,15 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4100 DEFAULT CHARSET=utf8;
-=======
-  `content_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `filename` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `thumbnail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=8270 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_id` int(11) DEFAULT NULL,
   `ministry_role_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=389 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -495,7 +396,7 @@ CREATE TABLE `ministry_roles` (
   `involved` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `people` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -503,7 +404,7 @@ CREATE TABLE `people` (
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `middle_name` varchar(255) DEFAULT NULL,
-  `preferred_name` varchar(255) DEFAULT NULL,
+  `preferred_first_name` varchar(255) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
   `year_in_school` varchar(255) DEFAULT NULL,
   `level_of_school` varchar(255) DEFAULT NULL,
@@ -521,6 +422,7 @@ CREATE TABLE `people` (
   `url` varchar(2000) DEFAULT NULL,
   `primary_campus_involvement_id` int(11) DEFAULT NULL,
   `mentor_id` int(11) DEFAULT NULL,
+  `preferred_last_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_people_on_user_id` (`user_id`),
   KEY `index_people_on_first_name` (`first_name`),
@@ -534,7 +436,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -556,7 +458,7 @@ CREATE TABLE `person_extras` (
   `curr_room` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_person_extras_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1316 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1724 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `profile_pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -570,7 +472,7 @@ CREATE TABLE `profile_pictures` (
   `thumbnail` varchar(255) DEFAULT NULL,
   `uploaded_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=397 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) NOT NULL,
@@ -586,29 +488,10 @@ CREATE TABLE `school_years` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-  `created_at` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `controller` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `action` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `schema_migrations` (
-  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  UNIQUE KEY `unique_schema_migrations` (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `searches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `options` text,
   `query` text,
   `tables` text,
@@ -619,40 +502,18 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2596 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4664 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(255) NOT NULL,
   `data` text,
-=======
-  `options` text COLLATE utf8_unicode_ci,
-  `query` text COLLATE utf8_unicode_ci,
-  `tables` text COLLATE utf8_unicode_ci,
-  `saved` tinyint(1) DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `order` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `sessions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `data` text COLLATE utf8_unicode_ci,
->>>>>>> dev:db/development_structure.sql
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-<<<<<<< HEAD:db/development_structure.sql
-) ENGINE=InnoDB AUTO_INCREMENT=26561 DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=70588 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -661,7 +522,6 @@ CREATE TABLE `staff` (
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_staff_on_ministry_id` (`ministry_id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `states` (
@@ -672,9 +532,6 @@ CREATE TABLE `states` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `stint_applications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -683,7 +540,6 @@ CREATE TABLE `stint_applications` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stint_locations` (
@@ -693,23 +549,11 @@ CREATE TABLE `stint_locations` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `stint_locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `summer_project_applications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `summer_project_id` int(11) DEFAULT NULL,
   `person_id` int(11) DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `status` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -723,21 +567,6 @@ CREATE TABLE `summer_projects` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `summer_projects` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `timetables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -745,11 +574,7 @@ CREATE TABLE `timetables` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
-) ENGINE=InnoDB AUTO_INCREMENT=2930 DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
+) ENGINE=InnoDB AUTO_INCREMENT=3944 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -758,7 +583,6 @@ CREATE TABLE `training_answers` (
   `completed_at` date DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-<<<<<<< HEAD:db/development_structure.sql
   `approved_by` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -766,25 +590,12 @@ CREATE TABLE `training_answers` (
 CREATE TABLE `training_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-=======
-  `approved_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `training_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
->>>>>>> dev:db/development_structure.sql
   `position` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `ministry_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
->>>>>>> dev:db/development_structure.sql
 
 CREATE TABLE `training_question_activations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -794,25 +605,16 @@ CREATE TABLE `training_question_activations` (
   `updated_at` datetime DEFAULT NULL,
   `mandate` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `activity` varchar(255) DEFAULT NULL,
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `training_questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
->>>>>>> dev:db/development_structure.sql
   `ministry_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `training_category_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-<<<<<<< HEAD:db/development_structure.sql
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
@@ -838,22 +640,13 @@ CREATE TABLE `view_columns` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `view_id` varchar(255) DEFAULT NULL,
   `column_id` varchar(255) DEFAULT NULL,
-=======
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `view_columns` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `view_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `column_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
->>>>>>> dev:db/development_structure.sql
   `position` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
-<<<<<<< HEAD:db/development_structure.sql
-) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=480 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `views` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -865,7 +658,7 @@ CREATE TABLE `views` (
   `select_clause` varchar(2000) DEFAULT NULL,
   `tables_clause` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -983,15 +776,41 @@ INSERT INTO schema_migrations (version) VALUES ('20091004205424');
 
 INSERT INTO schema_migrations (version) VALUES ('20091007141651');
 
-INSERT INTO schema_migrations (version) VALUES ('20091008020514');
-
 INSERT INTO schema_migrations (version) VALUES ('20091012000730');
+
+INSERT INTO schema_migrations (version) VALUES ('20091027033604');
+
+INSERT INTO schema_migrations (version) VALUES ('20091027033704');
 
 INSERT INTO schema_migrations (version) VALUES ('20091103202343');
 
 INSERT INTO schema_migrations (version) VALUES ('20091104204904');
 
+INSERT INTO schema_migrations (version) VALUES ('20091231214211');
+
 INSERT INTO schema_migrations (version) VALUES ('20100109055730');
+
+INSERT INTO schema_migrations (version) VALUES ('20100125204611');
+
+INSERT INTO schema_migrations (version) VALUES ('20100125211110');
+
+INSERT INTO schema_migrations (version) VALUES ('20100210202651');
+
+INSERT INTO schema_migrations (version) VALUES ('20100303202104');
+
+INSERT INTO schema_migrations (version) VALUES ('20100407173131');
+
+INSERT INTO schema_migrations (version) VALUES ('20100421144336');
+
+INSERT INTO schema_migrations (version) VALUES ('20100422155152');
+
+INSERT INTO schema_migrations (version) VALUES ('20100505172935');
+
+INSERT INTO schema_migrations (version) VALUES ('20100507153429');
+
+INSERT INTO schema_migrations (version) VALUES ('20100507153649');
+
+INSERT INTO schema_migrations (version) VALUES ('20100507173839');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
@@ -1066,20 +885,3 @@ INSERT INTO schema_migrations (version) VALUES ('7');
 INSERT INTO schema_migrations (version) VALUES ('8');
 
 INSERT INTO schema_migrations (version) VALUES ('9');
-=======
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `views` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ministry_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `default_view` tinyint(1) DEFAULT NULL,
-  `select_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tables_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO schema_migrations (version) VALUES ('20100525190119');
->>>>>>> dev:db/development_structure.sql
