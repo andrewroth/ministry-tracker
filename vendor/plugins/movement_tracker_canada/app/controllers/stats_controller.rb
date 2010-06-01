@@ -21,6 +21,92 @@ class StatsController < ApplicationController
     setup_stats_report_from_session
   end
 
+  def add_report_if_authorized(report_symbol)
+    if authorized?(report_permissions[report_symbol][:action], report_permissions[report_symbol][:controller], @stats_ministry)
+      @reports_to_show += [report_symbol]
+    end
+  end
+
+  def setup_reports_to_show
+    @reports_to_show = []
+    case @report_type
+      when 'p2c'
+        add_report_if_authorized(:p2c_report)
+      when 'ccci'
+        add_report_if_authorized(:ccci_report)
+    end
+    if @reports_to_show.empty?
+        add_report_if_authorized(:weekly_report)
+        add_report_if_authorized(:indicated_decisions_report)
+        add_report_if_authorized(:monthly_report) if ['year', 'semester'].include?(@stats_time)
+        add_report_if_authorized(:semester_report) if @stats_time == 'year'
+    end
+  end
+
+  def hide_time_tabs(tab_symbols_array)
+    tab_symbols_array.each { | tab | @hide_tab[tab] = true }
+  end
+
+  def setup_time_tabs_visibility
+    @time_tabs = [:week, :month, :semester, :year]
+    @hide_tab = { :week => false,
+                  :month => false,
+                  :semester => false,
+                  :year => false }
+    
+    hide_time_tabs([:week]) if @stats_summary
+    
+    case @report_type
+      when 'ccci' 
+        hide_time_tabs([:week, :month])
+      when 'p2c' 
+        hide_time_tabs([:week, :month])
+      end
+   
+  end
+
+  def setup_summary_drilldown_radio_visibility
+    @hide_radios = false
+    case @report_type
+      when 'ccci' 
+        @hide_radios = true
+      when 'p2c' 
+        @hide_radios = true
+      end
+    if !is_ministry_admin && (@oneCampusMinistry || !@drillDownAccess)
+      @hide_radios = true
+    end
+    
+    if @hide_radios
+      @stats_summary = true
+      session[:stats_summary] = DEFAULT_SUMMARY    
+    end
+  end
+
+  def check_stats_time_availability
+    setup_time_tabs_visibility
+    while @hide_tab[:"#{@stats_time}"] && @stats_time != @time_tabs.last.to_s
+      @time_tabs.each do |t|
+        if t.to_s == @stats_time
+          @stats_time = @time_tabs[@time_tabs.index(t) + 1].to_s
+          break
+        end
+      end
+    end
+  end
+
+  def setup_period_dropdown(current_period)
+    case @stats_time
+      when 'year'
+        @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_period.id])
+      when 'semester'
+        @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",current_period.id])
+      when 'month'
+        @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", current_period.id])
+      when 'week'
+        @weeks = Week.all(:conditions => ["#{_(:end_date, :week)} <= ?", current_period.end_date], :order => :week_endDate)
+      end
+  end
 
   def select_report
     session[:stats_ministry_id] = Ministry.find(params['ministry']).id
@@ -30,29 +116,23 @@ class StatsController < ApplicationController
 
     setup_stats_report_from_session
 
-    if @report_type == "ccci"
-      setup_ccci_report_by_year
-    elsif @report_type == "p2c"
-      setup_p2c_report_by_year
-    else
-      case
-        when @stats_summary && @stats_time == 'year'
-          setup_summary_by_year
-        when @stats_summary && @stats_time == 'semester'
-          setup_summary_by_semester
-        when @stats_summary && @stats_time == 'month'
-          setup_summary_by_month
-          
-        when !@stats_summary && @stats_time == 'year'
-          setup_campus_by_year
-        when !@stats_summary && @stats_time == 'semester'
-          setup_campus_by_semester
-        when !@stats_summary && @stats_time == 'month'
-          setup_campus_by_month
-        when !@stats_summary && @stats_time == 'week'
-          setup_campus_by_week
-        end
-    end
+    case
+      when @stats_summary && @stats_time == 'year'
+        setup_summary_by_year
+      when @stats_summary && @stats_time == 'semester'
+        setup_summary_by_semester
+      when @stats_summary && @stats_time == 'month'
+        setup_summary_by_month
+        
+      when !@stats_summary && @stats_time == 'year'
+        setup_campus_by_year
+      when !@stats_summary && @stats_time == 'semester'
+        setup_campus_by_semester
+      when !@stats_summary && @stats_time == 'month'
+        setup_campus_by_month
+      when !@stats_summary && @stats_time == 'week'
+        setup_campus_by_week
+      end
 
     respond_to do |format|
       format.js
@@ -363,18 +443,10 @@ class StatsController < ApplicationController
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
     @drillDownAccess = @me.has_permission_from_ministry_or_higher("campus_drill_down", "stats", @stats_ministry)
 
-    @hide_radios = false
-
-    if !is_ministry_admin && (@oneCampusMinistry || !@drillDownAccess)
-      @stats_summary = true
-      session[:stats_summary] = DEFAULT_SUMMARY
-      @hide_radios = true
-    end
-
-    if @stats_time == "week" && @stats_summary
-      @stats_time = session[:stats_time] = DEFAULT_REPORT_TIME
-    end
-
+    setup_summary_drilldown_radio_visibility
+    check_stats_time_availability
+    setup_reports_to_show
+    
     @show_additional_report_links = (authorized?("semester_at_a_glance", "stats") || authorized?("how_people_came_to_christ", "stats")) ? true : false
 
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
@@ -407,51 +479,15 @@ class StatsController < ApplicationController
   end
 
   def setup_ccci_report_by_year
-     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    current_year_id = Month.find_year_id(cur_month)
-
-    @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
-    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
-    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
-
-    @campuses_selected = @stats_ministry.unique_campuses
-
-    session[:stats_year] = params[:year] if params[:year].present?
-    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    setup_summary_by_year
     
-    @year_id = session[:stats_year]
-    year = Year.find(@year_id)
-    
-    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
-
-    @period_model = year.semesters
-    @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
     @results_partial = "ccci_report_by_year"
-    @tab_select_partial = "select_year"
   end
 
   def setup_p2c_report_by_year
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    current_year_id = Month.find_year_id(cur_month)
-
-    @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
-    @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
-    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
-
-    @campuses_selected = @stats_ministry.unique_campuses
-
-    session[:stats_year] = params[:year] if params[:year].present?
-    session[:stats_year] = current_year_id unless session[:stats_year].present?
+    setup_summary_by_year
     
-    @year_id = session[:stats_year]
-    year = Year.find(@year_id)
-    
-    @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
-
-    @period_model = year.semesters
-    @report_description = "Summary of #{@stats_ministry.name} during #{year.description}"
     @results_partial = "p2c_report_by_year"
-    @tab_select_partial = "select_year"
   end
 
 
@@ -474,6 +510,12 @@ class StatsController < ApplicationController
     @report_description = "Summary of #{@stats_ministry.name} during #{semester.description}"
     @results_partial = "summary_by_semester"
     @tab_select_partial = "select_semester"
+  end
+
+  def setup_ccci_report_by_semester
+    setup_summary_by_semester
+    
+    @results_partial = "ccci_report_by_semester"
   end
 
 

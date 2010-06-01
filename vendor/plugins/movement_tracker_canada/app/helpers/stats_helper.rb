@@ -48,11 +48,28 @@ module StatsHelper
     evaluation
   end
 
+  def line_should_show(period_model_array, stat_hash)
+    accepted_collections = []
+    unless period_model_array.empty?
+      pm = period_model_array[0]
+      if pm.is_a?(Week)
+        accepted_collections = [:weekly, :prc]
+      elsif pm.is_a?(Month)
+        accepted_collections = [:weekly, :prc, :monthly]
+      elsif pm.is_a?(Semester)
+        accepted_collections = [:weekly, :prc, :monthly, :semesterly]
+      elsif pm.is_a?(Year)
+        accepted_collections = [:weekly, :prc, :monthly, :semesterly, :yearly]
+      end
+    end
+    accepted_collections.include?(stat_hash[:collected])
+  end
+
   def show_stat_hash_line(period_model_array, campus_ids, stat_hash)
     result = ""
     if stat_hash[:column_type] == :blank_line
       result = render(:partial => 'stats/blank_line')
-    else
+    elsif line_should_show(period_model_array, stat_hash)
       result = render(:partial => 'stats/stats_line',
                       :locals => {
                           :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",

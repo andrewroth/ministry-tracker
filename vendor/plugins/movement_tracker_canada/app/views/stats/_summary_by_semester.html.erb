@@ -13,7 +13,7 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-    <%= show_summary_report(:weekly_report, true)%>
-    <%= show_summary_report(:indicated_decisions_report, true)%>
-    <%= show_summary_report(:monthly_report, @monthly_report_permission)%>
+    <% @reports_to_show.each do |r| %>
+      <%= show_summary_report(r, true)%>
+    <% end %>
 </table>

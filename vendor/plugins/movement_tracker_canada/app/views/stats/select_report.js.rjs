@@ -9,14 +9,14 @@ end
 # update selected radio button in case server changes @stats_summary value
 page["report_summary_summary"].attr("checked", @stats_summary)
 
-
-# there's no week summary report, hide the link
-if @stats_summary
-  page << "jQuery('#week').addClass('notDisplayed')"
-else
-  page << "jQuery('#week').removeClass('notDisplayed')"
+# hide the time tab links accordingly
+@time_tabs.each do |t|
+  if @hide_tab[t]
+    page << "jQuery('##{t.to_s}').addClass('notDisplayed')"
+  else
+    page << "jQuery('##{t.to_s}').removeClass('notDisplayed')"   
+  end
 end
-
 
 # update tab styles to reflect selected tab
 page << "jQuery('.statsReportTab').removeClass('statsTabActive')"

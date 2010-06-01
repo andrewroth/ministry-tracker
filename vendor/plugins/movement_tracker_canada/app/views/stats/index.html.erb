@@ -44,22 +44,22 @@
     <br/>
 
     <div id="statsReportTimeTabs">
-      <div id="year" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "year" %>" >
+      <div id="year" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "year" %> <%= "notDisplayed" if @hide_tab[:year] %>" >
         <%= time_tab_link_to_remote("year") %>
       </div>
 
 
-      <div id="semester" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "semester" %>" >
+      <div id="semester" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "semester" %> <%= "notDisplayed" if @hide_tab[:semester] %>" >
         <%= time_tab_link_to_remote("semester") %>
       </div>
 
 
-      <div id="month" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "month" %>" >
+      <div id="month" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "month" %> <%= "notDisplayed" if @hide_tab[:month] %>" >
         <%= time_tab_link_to_remote("month") %>
       </div>
 
 
-      <div id="week" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "week" %> <%= "notDisplayed" if @stats_summary %>" >
+      <div id="week" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "week" %> <%= "notDisplayed" if @hide_tab[:week] %>" >
         <%= time_tab_link_to_remote("week") %>
       </div>
     </div>

@@ -135,6 +135,7 @@
            }, 
            :spirit_conversations_total => {
              :label => "Spiritual Conversations Total:",
+             :collected => :weekly,
              :css_class => " statsTableTotal",
              :column_type => :sum,
              :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations},
@@ -157,6 +158,7 @@
            }, 
            :gospel_pres_total => {
              :label => "Gospel Presentations Total:",
+             :collected => :weekly,
              :css_class => " statsTableTotal",
              :column_type => :sum,
              :columns_sum => [{:report => :weekly_report, :line => :gospel_pres},
@@ -280,6 +282,7 @@
       :ccci_report => {
         :win_exposures => {
           :label => "1. WIN - EXPOSURES",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
                            {:report => :weekly_report, :line => :gospel_pres_total},
@@ -289,30 +292,35 @@
         },
         :win_decisions => {
           :label => "2. WIN - DECISIONS",
+          :collected => :weekly,
           :column_type => :sum,
           :columns_sum => [{:report => :indicated_decisions_report, :line => :indicated_decisions}],
           :order => 2
         },
         :build_growth => {
           :label => "3. BUILD - GROWTH GROUP MEMBERS",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
           :order => 3
         },
         :build_group_members => {
           :label => "4. BUILD - MOVEMENT (ACTION) GROUP MEMBERS",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :core_students}],
           :order => 4
         },
         :send_group_leaders => {
           :label => "5. SEND - MOVEMENT (ACTION) GROUP LEADERS",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
           :order => 5
         },
         :send_laborers => {
           :label => "6. SEND - LIFETIME LABORERS",
+          :collected => :semesterly,
           :column_type => :sum,
           :columns_sum => [{:report => :semester_report, :line => :tot_grad_non_ministry},
                            {:report => :semester_report, :line => :tot_grad_c4c_staff},
@@ -323,6 +331,7 @@
         },
         :send_ccci_staff => {
           :label => "7. SEND - FULL-TIME CAMPUS CRUSADE STAFF MEMBERS",
+          :collected => :semesterly,
           :column_type => :sum,
           :columns_sum => [{:report => :semester_report, :line => :tot_grad_c4c_staff},
                            {:report => :semester_report, :line => :tot_grad_p2c_staff},
@@ -333,6 +342,7 @@
       :p2c_report => {
         :people_exposed_to_gospel => {
           :label => "1. Number of people exposed to the gospel",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
                            {:report => :weekly_report, :line => :gospel_pres_total},
@@ -342,60 +352,70 @@
         },
         :indicated_decisions => {
           :label => "2. Number of indicated decisions for Christ",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :indicated_decisions_report, :line => :indicated_decisions}],
           :order => 2
         },
         :people_in_studies => {
           :label => "3. Number of people in evangelistic studies (i.e. discovery groups or individual sessions)",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :evang_studies}],
           :order => 3
         },
         :integrated_new_believers => {
           :label => "4. Integrated new believers",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [],
           :order => 4
         },
         :people_in_growth_groups => {
           :label => "5. Number of people in growth groups",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
           :order => 5
         },
         :commit_filled_hs => {
           :label => "6. Number of commitments to be filled with Holy Spirit or Lordship commitments",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :commit_filled_hs}],
           :order => 6
         },
         :sharing_in => {
           :label => "7. Number of people who are sharing their faith a. with P2C",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_in}],
           :order => 7
         },
         :sharing_out => {
           :label => "b. outside P2C",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_out}],
           :order => 8
         },
         :trained_to_share_in => {
           :label => "8. Number of People *trained* to share their faith in the power of the Holy Spirit a. with P2C",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :trained_to_share_in}],
           :order => 9
         },
         :trained_to_share_out => {
           :label => "b. outside P2C",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :trained_to_share_out}],
           :order => 10
         },
         :spirit_mult => {
           :label => "9. Number of people actually leading others to do faith adventures (spiritual multipliers)",
+          :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
           :order => 11
