@@ -89,7 +89,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal("50000", assigns["people"][0]["person_id"])
     assert_equal(1, assigns["people"].size)
 
-    Factory(:address_1)
+    #Factory(:address_1)
     get :directory, :school_year => ["1"], :gender => ["1"], :first_name => "Josh", :last_name => "Starcher", :email => "josh.starcher@uscm.org"
     assert_response :success
     #assert_equal("50000", assigns["people"][0]["person_id"])
@@ -279,7 +279,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should re-create staff" do
-    Factory(:address_1)
+    #Factory(:address_1)
     Factory(:accessgroup_1)
     old_count = Person.count
     post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
@@ -315,7 +315,7 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   test "should re-create student" do
-    Factory(:address_1)
+    #Factory(:address_1)
     Factory(:accessgroup_1)
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 

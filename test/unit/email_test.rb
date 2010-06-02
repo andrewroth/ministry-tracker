@@ -10,8 +10,8 @@ class EmailTest < ActiveSupport::TestCase
     Factory(:email_1)
     Factory(:email_2)
     Factory(:search_1)
-    Factory(:address_1)
-    Factory(:address_2)
+    #Factory(:address_1)
+    #Factory(:address_2)
   end
 
   test "send email to list of people" do

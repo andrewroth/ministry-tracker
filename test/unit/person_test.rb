@@ -8,7 +8,7 @@ class PersonTest < ActiveSupport::TestCase
 
   def setup
     setup_n_campus_involvements(10)
-    setup_addresses
+    #setup_addresses
     setup_campuses
     setup_ministries
     setup_school_years
