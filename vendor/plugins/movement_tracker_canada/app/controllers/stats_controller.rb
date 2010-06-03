@@ -22,7 +22,8 @@ class StatsController < ApplicationController
   end
 
   def add_report_if_authorized(report_symbol)
-    if authorized?(report_permissions[report_symbol][:action], report_permissions[report_symbol][:controller], @stats_ministry)
+    permission_details = report_permissions[report_symbol][:reading]
+    if permission_details && authorized?(permission_details[:action], permission_details[:controller], @stats_ministry)
       @reports_to_show += [report_symbol]
     end
   end
