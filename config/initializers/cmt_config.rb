@@ -92,6 +92,6 @@ module Cmt
 
     # allow impersonating someone - don't turn this on unless you're in a dev environment
     :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
-  }
+  } unless defined?(CONFIG)
 end
 
