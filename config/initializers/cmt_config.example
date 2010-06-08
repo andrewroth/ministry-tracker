@@ -82,6 +82,6 @@ module Cmt
 
     # the from address for each outgoing email
     :email_from_address => "noreply@ministrytracker.org"
-  }
+  } unless defined?(CONFIG)
 end
 
