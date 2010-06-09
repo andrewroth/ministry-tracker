@@ -62,6 +62,26 @@
     }
   end
   
+  def report_scopes
+    {
+      :summary => {
+                    :order => 1, 
+                    :label => "Summary", 
+                    :title => "See a summary of all the campuses under [MINISTRY_NAME]"
+      },
+      :campus_drill_down => {
+                    :order => 2,
+                    :label => "Campus drill-down", 
+                    :title => "See individual campuses under [MINISTRY_NAME]"
+      },
+      :staff_drill_down => {
+                    :order => 3,
+                    :label => "Staff drill-down", 
+                    :title => "See individual staff members under [MINISTRY_NAME]"
+      }
+    }
+  end
+  
   def report_permissions
     {
       :semester_report => {
@@ -93,27 +113,27 @@
   
   def stats_reports
       {:semester_report => {
-          :tot_grad_non_ministry => {:column => :total_graduating_students_to_non_ministry, 
+          :tot_grad_non_ministry => {:column => :semesterreport_totalSpMultGradNonMinistry, 
            :label => "Total spiritual multipliers graduating to non-ministry vocations",
             :collected => :semesterly,
             :column_type => :database_column,
             :order => 1}, 
-          :tot_grad_c4c_staff => {:column => :total_graduating_students_to_full_time_c4c_staff, 
+          :tot_grad_c4c_staff => {:column => :semesterreport_totalFullTimeC4cStaff, 
            :label => "Total full time C4C staff",
             :collected => :semesterly,
             :column_type => :database_column,
             :order => 2}, 
-          :tot_grad_p2c_staff => {:column => :total_graduating_students_to_full_time_p2c_non_c4c, 
+          :tot_grad_p2c_staff => {:column => :semesterreport_totalFullTimeP2cStaffNonC4c, 
            :label => "Total full time P2C staff (non-campus)",
             :collected => :semesterly,
             :column_type => :database_column,
             :order => 3}, 
-          :tot_grad_intern => {:column => :total_graduating_students_to_one_year_internship, 
+          :tot_grad_intern => {:column => :semesterreport_totalPeopleOneYearInternship, 
            :label => "Total people doing one-year internships",
             :collected => :semesterly,
             :column_type => :database_column,
             :order => 4}, 
-          :tot_grad_other_ministry => {:column => :total_graduating_students_to_other_ministry, 
+          :tot_grad_other_ministry => {:column => :semesterreport_totalPeopleOtherMinistry, 
            :label => "Total people doing other full time ministry",
             :collected => :semesterly,
             :column_type => :database_column,
@@ -186,55 +206,55 @@
            }
       }, 
         :monthly_report => {
-          :avg_hours_prayer => {:column => :average_hours_prayer, 
+          :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
             :label => "Average - hours of prayer:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 1
           }, 
-          :frosh => {:column => :number_frosh_involved, 
+          :frosh => {:column => :monthlyreport_numFrosh, 
             :label => "Number of frosh involved:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 2
           },
-          :students_dg => {:column => :total_students_in_dg, 
+          :students_dg => {:column => :monthlyreport_totalStudentInDG, 
             :label => "Number of students in DGs:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 3
           },
-          :spirit_mult => {:column => :total_spiritual_multipliers, 
+          :spirit_mult => {:column => :monthlyreport_totalSpMult, 
             :label => "Number of spiritual multipliers:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 4
           },
-          :evt_spirit_conv => {:column => :event_spiritual_conversations, 
+          :evt_spirit_conv => {:column => :monthlyreport_eventSpirConversations, 
             :label => "Event exposures - Spiritual Conversations:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 5
           },
-          :evt_gos_pres => {:column => :event_gospel_prensentations, 
+          :evt_gos_pres => {:column => :monthlyreport_eventGospPres, 
             :label => "Event exposures - Gospel Presentations:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 6
           },
-          :med_spirit_conv => {:column => :media_spiritual_conversations, 
+          :med_spirit_conv => {:column => :monthlyreport_mediaSpirConversations, 
             :label => "Media exposures - Spiritual Conversations:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 7
           },
-          :med_gos_pres => {:column => :media_gospel_prensentations, 
+          :med_gos_pres => {:column => :monthlyreport_mediaGospPres, 
             :label => "Media exposures - Gospel Presentations:",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 8
           },
-          :core_students => {:column => :total_core_students, 
+          :core_students => {:column => :monthlyreport_totalCoreStudents, 
             :label => "Total core students:",
             :collected => :monthly,
             :column_type => :database_column,

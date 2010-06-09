@@ -12,10 +12,13 @@ function selectReport() {
 }
 
 // generate the string for observe_field's :with
-function getWithStringForReportForm(time, ministry, summary, report_type) {
+function getWithStringForReportForm(time, ministry, scope, report_type) {
 
-  if(summary == undefined || summary == null) {
-    summary = document.getElementById('report_summary_summary').checked;
+  if(scope == undefined || scope == null) {
+    var radios = jQuery(":input[name=report\\[scope\\]]");
+    for(var i = 0; i < radios.length; i++) {
+      if(radios[i].checked) { scope = radios[i].value }
+    }
   }
 
   if(time == undefined || time == null) {
@@ -33,7 +36,7 @@ function getWithStringForReportForm(time, ministry, summary, report_type) {
   }
 
 
-  return 'ministry=' + ministry + '&summary=' + summary + '&time=' + time + '&report_type=' + report_type
+  return 'ministry=' + ministry + '&report_scope=' + scope + '&time=' + time + '&report_type=' + report_type
 }
 
 function reportTypeChange(newTitle){
