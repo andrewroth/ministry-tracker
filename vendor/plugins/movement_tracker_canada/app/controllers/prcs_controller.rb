@@ -32,12 +32,14 @@ class PrcsController < ApplicationController
     cur_month_id = Month.find_semester_id(cur_month)
     @prc.semester_id = cur_month_id
 
-    @semesters = Semester.find_semesters(cur_month_id)
-
+    #@semesters = Semester.find_semesters(cur_month_id).reverse  #always put latest semester at top of list
+    @semesters = Semester.all(:order => :semester_startDate)   
+    
     @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
     @prc.campus_id = get_ministry.unique_campuses.first.id
 
-    @methods = Prcmethod.find_methods()
+    #@methods = Prcmethod.find_methods()
+    @methods = Prcmethod.all()
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,21 +52,28 @@ class PrcsController < ApplicationController
     @prc = Prc.find(params[:id])
   end
 
-  # POST /prcs
+  # POST /prcsP
   # POST /prcs.xml
   def create
-
-#    staff_id = @person.cim_hrdb_staff.id
-#    @prc = Prc.find(:first, :conditions => { :week_id => params[:prc][:week_id], :staff_id => staff_id, :campus_id => params[:prc][:campus_id] })
+    
+#    #debugger
+#
+#    #staff_id = @person.cim_hrdb_staff.id
+#    @prc = Prc.find(:first, :conditions => { :semester_id => params[:prc][:semester_id], :campus_id => params[:prc][:campus_id], :prc_firstName => params[:prc][:prc_firstName]})
+#
+#
+#    debugger
 #
 #    if @prc
 #      @prc.update_attributes(params[:prc])
-#      notice = 'Your weekly numbers were successfully re-submitted.'
+#      notice = 'Your indicated decision report was successfully re-submitted.'
 #    else
-#      @prc = Prc.new(params[:prc])
-#      @prc.staff_id = @person.cim_hrdb_staff.id
-#      notice = 'Your weekly numbers were successfully submitted.'
+      @prc = Prc.new(params[:prc])
+      #@prc.staff_id = @person.cim_hrdb_staff.id
+      notice = 'Your indicated decision report was successfully submitted.'
 #    end
+#    
+#    debugger
 
     respond_to do |format|
       if @prc.save
