@@ -49,7 +49,6 @@ Rails::Initializer.run do |config|
   config.gem 'liquid'
   config.gem 'facebooker' if defined?(Cmt) && Cmt::CONFIG[:facebook_connectivity_enabled]
   config.gem 'will_paginate'
-  config.gem 'facebooker'
   
   config.time_zone = 'UTC'
 
