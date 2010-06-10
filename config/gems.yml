@@ -1,0 +1,17 @@
+--- 
+- :name: json_pure
+- :name: fastercsv
+- :name: hpricot
+- :name: rubyzip
+- :version: = 1.3.11
+  :name: roo
+- :name: mechanize
+- :name: erubis
+- :name: aws-s3
+- :name: aaronchi-jrails
+- :name: spreadsheet
+- :name: liquid
+- :name: jrails
+- :name: will_paginate
+- :version: 2.3.5
+  :name: rails
