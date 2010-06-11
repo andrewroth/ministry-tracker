@@ -32,10 +32,15 @@ class PeopleController < ApplicationController
   def impersonate
     if !session[:impersonator].present? && Cmt::CONFIG[:allow_impersonate]
       person = Person.find(params[:id])
-      session[:impersonator] = current_user.id
-      session[:user] = person.user.id
-      @current_user = person.user
-      redirect_to :back
+      if person.user
+        clear_session
+        session[:impersonator] = current_user.id
+        session[:user] = person.user.id
+        @current_user = person.user
+        redirect_to :back
+      else
+        flash[:notice] = "No user for person #{params[:id]}"
+      end
     end
   end
 

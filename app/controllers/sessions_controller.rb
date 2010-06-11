@@ -102,7 +102,7 @@ class SessionsController < ApplicationController
 
   def destroy
     if session[:impersonator].present?
-      #current_user = User.find(session[:impersonator])
+      clear_session
       session[:user] = session[:impersonator]
       session[:impersonator] = nil
       redirect_to :back
