@@ -1,7 +1,7 @@
 module Common
   SERVER = "c4c"
   APP = "pulse"
-  STAGE = "staging"
+  STAGE = "prod"
   DISABLE_MOONSHINE = true
   ALLOW_IMPERSONATING = true
 end
