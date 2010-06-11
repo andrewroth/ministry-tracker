@@ -91,7 +91,7 @@ module Cmt
     :email_from_address => "noreply@campusforchrist.org",
 
     # allow impersonating someone - don't turn this on unless you're in a dev environment
-    :allow_impersonating => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
+    :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
   }
 end
 
