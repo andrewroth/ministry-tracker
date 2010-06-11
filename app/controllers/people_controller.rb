@@ -29,6 +29,17 @@ class PeopleController < ApplicationController
   def index
   end
   
+  def impersonate
+    if !session[:impersonator].present? && Cmt::CONFIG[:allow_impersonate]
+      logger.info "impersonate person#impersonate"
+      person = Person.find(params[:id])
+      session[:impersonator] = current_user.id
+      session[:user] = person.user.id
+      @current_user = person.user
+      redirect_to :back
+    end
+  end
+
   def advanced
     get_campuses
     @advanced = true
