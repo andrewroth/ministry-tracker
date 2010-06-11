@@ -44,7 +44,7 @@ Rails::Initializer.run do |config|
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
   config.gem 'liquid'
-  config.gem 'facebooker' if Cmt::CONFIG[:facebook_connectivity_enabled]
+  config.gem 'facebooker' if defined?(Cmt) && Cmt::CONFIG[:facebook_connectivity_enabled]
   config.gem 'will_paginate'
   
   config.time_zone = 'UTC'
