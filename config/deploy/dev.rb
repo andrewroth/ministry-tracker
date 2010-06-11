@@ -8,8 +8,6 @@ set :moonshine_apply, false
 def stage?() %w(emu stage).include?(ENV['target']) end
 def dev?() %w(dev moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
-puts ENV['target']
-puts "dev? #{dev?}"
 
 set :application, "ministry-tracker"
 set :user, 'deploy'
