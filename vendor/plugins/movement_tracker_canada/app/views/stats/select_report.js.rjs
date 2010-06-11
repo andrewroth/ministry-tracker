@@ -7,7 +7,7 @@ end
 
 
 # update selected radio button in case server changes @stats_summary value
-page["report_summary_summary"].attr("checked", @stats_summary)
+#page["report_summary_summary"].attr("checked", @stats_summary)
 
 # hide the time tab links accordingly
 @time_tabs.each do |t|
@@ -29,7 +29,8 @@ page.replace_html("year", time_tab_link_to_remote("year"))
 page.replace_html("semester", time_tab_link_to_remote("semester"))
 page.replace_html("month", time_tab_link_to_remote("month"))
 page.replace_html("week", time_tab_link_to_remote("week"))
-page.replace_html("reportTypeTitle", report_types[:"#{@report_type}"][:label])
+# à faire: un partial pour le titre et le hidden
+page.replace_html("formHeading", render(:partial => 'stats/form_heading'))
 page.replace_html("statsLinkBox", render(:partial => 'stats/stats_links'))
 
 

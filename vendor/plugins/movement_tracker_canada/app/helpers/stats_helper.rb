@@ -38,12 +38,12 @@ module StatsHelper
     end
   end
 
-  def evaluate_stat_for_period(period_model, campus_ids, stat_hash)
+  def evaluate_stat_for_period(period_model, campus_ids, stat_hash, staff_id = nil)
     evaluation = 0
     if stat_hash[:column_type] == :database_column
-      evaluation = period_model.evaluate_stat(campus_ids, stat_hash)
+      evaluation = period_model.evaluate_stat(campus_ids, stat_hash, staff_id)
     elsif stat_hash[:column_type] == :sum
-      stat_hash[:columns_sum].each { |cs| evaluation += evaluate_stat_for_period(period_model, campus_ids, stats_reports[cs[:report]][cs[:line]]) }
+      stat_hash[:columns_sum].each { |cs| evaluation += evaluate_stat_for_period(period_model, campus_ids, stats_reports[cs[:report]][cs[:line]], staff_id) }
     end
     evaluation
   end
