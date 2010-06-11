@@ -1,5 +1,3 @@
-form_for @group do |f|
-  page[:group].replace_html(:partial => 'form', :locals => {:group => @group, :f => f})
-end
+page[:group].replace_html(:partial => 'new_remote')
 page[:group].show
 page[:spinner].hide
