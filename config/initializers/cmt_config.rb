@@ -88,7 +88,10 @@ module Cmt
     :email_subject_prefix => "[pulse] ",
 
     # the from address for each outgoing email
-    :email_from_address => "noreply@campusforchrist.org"
+    :email_from_address => "noreply@campusforchrist.org",
+
+    # allow impersonating someone - don't turn this on unless you're in a dev environment
+    :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
   }
 end
 
