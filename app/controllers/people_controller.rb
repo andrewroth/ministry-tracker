@@ -31,7 +31,6 @@ class PeopleController < ApplicationController
   
   def impersonate
     if !session[:impersonator].present? && Cmt::CONFIG[:allow_impersonate]
-      logger.info "impersonate person#impersonate"
       person = Person.find(params[:id])
       session[:impersonator] = current_user.id
       session[:user] = person.user.id
