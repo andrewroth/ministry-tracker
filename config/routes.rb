@@ -143,7 +143,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource  :files
 
   map.resources :people,  :member => {:import_gcx_profile => :any,
-                                      :set_initial_campus => :any},
+                                      :set_initial_campus => :any,
+                                      :impersonate => :get},
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
                                           :change_ministry_and_goto_directory => :any,

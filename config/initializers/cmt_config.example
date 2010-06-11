@@ -81,7 +81,10 @@ module Cmt
     :email_subject_prefix => "[MT] ",
 
     # the from address for each outgoing email
-    :email_from_address => "noreply@ministrytracker.org"
-  }
+    :email_from_address => "noreply@ministrytracker.org",
+
+    # allow impersonating someone - don't turn this on unless you're in a dev environment
+    :allow_impersonate => false
+  } unless defined?(CONFIG)
 end
 

@@ -22,4 +22,8 @@ module PeopleHelper
     desc = desc.length > 1 ? desc[-2] : url
 	  return desc, url
   end
+
+  def currently_impersonating
+    session[:impersonator].present?
+  end
 end

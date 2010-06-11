@@ -1,0 +1,2 @@
+databases:
+  <%= "pulse_#{RAILS_ENV}" %>: campus_involvement, college, county, dorm, emergency_address, high_school, involvement_history, ministry, ministry_campus, ministry_involvement, ministry_role, other_role, permanent_address, profile_picture, staff_role, student_role, person_extra, view
