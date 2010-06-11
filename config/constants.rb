@@ -192,27 +192,18 @@
              :column_type => :database_column ,
              :order => 7
            }
-      },     
-        :indicated_decision_report => {
-           :new_believer_name => {:column => :prc_firstName,
-              :label => "New believer's name:",
-              :collected => :daily,
-              :column_type => :database_column,
-              :order => 1
+      },
+        :indicated_decisions_report => {
+           :blank_line => {
+             :column_type => :blank_line ,
+             :order => 0
            },
-           :witness_name => {:column => :prc_witnessName,
-              :label => "Witness name:",
-              :collected => :daily,
-              :column_type => :database_column,
-              :order => 2
-           },
-           :notes => {:column => :prc_notes,
-              :label => "Notes:",
-              :collected => :daily,
-              :column_type => :database_column,
-              :order => 3,
-              :display_type => :text_area
-           },                  
+           :indicated_decisions => {
+             :label => "Indicated Decisions:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 1
+           }
       }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
