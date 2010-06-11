@@ -147,12 +147,7 @@ module AuthenticatedSystem
       if session[:cas_user]
         need_cas_logout = true
       end
-      session[:cas_user] = nil
-      session[:user] = nil   # keeps the session but kill our variable
-      session[:ministry_id] = nil
-      session[:ministry_role_id] = nil
-      session[:can_manage] = nil
-      session[:facebook_session] = nil
+      clear_session
       # Log out of SSO if we're in it
       if need_cas_logout
         CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
@@ -161,6 +156,17 @@ module AuthenticatedSystem
       end
     end
   
+    def clear_session
+      session[:cas_user] = nil
+      session[:user] = nil   # keeps the session but kill our variable
+      session[:ministry_id] = nil
+      session[:ministry_role_id] = nil
+      session[:can_manage] = nil
+      session[:admins] = nil
+      session[:locale] = nil
+      session[:facebook_session] = nil
+    end
+
     def kill_remember_cookie!
       cookies.delete :auth_token
     end

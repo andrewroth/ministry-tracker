@@ -11,5 +11,7 @@
 - :name: aaronchi-jrails
 - :name: spreadsheet
 - :name: liquid
-- :version: 2.3.4
+- :name: jrails
+- :name: will_paginate
+- :version: 2.3.5
   :name: rails

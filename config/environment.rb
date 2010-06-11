@@ -28,6 +28,9 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
+  cmt_config = "#{RAILS_ROOT}/config/initializers/cmt_config"
+  require cmt_config if File.exists?("#{cmt_config}.rb")
+
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
@@ -44,7 +47,7 @@ Rails::Initializer.run do |config|
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
   config.gem 'liquid'
-  # config.gem 'facebooker'
+  config.gem 'facebooker' if defined?(Cmt) && Cmt::CONFIG[:facebook_connectivity_enabled]
   config.gem 'will_paginate'
   config.gem 'facebooker'
   
@@ -95,5 +98,3 @@ Rails::Initializer.run do |config|
   end
 
 end
-
-

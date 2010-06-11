@@ -117,8 +117,15 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    flash[:notice] = "You have been logged out."
-    logout_keeping_session!
+    if session[:impersonator].present?
+      clear_session
+      session[:user] = session[:impersonator]
+      session[:impersonator] = nil
+      redirect_to :back
+    else
+      flash[:notice] = "You have been logged out."
+      logout_keeping_session!
+    end
   end
     
 
