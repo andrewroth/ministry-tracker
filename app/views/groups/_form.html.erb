@@ -55,6 +55,7 @@
      </td>
    </tr>
 </table>
+<%= yield :before_buttons %>
 <%= submit_tag 'Save' %> or 
 <%- if params[:action] == 'new' -%>
 	<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
