@@ -17,6 +17,9 @@
     <% if authorized?("how_people_came_to_christ", "stats") %>
       <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
     <% end %>
+    <% if authorized?("salvation_story_synopses", "stats") %>
+      <li class="statsListLink"><%= link_to "Salvation Story Synopses", url_for(:controller => :stats, :action => :salvation_story_synopses) %></li>
+    <% end %>		
     <%= render :partial => 'stats/report_type_list_links' %>
     
   </ul>

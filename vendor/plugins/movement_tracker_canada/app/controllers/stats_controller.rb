@@ -372,6 +372,57 @@ class StatsController < ApplicationController
   end
 
 
+  def salvation_story_synopses
+
+    # find the current month
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    # find the current year id
+    current_year_id = Month.find_year_id(cur_month)
+
+    @ministries = my_ministries_for_stats(":salvation_story_synopses").sort { |x, y| x.name <=> y.name }
+
+    if params[:report].nil?
+      
+      @stats_ministry_id = get_ministry.id
+
+      @year_id = current_year_id
+      @year_selected = Year.find_year_description(@year_id)
+    else
+
+      @stats_ministry_id = params[:report]['ministry']
+      @stats_ministry_selected = Ministry.find(@stats_ministry_id)
+
+      @year_selected = params[:report]['year']
+      @year_id = Year.find_year_id(@year_selected)
+
+      
+      # find the prc ('indicated decisions') data to display
+
+    
+#      @methods = Array.new(Prcmethod.last.id+1){0}
+#      @completed = Array.new(Prcmethod.last.id+1){0}
+#
+      semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
+      year_start = Date.parse_date( semesters.first.semester_startDate )
+      year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+
+      campus_ids = Ministry.find(@stats_ministry_id).unique_campuses.collect {|c| c.id}
+      @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, campus_ids], :order => 'prc_date ASC')
+#      @total = prcs.size
+#
+#      prcs.each do |prc|
+#        @methods[prc.prcMethod_id] += 1
+#        @completed[prc.prcMethod_id] += 1 if prc.prc_7upCompleted == 1
+#      end
+end
+
+    # Initialize Variables Used by View
+
+    @years = Year.find_years(current_year_id)
+  end
+  
+  
+
   def year_summary
 
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"

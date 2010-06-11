@@ -1,0 +1,53 @@
+<table class="t1">
+    <tr>
+        <td class="t2">
+            <span class="title1">Date</span>
+        </td>
+        <td>
+            <span class="title1">New Believer</span>
+        </td>
+        <td>
+            <span class="title1">Witness</span>
+        </td>
+        <td>
+            <span class="title1">Method</span>
+        </td>
+        <td>
+            <span class="title1">Synopsis</span>
+        </td>
+        <td>
+            <span class="title1">Follow-up Complete</span>
+        </td>				
+    </tr>
+
+    <% @prcs.each do |prc| %>
+		    <% if !prc.nil? %>
+	        <tr class="<%= cycle('highlight', 'nohighlight') %>">
+	            <td>
+                  <%= prc.prc_date %>
+	            </td>
+	            <td>
+                  <%= prc.prc_firstName %>
+	            </td>
+	            <td>
+                  <%= prc.prc_witnessName %>
+	            </td>
+	            <td>
+                <% if !prc.prcMethod.nil? %>
+                  <%= prc.prcMethod.prcMethod_desc %>
+                <% end %>
+	            </td>
+	            <td>
+                  <%= prc.prc_notes %>
+	            </td>
+              <td>
+                  <% if prc.prc_7upCompleted == 0 %>
+                        No
+                  <% else %>
+                        Yes
+                  <% end %>
+              </td>							
+	        </tr>
+				<% end %>
+    <% end %>
+</table>
