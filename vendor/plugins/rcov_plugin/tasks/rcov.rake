@@ -1,6 +1,6 @@
 def run_coverage(files)
-  rm_f "coverage"
-  rm_f "coverage.data"
+  #rm_f "coverage"
+  #rm_f "coverage.data"
   
   # turn the files we want to run into a string
   if files.empty?

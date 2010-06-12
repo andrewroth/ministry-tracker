@@ -2,5 +2,12 @@
   <% Array.wrap(params[:person]).each do |p| %>
     <%= hidden_field_tag "person[]", p %>
   <% end %>
+  <% if params[:person] %>
+    <% content_for(:before_buttons) do %>
+      The <%= pluralize(params[:person].length, 'person') %> you selected will be added as members.
+      <BR/>
+      <BR/>
+    <% end %>
+  <% end %>
   <%= render 'form', :f => f %>
 <% end %>

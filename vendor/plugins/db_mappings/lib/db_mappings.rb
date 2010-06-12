@@ -1,11 +1,25 @@
+class Hash
+  def deep_merge(second)
+    # From: http://www.ruby-forum.com/topic/142809
+    # Author: Stefan Rusterholz
+    merger = proc { |key,v1,v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
+    self.merge(second, &merger)
+  end
+end
+
 ActiveRecord::Base.class_eval do
 
-  # Let's just use the same mappings file
-  # @mapping_filename = File.join(RAILS_ROOT, Rails.env.test? ? 'test' : 'config', 'mappings.yml')
-  @mapping_filename = File.join(RAILS_ROOT, Rails.env.test? ? 'config' : 'config', 'mappings.yml')
+  def self.load_mappings_files
+    loaded_atleast_one = false
+    @@map_hash = {}
+    for file in Dir[File.join(RAILS_ROOT, 'config', 'mappings*.yml')].sort
+      loaded_atleast_one = true
+      @@map_hash = @@map_hash.deep_merge(YAML::load(ERB.new(File.read(file)).result))
+    end
+    return loaded_atleast_one
+  end
 
-  if File.exists?(  @mapping_filename )
-    @@map_hash ||= YAML::load(ERB.new(File.read(@mapping_filename)).result)
+  if load_mappings_files
 
     # Convert the databases list of comma-separated values in an array
     if @@map_hash && @@map_hash['databases']

@@ -17,6 +17,8 @@ PRODUCTION_HOST = 'example.com'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
   
+  require "#{RAILS_ROOT}/vendor/plugins/git_branch_configs/init"
+
   # Skip frameworks you're not going to use (only works if using vendor/rails)
   # config.frameworks -= [ :action_web_service, :action_mailer ]
 
@@ -25,6 +27,9 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
+
+  cmt_config = "#{RAILS_ROOT}/config/initializers/cmt_config"
+  require cmt_config if File.exists?("#{cmt_config}.rb")
 
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
@@ -42,7 +47,7 @@ Rails::Initializer.run do |config|
   config.gem  'spreadsheet'
   # config.gem  'rubycas-client'
   config.gem 'liquid'
-  # config.gem 'facebooker'
+  config.gem 'facebooker' if defined?(Cmt) && Cmt::CONFIG[:facebook_connectivity_enabled]
   config.gem 'will_paginate'
   config.gem 'facebooker'
   
@@ -60,7 +65,7 @@ Rails::Initializer.run do |config|
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
   # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
+  config.active_record.schema_format = :sql
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
@@ -93,5 +98,3 @@ Rails::Initializer.run do |config|
   end
 
 end
-
-
