@@ -48,6 +48,10 @@ module StatsHelper
     evaluation
   end
 
+  def no_weekly_data(period_model, campus_ids, staff_id = nil)
+    period_model.no_weekly_data(campus_ids, staff_id)
+  end
+
   def line_should_show(period_model_array, stat_hash)
     accepted_collections = []
     unless period_model_array.empty?
