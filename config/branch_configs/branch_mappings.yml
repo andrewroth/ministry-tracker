@@ -9,4 +9,5 @@
 # The config file of the first match, from top to bottom, is loaded.
 
 - /emu_cdm|c4c.staging/: common_c4c_staging.rb
+- /pulse_cdm|c4c.prod/: common_c4c_prod.rb
 - /dev/: common_utopian_dev.rb
