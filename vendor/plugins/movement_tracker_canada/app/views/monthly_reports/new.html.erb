@@ -1,4 +1,4 @@
-<%= javascript_include_tag "semester_reports.js" %>
+<%= javascript_include_tag "monthly_reports.js" %>
 
 <h1 id="statsTitle">Measurements</h1>
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
@@ -7,25 +7,25 @@
 
 <div class="statsFormContainer">
   <div id="newSemesterHighlightsFormContainer" class="statsFormBox">
-    <h2 class="statsFormBoxTitle">Submit your semester highlights</h2>
+    <h2 class="statsFormBoxTitle">Submit your monthly highlights</h2>
     <br/>
-    <% form_for(@semester_report) do |f| %>
+    <% form_for(@monthly_report) do |f| %>
       <%= f.error_messages %>
       <table>
         <tr class="statsFormField">
-          <td><%= f.label :semester, "Semester:" %></td>
-          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
+          <td><%= f.label :month, "Month:" %></td>
+          <td><%= f.collection_select :month_id, @months, :month_id, :month_desc, {}, {:onChange => "beginLoadingMonthlyInputTab()"} %></td>
         </tr>
         <tr class="statsFormField">
           <td><%= f.label :campus, "Campus:" %></td>
-          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
+          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingMonthlyInputTab()"} %></td>
         </tr>
      </table>
     <% end %>
 	<div id="inputFields" class="inputsContainer">
 		<div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
-	    <div id="semesterReportInputFields" class="reportInputContainer">
-	    <%= show_input_lines(@semester_report) %>    	
+	    <div id="monthlyReportInputFields" class="reportInputContainer">
+	    <%= render :partial => 'monthly_reports/input_lines' %>    	
 	    </div>
 	</div>
   </div>

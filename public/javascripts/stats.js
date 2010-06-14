@@ -12,10 +12,13 @@ function selectReport() {
 }
 
 // generate the string for observe_field's :with
-function getWithStringForReportForm(time, ministry, summary) {
+function getWithStringForReportForm(time, ministry, scope, report_type) {
 
-  if(summary == undefined || summary == null) {
-    summary = document.getElementById('report_summary_summary').checked;
+  if(scope == undefined || scope == null) {
+    var radios = jQuery(":input[name=report\\[scope\\]]");
+    for(var i = 0; i < radios.length; i++) {
+      if(radios[i].checked) { scope = radios[i].value }
+    }
   }
 
   if(time == undefined || time == null) {
@@ -28,9 +31,19 @@ function getWithStringForReportForm(time, ministry, summary) {
 //    ministry = ministry_select.options[ministry_select.selectedIndex].value;
   }
 
-  return 'ministry=' + ministry + '&summary=' + summary + '&time=' + time
+  if(report_type == undefined || report_type == null) {
+    report_type = jQuery("#report_report_type")[0].value;
+  }
+
+
+  return 'ministry=' + ministry + '&report_scope=' + scope + '&time=' + time + '&report_type=' + report_type
 }
 
+function reportTypeChange(newTitle){
+	beginLoadingStatsTab();
+	// TODO: CHANGE THE PAGE'S TITLE
+	//jQuery("#reportTypeTitle").html = newTitle;
+}
 
 function beginLoadingStatsTab() {
   jQuery('.statsReportTabContainer').hide();

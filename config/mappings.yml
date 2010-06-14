@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, week, weekly_report, year
+  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, week, weekly_report, year
 
 tables:
   user: accountadmin_viewer
@@ -43,6 +43,7 @@ tables:
   week: cim_stats_week
   weekly_report: cim_stats_weeklyreport
   year: cim_stats_year
+  monthly_report: cim_stats_monthlyreport
 
 
 
@@ -241,4 +242,22 @@ semester_report:
   number_in_student_led_dg: semesterreport_numInStudentDG
   number_sp_mult_in_staff_led_dg: semesterreport_numSpMultStaffDG
   number_sp_mult_in_student_led_dg: semesterreport_numSpMultStdDG
+  total_graduating_students_to_non_ministry: :semesterreport_totalSpMultGradNonMinistry
+  total_graduating_students_to_full_time_c4c_staff: :semesterreport_totalFullTimeC4cStaff
+  total_graduating_students_to_full_time_p2c_non_c4c: :semesterreport_totalFullTimeP2cStaffNonC4c
+  total_graduating_students_to_one_year_internship: :semesterreport_totalPeopleOneYearInternship
+  total_graduating_students_to_other_ministry: :semesterreport_totalPeopleOtherMinistry
   
+monthly_report:
+  id: monthlyreport_id
+  average_hours_prayer: monthlyreport_avgPrayer
+  average_attendance_weekly_meetings: monthlyreport_avgWklyMtg
+  number_frosh_involved: monthlyreport_numFrosh
+  event_spiritual_conversations: monthlyreport_eventSpirConversations
+  event_gospel_prensentations: monthlyreport_eventGospPres
+  media_spiritual_conversations: monthlyreport_mediaSpirConversations
+  media_gospel_prensentations: monthlyreport_mediaGospPres
+  total_core_students: monthlyreport_totalCoreStudents
+  total_students_in_dg: monthlyreport_totalStudentInDG
+  total_spiritual_multipliers: monthlyreport_totalSpMult
+    

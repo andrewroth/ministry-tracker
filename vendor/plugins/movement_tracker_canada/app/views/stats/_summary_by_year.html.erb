@@ -17,52 +17,7 @@
         </td>
 
     </tr>
-
-    <%= show_stat_for_semesters("Spiritual Conversations by Staff", sp_conv, semesters, @campuses_selected) %>
-    <%= show_stat_for_semesters("Spiritual Conversations by Students", sp_conv_std, semesters, @campuses_selected) %>
-
-    <%= show_totals_for_stat_group("Spiritual Conversations Total", semesters) %>
-
-    <%= show_stat_for_semesters("Gospel Presentations by Staff", gos_pres, semesters, @campuses_selected) %>
-    <%= show_stat_for_semesters("Gospel Presentations by Students", gos_pres_std, semesters, @campuses_selected) %>
-
-    <%= show_totals_for_stat_group("Gospel Presentations Total", semesters) %>
-
-    <%= show_stat_for_semesters("Holy Spirit Presentations", hs_pres, semesters, @campuses_selected) %>
-
-    <% if @semester_highlights_permission %>
-      <%= show_semester_highlight_stat("Average - hours of prayer", :semesterreport_avgPrayer, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Average weekly meetings attendance", :average_attendance_weekly_meetings, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number challenged to staff", :number_challenged_staff, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number challenged to internships", :number_challenged_internships, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of frosh involved", :number_frosh_involved, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of staff-led DGs", :number_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number in staff-led DGs", :number_in_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of student-led DGs", :number_student_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number in student-led DGs", :number_in_student_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of spiritual multipliers in staff DGs", :number_sp_mult_in_staff_led_dg, semesters, @campuses_selected) %>
-      <%= show_semester_highlight_stat("Number of spiritual multipliers in student-led DGs", :number_sp_mult_in_student_led_dg, semesters, @campuses_selected) %>
-    <% end %>
-    <tr>
-        <td>
-            <br/>
-        </td>
-    </tr>
-    <tr class="highlight">
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-
-        <% semesters.each do |semester| %>
-          <td>
-              <%= stat = Prc.count_by_semester_and_campuses(semester.id, @campuses_selected) %>
-          </td>
-          <% total += stat %>
-        <% end %>
-
-        <td>
-            <%= total %>
-        </td>
-    </tr>
+		<% @reports_to_show.each do |r| %>
+      <%= show_summary_report(r, true)%>
+		<% end %>
 </table>

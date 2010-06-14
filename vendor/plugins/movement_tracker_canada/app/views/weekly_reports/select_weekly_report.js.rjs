@@ -1,0 +1,1 @@
+  page.replace_html("weeklyReportInputFields", :partial => "input_lines", :locals => { :weekly_report => @weekly_report })

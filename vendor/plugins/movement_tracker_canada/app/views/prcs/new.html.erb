@@ -9,14 +9,14 @@
     <br/>
 
     <% form_for(@prc) do |form| %>
-      <%= form.error_messages %>
+      <%= form.error_messages %>	  
       <p class="statsFormField">
-        <%= form.label :campus_id, "Campus:" %>
-        <%= form.collection_select :campus_id, @campuses, :campus_id, :campus_desc %>
-      </p>
+        <%= form.label :campus, "Campus:" %>
+        <%= form.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {} %>
+      </p>	  
       <p class="statsFormField">
-        <%= form.label :semester_id, "Semester:" %>
-        <%= form.select :semester_id, @semesters %>
+        <%= form.label :semester, "Semester:" %></td>
+        <%= form.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
       </p>
       <p class="statsFormField">
         <%= form.label :first_name, "Person who indicated decision:" %>
@@ -36,7 +36,7 @@
       </p>
       <p class="statsFormField">
         <%= form.label :method_id, "Method:" %>
-        <%= form.select :method_id, @methods, :prompt => "Method" %>
+  		<%= form.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc, {}, {:onChange => "beginLoadingMethodInputTab()"} %></td>
       </p>
       <p class="statsFormField">
         <%= form.label :integrated_believer, "Integrated believer:" %>

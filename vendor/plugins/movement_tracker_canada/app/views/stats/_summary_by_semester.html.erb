@@ -13,36 +13,7 @@
             <span class="statsTableTitle">Total</span>
         </td>
     </tr>
-    <%= show_summary_by_month_stat("Spiritual Conversations by Staff", sp_conv, @months, @stats_ministry_id) %>
-    <%= show_summary_by_month_stat("Spiritual Conversations by Students", sp_conv_std, @months, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Spiritual Conversations Total", @months) %>
-
-    <%= show_summary_by_month_stat("Gospel Presentations by Staff", gos_pres, @months, @stats_ministry_id) %>
-    <%= show_summary_by_month_stat("Gospel Presentations by Students", gos_pres_std, @months, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Gospel Presentations Total", @months) %>
-
-    <%= show_summary_by_month_stat("Holy Spirit Presentations by Staff", hs_pres, @months, @stats_ministry_id) %>
-
-
-    <tr><td><br/></td></tr>
-    <tr class='highlight'>
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-        <% @months.each do |month| -%>
-        <% start_date = Month.find_start_date(month.id) %>
-        <% end_date = Month.find_end_date(month.id) %>
-        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
+    <% @reports_to_show.each do |r| %>
+      <%= show_summary_report(r, true)%>
+    <% end %>
 </table>

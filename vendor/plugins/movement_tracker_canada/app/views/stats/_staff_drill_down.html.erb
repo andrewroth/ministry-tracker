@@ -1,0 +1,28 @@
+
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+  <tr>
+      <td class="statsTableTitle"></td>
+			<% stat_report(:weekly_report).each do |k, stat| 
+           if stat[:collected] == :weekly %>
+					   <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
+			<%   end
+         end %>
+  </tr>
+  <% @staffs.each do |staff| 
+       if staff[:staff_id].present? 
+         unless no_weekly_data(@period, @campus_ids, staff[:staff_id]) 
+%>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="statsTableTitle"><%= staff[:name] %></td>
+      <% stat_report(:weekly_report).each do |k, stat| 
+           if stat[:collected] == :weekly %>
+             <td class="<%= stat[:css_class] %>"><%= evaluate_stat_for_period(@period, @campus_ids, stat, staff[:staff_id]) %></td>
+      <%   end
+         end %>
+    </tr>
+  <%     end
+       end
+     end %>
+
+</table>
