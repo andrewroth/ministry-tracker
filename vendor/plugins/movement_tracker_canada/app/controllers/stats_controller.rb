@@ -424,7 +424,6 @@ end
     @report_scope = session[:stats_report_scope] 
 
     @stats_summary = @report_scope == SUMMARY ? true : false
-    setup_staffs_if_campus_drilldown(@report_scope, @stats_ministry)
 
     # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
@@ -470,6 +469,7 @@ end
     setup_campus_ids
     setup_selected_time_tab
     setup_selected_period_for_drilldown    
+    setup_staffs_if_staff_drilldown(@report_scope, @stats_ministry)
     setup_report_description
    
     @results_partial = "staff_drill_down"
@@ -779,8 +779,13 @@ end
   end
   #----------------------------------------------------------------------------------------
   # Stuff for Staff drill down
+    
+  def collect_staff_for_ministry(ministry)
+    ministry.staff.collect{|s| { :person_id => s[:person_id], :name => "#{s[:person_fname].capitalize} #{s[:person_lname].capitalize}"} }
+  end
+    
   def get_staffs_persons_for_ministry(ministry)
-    (ministry.staff.collect{|s| { :person_id => s[:person_id], :name => "#{s[:person_fname].capitalize} #{s[:person_lname].capitalize}"}} + ministry.children.collect{|m| get_staffs_persons_for_ministry(m)}).flatten.uniq
+    (collect_staff_for_ministry(ministry) + ministry.children.collect{|m| get_staffs_persons_for_ministry(m)}).flatten.sort{|a, b| a[:name] <=> b[:name]}.uniq
   end
 
   def get_staff_ids_for_persons_hash(persons_hash)
@@ -790,7 +795,7 @@ end
     end    
   end
   
-  def setup_staffs_if_campus_drilldown(report_scope, ministry)
+  def setup_staffs_if_staff_drilldown(report_scope, ministry)
     @staffs = []
     if report_scope == STAFF_DRILL_DOWN
       persons_hash = get_staffs_persons_for_ministry(ministry)
