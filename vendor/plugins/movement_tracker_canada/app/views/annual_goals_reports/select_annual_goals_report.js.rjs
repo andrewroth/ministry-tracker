@@ -1,0 +1,2 @@
+  page.replace_html("annualGoalsReportInputFields", :partial => "input_lines", :locals => { :annual_goals_report => @annual_goals_report })
+  

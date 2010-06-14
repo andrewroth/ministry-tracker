@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, week, weekly_report, year
+  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_goals_report, week, weekly_report, year
 
 tables:
   user: accountadmin_viewer
@@ -44,7 +44,7 @@ tables:
   weekly_report: cim_stats_weeklyreport
   year: cim_stats_year
   monthly_report: cim_stats_monthlyreport
-
+  annual_goals_report: cim_stats_annualgoalsreport
 
 
 # ciministry
@@ -260,4 +260,19 @@ monthly_report:
   total_core_students: monthlyreport_totalCoreStudents
   total_students_in_dg: monthlyreport_totalStudentInDG
   total_spiritual_multipliers: monthlyreport_totalSpMult
+  
+annual_goals_report:
+  id: annualGoalsReport_id
+  students_in_ministry: annualGoalsReport_studInMin
+  spiritual_multipliers: annualGoalsReport_sptMulti
+  first_years:  annualGoalsReport_firstYears
+  total_went_to_summit: annualGoalsReport_summitWent
+  total_went_to_wc: annualGoalsReport_wcWent
+  total_went_on_project: annualGoalsReport_projWent
+  spiritual_conversations: annualGoalsReport_spConvTotal
+  gospel_presentations: annualGoalsReport_gosPresTotal
+  holyspirit_presentations: annualGoalsReport_hsPresTotal
+  indicated_decisions: annualGoalsReport_prcTotal
+  followup_completed: annualGoalsReport_integBelievers
+  large_event_attendance: annualGoalsReport_lrgEventAttend 
     

@@ -107,7 +107,11 @@
       },
       :p2c_report => {
        :reading => {:controller => :stats, :action => :show_p2c_report}
-      }
+      },
+      :annual_goals_report => {
+       :editing => {:controller => :annual_goals_report, :action => :new},
+       #:reading => {:controller => :stats, :action => :annual_goals_recap}
+      }      
     }
   end
   
@@ -440,6 +444,71 @@
           :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
           :order => 11
         }
+      },
+      :annual_goals_report => {
+          :students_in_ministry => {:column => :annualGoalsReport_studInMin, 
+           :label => "Total students involved in campus ministry",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 1}, 
+          :spiritual_multipliers => {:column => :annualGoalsReport_sptMulti, 
+           :label => "Total spiritual multipliers",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 2}, 
+          :first_years => {:column => :annualGoalsReport_firstYears, 
+           :label => "Total first-year students involved",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 3}, 
+          :total_went_to_summit => {:column => :annualGoalsReport_summitWent, 
+           :label => "Total students that went to Summit",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 4}, 
+          :total_went_to_wc => {:column => :annualGoalsReport_wcWent, 
+           :label => "Total students that went to Winter Conference",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 5},
+          :total_went_on_project => {:column => :annualGoalsReport_projWent, 
+           :label => "Total students that went on a project",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 6}, 
+          :spiritual_conversations => {:column => :annualGoalsReport_spConvTotal, 
+           :label => "Total spiritual conversations",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 7}, 
+          :gospel_presentations => {:column => :annualGoalsReport_gosPresTotal, 
+           :label => "Total Gospel presentations",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 8}, 
+          :holyspirit_presentations => {:column => :annualGoalsReport_hsPresTotal, 
+           :label => "Total people doing one-year internships",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 9}, 
+          :indicated_decisions => {:column => :annualGoalsReport_prcTotal, 
+           :label => "Total indicated decisions to follow Jesus",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 10},
+          :followup_completed => {:column => :annualGoalsReport_integBelievers, 
+           :label => "Total integrated new believers",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 11}, 
+          :large_event_attendance => {:column => :annualGoalsReport_lrgEventAttend, 
+           :label => "Total attendance at large events",
+            :collected => :yearly,
+            :column_type => :database_column,
+            :order => 12               
+            }
       }
+
     }
-end
+    end
+
