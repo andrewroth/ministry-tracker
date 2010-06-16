@@ -1,0 +1,24 @@
+    <% form_for(annual_goals_report) do |f| %>
+      <%= f.error_messages %>
+      <%= f.hidden_field :year_id %>
+      <%= f.hidden_field :campus_id %>
+      <table>
+ <%
+lines = stats_reports[:annual_goals_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
+%>
+        <tr class="statsFormField">
+          <td><%= f.label input_stat[:column], input_stat[:label] %></td>
+          <td><%= f.text_field input_stat[:column], :size => 4 %></td>
+        </tr>
+
+<%
+end
+%>
+      </table>
+      <p>
+        <br/>
+        <div class="center"><%= f.submit "Submit" %></div>
+      </p>
+      <br/>
+    <% end %>

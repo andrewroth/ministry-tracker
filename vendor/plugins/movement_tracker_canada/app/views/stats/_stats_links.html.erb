@@ -11,6 +11,9 @@
     <% if authorized?("new", "semester_reports") %>
       <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
     <% end %>
+    <% if authorized?("new", "annual_goals_reports") %>
+      <li class="statsListLink"><%= link_to "Submit your annual goals", url_for(:controller => :annual_goals_reports, :action => :new) %></li>
+    <% end %>		
     <% if authorized?("semester_at_a_glance", "stats") %>
       <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
     <% end %>

@@ -1,0 +1,35 @@
+<%= javascript_include_tag "annual_goals_reports.js" %>
+
+<h1 id="statsTitle">Measurements</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div id="newAnnualGoalsFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Submit your annual ministry goals</h2>
+    <br/>
+    <% form_for(@annual_goals_report) do |f| %>
+      <%= f.error_messages %>
+      <table>
+        <tr class="statsFormField">
+          <td><%= f.label :year, "Year:" %></td>
+          <td><%= f.collection_select :year_id, @years, :year_id, :year_desc, {}, {:onChange => "beginLoadingAnnualGoalsInputTab()"} %></td>
+        </tr>
+        <tr class="statsFormField">
+          <td><%= f.label :campus, "Campus:" %></td>
+          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingAnnualGoalsInputTab()"} %></td>
+        </tr>
+     </table>
+    <% end %>
+  <div id="inputFields" class="inputsContainer">
+    <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+      <div id="annualGoalsReportInputFields" class="reportInputContainer">
+      <%= show_input_lines(@annual_goals_report) %>     
+      </div>
+  </div>
+  </div>
+</div>
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

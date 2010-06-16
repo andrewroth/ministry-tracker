@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.resources :annual_goals_reports
   map.resources :semester_reports
   map.resources :monthly_reports
   map.resources :weekly_reports
