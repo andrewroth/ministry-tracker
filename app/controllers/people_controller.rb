@@ -263,12 +263,17 @@ class PeopleController < ApplicationController
   # GET /people/show
   # Shows a person's profile (address info, assignments, involvements, etc)
   def show
-    get_ministry_involvement(get_ministry)
-    get_people_responsible_for
-    setup_vars
-    respond_to do |format|
-      format.html { render :action => :show }# show.rhtml
-      format.xml  { render :xml => @person.to_xml }
+    if @person.nil?
+      flash[:notice] = "No person found with the requested id."
+      redirect_to :controller => "dashboard"
+    else
+      get_ministry_involvement(get_ministry)
+      get_people_responsible_for
+      setup_vars
+      respond_to do |format|
+        format.html { render :action => :show }# show.rhtml
+        format.xml  { render :xml => @person.to_xml }
+      end
     end
   end
   
@@ -659,7 +664,7 @@ class PeopleController < ApplicationController
     end
     
     def get_profile_person
-      @person = Person.find(params[:id] || session[:person_id])
+      @person = Person.find(:first, :conditions => { Person._(:id) => params[:id] || session[:person_id]})
     end
     
     def setup_campuses
