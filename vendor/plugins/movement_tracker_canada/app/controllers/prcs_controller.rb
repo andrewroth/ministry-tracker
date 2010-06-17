@@ -115,7 +115,6 @@ class PrcsController < ApplicationController
   def setup_for_record(semester_id, campus_id, date)
     
     @prc = Prc.find(:first, :conditions => { :semester_id => semester_id, :campus_id => campus_id, :prc_date => date })  
-    throw "COULDNT FIND PRC" if @prc.nil?
     @prc ||= Prc.new
           
     @prc.semester_id = semester_id
