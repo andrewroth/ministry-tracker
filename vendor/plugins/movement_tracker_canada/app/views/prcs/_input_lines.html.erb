@@ -1,0 +1,30 @@
+<br>
+    <% form_for(prc) do |f| %>
+      <%= f.error_messages %>
+      <%= f.hidden_field :campus_id %>
+      <%= f.hidden_field :semester_id %>
+      <%= f.hidden_field :prc_date %>
+ <%
+lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines.each do | key, input_stat |
+  if input_stat[:column_type] == :database_column
+%>
+      <p class="statsFormField">
+        <%= f.label input_stat[:column], input_stat[:label] %>
+        <%= if input_stat[:display_type] == :text_area
+              f.text_area input_stat[:column], :size => "20x4"
+            else
+              f.text_field input_stat[:column], :size => 16
+            end %>
+      </p>
+      <br>
+<%
+  end
+end
+%>
+      <p>
+        <br/>
+        <div class="center"><%= f.submit "Submit" %></div>
+      </p>
+      <br/>
+    <% end %>

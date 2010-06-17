@@ -197,7 +197,7 @@
              :order => 7
            }
       },
-        :indicated_decisions_report => {
+      :indicated_decisions_report => {
            :blank_line => {
              :column_type => :blank_line ,
              :order => 0
@@ -208,6 +208,44 @@
              :column_type => :database_column ,
              :order => 1
            }
+        },
+        :indicated_decision_report => {
+           :believer_first_name => {
+             :column => :prc_firstName, 
+             :label => "New believer's first name:",
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 1
+           },
+           :witness_name => {
+             :column => :prc_witnessName, 
+             :label => "Witness name:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 2
+           },
+           :method => {
+             :column => :prcMethod_id, 
+             :label => "Method:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 3
+           },         
+           :integrated_believer => {
+             :column => :prc_7upCompleted, 
+             :label => "Integrated believer?:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 4
+           },
+           :notes => {
+             :column => :prc_notes, 
+             :label => "Notes:",
+             :display_type => :text_area,
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 5
+           }           
       }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
