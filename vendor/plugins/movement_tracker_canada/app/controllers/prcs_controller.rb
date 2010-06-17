@@ -4,7 +4,12 @@ class PrcsController < ApplicationController
   # GET /prcs
   # GET /prcs.xml
   def index
-    @prcs = Prc.all
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    cur_month_id = Month.find_semester_id(cur_month)
+    
+    semester_id = cur_month_id    
+    
+    setup_for_index(semester_id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,6 +51,7 @@ class PrcsController < ApplicationController
   # GET /prcs/1/edit
   def edit
     @prc = Prc.find(params[:id])
+    render :layout => false
   end
   
   # POST /prcs
@@ -86,12 +92,22 @@ class PrcsController < ApplicationController
     end
   end
   
+  def refresh_prc_index
+    setup_for_index(params['semester_id'])
+  
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  
   protected
   
   def create_or_update
-    @prc = Prc.find(:first, :conditions => { :semester_id => params[:prc][:semester_id], 
-                                             :campus_id => params[:prc][:campus_id], 
-                                             :prc_date => params[:prc][:date] })  
+    @prc = Prc.find(:first, :conditions => { :prc_id => params[:prc][:id] } )
+                                           #  :semester_id => params[:prc][:semester_id], 
+                                           #  :campus_id => params[:prc][:campus_id], 
+                                           #  :prc_date => params[:prc][:date] })  
   
     if @prc
       success_update = true if @prc.update_attributes(params[:prc])
@@ -128,5 +144,20 @@ class PrcsController < ApplicationController
     @methods = Prcmethod.all()
     
   end 
+  
+  def setup_for_index(semester_id)
+    
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    campus_id = @campuses.first().id
+    
+    @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
+    @prcs ||= Prc.all
+    
+    @semesters = Semester.all(:order => :semester_startDate)  
+
+    
+    @methods = Prcmethod.all()
+    
+  end  
   
 end

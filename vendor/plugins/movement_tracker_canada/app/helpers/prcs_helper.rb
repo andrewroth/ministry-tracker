@@ -7,5 +7,12 @@ module PrcsHelper
         :prc => prc
     }
   end
+  
+  def show_index_entries(prcs)
+    render :partial => 'prcs/index_entries',
+    :locals => {
+        :prcs => prcs
+    }
+  end  
  
 end

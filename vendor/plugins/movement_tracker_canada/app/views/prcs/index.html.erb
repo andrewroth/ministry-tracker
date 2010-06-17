@@ -1,0 +1,38 @@
+<%= javascript_include_tag "prcs.js" %>
+
+<h1 id="statsTitle">Measurements</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div id="indexPRCsContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Manage indicated decision reports</h2>
+    <br/>
+		
+    <% form_for(@prcs.first) do |f| %>
+      <%= f.error_messages %>      
+	    <table>
+	      <tr class="statsFormField">
+	        <td><%= f.label :campus, "Campus:" %></td>
+	        <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingPrcIndexTab()"} %></td>
+	      </tr>
+	      <tr class="statsFormField">
+	        <td><%= f.label :semester, "Semester:" %></td>
+	        <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingPrcIndexTab()"} %></td>
+	      </tr> 
+	   </table>
+    <% end %>
+  <div id="indexFields" class="indexContainer">
+    <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+      <div id="prcIndexFields" class="reportIndexContainer">
+      <%= show_index_entries(@prcs) %>     
+      </div>
+  </div>
+  </div>
+</div>
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+
