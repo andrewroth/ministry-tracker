@@ -114,6 +114,9 @@ class MinistryInvolvementsController < ApplicationController
     end
     @ministry_involvement = mi
     @promoted = @student_before && mi.ministry_role.is_a?(StaffRole)
+    if @promoted
+      @person.archive_all_student_ministry_involvements
+    end
     unless request.xhr?
       redirect_to '/staff'
     else
@@ -193,7 +196,7 @@ class MinistryInvolvementsController < ApplicationController
   def set_ministries_and_roles
     @ministries = get_ministry.self_plus_descendants
     @roles = [ [ 'Staff Roles', StaffRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
-    @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ] unless is_staff_somewhere(@person) || params[:staff_roles_only] == 'true'
     @default_role_id = MinistryRole.default_staff_role.id
   end
 end
