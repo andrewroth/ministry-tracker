@@ -8,7 +8,6 @@
         <% semesters.each do |semester| %>
           <td class="statsTableTitle">
             <%=  semester.description %>
-            <%#=link_to "#{semester.description}", :action => "semester_at_a_glance", :report => { 'ministry' => @ministry_id, 'campus_id' => @campus_id, 'semester' => "#{semester.description}"} %>
           </td>
         <% end %>
 

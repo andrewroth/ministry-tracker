@@ -1,6 +1,9 @@
 class SemesterReportsController < ApplicationController
   unloadable
 
+  skip_before_filter :authorization_filter, :only => [:select_semester_report]
+
+
   # GET /semester_reports
   # GET /semester_reports.xml
   def index

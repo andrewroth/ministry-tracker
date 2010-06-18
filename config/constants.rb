@@ -56,9 +56,9 @@
   
   def report_types
     { 
-      :c4c => {:label => "Campus for Christ Report", :controller => :stats, :action => :index},
-      :p2c => {:label => "Power to Change Report", :controller => :stats, :action => :show_p2c_report},
-      :ccci => {:label => "Campus Crusade for Christ International Report", :controller => :stats, :action => :show_ccci_report}
+      :c4c => {:label => "Campus for Christ Reports", :controller => :stats, :action => :index},
+      :p2c => {:label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report},
+      :ccci => {:label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report}
     }
   end
   
@@ -301,6 +301,20 @@
             :collected => :monthly,
             :column_type => :database_column,
             :order => 9
+          },
+          :integrated_new_believers => {:column => :montlyreport_integratedNewBelievers, 
+            :label => "Integrated new believers:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 10
+          },
+          :growth_rate => { 
+            :label => "Conversion growth rate:",
+            :collected => :monthly,
+            :column_type => :division,
+            :dividend => {:report => :monthly_report, :line => :integrated_new_believers},
+            :divisor => {:report => :monthly_report, :line => :students_dg},
+            :order => 11
           }
       }, 
         :monthly_p2c_special => {
