@@ -123,7 +123,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
   test "update_student_campus_involvement_second_involvement" do
     login 'sue@student.org'
     assert_difference "Person.find(2000).involvement_history.count", 1 do
-      xhr :get, :update, :id => 1004, :person_id => 2000, :campus_involvement => { :school_year_id => 2, :campus_id => 2 }
+      xhr :get, :update, :id => 1004, :person_id => 2000, :campus_involvement => { :school_year_id => "2", :campus_id => "2" }
     end
     history = Person.find(2000).involvement_history.last
     campus_involvement = CampusInvolvement.find 1002
