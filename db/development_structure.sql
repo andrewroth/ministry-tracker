@@ -79,6 +79,27 @@ CREATE TABLE `emails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `emergs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `passport_num` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_origin` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_expiry` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `notes` text COLLATE utf8_unicode_ci,
+  `meds` text COLLATE utf8_unicode_ci,
+  `health_coverage_state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `health_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `medical_plan_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `medical_plan_carrier` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `doctor_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `doctor_phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dentist_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dentist_phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `blood_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `blood_rh_factor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `free_times` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `start_time` int(11) DEFAULT NULL,
@@ -201,7 +222,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -253,7 +274,7 @@ CREATE TABLE `timetables` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -306,7 +327,7 @@ CREATE TABLE `view_columns` (
   PRIMARY KEY (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `views` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -318,6 +339,8 @@ CREATE TABLE `views` (
   `select_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tables_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO schema_migrations (version) VALUES ('20100421144336');
 
 INSERT INTO schema_migrations (version) VALUES ('20100525190119');
