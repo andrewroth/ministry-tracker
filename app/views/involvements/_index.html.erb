@@ -15,7 +15,7 @@
   <% if @student && is_admin? %>
     <p>
       <%= link_to_remote "Make this person a staff member.", 
-            :url => new_person_ministry_involvement_url(@person),
+            :url => new_person_ministry_involvement_url(@person, :staff_roles_only => true),
             :method => :get
           %>
     </p>
