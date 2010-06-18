@@ -210,6 +210,13 @@
            }
         },
         :indicated_decision_report => {
+            :decision_date => {
+             :column => :prc_date, 
+             :label => "Date:",
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 0
+           },       
            :believer_first_name => {
              :column => :prc_firstName, 
              :label => "New believer's first name:",

@@ -1,6 +1,7 @@
 <br>
     <% form_for(prc) do |f| %>
       <%= f.error_messages %>
+			<%= f.hidden_field :id %>
       <%= f.hidden_field :campus_id %>
       <%= f.hidden_field :semester_id %>
       <%= f.hidden_field :prc_date %>
