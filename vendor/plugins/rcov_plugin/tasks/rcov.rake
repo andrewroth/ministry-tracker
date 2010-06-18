@@ -46,7 +46,7 @@ def run_coverage(files)
   puts
   puts "Running tests..."
   cmd = "#{rcov} #{files}"
-  puts cmd
+  #puts cmd
   sh cmd
 end
 
