@@ -4,7 +4,7 @@
       <%= f.hidden_field :campus_id %>
       <table>
 <%
-lines = stats_reports[:monthly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
+lines = stats_reports[:monthly_report].sort{|a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
 lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
@@ -14,7 +14,7 @@ lines.each do | key, input_stat |
 
 <%
 end
-lines = stats_reports[:monthly_p2c_special].sort { |a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
+lines = stats_reports[:monthly_p2c_special].sort{|a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
 lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">

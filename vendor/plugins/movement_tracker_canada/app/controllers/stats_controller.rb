@@ -362,7 +362,8 @@ end
     @stats_ministry_id =  session[:stats_ministry_id].to_i
     @stats_ministry = Ministry.find(@stats_ministry_id)
     # make sure they have access to the ministry that was selected
-    @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me) || is_ministry_admin
+    # ---- for now we will just make sure that they can only select ministries they have access to
+    # @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me) || is_ministry_admin
 
     @stats_time = session[:stats_time]
     @report_type = session[:stats_report_type] 
@@ -379,7 +380,8 @@ end
     setup_reports_to_show
     
     @show_additional_report_links = (authorized?("how_people_came_to_christ", "stats")) ? true : false
-
+    @show_ministries_under = authorized?("view_ministries_under", "stats")
+ 
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
   end
