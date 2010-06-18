@@ -4,7 +4,12 @@ class PrcsController < ApplicationController
   # GET /prcs
   # GET /prcs.xml
   def index
-    @prcs = Prc.all
+    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+    cur_month_id = Month.find_semester_id(cur_month)
+    
+    semester_id = cur_month_id    
+    
+    setup_for_index(semester_id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -22,24 +27,20 @@ class PrcsController < ApplicationController
       format.xml  { render :xml => @prc }
     end
   end
+  
 
   # GET /prcs/new
   # GET /prcs/new.xml
   def new
-    @prc = Prc.new
-
+  
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
     cur_month_id = Month.find_semester_id(cur_month)
-    @prc.semester_id = cur_month_id
-
-    #@semesters = Semester.find_semesters(cur_month_id).reverse  #always put latest semester at top of list
-    @semesters = Semester.all(:order => :semester_startDate)   
     
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
-    @prc.campus_id = get_ministry.unique_campuses.first.id
+    semester_id = cur_month_id   
+    campus_id = get_ministry.unique_campuses.first.id   #NEW!    
+    date = Date.today()
 
-    #@methods = Prcmethod.find_methods()
-    @methods = Prcmethod.all()
+    setup_for_record(semester_id, campus_id, date)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,58 +51,19 @@ class PrcsController < ApplicationController
   # GET /prcs/1/edit
   def edit
     @prc = Prc.find(params[:id])
+    render :layout => false
   end
-
-  # POST /prcsP
+  
+  # POST /prcs
   # POST /prcs.xml
   def create
-    
-#    #debugger
-#
-#    #staff_id = @person.cim_hrdb_staff.id
-#    @prc = Prc.find(:first, :conditions => { :semester_id => params[:prc][:semester_id], :campus_id => params[:prc][:campus_id], :prc_firstName => params[:prc][:prc_firstName]})
-#
-#
-#    debugger
-#
-#    if @prc
-#      @prc.update_attributes(params[:prc])
-#      notice = 'Your indicated decision report was successfully re-submitted.'
-#    else
-      @prc = Prc.new(params[:prc])
-      #@prc.staff_id = @person.cim_hrdb_staff.id
-      notice = 'Your indicated decision report was successfully submitted.'
-#    end
-#    
-#    debugger
-
-    respond_to do |format|
-      if @prc.save
-        flash[:notice] = notice
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { render :xml => @prc, :status => :created, :location => @prc }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
-      end
-    end
+    create_or_update
   end
 
   # PUT /prcs/1
   # PUT /prcs/1.xml
   def update
-    @prc = Prc.find(params[:id])
-
-    respond_to do |format|
-      if @prc.update_attributes(params[:prc])
-        flash[:notice] = 'Your weekly numbers were successfully submitted.'
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
-      end
-    end
+    create_or_update
   end
 
   # DELETE /prcs/1
@@ -111,7 +73,7 @@ class PrcsController < ApplicationController
     @prc.destroy
 
     unless @prc.errors.empty?
-      flash[:notice] = "WARNING: Couldn't delete weekly numbers because:"
+      flash[:notice] = "WARNING: Couldn't delete indicated decision report because:"
       @prc.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
     end
 
@@ -120,4 +82,82 @@ class PrcsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+
+  def select_prc_report
+    setup_for_record(params['semester_id'], params['campus_id'], params['date'])
+  
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def refresh_prc_index
+    setup_for_index(params['semester_id'])
+  
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  
+  protected
+  
+  def create_or_update
+    @prc = Prc.find(:first, :conditions => { :prc_id => params[:prc][:id] } )
+                                           #  :semester_id => params[:prc][:semester_id], 
+                                           #  :campus_id => params[:prc][:campus_id], 
+                                           #  :prc_date => params[:prc][:date] })  
+  
+    if @prc
+      success_update = true if @prc.update_attributes(params[:prc])
+    else
+      success_update = true if @prc = Prc.new(params[:prc])
+    end
+  
+    respond_to do |format|
+      if success_update
+        @prc.save!
+        flash[:notice] = 'Your indicated decision report was successfully submitted.'
+        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def setup_for_record(semester_id, campus_id, date)
+    
+    @prc = Prc.find(:first, :conditions => { :semester_id => semester_id, :campus_id => campus_id, :prc_date => date })  
+    @prc ||= Prc.new
+          
+    @prc.semester_id = semester_id
+    @prc.campus_id = campus_id
+    @prc.prc_date = date
+    
+    @semesters = Semester.all(:order => :semester_startDate)  
+
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    
+    @methods = Prcmethod.all()
+    
+  end 
+  
+  def setup_for_index(semester_id)
+    
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    campus_id = @campuses.first().id
+    
+    @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
+    @prcs ||= Prc.all
+    
+    @semesters = Semester.all(:order => :semester_startDate)  
+
+    
+    @methods = Prcmethod.all()
+    
+  end  
+  
 end

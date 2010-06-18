@@ -1,57 +1,39 @@
+<%= javascript_include_tag "prcs.js" %>
+
 <h1 id="statsTitle">Measurements</h1>
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
 
 <br/>
 
 <div class="statsFormContainer">
-  <div id="newWeeklyReportFormContainer" class="statsFormBox">
-    <h2 class="statsFormBoxTitle">Submit indicated decision</h2>
+  <div id="newPRCFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Submit indicated decision report</h2>
     <br/>
-
-    <% form_for(@prc) do |form| %>
-      <%= form.error_messages %>	  
-      <p class="statsFormField">
-        <%= form.label :campus, "Campus:" %>
-        <%= form.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {} %>
-      </p>	  
-      <p class="statsFormField">
-        <%= form.label :semester, "Semester:" %></td>
-        <%= form.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :first_name, "Person who indicated decision:" %>
-        <%= form.text_field :first_name %>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :witness_name, "Person who shared the gospel:" %>
-        <%= form.text_field :witness_name %>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :date, "Date:" %>
-        <%= form.date_select :date %>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :notes, "Notes:" %>
-        <%= form.text_area :notes %>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :method_id, "Method:" %>
-  		<%= form.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc, {}, {:onChange => "beginLoadingMethodInputTab()"} %></td>
-      </p>
-      <p class="statsFormField">
-        <%= form.label :integrated_believer, "Integrated believer:" %>
-        <%= form.check_box :integrated_believer %>
-      </p>
-      <p>
-        <br/>
-        <div class="center"><%= form.submit "Submit" %></div>
-      </p>
+    <% form_for(@prc) do |f| %>
+      <%= f.error_messages %>
+      <table>
+        <tr class="statsFormField">
+          <td><%= f.label :campus, "Campus:" %></td>
+          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingPrcInputTab()"} %></td>
+        </tr>
+        <tr class="statsFormField">
+          <td><%= f.label :semester, "Semester:" %></td>
+          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingPrcInputTab()"} %></td>
+        </tr>	
+				<tr class="statsFormField">
+				  <td><%= f.label :date, "Date:" %></td>
+          <td><%= f.date_select :date, {:onChange => "beginLoadingPrcInputTab()"} %></td>	
+				</tr>
+     </table>
     <% end %>
-      
-    <br/>
+  <div id="inputFields" class="inputsContainer">
+    <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+      <div id="prcInputFields" class="reportInputContainer">
+      <%= show_input_lines(@prc) %>     
+      </div>
+  </div>
   </div>
 </div>
-
 
 <br/>
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

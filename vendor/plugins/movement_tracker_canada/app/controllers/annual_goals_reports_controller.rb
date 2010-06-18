@@ -60,13 +60,9 @@ class AnnualGoalsReportsController < ApplicationController
   # POST /annual_goals_reports
   # POST /annual_goals_reports.xml
   def create
-    
-    debugger
 
     #staff_id = @person.cim_hrdb_staff.id
     @annual_goals_report = AnnualGoalsReport.find(:first, :conditions => { :year_id => params[:annual_goals_report][:year_id], :campus_id => params[:annual_goals_report][:campus_id] })
-
-    debugger
 
     if @annual_goals_report
       @annual_goals_report.update_attributes(params[:annual_goals_report])

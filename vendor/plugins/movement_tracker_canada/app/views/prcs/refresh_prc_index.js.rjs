@@ -1,0 +1,2 @@
+page.replace_html("prcIndexFields", :partial => "index_entries", :locals => { :prcs => @prcs })
+

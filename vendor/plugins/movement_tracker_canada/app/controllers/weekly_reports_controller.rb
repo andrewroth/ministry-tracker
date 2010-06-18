@@ -1,6 +1,8 @@
 class WeeklyReportsController < ApplicationController
   unloadable
 
+  skip_before_filter :authorization_filter, :only => [:select_weekly_report]
+
   # GET /weekly_reports
   # GET /weekly_reports.xml
   def index

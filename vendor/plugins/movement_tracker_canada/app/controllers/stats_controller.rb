@@ -1,3 +1,4 @@
+require "date"
 class StatsController < ApplicationController
   unloadable
 
@@ -106,62 +107,6 @@ class StatsController < ApplicationController
 
     render :partial => "collection_select"
   end
-
-
-  def semester_at_a_glance
-
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-
-    @ministries = my_ministries_for_stats("semester_at_a_glance").sort { |x, y| x.name <=> y.name }
-
-    if params[:report].nil?
-
-      @stats_ministry_id = get_ministry.id
-      @semester_id = Month.find_semester_id(cur_month)
-      @campus_id = ALL_CAMPUSES_UNDER_MINISTRY
-
-    else # set the appropriate variables to the parameters
-
-      @stats_ministry_id = params[:report]['ministry']
-      @stats_ministry_selected = Ministry.find(@stats_ministry_id)
-
-      @campus_id = params[:report]['campus_id']
-      case @campus_id.to_i
-      when ALL_CAMPUSES_UNDER_MINISTRY
-        @campus_selected_description = "All campuses under #{@stats_ministry_selected.name}"
-        @campuses_selected = @stats_ministry_selected.unique_campuses
-      when NO_CAMPUSES_UNDER_MINISTRY
-        @campus_selected = nil
-        @campuses_selected = nil
-      else
-        @campus_selected_description = Campus.find(@campus_id).campus_desc
-        @campuses_selected = [Campus.find(@campus_id)]
-      end
-
-      @semester_id = Semester.find_semester_id(params[:report]['semester'])
-
-      @staff_id = authorized?(:index, :stats) ? nil : @me.cim_hrdb_staff.id
-      @staff_hash = {}
-      @campuses_selected.each do |campus|
-        @staff_hash.merge!( { campus.id => WeeklyReport.find_staff(@semester_id, campus.id, @staff_id) } )
-      end
-
-      @weeks = Week.find_weeks_in_semester(@semester_id)
-      @months = Month.find_months_by_semester(@semester_id)
-
-      flash[:notice] = @staff_hash.size == 0 ? "Sorry, no stats were found for your selection!" : nil
-    end
-
-
-    @semester_selected = Semester.find_semester_description(@semester_id)
-
-    # the code below ensures that months that haven't occurred yet aren't listed
-    cur_id = Month.find_semester_id(cur_month)
-    @semesters = Semester.find_semesters(cur_id)
-    @cur_semester = Semester.find_semester_description(cur_id)
-    
-  end
-
 
   def summary_by_campus
 
@@ -433,7 +378,7 @@ end
     check_stats_time_availability
     setup_reports_to_show
     
-    @show_additional_report_links = (authorized?("semester_at_a_glance", "stats") || authorized?("how_people_came_to_christ", "stats")) ? true : false
+    @show_additional_report_links = (authorized?("how_people_came_to_christ", "stats")) ? true : false
 
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
@@ -448,7 +393,7 @@ end
     @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
     @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
 
-    @campuses_selected = @stats_ministry.unique_campuses
+    #@campuses_selected = @stats_ministry.unique_campuses
 
     session[:stats_year] = params[:year] if params[:year].present?
     session[:stats_year] = current_year_id unless session[:stats_year].present?
@@ -469,7 +414,7 @@ end
     setup_campus_ids
     setup_selected_time_tab
     setup_selected_period_for_drilldown    
-    setup_staffs_if_staff_drilldown(@report_scope, @stats_ministry)
+    setup_staffs_for_staff_drilldown(@report_scope, @stats_ministry)
     setup_report_description
    
     @results_partial = "staff_drill_down"
@@ -795,7 +740,7 @@ end
     end    
   end
   
-  def setup_staffs_if_staff_drilldown(report_scope, ministry)
+  def setup_staffs_for_staff_drilldown(report_scope, ministry)
     @staffs = []
     if report_scope == STAFF_DRILL_DOWN
       persons_hash = get_staffs_persons_for_ministry(ministry)
@@ -807,7 +752,7 @@ end
   
   def add_report_if_authorized(report_symbol)
     permission_details = report_permissions[report_symbol][:reading]
-    if permission_details && authorized?(permission_details[:action], permission_details[:controller], @stats_ministry)
+    if permission_details && authorized?(permission_details[:action], permission_details[:controller])#, @stats_ministry)
       @reports_to_show += [report_symbol]
     end
   end

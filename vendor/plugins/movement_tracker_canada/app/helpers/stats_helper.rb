@@ -32,7 +32,7 @@ module StatsHelper
   
   def get_hash_for_stats_ministry_selection_tree
     unless is_ministry_admin
-      get_ministry.root.to_hash_with_only_the_children_person_is_involved_in(@me).to_json
+      get_ministry.root.to_hash_with_only_the_children_person_is_involved_in(@me, authorized?("view_ministries_under", "stats")).to_json
     else
       get_ministry.root.to_hash_with_children.to_json
     end
@@ -44,6 +44,16 @@ module StatsHelper
       evaluation = period_model.evaluate_stat(campus_ids, stat_hash, staff_id)
     elsif stat_hash[:column_type] == :sum
       stat_hash[:columns_sum].each { |cs| evaluation += evaluate_stat_for_period(period_model, campus_ids, stats_reports[cs[:report]][cs[:line]], staff_id) }
+    elsif stat_hash[:column_type] == :division
+      
+      dividend_stat = stats_reports[stat_hash[:dividend][:report]][stat_hash[:dividend][:line]]
+      divisor_stat = stats_reports[stat_hash[:divisor][:report]][stat_hash[:divisor][:line]]
+      
+      dividend = evaluate_stat_for_period(period_model, campus_ids, dividend_stat, staff_id)
+      divisor = evaluate_stat_for_period(period_model, campus_ids, divisor_stat, staff_id)
+
+      evaluation = dividend.to_f / divisor.to_f unless divisor.nil? || divisor == 0 || dividend.nil?
+      evaluation = (evaluation * 100.0).round / 100.0 
     end
     evaluation
   end

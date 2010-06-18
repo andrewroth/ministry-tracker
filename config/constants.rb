@@ -56,9 +56,9 @@
   
   def report_types
     { 
-      :c4c => {:label => "Campus for Christ Report", :controller => :stats, :action => :index},
-      :p2c => {:label => "Power to Change Report", :controller => :stats, :action => :show_p2c_report},
-      :ccci => {:label => "Campus Crusade for Christ International Report", :controller => :stats, :action => :show_ccci_report}
+      :c4c => {:label => "Campus for Christ Reports", :controller => :stats, :action => :index},
+      :p2c => {:label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report},
+      :ccci => {:label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report}
     }
   end
   
@@ -197,7 +197,7 @@
              :order => 7
            }
       },
-        :indicated_decisions_report => {
+      :indicated_decisions_report => {
            :blank_line => {
              :column_type => :blank_line ,
              :order => 0
@@ -208,6 +208,51 @@
              :column_type => :database_column ,
              :order => 1
            }
+        },
+        :indicated_decision_report => {
+            :decision_date => {
+             :column => :prc_date, 
+             :label => "Date:",
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 0
+           },       
+           :believer_first_name => {
+             :column => :prc_firstName, 
+             :label => "New believer's first name:",
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 1
+           },
+           :witness_name => {
+             :column => :prc_witnessName, 
+             :label => "Witness name:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 2
+           },
+           :method => {
+             :column => :prcMethod_id, 
+             :label => "Method:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 3
+           },         
+           :integrated_believer => {
+             :column => :prc_7upCompleted, 
+             :label => "Integrated believer?:",
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 4
+           },
+           :notes => {
+             :column => :prc_notes, 
+             :label => "Notes:",
+             :display_type => :text_area,
+             :collected => :prc,
+             :column_type => :database_column ,
+             :order => 5
+           }           
       }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
@@ -263,6 +308,20 @@
             :collected => :monthly,
             :column_type => :database_column,
             :order => 9
+          },
+          :integrated_new_believers => {:column => :montlyreport_integratedNewBelievers, 
+            :label => "Integrated new believers:",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :order => 10
+          },
+          :growth_rate => { 
+            :label => "Conversion growth rate:",
+            :collected => :monthly,
+            :column_type => :division,
+            :dividend => {:report => :monthly_report, :line => :integrated_new_believers},
+            :divisor => {:report => :monthly_report, :line => :students_dg},
+            :order => 11
           }
       }, 
         :monthly_p2c_special => {

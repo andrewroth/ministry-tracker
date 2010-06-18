@@ -1,6 +1,8 @@
 class MonthlyReportsController < ApplicationController
   unloadable
 
+  skip_before_filter :authorization_filter, :only => [:select_monthly_report]
+
   # GET /monthly_reports
   # GET /monthly_reports.xml
   def index

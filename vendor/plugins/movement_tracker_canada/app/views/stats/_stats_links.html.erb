@@ -1,6 +1,6 @@
   <ul class="statsLinkList">
     <% if authorized?("new", "prcs") %>
-      <li class="statsListLink"><%= link_to "Submit your indicated decisions", url_for(:controller => :prcs, :action => :new) %></li>
+      <li class="statsListLink"><%= link_to "Manage your indicated decision reports", url_for(:controller => :prcs, :action => :index) %></li>
     <% end %>  	
     <% if authorized?("new", "weekly_reports") %>
       <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
@@ -14,9 +14,6 @@
     <% if authorized?("new", "annual_goals_reports") %>
       <li class="statsListLink"><%= link_to "Submit your annual goals", url_for(:controller => :annual_goals_reports, :action => :new) %></li>
     <% end %>		
-    <% if authorized?("semester_at_a_glance", "stats") %>
-      <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
-    <% end %>
     <% if authorized?("how_people_came_to_christ", "stats") %>
       <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
     <% end %>
