@@ -1,407 +1,428 @@
 CREATE TABLE `addresses` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `address_type` varchar(255) default NULL,
-  `title` varchar(255) default NULL,
-  `address1` varchar(255) default NULL,
-  `address2` varchar(255) default NULL,
-  `city` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  `zip` varchar(255) default NULL,
-  `country` varchar(255) default NULL,
-  `phone` varchar(255) default NULL,
-  `alternate_phone` varchar(255) default NULL,
-  `dorm` varchar(255) default NULL,
-  `room` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `start_date` date default NULL,
-  `end_date` date default NULL,
-  `created_at` date default NULL,
-  `updated_at` date default NULL,
-  `email_validated` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `address_type` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `address1` varchar(255) DEFAULT NULL,
+  `address2` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `alternate_phone` varchar(255) DEFAULT NULL,
+  `dorm` varchar(255) DEFAULT NULL,
+  `room` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `email_validated` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_addresses_on_email` (`email`),
   KEY `index_addresses_on_person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campus_involvements` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `campus_id` int(11) default NULL,
-  `start_date` date default NULL,
-  `end_date` date default NULL,
-  `ministry_id` int(11) default NULL,
-  `added_by_id` int(11) default NULL,
-  `graduation_date` date default NULL,
-  `school_year_id` int(11) default NULL,
-  `major` varchar(255) default NULL,
-  `minor` varchar(255) default NULL,
-  `last_history_update_date` date default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `added_by_id` int(11) DEFAULT NULL,
+  `graduation_date` date DEFAULT NULL,
+  `school_year_id` int(11) DEFAULT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `minor` varchar(255) DEFAULT NULL,
+  `last_history_update_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `index_campus_involvements_on_p_id_and_c_id_and_end_date` (`person_id`,`campus_id`,`end_date`),
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4129 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4135 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campuses` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `address` varchar(255) default NULL,
-  `city` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  `zip` varchar(255) default NULL,
-  `country` varchar(255) default NULL,
-  `phone` varchar(255) default NULL,
-  `fax` varchar(255) default NULL,
-  `url` varchar(255) default NULL,
-  `abbrv` varchar(255) default NULL,
-  `is_secure` tinyint(1) default NULL,
-  `enrollment` int(11) default NULL,
-  `created_at` date default NULL,
-  `updated_at` date default NULL,
-  `type` varchar(255) default NULL,
-  `address2` varchar(255) default NULL,
-  `county` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `fax` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `abbrv` varchar(255) DEFAULT NULL,
+  `is_secure` tinyint(1) DEFAULT NULL,
+  `enrollment` int(11) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `address2` varchar(255) DEFAULT NULL,
+  `county` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_campuses_on_county` (`county`),
   KEY `index_campuses_on_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `columns` (
-  `id` int(11) NOT NULL auto_increment,
-  `title` varchar(255) default NULL,
-  `update_clause` varchar(255) default NULL,
-  `from_clause` varchar(255) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `update_clause` varchar(255) DEFAULT NULL,
+  `from_clause` varchar(255) DEFAULT NULL,
   `select_clause` text,
-  `column_type` varchar(255) default NULL,
-  `writeable` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `join_clause` varchar(255) default NULL,
-  `source_model` varchar(255) default NULL,
-  `source_column` varchar(255) default NULL,
-  `foreign_key` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
+  `column_type` varchar(255) DEFAULT NULL,
+  `writeable` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `join_clause` varchar(255) DEFAULT NULL,
+  `source_model` varchar(255) DEFAULT NULL,
+  `source_column` varchar(255) DEFAULT NULL,
+  `foreign_key` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conference_registrations` (
-  `id` int(11) NOT NULL auto_increment,
-  `conference_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `conference_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conferences` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `correspondence_types` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `overdue_lifespan` int(11) default NULL,
-  `expiry_lifespan` int(11) default NULL,
-  `actions_now_task` varchar(255) default NULL,
-  `actions_overdue_task` varchar(255) default NULL,
-  `actions_followup_task` varchar(255) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `overdue_lifespan` int(11) DEFAULT NULL,
+  `expiry_lifespan` int(11) DEFAULT NULL,
+  `actions_now_task` varchar(255) DEFAULT NULL,
+  `actions_overdue_task` varchar(255) DEFAULT NULL,
+  `actions_followup_task` varchar(255) DEFAULT NULL,
   `redirect_params` text,
-  `redirect_target_id_type` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
+  `redirect_target_id_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `correspondences` (
-  `id` int(11) NOT NULL auto_increment,
-  `correspondence_type_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `receipt` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  `visited` date default NULL,
-  `completed` date default NULL,
-  `overdue_at` date default NULL,
-  `expire_at` date default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `correspondence_type_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `receipt` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `visited` date DEFAULT NULL,
+  `completed` date DEFAULT NULL,
+  `overdue_at` date DEFAULT NULL,
+  `expire_at` date DEFAULT NULL,
   `token_params` text,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_correspondences_on_receipt` (`receipt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `counties` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_counties_on_state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `countries` (
-  `id` int(11) NOT NULL auto_increment,
-  `country` varchar(255) default NULL,
-  `code` varchar(255) default NULL,
-  `is_closed` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country` varchar(255) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `is_closed` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `custom_attributes` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `name` varchar(255) default NULL,
-  `value_type` varchar(255) default NULL,
-  `description` varchar(255) default NULL,
-  `type` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `value_type` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_custom_attributes_on_type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `custom_values` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `custom_attribute_id` int(11) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `custom_attribute_id` int(11) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `delayed_jobs` (
-  `id` int(11) NOT NULL auto_increment,
-  `priority` int(11) default '0',
-  `attempts` int(11) default '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `priority` int(11) DEFAULT '0',
+  `attempts` int(11) DEFAULT '0',
   `handler` text,
-  `last_error` varchar(255) default NULL,
-  `run_at` datetime default NULL,
-  `locked_at` datetime default NULL,
-  `failed_at` datetime default NULL,
-  `locked_by` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `last_error` varchar(255) DEFAULT NULL,
+  `run_at` datetime DEFAULT NULL,
+  `locked_at` datetime DEFAULT NULL,
+  `failed_at` datetime DEFAULT NULL,
+  `locked_by` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dorms` (
-  `id` int(11) NOT NULL auto_increment,
-  `campus_id` int(11) default NULL,
-  `name` varchar(255) default NULL,
-  `created_at` date default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `campus_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_dorms_on_campus_id` (`campus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `email_templates` (
-  `id` int(11) NOT NULL auto_increment,
-  `correspondence_type_id` int(11) default NULL,
-  `outcome_type` varchar(255) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `correspondence_type_id` int(11) DEFAULT NULL,
+  `outcome_type` varchar(255) DEFAULT NULL,
   `subject` varchar(255) NOT NULL,
   `from` varchar(255) NOT NULL,
-  `bcc` varchar(255) default NULL,
-  `cc` varchar(255) default NULL,
+  `bcc` varchar(255) DEFAULT NULL,
+  `cc` varchar(255) DEFAULT NULL,
   `body` text NOT NULL,
   `template` text,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `emails` (
-  `id` int(11) NOT NULL auto_increment,
-  `subject` varchar(255) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(255) DEFAULT NULL,
   `body` text,
   `people_ids` text,
   `missing_address_ids` text,
-  `search_id` int(11) default NULL,
-  `sender_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `search_id` int(11) DEFAULT NULL,
+  `sender_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `emergs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `passport_num` varchar(255) DEFAULT NULL,
+  `passport_origin` varchar(255) DEFAULT NULL,
+  `passport_expiry` varchar(255) DEFAULT NULL,
+  `notes` text,
+  `meds` text,
+  `health_coverage_state` varchar(255) DEFAULT NULL,
+  `health_number` varchar(255) DEFAULT NULL,
+  `medical_plan_number` varchar(255) DEFAULT NULL,
+  `medical_plan_carrier` varchar(255) DEFAULT NULL,
+  `doctor_name` varchar(255) DEFAULT NULL,
+  `doctor_phone` varchar(255) DEFAULT NULL,
+  `dentist_name` varchar(255) DEFAULT NULL,
+  `dentist_phone` varchar(255) DEFAULT NULL,
+  `blood_type` varchar(255) DEFAULT NULL,
+  `blood_rh_factor` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `free_times` (
-  `id` int(11) NOT NULL auto_increment,
-  `start_time` int(11) default NULL,
-  `end_time` int(11) default NULL,
-  `day_of_week` int(11) default NULL,
-  `timetable_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `css_class` varchar(255) default NULL,
-  `weight` decimal(4,2) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `start_time` int(11) DEFAULT NULL,
+  `end_time` int(11) DEFAULT NULL,
+  `day_of_week` int(11) DEFAULT NULL,
+  `timetable_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `css_class` varchar(255) DEFAULT NULL,
+  `weight` decimal(4,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `free_times_timetable_id` (`timetable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89211 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89218 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_involvements` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `group_id` int(11) default NULL,
-  `level` varchar(255) default NULL,
-  `requested` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `level` varchar(255) DEFAULT NULL,
+  `requested` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4262 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_types` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `group_type` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `mentor_priority` tinyint(1) default NULL,
-  `public` tinyint(1) default NULL,
-  `unsuitability_leader` int(11) default NULL,
-  `unsuitability_coleader` int(11) default NULL,
-  `unsuitability_participant` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `group_type` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `mentor_priority` tinyint(1) DEFAULT NULL,
+  `public` tinyint(1) DEFAULT NULL,
+  `unsuitability_leader` int(11) DEFAULT NULL,
+  `unsuitability_coleader` int(11) DEFAULT NULL,
+  `unsuitability_participant` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `groups` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `address` varchar(255) default NULL,
-  `address_2` varchar(255) default NULL,
-  `city` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  `zip` varchar(255) default NULL,
-  `country` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `url` varchar(255) default NULL,
-  `dorm_id` int(11) default NULL,
-  `ministry_id` int(11) default NULL,
-  `campus_id` int(11) default NULL,
-  `start_time` int(11) default NULL,
-  `end_time` int(11) default NULL,
-  `day` int(11) default NULL,
-  `group_type_id` int(11) default NULL,
-  `needs_approval` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `address_2` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `dorm_id` int(11) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `start_time` int(11) DEFAULT NULL,
+  `end_time` int(11) DEFAULT NULL,
+  `day` int(11) DEFAULT NULL,
+  `group_type_id` int(11) DEFAULT NULL,
+  `needs_approval` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_groups_on_campus_id` (`campus_id`),
   KEY `index_groups_on_dorm_id` (`dorm_id`),
   KEY `index_groups_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=467 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `imports` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `parent_id` int(11) default NULL,
-  `size` int(11) default NULL,
-  `height` int(11) default NULL,
-  `width` int(11) default NULL,
-  `content_type` varchar(255) default NULL,
-  `filename` varchar(255) default NULL,
-  `thumbnail` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `size` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `content_type` varchar(255) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `involvement_histories` (
-  `id` int(11) NOT NULL auto_increment,
-  `type` varchar(255) default NULL,
-  `person_id` int(11) default NULL,
-  `start_date` date default NULL,
-  `end_date` date default NULL,
-  `campus_id` int(11) default NULL,
-  `school_year_id` int(11) default NULL,
-  `ministry_id` int(11) default NULL,
-  `ministry_role_id` int(11) default NULL,
-  `campus_involvement_id` int(11) default NULL,
-  `ministry_involvement_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `school_year_id` int(11) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `campus_involvement_id` int(11) DEFAULT NULL,
+  `ministry_involvement_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
-  `id` int(11) NOT NULL auto_increment,
-  `parent_id` int(11) default NULL,
-  `name` varchar(255) default NULL,
-  `address` varchar(255) default NULL,
-  `city` varchar(255) default NULL,
-  `state` varchar(255) default NULL,
-  `zip` varchar(255) default NULL,
-  `country` varchar(255) default NULL,
-  `phone` varchar(255) default NULL,
-  `fax` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `url` varchar(255) default NULL,
-  `created_at` date default NULL,
-  `updated_at` date default NULL,
-  `ministries_count` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `fax` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `ministries_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_ministries_on_parent_id` (`parent_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_campuses` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `campus_id` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `index_ministry_campuses_on_ministry_id_and_campus_id` (`ministry_id`,`campus_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_involvements` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `ministry_id` int(11) default NULL,
-  `start_date` date default NULL,
-  `end_date` date default NULL,
-  `admin` tinyint(1) default NULL,
-  `ministry_role_id` int(11) default NULL,
-  `responsible_person_id` int(11) default NULL,
-  `last_history_update_date` date default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `responsible_person_id` int(11) DEFAULT NULL,
+  `last_history_update_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8304 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8324 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
-  `id` int(11) NOT NULL auto_increment,
-  `permission_id` int(11) default NULL,
-  `ministry_role_id` int(11) default NULL,
-  `created_at` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `permission_id` int(11) DEFAULT NULL,
+  `ministry_role_id` int(11) DEFAULT NULL,
+  `created_at` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `name` varchar(255) default NULL,
-  `created_at` date default NULL,
-  `position` int(11) default NULL,
-  `description` varchar(255) default NULL,
-  `type` varchar(255) default NULL,
-  `involved` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `involved` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `people` (
-  `id` int(11) NOT NULL auto_increment,
-  `user_id` int(11) default NULL,
-  `first_name` varchar(255) default NULL,
-  `last_name` varchar(255) default NULL,
-  `middle_name` varchar(255) default NULL,
-  `preferred_name` varchar(255) default NULL,
-  `gender` varchar(255) default NULL,
-  `year_in_school` varchar(255) default NULL,
-  `level_of_school` varchar(255) default NULL,
-  `graduation_date` date default NULL,
-  `major` varchar(255) default NULL,
-  `minor` varchar(255) default NULL,
-  `birth_date` date default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `middle_name` varchar(255) DEFAULT NULL,
+  `preferred_name` varchar(255) DEFAULT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `year_in_school` varchar(255) DEFAULT NULL,
+  `level_of_school` varchar(255) DEFAULT NULL,
+  `graduation_date` date DEFAULT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `minor` varchar(255) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
   `bio` text,
-  `image` varchar(255) default NULL,
-  `created_at` date default NULL,
-  `updated_at` date default NULL,
-  `staff_notes` varchar(255) default NULL,
-  `updated_by` int(11) default NULL,
-  `created_by` int(11) default NULL,
-  `url` varchar(2000) default NULL,
-  `primary_campus_involvement_id` int(11) default NULL,
-  `mentor_id` int(11) default NULL,
-  PRIMARY KEY  (`id`),
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `staff_notes` varchar(255) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `url` varchar(2000) DEFAULT NULL,
+  `primary_campus_involvement_id` int(11) DEFAULT NULL,
+  `mentor_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `index_people_on_user_id` (`user_id`),
   KEY `index_people_on_first_name` (`first_name`),
   KEY `index_people_on_last_name_and_first_name` (`last_name`,`first_name`),
@@ -409,47 +430,47 @@ CREATE TABLE `people` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL auto_increment,
-  `description` varchar(1000) default NULL,
-  `controller` varchar(255) default NULL,
-  `action` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(1000) DEFAULT NULL,
+  `controller` varchar(255) DEFAULT NULL,
+  `action` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `major` varchar(255) default NULL,
-  `minor` varchar(255) default NULL,
-  `url` varchar(255) default NULL,
-  `staff_notes` varchar(255) default NULL,
-  `updated_at` varchar(255) default NULL,
-  `updated_by` varchar(255) default NULL,
-  `perm_start_date` date default NULL,
-  `perm_end_date` date default NULL,
-  `perm_dorm` varchar(255) default NULL,
-  `perm_room` varchar(255) default NULL,
-  `perm_alternate_phone` varchar(255) default NULL,
-  `curr_start_date` date default NULL,
-  `curr_end_date` date default NULL,
-  `curr_dorm` varchar(255) default NULL,
-  `curr_room` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `major` varchar(255) DEFAULT NULL,
+  `minor` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `staff_notes` varchar(255) DEFAULT NULL,
+  `updated_at` varchar(255) DEFAULT NULL,
+  `updated_by` varchar(255) DEFAULT NULL,
+  `perm_start_date` date DEFAULT NULL,
+  `perm_end_date` date DEFAULT NULL,
+  `perm_dorm` varchar(255) DEFAULT NULL,
+  `perm_room` varchar(255) DEFAULT NULL,
+  `perm_alternate_phone` varchar(255) DEFAULT NULL,
+  `curr_start_date` date DEFAULT NULL,
+  `curr_end_date` date DEFAULT NULL,
+  `curr_dorm` varchar(255) DEFAULT NULL,
+  `curr_room` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_person_extras_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1743 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1747 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `profile_pictures` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `parent_id` int(11) default NULL,
-  `size` int(11) default NULL,
-  `height` int(11) default NULL,
-  `width` int(11) default NULL,
-  `content_type` varchar(255) default NULL,
-  `filename` varchar(255) default NULL,
-  `thumbnail` varchar(255) default NULL,
-  `uploaded_date` date default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `size` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `content_type` varchar(255) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `uploaded_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `schema_migrations` (
@@ -458,184 +479,184 @@ CREATE TABLE `schema_migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `school_years` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `level` varchar(255) default NULL,
-  `position` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `level` varchar(255) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `searches` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
   `options` text,
   `query` text,
   `tables` text,
-  `saved` tinyint(1) default NULL,
-  `name` varchar(255) default NULL,
-  `order` varchar(255) default NULL,
-  `description` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5304 DEFAULT CHARSET=utf8;
+  `saved` tinyint(1) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `order` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5321 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(255) NOT NULL,
   `data` text,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=75329 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75405 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `created_at` date default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `created_at` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `index_staff_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `states` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `abbreviation` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `abbreviation` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stint_applications` (
-  `id` int(11) NOT NULL auto_increment,
-  `stint_location_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stint_location_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stint_locations` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `summer_project_applications` (
-  `id` int(11) NOT NULL auto_increment,
-  `summer_project_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `status` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `summer_project_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `summer_projects` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `timetables` (
-  `id` int(11) NOT NULL auto_increment,
-  `person_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3980 DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3988 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
-  `id` int(11) NOT NULL auto_increment,
-  `training_question_id` int(11) default NULL,
-  `person_id` int(11) default NULL,
-  `completed_at` date default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `approved_by` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `training_question_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `completed_at` date DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `approved_by` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_categories` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `position` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `ministry_id` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_question_activations` (
-  `id` int(11) NOT NULL auto_increment,
-  `ministry_id` int(11) default NULL,
-  `training_question_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `mandate` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ministry_id` int(11) DEFAULT NULL,
+  `training_question_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `mandate` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_questions` (
-  `id` int(11) NOT NULL auto_increment,
-  `activity` varchar(255) default NULL,
-  `ministry_id` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `training_category_id` int(11) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity` varchar(255) DEFAULT NULL,
+  `ministry_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `training_category_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL auto_increment,
-  `username` varchar(255) default NULL,
-  `password` varchar(255) default NULL,
-  `last_login` datetime default NULL,
-  `system_admin` tinyint(1) default NULL,
-  `remember_token` varchar(255) default NULL,
-  `remember_token_expires_at` datetime default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `guid` varchar(255) default NULL,
-  `email_validated` tinyint(1) default NULL,
-  `developer` tinyint(1) default NULL,
-  `facebook_hash` varchar(255) default NULL,
-  `facebook_username` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `system_admin` tinyint(1) DEFAULT NULL,
+  `remember_token` varchar(255) DEFAULT NULL,
+  `remember_token_expires_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `guid` varchar(255) DEFAULT NULL,
+  `email_validated` tinyint(1) DEFAULT NULL,
+  `developer` tinyint(1) DEFAULT NULL,
+  `facebook_hash` varchar(255) DEFAULT NULL,
+  `facebook_username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `index_users_on_guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `view_columns` (
-  `id` int(11) NOT NULL auto_increment,
-  `view_id` varchar(255) default NULL,
-  `column_id` varchar(255) default NULL,
-  `position` int(11) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `view_id` varchar(255) DEFAULT NULL,
+  `column_id` varchar(255) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `views` (
-  `id` int(11) NOT NULL auto_increment,
-  `title` varchar(255) default NULL,
-  `ministry_id` varchar(255) default NULL,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `default_view` tinyint(1) default NULL,
-  `select_clause` varchar(2000) default NULL,
-  `tables_clause` varchar(2000) default NULL,
-  PRIMARY KEY  (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `ministry_id` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `default_view` tinyint(1) DEFAULT NULL,
+  `select_clause` varchar(2000) DEFAULT NULL,
+  `tables_clause` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
@@ -778,6 +799,8 @@ INSERT INTO schema_migrations (version) VALUES ('20100303202104');
 
 INSERT INTO schema_migrations (version) VALUES ('20100407173131');
 
+INSERT INTO schema_migrations (version) VALUES ('20100421144336');
+
 INSERT INTO schema_migrations (version) VALUES ('20100429145346');
 
 INSERT INTO schema_migrations (version) VALUES ('20100505172935');
@@ -816,11 +839,21 @@ INSERT INTO schema_migrations (version) VALUES ('20100608205353');
 
 INSERT INTO schema_migrations (version) VALUES ('20100611162109');
 
-INSERT INTO schema_migrations (version) VALUES ('20100614171553');
-
 INSERT INTO schema_migrations (version) VALUES ('20100614175935');
 
 INSERT INTO schema_migrations (version) VALUES ('20100614182328');
+
+INSERT INTO schema_migrations (version) VALUES ('20100616160610');
+
+INSERT INTO schema_migrations (version) VALUES ('20100617184410');
+
+INSERT INTO schema_migrations (version) VALUES ('20100617184454');
+
+INSERT INTO schema_migrations (version) VALUES ('20100617191312');
+
+INSERT INTO schema_migrations (version) VALUES ('20100617225456');
+
+INSERT INTO schema_migrations (version) VALUES ('20100618143651');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

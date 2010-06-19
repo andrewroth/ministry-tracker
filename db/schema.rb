@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100614182328) do
+ActiveRecord::Schema.define(:version => 20100618143651) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -205,6 +205,25 @@ ActiveRecord::Schema.define(:version => 20100614182328) do
     t.integer  "sender_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "emergs", :force => true do |t|
+    t.integer "person_id"
+    t.string  "passport_num"
+    t.string  "passport_origin"
+    t.string  "passport_expiry"
+    t.text    "notes"
+    t.text    "meds"
+    t.string  "health_coverage_state"
+    t.string  "health_number"
+    t.string  "medical_plan_number"
+    t.string  "medical_plan_carrier"
+    t.string  "doctor_name"
+    t.string  "doctor_phone"
+    t.string  "dentist_name"
+    t.string  "dentist_phone"
+    t.string  "blood_type"
+    t.string  "blood_rh_factor"
   end
 
   create_table "free_times", :force => true do |t|
