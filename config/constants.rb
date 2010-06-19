@@ -454,7 +454,7 @@
           :label => "4. Integrated new believers",
           :collected => :monthly,
           :column_type => :sum,
-          :columns_sum => [],
+          :columns_sum => [{:report => :monthly_report, :line => :integrated_new_believers}],
           :order => 4
         },
         :people_in_growth_groups => {
