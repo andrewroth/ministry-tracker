@@ -10,6 +10,7 @@ class StatsController < ApplicationController
 
   DEFAULT_REPORT_TIME = 'semester'
   DEFAULT_SUMMARY = 'true'
+  REPORT_TYPE_C4C = 'c4c'
   DEFAULT_REPORT_TYPE = :c4c 
   SUMMARY = 'summary'
   STAFF_DRILL_DOWN = 'staff_drill_down'
@@ -374,7 +375,10 @@ end
 
     @stats_time = session[:stats_time]
     @report_type = session[:stats_report_type] 
-    @report_scope = session[:stats_report_scope] 
+    
+    #P2C and CCCI reports work only with summary view    
+    @report_scope = (@report_type == REPORT_TYPE_C4C) ? session[:stats_report_scope] : SUMMARY
+    
     @scope_radio_selected_id = report_scopes[:"#{@report_scope}"][:radio_id]
 
     @stats_summary = @report_scope == SUMMARY ? true : false
