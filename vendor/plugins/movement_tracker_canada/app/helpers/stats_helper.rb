@@ -37,7 +37,6 @@ module StatsHelper
   
   def get_hash_for_stats_ministry_selection_tree
     unless is_ministry_admin
-      debugger
       get_ministry.root.to_hash_with_only_the_children_person_is_involved_in(@me, authorized?("view_ministries_under", "stats")).to_json
     else
       get_ministry.root.to_hash_with_children(authorized?("view_ministries_under", "stats")).to_json

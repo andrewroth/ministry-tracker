@@ -1,3 +1,4 @@
+<% if radio[:show] %>
 <div id='stats<%= radio[:value].camelize %>RadioContainer' class='statsRadioButton'>
   <%= radio_button "report", "scope", radio[:value], {:checked => radio[:checked], :disabled => radio[:disabled], :title => radio[:title]}%>
   <%= label_tag "report_scope_#{radio[:value].downcase}", radio[:label], :disabled => radio[:disabled], :id => "report_scope_#{radio[:value].downcase}_label", :title => radio[:title] %>
@@ -7,3 +8,5 @@
                                                                                      :complete => "completeLoadingStatsTab()"%>
     
 </div>
+
+<% end %>

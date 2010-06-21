@@ -15,6 +15,7 @@ function selectReport() {
 function getWithStringForReportForm(time, ministry, scope, report_type) {
 
   if(scope == undefined || scope == null) {
+		scope = 'summary';
     var radios = jQuery(":input[name=report\\[scope\\]]");
     for(var i = 0; i < radios.length; i++) {
       if(radios[i].checked) { scope = radios[i].value }

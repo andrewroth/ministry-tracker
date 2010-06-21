@@ -15,7 +15,7 @@ class StatsController < ApplicationController
   SUMMARY = 'summary'
   STAFF_DRILL_DOWN = 'staff_drill_down'
   CAMPUS_DRILL_DOWN = 'campus_drill_down'
-  DEFAULT_REPORT_SCOPE = 'summary' 
+  DEFAULT_REPORT_SCOPE = SUMMARY 
 
 
   def index
@@ -385,7 +385,7 @@ end
 
     # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
-    @drillDownAccess = @me.has_permission_from_ministry_or_higher("campus_drill_down", "stats", @stats_ministry)
+    @drillDownAccess = @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
 
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
@@ -738,8 +738,20 @@ end
   #----------------------------------------------------------------------------------------
   # Stuff for Staff drill down
     
+  def staff_drill_down_hash(staff)
+    { :person_id => staff[:person_id], :name => "#{staff[:person_fname].capitalize} #{staff[:person_lname].capitalize}" }
+  end
+    
   def collect_staff_for_ministry(ministry)
-    ministry.staff.collect{|s| { :person_id => s[:person_id], :name => "#{s[:person_fname].capitalize} #{s[:person_lname].capitalize}"} }
+    staff_collection = []
+    if authorized?('view_other_staffs', 'stats')
+      staff_collection = ministry.staff.collect{|s| staff_drill_down_hash(s) }
+    else
+      if ministry.staff.include?(@me)
+        staff_collection = [staff_drill_down_hash(s)]
+      end
+    end
+    staff_collection
   end
     
   def get_staffs_persons_for_ministry(ministry)
@@ -808,6 +820,15 @@ end
    
   end
 
+  def show_scope_radio(scope)
+    case scope[:show]
+      when :yes
+        return true
+      when :if_more_than_one_campus
+        return !@oneCampusMinistry
+      end
+  end
+
   def get_initialized_scope_radio(key, scope)
     {
       :order => scope[:order],
@@ -815,7 +836,8 @@ end
       :disabled => false, 
       :value => key,
       :label => scope[:label], 
-      :title => scope[:title].gsub('[MINISTRY_NAME]', "#{@ministry_name}")
+      :title => scope[:title].gsub('[MINISTRY_NAME]', "#{@ministry_name}"),
+      :show => show_scope_radio(scope)
     }
   end
 
@@ -840,7 +862,8 @@ end
     
     if @hide_radios
       @stats_summary = true
-      session[:stats_summary] = DEFAULT_SUMMARY    
+      session[:stats_summary] = DEFAULT_SUMMARY  
+      @report_scope = SUMMARY
     end
   end
 
