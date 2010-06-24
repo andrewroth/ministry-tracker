@@ -1,6 +1,6 @@
 module PersonForm
   def setup_campuses
-    @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
+    @primary_campus_involvement ||= @person.primary_campus_involvement || CampusInvolvement.new
     # If the Country is set in config, don't filter by states but get campuses from the country
     if Cmt::CONFIG[:campus_scope_country] &&
       (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
