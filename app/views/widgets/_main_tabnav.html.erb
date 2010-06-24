@@ -11,8 +11,11 @@
 #   :generate_css => true|false #=> generates a default inline css for the tabnav, defaults to false
 #   :html => aHash #=> sets html options for the tabnav's div (es :html => {:class=> 'myCssClass', :id=>'myCssId'}) 
 #     
+return if @restrict_all_links
+
 render_tabnav :main, 
               :html => {:class => 'tablist', :id => 'tablist' } do 
+
   link = I18n.t :help_link, :default => ''
   if link.present?
     add_tab do |t|

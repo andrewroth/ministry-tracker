@@ -57,6 +57,22 @@
     		    </td>
     		</tr>
     		<%- end -%>
+        <tr>
+          <td>
+            <%= f.label :has_collection_groups %><%- tooltip do -%><p>Should groups automatically be created with the name determined from the collection groups name line?  This is usually set to true for bible study type groups, where you have people who don't know what group they should be in, but who want to get involved.</p><%- end -%>
+          </td>
+          <td>
+            <%= f.check_box :has_collection_groups %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :collection_group_name %><%- tooltip do -%><p>Use this to determine what all the collection groups will be called.  Use {{campus}} and {{group_type}} to substitute the campus and group type strings, respectively.</p><%- end -%>
+          </td>
+          <td>
+            <%= f.text_field :collection_group_name %>
+          </td>
+        </tr>
     	</table>
   	  </td>
   	</tr>
