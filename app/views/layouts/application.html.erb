@@ -35,7 +35,7 @@
 
 		<div id="wrapper">
       
-		  <% if logged_in? %>
+		  <% if logged_in? && @me %>
 		  <div id="userbar">
     		<% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
 	  	    <a href="#" class="logoutbutton" onclick="try {

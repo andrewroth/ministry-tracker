@@ -1,4 +1,5 @@
-<%- form_for @person do |f| -%>
+<%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
+  <%= f.error_messages %>
   <table>
   <tr>
     <td>First Name: </td>
