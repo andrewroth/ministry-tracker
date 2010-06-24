@@ -10,13 +10,14 @@ require 'person_methods'
 #Question: What is the use of primary_campus_id and its implications?
 #
 class PeopleController < ApplicationController
-  include PersonMethodsEmu
+  include PersonMethods
+  include PersonForm
+
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state]
-  skip_before_filter :authorization_filter, :only => free_actions
-  skip_before_filter :force_required_data, :only => free_actions
+  skip_before_filter :authorization_filter, :force_required_data, :login_required, :get_ministry, :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -578,19 +579,6 @@ class PeopleController < ApplicationController
     redirect_to @person
   end
   
-  def get_campuses_for_state
-    @campus_state = params[:primary_campus_state]
-    @campus_country = params[:primary_campus_country]
-    render :text => '' unless @campus_state
-    @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
-  end
-
-  def get_campus_states
-    @campus_country = params[:primary_campus_country]
-    render :text => '' unless @campus_country.present?
-    @campus_states = CmtGeo.states_for_country(@campus_country) || []
-  end
-
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
     @current_address_states = CmtGeo.states_for_country(params[:current_address_country]) || []
@@ -666,32 +654,7 @@ class PeopleController < ApplicationController
     def get_profile_person
       @person = Person.find(:first, :conditions => { Person._(:id) => params[:id] || session[:person_id]})
     end
-    
-    def setup_campuses
-      @primary_campus_involvement = @person.primary_campus_involvement || CampusInvolvement.new
-      # If the Country is set in config, don't filter by states but get campuses from the country
-      if Cmt::CONFIG[:campus_scope_country] && 
-        (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
-        @no_campus_scope = true
-        @campus_country = c
-        @campuses = CmtGeo.campuses_for_country(c.abbrev).sort{ |c1, c2| c1.name <=> c2.name }
-      else
-        if @person.try(:primary_campus).try(:state).present? && @person.primary_campus.try(:country).present?
-          @campus_state = @person.primary_campus.state
-          @campus_country = @person.primary_campus.country
-        elsif @person.current_address.try(:state).present? && @person.current_address.try(:country).present?
-          @campus_state = @person.current_address.state
-          @campus_country = @person.current_address.country
-        elsif @person.try(:permanent_address).try(:state).present? && @person.permanent_address.try(:country).present?
-          @campus_state = @person.permanent_address.state
-          @campus_country = @person.permanent_address.country
-        end
-        @campus_states = CmtGeo.states_for_country(@campus_country) || []
-        @campuses = CmtGeo.campuses_for_state(@campus_state, @campus_country) || []
-      end
-      @campus_countries = CmtGeo.all_countries
-    end
-    
+   
     def get_view
       view_id = session[:view_id]
       if view_id
