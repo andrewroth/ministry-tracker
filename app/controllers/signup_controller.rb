@@ -2,6 +2,7 @@ class SignupController < ApplicationController
   include PersonForm
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
   before_filter :set_is_staff_somewhere
+  before_filter :restrict_everything
 
   def index
     redirect_to :action => :step1_info
@@ -64,11 +65,19 @@ class SignupController < ApplicationController
     @groups = @campus.groups
     @group_types = GroupType.all
     @join = true
+    @campus.ensure_campus_ministry_groups_created
+    @collection_group = @campus.collection_groups.find :first, 
+      :conditions => [ "#{CampusMinistryGroup.__(:ministry_id)} = ?", Ministry.default_ministry ]
+    @groups.delete_if { |g| g == @collection_group }
   end
 
   protected
 
   def set_is_staff_somewhere
     @is_staff_somewhere = {}
+  end
+
+  def restrict_everything
+    @restrict_all_links = true
   end
 end

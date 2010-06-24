@@ -498,8 +498,7 @@ class PeopleController < ApplicationController
       if ministry_campus
         ministry = ministry_campus.ministry
       else
-        ministry = Ministry.find(:first, :conditions => { :name => Cmt::CONFIG[:default_ministry_name] })
-        ministry ||= Ministry.first
+        ministry = Ministry.default_ministry
         throw "add some ministries" unless ministry
       end
       @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)

@@ -10,8 +10,9 @@ class Ministry < ActiveRecord::Base
   has_many :involvement_questions, :dependent => :destroy
   has_many :training_categories, :class_name => "TrainingCategory", :foreign_key => _(:ministry_id, :training_category), :order => _(:position, :training_category), :dependent => :destroy
   has_many :training_questions, :order => "activity", :dependent => :destroy
+  has_many :campus_ministry_groups
+  has_many :campus_groups, :through => :campus_ministry_groups, :class_name => "Group", :source => :group
   after_create :create_first_view
-
 
   def all_training_categories
     @all_training_categories ||= Array.wrap(ancestors.collect(&:training_categories)).flatten.uniq
