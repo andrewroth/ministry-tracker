@@ -1,0 +1,1 @@
+page << render(:file => "people/get_campus_states.js.rjs")

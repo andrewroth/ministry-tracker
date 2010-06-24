@@ -127,6 +127,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :ministry_involvements
 
 
+  map.signup '/signup', :controller => 'signup', :action => :index
+
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:

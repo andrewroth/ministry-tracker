@@ -109,4 +109,8 @@ module ApplicationHelper
     end
   end
 
+  def init(k)
+    return false if local_assigns[k].nil?
+    return local_assigns[k]
+  end
 end
