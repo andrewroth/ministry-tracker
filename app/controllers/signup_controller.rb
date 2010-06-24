@@ -1,6 +1,7 @@
 class SignupController < ApplicationController
   include PersonForm
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
+  before_filter :set_is_staff_somewhere
 
   def index
     redirect_to :action => :step1_info
@@ -8,7 +9,6 @@ class SignupController < ApplicationController
 
   def step1_info
     @custom_userbar_title = "Signup"
-    @is_staff_somewhere = {}
     @person ||= get_person || Person.new
     setup_campuses
   end
@@ -51,8 +51,24 @@ class SignupController < ApplicationController
         ci.save!
       end
     end
+
+    session[:signup_person_id] = @person.id
+    session[:signup_campus_id] = @primary_campus_involvement.campus_id
+
+    redirect_to :action => :step1_group
   end
 
-  def step1_campus
+  def step1_group
+    @me = @my = @person = Person.find(session[:signup_person_id])
+    @campus = Campus.find session[:signup_campus_id]
+    @groups = @campus.groups
+    @group_types = GroupType.all
+    @join = true
+  end
+
+  protected
+
+  def set_is_staff_somewhere
+    @is_staff_somewhere = {}
   end
 end

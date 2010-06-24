@@ -47,7 +47,7 @@
 <br />
 
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
-<%- unless involvements.empty? -%>
+<%- unless @join || involvements.empty? -%>
   &nbsp &nbsp <b>Members:</b>  
   <%= 
       link = authorized?(:show, :people)

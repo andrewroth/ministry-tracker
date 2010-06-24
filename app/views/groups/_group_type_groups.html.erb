@@ -5,7 +5,7 @@
   <% unless gt_groups.empty? %>
     <%- gt_groups.each do |group| -%>
       <div id=<%= "group_#{group.id}" %> >
-        <%= render :partial => 'group', :locals => {:group => group} %>
+        <%= render :partial => 'groups/group', :locals => {:group => group} %>
       </div>
     <%- end -%> 
   <% else %>
