@@ -1,0 +1,13 @@
+<DIV><%= link_to_function "Join an existing group", "$(\"#groups_list\").slideDown();" %></DIV>
+
+<BR/>
+
+<DIV id="groups_list" style="display:none">
+  <%- @group_types.each do |gt| -%>
+    <%= render :partial => "groups/group_type_groups", :locals => { :gt => gt } %>
+  <%- end -%>
+</DIV>
+
+<BR/>
+
+<DIV>Just put me in an existing group</DIV>
