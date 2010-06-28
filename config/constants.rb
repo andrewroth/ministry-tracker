@@ -67,17 +67,23 @@
       :summary => {
                     :order => 1, 
                     :label => "Summary", 
-                    :title => "See a summary of all the campuses under [MINISTRY_NAME]"
+                    :title => "See a summary of all the campuses under [MINISTRY_NAME]",
+                    :radio_id => "report_scope_summary",
+                    :show => :yes
       },
       :campus_drill_down => {
                     :order => 2,
                     :label => "Campus drill-down", 
-                    :title => "See individual campuses under [MINISTRY_NAME]"
+                    :title => "See individual campuses under [MINISTRY_NAME]",
+                    :radio_id => "report_scope_campus_drill_down",
+                    :show => :if_more_than_one_campus
       },
       :staff_drill_down => {
                     :order => 3,
                     :label => "Staff drill-down", 
-                    :title => "See individual staff members under [MINISTRY_NAME]"
+                    :title => "See individual staff members under [MINISTRY_NAME]",
+                    :radio_id => "report_scope_staff_drill_down",
+                    :show => :yes
       }
     }
   end
@@ -451,7 +457,7 @@
           :label => "4. Integrated new believers",
           :collected => :monthly,
           :column_type => :sum,
-          :columns_sum => [],
+          :columns_sum => [{:report => :monthly_report, :line => :integrated_new_believers}],
           :order => 4
         },
         :people_in_growth_groups => {

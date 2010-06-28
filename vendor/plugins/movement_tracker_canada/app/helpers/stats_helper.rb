@@ -1,6 +1,11 @@
 module StatsHelper
   unloadable
 
+  def campus_link_to_remote(campus)
+    ministry_id = "#{@stats_ministry.id}_#{campus.id}"
+    link_to_remote(campus.campus_shortDesc, :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, '#{ministry_id}', 'summary')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
+  end
+
   def time_tab_link_to_remote(time)
     link_to_remote(time.capitalize, :url => {:action => "select_report"}, :with => "getWithStringForReportForm('#{time.downcase}')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
   end
@@ -34,8 +39,15 @@ module StatsHelper
     unless is_ministry_admin
       get_ministry.root.to_hash_with_only_the_children_person_is_involved_in(@me, authorized?("view_ministries_under", "stats")).to_json
     else
-      get_ministry.root.to_hash_with_children.to_json
+      get_ministry.root.to_hash_with_children(authorized?("view_ministries_under", "stats")).to_json
     end
+  end
+
+  def give_percentage(dividend, divisor)
+    result = 0
+    result = dividend.to_f / divisor.to_f unless divisor.nil? || divisor == 0 || dividend.nil?
+    result = (result * 10000.0).round / 100.0
+    "#{result}%"
   end
 
   def evaluate_stat_for_period(period_model, campus_ids, stat_hash, staff_id = nil)
@@ -52,8 +64,7 @@ module StatsHelper
       dividend = evaluate_stat_for_period(period_model, campus_ids, dividend_stat, staff_id)
       divisor = evaluate_stat_for_period(period_model, campus_ids, divisor_stat, staff_id)
 
-      evaluation = dividend.to_f / divisor.to_f unless divisor.nil? || divisor == 0 || dividend.nil?
-      evaluation = (evaluation * 100.0).round / 100.0 
+      evaluation = give_percentage(dividend, divisor)
     end
     evaluation
   end
@@ -79,8 +90,26 @@ module StatsHelper
     accepted_collections.include?(stat_hash[:collected])
   end
 
+  def evaluate_special_total(period_model_array, campus_ids, stat_hash)
+    special_total = nil
+    if stat_hash[:column_type] == :division
+      dividend_stat = stats_reports[stat_hash[:dividend][:report]][stat_hash[:dividend][:line]]
+      divisor_stat = stats_reports[stat_hash[:divisor][:report]][stat_hash[:divisor][:line]]
+      
+      dividend = 0
+      divisor = 0
+      period_model_array.each do |pm| 
+        dividend += evaluate_stat_for_period(pm, campus_ids, dividend_stat) 
+        divisor += evaluate_stat_for_period(pm, campus_ids, divisor_stat) 
+      end
+      special_total = give_percentage(dividend, divisor)
+    end
+    special_total
+  end
+
   def show_stat_hash_line(period_model_array, campus_ids, stat_hash)
     result = ""
+
     if stat_hash[:column_type] == :blank_line
       result = render(:partial => 'stats/blank_line')
     elsif line_should_show(period_model_array, stat_hash)
@@ -88,8 +117,9 @@ module StatsHelper
                       :locals => {
                           :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
                           :title => stat_hash[:label], 
-                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash) } 
-                      })
+                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash)},
+                          :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash)} 
+                      )
     end
     result
   end

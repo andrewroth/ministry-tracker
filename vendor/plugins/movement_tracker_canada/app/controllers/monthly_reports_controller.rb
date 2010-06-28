@@ -32,7 +32,7 @@ class MonthlyReportsController < ApplicationController
     @monthly_report.month_id = month_id
     @monthly_report.campus_id = campus_id
     
-    @months = Month.find(:all, :conditions => "month_number <= #{ Time.now.month } AND month_calendaryear <= #{ Time.now.year }", :order => "month_calendaryear, month_number")
+    @months = Month.find(:all, :conditions => "(month_number <= #{ Time.now.month } AND month_calendaryear = #{ Time.now.year }) OR month_calendaryear <= #{ Time.now.year }", :order => "month_calendaryear, month_number")
 
     @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("monthly_reports", "new"))
 

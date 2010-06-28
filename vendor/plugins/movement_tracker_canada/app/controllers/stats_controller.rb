@@ -10,11 +10,12 @@ class StatsController < ApplicationController
 
   DEFAULT_REPORT_TIME = 'semester'
   DEFAULT_SUMMARY = 'true'
+  REPORT_TYPE_C4C = 'c4c'
   DEFAULT_REPORT_TYPE = :c4c 
   SUMMARY = 'summary'
   STAFF_DRILL_DOWN = 'staff_drill_down'
   CAMPUS_DRILL_DOWN = 'campus_drill_down'
-  DEFAULT_REPORT_SCOPE = 'summary' 
+  DEFAULT_REPORT_SCOPE = SUMMARY 
 
 
   def index
@@ -62,7 +63,7 @@ class StatsController < ApplicationController
   end
 
   def select_report
-    session[:stats_ministry_id] = Ministry.find(params['ministry']).id
+    session[:stats_ministry_id] = params['ministry'] if params['ministry'].present?
     session[:stats_time] = params['time']
     session[:stats_report_type] = params['report_type'] if params['report_type'].present?
     session[:stats_report_scope] = params['report_scope'] if params['report_scope'].present?
@@ -126,7 +127,7 @@ class StatsController < ApplicationController
       
       @semester_id = Semester.find_semester_id(params[:report]['semester'])
 
-      @campuses = @stats_ministry_selected.unique_campuses.sort { |x, y| x.campus_desc <=> y.campus_desc }
+      setup_campus_ids
       
       flash[:notice] = @campuses.size == 0 ? "Sorry, no stats were found for your selection!" : nil
     end
@@ -358,28 +359,41 @@ end
 
 
   def setup_stats_report_from_session
-
-    @stats_ministry_id =  session[:stats_ministry_id].to_i
+    
+    ministry_campus_id = session[:stats_ministry_id].to_s.split('_')
+    @stats_ministry_id =  ministry_campus_id[0].to_i
     @stats_ministry = Ministry.find(@stats_ministry_id)
+    if ministry_campus_id.length > 1 
+      @campus_ids = [ministry_campus_id[1].to_i]
+      @ministry_name = Campus.find(ministry_campus_id[1].to_i).campus_desc
+    else
+      @ministry_name = @stats_ministry.name
+    end
     # make sure they have access to the ministry that was selected
-    @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me) || is_ministry_admin
+    # ---- for now we will just make sure that they can only select ministries they have access to
+    # @stats_ministry = get_ministry.root unless @stats_ministry.person_involved_at_or_under(@me) || is_ministry_admin
 
     @stats_time = session[:stats_time]
     @report_type = session[:stats_report_type] 
-    @report_scope = session[:stats_report_scope] 
+    
+    #P2C and CCCI reports work only with summary view    
+    @report_scope = (@report_type == REPORT_TYPE_C4C) ? session[:stats_report_scope] : SUMMARY
+    
+    @scope_radio_selected_id = report_scopes[:"#{@report_scope}"][:radio_id]
 
     @stats_summary = @report_scope == SUMMARY ? true : false
 
     # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
-    @drillDownAccess = @me.has_permission_from_ministry_or_higher("campus_drill_down", "stats", @stats_ministry)
+    @drillDownAccess = @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
 
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
     setup_reports_to_show
     
     @show_additional_report_links = (authorized?("how_people_came_to_christ", "stats")) ? true : false
-
+    @show_ministries_under = authorized?("view_ministries_under", "stats")
+ 
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
   end
@@ -391,9 +405,7 @@ end
 
     @semester_highlights_permission = authorized?(:semester_highlights, :stats, @stats_ministry)
     @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
-    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
-
-    #@campuses_selected = @stats_ministry.unique_campuses
+    setup_campus_ids
 
     session[:stats_year] = params[:year] if params[:year].present?
     session[:stats_year] = current_year_id unless session[:stats_year].present?
@@ -404,7 +416,7 @@ end
     @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id])
 
     @period_model = year.semesters
-    @report_description = "Summary of #{@stats_ministry.name} during #{Year.find(@year_id).description}"
+    @report_description = "Summary of #{@ministry_name} during #{Year.find(@year_id).description}"
     @results_partial = "summary_by_year"
     @tab_select_partial = "select_year"
   end
@@ -428,7 +440,7 @@ end
     @semester_id = session[:stats_semester]
     semester = Semester.find(@semester_id)
 
-    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+    setup_campus_ids    
     @monthly_report_permission = authorized?(:monthly_report, :stats, @stats_ministry)
     @period_model = @months = semester.months
 
@@ -436,7 +448,7 @@ end
     cur_semester_id = Month.find_semester_id(@cur_month)
     @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
 
-    @report_description = "Summary of #{@stats_ministry.name} during #{semester.description}"
+    @report_description = "Summary of #{@ministry_name} during #{semester.description}"
     @results_partial = "summary_by_semester"
     @tab_select_partial = "select_semester"
   end
@@ -451,12 +463,12 @@ end
     cur_month = Month.find(session[:stats_month])
 
     @period_model = @weeks = cur_month.weeks
-    @campus_ids = @stats_ministry.unique_campuses.collect { |c| c.id }    
+    setup_campus_ids    
 
     @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", cur_month_id])
     @month_id = cur_month.id
     
-    @report_description = "Summary of #{@stats_ministry.name} during #{cur_month.description}"
+    @report_description = "Summary of #{@ministry_name} during #{cur_month.description}"
     @results_partial = "summary_by_month"
     @tab_select_partial = "select_month"
   end
@@ -481,13 +493,13 @@ end
       last_end_date = year.months.last.weeks.all(:order => "week_endDate asc").last.end_date
     end
 
-    @campuses = @stats_ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    setup_campus_ids
     @campus_stats = get_campus_stats_hash_for_date_range(first_end_date, last_end_date, @campuses)
     @campus_prcs = get_campus_prcs_hash_for_date_range(first_end_date, last_end_date, @campuses)
 
     @years = Year.all(:conditions => ["#{_(:id, :year)} <= ?",current_year_id]).select{|y| y.months.any? && y.months.first.weeks.any?}
 
-    @report_description = "Campuses under #{@stats_ministry.name} during #{year.description}"
+    @report_description = "Campuses under #{@ministry_name} during #{year.description}"
     @results_partial = "campuses_by_week_range"
     @tab_select_partial = "select_year"
   end
@@ -506,7 +518,7 @@ end
     first_end_date = semester.weeks.all(:order => "week_endDate asc").first.end_date
     last_end_date =  semester.weeks.all(:order => "week_endDate asc").last.end_date
 
-    @campuses = @stats_ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    setup_campus_ids
     @campus_stats = get_campus_stats_hash_for_date_range(first_end_date, last_end_date, @campuses)
     @campus_prcs = get_campus_prcs_hash_for_date_range(first_end_date, last_end_date, @campuses)
 
@@ -514,7 +526,7 @@ end
     cur_semester_id = Month.find_semester_id(@cur_month)
     @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",cur_semester_id])
 
-    @report_description = "Campuses under #{@stats_ministry.name} during #{semester.description}"
+    @report_description = "Campuses under #{@ministry_name} during #{semester.description}"
     @results_partial = "campuses_by_week_range"
     @tab_select_partial = "select_semester"
   end
@@ -533,7 +545,7 @@ end
     first_week_end_date = month.weeks.all(:order => "week_endDate asc").first.end_date
     last_week_end_date =  month.weeks.all(:order => "week_endDate asc").last.end_date
 
-    @campuses = @stats_ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    setup_campus_ids
     @campus_stats = get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
     @campus_prcs = get_campus_prcs_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
 
@@ -541,7 +553,7 @@ end
     @weeks = Week.find_weeks_in_month(@month_id)
     @months = Month.find(:all, :conditions => ["#{_(:id, :month)} <= ?", @cur_month_id])
 
-    @report_description = "Campuses under #{@stats_ministry.name} during #{month.description}"
+    @report_description = "Campuses under #{@ministry_name} during #{month.description}"
     @results_partial = "campuses_by_week_range"
     @tab_select_partial = "select_month"
   end
@@ -559,14 +571,14 @@ end
     first_week_end_date = week.end_date
     last_week_end_date =  week.end_date
 
-    @campuses = @stats_ministry.unique_campuses.sort{ |c1, c2| c1.name <=> c2.name }
+    setup_campus_ids
     @campus_stats = get_campus_stats_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
     @campus_prcs = get_campus_prcs_hash_for_date_range(first_week_end_date, last_week_end_date, @campuses)
 
 
     @weeks = Week.all(:conditions => ["#{_(:end_date, :week)} <= ?", cur_week.end_date], :order => :week_endDate)
 
-    @report_description = "Campuses under #{@stats_ministry.name} during the week ending on #{week.end_date}"
+    @report_description = "Campuses under #{@ministry_name} during the week ending on #{week.end_date}"
     @results_partial = "campuses_by_week_range"
     @tab_select_partial = "select_week"
   end
@@ -705,28 +717,41 @@ end
   def setup_report_description
      case @stats_time
       when 'year'
-        @report_description = "Staff drill down of #{@stats_ministry.name} during #{get_current_stats_period.description}"
+        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
           
       when 'semester'
-        @report_description = "Staff drill down of #{@stats_ministry.name} during #{get_current_stats_period.description}"
+        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
 
       when 'month'
-        @report_description = "Staff drill down of #{@stats_ministry.name} during #{get_current_stats_period.description}"
+        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
 
       when 'week'
-        @report_description = "Staff drill down of #{@stats_ministry.name} during the week ending on #{get_current_stats_period.end_date}"
+        @report_description = "Staff drill down of #{@ministry_name} during the week ending on #{get_current_stats_period.end_date}"
         
     end   
   end
 
   def setup_campus_ids
     @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }    
+    @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN
   end
   #----------------------------------------------------------------------------------------
   # Stuff for Staff drill down
     
+  def staff_drill_down_hash(staff)
+    { :person_id => staff[:person_id], :name => "#{staff[:person_fname].capitalize} #{staff[:person_lname].capitalize}" }
+  end
+    
   def collect_staff_for_ministry(ministry)
-    ministry.staff.collect{|s| { :person_id => s[:person_id], :name => "#{s[:person_fname].capitalize} #{s[:person_lname].capitalize}"} }
+    staff_collection = []
+    if authorized?('view_other_staffs', 'stats')
+      staff_collection = ministry.staff.collect{|s| staff_drill_down_hash(s) }
+    else
+      if ministry.staff.include?(@me)
+        staff_collection = [staff_drill_down_hash(s)]
+      end
+    end
+    staff_collection
   end
     
   def get_staffs_persons_for_ministry(ministry)
@@ -795,6 +820,15 @@ end
    
   end
 
+  def show_scope_radio(scope)
+    case scope[:show]
+      when :yes
+        return true
+      when :if_more_than_one_campus
+        return !@oneCampusMinistry
+      end
+  end
+
   def get_initialized_scope_radio(key, scope)
     {
       :order => scope[:order],
@@ -802,7 +836,8 @@ end
       :disabled => false, 
       :value => key,
       :label => scope[:label], 
-      :title => scope[:title].gsub('[MINISTRY_NAME]', "#{@stats_ministry.name}")
+      :title => scope[:title].gsub('[MINISTRY_NAME]', "#{@ministry_name}"),
+      :show => show_scope_radio(scope)
     }
   end
 
@@ -827,7 +862,8 @@ end
     
     if @hide_radios
       @stats_summary = true
-      session[:stats_summary] = DEFAULT_SUMMARY    
+      session[:stats_summary] = DEFAULT_SUMMARY  
+      @report_scope = SUMMARY
     end
   end
 

@@ -7,7 +7,7 @@ end
 
 
 # update selected radio button in case server changes @stats_summary value
-#page["report_summary_summary"].attr("checked", @stats_summary)
+page[@scope_radio_selected_id].attr("checked", true)
 
 # hide the time tab links accordingly
 @time_tabs.each do |t|
