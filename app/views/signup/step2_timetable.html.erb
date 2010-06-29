@@ -62,9 +62,7 @@
 </script>
 
 <%- if @can_edit -%>
-  <%- form_for [@person, @timetable], 
-    :url => (@signup ? update_signup_person_timetable_url(@person, @timetable) : person_timetable_url(@person, @timetable)),
-    :html => {:onsubmit => "set_times_field()"} do |f| -%>
+  <%- form_for [@person, @timetable], :html => {:onsubmit => "set_times_field()"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%= f.submit 'Save Timetable' %>
   <%- end -%><br/>
@@ -82,7 +80,7 @@
 
   <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
 
-  <%= render :partial => 'timetable' %>
+  <%= render :partial => 'timetables/timetable' %>
 <%- else -%>
   Nothing to see here. Please move on.
 <%- end -%>
