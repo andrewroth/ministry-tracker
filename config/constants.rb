@@ -331,7 +331,7 @@
           }
       },
       :weekly_p2c_special => {
-          :commit_filled_hs => {:column => :weeklyreport_p2c_numCommitFilledHS, 
+          :commit_filled_hs => {:column => :weeklyReport_p2c_numCommitFilledHS, 
             :label => "Number of commitments to be filled with Holy Spirit or Lordship commitments",
             :collected => :weekly,
             :column_type => :database_column,
