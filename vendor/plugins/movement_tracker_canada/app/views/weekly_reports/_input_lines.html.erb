@@ -3,7 +3,18 @@
       <%= f.hidden_field :week_id %>
       <%= f.hidden_field :campus_id %>
  <%
-lines = stats_reports[:weekly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+lines = stats_reports[:weekly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
+lines.each do | key, input_stat |
+  if input_stat[:column_type] == :database_column
+%>
+      <p class="statsFormField">
+        <%= f.label input_stat[:column], input_stat[:label] %>
+        <%= f.text_field input_stat[:column], :size => 4 %>
+      </p>
+<%
+  end
+end
+lines = stats_reports[:weekly_p2c_special].sort { |a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
 lines.each do | key, input_stat |
   if input_stat[:column_type] == :database_column
 %>

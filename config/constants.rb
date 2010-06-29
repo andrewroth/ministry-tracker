@@ -329,9 +329,17 @@
             :divisor => {:report => :monthly_report, :line => :students_dg},
             :order => 11
           }
+      },
+      :weekly_p2c_special => {
+          :commit_filled_hs => {:column => :weeklyreport_p2c_numCommitFilledHS, 
+            :label => "Number of commitments to be filled with Holy Spirit or Lordship commitments",
+            :collected => :weekly,
+            :column_type => :database_column,
+            :order => 1
+          }
       }, 
         :monthly_p2c_special => {
-          :evang_studies => {:column => :montlyreport_p2c_numInEvangStudies, 
+          :evang_studies => {:column => :montlyReport_p2c_numInEvangStudies, 
             :label => "Number of people in evangelistic studies",
             :collected => :monthly,
             :column_type => :database_column,
@@ -360,12 +368,6 @@
             :collected => :monthly,
             :column_type => :database_column,
             :order => 5
-          }, 
-          :commit_filled_hs => {:column => :montlyreport_p2c_numCommitFilledHS, 
-            :label => "Number of commitments to be filled with Holy Spirit or Lordship commitments",
-            :collected => :monthly,
-            :column_type => :database_column,
-            :order => 6
           }
       }, 
       :ccci_report => {
@@ -469,9 +471,9 @@
         },
         :commit_filled_hs => {
           :label => "6. Number of commitments to be filled with Holy Spirit or Lordship commitments",
-          :collected => :monthly,
+          :collected => :weekly,
           :column_type => :sum,
-          :columns_sum => [{:report => :monthly_p2c_special, :line => :commit_filled_hs}],
+          :columns_sum => [{:report => :weekly_p2c_special, :line => :commit_filled_hs}],
           :order => 6
         },
         :sharing_in => {
