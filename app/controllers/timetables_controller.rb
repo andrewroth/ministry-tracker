@@ -29,6 +29,8 @@ class TimetablesController < ApplicationController
   end
 
   def edit_signup
+    flash[:notice] = "Enter your timetable here.  This step is optional - if you don't have your tiemtable, you can fill out your timetable at a later time.  Just hit \"Save Timetable\" and an email will be sent with a link back ot this page for you to update."
+    @custom_userbar_title = "Signup"
     render :action => "edit"
   end
 
