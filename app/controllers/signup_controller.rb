@@ -3,13 +3,13 @@ class SignupController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
+  before_filter :set_custom_userbar_title
 
   def index
     redirect_to :action => :step1_info
   end
 
   def step1_info
-    @custom_userbar_title = "Signup"
     @person ||= get_person || Person.new
     setup_campuses
   end
@@ -84,6 +84,7 @@ class SignupController < ApplicationController
       return
     end
 
+    @ministry = Ministry.default_ministry
     @me = @my = @person = Person.find(session[:signup_person_id])
     @campus = Campus.find session[:signup_campus_id]
     @groups = @campus.groups
@@ -136,6 +137,7 @@ class SignupController < ApplicationController
   end
 
   def step2_timetable_submit
+    flash[:notice] = nil
     @signup = true
     params[:person_id] = session[:signup_person_id]
     @me = @my = @person = Person.find(session[:signup_person_id])
@@ -157,5 +159,9 @@ class SignupController < ApplicationController
 
   def restrict_everything
     @restrict_all_links = true
+  end
+
+  def set_custom_userbar_title
+    @custom_userbar_title = "Signup"
   end
 end
