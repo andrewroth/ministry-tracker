@@ -147,7 +147,8 @@ ActionController::Routing::Routes.draw do |map|
   # -- just remember to delete public/index.html.
   map.cas_proxy_callback 'cas_proxy_callback/:action', :controller => 'cas_proxy_callback'
   
-  map.connect '', :controller => "dashboard"
+  # root to dashboard
+  map.dashboard '', :controller => "dashboard"
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id.:format'
