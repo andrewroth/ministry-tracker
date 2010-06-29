@@ -156,8 +156,10 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state             => :any,
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
-                                          :perform_task => :post},
-                         :has_many => [:timetables] do |person|
+                                          #:perform_task => :post},
+                                          :perform_task => :post} do |person|
+                         #:has_many => [:timetables] do |person|
+    person.resources :timetables, :member => { :update_signup => :put }
     person.resources :campus_involvements
     person.resources :ministry_involvements
     person.resources :involvement
@@ -169,6 +171,10 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :ministry_involvements
 
+
+  map.signup '/signup', :controller => 'signup', :action => :index
+  map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
+  map.signup_timetable '/signup/step2_timetable', :controller => 'timetables', :action => "edit_signup"
 
   # The priority is based upon order of creation: first created -> highest priority.
   

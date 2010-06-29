@@ -4,8 +4,10 @@
 
 class GroupInvolvementsController < ApplicationController
   before_filter :set_group_involvement_and_group, :only => [ :accept_request, :decline_request, 
-    :decline_request, :transfer, :change_level, :destroy, :joingroup ]
+    :decline_request, :transfer, :change_level, :destroy, :joingroup, :joingroup_signup ]
   before_filter :ensure_request_matches_group, :only => [ :accept_request, :decline_request ]
+  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, 
+    :force_required_data, :set_initial_campus, :only => [ :joingroup_signup ]
 
   def create
     get_person_campus_groups
@@ -16,6 +18,13 @@ class GroupInvolvementsController < ApplicationController
     @level = @gi.level
   end
   
+  def joingroup_signup
+    params[:person_id] = session[:signup_person_id]
+    @me = @my = @person = Person.find(session[:signup_person_id])
+    joingroup
+    render :action => :joingroup
+  end
+
   def joingroup
     unless %w(member interested).include?(params[:level])
       flash[:notice] = 'invalid level'

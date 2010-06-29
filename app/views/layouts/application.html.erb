@@ -35,7 +35,7 @@
 
 		<div id="wrapper">
       
-		  <% if logged_in? %>
+		  <% if logged_in? && @me && !@custom_userbar_title%>
 		  <div id="userbar">
     		<% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
 	  	    <a href="#" class="logoutbutton" onclick="try {
@@ -64,7 +64,7 @@
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-          <div id="username"><%= link_to I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller) %></div>
+          <div id="username"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>

@@ -1,0 +1,32 @@
+<%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
+  <%= f.error_messages %>
+  <table>
+  <tr>
+    <td>First Name: </td>
+    <td><%= f.text_field :first_name %></td>
+  </tr>
+  <tr>
+    <td>Last Name: </td>
+    <td><%= f.text_field :last_name %></td>
+  </tr>
+  <tr>
+    <td>Email </td>
+    <td><%= f.text_field :email %></td>
+  </tr>
+  <tr>
+    <td>Gender: </td>
+    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => "" %></td>
+  </tr>
+  <tr>
+    <td>Phone: </td>
+    <td><%= f.text_field :local_phone %></td>
+  </tr>
+  <%= render :partial => 'people/primary_campus_involvement', :locals => { 
+       :hide_grad_date => true, :hide_major => true, :hide_minor => true,
+       :no_table => true
+      }
+    %>
+  </table>
+
+  <%= submit_tag "Next" %>  
+<%- end -%>

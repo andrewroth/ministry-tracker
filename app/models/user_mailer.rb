@@ -16,6 +16,14 @@ class UserMailer < ActionMailer::Base
     @sent_on     = Time.now
     @body[:code] = User.secure_digest(email)
   end
+
+  def signup_confirm_email(email, link)
+    @recipients  = "#{email}"
+    from         = Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email verification"
+    @sent_on     = Time.now
+    @body[:link] = link
+  end
   # 
   # def created_staff(person, ministry, added_by, password = nil)
   #   created(person, ministry, added_by, password)

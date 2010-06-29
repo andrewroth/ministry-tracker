@@ -1,0 +1,20 @@
+<DIV><P>Would you like to...</P></DIV>
+
+<BR/>
+
+<DIV><%= link_to_function "Join an existing group", "$(\"#groups_list\").slideDown();" %></DIV>
+
+<BR/>
+
+<DIV id="groups_list" style="display:none">
+  <div id="customizebody" class="accordion">
+    <%- @group_types.each do |gt| -%>
+      <%= render :partial => "groups/group_type_groups", :locals => { :gt => gt } %>
+    <%- end -%>
+    <%= link_to "Done", :action => "step2_timetable" %>
+  </div>
+</DIV>
+
+<BR/>
+
+<DIV><%= link_to "Just put me in a group", :action => "step1_default_group" %></DIV>
