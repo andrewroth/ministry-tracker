@@ -25,7 +25,7 @@
 <%- else -%>
   <%- if @join -%>
     <%= link_to_remote 'Join', 
-      :url => { :action => 'joingroup', :controller => 'group_involvements', 
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
         :person_id => @person.id,
         :group_id => group.id,
         :level => 'member'
@@ -34,7 +34,7 @@
     %>
     or
     <%= link_to_remote 'Interested', 
-      :url => { :action => 'joingroup', :controller => 'group_involvements', 
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
         :person_id => @person.id,
         :group_id => group.id,

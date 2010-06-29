@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
-  #protected
+  protected
     def fake_login
       self.current_user = User.find(Person.find(50195).user_id)
     end
@@ -417,5 +417,13 @@ class ApplicationController < ActionController::Base
         return false
       end
       true
+    end
+
+    def base_url
+      if request.port != 80
+        request.protocol + request.host_with_port
+      else
+        request.protocol + request.host
+      end
     end
 end
