@@ -1,3 +1,3 @@
-<P>You're done!  You will receive further information once groups are set up.  Hit the finished button to go back to the Sign In page.</P
+<P>You're done!  You will receive further information once groups are set up.  Hit the finished button to <% unless logged_in? %>go back to the Sign In page.<% else %>go back to the dashboard.<% end %></P
 
 <%= link_to "Finished", :controller => :signup, :action => :finished %>
