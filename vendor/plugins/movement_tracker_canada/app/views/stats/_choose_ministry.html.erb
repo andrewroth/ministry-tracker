@@ -2,10 +2,10 @@
 
 <div id='stats_chosen_ministry'>
   Ministry Team:
-  <%= link_to_function @stats_ministry.name, "", :id => 'stats_choose_ministry_link' %>
+  <%= link_to_function @name_for_treeview, "", :id => 'stats_choose_ministry_link' %>
 </div>
 
-<%= hidden_field_tag 'report[ministry]', @stats_ministry_id %>
+<%= hidden_field_tag 'report[ministry]', @id_for_treeview %>
 <div id='stats_choose_ministry_tree_<%=uid%>' class='stats_choose_ministry_tree' style='display:none'></div>
 <script>
   Ext.onReady(function(){
