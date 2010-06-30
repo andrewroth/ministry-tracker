@@ -14,13 +14,13 @@ class Campus < ActiveRecord::Base
     ministries.each do | ministry|
       ministry.group_types.each do |gt|
         if gt.has_collection_groups
-          find_or_create_ministry_group(gt, ministry)
+          find_or_create_ministry_group(gt)
         end
       end
     end
   end
 
-  def find_or_create_ministry_group(gt, ministry = Ministry.default_ministry)
+  def find_or_create_ministry_group(gt, ministry = derive_ministry)
     raise "Group type does not have collection groups" unless gt.has_collection_groups
     cmg = campus_ministry_groups.find_by_ministry_id(ministry, :joins => :group,
       :conditions => [ "group_type_id = ?", gt.id ] )
@@ -29,6 +29,7 @@ class Campus < ActiveRecord::Base
     else
       group = gt.groups.new :campus_id => self.id, :ministry_id => ministry.id
     end
+    group.ministry = derive_ministry
     group.derive_name
     group.save!
 
