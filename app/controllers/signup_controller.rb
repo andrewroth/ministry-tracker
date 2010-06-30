@@ -149,7 +149,7 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
-    UserMailer.deliver_signup_confirm_email(@person.email, link)
+    UserMailer.deliver_signup_finished_email(@person.email, link)
   end
 
   def finished
