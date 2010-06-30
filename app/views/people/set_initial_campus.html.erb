@@ -3,6 +3,6 @@
   <div id='errors'>
     <%= error_messages_for 'campus_involvement' %>
   </div>
-  <%= render :partial => 'primary_campus_involvement' %>
+  <%= render :partial => 'primary_campus_involvement', :locals => { :hide_campus => false } %>
   <%= submit_tag 'Save' %>
 <% end %>

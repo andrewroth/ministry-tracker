@@ -18,10 +18,6 @@ class SignupController < ApplicationController
     session[:signup_campus_id] = nil
     session[:needs_verification] = nil
 
-    if logged_in?
-      flash[:notice] = "Please note that you’re currently logged in as #{@person.full_name}.  This form will update your personal information.  If you want to sign up for a new account, <A HREF=\"/logout\">log out</A> first and click the signup link on the front page.  <A HREF=\"/logout\">Click here</A> to log out."
-    end
-
     setup_campuses
   end
 
