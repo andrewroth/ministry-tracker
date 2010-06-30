@@ -20,7 +20,7 @@ class UserMailer < ActionMailer::Base
   def signup_finished_email(email, link)
     @recipients  = "#{email}"
     from         = Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email verification"
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
     @sent_on     = Time.now
     @body[:link] = link
   end
