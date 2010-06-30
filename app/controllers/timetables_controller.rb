@@ -9,7 +9,8 @@ class TimetablesController < ApplicationController
   before_filter :check_authorization
   before_filter :get_timetable, :except => [:create, :index]
   before_filter :setup_timetable, :only => [:show, :edit, :edit_signup]
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :only => [:edit_signup, :update_signup]
+  #skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :only => [:edit_signup, :update_signup]
+  skip_standard_login_stack :only => [:edit_signup, :update_signup]
 
   def index
     render :layout => 'manage'
@@ -29,7 +30,7 @@ class TimetablesController < ApplicationController
   end
 
   def edit_signup
-    flash[:notice] = "Enter your timetable here.  This step is optional - if you don't have your tiemtable, you can fill out your timetable at a later time.  Just hit \"Save Timetable\" and an email will be sent with a link back ot this page for you to update."
+    flash[:notice] = "Enter your timetable here.  This step is optional - if you don't have your timetable, you can fill out your timetable at a later time.  Just hit \"Save Timetable\" and an email will be sent with a link back to this page for you to update."
     @custom_userbar_title = "Signup"
     render :action => "edit"
   end

@@ -464,4 +464,8 @@ class ApplicationController < ActionController::Base
         request.protocol + request.host
       end
     end
+
+    def self.skip_standard_login_stack(additional_params = {})
+      skip_before_filter({ :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus }.merge(additional_params))
+    end
 end
