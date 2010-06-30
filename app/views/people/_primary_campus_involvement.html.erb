@@ -1,10 +1,25 @@
+<%- 
+if @no_campus_scope
+  hide_campus = true if hide_campus.nil? # ||= true will clobber a false value
+else
+  hide_campus ||= false
+end
+hide_school_year ||= false
+hide_grad_date ||= false
+hide_major ||= false
+hide_minor ||= false
+hide_rp ||= false
+no_table ||= false
+-%>
+
 <%- fields_for :primary_campus_involvement, @person.most_recent_involvement do |cif| -%>
-  <table class="halftab">
+  <%- unless no_table -%><table class="halftab"><%- end -%>
     <% unless @no_campus_scope %>
+      <%- unless hide_campus -%>
     <tr id='campus_country' style='<%= "display:none;" if @campus_country %>'>
       <th>Country</th>
       <td>
-        <%= select_tag :primary_campus_country, render(:partial => 'campus_country_options') %>
+        <%= select_tag :primary_campus_country, render(:partial => 'people/campus_country_options') %>
         <%= observe_field(:primary_campus_country, {
           :url => get_campus_states_people_path,
           :with => 'primary_campus_country',
@@ -16,7 +31,7 @@
     </tr>
     <tr id='campus_state' style='<%= "display:none;" if @campus_state || !@campus_country %>'>
       <th class='highlight'><%= I18n.t :State, :default => 'State' %></th>
-      <td><%= select_tag :primary_campus_state, render(:partial => 'campus_state_options') %>
+      <td><%= select_tag :primary_campus_state, render(:partial => 'people/campus_state_options') %>
         <br/>
         <span id="campus_state_filter" <%= highlight_if_requested %>><%= campus_state_filter_message %></span>
         <%= link_to_function(t(:person_campus_change_country, 
@@ -30,7 +45,9 @@
         %>
       </td>
     </tr>
+      <% end %>
     <% end %>
+    <% unless hide_campus %>
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
       <th <%= highlight_if_requested %>>Campus</th>
       <td <%= highlight_if_requested %>>
@@ -56,27 +73,36 @@
       </script>
       </td>
     </tr>
+    <%- end %>
+    <%- unless hide_school_year -%>
     <tr class='pcd'>
       <th>Year</th>
       <td><%= cif.select :school_year_id, school_year_options %></td>
     </tr>
+    <%- end -%>
+    <%- unless hide_grad_date -%>
     <tr class='pcd'>
       <th>Grad Date</th>
       <td class="date"><%= cif.date_select(:graduation_date, date_options(1980) ) %></td>
     </tr>
+    <%- end -%>
+    <%- unless hide_major -%>
     <tr class='pcd'>
       <th>Major</th>
       <td><%= cif.text_field :major %></td>
     </tr>
+    <%- end -%>
+    <%- unless hide_minor -%>
     <tr class='pcd'>
       <th>Minor</th>
       <td><%= cif.text_field :minor %></td>
     </tr>
-    <%- if Cmt::CONFIG[:rp_system_enabled] -%>
+    <%- end -%>
+    <%- if !hide_rp && Cmt::CONFIG[:rp_system_enabled] -%>
       <tr class='pcd'>
         <th>Responsible Person</th>
         <td><%= select_tag :responsible_person_id, options_from_collection_for_select(@possible_responsible_people, 'id', 'full_name', @person.responsible_person.object_id) %></td>
       </tr>
     <%- end -%>
-  </table>
+  <%- unless no_table -%></table><%- end -%>
 <%- end -%>

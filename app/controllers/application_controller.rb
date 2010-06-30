@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
-  #protected
+  protected
     def fake_login
       self.current_user = User.find(Person.find(50195).user_id)
     end
@@ -454,5 +454,17 @@ class ApplicationController < ActionController::Base
         return false
       end
       true
+    end
+
+    def base_url
+      if request.port != 80
+        request.protocol + request.host_with_port
+      else
+        request.protocol + request.host
+      end
+    end
+
+    def self.skip_standard_login_stack(additional_params = {})
+      skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, additional_params)
     end
 end

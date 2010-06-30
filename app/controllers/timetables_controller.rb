@@ -4,10 +4,13 @@ class BadParams < StandardError; end
 
 class TimetablesController < ApplicationController
   include ActionView::Helpers::TextHelper
-  layout 'people'
+  layout :get_layout
+  before_filter :person_signup_setup, :only => [:edit_signup, :update_signup]
   before_filter :check_authorization
   before_filter :get_timetable, :except => [:create, :index]
-  before_filter :setup_timetable, :only => [:show, :edit]
+  before_filter :setup_timetable, :only => [:show, :edit, :edit_signup]
+  #skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :only => [:edit_signup, :update_signup]
+  skip_standard_login_stack :only => [:edit_signup, :update_signup]
 
   def index
     render :layout => 'manage'
@@ -26,6 +29,12 @@ class TimetablesController < ApplicationController
     end
   end
 
+  def edit_signup
+    flash[:notice] = "Enter your timetable here.  This step is optional - if you don't have your timetable, you can fill out your timetable at a later time.  Just hit \"Save Timetable\" and an email will be sent with a link back to this page for you to update."
+    @custom_userbar_title = "Signup"
+    render :action => "edit"
+  end
+
   def edit
     if @can_edit
       respond_to do |format|
@@ -38,6 +47,11 @@ class TimetablesController < ApplicationController
 
   end
   
+  def update_signup
+    update
+    redirect_to :controller => :signup, :action => :step2_timetable_submit
+  end
+
   # PUT /timetables/1
   # PUT /timetables/1.xml
   def update
@@ -58,6 +72,7 @@ class TimetablesController < ApplicationController
       end
 
       @timetable.touch
+      return if @signup
 
       respond_to do |format|
         flash[:notice] = 'Timetable was successfully updated.'
@@ -224,8 +239,13 @@ class TimetablesController < ApplicationController
       @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StudentRole)
     end
     
-    
-    
-    
-    
+    def person_signup_setup
+      @signup = true
+      params[:person_id] = session[:signup_person_id]
+      @me = @my = @person = Person.find(session[:signup_person_id])
+    end
+
+    def get_layout
+      @signup ? 'application' : 'people'
+    end
 end

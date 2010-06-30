@@ -3,4 +3,5 @@ module Common
   APP = "pulse"
   STAGE = "prod"
   DISABLE_MOONSHINE = true
+  ALLOW_IMPERSONATING = true
 end

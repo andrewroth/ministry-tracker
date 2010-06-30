@@ -1119,6 +1119,18 @@ div.choose_ministry_tree {
   float: right;
 }
 
+
+#new_person th {
+  width: 12em;
+  min-width: 12em;
+  max-width: 12em;
+}
+
+#new_person tr {
+  height: 2em;
+  vertical-align: top;
+}
+
 /************************************************/
 /* Stats section                                */
 #statsTitle {
@@ -1456,4 +1468,4 @@ div .backLink {
   background-image: url(/images/widgets/rarrowdown.gif);
   background-repeat: no-repeat;
   background-position: right center;
-}
+
