@@ -1,5 +1,8 @@
-<P>Email is alread in the system.  If this email is yours, please click the send button and an email will be sent to <%= @email %> so that you can finish joining a group process.  This is to ensure that you own this email address.  If this is not you, plase hit the back button and use another email address.</P>
+<% instruction_block do %>Email is already in the system. If this email is yours, please click the ‘Verify Email” button and an email will be sent to <%= @email %> so that you can finish joining a group process. This is to ensure that you own this email address. If this is not you, please hit the back button and use another email address.<% end %>
 
-<% form_tag :controller => :signup, :action => :step1_verify_submit do %>
-  <%= submit_tag "Verify Email" %>
+<% form_tag({ :controller => :signup, :action => :step1_verify_submit }, :class => 'center')do %>
+  <%= submit_tag "Verify Email", :class => 'action-button' %>
+  <BR/>
+  <BR/>
+  <%= link_to_function "Back", "history.go(-1)", :class => 'action-button' %>
 <% end %>

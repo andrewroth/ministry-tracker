@@ -759,14 +759,18 @@ table#schedule_header {
   left: 10px;
 }
 
-a.action-button {
+a.action-button, input.action-button {
 background:#FFCB05;
 border:1px solid black;
-color:white;
+color:#1F429B;
 padding:4px;
 display:inline-block;
 font-weight:bold;
 margin:0px 0 5px 0;
+cursor: pointer;
+}
+input.action-button:hover {
+  text-decoration: underline;
 }
 
 .drag_me {cursor:pointer;}
@@ -1000,7 +1004,7 @@ padding-bottom:5px;
 
 /* ************* */
 /* Flash Notices */
-#flash_notice {
+#flash_notice, .flash_notice {
 margin:10px;
 padding:10px;
 background:#fff7d2;
