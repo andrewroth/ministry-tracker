@@ -360,12 +360,16 @@ end
 
   def setup_stats_report_from_session
     
-    ministry_campus_id = session[:stats_ministry_id].to_s.split('_')
+    @id_for_treeview = session[:stats_ministry_id]
+    ministry_campus_id = @id_for_treeview.to_s.split('_')
     @stats_ministry_id =  ministry_campus_id[0].to_i
     @stats_ministry = Ministry.find(@stats_ministry_id)
+    @name_for_treeview = @stats_ministry.name
     if ministry_campus_id.length > 1 
-      @campus_ids = [ministry_campus_id[1].to_i]
-      @ministry_name = Campus.find(ministry_campus_id[1].to_i).campus_desc
+      campus = Campus.find(ministry_campus_id[1].to_i)
+      @campus_ids = [campus.id]
+      @ministry_name = campus.campus_desc
+      @name_for_treeview = campus.campus_shortDesc
     else
       @ministry_name = @stats_ministry.name
     end
