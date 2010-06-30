@@ -983,7 +983,7 @@ padding-bottom:5px;
 
 /* ************* */
 /* Flash Notices */
-#flash_notice {
+#flash_notice, .flash_notice {
 margin:10px;
 padding:10px;
 background:#fff7d2;
