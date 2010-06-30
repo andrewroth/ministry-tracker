@@ -1,6 +1,6 @@
 class SignupController < ApplicationController
   include PersonForm
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
+  skip_standard_login_stack
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
