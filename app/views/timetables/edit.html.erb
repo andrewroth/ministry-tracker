@@ -1,3 +1,9 @@
+<%- if @signup %>
+  <%- instruction_block do %>
+Enter your timetable here.  This step is optional - if you don't have your timetable, you can fill out your timetable at a later time.  Just hit \"Save Timetable\" and an email will be sent with a link back to this page for you to update.
+  <%- end %>
+<%- end %>
+
 <h1><%= @person.full_name %></h1> 
 <div class="divider" style="margin-bottom:0;">&nbsp;</div>
 <br />
@@ -66,23 +72,31 @@
     :url => (@signup ? update_signup_person_timetable_url(@person, @timetable) : person_timetable_url(@person, @timetable)),
     :html => {:onsubmit => "set_times_field()"} do |f| -%>
     <%= hidden_field_tag :times %>
-    <%= f.submit 'Save Timetable' %>
+    <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
+    <%- if @signup -%>
+    <%= f.submit 'Edit Timetable Later', :class => 'action-button', :style => ('margin-left: 12px' if @signup) %>
+    <%- end %>
+    <br/>
+    <br/>
+
+    Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:<br/>
+
+    <div class="statusheadwrap">
+      <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
+      <% if !Cmt::CONFIG[:hide_poor_status_in_scheduler] %>
+        <%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
+      <% end %>
+      <%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
+      <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
+    </div>
+
+    <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
+
+    <%= render :partial => 'timetable' %>
+
+    <br/>
+    <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
   <%- end -%><br/>
-
-  Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:<br/>
-
-  <div class="statusheadwrap">
-    <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
-		<% if !Cmt::CONFIG[:hide_poor_status_in_scheduler] %>
-    	<%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
-    <% end %>
-		<%= link_to_function('', '', :class => 'okhead', :rel => Timetable::OK_CLASS) %>
-    <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
-  </div>
-
-  <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
-
-  <%= render :partial => 'timetable' %>
 <%- else -%>
   Nothing to see here. Please move on.
 <%- end -%>
