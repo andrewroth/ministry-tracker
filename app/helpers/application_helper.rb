@@ -113,4 +113,16 @@ module ApplicationHelper
     return false if local_assigns[k].nil?
     return local_assigns[k]
   end
+
+  def instruction_block(html = nil, &proc)
+    html ||= capture(&proc) if block_given?
+    render_s = "<script>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
+
+    if block_given?
+      concat(render_s)
+      return nil
+    else
+      render_s
+    end
+  end
 end

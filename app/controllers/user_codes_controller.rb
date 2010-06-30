@@ -13,4 +13,9 @@ class UserCodesController < ApplicationController
       flash[:notice] = "Sorry, no such code was found."
     end
   end
+
+  def self.clear(session)
+    session[:code_valid_for_user_id] = nil
+    session[:code_valid_for_person_id] = nil
+  end
 end

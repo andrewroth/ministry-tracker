@@ -11,12 +11,24 @@ class SignupController < ApplicationController
 
   def step1_info
     @person ||= get_person || Person.new
+    UserCodesController.clear(session)
+    session[:signup_person_params] = nil
+    session[:signup_primary_campus_involvement_params] = nil
+    session[:signup_person_id] = nil
+    session[:signup_campus_id] = nil
+    session[:needs_verification] = nil
+
+    if logged_in?
+      flash[:notice] = "Please note that you’re currently logged in as #{@person.full_name}.  This form will update your personal information.  If you want to sign up for a new account, <A HREF=\"/logout\">log out</A> first and click the signup link on the front page.  <A HREF=\"/logout\">Click here</A> to log out."
+    end
+
     setup_campuses
   end
 
   def step1_info_submit
     @person = Person.new(params[:person])
     [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
+      next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
 
@@ -37,7 +49,6 @@ class SignupController < ApplicationController
         # update user based on what was submitted
         @person.first_name = params[:person][:first_name]
         @person.last_name = params[:person][:first_name]
-        @person.email = params[:person][:email]
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
         @person.save!
@@ -55,7 +66,7 @@ class SignupController < ApplicationController
 
       if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created)
         @email = params[:person][:email]
-        render :action => :step1_verify
+        redirect_to :action => :step1_verify
       else
         ci = @person.campus_involvements.find :first, :conditions => {
           :campus_id => @primary_campus_involvement.campus_id
@@ -96,6 +107,7 @@ class SignupController < ApplicationController
     @groups = @campus.groups
     @group_types = GroupType.all
     @join = true
+    @signup = true
     @campus.ensure_campus_ministry_groups_created
     @collection_group = @campus.collection_groups.find :first, 
       :conditions => [ "#{CampusMinistryGroup.__(:ministry_id)} = ?", Ministry.default_ministry ]
@@ -107,6 +119,7 @@ class SignupController < ApplicationController
     session[:needs_verification] = true
     @me = @my = @person = Person.find(session[:signup_person_id])
     @user = @person.user
+    @email = @person.email.downcase
     pass = { :person => session[:signup_person_params], 
       :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
     link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")

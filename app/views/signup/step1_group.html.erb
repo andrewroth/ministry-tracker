@@ -1,18 +1,23 @@
-<DIV><P>Would you like to...</P></DIV>
+<% instruction_block do %>
+Would you like to...
+<% end %>
 
 <BR/>
 
-<DIV><%= link_to_function "Join an existing group", "$(\"#groups_list\").slideDown();" %></DIV>
-
-<BR/>
+<DIV class="center"><%= link_to_function "Join an existing group", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
 
 <DIV id="groups_list" style="display:none">
+  <BR/>
+
+  <DIV style="clear:both" class="center">
+    <%= link_to "Next", { :action => "step2_timetable" }, :class => "action-button" %>
+  </DIV>
   <%= render :partial => "groups/groups_for_ministry" %>
-  <DIV style="clear:both">
-    <%= link_to "Done", :action => "step2_timetable" %>
+  <DIV style="clear:both" class="center">
+    <%= link_to "Next", { :action => "step2_timetable" }, :class => "action-button" %>
   </DIV>
 </DIV>
 
 <BR/>
 
-<DIV style="clear:both"><%= link_to "Just put me in a group", :action => "step1_default_group" %></DIV>
+<DIV style="clear:both" class="center"><%= link_to "Just put me in a group", { :action => "step1_default_group" }, :class => "action-button" %></DIV>
