@@ -7,14 +7,12 @@
 <BR/>
 
 <DIV id="groups_list" style="display:none">
-  <div id="customizebody" class="accordion">
-    <%- @group_types.each do |gt| -%>
-      <%= render :partial => "groups/group_type_groups", :locals => { :gt => gt } %>
-    <%- end -%>
+  <%= render :partial => "groups/groups_for_ministry" %>
+  <DIV style="clear:both">
     <%= link_to "Done", :action => "step2_timetable" %>
-  </div>
+  </DIV>
 </DIV>
 
 <BR/>
 
-<DIV><%= link_to "Just put me in a group", :action => "step1_default_group" %></DIV>
+<DIV style="clear:both"><%= link_to "Just put me in a group", :action => "step1_default_group" %></DIV>

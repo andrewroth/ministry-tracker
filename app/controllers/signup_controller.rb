@@ -1,15 +1,15 @@
 class SignupController < ApplicationController
   include PersonForm
-  skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
+  skip_standard_login_stack
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
+  before_filter :set_custom_userbar_title
 
   def index
     redirect_to :action => :step1_info
   end
 
   def step1_info
-    @custom_userbar_title = "Signup"
     @person ||= get_person || Person.new
     setup_campuses
   end
@@ -34,7 +34,13 @@ class SignupController < ApplicationController
       if logged_in?
         @user = current_user
         @person = @user.person 
-        # TODO: update user based on what was submitted
+        # update user based on what was submitted
+        @person.first_name = params[:person][:first_name]
+        @person.last_name = params[:person][:first_name]
+        @person.email = params[:person][:email]
+        @person.gender = params[:person][:gender]
+        @person.local_phone = params[:person][:local_phone]
+        @person.save!
       else
         @user = User.find_or_create_from_guid_or_email(nil, params[:person][:email], 
                                                        params[:person][:first_name],
@@ -67,7 +73,7 @@ class SignupController < ApplicationController
           ci.ministry_id = ci.derive_ministry.try(:id)
           ci.save!
         end
-        puts "HOOKHERE2 person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
+        #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         redirect_to :action => :step1_group
       end
     end
@@ -84,6 +90,7 @@ class SignupController < ApplicationController
       return
     end
 
+    @ministry = Ministry.default_ministry
     @me = @my = @person = Person.find(session[:signup_person_id])
     @campus = Campus.find session[:signup_campus_id]
     @groups = @campus.groups
@@ -136,9 +143,13 @@ class SignupController < ApplicationController
   end
 
   def step2_timetable_submit
+    flash[:notice] = nil
     @signup = true
     params[:person_id] = session[:signup_person_id]
     @me = @my = @person = Person.find(session[:signup_person_id])
+    @user = @person.user
+    link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
+    UserMailer.deliver_signup_confirm_email(@person.email, link)
   end
 
   def finished
@@ -149,6 +160,13 @@ class SignupController < ApplicationController
     redirect_to logged_in? ? dashboard_url : login_url
   end
 
+  def timetable
+    @user = User.find session[:code_valid_for_user_id]
+    self.current_user = @user
+    @me = @my = @person = @user.person
+    redirect_to edit_person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id)
+  end
+
   protected
 
   def set_is_staff_somewhere
@@ -157,5 +175,9 @@ class SignupController < ApplicationController
 
   def restrict_everything
     @restrict_all_links = true
+  end
+
+  def set_custom_userbar_title
+    @custom_userbar_title = "Signup"
   end
 end
