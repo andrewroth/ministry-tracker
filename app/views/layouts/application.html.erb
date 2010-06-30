@@ -74,6 +74,7 @@
 			
 			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
 			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
+      <div id="instructions" class="flash_notice notice" style="display:none;"></div> 
 			
 			<div id="content">
 				<%= yield %>
