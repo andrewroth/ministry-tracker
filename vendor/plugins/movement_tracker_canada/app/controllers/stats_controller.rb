@@ -748,7 +748,7 @@ end
       staff_collection = ministry.staff.collect{|s| staff_drill_down_hash(s) }
     else
       if ministry.staff.include?(@me)
-        staff_collection = [staff_drill_down_hash(s)]
+        staff_collection = [staff_drill_down_hash(@me)]
       end
     end
     staff_collection
@@ -856,7 +856,7 @@ end
       when 'p2c' 
         @hide_radios = true
       end
-    if !is_ministry_admin && (@oneCampusMinistry || !@drillDownAccess)
+    if !is_ministry_admin && !@drillDownAccess
       @hide_radios = true
     end
     
