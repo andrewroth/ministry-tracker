@@ -46,6 +46,10 @@ class Group < ActiveRecord::Base
     self[:name] = line.gsub("{{campus}}", campus.try(:name)).gsub("{{group_type}}", group_type.group_type)
   end
 
+  def derive_ministry
+    self.ministry = campus.try(:derive_ministry)
+  end
+
   def update_collection_groups
     if campus_ministry_group
       derive_name
