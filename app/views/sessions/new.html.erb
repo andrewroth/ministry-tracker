@@ -1,6 +1,8 @@
-<center>
-<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/k6tDWnwXF4Y&hl=en_US&fs=1&rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/k6tDWnwXF4Y&hl=en_US&fs=1&rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
-</center>
+<CENTER>
+  <BR/>
+  <h2><%= link_to "Signup for a group (no login required)", signup_url %></h2>
+  <BR/>
+</CENTER>
 <%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
 <%- if Cmt::CONFIG[:gcx_greenscreen_from_link] -%>
   <%- unless show_form %><br /><%- end -%>

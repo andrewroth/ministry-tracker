@@ -1,0 +1,45 @@
+<%- steps = [ "Info", "Group", "Timetable" ] -%>
+<%- width_per_step = 100 -%>
+<%- step ||= 1 %>
+<%- done ||= false -%>
+<%- if done then step = 3 end %>
+<table id="progress-table" style="width: <%= width_per_step * steps.length * 2 %>px;" class="center" border="0">
+  <tr class="progress-label">
+    <%- steps.each do |label| -%>
+    <td colspan="2">
+      <%= label %>
+    </td>
+    <%- end -%>
+  </tr>
+  <tr class="bar">
+    <%- (1..step - 1).each do |i| -%>
+    <td style="width:<%= width_per_step / 2 %>px" class="progress-done">
+      <%= image_tag "s.gif" %>
+    </td>
+    <td style="width:<%= width_per_step / 2 %>px" class="progress-done">
+      <%= image_tag "s.gif" %>
+    </td>
+    <%- end -%>
+    <td style="width:<%= width_per_step / 2 %>px" class="progress-done <%= "current-progress" unless done %>">
+      <%= image_tag "s.gif" %>
+    </td>
+    <td style="width:<%= width_per_step / 2 %>px" class="<%= done ? "progress-done" : "progress-todo" %>">
+      <%= image_tag "s.gif" %>
+    </td>
+    <%- (step + 1..steps.length).each do |i| -%>
+    <td style="width:<%= width_per_step / 2 %>px" class="progress-todo">
+      <%= image_tag "s.gif" %>
+    </td>
+    <td style="width:<%= width_per_step / 2 %>px" class="progress-todo">
+      <%= image_tag "s.gif" %>
+    </td>
+    <%- end -%>
+  </tr>
+  <tr class="progress-bottom">
+    <%- steps.each do |step| -%>
+    <td colspan="2">
+      <%= image_tag "s.gif" %>
+    </td>
+    <%- end -%>
+  </tr>
+</table>
