@@ -48,7 +48,7 @@ class TimetablesController < ApplicationController
   
   def update_signup
     update
-    redirect_to :controller => :signup, :action => :step2_timetable_submit
+    redirect_to :controller => :signup, :action => :step3_timetable_submit
   end
 
   # PUT /timetables/1
