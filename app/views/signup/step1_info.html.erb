@@ -43,4 +43,10 @@ Step 1: Please fill out your info and click next.  <% if logged_in? %><STRONG>Pl
   <div class="center">
   <%= submit_tag "Next", :class => 'action-button' %>  
   </div>
+
 <%- end -%>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 1 } %>
+</center>
+
