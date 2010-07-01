@@ -6,3 +6,7 @@
   <BR/>
   <%= link_to_function "Back", "history.go(-1)", :class => 'action-button' %>
 <% end %>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 1 } %>
+</center>

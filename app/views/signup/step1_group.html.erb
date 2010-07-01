@@ -1,5 +1,5 @@
 <% instruction_block do %>
-Would you like to...
+Step 2: Join a group.  Would you like to...
 <% end %>
 
 <BR/>
@@ -21,3 +21,7 @@ Would you like to...
 <BR/>
 
 <DIV style="clear:both" class="center"><%= link_to "Just put me in a group", { :action => "step1_default_group" }, :class => "action-button" %></DIV>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 2 } %>
+</center>
