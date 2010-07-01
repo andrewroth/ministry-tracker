@@ -81,12 +81,29 @@ class SignupController < ApplicationController
           ci.save!
         end
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
-        redirect_to :action => :step1_group
+        redirect_to :action => :step2_group
       end
     end
   end
 
-  def step1_group
+  def step1_verify_submit
+    # send verification email
+    session[:needs_verification] = true
+    @me = @my = @person = Person.find(session[:signup_person_id])
+    @user = @person.user
+    @email = @person.email.downcase
+    pass = { :person => session[:signup_person_params], 
+      :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
+    link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
+    UserMailer.deliver_signup_confirm_email(@person.email, link)
+  end
+
+  def step1_email_verified
+    flash[:notice] = "Your email has been verified."
+    redirect_to params.merge(:action => :step1_info_submit)
+  end
+
+  def step2_group
     @signup = true
     if session[:needs_verification] && !session[:code_valid_for_user_id]
       flash[:notice] = "Sorry, your email has not been verified yet."
@@ -110,24 +127,7 @@ class SignupController < ApplicationController
     @groups.delete_if { |g| g == @collection_group }
   end
 
-  def step1_verify_submit
-    # send verification email
-    session[:needs_verification] = true
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @user = @person.user
-    @email = @person.email.downcase
-    pass = { :person => session[:signup_person_params], 
-      :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
-    link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
-    UserMailer.deliver_signup_confirm_email(@person.email, link)
-  end
-
-  def step1_email_verified
-    flash[:notice] = "Your email has been verified."
-    redirect_to params.merge(:action => :step1_info_submit)
-  end
-
-  def step1_default_group
+  def step2_default_group
     if session[:needs_verification] && !session[:code_valid_for_user_id]
       flash[:notice] = "Sorry, your email has not been verified yet."
       render :inline => "", :layout => true
@@ -148,10 +148,10 @@ class SignupController < ApplicationController
     @group.group_involvements.find_or_create_by_person_id_and_level :person_id => @person.id, :level => 'member'
     flash[:notice] = "Thank you.  You will be put into a group and someone will notify you of the group details."
 
-    redirect_to :action => :step2_timetable
+    redirect_to :action => :step3_timetable
   end
 
-  def step2_timetable_submit
+  def step3_timetable_submit
     flash[:notice] = nil
     @signup = true
     params[:person_id] = session[:signup_person_id]
