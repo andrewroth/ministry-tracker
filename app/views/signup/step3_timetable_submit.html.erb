@@ -7,3 +7,8 @@
 <DIV class="center">
   <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
 </DIV>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :done => true } %>
+</center>
+
