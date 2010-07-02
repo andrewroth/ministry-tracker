@@ -20,6 +20,7 @@ class GroupInvolvementsController < ApplicationController
   def joingroup_signup
     params[:person_id] = session[:signup_person_id]
     @me = @my = @person = Person.find(session[:signup_person_id])
+    @join = @signup = true
     joingroup
     render :action => :joingroup
   end
