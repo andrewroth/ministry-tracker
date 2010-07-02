@@ -2,13 +2,10 @@
   You're done!  You will receive further information once groups are set up.  Hit the finished button to <% unless logged_in? %>go back to the Sign In page.<% else %>go back to the dashboard.<% end %>
 <%- end %>
 
-<BR/>
-
-<DIV class="center">
-  <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
-</DIV>
-
 <center>
   <%= render :partial => 'progress', :locals => { :done => true } %>
 </center>
 
+<DIV class="center">
+  <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
+</DIV>

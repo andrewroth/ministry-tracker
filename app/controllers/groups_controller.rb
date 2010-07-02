@@ -31,8 +31,12 @@ class GroupsController < ApplicationController
     render(:update) { |page|  page.redirect_to new_email_url(:person => people) }
   end
 
-  # lists all relevant groups with a join / interested link for each one
   def join
+    redirect_to :controller => "signup", :action => "step1_info"
+  end
+
+  # lists all relevant groups with a join / interested link for each one
+  def join_old
     setup_campuses_filter
     setup_groups
     @join = true
