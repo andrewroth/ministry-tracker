@@ -44,7 +44,7 @@ class SignupController < ApplicationController
         @person = @user.person 
         # update user based on what was submitted
         @person.first_name = params[:person][:first_name]
-        @person.last_name = params[:person][:first_name]
+        @person.last_name = params[:person][:last_name]
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
         @person.save!
