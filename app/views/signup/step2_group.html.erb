@@ -2,7 +2,9 @@
 Step 2: Join a group.  Would you like to...
 <% end %>
 
-<BR/>
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 2 } %>
+</center>
 
 <DIV class="center"><%= link_to_function "Join an existing group", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
 
@@ -22,6 +24,3 @@ Step 2: Join a group.  Would you like to...
 
 <DIV style="clear:both" class="center"><%= link_to "Just put me in a group", { :action => "step2_default_group" }, :class => "action-button" %></DIV>
 
-<center>
-  <%= render :partial => 'progress', :locals => { :step => 2 } %>
-</center>
