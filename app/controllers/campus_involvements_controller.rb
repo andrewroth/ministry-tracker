@@ -181,10 +181,8 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def set_student
-    current_role = get_ministry_involvement(get_ministry).try(:ministry_role) ||
-      @campus_involvement.find_or_create_ministry_involvement.ministry_role
-    @student = current_role.nil? || current_role.is_a?(StudentRole)
-    @staff = !@student
+    @staff = @person.is_staff_somewhere?
+    @student = !@staff
   end
 
 end
