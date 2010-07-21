@@ -36,7 +36,7 @@
 |,
     :GCX_login_info => %|
 <p>What is TheKey login?</p>
-<p>TheKey is a single sign-on login that authenticates you to use Campus for Christ web applications including:</p>
+<p>TheKey (formerly GCX) is a single sign-on login that authenticates you to use Campus for Christ web applications including:</p>
 <p>
 <ul><li><a href="http://pulse.campusforchrist.org">Pulse</a></li>
   <li><a href="http://pat.powertochange.org">Project Application Tool</a></li>
