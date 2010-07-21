@@ -184,8 +184,8 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def set_student
-    @student = @person.is_student
-    @staff = !@student
+    @staff = @person.is_staff_somewhere?
+    @student = !@staff
   end
 
 end

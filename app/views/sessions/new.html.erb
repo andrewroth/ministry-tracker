@@ -8,11 +8,11 @@
   <%- unless show_form %><br /><%- end -%>
   <div class='login_sector' style='text-align: center'>
     <br/>
-    <%= link_to image_tag('GCX-logo.gif', :height => '68px', :width => '100px', 
+    <%= link_to image_tag('logo_thekey.png', :height => '50px', :width => '100px', 
                           :style => 'vertical-align: middle'),
       CASClient::Frameworks::Rails::Filter.login_url(controller) %>
       &nbsp; &nbsp; &nbsp;
-    <%= link_to 'Login with GCX', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+    <%= link_to 'Login with TheKey', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
     <br/>
     <%= link_to 'Create an Account', new_gcx_url %>
   </div>
