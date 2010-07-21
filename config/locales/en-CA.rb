@@ -35,8 +35,8 @@
 </script>
 |,
     :GCX_login_info => %|
-<p>What is GCX login?</p>
-<p>GCX is a single sign on login that authenticates you to use Campus for Christ web applications including:</p>
+<p>What is TheKey login?</p>
+<p>TheKey is a single sign-on login that authenticates you to use Campus for Christ web applications including:</p>
 <p>
 <ul><li><a href="http://pulse.campusforchrist.org">Pulse</a></li>
   <li><a href="http://pat.powertochange.org">Project Application Tool</a></li>
@@ -45,7 +45,7 @@
   <li><a href="http://mpdtool.powertochange.org">MPD Tool</a></li>
 </ul>
 </p>
-<p>Your GCX username will authenticate you to all these sites using one login.  You do not have to create a new one each time!  Contact us at helpdesk@c4c.ca if you have any questions about your GCX username.  Thank you!
+<p>Your username will authenticate you to all these sites using one login via TheKey.  You do not have to create a new one each time!  Contact us at helpdesk@c4c.ca if you have any questions about your username.  Thank you!
 <br>
 </p>
     |,
