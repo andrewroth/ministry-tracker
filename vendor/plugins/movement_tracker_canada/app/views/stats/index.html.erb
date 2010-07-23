@@ -4,20 +4,7 @@
 <h1 id="statsTitle">Measurements</h1>
 
 <div id="statsLinkBox" class="statsFormBox">
-  <ul class="statsLinkList">
-    <% if authorized?("new", "weekly_reports") %>
-      <li class="statsListLink"><%= link_to "Submit your weekly stats", url_for(:controller => :weekly_reports, :action => :new) %></li>
-    <% end %>
-    <% if authorized?("new", "semester_reports") %>
-      <li class="statsListLink"><%= link_to "Submit your semester highlights", url_for(:controller => :semester_reports, :action => :new) %></li>
-    <% end %>
-    <% if authorized?("semester_at_a_glance", "stats") %>
-      <li class="statsListLink"><%= link_to "Semester at a glance", url_for(:controller => :stats, :action => :semester_at_a_glance) %></li>
-    <% end %>
-    <% if authorized?("how_people_came_to_christ", "stats") %>
-      <li class="statsListLink"><%= link_to "How people came to Christ", url_for(:controller => :stats, :action => :how_people_came_to_christ) %></li>
-    <% end %>
-  </ul>
+  <%= render :partial => 'stats/stats_links' %>
 </div>
 
 <div class="statsFormContainer">
@@ -25,28 +12,15 @@
     <br/>
 
     <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
-      
+ 			
+			<div id="formHeading"><%= render :partial => "form_heading" %></div>
       <%= render :partial => "choose_ministry" %>
 
       <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
         <br/>
-        <div id="summaryRadioButton" class="statsRadioButton">
-          <%= form.radio_button :summary, "summary", :checked => @stats_summary %>
-          <%= form.label :summary_summary, "Summary" %>
-          <%= observe_field 'report_summary_summary', :url => {:action => "select_report"},
-                                                      :with => "getWithStringForReportForm()",
-                                                      :before => "beginLoadingStatsTab()",
-                                                      :complete => "completeLoadingStatsTab()" %>
-        </div>
-
-        <div class="statsRadioButton">
-          <%= form.radio_button :summary, "campus", :checked => !@stats_summary %>
-          <%= form.label :summary_campus, "Campus drill-down" %>
-          <%= observe_field 'report_summary_campus', :url => {:action => "select_report"},
-                                                     :with => "getWithStringForReportForm()",
-                                                     :before => "beginLoadingStatsTab()",
-                                                     :complete => "completeLoadingStatsTab()" %>
-        </div>
+	<% @scope_radios.each do |radio| %>
+	 <%= render :partial => "scope_radio", :locals => { :radio => radio } %>
+	<% end %>
         <br/>
       </div>
       
@@ -55,22 +29,22 @@
     <br/>
 
     <div id="statsReportTimeTabs">
-      <div id="year" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "year" %>" >
+      <div id="year" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "year" %> <%= "notDisplayed" if @hide_tab[:year] %>" >
         <%= time_tab_link_to_remote("year") %>
       </div>
 
 
-      <div id="semester" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "semester" %>" >
+      <div id="semester" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "semester" %> <%= "notDisplayed" if @hide_tab[:semester] %>" >
         <%= time_tab_link_to_remote("semester") %>
       </div>
 
 
-      <div id="month" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "month" %>" >
+      <div id="month" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "month" %> <%= "notDisplayed" if @hide_tab[:month] %>" >
         <%= time_tab_link_to_remote("month") %>
       </div>
 
 
-      <div id="week" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "week" %> <%= "notDisplayed" if @stats_summary %>" >
+      <div id="week" class="statsReportTab statsFormField <%= "statsTabActive" if @selected_time_tab_id == "week" %> <%= "notDisplayed" if @hide_tab[:week] %>" >
         <%= time_tab_link_to_remote("week") %>
       </div>
     </div>

@@ -1,25 +1,18 @@
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+<% total = 0 %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %><%= special_css_class %>">
         <td class="statsTableTitle">
             <%= title %>
         </td>
-        <% total = 0 
-           @total_section ||= Hash.new
-        %>
-
-        <% stats_array.each_with_index do | stat, i | %>
+				
+        <% stats_array.each do | stat | %>
           <td>
               <%= stat %>
-              <% total += stat 
-               @total_section[i] ||= 0
-               @total_section[i] += stat %>
+              <% total += stat if special_total.nil? %>
           </td>
         <% end %>
 
         <td>
-            <%= total %>
-            <% 
-            @total_section[:total] ||= 0
-            @total_section[:total] += total %>
+            <%= special_total.nil? ? total : special_total %>
         </td>
     </tr>
 

@@ -1,0 +1,51 @@
+<a name="top"><h1 id="statsTitle">Measurements</h1></a>
+<div class="backLink"><a href="/stats">Go back</a></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Salvation Story Synopses</h2>
+    <br/>
+
+    <div class="statsForm">
+      <% form_for :report, :url => { :action => :salvation_story_synopses }, :html => { :name => 'reportForm', :onSubmit => "$('#spinnersubmit').show()" } do |form| %>
+
+        <div class="statsFormField statsSelectContainer">
+          <%= form.label :ministry, "Ministry:" %>
+          <%= form.collection_select :ministry, @ministries, :id, :name, :selected => @stats_ministry_id.to_i %>
+        </div>
+
+        <div class="statsFormField statsSelectContainer">
+          <%= form.label :year, "Year:" %>
+          <%= form.select :year, @years, :selected => @year_selected %>
+        </div>
+
+        <br/>
+        <p>
+          <%= submit_tag "Show report" , :class => "submit" %>
+        </p>
+        <%= spinner('submit') %>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<br/>
+<div id="results" class="statsContainer" <% unless @stats_ministry_selected.present? %> style="display: none"<% end %> >
+  <% if @stats_ministry_selected.present? %>
+    <p>
+      <span class="statsTitle"><%= sprintf("%s", @stats_ministry_selected.name) %> during <%= sprintf("%s", @year_selected) %></span>
+    </p>
+    <p>
+      <%= render :partial => "salvation_story_synopses" %>
+      <br/>
+    </p>
+  <% end %>
+</div>

@@ -1,0 +1,13 @@
+<%= javascript_include_tag "prcs.js" %>
+
+<br/>
+
+<div class="statsFormContainer">
+
+  <div id="inputFields" class="inputsContainer">
+    <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+      <div id="prcInputFields" class="reportInputContainer">
+      <%= show_input_lines(@prc) %>     
+      </div>
+  </div>
+</div>

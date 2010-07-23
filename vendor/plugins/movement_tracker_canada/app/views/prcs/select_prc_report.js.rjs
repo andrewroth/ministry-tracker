@@ -1,0 +1,2 @@
+page.replace_html("prcInputFields", :partial => "input_lines", :locals => { :prc => @prc })
+

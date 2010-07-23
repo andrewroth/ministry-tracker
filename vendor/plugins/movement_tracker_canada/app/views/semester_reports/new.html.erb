@@ -1,3 +1,5 @@
+<%= javascript_include_tag "semester_reports.js" %>
+
 <h1 id="statsTitle">Measurements</h1>
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
 
@@ -12,66 +14,22 @@
       <table>
         <tr class="statsFormField">
           <td><%= f.label :semester, "Semester:" %></td>
-          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc %></td>
+          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
         </tr>
         <tr class="statsFormField">
           <td><%= f.label :campus, "Campus:" %></td>
-          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc %></td>
+          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingSemesterInputTab()"} %></td>
         </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :semesterreport_avgPrayer, "Avg - hours of prayer:" %></td>
-          <td><%= f.text_field :semesterreport_avgPrayer, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :average_attendance_weekly_meetings, "Avg weekly meetings attendance:" %></td>
-          <td><%= f.text_field :average_attendance_weekly_meetings, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_challenged_staff, "No challenged to staff:" %></td>
-          <td><%= f.text_field :number_challenged_staff, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_challenged_internships, "No challenged to internships:" %></td>
-          <td><%= f.text_field :number_challenged_internships, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_frosh_involved, "No frosh involved:" %></td>
-          <td><%= f.text_field :number_frosh_involved, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_staff_led_dg, "No staff-led DGs:" %></td>
-          <td><%= f.text_field :number_staff_led_dg, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_in_staff_led_dg, "No in staff-led DGs:" %></td>
-          <td><%= f.text_field :number_in_staff_led_dg, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_student_led_dg, "No student-led DGs:" %></td>
-          <td><%= f.text_field :number_student_led_dg, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_in_student_led_dg, "No in student-led DGs:" %></td>
-          <td><%= f.text_field :number_in_student_led_dg, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_sp_mult_in_staff_led_dg, "No spiritual multipliers in staff DGs:" %></td>
-          <td><%= f.text_field :number_sp_mult_in_staff_led_dg, :size => 4 %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :number_sp_mult_in_student_led_dg, "No spiritual multipliers in student-led DGs:" %></td>
-          <td><%= f.text_field :number_sp_mult_in_student_led_dg, :size => 4 %></td>
-        </tr>
-      </table>
-      <p>
-        <br/>
-        <div class="center"><%= f.submit "Submit" %></div>
-      </p>
-      <br/>
+     </table>
     <% end %>
+	<div id="inputFields" class="inputsContainer">
+		<div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+	    <div id="semesterReportInputFields" class="reportInputContainer">
+	    <%= show_input_lines(@semester_report) %>    	
+	    </div>
+	</div>
   </div>
 </div>
-
 
 <br/>
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

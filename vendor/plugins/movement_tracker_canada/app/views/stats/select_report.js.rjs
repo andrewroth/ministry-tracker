@@ -7,16 +7,16 @@ end
 
 
 # update selected radio button in case server changes @stats_summary value
-page["report_summary_summary"].attr("checked", @stats_summary)
+page[@scope_radio_selected_id].attr("checked", true)
 
-
-# there's no week summary report, hide the link
-if @stats_summary
-  page << "jQuery('#week').addClass('notDisplayed')"
-else
-  page << "jQuery('#week').removeClass('notDisplayed')"
+# hide the time tab links accordingly
+@time_tabs.each do |t|
+  if @hide_tab[t]
+    page << "jQuery('##{t.to_s}').addClass('notDisplayed')"
+  else
+    page << "jQuery('##{t.to_s}').removeClass('notDisplayed')"   
+  end
 end
-
 
 # update tab styles to reflect selected tab
 page << "jQuery('.statsReportTab').removeClass('statsTabActive')"
@@ -29,6 +29,9 @@ page.replace_html("year", time_tab_link_to_remote("year"))
 page.replace_html("semester", time_tab_link_to_remote("semester"))
 page.replace_html("month", time_tab_link_to_remote("month"))
 page.replace_html("week", time_tab_link_to_remote("week"))
+# à faire: un partial pour le titre et le hidden
+page.replace_html("formHeading", render(:partial => 'stats/form_heading'))
+page.replace_html("statsLinkBox", render(:partial => 'stats/stats_links'))
 
 
 # replace tab content

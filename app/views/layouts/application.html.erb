@@ -5,6 +5,7 @@
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <link rel="Shortcut Icon" href="http://www.campusforchrist.org/images/favicon.ico">
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
       <% if Cmt::CONFIG[:web_title] %>
@@ -64,7 +65,7 @@
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-          <div id="username"><%= @custom_userbar_title || I18n.t(:please_login, :default => 'Please Login') %></div>
+          <div id="username"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>

@@ -10,7 +10,7 @@ require 'person_methods'
 #Question: What is the use of primary_campus_id and its implications?
 #
 class PeopleController < ApplicationController
-  include PersonMethods
+  include PersonMethodsEmu
   include PersonForm
 
   before_filter  :get_profile_person, :only => [:edit, :update, :show]

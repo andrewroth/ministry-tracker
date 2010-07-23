@@ -166,7 +166,6 @@ class ApplicationController < ActionController::Base
     
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
-      
       ministry ||= get_ministry
       return false unless ministry
 

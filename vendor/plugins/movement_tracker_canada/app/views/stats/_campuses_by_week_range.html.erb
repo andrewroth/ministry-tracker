@@ -15,7 +15,7 @@
 
   <% @campuses.each do |campus| %>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
-      <td class="statsTableTitle"><%= campus.short_desc %></td>
+      <td class="statsTableTitle"><%= campus_link_to_remote(campus) %></td>
       <td><%= @campus_stats[campus.id][sp_conv] %></td>
       <td><%= @campus_stats[campus.id][sp_conv_std] %></td>
       <td><%= @campus_stats[campus.id][gos_pres] %></td>

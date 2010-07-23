@@ -8,6 +8,35 @@ namespace :cmt do
     end
   end
 
+  desc "refresh data into the cim_stats_monthlyreport table from the data into cim_stats_semesterreport table" 
+  task :update_monthly_report => :environment do
+    hsh_month_for_semester ||= Hash.new
+
+    SemesterReport.all.each do | sr |
+      #Find the right month_id for the current semester record
+      if !(hsh_month_for_semester.has_key?(sr[:semester_id]))
+        hsh_month_for_semester[sr[:semester_id]] = Month.find(:all, :conditions => { :semester_id => sr[:semester_id] }, :order => :month_number).last.id
+      end      
+      month_id = hsh_month_for_semester[sr[:semester_id]]
+
+      #try to find a record for the current month_id, campus_id
+      monthly_report = MonthlyReport.find(:first, :conditions => { :month_id => month_id, :campus_id => sr[:campus_id] })
+      #if no record, create a new one
+      monthly_report ||= MonthlyReport.new
+      monthly_report.campus_id = sr[:campus_id]
+      monthly_report.month_id = month_id
+      
+      #update the data
+      monthly_report[:monthlyreport_avgPrayer] = sr[:semesterreport_avgPrayer] if monthly_report[:monthlyreport_avgPrayer] == 0
+      monthly_report[:monthlyreport_numFrosh] = sr[:semesterreport_numFrosh] if monthly_report[:monthlyreport_numFrosh] == 0
+      monthly_report[:monthlyreport_totalStudentInDG] = sr[:semesterreport_numInStaffDG] + sr[:semesterreport_numInStudentDG] if monthly_report[:monthlyreport_totalStudentInDG] == 0
+      monthly_report[:monthlyreport_totalSpMult] = sr[:semesterreport_numSpMultStaffDG] + sr[:semesterreport_numSpMultStdDG] if monthly_report[:monthlyreport_totalSpMult] == 0
+      
+      monthly_report.save!
+    end
+    
+
+  end
 
   desc "add a year, and appropriate semesters, months and weeks to cim_stats tables"
   task :add_years_to_cim_stats => :environment do

@@ -15,36 +15,6 @@
             Total
         </td>
     </tr>
-    <%= show_summary_by_week_stat("Spiritual Conversations by Staff", sp_conv, @weeks, @stats_ministry_id) %>
-    <%= show_summary_by_week_stat("Spiritual Conversations by Students", sp_conv_std, @weeks, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Spiritual Conversations Total", @weeks) %>
-
-    <%= show_summary_by_week_stat("Gospel Presentations by Staff", gos_pres, @weeks, @stats_ministry_id) %>
-    <%= show_summary_by_week_stat("Gospel Presentations by Students", gos_pres_std, @weeks, @stats_ministry_id) %>
-
-    <%= show_totals_for_stat_group("Gospel Presentations Total", @weeks) %>
-
-    <%= show_summary_by_week_stat("Holy Spirit Presentations by Staff", hs_pres, @weeks, @stats_ministry_id) %>
-
-
-    <tr><td><br/></td></tr>
-    <tr class="highlight">
-        <td class="statsTableTitle">
-            Indicated Decisions
-        </td>
-        <% total = 0 %>
-        <% @weeks.each do |week| -%>
-        <% start_date = Week.find_start_date(week.id) %>
-        <% end_date = Week.find_end_date(week.id) %>
-        <% result = Prc.count_by_date_per_ministry(start_date,end_date,@stats_ministry_id) %>
-        <% total += result %>
-        <td>
-            <%= sprintf "%s", result %>
-        </td>
-        <% end %>
-        <td>
-            <%= sprintf "%s", total %>
-        </td>
-    </tr>
+    <%= show_summary_report(:weekly_report, true)%>
+    <%= show_summary_report(:indicated_decisions_report, true)%>
 </table>

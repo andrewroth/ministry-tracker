@@ -1,0 +1,2 @@
+  page.replace_html("monthlyReportInputFields", :partial => "input_lines")
+  
