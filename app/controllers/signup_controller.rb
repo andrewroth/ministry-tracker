@@ -51,7 +51,8 @@ class SignupController < ApplicationController
       else
         @user = User.find_or_create_from_guid_or_email(nil, params[:person][:email], 
                                                        params[:person][:first_name],
-                                                       params[:person][:last_name])
+                                                       params[:person][:last_name],
+                                                      false)
         @person = @user.person 
       end
 
