@@ -1,8 +1,5 @@
 class Campus < ActiveRecord::Base
   load_mappings
-  include Common::Core::Campus
-  include Common::Core::Ca::Campus
-  include Legacy::Stats::Core::Campus
 
   include Common::Core::Campus
   include Common::Core::Ca::Campus
@@ -40,4 +37,6 @@ class Campus < ActiveRecord::Base
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group
     return group
   end
+=======
+>>>>>>> dev:app/models/campus.rb
 end
