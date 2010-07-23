@@ -4,6 +4,10 @@ class Campus < ActiveRecord::Base
   include Common::Core::Ca::Campus
   include Legacy::Stats::Core::Campus
 
+  include Common::Core::Campus
+  include Common::Core::Ca::Campus
+  include Legacy::Stats::Core::Campus
+
   has_many :groups
   has_many :campus_ministry_groups
   has_many :collection_groups, :through => :campus_ministry_groups, :class_name => "Group", :source => :group
