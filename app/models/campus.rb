@@ -37,6 +37,4 @@ class Campus < ActiveRecord::Base
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group
     return group
   end
-=======
->>>>>>> dev:app/models/campus.rb
 end
