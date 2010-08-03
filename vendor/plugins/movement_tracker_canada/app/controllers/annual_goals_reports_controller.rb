@@ -57,11 +57,7 @@ class AnnualGoalsReportsController < ApplicationController
     @annual_goals_report = AnnualGoalsReport.find(params[:id])
   end
 
-  # POST /annual_goals_reports
-  # POST /annual_goals_reports.xml
-  def create
-
-    #staff_id = @person.cim_hrdb_staff.id
+  def create_or_update
     @annual_goals_report = AnnualGoalsReport.find(:first, :conditions => { :year_id => params[:annual_goals_report][:year_id], :campus_id => params[:annual_goals_report][:campus_id] })
 
     if @annual_goals_report
@@ -82,29 +78,38 @@ class AnnualGoalsReportsController < ApplicationController
         format.xml  { render :xml => @annual_goals_report.errors, :status => :unprocessable_entity }
       end
     end
+    
+  end
+
+  # POST /annual_goals_reports
+  # POST /annual_goals_reports.xml
+  def create
+    create_or_update
   end
 
   # PUT /annual_goals_reports/1
   # PUT /annual_goals_reports/1.xml
   def update
-    @annual_goals_report = AnnualGoalsReport.find(:first, :conditions => { :year_id => params[:annual_goals_report][:year_id], :campus_id => params[:annual_goals_report][:campus_id] })
+    create_or_update
 
-    if @annual_goals_report
-      success_update = true if @annual_goals_report.update_attributes(params[:annual_goals_report])
-    else
-      success_update = true if @annual_goals_report = AnnualGoalsReport.new(params[:annual_goals_report])
-    end
-
-    respond_to do |format|
-      if success_update && @annual_goals_report.save
-        flash[:notice] = 'Your annual goals were successfully updated.'
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @annual_goals_report.errors, :status => :unprocessable_entity }
-      end
-    end
+#    @annual_goals_report = AnnualGoalsReport.find(:first, :conditions => { :year_id => params[:annual_goals_report][:year_id], :campus_id => params[:annual_goals_report][:campus_id] })
+#
+#    if @annual_goals_report
+#      success_update = true if @annual_goals_report.update_attributes(params[:annual_goals_report])
+#    else
+#      success_update = true if @annual_goals_report = AnnualGoalsReport.new(params[:annual_goals_report])
+#    end
+#
+#    respond_to do |format|
+#      if success_update && @annual_goals_report.save
+#        flash[:notice] = 'Your annual goals were successfully updated.'
+#        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
+#        format.xml  { head :ok }
+#      else
+#        format.html { render :action => "edit" }
+#        format.xml  { render :xml => @annual_goals_report.errors, :status => :unprocessable_entity }
+#      end
+#    end
   end
 
   # DELETE /annual_goals_reports/1
