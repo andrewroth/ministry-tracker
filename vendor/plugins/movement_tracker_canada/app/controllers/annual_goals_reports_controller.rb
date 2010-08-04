@@ -1,6 +1,6 @@
 class AnnualGoalsReportsController < ApplicationController
   unloadable
-
+    
   # GET /annual_goals_reports
   # GET /annual_goals_reports.xml
   def index
