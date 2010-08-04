@@ -1457,11 +1457,17 @@ table .statsTable {
   font-size: small;
 }
 
-div .backLink {
+div .backLink, div .addLink {
   text-align: left;
   float: left;
   width: 100%;
   margin: 0.5em 1em 0.5em 1em;
+}
+
+.addLink a {
+  padding-left: 17px;
+  background-image: url(/images/add.png);
+  background-repeat: no-repeat;
 }
 
 .backLink a {

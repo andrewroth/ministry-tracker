@@ -14,6 +14,8 @@ lines.each do | key, input_stat |
         <%= f.label input_stat[:column], input_stat[:label] %>
         <%= if input_stat[:display_type] == :text_area
               f.text_area input_stat[:column], :size => "20x4"
+            elsif input_stat[:display_type] == :checkbox
+              f.check_box input_stat[:column]
             else
               f.text_field input_stat[:column], :size => 16
             end %>
