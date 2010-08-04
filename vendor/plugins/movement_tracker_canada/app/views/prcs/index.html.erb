@@ -9,6 +9,11 @@
   <div id="indexPRCsContainer" class="statsFormBox">
     <h2 class="statsFormBoxTitle">Manage indicated decision reports</h2>
     <br/>
+		<div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
+		<br/>
+<%
+unless @prcs.empty?
+%>
 		
     <% form_for(@prcs.first) do |f| %>
       <%= f.error_messages %>      
@@ -30,6 +35,11 @@
       </div>
   </div>
   </div>
+<%
+else
+ %> No indicated decision reported <%
+end
+%>
 </div>
 
 <br/>
