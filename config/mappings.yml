@@ -115,6 +115,7 @@ campus:
   state_id: province_id
   desc: campus_desc
   short_desc: campus_shortDesc
+  short_name: campus_shortDesc
   
 cim_hrdb_current_address:
   id: person_id
