@@ -339,7 +339,7 @@
           }
       }, 
         :monthly_p2c_special => {
-          :evang_studies => {:column => :montlyReport_p2c_numInEvangStudies, 
+          :evang_studies => {:column => :montlyreport_p2c_numInEvangStudies, 
             :label => "Number of people in evangelistic studies",
             :collected => :monthly,
             :column_type => :database_column,
