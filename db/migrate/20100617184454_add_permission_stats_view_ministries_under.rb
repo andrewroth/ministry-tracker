@@ -1,7 +1,7 @@
 class AddPermissionStatsViewMinistriesUnder < ActiveRecord::Migration
  NEW_PERMISSIONS = [{ :description => "View stats of ministries under the current ministry involvement", :controller => "stats", :action => "view_ministries_under" }]
 
-  def find_permission(permission)
+  def self.find_permission(permission)
     Permission.find(:first, :conditions => { :controller => permission[:controller], :action => permission[:action] } )
   end
   
