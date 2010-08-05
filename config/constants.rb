@@ -216,48 +216,70 @@
            }
         },
         :indicated_decision_report => {
-            :decision_date => {
-             :column => :prc_date, 
-             :label => "Date:",
+            :campus_id => {
+             :column => :campus_id, 
+             :label => "Campus:",
+             :display_type => :drop_down,
+             :drop_down_data => :campus,
              :collected => :prc,           
              :column_type => :database_column ,
              :order => 0
+           },         
+           :semester_id => {
+             :column => :semester_id, 
+             :label => "Semester",
+             :display_type => :drop_down,
+             :drop_down_data => :semester,
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 1
+           },
+           :decision_date => {
+             :column => :prc_date, 
+             :label => "Date:",
+             :display_type => :date_picker,
+             :collected => :prc,           
+             :column_type => :database_column ,
+             :order => 2
            },       
            :believer_first_name => {
              :column => :prc_firstName, 
              :label => "New believer's first name:",
              :collected => :prc,           
              :column_type => :database_column ,
-             :order => 1
+             :order => 3
            },
            :witness_name => {
              :column => :prc_witnessName, 
              :label => "Witness name:",
              :collected => :prc,
              :column_type => :database_column ,
-             :order => 2
+             :order => 4
            },
            :method => {
              :column => :prcMethod_id, 
              :label => "Method:",
+             :display_type => :drop_down,
+             :drop_down_data => :prc_method,
              :collected => :prc,
              :column_type => :database_column ,
-             :order => 3
+             :order => 5
            },         
            :integrated_believer => {
              :column => :prc_7upCompleted, 
              :label => "Integrated believer?:",
+             :display_type => :checkbox,
              :collected => :prc,
              :column_type => :database_column ,
-             :order => 4
+             :order => 6
            },
            :notes => {
              :column => :prc_notes, 
-             :label => "Notes:",
+             :label => "Story:",
              :display_type => :text_area,
              :collected => :prc,
              :column_type => :database_column ,
-             :order => 5
+             :order => 7
            }           
       }, 
         :monthly_report => {

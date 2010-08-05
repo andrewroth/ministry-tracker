@@ -1,45 +1,43 @@
 <%= javascript_include_tag "prcs.js" %>
 
+<% do_not_show = [:campus_id, :semester_id] %>
+
 <table class="statsTable">
 <tr>
 <%
 lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
+
 lines.each do | key, input_stat |
-  if input_stat[:column_type] == :database_column
+  if input_stat[:column_type] == :database_column && !do_not_show.include?(key)
 %>
-    <th>   	
+    <td  class="statsTableTitle">   	
 			<%=h  input_stat[:label] %>
-    </th>
+    </td>
 <% 
   end 
 end
 %>  
     <th>
-    	edit?
+    	
     </th>
 </tr>
 
 <% @prcs.each do |prc| %>
-  <tr id="<%=dom_id(prc)%>">
+  <tr id="<%=dom_id(prc)%>" class="<%= cycle('highlight', 'nohighlight') %>">
 	 <%
 	lines.each do | key, input_stat |
-	  if input_stat[:column_type] == :database_column
+	  if input_stat[:column_type] == :database_column && !do_not_show.include?(key)
 	%>
 	      <td>
-	        <%=h  prc.attributes[input_stat[:column].to_s] %>
+	        <%=h show_data(prc, input_stat) %>
 	      </td>
 	<%
 	  end
 	end
 	%>
 		<td><%= # link_to 'x', url_for(:controller => :stats, :action => :edit, :prc => prc ) 
-         %>
-		    <%= link_to_remote 'x',
-		        :url => { :controller => :prcs, :action => 'edit', :id => prc.id },
-		        :update => 'prcIndexFields',
-		        :method => :get,
-		        :before => "beginLoadingPrcInputTab",
-		        :complete => "completeLoadingPrcInputTab" %>
+         %><div class="butUpdate">
+		    <%= link_to 'Edit', url_for(:controller => :prcs, :action => 'edit', :id => prc.id) %></div>
 		</td>
 
  </tr>

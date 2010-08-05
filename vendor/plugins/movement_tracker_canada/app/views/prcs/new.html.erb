@@ -1,7 +1,6 @@
-<%= javascript_include_tag "prcs.js" %>
 
 <h1 id="statsTitle">Measurements</h1>
-<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :prcs, :action => :index) %></div>
 
 <br/>
 
@@ -9,23 +8,6 @@
   <div id="newPRCFormContainer" class="statsFormBox">
     <h2 class="statsFormBoxTitle">Submit indicated decision report</h2>
     <br/>
-    <% form_for(@prc) do |f| %>
-      <%= f.error_messages %>
-      <table>
-        <tr class="statsFormField">
-          <td><%= f.label :campus, "Campus:" %></td>
-          <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingPrcInputTab()"} %></td>
-        </tr>
-        <tr class="statsFormField">
-          <td><%= f.label :semester, "Semester:" %></td>
-          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingPrcInputTab()"} %></td>
-        </tr>	
-				<tr class="statsFormField">
-				  <td><%= f.label :date, "Date:" %></td>
-          <td><%= f.date_select :date, {:onChange => "beginLoadingPrcInputTab()"} %></td>	
-				</tr>
-     </table>
-    <% end %>
   <div id="inputFields" class="inputsContainer">
     <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
       <div id="prcInputFields" class="reportInputContainer">
@@ -36,4 +18,4 @@
 </div>
 
 <br/>
-<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :prcs, :action => :index) %></div>

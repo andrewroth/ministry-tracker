@@ -1,5 +1,5 @@
   <ul class="statsLinkList">
-    <% if false #authorized?("new", "prcs") %>
+    <% if authorized?("new", "prcs") %>
       <li class="statsListLink"><%= link_to "Manage your indicated decision reports", url_for(:controller => :prcs, :action => :index) %></li>
     <% end %>  	
     <% if authorized?("new", "weekly_reports") %>

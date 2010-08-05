@@ -1,7 +1,7 @@
 <%= javascript_include_tag "prcs.js" %>
 
 <h1 id="statsTitle">Measurements</h1>
-<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Back to insights home', url_for(:controller => :stats, :action => :index) %></div>
 
 <br/>
 
@@ -9,8 +9,7 @@
   <div id="indexPRCsContainer" class="statsFormBox">
     <h2 class="statsFormBoxTitle">Manage indicated decision reports</h2>
     <br/>
-		<div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
-		<br/>
+<br/><br/>
 <%
 unless @prcs.empty?
 %>
@@ -28,21 +27,25 @@ unless @prcs.empty?
 	      </tr> 
 	   </table>
     <% end %>
-  <div id="indexFields" class="indexContainer">
-    <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
-      <div id="prcIndexFields" class="reportIndexContainer">
-      <%= show_index_entries(@prcs) %>     
-      </div>
   </div>
-  </div>
+</div>
+<div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
+<br/><br/>
+<div id="results">
+	<div id="indexFields" class="statsContainer">
+	  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+	    <div id="prcIndexFields" class="statsReportTabContainer statsTabContainerActive" style="display:block;">
+	    <%= show_index_entries(@prcs) %>     
+	    </div>
+	</div>
+</div>
 <%
 else
  %> No indicated decision reported <%
 end
 %>
-</div>
 
 <br/>
-<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Back to insights home', url_for(:controller => :stats, :action => :index) %></div>
 
 

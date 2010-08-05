@@ -51,7 +51,12 @@ class PrcsController < ApplicationController
   # GET /prcs/1/edit
   def edit
     @prc = Prc.find(params[:id])
-    render :layout => false
+    setup_campuses_and_semesters
+
+    respond_to do |format|
+      format.html # edit.html.erb
+      format.xml  { render :xml => @prc }
+    end
   end
   
   # POST /prcs
@@ -119,13 +124,20 @@ class PrcsController < ApplicationController
       if success_update
         @prc.save!
         flash[:notice] = 'Your indicated decision report was successfully submitted.'
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
+        format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def setup_campuses_and_semesters()
+    @semesters = Semester.all(:order => :semester_startDate)  
+
+    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    
   end
   
   def setup_for_record(semester_id, campus_id, date)
@@ -137,9 +149,7 @@ class PrcsController < ApplicationController
     @prc.campus_id = campus_id
     @prc.prc_date = date
     
-    @semesters = Semester.all(:order => :semester_startDate)  
-
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    setup_campuses_and_semesters
     
     @methods = Prcmethod.all()
     

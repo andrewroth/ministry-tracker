@@ -2,9 +2,6 @@
     <% form_for(prc) do |f| %>
       <%= f.error_messages %>
 			<%= f.hidden_field :id %>
-      <%= f.hidden_field :campus_id %>
-      <%= f.hidden_field :semester_id %>
-      <%= f.hidden_field :prc_date %>
  <%
 lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
 lines.each do | key, input_stat |
@@ -14,8 +11,23 @@ lines.each do | key, input_stat |
         <%= f.label input_stat[:column], input_stat[:label] %>
         <%= if input_stat[:display_type] == :text_area
               f.text_area input_stat[:column], :size => "20x4"
+
+            elsif input_stat[:display_type] == :date_picker
+              f.date_select input_stat[:column]
+
             elsif input_stat[:display_type] == :checkbox
               f.check_box input_stat[:column]
+
+            elsif input_stat[:display_type] == :drop_down
+
+              if input_stat[:drop_down_data] == :campus
+                f.collection_select :campus_id, @campuses, :campus_id, :campus_desc
+              elsif input_stat[:drop_down_data] == :semester
+                f.collection_select :semester_id, @semesters, :semester_id, :semester_desc
+              elsif input_stat[:drop_down_data] == :prc_method
+                f.select input_stat[:column], Prcmethod.all.collect {|p| [ p.prcMethod_desc, p.prcMethod_id ] }
+              end
+              
             else
               f.text_field input_stat[:column], :size => 16
             end %>
