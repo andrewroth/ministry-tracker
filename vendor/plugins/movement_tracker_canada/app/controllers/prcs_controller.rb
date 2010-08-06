@@ -1,15 +1,13 @@
 class PrcsController < ApplicationController
   unloadable
 
+  skip_before_filter :authorization_filter, :only => [:refresh_prc_index]
+
   # GET /prcs
   # GET /prcs.xml
   def index
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    cur_month_id = Month.find_semester_id(cur_month)
-    
-    semester_id = cur_month_id    
-    
-    setup_for_index(semester_id)
+   
+    setup_for_index(active_data(:semester_id), active_data(:campus_id))
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,15 +30,13 @@ class PrcsController < ApplicationController
   # GET /prcs/new
   # GET /prcs/new.xml
   def new
-  
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    cur_month_id = Month.find_semester_id(cur_month)
+    @prc = Prc.new
+          
+    @prc.semester_id = active_data(:semester_id)
+    @prc.campus_id = active_data(:campus_id)
+    @prc.prc_date = default_date
     
-    semester_id = cur_month_id   
-    campus_id = get_ministry.unique_campuses.first.id   #NEW!    
-    date = Date.today()
-
-    setup_for_record(semester_id, campus_id, date)
+    setup_campuses_and_semesters
 
     respond_to do |format|
       format.html # new.html.erb
@@ -51,6 +47,7 @@ class PrcsController < ApplicationController
   # GET /prcs/1/edit
   def edit
     @prc = Prc.find(params[:id])
+
     setup_campuses_and_semesters
 
     respond_to do |format|
@@ -98,7 +95,7 @@ class PrcsController < ApplicationController
   end
   
   def refresh_prc_index
-    setup_for_index(params['semester_id'])
+    setup_for_index(params['semester_id'], params['campus_id'])
   
     respond_to do |format|
       format.js
@@ -109,10 +106,7 @@ class PrcsController < ApplicationController
   protected
   
   def create_or_update
-    @prc = Prc.find(:first, :conditions => { :prc_id => params[:prc][:id] } )
-                                           #  :semester_id => params[:prc][:semester_id], 
-                                           #  :campus_id => params[:prc][:campus_id], 
-                                           #  :prc_date => params[:prc][:date] })  
+    @prc = Prc.find(params[:prc][:id]) unless params[:prc][:id].nil? || params[:prc][:id] == ''
   
     if @prc
       success_update = true if @prc.update_attributes(params[:prc])
@@ -123,6 +117,8 @@ class PrcsController < ApplicationController
     respond_to do |format|
       if success_update
         @prc.save!
+        set_active_data(:semester_id, @prc.semester_id)
+        set_active_data(:campus_id, @prc.campus_id)
         flash[:notice] = 'Your indicated decision report was successfully submitted.'
         format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
@@ -135,15 +131,16 @@ class PrcsController < ApplicationController
   
   def setup_campuses_and_semesters()
     @semesters = Semester.all(:order => :semester_startDate)  
-
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
-    
+    @campuses = user_campuses
+    @methods = Prcmethod.all()
   end
   
   def setup_for_record(semester_id, campus_id, date)
     
-    @prc = Prc.find(:first, :conditions => { :semester_id => semester_id, :campus_id => campus_id, :prc_date => date })  
-    @prc ||= Prc.new
+    set_active_data(:semester_id, semester_id)
+    set_active_data(:campus_id, campus_id)
+    
+    @prc = Prc.new
           
     @prc.semester_id = semester_id
     @prc.campus_id = campus_id
@@ -151,23 +148,82 @@ class PrcsController < ApplicationController
     
     setup_campuses_and_semesters
     
-    @methods = Prcmethod.all()
-    
   end 
   
-  def setup_for_index(semester_id)
-    
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
-    campus_id = @campuses.first().id
+  def setup_for_index(semester_id, campus_id)
+    set_active_data(:semester_id, semester_id)
+    set_active_data(:campus_id, campus_id)
     
     @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
-    @prcs ||= Prc.all
-    
-    @semesters = Semester.all(:order => :semester_startDate)  
-
-    
-    @methods = Prcmethod.all()
-    
+    if @prcs.empty?
+      prc = Prc.new      
+      prc.semester_id = active_data(:semester_id)
+      prc.campus_id = active_data(:campus_id)
+      @prcs = [prc]
+      @no_prc = true
+    else
+      @no_prc = false
+    end
+    setup_campuses_and_semesters
   end  
+
+  def user_campuses
+    @user_campuses ||= @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+  end
+
+  #used to define default values
+  def key_data
+    @key_data ||= { :semester_id => current_semester_id, :campus_id => default_campus_id }
+  end
+
+  #set the context that the user has chosen
+  def set_active_data(key, value)
+    @active_data ||= {}
+    @active_data[key] = value
+    session[key] = value
+  end
+
+  #used to get the context the user has chosen
+  def active_data(key)
+    @active_data ||= {}
+    unless @active_data[key]
+      if session[key].present?
+        @active_data[key] = session[key]
+      else
+        @active_data[key] = key_data[key]
+        session[key] = @active_data[key]
+      end
+    end
+    @active_data[key]
+  end
+
+  def active_semester
+    @active_semester ||= Semester.find(active_data(:semester_id))
+  end
+
+  def default_date
+    result = nil
+    if Time.now <= active_semester.end_date && Time.now >= active_semester.start_date
+      result = Date.today
+    end
+    result    
+  end
+
+  #default value for the semester_id
+  def current_semester_id
+    unless @current_semester_id
+      cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
+      @current_semester_id = Month.find_semester_id(cur_month)   
+    end
+    @current_semester_id
+  end
+  
+  #default value for the campus_id
+  def default_campus_id
+    unless @default_campus_id || user_campuses.nil? || user_campuses.empty?
+      @default_campus_id = user_campuses.first().id        
+    end
+    @default_campus_id
+  end
   
 end

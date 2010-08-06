@@ -10,9 +10,6 @@
     <h2 class="statsFormBoxTitle">Manage indicated decision reports</h2>
     <br/>
 <br/><br/>
-<%
-unless @prcs.empty?
-%>
 		
     <% form_for(@prcs.first) do |f| %>
       <%= f.error_messages %>      
@@ -30,7 +27,7 @@ unless @prcs.empty?
   </div>
 </div>
 <div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
-<br/><br/>
+<br/>
 <div id="results">
 	<div id="indexFields" class="statsContainer">
 	  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
@@ -39,11 +36,6 @@ unless @prcs.empty?
 	    </div>
 	</div>
 </div>
-<%
-else
- %> No indicated decision reported <%
-end
-%>
 
 <br/>
 <div class="backLink"><%= link_to 'Back to insights home', url_for(:controller => :stats, :action => :index) %></div>

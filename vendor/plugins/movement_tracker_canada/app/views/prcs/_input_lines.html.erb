@@ -25,7 +25,7 @@ lines.each do | key, input_stat |
               elsif input_stat[:drop_down_data] == :semester
                 f.collection_select :semester_id, @semesters, :semester_id, :semester_desc
               elsif input_stat[:drop_down_data] == :prc_method
-                f.select input_stat[:column], Prcmethod.all.collect {|p| [ p.prcMethod_desc, p.prcMethod_id ] }
+                f.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc
               end
               
             else
