@@ -204,10 +204,10 @@
            }
       },
       :indicated_decisions_report => {
-           :blank_line => {
-             :column_type => :blank_line ,
-             :order => 0
-           },
+#           :blank_line => {
+#             :column_type => :blank_line ,
+#             :order => 0
+#           },
            :indicated_decisions => {
              :label => "Indicated Decisions:",
              :collected => :prc,

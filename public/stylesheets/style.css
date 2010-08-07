@@ -1191,6 +1191,10 @@ div.choose_ministry_tree {
   float: left;
 }
 
+#formHeading {
+	text-align: center;
+}
+
 .campusSemesterStats {
   margin: 3em 0 3em 0;
   padding: 3em;
@@ -1201,13 +1205,13 @@ div.choose_ministry_tree {
 }
 
 .statsFormBox {
-  margin: 1em;
+  margin: 0;
   padding: 0.7em;
   text-align: left;
   background-color: #F7F7F7;
   border: 2px solid white;
-  -moz-border-radius: 60px;
-  -webkit-border-radius: 60px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
   -moz-box-shadow: 0 0 10em white inset;
   -webkit-box-shadow: 0 0 10em white inset;
 }
@@ -1252,9 +1256,9 @@ div .statsSelectContainer {
 }
 
 div .statsRadioButton {
-  width: 11em;
   float: left;
   text-align: left;
+	margin-left: 2em;
 }
 
 .statsRadioButton input {
@@ -1278,8 +1282,16 @@ div .statsRadioButton {
 }
 
 #statsRadioButtonContainer {
-  width: 22em;
+  width: 33em;
   margin: 0.8em auto 0 auto;
+}
+
+#statsLinkBox h3 {
+	border-bottom: 1px dotted #1F429B;
+}
+
+ul.statsLinkList {
+	margin: 0 0 5px 0;
 }
 
 .statsSpinner {
@@ -1322,8 +1334,7 @@ div .statsRadioButton {
 
 .statsContainer {
   width: 65em;
-  margin-left: auto;
-  margin-right: auto;
+	margin: 10px auto 0 auto;
   text-align: center;
 }
 
