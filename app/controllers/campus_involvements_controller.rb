@@ -184,7 +184,7 @@ class CampusInvolvementsController < ApplicationController
   end
 
   def set_student
-    @staff = @person.is_staff_somewhere?
+    @staff = @person.is_staff_somewhere?(false) # disable hrdb check in this case
     @student = !@staff
   end
 
