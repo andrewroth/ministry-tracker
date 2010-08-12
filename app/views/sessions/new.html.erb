@@ -1,7 +1,9 @@
 <CENTER>
   <BR/>
-  <h2><%= link_to "Signup for a group (no login required)", signup_url %></h2>
+  <%= link_to image_tag("signup.png"), signup_url %>
   <BR/>
+  <BR/>
+  <%= link_to image_tag("signin.png"), CASClient::Frameworks::Rails::Filter.login_url(controller) %>
 </CENTER>
 <%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
 <%- if Cmt::CONFIG[:gcx_greenscreen_from_link] -%>
