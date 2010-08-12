@@ -78,12 +78,11 @@ Step 3: Enter your timetable here.  This step is optional - if you don't have yo
     :url => (@signup ? update_signup_person_timetable_url(@person, @timetable) : person_timetable_url(@person, @timetable)),
     :html => {:onsubmit => "set_times_field()"} do |f| -%>
     <%= hidden_field_tag :times %>
+    <%- unless @signup -%>
     <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
-    <%- if @signup -%>
-    <%= f.submit 'Edit Timetable Later', :class => 'action-button', :style => ('margin-left: 12px' if @signup) %>
+    <br/>
+    <br/>
     <%- end %>
-    <br/>
-    <br/>
 
     Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:<br/>
 
@@ -102,6 +101,9 @@ Step 3: Enter your timetable here.  This step is optional - if you don't have yo
 
     <br/>
     <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
+    <%- if @signup -%>
+    <%= f.submit 'Edit Timetable Later', :class => 'action-button', :style => 'margin-left: 12px' %>
+    <%- end %>
   <%- end -%><br/>
 <%- else -%>
   Nothing to see here. Please move on.
