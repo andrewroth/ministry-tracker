@@ -32,7 +32,34 @@ class UserMailer < ActionMailer::Base
     @sent_on     = Time.now
     @body[:link] = link
   end
-  # 
+
+  def group_join_email(requested, interested, group_name, leader_first_name, leader_email, 
+                       member_first_name, member_last_name, member_email, member_phone, 
+                       join_time, school_year, group_link)
+    @recipients  = leader_email
+    @from        = Cmt::CONFIG[:email_from_address]
+    if requested
+      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a student requesting to join!"
+    elsif interested
+      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a student interested in it!"
+    else
+      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a new member!"
+    end
+    @sent_on     = Time.now
+    @body[:requested] = requested
+    @body[:interested] = interested
+    @body[:group_name] = group_name
+    @body[:leader_first_name] = leader_first_name
+    @body[:member_first_name] = member_first_name
+    @body[:member_last_name] = member_last_name
+    @body[:member_email] = member_email
+    @body[:member_phone] = member_phone
+    @body[:join_time] = join_time
+    @body[:school_year] = school_year
+    @body[:group_link] = group_link
+  end
+
+   # 
   # def created_staff(person, ministry, added_by, password = nil)
   #   created(person, ministry, added_by, password)
   # end

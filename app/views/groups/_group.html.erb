@@ -52,9 +52,9 @@
   <%= 
       link = authorized?(:show, :people)
       involvements.map{ |i| 
-        if link
+        if link && i.person.present?
           link_to(i.person.full_name, person_url(i.person.id))
-        else
+        elsif i.person.present?
           i.person.full_name
         end
       }.join(', ')
