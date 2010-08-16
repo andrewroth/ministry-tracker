@@ -35,7 +35,7 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
   :address => 'smtp.powertochange.local',
   :domain => 'powertochange.local'
-}
+} if Common::STAGE == "prod" && Common::SERVER == "c4c"
 
 # ExceptionNotifier.configure_exception_notifier do |config|
 #   config[:exception_recipients] = ['andrewroth@gmail.com', 'josh.starcher@gmail.com']
