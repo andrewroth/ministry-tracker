@@ -2,7 +2,11 @@
 class Group < ActiveRecord::Base
   load_mappings
 
-  LEVELS = [ 'leader', 'co-leader', 'member', 'interested' ]
+  LEADER = 'leader'
+  CO_LEADER = 'co-leader'
+  MEMBER = 'member'
+  INTERESTED = 'interested'
+  LEVELS = [ LEADER, CO_LEADER, MEMBER, INTERESTED ]
   LEVEL_TITLES = [ 'Leader', 'Co Leader', 'Member', 'Interested' ]
 
   def self.promote(level)
