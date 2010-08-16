@@ -10,27 +10,29 @@ class UserMailer < ActionMailer::Base
   end
   
   def confirm_email(email)
-    @recipients  = "#{email}"
+    @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email confirmation code"
-    @sent_on     = Time.now
-    @body[:code] = User.secure_digest(email)
+    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Email confirmation code"
+    @sent_on      = Time.now
+    @body[:code]  = User.secure_digest(email)
   end
 
   def signup_finished_email(email, link)
-    @recipients  = "#{email}"
+    @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
-    @sent_on     = Time.now
-    @body[:link] = link
+    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
+    @sent_on      = Time.now
+    @content_type = "text/html"
+    @body[:link]  = link
   end
 
   def signup_confirm_email(email, link)
-    @recipients  = "#{email}"
+    @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Your Pulse verify email"
-    @sent_on     = Time.now
-    @body[:link] = link
+    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Your Pulse verify email"
+    @sent_on      = Time.now
+    @content_type = "text/html"
+    @body[:link]  = link
   end
 
   def group_join_email(requested, interested, group_name, leader_first_name, leader_email, 
