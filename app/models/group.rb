@@ -28,6 +28,10 @@ class Group < ActiveRecord::Base
   has_many :requesters, :class_name => 'Person', :through => :group_involvements
   has_many :requests, :class_name => 'GroupInvolvement', :conditions => { :requested => true }
 
+  has_one :campus_ministry_group
+
+  after_save :update_collection_groups
+
   def is_leader(p) in_association(leaders, p) end
   def is_co_leader(p) in_association(co_leaders, p) end
   def is_member(p) in_association(members, p) end
@@ -36,5 +40,23 @@ class Group < ActiveRecord::Base
 
   def in_association(a, p)
     a.include?(p)
+  end
+
+  def derive_name(line = group_type.try(:collection_group_name))
+    self[:name] = line.gsub("{{campus}}", campus.try(:name)).gsub("{{group_type}}", group_type.group_type)
+  end
+
+  def derive_ministry
+    self.ministry = campus.try(:derive_ministry)
+  end
+
+  def update_collection_groups
+    if campus_ministry_group
+      derive_name
+    end
+  end
+
+  def is_collection_group
+    campus_ministry_group.present?
   end
 end

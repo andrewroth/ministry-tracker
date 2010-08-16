@@ -106,6 +106,10 @@ class CampusInvolvementsController < ApplicationController
 
   # record the mi history as well
   def update_student_campus_involvement
+    # TODO: this has been refactored into CampusInvolvement#update_student_campus_involvement. 
+    # However, in the intereste of not breaking things, I'll leave it how it is here until I
+    # have time to move it and test it thoroughly. -AR June 24, 2010
+    #
     @student = true
     @campus_ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     # restrict students to making ministry involvements of their role or less
@@ -145,7 +149,6 @@ class CampusInvolvementsController < ApplicationController
     unless @campus_involvement.errors.empty?
       set_roles
     end
-    logger.info "@campus_involvement.object_id = #{@campus_involvement.object_id}"
   end
 
   def set_campuses

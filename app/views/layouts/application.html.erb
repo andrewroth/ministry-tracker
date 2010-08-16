@@ -35,7 +35,7 @@
 
 		<div id="wrapper">
       
-		  <% if logged_in? %>
+		  <% if logged_in? && @me && !@custom_userbar_title%>
 		  <div id="userbar">
     		<% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
 	  	    <a href="#" class="logoutbutton" onclick="try {
@@ -61,7 +61,7 @@
 			<%- else -%>
 		  <div id="userbar">
 				<div id="userblock">
-          <div id="username"><%= I18n.t(:please_login, :default => 'Please Login') %></div>
+          <div id="username"><%= @custom_userbar_title || I18n.t(:please_login, :default => 'Please Login') %></div>
 		    </div>
   			<div class="clear"></div>
 			</div>
@@ -74,6 +74,7 @@
 			
 			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
 			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
+      <div id="instructions" class="flash_notice notice" style="display:none;"></div> 
 			
 			<div id="content">
 				<%= yield %>

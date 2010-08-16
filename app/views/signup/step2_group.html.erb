@@ -1,0 +1,30 @@
+<% instruction_block do %>
+Step 2: Join a group.  Would you like to...
+<% end %>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 2 } %>
+</center>
+
+<DIV class="center"><%= link_to_function "Join an existing group", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
+
+<DIV id="groups_list" style="display:none">
+  <BR/>
+
+  <DIV style="clear:both" class="center">
+    <%= link_to "Next", { :action => "step3_timetable" }, :class => "action-button" %>
+  </DIV>
+  <%= render :partial => "groups/groups_for_ministry" %>
+  <DIV style="clear:both" class="center">
+    <%= link_to "Next", { :action => "step3_timetable" }, :class => "action-button" %>
+  </DIV>
+</DIV>
+
+<BR/>
+
+<DIV style="clear:both" class="center"><%= link_to "Just put me in a group", { :action => "step2_default_group" }, :class => "action-button" %></DIV>
+
+<BR/>
+
+<DIV style="clear:both" class="center"><%= link_to "Back", { :action => "step1_info" }, :class => "action-button" %></DIV>
+

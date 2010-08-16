@@ -983,7 +983,7 @@ padding-bottom:5px;
 
 /* ************* */
 /* Flash Notices */
-#flash_notice {
+#flash_notice, .flash_notice {
 margin:10px;
 padding:10px;
 background:#fff7d2;
@@ -1101,3 +1101,55 @@ div.choose_ministry_tree {
 #clear_timetable {
   float: right;
 }
+
+#new_person th {
+  width: 12em;
+  min-width: 12em;
+  max-width: 12em;
+}
+
+#new_person tr {
+  height: 2em;
+  vertical-align: top;
+}
+
+.progress-label {
+  height: 16px;
+}
+
+.progress-done {
+  background-color: #D2FFF7;
+}
+
+.current-progress {
+  border-right: 1px solid;
+}
+
+#progress-table tr.bar {
+  height: 10px;
+}
+
+#progress-table {
+  margin-bottom: 10px;
+  border: 0px solid #CCCCCC;
+}
+
+.progress-label td {
+  border-bottom: 1px solid #999999;
+}
+
+.progress-bottom td {
+  border-top: 1px solid #999999;
+}
+
+#progress-table tr.progress-bottom {
+  height: 10px;
+}
+
+#progress-table tr.bar td:first-child {
+  border-left: 1px solid #999999;
+}
+#progress-table tr.bar td:last-child {
+  border-right: 1px solid #999999;
+}
+

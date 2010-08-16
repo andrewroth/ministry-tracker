@@ -1,0 +1,55 @@
+<% instruction_block do %>
+Step 1: Please fill out your info and click next.  <% if logged_in? %><STRONG>Please note that you’re currently logged in as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you.</STRONG><% end %>
+<BR/>
+<BR/>
+All fields are required for sign up.
+<% end %>
+
+<center>
+  <%= render :partial => 'progress', :locals => { :step => 1 } %>
+</center>
+
+<%- if logged_in? %>
+<DIV class="center">
+  <P>
+  <%= link_to "Start Again", logout_url, :class => 'action-button' %>
+  </P>
+</DIV>
+<%- end -%>
+<%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
+  <%= f.error_messages %>
+  <table>
+  <tr>
+    <td>First Name: </td>
+    <td><%= f.text_field :first_name %></td>
+  </tr>
+  <tr>
+    <td>Last Name: </td>
+    <td><%= f.text_field :last_name %></td>
+  </tr>
+  <%- unless logged_in? %>
+  <tr>
+    <td>Email </td>
+    <td><%= f.text_field :email %></td>
+  </tr>
+  <%- end %>
+  <tr>
+    <td>Gender: </td>
+    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => "" %></td>
+  </tr>
+  <tr>
+    <td>Phone: </td>
+    <td><%= f.text_field :local_phone %></td>
+  </tr>
+  <%= render :partial => 'people/primary_campus_involvement', :locals => { 
+       :hide_grad_date => true, :hide_major => true, :hide_minor => true,
+       :no_table => true, :hide_campus => false
+      }
+    %>
+  </table>
+
+  <div class="center">
+  <%= submit_tag "Next", :class => 'action-button' %>  
+  </div>
+
+<%- end -%>

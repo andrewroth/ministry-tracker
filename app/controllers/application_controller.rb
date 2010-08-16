@@ -22,17 +22,28 @@ class ApplicationController < ActionController::Base
 		
   case
   when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen_directly]
-    before_filter CASClient::Frameworks::Rails::Filter
+    #before_filter CASClient::Frameworks::Rails::Filter
+    before_filter :cas_filter
   when Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:gcx_greenscreen_from_link]
-    before_filter CASClient::Frameworks::Rails::GatewayFilter 
+    #before_filter CASClient::Frameworks::Rails::GatewayFilter 
+    before_filter :cas_gateway_filter
   end unless Rails.env.test?
    # before_filter :fake_login
+
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
   
   helper :all
 
-  #protected
+  protected
+    def cas_filter
+      CASClient::Frameworks::Rails::Filter.filter(self)
+    end
+
+    def cas_gateway_filter
+      CASClient::Frameworks::Rails::GatewayFilter.filter(self)
+    end
+
     def fake_login
       self.current_user = User.find(Person.find(50195).user_id)
     end
@@ -417,5 +428,17 @@ class ApplicationController < ActionController::Base
         return false
       end
       true
+    end
+
+    def base_url
+      if request.port != 80
+        request.protocol + request.host_with_port
+      else
+        request.protocol + request.host
+      end
+    end
+
+    def self.skip_standard_login_stack(additional_params = {})
+      skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
     end
 end

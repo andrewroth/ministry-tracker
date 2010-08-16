@@ -1,12 +1,12 @@
 <% gi = @my.group_involvements.find_by_group_id(group.id) %>
 
 <h2><%= 
-  if authorized?(:show, :groups) 
+  if !@signup && authorized?(:show, :groups) 
     link_to(group.name, group_url(group), :method => :get)
   else
     "<b>#{group.name}</b>"
   end
--%> <%- if !@join && authorized?(:new, :groups) -%>
+-%> <%- if !@join && !@signup && authorized?(:new, :groups) -%>
   &nbsp <%= link_to_remote image_tag('delete.png'), 
   						:url => {:action => :destroy, :id => group.id}, 
   						:method => :delete,
@@ -25,7 +25,7 @@
 <%- else -%>
   <%- if @join -%>
     <%= link_to_remote 'Join', 
-      :url => { :action => 'joingroup', :controller => 'group_involvements', 
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
         :person_id => @person.id,
         :group_id => group.id,
         :level => 'member'
@@ -34,7 +34,7 @@
     %>
     or
     <%= link_to_remote 'Interested', 
-      :url => { :action => 'joingroup', :controller => 'group_involvements', 
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
         :gt_id => group.group_type.id,
         :person_id => @person.id,
         :group_id => group.id,
@@ -47,7 +47,7 @@
 <br />
 
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
-<%- unless involvements.empty? -%>
+<%- unless @signup || @join || involvements.empty? -%>
   &nbsp &nbsp <b>Members:</b>  
   <%= 
       link = authorized?(:show, :people)
@@ -63,7 +63,7 @@
 <%- end -%>
 
 <% involvements = group.group_involvements.select{|gi| (gi.requested.nil? || gi.requested == false) && gi.level == 'interested'}%>
-<%- unless involvements.empty? -%>
+<%- unless @signup || @join || involvements.empty? -%>
   &nbsp &nbsp <b>Interested:</b>
   <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />

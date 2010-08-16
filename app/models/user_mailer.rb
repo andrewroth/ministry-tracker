@@ -11,10 +11,26 @@ class UserMailer < ActionMailer::Base
   
   def confirm_email(email)
     @recipients  = "#{email}"
-    from         = Cmt::CONFIG[:email_from_address]
+    @from         = Cmt::CONFIG[:email_from_address]
     @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email confirmation code"
     @sent_on     = Time.now
     @body[:code] = User.secure_digest(email)
+  end
+
+  def signup_finished_email(email, link)
+    @recipients  = "#{email}"
+    @from         = Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
+    @sent_on     = Time.now
+    @body[:link] = link
+  end
+
+  def signup_confirm_email(email, link)
+    @recipients  = "#{email}"
+    @from         = Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Your Pulse verify email"
+    @sent_on     = Time.now
+    @body[:link] = link
   end
   # 
   # def created_staff(person, ministry, added_by, password = nil)
@@ -24,7 +40,7 @@ class UserMailer < ActionMailer::Base
   protected
   def created(person, ministry, added_by, password)
     @recipients  = person.user.username
-    from         = Cmt::CONFIG[:email_from_address]
+    @from         = Cmt::CONFIG[:email_from_address]
     @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} An account has been created for you"
     @sent_on     = Time.now
     @body[:person] = person
