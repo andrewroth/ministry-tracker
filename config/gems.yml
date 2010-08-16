@@ -12,6 +12,7 @@
 - :name: spreadsheet
 - :name: liquid
 - :name: jrails
+- :name: daemon
 - :name: will_paginate
 - :version: 2.3.5
   :name: rails
