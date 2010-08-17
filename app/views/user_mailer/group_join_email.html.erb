@@ -13,7 +13,7 @@ end -%> <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% en
 <%- if @requested -%>
   <P>You can accept <%= @member_first_name %>'s request to <%= @group_name %> <%= link_to "here", @group_link %></P>
 <%- elsif @interested -%>
-A person who marks a group ‘Interested’ usually means person is not too sure if this is the right group for them.   If person is right for your group, you can accept their request <%= link_to "here", @group_link %> and use the ‘Move’ button to move them to be a member.  Similarly, if person is interested in the wrong group, you can remove them from your group by checking their name and hitting the ‘Remove’ button.
+<P>A person who marks a group ‘Interested’ usually means person is not too sure if this is the right group for them.   If person is right for your group, you can accept their request <%= link_to "here", @group_link %> and use the ‘Move’ button to move them to be a member.  Similarly, if person is interested in the wrong group, you can remove them from your group by checking their name and hitting the ‘Remove’ button.</P>
 <%- else -%>
   <P>You can view and edit <%= @group_name %> <%= link_to "here", @group_link %>.</P>
 <%- end -%>
