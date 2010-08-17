@@ -147,7 +147,22 @@
            :label => "Total people doing other full time ministry",
             :collected => :semesterly,
             :column_type => :database_column,
-            :order => 5}
+            :order => 5}, 
+          :students_attending_summit => {:column => :semesterreport_studentsSummit, 
+           :label => "Students attending Summit",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 6}, 
+          :students_going_to_wc => {:column => :semesterreport_studentsWC, 
+           :label => "Students going to Winter Conference",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 7}, 
+          :students_going_to_projects => {:column => :semesterreport_studentsProjects, 
+           :label => "Students going to projects",
+            :collected => :semesterly,
+            :column_type => :database_column,
+            :order => 8}
       }, 
         :weekly_report => {
            :spirit_conversations => {:column => :weeklyReport_1on1SpConv, 
