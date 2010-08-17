@@ -1,0 +1,22 @@
+<HTML>
+  <P><%= @leader_first_name %>,</P>
+
+  <P><%= @member_first_name %> <%= @member_last_name %> has <%= 
+if @requested 
+  "requested to join"
+elsif @interested 
+  "marked interest in"
+else 
+  "joined"
+end -%> <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %><%= @member_first_name %> is a <%= @school_year %> student and <% else %>Their <% end %>contact info is <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
+
+<%- if @requested -%>
+  <P>You can accept <%= @member_first_name %>'s request to <%= @group_name %> <%= link_to "here", @group_link %></P>
+<%- elsif @interested -%>
+<P>A person who marks a group ‘Interested’ usually means person is not too sure if this is the right group for them.   If person is right for your group, you can accept their request <%= link_to "here", @group_link %> and use the ‘Move’ button to move them to be a member.  Similarly, if person is interested in the wrong group, you can remove them from your group by checking their name and hitting the ‘Remove’ button.</P>
+<%- else -%>
+  <P>You can view and edit <%= @group_name %> <%= link_to "here", @group_link %>.</P>
+<%- end -%>
+
+  <P>Thank you for using the Pulse!</P>
+</HTML>

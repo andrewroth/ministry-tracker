@@ -2,42 +2,30 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'rubygems'
 require 'spec'
-require 'active_record'
+require 'logger'
+
+gem 'activerecord', ENV['RAILS_VERSION'] if ENV['RAILS_VERSION']
+
 require 'delayed_job'
-
-logger = Logger.new('/tmp/dj.log')
-ActiveRecord::Base.logger = logger
-Delayed::Worker.logger = logger
-ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
-ActiveRecord::Migration.verbose = false
-
-ActiveRecord::Schema.define do
-
-  create_table :delayed_jobs, :force => true do |table|
-    table.integer  :priority, :default => 0
-    table.integer  :attempts, :default => 0
-    table.text     :handler
-    table.string   :last_error
-    table.datetime :run_at
-    table.datetime :locked_at
-    table.string   :locked_by
-    table.datetime :failed_at
-    table.timestamps
-  end
-
-  create_table :stories, :force => true do |table|
-    table.string :text
-  end
-
-end
-
-# Purely useful for test cases...
-class Story < ActiveRecord::Base
-  def tell; text; end       
-  def whatever(n, _); tell*n; end
-  
-  handle_asynchronously :whatever
-end
-
 require 'sample_jobs'
-require 'shared_backend_spec'
+
+Delayed::Worker.logger = Logger.new('/tmp/dj.log')
+RAILS_ENV = 'test'
+
+# determine the available backends
+BACKENDS = []
+Dir.glob("#{File.dirname(__FILE__)}/setup/*.rb") do |backend|
+  begin
+    backend = File.basename(backend, '.rb')
+    require "setup/#{backend}"
+    require "backend/#{backend}_job_spec"
+    BACKENDS << backend.to_sym
+  rescue Exception
+    puts "Unable to load #{backend} backend: #{$!}"
+  end
+end
+
+Delayed::Worker.backend = BACKENDS.first
+
+# Add this directory so the ActiveSupport autoloading works
+ActiveSupport::Dependencies.load_paths << File.dirname(__FILE__)
