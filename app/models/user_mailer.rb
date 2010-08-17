@@ -38,6 +38,7 @@ class UserMailer < ActionMailer::Base
   def group_join_email(requested, interested, group_name, leader_first_name, leader_email, 
                        member_first_name, member_last_name, member_email, member_phone, 
                        join_time, school_year, group_link)
+    @content_type = "text/html"
     @recipients  = leader_email
     @from        = Cmt::CONFIG[:email_from_address]
     if requested
