@@ -1,62 +1,27 @@
-class Class
-  def load_for_delayed_job(arg)
-    self
-  end
-  
-  def dump_for_delayed_job
-    name
-  end
-end
-
 module Delayed
   class PerformableMethod < Struct.new(:object, :method, :args)
-    STRING_FORMAT = /^LOAD\;([A-Z][\w\:]+)(?:\;(\w+))?$/
-    
-    class LoadError < StandardError
-    end
-
     def initialize(object, method, args)
-      raise NoMethodError, "undefined method `#{method}' for #{object.inspect}" unless object.respond_to?(method)
+      raise NoMethodError, "undefined method `#{method}' for #{object.inspect}" unless object.respond_to?(method, true)
 
-      self.object = dump(object)
-      self.args   = args.map { |a| dump(a) }
+      self.object = object
+      self.args   = args
       self.method = method.to_sym
     end
     
     def display_name
-      if STRING_FORMAT === object
-        "#{$1}#{$2 ? '#' : '.'}#{method}"
-      else
-        "#{object.class}##{method}"
-      end
+      "#{object.class}##{method}"
     end
     
     def perform
-      load(object).send(method, *args.map{|a| load(a)})
-    rescue PerformableMethod::LoadError
-      # We cannot do anything about objects that can't be loaded
-      true
+      object.send(method, *args) if object
     end
-
-    private
-
-    def load(obj)
-      if STRING_FORMAT === obj
-        $1.constantize.load_for_delayed_job($2)
-      else
-        obj
-      end
-    rescue => e
-      Delayed::Worker.logger.warn "Could not load object for job: #{e.message}"
-      raise PerformableMethod::LoadError
+    
+    def method_missing(symbol, *args)
+      object.respond_to?(symbol) ? object.send(symbol, *args) : super
     end
-
-    def dump(obj)
-      if obj.respond_to?(:dump_for_delayed_job)
-        "LOAD;#{obj.dump_for_delayed_job}"
-      else
-        obj
-      end
-    end
+       
+    def respond_to?(symbol, include_private=false)
+      object.respond_to?(symbol, include_private) || super
+    end    
   end
 end

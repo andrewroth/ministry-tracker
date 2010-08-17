@@ -1,16 +1,16 @@
 require 'active_record'
 
 class ActiveRecord::Base
-  def self.load_for_delayed_job(id)
-    if id
-      find(id)
-    else
-      super
-    end
-  end
+  yaml_as "tag:ruby.yaml.org,2002:ActiveRecord"
   
-  def dump_for_delayed_job
-    "#{self.class};#{id}"
+  def self.yaml_new(klass, tag, val)
+    klass.find(val['attributes']['id'])
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def to_yaml_properties
+    ['@attributes']
   end
 end
 
@@ -22,11 +22,24 @@ module Delayed
       class Job < ::ActiveRecord::Base
         include Delayed::Backend::Base
         set_table_name :delayed_jobs
+        
+        before_save :set_default_run_at
 
-        named_scope :ready_to_run, lambda {|worker_name, max_run_time|
-          {:conditions => ['(run_at <= ? AND (locked_at IS NULL OR locked_at < ?) OR locked_by = ?) AND failed_at IS NULL', db_time_now, db_time_now - max_run_time, worker_name]}
-        }
-        named_scope :by_priority, :order => 'priority ASC, run_at ASC'
+        if ::ActiveRecord::VERSION::MAJOR >= 3
+          scope :ready_to_run, lambda {|worker_name, max_run_time|
+            where(['(run_at <= ? AND (locked_at IS NULL OR locked_at < ?) OR locked_by = ?) AND failed_at IS NULL', db_time_now, db_time_now - max_run_time, worker_name])
+          }
+          scope :by_priority, order('priority ASC, run_at ASC')
+        else
+          named_scope :ready_to_run, lambda {|worker_name, max_run_time|
+            {:conditions => ['(run_at <= ? AND (locked_at IS NULL OR locked_at < ?) OR locked_by = ?) AND failed_at IS NULL', db_time_now, db_time_now - max_run_time, worker_name]}
+          }
+          named_scope :by_priority, :order => 'priority ASC, run_at ASC'
+        end
+
+        def self.after_fork
+          ::ActiveRecord::Base.connection.reconnect!
+        end
 
         # When a worker is exiting, make sure we don't have any locked jobs.
         def self.clear_locks!(worker_name)

@@ -495,6 +495,7 @@ class PeopleController < ApplicationController
   end
   
   def set_initial_campus
+    get_person
     if request.method == :put
       ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
       if ministry_campus
