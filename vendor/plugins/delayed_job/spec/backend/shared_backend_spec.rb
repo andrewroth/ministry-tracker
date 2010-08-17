@@ -1,9 +1,18 @@
+class NamedJob < Struct.new(:perform)
+  def display_name
+    'named_job'
+  end
+end
+
 shared_examples_for 'a backend' do
   def create_job(opts = {})
     @backend.create(opts.merge(:payload_object => SimpleJob.new))
   end
 
   before do
+    Delayed::Worker.max_priority = nil
+    Delayed::Worker.min_priority = nil
+    Delayed::Worker.default_priority = 99
     SimpleJob.runs = 0
   end
   
@@ -30,6 +39,11 @@ shared_examples_for 'a backend' do
     @job.priority.should == 5
   end
 
+  it "should use default priority when it is not set" do
+    @job = @backend.enqueue SimpleJob.new
+    @job.priority.should == 99
+  end
+
   it "should be able to set run_at when enqueuing items" do
     later = @backend.db_time_now + 5.minutes
     @job = @backend.enqueue SimpleJob.new, 5, later
@@ -41,34 +55,27 @@ shared_examples_for 'a backend' do
     job = @backend.enqueue M::ModuleJob.new
     lambda { job.invoke_job }.should change { M::ModuleJob.runs }.from(0).to(1)
   end
-                   
-  it "should raise an DeserializationError when the job class is totally unknown" do
-    job = @backend.new :handler => "--- !ruby/object:JobThatDoesNotExist {}"
-    lambda { job.payload_object.perform }.should raise_error(Delayed::Backend::DeserializationError)
-  end
+  
+  describe "payload_object" do
+    it "should raise a DeserializationError when the job class is totally unknown" do
+      job = @backend.new :handler => "--- !ruby/object:JobThatDoesNotExist {}"
+      lambda { job.payload_object }.should raise_error(Delayed::Backend::DeserializationError)
+    end
 
-  it "should try to load the class when it is unknown at the time of the deserialization" do
-    job = @backend.new :handler => "--- !ruby/object:JobThatDoesNotExist {}"
-    job.should_receive(:attempt_to_load).with('JobThatDoesNotExist').and_return(true)
-    lambda { job.payload_object.perform }.should raise_error(Delayed::Backend::DeserializationError)
-  end
+    it "should raise a DeserializationError when the job struct is totally unknown" do
+      job = @backend.new :handler => "--- !ruby/struct:StructThatDoesNotExist {}"
+      lambda { job.payload_object }.should raise_error(Delayed::Backend::DeserializationError)
+    end
+    
+    it "should autoload classes that are unknown at runtime" do
+      job = @backend.new :handler => "--- !ruby/object:Autoloaded::Clazz {}"
+      lambda { job.payload_object }.should_not raise_error(Delayed::Backend::DeserializationError)
+    end
 
-  it "should try include the namespace when loading unknown objects" do
-    job = @backend.new :handler => "--- !ruby/object:Delayed::JobThatDoesNotExist {}"
-    job.should_receive(:attempt_to_load).with('Delayed::JobThatDoesNotExist').and_return(true)
-    lambda { job.payload_object.perform }.should raise_error(Delayed::Backend::DeserializationError)
-  end
-
-  it "should also try to load structs when they are unknown (raises TypeError)" do
-    job = @backend.new :handler => "--- !ruby/struct:JobThatDoesNotExist {}"
-    job.should_receive(:attempt_to_load).with('JobThatDoesNotExist').and_return(true)
-    lambda { job.payload_object.perform }.should raise_error(Delayed::Backend::DeserializationError)
-  end
-
-  it "should try include the namespace when loading unknown structs" do
-    job = @backend.new :handler => "--- !ruby/struct:Delayed::JobThatDoesNotExist {}"
-    job.should_receive(:attempt_to_load).with('Delayed::JobThatDoesNotExist').and_return(true)
-    lambda { job.payload_object.perform }.should raise_error(Delayed::Backend::DeserializationError)
+    it "should autoload structs that are unknown at runtime" do
+      job = @backend.new :handler => "--- !ruby/struct:Autoloaded::Struct {}"
+      lambda { job.payload_object }.should_not raise_error(Delayed::Backend::DeserializationError)
+    end
   end
   
   describe "find_available" do
@@ -100,6 +107,11 @@ shared_examples_for 'a backend' do
     it "should find own jobs" do
       @job = create_job(:locked_by => 'worker', :locked_at => (@backend.db_time_now - 1.minutes))
       @backend.find_available('worker', 5, 4.hours).should include(@job)
+    end
+
+    it "should find only the right amount of jobs" do
+      10.times { create_job }
+      @backend.find_available('worker', 7, 4.hours).should have(7).jobs
     end
   end
   
@@ -164,14 +176,14 @@ shared_examples_for 'a backend' do
     it "should be the class name of the job that was enqueued" do
       @backend.create(:payload_object => ErrorJob.new ).name.should == 'ErrorJob'
     end
-
+    
     it "should be the method that will be called if its a performable method object" do
-      @job = Story.send_later(:create)
-      @job.name.should == "Story.create"
+      job = @backend.new(:payload_object => NamedJob.new)
+      job.name.should == 'named_job'
     end
 
     it "should be the instance method that will be called if its a performable method object" do
-      @job = Story.create(:text => "...").send_later(:save)
+      @job = Story.create(:text => "...").delay.save
       @job.name.should == 'Story#save'
     end
   end
@@ -189,6 +201,22 @@ shared_examples_for 'a backend' do
       jobs.each_cons(2) do |a, b| 
         a.priority.should <= b.priority
       end
+    end
+
+    it "should only find jobs greater than or equal to min priority" do
+      min = 5
+      Delayed::Worker.min_priority = min
+      10.times {|i| @backend.enqueue SimpleJob.new, i }
+      jobs = @backend.find_available('worker', 10)
+      jobs.each {|job| job.priority.should >= min}
+    end
+
+    it "should only find jobs less than or equal to max priority" do
+      max = 5
+      Delayed::Worker.max_priority = max
+      10.times {|i| @backend.enqueue SimpleJob.new, i }
+      jobs = @backend.find_available('worker', 10)
+      jobs.each {|job| job.priority.should <= max}
     end
   end
   
@@ -220,4 +248,32 @@ shared_examples_for 'a backend' do
     end
   end
   
+  context "large handler" do
+    before do
+      text = "Lorem ipsum dolor sit amet. " * 1000
+      @job = @backend.enqueue Delayed::PerformableMethod.new(text, :length, {})
+    end
+    
+    it "should have an id" do
+      @job.id.should_not be_nil
+    end
+  end
+
+  describe "yaml serialization" do
+    it "should reload changed attributes" do
+      job = @backend.enqueue SimpleJob.new
+      yaml = job.to_yaml
+      job.priority = 99
+      job.save
+      YAML.load(yaml).priority.should == 99
+    end
+
+    it "should ignore destroyed records" do
+      job = @backend.enqueue SimpleJob.new
+      yaml = job.to_yaml
+      job.destroy
+      lambda { YAML.load(yaml).should be_nil }.should_not raise_error
+    end
+  end
+
 end

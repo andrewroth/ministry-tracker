@@ -32,10 +32,18 @@ config.action_controller.perform_caching             = true
 
 # Mail settings
 ActionMailer::Base.delivery_method = :smtp
-ActionMailer::Base.smtp_settings = {
-  :address => 'smtp.powertochange.local',
-  :domain => 'powertochange.local'
-} if Common::STAGE == "prod" && Common::SERVER == "c4c"
+if Common::STAGE == "prod" && Common::SERVER == "c4c"
+  ActionMailer::Base.smtp_settings = {
+    :address => 'smtp.powertochange.local',
+    :domain => 'powertochange.local'
+  }
+else
+  ActionMailer::Base.smtp_settings = {
+    :address => 'localhost',
+    :port => 2525,
+    :domain => 'powertochange.local'
+  }
+end
 
 # ExceptionNotifier.configure_exception_notifier do |config|
 #   config[:exception_recipients] = ['andrewroth@gmail.com', 'josh.starcher@gmail.com']
