@@ -60,7 +60,7 @@ class WeeklyReportsController < ApplicationController
     @weekly_report = WeeklyReport.find(params[:id])
   end
 
-  def create_or_update
+  def create_or_update()
     params[:weekly_report][:staff_id] = @person.cim_hrdb_staff.id
     @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => params[:weekly_report][:week_id], :staff_id => params[:weekly_report][:staff_id], :campus_id => params[:weekly_report][:campus_id] })
   
@@ -74,7 +74,7 @@ class WeeklyReportsController < ApplicationController
       if success_update
         @weekly_report.save!
         flash[:notice] = 'Your weekly numbers were successfully submitted.'
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
+        format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

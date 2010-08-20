@@ -1,13 +1,21 @@
-<%= javascript_include_tag "prcs.js" %>
+
+<h1 id="statsTitle">Measurements</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :prcs, :action => :index) %></div>
 
 <br/>
 
 <div class="statsFormContainer">
-
+  <div id="newPRCFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Edit indicated decision report</h2>
+    <br/>
   <div id="inputFields" class="inputsContainer">
     <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
       <div id="prcInputFields" class="reportInputContainer">
       <%= show_input_lines(@prc) %>     
       </div>
   </div>
+  </div>
 </div>
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :prcs, :action => :index) %></div>
