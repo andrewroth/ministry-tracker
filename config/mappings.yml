@@ -184,6 +184,7 @@ site_multilingual_label:
 year:
   id: year_id
   description: year_desc
+  desc: year_desc
 
 prc:
   id: prc_id
@@ -201,11 +202,13 @@ prcmethod:
 semester:
   id: semester_id
   description: semester_desc
+  desc: semester_desc
   start_date: semester_startDate
 
 month:
   id: month_id
   description: month_desc
+  desc: month_desc
   number: month_number
   calendar_year: month_calendaryear
 
