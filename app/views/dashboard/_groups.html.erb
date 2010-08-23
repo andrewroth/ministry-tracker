@@ -1,8 +1,8 @@
 <div class="modulecontent">
   <ul class="groupicon">
     <% @person.all_groups.current_and_next_semester.group_by(&:semester).each do |semester, groups| %>
-      <%- for group in groups %>
       <div><%= semester.desc %></div>
+      <%- for group in groups %>
       <li>
         <%- if authorized?(:accept_request, :group_involvements) || 
               authorized?(:decline_requests, :group_involvements) %>
