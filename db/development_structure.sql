@@ -50,7 +50,7 @@ CREATE TABLE `campus_ministry_groups` (
   `campus_id` int(11) DEFAULT NULL,
   `ministry_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -315,7 +315,7 @@ CREATE TABLE `groups` (
   KEY `index_groups_on_dorm_id` (`dorm_id`),
   KEY `index_groups_on_ministry_id` (`ministry_id`),
   KEY `index_c4c_pulse_staging.groups_on_semester_id` (`semester_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=483 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=513 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `imports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -539,7 +539,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=75802 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75803 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -941,6 +941,10 @@ INSERT INTO schema_migrations (version) VALUES ('20100816130327');
 INSERT INTO schema_migrations (version) VALUES ('20100818015210');
 
 INSERT INTO schema_migrations (version) VALUES ('20100818015834');
+
+INSERT INTO schema_migrations (version) VALUES ('20100823200602');
+
+INSERT INTO schema_migrations (version) VALUES ('20100823202111');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
