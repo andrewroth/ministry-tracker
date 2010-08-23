@@ -4,6 +4,7 @@
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data
   filter_parameter_logging :password
+  skip_before_filter :cas_filter, :cas_gateway_filter, :only => :create
 
   def crash
     throw("Forced crash.  env: #{RAILS_ENV}")

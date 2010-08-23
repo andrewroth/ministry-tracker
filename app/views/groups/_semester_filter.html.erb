@@ -1,0 +1,5 @@
+<div>Semester: <%= select_tag 'semester_id', options_for_select(@semester_filter_options, @semester.try(:id)) %>
+  <%= observe_field :semester_id, 
+    :function => %|document.location = "#{url_for(:controller => params[:controller], :action => params[:action])}?campus_id="+$('#campus_id')[0].value+"&semester_id="+$('#semester_id')[0].value;|
+  %>
+</div>

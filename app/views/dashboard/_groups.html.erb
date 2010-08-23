@@ -1,6 +1,8 @@
 <div class="modulecontent">
   <ul class="groupicon">
-    <% @person.all_groups.each do |group| %>
+    <% @person.all_groups.current_and_next_semester.group_by(&:semester).each do |semester, groups| %>
+      <%- for group in groups %>
+      <div><%= semester.desc %></div>
       <li>
         <%- if authorized?(:accept_request, :group_involvements) || 
               authorized?(:decline_requests, :group_involvements) %>
@@ -17,6 +19,7 @@
           <%= link_to(group.name, group) %>
         <%- end -%>
       </li>
+      <%- end %>
     <%- end -%>
   </ul>
   <%= link_to 'Join a Group', :controller => "groups", :action => "join"%> 
