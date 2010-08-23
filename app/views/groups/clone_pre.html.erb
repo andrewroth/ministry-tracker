@@ -1,0 +1,13 @@
+<%= form_tag clone_group_url(@group.id) %>
+<P>You can prepare for an upcoming term by copying this group to another term.  Note that this will create a copy of the group, including the group involvement.  You can edit the original group and it will not affect the new group, or edit the new group without affecting the original group.</P>
+
+<DIV>
+  Which semester would you like to copy the group to?  <%= select_tag "semester_id", options_for_select(@semesters.collect{ |s| [s.desc, s.id] }, @next_semester.try(:id)) %> 
+</DIV>
+
+<DIV>
+  <BR/>
+  <%= submit_tag "Copy group" %> or <%= link_to "cancel", group_url(@group.id) %>
+</DIV>
+
+</form>

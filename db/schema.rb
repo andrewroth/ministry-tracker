@@ -9,7 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100525190119) do
+ActiveRecord::Schema.define(:version => 20100818015834) do
+
+  create_table "campus_ministry_groups", :force => true do |t|
+    t.integer "group_id"
+    t.integer "campus_id"
+    t.integer "ministry_id"
+  end
 
   create_table "columns", :force => true do |t|
     t.string   "title"
@@ -91,10 +97,12 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
   end
 
   create_table "group_involvements", :force => true do |t|
-    t.integer "person_id"
-    t.integer "group_id"
-    t.string  "level"
-    t.boolean "requested"
+    t.integer  "person_id"
+    t.integer  "group_id"
+    t.string   "level"
+    t.boolean  "requested"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "group_involvements", ["person_id", "group_id"], :name => "person_id_group_id", :unique => true
@@ -109,6 +117,8 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.integer  "unsuitability_leader"
     t.integer  "unsuitability_coleader"
     t.integer  "unsuitability_participant"
+    t.string   "collection_group_name",     :default => "{{campus}} interested in a {{group_type}}"
+    t.boolean  "has_collection_groups",     :default => false
   end
 
   create_table "groups", :force => true do |t|
@@ -129,11 +139,13 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.integer "day"
     t.integer "group_type_id"
     t.boolean "needs_approval"
+    t.integer "semester_id"
   end
 
   add_index "groups", ["campus_id"], :name => "index_groups_on_campus_id"
   add_index "groups", ["dorm_id"], :name => "index_groups_on_dorm_id"
   add_index "groups", ["ministry_id"], :name => "index_groups_on_ministry_id"
+  add_index "groups", ["semester_id"], :name => "index_groups_on_semester_id"
 
   create_table "imports", :force => true do |t|
     t.integer  "person_id"
@@ -154,11 +166,43 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.string  "created_at"
   end
 
+  create_table "news", :force => true do |t|
+    t.string   "title"
+    t.text     "message"
+    t.integer  "group_id"
+    t.integer  "ministry_id"
+    t.integer  "person_id"
+    t.boolean  "sticky"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "staff"
+    t.boolean  "students"
+  end
+
+  create_table "news_comments", :force => true do |t|
+    t.integer  "news_id"
+    t.integer  "person_id"
+    t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "permissions", :force => true do |t|
     t.string "description", :limit => 1000
     t.string "controller"
     t.string "action"
   end
+
+  create_table "person_news", :force => true do |t|
+    t.integer  "news_id"
+    t.integer  "person_id"
+    t.boolean  "hidden"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "person_news", ["news_id"], :name => "index_person_news_on_news_id"
+  add_index "person_news", ["person_id"], :name => "index_person_news_on_person_id"
 
   create_table "searches", :force => true do |t|
     t.integer  "person_id"
@@ -169,6 +213,14 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.string   "name"
     t.string   "order"
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "semesters", :force => true do |t|
+    t.integer  "year_id"
+    t.date     "start_date"
+    t.string   "desc"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -202,6 +254,11 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "strategies", :force => true do |t|
+    t.string "name"
+    t.string "abbrv"
   end
 
   create_table "summer_project_applications", :force => true do |t|
@@ -257,6 +314,14 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.integer  "training_category_id"
   end
 
+  create_table "user_codes", :force => true do |t|
+    t.integer "user_id"
+    t.string  "code"
+    t.string  "pass"
+  end
+
+  add_index "user_codes", ["user_id"], :name => "index_user_codes_on_user_id"
+
   create_table "view_columns", :force => true do |t|
     t.string   "view_id"
     t.string   "column_id"
@@ -276,6 +341,12 @@ ActiveRecord::Schema.define(:version => 20100525190119) do
     t.boolean  "default_view"
     t.string   "select_clause", :limit => 2000
     t.string   "tables_clause", :limit => 2000
+  end
+
+  create_table "years", :force => true do |t|
+    t.string   "desc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

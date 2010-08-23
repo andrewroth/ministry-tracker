@@ -60,7 +60,9 @@ ActionController::Routing::Routes.draw do |map|
                                      :compare_timetables => :any,
                                      :set_start_time => :any,
                                      :set_end_time => :any,
-                                     :email => :post},
+                                     :email => :post,
+                                     :clone_pre => :get,
+                                     :clone => :post },
                          :collection => {:join => :get}
 
   map.resources :manage

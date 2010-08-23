@@ -1,4 +1,4 @@
-<div style='float:right'>Campus: <%= select_tag 'campus_id', options_for_select(@campus_filter_options, @campus.try(:id)) %>
+<div>Campus: <%= select_tag 'campus_id', options_for_select(@campus_filter_options, @campus.try(:id)) %>
   <%= observe_field :campus_id, 
     :function => %|document.location = "#{url_for(:controller => params[:controller], :action => params[:action])}?campus_id="+$('#campus_id')[0].value;|
   %>

@@ -37,10 +37,12 @@ class ApplicationController < ActionController::Base
 
   protected
     def cas_filter
+      return if logged_in?
       CASClient::Frameworks::Rails::Filter.filter(self)
     end
 
     def cas_gateway_filter
+      return if logged_in?
       CASClient::Frameworks::Rails::GatewayFilter.filter(self)
     end
 
