@@ -1,6 +1,6 @@
 class CreateYears < ActiveRecord::Migration
   def self.up
-    create_table :years do |t|
+    create_table Year.table_name do |t|
       t.string :desc
 
       t.timestamps
@@ -8,6 +8,6 @@ class CreateYears < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :years
+    drop_table Year.table_name
   end
 end
