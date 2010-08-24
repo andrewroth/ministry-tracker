@@ -3,6 +3,8 @@
 # * movement count (definition unclear)
 # * names of newest people added
 class DashboardController < ApplicationController
+  include SemesterSet
+  before_filter :set_current_and_next_semester
   
   def index
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
