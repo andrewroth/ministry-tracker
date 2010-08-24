@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
     # cas stuff is not set by this point and so it appears like nobody is logged in even
     # when someone goes through cas login successfully
     login_from_cas if params[:ticket].present? 
-    
+
     unless request.domain(2) =~ /pulse/
       # to help with testing - remove before final release
       p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)
