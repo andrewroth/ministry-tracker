@@ -17,6 +17,11 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
+    # force current user to be made again -- not sure why, but sometimes the
+    # cas stuff is not set by this point and so it appears like nobody is logged in even
+    # when someone goes through cas login successfully
+    login_from_cas if params[:ticket].present? 
+
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
