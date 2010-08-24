@@ -14,7 +14,18 @@ Step 2: Join a group.  Would you like to...
   <DIV style="clear:both" class="center">
     <%= link_to "Next", { :action => "step3_timetable" }, :class => "action-button" %>
   </DIV>
-  <%= render :partial => "groups/groups_for_ministry" %>
+  <DIV style="width: 675px; text-align: right;">
+    <%= select_tag "semester_id", options_for_select(@semester_filter_options, @current_semester.id),
+      :onChange => "if ($('#semester_id')[0].value == '#{@current_semester.id}') { $('#groups1').show();$('#groups2').hide(); } else { $('#groups1').hide(); $('#groups2').show(); }" %>
+  </DIV>
+  <div id="groups1">
+    <%- @groups = @groups1 %>
+    <%= render :partial => "groups/groups_for_ministry" %>
+  </div>
+  <div id="groups2" style="display:none">
+    <%- @groups = @groups2 %>
+    <%= render :partial => "groups/groups_for_ministry" %>
+  </div>
   <DIV style="clear:both" class="center">
     <%= link_to "Next", { :action => "step3_timetable" }, :class => "action-button" %>
   </DIV>

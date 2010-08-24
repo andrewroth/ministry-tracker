@@ -3,6 +3,8 @@
 # no longer being used, but is handled in timetables controllers
 
 class GroupsController < ApplicationController
+  include SemesterSet
+
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time, :clone_pre, :clone]
   skip_before_filter :authorization_filter, :email_helper
@@ -337,19 +339,4 @@ class GroupsController < ApplicationController
     end
   end
 
-  def set_current_and_next_semester
-    @current_semester = Semester.current
-    unless @current_semester
-      Semester.create_default_semesters(2)
-      @current_semester = Semester.current
-    end
-    # finding the next semester assumes that ids are sequential.  it can be changed to work
-    # with non-sequential but is more work, so I'll assume it's sequential until we know
-    # otherwise -AR
-    @next_semester = Semester.find(:first, :conditions => [ "#{::Semester._(:id)} = ?", @current_semester.id + 1])
-    unless @next_semester
-      Semester.create_default_semesters(1) # need another year apparently
-      @next_semester = Semester.find(:first, :conditions => [ "#{::Semester._(:id)} = ?", @current_semester.id + 1])
-    end
-  end
 end
