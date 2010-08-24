@@ -53,8 +53,10 @@
       <br/>
       <%= check_box_tag(:isleader, 1, true)%>
       Make me the leader of this group
-      <br/>
-     <%= link_to "Copy this group to another term...", clone_pre_group_url(@group.id) %>
+      <%- unless @group.new_record? -%>
+        <br/>
+        <%= link_to "Copy this group to another term...", clone_pre_group_url(@group.id) %>
+      <%- end -%>
      </td>
    </tr>
 </table>
