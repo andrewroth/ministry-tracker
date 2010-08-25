@@ -851,6 +851,10 @@ end
         hide_time_tabs([:week, :month])
       when 'comp' 
         hide_time_tabs([:week, :month, :year])
+      when 'story'
+        hide_time_tabs([:week, :month, :semester])
+      when 'decision'
+        hide_time_tabs([:week, :month, :semester])
       end
    
   end
@@ -891,6 +895,10 @@ end
       when 'p2c' 
         @hide_radios = true
       when 'comp' 
+        @hide_radios = true
+      when 'decision'
+        @hide_radios = true
+      when 'story'
         @hide_radios = true
       end
     if !is_ministry_admin && !@drillDownAccess
