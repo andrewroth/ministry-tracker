@@ -68,6 +68,7 @@ class Ministry < ActiveRecord::Base
   end
 
   def all_groups(top = true)
+    # TODO: account for top
     unless @subministry_groups
       @subministry_groups = Group.all(:conditions => [ "#{_(:lft, :ministry)} >= #{left} AND #{_(:rgt, :ministry)} <= #{rgt}" ], :joins => :ministry, :order => "#{Group.table_name}.name ASC")
     end
