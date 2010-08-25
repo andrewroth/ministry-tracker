@@ -60,7 +60,6 @@ class PeopleController < ApplicationController
   #
   # Sets up pagination for results (TODO: this can be put in a method!)
   def directory
-    debugger
     get_view
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
     get_ministries
