@@ -332,11 +332,9 @@ class GroupsController < ApplicationController
     if is_staff_somewhere
       ministry_ids = get_ministry.descendants.collect(&:id) << get_ministry.id
       conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
-      conditions += ") AND semester_id = #{@semester.id}"
-      @groups = Group.find(:all, :conditions => conditions, :order => "name ASC")
-    else
-      @groups = Group.find(:all, :conditions => conditions, :order => "name ASC")
     end
+    conditions += ") AND semester_id = #{@semester.id}"
+    @groups = Group.find(:all, :conditions => conditions, :order => "name ASC")
   end
 
 end
