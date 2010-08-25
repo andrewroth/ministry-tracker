@@ -60,6 +60,7 @@ class PeopleController < ApplicationController
   #
   # Sets up pagination for results (TODO: this can be put in a method!)
   def directory
+    debugger
     get_view
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
     get_ministries
@@ -238,10 +239,10 @@ class PeopleController < ApplicationController
      	  involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
   	   	conditions[1] << my_campus_ids
  	    end
- 	    involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
+ 	    #involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
  	    
 	   	conditions[0] << involvement_condition
-	   	conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
+	   	#conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
 	   	
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
