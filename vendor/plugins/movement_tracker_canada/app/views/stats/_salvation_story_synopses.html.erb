@@ -1,27 +1,18 @@
-<table class="t1">
+<p><span class="statsTitle"><%= @report_description %></span></p>
+<table class="statsTable">
+
+
     <tr>
-        <td class="t2">
-            <span class="title1">Date</span>
-        </td>
-        <td>
-            <span class="title1">New Believer</span>
-        </td>
-        <td>
-            <span class="title1">Witness</span>
-        </td>
-        <td>
-            <span class="title1">Method</span>
-        </td>
-        <td>
-            <span class="title1">Synopsis</span>
-        </td>
-        <td>
-            <span class="title1">Follow-up Complete</span>
-        </td>				
+        <td><span class="statsTableTitle">Date</span></td>
+        <td><span class="statsTableTitle">New Believer</span></td>
+        <td><span class="statsTableTitle">Witness</span></td>
+        <td><span class="statsTableTitle">Method</span></td>
+        <td><span class="statsTableTitle">Synopses</span></td>
+        <td><span class="statsTableTitle">Follow-up Complete</span></td>
     </tr>
 
     <% @prcs.each do |prc| %>
-		    <% if !prc.nil? %>
+        <% if !prc.nil? %>
 	        <tr class="<%= cycle('highlight', 'nohighlight') %>">
 	            <td>
                   <%= prc.prc_date %>
@@ -48,6 +39,6 @@
                   <% end %>
               </td>							
 	        </tr>
-				<% end %>
+        <% end %>
     <% end %>
 </table>
