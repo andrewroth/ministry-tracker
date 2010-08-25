@@ -70,7 +70,13 @@ class StatsController < ApplicationController
 
     setup_stats_report_from_session
 
-    select_c4c_report
+    case @report_type
+      when 'comp'
+        setup_compliance_report
+    else
+        # c4c, p2c and ccci are all handled here:
+        select_c4c_report
+    end
 
     respond_to do |format|
       format.js
@@ -436,6 +442,16 @@ end
     @results_partial = "staff_drill_down"
   end
 
+  def setup_compliance_report
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown    
+    setup_staffs_for_staff_drilldown(STAFF_DRILL_DOWN, @stats_ministry)
+    setup_report_description
+   
+    @results_partial = "staff_drill_down"
+  end
+
   def setup_summary_by_semester
     @cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
 
@@ -719,20 +735,33 @@ end
   end
 
   def setup_report_description
+    case @report_type
+      when 'comp'
+        report_name = 'Compliance report for '
+      when 'c4c'
+        if @report_scope == CAMPUS_DRILL_DOWN
+          report_name = 'Campus drill down of '
+        elsif @report_scope == STAFF_DRILL_DOWN
+          report_name = 'Staff drill down of '
+        elsif @report_scope == SUMMARY
+          report_name = 'Summary for '
+        end
+    end
      case @stats_time
       when 'year'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
+        period_description = get_current_stats_period.description
           
       when 'semester'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
+        period_description = get_current_stats_period.description
 
       when 'month'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
+        period_description = get_current_stats_period.description
 
       when 'week'
-        @report_description = "Staff drill down of #{@ministry_name} during the week ending on #{get_current_stats_period.end_date}"
+        period_description = "the week ending on #{get_current_stats_period.end_date}"
         
     end   
+    @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
   end
 
   def setup_campus_ids
@@ -820,6 +849,8 @@ end
         hide_time_tabs([:week, :month])
       when 'p2c' 
         hide_time_tabs([:week, :month])
+      when 'comp' 
+        hide_time_tabs([:week, :month, :year])
       end
    
   end
@@ -858,6 +889,8 @@ end
       when 'ccci' 
         @hide_radios = true
       when 'p2c' 
+        @hide_radios = true
+      when 'comp' 
         @hide_radios = true
       end
     if !is_ministry_admin && !@drillDownAccess

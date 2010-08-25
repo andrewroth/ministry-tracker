@@ -58,7 +58,8 @@
     { 
       :c4c => {:label => "Campus for Christ Reports", :controller => :stats, :action => :index},
       :p2c => {:label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report},
-      :ccci => {:label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report}
+      :ccci => {:label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report},
+      :comp => {:label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report}
     }
   end
   
