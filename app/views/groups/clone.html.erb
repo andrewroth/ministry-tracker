@@ -1,0 +1,3 @@
+<DIV>The group <%= link_to @group.name, group_url(@group.id) %> from semester <%= @group.semester.desc %> was copied to <%= link_to @new_group.name, group_url(@new_group.id) %> for semester <%= @new_group.semester.desc %>.</DIV>
+
+<DIV>Click <%= link_to "here", group_url(@new_group.id)%> to view the new group, or <%= link_to "go back to the groups listing", groups_url %>.</DIV>

@@ -1,4 +1,5 @@
 class Ministry < ActiveRecord::Base
+  set_inheritance_column "asdf"
   load_mappings
   include Common::Core::Ministry
 

@@ -3,13 +3,17 @@
 # no longer being used, but is handled in timetables controllers
 
 class GroupsController < ApplicationController
+  include SemesterSet
+
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
-  before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time]
+  before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time, :clone_pre, :clone]
   skip_before_filter :authorization_filter, :email_helper
+  before_filter :set_current_and_next_semester
 
   def index
     @join = false
     setup_campuses_filter
+    setup_semester_filter
     setup_groups
 
     respond_to do |format|
@@ -19,6 +23,10 @@ class GroupsController < ApplicationController
       end
       format.js
     end
+  end
+
+  def clone
+    @new_group = @group.deep_copy(:semester_id => params[:semester_id])
   end
 
   def email
@@ -58,7 +66,8 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new :country => Cmt::CONFIG[:default_country]
+    @group = Group.new :country => Cmt::CONFIG[:default_country], 
+      :semester_id => @current_semester.id
     respond_to do |format|
       format.html 
       format.js
@@ -98,7 +107,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @campus = Group.find_by_id(params[:id]).campus
+    @campus = @group.campus
     respond_to do |format|
       format.js
     end
@@ -261,6 +270,12 @@ class GroupsController < ApplicationController
     # end
   end
   
+  def clone_pre
+    @semesters = Semester.all
+  end
+
+  protected
+
   # TODO: need this?
   def determine_default_campus_filter(ministry)
     # use the MinistryInvolvement whose ministry is at or under ministry,
@@ -297,17 +312,31 @@ class GroupsController < ApplicationController
     @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + @campuses.collect{ |c| [ c.name, c.id ] }
   end
 
+  def setup_semester_filter
+    if params[:semester_id]
+      @semester = Semester.find params[:semester_id]
+    elsif session[:group_semester_filter_id]
+      @semester = Semester.find session[:group_semester_filter_id]
+    else
+      @semester = @current_semester
+    end
+    session[:group_semester_filter_id] = @semester.id
+    @semester_filter_options = Semester.all.collect{ |s| [ s.desc, s.id ] }
+  end
+
   def setup_groups
-    conditions = 'campus_id is null'
+    conditions = '(campus_id is null'
     if @campus || @campuses.present?
       conditions += " OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     end
     if is_staff_somewhere
       ministry_ids = get_ministry.descendants.collect(&:id) << get_ministry.id
       conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
-      @groups = Group.find(:all, :conditions => conditions)
+      conditions += ") AND semester_id = #{@semester.id}"
+      @groups = Group.find(:all, :conditions => conditions, :order => "name ASC")
     else
-      @groups = Group.find(:all, :conditions => conditions)
+      @groups = Group.find(:all, :conditions => conditions, :order => "name ASC")
     end
   end
+
 end
