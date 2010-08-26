@@ -879,6 +879,14 @@ class StatsController < ApplicationController
         end
       end
     end
+    while @hide_tab[:"#{@stats_time}"] && @stats_time != @time_tabs.first.to_s
+      @time_tabs.each do |t|
+        if t.to_s == @stats_time
+          @stats_time = @time_tabs[@time_tabs.index(t) - 1].to_s
+          break
+        end
+      end
+    end
   end
 
   def setup_period_dropdown(current_period)
