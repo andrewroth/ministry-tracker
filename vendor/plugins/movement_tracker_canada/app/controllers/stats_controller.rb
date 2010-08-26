@@ -73,7 +73,7 @@ class StatsController < ApplicationController
     case @report_type
       when 'comp'
         setup_compliance_report
-    else
+      else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
     end
@@ -449,7 +449,7 @@ end
     setup_staffs_for_staff_drilldown(STAFF_DRILL_DOWN, @stats_ministry)
     setup_report_description
    
-    @results_partial = "staff_drill_down"
+    @results_partial = "compliance_report"
   end
 
   def setup_summary_by_semester

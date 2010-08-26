@@ -1,0 +1,40 @@
+<%
+  def compliance_report_image(period, campus_ids, staff_id)
+    result = ""
+    if period.end_date < Date.today
+      result = (no_weekly_data(period, campus_ids, staff_id) ? image_tag("denied_red.png") : image_tag("check_green.png"))
+    elsif period.start_date <= Date.today && Date.today <= period.end_date
+      result = (no_weekly_data(period, campus_ids, staff_id) ? image_tag("clock_black.png") : image_tag("check_green.png"))
+    end
+    result
+  end
+%>
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+  <tr>
+      <td class="statsTableTitle"></td>
+      <% @period.months.each do |m| %>
+             <td colspan="<%= m.weeks.count%>" class="statsTableTitle"><%= m.month_desc %></td>
+      <% end %>
+  </tr>
+  <tr>
+      <td class="statsTableTitle"></td>
+      <% @period.weeks.each do |w| %>
+             <td class="statsTableTitle"><%= w.week_endDate.day %></td>
+      <% end %>
+  </tr>
+  <% @staffs.each do |staff| 
+       if staff[:staff_id].present? 
+         unless no_weekly_data(@period, @campus_ids, staff[:staff_id]) 
+%>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="statsTableTitle"><%= staff[:name] %></td>
+      <% @period.weeks.each do |w| %>
+             <td><%= compliance_report_image(w, @campus_ids, staff[:staff_id]) %></td>
+      <% end %>
+    </tr>
+  <%     end
+       end
+     end %>
+
+</table>
