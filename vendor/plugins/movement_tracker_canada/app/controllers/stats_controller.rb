@@ -694,20 +694,21 @@ class StatsController < ApplicationController
           report_name = 'Summary for '
         end
     end
-     case @stats_time
+    case @stats_time
       when 'year'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
-          
+        period_description = get_current_stats_period.description
+
       when 'semester'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
+        period_description = get_current_stats_period.description
 
       when 'month'
-        @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
+        period_description = get_current_stats_period.description
 
       when 'week'
-        @report_description = "Staff drill down of #{@ministry_name} during the week ending on #{get_current_stats_period.end_date}"
-        
-    end   
+        period_description = "the week ending on #{get_current_stats_period.end_date}"
+
+    end
+    @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
   end
 
   def setup_campus_ids
