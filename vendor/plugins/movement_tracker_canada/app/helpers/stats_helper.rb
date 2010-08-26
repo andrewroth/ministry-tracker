@@ -17,7 +17,7 @@ module StatsHelper
   end
 
   def report_type_links_to_show
-    @report_type_links_to_show = report_types.collect {| key, value | key if authorized?(value[:action], value[:controller]) }
+    @report_type_links_to_show = report_types.collect {| key, value | key if authorized?(value[:action], value[:controller]) }.compact
   end
 
   def report_type_link_to_remote(report_type)
