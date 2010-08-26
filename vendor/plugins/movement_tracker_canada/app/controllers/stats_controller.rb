@@ -70,7 +70,17 @@ class StatsController < ApplicationController
 
     setup_stats_report_from_session
 
-    select_c4c_report
+    case @report_type
+      when 'comp'
+        setup_compliance_report
+      when 'hpctc'
+        setup_how_people_came_to_christ_report
+      when 'story'
+        setup_story_report
+    else
+        # c4c, p2c and ccci are all handled here:
+        select_c4c_report
+    end
 
     respond_to do |format|
       format.js
@@ -204,106 +214,6 @@ class StatsController < ApplicationController
   end
 
 
-  def how_people_came_to_christ
-
-    # find the current month
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    # find the current year id
-    current_year_id = Month.find_year_id(cur_month)
-
-    @ministries = my_ministries_for_stats("how_people_came_to_christ").sort { |x, y| x.name <=> y.name }
-
-    if params[:report].nil?
-      
-      @stats_ministry_id = get_ministry.id
-
-      @year_id = current_year_id
-      @year_selected = Year.find_year_description(@year_id)
-    else
-
-      @stats_ministry_id = params[:report]['ministry']
-      @stats_ministry_selected = Ministry.find(@stats_ministry_id)
-
-      @year_selected = params[:report]['year']
-      @year_id = Year.find_year_id(@year_selected)
-
-      
-      # calculate the totals and percentages of the various indicated decisions methods
-
-      @methods = Array.new(Prcmethod.last.id+1){0}
-      @completed = Array.new(Prcmethod.last.id+1){0}
-
-      semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
-      year_start = Date.parse_date( semesters.first.semester_startDate )
-      year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
-
-      campus_ids = Ministry.find(@stats_ministry_id).unique_campuses.collect {|c| c.id}
-      prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, campus_ids])
-      @total = prcs.size
-
-      prcs.each do |prc|
-        @methods[prc.prcMethod_id] += 1
-        @completed[prc.prcMethod_id] += 1 if prc.prc_7upCompleted == 1
-      end
-    end
-
-    # Initialize Variables Used by View
-
-    @years = Year.find_years(current_year_id)
-  end
-
-
-  def salvation_story_synopses
-
-    # find the current month
-    cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-    # find the current year id
-    current_year_id = Month.find_year_id(cur_month)
-
-    @ministries = my_ministries_for_stats(":salvation_story_synopses").sort { |x, y| x.name <=> y.name }
-
-    if params[:report].nil?
-      
-      @stats_ministry_id = get_ministry.id
-
-      @year_id = current_year_id
-      @year_selected = Year.find_year_description(@year_id)
-    else
-
-      @stats_ministry_id = params[:report]['ministry']
-      @stats_ministry_selected = Ministry.find(@stats_ministry_id)
-
-      @year_selected = params[:report]['year']
-      @year_id = Year.find_year_id(@year_selected)
-
-      
-      # find the prc ('indicated decisions') data to display
-
-    
-#      @methods = Array.new(Prcmethod.last.id+1){0}
-#      @completed = Array.new(Prcmethod.last.id+1){0}
-#
-      semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
-      year_start = Date.parse_date( semesters.first.semester_startDate )
-      year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
-
-      campus_ids = Ministry.find(@stats_ministry_id).unique_campuses.collect {|c| c.id}
-      @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, campus_ids], :order => 'prc_date ASC')
-#      @total = prcs.size
-#
-#      prcs.each do |prc|
-#        @methods[prc.prcMethod_id] += 1
-#        @completed[prc.prcMethod_id] += 1 if prc.prc_7upCompleted == 1
-#      end
-end
-
-    # Initialize Variables Used by View
-
-    @years = Year.find_years(current_year_id)
-  end
-  
-  
-
   def year_summary
 
     cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
@@ -400,6 +310,55 @@ end
  
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
+  end
+
+
+  def setup_how_people_came_to_christ_report
+
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown
+    setup_report_description
+
+    # calculate the totals and percentages of the various indicated decisions methods
+
+    @methods = Array.new(Prcmethod.last.id+1){0}
+    @completed = Array.new(Prcmethod.last.id+1){0}
+
+    semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
+    year_start = Date.parse_date( semesters.first.semester_startDate )
+    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+
+    prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, @campus_ids])
+    @total = prcs.size
+
+    prcs.each do |prc|
+      @methods[prc.prcMethod_id] += 1
+      @completed[prc.prcMethod_id] += 1 if prc.prc_7upCompleted == 1
+    end
+
+
+    @results_partial = "how_people_came_to_christ"
+  end
+
+
+  def setup_story_report
+    
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown
+    setup_report_description
+
+
+    # find the prc ('indicated decisions') data to display
+
+    semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
+    year_start = Date.parse_date( semesters.first.semester_startDate )
+    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+
+    @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, @campus_ids], :order => 'prc_date ASC')
+
+    @results_partial = "salvation_story_synopses"
   end
 
 
@@ -719,6 +678,22 @@ end
   end
 
   def setup_report_description
+    case @report_type
+      when 'comp'
+        report_name = 'Compliance report for '
+      when 'hpctc'
+        report_name = 'How people came to Christ for '
+      when 'story'
+        report_name = 'Salvation Story Synopses for '
+      when 'c4c'
+        if @report_scope == CAMPUS_DRILL_DOWN
+          report_name = 'Campus drill down of '
+        elsif @report_scope == STAFF_DRILL_DOWN
+          report_name = 'Staff drill down of '
+        elsif @report_scope == SUMMARY
+          report_name = 'Summary for '
+        end
+    end
      case @stats_time
       when 'year'
         @report_description = "Staff drill down of #{@ministry_name} during #{get_current_stats_period.description}"
@@ -820,6 +795,12 @@ end
         hide_time_tabs([:week, :month])
       when 'p2c' 
         hide_time_tabs([:week, :month])
+      when 'comp' 
+        hide_time_tabs([:week, :month, :year])
+      when 'story'
+        hide_time_tabs([:week, :month, :semester])
+      when 'hpctc'
+        hide_time_tabs([:week, :month, :semester])
       end
    
   end
@@ -858,6 +839,12 @@ end
       when 'ccci' 
         @hide_radios = true
       when 'p2c' 
+        @hide_radios = true
+      when 'comp' 
+        @hide_radios = true
+      when 'hpctc'
+        @hide_radios = true
+      when 'story'
         @hide_radios = true
       end
     if !is_ministry_admin && !@drillDownAccess
