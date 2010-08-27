@@ -1394,6 +1394,38 @@ ul.statsLinkList {
   /*-webkit-box-shadow: 0 0 5em #E1E6F2 inset;*/
 }
 
+
+.progressBarPercent .insightsProgressBar, .insightsProgress {
+	display:block;
+	height: 0.7em;
+}
+
+.insightsProgressBar {
+	background-color:#FFFFFF;
+	border: 1px solid #2951AD;
+	text-align: left;
+}
+
+.insightsProgress {
+	background-color: #FFDA68;
+	border: 0;
+}
+
+#nationalIndicatedDecisions {
+	display:block;
+	width: 205px;
+	float: right;
+	text-align: center;
+	color: #2951AD;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+#IndicatedDecisionsVSGoal {
+  color: #2951AD;
+  font-size: 2.5em;
+}
+
 .center {
   text-align: center;
 }

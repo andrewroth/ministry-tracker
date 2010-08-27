@@ -1,0 +1,4 @@
+<%
+percent = goal == 0 ? 0 : (100.0 * (progress.to_f / goal.to_f)).to_i
+%>
+<div class="insightsProgressBar"><div class="insightsProgress" style="width: <%= percent%>%"></div></div>

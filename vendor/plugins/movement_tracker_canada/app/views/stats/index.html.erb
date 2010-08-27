@@ -3,6 +3,13 @@
 
 <h1 id="statsTitle">Measurements</h1>
 
+<%
+    all_campuses_id = Campus.all.collect {|c| c.campus_id.to_i}
+    indicated_decisions_goal = evaluate_stat_for_period(@this_year, nil, stats_reports[:annual_goals_report][:indicated_decisions])
+    indicated_decisions_progress = evaluate_stat_for_period(@this_year, nil, stats_reports[:indicated_decisions_report][:indicated_decisions])
+%>
+<%= render :partial => 'national_indicated_decisions', :locals => { :indicated_decisions => indicated_decisions_progress, :goal => indicated_decisions_goal } %>
+
 <div id="statsLinkBox" class="statsFormBox">
   <%= render :partial => 'stats/stats_links' %>
 </div>

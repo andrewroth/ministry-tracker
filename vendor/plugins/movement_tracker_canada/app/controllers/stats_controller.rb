@@ -269,7 +269,7 @@ class StatsController < ApplicationController
 
 
   def setup_stats_report_from_session
-    
+    @this_year = get_current_year
     @id_for_treeview = session[:stats_ministry_id]
     ministry_campus_id = @id_for_treeview.to_s.split('_')
     @stats_ministry_id =  ministry_campus_id[0].to_i
