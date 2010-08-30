@@ -1,6 +1,6 @@
 <div id="groups">
   <%- campus_id = @campus ? @campus.id : nil -%>
-  <%- gt_groups = @groups.select{|g| g.group_type == gt} -%>
+  <%- gt_groups = @groups.select{|g| g.group_type_id == gt.id} -%>
 
   <% unless gt_groups.empty? %>
     <%- gt_groups.each do |group| -%>

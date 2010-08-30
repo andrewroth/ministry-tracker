@@ -121,9 +121,13 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @campus = Campus.find session[:signup_campus_id]
     @groups1 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
-      @current_semester.id ])
+      @current_semester.id ],
+      :joins => :ministry, :include => { :group_involvements => :person },
+      :order => "#{Group.__(:name)} ASC")
     @groups2 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
-      @next_semester.id ])
+      @next_semester.id ],
+      :joins => :ministry, :include => { :group_involvements => :person },
+      :order => "#{Group.__(:name)} ASC")
     @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
     @group_types = GroupType.all
     @join = true
@@ -133,6 +137,10 @@ class SignupController < ApplicationController
       :conditions => [ "#{CampusMinistryGroup.__(:ministry_id)} = ?", Ministry.default_ministry ]
     @groups1.delete_if { |g| g == @collection_group }
     @groups2.delete_if { |g| g == @collection_group }
+    # cache of campus names
+    campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", ( @groups1 + @groups2 ).collect(&:campus_id).uniq ])
+    @campus_id_to_name = Hash[campuses.collect{ |c| [c.id.to_s, c.name] }]
+            
   end
 
   def step2_default_group

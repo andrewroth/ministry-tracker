@@ -1,57 +1,57 @@
-<% gi = @my.group_involvements.find_by_group_id(group.id) %>
+<% gi = group.group_involvements.detect{ |gi| gi.person == @me } %>
 
-<h2><%= 
-  if !@signup && authorized?(:show, :groups) 
+<h2><%=
+  if !@signup && authorized?(:show, :groups)
     link_to(group.name, group_url(group), :method => :get)
   else
     "<b>#{group.name}</b>"
   end
 -%> <%- if !@join && !@signup && authorized?(:new, :groups) -%>
-  &nbsp <%= link_to_remote image_tag('delete.png'), 
-  						:url => {:action => :destroy, :id => group.id}, 
-  						:method => :delete,
-  						:confirm => "Are you sure you want to delete this bible study?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!" %>
+  &nbsp <%= link_to_remote image_tag('delete.png'),
+              :url => {:action => :destroy, :id => group.id},
+              :method => :delete,
+              :confirm => "Are you sure you want to delete this bible study?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!" %>
 <%- end -%>
 </h2>
 
-&nbsp &nbsp 
+&nbsp &nbsp
 <b>Involvement:</b>
-<%- if @my.group_involvement_interests.find_by_group_id(group.id) -%>
+<%- if gi && gi.level == 'interested' && (gi.requested == nil || gi.requested == false) -%>
   Marked as Interested
-<%- elsif @my.group_involvement_requests.find_by_group_id(group.id) -%>
+<%- elsif gi && gi.requested %>
   Join Request Pending
 <%- elsif gi -%>
-  <%= gi.level.capitalize %>
-<%- else -%>
+  <%= gi.level.capitalize %> 
+<%- else %>
   <%- if @join -%>
-    <%= link_to_remote 'Join', 
-      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
+    <%= link_to_remote 'Join',
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
         :person_id => @person.id,
         :group_id => group.id,
         :level => 'member'
-      }, 
+      },
       :method => :post
     %>
     or
-    <%= link_to_remote 'Interested', 
-      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements', 
+    <%= link_to_remote 'Interested',
+      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
         :gt_id => group.group_type.id,
         :person_id => @person.id,
         :group_id => group.id,
         :level => 'interested'
-      }, 
-      :method => :post 
+      },
+      :method => :post
     %>
-  <%- end -%> 
-<%- end -%>
-<br />
+  <%- end -%>
+<%- end %>
+<br/>
 
 <% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
 <%- unless @signup || @join || involvements.empty? -%>
-  &nbsp &nbsp <b>Members:</b>  
-  <%= 
+  &nbsp &nbsp <b>Members:</b>
+  <%=
       link = authorized?(:show, :people)
-      involvements.map{ |i| 
+      involvements.map{ |i|
         if link && i.person.present?
           link_to(i.person.full_name, person_url(i.person.id))
         elsif i.person.present?
@@ -68,13 +68,13 @@
   <%= involvements.map{|i| i.person.full_name}.join(", ") %>
   <br />
 <%- end -%>
-&nbsp &nbsp <b>Campus:</b> 
+&nbsp &nbsp <b>Campus:</b>
 
-<%- if group.campus -%>
-  <%= group.campus.name %>
+<%- if campus_name = @campus_id_to_name[group.campus_id.to_s] -%>
+  <%= campus_name %>
   <%= ", " + group.dorm.name if group.dorm %>
 <%- else -%>
-  All 
+  All
 <%- end -%>
 <br />
 
@@ -97,13 +97,14 @@
   <%= no_time_const %>
 <%- end -%>
 <br />
-  
 
-&nbsp &nbsp <b>Email:</b> 
+
+&nbsp &nbsp <b>Email:</b>
 <%- if group.email && group.email != "" -%>
   <%= group.email %>
 <%- else -%>
-  <%= group.leaders.first.current_address.email if group.leaders.first && group.leaders.first.current_address %>
+  <%- leaders = group.group_involvements.find_all{ |gi| gi.level == "leader" }.collect(&:person) -%>
+  <%= leaders.collect{|l| l.email }.join(", ") %>
 <%- end -%>
 <br />
 <br />
