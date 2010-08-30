@@ -325,18 +325,20 @@ class GroupsController < ApplicationController
   end
 
   def setup_groups
-    conditions = '(campus_id is null'
-    debugger
+    conditions = "(#{Group.__(:campus_id)} is null"
     if (!is_staff_somewhere && (@campus || @campuses.present?)) || 
       (is_staff_somewhere && @campus.present?)
-      conditions += " OR campus_id in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
+      conditions += " OR #{Group.__(:campus_id)} in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     elsif is_staff_somewhere
       #ministry_ids = get_ministry.descendants.collect(&:id) << get_ministry.id
       #conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
       conditions += " OR (#{get_ministry.descendants_condition})"
     end
     conditions += ") AND semester_id = #{@semester.id}"
-    @groups = Group.find(:all, :conditions => conditions, :joins => :ministry, :order => "name ASC")
+    #@groups = Group.find(:all, :conditions => conditions, :joins => :ministry, :order => "name ASC")
+    @groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ], :include => { :group_involvements => :person }, :order => "#{Group.__(:name)} ASC")
+    campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
+    @campus_id_to_name = Hash[campuses.collect{ |c| [c.id.to_s, c.name] }]
   end
 
 end
