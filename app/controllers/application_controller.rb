@@ -87,6 +87,7 @@ class ApplicationController < ActionController::Base
     end
 
     def get_ministry_involvement(ministry, person = @person)
+      # TODO: can do this in one query without using ancestor_ids now
       @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
