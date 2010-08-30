@@ -36,7 +36,7 @@ class Campus < ActiveRecord::Base
     end
     group.ministry = derive_ministry
     group.derive_name
-    group.semester = Semester.current
+    group.semester ||= Semester.current
     group.save!
 
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group
