@@ -77,7 +77,7 @@ class StatsController < ApplicationController
         setup_how_people_came_to_christ_report
       when 'story'
         setup_story_report
-    else
+      else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
     end
@@ -269,7 +269,7 @@ class StatsController < ApplicationController
 
 
   def setup_stats_report_from_session
-    
+    @this_year = get_current_year
     @id_for_treeview = session[:stats_ministry_id]
     ministry_campus_id = @id_for_treeview.to_s.split('_')
     @stats_ministry_id =  ministry_campus_id[0].to_i
@@ -393,6 +393,16 @@ class StatsController < ApplicationController
     setup_report_description
    
     @results_partial = "staff_drill_down"
+  end
+
+  def setup_compliance_report
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown    
+    setup_staffs_for_staff_drilldown(STAFF_DRILL_DOWN, @stats_ministry)
+    setup_report_description
+   
+    @results_partial = "compliance_report"
   end
 
   def setup_summary_by_semester
@@ -694,10 +704,17 @@ class StatsController < ApplicationController
           report_name = 'Summary for '
         end
     end
+<<<<<<< HEAD
     case @stats_time
       when 'year'
         period_description = get_current_stats_period.description
 
+=======
+     case @stats_time
+      when 'year'
+        period_description = get_current_stats_period.description
+          
+>>>>>>> c4c.dev
       when 'semester'
         period_description = get_current_stats_period.description
 
@@ -706,8 +723,13 @@ class StatsController < ApplicationController
 
       when 'week'
         period_description = "the week ending on #{get_current_stats_period.end_date}"
+<<<<<<< HEAD
 
     end
+=======
+        
+    end   
+>>>>>>> c4c.dev
     @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
   end
 
@@ -865,6 +887,14 @@ class StatsController < ApplicationController
       @time_tabs.each do |t|
         if t.to_s == @stats_time
           @stats_time = @time_tabs[@time_tabs.index(t) + 1].to_s
+          break
+        end
+      end
+    end
+    while @hide_tab[:"#{@stats_time}"] && @stats_time != @time_tabs.first.to_s
+      @time_tabs.each do |t|
+        if t.to_s == @stats_time
+          @stats_time = @time_tabs[@time_tabs.index(t) - 1].to_s
           break
         end
       end
