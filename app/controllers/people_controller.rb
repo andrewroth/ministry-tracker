@@ -716,7 +716,7 @@ class PeopleController < ApplicationController
     end
     
     def get_campuses
-      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry))
+      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
     end
     
     def get_campus_ids
@@ -764,7 +764,7 @@ class PeopleController < ApplicationController
       
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
-        conditions << "(#{ministry_condition} OR #{campus_condition})"
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
       elsif is_staff_somewhere && !campus_condition
         conditions << "(#{ministry_condition})"
       elsif !is_staff_somewhere
