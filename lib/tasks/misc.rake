@@ -432,6 +432,17 @@ task :niu => :environment do
     end
   end
 end
+
+desc "add a year, and appropriate semesters to tables"
+task :add_years => :environment do
+  puts "\nType a number to add that many years, and the appropriate semesters. Type '0' to cancel."
+  response = STDIN.gets
+  num_years_to_add = response.to_i
+
+  Semester.create_default_semesters(num_years_to_add)
+end
+
+id
 def escape_string(str)
   if str
     str.gsub(/([\0\n\r\032\'\"\\])/) do

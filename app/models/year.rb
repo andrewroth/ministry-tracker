@@ -1,7 +1,5 @@
 class Year < ActiveRecord::Base
-  unloadable
-  
   load_mappings
-  
+  include Common::Core::Year
   include Legacy::Stats::Year
 end

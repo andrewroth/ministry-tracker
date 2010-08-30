@@ -1,9 +1,11 @@
 class SignupController < ApplicationController
   include PersonForm
+  include SemesterSet
   skip_standard_login_stack
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
+  before_filter :set_current_and_next_semester
 
   def index
     redirect_to :action => :step1_info
@@ -54,6 +56,9 @@ class SignupController < ApplicationController
                                                        params[:person][:last_name],
                                                       false)
         @person = @user.person 
+        @person.gender = params[:person][:gender]
+        @person.local_phone = params[:person][:local_phone]
+        @person.save!
       end
 
       session[:signup_person_params] = params[:person]
@@ -118,14 +123,19 @@ class SignupController < ApplicationController
     @ministry = Ministry.default_ministry
     @me = @my = @person = Person.find(session[:signup_person_id])
     @campus = Campus.find session[:signup_campus_id]
-    @groups = @campus.groups
+    @groups1 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
+      @current_semester.id ])
+    @groups2 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
+      @next_semester.id ])
+    @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
     @group_types = GroupType.all
     @join = true
     @signup = true
     @campus.ensure_campus_ministry_groups_created
     @collection_group = @campus.collection_groups.find :first, 
       :conditions => [ "#{CampusMinistryGroup.__(:ministry_id)} = ?", Ministry.default_ministry ]
-    @groups.delete_if { |g| g == @collection_group }
+    @groups1.delete_if { |g| g == @collection_group }
+    @groups2.delete_if { |g| g == @collection_group }
   end
 
   def step2_default_group

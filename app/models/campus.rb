@@ -22,6 +22,11 @@ class Campus < ActiveRecord::Base
 
   def find_or_create_ministry_group(gt, ministry = derive_ministry)
     raise "Group type does not have collection groups" unless gt.has_collection_groups
+    if ministry.nil? && (ministry = derive_ministry).nil?
+      logger.info "Warning: In Campus.find_or_create_ministry_group and could not derive a ministry for campus #{self.inspect}"
+      return
+    end
+
     cmg = campus_ministry_groups.find_by_ministry_id(ministry, :joins => :group,
       :conditions => [ "group_type_id = ?", gt.id ] )
     if cmg
@@ -31,6 +36,7 @@ class Campus < ActiveRecord::Base
     end
     group.ministry = derive_ministry
     group.derive_name
+    group.semester ||= Semester.current
     group.save!
 
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group

@@ -45,9 +45,12 @@
     	   or <%= link_to(t(:find_common_times_link, :default => 'Find common times'), timetables_path)%>
     	  <%- end -%>
       <%- end -%>
-      <%- if @campuses.length > 1 -%>
+      <div style="float:right;  text-align:right; ">
+        <%- if @campuses.length > 1 -%>
         <%= render :partial => 'campus_filter' %>
-      <%- end -%>
+        <%- end -%>
+        <%= render :partial => 'semester_filter' %>
+      </div>
   	</div><%= spinner %>
 	</div>
 	<div>
