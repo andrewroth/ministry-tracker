@@ -755,21 +755,6 @@ class PeopleController < ApplicationController
       if params[:campus] || !is_staff_somewhere
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
-<<<<<<< HEAD
-      else
-        conditions << ministry_condition
-        @advanced = true
-        campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
-        campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
-      end
-      
-      # students should not have access to everyone in the ministry
-      if is_staff_somewhere && campus_condition
-        conditions << "(#{ministry_condition} AND #{campus_condition})"
-      elsif is_staff_somewhere && !campus_condition
-        conditions << "(#{ministry_condition})"
-      elsif !is_staff_somewhere
-        conditions << "(#{ministry_condition} AND #{campus_condition})"
         @advanced = true
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
