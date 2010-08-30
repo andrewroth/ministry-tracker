@@ -56,6 +56,9 @@ class SignupController < ApplicationController
                                                        params[:person][:last_name],
                                                       false)
         @person = @user.person 
+        @person.gender = params[:person][:gender]
+        @person.local_phone = params[:person][:local_phone]
+        @person.save!
       end
 
       session[:signup_person_params] = params[:person]
