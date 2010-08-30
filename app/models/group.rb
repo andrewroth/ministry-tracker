@@ -17,11 +17,13 @@ class Group < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :group_type
+  validates_presence_of :semester_id
   
   belongs_to :ministry
   belongs_to :campus
   belongs_to :group_type
   belongs_to :dorm
+  belongs_to :semester
   
   has_many :group_involvements, :dependent => :destroy
   has_many :people, :through => :group_involvements
@@ -35,6 +37,13 @@ class Group < ActiveRecord::Base
   has_one :campus_ministry_group
 
   after_save :update_collection_groups
+
+  named_scope :current_and_next_semester, lambda {
+    sid = Semester.current.id
+    { :conditions => [ "semester_id in (#{sid}, #{sid+1})" ],
+      :order => "semester_id ASC"
+    }
+  }
 
   def is_leader(p) in_association(leaders, p) end
   def is_co_leader(p) in_association(co_leaders, p) end
@@ -62,5 +71,15 @@ class Group < ActiveRecord::Base
 
   def is_collection_group
     campus_ministry_group.present?
+  end
+
+  def deep_copy(override_attributes = {})
+    new_group = Group.new self.attributes.merge(override_attributes)
+    new_group.save!
+    group_involvements.each do |inv|
+      new_group.group_involvements.create :person_id => inv.person_id, 
+        :level => inv.level, :requested => inv.requested
+    end
+    return new_group
   end
 end

@@ -4,6 +4,7 @@
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data
   filter_parameter_logging :password
+  skip_before_filter :cas_filter, :cas_gateway_filter, :only => :create
 
   def crash
     throw("Forced crash.  env: #{RAILS_ENV}")
@@ -16,6 +17,11 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
+    # force current user to be made again -- not sure why, but sometimes the
+    # cas stuff is not set by this point and so it appears like nobody is logged in even
+    # when someone goes through cas login successfully
+    login_from_cas if params[:ticket].present? 
+
     unless request.domain(2) =~ /pulse/
       # to help with testing - remove before final release
       p = (params[:id] ? Person.find(:first, :conditions => {_(:id, :person) => params[:id]}) : nil)

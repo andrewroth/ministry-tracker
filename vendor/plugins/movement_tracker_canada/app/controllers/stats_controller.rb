@@ -718,6 +718,7 @@ class StatsController < ApplicationController
         period_description = "the week ending on #{get_current_stats_period.end_date}"
         
     end   
+
     @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
   end
 
