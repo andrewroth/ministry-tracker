@@ -19,9 +19,9 @@
 		<%= spinner %>
 		<% if @my.ministries.length > 1 || is_admin?%>
 		  <%- if is_admin? -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.self_plus_descendants.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(current_ministry.root.descendants_with_names.collect {|m| [m.name + " #{m.parent_name ? '(' + m.parent_name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- else -%>
-    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.ministry_tree.sort.collect {|m| [m.name + " #{m.parent ? '(' + m.parent.name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
+    	  Current Ministry: <%= select_tag(:current_ministry, options_for_select(@my.descendants_with_names.sort.collect.collect {|m| [m.name + " #{m.parent ? '(' + m.parent_name + ')' : ''}", m.id]}, @ministry.id)) %>&nbsp; 
     	<%- end -%>
       <%- tooltip do -%> By changing you current ministry, what ministry you are interacting with. You current ministry is displayed under your name <%- end -%>
   	  <%= spinner('ministry') %>

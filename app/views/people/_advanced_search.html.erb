@@ -50,7 +50,7 @@
     Ministry: <br/>
     <%= select_tag 'ministry[]',
       options_for_select(
-        @ministries.collect {|ministry| [ministry.name, ministry.id]},
+        @ministries.collect {|ministry| [ministry.name, ministry.id.to_s]},
           @options["ministry"]),
       :multiple => true,
       :class => 'wide'
@@ -61,7 +61,7 @@
     Campus: <br/>
     <%= select_tag 'campus[]',
       options_for_select(
-        @campuses.collect {|campus| [campus.name, campus.id]},
+        @campuses.collect {|campus| [campus.name, campus.id.to_s]},
           @options["campus"]),
       :multiple => true,
       :class => 'doublewide'
