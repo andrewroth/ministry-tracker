@@ -1,4 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.resources :event_groups
+
+  map.resources :event_campuses
+
+  map.resources :events
+
   map.resources :involvement_histories
 
   map.resources :emails
