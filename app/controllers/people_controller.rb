@@ -712,8 +712,8 @@ class PeopleController < ApplicationController
       @use_address2 = !Cmt::CONFIG[:disable_address2]
     end
     
-    def my_campuses
-      @my_campuses ||= @my.campus_list(get_ministry_involvement(@ministry))
+    def get_campuses
+      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
     end
     
     def my_campus_ids
@@ -784,6 +784,18 @@ class PeopleController < ApplicationController
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
       else
         conditions << ministry_condition
+        @advanced = true
+        campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
+        campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
+      end
+      
+      # students should not have access to everyone in the ministry
+      if is_staff_somewhere && campus_condition
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
+      elsif is_staff_somewhere && !campus_condition
+        conditions << "(#{ministry_condition})"
+      elsif !is_staff_somewhere
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
       return conditions
     end
