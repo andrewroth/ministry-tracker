@@ -12,6 +12,7 @@ require 'person_methods'
 class PeopleController < ApplicationController
   include PersonMethods
   include PersonForm
+
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
@@ -178,6 +179,7 @@ class PeopleController < ApplicationController
       
       build_sql(tables_clause)
       @people = ActiveRecord::Base.connection.select_all(@sql)
+      post_process_directory(@people)
     else
       @people = []
       @count = 0
@@ -310,7 +312,7 @@ class PeopleController < ApplicationController
     permanent_address_country = @person.permanent_address.try(:country)
     @person.sanify_addresses
 
-    get_possible_responsible_people if Cmt::CONFIG[:rp_system_enabled]
+    #get_possible_responsible_people
     setup_vars
     setup_campuses
     render :update do |page|
@@ -762,7 +764,7 @@ class PeopleController < ApplicationController
       
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
-        conditions << "(#{ministry_condition} OR #{campus_condition})"
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
       elsif is_staff_somewhere && !campus_condition
         conditions << "(#{ministry_condition})"
       elsif !is_staff_somewhere
@@ -772,4 +774,11 @@ class PeopleController < ApplicationController
       return conditions
     end
     
+    # does some post-processing on the people returned by directory.  I found this way
+    # easier than getting the SQL right in some specific cases.  In particular, for people
+    # with multiple campus involvements, the directory code is difficult to work with.
+    # It auto adds a join on people and campus involvements.  It's really a pain to get
+    # the campuses right in SQL, so it's done here.
+    def post_process_directory(people)
+    end
 end
