@@ -704,17 +704,10 @@ class StatsController < ApplicationController
           report_name = 'Summary for '
         end
     end
-<<<<<<< HEAD
-    case @stats_time
-      when 'year'
-        period_description = get_current_stats_period.description
-
-=======
      case @stats_time
       when 'year'
         period_description = get_current_stats_period.description
           
->>>>>>> c4c.dev
       when 'semester'
         period_description = get_current_stats_period.description
 
@@ -723,13 +716,9 @@ class StatsController < ApplicationController
 
       when 'week'
         period_description = "the week ending on #{get_current_stats_period.end_date}"
-<<<<<<< HEAD
-
-    end
-=======
         
     end   
->>>>>>> c4c.dev
+
     @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
   end
 
