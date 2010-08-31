@@ -1,6 +1,6 @@
 class CreateEventCampuses < ActiveRecord::Migration
   def self.up
-    create_table :event_campuses do |t|
+    create_table EventCampus.table_name do |t|
       t.integer :event_id
       t.integer :campus_id
 

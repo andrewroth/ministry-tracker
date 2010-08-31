@@ -5,7 +5,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :events
 
-
   map.resources :annual_goals_reports
   map.resources :semester_reports
   map.resources :monthly_reports
@@ -50,6 +49,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :accountadmin_accessgroups
   map.resources :accountadmin_accesscategories
 
+=======
+>>>>>>> dev
   map.resources :involvement_histories
 
   map.resources :emails
