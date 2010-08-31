@@ -1,0 +1,13 @@
+<p>
+  <b>Title:</b>
+  <%=h @event_group.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @event_group.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_group_path(@event_group) %> |
+<%= link_to 'Back', event_groups_path %>
