@@ -37,7 +37,26 @@ if Common::STAGE == "prod" && Common::SERVER == "c4c"
     :address => 'smtp.powertochange.local',
     :domain => 'powertochange.local'
   }
+
+  ExceptionNotification::Notifier.configure_exception_notifier do |config|
+    config[:app_name]                 = "[PULSE]"
+    config[:sender_address]           = "noreply@campusforchrist.org"
+    config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck@gmail.com']
+    # In a local environment only use this gem to render, never email
+    #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
+    config[:skip_local_notification]  = true
+    # Error Notification will be sent if the HTTP response code for the error matches one of the following error codes
+    config[:notify_error_codes]   = %W( 405 500 503 )
+    # Error Notification will be sent if the error class matches one of the following error classes
+    config[:notify_error_classes] = %W( )
+    # What should we do for errors not listed?
+    config[:notify_other_errors]  = true
+    # If you set this SEN will attempt to use git blame to discover the person who made the last change to the problem code
+    config[:git_repo_path]            = "/var/www/pulse.campusforchrist.org/current"
+  end
 else
+  config.action_controller.consider_all_requests_local = true
+
   ActionMailer::Base.smtp_settings = {
     :address => 'localhost',
     :port => 2525,
@@ -50,19 +69,6 @@ end
 #   config[:send_email_error_codes] = %W( 400 403 404 405 500 501 503 )
 # end
 
-ExceptionNotification::Notifier.configure_exception_notifier do |config|
-  config[:app_name]                 = "[PULSE]"
-  config[:sender_address]           = "noreply@campusforchrist.org"
-  config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck@gmail.com']
-  # In a local environment only use this gem to render, never email
-  #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
-  config[:skip_local_notification]  = true
-  # Error Notification will be sent if the HTTP response code for the error matches one of the following error codes
-  config[:notify_error_codes]   = %W( 405 500 503 )
-  # Error Notification will be sent if the error class matches one of the following error classes
-  config[:notify_error_classes] = %W( )
-  # What should we do for errors not listed?
-  config[:notify_other_errors]  = true
-  # If you set this SEN will attempt to use git blame to discover the person who made the last change to the problem code
-  config[:git_repo_path]            = "ssh://git://github.com/twinge/ministry-tracker.git" # ssh://git@blah.example.com/repo/webapp.git
+if Common::STAGE == "prod"
+
 end
