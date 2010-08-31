@@ -1,0 +1,3 @@
+require 'eventbright'
+EventBright.setup("your api key here") # request an api key here: http://www.eventbrite.com/api/key
+@eventbrite_user = EventBright::User.new("you user key here") # find your user key here: http://www.eventbrite.com/userkeyapi
