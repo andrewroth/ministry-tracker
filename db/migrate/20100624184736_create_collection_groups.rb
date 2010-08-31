@@ -10,8 +10,8 @@ class CreateCollectionGroups < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :collection_groups
-    remove_column :group_types, :collection_group_name
-    remove_column :group_types, :has_collection_groups
+    drop_table CampusMinistryGroup.table_name
+    remove_column GroupType.table_name, :collection_group_name
+    remove_column GroupType.table_name, :has_collection_groups
   end
 end
