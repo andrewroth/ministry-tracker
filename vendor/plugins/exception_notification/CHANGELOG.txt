@@ -1,0 +1,34 @@
+2010-06-30 v3.0.13
+- Fixed homepage in Rakefile, noted Rails 3 incompatibility in README.
+
+2010-06-25 v3.0.12
+- Improved clarity of readme.
+
+2010-06-18 v3.0.11
+- Added correct view to Rakefile to include with build. (Jeweler had missed it because it was the wrong filename)
+
+2010-06-18 v3.0.10
+- Added view to gemspec to include with build. (Not sure why Jeweler missed it)
+
+2010-06-18 v3.0.9
+- Fixed bad view path for mailer.
+
+2010 - Version 3 refactoring
+- Realigned structure of gem to match the standard rails branch
+- Added Hoptoad Notification Integration (requires standard Hoptoad Gem)
+
+2009-01-28 v2.0.8
+- improve readme
+
+2009-12-30 v2.0.7
+- cite /rails/app/views/exception_notifiable/500.html in Rakefile (oops!)
+
+2009-12-30 v2.0.6
+- cite /rails/app/views/exception_notifiable/500.html in gemspec (oops!)
+
+2009-12-30 v2.0.5
+- use blank? instead of empty? so nils won't cause an error
+
+2009-11-04
+* Fixing Typos in Comments and Readme
+* General Readme cleanup

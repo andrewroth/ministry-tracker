@@ -4,6 +4,21 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
+
+  ############################################################
+  # ERROR HANDLING et Foo
+  include ExceptionNotification::ExceptionNotifiable
+  #Comment out the line below if you want to see the normal rails errors in normal development.
+  #alias :rescue_action_locally :rescue_action_in_public if Rails.env == 'development'
+  #self.error_layout = 'errors'
+  self.exception_notifiable_verbose = true #SEN uses logger.info, so won't be verbose in production
+  self.exception_notifiable_pass_through = :hoptoad # requires the standard hoptoad gem to be installed, and setup normally
+  #self.exception_notifiable_silent_exceptions = [ ActionController::RoutingError ]
+  #specific errors can be handled by something else:
+  #rescue_from 'Acl9::AccessDenied', :with => :access_denied
+  # END ERROR HANDLING
+  ############################################################
+
   
   if Cmt::CONFIG[:facebook_connectivity_enabled]
     before_filter :set_facebook_session
