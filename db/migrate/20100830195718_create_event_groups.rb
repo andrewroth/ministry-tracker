@@ -1,6 +1,6 @@
 class CreateEventGroups < ActiveRecord::Migration
   def self.up
-    create_table :event_groups do |t|
+    create_table EventGroup.table_name do |t|
       t.string :title
       t.string :description
 

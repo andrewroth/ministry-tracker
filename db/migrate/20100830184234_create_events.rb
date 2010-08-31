@@ -1,6 +1,6 @@
 class CreateEvents < ActiveRecord::Migration
   def self.up
-    create_table :events do |t|
+    create_table Event.table_name do |t|
       t.integer :registrar_event_id
       t.integer :event_group_id
       t.string :register_url
