@@ -67,4 +67,12 @@ class Ministry < ActiveRecord::Base
     @self_mandated_training_questions = TrainingQuestionActivation.find(:all, :conditions => ["mandate = 1 AND #{_(:ministry_id, :training_question_activation)} = ?", self.id], :include => :training_question).collect(&:training_question)
   end
 
+  def all_groups(top = true)
+    # TODO: account for top
+    unless @subministry_groups
+      @subministry_groups = Group.all(:conditions => [ "#{_(:lft, :ministry)} >= #{left} AND #{_(:rgt, :ministry)} <= #{rgt}" ], :joins => :ministry, :order => "#{Group.table_name}.name ASC")
+    end
+    return @subministry_groups
+  end
+
 end

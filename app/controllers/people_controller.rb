@@ -236,14 +236,15 @@ class PeopleController < ApplicationController
    	  
    	  # Scope by the user's ministry / campus involvements
    	  involvement_condition = "("
-   	  if my_campus_ids.present?
+      unless @person.is_staff_somewhere?
      	  involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
   	   	conditions[1] << my_campus_ids
+      else
  	    end
- 	    involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
+ 	    #involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
  	    
 	   	conditions[0] << involvement_condition
-	   	conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
+	   	#conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
 	   	
 	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
   
@@ -714,79 +715,62 @@ class PeopleController < ApplicationController
       @use_address2 = !Cmt::CONFIG[:disable_address2]
     end
     
-    def my_campuses
-      @my_campuses ||= @my.campus_list(get_ministry_involvement(@ministry))
-    end
-    
-    def my_campus_ids
-      @my_campus_ids ||= my_campuses.collect(&:id)
-    end
-    
     def get_campuses
-      return @campuses if @campuses
-      if is_staff_somewhere
-        @campuses = get_ministries.collect(&:campuses).flatten
-      else
-        @campuses = my_campuses
-      end
+      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
+    end
+    
+    def get_campus_ids
+      @campus_ids ||= get_campuses.collect(&:id).collect(&:to_s)
     end
     
     def get_ministries(ministry = nil)
-      if !is_staff_somewhere
-        @ministries = [ get_ministry ]
-      elsif ministry # recursive case
-        [ ministry ] + ministry.children.collect{ |m| get_ministries(m) }
+      if is_staff_somewhere
+        @ministries = get_ministry.self_and_descendants
       else
-        @ministries = get_ministries(get_ministry).flatten
+        @ministries = @my.ministries
       end
     end
 
+    def get_ministry_ids
+      @ministry_ids ||= get_ministries.collect(&:id).collect(&:to_s)
+    end
+
     def add_involvement_conditions(conditions)
-      # figure out which campuses to query based on the campuses listed for the current ministry
-      # Check ministry
-      ministry_condition = ''
       if params[:ministry]
-        # Only consider ministry ids that this person is involved in (for students)
-        unless is_staff_somewhere
-          params[:ministry] = params[:ministry].collect(&:to_i) & @my.ministry_involvements.collect(&:ministry_id)
-        end
-        unless params[:ministry].empty?
-          ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(params[:ministry].join(','))}) AND MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
-          @search_for << Ministry.find(:all, :conditions => "id in(#{quote_string(params[:ministry].join(','))})").collect(&:name).join(', ')
-          @advanced = true 
-        end
-      else
-        ministry_condition = "MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(current_ministry.self_plus_descendants.collect(&:id).join(','))}) AND MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
+        ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
+        ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
+        #ministry_ids = params[:ministry] & get_ministry_ids
+        @advanced = true
       end
+      ministry_ids ||= get_ministry_ids
+
+      ministry_condition = " (MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
+      ministry_condition += " AND MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
     
       # Check campus
-      campus_condition = ''
-      if params[:campus].present?
+      if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
-        params[:campus] = params[:campus].collect(&:to_i) & @campuses.collect(&:id)
-        unless params[:campus].empty?
-          conditions << "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(params[:campus].join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" 
-          @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} in (#{quote_string(params[:campus].join(','))})").collect(&:name).join(', ')
-          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
-          @advanced = true
-        end
-      elsif !params[:ministry].present?
-        campus_ids = @campuses.collect &:id # note that @campuses is restricted to campus involvements in this ministry if the person is a student (see get_campuses)
-        campus_condition = "CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN(#{quote_string(campus_ids.join(','))}) AND CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL AND MinistryInvolvement.#{_(:end_date, :campus_involvement)} is NULL" if campus_ids.present?
+        campus_ids = params[:campus] & get_campus_ids
       end
       
-      if campus_condition.present?
-        # students should not have access to everyone in the ministry
-        if is_staff_somewhere
-          conditions << ('(' + ministry_condition + ' OR ' + campus_condition + ')')
-        else
-          conditions << campus_condition
-        end
+      if params[:campus] || !is_staff_somewhere
+        @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
-      else
-        conditions << ministry_condition
+        @advanced = true
+        campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
+        campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
       end
+      
+      # students should not have access to everyone in the ministry
+      if is_staff_somewhere && campus_condition
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
+      elsif is_staff_somewhere && !campus_condition
+        conditions << "(#{ministry_condition})"
+      elsif !is_staff_somewhere
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
+      end
+
       return conditions
     end
     
