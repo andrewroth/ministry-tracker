@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
       @is_staff_somewhere ||= {}
       @is_staff_somewhere[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
-         person.id, Ministry.first.root.staff_role_ids]).nil?
+         person.id, Ministry.root.staff_role_ids]).nil?
     end
     helper_method :is_staff_somewhere
  
