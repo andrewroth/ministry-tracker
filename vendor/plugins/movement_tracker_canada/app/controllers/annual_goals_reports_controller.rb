@@ -1,5 +1,7 @@
 class AnnualGoalsReportsController < ApplicationController
   unloadable
+
+  skip_before_filter :authorization_filter, :only => [:select_annual_goals_report]    
     
   # GET /annual_goals_reports
   # GET /annual_goals_reports.xml
