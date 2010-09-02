@@ -1,0 +1,36 @@
+<h2><%= @ministry.name %></h2>
+<BR/>
+
+<h3>Parent Ministries</h3>
+<DIV>
+  <%= @ministry.ancestors.reverse.collect{ |m| link_to(m.name, ministry_url(m.id)) }.join(" < ") %>
+</DIV>
+
+<BR/>
+
+<!--
+<h3>Campuses</h3>
+<DIV>
+  <%- for campus in @ministry.unique_campuses -%>
+    <%= link_to campus.name, campus_url(campus) %><BR/>
+  <%- end -%>
+</DIV>
+-->
+
+<h3>Ministries</h3>
+<%- ms = @ministry.self_and_descendants %>
+<%- Ministry.each_with_level(ms) do |m, level| -%>
+    <DIV style="padding-left: <%= 20*level %>px;">
+      <%= link_to m.name, ministry_url(m.id) %>
+      <%- ns = @ministry.descendants_staff_count_hash[m.id].to_i; ng = @ministry.descendants_groups_count_hash[m.id].to_i %>
+      <%= "(" if ns > 0 || ng > 0 %><%= "#{ns} staff" if ns > 0%><%= ", " if ns > 0 && ng > 0 %><%= pluralize(ng, "group") if ng > 0 %><%= ")" if ns > 0 || ng > 0 %>
+    </DIV>
+  <%- end -%>
+</h3>
+
+<BR/>
+
+<h3>Staff</h3>
+<DIV>
+  <%= render :partial => "ministries/show_staff", :locals => { :ministry => @ministry } %>
+</DIV>

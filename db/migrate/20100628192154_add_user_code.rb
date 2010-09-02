@@ -1,15 +1,15 @@
 class AddUserCode < ActiveRecord::Migration
   def self.up
-    create_table :user_codes do |t|
+    create_table UserCode.table_name do |t|
       t.integer :user_id
       t.string :code
       t.string :pass
     end
-    add_index :user_codes, :user_id
+    add_index UserCode.table_name, :user_id
   end
 
   def self.down
-    remove_index :user_codes, :user_id
-    drop_table :user_codes
+    remove_index UserCode.table_name, :user_id
+    drop_table UserCode.table_name
   end
 end

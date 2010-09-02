@@ -1,0 +1,39 @@
+<h2><%= @campus.name %> <%- if @campus.abbrv.present? %>(<%= @campus.abbrv %>)<%- end -%></h2>
+<p>
+<%= @campus.address1 %>
+<%- if @campus.address2.present? -%>
+  <%= @campus.address2 %>
+<%- end -%>
+<%= if c = @campus.city then c + ", " end %><%= @campus.state %><BR/>
+<%= if z = @campus.zip then z + ", " end %><%= CmtGeo::lookup_country_name(@campus.country) %>
+</p>
+
+<h3>Teams</h3>
+<DIV>
+<%- for ministry in @campus.ministries %>
+  <h4><%= link_to ministry.name, ministry_url(ministry.id) %></h4>
+  <DIV style="padding-left: 20px;">
+  <%= render :partial => "ministries/show_staff", :locals => { :ministry => ministry } %>
+  <%- if @campus.ministries.empty? -%>No staff<%- end -%>
+  </DIV>
+<%- end -%>
+</DIV>
+
+<BR/>
+
+<h3>Groups</h3>
+<DIV>
+<%- atleast_one = false %>
+<%- @campus.groups.group_by(&:group_type).each_pair do |gt, groups| -%>
+  <%= pluralize(groups.length, gt.group_type) %>
+  <%- atleast_one = true %>
+<%- end -%>
+<%- unless atleast_one %>No groups<%- end -%>
+</DIV>
+
+<BR/>
+
+<h3>Infobase</h3>
+<DIV>
+Infobase stub.
+</DIV>

@@ -1,0 +1,8 @@
+<%- roles_with_invs = ministry.staff_involvements.group_by(&:ministry_role) -%>
+<%- roles_with_invs.keys.sort!{ |k1, k2| k1.position <=> k2.position }.each do |role| -%>
+  <%- invs = roles_with_invs[role] %>
+  <h4><%= role.name %></h4>
+  <%- for inv in invs -%>
+    <%= link_to inv.person.full_name, person_url(inv.person_id) %><BR/>
+  <%- end -%>
+<%- end -%>
