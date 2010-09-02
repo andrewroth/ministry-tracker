@@ -18,7 +18,7 @@ module EventBright
     readable :job_title, :company, :website, :blog, :gender
     readable :age, :birth_date
     readable :affiliate # Doc error - affiliate?
-    ignores :answers
+    readable :answers
     readable :event_id
     
     readable :ticket_id
