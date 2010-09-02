@@ -751,6 +751,9 @@ class PeopleController < ApplicationController
       # Check campus
       if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
+        if params[:campus].class == String
+          params[:campus] = [ params[:campus] ]
+        end
         campus_ids = params[:campus] & get_campus_ids
       end
       if !is_staff_somewhere
