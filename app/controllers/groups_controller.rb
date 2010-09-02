@@ -338,7 +338,7 @@ class GroupsController < ApplicationController
     #@groups = Group.find(:all, :conditions => conditions, :joins => :ministry, :order => "name ASC")
     @groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ], :include => { :group_involvements => :person }, :order => "#{Group.__(:name)} ASC")
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
-    @campus_id_to_name = Hash[campuses.collect{ |c| [c.id.to_s, c.name] }]
+    @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
   end
 
 end
