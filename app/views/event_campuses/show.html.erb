@@ -1,0 +1,13 @@
+<p>
+  <b>Event:</b>
+  <%=h @event_campus.event_id %>
+</p>
+
+<p>
+  <b>Campus:</b>
+  <%=h @event_campus.campus_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_campus_path(@event_campus) %> |
+<%= link_to 'Back', event_campuses_path %>
