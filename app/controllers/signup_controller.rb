@@ -142,8 +142,7 @@ class SignupController < ApplicationController
     @groups2.delete_if { |g| g == @collection_group }
     # cache of campus names
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", ( @groups1 + @groups2 ).collect(&:campus_id).uniq ])
-    @campus_id_to_name = Hash[campuses.collect{ |c| [c.id.to_s, c.name] }]
-            
+    @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
   end
 
   def step2_default_group
