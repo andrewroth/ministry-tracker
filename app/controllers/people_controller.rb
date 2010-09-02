@@ -753,6 +753,9 @@ class PeopleController < ApplicationController
         # Only consider campus ids that this person is allowed to see (stop deviousness)
         campus_ids = params[:campus] & get_campus_ids
       end
+      if !is_staff_somewhere
+        campus_ids ||= get_campus_ids
+      end
       
       if params[:campus] || !is_staff_somewhere
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
