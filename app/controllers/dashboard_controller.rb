@@ -39,7 +39,7 @@ class DashboardController < ApplicationController
             eb_event = EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
             if eb_event.status == "Live" then
-              if my_campuses_ids.size == 1 then
+              if my_campuses_ids.size == 1 && event.campuses.size > 1 then
                 attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
                 eb_event.attributes[:my_campus_num_attendees] = attendees.size
                 @my_campus = Campus.find(my_campuses_ids[0])
