@@ -8,6 +8,7 @@ class Campus < ActiveRecord::Base
   has_many :campus_ministry_groups
   has_many :collection_groups, :through => :campus_ministry_groups, :class_name => "Group", :source => :group
 
+
   # TODO: if we ever support multiple root ministries in one install, ex. AIA and C4C
   # and IV, then Ministry.default_ministry will have to be changed to all "root" ministries
   def ensure_campus_ministry_groups_created(ministries = [ Ministry.default_ministry ])
@@ -36,7 +37,7 @@ class Campus < ActiveRecord::Base
     end
     group.ministry = derive_ministry
     group.derive_name
-    group.semester = Semester.current
+    group.semester ||= Semester.current
     group.save!
 
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group

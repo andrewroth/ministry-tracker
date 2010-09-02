@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  registrar_event_id: 1
+  event_group_id: 1
+  register_url: MyString
+
+two:
+  registrar_event_id: 1
+  event_group_id: 1
+  register_url: MyString
