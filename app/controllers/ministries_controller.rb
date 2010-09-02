@@ -13,6 +13,10 @@ class MinistriesController < ApplicationController
   skip_before_filter :get_ministry, :only => [:edit]
   skip_before_filter :force_required_data, :only => [:edit]
 
+  def show
+    @ministry = Ministry.find params[:id]
+  end
+
   def index
     setup_ministries
     respond_to do |format|
