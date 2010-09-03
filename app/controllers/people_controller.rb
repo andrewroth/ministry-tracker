@@ -238,7 +238,7 @@ class PeopleController < ApplicationController
       involvement_condition = "("
       unless @person.is_staff_somewhere?
         involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
-        conditions[1] << my_campus_ids
+        conditions[1] << get_campus_ids
       else
       end
       involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
