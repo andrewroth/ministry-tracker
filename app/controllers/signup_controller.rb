@@ -132,8 +132,7 @@ class SignupController < ApplicationController
     @join = true
     @signup = true
     @campus.ensure_campus_ministry_groups_created
-    @collection_group = @campus.collection_groups.find :first, 
-      :conditions => [ "#{CampusMinistryGroup.__(:ministry_id)} = ?", Ministry.default_ministry ]
+    @collection_group = @campus.collection_groups.first
     @groups1.delete_if { |g| g == @collection_group }
     @groups2.delete_if { |g| g == @collection_group }
   end
