@@ -7,9 +7,10 @@ module StatsHelper
     "#{ministry_id}_#{campus.id}"
   end
 
-  def campus_link_to_remote(campus)
+  def campus_link_to_remote(campus, report_type)
+    report_type = 'c4c' if report_type.nil?
     ministry_id = ministry_id_with_campus_id(campus)
-    link_to_remote(campus.campus_shortDesc, :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, '#{ministry_id}', 'summary')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
+    link_to_remote(campus.campus_shortDesc, :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, '#{ministry_id}', 'summary', '#{report_type}')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
   end
 
   def time_tab_link_to_remote(time)

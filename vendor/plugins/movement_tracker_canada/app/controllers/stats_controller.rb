@@ -32,7 +32,8 @@ class StatsController < ApplicationController
       when SUMMARY
         select_c4c_summary
       when CAMPUS_DRILL_DOWN
-        select_c4c_campus_drill_down
+        setup_campus_drill_down
+        #select_c4c_campus_drill_down
       when STAFF_DRILL_DOWN
         setup_staff_drill_down
       end
@@ -289,14 +290,8 @@ class StatsController < ApplicationController
 
     @stats_time = session[:stats_time]
     @report_type = session[:stats_report_type] 
+    @report_scope = session[:stats_report_scope]
     
-    #P2C and CCCI reports work only with summary view    
-    @report_scope = (@report_type == REPORT_TYPE_C4C) ? session[:stats_report_scope] : SUMMARY
-    
-    @scope_radio_selected_id = report_scopes[:"#{@report_scope}"][:radio_id]
-
-    @stats_summary = @report_scope == SUMMARY ? true : false
-
     # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
     @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
     @drillDownAccess = @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
@@ -304,6 +299,9 @@ class StatsController < ApplicationController
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
     setup_reports_to_show
+
+    @scope_radio_selected_id = report_scopes[:"#{@report_scope}"][:radio_id]
+    @stats_summary = @report_scope == SUMMARY ? true : false
     
     @show_additional_report_links = (authorized?("how_people_came_to_christ", "stats")) ? true : false
     @show_ministries_under = authorized?("view_ministries_under", "stats")
@@ -393,6 +391,16 @@ class StatsController < ApplicationController
     setup_report_description
    
     @results_partial = "staff_drill_down"
+  end
+
+  def setup_campus_drill_down
+    
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown    
+    setup_report_description
+   
+    @results_partial = "campus_drill_down"
   end
 
   def setup_compliance_report
@@ -696,15 +704,18 @@ class StatsController < ApplicationController
       when 'story'
         report_name = 'Salvation Story Synopses for '
       when 'c4c'
-        if @report_scope == CAMPUS_DRILL_DOWN
-          report_name = 'Campus drill down of '
-        elsif @report_scope == STAFF_DRILL_DOWN
-          report_name = 'Staff drill down of '
-        elsif @report_scope == SUMMARY
+        if @report_scope == SUMMARY
           report_name = 'Summary for '
         end
     end
-     case @stats_time
+
+    if @report_scope == CAMPUS_DRILL_DOWN
+        report_name = 'Campus drill down of '
+    elsif @report_scope == STAFF_DRILL_DOWN
+      report_name = 'Staff drill down of '
+    end
+    
+    case @stats_time
       when 'year'
         period_description = get_current_stats_period.description
           
@@ -774,17 +785,21 @@ class StatsController < ApplicationController
   
   def setup_reports_to_show
     @reports_to_show = []
+    @show_non_database = false
     case @report_type
       when 'p2c'
         add_report_if_authorized(:p2c_report)
       when 'ccci'
         add_report_if_authorized(:ccci_report)
+        @show_non_database = true
     end
     if @reports_to_show.empty?
         add_report_if_authorized(:weekly_report)
         add_report_if_authorized(:indicated_decisions_report)
-        add_report_if_authorized(:monthly_report) if ['year', 'semester'].include?(@stats_time)
-        add_report_if_authorized(:semester_report) if @stats_time == 'year'
+        if @report_scope == SUMMARY
+          add_report_if_authorized(:monthly_report) if ['year', 'semester'].include?(@stats_time)
+          add_report_if_authorized(:semester_report) if @stats_time == 'year'
+        end
     end
   end
 
@@ -803,7 +818,8 @@ class StatsController < ApplicationController
     
     case @report_type
       when 'ccci' 
-        hide_time_tabs([:week, :month])
+        hide_time_tabs([:week])
+        hide_time_tabs([:month]) if @report_scope == SUMMARY
       when 'p2c' 
         hide_time_tabs([:week, :month])
       when 'comp' 
@@ -826,6 +842,7 @@ class StatsController < ApplicationController
   end
 
   def get_initialized_scope_radio(key, scope)
+    the_key = :"#{key}"
     {
       :order => scope[:order],
       :checked => @report_scope == key ? true : false, 
@@ -833,7 +850,7 @@ class StatsController < ApplicationController
       :value => key,
       :label => scope[:label], 
       :title => scope[:title].gsub('[MINISTRY_NAME]', "#{@ministry_name}"),
-      :show => show_scope_radio(scope)
+      :show => show_scope_radio(scope) && available_scopes.include?(the_key)
     }
   end
 
@@ -846,26 +863,15 @@ class StatsController < ApplicationController
   def setup_summary_drilldown_radio_visibility
     setup_report_scope_radios
     @hide_radios = false
-    case @report_type
-      when 'ccci' 
-        @hide_radios = true
-      when 'p2c' 
-        @hide_radios = true
-      when 'comp' 
-        @hide_radios = true
-      when 'hpctc'
-        @hide_radios = true
-      when 'story'
-        @hide_radios = true
-      end
-    if !is_ministry_admin && !@drillDownAccess
-      @hide_radios = true
-    end
+    @hide_radios = true if available_scopes.length <= 1
+    @hide_radios = true if !is_ministry_admin && !@drillDownAccess
     
     if @hide_radios
       @stats_summary = true
-      session[:stats_summary] = DEFAULT_SUMMARY  
-      @report_scope = SUMMARY
+      new_scope = SUMMARY
+      new_scope = available_scopes[0].to_s if available_scopes.length == 1
+      session[:stats_summary] = new_scope == SUMMARY ? DEFAULT_SUMMARY : false  
+      @report_scope = new_scope
     end
   end
 
@@ -903,6 +909,13 @@ class StatsController < ApplicationController
     end
     period_dropdown
   end
+
+  def current_report_type
+    report_types[:"#{@report_type}"]
+  end
   
+  def available_scopes
+    current_report_type[:scopes]
+  end
   
 end

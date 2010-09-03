@@ -1,0 +1,47 @@
+<% total_stat = {} %>
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+  <tr>
+      <td class="statsTableTitle"></td>
+    <% @reports_to_show.each do |r| %>
+      <% stat_report(r).each do |k, stat| 
+           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)%>
+             <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
+      <%    total_stat[k] = 0
+           end
+         end %>
+    <% end %>
+  </tr>
+  <% @campuses.each do |campus| 
+
+%>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="statsTableTitle"><%= campus_link_to_remote(campus, @report_type) %></td>
+    <% @reports_to_show.each do |r| %>
+      <% stat_report(r).each do |k, stat| 
+           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)
+             data = evaluate_stat_for_period(@period, [campus.id], stat) %>
+             <td class="<%= stat[:css_class] %>"><%= data %></td>
+      <%     total_stat[k] += data
+           end
+         end %>
+    <% end %>
+    </tr>
+  <%     
+       
+     end %>
+
+  <tr><td><br/></td></tr>
+  <tr class="highlight">
+    <td class="statsTableTitle">Totals:</td>
+    <% @reports_to_show.each do |r|
+         stat_report(r).each do |k, stat| 
+           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column) %>
+             <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
+      <%     
+           end
+         end 
+       end %>
+  </tr>
+
+</table>
