@@ -46,7 +46,23 @@
 <%- end %>
 <br/>
 
-<% involvements = group.group_involvements.reject{|gi| gi.requested == true || gi.level == 'interested'} %>
+<% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
+<%- unless @signup || @join || involvements.empty? -%>
+  &nbsp &nbsp <b>Leaders:</b>
+  <%=
+      link = authorized?(:show, :people)
+      involvements.map{ |i|
+        if link && i.person.present?
+          link_to(i.person.full_name, person_url(i.person.id))
+        elsif i.person.present?
+          i.person.full_name
+        end
+      }.join(', ')
+  %>
+  <br />
+<%- end -%>
+
+<% involvements = group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::MEMBER }%>
 <%- unless @signup || @join || involvements.empty? -%>
   &nbsp &nbsp <b>Members:</b>
   <%=
@@ -62,7 +78,7 @@
   <br />
 <%- end -%>
 
-<% involvements = group.group_involvements.select{|gi| (gi.requested.nil? || gi.requested == false) && gi.level == 'interested'}%>
+<% involvements = group.group_involvements.select{|gi| (gi.requested != true) && gi.level == Group::INTERESTED }%>
 <%- unless @signup || @join || involvements.empty? -%>
   &nbsp &nbsp <b>Interested:</b>
   <%= involvements.map{|i| i.person.full_name}.join(", ") %>
