@@ -2,6 +2,12 @@ require 'httparty'
 require 'tzinfo'
 module EventBright
   EVENTBRITE_TIME_STRING = '%Y-%m-%d %H:%M:%S'
+  
+  def self.setup_from_initializer()
+    self.setup(EventBright::KEYS[:api], EventBright::DEBUG)
+    @eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
+  end
+  
   def self.setup(app_key = "YmRmMmMxMjYzNDYy", debug = false)
     @app_key = app_key
     @debug = debug

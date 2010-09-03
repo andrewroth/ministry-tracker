@@ -38,6 +38,20 @@ module EventBright
     def save(*args)
       # noop. Attendees can't be altered via api
     end
+    
+    def answer_to_question(question)
+      answer_text = nil
+    
+      if self.answers then
+        self.answers.each do |answer|
+          answer = answer["answer"]
+          answer_text = answer["answer_text"] if answer["question"] == question
+        end
+      end
+      
+      answer_text
+    end
+    
   end
   class AttendeeCollection < ApiObjectCollection
     collection_for Attendee

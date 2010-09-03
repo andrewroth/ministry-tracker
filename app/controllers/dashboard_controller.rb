@@ -32,8 +32,7 @@ class DashboardController < ApplicationController
           @eventbrite_events = []
           live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
 
-          EventBright.setup(EventBright::KEYS[:api], true)
-          @eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
+          @eventbrite_user = EventBright.setup_from_initializer()
 
           my_events.each do |event|
             eb_event = EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})

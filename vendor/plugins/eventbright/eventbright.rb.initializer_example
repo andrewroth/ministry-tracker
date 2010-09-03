@@ -1,4 +1,4 @@
-# put this file in your config/initializers
+# rename this file to eventbright.rb and put it in your config/initializers
 # in your code call:
 #   EventBright.setup(EventBright::KEYS[:api], true)
 #   eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
@@ -8,6 +8,7 @@ require 'eventbright'
 module EventBright
   #request an api key here: http://www.eventbrite.com/api/key
   #find your user key here: http://www.eventbrite.com/userkeyapi
-  KEYS = {:api => "your api key", :user => "your user key"}
+  KEYS = {:api => "your api key", :user => "your user key"} unless defined?(KEYS)
+  DEBUG = true unless defined?(DEBUG)
 end
 
