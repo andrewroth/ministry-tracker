@@ -38,6 +38,7 @@ class GroupInvolvementsController < ApplicationController
     get_person_campus_groups
     #@gi.send_later(:join_notifications2, base_url)
     @gi.send_later(:join_notifications, base_url)
+    @campus_id_to_name = { @group.campus_id.to_s => @group.campus.name }
     flash[:notice] = (@gi.requested ? "Join request for <b>#{@group.name}</b> group sent!" : 
                                       "You are now marked as <b>#{@gi.level.capitalize}</b> in the group <b>#{@group.name}</b>")
     @join = true
