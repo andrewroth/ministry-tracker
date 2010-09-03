@@ -215,51 +215,51 @@ class PeopleController < ApplicationController
     # figure out if the search parameter looks like a first or last name only, or both
     @search = params[:search]
     if @search && !@search.empty?
-     	names = @search.strip.split(' ')
-     	conditions = [[],[]]
-    	if (names.size > 1)
-	    	first = names[0].to_s
-    		last = names[1].to_s
-	    	conditions[0] << "#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? "
-	    	conditions[1] << last + "%"
-	    	conditions[1] << first + "%"
-	   	else
-	   	  name = names.join
-	   		conditions[0] << "(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) "
-	   		conditions[1] << name+'%'
-	   		conditions[1] << name+'%' 
-	   	end
-	   	if params[:filter_ids].present?
-	   	  conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
-	   	  conditions[1] << params[:filter_ids]
-   	  end
-   	  
-   	  # Scope by the user's ministry / campus involvements
-   	  involvement_condition = "("
-      unless @person.is_staff_somewhere?
-     	  involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
-  	   	conditions[1] << my_campus_ids
+      names = @search.strip.split(' ')
+      conditions = [[],[]]
+      if (names.size > 1)
+        first = names[0].to_s
+        last = names[1].to_s
+        conditions[0] << "#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? "
+        conditions[1] << last + "%"
+        conditions[1] << first + "%"
       else
- 	    end
- 	    #involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
- 	    
-	   	conditions[0] << involvement_condition
-	   	#conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
-	   	
-	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
-  
+        name = names.join
+        conditions[0] << "(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) "
+        conditions[1] << name+'%'
+        conditions[1] << name+'%' 
+      end
+      if params[:filter_ids].present?
+        conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
+        conditions[1] << params[:filter_ids]
+      end
+
+      # Scope by the user's ministry / campus involvements
+      involvement_condition = "("
+      unless @person.is_staff_somewhere?
+        involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
+        conditions[1] << my_campus_ids
+      else
+      end
+      involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
+
+      conditions[0] << involvement_condition
+      conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
+
+      @conditions = [ conditions[0].join(' AND ') ] + conditions[1]
+
       includes = [:current_address, :campus_involvements, :ministry_involvements]
-	  	@people = Person.find(:all, :order => "#{_(:last_name, :person)}, #{_(:first_name, :person)}", :conditions => @conditions, :include => includes)
-	  	respond_to do |format|
-	  	  if params[:context]
-	  	    format.js {render :partial => params[:context] + '/results', :locals => {:people => @people, :type => params[:type], :group_id => params[:group_id]}}
-  	    else
-  	      format.js {render :action => 'results'}
-	      end
-	  	end
-	  else
-	    render :nothing => true
-	  end
+      @people = Person.find(:all, :order => "#{_(:last_name, :person)}, #{_(:first_name, :person)}", :conditions => @conditions, :include => includes)
+      respond_to do |format|
+        if params[:context]
+          format.js {render :partial => params[:context] + '/results', :locals => {:people => @people, :type => params[:type], :group_id => params[:group_id]}}
+        else
+          format.js {render :action => 'results'}
+        end
+      end
+    else
+      render :nothing => true
+    end
   end
 
   # GET /people/show
