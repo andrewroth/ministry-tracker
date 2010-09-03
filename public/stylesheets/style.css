@@ -1177,7 +1177,7 @@ div.choose_ministry_tree {
 
 /************************************************/
 /* Stats section                                */
-#statsTitle {
+#statsTitle, #reportTitle {
   color: #1F429B;
   border-bottom:1px dotted #1F429B;
 	margin: 0 0 10px 3px;
@@ -1496,7 +1496,13 @@ fieldset {
 #results .statsTableTitle {
   color: #474E66;
   vertical-align: middle;
-	text-align: left;
+  text-align: left;
+}
+
+#results .statsTableTitleTop {
+  color: #474E66;
+  vertical-align: middle;
+  text-align: center;
 }
 
 table .statsTable {

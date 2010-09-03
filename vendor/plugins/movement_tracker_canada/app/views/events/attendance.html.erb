@@ -1,0 +1,41 @@
+<%= javascript_include_tag "events.js" %>
+
+<script>
+  Window.ajax_base = "<%= "/#{request.path_parameters[:controller]}/#{request.path_parameters[:id]}/" %>";
+</script>
+
+<h1 id="reportTitle">Events</h1>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <br/>
+
+    <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
+
+      <div id="formHeading"><h2><div id="reportTypeTitle"><%= @eb_event.title %></div></h2></div>
+
+      <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
+        <br/>
+	<% @attendance_scope_radios.each do |radio| %>
+	 <%= render :partial => "scope_radio", :locals => { :radio => radio } %>
+	<% end %>
+        <br/>
+      </div>
+
+    <% end %>
+
+    <br/>
+
+  </div>
+</div>
+
+
+<div class="clear">&nbsp;</div>
+
+
+<div id="results" class="statsContainer">
+  <div id="attendanceSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
+  <div id="attendanceResults" class="statsReportTabContainer" style="display: none;"></div>
+  <br/>
+</div>
+
