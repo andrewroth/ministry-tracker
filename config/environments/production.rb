@@ -53,7 +53,7 @@ if Common::STAGE == "prod" && Common::SERVER == "c4c"
     # What should we do for errors not listed?
     config[:notify_other_errors]  = true
     # If you set this SEN will attempt to use git blame to discover the person who made the last change to the problem code
-    config[:git_repo_path]            = "/var/www/pulse.campusforchrist.org/current"
+    #config[:git_repo_path]            = "/var/www/pulse.campusforchrist.org/current"
   end
 else
   config.action_controller.consider_all_requests_local = true
