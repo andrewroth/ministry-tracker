@@ -47,20 +47,18 @@
 <br/>
 
 <% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
-<%- unless @signup || @join || involvements.empty? -%>
-  &nbsp &nbsp <b>Leaders:</b>
-  <%=
-      link = authorized?(:show, :people)
-      involvements.map{ |i|
-        if link && i.person.present?
-          link_to(i.person.full_name, person_url(i.person.id))
-        elsif i.person.present?
-          i.person.full_name
-        end
-      }.join(', ')
-  %>
-  <br />
-<%- end -%>
+&nbsp &nbsp <b>Leaders:</b>
+<%=
+    link = authorized?(:show, :people)
+    involvements.map{ |i|
+      if link && i.person.present?
+        link_to(i.person.full_name, person_url(i.person.id))
+      elsif i.person.present?
+        i.person.full_name
+      end
+    }.join(', ')
+%>
+<br />
 
 <% involvements = group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::MEMBER }%>
 <%- unless @signup || @join || involvements.empty? -%>
