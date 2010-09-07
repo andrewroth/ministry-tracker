@@ -957,7 +957,7 @@ input.searchdash {font-size:16px; width:250px;}
 input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padding:3px 3px 2px 3px; position:absolute;}
 .modulesearchbox small {line-height:2em; font-size:11px; font-weight:bold;}
 
-.modulecontent ul {font-size:13px;}
+a.modulecontent, .modulecontent ul {font-size:13px;}
 .modulecontent ul li {margin-bottom:6px;}
 ul.groupicon li{background:url(/images/silk/user_go.png) no-repeat 0% 0%; padding-left:22px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
@@ -999,7 +999,8 @@ margin-top:5px;
 
 table.datatable td, table.datatable th {
 padding-bottom:5px;
-} 
+}
+
 
 
 /* ************* */
@@ -1176,7 +1177,7 @@ div.choose_ministry_tree {
 
 /************************************************/
 /* Stats section                                */
-#statsTitle {
+#statsTitle, #reportTitle {
   color: #1F429B;
   border-bottom:1px dotted #1F429B;
 	margin: 0 0 10px 3px;
@@ -1495,7 +1496,13 @@ fieldset {
 #results .statsTableTitle {
   color: #474E66;
   vertical-align: middle;
-	text-align: left;
+  text-align: left;
+}
+
+#results .statsTableTitleTop {
+  color: #474E66;
+  vertical-align: middle;
+  text-align: center;
 }
 
 table .statsTable {

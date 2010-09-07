@@ -617,5 +617,14 @@
       }
 
     }
-    end
+  end
 
+  
+  def eventbrite
+    {
+      :campus_question => "Your Campus",
+      :event_status_live => "Live",
+      :male => "Male",
+      :female => "Female"
+    }
+  end
