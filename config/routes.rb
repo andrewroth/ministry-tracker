@@ -49,8 +49,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :accountadmin_accessgroups
   map.resources :accountadmin_accesscategories
 
-=======
->>>>>>> dev
   map.resources :involvement_histories
 
   map.resources :emails
