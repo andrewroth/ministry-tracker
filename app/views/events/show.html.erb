@@ -1,0 +1,18 @@
+<p>
+  <b>Registrar event:</b>
+  <%=h @event.registrar_event_id %>
+</p>
+
+<p>
+  <b>Event group:</b>
+  <%=h @event.event_group_id %>
+</p>
+
+<p>
+  <b>Register url:</b>
+  <%=h @event.register_url %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>
