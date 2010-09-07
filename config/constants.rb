@@ -79,7 +79,7 @@
                     :label => "Campus drill-down", 
                     :title => "See individual campuses under [MINISTRY_NAME]",
                     :radio_id => "report_scope_campus_drill_down",
-                    :show => :if_more_than_one_campus
+                    :show => :yes
       },
       :staff_drill_down => {
                     :order => 3,

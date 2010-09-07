@@ -866,11 +866,11 @@ class StatsController < ApplicationController
     @hide_radios = true if available_scopes.length <= 1
     @hide_radios = true if !is_ministry_admin && !@drillDownAccess
     
-    if @hide_radios
-      @stats_summary = true
+    if @hide_radios || !(available_scopes.include?(:"#{@report_scope}"))
       new_scope = SUMMARY
       new_scope = available_scopes[0].to_s if available_scopes.length == 1
       session[:stats_summary] = new_scope == SUMMARY ? DEFAULT_SUMMARY : false  
+      @stats_summary = new_scope == SUMMARY ? true : false
       @report_scope = new_scope
     end
   end
