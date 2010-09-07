@@ -14,5 +14,7 @@
 - :name: jrails
 - :name: daemons
 - :name: will_paginate
+- :name: httparty
+- :name: tzinfo
 - :version: 2.3.5
   :name: rails
