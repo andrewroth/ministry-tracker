@@ -5,6 +5,11 @@ else
   page << "jQuery('#statsRadioButtonContainer').removeClass('notDisplayed')"
 end
 
+if @show_campus_select
+  page << "jQuery('#attendanceCampusSelect').removeClass('notDisplayed')"
+else
+  page << "jQuery('#attendanceCampusSelect').addClass('notDisplayed')"
+end
 
 # update selected radio button in case server changes @stats_summary value
 page[@scope_radio_selected_id].attr("checked", true)

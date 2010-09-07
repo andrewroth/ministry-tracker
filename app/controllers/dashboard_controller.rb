@@ -37,7 +37,7 @@ class DashboardController < ApplicationController
           my_events.each do |event|
             eb_event = EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
-            if eb_event.status == "Live" then
+            if eb_event.status == eventbrite[:event_status_live] then
               if my_campuses_ids.size == 1 && event.campuses.size > 1 then
                 attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
                 eb_event.attributes[:my_campus_num_attendees] = attendees.size
@@ -46,6 +46,10 @@ class DashboardController < ApplicationController
 
               @eventbrite_events << eb_event
               live_event_ids << event.id
+
+              if authorized?(:show_all_campuses_individuals, :events)
+                eb_event.attributes[:link_to_report] = url_for(:controller => 'events', :action => 'attendance', :id => event.id)
+              end
             end
           end
 

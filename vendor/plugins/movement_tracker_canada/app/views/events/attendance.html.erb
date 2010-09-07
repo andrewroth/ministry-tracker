@@ -16,12 +16,16 @@
 
       <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
         <br/>
-	<% @attendance_scope_radios.each do |radio| %>
-	 <%= render :partial => "scope_radio", :locals => { :radio => radio } %>
-	<% end %>
+        <% @attendance_scope_radios.each do |radio| %>
+         <%= render :partial => "scope_radio", :locals => { :radio => radio } %>
+        <% end %>
         <br/>
       </div>
 
+      <div id="attendanceCampusSelect" <%= "class='notDisplayed'" unless @show_campus_select %>>
+        <%= form.label :campus, "Campus:" %>
+        <%= form.collection_select :campus_id, @attendance_campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoading()"} %>
+      </div>
     <% end %>
 
     <br/>

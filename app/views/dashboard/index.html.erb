@@ -238,7 +238,11 @@ this system, along with any other information we think would be helpful to you.<
               <% @eventbrite_events.each do |event| %>
 
                 <tr>
-                  <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click here to register!"}) %></td>
+                  <% if event.attributes[:link_to_report] %>
+                    <td class="normal"><%= link_to(event.title, event.attributes[:link_to_report], {:class => "modulecontent", :title => "Click to see more info"}) %></td>
+                  <% else %>
+                    <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to register!"}) %></td>
+                  <% end %>
                   <td class="center"><b><%= event.num_attendee_rows %></b></td>
                   <% total_group_attendees += event.num_attendee_rows %>
                 </tr>

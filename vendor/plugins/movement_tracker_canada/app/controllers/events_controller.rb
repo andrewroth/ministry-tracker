@@ -91,6 +91,9 @@ class EventsController < ApplicationController
 
     @report_scope = session[:attendance_report_scope]
 
+    @show_campus_select = @report_scope == INDIVIDUALS ? true : false
+    @attendance_campuses = []
+
     @scope_radio_selected_id = REPORT_SCOPES[:"#{@report_scope}"][:radio_id]
 
 
@@ -106,16 +109,19 @@ class EventsController < ApplicationController
     @campus_summaries = {}
     @campus_summary_totals = {:males => 0, :females => 0}
 
-    @eb_event.attendees.each do |attendee|
-      campus = attendee.answer_to_question("Your Campus")
+    attendees = @eb_event.attendees
+
+    
+    attendees.each do |attendee|
+      campus = attendee.answer_to_question(eventbrite[:campus_question])
 
       @campus_summaries[campus.to_s] = {:males => 0, :females => 0} if @campus_summaries[campus].nil?
 
       case attendee.gender
-      when "Female"
+      when eventbrite[:female]
         @campus_summaries[campus][:females] += 1
         @campus_summary_totals[:females] += 1
-      when "Male"
+      when eventbrite[:male]
         @campus_summaries[campus][:males] += 1
         @campus_summary_totals[:males] += 1
       end
@@ -128,16 +134,22 @@ class EventsController < ApplicationController
 
 
   def setup_individuals
-    @report_description = "Individual Attendees to #{@eb_event.title}"
+    if authorized?(:show_all_campuses_individuals, :events)
+      @attendance_campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("events", "show_all_campuses_individuals"))
+    elsif authorized?(:show_my_campus_individuals, :events)
+      @attendance_campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("events", "show_my_campus_individuals"))
+    end
+
+    @report_description = "Individual Attendees to" #{@eb_event.title}"
 
     @results_partial = "attendance_individuals"
   end
 
 
   def setup_event
-    @event ||= Event.find(params[:id])
+    @event = Event.find(params[:id])
     @eventbrite_user ||= EventBright.setup_from_initializer()
-    @eb_event ||= EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+    @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
   end
 
 end
