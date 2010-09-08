@@ -165,6 +165,9 @@ module AuthenticatedSystem
       session[:admins] = nil
       session[:locale] = nil
       session[:facebook_session] = nil
+      session.select {|k,v| k.to_s =~ /^ministry_/}.each do |s|
+        session[s[0]] = nil
+      end
     end
 
     def kill_remember_cookie!
