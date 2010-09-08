@@ -56,12 +56,12 @@
   
   def report_types
     { 
-      :c4c => {:label => "Campus for Christ Reports", :controller => :stats, :action => :index},
-      :p2c => {:label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report},
-      :ccci => {:label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report},
-      :comp => {:label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report},
-      :hpctc => {:label => "How people came to Christ", :controller => :stats, :action => :how_people_came_to_christ},
-      :story => {:label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses}
+      :c4c => {:order => 1, :label => "Campus for Christ Reports", :controller => :stats, :action => :index, :scopes => [:summary, :campus_drill_down, :staff_drill_down]},
+      :p2c => {:order => 5, :label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report, :scopes => [:summary]},
+      :ccci => {:order => 6, :label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report, :scopes => [:summary, :campus_drill_down]},
+      :comp => {:order => 4, :label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report, :scopes => [:staff_drill_down]},
+      :hpctc => {:order => 2, :label => "How people came to Christ", :controller => :stats, :action => :how_people_came_to_christ, :scopes => [:summary]},
+      :story => {:order => 3, :label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses, :scopes => [:summary]}
     }
   end
   
@@ -79,7 +79,7 @@
                     :label => "Campus drill-down", 
                     :title => "See individual campuses under [MINISTRY_NAME]",
                     :radio_id => "report_scope_campus_drill_down",
-                    :show => :if_more_than_one_campus
+                    :show => :yes
       },
       :staff_drill_down => {
                     :order => 3,
