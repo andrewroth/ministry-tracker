@@ -3,11 +3,10 @@
     <tr>
         <td>
         </td>
-        <% semesters = Semester.find_semesters_by_year(@year_id) %>
 
-        <% semesters.each do |semester| %>
+        <% @periods.each do |p| %>
           <td class="statsTableTitle">
-            <%=  semester.description %>
+            <%= period_description_for_column_title(p) %>
           </td>
         <% end %>
 
@@ -16,7 +15,7 @@
         </td>
 
     </tr>
-		<% @reports_to_show.each do |r| %>
+    <% @reports_to_show.each do |r| %>
       <%= show_summary_report(r, true)%>
-		<% end %>
+    <% end %>
 </table>
