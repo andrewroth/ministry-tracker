@@ -73,7 +73,7 @@ class EventsController < ApplicationController
   def setup_report_scope_radios
     @attendance_scope_radios = []
     REPORT_SCOPES.each { |k,v| @attendance_scope_radios << get_initialized_scope_radio(k.to_s ,v) }
-    @attendace_scope_radios = @attendance_scope_radios.sort {|x,y| x[:order] <=> y[:order] }
+    @attendance_scope_radios.sort! {|x,y| x[:order] <=> y[:order] }
   end
 
 
