@@ -13,6 +13,16 @@ module StatsHelper
     link_to_remote(campus.campus_shortDesc, :url => {:action => "select_report"}, :with => "getWithStringForReportForm(null, '#{ministry_id}', 'summary', '#{report_type}')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
   end
 
+  def period_description_for_column_title(period)
+    description = ""
+    if period.class.name == "Week"
+      description = "Week #{period.month.weeks.index(period)}"
+    else
+      description = period.description
+    end
+    description
+  end
+
   def time_tab_link_to_remote(time)
     link_to_remote(time.capitalize, :url => {:action => "select_report"}, :with => "getWithStringForReportForm('#{time.downcase}')", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
   end
