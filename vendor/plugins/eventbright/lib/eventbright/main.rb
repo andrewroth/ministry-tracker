@@ -51,7 +51,7 @@ module EventBright
   
   class API
     include HTTParty
-    base_uri "http://www.eventbrite.com/json/" # switched from https to http because https causing issues (occasional 404 response)
+    base_uri "https://www.eventbrite.com/json/"
     def self.do_post(function, opts = {})
       response = post(function, opts)
       if response["error"]
