@@ -47,7 +47,7 @@ class DashboardController < ApplicationController
               @eventbrite_events << eb_event
               live_event_ids << event.id
 
-              if authorized?(:show_all_campuses_individuals, :events)
+              if authorized?(:attendance, :events)
                 eb_event.attributes[:link_to_report] = url_for(:controller => 'events', :action => 'attendance', :id => event.id)
               end
             end

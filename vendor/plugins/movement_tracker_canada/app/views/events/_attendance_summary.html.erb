@@ -11,12 +11,12 @@
   </tr>
 
   <% @campus_summaries.each do |campus, values| %>
-  <tr class="<%= cycle('highlight', 'nohighlight') %>">
-    <td class="statsTableTitle"><%= campus.to_s %></td>
-    <td><%= values[:males] %></td>
-    <td><%= values[:females] %></td>
-    <td><%= values[:females] + values[:males] %></td>
-  </tr>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="statsTableTitle"><%= campus.to_s %></td>
+      <td><%= values[:males] %></td>
+      <td><%= values[:females] %></td>
+      <td><%= values[:females] + values[:males] %></td>
+    </tr>
   <% end %>
 
   <tr><td></td></tr>

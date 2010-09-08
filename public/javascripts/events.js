@@ -26,7 +26,7 @@ function getWithStringForReportForm(campus, scope) {
 //    campus = jQuery("#report_campus")[0].value;
 //  }
 
-  return 'attendance_campus=' + campus + '&attendance_report_scope=' + scope
+  return '&attendance_report_scope=' + scope
 }
 
 function reportTypeChange(newTitle){

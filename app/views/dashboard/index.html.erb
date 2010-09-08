@@ -177,46 +177,13 @@ this system, along with any other information we think would be helpful to you.<
       	<%= render :partial => "dashboard/groups" %>
       </div>
     </div>
-  
-    
-    
-    <% if is_ministry_leader %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>Statistics</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
-        </div>
-      </div>
-      <div class="modulecontent">
-      <ul>
-        <li><%= pluralize(@people_in_ministries, "person") %> in <%= @ministry.name %> ministry</li>
-        <% @ministry.groups.group_by(&:group_type).each do |gt, groups| %>
-          <li><%= pluralize(groups.length, gt.group_type) %></li>
-        <% end %>
-      </ul>
-      <% if @newest_people %>
-      <br>
-      <h6>Newest People</h6>
-      <div class="lightgray">
-        <ul class="searchicon">
-          <% @newest_people.each do |person| %>
-            <li><%= link_to(person.full_name, person) %></li>
-          <% end %>
-        </ul>
-      </div>
-      <% end %>
-      
-      </div>
-    </div>
-    <% end %>
+
+
 
     <% if @eventbrite_events.present? && @event_groups.present? && @eventbrite_events.size >= 1 && @event_groups.size >= 1 %>
     <div class="dashmodule">
       <div class="moduletitle">
-        <h2>Events</h2>
+        <h2>My Events</h2>
         <div class="modulecontrols">
           <a href="" class="minmodule"></a>
           <a href="" class="movemodule"></a>
@@ -249,7 +216,7 @@ this system, along with any other information we think would be helpful to you.<
 
                 <% if event.attributes[:my_campus_num_attendees].present? %>
                   <tr>
-                    <td class="small">people from <%= @my_campus.short_desc %></td>
+                    <td class="small">number of people attending from <%= @my_campus.short_desc %></td>
                     <td class="center"><%= event.attributes[:my_campus_num_attendees] %></td>
                   </tr>
                 <% end %>
@@ -264,6 +231,41 @@ this system, along with any other information we think would be helpful to you.<
           </div>
           <br/>
         <% end %>
+
+      </div>
+    </div>
+    <% end %>
+
+
+
+    <% if is_ministry_leader %>
+    <div class="dashmodule">
+      <div class="moduletitle">
+        <h2>Statistics</h2>
+        <div class="modulecontrols">
+          <a href="" class="minmodule"></a>
+          <a href="" class="movemodule"></a>
+          <a href="" class="closemodule"></a>
+        </div>
+      </div>
+      <div class="modulecontent">
+      <ul>
+        <li><%= pluralize(@people_in_ministries, "person") %> in <%= @ministry.name %> ministry</li>
+        <% @ministry.groups.group_by(&:group_type).each do |gt, groups| %>
+          <li><%= pluralize(groups.length, gt.group_type) %></li>
+        <% end %>
+      </ul>
+      <% if @newest_people %>
+      <br>
+      <h6>Newest People</h6>
+      <div class="lightgray">
+        <ul class="searchicon">
+          <% @newest_people.each do |person| %>
+            <li><%= link_to(person.full_name, person) %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
 
       </div>
     </div>

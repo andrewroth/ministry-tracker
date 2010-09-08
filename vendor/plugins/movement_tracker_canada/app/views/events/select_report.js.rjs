@@ -15,6 +15,11 @@ end
 page[@scope_radio_selected_id].attr("checked", true)
 
 
+# update the campus select list with campuses that were found in the event data
+if @show_campus_select
+  page.replace_html('attendanceCampusSelect', :partial => 'attendance_campus_select')
+end
+
 page << "jQuery('##{@selected_results_div_id}').addClass('statsTabContainerActive')"
 
 

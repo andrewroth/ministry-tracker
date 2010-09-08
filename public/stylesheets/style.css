@@ -1312,6 +1312,13 @@ ul.statsLinkList {
   text-align: right;
 }
 
+#attendanceCampusSelect label {
+  float: left;
+  width: 15em;
+  text-align: right;
+  color: #1F429B;
+}
+
 #newWeeklyReportFormContainer {
   width: 42em;
 }

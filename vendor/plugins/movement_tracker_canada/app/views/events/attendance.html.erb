@@ -6,6 +6,8 @@
 
 <h1 id="reportTitle">Events</h1>
 
+<div class="backLink"><%= link_to 'Go Back', url_for(:controller => :dashboard, :action => :index) %></div>
+
 <div class="statsFormContainer">
   <div class="statsFormBox">
     <br/>
@@ -22,9 +24,7 @@
         <br/>
       </div>
 
-      <div id="attendanceCampusSelect" <%= "class='notDisplayed'" unless @show_campus_select %>>
-        <%= form.label :campus, "Campus:" %>
-        <%= form.collection_select :campus_id, @attendance_campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoading()"} %>
+      <div class="statsFormField" id="attendanceCampusSelect" <%= "class='notDisplayed'" unless @show_campus_select %>>
       </div>
     <% end %>
 
