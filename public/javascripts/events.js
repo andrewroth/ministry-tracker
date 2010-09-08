@@ -8,7 +8,7 @@ function selectReport() {
     data: getWithStringForReportForm(),
     dataType:'script',
     type:'post',
-    url: Window.ajax_base + 'select_report'})
+    url: ajax_base + 'select_report'})
 }
 
 // generate the string for observe_field's :with
@@ -21,10 +21,6 @@ function getWithStringForReportForm(campus, scope) {
       if(radios[i].checked) { scope = radios[i].value }
     }
   }
-
-//  if(campus == undefined || campus == null) {
-//    campus = jQuery("#report_campus")[0].value;
-//  }
 
   return '&attendance_report_scope=' + scope
 }
