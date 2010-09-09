@@ -5,6 +5,14 @@ else
   page << "jQuery('#statsRadioButtonContainer').removeClass('notDisplayed')"
 end
 
+@scope_radios.each do |radio|
+  if radio[:show]
+      page << "jQuery('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
+  else
+    page << "jQuery('#stats#{radio[:value].camelize}RadioContainer').addClass('notDisplayed')"
+  end
+end
+
 
 # update selected radio button in case server changes @stats_summary value
 page[@scope_radio_selected_id].attr("checked", true)
