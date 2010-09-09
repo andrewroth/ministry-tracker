@@ -117,50 +117,58 @@ class EventsController < ApplicationController
 
 
   def setup_summary
-    @campus_summaries = {}
-    @campus_summary_totals = {:males => 0, :females => 0}
+    begin
+      @campus_summaries = {}
+      @campus_summary_totals = {:males => 0, :females => 0}
 
-    attendees = @eb_event.attendees
+      attendees = @eb_event.attendees if @eb_event.present?
+      raise Exception.new() if attendees.blank?
 
-    
-    attendees.each do |attendee|
-      eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
 
-      if authorized?(:show_all_campuses_summaries, :events) || @my_campus.matches_eventbrite_campus(eb_campus)
+      attendees.each do |attendee|
+        eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
 
-        @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0} if @campus_summaries[eb_campus].nil?
+        if authorized?(:show_all_campuses_summaries, :events) || @my_campus.matches_eventbrite_campus(eb_campus)
 
-        case attendee.gender
-        when eventbrite[:female]
-          @campus_summaries[eb_campus][:females] += 1
-          @campus_summary_totals[:females] += 1
-        when eventbrite[:male]
-          @campus_summaries[eb_campus][:males] += 1
-          @campus_summary_totals[:males] += 1
+          @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0} if @campus_summaries[eb_campus].nil?
+
+          case attendee.gender
+          when eventbrite[:female]
+            @campus_summaries[eb_campus][:females] += 1
+            @campus_summary_totals[:females] += 1
+          when eventbrite[:male]
+            @campus_summaries[eb_campus][:males] += 1
+            @campus_summary_totals[:males] += 1
+          end
+
         end
-
       end
+
+
+      @report_description = "Attendance Summary"
+
+      @results_partial = "attendance_summary"
+    rescue
+      setup_error_rescue
     end
-
-
-    @report_description = "Attendance Summary"
-
-    @results_partial = "attendance_summary"
   end
 
 
   def setup_individuals
-    attendees = @eb_event.attendees
-    
-    unless(@selected_campus.present?)
-      eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
-      @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
-      @selected_campus_id = @selected_campus.id
-    end
-
-
-    already_retried = false # use to prevent infinite loop
+    retries = 1 # use to prevent infinite loop
     begin
+
+      attendees = @eb_event.attendees if @eb_event.present?
+      raise Exception.new() if attendees.blank?
+      
+    
+      unless(@selected_campus.present?)
+        eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
+        @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
+        @selected_campus_id = @selected_campus.id
+      end
+
+
       @campus_individuals = {}
       campuses = {}
 
@@ -181,35 +189,35 @@ class EventsController < ApplicationController
         end
       end
 
-
       # we don't know which campuses are available for selection until we've looped through all attendees
       # this means it's possible to select a campus which no one attending the event is from
       # if that happens we need to select a new campus and go through the list of attendees again
-      if campuses.index(@selected_campus).nil?
-        raise SELECTED_CAMPUS_EXCEPTION
-      end
+      raise Exception.new(SELECTED_CAMPUS_EXCEPTION) if campuses.index(@selected_campus).nil?
+
+      # convert campus hash to an array for collection select
+      @attendance_campuses = []
+      campuses.each { |title, campus| @attendance_campuses << campus }
+      @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+
+
+      @report_description = "Individual Attendees from #{@selected_campus.desc}"
+
+      @results_partial = "attendance_individuals"
 
     rescue Exception => e
-      if e.message == SELECTED_CAMPUS_EXCEPTION && !already_retried
+      if e.message == SELECTED_CAMPUS_EXCEPTION && retries > 0
         
         eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
         @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
         @selected_campus_id = @selected_campus.id
 
-        retry
+        retries -= 1
+        retry unless retries < 0
+        
+      else
+        setup_error_rescue
       end
     end
-
-
-    # convert campus hash to an array for collection select
-    @attendance_campuses = []
-    campuses.each { |title, campus| @attendance_campuses << campus }
-    @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
-
-
-    @report_description = "Individual Attendees from #{@selected_campus.desc}"
-
-    @results_partial = "attendance_individuals"
   end
 
 
@@ -235,5 +243,11 @@ class EventsController < ApplicationController
   def setup_my_campus
     my_campuses_ids = get_ministry.unique_campuses.collect { |c| c.id }
     @my_campus = Campus.find(my_campuses_ids[0])
+  end
+
+  def setup_error_rescue
+    @report_description = "Oh noes..."
+
+    @results_partial = "error"
   end
 end

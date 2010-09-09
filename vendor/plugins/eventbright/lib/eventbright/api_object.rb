@@ -49,7 +49,7 @@ module EventBright
     def load(hash = {}, no_dirty = false)
       if hash.nil? || hash.size == 0
         response = EventBright.call("#{self.class.singlet_name}_get", prep_api_hash('get'))
-        hash = response["#{self.class.singlet_name}"]
+        hash = response["#{self.class.singlet_name}"] if response.present?
       end
       unless hash.nil? || hash.size == 0
         init_with_hash(hash, no_dirty)
