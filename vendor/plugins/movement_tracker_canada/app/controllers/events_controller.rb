@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   unloadable
 
+  require 'ordered_hash_sort.rb'
+
   skip_before_filter :authorization_filter, :only => [:select_report]
 
   
@@ -9,6 +11,7 @@ class EventsController < ApplicationController
   INDIVIDUALS = 'individuals'
   SUMMARY = 'summary'
   DEFAULT_REPORT_SCOPE = SUMMARY
+  DEFAULT_REPORT_SORT = "last_name"
   REPORT_SCOPES =
     {
       :summary => {
@@ -31,21 +34,17 @@ class EventsController < ApplicationController
   def attendance
     session[:attendance_campus_id] = 0 unless session[:attendance_campus_id].present?
     session[:attendance_report_scope] = DEFAULT_REPORT_SCOPE unless session[:attendance_report_scope].present?
-
-    @event = Event.find(params[:id])
+    session[:attendance_report_sort] = DEFAULT_REPORT_SORT unless session[:attendance_report_sort].present?
 
     setup_attendance_report_from_session
-
-
-    @eventbrite_user = EventBright.setup_from_initializer()
-
-    @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+    setup_event
   end
 
 
   def select_report
     
     session[:attendance_report_scope] = params['attendance_report_scope'] if params['attendance_report_scope'].present?
+    session[:attendance_report_sort] = params['attendance_report_sort'] if params['attendance_report_sort'].present?
 
     # don't store selected_campus in session to prevent SELECTED_CAMPUS_EXCEPTION (see setup_individuals)
     @selected_campus_id = params['attendance_campus_id'].present? ? params['attendance_campus_id'] : nil
@@ -103,6 +102,7 @@ class EventsController < ApplicationController
     setup_report_scope_radios
 
     @report_scope = session[:attendance_report_scope]
+    @report_sort = session[:attendance_report_sort]
 
     @show_campus_select = (@report_scope == INDIVIDUALS && authorized?(:show_all_campuses_individuals, :events)) ? true : false
 
@@ -118,7 +118,7 @@ class EventsController < ApplicationController
 
   def setup_summary
     begin
-      @campus_summaries = {}
+      @campus_summaries = ActiveSupport::OrderedHash.new
       @campus_summary_totals = {:males => 0, :females => 0}
 
       attendees = @eb_event.attendees if @eb_event.present?
@@ -144,6 +144,7 @@ class EventsController < ApplicationController
         end
       end
 
+      @campus_summaries = @campus_summaries.sorted_hash { |a,b| a[0].upcase <=> b[0].upcase  }
 
       @report_description = "Attendance Summary"
 
@@ -169,7 +170,7 @@ class EventsController < ApplicationController
       end
 
 
-      @campus_individuals = {}
+      @campus_individuals = ActiveSupport::OrderedHash.new
       campuses = {}
 
       attendees.each do |attendee|
@@ -198,6 +199,12 @@ class EventsController < ApplicationController
       @attendance_campuses = []
       campuses.each { |title, campus| @attendance_campuses << campus }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+
+
+      if @report_sort.present? && @campus_individuals.size > 1
+        @report_sort = DEFAULT_REPORT_SORT unless @campus_individuals.first[1][@report_sort.to_sym].present?
+        @campus_individuals = @campus_individuals.sorted_hash { |a,b| a[1][@report_sort.to_sym].upcase <=> b[1][@report_sort.to_sym].upcase }
+      end
 
 
       @report_description = "Individual Attendees from #{@selected_campus.desc}"

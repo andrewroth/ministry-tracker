@@ -1260,7 +1260,7 @@ div .statsSelectContainer {
 div .statsRadioButton {
   float: left;
   text-align: left;
-	margin-left: 2em;
+  margin-left: 2em;
 }
 
 .statsRadioButton input {
@@ -1529,6 +1529,12 @@ div .addLink {
   margin: 0.5em 1em 0.5em 1em;
 }
 
+div .editLink {
+  text-align: center;
+  width: 100%;
+  margin: 0.5em 0em 0.5em 0em;
+}
+
 .addLink a {
   padding-left: 17px;
   background-image: url(/images/add.png);
@@ -1550,6 +1556,12 @@ div .addLink {
 .downLink a {
   padding-left: 17px;
   background-image: url(/images/silk/arrow_down.png);
+  background-repeat: no-repeat;
+}
+
+.editLink a {
+  padding-left: 20px;
+  background-image: url(/images/edit.png);
   background-repeat: no-repeat;
 }
 
