@@ -11,6 +11,6 @@ else
     page[:name].replace_html(@group.name)
     page[:type].replace_html(@group.group_type.group_type.humanize)
   else
-    page[:address_form].replace_html(:partial => 'form', :locals => {:group => @group})
+    page[:address_form].replace_html(:partial => 'new_remote', :locals => {:group => @group})
   end
 end
