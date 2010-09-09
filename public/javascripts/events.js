@@ -12,7 +12,7 @@ function selectReport() {
 }
 
 // generate the string for observe_field's :with
-function getWithStringForReportForm(campus, scope) {
+function getWithStringForReportForm(scope, sort, campus) {
 
   if(scope == undefined || scope == null) {
     scope = 'summary';
@@ -22,7 +22,11 @@ function getWithStringForReportForm(campus, scope) {
     }
   }
 
-  return '&attendance_report_scope=' + scope
+  if(sort == undefined || sort == null) { sort = 'last_name'; }
+
+  if(campus == undefined || campus == null) { campus = '0'; }
+
+  return '&attendance_report_scope=' + scope + '&attendance_report_sort=' + sort + '&attendance_campus_id=' + campus
 }
 
 function reportTypeChange(newTitle){

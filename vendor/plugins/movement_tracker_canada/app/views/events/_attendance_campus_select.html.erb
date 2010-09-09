@@ -3,7 +3,7 @@
   <%= form.label :attendance_campus_id, "From Campus:" %>
   <%= form.collection_select :attendance_campus_id, @attendance_campuses, :campus_id, :campus_desc, :selected => @selected_campus_id.to_i %>
   <%= observe_field 'report_attendance_campus_id', :url => {:action => "select_report"},
-                                                   :with => "getWithStringForReportForm() + '&attendance_campus_id=' + value",
+                                                   :with => "getWithStringForReportForm(null, null, value)",
                                                    :before => "beginLoading()",
                                                    :complete => "completeLoading()" %>
 <% end %>

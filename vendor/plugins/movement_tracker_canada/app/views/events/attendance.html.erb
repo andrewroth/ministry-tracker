@@ -8,6 +8,12 @@
 
 <div class="backLink"><%= link_to 'Go Back', url_for(:controller => :dashboard, :action => :index) %></div>
 
+<div id="statsLinkBox" class="statsFormBox">
+  <ul class="statsLinkList">
+    <li class="statsLinkList"><div class="editLink"><%= link_to 'Register for this event', @eb_event.url %></div></li>
+  </ul>
+</div>
+
 <div class="statsFormContainer">
   <div class="statsFormBox">
     <br/>
