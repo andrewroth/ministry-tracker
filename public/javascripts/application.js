@@ -3,8 +3,10 @@ function show_upload_picture() {
 }
 
 // use as a general dialog utility
-function show_dialog(title) {
-	tb_show(title, '#TB_inline?width=450&height=320&inlineId=dialog')
+function show_dialog(title, w, h) {
+  if (w == null) { w = '450' }
+  if (h == null) { h = '320' }
+  tb_show(title, "#TB_inline?width="+w+"&height="+h+"&inlineId=dialog")
 }
 
 function show_add_student() {
