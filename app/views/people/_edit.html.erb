@@ -49,8 +49,5 @@
 
 <!-- Buttons at the bottom -->
 <%= submit_tag "Save" %> or
-<%= link_to_function 'cancel',
-      "$('#edit_info').hide();$('#info').show()",
-      :class => 'cancel'
-    %>
-  <% end -%>
+<% if request.xhr? %>or <% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
+<% end -%>

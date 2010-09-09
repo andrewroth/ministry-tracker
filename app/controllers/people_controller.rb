@@ -316,7 +316,8 @@ class PeopleController < ApplicationController
     setup_vars
     setup_campuses
     render :update do |page|
-      page[:info].hide
+      thickbox = Cmt::CONFIG[:person_edit_in_thickbox]
+      page[:info].hide unless thickbox
       page[:edit_info].replace_html :partial => 'edit',
         :locals => {
           :current_address_country => current_address_country,
@@ -325,6 +326,7 @@ class PeopleController < ApplicationController
           :current_address_states => current_address_states,
           :permanent_address_states => permanent_address_states }
       page[:edit_info].show
+      page << "show_dialog('Edit Group', 700, 550)" if thickbox
     end
   end
 
@@ -469,6 +471,10 @@ class PeopleController < ApplicationController
                 page[:campuses_div].replace_html :partial => 'campuses'
               end
               page << "$.scrollTo(0, 0)"
+              if Cmt::CONFIG[:person_edit_in_thickbox]
+                page['dialog'].hide
+                page.call("close_thickbox")
+              end
             end
           end
         end
