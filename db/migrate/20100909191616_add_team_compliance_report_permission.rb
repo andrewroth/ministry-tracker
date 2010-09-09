@@ -1,6 +1,5 @@
-class AddViewTeamComplianceReportPermission < ActiveRecord::Migration
-class AddPermissionForComplianceReports < ActiveRecord::Migration
- NEW_PERMISSIONS = [{ :description => "Show compliance report of people in same team", :controller => "stats", :action => "view_team_compliance_report" }]
+class AddTeamComplianceReportPermission < ActiveRecord::Migration
+ NEW_PERMISSIONS = [{ :description => "Show compliance report for team", :controller => "stats", :action => "team_compliance_report" }]
 
   def self.find_permission(permission)
     Permission.find(:first, :conditions => { :controller => permission[:controller], :action => permission[:action] } )
@@ -20,5 +19,4 @@ class AddPermissionForComplianceReports < ActiveRecord::Migration
     end
 
   end
-end
 end
