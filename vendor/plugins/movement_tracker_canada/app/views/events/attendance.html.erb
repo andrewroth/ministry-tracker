@@ -1,8 +1,8 @@
 <%= javascript_include_tag "events.js" %>
 
-<script>
-  Window.ajax_base = "<%= "/#{request.path_parameters[:controller]}/#{request.path_parameters[:id]}/" %>";
-</script>
+<% javascript_tag do %>
+  ajax_base = "<%= "/#{request.path_parameters[:controller]}/#{request.path_parameters[:id]}/" %>";
+<% end %>
 
 <h1 id="reportTitle">Events</h1>
 
