@@ -1,5 +1,5 @@
-class GiveViewTeamComplianceReportPermissionToTeamLeaderMember < ActiveRecord::Migration
- NEW_PERMISSIONS = [{ :description => "Show compliance report of people in same team", :controller => "stats", :action => "view_team_compliance_report" }]
+class GiveTeamComplianceReportPermissionToTeamLeaderMember < ActiveRecord::Migration
+ NEW_PERMISSIONS = [{ :description => "Show compliance report for team", :controller => "stats", :action => "team_compliance_report" }]
 
   NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Member",  :permission_index => 0 }, 
                                    { :ministry_role_name => "Team Leader",  :permission_index => 0 }]
