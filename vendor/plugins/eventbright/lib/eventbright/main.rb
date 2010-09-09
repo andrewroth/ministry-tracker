@@ -52,11 +52,30 @@ module EventBright
   class API
     include HTTParty
     base_uri "https://www.eventbrite.com/json/"
+    ERROR_404 = "404 Not Found"
+    NUM_RETRIES_ON_404 = 3
+
     def self.do_post(function, opts = {})
-      response = post(function, opts)
-      if response["error"]
-        raise Error.new(response["error"]["error_message"], response["error"]["error_type"], response)
+
+      retries = NUM_RETRIES_ON_404
+      begin
+        response = post(function, opts)
+
+        if response["error"]
+          raise Exception.new(response["error"]["error_message"])
+        elsif response.select{|k,v| v =~ /<title>404 Not Found<\/title>/}.present?
+          raise Exception.new(ERROR_404)
+        end
+
+      rescue Exception => e
+        puts "\tAPI ERROR #{e.message}"
+        if e.message == ERROR_404 && retries > 0
+          retries -= 1
+          retry unless retries <=0
+        end
+        response = nil
       end
+      
       response
     end
   end
