@@ -403,7 +403,7 @@ class StatsController < ApplicationController
   def collect_staff_for_ministry(ministry)
     staff_collection = []
     action = 'view_other_staffs'
-    action = 'view_team_compliance_report' if @report_type == COMPLIANCE_REPORT
+    action = 'team_compliance_report' if @report_type == COMPLIANCE_REPORT
     if authorized?(action, 'stats')
       staff_collection = ministry.staff.collect{|s| staff_drill_down_hash(s) }
     else
