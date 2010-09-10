@@ -52,7 +52,7 @@ module EventBright
   
   class API
     include HTTParty
-    base_uri "https://www.eventbrite.com/json/asdf"
+    base_uri "https://www.eventbrite.com/json/"
     ERROR_404 = "404 Not Found"
     NUM_RETRIES_ON_404 = 3
 
