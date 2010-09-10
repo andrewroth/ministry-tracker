@@ -99,12 +99,19 @@ class EventsController < ApplicationController
 
   def setup_attendance_report_from_session
 
+    setup_my_campus
     setup_report_scope_radios
 
     @report_scope = session[:attendance_report_scope]
     @report_sort = session[:attendance_report_sort]
 
-    @show_campus_select = (@report_scope == INDIVIDUALS && authorized?(:show_all_campuses_individuals, :events)) ? true : false
+    if @report_scope == INDIVIDUALS &&
+        (authorized?(:show_all_campuses_individuals, :events) ||
+          (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
+      @show_campus_select = true
+    else
+      @show_campus_select = false
+    end
 
     @attendance_campuses = []
 
@@ -128,7 +135,9 @@ class EventsController < ApplicationController
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
 
-        if authorized?(:show_all_campuses_summaries, :events) || @my_campus.matches_eventbrite_campus(eb_campus)
+        matched_campus = @my_campuses.select {|c| c.matches_eventbrite_campus(eb_campus)}[0]
+        
+        if authorized?(:show_all_campuses_summaries, :events) || matched_campus.present?
 
           @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0} if @campus_summaries[eb_campus].nil?
 
@@ -162,7 +171,8 @@ class EventsController < ApplicationController
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
-    
+      @selected_campus = @my_campuses.first unless authorized?(:show_all_campuses_individuals, :events)
+
       unless(@selected_campus.present?)
         eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
         @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
@@ -183,17 +193,23 @@ class EventsController < ApplicationController
           add_attendee_to_hash(@campus_individuals, attendee) if @selected_campus.matches_eventbrite_campus(eb_campus)
 
         # else if only has permission to see info from their own campus
-        elsif authorized?(:show_my_campus_individuals, :events) && @my_campus.matches_eventbrite_campus(eb_campus)
-          campuses[eb_campus.to_s] = @my_campus
+        elsif authorized?(:show_my_campus_individuals, :events)
+          matched_campus = @my_campuses.select {|c| c.matches_eventbrite_campus(eb_campus)}[0]
 
-          add_attendee_to_hash(@campus_individuals, attendee) if @selected_campus.matches_eventbrite_campus(eb_campus)
+          if matched_campus.present?
+            campuses[eb_campus.to_s] = matched_campus
+
+            add_attendee_to_hash(@campus_individuals, attendee) if @selected_campus.matches_eventbrite_campus(eb_campus)
+          end
         end
       end
 
       # we don't know which campuses are available for selection until we've looped through all attendees
       # this means it's possible to select a campus which no one attending the event is from
       # if that happens we need to select a new campus and go through the list of attendees again
-      raise Exception.new(SELECTED_CAMPUS_EXCEPTION) if campuses.index(@selected_campus).nil?
+      if campuses.present? && campuses.index(@selected_campus).nil?
+        raise Exception.new(SELECTED_CAMPUS_EXCEPTION)
+      end
 
       # convert campus hash to an array for collection select
       @attendance_campuses = []
@@ -248,8 +264,7 @@ class EventsController < ApplicationController
   end
 
   def setup_my_campus
-    my_campuses_ids = get_ministry.unique_campuses.collect { |c| c.id }
-    @my_campus = Campus.find(my_campuses_ids[0])
+    @my_campuses = @my.campuses
   end
 
   def setup_error_rescue
