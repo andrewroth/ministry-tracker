@@ -28,6 +28,7 @@ module EventBright
     debug "\tSending  /#{function}\t\t(#{opts.inspect})"
     response = API.do_post("/#{function}", :body => opts)
     debug "\tResponse /#{function}\t\t#{response.inspect}"
+
     response
   end
   
@@ -68,7 +69,7 @@ module EventBright
         end
 
       rescue Exception => e
-        puts "\tAPI ERROR #{e.message}"
+        Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
         if e.message == ERROR_404 && retries > 0
           retries -= 1
           retry unless retries <=0
