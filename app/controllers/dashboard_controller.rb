@@ -32,10 +32,10 @@ class DashboardController < ApplicationController
           @eventbrite_events = []
           live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
 
-          @eventbrite_user = EventBright.setup_from_initializer()
+          @eventbrite_user = ::EventBright.setup_from_initializer()
 
           my_events.each do |event|
-            eb_event = EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
+            eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
             if eb_event.status == eventbrite[:event_status_live] then
               if my_campuses_ids.size == 1 && event.campuses.size > 1 then
