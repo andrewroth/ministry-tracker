@@ -264,7 +264,11 @@ class EventsController < ApplicationController
   end
 
   def setup_my_campus
-    @my_campuses = @my.campuses
+    if @me.is_staff_somewhere?
+      @my_campuses = get_ministry.unique_campuses
+    else
+      @my_campuses = @my.campuses
+    end
   end
 
   def setup_error_rescue
