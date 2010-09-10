@@ -90,6 +90,9 @@ module Cmt
     # the from address for each outgoing email
     :email_from_address => "No-Reply <noreply@campusforchrist.org>",
 
+    # when editing a person profile, use a thickbox instead of in the page
+    :person_edit_in_thickbox => false,
+
     # allow impersonating someone - don't turn this on unless you're in a dev environment
     :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
   } unless defined?(CONFIG)

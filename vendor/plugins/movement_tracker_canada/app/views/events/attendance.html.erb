@@ -1,0 +1,51 @@
+<%= javascript_include_tag "events.js" %>
+
+<% javascript_tag do %>
+  ajax_base = "<%= "/#{request.path_parameters[:controller]}/#{request.path_parameters[:id]}/" %>";
+<% end %>
+
+<h1 id="reportTitle">Events</h1>
+
+<div class="backLink"><%= link_to 'Go Back', url_for(:controller => :dashboard, :action => :index) %></div>
+
+<div id="statsLinkBox" class="statsFormBox">
+  <ul class="statsLinkList">
+    <li class="statsLinkList"><div class="editLink"><%= link_to 'Register for this event', @eb_event.url %></div></li>
+  </ul>
+</div>
+
+<div class="statsFormContainer">
+  <div class="statsFormBox">
+    <br/>
+
+    <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
+
+      <div id="formHeading"><h2><div id="reportTypeTitle"><%= @eb_event.title %></div></h2></div>
+
+      <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
+        <br/>
+        <% @attendance_scope_radios.each do |radio| %>
+         <%= render :partial => "scope_radio", :locals => { :radio => radio } %>
+        <% end %>
+        <br/>
+      </div>
+
+      <div class="statsFormField" id="attendanceCampusSelect" <%= "class='notDisplayed'" unless @show_campus_select %>>
+      </div>
+    <% end %>
+
+    <br/>
+
+  </div>
+</div>
+
+
+<div class="clear">&nbsp;</div>
+
+
+<div id="results" class="statsContainer">
+  <div id="attendanceSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
+  <div id="attendanceResults" class="statsReportTabContainer" style="display: none;"></div>
+  <br/>
+</div>
+

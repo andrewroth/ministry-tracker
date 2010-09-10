@@ -77,7 +77,13 @@
   <div id="info">
     <%= render :partial => 'view' %>
   </div>
+  <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
+  <div id="dialog" style="display:none">
+  <%- end -%>
   <div><div id="edit_info" style="display:none"></div></div>
+  <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
+  </div>
+  <%- end -%>
 </div>
 
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>

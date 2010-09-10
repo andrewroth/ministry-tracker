@@ -16,6 +16,7 @@ class StatsController < ApplicationController
   STAFF_DRILL_DOWN = 'staff_drill_down'
   CAMPUS_DRILL_DOWN = 'campus_drill_down'
   DEFAULT_REPORT_SCOPE = SUMMARY 
+  COMPLIANCE_REPORT = 'comp'
 
 
   def index
@@ -36,7 +37,7 @@ class StatsController < ApplicationController
     setup_stats_report_from_session
 
     case @report_type
-      when 'comp'
+      when COMPLIANCE_REPORT
         setup_compliance_report
       when 'hpctc'
         setup_how_people_came_to_christ_report
@@ -352,7 +353,7 @@ class StatsController < ApplicationController
 
   def setup_report_description
     case @report_type
-      when 'comp'
+      when COMPLIANCE_REPORT
         report_name = 'Compliance report for '
       when 'hpctc'
         report_name = 'How people came to Christ for '
@@ -401,7 +402,9 @@ class StatsController < ApplicationController
     
   def collect_staff_for_ministry(ministry)
     staff_collection = []
-    if authorized?('view_other_staffs', 'stats')
+    action = 'view_other_staffs'
+    action = 'team_compliance_report' if @report_type == COMPLIANCE_REPORT
+    if authorized?(action, 'stats')
       staff_collection = ministry.staff.collect{|s| staff_drill_down_hash(s) }
     else
       if ministry.staff.include?(@me)
@@ -478,7 +481,7 @@ class StatsController < ApplicationController
         hide_time_tabs([:month]) if @report_scope == SUMMARY
       when 'p2c' 
         hide_time_tabs([:week, :month])
-      when 'comp' 
+      when COMPLIANCE_REPORT 
         hide_time_tabs([:week, :month, :year])
       when 'story'
         hide_time_tabs([:week, :month, :semester])

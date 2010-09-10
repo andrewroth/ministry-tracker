@@ -13,6 +13,7 @@ public/javascripts/all.js
 public/stylesheets/all.css
 config/initializers/uscm_prod.rb
 config/initializers/cache_money.rb
+config/initializers/eventbright.rb
 query_trace
 nbproject/
 *.swp

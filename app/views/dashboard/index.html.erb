@@ -177,9 +177,77 @@ this system, along with any other information we think would be helpful to you.<
       	<%= render :partial => "dashboard/groups" %>
       </div>
     </div>
-  
-    
-    
+
+
+
+    <% if @eventbrite_events.present? && @event_groups.present? && @eventbrite_events.size >= 1 && @event_groups.size >= 1 %>
+    <div class="dashmodule">
+      <div class="moduletitle">
+        <h2>My Events</h2>
+        <div class="modulecontrols">
+          <a href="" class="minmodule"></a>
+          <a href="" class="movemodule"></a>
+          <a href="" class="closemodule"></a>
+        </div>
+      </div>
+      <div class="modulecontent">
+
+        
+
+        <% @event_groups.each do |group| %>
+          <% total_group_attendees = 0 %>
+          <div class="lightgray">
+            <table>
+              <tr>
+                <td></td>
+                <td><h6><%= group.title %></h6></td>
+                <td class="small center">attendees</td>
+              </tr>
+              <tr></tr>
+
+              <% @eventbrite_events.each do |event| %>
+
+                <tr>
+                  <td>
+                    <%- tooltip(link_to(image_tag('edit.png'), event.url, { :id => "register_#{event.id}", :rel => "#tooltip_content_#{event.id}"}),
+                                                    :id => event.id,
+                                                    :link_id => "register_#{event.id}") do -%>Click here to register now!<%- end -%>
+                  </td>
+                  <% if event.attributes[:link_to_report] %>
+                    <td class="normal"><%= link_to(event.title, event.attributes[:link_to_report], {:class => "modulecontent", :title => "Click to see more info"}) %></td>
+                  <% else %>
+                    <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to register!"}) %></td>
+                  <% end %>
+                  <td class="center"><b><%= event.num_attendee_rows %></b></td>
+                  <% total_group_attendees += event.num_attendee_rows %>
+                </tr>
+
+                <% if event.attributes[:my_campus_num_attendees].present? %>
+                  <tr>
+                    <td></td>
+                    <td class="small">number of people attending from <%= @my_campus.short_desc %></td>
+                    <td class="center"><%= event.attributes[:my_campus_num_attendees] %></td>
+                  </tr>
+                <% end %>
+
+              <% end %>
+              <% unless @eventbrite_events.size == 1 %>
+                <tr>
+                  <td></td>
+                  <td>Total</td><td class="center"><%= total_group_attendees %></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+          <br/>
+        <% end %>
+
+      </div>
+    </div>
+    <% end %>
+
+
+
     <% if is_ministry_leader %>
     <div class="dashmodule">
       <div class="moduletitle">
@@ -208,10 +276,12 @@ this system, along with any other information we think would be helpful to you.<
         </ul>
       </div>
       <% end %>
-      
+
       </div>
     </div>
     <% end %>
+
+
   
   <div class="clear"></div>
   

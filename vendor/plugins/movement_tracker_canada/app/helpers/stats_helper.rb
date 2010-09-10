@@ -16,7 +16,7 @@ module StatsHelper
   def period_description_for_column_title(period)
     description = ""
     if period.class.name == "Week"
-      description = "Week #{period.month.weeks.index(period)}"
+      description = "Week #{period.month.weeks.index(period) + 1}"
     else
       description = period.description
     end
@@ -28,7 +28,7 @@ module StatsHelper
   end
 
   def report_type_links_to_show
-    @report_type_links_to_show = report_types.collect {| key, value | key if authorized?(value[:action], value[:controller]) }.compact
+    @report_type_links_to_show ||= report_types.collect {| key, value | key if authorized?(value[:action], value[:controller]) }.compact.sort { |x, y| report_types[x][:order] <=> report_types[y][:order] }
   end
 
   def report_type_link_to_remote(report_type)
@@ -37,7 +37,7 @@ module StatsHelper
   end
   
   def get_links_for_report_types
-    report_type_links_to_show.collect {| key | report_type_link_to_remote(key)}
+    @get_links_for_report_types ||= report_type_links_to_show.collect {| key | report_type_link_to_remote(key)}
   end
   
   def show_summary_report(report_type, permission_granted)

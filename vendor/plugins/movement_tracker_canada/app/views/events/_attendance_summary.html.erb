@@ -1,0 +1,37 @@
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+
+  <% if @campus_summaries.present? %>
+
+  <tr>
+    <td class="statsTableTitle"></td>
+    <td class="statsTableTitleTop">Males</td>
+    <td class="statsTableTitleTop">Females</td>
+    <td class="statsTableTitleTop">Total</td>
+  </tr>
+
+  <% @campus_summaries.each do |campus, values| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="statsTableTitle"><%= campus.to_s %></td>
+      <td><%= values[:males] %></td>
+      <td><%= values[:females] %></td>
+      <td><%= values[:females] + values[:males] %></td>
+    </tr>
+  <% end %>
+
+  <tr><td></td></tr>
+  
+  <tr class="statsTableTotal">
+    <td class="statsTableTitle">Total</td>
+    <td><%= @campus_summary_totals[:males] %></td>
+    <td><%= @campus_summary_totals[:females] %></td>
+    <td><%= @campus_summary_totals[:males] + @campus_summary_totals[:females] %></td>
+  </tr>
+
+  <% else %>
+
+  There are no registered attendees yet.
+
+  <% end %>
+
+</table>
