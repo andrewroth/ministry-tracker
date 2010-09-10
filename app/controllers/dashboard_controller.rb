@@ -19,7 +19,11 @@ class DashboardController < ApplicationController
 
       if Event.first.present?
 
-        @my_campuses = @my.campuses
+        if @me.is_staff_somewhere?
+          @my_campuses = get_ministry.unique_campuses
+        else
+          @my_campuses = @my.campuses
+        end
         my_campuses_ids = @my_campuses.collect { |c| c.id }
 
         if my_campuses_ids.present? then
