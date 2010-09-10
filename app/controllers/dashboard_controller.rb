@@ -21,11 +21,11 @@ class DashboardController < ApplicationController
 
         my_campuses_ids = get_ministry.unique_campuses.collect { |c| c.id }
 
-        unless my_campuses_ids.empty? then
+        if my_campuses_ids.present? then
           my_event_ids = EventCampus.find(:all, :conditions => _(:campus_id, :event_campuses) + " IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
         end
 
-        unless my_event_ids.empty? || my_campuses_ids.empty? then
+        if my_event_ids.present? && my_campuses_ids.present? then
 
           my_events = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{my_event_ids.join(',')})")
 
@@ -53,7 +53,7 @@ class DashboardController < ApplicationController
             end
           end
 
-          unless live_event_ids.empty? then
+          if live_event_ids.present? then
             #find all event_groups that the live events are in
             event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
             @event_groups = EventGroup.find(:all, :conditions => "#{EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
