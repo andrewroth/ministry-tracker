@@ -219,9 +219,7 @@ class EventsController < ApplicationController
 
       if @report_sort.present? && @campus_individuals.size > 1
         @report_sort = DEFAULT_REPORT_SORT unless @campus_individuals.first[1][@report_sort.to_sym].present?
-        Rails.logger.info "_____________________before sort______________________________"
         @campus_individuals = @campus_individuals.sorted_hash { |a,b| a[1][@report_sort.to_sym].upcase <=> b[1][@report_sort.to_sym].upcase }
-        Rails.logger.info "_____________________after sort_______________________________"
       end
 
 
@@ -230,7 +228,6 @@ class EventsController < ApplicationController
       @results_partial = "attendance_individuals"
 
     rescue Exception => e
-      Rails.logger.info "EXCEPTION #{e.message}"
       if e.message == SELECTED_CAMPUS_EXCEPTION && retries > 0
         
         eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
