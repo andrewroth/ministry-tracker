@@ -4,11 +4,17 @@
   <% if @campus_individuals.size > 0 %>
 
   <tr>
-    <td class="statsTableTitleTop">First Name</td>
-    <td class="statsTableTitleTop">Last Name</td>
-    <td class="statsTableTitleTop">Email</td>
+    <td class="statsTableTitleTop"><%= link_to_remote('First Name', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'first_name', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+    <td class="statsTableTitleTop"><%= link_to_remote('Last Name', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'last_name', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+    <td class="statsTableTitleTop"><%= link_to_remote('Email', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'email', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+
     <td class="statsTableTitleTop">Phone</td>
-    <td class="statsTableTitleTop">Gender</td>
+
+    <td class="statsTableTitleTop"><%= link_to_remote('Gender', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'gender', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
   </tr>
 
   <% @campus_individuals.each do |key, individual| %>

@@ -498,6 +498,7 @@ div.sectionHeader h2 {
 	border-bottom: 1px solid #000;
 	padding: 5px  0 2px 0;
 	font-size: 11pt;
+    color: darkslategray;
 }
 .center {
     text-align:center;
@@ -939,9 +940,9 @@ float:right;
 }
 
 #dashwrap {padding:0;}
-.dashmodule {border:1px solid silver; float:left; width:100%; margin-bottom:7px;}
-.moduletitle {background:#e8e8e8; height:30px;}
-.moduletitle h2 {float:left; color:#000; font-weight:bold; font-size:18px; padding:4px 4px 4px 5px;}
+.dashmodule {border:1px solid lightsteelBlue; float:left; width:100%; margin-bottom:7px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
+.moduletitle {background:#EBEBF2; height:30px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
+.moduletitle h2 {float:left; color:darkslategray; font-weight:bold; font-size:18px; padding:4px 4px 4px 5px;}
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
@@ -950,7 +951,7 @@ a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
 .modulecontent h6 {font-size:13px;}
-.lightgray {background:#f0f0f0; padding:5px;}
+.lightgray {/*f0f0f0*/ background:#F7F7FA; padding:5px; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0;}
 
 .modulesearchbox {margin-bottom:1em;}
 input.searchdash {font-size:16px; width:250px;}
@@ -1260,7 +1261,7 @@ div .statsSelectContainer {
 div .statsRadioButton {
   float: left;
   text-align: left;
-	margin-left: 2em;
+  margin-left: 2em;
 }
 
 .statsRadioButton input {
@@ -1529,6 +1530,12 @@ div .addLink {
   margin: 0.5em 1em 0.5em 1em;
 }
 
+div .editLink {
+  text-align: center;
+  width: 100%;
+  margin: 0.5em 0em 0.5em 0em;
+}
+
 .addLink a {
   padding-left: 17px;
   background-image: url(/images/add.png);
@@ -1550,6 +1557,12 @@ div .addLink {
 .downLink a {
   padding-left: 17px;
   background-image: url(/images/silk/arrow_down.png);
+  background-repeat: no-repeat;
+}
+
+.editLink a {
+  padding-left: 20px;
+  background-image: url(/images/edit.png);
   background-repeat: no-repeat;
 }
 
