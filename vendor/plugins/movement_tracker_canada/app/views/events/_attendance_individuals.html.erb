@@ -1,0 +1,48 @@
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+
+  <% if @campus_individuals.size > 0 %>
+
+  <tr>
+    <td class="statsTableTitleTop"><%= link_to_remote('First Name', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'first_name', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+    <td class="statsTableTitleTop"><%= link_to_remote('Last Name', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'last_name', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+    <td class="statsTableTitleTop"><%= link_to_remote('Email', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'email', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+
+    <td class="statsTableTitleTop">Phone</td>
+
+    <td class="statsTableTitleTop"><%= link_to_remote('Gender', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'gender', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+  </tr>
+
+  <% @campus_individuals.each do |key, individual| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td><%= individual[:first_name] %></td>
+      <td><%= individual[:last_name] %></td>
+      <td><%= mail_to(individual[:email]) %></td>
+      <td>
+        <% if individual[:cell_phone].present? %>
+          cell: <%= number_to_phone(individual[:cell_phone]) %><br/>
+        <% end %>
+        <% if individual[:home_phone].present? %>
+          home: <%= number_to_phone(individual[:home_phone]) %><br/>
+        <% end %>
+        <% if individual[:work_phone].present? %>
+          work: <%= number_to_phone(individual[:work_phone]) %>
+        <% end %>
+      </td>
+      <td><%= individual[:gender] %></td>
+    </tr>
+  <% end %>
+
+  <tr><td></td></tr>
+
+  <% else %>
+
+  There are no registered attendees yet.
+
+  <% end %>
+
+</table>

@@ -380,6 +380,7 @@
       }, 
         :monthly_p2c_special => {
           :evang_studies => {:column => :montlyreport_p2c_numInEvangStudies, 
+            :submit_label => "Number of people in evangelistic studies (i.e. discovery groups or individual sessions)",
             :label => "Number of people in evangelistic studies",
             :collected => :monthly,
             :column_type => :database_column,
@@ -617,5 +618,14 @@
       }
 
     }
-    end
+  end
 
+  
+  def eventbrite
+    {
+      :campus_question => "Your Campus",
+      :event_status_live => "Live",
+      :male => "Male",
+      :female => "Female"
+    }
+  end

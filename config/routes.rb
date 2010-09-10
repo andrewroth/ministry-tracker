@@ -1,9 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :event_groups
-
-  map.resources :event_campuses
-
-  map.resources :events
 
   map.resources :annual_goals_reports
   map.resources :semester_reports
@@ -50,10 +45,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :accountadmin_accesscategories
 
   map.resources :event_groups
-
   map.resources :event_campuses
-
-  map.resources :events
+  map.resources :events, :member => { :attendance => :get, :select_report => :post }
 
   map.resources :involvement_histories
 

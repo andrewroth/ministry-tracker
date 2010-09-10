@@ -1,3 +1,9 @@
+<% 
+  def show_label(input_stat)
+    input_stat[:submit_label] ? input_stat[:submit_label] : input_stat[:label]
+  end
+%>
+
     <% form_for(@monthly_report) do |f| %>
       <%= f.error_messages %>
       <%= f.hidden_field :month_id %>
@@ -8,7 +14,7 @@ lines = stats_reports[:monthly_report].sort{|a,b| a[1][:order] <=> b[1][:order]}
 lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
-          <td><%= f.label input_stat[:column], input_stat[:label] %></td>
+          <td><%= f.label input_stat[:column], show_label(input_stat) %></td>
           <td><%= f.text_field input_stat[:column], :size => 4 %></td>
         </tr>
 
@@ -18,7 +24,7 @@ lines = stats_reports[:monthly_p2c_special].sort{|a,b| a[1][:order] <=> b[1][:or
 lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
-          <td><%= f.label input_stat[:column], input_stat[:label] %></td>
+          <td><%= f.label input_stat[:column], show_label(input_stat) %></td>
           <td><%= f.text_field input_stat[:column], :size => 4 %></td>
         </tr>
 
