@@ -19,13 +19,18 @@ class DashboardController < ApplicationController
 
       if Event.first.present?
 
-        my_campuses_ids = get_ministry.unique_campuses.collect { |c| c.id }
+        if @me.is_staff_somewhere?
+          @my_campuses = get_ministry.unique_campuses
+        else
+          @my_campuses = @my.campuses
+        end
+        my_campuses_ids = @my_campuses.collect { |c| c.id }
 
         if my_campuses_ids.present? then
           my_event_ids = EventCampus.find(:all, :conditions => _(:campus_id, :event_campuses) + " IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
         end
 
-        if my_event_ids.present? && my_campuses_ids.present? then
+        if my_event_ids.present? && @my_campuses.present? then
 
           my_events = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{my_event_ids.join(',')})")
 
@@ -38,10 +43,9 @@ class DashboardController < ApplicationController
             eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
             if eb_event.status == eventbrite[:event_status_live] then
-              if my_campuses_ids.size == 1 && event.campuses.size > 1 then
+              if @my_campuses.size == 1 && event.campuses.size > 1 then
                 attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
-                eb_event.attributes[:my_campus_num_attendees] = attendees.size
-                @my_campus = Campus.find(my_campuses_ids[0])
+                eb_event.attributes[:my_campus_num_attendees] = attendees.size                
               end
 
               @eventbrite_events << eb_event
