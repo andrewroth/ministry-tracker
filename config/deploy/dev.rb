@@ -54,7 +54,7 @@ deploy.task :after_symlink do
   # other shared files / folders
   link_shared 'log', :overwrite => true
   link_shared 'config/database.yml', :overwrite => true
-#  link_shared 'config/initializers/eventbright.rb', :overwrite => true
+  link_shared 'config/initializers/eventbright.rb', :overwrite => true
 
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
   link_shared "public/#{profile_pic_prefix}.profile_pictures"
