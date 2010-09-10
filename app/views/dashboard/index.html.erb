@@ -222,10 +222,10 @@ this system, along with any other information we think would be helpful to you.<
                   <% total_group_attendees += event.num_attendee_rows %>
                 </tr>
 
-                <% if event.attributes[:my_campus_num_attendees].present? %>
+                <% if event.attributes[:my_campus_num_attendees].present? && @my_campuses.size == 1 %>
                   <tr>
                     <td></td>
-                    <td class="small">number of people attending from <%= @my_campus.short_desc %></td>
+                    <td class="small">number of people attending from <%= @my_campuses.first.short_desc %></td>
                     <td class="center"><%= event.attributes[:my_campus_num_attendees] %></td>
                   </tr>
                 <% end %>
