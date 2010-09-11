@@ -16,4 +16,18 @@ class Hash
         other.fetch(key){return false}.eql?(value)
       end
   end unless {}.eql?({})
+
+  # Ruby 1.8.6 doesn't define a Hash specific first method.
+  def first
+    return [self.keys.first,self.values.first]
+  end unless defined?({}.first)
+end
+
+
+class ActiveSupport::OrderedHash
+
+  # Ruby 1.8.6 doesn't define an OrderedHash specific first method.
+  def first
+    return [self.keys.first,self.values.first]
+  end unless defined?(ActiveSupport::OrderedHash.new.first)
 end

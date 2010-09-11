@@ -69,8 +69,7 @@ module EventBright
         end
 
       rescue Exception => e
-#        puts "\tAPI ERROR #{e.message}"
-        Rails.logger.info "\tAPI ERROR #{e.message}"
+        Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
         if e.message == ERROR_404 && retries > 0
           retries -= 1
           retry unless retries <=0
