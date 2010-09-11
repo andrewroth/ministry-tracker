@@ -1,0 +1,21 @@
+<h6><P><%= @num_people %> people in <%= @ministry.name %> ministry.</P></h6>
+
+<h6>Groups</h6>
+<P class="dashboard_stats_indent">
+  <%- @group_stats.each do |gt, sem, tot| -%>
+    <%= gt %>: <%= sem %> this semester, <%= tot %> total<br/>
+  <%- end -%>
+<% if @group_stats.empty? %>No groups<% end %>
+</P>
+
+<h6>Logins</h6>
+<P class="dashboard_stats_indent">
+Last 7 week: <%= @logins_this_week %><BR/>
+Last 30 days: <%= @logins_this_month %><BR/>
+</P>
+
+<h6>Timetable Updates</h6>
+<P class="dashboard_stats_indent">
+Last 7 days: <%= @tt_last_week %><BR/>
+Last 30 days: <%= @tt_last_month %><BR/>
+</P>

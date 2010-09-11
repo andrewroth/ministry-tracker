@@ -191,24 +191,7 @@ this system, along with any other information we think would be helpful to you.<
         </div>
       </div>
       <div class="modulecontent">
-      <ul>
-        <li><%= pluralize(@people_in_ministries, "person") %> in <%= @ministry.name %> ministry</li>
-        <% @ministry.groups.group_by(&:group_type).each do |gt, groups| %>
-          <li><%= pluralize(groups.length, gt.group_type) %></li>
-        <% end %>
-      </ul>
-      <% if @newest_people %>
-      <br>
-      <h6>Newest People</h6>
-      <div class="lightgray">
-        <ul class="searchicon">
-          <% @newest_people.each do |person| %>
-            <li><%= link_to(person.full_name, person) %></li>
-          <% end %>
-        </ul>
-      </div>
-      <% end %>
-      
+        <%= render :partial => "stats" %>
       </div>
     </div>
     <% end %>
