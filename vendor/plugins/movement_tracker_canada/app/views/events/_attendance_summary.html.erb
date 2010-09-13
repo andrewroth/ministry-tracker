@@ -5,6 +5,8 @@
 
   <tr>
     <td class="statsTableTitle"></td>
+    <td class="statsTableTitleTop">First Years</td>
+    <td class="statsTableTitleTop">Upper Years</td>
     <td class="statsTableTitleTop">Males</td>
     <td class="statsTableTitleTop">Females</td>
     <td class="statsTableTitleTop">Total</td>
@@ -13,6 +15,8 @@
   <% @campus_summaries.each do |campus, values| %>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
       <td class="statsTableTitle"><%= campus.to_s %></td>
+      <td><%= values[:first_year] %></td>
+      <td><%= values[:upper_year] %></td>
       <td><%= values[:males] %></td>
       <td><%= values[:females] %></td>
       <td><%= values[:females] + values[:males] %></td>
@@ -23,6 +27,8 @@
   
   <tr class="statsTableTotal">
     <td class="statsTableTitle">Total</td>
+    <td><%= @campus_summary_totals[:first_year] %></td>
+    <td><%= @campus_summary_totals[:upper_year] %></td>
     <td><%= @campus_summary_totals[:males] %></td>
     <td><%= @campus_summary_totals[:females] %></td>
     <td><%= @campus_summary_totals[:males] + @campus_summary_totals[:females] %></td>
