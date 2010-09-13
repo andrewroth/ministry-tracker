@@ -219,7 +219,12 @@ class EventsController < ApplicationController
 
       if @report_sort.present? && @campus_individuals.size > 1
         @report_sort = DEFAULT_REPORT_SORT unless @campus_individuals.first[1][@report_sort.to_sym].present?
-        @campus_individuals = @campus_individuals.sorted_hash { |a,b| a[1][@report_sort.to_sym].upcase <=> b[1][@report_sort.to_sym].upcase }
+        
+        unless @report_sort == "amount_paid"
+          @campus_individuals = @campus_individuals.sorted_hash { |a,b| a[1][@report_sort.to_sym].upcase <=> b[1][@report_sort.to_sym].upcase }
+        else
+          @campus_individuals = @campus_individuals.sorted_hash { |a,b| a[1][@report_sort.to_sym].to_f <=> b[1][@report_sort.to_sym].to_f }
+        end
       end
 
 
@@ -252,7 +257,10 @@ class EventsController < ApplicationController
       :email => attendee.email,
       :home_phone => attendee.home_phone,
       :cell_phone => attendee.cell_phone,
-      :work_phone => attendee.work_phone
+      :work_phone => attendee.work_phone,
+      :amount_paid => attendee.amount_paid,
+      :year => attendee.answer_to_question(eventbrite[:year_question]),
+      :campus => attendee.answer_to_question(eventbrite[:campus_question])
     }
   end
 

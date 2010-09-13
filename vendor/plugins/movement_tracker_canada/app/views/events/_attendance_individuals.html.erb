@@ -15,6 +15,12 @@
 
     <td class="statsTableTitleTop"><%= link_to_remote('Gender', :url => {:action => "select_report"},
       :with => "getWithStringForReportForm('#{@report_scope}', 'gender', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+
+    <td class="statsTableTitleTop"><%= link_to_remote('Year', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'year', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
+
+    <td class="statsTableTitleTop"><%= link_to_remote('Paid', :url => {:action => "select_report"},
+      :with => "getWithStringForReportForm('#{@report_scope}', 'amount_paid', #{@selected_campus.id})", :before => "beginLoading()", :complete => "completeLoading()") %></td>
   </tr>
 
   <% @campus_individuals.each do |key, individual| %>
@@ -34,6 +40,8 @@
         <% end %>
       </td>
       <td><%= individual[:gender] %></td>
+      <td><%= individual[:year] %></td>
+      <td><%= individual[:amount_paid].present? ? "$#{individual[:amount_paid]}" : "$0.00" %></td>
     </tr>
   <% end %>
 
