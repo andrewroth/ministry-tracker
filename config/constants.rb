@@ -627,6 +627,7 @@
       :year_question => "Your Year",
       :event_status_live => "Live",
       :male => "Male",
-      :female => "Female"
+      :female => "Female",
+      :first_year => "1st Year (Undergrad)"
     }
   end
