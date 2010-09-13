@@ -126,7 +126,7 @@ class EventsController < ApplicationController
   def setup_summary
     begin
       @campus_summaries = ActiveSupport::OrderedHash.new
-      @campus_summary_totals = {:males => 0, :females => 0}
+      @campus_summary_totals = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0}
 
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
@@ -139,7 +139,7 @@ class EventsController < ApplicationController
         
         if authorized?(:show_all_campuses_summaries, :events) || matched_campus.present?
 
-          @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0} if @campus_summaries[eb_campus].nil?
+          @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0} if @campus_summaries[eb_campus].nil?
 
           case attendee.gender
           when eventbrite[:female]
@@ -148,6 +148,15 @@ class EventsController < ApplicationController
           when eventbrite[:male]
             @campus_summaries[eb_campus][:males] += 1
             @campus_summary_totals[:males] += 1
+          end
+
+          case attendee.answer_to_question(eventbrite[:year_question])
+          when eventbrite[:first_year]
+            @campus_summaries[eb_campus][:first_year] += 1
+            @campus_summary_totals[:first_year] += 1
+          else
+            @campus_summaries[eb_campus][:upper_year] += 1
+            @campus_summary_totals[:upper_year] += 1
           end
 
         end
