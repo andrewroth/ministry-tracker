@@ -47,6 +47,7 @@ class PeopleController < ApplicationController
 
   def advanced
     get_campuses
+    get_ministries
     @advanced = true
     @options = {}
     render :layout => 'application'
