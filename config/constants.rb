@@ -624,6 +624,7 @@
   def eventbrite
     {
       :campus_question => "Your Campus",
+      :year_question => "Your Year",
       :event_status_live => "Live",
       :male => "Male",
       :female => "Female"
