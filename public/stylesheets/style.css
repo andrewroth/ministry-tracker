@@ -8,7 +8,7 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar {background:#FFCB05; height:33px; padding: 5px 0px;}
+#greenbar {background:#FFCB05; height:33px; padding: 5px 0px; position: relative;}
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -391,6 +391,9 @@ margin-top:10px;
     float:right;
     margin-top: 4px;
     border-bottom: #FFCB05 solid 0px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .tablist ul {
