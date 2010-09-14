@@ -519,6 +519,13 @@ class PeopleController < ApplicationController
     @is_staff_somewhere ||= {}
 
     setup_campuses
+
+    # attempt to render hte template manually here, because of some crash emails
+    # suggesting on a get request, the .js.rjs is rendered.  Not sure why, could be
+    # based on browser, or passenger
+    if request.method == :get
+      render :template => "people/set_initial_campus.html.erb"
+    end
   end
 
   # Change which ministry we are now viewing in our session
