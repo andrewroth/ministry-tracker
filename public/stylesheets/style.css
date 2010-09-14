@@ -1262,9 +1262,11 @@ div .statsSelectContainer {
 }
 
 div .statsRadioButton {
-  float: left;
-  text-align: left;
-  margin-left: 2em;
+  display: inline-block;
+  margin: 0 1em 0 1em;
+
+  /* hack for IE */
+  *float: left;
 }
 
 .statsRadioButton input {
@@ -1290,6 +1292,7 @@ div .statsRadioButton {
 #statsRadioButtonContainer {
   width: 33em;
   margin: 0.8em auto 0 auto;
+  text-align: center;
 }
 
 #statsLinkBox h3 {
@@ -1362,13 +1365,17 @@ ul.statsLinkList {
 }
 
 .statsReportTab {
-  float: left;
+  display: inline-block;
   border: solid 2px #ADC9DB;
   background-color: #FCFCFC;
   padding: 5px;
-  margin: 0 0 0 1.7em;
+  margin: 0 0.5em 0 0.5em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+
+  /* hacks for IE */
+  *display: inherit;
+  *float: left;
 }
 
 .statsReportTab:hover:not(.statsTabActive) {
