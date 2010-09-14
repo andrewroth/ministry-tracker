@@ -168,7 +168,12 @@ class PrcsController < ApplicationController
   end  
 
   def user_campuses
-    @user_campuses ||= @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    unless is_ministry_admin
+      @user_campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
+    else
+      @user_campuses = Ministry.first.root.unique_campuses
+    end
+    @user_campuses.sort! {|a,b| a.name <=> b.name}
   end
 
   #used to define default values
