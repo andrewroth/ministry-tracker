@@ -1,6 +1,7 @@
 class AnnualGoalsReportsController < ApplicationController
   unloadable
 
+
   skip_before_filter :authorization_filter, :only => [:select_annual_goals_report]    
     
   # GET /annual_goals_reports
@@ -34,7 +35,12 @@ class AnnualGoalsReportsController < ApplicationController
     
     @years = Year.all()   # order by id, if that's not default
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("annual_goals_reports", "new"))
+    unless is_ministry_admin
+      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("annual_goals_reports", "new"))
+    else
+      @campuses = Ministry.first.root.unique_campuses
+    end
+    @campuses.sort! {|a,b| a.name <=> b.name}
 
   end
 

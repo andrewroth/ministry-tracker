@@ -36,7 +36,12 @@ class WeeklyReportsController < ApplicationController
     @weekly_report.campus_id = campus_id
     @weeks = Week.all(:order => :week_endDate)
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("weekly_reports", "new"))
+    unless is_ministry_admin
+      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("weekly_reports", "new"))
+    else
+      @campuses = Ministry.first.root.unique_campuses
+    end
+    @campuses.sort! {|a,b| a.name <=> b.name}
     
   end
 
