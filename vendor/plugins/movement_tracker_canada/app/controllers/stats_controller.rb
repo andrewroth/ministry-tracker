@@ -485,17 +485,13 @@ class StatsController < ApplicationController
       when 'hpctc'
         report_name = "How people came to Christ for #{@ministry_name}"
       when 'story'
-<<<<<<< HEAD
-        report_name = 'Salvation Story Synopses for '
-      when 'annual_goals'
-        report_name = 'Goals for '
-=======
         report_name = "Salvation Story Synopses for #{@ministry_name}"
+      when 'annual_goals'
+        report_name = "Goals for #{@ministry_name}"
       when PERSONAL_STATS
         fname = @me.person_fname
         lname = @me.person_lname
         report_name = "#{fname} #{lname}'s stats "
->>>>>>> c4c.jr.staff_personnal_report
       when 'c4c'
         if @report_scope == SUMMARY
           report_name = "Summary of #{@ministry_name}"
@@ -635,13 +631,10 @@ class StatsController < ApplicationController
         hide_time_tabs([:week, :month, :semester])
       when 'hpctc'
         hide_time_tabs([:week, :month, :semester])
-<<<<<<< HEAD
       when 'annual_goals'
         hide_time_tabs([:week, :month, :semester])
-=======
       when PERSONAL_STATS
         # no more time tabs to hide
->>>>>>> c4c.jr.staff_personnal_report
       end
    
   end
