@@ -30,6 +30,21 @@ class SignupController < ApplicationController
       @person.errors.add_on_blank(c)
     end
 
+    # verify email
+    email = params[:person][:email]
+    if email.present?
+      email_regex = ValidatesEmailFormatOf::Regex
+      email_error = "Please enter a valid email address.  If the email is already in the pulse, enter it anyways and a verification email will be sent."
+      begin
+        domain, local = email.reverse.split('@', 2)
+        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and local.length >= 6
+          @person.errors.add_to_base(email_error)
+        end
+      rescue
+        @person.errors.add_to_base(email_error)
+      end
+    end
+
     @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
     [:campus_id, :school_year_id].each do |c|
       unless @primary_campus_involvement.send(c).present?
