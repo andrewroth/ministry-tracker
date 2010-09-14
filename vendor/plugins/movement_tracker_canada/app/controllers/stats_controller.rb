@@ -473,7 +473,7 @@ class StatsController < ApplicationController
       when 'story'
         report_name = 'Salvation Story Synopses for '
       when 'annual_goals'
-        report_name = 'Annual Goals for '
+        report_name = 'Goals for '
       when 'c4c'
         if @report_scope == SUMMARY
           report_name = 'Summary of '

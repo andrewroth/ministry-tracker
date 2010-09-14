@@ -70,10 +70,10 @@ class AnnualGoalsReportsController < ApplicationController
 
     if @annual_goals_report
       @annual_goals_report.update_attributes(params[:annual_goals_report])
-      notice = 'Your annual goals were successfully re-submitted.'
+      notice = 'Your goals were successfully re-submitted.'
     else
       @annual_goals_report = AnnualGoalsReport.new(params[:annual_goals_report])
-      notice = 'Your annual goals were successfully submitted.'
+      notice = 'Your goals were successfully submitted.'
     end
 
     respond_to do |format|
@@ -110,7 +110,7 @@ class AnnualGoalsReportsController < ApplicationController
 #
 #    respond_to do |format|
 #      if success_update && @annual_goals_report.save
-#        flash[:notice] = 'Your annual goals were successfully updated.'
+#        flash[:notice] = 'Your goals were successfully updated.'
 #        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
 #        format.xml  { head :ok }
 #      else
@@ -127,7 +127,7 @@ class AnnualGoalsReportsController < ApplicationController
     @semester_report.destroy
 
     unless @semester_report.errors.empty?
-      flash[:notice] = "WARNING: Couldn't delete annual goals because:"
+      flash[:notice] = "WARNING: Couldn't delete goals because:"
       @semester_report.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
     end
 
