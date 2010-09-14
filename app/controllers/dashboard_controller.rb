@@ -94,12 +94,19 @@ class DashboardController < ApplicationController
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid}",
       :group => "#{GroupType.__(:id)}")
 
+    gt_sem_inv = GroupType.find(:all,
+      :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
+      :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id INNER JOIN #{GroupInvolvement.table_name} gi ON gi.group_id = g.id",
+      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid} AND gi.level != 'interested' AND (gi.requested = FALSE OR gi.requested IS NULL)",
+      :group => "#{GroupType.__(:id)}")
+
     i = -1
     @group_stats = []
     GroupType.all.each do |gt|
       gt_all_total = gt_all.detect{ |gt_a| gt_a.name == gt.group_type }.try(:total) || 0
       gt_sem_total = gt_sem.detect{ |gt_s| gt_s.name == gt.group_type }.try(:total) || 0
-      @group_stats << [ gt.group_type, gt_sem_total, gt_all_total ]
+      gt_sem_invs = gt_sem_inv.detect{ |gt_s| gt_s.name == gt.group_type }.try(:total) || 0
+      @group_stats << [ gt.group_type, gt_sem_total, gt_sem_invs, gt_all_total ]
     end
 
     logins_week = Person.find(:first,
