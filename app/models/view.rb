@@ -25,10 +25,10 @@ class View < ActiveRecord::Base
     tables_clause = Person.table_name + ' as Person'
     # Always include the campus involvements table
     tables << 'CampusInvolvement'
-    tables_clause += " LEFT JOIN #{CampusInvolvement.table_name} as CampusInvolvement on Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+    tables_clause += " LEFT JOIN #{CampusInvolvement.table_name} as CampusInvolvement on Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)} AND CampusInvolvement.end_date IS NULL"
     # Always include the ministry involvements table
     tables << 'MinistryInvolvement'
-    tables_clause += " LEFT JOIN #{MinistryInvolvement.table_name} as MinistryInvolvement on Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
+    tables_clause += " LEFT JOIN #{MinistryInvolvement.table_name} as MinistryInvolvement on Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)} AND MinistryInvolvement.end_date IS NULL"
     # Always include the current address
     tables << 'CurrentAddress'
     tables_clause += " LEFT JOIN #{CurrentAddress.table_name} as CurrentAddress on Person.#{_(:id, :person)} = CurrentAddress.#{_(:person_id, :address)} AND #{_(:address_type, :address)} = 'current'"
