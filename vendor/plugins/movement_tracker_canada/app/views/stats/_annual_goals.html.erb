@@ -15,9 +15,9 @@
     <% @annual_goals_sum.each do |goal, sum| %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td class="progressBar"><%= stats_reports[:annual_goals_report][goal.to_sym][:label] %></td>
-        <td class="progressBar"><%= @annual_goals_progress[goal.to_sym] %></td>
+        <td class="progressBar"><%= number_with_delimiter(@annual_goals_progress[goal.to_sym], :delimiter => ",") %></td>
         <td class="progressBar"><div id="<%=goal%>_progress_bar"></div></td>
-        <td class="progressBar"><%= sum %></td>
+        <td class="progressBar"><%= number_with_delimiter(sum, :delimiter => ",") %></td>
       </tr>
       <script>$("#<%=goal%>_progress_bar").progressbar({ value: <%= (@annual_goals_progress[goal.to_sym].to_f / sum.to_f)*100.00 %> });</script>
     <% end %>
