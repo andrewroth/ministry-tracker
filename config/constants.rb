@@ -62,7 +62,8 @@
       :comp => {:order => 4, :label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report, :scopes => [:staff_drill_down]},
       :hpctc => {:order => 2, :label => "How people came to Christ", :controller => :stats, :action => :how_people_came_to_christ, :scopes => [:summary]},
       :story => {:order => 3, :label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses, :scopes => [:summary]},
-      :annual_goals => {:order => 3, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]}
+      :annual_goals => {:order => 8, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]},
+      :perso => {:order => 7, :label => "My personal stats", :controller => :stats, :action => :personal, :scopes => [:summary]}
     }
   end
   

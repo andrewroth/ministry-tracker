@@ -129,8 +129,12 @@ class GroupInvolvementsController < ApplicationController
       # try to transfer each member
       params[:members].each do |member|
         gi = @group.group_involvements.find(:first, :conditions => {:person_id => member})
-        yield gi
-        gi.save!
+        if gi
+          yield gi
+          gi.save!
+        else
+          logger.info "Warning: in GroupInvolvements#act_on_members and couldn't find the group involvement for person #{member} in group #{@group.id}"
+        end
       end
     else
       @member_notices << "People need to be selected"

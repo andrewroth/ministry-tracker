@@ -410,7 +410,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=464 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -462,7 +462,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -959,6 +959,10 @@ INSERT INTO schema_migrations (version) VALUES ('20100909191616');
 INSERT INTO schema_migrations (version) VALUES ('20100909191848');
 
 INSERT INTO schema_migrations (version) VALUES ('20100914175614');
+
+INSERT INTO schema_migrations (version) VALUES ('20100914201801');
+
+INSERT INTO schema_migrations (version) VALUES ('20100914201933');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

@@ -5,6 +5,12 @@ else
   page << "jQuery('#statsRadioButtonContainer').removeClass('notDisplayed')"
 end
 
+if @hide_ministry_treeview
+  page << "jQuery('#stats_chosen_ministry').addClass('notDisplayed')"
+else
+  page << "jQuery('#stats_chosen_ministry').removeClass('notDisplayed')"
+end
+
 @scope_radios.each do |radio|
   if radio[:show]
       page << "jQuery('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
