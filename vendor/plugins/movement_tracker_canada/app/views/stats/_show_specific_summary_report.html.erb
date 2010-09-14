@@ -1,7 +1,7 @@
 <%
       if permission_granted 
         stat_report(report_symbol).each do | key, input_stat |
-          %><%= show_stat_hash_line(@periods, @campus_ids, input_stat)%><%
+          %><%= show_stat_hash_line(@periods, @campus_ids, input_stat, @staff_id)%><%
         end
       end 
 %>
