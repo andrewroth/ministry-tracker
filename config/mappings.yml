@@ -220,7 +220,7 @@ weekly_report:
   followup_completed: weeklyReport_7upCompleted
   spiritual_conversations_student: weeklyReport_1on1SpConvStd
   gospel_presentations_student: weeklyReport_1on1GosPresStd
-  holyspirt_presentations_student: weeklyReport_1on1HsPresStd
+  holyspirit_presentations_student: weeklyReport_1on1HsPresStd
   followup_completed_student: weeklyReport_7upCompletedStd
   cj_video: weeklyReport_cjVideo
   mda: weeklyReport_mda
@@ -246,11 +246,14 @@ semester_report:
   number_in_student_led_dg: semesterreport_numInStudentDG
   number_sp_mult_in_staff_led_dg: semesterreport_numSpMultStaffDG
   number_sp_mult_in_student_led_dg: semesterreport_numSpMultStdDG
-  total_graduating_students_to_non_ministry: :semesterreport_totalSpMultGradNonMinistry
-  total_graduating_students_to_full_time_c4c_staff: :semesterreport_totalFullTimeC4cStaff
-  total_graduating_students_to_full_time_p2c_non_c4c: :semesterreport_totalFullTimeP2cStaffNonC4c
-  total_graduating_students_to_one_year_internship: :semesterreport_totalPeopleOneYearInternship
-  total_graduating_students_to_other_ministry: :semesterreport_totalPeopleOtherMinistry
+  total_graduating_students_to_non_ministry: semesterreport_totalSpMultGradNonMinistry
+  total_graduating_students_to_full_time_c4c_staff: semesterreport_totalFullTimeC4cStaff
+  total_graduating_students_to_full_time_p2c_non_c4c: semesterreport_totalFullTimeP2cStaffNonC4c
+  total_graduating_students_to_one_year_internship: semesterreport_totalPeopleOneYearInternship
+  total_graduating_students_to_other_ministry: semesterreport_totalPeopleOtherMinistry
+  total_students_to_summit: semesterreport_studentsSummit
+  total_students_to_wc: semesterreport_studentsWC
+  total_students_to_project: semesterreport_studentsProjects
   
 monthly_report:
   id: monthlyreport_id
@@ -264,6 +267,7 @@ monthly_report:
   total_core_students: monthlyreport_totalCoreStudents
   total_students_in_dg: monthlyreport_totalStudentInDG
   total_spiritual_multipliers: monthlyreport_totalSpMult
+  total_integrated_new_believers: montlyreport_integratedNewBelievers
   
 annual_goals_report:
   id: annualGoalsReport_id
