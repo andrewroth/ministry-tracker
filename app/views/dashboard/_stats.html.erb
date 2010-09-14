@@ -1,21 +1,30 @@
 <h6><P><%= @num_people %> people in <%= @ministry.name %> ministry.</P></h6>
 
-<h6>Groups</h6>
-<P class="dashboard_stats_indent">
-  <%- @group_stats.each do |gt, sem, tot| -%>
-    <%= gt %>: <%= sem %> this semester, <%= tot %> total<br/>
+<%- if @group_stats.present? %>
+<table border='0' cellpadding='0' cellspacing='0' style='margin-bottom: 10px'>
+  <tr>
+    <th class=""><h6>Groups this semester</h6></th>
+    <th class="small center" width='25%'>#groups</th>
+    <th class="small center" width='25%'>#participants</th>
+  </tr>
+  <%- @group_stats.each do |gt, sem, sem_inv, tot| -%>
+    <tr>
+      <td><%= gt.pluralize %></td>
+      <td class='center'><b><%= sem %></b></td>
+      <td class='center'><b><%= sem_inv %></b></td>
+  </tr>
   <%- end -%>
-<% if @group_stats.empty? %>No groups<% end %>
-</P>
+</table>
+<% else %><P>No groups</P><% end %>
 
 <h6>Logins</h6>
 <P class="dashboard_stats_indent">
-Last 7 week: <%= @logins_this_week %><BR/>
-Last 30 days: <%= @logins_this_month %><BR/>
+Last 7 days: <b><%= @logins_this_week %></b><BR/>
+Last 30 days: <b><%= @logins_this_month %></b><BR/>
 </P>
 
 <h6>Timetable Updates</h6>
 <P class="dashboard_stats_indent">
-Last 7 days: <%= @tt_last_week %><BR/>
-Last 30 days: <%= @tt_last_month %><BR/>
+Last 7 days: <b><%= @tt_last_week %></b><BR/>
+Last 30 days: <b><%= @tt_last_month %></b><BR/>
 </P>
