@@ -1,0 +1,2 @@
+
+page.replace_html("events", :partial => "events")

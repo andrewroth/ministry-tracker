@@ -629,6 +629,7 @@
       :event_status_live => "Live",
       :male => "Male",
       :female => "Female",
-      :first_year => "1st Year (Undergrad)"
+      :first_year => "1st Year (Undergrad)",
+      :c4c_events_link => "http://www.eventbrite.com/org/571076749"
     }
   end

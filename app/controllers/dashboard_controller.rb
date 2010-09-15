@@ -18,57 +18,69 @@ class DashboardController < ApplicationController
     if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
                                          :order => "#{Person.table_name}.#{_(:created_at, :person)} desc", :limit => 4, :joins => [:ministry_involvements, :campus_involvements])
+    end
 
+    @show_my_events = Event.first.present? ? true : false
+  end
 
-      if Event.first.present?
+  
+  def events
+    begin
 
-        if @me.is_staff_somewhere?
-          @my_campuses = get_ministry.unique_campuses
-        else
-          @my_campuses = @my.campuses
-        end
-        my_campuses_ids = @my_campuses.collect { |c| c.id }
+      if @me.is_staff_somewhere?
+        @my_campuses = get_ministry.unique_campuses
+      else
+        @my_campuses = @my.campuses
+      end
+      my_campuses_ids = @my_campuses.collect { |c| c.id }
 
-        if my_campuses_ids.present? then
-          my_event_ids = EventCampus.find(:all, :conditions => _(:campus_id, :event_campuses) + " IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
-        end
+      if my_campuses_ids.present? then
+        my_event_ids = EventCampus.find(:all, :conditions => _(:campus_id, :event_campuses) + " IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
+      end
 
-        if my_event_ids.present? && @my_campuses.present? then
+      if my_event_ids.present? && @my_campuses.present? then
 
-          my_events = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{my_event_ids.join(',')})")
+        my_events = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{my_event_ids.join(',')})")
 
-          @eventbrite_events = []
-          live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
+        @eventbrite_events = []
+        live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
 
-          @eventbrite_user = ::EventBright.setup_from_initializer()
+        @eventbrite_user = ::EventBright.setup_from_initializer()
 
-          my_events.each do |event|
-            eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
+        my_events.each do |event|
+          eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
-            if eb_event.status == eventbrite[:event_status_live] then
-              if @my_campuses.size == 1 && event.campuses.size > 1 then
-                attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
-                eb_event.attributes[:my_campus_num_attendees] = attendees.size                
-              end
+          if eb_event.status == eventbrite[:event_status_live] then
+            if @my_campuses.size == 1 && event.campuses.size > 1 then
+              attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
+              eb_event.attributes[:my_campus_num_attendees] = attendees.size
+            end
 
-              @eventbrite_events << eb_event
-              live_event_ids << event.id
+            @eventbrite_events << eb_event
+            live_event_ids << event.id
 
-              if authorized?(:attendance, :events)
-                eb_event.attributes[:link_to_report] = url_for(:controller => 'events', :action => 'attendance', :id => event.id)
-              end
+            if authorized?(:attendance, :events)
+              eb_event.attributes[:link_to_report] = url_for(:controller => 'events', :action => 'attendance', :id => event.id)
             end
           end
+        end
 
-          if live_event_ids.present? then
-            #find all event_groups that the live events are in
-            event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
-            @event_groups = EventGroup.find(:all, :conditions => "#{EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
-          end
+        if live_event_ids.present? then
+          #find all event_groups that the live events are in
+          event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
+          @event_groups = EventGroup.find(:all, :conditions => "#{EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
         end
       end
+
+    rescue Exception => e
+      @eventbrite_error = e.message
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
+
 
   protected
 
