@@ -1,5 +1,5 @@
 <div class="modulecontent">
-  <% unless @eventbrite_error.present? %>
+  <% if @eventbrite_error.blank? && @event_groups.present? && @eventbrite_events.present? %>
 
     <% @event_groups.each do |group| %>
       <% total_group_attendees = 0 %>
@@ -49,12 +49,20 @@
       <br/>
     <% end %>
 
+  <% elsif @eventbrite_events.blank? || @event_groups.blank? %>
+      <div class="lightgray">
+        We couldn't find any current events at your campus.
+        <br/>
+        <br/>
+        <%= link_to('Register for an event', eventbrite[:c4c_events_link]) %>
+      </div>
+
   <% else %>
       <div class="lightgray">
         It looks like <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> isn't responding right now, please try again later.
         <br/>
         <br/>
-        <%= link_to('Click here to register for an event', eventbrite[:c4c_events_link]) %>
+        <%= link_to('Register for an event', eventbrite[:c4c_events_link]) %>
       </div>
   <% end %>
 
