@@ -49,5 +49,5 @@ page.replace_html(@selected_results_div_id, :partial => @results_partial)
 
 page << "jQuery('.statsReportTabContainer').hide();"
 
-page[@selected_results_div_id].visual_effect :slide_down
+page[@selected_results_div_id].visual_effect :blind_down
 
