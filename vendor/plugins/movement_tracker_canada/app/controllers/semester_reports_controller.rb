@@ -35,7 +35,12 @@ class SemesterReportsController < ApplicationController
     
     @semesters = Semester.all(:order => :semester_startDate)
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("semester_reports", "new"))
+    unless is_ministry_admin
+      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("semester_reports", "new"))
+    else
+      @campuses = Ministry.first.root.unique_campuses
+    end
+    @campuses.sort! {|a,b| a.name <=> b.name}
 
   end
 

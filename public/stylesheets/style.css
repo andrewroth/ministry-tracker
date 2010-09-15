@@ -1501,6 +1501,10 @@ fieldset {
   background-color: #FFEA99;
 }
 
+#results .statsTableTitleProgressBar {
+  width: 17em;
+}
+
 #results .statsTableTitle {
   color: #474E66;
   vertical-align: middle;

@@ -43,6 +43,8 @@ class StatsController < ApplicationController
         setup_how_people_came_to_christ_report
       when 'story'
         setup_story_report
+      when 'annual_goals'
+        setup_annual_goals_report
       else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
@@ -110,6 +112,117 @@ class StatsController < ApplicationController
  
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
+  end
+
+
+  def setup_annual_goals_report
+    setup_campus_ids
+    setup_selected_time_tab
+    setup_selected_period_for_drilldown
+    setup_report_description
+
+    year = Year.find(@year_id)
+    month_ids = year.months.collect {|m| m.id}
+    semester_ids = year.semesters.collect {|s| s.id}
+    
+    week_ids = []
+    year.months.each do |m|
+      week_ids << m.weeks.collect {|w| w.id}
+    end
+    week_ids.flatten!
+
+
+
+    annual_goals_sum = AnnualGoalsReport.first(:select => "
+      sum(#{AnnualGoalsReport.table_name}.#{_(:students_in_ministry, :annual_goals_report)}) as students_in_ministry,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:spiritual_multipliers, :annual_goals_report)}) as spiritual_multipliers,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:first_years, :annual_goals_report)}) as first_years,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:total_went_to_summit, :annual_goals_report)}) as total_went_to_summit,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:total_went_to_wc, :annual_goals_report)}) as total_went_to_wc,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:total_went_on_project, :annual_goals_report)}) as total_went_on_project,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:spiritual_conversations, :annual_goals_report)}) as spiritual_conversations,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:gospel_presentations, :annual_goals_report)}) as gospel_presentations,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:holyspirit_presentations, :annual_goals_report)}) as holyspirit_presentations,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:indicated_decisions, :annual_goals_report)}) as indicated_decisions,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:followup_completed, :annual_goals_report)}) as followup_completed,
+      sum(#{AnnualGoalsReport.table_name}.#{_(:large_event_attendance, :annual_goals_report)}) as large_event_attendance",
+      :conditions => ["#{_(:campus_id, :annual_goals_report)} in (?) AND #{_(:year_id, :annual_goals_report)} = ?", @campus_ids, year.id])
+
+    @annual_goals_sum = ActiveSupport::OrderedHash.new
+    @annual_goals_sum[:students_in_ministry] = annual_goals_sum["students_in_ministry"]
+    @annual_goals_sum[:spiritual_multipliers] = annual_goals_sum["spiritual_multipliers"]
+    @annual_goals_sum[:first_years] = annual_goals_sum["first_years"]
+    @annual_goals_sum[:total_went_to_summit] = annual_goals_sum["total_went_to_summit"]
+    @annual_goals_sum[:total_went_to_wc] = annual_goals_sum["total_went_to_wc"]
+    @annual_goals_sum[:total_went_on_project] = annual_goals_sum["total_went_on_project"]
+    @annual_goals_sum[:spiritual_conversations] = annual_goals_sum["spiritual_conversations"]
+    @annual_goals_sum[:gospel_presentations] = annual_goals_sum["gospel_presentations"]
+    @annual_goals_sum[:holyspirit_presentations] = annual_goals_sum["holyspirit_presentations"]
+    @annual_goals_sum[:indicated_decisions] = annual_goals_sum["indicated_decisions"]
+    @annual_goals_sum[:followup_completed] = annual_goals_sum["followup_completed"]
+    @annual_goals_sum.each do |key,goal|
+      @annual_goals_sum[key] = 0 if goal.blank?
+    end
+
+    
+    @monthly_sum = MonthlyReport.first(:select => "
+      sum(#{MonthlyReport.table_name}.#{_(:number_frosh_involved, :monthly_report)}) as number_frosh_involved,
+      sum(#{MonthlyReport.table_name}.#{_(:event_spiritual_conversations, :monthly_report)}) as event_spiritual_conversations,
+      sum(#{MonthlyReport.table_name}.#{_(:event_gospel_prensentations, :monthly_report)}) as event_gospel_prensentations,
+      sum(#{MonthlyReport.table_name}.#{_(:media_spiritual_conversations, :monthly_report)}) as media_spiritual_conversations,
+      sum(#{MonthlyReport.table_name}.#{_(:media_gospel_prensentations, :monthly_report)}) as media_gospel_prensentations,
+      sum(#{MonthlyReport.table_name}.#{_(:total_core_students, :monthly_report)}) as total_core_students,
+      sum(#{MonthlyReport.table_name}.#{_(:total_spiritual_multipliers, :monthly_report)}) as total_spiritual_multipliers,
+      sum(#{MonthlyReport.table_name}.#{_(:total_integrated_new_believers, :monthly_report)}) as followup_completed",
+      :conditions => ["#{_(:campus_id, :monthly_report)} in (?) AND #{_(:month_id, :monthly_report)} in (?)", @campus_ids, month_ids])
+
+    @semester_sum = SemesterReport.first(:select => "
+      sum(#{SemesterReport.table_name}.#{_(:total_students_to_summit, :semester_report)}) as total_students_to_summit,
+      sum(#{SemesterReport.table_name}.#{_(:total_students_to_wc, :semester_report)}) as total_students_to_wc,
+      sum(#{SemesterReport.table_name}.#{_(:total_students_to_project, :semester_report)}) as total_students_to_project",
+      :conditions => ["#{_(:campus_id, :semester_report)} in (?) AND #{_(:semester_id, :semester_report)} in (?)", @campus_ids, semester_ids])
+
+    @weekly_sum = WeeklyReport.first(:select => "
+      sum(#{WeeklyReport.table_name}.#{_(:spiritual_conversations, :weekly_report)}) as spiritual_conversations,
+      sum(#{WeeklyReport.table_name}.#{_(:spiritual_conversations_student, :weekly_report)}) as spiritual_conversations_student,
+      sum(#{WeeklyReport.table_name}.#{_(:gospel_presentations, :weekly_report)}) as gospel_presentations,
+      sum(#{WeeklyReport.table_name}.#{_(:gospel_presentations_student, :weekly_report)}) as gospel_presentations_student,
+      sum(#{WeeklyReport.table_name}.#{_(:holyspirit_presentations, :weekly_report)}) as holyspirit_presentations,
+      sum(#{WeeklyReport.table_name}.#{_(:holyspirit_presentations_student, :weekly_report)}) as holyspirit_presentations_student",
+      :conditions => ["#{_(:campus_id, :weekly_report)} in (?) AND #{_(:week_id, :weekly_report)} in (?)", @campus_ids, week_ids])
+
+    @prc_sum = 0
+    campuses = Campus.all(:conditions => ["#{_(:id, :campus)} in (?)", @campus_ids])
+    semester_ids.each do |sid|
+      @prc_sum += Prc.count_by_semester_and_campuses(sid, campuses)
+    end
+
+    @annual_goals_progress = {}
+    @annual_goals_progress[:students_in_ministry] = @monthly_sum["total_core_students"].to_i
+    @annual_goals_progress[:spiritual_multipliers] = @monthly_sum["total_spiritual_multipliers"].to_i
+    @annual_goals_progress[:first_years] = @monthly_sum["number_frosh_involved"].to_i
+    @annual_goals_progress[:total_went_to_summit] = @semester_sum["total_students_to_summit"].to_i
+    @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
+    @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i
+    
+    @annual_goals_progress[:spiritual_conversations] = @monthly_sum["event_spiritual_conversations"].to_i + @monthly_sum["media_spiritual_conversations"].to_i +
+                                                        @weekly_sum["spiritual_conversations"].to_i + @weekly_sum["spiritual_conversations_student"].to_i
+
+    @annual_goals_progress[:gospel_presentations] = @monthly_sum["event_gospel_prensentations"].to_i + @monthly_sum["media_gospel_prensentations"].to_i +
+                                                     @weekly_sum["gospel_presentations"].to_i + @weekly_sum["gospel_presentations_student"].to_i
+
+    @annual_goals_progress[:holyspirit_presentations] = @weekly_sum["holyspirit_presentations"].to_i + @weekly_sum["holyspirit_presentations_student"].to_i
+    @annual_goals_progress[:indicated_decisions] = @prc_sum.to_i
+    @annual_goals_progress[:followup_completed] = @monthly_sum["followup_completed"].to_i
+
+    @annual_goals_progress.each do |key,goal|
+      @annual_goals_progress[key] = 0 if goal.blank?
+    end
+
+
+
+
+    @results_partial = "annual_goals"
   end
 
 
@@ -359,6 +472,8 @@ class StatsController < ApplicationController
         report_name = 'How people came to Christ for '
       when 'story'
         report_name = 'Salvation Story Synopses for '
+      when 'annual_goals'
+        report_name = 'Goals for '
       when 'c4c'
         if @report_scope == SUMMARY
           report_name = 'Summary of '
@@ -486,6 +601,8 @@ class StatsController < ApplicationController
       when 'story'
         hide_time_tabs([:week, :month, :semester])
       when 'hpctc'
+        hide_time_tabs([:week, :month, :semester])
+      when 'annual_goals'
         hide_time_tabs([:week, :month, :semester])
       end
    
