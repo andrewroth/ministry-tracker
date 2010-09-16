@@ -290,11 +290,22 @@ class StatsController < ApplicationController
   def setup_personal_report
     @hide_ministry_treeview = true
     @stats_ministry = Ministry.root
-    setup_selected_period_for_summary
-    setup_staffs_for_staff_drilldown(@report_scope)
-    setup_selected_time_tab
-    setup_report_description
-    @results_partial = "summary"
+    case @report_scope
+      when SUMMARY
+        setup_selected_period_for_summary
+        setup_staffs_for_staff_drilldown(@report_scope)
+        setup_selected_time_tab
+        setup_report_description
+        @results_partial = "summary"
+      when CAMPUS_DRILL_DOWN
+        setup_selected_period_for_drilldown    
+        setup_selected_time_tab
+        setup_staffs_for_staff_drilldown(@report_scope)
+        setup_campus_ids
+        setup_report_description
+        @results_partial = "campus_drill_down"
+    end
+    
   end
 
   def setup_staff_drill_down
@@ -479,29 +490,35 @@ class StatsController < ApplicationController
   end
 
   def setup_report_description
+    ministry_name = @ministry_name
+    
+    fname = @me.person_fname
+    lname = @me.person_lname
+    ministry_name = "#{fname} #{lname}'s stats" if @report_type == PERSONAL_STATS
+    
     case @report_type
       when COMPLIANCE_REPORT
-        report_name = "Compliance report for #{@ministry_name}"
+        report_name = "Compliance report for #{ministry_name}"
       when 'hpctc'
-        report_name = "How people came to Christ for #{@ministry_name}"
+        report_name = "How people came to Christ for #{ministry_name}"
       when 'story'
-        report_name = "Salvation Story Synopses for #{@ministry_name}"
+        report_name = "Salvation Story Synopses for #{ministry_name}"
       when 'annual_goals'
-        report_name = "Goals for #{@ministry_name}"
+        report_name = "Goals for #{ministry_name}"
       when PERSONAL_STATS
-        fname = @me.person_fname
-        lname = @me.person_lname
-        report_name = "#{fname} #{lname}'s stats "
+        if @report_scope == SUMMARY
+          report_name = "Summary of #{ministry_name}"
+        end
       when 'c4c'
         if @report_scope == SUMMARY
-          report_name = "Summary of #{@ministry_name}"
+          report_name = "Summary of #{ministry_name}"
         end
     end
 
     if @report_scope == CAMPUS_DRILL_DOWN
-        report_name = "Campus drill down of #{@ministry_name}"
+        report_name = "Campus drill down of #{ministry_name}"
     elsif @report_scope == STAFF_DRILL_DOWN
-      report_name = "Staff drill down of #{@ministry_name}"
+      report_name = "Staff drill down of #{ministry_name}"
     end
     
     case @stats_time
@@ -523,7 +540,13 @@ class StatsController < ApplicationController
   end
 
   def setup_campus_ids
-    @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }    
+    
+    if @report_type == PERSONAL_STATS
+      @campus_ids = WeeklyReport.find(:all, :conditions => {:staff_id => 336}).collect{|wr| wr[:campus_id]}.uniq
+    else
+      @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }
+    end
+    
     @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN
   end
   #----------------------------------------------------------------------------------------
