@@ -31,7 +31,7 @@ class SignupController < ApplicationController
     end
 
     # verify email
-    email = params[:person][:email]
+    email = params[:person] && params[:person][:email]
     if email.present?
       email_regex = ValidatesEmailFormatOf::Regex
       email_error = "Please enter a valid email address.  If the email is already in the pulse, enter it anyways and a verification email will be sent."
