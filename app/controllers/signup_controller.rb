@@ -37,7 +37,7 @@ class SignupController < ApplicationController
       email_error = "Please enter a valid email address.  If the email is already in the pulse, enter it anyways and a verification email will be sent."
       begin
         domain, local = email.reverse.split('@', 2)
-        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and local.length >= 6
+        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and email.length >= 6
           @person.errors.add_to_base(email_error)
         end
       rescue
@@ -101,6 +101,7 @@ class SignupController < ApplicationController
           ci.ministry_id = ci.derive_ministry.try(:id)
           ci.save!
         end
+        ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         redirect_to :action => :step2_group
       end
