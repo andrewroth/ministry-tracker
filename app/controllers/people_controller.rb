@@ -521,6 +521,11 @@ class PeopleController < ApplicationController
 
     setup_campuses
 
+    if default_country
+      @campus_country = default_country
+      @campus_states = CmtGeo.states_for_country(@campus_country.code)
+    end
+
     # attempt to render hte template manually here, because of some crash emails
     # suggesting on a get request, the .js.rjs is rendered.  Not sure why, could be
     # based on browser, or passenger
