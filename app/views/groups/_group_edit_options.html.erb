@@ -34,7 +34,7 @@
     <br />
     <%- form_remote_tag(:url => transfer_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :html => {:id => 'transfer_to_form'}) do -%>
       Pick a group to transfer the selected people to:<br />
-      <%= select_tag('transfer_to', options_for_select(@groups.collect {|g| [g.name, g.id]})) %>
+      <%= select_tag('transfer_to', grouped_options_for_select(@grouped_groups)) %>
       <%= link_to_remote 'Go', {:url => transfer_group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), 
         :with => "#{data}", :method => :post}, {:class => 'small'}
       %>
