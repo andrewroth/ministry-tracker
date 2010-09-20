@@ -66,9 +66,31 @@ class GroupsController < ApplicationController
   end
   
   def show
-    get_person_campus_groups
-    @groups = @person_campus_groups
-    @ministry = @group.ministry
+    # @groups is the list of groups that show up when transferring someone
+    if authorized?(:transfer, :groups)
+      @groups = get_ministry.all_groups
+      @groups += @group.ministry.all_groups
+    else
+      # use only groups you're a leader of
+      @groups = @my.group_involvements.find_all_by_level(Group::LEADER).collect &:group
+    end
+    @groups.uniq!
+    @groups.sort{ |g1, g2| g1.name <=> g2.name }
+    s1 = Semester.current
+    s2 = Semester.find(s1.id+1)
+    s1_list = []
+    s2_list = []
+    @groups.each do |g|
+      case g.semester
+      when s1
+        s1_list << [ g.name, g.id ]
+      when s2
+        s2_list << [ g.name, g.id ]
+      end
+    end
+    @grouped_groups = [ [ s1.desc, s1_list ], [ s2.desc, s2_list ] ]
+
+    #@ministry = @group.ministry
     @gi = @group.group_involvements.find_by_person_id @me.id
     respond_to do |format|
       format.html 

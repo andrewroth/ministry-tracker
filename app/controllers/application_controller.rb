@@ -398,14 +398,6 @@ class ApplicationController < ActionController::Base
       @default_country ||= (Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:default_country] }) || Country.new)
     end
 
-    def get_person_campus_groups
-      groups = Group.find :all, :conditions => {:ministry_id => get_ministry.id}, :include => [:group_type, :group_involvements, :campus]
-      my_campuses_ids = get_person_campuses.collect &:id
-      @person_campus_groups = groups.select { |g| 
-        g.campus.nil? || my_campuses_ids.include?(g.campus.id)
-      }.sort{ |g1, g2| g1.name.to_s <=> g2.name.to_s }
-    end
-
     def get_person_campuses
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
