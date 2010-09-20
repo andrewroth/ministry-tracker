@@ -216,39 +216,39 @@ class PeopleController < ApplicationController
     # figure out if the search parameter looks like a first or last name only, or both
     @search = params[:search]
     if @search && !@search.empty?
-     	names = @search.strip.split(' ')
-     	conditions = [[],[]]
-    	if (names.size > 1)
-	    	first = names[0].to_s
-    		last = names[1].to_s
-	    	conditions[0] << "#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? "
-	    	conditions[1] << last + "%"
-	    	conditions[1] << first + "%"
-	   	else
-	   	  name = names.join
-	   		conditions[0] << "(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) "
-	   		conditions[1] << name+'%'
-	   		conditions[1] << name+'%' 
-	   	end
-	   	if params[:filter_ids].present?
-	   	  conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
-	   	  conditions[1] << params[:filter_ids]
-   	  end
-   	  
-   	  # Scope by the user's ministry / campus involvements
-   	  involvement_condition = "("
-      unless @person.is_staff_somewhere?
-     	  involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
-  	   	conditions[1] << my_campus_ids
+      names = @search.strip.split(' ')
+      conditions = [[],[]]
+      if (names.size > 1)
+        first = names[0].to_s
+        last = names[1].to_s
+        conditions[0] << "#{_(:last_name, :person)} LIKE ? AND #{_(:first_name, :person)} LIKE ? "
+        conditions[1] << last + "%"
+        conditions[1] << first + "%"
       else
- 	    end
- 	    #involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
- 	    
-	   	conditions[0] << involvement_condition
-	   	#conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
-	   	
-	   	@conditions = [ conditions[0].join(' AND ') ] + conditions[1]
-  
+        name = names.join
+        conditions[0] << "(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) "
+        conditions[1] << name+'%'
+        conditions[1] << name+'%' 
+      end
+      if params[:filter_ids].present?
+        conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
+        conditions[1] << params[:filter_ids]
+      end
+
+      # Scope by the user's ministry / campus involvements
+      involvement_condition = "("
+      unless @person.is_staff_somewhere?
+        involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
+        conditions[1] << get_campus_ids
+      else
+      end
+      involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
+
+      conditions[0] << involvement_condition
+      conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
+
+      @conditions = [ conditions[0].join(' AND ') ] + conditions[1]
+
       includes = [:current_address, :campus_involvements, :ministry_involvements]
       @people = Person.find(:all, :order => "#{_(:last_name, :person)}, #{_(:first_name, :person)}", :conditions => @conditions, :include => includes)
       respond_to do |format|
@@ -521,11 +521,6 @@ class PeopleController < ApplicationController
 
     setup_campuses
 
-    if default_country
-      @campus_country = default_country
-      @campus_states = CmtGeo.states_for_country(@campus_country.code)
-    end
-
     # attempt to render hte template manually here, because of some crash emails
     # suggesting on a get request, the .js.rjs is rendered.  Not sure why, could be
     # based on browser, or passenger
@@ -735,7 +730,7 @@ class PeopleController < ApplicationController
     end
     
     def get_campuses
-      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry))
+      @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
     end
     
     def get_campus_ids
@@ -770,7 +765,13 @@ class PeopleController < ApplicationController
       # Check campus
       if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
+        if params[:campus].class == String
+          params[:campus] = [ params[:campus] ]
+        end
         campus_ids = params[:campus] & get_campus_ids
+      end
+      if !is_staff_somewhere
+        campus_ids ||= get_campus_ids
       end
       
       if params[:campus] || !is_staff_somewhere
@@ -783,7 +784,7 @@ class PeopleController < ApplicationController
       
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
-        conditions << "(#{ministry_condition} OR #{campus_condition})"
+        conditions << "(#{ministry_condition} AND #{campus_condition})"
       elsif is_staff_somewhere && !campus_condition
         conditions << "(#{ministry_condition})"
       elsif !is_staff_somewhere
