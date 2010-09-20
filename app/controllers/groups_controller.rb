@@ -11,7 +11,11 @@ class GroupsController < ApplicationController
   before_filter :set_current_and_next_semester
 
   def index
-    @join = false
+    if Cmt::CONFIG[:joingroup_from_index]
+      @join = true
+    else
+      @join = false
+    end
     setup_campuses_filter
     setup_semester_filter
     setup_groups
@@ -39,12 +43,19 @@ class GroupsController < ApplicationController
     render(:update) { |page|  page.redirect_to new_email_url(:person => people) }
   end
 
-  def join
-    redirect_to :controller => "signup", :action => "step1_info"
+  unless Cmt::CONFIG[:joingroup_from_index]
+    def join
+      redirect_to :controller => "signup", :action => "step1_info"
+    end
+  else
+    def join
+      join_old
+    end
   end
 
   # lists all relevant groups with a join / interested link for each one
   def join_old
+    setup_semester_filter
     setup_campuses_filter
     setup_groups
     @join = true
