@@ -99,10 +99,6 @@ class StatsController < ApplicationController
     @report_type = session[:stats_report_type] 
     @report_scope = session[:stats_report_scope]
     
-    # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
-    @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
-    @drillDownAccess = @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
-
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
     setup_reports_to_show
@@ -550,7 +546,7 @@ class StatsController < ApplicationController
       when :yes
         return true
       when :if_more_than_one_campus
-        return !@oneCampusMinistry
+        return !oneCampusMinistry
       end
   end
 
@@ -577,7 +573,6 @@ class StatsController < ApplicationController
     setup_report_scope_radios
     @hide_radios = false
     @hide_radios = true if available_scopes.length <= 1
-    @hide_radios = true if !is_ministry_admin && !@drillDownAccess
     
     if @hide_radios || !(available_scopes.include?(:"#{@report_scope}"))
       new_scope = SUMMARY
@@ -626,7 +621,23 @@ class StatsController < ApplicationController
   end
   
   def available_scopes
-    current_report_type[:scopes]
+    @available_scopes ||= get_available_scopes
+  end
+
+  def get_available_scopes
+    scopes = current_report_type[:scopes]
+    unless @report_type == PERSONAL_STATS || campusDrillDownAccess
+      scopes.delete(:campus_drill_down)
+    end
+    scopes
+  end
+
+  def oneCampusMinistry
+    @oneCampusMinistry ||= @stats_ministry.unique_campuses.size <= 1 ? true : false
+  end
+
+  def campusDrillDownAccess
+    @campusDrillDownAccess ||= is_ministry_admin || @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
   end
   
 end
