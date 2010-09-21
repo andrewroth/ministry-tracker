@@ -75,8 +75,9 @@ module EventBright
           retry unless retries <=0
         end
         response = nil
+        raise Exception.new(e.message) # raise exception for caller to handle
       end
-      
+
       response
     end
   end

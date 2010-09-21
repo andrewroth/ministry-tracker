@@ -17,7 +17,7 @@ set :keep_releases, 3
 
 set :scm, "git"
 set :repository, "git://github.com/twinge/#{application}.git"
-set :branch, if prod? then 'pulse_cdm' elsif stage? then 'emu_cdm' else 'moose_cdm' end
+set :branch, if prod? then 'pulse_cdm' elsif stage? then 'c4c.staging' else 'c4c.dev' end
 set :deploy_via, :checkout
 path = if ma?
          'mt.ministryhacks.com'
@@ -60,6 +60,7 @@ deploy.task :after_symlink do
   link_shared "public/#{profile_pic_prefix}.profile_pictures"
 
   #sudo "/opt/ruby/bin/god restart dj-#{if stage? then 'emu' elsif dev? then 'dev' elsif prod? then 'pulse' end}"
+  run "cd #{release_path} && git checkout -b #{fetch(:branch)} origin/#{fetch(:branch)}"
   run "cd #{release_path} && git submodule init"
   run "cd #{release_path} && git submodule update"
 end
