@@ -1,6 +1,7 @@
 class AnnualGoalsReportsController < ApplicationController
   unloadable
 
+
   skip_before_filter :authorization_filter, :only => [:select_annual_goals_report]    
     
   # GET /annual_goals_reports
@@ -34,7 +35,12 @@ class AnnualGoalsReportsController < ApplicationController
     
     @years = Year.all()   # order by id, if that's not default
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("annual_goals_reports", "new"))
+    unless is_ministry_admin
+      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("annual_goals_reports", "new"))
+    else
+      @campuses = Ministry.first.root.unique_campuses
+    end
+    @campuses.sort! {|a,b| a.name <=> b.name}
 
   end
 
@@ -64,10 +70,10 @@ class AnnualGoalsReportsController < ApplicationController
 
     if @annual_goals_report
       @annual_goals_report.update_attributes(params[:annual_goals_report])
-      notice = 'Your annual goals were successfully re-submitted.'
+      notice = 'Your goals were successfully re-submitted.'
     else
       @annual_goals_report = AnnualGoalsReport.new(params[:annual_goals_report])
-      notice = 'Your annual goals were successfully submitted.'
+      notice = 'Your goals were successfully submitted.'
     end
 
     respond_to do |format|
@@ -104,7 +110,7 @@ class AnnualGoalsReportsController < ApplicationController
 #
 #    respond_to do |format|
 #      if success_update && @annual_goals_report.save
-#        flash[:notice] = 'Your annual goals were successfully updated.'
+#        flash[:notice] = 'Your goals were successfully updated.'
 #        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
 #        format.xml  { head :ok }
 #      else
@@ -121,7 +127,7 @@ class AnnualGoalsReportsController < ApplicationController
     @semester_report.destroy
 
     unless @semester_report.errors.empty?
-      flash[:notice] = "WARNING: Couldn't delete annual goals because:"
+      flash[:notice] = "WARNING: Couldn't delete goals because:"
       @semester_report.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
     end
 

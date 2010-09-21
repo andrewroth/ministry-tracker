@@ -1,0 +1,6 @@
+
+page << "jQuery('#events').hide();"
+
+page.replace_html("events", :partial => "events")
+
+page["events"].visual_effect :fade_in

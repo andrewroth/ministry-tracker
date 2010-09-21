@@ -87,7 +87,10 @@ module Cmt
     :person_edit_in_thickbox => false,
 
     # allow impersonating someone - don't turn this on unless you're in a dev environment
-    :allow_impersonate => false
+    :allow_impersonate => false,
+
+    # join group link should go through the old join page where you can join right on the index
+    :joingroup_from_index => true
   } unless defined?(CONFIG)
 end
 

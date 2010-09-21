@@ -34,7 +34,13 @@ class MonthlyReportsController < ApplicationController
     
     @months = Month.find(:all, :conditions => "(month_number <= #{ Time.now.month } AND month_calendaryear = #{ Time.now.year }) OR month_calendaryear <= #{ Time.now.year }", :order => "month_calendaryear, month_number")
 
-    @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("monthly_reports", "new"))
+    unless is_ministry_admin
+      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("monthly_reports", "new"))
+    else
+      @campuses = Ministry.first.root.unique_campuses
+    end
+    @campuses.sort! {|a,b| a.name <=> b.name}
+
 
   end
 

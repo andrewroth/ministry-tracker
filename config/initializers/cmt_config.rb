@@ -94,7 +94,10 @@ module Cmt
     :person_edit_in_thickbox => false,
 
     # allow impersonating someone - don't turn this on unless you're in a dev environment
-    :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING
+    :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING,
+    
+    # join group link should go through the old join page where you can join right on the index
+    :joingroup_from_index => false
   } unless defined?(CONFIG)
 end
 
