@@ -21,12 +21,23 @@ class StatsController < ApplicationController
 
 
   def index
+    session[:stats_ignore_ie_warning] = true if params['withie'] == '1' if params['withie'].present?
     session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
     session[:stats_time] = DEFAULT_REPORT_TIME unless session[:stats_time].present?
     session[:stats_report_type] = DEFAULT_REPORT_TYPE unless session[:stats_report_type].present?
     session[:stats_report_scope] = DEFAULT_REPORT_SCOPE unless session[:stats_report_scope].present?
+    session[:stats_ignore_ie_warning] = false unless session[:stats_ignore_ie_warning].present?
+
+    user_agent = request.env['HTTP_USER_AGENT'].downcase
+    if user_agent =~ /msie/i && !session[:stats_ignore_ie_warning]
+      redirect_to(:action => "ie_warning")
+    end
 
     setup_stats_report_from_session
+  end
+  
+  def ie_warning
+    #not much to do in here (in fact, nothing!)
   end
 
   def select_report
