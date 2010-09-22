@@ -472,6 +472,9 @@ class ApplicationController < ActionController::Base
       if !is_staff_somewhere && @my.campus_involvements.empty?
         redirect_to set_initial_campus_person_url(@person.id)
         return false
+      elsif is_staff_somewhere && @my.ministry_involvements.empty?
+        redirect_to set_initial_ministry_person_url(@person.id)
+        return false
       end
       true
     end
