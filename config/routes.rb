@@ -31,6 +31,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assignmentstatuses
 
+  map.connect 'search/',
+              :conditions => { :method => :get },
+              :controller => "search",
+              :action => "index"
+
   map.connect 'accountadmin_users/search',
               :conditions => { :method => :get },
               :controller => "accountadmin_users",

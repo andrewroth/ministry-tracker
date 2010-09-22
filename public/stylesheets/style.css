@@ -1591,10 +1591,8 @@ div .editLink {
   margin-left: 5em;
   border: 4px solid #F5F5FA;
   
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-box-shadow: 0 .25em 1em grey;
-  -webkit-box-shadow: 0 .25em 1em grey;
+  -moz-border-radius: 6px; -webkit-border-radius: 6px;
+  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 #stats_chosen_ministry {
@@ -1662,3 +1660,169 @@ div .editLink {
   border-right: 1px solid #999999;
 }
 
+
+/************************************************/
+/* Search section                               */
+
+#uberSearchBoxContainer {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+#uberSearchBox {
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  height: 25px;
+  background: #E6E6E6;
+  color: #B3B3B3;
+  border: 1px solid #CCCCCC;
+  padding-left: 10px;
+
+  -moz-border-radius: 16px; -webkit-border-radius: 16px;
+}
+
+#uberSearchBox:focus {
+/*  background: #FFFFCC;*/
+  background: white;
+  color: black;
+  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset; /*looks weird in webkit*/
+}
+
+.ac_loading {
+  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+}
+
+#uberSearchButton {
+  border: 0px;
+  background-color: transparent;
+  position: absolute;
+  top: 3px;
+  left: 218px;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+#searchHeaderInfo {
+  float: left;
+}
+
+#searchFilterControlsContainer {
+  height: 100%;
+  width: 150px;
+  float: left;
+}
+
+#searchResultsContainer {
+  height: 100%;
+  width: 65%;
+  float: left;
+}
+
+.searchResultsTitle {
+  border-bottom: 1px solid #E6E6E6;
+  margin-bottom: 15px;
+  padding-bottom: 2px;
+  font-size: 14px;
+  vertical-align: bottom;
+}
+
+.searchResultsPagination {
+  text-align: center;
+  font-size: 13px;
+}
+
+.searchResultsPagination .prev_page {
+  padding: 3px 10px;
+  font-weight: bold;
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+}
+
+.searchResultsPagination .next_page {
+  padding: 3px 10px;
+  font-weight: bold;
+  border: 0;
+}
+
+.searchResultsPagination a, .searchResultsPagination .current {
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+  padding: 3px 7px 3px 3px;
+  font-weight: bold;
+}
+
+.searchResultsSize {
+  float: right;
+  text-align: right;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.searchResult {
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResult:hover {
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+.searchResultPic, .searchResultInfo {
+  float: left;
+}
+
+.searchResultPic {
+  width: 100px;
+}
+
+.searchResultActions {
+  margin: 5px 10px 0 0;
+  text-align: right;
+  float: right;
+}
+
+.searchResultName {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.searchResultInfo {
+  margin: 7px 0 0 15px;
+  font-size: 11px;
+  overflow: hidden;
+  height: 68px;
+  width: 300px;
+}
+
+.autoCompleteMore {
+  font-weight: bold;
+  padding-top: 15px;
+}
+
+.autoCompleteMoreInfo {
+  font-weight: normal;
+  font-size: 10px;
+}
+
+.autoCompleteMorePic {
+  float: left;
+  padding: 19px 8px 0 35px;
+}
+
+.autoCompleteMore a {
+  color: #747474;
+  text-decoration: none;
+}
+
+.autoCompleteQuery strong {
+  color: #1F429B;
+}
+
+.autoCompleteMoreInfo strong {
+  color: #747474;
+  font-weight: normal;
+}
