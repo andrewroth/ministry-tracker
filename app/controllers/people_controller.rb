@@ -665,6 +665,7 @@ class PeopleController < ApplicationController
       #@show_ministries_list = get_ministry_involvement(get_ministry).try(:ministry_role).is_a?(StaffRole)
       @staff = is_staff_somewhere(@person)
       @student = !@staff
+      @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
     
     def set_dorms
