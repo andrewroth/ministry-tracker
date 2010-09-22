@@ -1589,6 +1589,12 @@ div .editLink {
   background-repeat: no-repeat;
 }
 
+.eventLink a {
+  padding-left: 20px;
+  background-image: url(/images/silk/date.png);
+  background-repeat: no-repeat;
+}
+
 .notDisplayed {
   display: none !important;
 }

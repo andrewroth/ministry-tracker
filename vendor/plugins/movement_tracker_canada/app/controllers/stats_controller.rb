@@ -513,6 +513,9 @@ class StatsController < ApplicationController
       when 'annual_goals'
         report_name = "Goals for #{ministry_name}"
       when PERSONAL_STATS
+        fname = @me.person_fname
+        lname = @me.person_lname
+        report_name = "#{fname} #{lname}'s stats "
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
         end
