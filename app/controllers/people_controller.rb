@@ -503,6 +503,10 @@ class PeopleController < ApplicationController
     end
   end
   
+  def set_initial_ministry
+    get_person
+  end
+
   def set_initial_campus
     get_person
     if request.method == :put
