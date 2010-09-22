@@ -37,7 +37,7 @@ function reportTypeChange(newTitle){
 
 function beginLoading() {
   jQuery('.statsReportTabContainer').hide();
-  jQuery('.statsTabContainerActive').visualEffect('drop_out');
+  jQuery('.statsTabContainerActive').visualEffect('fade');
   jQuery('#attendanceSpinnerContainer').visualEffect('appear');
 }
 

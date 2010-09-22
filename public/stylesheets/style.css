@@ -1181,6 +1181,13 @@ div.choose_ministry_tree {
 
 /************************************************/
 /* Stats section                                */
+
+.x-panel-body {
+  /* IE hack, makes ministry selection boxes readable
+     why doesn't ext-all.css seem to work in IE? */
+  background: white;
+}
+
 #statsTitle, #reportTitle {
   color: #1F429B;
   border-bottom:1px dotted #1F429B;
@@ -1236,6 +1243,7 @@ div.choose_ministry_tree {
   margin-bottom: 10px;
   margin-right: 8px;
   width: 100%;
+  float: none; /* needed for IE */
 }
 
 .statsFormField select {
@@ -1255,6 +1263,7 @@ div .statsSelectContainer {
 .statsReportTab label {
   width: auto;
   color: #1F429B;
+  float: left;
 }
 
 .statsFormBox text_field {

@@ -48,7 +48,7 @@ function reportTypeChange(newTitle){
 
 function beginLoadingStatsTab() {
   jQuery('.statsReportTabContainer').hide();
-  jQuery('.statsTabContainerActive').visualEffect('drop_out');
+  jQuery('.statsTabContainerActive').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
 }
 
