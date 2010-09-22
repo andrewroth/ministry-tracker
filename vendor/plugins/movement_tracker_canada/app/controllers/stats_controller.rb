@@ -549,7 +549,7 @@ class StatsController < ApplicationController
   def setup_campus_ids
     
     if @report_type == PERSONAL_STATS
-      @campus_ids = WeeklyReport.find(:all, :conditions => {:staff_id => 336}).collect{|wr| wr[:campus_id]}.uniq
+      @campus_ids = WeeklyReport.find(:all, :conditions => {:staff_id => @staff_id}).collect{|wr| wr[:campus_id]}.uniq
     else
       @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }
     end
