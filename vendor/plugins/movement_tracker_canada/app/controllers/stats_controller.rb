@@ -112,10 +112,6 @@ class StatsController < ApplicationController
     @report_type = session[:stats_report_type] 
     @report_scope = session[:stats_report_scope]
     
-    # only allow campus drill-down if the ministry has more than one campus under it and the person has the correct permission at this ministry
-    @oneCampusMinistry = @stats_ministry.unique_campuses.size <= 1 ? true : false
-    @drillDownAccess = @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
-
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
     setup_reports_to_show
@@ -301,11 +297,22 @@ class StatsController < ApplicationController
   def setup_personal_report
     @hide_ministry_treeview = true
     @stats_ministry = Ministry.root
-    setup_selected_period_for_summary
-    setup_staffs_for_staff_drilldown(@report_scope)
-    setup_selected_time_tab
-    setup_report_description
-    @results_partial = "summary"
+    case @report_scope
+      when SUMMARY
+        setup_selected_period_for_summary
+        setup_staffs_for_staff_drilldown(@report_scope)
+        setup_selected_time_tab
+        setup_report_description
+        @results_partial = "summary"
+      when CAMPUS_DRILL_DOWN
+        setup_selected_period_for_drilldown    
+        setup_selected_time_tab
+        setup_staffs_for_staff_drilldown(@report_scope)
+        setup_campus_ids
+        setup_report_description
+        @results_partial = "campus_drill_down"
+    end
+    
   end
 
   def setup_staff_drill_down
@@ -490,29 +497,35 @@ class StatsController < ApplicationController
   end
 
   def setup_report_description
+    ministry_name = @ministry_name
+    
+    fname = @me.person_fname
+    lname = @me.person_lname
+    ministry_name = "#{fname} #{lname}'s stats" if @report_type == PERSONAL_STATS
+    
     case @report_type
       when COMPLIANCE_REPORT
-        report_name = "Compliance report for #{@ministry_name}"
+        report_name = "Compliance report for #{ministry_name}"
       when 'hpctc'
-        report_name = "How people came to Christ for #{@ministry_name}"
+        report_name = "How people came to Christ for #{ministry_name}"
       when 'story'
-        report_name = "Salvation Story Synopses for #{@ministry_name}"
+        report_name = "Salvation Story Synopses for #{ministry_name}"
       when PERSONAL_STATS
-        fname = @me.person_fname
-        lname = @me.person_lname
-        report_name = "#{fname} #{lname}'s stats "
+        if @report_scope == SUMMARY
+          report_name = "Summary of #{ministry_name}"
+        end
       when 'annual_goals'
         report_name = 'Goals for '
       when 'c4c'
         if @report_scope == SUMMARY
-          report_name = "Summary of #{@ministry_name}"
+          report_name = "Summary of #{ministry_name}"
         end
     end
 
     if @report_scope == CAMPUS_DRILL_DOWN
-        report_name = "Campus drill down of #{@ministry_name}"
+        report_name = "Campus drill down of #{ministry_name}"
     elsif @report_scope == STAFF_DRILL_DOWN
-      report_name = "Staff drill down of #{@ministry_name}"
+      report_name = "Staff drill down of #{ministry_name}"
     end
     
     case @stats_time
@@ -534,7 +547,13 @@ class StatsController < ApplicationController
   end
 
   def setup_campus_ids
-    @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }    
+    
+    if @report_type == PERSONAL_STATS
+      @campus_ids = WeeklyReport.find(:all, :conditions => {:staff_id => @staff_id}).collect{|wr| wr[:campus_id]}.uniq
+    else
+      @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }
+    end
+    
     @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN
   end
   #----------------------------------------------------------------------------------------
@@ -655,7 +674,7 @@ class StatsController < ApplicationController
       when :yes
         return true
       when :if_more_than_one_campus
-        return !@oneCampusMinistry
+        return !oneCampusMinistry
       end
   end
 
@@ -682,7 +701,6 @@ class StatsController < ApplicationController
     setup_report_scope_radios
     @hide_radios = false
     @hide_radios = true if available_scopes.length <= 1
-    @hide_radios = true if !is_ministry_admin && !@drillDownAccess
     
     if @hide_radios || !(available_scopes.include?(:"#{@report_scope}"))
       new_scope = SUMMARY
@@ -731,7 +749,23 @@ class StatsController < ApplicationController
   end
   
   def available_scopes
-    current_report_type[:scopes]
+    @available_scopes ||= get_available_scopes
+  end
+
+  def get_available_scopes
+    scopes = current_report_type[:scopes]
+    unless @report_type == PERSONAL_STATS || campusDrillDownAccess
+      scopes.delete(:campus_drill_down)
+    end
+    scopes
+  end
+
+  def oneCampusMinistry
+    @oneCampusMinistry ||= @stats_ministry.unique_campuses.size <= 1 ? true : false
+  end
+
+  def campusDrillDownAccess
+    @campusDrillDownAccess ||= is_ministry_admin || @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
   end
   
 end

@@ -1581,7 +1581,7 @@ div .editLink {
 }
 
 .notDisplayed {
-  display: none;
+  display: none !important;
 }
 
 .stats_choose_ministry_tree {
