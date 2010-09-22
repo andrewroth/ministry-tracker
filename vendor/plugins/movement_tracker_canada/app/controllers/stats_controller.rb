@@ -2,7 +2,7 @@ require "date"
 class StatsController < ApplicationController
   unloadable
 
-  skip_before_filter :authorization_filter, :only => [:select_report]
+  skip_before_filter :authorization_filter, :only => [:select_report, :ie_warning]
 
 
   NO_CAMPUSES_UNDER_MINISTRY = -1
