@@ -16,7 +16,8 @@ class PeopleController < ApplicationController
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
-                  :get_campus_states, :set_initial_campus, :get_campuses_for_state]
+                  :get_campus_states, :set_initial_campus, :get_campuses_for_state,
+                  :set_initial_ministry]
   skip_standard_login_stack :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
