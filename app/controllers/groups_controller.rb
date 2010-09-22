@@ -67,7 +67,7 @@ class GroupsController < ApplicationController
   
   def show
     # @groups is the list of groups that show up when transferring someone
-    if authorized?(:transfer, :groups)
+    if authorized?(:transfer, :group_involvements)
       @groups = get_ministry.all_groups
       @groups += @group.ministry.all_groups
     else
