@@ -13,8 +13,9 @@
       </td>
       <td class="spacer">&nbsp;</td>
       <td>
-        Primary campus:
-        <%= select :person, :primary_campus_involvement_id, options_for_select(@person.campus_involvements.collect{ |ci| [ ci.campus.name, ci.id ] }) %>
+        <%= render :partial => 'extra_person_information',
+          :locals => { :f => f, :person => @person, :user => @person.user}
+        %>
       </td>
     </tr>
 
