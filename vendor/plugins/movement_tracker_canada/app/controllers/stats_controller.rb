@@ -2,7 +2,7 @@ require "date"
 class StatsController < ApplicationController
   unloadable
 
-  skip_before_filter :authorization_filter, :only => [:select_report]
+  skip_before_filter :authorization_filter, :only => [:select_report, :ie_warning]
 
 
   NO_CAMPUSES_UNDER_MINISTRY = -1
@@ -17,15 +17,27 @@ class StatsController < ApplicationController
   CAMPUS_DRILL_DOWN = 'campus_drill_down'
   DEFAULT_REPORT_SCOPE = SUMMARY 
   COMPLIANCE_REPORT = 'comp'
+  PERSONAL_STATS = 'perso'
 
 
   def index
+    session[:stats_ignore_ie_warning] = true if params['withie'] == '1' if params['withie'].present?
     session[:stats_ministry_id] = get_ministry.id unless session[:stats_ministry_id].present?
     session[:stats_time] = DEFAULT_REPORT_TIME unless session[:stats_time].present?
     session[:stats_report_type] = DEFAULT_REPORT_TYPE unless session[:stats_report_type].present?
     session[:stats_report_scope] = DEFAULT_REPORT_SCOPE unless session[:stats_report_scope].present?
+    session[:stats_ignore_ie_warning] = false unless session[:stats_ignore_ie_warning].present?
+
+    user_agent = request.env['HTTP_USER_AGENT'].downcase
+    if user_agent =~ /msie/i && !session[:stats_ignore_ie_warning]
+      redirect_to(:action => "ie_warning")
+    end
 
     setup_stats_report_from_session
+  end
+  
+  def ie_warning
+    #not much to do in here (in fact, nothing!)
   end
 
   def select_report
@@ -43,6 +55,8 @@ class StatsController < ApplicationController
         setup_how_people_came_to_christ_report
       when 'story'
         setup_story_report
+      when PERSONAL_STATS
+        setup_personal_report
       when 'annual_goals'
         setup_annual_goals_report
       else
@@ -78,6 +92,7 @@ class StatsController < ApplicationController
 
 
   def setup_stats_report_from_session
+    @hide_ministry_treeview = false
     @this_year = get_current_year
     @id_for_treeview = session[:stats_ministry_id]
     ministry_campus_id = @id_for_treeview.to_s.split('_')
@@ -283,6 +298,16 @@ class StatsController < ApplicationController
     @results_partial = "summary"
   end
 
+  def setup_personal_report
+    @hide_ministry_treeview = true
+    @stats_ministry = Ministry.root
+    setup_selected_period_for_summary
+    setup_staffs_for_staff_drilldown(@report_scope)
+    setup_selected_time_tab
+    setup_report_description
+    @results_partial = "summary"
+  end
+
   def setup_staff_drill_down
     
     setup_campus_ids
@@ -467,23 +492,27 @@ class StatsController < ApplicationController
   def setup_report_description
     case @report_type
       when COMPLIANCE_REPORT
-        report_name = 'Compliance report for '
+        report_name = "Compliance report for #{@ministry_name}"
       when 'hpctc'
-        report_name = 'How people came to Christ for '
+        report_name = "How people came to Christ for #{@ministry_name}"
       when 'story'
-        report_name = 'Salvation Story Synopses for '
+        report_name = "Salvation Story Synopses for #{@ministry_name}"
+      when PERSONAL_STATS
+        fname = @me.person_fname
+        lname = @me.person_lname
+        report_name = "#{fname} #{lname}'s stats "
       when 'annual_goals'
         report_name = 'Goals for '
       when 'c4c'
         if @report_scope == SUMMARY
-          report_name = 'Summary of '
+          report_name = "Summary of #{@ministry_name}"
         end
     end
 
     if @report_scope == CAMPUS_DRILL_DOWN
-        report_name = 'Campus drill down of '
+        report_name = "Campus drill down of #{@ministry_name}"
     elsif @report_scope == STAFF_DRILL_DOWN
-      report_name = 'Staff drill down of '
+      report_name = "Staff drill down of #{@ministry_name}"
     end
     
     case @stats_time
@@ -501,7 +530,7 @@ class StatsController < ApplicationController
         
     end   
 
-    @report_description = "#{report_name}#{@ministry_name} during #{period_description}"
+    @report_description = "#{report_name} during #{period_description}"
   end
 
   def setup_campus_ids
@@ -533,21 +562,30 @@ class StatsController < ApplicationController
     (collect_staff_for_ministry(ministry) + ministry.children.collect{|m| get_staffs_persons_for_ministry(m)}).flatten.sort{|a, b| a[:name] <=> b[:name]}.uniq
   end
 
+  def get_staff_id_for_person(person_id)
+      result = CimHrdbStaff.find(:first, :conditions => { :person_id => person_id })
+      result.nil? ? nil : result[:staff_id]    
+  end
+
   def get_staff_ids_for_persons_hash(persons_hash)
     persons_hash.each do|s| 
-      result = CimHrdbStaff.find(:first, :conditions => { :person_id => s[:person_id] })
-      s[:staff_id] = result.nil? ? nil : result[:staff_id]
+      s[:staff_id] = get_staff_id_for_person(s[:person_id])
     end    
   end
   
-  def setup_staffs_for_staff_drilldown(report_scope, ministry)
+  def setup_staffs_for_staff_drilldown(report_scope, ministry = nil)
     @staffs = []
     if report_scope == STAFF_DRILL_DOWN
       persons_hash = get_staffs_persons_for_ministry(ministry)
       get_staff_ids_for_persons_hash(persons_hash)
       @staffs = persons_hash
     end
+    if @report_type == PERSONAL_STATS
+      @staff_id = get_staff_id_for_person(@me.id)
+    end
   end
+  
+  
   #----------------------------------------------------------------------------------------
   
   def add_report_if_authorized(report_symbol)
@@ -566,6 +604,8 @@ class StatsController < ApplicationController
       when 'ccci'
         add_report_if_authorized(:ccci_report)
         @show_non_database = true
+      when PERSONAL_STATS
+        add_report_if_authorized(:weekly_report)
     end
     if @reports_to_show.empty?
         add_report_if_authorized(:weekly_report)
@@ -602,6 +642,8 @@ class StatsController < ApplicationController
         hide_time_tabs([:week, :month, :semester])
       when 'hpctc'
         hide_time_tabs([:week, :month, :semester])
+      when PERSONAL_STATS
+        # no more time tabs to hide
       when 'annual_goals'
         hide_time_tabs([:week, :month, :semester])
       end
