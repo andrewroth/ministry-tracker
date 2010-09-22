@@ -45,7 +45,16 @@ All fields are required for sign up.
        :hide_grad_date => true, :hide_major => true, :hide_minor => true,
        :no_table => true, :hide_campus => false
       }
-    %>
+  %>
+  <%= observe_field "primary_campus_involvement_campus_id",
+        :url => { :controller => 'signup', :action => 'get_dorms' },
+        :with => "primary_campus_involvement_campus_id"
+  %>
+  <tr>
+    <td>Major: </td>
+    <td><%= f.text_field :major %></td>
+  </tr>
+  <%= render :partial => "dorm_tr" %>
   </table>
 
   <div class="center">
