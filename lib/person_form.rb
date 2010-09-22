@@ -6,7 +6,7 @@ module PersonForm
       (c = Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:campus_scope_country] }))
       @no_campus_scope = true
       @campus_country = c
-      @campuses = CmtGeo.campuses_for_country(c.abbrev).sort{ |c1, c2| c1.name <=> c2.name }
+      @campuses = CmtGeo.campuses_for_country(c.code).sort{ |c1, c2| c1.name <=> c2.name }
       mc_cs = MinistryCampus.all(:select => :campus_id).collect(&:campus_id) # only campuses with a ministry team are valid
       @campuses = @campuses.find_all{ |c| mc_cs.include?(c.id) }
     else

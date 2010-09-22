@@ -12,6 +12,11 @@
         %>
       </td>
       <td class="spacer">&nbsp;</td>
+      <td>
+        <%= render :partial => 'extra_person_information',
+          :locals => { :f => f, :person => @person, :user => @person.user}
+        %>
+      </td>
     </tr>
 
     <!-- Render the address blocks -->
