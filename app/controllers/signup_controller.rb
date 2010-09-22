@@ -59,7 +59,6 @@ class SignupController < ApplicationController
     end
 
     if @person.errors.present? || @primary_campus_involvement.errors.present?
-      debugger
       @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step1_info
       render :action => "step1_info"
@@ -84,6 +83,7 @@ class SignupController < ApplicationController
         @person.save!
         # in order to save major, update it manually again, 
         # since it's stored in a second table in the Cdn schema
+        @person.clear_extra_ref
         @person.major = params[:person][:major]
         @person.curr_dorm = params[:person][:curr_dorm]
         @person.save!
