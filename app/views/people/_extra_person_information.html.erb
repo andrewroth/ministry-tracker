@@ -1,4 +1,10 @@
 <table class="halftab">
+  <!--
+  <tr>
+    <th>Primary campus:</th>
+    <td><%= select :person, :primary_campus_involvement_id, options_for_select(@person.campus_involvements.collect{ |ci| [ ci.campus.name, ci.id ] }) %></td>
+  </tr>
+  -->
 	<tr>
 		<th>Major</th>
 		<td><%= text_field :person, :major %></td>
