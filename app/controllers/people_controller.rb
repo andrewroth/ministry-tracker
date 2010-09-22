@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
   end
   
   def impersonate
-    if !session[:impersonator].present? && Cmt::CONFIG[:allow_impersonate]
+    if !session[:impersonator].present? && (Cmt::CONFIG[:allow_impersonate] || is_admin?)
       person = Person.find(params[:id])
       if person.user
         clear_session
