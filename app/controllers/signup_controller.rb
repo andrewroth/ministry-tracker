@@ -21,6 +21,12 @@ class SignupController < ApplicationController
     session[:needs_verification] = nil
 
     setup_campuses
+    @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
+  end
+
+  def get_dorms
+    c = Campus.find :first, :conditions => [ "#{Campus._(:id)} = ?", params[:primary_campus_involvement_campus_id] ]
+    @dorms = c.try(:dorms)
   end
 
   def step1_info_submit
@@ -53,6 +59,8 @@ class SignupController < ApplicationController
     end
 
     if @person.errors.present? || @primary_campus_involvement.errors.present?
+      debugger
+      @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step1_info
       render :action => "step1_info"
     else
@@ -73,6 +81,11 @@ class SignupController < ApplicationController
         @person = @user.person 
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
+        @person.save!
+        # in order to save major, update it manually again, 
+        # since it's stored in a second table in the Cdn schema
+        @person.major = params[:person][:major]
+        @person.curr_dorm = params[:person][:curr_dorm]
         @person.save!
       end
 
