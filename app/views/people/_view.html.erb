@@ -43,8 +43,8 @@
 	  <table class="halftab">
     	<tr><th width="100px">Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:name) %></td></tr>
     	<tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
-    	<tr><th>Major</th><td><%= @person.most_recent_involvement.try(:major) %></td></tr>
-    	<tr><th>Minor</th><td><%= @person.most_recent_involvement.try(:minor) %></td></tr>
+    	<tr><th>Major</th><td><%= @person.major %></td></tr>
+    	<tr><th>Minor</th><td><%= @person.minor %></td></tr>
 	<%- if Cmt::CONFIG[:rp_system_enabled] -%>
 	  <tr><th>Responsible Person<th><td> 
       <% if @person.responsible_person %>

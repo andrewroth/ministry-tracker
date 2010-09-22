@@ -1,0 +1,6 @@
+if @dorms.present?
+  page.replace "dorm_tr", :partial => "dorm_tr"
+  page.show "dorm_tr"
+else
+  page.hide "dorm_tr"
+end

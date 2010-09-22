@@ -11,7 +11,7 @@
   <%- if authorized?(:show, :timetables) -%>
   <li><%= link_to('Timetable', person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
   <%- end -%>
-  <%- if !currently_impersonating && Cmt::CONFIG[:allow_impersonate] -%>
+  <%- if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?) -%>
   <li><%= link_to('Impersonate', impersonate_person_path(@person.id), :class => "subtabs-menu-inactive") %></li>
   <%- end -%>
   </ul>

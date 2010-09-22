@@ -9,8 +9,6 @@ class GroupInvolvementsController < ApplicationController
   skip_standard_login_stack :only => [ :joingroup_signup ]
 
   def create
-    get_person_campus_groups
-    @groups = @person_campus_groups
     params[:requested] = false
     create_group_involvement
     @group = @gi.group
@@ -35,7 +33,6 @@ class GroupInvolvementsController < ApplicationController
     end
     params[:requested] = (params[:level] == 'member' ? @group.needs_approval : false)
     create_group_involvement
-    get_person_campus_groups
     #@gi.send_later(:join_notifications2, base_url)
     @gi.send_later(:join_notifications, base_url)
     @campus_id_to_name = { @group.campus_id.to_s => @group.try(:campus).try(:name) }
@@ -45,7 +42,6 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def accept_request
-    get_person_campus_groups
     @gi_request.requested = false
     @gi_request.save!
     flash[:notice] = "Group join request from <b>" + @gi_request.person.full_name + "</b> accepted."
@@ -53,7 +49,6 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def decline_request
-    get_person_campus_groups
     @gi_request.destroy
     flash[:notice] = "Group join request from <b>" + @gi_request.person.full_name + "</b> declined."
     render :action => 'request_result' 

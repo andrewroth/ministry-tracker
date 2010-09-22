@@ -16,7 +16,8 @@ class PeopleController < ApplicationController
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
-                  :get_campus_states, :set_initial_campus, :get_campuses_for_state]
+                  :get_campus_states, :set_initial_campus, :get_campuses_for_state,
+                  :set_initial_ministry]
   skip_standard_login_stack :only => free_actions
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
@@ -31,7 +32,7 @@ class PeopleController < ApplicationController
   end
   
   def impersonate
-    if !session[:impersonator].present? && Cmt::CONFIG[:allow_impersonate]
+    if !session[:impersonator].present? && (Cmt::CONFIG[:allow_impersonate] || is_admin?)
       person = Person.find(params[:id])
       if person.user
         clear_session
@@ -502,6 +503,10 @@ class PeopleController < ApplicationController
     end
   end
   
+  def set_initial_ministry
+    get_person
+  end
+
   def set_initial_campus
     get_person
     if request.method == :put
@@ -660,6 +665,7 @@ class PeopleController < ApplicationController
       #@show_ministries_list = get_ministry_involvement(get_ministry).try(:ministry_role).is_a?(StaffRole)
       @staff = is_staff_somewhere(@person)
       @student = !@staff
+      @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
     
     def set_dorms
