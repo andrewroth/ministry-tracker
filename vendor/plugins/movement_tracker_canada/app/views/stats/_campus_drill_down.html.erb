@@ -12,7 +12,13 @@
          end %>
     <% end %>
   </tr>
-  <% @campuses.each do |campus| 
+  <% @campuses.each do |campus|
+        show_campus = true
+        unless @staff_id.nil?
+          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id) 
+        end 
+
+        if show_campus
 
 %>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
@@ -20,7 +26,7 @@
     <% @reports_to_show.each do |r| %>
       <% stat_report(r).each do |k, stat| 
            if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)
-             data = evaluate_stat_for_period(@period, [campus.id], stat) %>
+             data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
              <td class="<%= stat[:css_class] %>"><%= data %></td>
       <%     total_stat[k] += data
            end
@@ -28,7 +34,7 @@
     <% end %>
     </tr>
   <%     
-       
+       end
      end %>
 
   <tr><td><br/></td></tr>

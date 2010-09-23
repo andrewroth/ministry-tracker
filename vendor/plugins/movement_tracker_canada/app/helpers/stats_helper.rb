@@ -107,7 +107,7 @@ module StatsHelper
     accepted_collections.include?(stat_hash[:collected])
   end
 
-  def evaluate_special_total(period_model_array, campus_ids, stat_hash)
+  def evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id = nil)
     special_total = nil
     if stat_hash[:column_type] == :division
       dividend_stat = stats_reports[stat_hash[:dividend][:report]][stat_hash[:dividend][:line]]
@@ -116,15 +116,15 @@ module StatsHelper
       dividend = 0
       divisor = 0
       period_model_array.each do |pm| 
-        dividend += evaluate_stat_for_period(pm, campus_ids, dividend_stat) 
-        divisor += evaluate_stat_for_period(pm, campus_ids, divisor_stat) 
+        dividend += evaluate_stat_for_period(pm, campus_ids, dividend_stat, staff_id) 
+        divisor += evaluate_stat_for_period(pm, campus_ids, divisor_stat, staff_id) 
       end
       special_total = give_percentage(dividend, divisor)
     end
     special_total
   end
 
-  def show_stat_hash_line(period_model_array, campus_ids, stat_hash)
+  def show_stat_hash_line(period_model_array, campus_ids, stat_hash, staff_id = nil)
     result = ""
 
     if stat_hash[:column_type] == :blank_line
@@ -134,8 +134,8 @@ module StatsHelper
                       :locals => {
                           :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
                           :title => stat_hash[:label], 
-                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash)},
-                          :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash)} 
+                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
+                          :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id)} 
                       )
     end
     result

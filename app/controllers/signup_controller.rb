@@ -21,6 +21,12 @@ class SignupController < ApplicationController
     session[:needs_verification] = nil
 
     setup_campuses
+    @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
+  end
+
+  def get_dorms
+    c = Campus.find :first, :conditions => [ "#{Campus._(:id)} = ?", params[:primary_campus_involvement_campus_id] ]
+    @dorms = c.try(:dorms)
   end
 
   def step1_info_submit
@@ -31,13 +37,13 @@ class SignupController < ApplicationController
     end
 
     # verify email
-    email = params[:person][:email]
+    email = params[:person] && params[:person][:email]
     if email.present?
       email_regex = ValidatesEmailFormatOf::Regex
       email_error = "Please enter a valid email address.  If the email is already in the pulse, enter it anyways and a verification email will be sent."
       begin
         domain, local = email.reverse.split('@', 2)
-        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and local.length >= 6
+        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and email.length >= 6
           @person.errors.add_to_base(email_error)
         end
       rescue
@@ -53,6 +59,7 @@ class SignupController < ApplicationController
     end
 
     if @person.errors.present? || @primary_campus_involvement.errors.present?
+      @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step1_info
       render :action => "step1_info"
     else
@@ -73,6 +80,12 @@ class SignupController < ApplicationController
         @person = @user.person 
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
+        @person.save!
+        # in order to save major, update it manually again, 
+        # since it's stored in a second table in the Cdn schema
+        @person.clear_extra_ref
+        @person.major = params[:person][:major]
+        @person.curr_dorm = params[:person][:curr_dorm]
         @person.save!
       end
 
@@ -101,6 +114,7 @@ class SignupController < ApplicationController
           ci.ministry_id = ci.derive_ministry.try(:id)
           ci.save!
         end
+        ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         redirect_to :action => :step2_group
       end
