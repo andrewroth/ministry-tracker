@@ -1664,6 +1664,14 @@ div .editLink {
 /************************************************/
 /* Search section                               */
 
+#uberSearchContainer {
+  z-index: 99999;
+  float: left;
+  left: 220px;
+  position: relative;
+  margin-top: 6px;
+}
+
 #uberSearchBoxContainer {
   padding: 0px;
   margin: 0px;
@@ -1671,6 +1679,8 @@ div .editLink {
 }
 
 #uberSearchBox {
+  width: 240px;
+  font-size: 18px;
   position: absolute;
   top: 4px;
   left: 9px;
@@ -1687,7 +1697,7 @@ div .editLink {
 /*  background: #FFFFCC;*/
   background: white;
   color: black;
-  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset; /*looks weird in webkit*/
+  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
 #uberSearchBox.ac_loading {
@@ -1746,7 +1756,7 @@ div .editLink {
   border: 0;
 }
 
-.searchResultsPagination a, .searchResultsPagination .current {
+.searchResultsPagination a, .searchResultsPagination .current, span.gap {
   border: solid #DEDEDE;
   border-width: 0 1px 0 0;
   padding: 3px 7px 3px 3px;
@@ -1824,6 +1834,129 @@ div .editLink {
 }
 
 .autoCompleteMoreInfo strong {
+  color: #747474;
+  font-weight: normal;
+}
+
+
+.ac_results {
+  padding: 18px 0 0 0;
+  background-color: white;
+  overflow: hidden;
+  z-index: 9999;
+  border: solid #CCCCCC; /*#1F429B;*/
+  border-width: 0 1px 5px 1px;
+
+  top: 44px !important;
+
+  -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
+  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+}
+
+.ac_results ul {
+  width: 100%;
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ac_results li {
+  margin: 0;
+  cursor: default;
+  display: block;
+
+  /*
+  if width will be 100% horizontal scrollbar will apear
+  when scroll mode will be used
+  (right now scroll is turned off because there is a fixed amount of results)
+  */
+  /*width: 100%;*/
+
+  font: menu;
+  font-size: 12px;
+
+  /*
+  it is very important, if line-height not setted or setted
+  in relative units scroll will be broken in firefox
+  */
+  line-height: 12px;
+  overflow: hidden;
+  color: black;
+  border: 2px solid white;
+
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+
+.ac_loading {
+  background: white url('spinner.gif') right center no-repeat;
+}
+
+.ac_odd {
+  background-color: white;
+}
+
+.ac_over {
+  color: white;
+  background-color: #FFCB05;
+}
+
+.autoCompleteName {
+  font-weight: bold;
+  font-size: 12px;
+  display: inline;
+}
+
+.autoCompleteName strong {
+  color: #1F429B;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.autoCompletePic, .autoCompleteInfo {
+  padding: 3px;
+}
+
+.autoCompletePic {
+  float: left;
+  overflow: hidden;
+  width: 46px;
+  height: 49px;
+}
+
+.autoCompleteInfo {
+  margin: 0 auto auto 56px;
+  padding-top: 4px;
+  font-size: 10px;
+  height: 100%;
+}
+
+.autoCompleteExtraInfo {
+  height: 39px;
+  overflow: hidden;
+}
+
+.autoCompleteExtraInfo strong {
+  color: #1F429B;
+  font-weight: normal;
+}
+
+.autoCompleteResult {
+  text-align: left;
+  vertical-align: top;
+  height: 55px;
+}
+
+.autoCompleteResult a :hover {
+/*  color: #1F429B;*/
+  text-decoration: none;
+}
+
+.autoCompleteResult a {
+  display: block;
+}
+
+.noSearchHighlight strong {
   color: #747474;
   font-weight: normal;
 }
