@@ -1,0 +1,75 @@
+          <% if authorized?(:index, :search) %>
+
+            <div id="uberSearchContainer">
+              <% default_search_box_text = "search" %>
+
+              <div id="uberSearchBoxContainer">
+                <% form_tag url_for(:controller => :search), :method => 'get' do %>
+
+                  <%  if controller.action_name == "index" && controller.controller_name == "search" %>
+                    <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
+                  <% else %>
+                    <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
+                  <% end %>
+
+                  <button type="submit" id="uberSearchButton" value="">
+                    <img src="/images/silk/zoom.png" alt="Search" title="Click to search" />
+                  </button>
+
+                <% end %>
+              </div>
+
+              <%= javascript_include_tag "jquery.ajaxQueue.js" %>
+              <%= javascript_include_tag "jquery.autocomplete.js" %>
+              <script>
+              $("#uberSearchBox").autocomplete("/search/autocomplete", {
+                minChars: 1,
+                selectFirst: false,
+                matchContains: true,
+                autoFill: false,
+                scroll: false,
+                cacheLength: 100,
+                matchSubset: false,
+                width: 255,
+                formatItem: function(data, i, n, value) {
+                  return value;
+                },
+                formatResult: function(data, value) {
+                  // find the name, it's inside the div with id autoCompleteName
+                  indexOfId = value.indexOf('autoCompleteName');
+                  return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
+                },
+                formatMatch: function(data, i, n, value) {
+                  // not sure if this is ever called... but we don't want to match code, just the name
+                  // find the name, it's inside the div with id autoCompleteName
+                  indexOfId = value.indexOf('autoCompleteName');
+                  return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
+                }
+              }).result(function(event, info) {
+                // find link to person's profile
+                value = info[0]
+                indexOfHref = value.indexOf('href');
+                url = value.substring(value.indexOf('=', indexOfHref)+2, value.indexOf('>', indexOfHref)-1);
+                location.href = url;
+              });
+
+
+              $(document).ready(function() {
+                var fields = jQuery(":input");
+                for (var i = 0; i < fields.length; i++) {
+                  fields[i].onfocus = function() {
+                    this.className += ' focused'; // so we can style focused input elements in IE
+                    if(this.value=='<%= default_search_box_text %>') this.value='';
+                  }
+                  fields[i].onblur = function() {
+                    this.className = this.className.replace('focused', '');
+                    if(this.value=='') this.value='<%= default_search_box_text %>';
+                  }
+                }
+              });
+
+
+              </script>
+            </div>
+
+          <% end %>

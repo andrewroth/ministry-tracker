@@ -168,6 +168,7 @@ module AuthenticatedSystem
       session.select {|k,v| k.to_s =~ /^ministry_/}.each do |s|
         session[s[0]] = nil
       end
+      session[:search_limit_condition] = nil
     end
 
     def kill_remember_cookie!
