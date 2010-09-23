@@ -1,4 +1,4 @@
 <tr id="dorm_tr"<%- unless @dorms.present? -%> style="display:none"<% end %>>
   <td>Dorm: </td>
-  <td><%= select :person, :curr_dorm, (@dorms || []).collect(&:name), :include_blank => true %></td>
+  <td><%= select :person, :local_dorm, (@dorms || []).collect(&:name), :include_blank => true %></td>
 </tr>
