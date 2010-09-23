@@ -41,7 +41,7 @@
 
 
 
-
+          <% if authorized?(:index, :search) %>
 
             <div id="uberSearchContainer">
               <% default_search_box_text = "search" %>
@@ -99,10 +99,20 @@
                 location.href = url;
               });
 
+              // so we can style focused input elements in IE
+              $(document).ready(function() {
+                var fields = jQuery(":input");
+                for (var i = 0; i < fields.length; i++) {
+                  fields[i].onfocus = function() {this.className += ' focused';}
+                  fields[i].onblur = function() {this.className = this.className.replace('focused', '');}
+                }
+              });
+
+
               </script>
             </div>
 
-
+          <% end %>
 
 
 
