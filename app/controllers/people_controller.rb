@@ -271,6 +271,11 @@ class PeopleController < ApplicationController
       flash[:notice] = "No person found with the requested id."
       redirect_to :controller => "dashboard"
     else
+      # set the primary campus involvement if there are campus involvements
+      if !@person.primary_campus_involvement && @person.campus_involvements.present?
+        @person.primary_campus_involvement = @person.campus_involvements.last
+        @person.save!
+      end
       get_ministry_involvement(get_ministry)
       get_people_responsible_for
       setup_vars
