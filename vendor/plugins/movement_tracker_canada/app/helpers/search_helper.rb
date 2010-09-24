@@ -31,7 +31,7 @@ module SearchHelper
       info += person.ministries_concat.present? ? "#{person.ministries_concat}<strong> · </strong>Staff<br/>" : "Staff<br/>"
     end
 
-    info += "#{person.email.downcase}" if person.email.present?
+    info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
 
     if person.cell_phone.present?
       info += "<strong> · </strong>" if person.email.present?

@@ -1685,7 +1685,7 @@ div .editLink {
   top: 4px;
   left: 9px;
   height: 25px;
-/*  background: #E6E6E6;*/
+/*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
   border: 1px solid #CCCCCC;
@@ -1695,9 +1695,9 @@ div .editLink {
 }
 
 #uberSearchBox.focused, #uberSearchBox:focus {
-/*  background: #FFFFCC;*/
   background: white;
   color: black;
+  border: 1px solid #00268D; /* #FFCB05; yellow */
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -1808,6 +1808,11 @@ div .editLink {
   overflow: hidden;
   height: 68px;
   width: 300px;
+}
+
+.searchResultInfo strong {
+  color: #1F429B;
+  font-weight: normal;
 }
 
 .autoCompleteMore {
