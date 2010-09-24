@@ -77,7 +77,10 @@ class SignupController < ApplicationController
                                                        params[:person][:first_name],
                                                        params[:person][:last_name],
                                                       false)
+        # it's possible that an old person row was found, so update attributes
         @person = @user.person 
+        @person.first_name = params[:person][:first_name]
+        @person.last_name = params[:person][:last_name]
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
         @person.save!
