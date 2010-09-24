@@ -1682,7 +1682,7 @@ div .editLink {
 #uberSearchContainer {
   z-index: 99999;
   float: left;
-  left: 220px;
+  left: 145px;
   position: relative;
   margin-top: 6px;
 }
@@ -1700,7 +1700,8 @@ div .editLink {
   top: 4px;
   left: 9px;
   height: 25px;
-  background: #E6E6E6;
+/*  background: #E6E6E6;*/
+  background: white;
   color: #B3B3B3;
   border: 1px solid #CCCCCC;
   padding-left: 10px;
@@ -1960,6 +1961,7 @@ div .editLink {
   text-align: left;
   vertical-align: top;
   height: 55px;
+  cursor: pointer;
 }
 
 .autoCompleteResult a :hover {
