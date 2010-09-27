@@ -24,7 +24,7 @@
       <%= javascript_include_tag "jquery.autocomplete.js" %>
       <script>
       $("#uberSearchBox").autocomplete("/search/autocomplete", {
-        minChars: 1,
+        minChars: 2,
         selectFirst: false,
         matchContains: true,
         autoFill: false,
@@ -32,6 +32,7 @@
         cacheLength: 100,
         matchSubset: false,
         width: 255,
+        delay: 500,
         formatItem: function(data, i, n, value) {
           return value;
         },
