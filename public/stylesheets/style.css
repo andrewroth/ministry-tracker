@@ -1680,7 +1680,7 @@ div .editLink {
 /* Search section                               */
 
 #uberSearchContainer {
-  z-index: 99999;
+  z-index: 99;
   float: left;
   left: 145px;
   position: relative;
@@ -1864,7 +1864,7 @@ div .editLink {
   padding: 18px 0 0 0;
   background-color: white;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
   border-width: 0 1px 5px 1px;
 

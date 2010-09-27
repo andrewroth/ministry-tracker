@@ -24,23 +24,23 @@ module SearchHelper
       # they are a student
       if person.campuses_concat.present?
         info += "#{person.campuses_concat}"
-        info += (person.year_desc.blank? || person.year_desc == "Other") ? "<br/>" : "<strong> · </strong>#{person.year_desc}<br/>"
+        info += (person.year_desc.blank? || person.year_desc == "Other") ? "<br/>" : "<b> · </b>#{person.year_desc}<br/>"
       end
     else
       # they are a staff
-      info += person.ministries_concat.present? ? "#{person.ministries_concat}<strong> · </strong>Staff<br/>" : "Staff<br/>"
+      info += person.ministries_concat.present? ? "#{person.ministries_concat}<b> · </b>Staff<br/>" : "Staff<br/>"
     end
 
     info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
 
     if person.cell_phone.present?
-      info += "<strong> · </strong>" if person.email.present?
+      info += "<b> · </b>" if person.email.present?
       info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
     elsif person.person_local_phone.present?
-      info += "<strong> · </strong>" if person.email.present?
+      info += "<b> · </b>" if person.email.present?
       info += "#{number_to_phone(person.person_local_phone)}<br/>"
     elsif person.person_phone.present?
-      info += "<strong> · </strong>" if person.email.present?
+      info += "<b> · </b>" if person.email.present?
       info += "#{number_to_phone(person.person_phone)}<br/>"
     end
 
