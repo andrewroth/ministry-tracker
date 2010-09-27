@@ -1,4 +1,10 @@
 <table class="halftab">
+  <%- if @primary_campus_involvement.present? && !@primary_campus_involvement.new_record? %>
+  <tr>
+    <th>Grad Date</th>
+    <td><%= date_select :primary_campus_involvement, :graduation_date %></td>
+  </tr>
+  <%- end -%>
 	<tr>
 		<th>Major</th>
 		<td><%= text_field :person, :major %></td>
