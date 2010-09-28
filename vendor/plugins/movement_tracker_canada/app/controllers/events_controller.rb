@@ -32,7 +32,7 @@ class EventsController < ApplicationController
 
 
   def attendance
-    session[:attendance_campus_id] = 0 unless session[:attendance_campus_id].present?
+    session[:attendance_campus_id] = nil unless session[:attendance_campus_id].present?
     session[:attendance_report_scope] = DEFAULT_REPORT_SCOPE unless session[:attendance_report_scope].present?
     session[:attendance_report_sort] = DEFAULT_REPORT_SORT unless session[:attendance_report_sort].present?
 
@@ -44,11 +44,12 @@ class EventsController < ApplicationController
   def select_report
     
     session[:attendance_report_scope] = params['attendance_report_scope'] if params['attendance_report_scope'].present?
-    session[:attendance_report_sort] = params['attendance_report_sort'] if params['attendance_report_sort'].present?
 
-    # don't store selected_campus in session to prevent SELECTED_CAMPUS_EXCEPTION (see setup_individuals)
-    @selected_campus_id = params['attendance_campus_id'].present? ? params['attendance_campus_id'] : nil
-    @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
+    session[:attendance_report_sort] = params['attendance_report_sort'] if params['attendance_report_sort'].present? &&
+      params['attendance_report_sort'] != "null" && params['attendance_report_sort'] != "undefined" # javascript may return null or undefined
+
+    session[:attendance_campus_id] = params['attendance_campus_id'] if params['attendance_campus_id'].present? &&
+      params['attendance_campus_id'] != "null" && params['attendance_campus_id'] != "undefined" # javascript may return null or undefined
 
 
     setup_attendance_report_from_session
@@ -79,7 +80,7 @@ class EventsController < ApplicationController
   def get_initialized_scope_radio(key, scope)
     {
       :order => scope[:order],
-      :checked => @attendance_report_scope == key ? true : false,
+      :checked => @report_scope == key ? true : false,
       :disabled => false,
       :value => key,
       :label => scope[:label],
@@ -100,10 +101,13 @@ class EventsController < ApplicationController
   def setup_attendance_report_from_session
 
     setup_my_campus
-    setup_report_scope_radios
 
     @report_scope = session[:attendance_report_scope]
     @report_sort = session[:attendance_report_sort]
+    @selected_campus_id = session[:attendance_campus_id].present? ? session[:attendance_campus_id] : @my_campuses.first.id
+    @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
+
+    setup_report_scope_radios
 
     if @report_scope == INDIVIDUALS &&
         (authorized?(:show_all_campuses_individuals, :events) ||
@@ -174,14 +178,14 @@ class EventsController < ApplicationController
 
 
   def setup_individuals
-    retries = 1 # use to prevent infinite loop
+
+    retries = 1 # IMPORTANT, use to prevent infinite loop
+
     begin
 
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
-      @selected_campus = @my_campuses.first unless authorized?(:show_all_campuses_individuals, :events)
-
       unless(@selected_campus.present?)
         eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
         @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)

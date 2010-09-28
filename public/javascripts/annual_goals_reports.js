@@ -21,7 +21,7 @@ function getRecordInfos()
  
  function beginLoadingAnnualGoalsInputTab() {
   jQuery('.reportInputContainer').hide();
-  jQuery('.reportInputContainer').visualEffect('drop_out');
+  jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
   selectInputFields();
 }

@@ -38,7 +38,7 @@ function getIndexInfo()
  
  function beginLoadingPrcInputTab() {
   jQuery('.reportInputContainer').hide();
-  jQuery('.reportInputContainer').visualEffect('drop_out');
+  jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
   selectInputFields();
 }
@@ -51,7 +51,7 @@ function completeLoadingPrcInputTab() {
 
 function beginLoadingPrcIndexTab() {
   jQuery('.reportIndexContainer').hide();
-  jQuery('.reportIndexContainer').visualEffect('drop_out');
+  jQuery('.reportIndexContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
   refreshIndexFields();
 }
