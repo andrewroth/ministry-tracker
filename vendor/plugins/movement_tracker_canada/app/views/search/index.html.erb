@@ -1,0 +1,56 @@
+
+<h1 id="reportTitle">Search</h1>
+
+<% if @q.present? %>
+
+<div id="searchHeaderInfo">
+</div>
+
+<br/>
+
+<div id="searchFilterControlsContainer">
+  <br/>
+</div>
+
+<div id="searchResultsContainer">
+  <% if session[:authorized_to_search_people] %>
+    <div class="searchResultsTitle">
+      <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
+
+      <div class="searchResultsSize">
+        <% if @people.total_entries > @people.per_page %>
+          <% onCurPageEnd = @people.current_page * @people.per_page %>
+          <% onCurPageBegin = (onCurPageEnd-@people.per_page)+1 %>
+          <% onCurPageEnd = onCurPageEnd > @people.total_entries ? @people.total_entries : onCurPageEnd %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+        <% end %>
+        <%= pluralize(@people.total_entries, "person") %>
+      </div>
+
+    </div>
+
+    <ul id="peopleSearchResults">
+      <% if @people.size > 0 %>
+        <%= render :partial => "person", :collection => @people %>
+      <% else %>
+        <p>
+          No people found for <strong><%= @q %></strong> within your network.<br/>
+          Check your spelling or try searching for just their first name, last name or email.
+        </p>
+      <% end %>
+    </ul>
+
+    <br/>
+    <div class="searchResultsPagination">
+      <%= will_paginate @people %>
+    </div>
+  <% end %>
+</div>
+
+
+<% else %>
+
+<br/>
+<p><h3>Don't be shy, search for something by using the search box!</h3></p>
+
+<% end %>

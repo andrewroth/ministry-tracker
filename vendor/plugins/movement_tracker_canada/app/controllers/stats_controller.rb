@@ -55,10 +55,10 @@ class StatsController < ApplicationController
         setup_how_people_came_to_christ_report
       when 'story'
         setup_story_report
-      when PERSONAL_STATS
-        setup_personal_report
       when 'annual_goals'
         setup_annual_goals_report
+      when PERSONAL_STATS
+        setup_personal_report
       else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
@@ -510,6 +510,8 @@ class StatsController < ApplicationController
         report_name = "How people came to Christ for #{ministry_name}"
       when 'story'
         report_name = "Salvation Story Synopses for #{ministry_name}"
+      when 'annual_goals'
+        report_name = "Goals for #{ministry_name}"
       when PERSONAL_STATS
         fname = @me.person_fname
         lname = @me.person_lname
@@ -517,8 +519,6 @@ class StatsController < ApplicationController
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
         end
-      when 'annual_goals'
-        report_name = 'Goals for '
       when 'c4c'
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
@@ -664,10 +664,10 @@ class StatsController < ApplicationController
         hide_time_tabs([:week, :month, :semester])
       when 'hpctc'
         hide_time_tabs([:week, :month, :semester])
-      when PERSONAL_STATS
-        # no more time tabs to hide
       when 'annual_goals'
         hide_time_tabs([:week, :month, :semester])
+      when PERSONAL_STATS
+        # no more time tabs to hide
       end
    
   end

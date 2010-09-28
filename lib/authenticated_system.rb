@@ -168,6 +168,12 @@ module AuthenticatedSystem
       session.select {|k,v| k.to_s =~ /^ministry_/}.each do |s|
         session[s[0]] = nil
       end
+      
+      # session vars used to speed up search auto-complete
+      session[:search_limit_condition] = nil
+      session[:authorized_to_search_people] = nil
+      session[:search_ministry] = nil
+      session[:search_ministry_id] = nil
     end
 
     def kill_remember_cookie!
