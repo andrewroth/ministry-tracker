@@ -2,18 +2,22 @@ module SearchHelper
   unloadable
 
   def profile_picture_for_person(person)
-    if person.filename.blank?
-      image_tag('no_photo_blank.png', :width => '100%')
-    else
-      image_tag(person.filename(:mini), :width => '100%')
+    if Cmt::CONFIG[:profile_picture_enabled]
+      if person.profile_picture_id.blank?
+        image_tag('no_photo_blank.png', :width => '100%')
+      else
+        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:thumb), :width => '100%')
+      end
     end
   end
 
   def ac_profile_picture_for_person(person)
-    if person.filename.blank?
-      image_tag('no_photo_blank.png', :height => '100%')
-    else
-      image_tag(person.filename(:mini), :height => '100%')
+    if Cmt::CONFIG[:profile_picture_enabled]
+      if person.profile_picture_id.blank?
+        image_tag('no_photo_blank.png', :height => '100%')
+      else
+        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:mini), :width => '100%')
+      end
     end
   end
 
