@@ -1,0 +1,42 @@
+body {
+  
+}
+
+.menu li a, #ssoHelp
+{
+  background-color: #FFCB05;
+}
+
+.menu li a:hover, #ssoHelp:hover
+{
+  background-color: #FFFFFF;
+}
+
+.menu li a, #ssoHelp_link, #ssoHelp_link:hover
+{
+  color: #1F429B;
+}
+
+.extra_header1
+{
+  text-align: center;
+}
+
+.extra_header1A
+{
+  background: no-repeat url(../images/c4c_logo.gif);
+  height: 120px;
+  width: 210px;
+  margin: 0 auto;
+}
+
+.header
+{
+  margin: 0;
+}
+
+.header p
+{
+  margin-left: -9999px;
+  border: 0;
+}

@@ -44,7 +44,7 @@
 
 
 <div id="results" class="statsContainer">
-  <div id="attendanceSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
+  <div id="attendanceSpinnerContainer">Fetching event information from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>...<br/><br/><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
   <div id="attendanceResults" class="statsReportTabContainer" style="display: none;"></div>
   <br/>
 </div>
