@@ -45,12 +45,15 @@ class SessionsController < ApplicationController
       self.current_user.last_login = Time.now
       self.current_user.save
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+    else
+      render :layout => false
     end
     # force a flash warning div to show up, so that invalid password message can be shown
     flash[:warning] = '&nbsp;'
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end
+
 
   end
 

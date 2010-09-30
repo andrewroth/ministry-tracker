@@ -1,0 +1,69 @@
+body {
+	margin: 0;
+	padding: 0;
+  text-align: center;
+  background: repeat-x url(/images/log_in_bkg.gif);
+}
+
+/******************************/
+/* Login page                 */
+/******************************/
+
+#loginwrapper
+{
+  text-align: left;
+  position: relative;
+  display: block;
+  width: 920px;
+  margin: auto;
+}
+
+#loginwrapper img
+{
+  border: 0;
+}
+
+#loginC4cLogo
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+#loginMainImg
+{
+  position:absolute;
+  left: 0px;
+  top: 113px;
+}
+
+#loginDiscoChange
+{
+  position:absolute;
+  left: 0px;
+  top: 347px;
+}
+
+#loginPulseExplan
+{
+  position:absolute;
+  left: 326px;
+  top: 347px;
+}
+
+#loginCreateAccount
+{
+  position:absolute;
+  left: 731px;
+  top: 466px;
+}
+
+#loginHelpLink
+{
+  position:absolute;
+  left: 865px;
+  top: 465px;
+}
+
+
+ */

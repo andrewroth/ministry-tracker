@@ -1,35 +1,37 @@
-<CENTER>
-  <BR/>
-  <%= link_to image_tag("signup.png"), signup_url %>
-  <BR/>
-  <BR/>
-  <%= link_to image_tag("signin.png"), CASClient::Frameworks::Rails::Filter.login_url(controller) %>
-</CENTER>
-<%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
-<%- if Cmt::CONFIG[:gcx_greenscreen_from_link] -%>
-  <%- unless show_form %><br /><%- end -%>
-  <div class='login_sector' style='text-align: center'>
-    <br/>
-    <%= link_to image_tag('logo_thekey.png', :height => '50px', :width => '100px', 
-                          :style => 'vertical-align: middle'),
-      CASClient::Frameworks::Rails::Filter.login_url(controller) %>
-      &nbsp; &nbsp; &nbsp;
-    <%= link_to 'Login with TheKey', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
-    <br/>
-    <%= link_to 'Create an Account', new_gcx_url %>
-  </div>
-  <div class='login_info'>
-    <%= I18n.t :GCX_login_info, :default => '' %>
-  </div>
-<%- end-%>
-  <br/>
-  <div style='text-align: center;' >
-    <object id="scPlayer" style="padding-top: 10px; margin-top: 10px;" class="embeddedObject" width="540" height="407" type="application/x-shockwave-flash" data="https://campusforchrist.s3.amazonaws.com/media/Pulse/mp4h264player.swf" > <param name="movie" value="https://campusforchrist.s3.amazonaws.com/media/Pulse/mp4h264player.swf" /> <param name="quality" value="high" /> <param name="bgcolor" value="#FFFFFF" /> <param name="flashVars" value="thumb=https://campusforchrist.s3.amazonaws.com/media/Pulse/FirstFrame.png&containerwidth=920&containerheight=693&showstartscreen=true&showendscreen=true&loop=false&autostart=false&color=1A1A1A,1A1A1A&thumb=FirstFrame.png&thumbscale=45&content=https://campusforchrist.s3.amazonaws.com/media/Pulse/PulseNoLogin.mp4&blurover=false" /> <param name="allowFullScreen" value="true" /> <param name="scale" value="showall" /> <param name="allowScriptAccess" value="always" /> <param name="base" value="https://campusforchrist.s3.amazonaws.com/media/Pulse/" /> <video width="920" height="693" controls="controls"><br />  <source src="https://campusforchrist.s3.amazonaws.com/media/Pulse/PulseNoLogin.mp4" type="video/mp4;" /><br />  <b>Your browser cannot play this video. <a href="https://www.screencast.com/handlers/redirect.ashx?target=viewingembededhelp">Learn how to fix this</a>.</b> </video> </object>
-  </div>
-
-<%- if show_form -%>
-  <br/>
-  <div id="local_form">
-    <%= render :partial => 'local_form' %>
-  </div> 
-<%- end -%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<head> 
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+  <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico"> 
+    
+    <title>
+      <% if Cmt::CONFIG[:web_title] %>
+        <%= Cmt::CONFIG[:web_title] %>
+      <% else %>
+        Campus Movement Tracker
+      <% end %>      
+      <%= ': ' + @site_title if @site_title -%>
+    </title>
+		
+<%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>					
+  </head> 
+  <body> 
+		<div id="loginBody">
+			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
+			<div id="loginwrapper">
+				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
+				<map name="getin">
+				  <area shape="rect" coords="320,53,662,117" href="<%= signup_url %>" alt="Join a Group! (No need to login)" />
+				  <area shape="rect" coords="511,187,605,232" href="<%= CASClient::Frameworks::Rails::Filter.login_url(controller) %>" alt="Sign In" />
+				</map>
+				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
+				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
+				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
+				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
+			</div>
+		</div>
+	</body>
+</html>
