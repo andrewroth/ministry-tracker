@@ -1804,6 +1804,7 @@ div .editLink {
 
 .searchResultPic {
   width: 100px;
+  text-align: center;
 }
 
 .searchResultActions {
