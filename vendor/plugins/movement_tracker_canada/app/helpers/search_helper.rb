@@ -6,7 +6,7 @@ module SearchHelper
       if person.profile_picture_id.blank?
         image_tag('no_photo_blank.png', :width => '100%')
       else
-        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:thumb), :width => '100%')
+        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:thumb))
       end
     end
   end
@@ -14,9 +14,9 @@ module SearchHelper
   def ac_profile_picture_for_person(person)
     if Cmt::CONFIG[:profile_picture_enabled]
       if person.profile_picture_id.blank?
-        image_tag('no_photo_blank.png', :height => '100%')
+        image_tag('no_photo_blank.png', :height => '100%', :width => '100%')
       else
-        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:mini), :width => '100%')
+        image_tag(ProfilePicture.find(person.profile_picture_id).public_filename(:mini))
       end
     end
   end

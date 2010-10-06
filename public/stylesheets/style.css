@@ -1691,7 +1691,7 @@ td.eventAttendees {
 #uberSearchContainer {
   z-index: 99;
   float: left;
-  left: 145px;
+  left: 140px;
   position: relative;
   margin-top: 6px;
 }
@@ -1830,7 +1830,7 @@ td.eventAttendees {
   margin: 7px 0 0 15px;
   font-size: 11px;
   overflow: hidden;
-  height: 68px;
+  height: 93px;
   width: 300px;
 }
 
@@ -1950,13 +1950,14 @@ td.eventAttendees {
 .autoCompletePic {
   float: left;
   overflow: hidden;
-  width: 46px;
-  height: 49px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
 }
 
 .autoCompleteInfo {
-  margin: 0 auto auto 56px;
-  padding-top: 4px;
+  margin: 0 auto auto 60px;
+  padding-top: 6px;
   font-size: 10px;
   height: 100%;
 }
@@ -1974,7 +1975,7 @@ td.eventAttendees {
 .autoCompleteResult {
   text-align: left;
   vertical-align: top;
-  height: 55px;
+  height: 56px;
   cursor: pointer;
 }
 
