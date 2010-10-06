@@ -15,7 +15,7 @@
     <% end %>
     <% if authorized?(:new, :emails) %>
       <br/>
-      <%=link_to("Send Email", url_for(:controller => :emails, :action => :new, :person => "#{person.id}"))%>
+      <%=link_to("Send Email", new_email_url("person[]" => person.id))%>
     <% end %>
   </div>
 </li>
