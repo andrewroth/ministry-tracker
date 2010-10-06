@@ -21,6 +21,6 @@
 	</table>
 <%- else -%>
 	<br />
-	<strong>Sorry, I couldn't find anyone by that name. If you are sure the person you're looking for is not in the system yet,
-	  <%= link_to "click here to add a student", add_student_people_url %> or <%= link_to "click here to add a staff person", new_staff_path() %></strong>
+  <strong>Sorry, I couldn't find anyone by that name. If you are sure the person you're looking for is not in the system yet, <%= link_to_remote "click here to add a student", :url => add_student_people_url, :loading => "$('#spinneradd_student').show();", :complete => "$('#spinneradd_student').hide(); show_add_student()", :method => :get %>
+  </strong>
 <%- end -%>
