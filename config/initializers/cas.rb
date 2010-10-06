@@ -7,7 +7,7 @@ cas_logger.level = Logger::DEBUG
 
 CASClient::Frameworks::Rails::Filter.configure(
     :cas_base_url  => "https://signin.mygcx.org/cas/",
-    :login_url     => "https://signin.mygcx.org/cas/login.htm?template=http://resources.campusforchrist.org/sso/c4c_template.css",
+    :login_url     => "https://signin.mygcx.org/cas/login",
     :logout_url    => "https://signin.mygcx.org/cas/logout",
     :validate_url  => "https://signin.mygcx.org/cas/proxyValidate",    
     :proxy_retrieval_url => "https://pat.powertochange.org/cas_proxy_callback/retrieve_pgt",
