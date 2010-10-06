@@ -1,5 +1,5 @@
 <div class="modulecontent">
-  <% if @eventbrite_error.blank? && @event_groups.present? && @eventbrite_events.present? %>
+  <% if @eventbrite_error.blank? && @event_groups.present? && @eventbrite_events_by_group.present? %>
 
     <% @event_groups.each do |group| %>
       <% total_group_attendees = 0 %>
@@ -12,10 +12,10 @@
           </tr>
           <tr></tr>
 
-          <% @eventbrite_events.each do |event| %>
+          <% @eventbrite_events_by_group["#{group.id}"].each do |event| %>
 
             <tr>
-              <td>
+              <td class="eventIcon">
                 <%= link_to(image_tag('/images/silk/date.png', :mouseover => image_path('/images/silk/date_edit.png'), :title => "Click to goto registration!"), event.url) %>
               </td>
               <% if event.attributes[:link_to_report] %>
@@ -23,7 +23,7 @@
               <% else %>
                 <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to goto registration!"}) %></td>
               <% end %>
-              <td class="center"><b><%= event.num_attendee_rows %></b></td>
+              <td class="center eventAttendees"><b><%= event.num_attendee_rows %></b></td>
               <% total_group_attendees += event.num_attendee_rows %>
             </tr>
 
@@ -36,7 +36,7 @@
             <% end %>
 
           <% end %>
-          <% unless @eventbrite_events.size == 1 %>
+          <% unless @eventbrite_events_by_group["#{group.id}"].size == 1 %>
             <tr>
               <td></td>
               <td>Total</td><td class="center"><%= total_group_attendees %></td>
@@ -47,12 +47,14 @@
       <br/>
     <% end %>
 
-  <% elsif @eventbrite_events.blank? || @event_groups.blank? %>
+  <% elsif @eventbrite_events_by_group.blank? || @event_groups.blank? %>
       <div class="lightgray">
         We couldn't find any current events at your campus.
         <br/>
         <br/>
-        <%= link_to('Register for an event', eventbrite[:c4c_events_link]) %>
+        <div class="eventLink">
+          <%= link_to("Click here to see a list of all events", eventbrite[:c4c_events_link]) %>
+        </div>
       </div>
 
   <% else %>
@@ -60,7 +62,7 @@
         It looks like <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> isn't responding right now, please try again later.
         <br/>
         <br/>
-        <%= link_to('Register for an event', eventbrite[:c4c_events_link]) %>
+        <%= link_to("#{image_tag('/images/silk/date.png')} Click here to see a list of all events", eventbrite[:c4c_events_link]) %>
       </div>
   <% end %>
 
