@@ -45,7 +45,7 @@ module EventBright
       if self.answers then
         self.answers.each do |answer|
           answer = answer["answer"]
-          answer_text = answer["answer_text"] if answer["question"] == question
+          answer_text = answer["answer_text"] if answer["question"].include?(question)
         end
       end
       
