@@ -1591,8 +1591,17 @@ div .editLink {
 
 .eventLink a {
   padding-left: 20px;
+  padding-top: 2px;
   background-image: url(/images/silk/date.png);
   background-repeat: no-repeat;
+}
+
+td.eventIcon {
+  width: 16px;
+}
+
+td.eventAttendees {
+  width: 47px;
 }
 
 .notDisplayed {
