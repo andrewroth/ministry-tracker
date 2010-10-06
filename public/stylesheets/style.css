@@ -1280,6 +1280,7 @@ div.choose_ministry_tree {
 
 .searchResultPic {
   width: 100px;
+  text-align: center;
 }
 
 .searchResultActions {
