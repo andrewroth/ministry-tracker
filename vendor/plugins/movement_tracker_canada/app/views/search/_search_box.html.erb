@@ -57,7 +57,7 @@
 
 
       $(document).ready(function() {
-        var fields = jQuery(":input");
+        var fields = jQuery("#uberSearchBox");
         for (var i = 0; i < fields.length; i++) {
           fields[i].onfocus = function() {
             this.className += ' focused'; // so we can style focused input elements in IE
