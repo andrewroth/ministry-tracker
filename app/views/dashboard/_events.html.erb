@@ -47,7 +47,7 @@
       <br/>
     <% end %>
 
-  <% elsif @eventbrite_events_by_group.blank? || @event_groups.blank? %>
+  <% elsif @eventbrite_error.blank? && (@eventbrite_events_by_group.blank? || @event_groups.blank?) %>
       <div class="lightgray">
         We couldn't find any current events at your campus.
         <br/>
@@ -62,7 +62,9 @@
         It looks like <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> isn't responding right now, please try again later.
         <br/>
         <br/>
-        <%= link_to("#{image_tag('/images/silk/date.png')} Click here to see a list of all events", eventbrite[:c4c_events_link]) %>
+        <div class="eventLink">
+          <%= link_to("Click here to see a list of all events", eventbrite[:c4c_events_link]) %>
+        </div>
       </div>
   <% end %>
 
