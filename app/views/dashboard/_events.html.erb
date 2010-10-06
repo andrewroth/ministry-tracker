@@ -16,14 +16,12 @@
 
             <tr>
               <td>
-                <%- tooltip(link_to(image_tag('edit.png'), event.url, { :id => "register_#{event.id}", :rel => "#tooltip_content_#{event.id}"}),
-                                                :id => event.id,
-                                                :link_id => "register_#{event.id}") do -%>Click here to register now!<%- end -%>
+                <%= link_to(image_tag('/images/silk/date.png', :mouseover => image_path('/images/silk/date_edit.png'), :title => "Click to goto registration!"), event.url) %>
               </td>
               <% if event.attributes[:link_to_report] %>
                 <td class="normal"><%= link_to(event.title, event.attributes[:link_to_report], {:class => "modulecontent", :title => "Click to see more info"}) %></td>
               <% else %>
-                <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to register!"}) %></td>
+                <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to goto registration!"}) %></td>
               <% end %>
               <td class="center"><b><%= event.num_attendee_rows %></b></td>
               <% total_group_attendees += event.num_attendee_rows %>
