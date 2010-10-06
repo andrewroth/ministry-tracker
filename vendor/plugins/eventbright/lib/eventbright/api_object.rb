@@ -7,6 +7,8 @@ module EventBright
     attr_accessor :id, :owner
     attr_accessor :attributes, :relations, :collections
     attr_accessor :dirty, :dirty_relations, :dirty_collections
+
+    ERROR_BLANK_ID = "Got blank Eventbrite api_object back (it's id was blank)"
     
     def initialize(owner = false, hash = {})
       preinit
@@ -28,7 +30,9 @@ module EventBright
     end
     
     # Callback after initialization
-    def init; end
+    def init
+      raise Exception.new(ERROR_BLANK_ID) if self.id.blank?
+    end
     
     def attribute_get(key);   @attributes[key];   end
    

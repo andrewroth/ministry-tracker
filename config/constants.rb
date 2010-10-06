@@ -628,9 +628,11 @@
       :campus_question => "Your Campus",
       :year_question => "Your Year",
       :event_status_live => "Live",
+      :event_status_completed => "Completed",
       :male => "Male",
       :female => "Female",
       :first_year => "1st Year (Undergrad)",
-      :c4c_events_link => "http://www.eventbrite.com/org/571076749"
+      :c4c_events_link => "http://www.eventbrite.com/org/571076749",
+      :num_days_to_display_event_after_completed => 10
     }
   end

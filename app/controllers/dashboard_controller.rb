@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
   include SemesterSet
   before_filter :set_current_and_next_semester
 
+
   def index
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
@@ -50,7 +51,7 @@ class DashboardController < ApplicationController
         my_events.each do |event|
           eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
 
-          if eb_event.status == eventbrite[:event_status_live] then
+          if display_event(eb_event) then
             if @my_campuses.size == 1 && event.campuses.size > 1 then
               attendees = event.all_attendees_from_campus(Campus.find(my_campuses_ids.first))
               eb_event.attributes[:my_campus_num_attendees] = attendees.size
@@ -69,11 +70,22 @@ class DashboardController < ApplicationController
           #find all event_groups that the live events are in
           event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
           @event_groups = EventGroup.find(:all, :conditions => "#{EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
+
+          #organize eventbrite events by group
+          @eventbrite_events_by_group = {}
+          @event_groups.each { |group| @eventbrite_events_by_group["#{group.id}"] = [] }
+
+          @eventbrite_events.each do |eb_event|
+            event = Event.first(:conditions => {:registrar_event_id => eb_event.id})
+            @eventbrite_events_by_group["#{event.event_group_id}"] << eb_event
+          end
         end
       end
 
     rescue Exception => e
       @eventbrite_error = e.message
+      @eventbrite_error ||= e
+      Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
     end
 
     respond_to do |format|
@@ -83,6 +95,29 @@ class DashboardController < ApplicationController
 
 
   protected
+
+  def get_eventbrite_event_from_event(event)
+    @eventbrite_user ||= ::EventBright.setup_from_initializer()
+    eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
+    raise Exception.new("Got blank Eventbrite api_object back") if eb_event.id.blank? || eb_event.attributes.blank?
+  end
+
+  def display_event(eb_event)
+    display = false
+
+    # display event if it is Live
+    if eb_event.status == eventbrite[:event_status_live]
+      display = true
+
+    # or if the event is Completed but a certain amount of days have not yet passed since the event's end_date
+    elsif eb_event.status == eventbrite[:event_status_completed]
+      end_time = Time.parse(eb_event.end_date)
+      end_time = end_time.advance(:days => eventbrite[:num_days_to_display_event_after_completed])
+      display = true if end_time >= Time.now
+    end
+
+    display
+  end
 
   def setup_stats
     ministry = get_ministry
