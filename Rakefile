@@ -11,7 +11,7 @@ require 'tasks/rails'
 
 begin
   require 'tasks/facebooker'
-rescue
+rescue LoadError
 end
 
 # require 'rubygems'
