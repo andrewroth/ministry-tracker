@@ -4,7 +4,7 @@
 
 <center>
   <%= render :partial => 'progress', :locals => { :step => 2 } %>
-
+</center>
 
 
 <DIV class="center"><%= link_to_function "I want to choose an existing group to join for the <u>#{@current_semester.desc}</u> semester", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
@@ -32,25 +32,27 @@
   </DIV>
 </DIV>
 
+<DIV class="center">
+  
 <BR/>
 <BR/>
 <P>
-If you just want to join a group and have leaders put you into a group that fits your timetable, please choose a collection group below:
+  <B>If you just want to join a group and have leaders put you into a group that fits your timetable, please choose a collection group below:</B>
 </P>
 
-<DIV style="clear:both" class="center"><%= link_to "Collection group for the <u>#{@current_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@current_semester.id}" }, :class => "action-button" %></DIV>
-<DIV style="clear:both" class="center"><%= link_to "Collection group for the <u>#{@next_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@next_semester.id}" }, :class => "action-button" %></DIV>
+<%= link_to "Collection group for the <u>#{@current_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@current_semester.id}" }, :class => "action-button" %>
+<BR/>
+<%= link_to "Collection group for the <u>#{@next_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@next_semester.id}" }, :class => "action-button" %>
 
 <BR/>
 <BR/>
 <P>
-Fall months are September - December<BR/>
-Winter months are January - April<BR/>
-Summer months are May - July
+  <small>Please note: Fall semesters are from September - December, Winter months are from January - April, and Summer months are from May - July</small>
 </P>
 
 <BR/>
+<BR/>
 
-<DIV style="clear:both" class="center"><%= link_to "Back", { :action => "step1_info" }, :class => "action-button" %></DIV>
+<%= link_to "Back", { :action => "step1_info" }, :class => "action-button" %>
 
-</center>
+</DIV>
