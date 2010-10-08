@@ -764,17 +764,24 @@ table#schedule_header {
 }
 
 a.action-button, input.action-button {
-background:#FFCB05;
-border:1px solid black;
-color:#1F429B;
-padding:4px;
-display:inline-block;
-font-weight:bold;
+background: #FFCB05;
+border: 1px solid #ABB7EC;
+color: #1F429B;
+padding: 5px;
+display: inline-block;
+font-weight: bold;
 margin:0px 0 5px 0;
 cursor: pointer;
+
+-moz-border-radius: 5px; -webkit-border-radius: 5px;
+-moz-box-shadow:0 -7px 7px #F2B700 inset; -webkit-box-shadow:0 -7px 7px #F2B700 inset;
 }
-input.action-button:hover {
+a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
+  background: #F2B700;
+}
+a.action-button u {
+color: #1F429B;
 }
 
 .drag_me {cursor:pointer;}
@@ -1016,6 +1023,10 @@ background:#fff7d2;
 border:1px dotted orange;
 }
 
+.flash_notice b {
+  color: #1F429B;
+  font-weight: bold;
+}
 
 .flash {
 
