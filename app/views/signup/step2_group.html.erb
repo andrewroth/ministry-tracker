@@ -4,9 +4,10 @@
 
 <center>
   <%= render :partial => 'progress', :locals => { :step => 2 } %>
-</center>
 
-<DIV class="center"><%= link_to_function "I want to choose a group to join", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
+
+
+<DIV class="center"><%= link_to_function "I want to choose an existing group to join for the <u>#{@current_semester.desc}</u> semester", "$(\"#groups_list\").is(':visible') ? $(\"#groups_list\").slideUp() : $(\"#groups_list\").slideDown();", :class => "action-button" %></DIV>
 
 <DIV id="groups_list" style="display:none">
   <BR/>
@@ -33,12 +34,23 @@
 
 <BR/>
 <BR/>
+<P>
+If you just want to join a group and have leaders put you into a group that fits your timetable, please choose a collection group below:
+</P>
 
-<DIV style="clear:both" class="center"><%= link_to "Choose a group for me to join, for the <u>#{@current_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@current_semester.id}" }, :class => "action-button" %></DIV>
-<DIV style="clear:both" class="center"><%= link_to "Choose a group for me to join, for the <u>#{@next_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@next_semester.id}" }, :class => "action-button" %></DIV>
+<DIV style="clear:both" class="center"><%= link_to "Collection group for the <u>#{@current_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@current_semester.id}" }, :class => "action-button" %></DIV>
+<DIV style="clear:both" class="center"><%= link_to "Collection group for the <u>#{@next_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@next_semester.id}" }, :class => "action-button" %></DIV>
 
 <BR/>
+<BR/>
+<P>
+Fall months are September - December<BR/>
+Winter months are January - April<BR/>
+Summer months are May - July
+</P>
+
 <BR/>
 
 <DIV style="clear:both" class="center"><%= link_to "Back", { :action => "step1_info" }, :class => "action-button" %></DIV>
 
+</center>

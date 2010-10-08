@@ -780,6 +780,9 @@ a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   background: #F2B700;
 }
+a.action-button u {
+color: #1F429B;
+}
 
 .drag_me {cursor:pointer;}
 
