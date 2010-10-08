@@ -22,9 +22,9 @@ function getWithStringForReportForm(scope, sort, campus) {
     }
   }
 
-  if(sort == undefined || sort == null) { sort = 'last_name'; }
+  if(sort == undefined || sort == null) { sort = undefined; }
 
-  if(campus == undefined || campus == null) { campus = '0'; }
+  if(campus == undefined || campus == null) { campus = undefined; }
 
   return '&attendance_report_scope=' + scope + '&attendance_report_sort=' + sort + '&attendance_campus_id=' + campus
 }

@@ -1,0 +1,36 @@
+
+<CENTER>
+  <BR/>
+  <%= link_to image_tag("signup.png"), signup_url %>
+  <BR/>
+  <BR/>
+  <%= link_to image_tag("signin.png"), CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+</CENTER>
+<%- show_form = Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:local_direct_logins] -%>
+<%- if Cmt::CONFIG[:gcx_greenscreen_from_link] -%>
+  <%- unless show_form %><br /><%- end -%>
+  <div class='login_sector' style='text-align: center'>
+    <br/>
+    <%= link_to image_tag('logo_thekey.png', :height => '50px', :width => '100px', 
+                          :style => 'vertical-align: middle'),
+      CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+      &nbsp; &nbsp; &nbsp;
+    <%= link_to 'Login with TheKey', CASClient::Frameworks::Rails::Filter.login_url(controller) %>
+    <br/>
+    <%= link_to 'Create an Account', new_gcx_url %>
+  </div>
+  <div class='login_info'>
+    <%= I18n.t :GCX_login_info, :default => '' %>
+  </div>
+<%- end-%>
+  <br/>
+  <div style='text-align: center;' >
+    <object id="scPlayer" style="padding-top: 10px; margin-top: 10px;" class="embeddedObject" width="540" height="407" type="application/x-shockwave-flash" data="https://campusforchrist.s3.amazonaws.com/media/Pulse/mp4h264player.swf" > <param name="movie" value="https://campusforchrist.s3.amazonaws.com/media/Pulse/mp4h264player.swf" /> <param name="quality" value="high" /> <param name="bgcolor" value="#FFFFFF" /> <param name="flashVars" value="thumb=https://campusforchrist.s3.amazonaws.com/media/Pulse/FirstFrame.png&containerwidth=920&containerheight=693&showstartscreen=true&showendscreen=true&loop=false&autostart=false&color=1A1A1A,1A1A1A&thumb=FirstFrame.png&thumbscale=45&content=https://campusforchrist.s3.amazonaws.com/media/Pulse/PulseNoLogin.mp4&blurover=false" /> <param name="allowFullScreen" value="true" /> <param name="scale" value="showall" /> <param name="allowScriptAccess" value="always" /> <param name="base" value="https://campusforchrist.s3.amazonaws.com/media/Pulse/" /> <video width="920" height="693" controls="controls"><br />  <source src="https://campusforchrist.s3.amazonaws.com/media/Pulse/PulseNoLogin.mp4" type="video/mp4;" /><br />  <b>Your browser cannot play this video. <a href="https://www.screencast.com/handlers/redirect.ashx?target=viewingembededhelp">Learn how to fix this</a>.</b> </video> </object>
+  </div>
+
+<%- if show_form -%>
+  <br/>
+  <div id="local_form">
+    <%= render :partial => 'local_form' %>
+  </div> 
+<%- end -%>
