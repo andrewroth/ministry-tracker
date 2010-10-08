@@ -56,7 +56,7 @@ class Group < ActiveRecord::Base
   end
 
   def derive_name(line = group_type.try(:collection_group_name))
-    self[:name] = line.gsub("{{campus}}", campus.try(:name)).gsub("{{group_type}}", group_type.group_type)
+    self[:name] = line.gsub("{{campus}}", campus.try(:short_name)).gsub("{{group_type}}", group_type.group_type).gsub("{{semester}}", semester.try(:desc))
   end
 
   def derive_ministry
@@ -81,5 +81,14 @@ class Group < ActiveRecord::Base
         :level => inv.level, :requested => inv.requested
     end
     return new_group
+  end
+
+  def find_or_create_involvement(person, level)
+    if LEVELS.index(level).present?
+      gi = group_involvements.find_by_person_id(person.id)
+      gi ||= group_involvements.new(:person_id => person.id)
+      gi.level = level
+      gi.save!
+    end
   end
 end
