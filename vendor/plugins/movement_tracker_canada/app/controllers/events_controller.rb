@@ -171,7 +171,7 @@ class EventsController < ApplicationController
       @report_description = "Attendance Summary"
 
       @results_partial = "attendance_summary"
-    rescue
+    rescue Exception => e
       setup_error_rescue
     end
   end
@@ -280,8 +280,12 @@ class EventsController < ApplicationController
 
   def setup_event
     @event = Event.find(params[:id])
-    @eventbrite_user ||= EventBright.setup_from_initializer()
-    @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+    begin
+      @eventbrite_user ||= EventBright.setup_from_initializer()
+      @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+    rescue Exception => e
+      setup_error_rescue
+    end
   end
 
   def setup_my_campus
@@ -297,4 +301,5 @@ class EventsController < ApplicationController
 
     @results_partial = "error"
   end
+
 end
