@@ -54,6 +54,7 @@ module EventBright
     include HTTParty
     base_uri "https://www.eventbrite.com/json/"
     ERROR_404 = "404 Not Found"
+    ERROR_502 = "502 Bad Gateway"
     NUM_RETRIES_ON_404 = 3
 
     def self.do_post(function, opts = {})
@@ -64,8 +65,10 @@ module EventBright
 
         if response["error"]
           raise Exception.new(response["error"]["error_message"])
-        elsif response.select{|k,v| v =~ /<title>404 Not Found<\/title>/}.present?
+        elsif response.select{|k,v| v =~ /404 Not Found/}.present?
           raise Exception.new(ERROR_404)
+        elsif response.select{|k,v| v =~ /502 Bad Gateway/}.present?
+          raise Exception.new(ERROR_502)
         end
 
       rescue Exception => e
