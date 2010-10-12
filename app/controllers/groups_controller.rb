@@ -78,17 +78,21 @@ class GroupsController < ApplicationController
     @groups.sort{ |g1, g2| g1.name <=> g2.name }
     s1 = Semester.current
     s2 = Semester.find(s1.id+1)
+    no_list = []
     s1_list = []
     s2_list = []
     @groups.each do |g|
       case g.semester
+      when nil
+        no_list << [ g.name, g.id ]
       when s1
         s1_list << [ g.name, g.id ]
       when s2
         s2_list << [ g.name, g.id ]
       end
     end
-    @grouped_groups = [ [ s1.desc, s1_list ], [ s2.desc, s2_list ] ]
+    @grouped_groups = [ [ s1.desc, s1_list ], [ s2.desc, s2_list ], [ "No Semester Set", no_list ] ]
+    params[:from_group] = @group.id
 
     #@ministry = @group.ministry
     @gi = @group.group_involvements.find_by_person_id @me.id
@@ -99,8 +103,10 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new :country => Cmt::CONFIG[:default_country], 
-      :semester_id => @current_semester.id
+    @group = Group.new :country => Cmt::CONFIG[:default_country]
+    unless Cmt::CONFIG[:semesterless_groups]
+      @group.semester_id = @current_semester.id
+    end
     respond_to do |format|
       format.html 
       format.js
@@ -367,7 +373,11 @@ class GroupsController < ApplicationController
       #conditions += " AND ministry_id in (#{ministry_ids.join(",")})"
       conditions += " OR (#{get_ministry.descendants_condition})"
     end
-    conditions += ") AND semester_id = #{@semester.id}"
+    if Cmt::CONFIG[:semesterless_groups]
+      conditions += ") AND (semester_id = #{@semester.id} OR semester_id IS NULL)"
+    else
+      conditions += ") AND semester_id = #{@semester.id}"
+    end
     #@groups = Group.find(:all, :conditions => conditions, :joins => :ministry, :order => "name ASC")
     @groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ], :include => { :group_involvements => :person }, :order => "#{Group.__(:name)} ASC")
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])

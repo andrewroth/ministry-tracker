@@ -90,7 +90,10 @@ module Cmt
     :allow_impersonate => false,
 
     # join group link should go through the old join page where you can join right on the index
-    :joingroup_from_index => true
+    :joingroup_from_index => true,
+
+    # allow groups to be created and saved with no semester
+    :semesterless_groups => true
   } unless defined?(CONFIG)
 end
 
