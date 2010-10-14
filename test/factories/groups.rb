@@ -1,3 +1,4 @@
+=begin
 Factory.define :group_1, :class => Group, :singleton => true, :singleton => true do |g|
   g.id '1'
   g.name '\'Foo\''
@@ -26,3 +27,4 @@ Factory.define :group_4, :class => Group, :singleton => true, :singleton => true
   g.name '\'Other\''
   g.group_type_id '3'
 end
+=end

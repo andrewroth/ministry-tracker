@@ -12,20 +12,32 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    assert_equal [ Group.find(1), Group.find(2), Group.find(3), Group.find(4) ], assigns("groups")
+    [ Group.find(1), Group.find(2), Group.find(4) ].each do |group|
+      assert assigns("groups").index(group)
+    end
   end
 
   def test_join
     get :join
-    assert_response :success
-    assert_equal [ Group.find(1), Group.find(2), Group.find(3), Group.find(4) ], assigns("groups")
+    unless Cmt::CONFIG[:joingroup_from_index]
+      assert_redirected_to :controller => "signup", :action => "step1_info"
+    else
+      assert_response :success
+      [ Group.find(1), Group.find(2), Group.find(4) ].each do |group|
+        assert assigns("groups").index(group)
+      end
+    end
   end
 
   def test_join_request_campus_chosen
     p = Person.find 50000
     p.campus_involvements.delete_all
     get :join
-    assert_response :success
+    unless Cmt::CONFIG[:joingroup_from_index]
+      assert_redirected_to :controller => "signup", :action => "step1_info"
+    else
+      assert_response :success
+    end
   end
 
   # 
@@ -73,8 +85,8 @@ class GroupsControllerTest < ActionController::TestCase
       xhr(:get, :new)
       assert_response :success
       post :create, :group => {:name => 'Water Water Water', :address => 'here', :city => 'there', 
-                                :state => 'IL', :country => 'United States',
-                                :email => 'asdf', :group_type_id => 1 }    
+                               :state => 'IL', :country => 'United States',
+                               :email => 'asdf', :group_type_id => 1, :semester_id => 1  }
     end
     assert_not_nil assigns(:group) 
   end
@@ -85,9 +97,9 @@ class GroupsControllerTest < ActionController::TestCase
     login
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
-                                :state => 'IL', :country => 'United States',
-                                :email => 'asdf', :group_type_id => 1 },
-                                :person => [2000, 3000]
+                             :state => 'IL', :country => 'United States',
+                             :email => 'asdf', :group_type_id => 1, :semester_id => 1 },
+                             :person => [2000, 3000]
     assert_equal old_count+1, Group.count
     assert_equal(2, Group.last.members.size)
   end
@@ -96,8 +108,8 @@ class GroupsControllerTest < ActionController::TestCase
     login
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
-                                :state => 'IL', :country => 'United States',
-                                :email => 'asdf', :group_type_id => 1 }, :isleader => "1"
+                             :state => 'IL', :country => 'United States',
+                             :email => 'asdf', :group_type_id => 1, :semester_id => 1 }, :isleader => "1"
     assert_equal old_count+1, Group.count
     assert_not_equal([], ::GroupInvolvement.all(:conditions => { :person_id => 50000, :group_id => Group.last.id }) )
   end
@@ -106,8 +118,8 @@ class GroupsControllerTest < ActionController::TestCase
     login
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there', 
-                                :state => 'IL', :country => 'United States',
-                                :email => 'asdf', :group_type_id => 1 }
+                             :state => 'IL', :country => 'United States',
+                             :email => 'asdf', :group_type_id => 1, :semester_id => 1  }
     assert_equal old_count+1, Group.count
   end
   
