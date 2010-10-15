@@ -9,6 +9,6 @@ module EventBright
   #request an api key here: http://www.eventbrite.com/api/key
   #find your user key here: http://www.eventbrite.com/userkeyapi
   KEYS = {:api => "your api key", :user => "your user key"} unless defined?(KEYS)
-  DEBUG = true unless defined?(DEBUG)
+  DEBUG = false unless defined?(DEBUG)
 end
 

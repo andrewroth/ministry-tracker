@@ -1,7 +1,7 @@
 <div class="modulecontent">
   <ul class="groupicon">
-    <% @person.all_groups.current_and_next_semester.group_by(&:semester).each do |semester, groups| %>
-      <div><%= semester.desc %></div>
+    <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL") + @person.all_groups.current_and_next_semester).group_by(&:semester).each do |semester, groups| %>
+      <div><%= semester ? semester.desc : "No Semester Set" %></div>
       <%- for group in groups %>
       <li>
         <%- if authorized?(:accept_request, :group_involvements) || 
