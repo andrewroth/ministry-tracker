@@ -77,9 +77,6 @@ class GroupsController < ApplicationController
     @groups.uniq!
     @groups.sort{ |g1, g2| g1.name <=> g2.name }
 
-    puts Date.today
-    puts Semester.all.each {|s| puts s.inspect}
-
     s1 = Semester.current
     s2 = s1.next_semester
     s1_list = []
