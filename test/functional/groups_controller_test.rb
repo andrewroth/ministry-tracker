@@ -12,9 +12,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    [ Group.find(1), Group.find(2), Group.find(4) ].each do |group|
-      assert assigns("groups").index(group)
-    end
+    assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
   end
 
   def test_join
@@ -23,9 +21,7 @@ class GroupsControllerTest < ActionController::TestCase
       assert_redirected_to :controller => "signup", :action => "step1_info"
     else
       assert_response :success
-      [ Group.find(1), Group.find(2), Group.find(4) ].each do |group|
-        assert assigns("groups").index(group)
-      end
+      assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
     end
   end
 
