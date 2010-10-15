@@ -21,7 +21,7 @@ CREATE TABLE `columns` (
   `source_column` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `foreign_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `conference_registrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -87,6 +87,34 @@ CREATE TABLE `emails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `event_campuses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `event_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `registrar_event_id` int(11) DEFAULT NULL,
+  `event_group_id` int(11) DEFAULT NULL,
+  `register_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `free_times` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `start_time` int(11) DEFAULT NULL,
@@ -126,7 +154,7 @@ CREATE TABLE `group_types` (
   `collection_group_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT '{{campus}} interested in a {{group_type}}',
   `has_collection_groups` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -176,7 +204,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -209,7 +237,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `action` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `person_news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -368,7 +396,7 @@ CREATE TABLE `user_codes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pass` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pass` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `index_user_codes_on_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -383,7 +411,7 @@ CREATE TABLE `view_columns` (
   PRIMARY KEY (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `views` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -395,7 +423,7 @@ CREATE TABLE `views` (
   `select_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tables_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `years` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -422,3 +450,11 @@ INSERT INTO schema_migrations (version) VALUES ('20100816023643');
 INSERT INTO schema_migrations (version) VALUES ('20100818015210');
 
 INSERT INTO schema_migrations (version) VALUES ('20100818015834');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830184234');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830195510');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830195718');
+
+INSERT INTO schema_migrations (version) VALUES ('20100923050109');
