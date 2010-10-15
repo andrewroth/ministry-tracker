@@ -5,7 +5,7 @@ module EventBright
   
   def self.setup_from_initializer()
     self.setup(EventBright::KEYS[:api], EventBright::DEBUG)
-    @eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
+    @eventbrite_user ||= EventBright::User.new(EventBright::KEYS[:user])
   end
   
   def self.setup(app_key = "YmRmMmMxMjYzNDYy", debug = false)
