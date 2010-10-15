@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class EventCampusesControllerTest < ActionController::TestCase
+
+=begin tests from scaffolding:
   test "should get index" do
     get :index
     assert_response :success
@@ -42,4 +44,5 @@ class EventCampusesControllerTest < ActionController::TestCase
 
     assert_redirected_to event_campuses_path
   end
+=end
 end

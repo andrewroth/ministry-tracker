@@ -12,13 +12,17 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
+    assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
   end
 
   def test_join
     get :join
-    assert_response :success
-    assert_equal [ Factory.build(:group_1), Factory.build(:group_2) ], assigns('groups')
+    unless Cmt::CONFIG[:joingroup_from_index]
+      assert_redirected_to :controller => "signup", :action => "step1_info"
+    else
+      assert_response :success
+      assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
+    end
   end
 
   def test_join_request_campus_chosen
