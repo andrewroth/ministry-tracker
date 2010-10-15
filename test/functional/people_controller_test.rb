@@ -268,13 +268,7 @@ class PeopleControllerTest < ActionController::TestCase
  
   test "should have all campuses on directory for staff" do
     get :directory
-
-    first = Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten
-    campuses = assigns(:campuses)
-
-    first.each do |c|
-      assert campuses.index(c)
-    end
+    assert_array_similarity(Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten, assigns(:campuses))
   end
 
   test "should clear session order when changing view" do
