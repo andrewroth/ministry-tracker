@@ -1,6 +1,12 @@
 <p class="statsTitle"><%= @report_description %></p>
 <table class="statsTable">
 
-  It looks like Eventbrite isn't responding right now, please try again later.
+  It looks like <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> isn't responding right now, please try again later.
 
+  <br/>
+  <br/>
+  
+  <div class="eventLink">
+    <%= link_to("Click here to see a list of all events", eventbrite[:c4c_events_link]) %>
+  </div>
 </table>

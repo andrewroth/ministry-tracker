@@ -5,7 +5,7 @@ module EventBright
   
   def self.setup_from_initializer()
     self.setup(EventBright::KEYS[:api], EventBright::DEBUG)
-    @eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
+    @eventbrite_user ||= EventBright::User.new(EventBright::KEYS[:user])
   end
   
   def self.setup(app_key = "YmRmMmMxMjYzNDYy", debug = false)
@@ -54,6 +54,7 @@ module EventBright
     include HTTParty
     base_uri "https://www.eventbrite.com/json/"
     ERROR_404 = "404 Not Found"
+    ERROR_502 = "502 Bad Gateway"
     NUM_RETRIES_ON_404 = 3
 
     def self.do_post(function, opts = {})
@@ -61,15 +62,18 @@ module EventBright
       retries = NUM_RETRIES_ON_404
       begin
         response = post(function, opts)
+        Rails.logger.info "\tEventbrite API call (#{Date.today}) \t #{function} \t #{opts.inspect}" if response
 
         if response["error"]
           raise Exception.new(response["error"]["error_message"])
-        elsif response.select{|k,v| v =~ /<title>404 Not Found<\/title>/}.present?
+        elsif response.select{|k,v| v =~ /404 Not Found/}.present?
           raise Exception.new(ERROR_404)
+        elsif response.select{|k,v| v =~ /502 Bad Gateway/}.present?
+          raise Exception.new(ERROR_502)
         end
 
       rescue Exception => e
-        Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
+        Rails.logger.info "\tEventbright API ERROR \t#{e.message}"
         if e.message == ERROR_404 && retries > 0
           retries -= 1
           retry unless retries <=0

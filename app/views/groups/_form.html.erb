@@ -30,7 +30,7 @@
   		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
   		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
   		<tr><td><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
-  		<tr><td>Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc %></td></tr>
+                <tr><td>Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc, :include_blank => Cmt::CONFIG[:semesterless_groups] %></td></tr>
   	</table>
 	  </td>
 	  <td style="vertical-align:top;">

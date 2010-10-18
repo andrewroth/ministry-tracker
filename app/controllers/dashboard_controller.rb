@@ -83,6 +83,8 @@ class DashboardController < ApplicationController
 
     rescue Exception => e
       @eventbrite_error = e.message
+      @eventbrite_error ||= e
+      Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
     end
 
     respond_to do |format|
@@ -92,6 +94,12 @@ class DashboardController < ApplicationController
 
 
   protected
+
+  def get_eventbrite_event_from_event(event)
+    @eventbrite_user ||= ::EventBright.setup_from_initializer()
+    eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
+    raise "error" if eb_event.attributes.blank?
+  end
 
   def display_event(eb_event)
     display = false
