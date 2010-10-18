@@ -1,10 +1,13 @@
+include SemesterSet
+set_current_and_next_semester
+
 Factory.define :group_1, :class => Group, :singleton => true, :singleton => true do |g|
   g.id '1'
   g.name '\'Foo\''
   g.group_type_id '2'
   g.ministry_id '1'
   g.campus_id '1'
-  g.semester_id '10'
+  g.semester_id @current_semester.id
 end
 
 Factory.define :group_2, :class => Group, :singleton => true, :singleton => true do |g|
@@ -12,7 +15,7 @@ Factory.define :group_2, :class => Group, :singleton => true, :singleton => true
   g.name '\'Foo\''
   g.group_type_id '2'
   g.ministry_id '1'
-  g.semester_id '10'
+  g.semester_id @current_semester.id
 end
 
 Factory.define :group_3, :class => Group, :singleton => true, :singleton => true do |g|
@@ -21,12 +24,12 @@ Factory.define :group_3, :class => Group, :singleton => true, :singleton => true
   g.group_type_id '1'
   g.ministry_id '1'
   g.campus_id '2'
-  g.semester_id '10'
+  g.semester_id @current_semester.id
 end
 
 Factory.define :group_4, :class => Group, :singleton => true, :singleton => true do |g|
   g.id '3'
   g.name '\'Other\''
   g.group_type_id '3'
-  g.semester_id '10'
+  g.semester_id @current_semester.id
 end
