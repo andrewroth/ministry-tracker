@@ -4,6 +4,7 @@ class GroupsControllerTest < ActionController::TestCase
  
   def setup
     setup_default_user
+    setup_semesters
     setup_groups
 
     login
