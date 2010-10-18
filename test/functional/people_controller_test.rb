@@ -9,6 +9,7 @@ class PeopleControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_ministry_roles
+    setup_regions
     Factory(:country_1)
     Factory(:country_2)
     Factory(:state_1)
