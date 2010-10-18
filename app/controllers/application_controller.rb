@@ -416,11 +416,12 @@ class ApplicationController < ActionController::Base
     end
     
     def force_campus_set
+      return false unless @my
       if !is_staff_somewhere && @my.campus_involvements.empty?
-        redirect_to set_initial_campus_person_url(@person.id)
+        redirect_to set_initial_campus_person_url(@my.id)
         return false
       elsif is_staff_somewhere && @my.ministry_involvements.empty?
-        redirect_to set_initial_ministry_person_url(@person.id)
+        redirect_to set_initial_ministry_person_url(@my.id)
         return false
       end
       true
