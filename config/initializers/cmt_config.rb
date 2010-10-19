@@ -97,7 +97,10 @@ module Cmt
     :allow_impersonate => defined?(Common) && defined?(Common::ALLOW_IMPERSONATING) && Common::ALLOW_IMPERSONATING,
     
     # join group link should go through the old join page where you can join right on the index
-    :joingroup_from_index => false
+    :joingroup_from_index => false,
+
+    # allow groups to be created and saved with no semester
+    :semesterless_groups => false
   } unless defined?(CONFIG)
 end
 

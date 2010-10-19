@@ -5,7 +5,7 @@ module EventBright
   
   def self.setup_from_initializer()
     self.setup(EventBright::KEYS[:api], EventBright::DEBUG)
-    @eventbrite_user = EventBright::User.new(EventBright::KEYS[:user])
+    @eventbrite_user ||= EventBright::User.new(EventBright::KEYS[:user])
   end
   
   def self.setup(app_key = "YmRmMmMxMjYzNDYy", debug = false)
@@ -62,6 +62,7 @@ module EventBright
       retries = NUM_RETRIES_ON_404
       begin
         response = post(function, opts)
+        Rails.logger.info "\tEventbrite API call (#{Date.today}) \t #{function} \t #{opts.inspect}" if response
 
         if response["error"]
           raise Exception.new(response["error"]["error_message"])
@@ -72,7 +73,7 @@ module EventBright
         end
 
       rescue Exception => e
-        Rails.logger.info "\tEventBright API ERROR \t#{e.message}"
+        Rails.logger.info "\tEventbright API ERROR \t#{e.message}"
         if e.message == ERROR_404 && retries > 0
           retries -= 1
           retry unless retries <=0

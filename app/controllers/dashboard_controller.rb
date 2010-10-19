@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
   include SemesterSet
   before_filter :set_current_and_next_semester
 
+
   def index
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
@@ -98,7 +99,7 @@ class DashboardController < ApplicationController
   def get_eventbrite_event_from_event(event)
     @eventbrite_user ||= ::EventBright.setup_from_initializer()
     eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
-    raise "error" if eb_event.attributes.blank?
+    raise Exception.new("Got blank Eventbrite api_object back") if eb_event.id.blank? || eb_event.attributes.blank?
   end
 
   def display_event(eb_event)

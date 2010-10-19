@@ -17,7 +17,9 @@ class Group < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :group_type
-  validates_presence_of :semester_id
+  unless Cmt::CONFIG[:semesterless_groups]
+    validates_presence_of :semester_id
+  end
   
   belongs_to :ministry
   belongs_to :campus

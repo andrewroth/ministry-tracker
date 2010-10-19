@@ -9,6 +9,7 @@ class PeopleControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_ministry_roles
+    setup_regions
     Factory(:country_1)
     Factory(:country_2)
     Factory(:state_1)
@@ -268,7 +269,7 @@ class PeopleControllerTest < ActionController::TestCase
  
   test "should have all campuses on directory for staff" do
     get :directory
-    assert_equal Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten, assigns(:campuses)
+    assert_array_similarity(Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten, assigns(:campuses))
   end
 
   test "should clear session order when changing view" do
@@ -437,6 +438,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:access_5)
     Factory(:person_6)
     Factory(:ministryinvolvement_5)
+    Factory(:ministry_4)
     Factory(:ministry_5)
     Factory(:campusinvolvement_5)
     Factory(:campus_1)
@@ -468,6 +470,7 @@ class PeopleControllerTest < ActionController::TestCase
   test "ministry leader with no permanent address should render when updating notes" do
   
     # setup session
+    Factory(:ministry_4)
     ministry = Factory(:ministry_5)
 
     Factory(:access_5)
@@ -479,7 +482,6 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_5)
     Factory(:campusinvolvement_5)
     Factory(:campus_1)
-    Factory(:ministry_4)
   
     # make sure it renders properly
     get :show, :id => person.id
