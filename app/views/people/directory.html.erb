@@ -177,7 +177,7 @@
   			end %></td>
 	    <%- end -%>
 				<td class="alignright">
-				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :method => :delete, :confirm => "You are about to remove this person from all ministries and campuses they are a part of. Are you SURE you want to continue?") if @can_delete %>
+				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
 				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']) %></span>
 				</td>
 			</tr>
