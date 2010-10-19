@@ -341,13 +341,20 @@ class PeopleController < ApplicationController
   def destroy
     # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
     @person = Person.find(params[:id], :include => [:ministry_involvements, :campus_involvements])
-    ministry_involvements_to_end = @person.ministry_involvements.select {|mi| current_ministry.self_plus_descendants.collect(&:id).include?(mi.ministry_id)}.collect(&:id)
+    ministry_involvements_to_end = @person.ministry_involvements.collect &:id
     MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
     
-    campus_involvements_to_end = @person.campus_involvements.select {|ci| @my.campus_list(get_ministry_involvement(current_ministry)).collect(&:id).include?(ci.campus_id)}.collect(&:id)
+    campus_involvements_to_end = @person.campus_involvements.collect &:id
     CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
+
+    group_involvements_to_end = @person.all_group_involvements.delete_all
     flash[:notice] = "All of #{@person.full_name}'s involvements have been ended."
-    redirect_to :back
+    
+    if (params[:logout] == 'true')
+       redirect_to logout_url
+    else
+      redirect_to :back
+    end
   end
   # POST /people
   # POST /people.xml
