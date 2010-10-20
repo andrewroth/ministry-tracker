@@ -49,8 +49,8 @@
 		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/check_green.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/exclamation.gif\" /> required");
 	}
 
-yyyymmddMessage = "yyyy/mm/dd required";
-requiredMessage = "required"
+yyyymmddMessage = "(yyyy/mm/dd)";
+requiredMessage = ""
 
 $("input.positiveinteger").change(function (e) { e.currentTarget.value = pureInteger(e.currentTarget.value); });
 $("input.yyyymmdd").blur(function (e) { validDate(e.currentTarget); });
