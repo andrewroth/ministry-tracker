@@ -1,3 +1,10 @@
+<%
+def message_span(id, classname)
+  " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
+end
+
+%>
+
 <br>
     <% form_for(prc) do |f| %>
       <%= f.error_messages %>
@@ -5,15 +12,18 @@
  <%
 lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
 lines.each do | key, input_stat |
+	required = false
   if input_stat[:column_type] == :database_column
+    required_indicator = input_stat[:required] ? "*" : ""
 %>
       <p class="statsFormField">
-        <%= f.label input_stat[:column], input_stat[:label] %>
+        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
         <%= if input_stat[:display_type] == :text_area
-              f.text_area input_stat[:column], :size => "20x4"
+              required = true
+              f.text_area input_stat[:column], :size => "20x4", :class => "required"
 
             elsif input_stat[:display_type] == :date_picker
-              f.date_select input_stat[:column]
+              f.date_select(input_stat[:column], :size => 7, :class => "yyyymmdd")
 
             elsif input_stat[:display_type] == :checkbox
               f.check_box input_stat[:column]
@@ -29,7 +39,13 @@ lines.each do | key, input_stat |
               end
               
             else
-              f.text_field input_stat[:column], :size => 16
+              required = true
+              f.text_field input_stat[:column], :size => 16, :class => "required"
+            end %>
+        <%= if input_stat[:display_type] == :date_picker
+              message_span("prc[#{input_stat[:column]}]", "yyyymmdd")
+            elsif required
+              message_span("prc[#{input_stat[:column]}]", "required")
             end %>
       </p>
       <br>
