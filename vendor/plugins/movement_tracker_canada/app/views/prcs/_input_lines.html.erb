@@ -17,7 +17,7 @@ lines.each do | key, input_stat |
     required_indicator = input_stat[:required] ? "*" : ""
 %>
       <p class="statsFormField">
-        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator} : " %>
+        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
         <%= if input_stat[:display_type] == :text_area
               required = true
               f.text_area input_stat[:column], :size => "20x4", :class => "required"
