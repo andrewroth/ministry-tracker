@@ -9,7 +9,7 @@ lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], input_stat[:label] %></td>
-          <td><%= f.text_field input_stat[:column], :size => 4 %></td>
+          <td><%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" %></td>
         </tr>
 
 <%
