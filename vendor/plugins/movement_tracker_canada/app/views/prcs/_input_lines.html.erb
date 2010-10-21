@@ -14,15 +14,16 @@ lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> 
 lines.each do | key, input_stat |
 	required = false
   if input_stat[:column_type] == :database_column
+    required_indicator = input_stat[:required] ? "*" : ""
 %>
       <p class="statsFormField">
-        <%= f.label input_stat[:column], input_stat[:label] %>
+        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
         <%= if input_stat[:display_type] == :text_area
               required = true
               f.text_area input_stat[:column], :size => "20x4", :class => "required"
 
             elsif input_stat[:display_type] == :date_picker
-              f.date_select(input_stat[:column], :class => "yyyymmdd")
+              f.date_select(input_stat[:column], :size => 7, :class => "yyyymmdd")
 
             elsif input_stat[:display_type] == :checkbox
               f.check_box input_stat[:column]
