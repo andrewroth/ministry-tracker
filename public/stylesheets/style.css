@@ -2005,3 +2005,10 @@ td.eventAttendees {
   font-weight: normal;
 }
 
+.jqueryValidationInformation {
+	color: green;
+}
+
+.jqueryValidationError {
+	color: red;
+}

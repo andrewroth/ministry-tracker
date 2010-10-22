@@ -9,7 +9,7 @@ lines.each do | key, input_stat |
 %>
       <p class="statsFormField">
         <%= f.label input_stat[:column], input_stat[:label] %>
-        <%= f.text_field input_stat[:column], :size => 4 %>
+        <%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" %>
       </p>
 <%
   end
@@ -20,7 +20,7 @@ lines.each do | key, input_stat |
 %>
       <p class="statsFormField">
         <%= f.label input_stat[:column], input_stat[:label] %>
-        <%= f.text_field input_stat[:column], :size => 4 %>
+        <%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" %>
       </p>
 <%
   end
