@@ -64,7 +64,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_template 'edit'
   end
 
-#  fails because of validates_no_association_data 
   def test_should_destroy_user
     setup_users
 
@@ -74,4 +73,7 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_redirected_to users_path
   end
+
+  
 end
+
