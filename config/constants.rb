@@ -171,55 +171,62 @@
       }, 
         :weekly_report => {
            :spirit_conversations => {:column => :weeklyReport_1on1SpConv, 
-             :label => "Spiritual Conversations:",
+             :label => "Spiritual Conversations",
              :collected => :weekly,
              :column_type => :database_column,
+             :display_type => :text_positive_integer,
              :order => 1 
            }, 
            :spirit_conversations_disciples => {
              :column => :weeklyReport_1on1SpConvStd, 
-             :label => "Spiritual Conversations by Disciples:",
+             :label => "Spiritual Conversations by Disciples",
              :collected => :weekly,
              :column_type => :database_column,
+             :display_type => :text_positive_integer,
              :order => 2
            }, 
            :spirit_conversations_total => {
-             :label => "Spiritual Conversations Total:",
+             :label => "Spiritual Conversations Total",
              :collected => :weekly,
              :css_class => " statsTableTotal",
              :column_type => :sum,
              :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations},
                               {:report => :weekly_report, :line => :spirit_conversations_disciples}],
+             :display_type => :text_positive_integer,
              :order => 3
            }, 
            :gospel_pres => {
              :column => :weeklyReport_1on1GosPres, 
-             :label => "Gospel Presentations:",
+             :label => "Gospel Presentations",
              :collected => :weekly,
              :column_type => :database_column ,
+             :display_type => :text_positive_integer,
              :order => 4
            }, 
            :gospel_pres_disciples => {
              :column => :weeklyReport_1on1GosPresStd, 
-             :label => "Gospel Presentations by Disciples:",
+             :label => "Gospel Presentations by Disciples",
              :collected => :weekly,
              :column_type => :database_column,
+             :display_type => :text_positive_integer,
              :order => 5
            }, 
            :gospel_pres_total => {
-             :label => "Gospel Presentations Total:",
+             :label => "Gospel Presentations Total",
              :collected => :weekly,
              :css_class => " statsTableTotal",
              :column_type => :sum,
              :columns_sum => [{:report => :weekly_report, :line => :gospel_pres},
                               {:report => :weekly_report, :line => :gospel_pres_disciples}],
+             :display_type => :text_positive_integer,
              :order => 6
            }, 
            :holy_spirit_pres => {
              :column => :weeklyReport_1on1HsPres, 
-             :label => "Holy Spirit Presentations:",
+             :label => "Holy Spirit Presentations",
              :collected => :weekly,
              :column_type => :database_column ,
+             :display_type => :text_positive_integer,
              :order => 7
            }
       },
@@ -229,7 +236,7 @@
 #             :order => 0
 #           },
            :indicated_decisions => {
-             :label => "Indicated Decisions:",
+             :label => "Indicated Decisions",
              :collected => :prc,
              :column_type => :database_column ,
              :order => 1
@@ -312,67 +319,67 @@
       }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
-            :label => "Average - hours of prayer:",
+            :label => "Average - hours of prayer",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 1
           }, 
           :frosh => {:column => :monthlyreport_numFrosh, 
-            :label => "Number of frosh involved:",
+            :label => "Number of frosh involved",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 2
           },
           :students_dg => {:column => :monthlyreport_totalStudentInDG, 
-            :label => "Number of students in DGs:",
+            :label => "Number of students in DGs",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 3
           },
           :spirit_mult => {:column => :monthlyreport_totalSpMult, 
-            :label => "Number of spiritual multipliers:",
+            :label => "Number of spiritual multipliers",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 4
           },
           :evt_spirit_conv => {:column => :monthlyreport_eventSpirConversations, 
-            :label => "Event exposures - Spiritual Conversations:",
+            :label => "Event exposures - Spiritual Conversations",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 5
           },
           :evt_gos_pres => {:column => :monthlyreport_eventGospPres, 
-            :label => "Event exposures - Gospel Presentations:",
+            :label => "Event exposures - Gospel Presentations",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 6
           },
           :med_spirit_conv => {:column => :monthlyreport_mediaSpirConversations, 
-            :label => "Media exposures - Spiritual Conversations:",
+            :label => "Media exposures - Spiritual Conversations",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 7
           },
           :med_gos_pres => {:column => :monthlyreport_mediaGospPres, 
-            :label => "Media exposures - Gospel Presentations:",
+            :label => "Media exposures - Gospel Presentations",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 8
           },
           :core_students => {:column => :monthlyreport_totalCoreStudents, 
-            :label => "Total core students:",
+            :label => "Total core students",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 9
           },
           :integrated_new_believers => {:column => :montlyreport_integratedNewBelievers, 
-            :label => "Integrated new believers:",
+            :label => "Integrated new believers",
             :collected => :monthly,
             :column_type => :database_column,
             :order => 10
           },
           :growth_rate => { 
-            :label => "Conversion growth rate:",
+            :label => "Conversion growth rate",
             :collected => :monthly,
             :column_type => :division,
             :dividend => {:report => :monthly_report, :line => :integrated_new_believers},

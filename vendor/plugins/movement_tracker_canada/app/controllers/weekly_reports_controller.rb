@@ -1,4 +1,4 @@
-class WeeklyReportsController < ApplicationController
+class WeeklyReportsController < ReportsController
   unloadable
 
   skip_before_filter :authorization_filter, :only => [:select_weekly_report]
@@ -12,6 +12,14 @@ class WeeklyReportsController < ApplicationController
       format.html # index.html.erb
       format.xml  { render :xml => @weekly_reports }
     end
+  end
+
+  def input_lines
+    if @input_lines.nil?
+      @input_lines = stats_reports[:weekly_report].sort { |a,b| a[1][:order] <=> b[1][:order]}.collect{|s| s[1][:column_type] == :database_column ? s : nil}.compact
+      @input_lines.concat()
+    end
+    @input_lines
   end
 
   # GET /weekly_reports/1
@@ -66,6 +74,7 @@ class WeeklyReportsController < ApplicationController
   end
 
   def create_or_update()
+    debugger
     params[:weekly_report][:staff_id] = @person.cim_hrdb_staff.id
     @weekly_report = WeeklyReport.find(:first, :conditions => { :week_id => params[:weekly_report][:week_id], :staff_id => params[:weekly_report][:staff_id], :campus_id => params[:weekly_report][:campus_id] })
   
