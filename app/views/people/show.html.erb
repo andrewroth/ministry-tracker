@@ -17,12 +17,6 @@
     <div class="butUpdate" style="margin-right:5px;">
       <%= link_to_remote "Edit Information", :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
     </div>  
-	  <%-# Only allow 'remove myself' for your own profile... %>	
-		<%- if @person == @me -%>
-	    <div class="butUpdate" style="margin-right:5px;">
-        <%= link_to "Remove My Involvements from Pulse", person_url(@person.id, :logout => 'true'), :confirm => "You are about to remove yourself from all ministries, campuses, and groups you are a part of. Are you SURE you want to continue? (you will be logged out)", :method => :delete %>
-			</div>
-		<%- end -%>
 	<%- end -%>
 	<h1><%= @person.full_name %> <%= spinner('p') %></h1> 
   <div class="divider" style="margin-bottom:0;">&nbsp;</div>
