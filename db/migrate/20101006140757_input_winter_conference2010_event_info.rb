@@ -3,7 +3,7 @@ class InputWinterConference2010EventInfo < ActiveRecord::Migration
   NEW_EVENT_GROUPS = [{:title => "Winter Conference 2010", :descripton => "Winter Conference 2010"}]
 
   NEW_EVENTS = [{:registrar_event_id => "831469949", :event_group_title => NEW_EVENT_GROUPS[0][:title], :register_url => "http://wcwest2010.eventbrite.com/", :campuses => [7,8,14,19,24,67,68,76,85,88,87]},
-                {:registrar_event_id => "888847567", :event_group_title => NEW_EVENT_GROUPS[0][:title], :register_url => "http://wceast2010.eventbrite.com/", :campuses => [1,2,37,40,43,46,48,49,51,53,54,55,56,57,61,62,63,64,65,72,73,74,75,77,80,83,84,141,87,141]}
+                {:registrar_event_id => "888847567", :event_group_title => NEW_EVENT_GROUPS[0][:title], :register_url => "http://wceast2010.eventbrite.com/", :campuses => [1,2,37,40,43,46,48,49,51,53,54,55,56,57,61,62,63,64,65,72,73,74,75,77,80,83,84,141,87]}
                ]
 
 
