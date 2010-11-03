@@ -216,12 +216,8 @@ class StatsController < ApplicationController
     @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
     @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i
     
-    @annual_goals_progress[:spiritual_conversations] = @monthly_sum["event_spiritual_conversations"].to_i + @monthly_sum["media_spiritual_conversations"].to_i +
-                                                        @weekly_sum["spiritual_conversations"].to_i + @weekly_sum["spiritual_conversations_student"].to_i
-
-    @annual_goals_progress[:gospel_presentations] = @monthly_sum["event_gospel_prensentations"].to_i + @monthly_sum["media_gospel_prensentations"].to_i +
-                                                     @weekly_sum["gospel_presentations"].to_i + @weekly_sum["gospel_presentations_student"].to_i
-
+    @annual_goals_progress[:spiritual_conversations] = @weekly_sum["spiritual_conversations"].to_i + @weekly_sum["spiritual_conversations_student"].to_i
+    @annual_goals_progress[:gospel_presentations] = @weekly_sum["gospel_presentations"].to_i + @weekly_sum["gospel_presentations_student"].to_i
     @annual_goals_progress[:holyspirit_presentations] = @weekly_sum["holyspirit_presentations"].to_i + @weekly_sum["holyspirit_presentations_student"].to_i
     @annual_goals_progress[:indicated_decisions] = @prc_sum.to_i
     @annual_goals_progress[:followup_completed] = @monthly_sum["followup_completed"].to_i
