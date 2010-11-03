@@ -9,7 +9,7 @@
 <%- end -%>
 <div style="float:right">
   <% if @timetable.updated_at.present? %>
-    Last updated <%= time_ago_in_words(@timetable.updated_at) %> ago
+    Last updated <%= distance_of_time_in_words(Time.zone.now, @timetable.updated_at) %> ago
   <% else %>
     Timetable never updated
   <% end %>

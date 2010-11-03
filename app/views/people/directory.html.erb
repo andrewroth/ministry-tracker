@@ -157,7 +157,7 @@
 				<td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%= 
 				case
                 when column.from_clause == "Timetable" && column.title == "Timetable Updated"
-                  person[column.safe_name].present? ? "#{time_ago_in_words(person[column.safe_name])} ago" : "never"
+                  person[column.safe_name].present? ? "#{distance_of_time_in_words(Time.now, person[column.safe_name])} ago" : "never"
 				when column.column_type == 'image'
 				  if person[column.safe_name]
 				    file_id, filename = person[column.safe_name].split('|')
