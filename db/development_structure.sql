@@ -606,6 +606,7 @@ CREATE TABLE `timetables` (
   `person_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `updated_by_person_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4353 DEFAULT CHARSET=utf8;
 
@@ -967,6 +968,8 @@ INSERT INTO schema_migrations (version) VALUES ('20101006140757');
 INSERT INTO schema_migrations (version) VALUES ('20101103143026');
 
 INSERT INTO schema_migrations (version) VALUES ('20101103175855');
+
+INSERT INTO schema_migrations (version) VALUES ('20101103192208');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
