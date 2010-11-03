@@ -2,7 +2,8 @@ class AddAnnualGoalsReportPermission < ActiveRecord::Migration
   NEW_PERMISSIONS = [{ :description => "Show Goals Progress Report", :controller => "stats", :action => "annual_goals" }]
 
   NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Member",  :permission_index => 0 },
-                                   { :ministry_role_name => "Team Leader",  :permission_index => 0 }]
+                                   { :ministry_role_name => "Team Leader",  :permission_index => 0 },
+                                   { :ministry_role_name => "Staff",  :permission_index => 0 }]
 
 
   def self.find_permission(permission)
