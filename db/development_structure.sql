@@ -267,7 +267,7 @@ CREATE TABLE `free_times` (
   `weight` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `free_times_timetable_id` (`timetable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106689 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=106728 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_involvements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -354,7 +354,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=593 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=594 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -402,7 +402,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8583 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8584 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -528,7 +528,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7078 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7082 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -539,7 +539,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95285 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95287 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -607,7 +607,7 @@ CREATE TABLE `timetables` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4352 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4353 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -965,6 +965,8 @@ INSERT INTO schema_migrations (version) VALUES ('20100929164102');
 INSERT INTO schema_migrations (version) VALUES ('20101006140757');
 
 INSERT INTO schema_migrations (version) VALUES ('20101103143026');
+
+INSERT INTO schema_migrations (version) VALUES ('20101103175855');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
