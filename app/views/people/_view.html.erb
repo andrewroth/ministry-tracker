@@ -135,14 +135,31 @@
     <td>
       <table class="halftab">
           <tr>
-            <td><p>Last logged in via PAT or Pulse <%= @person.user.last_login.present? ? "#{distance_of_time_in_words(Time.zone.now, @person.user.last_login)} ago" : "never" %><p/></td>
-            
+            <td>
+              <p>
+                <nobr>
+                  Last logged in via PAT or Pulse
+                  <% if @person.user.present? && @person.user.last_login.present? %>
+                    <%= "#{distance_of_time_in_words(Time.zone.now, @person.user.last_login)} ago" %>
+                  <% else %>
+                    never
+                  <% end %>
+                </nobr>
+              <p/>
+            </td>
           </tr>
 
           <tr>
             <td>
               <p>
-              Timetable last updated <%= @person.timetable.updated_at.present? ? "#{distance_of_time_in_words(Time.zone.now, @person.timetable.updated_at)} ago" : "never" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? && @person.timetable.updated_at.present? %>
+                <nobr>
+                Timetable last updated
+                <% if @person.timetable.present? && @person.timetable.updated_at.present? %>
+                  <%= "#{distance_of_time_in_words(Time.zone.now, @person.timetable.updated_at)} ago" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? %>
+                <% else %>
+                  never
+                <% end %>
+                </nobr>
               </p>
             </td>
           </tr>
