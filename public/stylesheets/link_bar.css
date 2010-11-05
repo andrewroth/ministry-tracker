@@ -1,0 +1,68 @@
+div#link_bar_wrapper {
+    width: 100%;
+    padding-top: 1px;
+}
+
+div#link_bar {
+    display: block;
+    height: 22px;
+    padding: 3px 8px 0;
+    font-size: 13px;
+}
+
+div#tools {
+  float: left;
+}
+
+div#tools nobr, div#user nobr, div#more_tools_box {
+  padding-top: 1px;
+  font-size: 13px;
+}
+
+div#user {
+  text-align: right;
+}
+
+div#link_bar a, div#link_bar b {
+  margin-right: 0.5em;
+}
+
+div#link_bar a, div#link_bar u {
+  color: #1F429B;
+  text-decoration: underline;
+}
+
+div#link_bar a:hover, div#link_bar u:hover {
+  color: #ECAC00;
+}
+
+div#more_tools_box {
+  display: none;
+  position: absolute;
+  text-align: left;
+  left: 290px;
+  top: 24px;
+  right: auto;
+  padding-bottom: 3px;
+
+  border: 1px solid #CCCCCC;
+  border-top: 0;
+  z-index: 1001;
+  background: #E6E6E6;
+
+  -moz-box-shadow: 1px 4px 5px #C8C8C8; -webkit-box-shadow: 1px 4px 5px #C8C8C8;
+  -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+
+div#more_tools_box a {
+  padding: 0.2em 0.6em;
+  display: block;
+}
+
+div#link_bar a.more_tools {
+  text-decoration: none;
+}
+
+div#link_bar small.more_tools {
+  color: #1F429B;
+}
