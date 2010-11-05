@@ -220,4 +220,4 @@ test:
 # incurring any user-visible performance degradation.
 production:
   <<: *default_settings
-  monitor_mode: <%= %x(hostname).chomp == "rails.powertochange.local" %>
+  monitor_mode: <%= v = %x(hostname -f).chomp == "rails.powertochange.local"; STDOUT.puts("newrelic: #{v}"); v %>
