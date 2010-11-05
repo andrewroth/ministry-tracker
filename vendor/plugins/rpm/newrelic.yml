@@ -1,20 +1,21 @@
 #
-# This file configures the New Relic RPM Agent.  New Relic RPM monitors
-# Rails and Java applications with deep visibility and low overhead.  For more
+# This file configures the NewRelic RPM Agent, NewRelic RPM monitors
+# Rails applications with deep visibility and low overhead.  For more
 # information, visit www.newrelic.com.
 #
-# Generated November 05, 2010
+# Generated <%= Time.now.strftime('%B %d, %Y') %>, for version <%= NewRelic::VERSION::STRING %>
 #
-# This configuration file is custom generated for Power to Change
+# <%= generated_for_user %>
 
-# Here are the settings that are common to all environments:
+
+# Here are the settings that are common to all environments
 common: &default_settings
   # ============================== LICENSE KEY ===============================
 
   # You must specify the license key associated with your New Relic
   # account.  This key binds your Agent's data to your account in the
   # New Relic RPM service.
-  license_key: '0c6558db0b799d3551a203bb7e81df185043d946'
+  license_key: '<%= license_key %>'
   
   # Agent Enabled (Rails Only)
   # Use this setting to force the agent to run or not run.
@@ -23,6 +24,7 @@ common: &default_settings
   # it from running with Rake or the console.  Set to false to
   # completely turn the agent off regardless of the other settings.
   # Valid values are true, false and auto.
+  #
   # agent_enabled: auto
   
   # Application Name
@@ -31,9 +33,16 @@ common: &default_settings
   # into a RPM "application" on your home dashboard page. If you want
   # to map this instance into multiple apps, like "AJAX Requests" and
   # "All UI" then specify a semicolon separated list of up to three
-  # distinct names.  If you comment this out, it defaults to the 
-  # capitalized RAILS_ENV (i.e., Production, Staging, etc)
-  app_name: Pulse
+  # distinct names, or a yaml list.  Defaults to the 
+  # capitalized RAILS_ENV or RACK_ENV (i.e., Production, Staging, etc)
+  #
+  # Example:
+  #
+  #   app_name:
+  #       - Ajax Service
+  #       - All Services
+  # 
+  app_name: <%= @app_name %>
 
   # When "true", the agent collects performance data about your 
   # application and reports this data to the NewRelic RPM service at 
@@ -49,7 +58,7 @@ common: &default_settings
   # information separate from that of your application.  Specify its
   # log level here.
   log_level: info
-  
+
   # The newrelic agent communicates with the RPM service via http by
   # default.  If you want to communicate via https to increase
   # security, then turn on SSL by setting this value to true.  Note,
@@ -175,6 +184,12 @@ common: &default_settings
   # disable_activerecord_instrumentation: true
   # disable_memcache_instrumentation: true
   # disable_dj: true
+
+  # If you're interested in capturing memcache keys as though they
+  # were SQL uncomment this flag. Note that this does increase
+  # overhead slightly on every memcached call, and can have security
+  # implications if your memcached keys are sensitive
+  # capture_memcache_keys: true
   
   # Certain types of instrumentation such as GC stats will not work if 
   # you are running multi-threaded.  Please let us know.
@@ -220,4 +235,12 @@ test:
 # incurring any user-visible performance degradation.
 production:
   <<: *default_settings
-  monitor_mode: %x(hostname) == "rails.powertochange.local"
+  monitor_mode: true
+
+# Many applications have a staging environment which behaves
+# identically to production.  Support for that environment is provided
+# here.  By default, the staging environment has the agent turned on.
+staging:
+  <<: *default_settings
+  monitor_mode: true
+  app_name: <%= @app_name %> (Staging)
