@@ -22,20 +22,20 @@
 
     <div id="tools">
       <nobr>
-        <a href="http://www.campusforchrist.org">C4C</a>
-        <a href="http://resources.campusforchrist.org">Resources</a>
-        <a href="http://pat.powertochange.org">Projects</a>
-        <b>Pulse</b>
-        <a href="http://campusforchrist.eventbrite.com">Events</a>
-        <a href="http://www.mygcx.org">GCX</a>
-        <a href="" class="more_tools"><u class="more_tools">more</u> <small class="more_tools">▼</small></a>
+        <a class="ll" href="http://www.campusforchrist.org">C4C</a>
+        <a class="ll" href="http://resources.campusforchrist.org">Resources</a>
+        <a class="ll" href="http://pat.powertochange.org">Projects</a>
+        <b class="ll">Pulse</b>
+        <a class="ll" href="http://campusforchrist.eventbrite.com">Events</a>
+        <a class="ll" href="http://www.mygcx.org">GCX</a>
+        <a class="ll more_tools" href=""><u class="more_tools">more</u> <small class="more_tools">▼</small></a>
       </nobr>
     </div>
 
     <div id="user">
       <nobr>
-        <b><%= @my.email%></b>
-        <%= link_to("Log out", session_url, :method => :delete) %>
+        <b class="rl"><%= @my.email %></b>
+        <%= link_to("Log out", session_url, :method => :delete, :class => "rl log_out") %>
       </nobr>
     </div>
 
