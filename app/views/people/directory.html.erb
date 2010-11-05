@@ -155,19 +155,21 @@
   <%- end -%>
       <%- @view.columns.each do |column| -%>
 				<td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%= 
-				case column.column_type
-				when 'image'
+				case
+                when column.from_clause == "Timetable" && column.title == "Timetable Updated"
+                  person[column.safe_name].present? ? "#{distance_of_time_in_words(Time.now, person[column.safe_name])} ago" : "never"
+				when column.column_type == 'image'
 				  if person[column.safe_name]
 				    file_id, filename = person[column.safe_name].split('|')
             filename = filename.split('.')
             filename = filename[0] + '_mini.' + filename[1]
   				  image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")  if defined?(Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name)
 				  end
-				when 'date'
+				when column.column_type == 'date'
 				  format_date(person[column.safe_name])
-				when 'gender'
+				when column.column_type == 'gender'
 				  @person.human_gender(person[column.safe_name])
-				when 'url'
+				when column.column_type == 'url'
 				  unless person[column.safe_name].blank?
   				  desc, url = parse_url(person[column.safe_name])
   				  link_to(desc, url, :target => '_blank')
