@@ -220,4 +220,4 @@ test:
 # incurring any user-visible performance degradation.
 production:
   <<: *default_settings
-  monitor_mode: %x(hostname) == "rails.powertochange.local"
+  monitor_mode: <%= %x(hostname).chomp == "rails.powertochange.local" %>
