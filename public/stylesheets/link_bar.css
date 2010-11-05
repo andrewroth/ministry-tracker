@@ -23,8 +23,12 @@ div#user {
   text-align: right;
 }
 
-div#link_bar a, div#link_bar b {
-  margin-right: 0.5em;
+div#link_bar .ll {
+  margin-right: 0.6em;
+}
+
+div#link_bar .rl {
+  margin-left: 0.6em;
 }
 
 div#link_bar a, div#link_bar u {
@@ -65,4 +69,10 @@ div#link_bar a.more_tools {
 
 div#link_bar small.more_tools {
   color: #1F429B;
+}
+
+div#link_bar a.log_out {
+  padding: 1px 0 0 20px;
+  background-image: url(/images/silk/door_out.png);
+  background-repeat: no-repeat;
 }
