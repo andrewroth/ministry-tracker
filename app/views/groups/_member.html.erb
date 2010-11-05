@@ -10,5 +10,11 @@
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>
   <td><%= person.current_address.alternate_phone %></td>
-  <td><%= person.timetable.updated_at.present? ? "#{time_ago_in_words(person.timetable.updated_at)} ago" : "never" %><%= ", by #{person.timetable.updated_by_person.full_name}" if person.timetable.updated_by_person.present? && person.timetable.updated_at.present? %></td>
+  <td>
+    <% if person.timetable.present? && person.timetable.updated_at.present? %>
+      <%= "#{time_ago_in_words(person.timetable.updated_at)} ago" %><%= ", by #{person.timetable.updated_by_person.full_name}" if person.timetable.updated_by_person.present? %>
+    <% else %>
+      never
+    <% end %>
+  </td>
 </tr>
