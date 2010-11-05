@@ -1,0 +1,48 @@
+<%= stylesheet_link_tag "link_bar.css" %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("a.more_tools").click(function(e) {
+      e.preventDefault();
+      $("div#more_tools_box").toggle();
+    });
+
+    $(document).mouseup(function(e) {
+      if($(e.target).parent("a.more_tools").length == 0) {
+        $("div#more_tools_box").hide();
+      }
+    });
+
+  });
+</script>
+
+<div id="link_bar_wrapper">
+  <div id="link_bar">
+
+    <div id="tools">
+      <nobr>
+        <a href="http://www.campusforchrist.org">C4C</a>
+        <a href="http://resources.campusforchrist.org">Resources</a>
+        <a href="http://pat.powertochange.org">Projects</a>
+        <b>Pulse</b>
+        <a href="http://campusforchrist.eventbrite.com">Events</a>
+        <a href="http://www.mygcx.org">GCX</a>
+        <a href="" class="more_tools"><u class="more_tools">more</u> <small class="more_tools">▼</small></a>
+      </nobr>
+    </div>
+
+    <div id="user">
+      <nobr>
+        <b><%= @my.full_name %> (<%= @my.email%>)</b>
+        <%= link_to("Log out", session_url, :method => :delete) %>
+      </nobr>
+    </div>
+
+  </div>
+</div>
+
+<div id="more_tools_box">
+  <a href="http://www.glclive.com" title="Global Learning Centre">GLC</a>
+  <a href="https://mpdtool.powertochange.org">MPD Tool</a>
+</div>
