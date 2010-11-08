@@ -7,6 +7,7 @@ class DashboardController < ApplicationController
   before_filter :set_current_and_next_semester
   
   def index
+    set_notices
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
   

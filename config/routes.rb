@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :notices, :member => { :dismiss => :post }
 
   map.resources :event_groups
 

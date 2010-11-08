@@ -439,6 +439,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def set_notices
+      @dismissed_notice_ids = [0] + @my.dismissed_notices(:select => Notice._(:id)).collect(&:id)
+      @notices = Notice.find(:all, :conditions => [ 
+        "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
+      ])
+    end
+
     def self.skip_standard_login_stack(additional_params = {})
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
     end

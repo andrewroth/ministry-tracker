@@ -30,6 +30,10 @@
            authorized?(:new, :training_categories) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
+                 <%- if authorized?(:new, :training_categories) -%>
+  		    <li<%= ' class="highlighted"' if params[:controller] == "notices" %>>
+  		    <%= link_to 'Notices', notices_path() %></li>
+                 <%- end -%>
   	<%- end -%>
     
   	</ul>

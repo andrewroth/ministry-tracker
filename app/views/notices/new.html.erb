@@ -1,0 +1,19 @@
+<h1>New notice</h1>
+
+<% form_for(@notice) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :message %><br />
+    <%= f.text_area :message, :rows => 4 %>
+  </p>
+  <p>
+    <%= f.label :live %><br />
+    <%= f.check_box :live %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', notices_path %>
