@@ -23,6 +23,9 @@ class Timetable < ActiveRecord::Base
   # defines how many top solutions to display following a 'find common times' search
   DISPLAY_TOP = 5
   
+  # defines the maximum number of characters available for displaying names in cells of compare view
+  MAX_CELL_WIDTH = 16
+  
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   belongs_to :updated_by_person, :class_name => "Person", :foreign_key => _(:updated_by_person_id)
   has_many :free_times, :class_name => "FreeTime", :foreign_key => _(:timetable_id, :free_time), :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
