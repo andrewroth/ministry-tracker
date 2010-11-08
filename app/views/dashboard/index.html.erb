@@ -207,6 +207,21 @@ this system, along with any other information we think would be helpful to you.<
       </div>
     <% end %>
 
+    <% if !is_staff_somewhere && authorized?(:show_total_indicated_decisions, :stats) && @total_indicated_decisions.present? %>
+    <div class="dashmodule">
+      <div class="moduletitle">
+        <h2>God at Work</h2>
+        <div class="modulecontrols">
+          <a href="" class="minmodule"></a>
+          <a href="" class="movemodule"></a>
+          <a href="" class="closemodule"></a>
+        </div>
+      </div>
+      <div class="modulecontent">
+        <%= render :partial => "insights" %>
+      </div>
+    </div>
+    <% end %>
 
     <% if is_ministry_leader %>
     <div class="dashmodule">
