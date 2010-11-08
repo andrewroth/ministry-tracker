@@ -40,7 +40,8 @@ class Person < ActiveRecord::Base
     :conditions => { _(:requested, :group_involvement) => true }
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
-  
+  has_many :dismissed_notices
+              
   def custom_value_hash
     if @custom_value_hash.nil?
       @custom_value_hash = {}
