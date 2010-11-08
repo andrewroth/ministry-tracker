@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :notices, :member => { :dismiss => :post }
 
   map.resources :annual_goals_reports
   map.resources :semester_reports

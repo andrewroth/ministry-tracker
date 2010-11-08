@@ -88,6 +88,11 @@
 			<div class="clear">&nbsp;</div>
 			
 			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+                        <%- if @notices -%>
+                          <%- for notice in @notices -%>
+                            <div class="flash_notice" id="notice_<%= notice.id %>"><%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %></div>
+                          <%- end %>
+                        <%- end %>
 			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
       <div id="instructions" class="flash_notice notice" style="display:none;"></div> 
 			
