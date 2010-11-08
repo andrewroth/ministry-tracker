@@ -139,14 +139,13 @@
             <td>
               <p>
                 <nobr>
-                  Last logged in via PAT or Pulse
                   <% if @person.user.present? && @person.user.last_login.present? %>
                     <span title="at exactly <%=@person.user.last_login%>">
                       Last logged in via PAT or Pulse
-                      <%= "#{time_ago_in_words(@person.user.last_login)} ago" %>
+                      <%= "#{distance_of_time_in_words(Time.zone.now, @person.user.last_login)} ago" %>
                     </span>
                   <% else %>
-                    never
+                    Has never logged in via PAT or Pulse
                   <% end %>
                 </nobr>
               <p/>
@@ -160,7 +159,7 @@
                   <% if @person.timetable.present? && @person.timetable.updated_at.present? %>
                     <span title="at exactly <%=@person.timetable.updated_at%>">
                       Timetable last updated
-                      <%= "#{time_ago_in_words(@person.timetable.updated_at)} ago" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? %>
+                      <%= "#{distance_of_time_in_words(Time.zone.now, @person.timetable.updated_at)} ago" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? %>
                     </span>
                   <% else %>
                     Has never updated their timetable
