@@ -57,7 +57,8 @@
 
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
-          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
+          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me), :title => "Goto your profile") %></small>
+          <small><%= link_to(image_tag('silk/calendar_edit.png'), "/people/#{@my.id}/timetables/#{@my.timetable.id}", :title => "Goto your timetable") %></small>
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
           <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change", :url => switch_list_ministries_url %></div>
             <div id="switch_ministries_list" style="display:none">
@@ -118,5 +119,6 @@
 		</div>
 		</div> <!-- Center -->
 		<%= I18n.t :analytics, :default => "" %>
+                <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
 	</body>
 </html>
