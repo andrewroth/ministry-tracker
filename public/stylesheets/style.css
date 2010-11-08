@@ -2012,3 +2012,15 @@ td.eventAttendees {
 .jqueryValidationError {
 	color: red;
 }
+
+table.groupInvolvementList .highlight {
+  background-color: #F5F5F5;
+}
+
+table.groupInvolvementList td {
+  padding: 5px 0;
+}
+
+table.groupInvolvementList th {
+  font-weight: bold;
+}
