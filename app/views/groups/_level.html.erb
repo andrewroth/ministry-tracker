@@ -28,7 +28,7 @@
                     :method => :post
 } ) do 
 -%>
-<table width="70%" border="0" cellspacing="0" cellpadding="5">
+<table width="70%" border="0" cellspacing="0" cellpadding="5" class="groupInvolvementList">
   <tr>
     <%- if authorized?(:transfer, :group_involvements) || authorized?(:change_level, :group_involvements) -%>
       <th width='20px'>
