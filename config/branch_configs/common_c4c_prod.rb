@@ -4,4 +4,5 @@ module Common
   STAGE = "prod"
   DISABLE_MOONSHINE = true
   ALLOW_IMPERSONATING = false
+  SEE_VOLUTION = "seevolution here"
 end
