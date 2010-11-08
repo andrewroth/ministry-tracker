@@ -1,6 +1,6 @@
 class CreateNotices < ActiveRecord::Migration
   def self.up
-    create_table :notices do |t|
+    create_table Notice.table_name do |t|
       t.text :message
       t.boolean :live
 
@@ -9,6 +9,6 @@ class CreateNotices < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :notices
+    drop_table Notice.table_name
   end
 end
