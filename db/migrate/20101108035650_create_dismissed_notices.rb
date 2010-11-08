@@ -1,6 +1,6 @@
 class CreateDismissedNotices < ActiveRecord::Migration
   def self.up
-    create_table :dismissed_notices do |t|
+    create_table DismissedNotice.table_name do |t|
       t.integer :person_id
       t.integer :notice_id
 
@@ -9,6 +9,6 @@ class CreateDismissedNotices < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :dismissed_notices
+    drop_table DismissedNotice.table_name
   end
 end
