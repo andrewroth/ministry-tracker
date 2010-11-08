@@ -11,7 +11,7 @@
 <div style="float:right">
   <% if @timetable.updated_at.present? %>
     <span title="at exactly <%=@timetable.updated_at%>">
-      Last updated <%= distance_of_time_in_words(Time.zone.now, @timetable.updated_at) %> ago<%= ", by #{@timetable.updated_by_person.full_name}" if @timetable.updated_by_person.present? %>
+      Last updated <%= time_ago_in_words(@timetable.updated_at) %> ago<%= ", by #{@timetable.updated_by_person.full_name}" if @timetable.updated_by_person.present? %>
     </span>
   <% else %>
     Timetable never updated
