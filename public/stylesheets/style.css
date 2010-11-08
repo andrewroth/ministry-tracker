@@ -2056,14 +2056,14 @@ table.groupInvolvementList th {
 
 #dashboardInsightsContainer #campusInsights {
   float: left;
-  width: 40%;
+  width: 35%;
   text-align: center;
   margin-top: 3em;
 }
 
 #dashboardInsightsContainer #totalInsights {
   float: right;
-  width: 40%;
+  width: 35%;
   text-align: center;
 }
 
