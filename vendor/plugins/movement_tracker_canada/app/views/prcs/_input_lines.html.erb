@@ -1,4 +1,12 @@
 <%
+def correct_error_messages(messages)
+  stats_reports[:indicated_decision_report].sort {|y,x| x[1][:column].to_s.length <=> y[1][:column].to_s.length}.each do |k, v|
+    messages = messages.gsub(v[:column].to_s.humanize, "'#{v[:label]}'")
+  end
+  messages
+end
+
+
 def message_span(id, classname)
   " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
 end
@@ -7,7 +15,7 @@ end
 
 <br>
     <% form_for(prc) do |f| %>
-      <%= f.error_messages %>
+      <%= correct_error_messages(f.error_messages) %>
 			<%= f.hidden_field :id %>
  <%
 lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}

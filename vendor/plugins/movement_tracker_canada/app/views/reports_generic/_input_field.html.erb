@@ -1,4 +1,9 @@
 <%
+def show_label(input_stat, required_indicator)
+  show_label = input_stat[:submit_label] ? input_stat[:submit_label] : input_stat[:label]
+  "#{show_label}#{required_indicator}: "
+end
+
 def message_span(id, classname)
   " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
 end
@@ -7,8 +12,9 @@ end
   if input_stat[:column_type] == :database_column
     required_indicator = input_stat[:required] ? "*" : ""
 %>
-      <p class="statsFormField">
-        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
+      <tr class="statsFormField">
+        <td><%= f.label input_stat[:column], show_label(input_stat, required_indicator) %></td>
+        <td>
         <%= case input_stat[:display_type]
             when :text_positive_integer
               f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" 
@@ -42,7 +48,8 @@ end
             elsif required
               message_span("prc[#{input_stat[:column]}]", "required")
             end %>
-      </p>
+        </td>
+      </tr>
 <%
   end
 %>

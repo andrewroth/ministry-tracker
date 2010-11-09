@@ -27,14 +27,19 @@ class PrcsController < ApplicationController
   end
   
 
-  # GET /prcs/new
-  # GET /prcs/new.xml
-  def new
+  def new_prc
     @prc = Prc.new
           
     @prc.semester_id = active_data(:semester_id)
     @prc.campus_id = active_data(:campus_id)
     @prc.prc_date = default_date
+    
+  end
+
+  # GET /prcs/new
+  # GET /prcs/new.xml
+  def new
+    new_prc
     
     setup_campuses_and_semesters
 
@@ -107,12 +112,10 @@ class PrcsController < ApplicationController
   
   def create_or_update
     @prc = Prc.find(params[:prc][:id]) unless params[:prc][:id].nil? || params[:prc][:id] == ''
-  
-    if @prc
-      success_update = true if @prc.update_attributes(params[:prc])
-    else
-      success_update = true if @prc = Prc.new(params[:prc])
-    end
+    @prc ||= Prc.new
+
+    success_update = false    
+    success_update = true if @prc.update_attributes(params[:prc])
   
     respond_to do |format|
       if success_update
@@ -123,6 +126,9 @@ class PrcsController < ApplicationController
         format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
       else
+        
+        setup_campuses_and_semesters()
+        
         format.html { render :action => "edit" }
         format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
       end
