@@ -1,0 +1,2 @@
+  page.replace_html("reportInputFields", :partial => "reports_generic/input_lines", :locals => { :report => @report })
+  
