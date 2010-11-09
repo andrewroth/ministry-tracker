@@ -3,9 +3,16 @@
 <div class="divider" style="margin-bottom:0;">&nbsp;</div>
 <br />
 <%- if @can_edit -%>
-  <div class="butNormal" style="margin-top:20px;">
-    <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
-  </div>
+  <%- if @printable -%>
+	 <!-- DO *NOT* SHOW LINKS -->
+	<%- elsif -%>
+	  <div class="butNormal" style="margin-top:20px;">
+	    <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
+	  </div>
+		&nbsp;&nbsp;
+		<small><%= link_to(image_tag('silk/printer.png'), person_timetable_path(@person, @timetable, :print_it => "true"),
+	  :title => "Print timetable", :popup => ['Print_Timetable', 'height=768,width=1024']) %></small>
+	<%- end -%>
 <%- end -%>
 
 <div style="float:right">

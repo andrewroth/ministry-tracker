@@ -15,10 +15,19 @@ class TimetablesController < ApplicationController
   def index
     render :layout => 'manage'
   end
+  
+#  def print
+#    printer = 'bugged'
+#       debugger   
+#    render :layout => false
+#  end
 
   # GET /timetables/1
   # GET /timetables/1.xml
   def show
+    if params[:print_it] == "true"
+      @printable = true;
+    end
     if @can_show
       respond_to do |format|
         format.html # show.html.erb
@@ -247,7 +256,12 @@ class TimetablesController < ApplicationController
       @me = @my = @person = Person.find(session[:signup_person_id])
     end
 
-    def get_layout
+    def get_layout ()
+      if params[:print_it] == "true"
+        print = 'whatever'
+        debugger
+         return 'printable';
+      end
       @signup ? 'application' : 'people'
     end
 end
