@@ -7,6 +7,7 @@
     <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable)) %>
   </div>
 <%- end -%>
+
 <div style="float:right">
   <% if @timetable.updated_at.present? %>
     <span title="at exactly <%=@timetable.updated_at%>">
@@ -16,6 +17,7 @@
     Timetable never updated
   <% end %>
 </div>
+
 <%- if @can_edit || @can_show -%>
 <div class="statusheadwrap">
   <div class="badhead"></div>

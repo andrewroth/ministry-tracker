@@ -139,14 +139,13 @@
             <td>
               <p>
                 <nobr>
-                  Last logged in via PAT or Pulse
                   <% if @person.user.present? && @person.user.last_login.present? %>
                     <span title="at exactly <%=@person.user.last_login%>">
                       Last logged in via PAT or Pulse
                       <%= "#{time_ago_in_words(@person.user.last_login)} ago" %>
                     </span>
                   <% else %>
-                    never
+                    Has never logged in via PAT or Pulse
                   <% end %>
                 </nobr>
               <p/>
