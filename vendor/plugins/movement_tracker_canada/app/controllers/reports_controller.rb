@@ -42,10 +42,6 @@ class ReportsController < ApplicationController
     report_model.nil? ? '' : report_model.to_s.underscore
   end
 
-  def new
-    
-  end
-
 
   # GET /weekly_reports
   # GET /weekly_reports.xml
@@ -134,7 +130,22 @@ class ReportsController < ApplicationController
   end
 
   def get_current_campus_id
-    @current_campus_id ||= get_ministry.unique_campuses.first.id
+    unless @current_campus_id
+      campus_found = nil
+      campus_count = {}
+      last_3_campuses = WeeklyReport.find(:all, :conditions => {:staff_id => get_current_staff_id}, :limit => 3).collect{|wr| wr[:campus_id]}
+      last_3_campuses.each do |c|
+        campus_count[c] ||= 0
+        campus_count[c] += 1
+      end
+      
+      last_3_campuses.each do |cf|
+        campus_found = cf if campus_found.nil? || campus_count[cf] >= campus_count[campus_found]
+      end
+      @current_campus_id ||= campus_found
+      @current_campus_id ||= get_ministry.unique_campuses.first.id
+    end
+    @current_campus_id
   end
 
   def get_current_year_id
