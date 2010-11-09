@@ -189,11 +189,12 @@ class DashboardController < ApplicationController
   def setup_insights
     @total_indicated_decisions = Year.current.evaluate_stat(nil, stats_reports[:indicated_decisions_report][:indicated_decisions])
 
-    my_campuses = get_ministry.unique_campuses
+    my_campus = @person.primary_campus
+    my_campus = @my.campuses.first unless my_campus.present?
 
-    if my_campuses.size == 1
-      @campus_indicated_decisions = Year.current.evaluate_stat(my_campuses.first.id, stats_reports[:indicated_decisions_report][:indicated_decisions])
-      @insights_campus = my_campuses.first
+    if my_campus.present?
+      @campus_indicated_decisions = Year.current.evaluate_stat(my_campus.id, stats_reports[:indicated_decisions_report][:indicated_decisions])
+      @insights_campus = my_campus
     else
       @campus_indicated_decisions = nil
     end
