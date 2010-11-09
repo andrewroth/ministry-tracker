@@ -8,7 +8,7 @@ function selectMonthlyInputFields() {
     data: getRecordInfos(),
     dataType:'script',
     type:'post',
-    url:'/monthly_reports/select_monthly_report'})
+    url:'/monthly_reports/select_report'})
 }
 
 
@@ -19,7 +19,7 @@ function getRecordInfos()
   return "month_id=" + month_id + "&campus_id=" + campus_id;
 }
  
- function beginLoadingMonthlyInputTab() {
+ function beginLoadingInputTab() {
   jQuery('.reportInputContainer').hide();
   jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
