@@ -1257,6 +1257,10 @@ div.choose_ministry_tree {
   float: none; /* needed for IE */
 }
 
+.statsFormField td {
+	width: 50%;
+}
+
 .statsFormField select {
   height: auto;
   width: auto;

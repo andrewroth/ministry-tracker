@@ -7,7 +7,7 @@ function selectWeeklyInputFields() {
     data: getRecordInfos(),
     dataType:'script',
     type:'post',
-    url:'/weekly_reports/select_weekly_report'})
+    url:'/weekly_reports/select_report'})
 }
 
 
@@ -18,7 +18,7 @@ function getRecordInfos()
   return "week_id=" + week_id + "&campus_id=" + campus_id;
 }
  
- function beginLoadingWeeklyInputTab() {
+ function beginLoadingInputTab() {
   jQuery('.reportInputContainer').hide();
   jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');

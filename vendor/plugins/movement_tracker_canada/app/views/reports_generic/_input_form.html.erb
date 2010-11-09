@@ -1,0 +1,62 @@
+<%
+def correct_error_messages(messages)
+  @input_lines.sort {|y,x| x[1][:column].to_s.length <=> y[1][:column].to_s.length}.each do |k, v|
+    messages = messages.gsub(v[:column].to_s.humanize, "'#{v[:label]}'")
+  end
+  messages
+end
+
+%>
+    <% form_for(@report) do |f| %>
+      <%= correct_error_messages(f.error_messages) %>
+    <table>
+<%
+  @id_fields.each do |id_l|
+    case id_l
+      when :week_id
+%>
+      <tr class="statsFormField">
+        <td><%= f.label :week, "Week ending on:" %></td>
+        <td><%= f.collection_select :week_id, @weeks, :week_id, :week_endDate, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+      </tr>
+<%
+      when :month_id
+%>
+        <tr class="statsFormField">
+          <td><%= f.label :month, "Month:" %></td>
+          <td><%= f.collection_select :month_id, @months, :month_id, :month_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+        </tr>
+<%
+      when :semester_id
+%>
+        <tr class="statsFormField">
+          <td><%= f.label :semester, "Semester:" %></td>
+          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+        </tr>
+<%
+      when :year_id
+%>
+        <tr class="statsFormField">
+          <td><%= f.label :year, "Year:" %></td>
+          <td><%= f.collection_select :year_id, @years, :year_id, :year_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+        </tr>
+<%
+      when :campus_id
+%>
+      <tr class="statsFormField">
+        <td><%= f.label :campus, "Campus:" %></td>
+        <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+      </tr>
+<%
+    end
+  end			
+%>
+			
+    </table>
+    <% end %>
+    <div id="inputFields" class="inputsContainer">
+      <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+        <div id="reportInputFields" class="reportInputContainer">
+        <%= render :partial => 'reports_generic/input_lines', :locals => { :report => @report } %>     
+        </div>
+    </div>
