@@ -1,0 +1,13 @@
+<p>
+  <b>Message:</b>
+  <%=h @notice.message %>
+</p>
+
+<p>
+  <b>Live:</b>
+  <%=h @notice.live %>
+</p>
+
+
+<%= link_to 'Edit', edit_notice_path(@notice) %> |
+<%= link_to 'Back', notices_path %>
