@@ -73,6 +73,7 @@ class TimetablesController < ApplicationController
 
       @person ||= get_person
       @timetable.update_attributes(:updated_by_person_id => @my.id)
+      @timetable.touch
       return if @signup
 
       respond_to do |format|

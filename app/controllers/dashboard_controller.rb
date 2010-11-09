@@ -8,6 +8,7 @@ class DashboardController < ApplicationController
 
 
   def index
+    set_notices
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
   
@@ -15,6 +16,8 @@ class DashboardController < ApplicationController
     @group_stats = [ ]
       
     setup_stats
+    setup_insights
+    
 
     if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
@@ -181,5 +184,19 @@ class DashboardController < ApplicationController
 
     @tt_last_week = timetables_week.total
     @tt_last_month = timetables_month.total
+  end
+
+  def setup_insights
+    @total_indicated_decisions = Year.current.evaluate_stat(nil, stats_reports[:indicated_decisions_report][:indicated_decisions])
+
+    my_campus = @person.primary_campus
+    my_campus = @my.campuses.first unless my_campus.present?
+
+    if my_campus.present?
+      @campus_indicated_decisions = Year.current.evaluate_stat(my_campus.id, stats_reports[:indicated_decisions_report][:indicated_decisions])
+      @insights_campus = my_campus
+    else
+      @campus_indicated_decisions = nil
+    end
   end
 end

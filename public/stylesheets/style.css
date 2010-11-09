@@ -187,8 +187,6 @@ background: #ffffcc;
 }
 
 
-
-
 .butProfile a {
 padding-left:20px;
 border:0px solid black;
@@ -196,24 +194,43 @@ height:18px;
 background:url(../images/zoom.png) top left no-repeat;
 }
 
-.butUpdate a {
+.butUpdate a, .butDelete a {
 padding:5px 5px 5px 5px;
 padding-left:20px;
 border:1px solid #ccc;
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
 height:18px;
 }
 
-
-.butUpdate a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+.butUpdate a {
+background: #fff url(../images/edit.png) 3px 5px no-repeat;
 }
 
-.butUpdate {
+.butDelete a {
+background: #fff url(../images/delete.png) 3px 5px no-repeat;
+}
+
+
+.butUpdate a:hover, .butDelete a:hover {
+text-decoration:none;
+border:1px solid #1F429B;
+}
+
+.butUpdate a:hover {
+background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+}
+
+.butDelete a:hover {
+background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
+}
+
+.butUpdate, .butDelete {
 margin:5px 0 0 0;
 float:right;
+}
+
+.actionButtons {
+  margin: 5px 0;
+float:left;
 }
 
 .butDExcel {
@@ -1257,6 +1274,10 @@ div.choose_ministry_tree {
   float: none; /* needed for IE */
 }
 
+.statsFormField td {
+	width: 50%;
+}
+
 .statsFormField select {
   height: auto;
   width: auto;
@@ -2011,4 +2032,68 @@ td.eventAttendees {
 
 .jqueryValidationError {
 	color: red;
+}
+
+table.groupInvolvementList .highlight {
+  background-color: #F5F5F5;
+}
+
+table.groupInvolvementList td {
+  padding: 5px 0;
+}
+
+table.groupInvolvementList th {
+  font-weight: bold;
+}
+
+#dashboardInsightsContainer {
+  background-image: url(/images/canada.gif);
+  background-repeat: no-repeat;
+  background-position: top center;
+  height: 140px;
+  text-align: center;
+  position: relative;
+}
+
+#dashboardInsightsContainer #campusInsights {
+  font-size: 70%;
+}
+
+#dashboardInsightsContainer #totalInsights {
+  font-size: 140%;
+}
+
+#dashboardInsightsContainer h1 {
+  font-weight: bold;
+  color: #1F429B;
+  font-size: 4em;
+}
+
+#dashboardInsightsContainer h2 {
+  font-weight: bold;
+  color: #1F429B;
+  font-size: 1.5em;
+}
+
+#dashboardInsightsContainer #campusInsights {
+  float: left;
+  width: 35%;
+  text-align: center;
+  margin-top: 3em;
+}
+
+#dashboardInsightsContainer #totalInsights {
+  float: right;
+  width: 35%;
+  text-align: center;
+}
+
+#dashboardInsightsContainer #insightsSubTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  float: left;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }

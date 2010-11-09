@@ -1,0 +1,55 @@
+<%
+def show_label(input_stat, required_indicator)
+  show_label = input_stat[:submit_label] ? input_stat[:submit_label] : input_stat[:label]
+  "#{show_label}#{required_indicator}: "
+end
+
+def message_span(id, classname)
+  " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
+end
+
+  required = false
+  if input_stat[:column_type] == :database_column
+    required_indicator = input_stat[:required] ? "*" : ""
+%>
+      <tr class="statsFormField">
+        <td><%= f.label input_stat[:column], show_label(input_stat, required_indicator) %></td>
+        <td>
+        <%= case input_stat[:display_type]
+            when :text_positive_integer
+              f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" 
+
+            when :text_area
+              required = true
+              f.text_area input_stat[:column], :size => "20x4", :class => "required"
+
+            when :date_picker
+              f.date_select(input_stat[:column], :size => 7, :class => "yyyymmdd")
+
+            when :checkbox
+              f.check_box input_stat[:column]
+
+            when :drop_down
+
+              if input_stat[:drop_down_data] == :campus
+                f.collection_select :campus_id, @campuses, :campus_id, :campus_desc
+              elsif input_stat[:drop_down_data] == :semester
+                f.collection_select :semester_id, @semesters, :semester_id, :semester_desc
+              elsif input_stat[:drop_down_data] == :prc_method
+                f.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc
+              end
+              
+            else
+              required = true
+              f.text_field input_stat[:column], :size => 16, :class => "required"
+            end %>
+        <%= if input_stat[:display_type] == :date_picker
+              message_span("prc[#{input_stat[:column]}]", "yyyymmdd")
+            elsif required
+              message_span("prc[#{input_stat[:column]}]", "required")
+            end %>
+        </td>
+      </tr>
+<%
+  end
+%>
