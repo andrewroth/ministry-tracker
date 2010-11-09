@@ -1,0 +1,16 @@
+<div id="dashboardInsightsContainer">
+  <% if @insights_campus.present? && @campus_indicated_decisions.present? && false %>
+  <div id="campusInsights">
+    <h1><%= @campus_indicated_decisions %></h1>
+    <h2><%= @insights_campus.desc %></h2>
+  </div>
+  <% end %>
+  <div id="totalInsights">
+    <h1><%= @total_indicated_decisions %></h1>
+    <h2>Canada</h2>
+  </div>
+  <br/>
+  <div id="insightsSubTitle">
+    <p>Indicated Decisions</p>
+  </div>
+</div>
