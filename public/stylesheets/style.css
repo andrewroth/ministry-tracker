@@ -187,8 +187,6 @@ background: #ffffcc;
 }
 
 
-
-
 .butProfile a {
 padding-left:20px;
 border:0px solid black;
@@ -196,24 +194,43 @@ height:18px;
 background:url(../images/zoom.png) top left no-repeat;
 }
 
-.butUpdate a {
+.butUpdate a, .butDelete a {
 padding:5px 5px 5px 5px;
 padding-left:20px;
 border:1px solid #ccc;
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
 height:18px;
 }
 
-
-.butUpdate a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+.butUpdate a {
+background: #fff url(../images/edit.png) 3px 5px no-repeat;
 }
 
-.butUpdate {
+.butDelete a {
+background: #fff url(../images/delete.png) 3px 5px no-repeat;
+}
+
+
+.butUpdate a:hover, .butDelete a:hover {
+text-decoration:none;
+border:1px solid #1F429B;
+}
+
+.butUpdate a:hover {
+background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+}
+
+.butDelete a:hover {
+background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
+}
+
+.butUpdate, .butDelete {
 margin:5px 0 0 0;
 float:right;
+}
+
+.actionButtons {
+  margin: 5px 0;
+float:left;
 }
 
 .butDExcel {

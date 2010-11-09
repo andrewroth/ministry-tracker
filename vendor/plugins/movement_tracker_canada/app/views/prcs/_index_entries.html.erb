@@ -24,9 +24,7 @@ lines.each do | key, input_stat |
   end 
 end
 %>  
-    <th>
-    	
-    </th>
+    <td></td>
 </tr>
 
 <% @prcs.each do |prc| %>
@@ -42,9 +40,11 @@ end
 	  end
 	end
 	%>
-		<td><%= # link_to 'x', url_for(:controller => :stats, :action => :edit, :prc => prc ) 
-         %><div class="butUpdate">
+		<td>
+			   <div class="butUpdate actionButtons">
 		    <%= link_to 'Edit', url_for(:controller => :prcs, :action => 'edit', :id => prc.id) %></div>
+				<div class="butDelete actionButtons">
+	      <%= link_to 'Delete', prc_url(prc.id), :confirm => 'Delete this story?', :method => :delete %></div>
 		</td>
 
  </tr>
