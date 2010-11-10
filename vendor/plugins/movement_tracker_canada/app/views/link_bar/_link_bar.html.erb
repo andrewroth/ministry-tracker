@@ -5,12 +5,34 @@
 
     $("a.more_tools").click(function(e) {
       e.preventDefault();
-      $("div#more_tools_box").toggle();
+      box = $("div#more_tools_box")
+      box.css('left', $("a.more_tools").position().left);
+      box.toggle();
+    });
+
+    $("a.project").click(function(e) {
+      e.preventDefault();
+      box = $("div#project_box")
+      box.css('left', $("a.project").position().left);
+      box.toggle();
+    });
+
+    $("a.staff").click(function(e) {
+      e.preventDefault();
+      box = $("div#staff_box")
+      box.css('left', $("a.staff").position().left);
+      box.toggle();
     });
 
     $(document).mouseup(function(e) {
       if($(e.target).parent("a.more_tools").length == 0) {
         $("div#more_tools_box").hide();
+      }
+      if($(e.target).parent("a.project").length == 0) {
+        $("div#project_box").hide();
+      }
+      if($(e.target).parent("a.staff").length == 0) {
+        $("div#staff_box").hide();
       }
     });
 
@@ -24,11 +46,14 @@
       <nobr>
         <a class="ll" href="http://www.campusforchrist.org">C4C</a>
         <a class="ll" href="http://resources.campusforchrist.org">Resources</a>
-        <a class="ll" href="http://pat.powertochange.org">Projects</a>
+        <a class="ll menu_link project" href=""><u>Projects</u><small>▼</small></a>
         <b class="ll">Pulse</b>
         <a class="ll" href="http://campusforchrist.eventbrite.com">Events</a>
         <a class="ll" href="http://www.mygcx.org">GCX</a>
-        <a class="ll more_tools" href=""><u class="more_tools">more</u> <small class="more_tools">▼</small></a>
+        <a class="ll menu_link more_tools" href=""><u>more</u><small>▼</small></a>
+        <% if is_staff_somewhere(@me) %>
+          <a class="ll menu_link staff" href=""><u>Staff</u><small>▼</small></a>
+        <% end %>
       </nobr>
     </div>
 
@@ -42,7 +67,22 @@
   </div>
 </div>
 
-<div id="more_tools_box">
+<div id="project_box" class="link_menu_box">
+  <a href="https://pat.powertochange.org">Apply</a>
+  <a href="http://gototheworld.com">Explore</a>
+  <a href="https://pat.powertochange.org">PAT</a>
+</div>
+
+<div id="more_tools_box" class="link_menu_box">
   <a href="http://www.glclive.com" title="Global Learning Centre">GLC</a>
   <a href="https://mpdtool.powertochange.org">MPD Tool</a>
 </div>
+
+<% if is_staff_somewhere(@me) %>
+<div id="staff_box" class="link_menu_box">
+  <a href="https://www.mygcx.org/C4C_Staff_Intranet/screen/home" title="Staff Dashboard">Stash</a>
+  <a href="https://docs.google.com/a/c4c.ca">Documents</a>
+  <a href="https://www.google.com/calendar/hosted/c4c.ca">Calendar</a>
+  <a href="http://staff.powertochange.org">The Loop</a>
+</div>
+<% end %>
