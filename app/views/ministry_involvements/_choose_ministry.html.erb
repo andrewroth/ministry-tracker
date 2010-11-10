@@ -20,6 +20,10 @@
       root: <%= get_ministry.root.to_hash_with_children.to_json %>
     });
 
+    // sort alphabetically 
+    var treeSorter = new Ext.tree.TreeSorter(tree, {});
+    treeSorter.doSort(tree.getRootNode());
+
     // render the tree
     tree.render('choose_ministry_tree_<%=uid%>');
     tree.getRootNode().expand();
