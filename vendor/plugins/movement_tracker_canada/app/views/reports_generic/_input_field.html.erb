@@ -1,42 +1,35 @@
 <%
-def correct_error_messages(messages)
-  stats_reports[:indicated_decision_report].sort {|y,x| x[1][:column].to_s.length <=> y[1][:column].to_s.length}.each do |k, v|
-    messages = messages.gsub(v[:column].to_s.humanize, "'#{v[:label]}'")
-  end
-  messages
+def show_label(input_stat, required_indicator)
+  show_label = input_stat[:submit_label] ? input_stat[:submit_label] : input_stat[:label]
+  "#{show_label}#{required_indicator}: "
 end
-
 
 def message_span(id, classname)
   " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
 end
 
-%>
-
-<br>
-    <% form_for(prc) do |f| %>
-      <%= correct_error_messages(f.error_messages) %>
-			<%= f.hidden_field :id %>
- <%
-lines = stats_reports[:indicated_decision_report].sort { |a,b| a[1][:order] <=> b[1][:order]}
-lines.each do | key, input_stat |
-	required = false
+  required = false
   if input_stat[:column_type] == :database_column
     required_indicator = input_stat[:required] ? "*" : ""
 %>
-      <p class="statsFormField">
-        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
-        <%= if input_stat[:display_type] == :text_area
+      <tr class="statsFormField">
+        <td><%= f.label input_stat[:column], show_label(input_stat, required_indicator) %></td>
+        <td>
+        <%= case input_stat[:display_type]
+            when :text_positive_integer
+              f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" 
+
+            when :text_area
               required = true
               f.text_area input_stat[:column], :size => "20x4", :class => "required"
 
-            elsif input_stat[:display_type] == :date_picker
+            when :date_picker
               f.date_select(input_stat[:column], :size => 7, :class => "yyyymmdd")
 
-            elsif input_stat[:display_type] == :checkbox
+            when :checkbox
               f.check_box input_stat[:column]
 
-            elsif input_stat[:display_type] == :drop_down
+            when :drop_down
 
               if input_stat[:drop_down_data] == :campus
                 f.collection_select :campus_id, @campuses, :campus_id, :campus_desc
@@ -55,15 +48,8 @@ lines.each do | key, input_stat |
             elsif required
               message_span("prc[#{input_stat[:column]}]", "required")
             end %>
-      </p>
-      <br>
+        </td>
+      </tr>
 <%
   end
-end
 %>
-      <p>
-        <br/>
-        <div class="center"><%= f.submit "Submit" %></div>
-      </p>
-      <br/>
-    <% end %>

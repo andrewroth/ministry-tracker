@@ -1,0 +1,28 @@
+<%= javascript_include_tag "inputLiveValidations.js" %>
+<%= javascript_include_tag "weekly_reports.js" %>
+
+<h1 id="statsTitle">Measurements</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div id="newWeeklyReportFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Submit your weekly numbers</h2>
+    <br/>
+    <%= render :partial => 'reports_generic/input_form'%>
+  </div>
+</div>
+
+<div id="statsDescriptions">
+  <p>
+    <p><h3>Spiritual Conversations:</h3> Able to speak about God, spiritual questions, but were not able to share four points of Gospel and explain how someone could pray to receive Christ. However, if doing a survey and the conversation does not go beyond the content of the survey questions, this would not be a spiritual conversation. If two staff together, the main 'sharer' should record. If staff and student, staff should record as "spiritual conversation" regardless of who did most of the sharing.</p>
+    <p><h3>Spiritual Conversations by Disciples:</h3> Able to speak about God, spiritual questions, but were not able to share four points of Gospel and explain how someone could pray to receive Christ. However if doing a survey and the conversation does not go beyond the content of the survey questions, this would not be a spiritual conversation. This would be one student alone or a couple of students together but no staff present.</p>
+    <p><h3>Gospel Presentations:</h3> The four points of the Gospel and how someone can pray to receive Christ were clearly presented. If two staff together, the main 'sharer' should record. If staff and student, staff should record as "gospel presentation" regardless of who did most of the sharing.</p>
+    <p><h3>Gospel Presentations by Disciple:</h3> The four points of the Gospel and how someone can pray to receive Christ were clearly presented. This would be one student alone or a couple of students together but no staff present.</p>
+    <p><h3>Holy Spirit Presentations:</h3> This is a one to one presentation of the ministry of the Holy Spirit, including an opportunity to pray to be filled and an explanation of spiritual breathing. If staff and student, staff should record as "Holy Spirit presentation" regardless of who did most of the sharing.</p>
+  </p>
+</div>
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

@@ -8,7 +8,7 @@ function selectInputFields() {
     data: getRecordInfos(),
     dataType:'script',
     type:'post',
-    url:'/annual_goals_reports/select_annual_goals_report'})
+    url:'/annual_goals_reports/select_report'})
 }
 
 
@@ -19,7 +19,7 @@ function getRecordInfos()
   return "year_id=" + year_id + "&campus_id=" + campus_id;
 }
  
- function beginLoadingAnnualGoalsInputTab() {
+ function beginLoadingInputTab() {
   jQuery('.reportInputContainer').hide();
   jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');
