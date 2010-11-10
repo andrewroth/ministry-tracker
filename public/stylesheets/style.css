@@ -1001,7 +1001,7 @@ div#userbar {
 }
 
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 30px; margin-top: 6px;}
+div#userblock {float: right; padding-right: 30px; margin-top: 6px; text-align: right;}
 
 div#userbar small {font-size:11px;}
 
@@ -1141,11 +1141,16 @@ div.section {
 #switch_ministries_list {
   position: absolute;  
   z-index: 500;
+  text-align: left;
+
+  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 div.choose_ministry_tree {
   position: absolute;
   z-index: 500;
+  
+  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 .statusheadwrap {
