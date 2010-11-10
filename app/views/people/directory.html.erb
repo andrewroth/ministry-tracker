@@ -155,19 +155,31 @@
   <%- end -%>
       <%- @view.columns.each do |column| -%>
 				<td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%= 
-				case column.column_type
-				when 'image'
+				case
+                when column.from_clause == "Timetable" && column.title == "Timetable Updated"
+                  if person[column.safe_name].present?
+                    # CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00') conversion is hard coded in the db, but rails will receive this time and think it's your system time
+                    # we need to convert to UTC to properly do the comparison
+                    time = Time.parse(person[column.safe_name]) # this is the time in PST (-08:00) but rails thinks it's your local system time
+                    time = time + 8.hours # this is the time in UTC but rails still thinks it's your local system time
+                    time = Time.utc(time.year, time.month, time.day, time.hour, time.min, time.sec) # this is the time in UTC and now rails thinks it's UTC
+                    "#{distance_of_time_in_words(Time.now.utc, time)} ago"
+                  else
+                    "never"
+                  end
+
+				when column.column_type == 'image'
 				  if person[column.safe_name]
 				    file_id, filename = person[column.safe_name].split('|')
             filename = filename.split('.')
             filename = filename[0] + '_mini.' + filename[1]
   				  image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")  if defined?(Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name)
 				  end
-				when 'date'
+				when column.column_type == 'date'
 				  format_date(person[column.safe_name])
-				when 'gender'
+				when column.column_type == 'gender'
 				  @person.human_gender(person[column.safe_name])
-				when 'url'
+				when column.column_type == 'url'
 				  unless person[column.safe_name].blank?
   				  desc, url = parse_url(person[column.safe_name])
   				  link_to(desc, url, :target => '_blank')
@@ -177,7 +189,7 @@
   			end %></td>
 	    <%- end -%>
 				<td class="alignright">
-				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :method => :delete, :confirm => "You are about to remove this person from all ministries and campuses they are a part of. Are you SURE you want to continue?") if @can_delete %>
+				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
 				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']) %></span>
 				</td>
 			</tr>

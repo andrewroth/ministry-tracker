@@ -1,4 +1,4 @@
-<tr>
+<tr class="<%= cycle('highlight', 'nohighlight') %>">
   <%- person.initialize_addresses(:current_address) if person.current_address.nil? -%>
   <%- if authorized?(:transfer, :group_involvements) || authorized?(:change_level, :group_involvements) %>
     <td width="20px">
@@ -10,5 +10,13 @@
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>
   <td><%= person.current_address.alternate_phone %></td>
-  <td><%= person.timetable.try(:updated_at) %></td>
+  <td>
+    <% if person.timetable.present? && person.timetable.updated_at.present? %>
+      <% last_updated = "#{time_ago_in_words(person.timetable.updated_at)} ago" %>
+      <% last_updated += ", by #{person.timetable.updated_by_person.full_name}" if person.timetable.updated_by_person.present? %>
+      <%= link_to(last_updated, "/people/#{person.id}/timetables/#{person.timetable.id}", :title => "Goto #{person.first_name}'s timetable") %>
+    <% else %>
+      never
+    <% end %>
+  </td>
 </tr>

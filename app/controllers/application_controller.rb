@@ -183,7 +183,7 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states],
+                  :set_permanent_address_states, :new],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -214,13 +214,15 @@ class ApplicationController < ActionController::Base
         end
       end
       
+      original_action = action || action_name
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
       controller ||= controller_name.to_s
 
       # Make sure we're always using strings      
       action = action.to_s
-      controller = controller.to_s     
+      controller = controller.to_s
+      original_action = original_action.to_s
       
       # Owner Action Checking
       # NOTE: These need to be done after action & controller are set
@@ -231,10 +233,12 @@ class ApplicationController < ActionController::Base
           if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
             return true
           end
-
-          if params[:id] && params[:id] == @my.id.to_s
+          
+          # also return true if person is destroying self-involvements (don't return true for creation of new profile)
+          if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
             return true
           end
+          
         when :profile_pictures, :timetables
           if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
             return true
@@ -469,11 +473,12 @@ class ApplicationController < ActionController::Base
     end
     
     def force_campus_set
+      return false unless @my
       if !is_staff_somewhere && @my.campus_involvements.empty?
-        redirect_to set_initial_campus_person_url(@person.id)
+        redirect_to set_initial_campus_person_url(@my.id)
         return false
       elsif is_staff_somewhere && @my.ministry_involvements.empty?
-        redirect_to set_initial_ministry_person_url(@person.id)
+        redirect_to set_initial_ministry_person_url(@my.id)
         return false
       end
       true
@@ -485,6 +490,13 @@ class ApplicationController < ActionController::Base
       else
         request.protocol + request.host
       end
+    end
+
+    def set_notices
+      @dismissed_notice_ids = [0] + @my.dismissed_notices(:select => Notice._(:id)).collect(&:id)
+      @notices = Notice.find(:all, :conditions => [ 
+        "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
+      ])
     end
 
     def self.skip_standard_login_stack(additional_params = {})

@@ -7,10 +7,7 @@ lines = stats_reports[:weekly_report].sort { |a,b| a[1][:order] <=> b[1][:order]
 lines.each do | key, input_stat |
   if input_stat[:column_type] == :database_column
 %>
-      <p class="statsFormField">
-        <%= f.label input_stat[:column], input_stat[:label] %>
-        <%= f.text_field input_stat[:column], :size => 4 %>
-      </p>
+    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f } %>
 <%
   end
 end
@@ -18,10 +15,7 @@ lines = stats_reports[:weekly_p2c_special].sort { |a,b| a[1][:order] <=> b[1][:o
 lines.each do | key, input_stat |
   if input_stat[:column_type] == :database_column
 %>
-      <p class="statsFormField">
-        <%= f.label input_stat[:column], input_stat[:label] %>
-        <%= f.text_field input_stat[:column], :size => 4 %>
-      </p>
+    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f } %>
 <%
   end
 end

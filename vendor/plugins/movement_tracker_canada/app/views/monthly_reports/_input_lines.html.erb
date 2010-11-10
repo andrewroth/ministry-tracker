@@ -15,7 +15,7 @@ lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], show_label(input_stat) %></td>
-          <td><%= f.text_field input_stat[:column], :size => 4 %></td>
+          <td><%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" %></td>
         </tr>
 
 <%
@@ -25,7 +25,7 @@ lines.each do | key, input_stat |
 %>
         <tr class="statsFormField">
           <td><%= f.label input_stat[:column], show_label(input_stat) %></td>
-          <td><%= f.text_field input_stat[:column], :size => 4 %></td>
+          <td><%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" %></td>
         </tr>
 
 <%

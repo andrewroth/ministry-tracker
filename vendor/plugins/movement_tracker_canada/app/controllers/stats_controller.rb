@@ -216,12 +216,8 @@ class StatsController < ApplicationController
     @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
     @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i
     
-    @annual_goals_progress[:spiritual_conversations] = @monthly_sum["event_spiritual_conversations"].to_i + @monthly_sum["media_spiritual_conversations"].to_i +
-                                                        @weekly_sum["spiritual_conversations"].to_i + @weekly_sum["spiritual_conversations_student"].to_i
-
-    @annual_goals_progress[:gospel_presentations] = @monthly_sum["event_gospel_prensentations"].to_i + @monthly_sum["media_gospel_prensentations"].to_i +
-                                                     @weekly_sum["gospel_presentations"].to_i + @weekly_sum["gospel_presentations_student"].to_i
-
+    @annual_goals_progress[:spiritual_conversations] = @weekly_sum["spiritual_conversations"].to_i + @weekly_sum["spiritual_conversations_student"].to_i
+    @annual_goals_progress[:gospel_presentations] = @weekly_sum["gospel_presentations"].to_i + @weekly_sum["gospel_presentations_student"].to_i
     @annual_goals_progress[:holyspirit_presentations] = @weekly_sum["holyspirit_presentations"].to_i + @weekly_sum["holyspirit_presentations_student"].to_i
     @annual_goals_progress[:indicated_decisions] = @prc_sum.to_i
     @annual_goals_progress[:followup_completed] = @monthly_sum["followup_completed"].to_i
@@ -273,14 +269,24 @@ class StatsController < ApplicationController
     setup_selected_period_for_drilldown
     setup_report_description
 
+    date_start = nil
+    date_end = nil
 
     # find the prc ('indicated decisions') data to display
+    case @stats_time
+      when 'year'
+        semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
+        date_start = Date.parse_date( semesters.first.semester_startDate )
+        date_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+        
+      when 'semester'
+        semester = Semester.find(@semester_id)
+        date_start = semester.start_date
+        date_end   = Date.parse_date( semester.end_date )
 
-    semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
-    year_start = Date.parse_date( semesters.first.semester_startDate )
-    year_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+    end
 
-    @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", year_start, year_end, @campus_ids], :order => 'prc_date ASC')
+    @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", date_start, date_end, @campus_ids], :order => 'prc_date ASC')
 
     @results_partial = "salvation_story_synopses"
   end
@@ -661,7 +667,7 @@ class StatsController < ApplicationController
       when COMPLIANCE_REPORT 
         hide_time_tabs([:week, :month, :year])
       when 'story'
-        hide_time_tabs([:week, :month, :semester])
+        hide_time_tabs([:week, :month])
       when 'hpctc'
         hide_time_tabs([:week, :month, :semester])
       when 'annual_goals'

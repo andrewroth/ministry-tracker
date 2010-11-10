@@ -55,6 +55,7 @@ class TimetablesController < ApplicationController
   # PUT /timetables/1.xml
   def update
     if @can_edit
+      
       # Clear out all other blocks
       @timetable.free_times.destroy_all
       times = JSON::Parser.new(params[:times]).parse
@@ -70,6 +71,8 @@ class TimetablesController < ApplicationController
         end
       end
 
+      @person ||= get_person
+      @timetable.update_attributes(:updated_by_person_id => @my.id)
       @timetable.touch
       return if @signup
 

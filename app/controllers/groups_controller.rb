@@ -76,8 +76,9 @@ class GroupsController < ApplicationController
     end
     @groups.uniq!
     @groups.sort{ |g1, g2| g1.name <=> g2.name }
+
     s1 = Semester.current
-    s2 = Semester.find(s1.id+1)
+    s2 = s1.next_semester
     no_list = []
     s1_list = []
     s2_list = []

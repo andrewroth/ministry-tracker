@@ -27,14 +27,19 @@ class PrcsController < ApplicationController
   end
   
 
-  # GET /prcs/new
-  # GET /prcs/new.xml
-  def new
+  def new_prc
     @prc = Prc.new
           
     @prc.semester_id = active_data(:semester_id)
     @prc.campus_id = active_data(:campus_id)
     @prc.prc_date = default_date
+    
+  end
+
+  # GET /prcs/new
+  # GET /prcs/new.xml
+  def new
+    new_prc
     
     setup_campuses_and_semesters
 
@@ -71,16 +76,20 @@ class PrcsController < ApplicationController
   # DELETE /prcs/1
   # DELETE /prcs/1.xml
   def destroy
+
     @prc = Prc.find(params[:id])
     @prc.destroy
 
     unless @prc.errors.empty?
       flash[:notice] = "WARNING: Couldn't delete indicated decision report because:"
       @prc.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+      setup_for_index(active_data(:semester_id), active_data(:campus_id))
+      render :action => 'index'
     end
 
     respond_to do |format|
-      format.html { redirect_to(prcs_url) }
+      setup_for_index(active_data(:semester_id), active_data(:campus_id))
+      format.html { render :action => "index" }
       format.xml  { head :ok }
     end
   end
@@ -107,12 +116,10 @@ class PrcsController < ApplicationController
   
   def create_or_update
     @prc = Prc.find(params[:prc][:id]) unless params[:prc][:id].nil? || params[:prc][:id] == ''
-  
-    if @prc
-      success_update = true if @prc.update_attributes(params[:prc])
-    else
-      success_update = true if @prc = Prc.new(params[:prc])
-    end
+    @prc ||= Prc.new
+
+    success_update = false    
+    success_update = true if @prc.update_attributes(params[:prc])
   
     respond_to do |format|
       if success_update
@@ -123,6 +130,9 @@ class PrcsController < ApplicationController
         format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
       else
+        
+        setup_campuses_and_semesters()
+        
         format.html { render :action => "edit" }
         format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
       end
@@ -221,14 +231,32 @@ class PrcsController < ApplicationController
       @current_semester_id = Month.find_semester_id(cur_month)   
     end
     @current_semester_id
+
   end
+
+  def get_current_staff_id
+    @current_staff_id ||= @person.cim_hrdb_staff.id
+  end
+
   
   #default value for the campus_id
   def default_campus_id
-    unless @default_campus_id || user_campuses.nil? || user_campuses.empty?
-      @default_campus_id = user_campuses.first().id        
+    unless @current_campus_id
+      campus_found = nil
+      campus_count = {}
+      last_3_campuses = WeeklyReport.find(:all, :conditions => {:staff_id => get_current_staff_id}, :limit => 3).collect{|wr| wr[:campus_id]}
+      last_3_campuses.each do |c|
+        campus_count[c] ||= 0
+        campus_count[c] += 1
+      end
+      
+      last_3_campuses.each do |cf|
+        campus_found = cf if campus_found.nil? || campus_count[cf] >= campus_count[campus_found]
+      end
+      @current_campus_id ||= campus_found
+      @current_campus_id ||= get_ministry.unique_campuses.first.id
     end
-    @default_campus_id
+    @current_campus_id
   end
   
 end

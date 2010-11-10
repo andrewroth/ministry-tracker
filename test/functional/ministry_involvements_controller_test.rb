@@ -18,6 +18,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
 
   test "destroy" do
     xhr :delete, :destroy, :id => 1, :person_id => 50000
+    assert_equal Date.today, MinistryInvolvement.find(1).end_date
     assert assigns(:ministry_involvement)
     assert_response :success
   end
@@ -35,11 +36,14 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "try destroying without access" do
+    Factory(:person_2)
+    Factory(:access_2)
     Factory(:user_2)
     login('fred@uscm.org')
     xhr :delete, :destroy, :id => 1, :person_id => 50000
-    assert_equal Date.today, assigns(:ministry_involvement).end_date
-    assert_response :success
+    assert_equal nil, MinistryInvolvement.find(1).end_date
+    assert_equal nil, assigns(:ministry_involvement)
+    assert_response :redirect
   end
 
   # test "destroy only one ministry" do
