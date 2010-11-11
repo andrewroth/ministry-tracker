@@ -727,7 +727,8 @@ line-height:28px;
 }
 
 #outer {
-	padding-left:2%;
+  /* why was this here? */
+  /* padding-left:2%;*/
 }
 
 table#legend {

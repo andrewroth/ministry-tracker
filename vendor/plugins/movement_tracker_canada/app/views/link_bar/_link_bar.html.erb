@@ -59,7 +59,7 @@
 
     <div id="user">
       <nobr>
-        <b class="rl"><%= @my.email %></b>
+        <b class="rl"><% @my.email %></b>
         <%= link_to("Log out", session_url, :method => :delete, :class => "rl log_out") %>
       </nobr>
     </div>
