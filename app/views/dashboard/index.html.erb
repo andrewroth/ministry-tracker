@@ -53,10 +53,6 @@
 <% end %>
 
 <div class="welcome">
-<div class="sectionHeader">
-  <h2>Welcome to the <%= I18n.t(:app_name)%></h2>
-</div>
-<br/>
 <%- if @ministry -%>
 
 <div class="hidememessage" style="display:none;">
@@ -74,10 +70,10 @@ this system, along with any other information we think would be helpful to you.<
 </div>
 
 <div id="gettingstarted">
-  <b>Getting Started: </b> 
-  <%= link_to image_tag('groupbutton.png'), :controller => "groups", :action => "join"%> 
-  <%= link_to image_tag('timetablebutton.png'), person_timetable_path(@me.id, 
-                (@my.timetable || Timetable.create(:person_id => @me.id)).id) %>
+  <big>getting started → </big>
+  <%= link_to "#{image_tag('silk/group_go.png')} Join a Group", {:controller => "groups", :action => "join"}, {:class => "action-button"} %>
+  <%= link_to "#{image_tag('silk/calendar_edit.png')} Edit Your Timetable", person_timetable_path(@me.id,
+                (@my.timetable || Timetable.create(:person_id => @me.id)).id), {:class => "action-button"} %>
 </div>
 
 <div id="dashwrap">
@@ -102,18 +98,20 @@ this system, along with any other information we think would be helpful to you.<
         <input type="submit" class="searchdashsubmit" value="Search"/><br />
         <%- end -%>
         <% if authorized?(:advanced, :people) %>
-        <small><%= link_to('Advanced Search', advanced_people_path()) %></small>
+        <%= link_to('Advanced Search', advanced_people_path()) %>
         <% end %>
         </div>
-        
-        <h6>Recent Searches</h6>
+
+        <% if @my.searches.first.present? %>
+        <span class="norm">Recent Searches</span>
         <div class="lightgray">
           <ul class="searchicon">
-            <% @my.searches.each do |search| %>
+            <% @my.searches.first(3).each do |search| %>
               <li><%= link_to(search.description, directory_people_path(:search_id => search.id, :format => :html)) %></li>
             <% end %>
           </ul>
         </div>
+        <% end %>
       
       </div>
     </div>
