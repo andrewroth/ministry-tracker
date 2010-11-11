@@ -35,6 +35,10 @@ div#link_bar .rl {
   margin-left: 0.6em;
 }
 
+div#link_bar b {
+  color: #A6A6A6;
+}
+
 div#link_bar a, div#link_bar u {
   color: #1F429B;
   text-decoration: underline;
