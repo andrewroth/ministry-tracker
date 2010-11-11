@@ -1,5 +1,5 @@
 <%- uid = Time.now.to_i -%>
-<span id='chosen_ministry'></span> <%= link_to_function 'Choose Ministry', "", :id => 'choose_ministry_link' %>
+<span id='chosen_ministry'></span> <%= link_to_function 'Choose Ministry▼', "", :id => 'choose_ministry_link' %>
 <%= hidden_field_tag 'ministry_involvement[ministry_id]' %>
 <div id='choose_ministry_tree_<%=uid%>' class='choose_ministry_tree' style='display:none'></div>
 <script>
@@ -20,6 +20,10 @@
       root: <%= get_ministry.root.to_hash_with_children.to_json %>
     });
 
+    // sort alphabetically 
+    var treeSorter = new Ext.tree.TreeSorter(tree, {});
+    treeSorter.doSort(tree.getRootNode());
+
     // render the tree
     tree.render('choose_ministry_tree_<%=uid%>');
     tree.getRootNode().expand();
@@ -29,7 +33,7 @@
       $('#ministry_involvement_ministry_id')[0].value = node.id;
       //$('#choose_ministry_tree').slideUp();
       $('#chosen_ministry').text(node.text);
-      $('#choose_ministry_link').text('Change Ministry')
+      $('#choose_ministry_link').text('Change Ministry▼')
       return false;
     }, this);
   });
