@@ -31,7 +31,7 @@ class SignupController < ApplicationController
 
   def step1_info_submit
     @person = Person.new(params[:person])
-    [:email, :first_name, :last_name, :gender].each do |c|
+    [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end

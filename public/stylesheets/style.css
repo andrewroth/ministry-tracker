@@ -38,11 +38,11 @@ padding:0px;
 margin:15px 0 10px 0;
 }
 
-table.address td {
+table.address td, table.activity td {
 width:50%;
 }
 
-table.address td.spacer {width:5px;}
+table.address td.spacer, table.activity td.spacer {width:5px;}
 
 #left-body {width:650px; float:left;}
 
@@ -2011,4 +2011,16 @@ td.eventAttendees {
 
 .jqueryValidationError {
 	color: red;
+}
+
+table.groupInvolvementList .highlight {
+  background-color: #F5F5F5;
+}
+
+table.groupInvolvementList td {
+  padding: 5px 0;
+}
+
+table.groupInvolvementList th {
+  font-weight: bold;
 }

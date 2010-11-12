@@ -64,12 +64,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_template 'edit'
   end
 
-#  fails because of validates_no_association_data 
-#  def test_should_destroy_user
-#    old_count = User.count
-#    delete :destroy, :id => 1
-#    assert_equal old_count-1, User.count
-#
-#    assert_redirected_to users_path
-#  end
+  def test_should_destroy_user
+    setup_users
+
+    assert_difference('User.count', -1) do
+      delete :destroy, :id => 3
+    end
+
+    assert_redirected_to users_path
+  end
+
+  
 end
+

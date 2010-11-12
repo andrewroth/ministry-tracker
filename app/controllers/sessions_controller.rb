@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
       end
-      self.current_user.last_login = Time.now
+      self.current_user.last_login = Time.now.utc
       self.current_user.save
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     else
@@ -78,7 +78,7 @@ class SessionsController < ApplicationController
           end
           flash[:notice] = "Logged in successfully"
           # local login worked, redirect to appropriate starting page
-          self.current_user.last_login = Time.now
+          self.current_user.last_login = Time.now.utc
           self.current_user.save
           redirect_params = session[:return_to] || url_for(:controller => 'dashboard', :action => 'index')
           wants.js do
