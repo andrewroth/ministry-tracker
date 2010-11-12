@@ -1,9 +1,9 @@
 class SearchController < ApplicationController
   unloadable
 
-  skip_standard_login_stack :only => [:autocomplete, :autocomplete_people, :search_people]
+  skip_standard_login_stack :only => [:autocomplete, :autocomplete_people, :search_people, :prepare]
 
-  before_filter :setup_session_for_search, :only => [:index, :autocomplete]
+  before_filter :setup_session_for_search, :only => [:index, :autocomplete, :prepare]
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
@@ -21,7 +21,6 @@ class SearchController < ApplicationController
     end
   end
 
-
   def autocomplete
     @q = params["q"]
 
@@ -30,6 +29,11 @@ class SearchController < ApplicationController
     end
 
     render :layout => false
+  end
+
+  def prepare
+    # call to prepare search via before filter - hopefully to make auto complete faster
+    render :nothing => true 
   end
 
 
@@ -177,6 +181,8 @@ class SearchController < ApplicationController
     end
 
     session[:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+    
+    session[:search_prepared] = true
   end
 
 end
