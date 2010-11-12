@@ -91,11 +91,14 @@
         
         
         Ext.onReady(function(){
-         
           // set the root node
           
           tree.setRootNode(root);
                 
+          // sort alphabetically
+          var treeSorter = new Ext.tree.TreeSorter(tree, {});
+          treeSorter.doSort(tree.getRootNode());
+          
           // what to do on drag/drop
           tree.on('beforenodedrop', function(e){
             ajax.request({
@@ -112,7 +115,9 @@
           //       
           // render the tree
           root.expand();
-          
+
+
+
         
           var main = new Ext.Panel({
             title: 'Ministries',
