@@ -1579,6 +1579,14 @@ table .statsTable {
   font-size: small;
 }
 
+#statsReportNote {
+  float: right;
+  font-style: italic;
+  font-size: 1em;
+  color: #A1A6B3;
+  margin-top: 0.5em;
+}
+
 div .backLink {
   text-align: left;
   float: left;
@@ -1722,6 +1730,7 @@ td.eventAttendees {
 #progress-table tr.bar td:last-child {
   border-right: 1px solid #999999;
 }
+
 
 
 /************************************************/
