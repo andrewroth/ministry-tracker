@@ -48,7 +48,7 @@
             return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
           }
         }).result(function(event, info) {
-          location.href = $("#acProfilePath").html();
+          location.href = $(".acLinkPath", info[0]).html();
         });
 
 

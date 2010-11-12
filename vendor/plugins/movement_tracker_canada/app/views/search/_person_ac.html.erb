@@ -1,6 +1,6 @@
 <%
   result = "<div class='autoCompleteResult' title='Goto #{person_ac.first_name.capitalize}&rsquo;s profile'>" +
-           "<div id='acProfilePath' style='display: none;'>/people/#{person_ac.id}</div>" +
+           "<div class='acLinkPath' style='display: none;'>/people/#{person_ac.id}</div>" +
            "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
 
            "<div class='autoCompleteInfo'>" +
