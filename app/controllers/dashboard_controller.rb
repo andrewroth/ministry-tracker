@@ -5,8 +5,7 @@
 class DashboardController < ApplicationController
   include SemesterSet
   before_filter :set_current_and_next_semester
-
-
+  
   def index
     set_notices
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
@@ -49,7 +48,7 @@ class DashboardController < ApplicationController
         @eventbrite_events = []
         live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
 
-        @eventbrite_user = ::EventBright.setup_from_initializer()
+        @eventbrite_user ||= ::EventBright.setup_from_initializer()
 
         my_events.each do |event|
           eb_event = ::EventBright::Event.new(@eventbrite_user, {:id => event.eventbrite_id})
