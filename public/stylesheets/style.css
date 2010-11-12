@@ -1289,6 +1289,26 @@ div.choose_ministry_tree {
   float: right;
 }
 
+.searchResultActions .viewTimetable {
+  padding-right: 20px;
+}
+
+.searchResult:hover .searchResultActions .viewTimetable {
+  background-image: url("/images/silk/calendar.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResultActions .sendEmail {
+  padding-right: 20px;
+}
+
+.searchResult:hover .searchResultActions .sendEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
 .searchResultName {
   font-size: 14px;
   font-weight: bold;
