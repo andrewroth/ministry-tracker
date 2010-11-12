@@ -183,3 +183,4 @@ module EventBright
     
   end
 end
+
