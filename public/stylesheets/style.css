@@ -1751,7 +1751,7 @@ td.eventAttendees {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 2px solid #E6E6E6;
+  border: 2px solid white;
   padding-left: 10px;
 
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
@@ -1772,8 +1772,8 @@ td.eventAttendees {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 4px;
-  left: 219px;
+  top: 5px;
+  left: 220px;
   padding: 7px 20px;
   cursor: pointer;
 }
