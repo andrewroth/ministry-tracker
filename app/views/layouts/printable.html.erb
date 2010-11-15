@@ -15,7 +15,7 @@
       <% end %>      
       <%= ': ' + @site_title if @site_title -%>
     </title>
-    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
+    <%= stylesheet_link_tag "ext/ext-all", "print", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
 
     <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
     <%- if logged_in? -%>
