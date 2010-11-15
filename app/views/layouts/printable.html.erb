@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico">
+    <%# Check if the web_title config option is set, and if so, use it %>
+    <title>
+      <% if Cmt::CONFIG[:web_title] %>
+        <%= Cmt::CONFIG[:web_title] %>
+      <% else %>
+        Campus Movement Tracker
+      <% end %>      
+      <%= ': ' + @site_title if @site_title -%>
+    </title>
+    <%= stylesheet_link_tag "ext/ext-all", "print", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
+
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%- if logged_in? -%>
+      <%= stylesheet_link_tag "connexion_default.css" %>
+    <%- end -%>
+		
+  <script language="Javascript1.2">
+	  <!--
+	  function printpage() {
+	    window.print();
+	  }
+	  //-->
+	</script>
+
+  </head> 
+  <body onload="printpage()">
+    <div id="outer">
+      <div id="content">
+        <%= yield %>
+			</div>
+    </div> <!-- Center -->
+    <%= I18n.t :analytics, :default => "" %>
+                <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
+  </body>
+</html>
