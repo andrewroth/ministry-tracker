@@ -15,12 +15,6 @@ class TimetablesController < ApplicationController
   def index
     render :layout => 'manage'
   end
-  
-#  def print
-#    printer = 'bugged'
-#       debugger   
-#    render :layout => false
-#  end
 
   # GET /timetables/1
   # GET /timetables/1.xml
@@ -258,8 +252,6 @@ class TimetablesController < ApplicationController
 
     def get_layout ()
       if params[:print_it] == "true"
-        print = 'whatever'
-        debugger
          return 'printable';
       end
       @signup ? 'application' : 'people'

@@ -152,7 +152,7 @@ this system, along with any other information we think would be helpful to you.<
             <li><%= link_to('Go to the directory', directory_people_path(:format => :html)) %></li>
           <%- end -%>
           <%- if authorized?(:index, :manage) -%>
-            <li><%= link_to('Manage your ministries, groups, etc', '/manage') %></li>
+            <li><%= link_to('Manage your ministries', '/manage') %></li>
           <%- end -%>									
         </ul>
       </div>
