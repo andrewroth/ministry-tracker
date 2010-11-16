@@ -11,8 +11,8 @@ Revised on: 2-16-2009
 #greenbar {background:#FFCB05; height:33px; padding: 5px 0px; position: relative;}
 
 #campus, #person, #training_question, #training_category {
-	border:1px dotted silver;
-	padding:8px;
+  border:1px dotted silver;
+  padding:8px;
 }
 
 .actionbox {
@@ -146,7 +146,7 @@ float:left;
 }
 
 .inline {
-	display:inline;
+  display:inline;
 }
 strong {font-weight:bold;}
 
@@ -187,6 +187,8 @@ background: #ffffcc;
 }
 
 
+
+
 .butProfile a {
 padding-left:20px;
 border:0px solid black;
@@ -194,43 +196,24 @@ height:18px;
 background:url(../images/zoom.png) top left no-repeat;
 }
 
-.butUpdate a, .butDelete a {
+.butUpdate a {
 padding:5px 5px 5px 5px;
 padding-left:20px;
 border:1px solid #ccc;
+background: #fff url(../images/edit.png) 3px 5px no-repeat;
 height:18px;
 }
 
-.butUpdate a {
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
-}
-
-.butDelete a {
-background: #fff url(../images/delete.png) 3px 5px no-repeat;
-}
-
-
-.butUpdate a:hover, .butDelete a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-}
 
 .butUpdate a:hover {
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+text-decoration:none;
+border:1px solid #1F429B;
+background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
 }
 
-.butDelete a:hover {
-background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
-}
-
-.butUpdate, .butDelete {
+.butUpdate {
 margin:5px 0 0 0;
 float:right;
-}
-
-.actionButtons {
-  margin: 5px 0;
-float:left;
 }
 
 .butDExcel {
@@ -313,13 +296,13 @@ input:focus, textarea:focus {
 background:#FFFFCC;
 }
 
-/*select {width:175px; height:1.5em;}*/
+select {width:175px; height:1.5em;}
 li {list-style: none; margin-top:3px;}
 p {margin-bottom:10px;}
 
 a:link, a:visited {
-	color: #1F429B;
-	text-decoration:none;
+  color: #1F429B;
+  text-decoration:none;
 }
 
 a:hover, a:active {
@@ -327,33 +310,33 @@ a:hover, a:active {
     color:#ecac00;
 }
 a.norm {
-	color:#747474;
-	text-decoration: none;
-	padding: 1px;
+  color:#747474;
+  text-decoration: none;
+  padding: 1px;
 }
 a.norm:active, a.norm:hover {
-	 text-decoration: none;
-	 background: #FFE99B;
-	 padding: 1px;
+   text-decoration: none;
+   background: #FFE99B;
+   padding: 1px;
 }
 .small, a.small {
-	padding: 3px 6px 3px 6px;
-	font-weight:normal;
-	font-size:.75em;
+  padding: 3px 6px 3px 6px;
+  font-weight:normal;
+  font-size:.75em;
 }
 a.small {
   color:#000;
-	background: #FFFFCC;
-	text-decoration: none;
-	border:1px solid #FFCB05;
-	line-height:19px;
-	text-transform:uppercase;
+  background: #FFFFCC;
+  text-decoration: none;
+  border:1px solid #FFCB05;
+  line-height:19px;
+  text-transform:uppercase;
 }
 a.small:active, a.small:hover {
   background:#FFE99B;
-	text-decoration: none;
-	font-weight:normal;
-	font-size:.75em;
+  text-decoration: none;
+  font-weight:normal;
+  font-size:.75em;
 }
 /* MORE (S)PACIFIC */
 h1 {
@@ -368,15 +351,15 @@ h1 {
     width:auto;
     border:10px solid #CCCCCC;
     text-align:left;
-	min-width:900px;
-	max-width:900px;
-	background:#FFFFFF;
+  min-width:900px;
+  max-width:900px;
+  background:#FFFFFF;
 }
 
 #footer {
-	min-width:900px;
-	max-width:900px;
-	height:120px;
+  min-width:900px;
+  max-width:900px;
+  height:120px;
 margin:auto;
 margin-top:10px;
 }
@@ -395,7 +378,7 @@ margin-top:10px;
     margin:10px;
 }
 .leftColumn {
-	max-width: 220px;
+  max-width: 220px;
 }
 .leftColumn a.norm {
     font-size:1.1em;
@@ -421,8 +404,8 @@ margin-top:10px;
     float:right;
     background:url("../images/yellowtab.png") no-repeat left top;
     margin-left:4px;
-	width: 86px;
-	
+  width: 86px;
+  
 }
 
 .tablist a {
@@ -431,7 +414,7 @@ margin-top:10px;
     color:#1F429B; font-weight:bold;
     padding:8px 10px 7px 0;
     margin-left:11px;
-	text-align: center;
+  text-align: center;
 }
 
 /* Commented Backslash Hack
@@ -447,7 +430,7 @@ margin-top:10px;
 }
  
 .tablist li.active a {
-	color: #1F429B;
+  color: #1F429B;
 }
 
 /* MISC LAYOUT */
@@ -492,20 +475,20 @@ h1#title {
 /* LITTLE THINGS */
 
 .clear {
-	clear: both;
-	display: block;
-	height: 0;
-	overflow: hidden;
+  clear: both;
+  display: block;
+  height: 0;
+  overflow: hidden;
 }
 
 .alt {
-	display: none;
+  display: none;
 }
 
 .box {
-	border: 1px solid #747474;
-	margin: 5px;
-	padding: 5px;
+  border: 1px solid #747474;
+  margin: 5px;
+  padding: 5px;
 }
 
 form .label {
@@ -515,9 +498,9 @@ form .label {
     margin-right:8px;
 }
 div.sectionHeader h2 {
-	border-bottom: 1px solid #000;
-	padding: 5px  0 2px 0;
-	font-size: 11pt;
+  border-bottom: 1px solid #000;
+  padding: 5px  0 2px 0;
+  font-size: 11pt;
     color: darkslategray;
 }
 .center {
@@ -536,7 +519,7 @@ div.sectionHeader h2 {
     font-weight: normal;
     color: #1F429B;
     border-bottom: 1px solid #000;
-		text-align: left;
+    text-align: left;
 }
 .directorytable .highlight {
     background-color:#fcfcfc;
@@ -544,16 +527,16 @@ div.sectionHeader h2 {
 
 .directorytable tr:hover {
     background-color:#fff193;
-		cursor:pointer;
+    cursor:pointer;
 }
 
 .directorytable thead tr:hover {
     background-color:#f5f5f5;
-		cursor:default;
+    cursor:default;
 }
 
 #group_types tr:hover{
-		cursor:default;
+    cursor:default;
 }
 
 
@@ -563,8 +546,8 @@ div.sectionHeader h2 {
 
 #searchBox {
 margin:10px 0 10px;
-	padding: 10px 10px 0px 10px;
-	border: 1px solid #ccc;
+  padding: 10px 10px 0px 10px;
+  border: 1px solid #ccc;
 background:#edf3fe;
 }
 
@@ -592,16 +575,16 @@ div.progressBar div.background {
 }
 
 div.right-menu {
-	float:right; 
-	text-align:left;
-	border: 0px solid grey;
-	padding: 0px;
-	margin: 0 5px 0 5px;
-	background-color: #fff;
+  float:right; 
+  text-align:left;
+  border: 0px solid grey;
+  padding: 0px;
+  margin: 0 5px 0 5px;
+  background-color: #fff;
 width:175px;
 }
 a.cancel {
-	color:red;
+  color:red;
 }
 
 .right_list {
@@ -655,22 +638,22 @@ margin-bottom:10px;
 }
 
 /*#two_col {
-	width:700px;
-	display:block;
-	margin: 10px 0px;
+  width:700px;
+  display:block;
+  margin: 10px 0px;
 }
 
 #tree-div {
-	width:80%; 
-	float:left;
-	overflow:auto; 
-	height:300px;
-	border:1px solid #c3daf9;
+  width:80%; 
+  float:left;
+  overflow:auto; 
+  height:300px;
+  border:1px solid #c3daf9;
 }
 
 #edit-ministry {
-	width:50%;
-	float:right;
+  width:50%;
+  float:right;
 }*/
 
 
@@ -723,12 +706,11 @@ line-height:28px;
 }
 
 #campuses, #campus-details {
-	margin: 5px;
+  margin: 5px;
 }
 
 #outer {
-  /* why was this here? */
-  /* padding-left:2%;*/
+  padding-left:2%;
 }
 
 table#legend {
@@ -804,10 +786,10 @@ color: #1F429B;
 
 .drag_me {cursor:pointer;}
 
-.bad {background:#bc0a0a;}
-.poor {background:#ffC000;}
-.ok {background:#61E6CB;}
-.good {background:#5CE40A;}
+.bad {background:#ff152b;}
+.poor {background:#fdff4f;}
+.ok {background:#50aff1;}
+.good {background:#08a001;}
 
 .allbad {background:#FD4239;}
 .allgood {background:#66BD29;}
@@ -826,10 +808,10 @@ border:2px solid white;
 margin-bottom:10px;
 }
 
-.badhead {background:url(/images/status_bad.png) 50% 50% #bc0a0a;}
-.poorhead {background:url(/images/status_poor.png) 50% 50% #ffC000;}
-.okhead {background:url(/images/status_okay.png) 50% 50% #61E6CB;}
-.goodhead {background:url(/images/status_good.png) 50% 50% #5CE40A;}
+.badhead {background:url(/images/status_bad_print_legend.png) 50% 50% #ff152b;}
+.poorhead {background:url(/images/status_poor_print.png) 50% 50% #fdff4f;}
+.okhead {background:url(/images/status_ok_print_legend.png) 50% 50% #50aff1;}
+.goodhead {background:url(/images/status_good_print_legend.png) 50% 50% #08a001;}
 
 .headselected,
 a.badhead:hover,
@@ -849,7 +831,7 @@ a.goodhead:hover {border:2px solid gray;}
 }
 
 .inputcheck {
-	margin-top:6px;
+  margin-top:6px;
 }
 
 #signin .inputsubmit {
@@ -949,7 +931,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 }
 
 #gettingstarted b{
-	color:black;
+  color:black;
   font-size: 120%;
 }
 
@@ -1002,7 +984,7 @@ div#userbar {
 }
 
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 10px; margin-top: 6px; text-align: right;}
+div#userblock {float: right; padding-right: 30px; margin-top: 6px;}
 
 div#userbar small {font-size:11px;}
 
@@ -1048,13 +1030,13 @@ border:1px dotted orange;
 
 .flash {
 
-	margin-left: 10px;
+  margin-left: 10px;
 }
 .notice {
-	color:#1F429B;
+  color:#1F429B;
 }
 .warning {
-	color:red;
+  color:red;
 }
 
 .setLink a:link {color: #1F429B;}
@@ -1142,16 +1124,11 @@ div.section {
 #switch_ministries_list {
   position: absolute;  
   z-index: 500;
-  text-align: left;
-
-  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 div.choose_ministry_tree {
   position: absolute;
   z-index: 500;
-  
-  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 .statusheadwrap {
@@ -1225,7 +1202,7 @@ div.choose_ministry_tree {
 #statsTitle, #reportTitle {
   color: #1F429B;
   border-bottom:1px dotted #1F429B;
-	margin: 0 0 10px 3px;
+  margin: 0 0 10px 3px;
 }
 
 #newWeeklyReportLink {
@@ -1238,7 +1215,7 @@ div.choose_ministry_tree {
 }
 
 #formHeading {
-	text-align: center;
+  text-align: center;
 }
 
 .campusSemesterStats {
@@ -1265,7 +1242,7 @@ div.choose_ministry_tree {
 .statsFormBoxTitle {
   font-size: 130%;
   margin-bottom: 0.5em;
-	text-align:center;  
+  text-align:center;  
 }
 
 .statsFormField label {
@@ -1278,10 +1255,6 @@ div.choose_ministry_tree {
   margin-right: 8px;
   width: 100%;
   float: none; /* needed for IE */
-}
-
-.statsFormField td {
-	width: 50%;
 }
 
 .statsFormField select {
@@ -1343,11 +1316,11 @@ div .statsRadioButton {
 }
 
 #statsLinkBox h3 {
-	border-bottom: 1px dotted #1F429B;
+  border-bottom: 1px dotted #1F429B;
 }
 
 ul.statsLinkList {
-	margin: 0 0 5px 0;
+  margin: 0 0 5px 0;
 }
 
 .statsSpinner {
@@ -1397,7 +1370,7 @@ ul.statsLinkList {
 
 .statsContainer {
   width: 65em;
-	margin: 10px auto 0 auto;
+  margin: 10px auto 0 auto;
   text-align: center;
 }
 
@@ -1462,29 +1435,29 @@ ul.statsLinkList {
 
 
 .progressBarPercent .insightsProgressBar, .insightsProgress {
-	display:block;
-	height: 0.7em;
+  display:block;
+  height: 0.7em;
 }
 
 .insightsProgressBar {
-	background-color:#FFFFFF;
-	border: 1px solid #2951AD;
-	text-align: left;
+  background-color:#FFFFFF;
+  border: 1px solid #2951AD;
+  text-align: left;
 }
 
 .insightsProgress {
-	background-color: #FFDA68;
-	border: 0;
+  background-color: #FFDA68;
+  border: 0;
 }
 
 #nationalIndicatedDecisions {
-	display:block;
-	width: 205px;
-	float: right;
-	text-align: center;
-	color: #2951AD;
-	font-size: 1.5em;
-	font-weight: bold;
+  display:block;
+  width: 205px;
+  float: right;
+  text-align: center;
+  color: #2951AD;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 #IndicatedDecisionsVSGoal {
@@ -1576,14 +1549,6 @@ fieldset {
 
 table .statsTable {
   font-size: small;
-}
-
-#statsReportNote {
-  float: right;
-  font-style: italic;
-  font-size: 1em;
-  color: #A1A6B3;
-  margin-top: 0.5em;
 }
 
 div .backLink {
@@ -1731,7 +1696,6 @@ td.eventAttendees {
 }
 
 
-
 /************************************************/
 /* Search section                               */
 
@@ -1759,7 +1723,7 @@ td.eventAttendees {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 2px solid #CCCCCC;
+  border: 1px solid #CCCCCC;
   padding-left: 10px;
 
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
@@ -1768,7 +1732,7 @@ td.eventAttendees {
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D; /* #FFCB05; yellow */
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -1780,8 +1744,8 @@ td.eventAttendees {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 4px;
-  left: 219px;
+  top: 3px;
+  left: 218px;
   padding: 7px 20px;
   cursor: pointer;
 }
@@ -1923,9 +1887,9 @@ td.eventAttendees {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 2px 5px 2px;
+  border-width: 0 1px 5px 1px;
 
-  top: 79px !important;
+  top: 44px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
@@ -2042,11 +2006,11 @@ td.eventAttendees {
 }
 
 .jqueryValidationInformation {
-	color: green;
+  color: green;
 }
 
 .jqueryValidationError {
-	color: red;
+  color: red;
 }
 
 table.groupInvolvementList .highlight {
@@ -2059,56 +2023,4 @@ table.groupInvolvementList td {
 
 table.groupInvolvementList th {
   font-weight: bold;
-}
-
-#dashboardInsightsContainer {
-  background-image: url(/images/canada.gif);
-  background-repeat: no-repeat;
-  background-position: top center;
-  height: 140px;
-  text-align: center;
-  position: relative;
-}
-
-#dashboardInsightsContainer #campusInsights {
-  font-size: 70%;
-}
-
-#dashboardInsightsContainer #totalInsights {
-  font-size: 140%;
-}
-
-#dashboardInsightsContainer h1 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 4em;
-}
-
-#dashboardInsightsContainer h2 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 1.5em;
-}
-
-#dashboardInsightsContainer #campusInsights {
-  float: left;
-  width: 35%;
-  text-align: center;
-  margin-top: 3em;
-}
-
-#dashboardInsightsContainer #totalInsights {
-  float: right;
-  width: 35%;
-  text-align: center;
-}
-
-#dashboardInsightsContainer #insightsSubTitle {
-  width: 100%;
-  text-align: center;
-  font-size: 1em;
-  float: left;
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
