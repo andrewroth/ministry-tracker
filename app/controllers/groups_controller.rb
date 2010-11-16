@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        layout = authorized?(:index, :manage) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'application'  : 'application'   # formerly had 'manage' layout for groups too
         render :layout => layout
       end
       format.js
