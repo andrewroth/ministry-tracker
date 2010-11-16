@@ -1,5 +1,8 @@
 <%= stylesheet_link_tag "link_bar.css" %>
 
+<% if logged_in? && @me  %>
+
+
 <script type="text/javascript">
   $(document).ready(function() {
 
@@ -86,4 +89,7 @@
   <a href="https://focus.crusade.org">FOCUS</a>
   <a href="http://staff.powertochange.org">The Loop</a>
 </div>
+<% end %>
+
+
 <% end %>
