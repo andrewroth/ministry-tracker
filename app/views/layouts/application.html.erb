@@ -30,7 +30,7 @@
 		
 	</head>	
 	<body>
-    <%= render :partial => "/link_bar/link_bar" %>
+    <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
       
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
