@@ -57,7 +57,7 @@
 
 
 		    <div id="userblock">
-          <div id="username"><%= @my.full_name %></div>
+          <div id="username"><%= @my.full_name %> </div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me), :title => "Goto your profile") %></small>
           <small><%= link_to(image_tag('silk/calendar_edit.png'), "/people/#{@my.id}/timetables/#{@my.timetable.id}", :title => "Goto your timetable") %></small>
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
@@ -105,11 +105,12 @@
 		</div> <!-- Wrapper -->
 		
     <div id="dialog" style="display:none"></div>
+		</div> <!-- Center -->
 		<div id="footer">
 		<table width="100%">
 			<tr>
 				<td width="18%">
-          <!-- <%= image_tag("logo.png") %></td><td style="font-size:11px;"> 
+          <!-- <%= image_tag("logo.png") %></td><td style="font-size:11px;">
           Student Network is part of the <a href="http://www.ministryhacks.com/">MinistryHacks Toolbox</a> -->
 				</td>
 				<td align="right">
@@ -118,7 +119,6 @@
 			</tr>
 		</table>
 		</div>
-		</div> <!-- Center -->
 		<%= I18n.t :analytics, :default => "" %>
                 <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
 	</body>
