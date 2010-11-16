@@ -30,9 +30,12 @@
 		
 	</head>	
 	<body>
+    <%= render :partial => "/link_bar/link_bar" %>
+      
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
     <%= connexion_bar if Cmt::CONFIG[:gcx_connexion_bar] %>
+
 
 		<div id="wrapper">
       
@@ -47,9 +50,7 @@
 	  	    <a href="#" class="logoutbutton" onclick="try {
             FB.Connect.logoutAndRedirect('<%= logout_url %>');
             } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
-	  	  <% else %>
-		    	<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>
-	    	<% end %>&nbsp;&nbsp;&nbsp;
+	  	  <% end %>
 
 
 

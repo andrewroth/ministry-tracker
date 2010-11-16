@@ -727,7 +727,8 @@ line-height:28px;
 }
 
 #outer {
-	padding-left:2%;
+  /* why was this here? */
+  /* padding-left:2%;*/
 }
 
 table#legend {
@@ -1758,7 +1759,7 @@ td.eventAttendees {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 1px solid #CCCCCC;
+  border: 2px solid #CCCCCC;
   padding-left: 10px;
 
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
@@ -1767,7 +1768,7 @@ td.eventAttendees {
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 1px solid #00268D; /* #FFCB05; yellow */
+  border: 2px solid #00268D; /* #FFCB05; yellow */
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -1779,8 +1780,8 @@ td.eventAttendees {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 3px;
-  left: 218px;
+  top: 4px;
+  left: 219px;
   padding: 7px 20px;
   cursor: pointer;
 }
@@ -1922,9 +1923,9 @@ td.eventAttendees {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 1px 5px 1px;
+  border-width: 0 2px 5px 2px;
 
-  top: 44px !important;
+  top: 79px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
