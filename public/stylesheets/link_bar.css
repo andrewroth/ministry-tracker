@@ -7,9 +7,9 @@ div#link_bar_wrapper {
 div#link_bar {
     display: block;
     height: 22px;
-    padding: 3px 8px 0;
+    padding-top: 3px;
     font-size: 13px;
-    width: 900px;
+    width: 914px; /* page wrapper width plus it's 7px border */
     margin-left: auto;
     margin-right: auto;
 }
