@@ -13,7 +13,7 @@
 </div>
 
 <div id="searchResultsContainer">
-  <% if session[:authorized_to_search_people] %>
+  <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
 
@@ -45,6 +45,41 @@
       <%= will_paginate @people %>
     </div>
   <% end %>
+
+
+
+  <% if session[:search][:authorized_to_search_groups] %>
+    <div class="searchResultsTitle">
+      <%= image_tag("silk/group.png") %> <strong>Group</strong> results for <strong><%= @q %></strong>
+
+      <div class="searchResultsSize">
+        <% if @groups.total_entries > @groups.per_page %>
+          <% onCurPageEnd = @groups.current_page * @groups.per_page %>
+          <% onCurPageBegin = (onCurPageEnd-@groups.per_page)+1 %>
+          <% onCurPageEnd = onCurPageEnd > @groups.total_entries ? @groups.total_entries : onCurPageEnd %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+        <% end %>
+        <%= pluralize(@groups.total_entries, "group") %>
+      </div>
+
+    </div>
+
+    <ul id="GroupSearchResults">
+      <% if @groups.size > 0 %>
+        <%= render :partial => "group", :collection => @groups %>
+      <% else %>
+        <p>
+          No groups found for <strong><%= @q %></strong> within your ministry.<br/>
+        </p>
+      <% end %>
+    </ul>
+
+    <br/>
+    <div class="searchResultsPagination">
+      <%= will_paginate @groups %>
+    </div>
+  <% end %>
+
 </div>
 
 

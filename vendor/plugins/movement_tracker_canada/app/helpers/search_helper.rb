@@ -61,6 +61,41 @@ module SearchHelper
 
     info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Goto compose an email to #{person.first_name.capitalize}") if person.email.present?
   end
- 
+
+  def info_for_group(group)
+    info = ""
+
+    if group.campus_desc.present?
+      info += "#{group.campus_desc}"
+    end
+
+    if group.semester_desc.present?
+      info += "<b> · </b>" if group.campus_desc.present?
+      info += "#{group.semester_desc}"
+    end
+
+    if group.email.present?
+      info += "<b> · </b>" if group.campus_desc.present? || group.semester_desc.present?
+      info += "#{group.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}"
+    end
+
+    info += "<br/>"
+
+    info += link_to("#{group.num_members} members", "/groups/#{group.id}", {:title => "Goto #{group.name}"}) if group.num_members.present?
+
+
+
+    if group.involvements.present?
+      info += ", " if group.num_members.present?
+
+      people_ids = group.involvements.split(",")
+
+      Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).each do |person|
+        info += "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")} is in this group<br/>"
+      end
+    end
+
+    info
+  end
 end
 
