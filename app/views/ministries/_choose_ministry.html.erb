@@ -38,7 +38,8 @@
   });
 
   $(document).click(function(e) {
-    $('#switch_ministries_list').hide();    
+    if ($('#switch_ministries_list').is(':visible')) {
+      $('#switch_ministries_list').slideUp();
+    }
   });
-
 </script>
