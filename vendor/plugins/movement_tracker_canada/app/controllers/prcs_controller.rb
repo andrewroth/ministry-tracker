@@ -163,7 +163,13 @@ class PrcsController < ApplicationController
   def setup_for_index(semester_id, campus_id)
     set_active_data(:semester_id, semester_id)
     set_active_data(:campus_id, campus_id)
-    
+
+    # if person's most recently submitted stats are at a campus they no longer have involvements at
+    if @my.ministries.index(Campus.find(campus_id).derive_ministry).nil?
+      campus_id = user_campuses.first.id
+      set_active_data(:campus_id, campus_id)
+    end
+
     @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
     if @prcs.empty?
       prc = Prc.new      
@@ -244,6 +250,7 @@ class PrcsController < ApplicationController
     unless @current_campus_id
       campus_found = nil
       campus_count = {}
+#      last_3_campuses = WeeklyReport.find(:all, :include => [:week], :conditions => {:staff_id => get_current_staff_id}, :limit => 3, :order => "#{Week.__(:end_date)} DESC").collect{|wr| wr[:campus_id]}
       last_3_campuses = WeeklyReport.find(:all, :conditions => {:staff_id => get_current_staff_id}, :limit => 3).collect{|wr| wr[:campus_id]}
       last_3_campuses.each do |c|
         campus_count[c] ||= 0
