@@ -46,15 +46,6 @@ class SearchController < ApplicationController
 
     people_ids = people.collect {|p| p.id}
 
-
-#    groups_matching_people = Group.all(:joins => "INNER JOIN #{GroupInvolvement.table_name} ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)}",
-#                                       :select => "#{Group.__(:id)}, GROUP_CONCAT(DISTINCT #{GroupInvolvement.__(:person_id)} SEPARATOR ',')",
-#                                       :conditions => ["#{GroupInvolvement.__(:person_id)} IN (?)", people_ids],
-#                                       :group => "#{Group.__(:id)}")
-#
-#    groups_matching_people_ids = groups_matching_people.collect {|g| g.id}
-
-
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
        ["#{Group.__(:id)}, #{Group.__(:name)}, #{Group.__(:email)}, #{Campus.__(:short_desc)} AS campus_desc, #{Ministry.__(:name)} AS ministry_name, " + 
@@ -63,13 +54,12 @@ class SearchController < ApplicationController
 
         # determine the rank for ordering of results
         "IF(#{Group.__(:name)} LIKE ?, #{SEARCH_RANK[:group][:name]}, 0) + " +
-        "IF(#{Group.__(:email)} LIKE ?, #{SEARCH_RANK[:group][:email]}, 0) + " +
         "IF(#{Ministry.__(:name)} LIKE ?, #{SEARCH_RANK[:group][:ministry]}, 0) + " +
         "IF(#{Semester.__(:desc)} LIKE ?, #{SEARCH_RANK[:group][:semester_current]}, 0) + " +
         "IF(#{Semester.__(:desc)} LIKE ?, #{SEARCH_RANK[:group][:semester_next]}, 0) + " +
         "IF(i.involvements IS NOT NULL, #{SEARCH_RANK[:group][:involvement]}, 0) " +
 
-        " AS rank ", "%#{@q}%", "%#{@q}%", session[:search][:search_ministry_name], semester_current.desc, semester_current.next_semester.desc], '')
+        " AS rank ", "%#{@q}%", session[:search][:search_ministry_name], semester_current.desc, semester_current.next_semester.desc], '')
 
     Group.paginate(:page => params[:page],
                    :per_page => params[:per_page],
@@ -89,9 +79,8 @@ class SearchController < ApplicationController
 
                    :conditions => ["#{session[:search][:group_search_limit_condition]} AND (" +
                                    "#{Group.__(:name, :group)} like ? " +
-                                   "or #{Group.__(:email, :group)} like ? " +
                                    ")",
-                                   "%#{@q}%", "%#{@q}%"],
+                                   "%#{@q}%"],
 
                    :order => 'rank DESC, semester_start DESC',
 
@@ -248,7 +237,7 @@ class SearchController < ApplicationController
 
 
   def setup_session_for_search
-    session[:search] = {}
+    session[:search] ||= {}
     
     session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
     session[:search][:group_search_limit_condition] ||= get_involvement_limit_condition_for_group_search
@@ -261,7 +250,7 @@ class SearchController < ApplicationController
     session[:search][:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
     session[:search][:authorized_to_search_groups] ||= (authorized?(:return_groups, :search) && authorized?(:show, :groups))
     
-    session[:search][:search_prepared] = true
+    session[:search][:search_prepared] ||= true
   end
 
 end

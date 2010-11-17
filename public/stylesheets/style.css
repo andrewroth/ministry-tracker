@@ -1870,7 +1870,7 @@ td.eventAttendees {
   float: right;
 }
 
-.searchResultActions .viewTimetable {
+.searchResultActions a {
   padding-right: 20px;
 }
 
@@ -1880,14 +1880,17 @@ td.eventAttendees {
   background-position: right;
 }
 
-.searchResultActions .sendEmail {
-  padding-right: 20px;
-}
-
 .searchResult:hover .searchResultActions .sendEmail {
   background-image: url("/images/silk/email_edit.png");
   background-repeat: no-repeat;
   background-position: right;
+}
+
+.searchResult:hover .searchResultActions .joinGroup {
+  background-image: url("/images/silk/group_go.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-top: 2px;
 }
 
 .searchResultName {
@@ -1896,16 +1899,24 @@ td.eventAttendees {
 }
 
 .searchResultInfo {
-  margin: 7px 0 0 15px;
   font-size: 11px;
   overflow: hidden;
   height: 93px;
-  width: 300px;
 }
 
 .searchResultInfo strong {
   color: #1F429B;
   font-weight: normal;
+}
+
+.searchResultPerson {
+  margin: 7px 0 0 15px;
+  width: 300px;
+}
+
+.searchResultGroup {
+  margin: 7px 0 0 10px;
+  width: 360px;
 }
 
 .autoCompleteMore {

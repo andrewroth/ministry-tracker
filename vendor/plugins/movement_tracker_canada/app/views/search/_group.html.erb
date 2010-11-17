@@ -2,17 +2,29 @@
   <div class='searchResultPic'>
   </div>
 
-  <div class='searchResultInfo'>
-    <div class='searchResultName'><%=link_to("#{group.name.capitalize}", "/groups/#{group.id}", {:title => "Goto #{group.name}"})%>
-    
-    <%= "#{Date::DAYNAMES[group.day]}'s" if group.day.present? %>
+  <div class='searchResultInfo searchResultGroup'>
+    <div class='searchResultName'>
+      <%=link_to("#{group.name.capitalize}", "/groups/#{group.id}")%>
+    </div>
 
-    <% midnight = Time.now.beginning_of_day %>
-    <%= "at #{(midnight + group.start_time).to_s(:time)}" if group.start_time %>
-
-    <%= " to #{(midnight + group.end_time).to_s(:time)}" if group.end_time %>
-</div>
     <div class='searchResultExtraInfo'><%="#{info_for_group(group)}"%></div>
   </div>
 
+  <div class='searchResultActions'>
+
+    <% unless group.is_associated(@me) %>
+    <br/>
+    <%= link_to_remote('Join group',
+        {:url => { :action => "joingroup", :controller => 'group_involvements',
+                   :person_id => @my.id,
+                   :group_id => group.id,
+                   :level => 'member' },
+         :method => :post},
+        {:class => "joinGroup"})
+    %>
+    <% end %>
+
+    <br/>
+    Email leaders or all members
+  </div>
 </li>

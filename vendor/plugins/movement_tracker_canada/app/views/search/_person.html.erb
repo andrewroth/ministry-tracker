@@ -3,8 +3,8 @@
     <%=link_to("#{profile_picture_for_person(person)}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"})%>
   </div>
 
-  <div class='searchResultInfo'>
-    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}", "/people/#{person.id}", {:title => "Goto #{person.first_name}'s profile"})%></div>
+  <div class='searchResultInfo searchResultPerson'>
+    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}", "/people/#{person.id}")%></div>
     <div class='searchResultExtraInfo'><%="#{info_for_person(person)}"%></div>
   </div>
 
