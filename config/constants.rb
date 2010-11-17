@@ -132,48 +132,56 @@
            :label => "Total spiritual multipliers graduating to non-ministry vocations",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 1}, 
           :tot_grad_c4c_staff => {:column => :semesterreport_totalFullTimeC4cStaff, 
            :label => "Total full time C4C staff",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 2}, 
           :tot_grad_p2c_staff => {:column => :semesterreport_totalFullTimeP2cStaffNonC4c, 
            :label => "Total full time P2C staff (non-campus)",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 3}, 
           :tot_grad_intern => {:column => :semesterreport_totalPeopleOneYearInternship, 
            :label => "Total people doing one-year internships",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 4}, 
           :tot_grad_other_ministry => {:column => :semesterreport_totalPeopleOtherMinistry, 
            :label => "Total people doing other full time ministry",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 5}, 
           :students_attending_summit => {:column => :semesterreport_studentsSummit, 
            :label => "Students attending Summit",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 6}, 
           :students_going_to_wc => {:column => :semesterreport_studentsWC, 
            :label => "Students going to Winter Conference",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 7}, 
           :students_going_to_projects => {:column => :semesterreport_studentsProjects, 
            :label => "Students going to projects",
             :collected => :semesterly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 8}
       }, 
@@ -182,6 +190,7 @@
              :label => "Spiritual Conversations",
              :collected => :weekly,
              :column_type => :database_column,
+             :grouping_method => :sum,
              :display_type => :text_positive_integer,
              :order => 1 
            }, 
@@ -190,6 +199,7 @@
              :label => "Spiritual Conversations by Disciples",
              :collected => :weekly,
              :column_type => :database_column,
+             :grouping_method => :sum,
              :display_type => :text_positive_integer,
              :order => 2
            }, 
@@ -207,6 +217,7 @@
              :label => "Gospel Presentations",
              :collected => :weekly,
              :column_type => :database_column ,
+             :grouping_method => :sum,
              :display_type => :text_positive_integer,
              :order => 4
            }, 
@@ -215,6 +226,7 @@
              :label => "Gospel Presentations by Disciples",
              :collected => :weekly,
              :column_type => :database_column,
+             :grouping_method => :sum,
              :display_type => :text_positive_integer,
              :order => 5
            }, 
@@ -232,6 +244,7 @@
              :label => "Holy Spirit Presentations",
              :collected => :weekly,
              :column_type => :database_column ,
+             :grouping_method => :sum,
              :display_type => :text_positive_integer,
              :order => 7
            }
@@ -245,6 +258,7 @@
              :label => "Indicated Decisions",
              :collected => :prc,
              :column_type => :database_column ,
+             :grouping_method => :sum,
              :order => 1
            }
         },
@@ -257,6 +271,7 @@
              :drop_down_data => :campus,
              :collected => :prc,           
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 0
            },         
            :semester_id => {
@@ -267,6 +282,7 @@
              :drop_down_data => :semester,
              :collected => :prc,           
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 1
            },
            :decision_date => {
@@ -276,6 +292,7 @@
              :required => true,
              :collected => :prc,           
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 2
            },       
            :believer_first_name => {
@@ -284,6 +301,7 @@
              :required => true,
              :collected => :prc,           
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 3
            },
            :witness_name => {
@@ -292,6 +310,7 @@
              :required => true,
              :collected => :prc,
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 4
            },
            :method => {
@@ -302,6 +321,7 @@
              :drop_down_data => :prc_method,
              :collected => :prc,
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 5
            },         
            :integrated_believer => {
@@ -311,6 +331,7 @@
              :required => false,
              :collected => :prc,
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 6
            },
            :notes => {
@@ -320,6 +341,7 @@
              :required => true,
              :collected => :prc,
              :column_type => :database_column ,
+             :grouping_method => :none,
              :order => 7
            }           
       }, 
@@ -328,6 +350,7 @@
             :label => "Average - hours of prayer",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :last_non_zero,
             :display_type => :text_positive_integer,
             :order => 1
           }, 
@@ -335,6 +358,7 @@
             :label => "Number of frosh involved",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :last_non_zero,
             :display_type => :text_positive_integer,
             :order => 2
           },
@@ -342,6 +366,7 @@
             :label => "Number of students in DGs",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :last_non_zero,
             :display_type => :text_positive_integer,
             :order => 3
           },
@@ -349,6 +374,7 @@
             :label => "Number of spiritual multipliers",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :last_non_zero,
             :display_type => :text_positive_integer,
             :order => 4
           },
@@ -356,6 +382,7 @@
             :label => "Event exposures - Spiritual Conversations",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 5
           },
@@ -363,6 +390,7 @@
             :label => "Event exposures - Gospel Presentations",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 6
           },
@@ -370,6 +398,7 @@
             :label => "Media exposures - Spiritual Conversations",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 7
           },
@@ -377,6 +406,7 @@
             :label => "Media exposures - Gospel Presentations",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 8
           },
@@ -384,6 +414,7 @@
             :label => "Total core students",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :last_non_zero,
             :display_type => :text_positive_integer,
             :order => 9
           },
@@ -391,6 +422,7 @@
             :label => "Integrated new believers",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 10
           },
@@ -408,6 +440,7 @@
             :label => "Number of commitments to be filled with Holy Spirit or Lordship commitments",
             :collected => :weekly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 1
           }
@@ -418,6 +451,7 @@
             :label => "Number of people in evangelistic studies",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 1
           }, 
@@ -425,6 +459,7 @@
             :label => "Number of People *trained* to share their faith in the power of the Holy Spirit a. with P2C",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 2
           }, 
@@ -432,6 +467,7 @@
             :label => "b. outside P2C",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 3
           }, 
@@ -439,6 +475,7 @@
             :label => "Number of people who are sharing their faith a. with P2C",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 4
           }, 
@@ -446,6 +483,7 @@
             :label => "b. outside P2C",
             :collected => :monthly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 5
           }
@@ -597,72 +635,84 @@
            :label => "Total students involved in campus ministry",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 1}, 
           :spiritual_multipliers => {:column => :annualGoalsReport_sptMulti, 
            :label => "Total spiritual multipliers",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 2}, 
           :first_years => {:column => :annualGoalsReport_firstYears, 
            :label => "Total first-year students involved",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 3}, 
           :total_went_to_summit => {:column => :annualGoalsReport_summitWent, 
            :label => "Total students that went to Summit",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 4}, 
           :total_went_to_wc => {:column => :annualGoalsReport_wcWent, 
            :label => "Total students that went to Winter Conference",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 5},
           :total_went_on_project => {:column => :annualGoalsReport_projWent, 
            :label => "Total students that went on a project",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 6}, 
           :spiritual_conversations => {:column => :annualGoalsReport_spConvTotal, 
            :label => "Total spiritual conversations",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 7}, 
           :gospel_presentations => {:column => :annualGoalsReport_gosPresTotal, 
            :label => "Total Gospel presentations",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 8}, 
           :holyspirit_presentations => {:column => :annualGoalsReport_hsPresTotal, 
            :label => "Total Holy Spirit presentations",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 9}, 
           :indicated_decisions => {:column => :annualGoalsReport_prcTotal, 
            :label => "Total indicated decisions to follow Jesus",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 10},
           :followup_completed => {:column => :annualGoalsReport_integBelievers, 
            :label => "Total integrated new believers",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 11}, 
           :large_event_attendance => {:column => :annualGoalsReport_lrgEventAttend, 
            :label => "Total attendance at large events",
             :collected => :yearly,
             :column_type => :database_column,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 12               
             }
