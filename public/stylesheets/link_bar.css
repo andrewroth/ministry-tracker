@@ -1,20 +1,24 @@
 div#link_bar_wrapper {
     width: 100%;
     padding-top: 1px;
+    margin-bottom: 7px;
 }
 
 div#link_bar {
     display: block;
     height: 22px;
-    padding: 3px 8px 0;
+    padding-top: 3px;
     font-size: 13px;
+    width: 914px; /* page wrapper width plus it's 7px border */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div#tools {
   float: left;
 }
 
-div#tools nobr, div#user nobr, div#more_tools_box {
+div#tools nobr, div#user nobr, div.link_menu_box {
   padding-top: 1px;
   font-size: 13px;
 }
@@ -31,25 +35,28 @@ div#link_bar .rl {
   margin-left: 0.6em;
 }
 
+div#link_bar b {
+  color: #A6A6A6;
+}
+
 div#link_bar a, div#link_bar u {
   color: #1F429B;
   text-decoration: underline;
 }
 
 div#link_bar a:hover, div#link_bar u:hover {
-  color: #ECAC00;
+  color: #1F429B;
 }
 
-div#more_tools_box {
+div.link_menu_box {
   display: none;
   position: absolute;
   text-align: left;
-  left: 290px;
   top: 24px;
   right: auto;
   padding-bottom: 3px;
 
-  border: 1px solid #CCCCCC;
+  border: 1px solid #1F429B;
   border-top: 0;
   z-index: 1001;
   background: #E6E6E6;
@@ -58,16 +65,22 @@ div#more_tools_box {
   -moz-border-radius: 5px; -webkit-border-radius: 5px;
 }
 
-div#more_tools_box a {
+div.link_menu_box a {
   padding: 0.2em 0.6em;
   display: block;
-}
-
-div#link_bar a.more_tools {
   text-decoration: none;
 }
 
-div#link_bar small.more_tools {
+div.link_menu_box a:hover {
+  color: #1F429B;
+  text-decoration: underline;
+}
+
+div#link_bar a.menu_link {
+  text-decoration: none;
+}
+
+div#link_bar small {
   color: #1F429B;
 }
 

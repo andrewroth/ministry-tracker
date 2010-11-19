@@ -61,7 +61,7 @@ module EventBright
 
       retries = NUM_RETRIES_ON_404
       begin
-        response = post(function, opts)
+        response = Rails.cache.fetch("eventbright #{function.inspect} #{opts.inspect} #{Time.now.day} #{Time.now.hour}") { post(function, opts) }
         Rails.logger.info "\tEventbrite API call (#{Date.today}) \t #{function} \t #{opts.inspect}" if response
 
         if response["error"]
@@ -86,3 +86,4 @@ module EventBright
     end
   end
 end
+

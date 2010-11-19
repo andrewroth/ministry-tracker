@@ -8,7 +8,7 @@ function selectInputFields() {
     data: getRecordInfos(),
     dataType:'script',
     type:'post',
-    url:'/semester_reports/select_semester_report'})
+    url:'/semester_reports/select_report'})
 }
 
 
@@ -19,7 +19,7 @@ function getRecordInfos()
 	return "semester_id=" + semester_id + "&campus_id=" + campus_id;
 }
  
- function beginLoadingSemesterInputTab() {
+ function beginLoadingInputTab() {
   jQuery('.reportInputContainer').hide();
   jQuery('.reportInputContainer').visualEffect('fade');
   jQuery('#statsSpinnerContainer').visualEffect('appear');

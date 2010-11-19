@@ -187,8 +187,6 @@ background: #ffffcc;
 }
 
 
-
-
 .butProfile a {
 padding-left:20px;
 border:0px solid black;
@@ -196,24 +194,43 @@ height:18px;
 background:url(../images/zoom.png) top left no-repeat;
 }
 
-.butUpdate a {
+.butUpdate a, .butDelete a {
 padding:5px 5px 5px 5px;
 padding-left:20px;
 border:1px solid #ccc;
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
 height:18px;
 }
 
-
-.butUpdate a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+.butUpdate a {
+background: #fff url(../images/edit.png) 3px 5px no-repeat;
 }
 
-.butUpdate {
+.butDelete a {
+background: #fff url(../images/delete.png) 3px 5px no-repeat;
+}
+
+
+.butUpdate a:hover, .butDelete a:hover {
+text-decoration:none;
+border:1px solid #1F429B;
+}
+
+.butUpdate a:hover {
+background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+}
+
+.butDelete a:hover {
+background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
+}
+
+.butUpdate, .butDelete {
 margin:5px 0 0 0;
 float:right;
+}
+
+.actionButtons {
+  margin: 5px 0;
+float:left;
 }
 
 .butDExcel {
@@ -296,7 +313,7 @@ input:focus, textarea:focus {
 background:#FFFFCC;
 }
 
-select {width:175px; height:1.5em;}
+/*select {width:175px; height:1.5em;}*/
 li {list-style: none; margin-top:3px;}
 p {margin-bottom:10px;}
 
@@ -349,7 +366,7 @@ h1 {
 #wrapper {
     margin: 10px auto 10px auto;
     width:auto;
-    border:10px solid #CCCCCC;
+    border:7px solid #CCCCCC;
     text-align:left;
 	min-width:900px;
 	max-width:900px;
@@ -360,8 +377,8 @@ h1 {
 	min-width:900px;
 	max-width:900px;
 	height:120px;
-margin:auto;
-margin-top:10px;
+    margin:auto;
+    margin-top:10px;
 }
 
 #header {
@@ -545,10 +562,10 @@ div.sectionHeader h2 {
 .directorytable td{vertical-align:middle;}
 
 #searchBox {
-margin:10px 0 10px;
-	padding: 10px 10px 0px 10px;
-	border: 1px solid #ccc;
-background:#edf3fe;
+  margin:10px 0 10px;
+  padding: 10px 10px 0px 10px;
+  /*border: 1px solid #ccc;*/
+  background:#F7F7FA;
 }
 
 
@@ -710,7 +727,8 @@ line-height:28px;
 }
 
 #outer {
-	padding-left:2%;
+  /* why was this here? */
+  /* padding-left:2%;*/
 }
 
 table#legend {
@@ -930,9 +948,9 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   margin-bottom:5px;
 }
 
-#gettingstarted b{
-	color:black;
-  font-size: 120%;
+#gettingstarted big{
+  font-size: 18px;
+  color: #9E9E9E;
 }
 
 #gettingstarted img {
@@ -950,9 +968,9 @@ float:right;
 }
 
 #dashwrap {padding:0;}
-.dashmodule {border:1px solid silver; float:left; width:100%; margin-bottom:7px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
-.moduletitle {background:#EBEBF2; height:30px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
-.moduletitle h2 {float:left; color:darkslategray; font-weight:bold; font-size:18px; padding:4px 4px 4px 5px;}
+.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
+.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
+.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
@@ -960,8 +978,9 @@ a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; d
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
-.modulecontent h6 {font-size:13px;}
-.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px 5px 5px 5px; -webkit-border-radius: 5px 5px 5px 5px;}
+.modulecontent h6 {font-size:13px; }
+.modulecontent .norm {font-size:13px; font-weight: normal;}
+.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;}
 
 .modulesearchbox {margin-bottom:1em;}
 input.searchdash {font-size:16px; width:250px;}
@@ -984,7 +1003,7 @@ div#userbar {
 }
 
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 10px; margin-top: 6px;}
+div#userblock {float: right; padding-right: 10px; margin-top: 6px; text-align: right;}
 
 div#userbar small {font-size:11px;}
 
@@ -1124,11 +1143,16 @@ div.section {
 #switch_ministries_list {
   position: absolute;  
   z-index: 500;
+  text-align: left;
+
+  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 div.choose_ministry_tree {
   position: absolute;
   z-index: 500;
+  
+  -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }
 
 .statusheadwrap {
@@ -1255,6 +1279,10 @@ div.choose_ministry_tree {
   margin-right: 8px;
   width: 100%;
   float: none; /* needed for IE */
+}
+
+.statsFormField td {
+	width: 50%;
 }
 
 .statsFormField select {
@@ -1551,6 +1579,14 @@ table .statsTable {
   font-size: small;
 }
 
+#statsReportNote {
+  float: right;
+  font-style: italic;
+  font-size: 1em;
+  color: #A1A6B3;
+  margin-top: 0.5em;
+}
+
 div .backLink {
   text-align: left;
   float: left;
@@ -1696,6 +1732,7 @@ td.eventAttendees {
 }
 
 
+
 /************************************************/
 /* Search section                               */
 
@@ -1723,7 +1760,7 @@ td.eventAttendees {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 2px solid #CCCCCC;
+  border: 2px solid white;
   padding-left: 10px;
 
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
@@ -1744,8 +1781,8 @@ td.eventAttendees {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 4px;
-  left: 219px;
+  top: 5px;
+  left: 220px;
   padding: 7px 20px;
   cursor: pointer;
 }
@@ -1889,7 +1926,7 @@ td.eventAttendees {
   border: solid #CCCCCC; /*#1F429B;*/
   border-width: 0 2px 5px 2px;
 
-  top: 72px !important;
+  top: 79px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
@@ -2023,4 +2060,56 @@ table.groupInvolvementList td {
 
 table.groupInvolvementList th {
   font-weight: bold;
+}
+
+#dashboardInsightsContainer {
+  background-image: url(/images/canada.gif);
+  background-repeat: no-repeat;
+  background-position: top center;
+  height: 140px;
+  text-align: center;
+  position: relative;
+}
+
+#dashboardInsightsContainer #campusInsights {
+  font-size: 70%;
+}
+
+#dashboardInsightsContainer #totalInsights {
+  font-size: 140%;
+}
+
+#dashboardInsightsContainer h1 {
+  font-weight: bold;
+  color: #1F429B;
+  font-size: 4em;
+}
+
+#dashboardInsightsContainer h2 {
+  font-weight: bold;
+  color: #1F429B;
+  font-size: 1.5em;
+}
+
+#dashboardInsightsContainer #campusInsights {
+  float: left;
+  width: 35%;
+  text-align: center;
+  margin-top: 3em;
+}
+
+#dashboardInsightsContainer #totalInsights {
+  float: right;
+  width: 35%;
+  text-align: center;
+}
+
+#dashboardInsightsContainer #insightsSubTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  float: left;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }

@@ -38,3 +38,26 @@
      end %>
 
 </table>
+<%- if @period.semester_id == @current_semester.semester_id -%>
+  <table>
+    <tr>
+      <td><b>NOTE: </b></td>
+      <td>Additional staff <b>currently</b> involved at the campus(es) you selected:</td>    
+    </tr>
+    <tr>
+      <td></td>
+      <td align="left">
+      <% noncompliants = [] %>
+      <% @staffs.each do |staff| 
+           if staff[:staff_id].present? 
+             if no_weekly_data(@period, @campus_ids, staff[:staff_id]) %>
+                <% noncompliants.push(staff[:name]) %>    
+    <%       end
+           end
+     %>
+    <%   end %> 
+		<%= noncompliants.collect{|u| u}.join(', ') %>
+     </td>
+    </tr>
+  </table>
+<%- end -%>

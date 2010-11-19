@@ -20,6 +20,10 @@
       root: {"text":"root", "id":0, "children":[ <%= @ministries.join(",") %> ] }
     });
 
+    // sort alphabetically
+    var treeSorter = new Ext.tree.TreeSorter(tree, {});
+    treeSorter.doSort(tree.getRootNode());
+
     // render the tree
     tree.render('switch_ministries_tree');
     tree.getRootNode().expand();
@@ -34,7 +38,8 @@
   });
 
   $(document).click(function(e) {
-    $('#switch_ministries_list').hide();    
+    if ($('#switch_ministries_list').is(':visible')) {
+      $('#switch_ministries_list').slideUp();
+    }
   });
-
 </script>
