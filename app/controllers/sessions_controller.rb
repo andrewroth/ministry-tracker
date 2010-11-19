@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
       end
-      self.current_user.last_login = Time.now
+      self.current_user.last_login = Time.now.utc
       self.current_user.save
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     end
