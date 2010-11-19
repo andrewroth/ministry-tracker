@@ -31,7 +31,7 @@ class SignupController < ApplicationController
 
   def step1_info_submit
     @person = Person.new(params[:person])
-    [:email, :first_name, :last_name, :gender].each do |c|
+    [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
@@ -40,7 +40,7 @@ class SignupController < ApplicationController
     email = params[:person] && params[:person][:email]
     if email.present?
       email_regex = ValidatesEmailFormatOf::Regex
-      email_error = "Please enter a valid email address.  If the email is already in the pulse, enter it anyways and a verification email will be sent."
+      email_error = "Please enter a valid email address.  If the email is already in the Pulse, enter it anyways and a verification email will be sent."
       begin
         domain, local = email.reverse.split('@', 2)
         unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and email.length >= 6
@@ -59,7 +59,6 @@ class SignupController < ApplicationController
     end
 
     if @person.errors.present? || @primary_campus_involvement.errors.present?
-      debugger
       @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step1_info
       render :action => "step1_info"
@@ -119,9 +118,15 @@ class SignupController < ApplicationController
         end
         ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
+
         redirect_to :action => :step2_group
       end
     end
+  end
+
+  def step1_verify
+    @me = @my = @person = Person.find(session[:signup_person_id])
+    @email = @person.email.downcase
   end
 
   def step1_verify_submit
@@ -168,13 +173,12 @@ class SignupController < ApplicationController
     @join = true
     @signup = true
     @campus.ensure_campus_ministry_groups_created
-    @collection_group = @campus.collection_groups.first
-    @groups1.delete_if { |g| g == @collection_group }
-    @groups2.delete_if { |g| g == @collection_group }
+    @collection_group = @campus.collection_groups
+    @groups1.delete_if { |g| @collection_group.index(g) }
+    @groups2.delete_if { |g| @collection_group.index(g) }
     # cache of campus names
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", ( @groups1 + @groups2 ).collect(&:campus_id).uniq ])
-    @campus_id_to_name = Hash[campuses.collect{ |c| [c.id.to_s, c.name] }]
-            
+    @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
   end
 
   def step2_default_group
@@ -190,15 +194,17 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @campus = Campus.find session[:signup_campus_id]
 
+    semester = params[:semester_id].present? ? Semester.find(params[:semester_id]) : Semester.current
+
     # Special case - add them to the Bible study group by default
     gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
 
     @campus = Campus.find session[:signup_campus_id]
-    @group = @campus.find_or_create_ministry_group gt
+    @group = @campus.find_or_create_ministry_group gt, nil, semester
     gi = @group.group_involvements.find_or_create_by_person_id_and_level :person_id => @person.id, :level => 'member'
     gi.send_later(:join_notifications, base_url)
 
-    flash[:notice] = "Thank you.  You will be put into a group and someone will notify you of the group details."
+    flash[:notice] = "Thank you!  You'll be put into a group and someone will notify you of the group details."
 
     redirect_to :action => :step3_timetable
   end
