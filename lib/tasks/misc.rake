@@ -459,6 +459,6 @@ end
 
 namespace :pulse do
   task :deliver_emails_working => :environment do
-    Mailers::EmailMailer.send_later(:deliver_emails_working, "put_your_email"
+    Mailers::EmailMailer.send_later(:deliver_emails_working, "andrewroth@gmail.com", "john.homenuke@c4c.ca")
   end
 end
