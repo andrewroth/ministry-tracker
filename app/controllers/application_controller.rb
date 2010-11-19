@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     #before_filter CASClient::Frameworks::Rails::GatewayFilter 
     before_filter :cas_gateway_filter
   end unless Rails.env.test?
+
    # before_filter :fake_login
 
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
@@ -36,6 +37,7 @@ class ApplicationController < ActionController::Base
   helper :all
 
   protected
+
     def cas_filter
       return if logged_in?
       CASClient::Frameworks::Rails::Filter.filter(self)
@@ -177,7 +179,6 @@ class ApplicationController < ActionController::Base
     
     def authorized?(action = nil, controller = nil, ministry = nil)
       return true if is_ministry_admin
-      
       ministry ||= get_ministry
       return false unless ministry
 
@@ -185,12 +186,12 @@ class ApplicationController < ActionController::Base
         @user_permissions ||= {}
         @user_permissions[ministry] ||= {}
         # Find the highest level of access they have at or above the level of the current ministry
-        if session[:ministry_role_id].nil?
+        if session[:"ministry_#{ministry.id}_role_id"].nil?
           mi = @my.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
-          session[:ministry_role_id] = mi ? mi.ministry_role_id : false
+          session[:"ministry_#{ministry.id}_role_id"] = mi ? mi.ministry_role_id : false
         end
-        if session[:ministry_role_id]
-          role = MinistryRole.find(session[:ministry_role_id])
+        if session[:"ministry_#{ministry.id}_role_id"]
+          role = MinistryRole.find(session[:"ministry_#{ministry.id}_role_id"])
           role.permissions.each do |perm|
             @user_permissions[ministry][perm.controller] ||= []
             @user_permissions[ministry][perm.controller] << perm.action
@@ -256,6 +257,7 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
+          
         end # case
       end # if
 
@@ -266,6 +268,42 @@ class ApplicationController < ActionController::Base
       end
       
       return Cmt::CONFIG[:permissions_granted_by_default]
+    end
+
+    def ministry_involvement_granting_authorization(action = nil, controller = nil, ministry = nil)
+      if is_ministry_admin
+        mi = ::MinistryInvolvement.build_highest_ministry_involvement_possible(@me)
+      else
+        mi = @me.highest_ministry_involvement_with_particular_role(role_granting_authorization(action, controller, ministry))
+      end
+      mi
+    end
+
+    def role_granting_authorization(action = nil, controller = nil, ministry = nil)
+      if authorized?(action, controller, ministry)
+
+        ministry ||= get_ministry
+        return false unless ministry
+
+        action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
+        action = action == 'update' ? 'edit' : action
+        controller ||= controller_name.to_s
+
+        # Make sure we're always using strings
+        action = action.to_s
+        controller = controller.to_s
+
+
+        my_role_ids = @my.ministry_involvements.collect{ |mi| mi.ministry_role_id }
+
+        mrps = ::MinistryRolePermission.all(:joins => :permission,
+          :conditions => ["#{::Permission.table_name}.#{_(:action, :permission)} = ? AND #{::Permission.table_name}.#{_(:controller, :permission)} = ? AND ministry_role_id IN (?)", action.to_s, controller.to_s, my_role_ids ] )
+
+        ::MinistryRole.all(:first, :conditions => ["id IN (?)", mrps.collect {|mrp| mrp.ministry_role_id } ], :order => "#{::MinistryRole.table_name}.position ASC").first
+
+      else
+        nil
+      end
     end
     
 #    def authorization_allowed_for_owner
