@@ -22,6 +22,7 @@ class DashboardController < ApplicationController
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
                                          :order => "#{Person.table_name}.#{_(:created_at, :person)} desc", :limit => 4, :joins => [:ministry_involvements, :campus_involvements])
     end
+<<<<<<< HEAD
 
     @show_my_events = Event.first.present? ? true : false
   end
@@ -93,6 +94,7 @@ class DashboardController < ApplicationController
     respond_to do |format|
       format.js
     end
+
   end
 
   protected
