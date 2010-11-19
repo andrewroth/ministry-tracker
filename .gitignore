@@ -16,6 +16,7 @@ config/initializers/cache_money.rb
 config/initializers/eventbright.rb
 query_trace
 nbproject/
+db/development_structure.sql
 *.swp
 public/profile_pictures
 *~

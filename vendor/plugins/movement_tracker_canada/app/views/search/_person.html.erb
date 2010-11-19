@@ -11,11 +11,11 @@
   <div class='searchResultActions'>
     <% if authorized?(:show, :timetables) && person.timetable_id.present? %>
       <br/>
-      <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}")%>
+      <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}", :class => "viewTimetable", :title => "Goto #{person.first_name.capitalize}&rsquo;s timetable")%>
     <% end %>
     <% if authorized?(:new, :emails) %>
       <br/>
-      <%=link_to("Send Email", new_email_url("person[]" => person.id))%>
+      <%=link_to("Send Email", new_email_url("person[]" => person.id), :class => "sendEmail", :title => "Goto compose an email to #{person.first_name.capitalize}")%>
     <% end %>
   </div>
 </li>

@@ -1870,6 +1870,26 @@ td.eventAttendees {
   float: right;
 }
 
+.searchResultActions .viewTimetable {
+  padding-right: 20px;
+}
+
+.searchResult:hover .searchResultActions .viewTimetable {
+  background-image: url("/images/silk/calendar.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResultActions .sendEmail {
+  padding-right: 20px;
+}
+
+.searchResult:hover .searchResultActions .sendEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
 .searchResultName {
   font-size: 14px;
   font-weight: bold;
@@ -1917,6 +1937,31 @@ td.eventAttendees {
   font-weight: normal;
 }
 
+li.ac_over .autoCompleteTimetable {
+  display: inline;
+  float: right;
+}
+
+.autoCompleteTimetable {
+  display: none;
+}
+
+.autoCompleteResult a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.autoCompleteResult a:hover {
+  text-decoration: underline;
+  color: #1F429B;
+}
+
+li.ac_over .autoCompleteEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 20px;
+}
 
 .ac_results {
   padding: 18px 0 0 0;
@@ -2031,10 +2076,6 @@ td.eventAttendees {
 .autoCompleteResult a :hover {
 /*  color: #1F429B;*/
   text-decoration: none;
-}
-
-.autoCompleteResult a {
-  display: block;
 }
 
 .noSearchHighlight strong {
