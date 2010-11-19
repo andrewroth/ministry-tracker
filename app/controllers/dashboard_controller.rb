@@ -16,7 +16,6 @@ class DashboardController < ApplicationController
       
     setup_stats
     setup_insights
-    
 
     if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
@@ -26,7 +25,6 @@ class DashboardController < ApplicationController
     @show_my_events = Event.first.present? ? true : false
   end
 
-  
   def events
     begin
 
@@ -93,8 +91,8 @@ class DashboardController < ApplicationController
     respond_to do |format|
       format.js
     end
-  end
 
+  end
 
   protected
 
@@ -124,20 +122,20 @@ class DashboardController < ApplicationController
   def setup_stats
     ministry = get_ministry
 
-    mis = MinistryInvolvement.find(:first, 
-      :select => "count(distinct(#{MinistryInvolvement._(:person_id)})) as total", 
+    mis = MinistryInvolvement.find(:first,
+      :select => "count(distinct(#{MinistryInvolvement._(:person_id)})) as total",
       :joins => "INNER JOIN #{Ministry.table_name} m ON #{MinistryInvolvement._(:ministry_id)} = m.id",
       :conditions => "lft >= #{ministry.lft} AND rgt <= #{ministry.rgt}")
     @num_people = mis.total
 
     sid = Semester.current.id
-    gt_all = GroupType.find(:all, 
+    gt_all = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt}",
       :group => "#{GroupType.__(:id)}")
 
-    gt_sem = GroupType.find(:all, 
+    gt_sem = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid}",
