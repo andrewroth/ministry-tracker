@@ -54,7 +54,6 @@ class SessionsController < ApplicationController
       flash[:warning] = "Invalid username or password"
     end
 
-
   end
 
   def create
