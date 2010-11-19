@@ -1,182 +1,191 @@
 CREATE TABLE `campus_ministry_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) DEFAULT NULL,
-  `campus_id` int(11) DEFAULT NULL,
-  `ministry_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `group_id` int(11) default NULL,
+  `campus_id` int(11) default NULL,
+  `ministry_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `columns` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `update_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `from_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `select_clause` text COLLATE utf8_unicode_ci,
-  `column_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `writeable` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `join_clause` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `source_model` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `source_column` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `foreign_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) collate utf8_unicode_ci default NULL,
+  `update_clause` varchar(255) collate utf8_unicode_ci default NULL,
+  `from_clause` varchar(255) collate utf8_unicode_ci default NULL,
+  `select_clause` text collate utf8_unicode_ci,
+  `column_type` varchar(255) collate utf8_unicode_ci default NULL,
+  `writeable` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `join_clause` varchar(255) collate utf8_unicode_ci default NULL,
+  `source_model` varchar(255) collate utf8_unicode_ci default NULL,
+  `source_column` varchar(255) collate utf8_unicode_ci default NULL,
+  `foreign_key` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `conference_registrations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `conference_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `conference_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `conferences` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `custom_attributes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ministry_id` int(11) DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `value_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `ministry_id` int(11) default NULL,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `value_type` varchar(255) collate utf8_unicode_ci default NULL,
+  `description` varchar(255) collate utf8_unicode_ci default NULL,
+  `type` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`),
   KEY `index_custom_attributes_on_type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `custom_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) DEFAULT NULL,
-  `custom_attribute_id` int(11) DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `custom_attribute_id` int(11) default NULL,
+  `value` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `delayed_jobs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `priority` int(11) DEFAULT '0',
-  `attempts` int(11) DEFAULT '0',
-  `handler` text COLLATE utf8_unicode_ci,
-  `last_error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `run_at` datetime DEFAULT NULL,
-  `locked_at` datetime DEFAULT NULL,
-  `failed_at` datetime DEFAULT NULL,
-  `locked_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `priority` int(11) default '0',
+  `attempts` int(11) default '0',
+  `handler` text collate utf8_unicode_ci,
+  `last_error` varchar(255) collate utf8_unicode_ci default NULL,
+  `run_at` datetime default NULL,
+  `locked_at` datetime default NULL,
+  `failed_at` datetime default NULL,
+  `locked_by` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `dismissed_notices` (
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `notice_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `emails` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subject` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `body` text COLLATE utf8_unicode_ci,
-  `people_ids` text COLLATE utf8_unicode_ci,
-  `missing_address_ids` text COLLATE utf8_unicode_ci,
-  `search_id` int(11) DEFAULT NULL,
-  `sender_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `subject` varchar(255) collate utf8_unicode_ci default NULL,
+  `body` text collate utf8_unicode_ci,
+  `people_ids` text collate utf8_unicode_ci,
+  `missing_address_ids` text collate utf8_unicode_ci,
+  `search_id` int(11) default NULL,
+  `sender_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `event_campuses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `event_id` int(11) DEFAULT NULL,
-  `campus_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `event_id` int(11) default NULL,
+  `campus_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `event_groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) collate utf8_unicode_ci default NULL,
+  `description` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `registrar_event_id` int(11) DEFAULT NULL,
-  `event_group_id` int(11) DEFAULT NULL,
-  `register_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `registrar_event_id` int(11) default NULL,
+  `event_group_id` int(11) default NULL,
+  `register_url` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `free_times` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `start_time` int(11) DEFAULT NULL,
-  `end_time` int(11) DEFAULT NULL,
-  `day_of_week` int(11) DEFAULT NULL,
-  `timetable_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `css_class` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `weight` decimal(4,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `start_time` int(11) default NULL,
+  `end_time` int(11) default NULL,
+  `day_of_week` int(11) default NULL,
+  `timetable_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `css_class` varchar(255) collate utf8_unicode_ci default NULL,
+  `weight` decimal(4,2) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `group_involvements` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) DEFAULT NULL,
-  `group_id` int(11) DEFAULT NULL,
-  `level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `requested` tinyint(1) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `group_id` int(11) default NULL,
+  `level` varchar(255) collate utf8_unicode_ci default NULL,
+  `requested` tinyint(1) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `group_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ministry_id` int(11) DEFAULT NULL,
-  `group_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `mentor_priority` tinyint(1) DEFAULT NULL,
-  `public` tinyint(1) DEFAULT NULL,
-  `unsuitability_leader` int(11) DEFAULT NULL,
-  `unsuitability_coleader` int(11) DEFAULT NULL,
-  `unsuitability_participant` int(11) DEFAULT NULL,
-  `collection_group_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT '{{campus}} interested in a {{group_type}}',
-  `has_collection_groups` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `ministry_id` int(11) default NULL,
+  `group_type` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `mentor_priority` tinyint(1) default NULL,
+  `public` tinyint(1) default NULL,
+  `unsuitability_leader` int(11) default NULL,
+  `unsuitability_coleader` int(11) default NULL,
+  `unsuitability_participant` int(11) default NULL,
+  `collection_group_name` varchar(255) collate utf8_unicode_ci default '{{campus}} interested in a {{group_type}}',
+  `has_collection_groups` tinyint(1) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `groups` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `zip` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dorm_id` int(11) DEFAULT NULL,
-  `ministry_id` int(11) DEFAULT NULL,
-  `campus_id` int(11) DEFAULT NULL,
-  `start_time` int(11) DEFAULT NULL,
-  `end_time` int(11) DEFAULT NULL,
-  `day` int(11) DEFAULT NULL,
-  `group_type_id` int(11) DEFAULT NULL,
-  `needs_approval` tinyint(1) DEFAULT NULL,
-  `semester_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `address` varchar(255) collate utf8_unicode_ci default NULL,
+  `address_2` varchar(255) collate utf8_unicode_ci default NULL,
+  `city` varchar(255) collate utf8_unicode_ci default NULL,
+  `state` varchar(255) collate utf8_unicode_ci default NULL,
+  `zip` varchar(255) collate utf8_unicode_ci default NULL,
+  `country` varchar(255) collate utf8_unicode_ci default NULL,
+  `email` varchar(255) collate utf8_unicode_ci default NULL,
+  `url` varchar(255) collate utf8_unicode_ci default NULL,
+  `dorm_id` int(11) default NULL,
+  `ministry_id` int(11) default NULL,
+  `campus_id` int(11) default NULL,
+  `start_time` int(11) default NULL,
+  `end_time` int(11) default NULL,
+  `day` int(11) default NULL,
+  `group_type_id` int(11) default NULL,
+  `needs_approval` tinyint(1) default NULL,
+  `semester_id` int(11) default NULL,
+  PRIMARY KEY  (`id`),
   KEY `index_groups_on_campus_id` (`campus_id`),
   KEY `index_groups_on_dorm_id` (`dorm_id`),
   KEY `index_groups_on_ministry_id` (`ministry_id`),
@@ -184,254 +193,263 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `imports` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `size` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `content_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `filename` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `thumbnail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `parent_id` int(11) default NULL,
+  `size` int(11) default NULL,
+  `height` int(11) default NULL,
+  `width` int(11) default NULL,
+  `content_type` varchar(255) collate utf8_unicode_ci default NULL,
+  `filename` varchar(255) collate utf8_unicode_ci default NULL,
+  `thumbnail` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `ministry_role_permissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `permission_id` int(11) DEFAULT NULL,
-  `ministry_role_id` int(11) DEFAULT NULL,
-  `created_at` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `permission_id` int(11) default NULL,
+  `ministry_role_id` int(11) default NULL,
+  `created_at` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `news` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `message` text COLLATE utf8_unicode_ci,
-  `group_id` int(11) DEFAULT NULL,
-  `ministry_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `sticky` tinyint(1) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `staff` tinyint(1) DEFAULT NULL,
-  `students` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) collate utf8_unicode_ci default NULL,
+  `message` text collate utf8_unicode_ci,
+  `group_id` int(11) default NULL,
+  `ministry_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `sticky` tinyint(1) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `staff` tinyint(1) default NULL,
+  `students` tinyint(1) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `news_comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `news_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `comment` text COLLATE utf8_unicode_ci,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `news_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `comment` text collate utf8_unicode_ci,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `notices` (
+  `id` int(11) NOT NULL auto_increment,
+  `message` text collate utf8_unicode_ci,
+  `live` tinyint(1) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `controller` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `action` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `description` varchar(1000) collate utf8_unicode_ci default NULL,
+  `controller` varchar(255) collate utf8_unicode_ci default NULL,
+  `action` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `person_news` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `news_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `hidden` tinyint(1) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `news_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `hidden` tinyint(1) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`),
   KEY `index_person_news_on_news_id` (`news_id`),
   KEY `index_person_news_on_person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `schema_migrations` (
-  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `version` varchar(255) collate utf8_unicode_ci NOT NULL,
   UNIQUE KEY `unique_schema_migrations` (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `searches` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) DEFAULT NULL,
-  `options` text COLLATE utf8_unicode_ci,
-  `query` text COLLATE utf8_unicode_ci,
-  `tables` text COLLATE utf8_unicode_ci,
-  `saved` tinyint(1) DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `order` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `options` text collate utf8_unicode_ci,
+  `query` text collate utf8_unicode_ci,
+  `tables` text collate utf8_unicode_ci,
+  `saved` tinyint(1) default NULL,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `order` varchar(255) collate utf8_unicode_ci default NULL,
+  `description` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `semesters` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `year_id` int(11) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `desc` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `year_id` int(11) default NULL,
+  `start_date` date default NULL,
+  `desc` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `sessions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `data` text COLLATE utf8_unicode_ci,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `session_id` varchar(255) collate utf8_unicode_ci NOT NULL,
+  `data` text collate utf8_unicode_ci,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `staff` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ministry_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `created_at` date DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `ministry_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `created_at` date default NULL,
+  PRIMARY KEY  (`id`),
   KEY `index_staff_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `stint_applications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stint_location_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `stint_location_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `stint_locations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `strategies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `abbrv` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `abbrv` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `summer_project_applications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `summer_project_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `summer_project_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `status` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `summer_projects` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `timetables` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `person_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `person_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `training_answers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `training_question_id` int(11) DEFAULT NULL,
-  `person_id` int(11) DEFAULT NULL,
-  `completed_at` date DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `approved_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `training_question_id` int(11) default NULL,
+  `person_id` int(11) default NULL,
+  `completed_at` date default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `approved_by` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `training_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `position` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `ministry_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) collate utf8_unicode_ci default NULL,
+  `position` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `ministry_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `training_question_activations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ministry_id` int(11) DEFAULT NULL,
-  `training_question_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `mandate` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `ministry_id` int(11) default NULL,
+  `training_question_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `mandate` tinyint(1) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `training_questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `activity` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ministry_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `training_category_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` int(11) NOT NULL auto_increment,
+  `activity` varchar(255) collate utf8_unicode_ci default NULL,
+  `ministry_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `training_category_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user_codes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `pass` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `user_id` int(11) default NULL,
+  `code` varchar(255) collate utf8_unicode_ci default NULL,
+  `pass` text collate utf8_unicode_ci,
+  PRIMARY KEY  (`id`),
   KEY `index_user_codes_on_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `view_columns` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `view_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `column_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `position` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `id` int(11) NOT NULL auto_increment,
+  `view_id` varchar(255) collate utf8_unicode_ci default NULL,
+  `column_id` varchar(255) collate utf8_unicode_ci default NULL,
+  `position` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `views` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ministry_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `default_view` tinyint(1) DEFAULT NULL,
-  `select_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tables_clause` varchar(2000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `title` varchar(255) collate utf8_unicode_ci default NULL,
+  `ministry_id` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `default_view` tinyint(1) default NULL,
+  `select_clause` varchar(2000) collate utf8_unicode_ci default NULL,
+  `tables_clause` varchar(2000) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `years` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `desc` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(11) NOT NULL auto_increment,
+  `desc` varchar(255) collate utf8_unicode_ci default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20100624184736');
 
@@ -458,3 +476,7 @@ INSERT INTO schema_migrations (version) VALUES ('20100830195510');
 INSERT INTO schema_migrations (version) VALUES ('20100830195718');
 
 INSERT INTO schema_migrations (version) VALUES ('20100923050109');
+
+INSERT INTO schema_migrations (version) VALUES ('20101108025347');
+
+INSERT INTO schema_migrations (version) VALUES ('20101108035650');
