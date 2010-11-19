@@ -59,7 +59,7 @@ class SessionsController < ApplicationController
           end
           flash[:notice] = "Logged in successfully"
           # local login worked, redirect to appropriate starting page
-          self.current_user.last_login = Time.now
+          self.current_user.last_login = Time.now.utc
           self.current_user.save
           redirect_params = session[:return_to] || url_for(:controller => 'dashboard', :action => 'index')
           wants.js do
