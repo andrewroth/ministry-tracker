@@ -16,18 +16,15 @@ class DashboardController < ApplicationController
       
     setup_stats
     setup_insights
-    
 
     if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
                                          :order => "#{Person.table_name}.#{_(:created_at, :person)} desc", :limit => 4, :joins => [:ministry_involvements, :campus_involvements])
     end
-<<<<<<< HEAD
 
     @show_my_events = Event.first.present? ? true : false
   end
 
-  
   def events
     begin
 
