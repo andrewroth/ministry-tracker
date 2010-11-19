@@ -141,7 +141,7 @@ class PrcsController < ApplicationController
   
   def setup_campuses_and_semesters()
     @semesters = Semester.all(:order => :semester_startDate)  
-    @campuses = user_campuses
+    @campuses = user_campuses_with_new_prc_permission
     @methods = Prcmethod.all()
   end
   
@@ -163,7 +163,8 @@ class PrcsController < ApplicationController
   def setup_for_index(semester_id, campus_id)
     set_active_data(:semester_id, semester_id)
     set_active_data(:campus_id, campus_id)
-    
+
+
     @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
     if @prcs.empty?
       prc = Prc.new      
@@ -177,7 +178,7 @@ class PrcsController < ApplicationController
     setup_campuses_and_semesters
   end  
 
-  def user_campuses
+  def user_campuses_with_new_prc_permission
     unless is_ministry_admin
       @user_campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("prcs", "new"))
     else
@@ -244,7 +245,7 @@ class PrcsController < ApplicationController
     unless @current_campus_id
       campus_found = nil
       campus_count = {}
-      last_3_campuses = WeeklyReport.find(:all, :conditions => {:staff_id => get_current_staff_id}, :limit => 3).collect{|wr| wr[:campus_id]}
+      last_3_campuses = WeeklyReport.find(:all, :include => [:week], :conditions => {:staff_id => get_current_staff_id}, :limit => 3, :order => "#{Week.__(:end_date)} DESC").collect{|wr| wr[:campus_id]}
       last_3_campuses.each do |c|
         campus_count[c] ||= 0
         campus_count[c] += 1
@@ -254,7 +255,12 @@ class PrcsController < ApplicationController
         campus_found = cf if campus_found.nil? || campus_count[cf] >= campus_count[campus_found]
       end
       @current_campus_id ||= campus_found
-      @current_campus_id ||= get_ministry.unique_campuses.first.id
+
+      # if person's most recently submitted stats are at a campus they no longer have involvements at
+      if @current_campus_id.nil? || @my.ministries.index(Campus.find(@current_campus_id).derive_ministry).nil?
+        @current_campus_id = user_campuses_with_new_prc_permission.first.id
+      end
+
     end
     @current_campus_id
   end

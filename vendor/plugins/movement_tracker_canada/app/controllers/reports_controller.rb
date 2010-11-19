@@ -81,10 +81,10 @@ class ReportsController < ApplicationController
     @years = Year.all()   # order by id, if that's not default
   end
 
-  def setup_dropdown_campuses
+  def setup_dropdown_campuses_with_new_report_permission
     unless @campuses
       unless is_ministry_admin
-        @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("weekly_reports", "new"))
+        @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("#{report_model.to_s.pluralize.underscore}", "new"))
       else
         @campuses = Ministry.first.root.unique_campuses
       end
@@ -99,7 +99,7 @@ class ReportsController < ApplicationController
     identification_fields.each do |id_f|
       case id_f
         when :campus_id
-          setup_dropdown_campuses
+          setup_dropdown_campuses_with_new_report_permission
         when :week_id
           setup_dropdown_weeks
         when :month_id
@@ -133,17 +133,22 @@ class ReportsController < ApplicationController
     unless @current_campus_id
       campus_found = nil
       campus_count = {}
-      last_3_campuses = WeeklyReport.find(:all, :conditions => {:staff_id => get_current_staff_id}, :limit => 3).collect{|wr| wr[:campus_id]}
+      last_3_campuses = WeeklyReport.find(:all, :include => [:week], :conditions => {:staff_id => get_current_staff_id}, :limit => 3, :order => "#{Week.__(:end_date)} DESC").collect{|wr| wr[:campus_id]}
       last_3_campuses.each do |c|
         campus_count[c] ||= 0
         campus_count[c] += 1
       end
-      
+
       last_3_campuses.each do |cf|
         campus_found = cf if campus_found.nil? || campus_count[cf] >= campus_count[campus_found]
       end
       @current_campus_id ||= campus_found
-      @current_campus_id ||= get_ministry.unique_campuses.first.id
+
+      # if person's most recently submitted stats are at a campus they no longer have involvements at
+      if @current_campus_id.nil? || @my.ministries.index(Campus.find(@current_campus_id).derive_ministry).nil?
+        @current_campus_id = setup_dropdown_campuses_with_new_report_permission.first.id
+      end
+
     end
     @current_campus_id
   end

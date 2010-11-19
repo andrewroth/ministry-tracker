@@ -366,7 +366,7 @@ h1 {
 #wrapper {
     margin: 10px auto 10px auto;
     width:auto;
-    border:10px solid #CCCCCC;
+    border:7px solid #CCCCCC;
     text-align:left;
 	min-width:900px;
 	max-width:900px;
@@ -377,8 +377,8 @@ h1 {
 	min-width:900px;
 	max-width:900px;
 	height:120px;
-margin:auto;
-margin-top:10px;
+    margin:auto;
+    margin-top:10px;
 }
 
 #header {
@@ -562,10 +562,10 @@ div.sectionHeader h2 {
 .directorytable td{vertical-align:middle;}
 
 #searchBox {
-margin:10px 0 10px;
-	padding: 10px 10px 0px 10px;
-	border: 1px solid #ccc;
-background:#edf3fe;
+  margin:10px 0 10px;
+  padding: 10px 10px 0px 10px;
+  /*border: 1px solid #ccc;*/
+  background:#F7F7FA;
 }
 
 
@@ -727,7 +727,8 @@ line-height:28px;
 }
 
 #outer {
-	padding-left:2%;
+  /* why was this here? */
+  /* padding-left:2%;*/
 }
 
 table#legend {
@@ -947,9 +948,9 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   margin-bottom:5px;
 }
 
-#gettingstarted b{
-	color:black;
-  font-size: 120%;
+#gettingstarted big{
+  font-size: 18px;
+  color: #9E9E9E;
 }
 
 #gettingstarted img {
@@ -967,9 +968,9 @@ float:right;
 }
 
 #dashwrap {padding:0;}
-.dashmodule {border:1px solid silver; float:left; width:100%; margin-bottom:7px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
-.moduletitle {background:#EBEBF2; height:30px; -moz-border-radius: 7px 7px 0 0; -webkit-border-radius: 7px 7px 0 0;}
-.moduletitle h2 {float:left; color:darkslategray; font-weight:bold; font-size:18px; padding:4px 4px 4px 5px;}
+.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
+.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
+.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
 .modulecontrols {float:right;}
 .modulecontent {min-height:100px; padding:5px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
@@ -977,8 +978,9 @@ a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; d
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
-.modulecontent h6 {font-size:13px;}
-.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px 5px 5px 5px; -webkit-border-radius: 5px 5px 5px 5px;}
+.modulecontent h6 {font-size:13px; }
+.modulecontent .norm {font-size:13px; font-weight: normal;}
+.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;}
 
 .modulesearchbox {margin-bottom:1em;}
 input.searchdash {font-size:16px; width:250px;}
@@ -1758,7 +1760,7 @@ td.eventAttendees {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 1px solid #CCCCCC;
+  border: 2px solid white;
   padding-left: 10px;
 
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
@@ -1767,7 +1769,7 @@ td.eventAttendees {
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 1px solid #00268D; /* #FFCB05; yellow */
+  border: 2px solid #00268D; /* #FFCB05; yellow */
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -1779,8 +1781,8 @@ td.eventAttendees {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 3px;
-  left: 218px;
+  top: 5px;
+  left: 220px;
   padding: 7px 20px;
   cursor: pointer;
 }
@@ -1922,9 +1924,9 @@ td.eventAttendees {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 1px 5px 1px;
+  border-width: 0 2px 5px 2px;
 
-  top: 44px !important;
+  top: 79px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
