@@ -95,7 +95,6 @@ class DashboardController < ApplicationController
     end
   end
 
-
   protected
 
   def get_eventbrite_event_from_event(event)
@@ -124,20 +123,20 @@ class DashboardController < ApplicationController
   def setup_stats
     ministry = get_ministry
 
-    mis = MinistryInvolvement.find(:first, 
-      :select => "count(distinct(#{MinistryInvolvement._(:person_id)})) as total", 
+    mis = MinistryInvolvement.find(:first,
+      :select => "count(distinct(#{MinistryInvolvement._(:person_id)})) as total",
       :joins => "INNER JOIN #{Ministry.table_name} m ON #{MinistryInvolvement._(:ministry_id)} = m.id",
       :conditions => "lft >= #{ministry.lft} AND rgt <= #{ministry.rgt}")
     @num_people = mis.total
 
     sid = Semester.current.id
-    gt_all = GroupType.find(:all, 
+    gt_all = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt}",
       :group => "#{GroupType.__(:id)}")
 
-    gt_sem = GroupType.find(:all, 
+    gt_sem = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid}",
