@@ -19,6 +19,9 @@ class TimetablesController < ApplicationController
   # GET /timetables/1
   # GET /timetables/1.xml
   def show
+    if params[:print_it] == "true"
+      @printable = true;
+    end
     if @can_show
       respond_to do |format|
         format.html # show.html.erb
@@ -48,7 +51,7 @@ class TimetablesController < ApplicationController
   
   def update_signup
     update
-    redirect_to :controller => :signup, :action => :step3_timetable_submit
+    redirect_to :controller => :signup, :action => :step3_timetable_submit, :method => :get
   end
 
   # PUT /timetables/1
@@ -73,6 +76,7 @@ class TimetablesController < ApplicationController
 
       @person ||= get_person
       @timetable.update_attributes(:updated_by_person_id => @my.id)
+      @timetable.touch
       return if @signup
 
       respond_to do |format|
@@ -246,7 +250,10 @@ class TimetablesController < ApplicationController
       @me = @my = @person = Person.find(session[:signup_person_id])
     end
 
-    def get_layout
+    def get_layout ()
+      if params[:print_it] == "true"
+         return 'printable';
+      end
       @signup ? 'application' : 'people'
     end
 end
