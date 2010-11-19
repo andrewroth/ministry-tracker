@@ -15,7 +15,7 @@
   		<%- end -%>
   		</td>
   		<td><%= person.current_address.try(:email) %></td>
-  		<td><%= person.user.last_login.present? ? "#{distance_of_time_in_words(Time.zone.now, person.user.last_login)} ago" : "never" %></td>
+  		<td><%= person.try(:user).try(:last_login).present? ? "#{distance_of_time_in_words(Time.zone.now, person.try(:user).try(:last_login))} ago" : "never" %></td>
 		</tr>
 	<%- end -%>
 	</table>

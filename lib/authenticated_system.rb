@@ -157,23 +157,7 @@ module AuthenticatedSystem
     end
   
     def clear_session
-      session[:cas_user] = nil
-      session[:user] = nil   # keeps the session but kill our variable
-      session[:ministry_id] = nil
-      session[:ministry_role_id] = nil
-      session[:can_manage] = nil
-      session[:admins] = nil
-      session[:locale] = nil
-      session[:facebook_session] = nil
-      session.select {|k,v| k.to_s =~ /^ministry_/}.each do |s|
-        session[s[0]] = nil
-      end
-      
-      # session vars used to speed up search auto-complete
-      session[:search_limit_condition] = nil
-      session[:authorized_to_search_people] = nil
-      session[:search_ministry] = nil
-      session[:search_ministry_id] = nil
+      session.clear
     end
 
     def kill_remember_cookie!
