@@ -24,6 +24,7 @@ class Timetable < ActiveRecord::Base
   DISPLAY_TOP = 5
   
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
+  belongs_to :updated_by_person, :class_name => "Person", :foreign_key => _(:updated_by_person_id)
   has_many :free_times, :class_name => "FreeTime", :foreign_key => _(:timetable_id, :free_time), :order => "#{_(:day_of_week, :free_times)}, #{_(:start_time, :free_times)}"
   
   # Question: This is coded very much like our old PHP code, should we define 

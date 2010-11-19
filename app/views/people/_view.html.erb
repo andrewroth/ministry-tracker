@@ -124,6 +124,34 @@
 </table>
 <br />
 
+<% if is_ministry_admin %>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+  <tr>
+	<td colspan="1"><h4 class="title">Recent Activity</h4></td>
+    <td class="spacer">&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td>
+      <table class="halftab">
+          <tr>
+            <td><p>Last logged in via PAT or Pulse <%= @person.user.last_login.present? ? "#{distance_of_time_in_words(Time.zone.now, @person.user.last_login)} ago" : "never" %><p/></td>
+            
+          </tr>
+
+          <tr>
+            <td>
+              <p>
+              Timetable last updated <%= @person.timetable.updated_at.present? ? "#{distance_of_time_in_words(Time.zone.now, @person.timetable.updated_at)} ago" : "never" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? && @person.timetable.updated_at.present? %>
+              </p>
+            </td>
+          </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<% end %>
+
 <%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
 	<%- remote_form_for @person do |f| -%>
 	<div id="staffArea">
