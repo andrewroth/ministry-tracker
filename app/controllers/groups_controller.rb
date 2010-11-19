@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        layout = authorized?(:index, :manage) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'application'  : 'application'   # formerly had 'manage' layout for groups too
         render :layout => layout
       end
       format.js
@@ -76,8 +76,9 @@ class GroupsController < ApplicationController
     end
     @groups.uniq!
     @groups.sort{ |g1, g2| g1.name <=> g2.name }
+
     s1 = Semester.current
-    s2 = Semester.find(s1.id+1)
+    s2 = s1.next_semester
     no_list = []
     s1_list = []
     s2_list = []
@@ -348,7 +349,9 @@ class GroupsController < ApplicationController
       session[:group_campus_filter_id] = @campus.try(:id)
     end
 
-    @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + @campuses.collect{ |c| [ c.name, c.id ] }
+    campuses_for_filter = @campuses.collect{ |c| [ c.name, c.id ] }
+    campuses_for_filter.sort! {|a, b| a[0] <=> b[0]}
+    @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + campuses_for_filter
   end
 
   def setup_semester_filter
