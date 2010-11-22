@@ -456,3 +456,9 @@ def escape_string(str)
     end
   end
 end
+
+namespace :pulse do
+  task :deliver_emails_working => :environment do
+    Mailers::EmailMailer.send_later(:deliver_emails_working, "andrewroth@gmail.com, john.homenuke@c4c.ca")
+  end
+end
