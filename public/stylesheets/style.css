@@ -1042,7 +1042,7 @@ background:#fff7d2;
 border:1px dotted orange;
 }
 
-.flash_notice b {
+div.flash b, div.flash_notice b  {
   color: #1F429B;
   font-weight: bold;
 }
@@ -1795,6 +1795,39 @@ td.eventAttendees {
   height: 100%;
   width: 150px;
   float: left;
+  padding-left: 20px;
+}
+
+#searchFilterControlsContainer a {
+  display: block;
+  width: 100%;
+}
+
+#searchFilterControlsContainer a:hover {
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+#searchFilterControlsContainer a.searchFilterAll {
+  padding-left: 20px;
+  background-image: url("/images/silk/zoom.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterPeople {
+  padding-left: 20px;
+  background-image: url("/images/silk/user.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterGroups {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/group.png");
+  background-repeat: no-repeat;
+  background-position: left;
 }
 
 #searchResultsContainer {
@@ -1843,11 +1876,32 @@ td.eventAttendees {
   font-weight: normal;
 }
 
-.searchResult {
-  height: 100px; /* for IE */
+.searchResultGroup {
+  height: 110px;
   margin: 0 0 10px 10px;
   line-height: 16px;
   overflow: hidden;
+}
+
+.searchResultPerson {
+  height: 100px;
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultMore {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.searchResultMore a {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 .searchResult:hover {
@@ -1870,8 +1924,12 @@ td.eventAttendees {
   float: right;
 }
 
-.searchResultActions a {
+.searchResultActions a, .searchResultActions b {
   padding-right: 20px;
+}
+
+.searchResultActions a.emailGroupLeaders {
+  padding-right: 0px;
 }
 
 .searchResult:hover .searchResultActions .viewTimetable {
@@ -1880,13 +1938,13 @@ td.eventAttendees {
   background-position: right;
 }
 
-.searchResult:hover .searchResultActions .sendEmail {
+.searchResult:hover .searchResultActions .sendEmail, .searchResult:hover .searchResultActions .emailGroupMembers {
   background-image: url("/images/silk/email_edit.png");
   background-repeat: no-repeat;
   background-position: right;
 }
 
-.searchResult:hover .searchResultActions .joinGroup {
+.searchResultGroup:hover .searchResultActions .joinGroup {
   background-image: url("/images/silk/group_go.png");
   background-repeat: no-repeat;
   background-position: right;
@@ -1909,14 +1967,14 @@ td.eventAttendees {
   font-weight: normal;
 }
 
-.searchResultPerson {
+.searchResultPerson .searchResultInfo {
   margin: 7px 0 0 15px;
   width: 300px;
 }
 
-.searchResultGroup {
+.searchResultGroup .searchResultInfo {
   margin: 7px 0 0 10px;
-  width: 360px;
+  width: 350px;
 }
 
 .autoCompleteMore {

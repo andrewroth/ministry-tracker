@@ -59,7 +59,7 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Goto compose an email to #{person.first_name.capitalize}") if person.email.present?
+    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
   end
 
   def info_for_group(group)
@@ -81,14 +81,14 @@ module SearchHelper
       "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}"
     end
 
-    info += "Lead by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
+    info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
 
 
     # display number of members and any members that matched the search query
 
     info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}") if group.num_members.present?
 
-    if group.involvements.present?
+    if group.try(:involvements)
       people_ids = group.involvements.split(",")
 
       people_array = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).collect do |person|

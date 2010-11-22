@@ -7,17 +7,40 @@ class SearchController < ApplicationController
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
-  DEFAULT_NUM_SEARCH_RESULTS = 10
+  DEFAULT_NUM_SEARCH_RESULTS = 7
 
   # rank search result relevance, higher is more relevant and therefore higher in results
   SEARCH_RANK = {:person => {:first_name => 3, :last_name => 1, :ministry => 2},
-                 :group  => {:name => 3, :email => 1, :ministry => 2, :semester_current => 2, :semester_next => 1, :involvement => 2}}
+                 :group  => {:name => 3, :ministry => 2, :semester_current => 2, :semester_next => 1, :involvement => 2}}
   
 
   def index
     @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
 
     if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+      @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
+    end
+  end
+
+  def people
+    @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+    end
+  end
+
+  def groups
+    @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
     end
@@ -41,14 +64,16 @@ class SearchController < ApplicationController
 
 
   def search_groups(people)
-    params[:per_page] ||= DEFAULT_NUM_SEARCH_RESULTS
     semester_current = Semester.current
 
-    people_ids = people.collect {|p| p.id}
+    # rank group results based on these's people's involvements in them
+    people_ids = people.nil? ? [] : people.collect {|p| p.id}
+    people_ids_string = people_ids.empty? ? "''" : quote_string(people_ids.join(','))
 
+    
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
-       ["#{Group.__(:id)}, #{Group.__(:name)}, #{Group.__(:email)}, #{Campus.__(:short_desc)} AS campus_desc, #{Ministry.__(:name)} AS ministry_name, " + 
+       ["#{Group.__(:id)}, #{Group.__(:name)}, #{Group.__(:needs_approval)}, #{Campus.__(:short_desc)} AS campus_desc, #{Ministry.__(:name)} AS ministry_name, " +
         "#{Semester.__(:desc)} AS semester_desc, #{Semester.__(:start_date)} AS semester_start, #{Group.__(:day)}, #{Group.__(:start_time)}, #{Group.__(:end_time)}, " +
         "i.involvements, COUNT(#{GroupInvolvement.__(:person_id)}) AS num_members, " +
 
@@ -61,20 +86,25 @@ class SearchController < ApplicationController
 
         " AS rank ", "%#{@q}%", session[:search][:search_ministry_name], semester_current.desc, semester_current.next_semester.desc], '')
 
+
+    joins_str = "LEFT JOIN #{Campus.table_name} ON #{Group.__(:campus_id)} = #{Campus.__(:id)} " +
+                "LEFT JOIN #{Ministry.table_name} ON #{Group.__(:ministry_id)} = #{Ministry.__(:id)} " +
+                "LEFT JOIN #{Semester.table_name} ON #{Group.__(:semester_id)} = #{Semester.__(:id)} " +
+                "LEFT JOIN #{GroupInvolvement.table_name} ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
+                
+                "LEFT JOIN (" +
+                  "SELECT #{Group.__(:id)}, GROUP_CONCAT(DISTINCT #{GroupInvolvement.__(:person_id)} SEPARATOR ',') AS involvements " +
+                  "FROM #{Group.table_name} INNER JOIN #{GroupInvolvement.table_name} " +
+                  "ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
+                  "WHERE (#{GroupInvolvement._(:person_id)} IN (#{people_ids_string})) " +
+                  "GROUP BY #{Group.__(:id)}" +
+                ") AS i ON #{Group.__(:id)} = i.#{Group._(:id)} "
+
+
     Group.paginate(:page => params[:page],
                    :per_page => params[:per_page],
                    
-                   :joins => "LEFT JOIN #{Campus.table_name} ON #{Group.__(:campus_id)} = #{Campus.__(:id)} " +
-                             "LEFT JOIN #{Ministry.table_name} ON #{Group.__(:ministry_id)} = #{Ministry.__(:id)} " +
-                             "LEFT JOIN #{Semester.table_name} ON #{Group.__(:semester_id)} = #{Semester.__(:id)} " +
-                             "LEFT JOIN #{GroupInvolvement.table_name} ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
-
-                             "LEFT JOIN (SELECT #{Group.__(:id)}, GROUP_CONCAT(DISTINCT #{GroupInvolvement.__(:person_id)} SEPARATOR ',') AS involvements " +
-                             "FROM #{Group.table_name} INNER JOIN #{GroupInvolvement.table_name} " + 
-                             "ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
-                             "WHERE (#{GroupInvolvement._(:person_id)} IN (#{quote_string(people_ids.join(','))})) " +
-                             "GROUP BY #{Group.__(:id)}) AS i ON #{Group.__(:id)} = i.#{Group._(:id)} ",
-      
+                   :joins => joins_str,
                    :select => select_str,
 
                    :conditions => ["#{session[:search][:group_search_limit_condition]} AND (" +
@@ -90,8 +120,6 @@ class SearchController < ApplicationController
 
 
   def search_people
-
-    params[:per_page] ||= DEFAULT_NUM_SEARCH_RESULTS
 
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
@@ -221,7 +249,7 @@ class SearchController < ApplicationController
   def get_involvement_limit_condition_for_person_search
     setup_my_ministry_and_campus_ids unless @ministry_search_ids && @campus_search_ids
 
-    # don't return people who have no involvements and don't return people who I don't have access to see based on my involvements
+    # don't return people who have no involvements and don't return people who aren't within my ministry and campus involvements
     "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
     "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
   end
@@ -230,7 +258,7 @@ class SearchController < ApplicationController
   def get_involvement_limit_condition_for_group_search
     setup_my_ministry_and_campus_ids unless @ministry_search_ids && @campus_search_ids
 
-    # don't return groups which aren't within my involvements
+    # don't return groups which aren't within my ministry and campus involvements
     "(#{Ministry.__(:id)} IS NOT NULL or #{Campus.__(:id)} IS NOT NULL) AND " +
     "(#{Ministry.__(:id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{Campus.__(:id)} in (#{quote_string(@campus_search_ids.join(','))})) "
   end
