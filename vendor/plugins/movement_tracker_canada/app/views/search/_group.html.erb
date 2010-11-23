@@ -1,21 +1,19 @@
 <li class='searchResult searchResultGroup'>
-  <div class='searchResultPic'>
-  </div>
 
   <div class='searchResultInfo'>
     <div class='searchResultName'>
-      <%=link_to("#{group.name.capitalize}", "/groups/#{group.id}")%>
+      <%=link_to("#{group.name.capitalize}", "/groups/#{group.id}")-%>
     </div>
 
-    <div class='searchResultExtraInfo'><%="#{info_for_group(group)}"%></div>
+    <div class='searchResultExtraInfo'><%="#{info_for_group(group)}"-%></div>
   </div>
 
   <div class='searchResultActions'>
 
-    <% if !group.is_associated(@me) && authorized?(:joingroup, :group_involvements) %>
+    <%- if !group.is_associated(@me) && authorized?(:joingroup, :group_involvements) -%>
       <br/>
-      <% join_group_text = group.needs_approval ? "Request to join group" : "Join goup" %>
-      <% join_group_response = group.needs_approval ? "<b>Join request sent!</b>" : "<b>Joined group!</b>" %>
+      <%- join_group_text = group.needs_approval ? "Request to join group" : "Join goup" -%>
+      <%- join_group_response = group.needs_approval ? "<b>Join request sent!</b>" : "<b>Joined group!</b>" -%>
 
       <%= link_to_remote(join_group_text,
           {:url => { :action => "joingroup", :controller => 'group_involvements',
@@ -27,25 +25,20 @@
            :complete => "$('#joinGroup#{group.id}').replaceWith('#{join_group_response}'); $('#joinGroup#{group.id}').show();"},
 
           {:id => "joinGroup#{group.id}", :class => "joinGroup"})
-      %>
-    <% end %>
-
-    <% if authorized?(:new, :emails) %>
-      <br/>
+      -%>
+    <%- end -%>
+    <%- if authorized?(:new, :emails) -%>
+<br/>
       <nobr>
       Email
-      <% all_leaders = group.leaders + group.co_leaders %>
-      <%= link_to("leaders", new_email_url(:person => all_leaders), :class => "emailGroupLeaders", :title => "Compose an email to the leaders and co-leaders of this group") %>
+      <%- all_leaders = group.leaders + group.co_leaders -%>
+      <%= link_to("leaders", new_email_url(:person => all_leaders), :class => "emailGroupLeaders", :title => "Compose an email to the leaders and co-leaders of this group") -%>
       or
-      <% all_members = all_leaders + group.members %>
-      <%= link_to("all members", new_email_url(:person => all_members), :class => "emailGroupMembers", :title => "Compose an email to all members and leaders of this group") %>
+      <%- all_members = all_leaders + group.members -%>
+      <%= link_to("all members", new_email_url(:person => all_members), :class => "emailGroupMembers", :title => "Compose an email to all members and leaders of this group") -%>
       </nobr>
-    <% end %>
+    <%- end -%>
       
   </div>
-    
-    
-
-
 
 </li>

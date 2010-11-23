@@ -6,15 +6,13 @@
 <div id="searchHeaderInfo">
 </div>
 
-<br/>
-
 <div id="searchFilterControlsContainer">
-  <%= link_to("All results", {:action => "index", :controller => "search", :q => @q}, {:class => "searchFilterAll"}) %>
-  <%= link_to("People", {:action => "people", :controller => "search", :q => @q}, {:class => "searchFilterPeople"}) %>
-  <%= link_to("Groups", {:action => "groups", :controller => "search", :q => @q}, {:class => "searchFilterGroups"}) %>
+  <%= render :partial => "filter_controls" %>
 </div>
 
 <div id="searchResultsContainer">
+  <br/>
+  
   <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
@@ -33,7 +31,7 @@
 
     <ul id="peopleSearchResults">
       <% if @people.size > 0 %>
-        <%= render :partial => "person", :collection => @people %>
+        <%= render :partial => "person", :collection => @people -%>
 
         <% if @people.total_entries > @num_results_per_page %>
           <li class="searchResult searchResultMore">
@@ -72,7 +70,7 @@
 
     <ul id="GroupSearchResults">
       <% if @groups.size > 0 %>
-        <%= render :partial => "group", :collection => @groups %>
+        <%= render :partial => "group", :collection => @groups -%>
 
         <% if @groups.total_entries > @num_results_per_page %>
           <li class="searchResult searchResultMore">
