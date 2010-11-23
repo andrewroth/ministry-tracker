@@ -7,7 +7,7 @@
       <div id="uberSearchBoxContainer">
         <% form_tag url_for(:controller => :search), :method => 'get' do %>
 
-          <%  if controller.action_name == "index" && controller.controller_name == "search" %>
+          <%  if controller.controller_name == "search" && (controller.action_name == "index" || controller.action_name == "people" || controller.action_name == "groups") %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
@@ -52,7 +52,7 @@
         });
 
 
-        <% unless session[:search_prepared] == true %>
+        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
         var prepare = function() {
           jQuery.ajax({
             dataType:'script',

@@ -1,32 +1,55 @@
 class SearchController < ApplicationController
   unloadable
 
-  skip_standard_login_stack :only => [:autocomplete, :autocomplete_people, :search_people, :prepare]
+  skip_standard_login_stack :only => [:autocomplete, :autocomplete_people, :search_people, :search_groups, :prepare]
 
   before_filter :setup_session_for_search, :only => [:index, :autocomplete, :prepare]
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
-  DEFAULT_NUM_SEARCH_RESULTS = 10
+  DEFAULT_NUM_SEARCH_RESULTS = 7
 
   # rank search result relevance, higher is more relevant and therefore higher in results
-  SEARCH_RANK = {:first_name => 3, :last_name => 1, :ministry => 2}
+  SEARCH_RANK = {:person => {:first_name => 3, :last_name => 1, :ministry => 2},
+                 :group  => {:name => 3, :ministry => 2, :semester_current => 2, :semester_next => 1, :involvement => 2}}
   
 
   def index
     @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
 
-    if session[:authorized_to_search_people]
-      @people = search_people if @q.present?
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+      @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
+    end
+  end
+
+  def people
+    @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+    end
+  end
+
+  def groups
+    @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+      @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
     end
   end
 
   def autocomplete
     @q = params["q"]
 
-    if session[:authorized_to_search_people]
-      @people = autocomplete_people if @q.present?
-    end
+    @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
 
     render :layout => false
   end
@@ -39,9 +62,64 @@ class SearchController < ApplicationController
 
   private
 
-  def search_people
 
-    params[:per_page] ||= DEFAULT_NUM_SEARCH_RESULTS
+  def search_groups(people)
+    semester_current = Semester.current
+
+    # rank group results based on these's people's involvements in them
+    people_ids = people.nil? ? [] : people.collect {|p| p.id}
+    people_ids_string = people_ids.empty? ? "''" : quote_string(people_ids.join(','))
+
+    
+    # I don't know a better way to sanitize the select statement...
+    select_str = ActiveRecord::Base.__send__(:sanitize_sql,
+       ["#{Group.__(:id)}, #{Group.__(:name)}, #{Group.__(:needs_approval)}, #{Campus.__(:short_desc)} AS campus_desc, #{Ministry.__(:name)} AS ministry_name, " +
+        "#{Semester.__(:desc)} AS semester_desc, #{Semester.__(:start_date)} AS semester_start, #{Group.__(:day)}, #{Group.__(:start_time)}, #{Group.__(:end_time)}, " +
+        "i.involvements, COUNT(#{GroupInvolvement.__(:person_id)}) AS num_members, " +
+
+        # determine the rank for ordering of results
+        "IF(#{Group.__(:name)} LIKE ?, #{SEARCH_RANK[:group][:name]}, 0) + " +
+        "IF(#{Ministry.__(:name)} LIKE ?, #{SEARCH_RANK[:group][:ministry]}, 0) + " +
+        "IF(#{Semester.__(:desc)} LIKE ?, #{SEARCH_RANK[:group][:semester_current]}, 0) + " +
+        "IF(#{Semester.__(:desc)} LIKE ?, #{SEARCH_RANK[:group][:semester_next]}, 0) + " +
+        "IF(i.involvements IS NOT NULL, #{SEARCH_RANK[:group][:involvement]}, 0) " +
+
+        " AS rank ", "%#{@q}%", session[:search][:search_ministry_name], semester_current.desc, semester_current.next_semester.desc], '')
+
+
+    joins_str = "LEFT JOIN #{Campus.table_name} ON #{Group.__(:campus_id)} = #{Campus.__(:id)} " +
+                "LEFT JOIN #{Ministry.table_name} ON #{Group.__(:ministry_id)} = #{Ministry.__(:id)} " +
+                "LEFT JOIN #{Semester.table_name} ON #{Group.__(:semester_id)} = #{Semester.__(:id)} " +
+                "LEFT JOIN #{GroupInvolvement.table_name} ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
+                
+                "LEFT JOIN (" +
+                  "SELECT #{Group.__(:id)}, GROUP_CONCAT(DISTINCT #{GroupInvolvement.__(:person_id)} SEPARATOR ',') AS involvements " +
+                  "FROM #{Group.table_name} INNER JOIN #{GroupInvolvement.table_name} " +
+                  "ON #{Group.__(:id)} = #{GroupInvolvement.__(:group_id)} " +
+                  "WHERE (#{GroupInvolvement._(:person_id)} IN (#{people_ids_string})) " +
+                  "GROUP BY #{Group.__(:id)}" +
+                ") AS i ON #{Group.__(:id)} = i.#{Group._(:id)} "
+
+
+    Group.paginate(:page => params[:page],
+                   :per_page => params[:per_page],
+                   
+                   :joins => joins_str,
+                   :select => select_str,
+
+                   :conditions => ["#{session[:search][:group_search_limit_condition]} AND (" +
+                                   "#{Group.__(:name, :group)} like ? " +
+                                   ")",
+                                   "%#{@q}%"],
+
+                   :order => 'rank DESC, semester_start DESC',
+
+                   :group => "#{Group.__(:id)}")
+
+  end
+
+
+  def search_people
 
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
@@ -52,10 +130,10 @@ class SearchController < ApplicationController
         "GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') AS ministries_concat, " +
 
         # determine the rank for ordering of results
-        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:first_name]}, 0) + " +
-        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:last_name]}, 0) + " +
-        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:ministry]}, 0) " +
-        " AS rank", "#{@q}%", "#{@q}%", session[:search_ministry_name] ], '')
+        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:person][:first_name]}, 0) + " +
+        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:person][:last_name]}, 0) + " +
+        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:person][:ministry]}, 0) " +
+        " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
   
 
     Person.paginate(:page => params[:page],
@@ -77,7 +155,7 @@ class SearchController < ApplicationController
 
                     :select => select_str,
 
-                    :conditions => ["#{session[:search_limit_condition]} AND (" +
+                    :conditions => ["#{session[:search][:person_search_limit_condition]} AND (" +
                                     "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                     "or #{_(:first_name, :person)} like ? " +
                                     "or #{_(:last_name, :person)} like ? " +
@@ -105,10 +183,10 @@ class SearchController < ApplicationController
         "GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') AS ministries_concat, " +
 
         # determine the rank for ordering of results
-        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:first_name]}, 0) + " +
-        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:last_name]}, 0) + " +
-        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:ministry]}, 0) " +
-        " AS rank", "#{@q}%", "#{@q}%", session[:search_ministry_name] ], '')
+        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:person][:first_name]}, 0) + " +
+        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:person][:last_name]}, 0) + " +
+        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:person][:ministry]}, 0) " +
+        " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
 
 
     Person.all(:limit => MAX_NUM_AUTOCOMPLETE_RESULTS,
@@ -119,13 +197,13 @@ class SearchController < ApplicationController
 
                          # need this to find their staff roles to see if they are in fact a staff
                          "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
-"LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
+                         "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
                          # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
                          "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
 
                :select => select_str,
 
-               :conditions => ["#{session[:search_limit_condition]} AND (" +
+               :conditions => ["#{session[:search][:person_search_limit_condition]} AND (" +
                                "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                "or #{_(:first_name, :person)} like ? " +
                                "or #{_(:last_name, :person)} like ? " +
@@ -141,7 +219,7 @@ class SearchController < ApplicationController
   end
 
 
-  def get_involvement_limit_condition
+  def setup_my_ministry_and_campus_ids
     get_person
 
     if is_staff_somewhere
@@ -165,24 +243,42 @@ class SearchController < ApplicationController
 
     @ministry_search_ids = [0] if (@ministry_search_ids.blank? || @ministry_search_ids.empty?)
     @campus_search_ids = [0] if (@campus_search_ids.blank? || @campus_search_ids.empty?)
-    
-    # don't return people who have no involvements and don't return people who I don't have access to see based on my involvements
-    involvement_limit_condition = "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
-      "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
+  end
+
+
+  def get_involvement_limit_condition_for_person_search
+    setup_my_ministry_and_campus_ids unless @ministry_search_ids && @campus_search_ids
+
+    # don't return people who have no involvements and don't return people who aren't within my ministry and campus involvements
+    "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
+    "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
+  end
+
+
+  def get_involvement_limit_condition_for_group_search
+    setup_my_ministry_and_campus_ids unless @ministry_search_ids && @campus_search_ids
+
+    # don't return groups which aren't within my ministry and campus involvements
+    "(#{Ministry.__(:id)} IS NOT NULL or #{Campus.__(:id)} IS NOT NULL) AND " +
+    "(#{Ministry.__(:id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{Campus.__(:id)} in (#{quote_string(@campus_search_ids.join(','))})) "
   end
 
 
   def setup_session_for_search
-    session[:search_limit_condition] ||= get_involvement_limit_condition
+    session[:search] ||= {}
+    
+    session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
+    session[:search][:group_search_limit_condition] ||= get_involvement_limit_condition_for_group_search
 
-    if session[:search_ministry_name].nil? || session[:search_ministry_id].nil? || session[:search_ministry_id] != session[:ministry_id]
-      session[:search_ministry_name] = get_ministry.name
-      session[:search_ministry_id] = session[:ministry_id]
+    if session[:search][:search_ministry_name].nil? || session[:search][:search_ministry_id].nil? || session[:search][:search_ministry_id] != session[:ministry_id]
+      session[:search][:search_ministry_name] = get_ministry.name
+      session[:search][:search_ministry_id] = session[:ministry_id]
     end
 
-    session[:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+    session[:search][:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+    session[:search][:authorized_to_search_groups] ||= (authorized?(:return_groups, :search) && authorized?(:show, :groups))
     
-    session[:search_prepared] = true
+    session[:search][:search_prepared] ||= true
   end
 
 end

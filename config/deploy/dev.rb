@@ -63,6 +63,7 @@ deploy.task :after_symlink do
   run "cd #{release_path} && git checkout -b #{fetch(:branch)} origin/#{fetch(:branch)}"
   run "cd #{release_path} && git submodule init"
   run "cd #{release_path} && git submodule update"
+  run "ruby /etc/screen.d/dj_pulse.rb"
 end
 
 namespace :deploy do
