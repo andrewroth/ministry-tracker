@@ -1,4 +1,20 @@
-<%= link_to("<div class='autoCompleteResult'>" +
-    "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
-    "<div class='autoCompleteInfo'><div class='autoCompleteName'>#{person_ac.first_name.capitalize} #{person_ac.last_name.capitalize}</div>" +
-    "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac)}</div></div></div>", "/people/#{person_ac.id}") %>
+<%
+  result = "<div class='autoCompleteResult' title='Goto #{person_ac.first_name.capitalize}&rsquo;s profile'>" +
+           "<div class='acLinkPath' style='display: none;'>/people/#{person_ac.id}</div>" +
+           "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
+
+           "<div class='autoCompleteInfo'>" +
+           "<div class='autoCompleteName'>#{person_ac.first_name.capitalize} #{person_ac.last_name.capitalize}</div>"
+
+  if person_ac.timetable_id.present?
+    result += "<div class='autoCompleteTimetable'>" +
+              link_to(image_tag('silk/calendar.png'), "/people/#{person_ac.id}/timetables/#{person_ac.timetable_id}", :title => "Goto #{person_ac.first_name.capitalize}&rsquo;s timetable") +
+              "</div>"
+  end
+
+  result += "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac)}</div>" +
+            "</div>" +
+            "</div>"
+%>
+
+<%= result %>

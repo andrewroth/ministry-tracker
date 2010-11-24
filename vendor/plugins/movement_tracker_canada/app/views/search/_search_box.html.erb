@@ -7,7 +7,7 @@
       <div id="uberSearchBoxContainer">
         <% form_tag url_for(:controller => :search), :method => 'get' do %>
 
-          <%  if controller.action_name == "index" && controller.controller_name == "search" %>
+          <%  if controller.controller_name == "search" && (controller.action_name == "index" || controller.action_name == "people" || controller.action_name == "groups") %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
@@ -48,15 +48,11 @@
             return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
           }
         }).result(function(event, info) {
-          // find link to person's profile
-          value = info[0]
-          indexOfHref = value.indexOf('href');
-          url = value.substring(value.indexOf('=', indexOfHref)+2, value.indexOf('>', indexOfHref)-1);
-          location.href = url;
+          location.href = $(".acLinkPath", info[0]).html();
         });
 
 
-        <% unless session[:search_prepared] == true %>
+        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
         var prepare = function() {
           jQuery.ajax({
             dataType:'script',
@@ -83,6 +79,7 @@
               if(this.value=='') this.value='<%= default_search_box_text %>';
             }
           };
+          
         });
       </script>
     </div>
