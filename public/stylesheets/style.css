@@ -1213,14 +1213,58 @@ div.choose_ministry_tree {
 
 #searchFilterControlsContainer {
   height: 100%;
-  width: 150px;
+  width: 120px;
   float: left;
+  padding-left: 20px;
+  line-height: 2em;
+}
+
+#searchFilterControlsContainer a {
+  display: block;
+  width: 100px;
+}
+
+#searchFilterControlsContainer .searchFilterHighlighted {
+  font-weight: bold;
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+#searchFilterControlsContainer a:hover {
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+#searchFilterControlsContainer a.searchFilterAll {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/zoom.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterPeople {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/user.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterGroups {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/group.png");
+  background-repeat: no-repeat;
+  background-position: left;
 }
 
 #searchResultsContainer {
   height: 100%;
   width: 65%;
   float: left;
+  padding-left: 50px;
+  border-left: 1px solid #E6E6E6;
 }
 
 .searchResultsTitle {
@@ -1477,7 +1521,7 @@ li.ac_over .autoCompleteEmail {
 
 .autoCompleteExtraInfo {
   height: 39px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .autoCompleteExtraInfo strong {

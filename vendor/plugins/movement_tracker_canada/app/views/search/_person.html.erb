@@ -1,21 +1,21 @@
 <li class='searchResult'>
   <div class='searchResultPic'>
-    <%=link_to("#{profile_picture_for_person(person)}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"})%>
+    <%=link_to("#{profile_picture_for_person(person)}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"})-%>
   </div>
 
   <div class='searchResultInfo'>
-    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}", "/people/#{person.id}", {:title => "Goto #{person.first_name}'s profile"})%></div>
-    <div class='searchResultExtraInfo'><%="#{info_for_person(person)}"%></div>
+    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}", "/people/#{person.id}")-%></div>
+    <div class='searchResultExtraInfo'><%="#{info_for_person(person)}"-%></div>
   </div>
 
   <div class='searchResultActions'>
-    <% if authorized?(:show, :timetables) && person.timetable_id.present? %>
+    <%- if authorized?(:show, :timetables) && person.timetable_id.present? -%>
       <br/>
-      <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}", :class => "viewTimetable", :title => "Goto #{person.first_name.capitalize}&rsquo;s timetable")%>
-    <% end %>
-    <% if authorized?(:new, :emails) %>
-      <br/>
-      <%=link_to("Send Email", new_email_url("person[]" => person.id), :class => "sendEmail", :title => "Goto compose an email to #{person.first_name.capitalize}")%>
-    <% end %>
+      <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}", :class => "viewTimetable", :title => "Goto #{person.first_name.capitalize}&rsquo;s timetable")-%>
+    <%- end -%>
+    <%- if authorized?(:new, :emails) -%>
+<br/>
+      <%=link_to("Send Email", new_email_url("person[]" => person.id), :class => "sendEmail", :title => "Compose an email to #{person.first_name.capitalize}")-%>
+    <%- end -%>
   </div>
 </li>

@@ -6,13 +6,13 @@
 <div id="searchHeaderInfo">
 </div>
 
-<br/>
-
 <div id="searchFilterControlsContainer">
-  <br/>
+  <%= render :partial => "filter_controls" %>
 </div>
 
 <div id="searchResultsContainer">
+  <br/>
+  
   <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
@@ -31,7 +31,14 @@
 
     <ul id="peopleSearchResults">
       <% if @people.size > 0 %>
-        <%= render :partial => "person", :collection => @people %>
+        <%= render :partial => "person", :collection => @people -%>
+
+        <% if @people.total_entries > @num_results_per_page %>
+          <li class="searchResult searchResultMore">
+            <%= link_to("See more results »", :action => "people", :controller => "search", :q => @q, :page => 2) %>
+          </li>
+        <% end %>
+
       <% else %>
         <p>
           No people found for <strong><%= @q %></strong> within your ministry.<br/>
@@ -66,7 +73,14 @@
 
     <ul id="GroupSearchResults">
       <% if @groups.size > 0 %>
-        <%= render :partial => "group", :collection => @groups %>
+        <%= render :partial => "group", :collection => @groups -%>
+
+        <% if @groups.total_entries > @num_results_per_page %>
+          <li class="searchResult searchResultMore">
+            <%= link_to("See more results »", :action => "groups", :controller => "search", :q => @q, :page => 2) %>
+          </li>
+        <% end %>
+
       <% else %>
         <p>
           No groups found for <strong><%= @q %></strong> within your ministry.<br/>
