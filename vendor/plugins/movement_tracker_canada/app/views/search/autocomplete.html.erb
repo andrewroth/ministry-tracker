@@ -1,0 +1,8 @@
+<%= render :partial => "person_ac", :collection => @people %>
+<% unless @people.size < @max_num_ac_results %>
+  <%= link_to("<div class='autoCompleteResult'>" +
+      "<div class='autoCompleteMorePic'>#{image_tag("/images/silk/zoom.png")}</div>" +
+      "<div class='autoCompleteMore'>See all results for <span class='autoCompleteName'>#{@q}</span>" +
+      "<br/><span class='autoCompleteMoreInfo'>displaying top #{@max_num_ac_results} results</span></div>" +
+      "</div>", "/search?q=#{@q}") %>
+<% end %>

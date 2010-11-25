@@ -1,6 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :notices, :member => { :dismiss => :post }
 
+  map.connect 'search/',
+              :conditions => { :method => :get },
+              :controller => "search",
+              :action => "index"
+
   map.resources :event_groups
 
   map.resources :event_campuses
