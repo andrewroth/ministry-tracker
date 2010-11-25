@@ -1,31 +1,51 @@
 class SearchController < ApplicationController
   unloadable
 
-  skip_standard_login_stack :only => [:autocomplete, :autocomplete_people, :search_people, :search_groups, :prepare]
+  skip_standard_login_stack :only => [:autocomplete, :prepare]
 
-  before_filter :setup_session_for_search, :only => [:index, :autocomplete, :prepare]
+  before_filter :setup_session_for_search, :only => [:index, :people, :groups, :autocomplete, :prepare]
+
+  before_filter :get_query, :only => [:index, :people, :groups, :autocomplete]
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
   DEFAULT_NUM_SEARCH_RESULTS = 10
 
   # rank search result relevance, higher is more relevant and therefore higher in results
-  SEARCH_RANK = {:person => {:first_name => 3, :last_name => 1, :ministry => 2},
-                 :group  => {:name => 3, :email => 1, :ministry => 2, :semester_current => 2, :semester_next => 1, :involvement => 2}}
+  SEARCH_RANK = {:person => {:first_name => 4, :last_name => 1, :ministry => 3},
+                 :group  => {:name => 5, :ministry => 4, :semester_current => 3, :semester_next => 1, :involvement => 2}}
   
 
   def index
-    @q = params["q"]
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
 
     if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+      @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
+    end
+  end
+
+  def people
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+    end
+  end
+
+  def groups
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
     end
   end
 
   def autocomplete
-    @q = params["q"]
-
     @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
 
     render :layout => false
@@ -38,6 +58,11 @@ class SearchController < ApplicationController
 
 
   private
+
+
+  def get_query
+    @q = params["q"].squeeze(" ").strip
+  end
 
 
   def search_groups(people)
