@@ -50,9 +50,9 @@ module SearchHelper
   def ac_info_for_person(person)
     info = ""
     if person.staff_role_ids.blank?
-      info += "#{person.campuses_concat}<br/>" if person.campuses_concat.present?
+      info += "<span class='noSearchHighlight'>#{person.campuses_concat}</span><br/>" if person.campuses_concat.present?
     else
-      info += "#{person.ministries_concat}<br/>" if person.ministries_concat.present?
+      info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
     info += "#{person.email.downcase}" if person.email.present?
