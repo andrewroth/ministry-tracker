@@ -1336,6 +1336,32 @@ div.choose_ministry_tree {
   font-weight: normal;
 }
 
+li.ac_over .autoCompleteTimetable {
+  display: inline;
+  float: right;
+}
+
+.autoCompleteTimetable {
+  display: none;
+}
+
+.autoCompleteResult a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.autoCompleteResult a:hover {
+  text-decoration: underline;
+  color: #1F429B;
+}
+
+li.ac_over .autoCompleteEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 20px;
+}
+
 .ac_results {
   padding: 18px 0 0 0;
   background-color: white;
@@ -1449,10 +1475,6 @@ div.choose_ministry_tree {
 .autoCompleteResult a :hover {
 /*  color: #1F429B;*/
   text-decoration: none;
-}
-
-.autoCompleteResult a {
-  display: block;
 }
 
 .noSearchHighlight strong {

@@ -48,11 +48,7 @@
             return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
           }
         }).result(function(event, info) {
-          // find link to person's profile
-          value = info[0]
-          indexOfHref = value.indexOf('href');
-          url = value.substring(value.indexOf('=', indexOfHref)+2, value.indexOf('>', indexOfHref)-1);
-          location.href = url;
+          location.href = $("#acProfilePath").html();
         });
 
 
@@ -83,6 +79,7 @@
               if(this.value=='') this.value='<%= default_search_box_text %>';
             }
           };
+          
         });
       </script>
     </div>
