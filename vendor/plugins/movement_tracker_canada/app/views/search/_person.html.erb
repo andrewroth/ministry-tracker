@@ -9,11 +9,13 @@
   </div>
 
   <div class='searchResultActions'>
-    <% if person.timetable_id.present? %>
+    <% if authorized?(:show, :timetables) && person.timetable_id.present? %>
       <br/>
       <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}")%>
     <% end %>
-    <br/>
-    <%=link_to("Send Email", url_for(:controller => :emails, :action => :new, :person => "#{person.id}"))%>
+    <% if authorized?(:new, :emails) %>
+      <br/>
+      <%=link_to("Send Email", url_for(:controller => :emails, :action => :new, :person => "#{person.id}"))%>
+    <% end %>
   </div>
 </li>

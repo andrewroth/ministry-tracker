@@ -166,6 +166,9 @@ module AuthenticatedSystem
       session[:locale] = nil
       session[:facebook_session] = nil
       session[:search_limit_condition] = nil
+      session[:authorized_to_search_people] = nil
+      session[:search_ministry] = nil
+      session[:search_ministry_id] = nil
     end
 
     def kill_remember_cookie!

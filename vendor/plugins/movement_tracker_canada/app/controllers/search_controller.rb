@@ -9,6 +9,9 @@ class SearchController < ApplicationController
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
   DEFAULT_NUM_SEARCH_RESULTS = 10
 
+  # rank search result relevance, higher is more relevant and therefore higher in results
+  SEARCH_RANK = {:first_name => 3, :last_name => 1, :ministry => 2}
+  
 
   def index
     @q = params["q"]
@@ -45,8 +48,11 @@ class SearchController < ApplicationController
         "GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') AS ministries_concat, " +
 
         # determine the rank for ordering of results
-        "IF(#{Person.__(:first_name)} LIKE ?,2,0) + IF(#{Person.__(:last_name)} LIKE ?,1,0)" +
-        " AS rank", "#{@q}%", "#{@q}%"], '')
+        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:first_name]}, 0) + " +
+        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:last_name]}, 0) + " +
+        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:ministry]}, 0) " +
+        " AS rank", "#{@q}%", "#{@q}%", session[:search_ministry_name] ], '')
+  
 
     Person.paginate(:page => params[:page],
                     :per_page => params[:per_page],
@@ -82,6 +88,7 @@ class SearchController < ApplicationController
 
   end
 
+  
   def autocomplete_people
 
     @max_num_ac_results = MAX_NUM_AUTOCOMPLETE_RESULTS
@@ -94,8 +101,11 @@ class SearchController < ApplicationController
         "GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') AS ministries_concat, " +
 
         # determine the rank for ordering of results
-        "IF(#{Person.__(:first_name)} LIKE ?,2,0) + IF(#{Person.__(:last_name)} LIKE ?,1,0)" +
-        " AS rank", "#{@q}%", "#{@q}%"], '')
+        "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:first_name]}, 0) + " +
+        "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:last_name]}, 0) + " +
+        "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:ministry]}, 0) " +
+        " AS rank", "#{@q}%", "#{@q}%", session[:search_ministry_name] ], '')
+
 
     Person.all(:limit => MAX_NUM_AUTOCOMPLETE_RESULTS,
                :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
@@ -128,32 +138,43 @@ class SearchController < ApplicationController
 
 
   def get_involvement_limit_condition
-    @person ||= get_person
-    @ministry ||= get_ministry
+    get_person
 
-    @ministries = @person.ministries.collect {|ministry| ministry.self_plus_descendants }.flatten.uniq
-    @ministry_search_ids = @ministries.collect {|ministry| ministry.id}
-    @ministry_search_ids = [0] if (@ministry_search_ids.blank? || @ministry_search_ids.empty?)
-
-    @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
-    @campus_search_ids ||= @campuses.collect {|c| c.id}
-    @campus_search_ids = [0] if (@campus_search_ids.blank? || @campus_search_ids.empty?)
-
-    # don't return people who have no involvements and don't return people who I don't have access to see based on my involvements
     if is_staff_somewhere
-      involvement_limit_condition = "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
-        "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
-    else
-      involvement_limit_condition = "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
-        "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) AND #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
+
+      # return anyone at or underneath a ministry that I'm involved in or one of those ministry's campuses
+
+      ministries = @my.ministries.collect {|m| m.self_plus_descendants }.flatten.uniq
+      @ministry_search_ids = ministries.collect {|m| m.id}
+      
+      campuses = ministries.collect {|m| m.campuses}.flatten.uniq
+      @campus_search_ids ||= campuses.collect {|c| c.id}
+
+    else # is student
+
+      # return anyone at a campus I'm involved in or a ministry I'm involved in
+
+      @ministry_search_ids = @my.ministries.collect {|ministry| ministry.id}
+
+      @campus_search_ids ||= @my.campuses.collect {|c| c.id}
     end
 
-    involvement_limit_condition 
+    @ministry_search_ids = [0] if (@ministry_search_ids.blank? || @ministry_search_ids.empty?)
+    @campus_search_ids = [0] if (@campus_search_ids.blank? || @campus_search_ids.empty?)
+    
+    # don't return people who have no involvements and don't return people who I don't have access to see based on my involvements
+    involvement_limit_condition = "(#{MinistryInvolvement.__(:id)} IS NOT NULL or #{CampusInvolvement.__(:id)} IS NOT NULL) AND " +
+      "(#{MinistryInvolvement.__(:ministry_id)} in (#{quote_string(@ministry_search_ids.join(','))}) OR #{CampusInvolvement.__(:campus_id)} in (#{quote_string(@campus_search_ids.join(','))})) "
   end
 
 
   def setup_session_for_search
     session[:search_limit_condition] ||= get_involvement_limit_condition
+
+    if session[:search_ministry_name].nil? || session[:search_ministry_id].nil? || session[:search_ministry_id] != session[:ministry_id]
+      session[:search_ministry_name] = get_ministry.name
+      session[:search_ministry_id] = session[:ministry_id]
+    end
 
     session[:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
   end

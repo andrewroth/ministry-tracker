@@ -1157,7 +1157,7 @@ div.choose_ministry_tree {
 /* Search section                               */
 
 #uberSearchContainer {
-  z-index: 99999;
+  z-index: 99;
   float: left;
   left: 145px;
   position: relative;
@@ -1339,7 +1339,7 @@ div.choose_ministry_tree {
   padding: 18px 0 0 0;
   background-color: white;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
   border-width: 0 1px 5px 1px;
 
