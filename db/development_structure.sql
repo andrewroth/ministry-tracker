@@ -557,11 +557,8 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=110063 DEFAULT CHARSET=utf8;
-=======
 ) ENGINE=InnoDB AUTO_INCREMENT=75369 DEFAULT CHARSET=utf8;
->>>>>>> c4c.jr.stats_last_non_zero
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1000,8 +997,6 @@ INSERT INTO schema_migrations (version) VALUES ('20101108035650');
 
 INSERT INTO schema_migrations (version) VALUES ('20101108173217');
 
-<<<<<<< HEAD
-=======
 INSERT INTO schema_migrations (version) VALUES ('20101108191504');
 
 INSERT INTO schema_migrations (version) VALUES ('20101122190758');
@@ -1010,7 +1005,6 @@ INSERT INTO schema_migrations (version) VALUES ('20101122193317');
 
 INSERT INTO schema_migrations (version) VALUES ('20101122201256');
 
->>>>>>> c4c.jr.stats_last_non_zero
 INSERT INTO schema_migrations (version) VALUES ('21');
 
 INSERT INTO schema_migrations (version) VALUES ('22');
