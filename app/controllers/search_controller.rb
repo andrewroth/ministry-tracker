@@ -9,7 +9,7 @@ class SearchController < ApplicationController
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
-  DEFAULT_NUM_SEARCH_RESULTS = 1
+  DEFAULT_NUM_SEARCH_RESULTS = 7
 
   # rank search result relevance, higher is more relevant and therefore higher in results
   SEARCH_RANK = {:person => {:first_name => 4, :last_name => 1, :ministry => 3},
