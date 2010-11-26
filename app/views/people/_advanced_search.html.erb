@@ -34,18 +34,26 @@
     %>
   </div>
   
-  <div class="clear" style="margin-bottom:15px;"></div>
+  <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <div class="adfieldbox">
     Year in School: <br/>
     <%= select_tag 'school_year[]',
       options_for_select(SchoolYear.find(:all).collect {|sy| [sy.name, sy.id.to_s]},
         @options["school_year"]),
-      :multiple => true,
-      :class => 'wide'
+      :multiple => true
     %>
   </div>
-    
+
+  <div class="adfieldbox">
+    Role: <br/>
+    <%= select_tag 'role[]',
+      options_for_select(MinistryRole.find(:all).collect {|r| [r.name, r.id.to_s]},
+        @options["role"]),
+      :multiple => true
+    %>
+  </div>
+
   <div class="adfieldbox">
     Ministry: <br/>
     <%
@@ -69,8 +77,9 @@
       :class => 'doublewide'
     %>
   </div>
-  
-  <div class="clear" style="margin-bottom:15px;"></div>
+
+
+  <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <%= submit_tag 'Search' %>
   <%= link_to_function "Back to Basic Search",
