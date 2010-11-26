@@ -1,5 +1,8 @@
 class ReportsController < ApplicationController
   unloadable
+
+  before_filter :redirect_unless_is_active_hrdb_staff
+  
   skip_before_filter :authorization_filter, :only => [:select_report]
 
   def get_db_lines_from_report(report_name)
