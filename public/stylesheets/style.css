@@ -1002,8 +1002,8 @@ border:1px dotted orange;
 	color:red;
 }
 
-.setLink a:link {color: #1F429B;}
-.setLink a:visited {color: #1F429B;}
+.setLink a:link {color: #67A03B;}
+.setLink a:visited {color: #67A03B;}
 
 .fieldWithErrors input {
   display: block;
@@ -1153,3 +1153,432 @@ div.choose_ministry_tree {
   border-right: 1px solid #999999;
 }
 
+/************************************************/
+/* Search section                               */
+
+#uberSearchContainer {
+  z-index: 99;
+  float: left;
+  left: 200px;
+  position: relative;
+  margin-top: 26px;
+}
+
+#uberSearchBoxContainer {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+#uberSearchBox {
+  width: 240px;
+  font-size: 18px;
+  position: absolute;
+  top: 4px;
+  left: 9px;
+  height: 25px;
+/*  background: #E6E6E6; use to blend in with bg more */
+  background: white;
+  color: #B3B3B3;
+  border: 2px solid white;
+  padding-left: 10px;
+
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+}
+
+#uberSearchBox.focused, #uberSearchBox:focus {
+  background: white;
+  color: black;
+  border: 2px solid black;
+  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
+}
+
+#uberSearchBox.ac_loading {
+  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+}
+
+#uberSearchButton {
+  border: 0px;
+  background-color: transparent;
+  position: absolute;
+  top: 5px;
+  left: 220px;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+#searchHeaderInfo {
+  float: left;
+}
+
+#searchFilterControlsContainer {
+  height: 100%;
+  width: 120px;
+  float: left;
+  padding-left: 20px;
+  line-height: 2em;
+}
+
+#searchFilterControlsContainer a {
+  display: block;
+  width: 100px;
+}
+
+#searchFilterControlsContainer .searchFilterHighlighted {
+  font-weight: bold;
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
+}
+
+#searchFilterControlsContainer a:hover {
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
+}
+
+#searchFilterControlsContainer a.searchFilterAll {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/zoom.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterPeople {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/user.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterGroups {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/group.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchResultsContainer {
+  height: 100%;
+  width: 65%;
+  float: left;
+  padding-left: 50px;
+  border-left: 1px solid #E6E6E6;
+}
+
+.searchResultsTitle {
+  border-bottom: 1px solid #E6E6E6;
+  margin-bottom: 15px;
+  padding-bottom: 2px;
+  font-size: 14px;
+  vertical-align: bottom;
+}
+
+.searchResultsPagination {
+  text-align: center;
+  font-size: 13px;
+}
+
+.searchResultsPagination .prev_page {
+  padding: 3px 10px;
+  font-weight: bold;
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+}
+
+.searchResultsPagination .next_page {
+  padding: 3px 10px;
+  font-weight: bold;
+  border: 0;
+}
+
+.searchResultsPagination a, .searchResultsPagination .current, span.gap {
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+  padding: 3px 7px 3px 3px;
+  font-weight: bold;
+}
+
+.searchResultsSize {
+  float: right;
+  text-align: right;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.searchResultGroup {
+  height: 110px;
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultPerson {
+  height: 100px;
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultMore {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.searchResultMore a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.searchResult:hover {
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
+}
+
+.searchResultPic, .searchResultInfo {
+  float: left;
+}
+
+.searchResultPic {
+  width: 100px;
+  text-align: center;
+}
+
+.searchResultActions {
+  margin: 5px 10px 0 0;
+  text-align: right;
+  float: right;
+}
+
+.searchResultActions a, .searchResultActions b {
+  padding-right: 20px;
+}
+
+.searchResultActions a.emailGroupLeaders {
+  padding-right: 0px;
+}
+
+.searchResult:hover .searchResultActions .viewTimetable {
+  background-image: url("/images/silk/calendar.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResult:hover .searchResultActions .sendEmail, .searchResult:hover .searchResultActions .emailGroupMembers {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResultGroup:hover .searchResultActions .joinGroup {
+  background-image: url("/images/silk/group_go.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-top: 2px;
+}
+
+.searchResultName {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.searchResultInfo {
+  font-size: 11px;
+  overflow: hidden;
+  height: 93px;
+}
+
+.searchResultInfo strong {
+  color: #67A03B;
+  font-weight: normal;
+}
+
+.searchResultPerson .searchResultInfo {
+  margin: 7px 0 0 15px;
+  width: 300px;
+}
+
+.searchResultGroup .searchResultInfo {
+  margin: 7px 0 0 10px;
+  width: 350px;
+}
+
+.autoCompleteMore {
+  font-weight: bold;
+  padding-top: 15px;
+}
+
+.autoCompleteMoreInfo {
+  font-weight: normal;
+  font-size: 10px;
+}
+
+.autoCompleteMorePic {
+  float: left;
+  padding: 19px 8px 0 35px;
+}
+
+.autoCompleteMore a {
+  color: #747474;
+  text-decoration: none;
+}
+
+.autoCompleteQuery strong {
+  color: #67A03B;
+}
+
+.autoCompleteMoreInfo strong {
+  color: #747474;
+  font-weight: normal;
+}
+
+li.ac_over .autoCompleteTimetable {
+  display: inline;
+  float: right;
+}
+
+.autoCompleteTimetable {
+  display: none;
+}
+
+.autoCompleteResult a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.autoCompleteResult a:hover {
+  text-decoration: underline;
+  color: #67A03B;
+}
+
+li.ac_over .autoCompleteEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 20px;
+}
+
+.ac_results {
+  padding: 18px 0 0 0;
+  background-color: white;
+  overflow: hidden;
+  z-index: 98;
+  border: solid #CCCCCC; /*#67A03B;*/
+  border-width: 0 2px 5px 2px;
+
+  top: 65px !important;
+
+  -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
+  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+}
+
+.ac_results ul {
+  width: 100%;
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ac_results li {
+  margin: 0;
+  cursor: default;
+  display: block;
+
+  /*
+  if width will be 100% horizontal scrollbar will apear
+  when scroll mode will be used
+  (right now scroll is turned off because there is a fixed amount of results)
+  */
+  /*width: 100%;*/
+
+  font: menu;
+  font-size: 12px;
+
+  /*
+  it is very important, if line-height not setted or setted
+  in relative units scroll will be broken in firefox
+  */
+  line-height: 12px;
+  overflow: hidden;
+  color: black;
+  border: 2px solid white;
+
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+
+.ac_loading {
+  background: white url('spinner.gif') right center no-repeat;
+}
+
+.ac_odd {
+  background-color: white;
+}
+
+.ac_over {
+  color: white;
+  background-color: #FFF5C6;
+}
+
+.autoCompleteName {
+  font-weight: bold;
+  font-size: 12px;
+  display: inline;
+}
+
+.autoCompleteName strong {
+  color: #67A03B;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.autoCompletePic, .autoCompleteInfo {
+  padding: 3px;
+}
+
+.autoCompletePic {
+  float: left;
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.autoCompleteInfo {
+  margin: 0 auto auto 60px;
+  padding-top: 6px;
+  font-size: 10px;
+  height: 100%;
+}
+
+.autoCompleteExtraInfo {
+  height: 39px;
+  overflow: visible;
+}
+
+.autoCompleteExtraInfo strong {
+  color: #67A03B;
+  font-weight: normal;
+}
+
+.autoCompleteResult {
+  text-align: left;
+  vertical-align: top;
+  height: 56px;
+  cursor: pointer;
+}
+
+.autoCompleteResult a :hover {
+/*  color: #67A03B;*/
+  text-decoration: none;
+}
+
+.noSearchHighlight strong {
+  color: #747474;
+  font-weight: normal;
+}
