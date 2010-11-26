@@ -351,6 +351,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_avgPrayer,
+                                    :annual_report => :annualReport_lnz_avgPrayer},
             :display_type => :text_positive_integer,
             :order => 1
           }, 
@@ -359,6 +361,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_numFrosh,
+                                    :annual_report => :annualReport_lnz_numFrosh},
             :display_type => :text_positive_integer,
             :order => 2
           },
@@ -367,6 +371,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_totalStudentInDG,
+                                    :annual_report => :annualReport_lnz_totalStudentInDG},
             :display_type => :text_positive_integer,
             :order => 3
           },
@@ -375,6 +381,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_totalSpMult,
+                                    :annual_report => :annualReport_lnz_totalSpMult},
             :display_type => :text_positive_integer,
             :order => 4
           },
@@ -415,6 +423,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_totalCoreStudents,
+                                    :annual_report => :annualReport_lnz_totalCoreStudents},
             :display_type => :text_positive_integer,
             :order => 9
           },

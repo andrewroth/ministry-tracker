@@ -1,6 +1,8 @@
 class PrcsController < ApplicationController
   unloadable
 
+  before_filter :redirect_unless_is_active_hrdb_staff
+
   skip_before_filter :authorization_filter, :only => [:refresh_prc_index]
 
   # GET /prcs

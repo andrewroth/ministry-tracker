@@ -1,5 +1,8 @@
 class ReportsController < ApplicationController
   unloadable
+
+  before_filter :redirect_unless_is_active_hrdb_staff
+  
   skip_before_filter :authorization_filter, :only => [:select_report]
 
   def get_db_lines_from_report(report_name)
@@ -11,8 +14,6 @@ class ReportsController < ApplicationController
     @input_lines
   end
 
-  # necessary overide for ReportsController
-  # gets the input lines for this report.
   def get_input_lines
     if @get_input_lines.nil?
       @get_input_lines = []
@@ -242,6 +243,10 @@ class ReportsController < ApplicationController
     url_for(:controller => :stats, :action => :index)
   end
 
+  def after_saving
+    #implement something in child class if needed
+  end
+
   def create_or_update()
 
     conditions = setup_conditions_from_params(params[get_params_name])
@@ -254,6 +259,7 @@ class ReportsController < ApplicationController
     respond_to do |format|
       if success_update
         @report.save!
+        after_saving
         flash[:notice] = 'Your numbers were successfully submitted.'
         format.html { redirect_to(url_to_redirect_after_update) }
         format.xml  { head :ok }
