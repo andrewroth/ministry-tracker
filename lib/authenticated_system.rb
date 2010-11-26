@@ -157,14 +157,7 @@ module AuthenticatedSystem
     end
   
     def clear_session
-      session[:cas_user] = nil
-      session[:user] = nil   # keeps the session but kill our variable
-      session[:ministry_id] = nil
-      session[:ministry_role_id] = nil
-      session[:can_manage] = nil
-      session[:admins] = nil
-      session[:locale] = nil
-      session[:facebook_session] = nil
+      session.clear
     end
 
     def kill_remember_cookie!

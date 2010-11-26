@@ -52,6 +52,7 @@ class Group < ActiveRecord::Base
   def is_member(p) in_association(members, p) end
   def is_interested(p) in_association(interesteds, p) end
   def has_requested(p) in_association(requesters, p) end
+  def is_associated(p) in_association(people, p) end
 
   def in_association(a, p)
     a.include?(p)
@@ -83,5 +84,18 @@ class Group < ActiveRecord::Base
         :level => inv.level, :requested => inv.requested
     end
     return new_group
+  end
+
+  def meeting_day_and_time_to_string()
+    meeting_time = self.day.present? ? "#{Date::DAYNAMES[self.day]}'s" : ""
+
+    midnight = Time.now.beginning_of_day
+    if self.start_time.present?
+      meeting_time += " at " unless meeting_time.blank?
+      meeting_time += "#{(midnight + self.start_time).to_s(:time)}"
+      meeting_time += " to #{(midnight + self.end_time).to_s(:time)}" if self.end_time
+    end
+
+    meeting_time
   end
 end

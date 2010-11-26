@@ -37,6 +37,11 @@
       
 		  <% if logged_in? && @me && !@custom_userbar_title%>
 		  <div id="userbar">
+
+
+            <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
+
+
     		<% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
 	  	    <a href="#" class="logoutbutton" onclick="try {
             FB.Connect.logoutAndRedirect('<%= logout_url %>');
@@ -44,6 +49,11 @@
 	  	  <% else %>
 		    	<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>
 	    	<% end %>&nbsp;&nbsp;&nbsp;
+
+
+
+
+
 		    <div id="userblock">
           <div id="username"><%= @my.full_name %></div>
           <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
