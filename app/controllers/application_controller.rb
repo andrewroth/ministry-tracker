@@ -502,4 +502,13 @@ class ApplicationController < ActionController::Base
     def self.skip_standard_login_stack(additional_params = {})
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
     end
+
+    def redirect_unless_is_active_hrdb_staff
+      unless @me.cim_hrdb_staff.boolean_is_active == true
+        flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
+        redirect_to :action => "index", :controller => "stats"
+        return false
+      end
+      return true
+    end
 end
