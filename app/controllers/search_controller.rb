@@ -285,8 +285,8 @@ class SearchController < ApplicationController
       session[:search][:search_ministry_id] = session[:ministry_id]
     end
 
-    session[:search][:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
-    session[:search][:authorized_to_search_groups] ||= (authorized?(:return_groups, :search) && authorized?(:show, :groups))
+    session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+    session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
     
     session[:search][:search_prepared] ||= true
   end

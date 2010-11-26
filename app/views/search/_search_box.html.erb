@@ -1,5 +1,5 @@
 <% if authorized?(:index, :search) %>
-  <% if (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
+  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
 
     <div id="uberSearchContainer">
       <% default_search_box_text = "search" %>
