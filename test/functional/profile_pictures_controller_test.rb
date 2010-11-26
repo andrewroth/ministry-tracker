@@ -18,7 +18,7 @@ class ProfilePicturesControllerTest < ActionController::TestCase
   #If test fails, install image science as a gem
   def test_should_create_profile_picture
     image = fixture_file_upload('/files/rails.png', 'image/png')
-    assert_difference('ProfilePicture.count', 4) do
+    assert_difference('ProfilePicture.count', 1) do
       post :create, :profile_picture => {:uploaded_data => image },  :html => { :multipart => true }
     end
   

@@ -53,9 +53,9 @@ end
 
 namespace :test do
   
-  desc "Measures unit, functional, and integration test coverage"
+  desc "Measures unit, functional, helper, and integration test coverage"
   task :coverage do
-    run_coverage Dir["test/unit/**/*.rb", "test/functional/**/*.rb", "test/integration/**/*.rb"]
+    run_coverage Dir["test/unit/**/*.rb", "test/functional/**/*.rb", "test/integration/**/*.rb", "test/helpers/**/*.rb"]
   end
   
   namespace :coverage do
@@ -72,6 +72,11 @@ namespace :test do
     desc "Runs coverage on integration tests"
     task :integration do
       run_coverage Dir["test/integration/**/*.rb"]
+    end
+
+    desc "Runs coverage on helper tests"
+    task :helpers do
+      run_coverage Dir["test/helpers/**/*.rb"]
     end
   end
 end

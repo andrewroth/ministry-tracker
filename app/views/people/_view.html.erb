@@ -124,6 +124,57 @@
 </table>
 <br />
 
+
+<% if is_ministry_admin %>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+  <tr>
+	<td colspan="1"><h4 class="title">Recent Activity</h4></td>
+    <td class="spacer">&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td>
+      <table class="halftab">
+          <tr>
+            <td>
+              <p>
+                <nobr>
+                  <% if @person.user.present? && @person.user.last_login.present? %>
+                    <span title="at exactly <%=@person.user.last_login%>">
+                      Last logged in via PAT or Pulse
+                      <%= "#{time_ago_in_words(@person.user.last_login)} ago" %>
+                    </span>
+                  <% else %>
+                    Has never logged in via PAT or Pulse
+                  <% end %>
+                </nobr>
+              <p/>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <p>
+                <nobr>
+                  <% if @person.timetable.present? && @person.timetable.updated_at.present? %>
+                    <span title="at exactly <%=@person.timetable.updated_at%>">
+                      Timetable last updated
+                      <%= "#{time_ago_in_words(@person.timetable.updated_at)} ago" %><%= ", by #{@person.timetable.updated_by_person.full_name}" if @person.timetable.updated_by_person.present? %>
+                    </span>
+                  <% else %>
+                    Has never updated their timetable
+                  <% end %>
+                </nobr>
+              </p>
+            </td>
+          </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<% end %>
+
+
 <%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
 	<%- remote_form_for @person do |f| -%>
 	<div id="staffArea">

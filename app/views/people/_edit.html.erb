@@ -16,6 +16,12 @@
         <%= render :partial => 'extra_person_information',
           :locals => { :f => f, :person => @person, :user => @person.user}
         %>
+			    <%-# Only allow 'remove myself' for your own profile... %>  
+		      <%- if @person == @me -%>
+		      <div class="butUpdate" style="margin-right:42px;">
+		        <%= link_to "Remove Me from the Pulse", person_url(@person.id, :logout => 'true'), :confirm => "You are about to remove yourself from all ministries, campuses, and groups you are a part of. Are you SURE you want to continue? (you will be logged out)", :method => :delete %>
+		      </div>
+					<%- end -%>
       </td>
     </tr>
 

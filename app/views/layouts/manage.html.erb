@@ -18,11 +18,6 @@
 		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
 		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
 	    <%- end -%>
-	  
-	    <%- if authorized?(:new, :groups) -%>
-		    <li<%= ' class="highlighted"' if params[:controller] == "groups" %>>
-		    <%= link_to(t(:groups, :default => 'Groups'), groups_path) %></li>
-        <%- end -%>
       
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
@@ -30,6 +25,10 @@
            authorized?(:new, :training_categories) -%>
   		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
   		    <%= link_to 'Customize', customize_path(@ministry) %></li>
+                 <%- if authorized?(:new, :training_categories) -%>
+  		    <li<%= ' class="highlighted"' if params[:controller] == "notices" %>>
+  		    <%= link_to 'Notices', notices_path() %></li>
+                 <%- end -%>
   	<%- end -%>
     
   	</ul>

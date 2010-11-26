@@ -30,9 +30,12 @@
 		
 	</head>	
 	<body>
+    <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
+      
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
     <%= connexion_bar if Cmt::CONFIG[:gcx_connexion_bar] %>
+
 
 		<div id="wrapper">
       
@@ -47,19 +50,18 @@
 	  	    <a href="#" class="logoutbutton" onclick="try {
             FB.Connect.logoutAndRedirect('<%= logout_url %>');
             } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
-	  	  <% else %>
-		    	<%= link_to("logout", session_url, :class => 'logoutbutton', :method => :delete) %>
-	    	<% end %>&nbsp;&nbsp;&nbsp;
+	  	  <% end %>
 
 
 
 
 
 		    <div id="userblock">
-          <div id="username"><%= @my.full_name %></div>
-          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me)) %></small>
+          <div id="username"><%= @my.full_name %> </div>
+          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me), :title => "Goto your profile") %></small>
+          <small><%= link_to(image_tag('silk/calendar_edit.png'), "/people/#{@my.id}/timetables/#{@my.timetable.id}", :title => "Goto your timetable") %></small>
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-          <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change", :url => switch_list_ministries_url %></div>
+          <div id="switch_ministries">Viewing <%= @ministry.name %> <%= link_to_remote "Change▼", :url => switch_list_ministries_url %></div>
             <div id="switch_ministries_list" style="display:none">
               &nbsp;
             </div>
@@ -85,8 +87,18 @@
 			</div>
 			<%- end -%>
 			<div class="clear">&nbsp;</div>
-			
+<noscript>
+	<div class="flash_notice warning">
+  For full functionality of this site it is necessary to enable JavaScript.
+  Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+  instructions how to enable JavaScript in your web browser</a>.</div>
+</noscript>			
 			<div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+                        <%- if @notices -%>
+                          <%- for notice in @notices -%>
+                            <div class="flash_notice" id="notice_<%= notice.id %>"><%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %></div>
+                          <%- end %>
+                        <%- end %>
 			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
       <div id="instructions" class="flash_notice notice" style="display:none;"></div> 
 			
@@ -98,11 +110,12 @@
 		</div> <!-- Wrapper -->
 		
     <div id="dialog" style="display:none"></div>
+		</div> <!-- Center -->
 		<div id="footer">
 		<table width="100%">
 			<tr>
 				<td width="18%">
-          <!-- <%= image_tag("logo.png") %></td><td style="font-size:11px;"> 
+          <!-- <%= image_tag("logo.png") %></td><td style="font-size:11px;">
           Student Network is part of the <a href="http://www.ministryhacks.com/">MinistryHacks Toolbox</a> -->
 				</td>
 				<td align="right">
@@ -111,7 +124,7 @@
 			</tr>
 		</table>
 		</div>
-		</div> <!-- Center -->
 		<%= I18n.t :analytics, :default => "" %>
+                <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
 	</body>
 </html>

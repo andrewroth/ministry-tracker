@@ -1,143 +1,91 @@
-class MonthlyReportsController < ApplicationController
+class MonthlyReportsController < ReportsController
   unloadable
 
-  skip_before_filter :authorization_filter, :only => [:select_monthly_report]
-
-  # GET /monthly_reports
-  # GET /monthly_reports.xml
-  def index
-    @monthly_reports = MonthlyReport.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @monthly_reports }
-    end
+  def identification_fields
+    [:month_id, :campus_id]
   end
 
-  # GET /monthly_reports/1
-  # GET /monthly_reports/1.xml
-  def show
-    @monthly_report = MonthlyReport.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @monthly_report }
-    end
+  def report_model
+    MonthlyReport
   end
 
-  def setup_for_record(month_id, campus_id)
-    @monthly_report = MonthlyReport.find(:first, :conditions => { :month_id => month_id, :campus_id => campus_id })
-    @monthly_report ||= MonthlyReport.new 
+  def input_reports
+    [:monthly_report, :monthly_p2c_special]
+  end
 
-    @monthly_report.month_id = month_id
-    @monthly_report.campus_id = campus_id
+  def after_saving
+    monthly_reports_this_year = get_monthly_reports_for_period(get_year)
+    monthly_reports_this_semester = get_monthly_reports_for_period(get_semester)
     
-    @months = Month.find(:all, :conditions => "(month_number <= #{ Time.now.month } AND month_calendaryear = #{ Time.now.year }) OR month_calendaryear <= #{ Time.now.year }", :order => "month_calendaryear, month_number")
-
-    unless is_ministry_admin
-      @campuses = @my.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("monthly_reports", "new"))
-    else
-      @campuses = Ministry.first.root.unique_campuses
+    sr = get_semester_report
+    ar = get_annual_report
+    
+    lnz_input_lines.each do |lil|
+      sr[lil[1][:lnz_correspondance][:semester_report]] = last_non_zero(monthly_reports_this_semester, lil[1][:column])
+      ar[lil[1][:lnz_correspondance][:annual_report]] = last_non_zero(monthly_reports_this_year, lil[1][:column])
     end
-    @campuses.sort! {|a,b| a.name <=> b.name}
-
-
+    sr.save!
+    ar.save!
   end
 
-  # GET /monthly_reports/new
-  # GET /monthly_reports/new.xml
-  def new
+  def last_non_zero(reports, column)
+    lnz = 0
+    reports.each do |r|
+      lnz = r[column] unless r[column] == 0
+    end
+    lnz
+  end
+
+  def lnz_input_lines
+    @lnz_input_lines ||= input_lines.collect {|il| il[1][:grouping_method] == :last_non_zero ? il : nil}.compact 
+  end
+
+  def get_monthly_reports_for_period(period)
+    period.months.collect {|month| month.monthly_reports.find(:all, :conditions => {:campus_id => @report[:campus_id]})}.flatten
+  end
+
+  def get_semester_report
+    sr = SemesterReport.find(:first, :conditions => { :campus_id => @report[:campus_id], :semester_id => get_semester_id})
+    sr ||= create_semester_report(@report[:campus_id], get_semester_id)
+    sr
+  end
   
-    current_month_id = Month.find_month_id("#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}")
-    current_campus_id = get_ministry.unique_campuses.first.id
-    
-    setup_for_record(current_month_id, current_campus_id)
-    
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @monthly_report }
-    end
+  def get_annual_report
+    ar = AnnualReport.find(:first, :conditions => { :campus_id => @report[:campus_id], :year_id => get_year_id})
+    ar ||= create_annual_report(@report[:campus_id], get_year_id)
+    ar
   end
 
-  # GET /monthly_reports/1/edit
-  def edit
-    @monthly_report = MonthlyReport.find(params[:id])
+  def get_semester
+    @get_semester ||= @report.month.semester
   end
 
-  # POST /monthly_reports
-  # POST /monthly_reports.xml
-  def create
-
-    staff_id = @person.cim_hrdb_staff.id
-    @monthly_report = MonthlyReport.find(:first, :conditions => { :month_id => params[:monthly_report][:month_id], :campus_id => params[:monthly_report][:campus_id] })
-
-    if @monthly_report
-      @monthly_report.update_attributes(params[:monthly_report])
-      notice = 'Your monthly numbers were successfully re-submitted.'
-    else
-      @monthly_report = MonthlyReport.new(params[:monthly_report])
-      notice = 'Your monthly numbers were successfully submitted.'
-    end
-
-    respond_to do |format|
-      if @monthly_report.save
-        flash[:notice] = notice
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { render :xml => @monthly_report, :status => :created, :location => @monthly_report }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @monthly_report.errors, :status => :unprocessable_entity }
-      end
-    end
+  def get_semester_id
+    @get_semester_id ||= get_semester.id
   end
 
-  # PUT /monthly_reports/1
-  # PUT /monthly_reports/1.xml
-  def update
-    @monthly_report = MonthlyReport.find(:first, :conditions => { :month_id => params[:monthly_report][:month_id], :campus_id => params[:monthly_report][:campus_id] })
-
-    if @monthly_report
-      success_update = true if @monthly_report.update_attributes(params[:monthly_report])
-    else
-      success_update = true if @monthly_report = MonthlyReport.new(params[:monthly_report])
-    end
-
-    respond_to do |format|
-      if success_update && @monthly_report.save
-        flash[:notice] = 'Your monthly numbers were successfully submitted.'
-        format.html { redirect_to(url_for(:controller => :stats, :action => :index)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @monthly_report.errors, :status => :unprocessable_entity }
-      end
-    end
+  def get_year
+    @get_year ||= @report.month.year
   end
 
-  # DELETE /monthly_reports/1
-  # DELETE /monthly_reports/1.xml
-  def destroy
-    @monthly_report = MonthlyReport.find(params[:id])
-    @monthly_report.destroy
-
-    unless @monthly_report.errors.empty?
-      flash[:notice] = "WARNING: Couldn't delete monthly numbers because:"
-      @monthly_report.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
-    end
-
-    respond_to do |format|
-      format.html { redirect_to(monthly_reports_url) }
-      format.xml  { head :ok }
-    end
+  def get_year_id
+    @get_year_id ||= get_year.id
   end
 
-  def select_monthly_report
-    setup_for_record(params['month_id'], params['campus_id'])
+  def create_semester_report
+    sr = SemesterReport.new()
+    sr[:campus_id] = @report[:campus_id]
+    sr[:semester_id] = get_semester_id
+    sr
+  end
   
-    respond_to do |format|
-      format.js
-    end
+  def create_annual_report
+    ar = AnnualReport.new()
+    ar[:campus_id] = @report[:campus_id]
+    ar[:year_id] = get_year_id
+    ar
   end
+  
 
 end
 

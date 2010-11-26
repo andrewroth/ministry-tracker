@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        layout = authorized?(:index, :manage) ? 'manage' : 'application'
+        layout = authorized?(:index, :manage) ? 'application'  : 'application'   # formerly had 'manage' layout for groups too
         render :layout => layout
       end
       format.js
@@ -349,7 +349,9 @@ class GroupsController < ApplicationController
       session[:group_campus_filter_id] = @campus.try(:id)
     end
 
-    @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + @campuses.collect{ |c| [ c.name, c.id ] }
+    campuses_for_filter = @campuses.collect{ |c| [ c.name, c.id ] }
+    campuses_for_filter.sort! {|a, b| a[0] <=> b[0]}
+    @campus_filter_options = [[ "All #{get_ministry.name}", '' ]] + campuses_for_filter
   end
 
   def setup_semester_filter

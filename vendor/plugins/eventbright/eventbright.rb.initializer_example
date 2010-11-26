@@ -12,3 +12,4 @@ module EventBright
   DEBUG = false unless defined?(DEBUG)
 end
 
+

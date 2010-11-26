@@ -1,0 +1,20 @@
+<%= javascript_include_tag "inputLiveValidations.js" %>
+<%= javascript_include_tag "monthly_reports.js" %>
+
+<h1 id="statsTitle">Measurements</h1>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
+
+<br/>
+
+<div class="statsFormContainer">
+  <div id="newSemesterHighlightsFormContainer" class="statsFormBox">
+    <h2 class="statsFormBoxTitle">Submit your monthly highlights</h2>
+    <br/>
+
+    <%= render :partial => 'reports_generic/input_form'%>
+
+  </div>
+</div>
+
+<br/>
+<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

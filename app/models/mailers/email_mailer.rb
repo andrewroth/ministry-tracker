@@ -16,4 +16,10 @@ class Mailers::EmailMailer < ActionMailer::Base
     @body = {:email => email, :missing => missing}
   end
 
+  def emails_working(emails)
+    recipients   emails
+    from         Cmt::CONFIG[:email_from_address]
+    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Emails still working"
+    @sent_on     = Time.now
+  end
 end

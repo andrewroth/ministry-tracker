@@ -17,4 +17,12 @@ class DashboardControllerTest < ActionController::TestCase
     get :index
     assert_response :success
   end
+
+  def test_events
+    get :events
+
+    assert_not_nil assigns(:my_campuses)
+    assert_response :success
+
+  end
 end

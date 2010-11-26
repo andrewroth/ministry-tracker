@@ -25,6 +25,10 @@
       root: <%= get_hash_for_stats_ministry_selection_tree %>
     });
 
+    // sort alphabetically 
+    var treeSorter = new Ext.tree.TreeSorter(tree, {});
+    treeSorter.doSort(tree.getRootNode());
+
     // render the tree
     tree.render('stats_choose_ministry_tree_<%=uid%>');
     tree.getRootNode().expand();

@@ -6,14 +6,14 @@
 <div id="searchHeaderInfo">
 </div>
 
-<br/>
-
 <div id="searchFilterControlsContainer">
-  <br/>
+  <%= render :partial => "filter_controls" %>
 </div>
 
 <div id="searchResultsContainer">
-  <% if session[:authorized_to_search_people] %>
+  <br/>
+  
+  <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
 
@@ -31,26 +31,70 @@
 
     <ul id="peopleSearchResults">
       <% if @people.size > 0 %>
-        <%= render :partial => "person", :collection => @people %>
+        <%= render :partial => "person", :collection => @people -%>
+
+        <% if @people.total_entries > @num_results_per_page %>
+          <li class="searchResult searchResultMore">
+            <%= link_to("See more results »", :action => "people", :controller => "search", :q => @q, :page => 2) %>
+          </li>
+        <% end %>
+
       <% else %>
         <p>
           No people found for <strong><%= @q %></strong> within your ministry.<br/>
-          Check your spelling or try searching for just their first name, last name or email.
+          Try searching for just their first name, last name or email.
         </p>
       <% end %>
     </ul>
 
     <br/>
-    <div class="searchResultsPagination">
-      <%= will_paginate @people %>
-    </div>
   <% end %>
+
+
+
+  <% if session[:search][:authorized_to_search_groups] %>
+    <div class="searchResultsTitle">
+      <%= image_tag("silk/group.png") %> <strong>Group</strong> results for <strong><%= @q %></strong>
+
+      <div class="searchResultsSize">
+        <% if @groups.total_entries > @groups.per_page %>
+          <% onCurPageEnd = @groups.current_page * @groups.per_page %>
+          <% onCurPageBegin = (onCurPageEnd-@groups.per_page)+1 %>
+          <% onCurPageEnd = onCurPageEnd > @groups.total_entries ? @groups.total_entries : onCurPageEnd %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+        <% end %>
+        <%= pluralize(@groups.total_entries, "group") %>
+      </div>
+
+    </div>
+
+    <ul id="GroupSearchResults">
+      <% if @groups.size > 0 %>
+        <%= render :partial => "group", :collection => @groups -%>
+
+        <% if @groups.total_entries > @num_results_per_page %>
+          <li class="searchResult searchResultMore">
+            <%= link_to("See more results »", :action => "groups", :controller => "search", :q => @q, :page => 2) %>
+          </li>
+        <% end %>
+
+      <% else %>
+        <p>
+          No groups found for <strong><%= @q %></strong> within your ministry.<br/>
+          Try searching for part of the group name or the name of someone who's in the group you're looking for.
+        </p>
+      <% end %>
+    </ul>
+
+    <br/>
+  <% end %>
+
 </div>
 
 
 <% else %>
 
 <br/>
-<p><h3>Don't be shy, search for someone by using the search box!</h3></p>
+<p><h3>Don't be shy, search for a person or group by using the search box!</h3></p>
 
 <% end %>
