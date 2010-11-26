@@ -200,10 +200,4 @@ module StatsHelper
     }
   end
 
-  def ensure_is_active_hrdb_staff
-    
-
-  end
-
- 
 end
