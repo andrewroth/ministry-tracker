@@ -1002,8 +1002,8 @@ border:1px dotted orange;
 	color:red;
 }
 
-.setLink a:link {color: #1F429B;}
-.setLink a:visited {color: #1F429B;}
+.setLink a:link {color: #67A03B;}
+.setLink a:visited {color: #67A03B;}
 
 .fieldWithErrors input {
   display: block;
@@ -1159,9 +1159,9 @@ div.choose_ministry_tree {
 #uberSearchContainer {
   z-index: 99;
   float: left;
-  left: 140px;
+  left: 200px;
   position: relative;
-  margin-top: 6px;
+  margin-top: 26px;
 }
 
 #uberSearchBoxContainer {
@@ -1180,20 +1180,20 @@ div.choose_ministry_tree {
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 1px solid #CCCCCC;
+  border: 2px solid white;
   padding-left: 10px;
 
-  -moz-border-radius: 16px; -webkit-border-radius: 16px;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 1px solid #00268D; /* #FFCB05; yellow */
+  border: 2px solid black;
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
-.ac_loading {
+#uberSearchBox.ac_loading {
   background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
 }
 
@@ -1201,8 +1201,8 @@ div.choose_ministry_tree {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 3px;
-  left: 218px;
+  top: 5px;
+  left: 220px;
   padding: 7px 20px;
   cursor: pointer;
 }
@@ -1226,13 +1226,13 @@ div.choose_ministry_tree {
 
 #searchFilterControlsContainer .searchFilterHighlighted {
   font-weight: bold;
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
 }
 
 #searchFilterControlsContainer a:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
 }
 
 #searchFilterControlsContainer a.searchFilterAll {
@@ -1307,15 +1307,37 @@ div.choose_ministry_tree {
   font-weight: normal;
 }
 
-.searchResult {
+.searchResultGroup {
+  height: 110px;
   margin: 0 0 10px 10px;
   line-height: 16px;
   overflow: hidden;
 }
 
+.searchResultPerson {
+  height: 100px;
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultMore {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.searchResultMore a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 .searchResult:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #FFF5C6;
+  -moz-box-shadow: 0 0 10px #FFF5C6; -webkit-box-shadow: 0 0 10px #FFF5C6;
 }
 
 .searchResultPic, .searchResultInfo {
@@ -1333,8 +1355,12 @@ div.choose_ministry_tree {
   float: right;
 }
 
-.searchResultActions .viewTimetable {
+.searchResultActions a, .searchResultActions b {
   padding-right: 20px;
+}
+
+.searchResultActions a.emailGroupLeaders {
+  padding-right: 0px;
 }
 
 .searchResult:hover .searchResultActions .viewTimetable {
@@ -1343,14 +1369,17 @@ div.choose_ministry_tree {
   background-position: right;
 }
 
-.searchResultActions .sendEmail {
-  padding-right: 20px;
-}
-
-.searchResult:hover .searchResultActions .sendEmail {
+.searchResult:hover .searchResultActions .sendEmail, .searchResult:hover .searchResultActions .emailGroupMembers {
   background-image: url("/images/silk/email_edit.png");
   background-repeat: no-repeat;
   background-position: right;
+}
+
+.searchResultGroup:hover .searchResultActions .joinGroup {
+  background-image: url("/images/silk/group_go.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-top: 2px;
 }
 
 .searchResultName {
@@ -1359,16 +1388,24 @@ div.choose_ministry_tree {
 }
 
 .searchResultInfo {
-  margin: 7px 0 0 15px;
   font-size: 11px;
   overflow: hidden;
   height: 93px;
-  width: 300px;
 }
 
 .searchResultInfo strong {
-  color: #1F429B;
+  color: #67A03B;
   font-weight: normal;
+}
+
+.searchResultPerson .searchResultInfo {
+  margin: 7px 0 0 15px;
+  width: 300px;
+}
+
+.searchResultGroup .searchResultInfo {
+  margin: 7px 0 0 10px;
+  width: 350px;
 }
 
 .autoCompleteMore {
@@ -1392,7 +1429,7 @@ div.choose_ministry_tree {
 }
 
 .autoCompleteQuery strong {
-  color: #1F429B;
+  color: #67A03B;
 }
 
 .autoCompleteMoreInfo strong {
@@ -1416,7 +1453,7 @@ li.ac_over .autoCompleteTimetable {
 
 .autoCompleteResult a:hover {
   text-decoration: underline;
-  color: #1F429B;
+  color: #67A03B;
 }
 
 li.ac_over .autoCompleteEmail {
@@ -1431,10 +1468,10 @@ li.ac_over .autoCompleteEmail {
   background-color: white;
   overflow: hidden;
   z-index: 98;
-  border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 1px 5px 1px;
+  border: solid #CCCCCC; /*#67A03B;*/
+  border-width: 0 2px 5px 2px;
 
-  top: 44px !important;
+  top: 65px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
@@ -1485,7 +1522,7 @@ li.ac_over .autoCompleteEmail {
 
 .ac_over {
   color: white;
-  background-color: #FFCB05;
+  background-color: #FFF5C6;
 }
 
 .autoCompleteName {
@@ -1495,7 +1532,7 @@ li.ac_over .autoCompleteEmail {
 }
 
 .autoCompleteName strong {
-  color: #1F429B;
+  color: #67A03B;
   font-weight: bold;
   font-size: 12px;
 }
@@ -1525,7 +1562,7 @@ li.ac_over .autoCompleteEmail {
 }
 
 .autoCompleteExtraInfo strong {
-  color: #1F429B;
+  color: #67A03B;
   font-weight: normal;
 }
 
@@ -1537,7 +1574,7 @@ li.ac_over .autoCompleteEmail {
 }
 
 .autoCompleteResult a :hover {
-/*  color: #1F429B;*/
+/*  color: #67A03B;*/
   text-decoration: none;
 }
 

@@ -52,7 +52,7 @@
         });
 
 
-        <% unless session[:search_prepared] == true %>
+        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
         var prepare = function() {
           jQuery.ajax({
             dataType:'script',
@@ -79,10 +79,11 @@
               if(this.value=='') this.value='<%= default_search_box_text %>';
             }
           };
-          
+
         });
       </script>
     </div>
 
   <% end %>
 <% end %>
+

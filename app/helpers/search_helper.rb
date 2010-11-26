@@ -37,16 +37,16 @@ module SearchHelper
 
     info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
 
-    if person.cell_phone.present?
-      info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
-    elsif person.person_local_phone.present?
-      info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.person_local_phone)}<br/>"
-    elsif person.person_phone.present?
-      info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.person_phone)}<br/>"
-    end
+#    if person.cell_phone.present?
+#      info += "<b> · </b>" if person.email.present?
+#      info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
+#    elsif person.person_local_phone.present?
+#      info += "<b> · </b>" if person.email.present?
+#      info += "#{number_to_phone(person.person_local_phone)}<br/>"
+#    elsif person.person_phone.present?
+#      info += "<b> · </b>" if person.email.present?
+#      info += "#{number_to_phone(person.person_phone)}<br/>"
+#    end
 
     info
   end
@@ -59,43 +59,52 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Goto compose an email to #{person.first_name.capitalize}") if person.email.present?
+#    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
   end
 
   def info_for_group(group)
     info = ""
 
-    if group.campus_desc.present?
-      info += "#{group.campus_desc}"
+
+    # display group campus, semester and time
+
+    info += (["#{group.try(:campus_desc)}", "#{group.try(:semester_desc)}", "#{group.meeting_day_and_time_to_string}"]-[""]-[nil]).join("<b> · </b>")
+
+    info += "<br/>" unless info.blank?
+
+
+    # display leaders of the group
+
+    leaders = group.leaders + group.co_leaders
+
+    leaders_array = leaders.collect do |person|
+      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}"
     end
 
-    if group.semester_desc.present?
-      info += "<b> · </b>" if group.campus_desc.present?
-      info += "#{group.semester_desc}"
-    end
-
-    if group.email.present?
-      info += "<b> · </b>" if group.campus_desc.present? || group.semester_desc.present?
-      info += "#{group.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}"
-    end
-
-    info += "<br/>"
-
-    info += link_to("#{group.num_members} members", "/groups/#{group.id}", {:title => "Goto #{group.name}"}) if group.num_members.present?
+    info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
 
 
+    # display number of members and any members that matched the search query
 
-    if group.involvements.present?
-      info += ", " if group.num_members.present?
+    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}") if group.num_members.present?
 
+    if group.try(:involvements)
       people_ids = group.involvements.split(",")
 
-      Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).each do |person|
-        info += "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")} is in this group<br/>"
+      people_array = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).collect do |person|
+        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}" if leaders.index(person).nil?
+      end
+      people_array = people_array-[""]-[nil]
+
+      if people_array.first.present?
+        info += "<b> · </b>" if group.num_members.present?
+        info += people_array.join(", ")
+        info += people_array.size > 1 ? " are in this group" : " is in this group"
       end
     end
 
     info
   end
 end
+
 

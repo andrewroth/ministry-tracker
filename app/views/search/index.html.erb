@@ -1,4 +1,3 @@
-
 <h1 id="reportTitle">Search</h1>
 
 <% if @q.present? %>
@@ -12,7 +11,7 @@
 
 <div id="searchResultsContainer">
   <br/>
-  
+
   <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
@@ -42,15 +41,12 @@
       <% else %>
         <p>
           No people found for <strong><%= @q %></strong> within your ministry.<br/>
-          Check your spelling or try searching for just their first name, last name or email.
+          Try searching for just their first name, last name or email.
         </p>
       <% end %>
     </ul>
 
     <br/>
-    <div class="searchResultsPagination">
-      <%= will_paginate @people %>
-    </div>
   <% end %>
 
 
@@ -84,14 +80,12 @@
       <% else %>
         <p>
           No groups found for <strong><%= @q %></strong> within your ministry.<br/>
+          Try searching for part of the group name or the name of someone who's in the group you're looking for.
         </p>
       <% end %>
     </ul>
 
     <br/>
-    <div class="searchResultsPagination">
-      <%= will_paginate @groups %>
-    </div>
   <% end %>
 
 </div>
@@ -100,6 +94,7 @@
 <% else %>
 
 <br/>
-<p><h3>Don't be shy, search for someone by using the search box!</h3></p>
+<p><h3>Don't be shy, search for a person or group by using the search box!</h3></p>
 
 <% end %>
+

@@ -1,4 +1,4 @@
-<li class='searchResult'>
+<li class='searchResult searchResultPerson'>
   <div class='searchResultPic'>
     <%=link_to("#{profile_picture_for_person(person)}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"})-%>
   </div>
@@ -19,3 +19,4 @@
     <%- end -%>
   </div>
 </li>
+
