@@ -200,5 +200,4 @@ module StatsHelper
     }
   end
 
- 
 end

@@ -17,6 +17,7 @@ config/initializers/eventbright.rb
 query_trace
 nbproject/
 *.swp
+*.swo
 public/profile_pictures
 *~
 .project
