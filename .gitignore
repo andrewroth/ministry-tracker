@@ -18,6 +18,8 @@ query_trace
 nbproject/
 db/development_structure.sql
 *.swp
+*.swo
 public/profile_pictures
 *~
 .project
+config/initializers/cmt_config.rb
