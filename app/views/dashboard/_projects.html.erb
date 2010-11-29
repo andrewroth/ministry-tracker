@@ -40,7 +40,7 @@
                   <td class="norm">Projects Accepted by Campus</td>
                   <td class="small">accepted</td>
                 </tr>
-                <%- for campus in @project_campuses %>
+                <%- for campus in @project_campuses[0..5] %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
                   <tr class='project_campus <%= 'extra' unless interested %>' style="<%= 'display:none' unless interested %>">
                     <td class="eventIcon"></td>
@@ -76,11 +76,11 @@
                   <td class="eventIcon"></td>
                   <td class="normal">
                     <table>
-                      <%- for project, totals in @project_totals_by_project %>
+                      <%- @project_totals.each_pair do |project, total| %>
                       <tr>
                         <td class="eventIcon"></td>
                         <td class="normal"><%= project %></td>
-                        <td class="center eventAttendees"><%= totals[:total] %></td>
+                        <td class="center eventAttendees"><%= total %></td>
                       </tr>
                       <%- end -%>
                     </table>

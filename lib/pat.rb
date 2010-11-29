@@ -21,7 +21,7 @@ module Pat
            #{Project.__(:event_group_id)} = #{event_group_id}
       |,
       :group => "#{Project.__(:id)}, #{Campus.__(:id)}",
-      :order => "#{Project.__(:title)} DESC, #{Campus.__(:name)} DESC"
+      :order => "#{Campus.__(:name)} ASC, accepted_count DESC"
     )
 
     results_by_project = ActiveSupport::OrderedHash.new
@@ -37,7 +37,13 @@ module Pat
       results_by_campus[campus.abbrv][:total] ||= 0
       results_by_campus[campus.abbrv][:total] += campus.accepted_count.to_i
     end
-    [ results_by_campus, results_by_project ]
+    # this can probably be done in sql somehow, but I can code it here way faster
+    results_by_campus2 = ActiveSupport::OrderedHash.new
+    results_by_campus.collect{|k,v| [ k, v ]}.sort{ |a, b| k1, v1 = a; k2, v2 = b; v2[:total].to_i <=> v1[:total].to_i }.each do |k,v|
+      results_by_campus2[k] = v
+    end
+
+    [ results_by_campus2, results_by_project ]
   end
 
   def projects_count_hash(event_group_id = current_event_group_id)
@@ -48,7 +54,8 @@ module Pat
            #{Project.__(:event_group_id)} = #{event_group_id}
       |,
       :conditions => "#{Profile.__(:type)} = 'Acceptance'",
-      :group => "#{Project.__(:id)}"
+      :group => "#{Project.__(:id)}",
+      :order => "accepted_count DESC"
     )
 
     results = ActiveSupport::OrderedHash.new
