@@ -45,7 +45,10 @@ Rails::Initializer.run do |config|
   # config.gem  'rubycas-client'
   config.gem 'liquid'
   config.gem 'facebooker' if defined?(Cmt) && Cmt::CONFIG[:facebook_connectivity_enabled]
-  config.gem 'will_paginate'
+  config.gem 'will_paginate', :version => "2.3.15"
+  config.gem 'daemons'
+  config.gem 'httparty' # for eventbright
+  config.gem 'tzinfo'   # for eventbright
   
   config.time_zone = 'UTC'
 
