@@ -16,10 +16,13 @@
                   default:
                     selector = '.project_campus_stats.'+c;
                 }
+                icon_selector = '.icon.project_campus.'+c;
                 if (project_campus_expanded[c]) {
-                  $(selector).fadeIn();
+                  $(selector).show();
+                  $(icon_selector).attr("src", "/images/contract.png");
                 } else {
-                  $(selector).fadeOut();
+                  $(selector).hide();
+                  $(icon_selector).attr("src", "/images/expand.png");
                 }
                 if (c == 'total') {
                   /*
@@ -37,13 +40,14 @@
               <tbody>
                 <tr>
                   <td></td>
-                  <td class="norm">Projects Accepted by Campus</td>
+                  <td class="norm">Project Participants</td>
                   <td class="small">accepted</td>
                 </tr>
-                <%- for campus in @project_campuses[0..5] %>
+                <%- @project_campuses.each_with_index do |campus, i| %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
-                  <tr class='project_campus <%= 'extra' unless interested %>' style="<%= 'display:none' unless interested %>">
-                    <td class="eventIcon"></td>
+                  <%- extra = !interested || i > 5 -%>
+                  <tr class='project_campus <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
+                    <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), "toggle_campus('#{campus}')") %></td>
                     <td class="normal"><%= link_to_function(campus, "toggle_campus('#{campus}')") %>
                       <table class="project_campus_stats <%= campus %>" style="display:none">
                         <%- if @project_totals_by_campus[campus] -%>
@@ -68,8 +72,10 @@
                   </tr>
                 <%- end %>
                 <tr>
-                  <td class="eventIcon"></td>
-                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses_link" %> for <% end %><%= link_to_function "All Projects", "toggle_campus('all_projects')", :id => "all_projects_link" %></td>
+                  <td class="eventIcon">
+                    <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), "toggle_campus('#{@staff ? 'total' : 'all_projects'}')") %>
+                  </td>
+                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses_link" %> for <%= image_tag('expand.png', :class => "icon project_campus all_projects") %><% end %> <%= link_to_function "All Projects", "toggle_campus('all_projects')", :id => "all_projects_link" %></td>
                   <td class="center eventAttendees"><%= @project_totals[:total] %></td>
                 </tr>
                 <tr id="all_projects" style="display:none">
