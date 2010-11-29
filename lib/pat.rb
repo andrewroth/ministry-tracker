@@ -1,6 +1,6 @@
 module Pat
   def current_event_group_id
-    75
+    58
   end
 
   def project_totals(campus_ids, event_group_id = current_event_group_id)
@@ -20,18 +20,19 @@ module Pat
         INNER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)} AND 
            #{Project.__(:event_group_id)} = #{event_group_id}
       |,
-      :group => "#{Project.__(:id)}, #{Campus.__(:id)}"
+      :group => "#{Project.__(:id)}, #{Campus.__(:id)}",
+      :order => "#{Project.__(:title)} DESC, #{Campus.__(:name)} DESC"
     )
 
-    results_by_project = {}
-    results_by_campus = {}
+    results_by_project = ActiveSupport::OrderedHash.new
+    results_by_campus = ActiveSupport::OrderedHash.new
     campuses.each do |campus|
-      results_by_project[campus.project] ||= {}
+      results_by_project[campus.project] ||= ActiveSupport::OrderedHash.new
       results_by_project[campus.project][campus.abbrv] = campus.accepted_count
       results_by_project[campus.project][:total] ||= 0
       results_by_project[campus.project][:total] += campus.accepted_count.to_i
 
-      results_by_campus[campus.abbrv] ||= {}
+      results_by_campus[campus.abbrv] ||= ActiveSupport::OrderedHash.new
       results_by_campus[campus.abbrv][campus.project] = campus.accepted_count
       results_by_campus[campus.abbrv][:total] ||= 0
       results_by_campus[campus.abbrv][:total] += campus.accepted_count.to_i
@@ -50,7 +51,7 @@ module Pat
       :group => "#{Project.__(:id)}"
     )
 
-    results = {}
+    results = ActiveSupport::OrderedHash.new
     projects.each do |project|
       results[project.project] = project.accepted_count
     end
