@@ -21,3 +21,4 @@ nbproject/
 public/profile_pictures
 *~
 .project
+config/initializers/cmt_config.rb
