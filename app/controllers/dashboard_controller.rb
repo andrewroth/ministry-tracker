@@ -4,6 +4,7 @@
 # * names of newest people added
 class DashboardController < ApplicationController
   include SemesterSet
+  include Pat
   before_filter :set_current_and_next_semester
   
   def index
@@ -15,6 +16,8 @@ class DashboardController < ApplicationController
     @group_stats = [ ]
       
     setup_stats
+    #setup_pat_stats
+    setup_insights
 
     if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
@@ -47,7 +50,7 @@ class DashboardController < ApplicationController
       :group => "#{GroupType.__(:id)}")
 
     gt_sem_inv = GroupType.find(:all,
-      :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
+      :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(distinct(person_id)) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id INNER JOIN #{GroupInvolvement.table_name} gi ON gi.group_id = g.id",
       :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid} AND gi.level != 'interested' AND (gi.requested = FALSE OR gi.requested IS NULL)",
       :group => "#{GroupType.__(:id)}")
@@ -86,5 +89,15 @@ class DashboardController < ApplicationController
 
     @tt_last_week = timetables_week.total
     @tt_last_month = timetables_month.total
+  end
+
+  def setup_pat_stats
+    get_person_campuses
+    campus_ids = Campus.all.collect(&:id)
+    @project_totals_by_campus, @project_totals_by_project = project_totals(campus_ids)
+    @project_totals = projects_count_hash
+    @project_totals[:total] = @project_totals.values.inject(0) { |t,v| t + v.to_i }
+    @interested_campuses = @person.most_nested_ministry.unique_campuses
+    @interested_campuses_abbrvs = @interested_campuses.collect(&:abbrv)
   end
 end

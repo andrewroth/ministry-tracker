@@ -1,0 +1,70 @@
+            <script>
+              project_campus_expanded = new Array(); project_campus_expanded['total'] = false;
+              function toggle_campus(c) {
+                if (project_campus_expanded[c] == null) {
+                  project_campus_expanded[c] = false;
+                }
+                project_campus_expanded[c] = !project_campus_expanded[c];
+
+                selector = (c == 'total' ? '.project_campus.extra' : '.project_campus_stats.'+c);
+                if (project_campus_expanded[c]) {
+                  $(selector).fadeIn();
+                } else {
+                  $(selector).fadeOut();
+                }
+                if (c == 'total') {
+                  if (project_campus_expanded[c]) {
+                    $("#all_campuses").html("Your Campuses");
+                  } else {
+                    $("#all_campuses").html("All Campuses");
+                  }
+                }
+              }
+            </script>
+            <table class="lightgray">
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td class="norm">Projects Accepted by Campus</td>
+                  <td class="small">accepted</td>
+                </tr>
+                <%- for campus in (@project_totals_by_campus.keys + @interested_campuses_abbrvs).uniq %>
+                  <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
+                  <tr class='project_campus <%= 'extra' unless interested %>' style="<%= 'display:none' unless interested %>">
+                    <td class="eventIcon"></td>
+                    <td class="normal"><%= link_to_function(campus, "toggle_campus('#{campus}')") %>
+                      <table class="project_campus_stats <%= campus %>" style="display:none">
+                        <%- if @project_totals_by_campus[campus] -%>
+                          <%- for project, total in @project_totals_by_campus[campus] %>
+                          <%- next if project == :total %>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal"><%= project %></td>
+                          <td class="center eventAttendees"><%= total %></td>
+                        </tr>
+                          <%- end -%>
+                        <%- else -%>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal">No project acceptances from this campus yet</td>
+                          <td class="center eventAttendees"></td>
+                        </tr>
+                        <%- end -%>
+                      </table>
+                    </td>
+                    <td class="center eventAttendees"><%= (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
+                  </tr>
+                <%- end %>
+                <tr>
+                  <td class="eventIcon"></td>
+                  <td class="normal"><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses" %></td>
+                  <td class="center eventAttendees"><%= @project_totals[:total] %></td>
+                </tr>
+                <tr>
+                  <td class="eventIcon"></td>
+                  <td><%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses" %> or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats" %></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          
