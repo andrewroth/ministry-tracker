@@ -201,8 +201,9 @@ class DashboardController < ApplicationController
 
   def setup_pat_stats
     @staff = @me.is_staff_somewhere?
+    #@staff = false
     get_person_campuses
-    campus_ids = Campus.all.collect(&:id)
+    campus_ids = CmtGeo.campuses_for_country("CAN").collect(&:id)
     @project_totals_by_campus, @project_totals_by_project = project_totals(campus_ids)
     @project_totals = projects_count_hash
     @project_totals[:total] = @project_totals.values.inject(0) { |t,v| t + v.to_i }
@@ -211,7 +212,7 @@ class DashboardController < ApplicationController
     if @staff
       @project_campuses = (@project_totals_by_campus.keys + @interested_campuses_abbrvs).uniq
     else
-      @project_campuses = @interested_campuses_abbrvs
+      @project_campuses = @project_totals_by_campus.keys & @interested_campuses_abbrvs
     end
   end
 end
