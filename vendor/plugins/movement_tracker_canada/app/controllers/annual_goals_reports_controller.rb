@@ -1,6 +1,9 @@
 class AnnualGoalsReportsController < ReportsController
   unloadable
 
+  before_filter :redirect_unless_is_active_hrdb_staff
+
+
   def identification_fields
     [:year_id, :campus_id]
   end

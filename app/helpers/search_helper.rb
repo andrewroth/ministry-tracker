@@ -37,16 +37,16 @@ module SearchHelper
 
     info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
 
-#    if person.cell_phone.present?
-#      info += "<b> · </b>" if person.email.present?
-#      info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
-#    elsif person.person_local_phone.present?
-#      info += "<b> · </b>" if person.email.present?
-#      info += "#{number_to_phone(person.person_local_phone)}<br/>"
-#    elsif person.person_phone.present?
-#      info += "<b> · </b>" if person.email.present?
-#      info += "#{number_to_phone(person.person_phone)}<br/>"
-#    end
+    if person.cell_phone.present?
+      info += "<b> · </b>" if person.email.present?
+      info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
+    elsif person.person_local_phone.present?
+      info += "<b> · </b>" if person.email.present?
+      info += "#{number_to_phone(person.person_local_phone)}<br/>"
+    elsif person.person_phone.present?
+      info += "<b> · </b>" if person.email.present?
+      info += "#{number_to_phone(person.person_phone)}<br/>"
+    end
 
     info
   end
@@ -59,7 +59,7 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-#    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
+    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
   end
 
   def info_for_group(group)
@@ -67,7 +67,7 @@ module SearchHelper
 
 
     # display group campus, semester and time
-
+    
     info += (["#{group.try(:campus_desc)}", "#{group.try(:semester_desc)}", "#{group.meeting_day_and_time_to_string}"]-[""]-[nil]).join("<b> · </b>")
 
     info += "<br/>" unless info.blank?
@@ -106,5 +106,4 @@ module SearchHelper
     info
   end
 end
-
 

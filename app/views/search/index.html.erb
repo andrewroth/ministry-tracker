@@ -1,3 +1,4 @@
+
 <h1 id="reportTitle">Search</h1>
 
 <% if @q.present? %>
@@ -11,7 +12,7 @@
 
 <div id="searchResultsContainer">
   <br/>
-
+  
   <% if session[:search][:authorized_to_search_people] %>
     <div class="searchResultsTitle">
       <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
@@ -97,4 +98,3 @@
 <p><h3>Don't be shy, search for a person or group by using the search box!</h3></p>
 
 <% end %>
-
