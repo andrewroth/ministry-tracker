@@ -1,0 +1,108 @@
+            <script>
+              project_campus_expanded = new Array(); project_campus_expanded['total'] = false;
+              function toggle_campus(c) {
+                if (project_campus_expanded[c] == null) {
+                  project_campus_expanded[c] = false;
+                }
+                project_campus_expanded[c] = !project_campus_expanded[c];
+
+                switch(c) {
+                  case 'total':
+                    selector = '.project_campus.extra';
+                    break;
+                  case 'all_projects':
+                    selector = '#all_projects';
+                    break;
+                  default:
+                    selector = '.project_campus_stats.'+c;
+                }
+                icon_selector = '.icon.project_campus.'+c;
+                if (project_campus_expanded[c]) {
+                  $(selector).show();
+                  $(icon_selector).attr("src", "/images/contract.png");
+                } else {
+                  $(selector).hide();
+                  $(icon_selector).attr("src", "/images/expand.png");
+                }
+                if (c == 'total') {
+                  /*
+                  if (project_campus_expanded[c]) {
+                    $("#all_campuses").html("All Campuses");
+                  } else {
+                    $("#all_campuses").html("All Campuses");
+                  }
+                  */
+                } else if (c == 'all_projects') {
+                }
+              }
+            </script>
+            <table class="lightgray">
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td class="norm">Project Participants</td>
+                  <td class="small">accepted</td>
+                </tr>
+                <%- @project_campuses.each_with_index do |campus, i| %>
+                  <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
+                  <%- extra = !interested || i > 5 -%>
+                  <tr class='project_campus <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
+                    <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), "toggle_campus('#{campus}')") %></td>
+                    <td class="normal"><%= link_to_function(campus, "toggle_campus('#{campus}')") %>
+                      <table class="project_campus_stats <%= campus %>" style="display:none">
+                        <%- if @project_totals_by_campus[campus] -%>
+                          <%- for project, total in @project_totals_by_campus[campus] %>
+                          <%- next if project == :total %>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal"><%= project %></td>
+                          <td class="center eventAttendees"><%= total %></td>
+                        </tr>
+                          <%- end -%>
+                        <%- else -%>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal">No project acceptances from this campus yet</td>
+                          <td class="center eventAttendees"></td>
+                        </tr>
+                        <%- end -%>
+                      </table>
+                    </td>
+                    <td class="center eventAttendees"><%= (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
+                  </tr>
+                <%- end %>
+                <tr>
+                  <td class="eventIcon">
+                    <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), "toggle_campus('#{@staff ? 'total' : 'all_projects'}')") %>
+                  </td>
+                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses_link" %> for <%= link_to_function(image_tag('expand.png', :class => "icon project_campus all_projects"), "toggle_campus('all_projects')") %><% end %> <%= link_to_function "All Projects", "toggle_campus('all_projects')", :id => "all_projects_link" %></td>
+                  <td class="center eventAttendees"><%= @project_totals[:total] %></td>
+                </tr>
+                <tr id="all_projects" style="display:none">
+                  <td class="eventIcon"></td>
+                  <td class="normal">
+                    <table>
+                      <%- @project_totals.each_pair do |project, total| %>
+                      <tr>
+                        <td class="eventIcon"></td>
+                        <td class="normal"><%= project %></td>
+                        <td class="center eventAttendees"><%= total %></td>
+                      </tr>
+                      <%- end -%>
+                    </table>
+                  </td>
+                  <td class="center eventAttendees"></td>
+                </tr>
+                <tr>
+                  <td class="eventIcon"></td>
+                  <td>
+                    <%- if @staff -%>
+                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats" %>--></td>
+                    <%- else -%>
+                      <%= link_to "Apply for project today", "https://pat.powertochange.org" %>
+                    <%- end -%>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          
