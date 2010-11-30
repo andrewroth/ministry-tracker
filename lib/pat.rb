@@ -1,6 +1,6 @@
 module Pat
   def current_event_group_id
-    58
+    75
   end
 
   def project_totals(campus_ids, event_group_id = current_event_group_id)
