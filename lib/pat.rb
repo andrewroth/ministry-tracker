@@ -4,30 +4,33 @@ module Pat
     75    # 2011 projects
   end
 
-  def project_acceptance_totals(campus_ids, event_group_id = current_event_group_id)
-    project_totals(campus_ids, "Acceptance", "accepted_count", event_group_id)
+  def project_acceptance_totals(campus_ids, secondary_sort = {}, event_group_id = current_event_group_id)
+    project_totals(campus_ids, "Acceptance", "accepted_count", event_group_id, secondary_sort)
   end
 
   def project_applying_totals(campus_ids, event_group_id = current_event_group_id)
     project_totals(campus_ids, "Applying", "applying_count", event_group_id)
   end
 
-  def project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", event_group_id = current_event_group_id)
+  def project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", event_group_id = current_event_group_id, secondary_sort = {})
     return [] unless campus_ids.present?
     campus_ids << 0 unless campus_ids.include?(0)
 
     campuses = Campus.find(:all,
-      :select => "#{Project.__(:title)} as project, #{Campus.__(:name)}, #{Campus.__(:abbrv)}, count(#{Profile.__(:id)}) as #{count_name}",
+      :select => "#{Project.__(:title)} as project, #{Campus.__(:name)}, #{Campus.__(:abbrv)}, count(distinct(#{Profile.__(:id)})) as #{count_name}",
       :joins => %|
         INNER JOIN #{CampusInvolvement.table_name} ON #{Campus.__(:id)} = #{CampusInvolvement.__(:campus_id)}
+          AND #{CampusInvolvement.__(:end_date)} IS NULL
           AND #{Campus.__(:id)} IN (#{campus_ids.join(',')})
         INNER JOIN #{Person.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:id)}
         INNER JOIN #{Access.table_name} ON #{Person.__(:id)} = #{Access.__(:person_id)}
         INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
         INNER JOIN #{Profile.table_name} ON #{User.__(:id)} = #{Profile.__(:viewer_id)} AND 
            #{Profile.__(:type)} = '#{type}'
-        INNER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)} AND 
-           #{Project.__(:event_group_id)} = #{event_group_id}
+        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
+        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
+        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)} AND
+           #{Form.__(:event_group_id)} = #{event_group_id}
       |,
       :group => "#{Project.__(:id)}, #{Campus.__(:id)}",
       :order => "#{Campus.__(:name)} ASC, #{count_name} DESC"
@@ -48,7 +51,23 @@ module Pat
     end
     # this can probably be done in sql somehow, but I can code it here way faster
     results_by_campus2 = ActiveSupport::OrderedHash.new
-    results_by_campus.collect{|k,v| [ k, v ]}.sort{ |a, b| k1, v1 = a; k2, v2 = b; v2[:total].to_i <=> v1[:total].to_i }.each do |k,v|
+    results_by_campus.collect{|k,v| [ k, v ]}.sort{ |a, b| 
+      k1, v1 = a
+      k2, v2 = b
+      diff = v2[:total].to_i <=> v1[:total].to_i
+      if diff != 0
+        diff
+      else
+        debugger if type == "Acceptance" 
+        if secondary_sort
+          s1 = (secondary_sort[k1] && secondary_sort[k1][:total]) || 0
+          s2 = (secondary_sort[k2] && secondary_sort[k2][:total]) || 0
+          s2 <=> s1
+        else
+          0
+        end
+      end
+    }.each do |k,v|
       results_by_campus2[k] = v
     end
 
