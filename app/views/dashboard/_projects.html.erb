@@ -41,6 +41,7 @@
                 <tr>
                   <td></td>
                   <td class="norm">Project Participants</td>
+                  <td class="small">applying</td>
                   <td class="small">accepted</td>
                 </tr>
                 <%- @project_campuses.each_with_index do |campus, i| %>
@@ -50,24 +51,36 @@
                     <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), "toggle_campus('#{campus}')") %></td>
                     <td class="normal"><%= link_to_function(campus, "toggle_campus('#{campus}')") %>
                       <table class="project_campus_stats <%= campus %>" style="display:none">
-                        <%- if @project_totals_by_campus[campus] -%>
-                          <%- for project, total in @project_totals_by_campus[campus] %>
-                          <%- next if project == :total %>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal"></td>
+                          <td class="small">applying</td>
+                          <td class="small">accepted</td>
+                        </tr>
+                        <%- projects = ((@project_totals_by_campus[campus] && @project_totals_by_campus[campus].keys) || []) | 
+                              ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
+                        <%- if projects.present? -%>
+                          <%- for project in projects -%>
+                            <%- next if project == :total %>
+                            <%- total = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][project]) || 0 -%>
+                            <%- applying_total = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][project]) || 0 -%>
                         <tr>
                           <td class="eventIcon"></td>
                           <td class="normal"><%= project %></td>
+                          <td class="center eventAttendees"><%= applying_total %></td>
                           <td class="center eventAttendees"><%= total %></td>
                         </tr>
                           <%- end -%>
                         <%- else -%>
                         <tr>
                           <td class="eventIcon"></td>
-                          <td class="normal">No project acceptances from this campus yet</td>
+                          <td class="normal">No project participation (yet!)</td>
                           <td class="center eventAttendees"></td>
                         </tr>
                         <%- end -%>
                       </table>
                     </td>
+                    <td class="center eventAttendees"><%= (h = @project_applying_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                     <td class="center eventAttendees"><%= (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                   </tr>
                 <%- end %>
@@ -76,17 +89,26 @@
                     <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), "toggle_campus('#{@staff ? 'total' : 'all_projects'}')") %>
                   </td>
                   <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses_link" %> for <%= link_to_function(image_tag('expand.png', :class => "icon project_campus all_projects"), "toggle_campus('all_projects')") %><% end %> <%= link_to_function "All Projects", "toggle_campus('all_projects')", :id => "all_projects_link" %></td>
-                  <td class="center eventAttendees"><%= @project_totals[:total] %></td>
+                  <td class="center eventAttendees"><%= @project_totals[:totals][:applying] %></td>
+                  <td class="center eventAttendees"><%= @project_totals[:totals][:accepted] %></td>
                 </tr>
                 <tr id="all_projects" style="display:none">
                   <td class="eventIcon"></td>
                   <td class="normal">
                     <table>
-                      <%- @project_totals.each_pair do |project, total| %>
+                      <tr>
+                        <td class="eventIcon"></td>
+                        <td class="normal"></td>
+                        <td class="small">applying</td>
+                        <td class="small">accepted</td>
+                      </tr>
+                      <%- @project_totals.each_pair do |project, totals| %>
+                        <%- next if project == :totals -%>
                       <tr>
                         <td class="eventIcon"></td>
                         <td class="normal"><%= project %></td>
-                        <td class="center eventAttendees"><%= total %></td>
+                        <td class="center eventAttendees"><%= totals[:applying] %></td>
+                        <td class="center eventAttendees"><%= totals[:accepted] %></td>
                       </tr>
                       <%- end -%>
                     </table>
@@ -97,9 +119,9 @@
                   <td class="eventIcon"></td>
                   <td>
                     <%- if @staff -%>
-                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats" %>--></td>
+                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>--></td>
                     <%- else -%>
-                      <%= link_to "Apply for project today", "https://pat.powertochange.org" %>
+                      <%= link_to "Apply for project today", "https://pat.powertochange.org", :target => "_blank" %>
                     <%- end -%>
                   <td></td>
                 </tr>
