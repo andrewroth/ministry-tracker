@@ -2234,3 +2234,13 @@ table.groupInvolvementList th {
   bottom: 0;
   left: 0;
 }
+
+.modulecontent tr.total td.eventAttendees {
+  /*border-top: 1px solid;
+  border-color: #E6E6E6;*/
+  font-weight:bold;
+}
+
+.modulecontent tr.pat_no_project_chosen td {
+  font-style: italic;
+}

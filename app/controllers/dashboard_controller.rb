@@ -204,15 +204,15 @@ class DashboardController < ApplicationController
     #@staff = false
     get_person_campuses
     campus_ids = CmtGeo.campuses_for_country("CAN").collect(&:id)
-    @project_totals_by_campus, @project_totals_by_project = project_totals(campus_ids)
+    @project_applying_totals_by_campus, @project_applying_totals_by_project = project_applying_totals(campus_ids)
+    @project_totals_by_campus, @project_totals_by_project = project_acceptance_totals(campus_ids, @project_applying_totals_by_campus)
     @project_totals = projects_count_hash
-    @project_totals[:total] = @project_totals.values.inject(0) { |t,v| t + v.to_i }
     @interested_campuses = get_person_current_campuses
     @interested_campuses_abbrvs = @interested_campuses.collect(&:abbrv)
     if @staff
-      @project_campuses = (@project_totals_by_campus.keys + @interested_campuses_abbrvs).uniq
+      @project_campuses = (@project_totals_by_campus.keys | @project_applying_totals_by_campus.keys | @interested_campuses_abbrvs)
     else
-      @project_campuses = @project_totals_by_campus.keys & @interested_campuses_abbrvs
+      @project_campuses = (@project_totals_by_campus.keys | @project_applying_totals_by_campus.keys) & @interested_campuses_abbrvs
     end
   end
 end
