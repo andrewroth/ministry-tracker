@@ -32,9 +32,11 @@ namespace :hrdb do
           INNER JOIN #{Access.table_name} ON #{Person.__(:id)} = #{Access.__(:person_id)}
           INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
           INNER JOIN #{Pat::Profile.table_name} ON #{User.__(:id)} = #{Pat::Profile.__(:viewer_id)}
-          INNER JOIN #{Pat::Project.table_name} ON #{Pat::Profile.__(:project_id)} = #{Pat::Project.__(:id)} AND 
-                     #{Pat::Project.__(:event_group_id)} = #{ENV['eg']}
+          INNER JOIN #{Pat::Appln.table_name} ON #{Pat::Appln.__(:id)} = #{Pat::Profile.__(:appln_id)}
+          INNER JOIN #{Pat::Form.table_name} ON #{Pat::Form.__(:id)} = #{Pat::Appln.__(:form_id)} AND
+                     #{Pat::Form.__(:event_group_id)} = #{ENV['eg']}
         |)
+        #throw people.collect(&:id)
       else
         throw "need eg="
       end
@@ -46,11 +48,13 @@ namespace :hrdb do
 
         # look for current assignment first
         if current_student_assignment_status_id
-          c = person.assignments.find_by_assignmentstatus_id current_student_assignment_status_id, :include => :campus
+          cs = person.assignments.find_all_by_assignmentstatus_id current_student_assignment_status_id, :include => :campus
+          c = cs.detect{ |cr| cr.campus.present? }
         end
 
         if !c && unknown_assignment_status_id
-          u = person.assignments.find_by_assignmentstatus_id unknown_assignment_status_id, :include => :campus
+          us = person.assignments.find_all_by_assignmentstatus_id unknown_assignment_status_id, :include => :campus
+          u = us.detect{ |ur| ur.campus.present? }
         end
 
         a = c || u
@@ -58,7 +62,7 @@ namespace :hrdb do
         if a && a.campus
           year_orig = person.cim_hrdb_school_years.first
           year = year_orig || unknown_school_year
-          puts "Person #{person.full_name} has student assignment to #{a.campus.try(:abbrv)} year #{year_orig.try(:year_desc)}"
+          puts "Person #{person.id} #{person.full_name} has student assignment to #{a.campus.try(:abbrv)} year #{year_orig.try(:year_desc)}"
           m = a.campus.derive_ministry
           if m
             ci = person.campus_involvements.find_or_create_by_campus_id(a.campus.id)
@@ -67,6 +71,7 @@ namespace :hrdb do
             ci.start_date ||= Date.today
             mi = ci.find_or_create_ministry_involvement
             puts "    -> #{m.name} #{mi.ministry_role.name}"
+            ci.save!
           end
         end
 
