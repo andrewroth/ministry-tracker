@@ -210,7 +210,6 @@ class DashboardController < ApplicationController
     @interested_campuses = get_person_current_campuses
     @interested_campuses_abbrvs = @interested_campuses.collect(&:abbrv)
     if @staff
-      debugger
       @project_campuses = (@project_totals_by_campus.keys | @project_applying_totals_by_campus.keys | @interested_campuses_abbrvs)
     else
       @project_campuses = (@project_totals_by_campus.keys | @project_applying_totals_by_campus.keys) & @interested_campuses_abbrvs

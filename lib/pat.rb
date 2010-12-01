@@ -58,7 +58,6 @@ module Pat
       if diff != 0
         diff
       else
-        debugger if type == "Acceptance" 
         if secondary_sort
           s1 = (secondary_sort[k1] && secondary_sort[k1][:total]) || 0
           s2 = (secondary_sort[k2] && secondary_sort[k2][:total]) || 0
@@ -75,25 +74,40 @@ module Pat
   end
 
   def projects_count_hash(event_group_id = current_event_group_id)
-    projects = Project.find(:all,
-      :select => "#{Project.__(:title)} as title, count(p1.id) as applying_count, count(p2.id) as accepted_count",
+    projects_accepted = Profile.find(:all,
+      :select => "#{Project.__(:title)} as title, count(#{Profile.__(:id)}) as accepted_count",
       :joins => %|
-        LEFT OUTER JOIN #{Profile.table_name} as p1 ON p1.#{Profile._(:project_id)} = #{Project.__(:id)} AND 
-           #{Project.__(:event_group_id)} = #{event_group_id} AND p1.type = 'Applying'
-        LEFT OUTER JOIN #{Profile.table_name} as p2 ON p2.#{Profile._(:project_id)} = #{Project.__(:id)} AND 
-           #{Project.__(:event_group_id)} = #{event_group_id} AND p1.type = 'Acceptance'
+        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
+        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
+        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)}
       |,
-      :conditions => "#{Project.__(:event_group_id)} = #{event_group_id}",
+      :conditions => "#{Profile.__(:type)} = 'Acceptance' AND #{Form.__(:event_group_id)} = #{event_group_id}",
       :group => "#{Project.__(:id)}",
-      :order => "accepted_count DESC, applying_count DESC"
+      :order => "accepted_count DESC"
+    )
+    projects_applying = Profile.find(:all,
+      :select => "#{Project.__(:title)} as title, count(#{Profile.__(:id)}) as applying_count",
+      :joins => %|
+        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
+        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
+        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)}
+      |,
+      :conditions => "#{Profile.__(:type)} = 'Applying' AND #{Form.__(:event_group_id)} = #{event_group_id}",
+      :group => "#{Project.__(:id)}",
+      :order => "applying_count DESC"
     )
 
     results = ActiveSupport::OrderedHash.new
     totals = { :accepted => 0, :applying => 0 }
-    projects.each do |project|
+    projects_accepted.each do |project|
       totals[:accepted] += project.accepted_count.to_i
+      results[project.title] ||= {}
+      results[project.title][:accepted] = project.accepted_count
+    end
+    projects_applying.each do |project|
       totals[:applying] += project.applying_count.to_i
-      results[project.title] = { :accepted => project.accepted_count, :applying => project.applying_count }
+      results[project.title] ||= {}
+      results[project.title][:applying] = project.applying_count
     end
     results[:totals] = totals
     results

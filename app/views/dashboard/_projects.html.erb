@@ -48,9 +48,9 @@
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
                   <%- extra = !interested || i > 5 -%>
                   <tr class='project_campus <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
-                    <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), "toggle_campus('#{campus}')") %></td>
-                    <td class="normal"><%= link_to_function(campus, "toggle_campus('#{campus}')") %>
-                      <table class="project_campus_stats <%= campus %>" style="display:none">
+                    <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), toggle_campus(campus)) %></td>
+                    <td class="normal"><%= link_to_function(campus, toggle_campus(campus)) %>
+                      <table class="project_campus_stats <%= campus.gsub("'","") %>" style="display:none">
                         <tr>
                           <td class="eventIcon"></td>
                           <td class="normal"></td>
@@ -64,13 +64,19 @@
                             <%- next if project == :total %>
                             <%- total = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][project]) || 0 -%>
                             <%- applying_total = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][project]) || 0 -%>
-                        <tr>
+                        <tr class=<%= 'pat_no_project_chosen' unless project.present? %>>
                           <td class="eventIcon"></td>
-                          <td class="normal"><%= project %></td>
-                          <td class="center eventAttendees"><%= applying_total %></td>
-                          <td class="center eventAttendees"><%= total %></td>
+                          <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
+                          <td class="center eventAttendees"><%= no_zero applying_total %></td>
+                          <td class="center eventAttendees"><%= no_zero total %></td>
                         </tr>
                           <%- end -%>
+                        <tr class="total">
+                          <td class="eventIcon"></td>
+                          <td class="normal">Total</td>
+                          <td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:total] %></td>
+                          <td class="center eventAttendees"><%= no_zero @project_totals_by_campus[campus] && @project_totals_by_campus[campus][:total] %></td>
+                        </tr>
                         <%- else -%>
                         <tr>
                           <td class="eventIcon"></td>
@@ -80,17 +86,18 @@
                         <%- end -%>
                       </table>
                     </td>
-                    <td class="center eventAttendees"><%= (h = @project_applying_totals_by_campus[campus]) ? h[:total] : 0 %></td>
-                    <td class="center eventAttendees"><%= (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
+                    <td class="center eventAttendees"><%= no_zero (h = @project_applying_totals_by_campus[campus]) ? h[:total] : 0 %></td>
+                    <td class="center eventAttendees"><%= no_zero (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                   </tr>
                 <%- end %>
-                <tr>
+                <tr class="total">
                   <td class="eventIcon">
-                    <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), "toggle_campus('#{@staff ? 'total' : 'all_projects'}')") %>
+                    <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
-                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", "toggle_campus('total')", :id => "all_campuses_link" %> for <%= link_to_function(image_tag('expand.png', :class => "icon project_campus all_projects"), "toggle_campus('all_projects')") %><% end %> <%= link_to_function "All Projects", "toggle_campus('all_projects')", :id => "all_projects_link" %></td>
-                  <td class="center eventAttendees"><%= @project_totals[:totals][:applying] %></td>
-                  <td class="center eventAttendees"><%= @project_totals[:totals][:accepted] %></td>
+                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function(image_tag('expand.png', :class => "icon project_campus all_projects"), toggle_campus('all_projects')) %><% end %> <%= link_to_function "All Projects", toggle_campus('all_projects'), :id => "all_projects_link" %></td>
+                  <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
+                  <!--<td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
+                  <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
                 </tr>
                 <tr id="all_projects" style="display:none">
                   <td class="eventIcon"></td>
@@ -104,13 +111,19 @@
                       </tr>
                       <%- @project_totals.each_pair do |project, totals| %>
                         <%- next if project == :totals -%>
-                      <tr>
+                      <tr class="<%= 'pat_no_project_chosen' unless project.present? %>">
                         <td class="eventIcon"></td>
-                        <td class="normal"><%= project %></td>
-                        <td class="center eventAttendees"><%= totals[:applying] %></td>
-                        <td class="center eventAttendees"><%= totals[:accepted] %></td>
+                        <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
+                        <td class="center eventAttendees"><%= no_zero totals[:applying] %></td>
+                        <td class="center eventAttendees"><%= no_zero totals[:accepted] %></td>
                       </tr>
                       <%- end -%>
+                      <tr class="total">
+                        <td class="eventIcon"></td>
+                        <td class="normal">Total</td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
+                      </tr>
                     </table>
                   </td>
                   <td class="center eventAttendees"></td>
