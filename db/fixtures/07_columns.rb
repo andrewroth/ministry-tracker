@@ -91,3 +91,18 @@ Column.seed(:title) do |c|
   c.from_clause = 'MinistryInvolvement'
   c.select_clause = 'start_date'
 end
+
+Column.seed(:title) do |c|
+  c.title = 'Timetable Updated'
+  c.from_clause = 'Timetable'
+  c.select_clause = "(CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00'))"
+end
+
+Column.seed(:title) do |c|
+  c.title = 'Role'
+  c.select_clause = 'name'
+  c.from_clause = 'MinistryRole'
+  c.source_model = 'MinistryInvolvement'
+  c.source_column = 'ministry_role_id'
+  c.foreign_key = 'id'
+end
