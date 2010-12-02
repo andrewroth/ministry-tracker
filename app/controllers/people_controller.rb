@@ -98,11 +98,13 @@ class PeopleController < ApplicationController
           conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
         end
       end
+
     
       # Advanced search options
       @options = {}
       @tables = {}
       @search_for = []
+      # Check year in school
       # Check year in school
       if params[:school_year].present?
         conditions << database_search_conditions(params)[:school_year]
@@ -135,7 +137,14 @@ class PeopleController < ApplicationController
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
-    
+
+      if params[:role].present? && params[:role].first.to_i > 0
+        conditions << database_search_conditions(params)[:role]
+        @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = #{MinistryInvolvement.table_name}.#{_(:person_id, :ministry_involvement)}"
+        @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
+        @advanced = true
+      end
+
       conditions = add_involvement_conditions(conditions)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
@@ -186,6 +195,13 @@ class PeopleController < ApplicationController
       @people = []
       @count = 0
     end
+
+    # pass which ministries were searched for to the view
+    if params[:ministry]
+      ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
+      @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
+    end
+    @searched_ministry_ids ||= get_ministry_ids
     
     respond_to do |format|
       format.html { render :layout => 'application' }
@@ -767,7 +783,7 @@ class PeopleController < ApplicationController
       @ministry_ids ||= get_ministries.collect(&:id).collect(&:to_s)
     end
 
-    def add_involvement_conditions(conditions)
+    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true)
       if params[:ministry]
         ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
         ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
@@ -776,8 +792,9 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
-      ministry_condition = " (MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
-      ministry_condition += " AND MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
+      ministry_condition = "("
+      ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
+      ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
     
       # Check campus

@@ -32,6 +32,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assignmentstatuses
 
+  map.connect 'ministry_involvements/edit_multiple_roles',
+              :conditions => { :method => :get },
+              :controller => "ministry_involvements",
+              :action => "edit_multiple_roles"
+
   map.connect 'search/',
               :conditions => { :method => :get },
               :controller => "search",

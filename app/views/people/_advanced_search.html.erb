@@ -41,16 +41,7 @@
     <%= select_tag 'school_year[]',
       options_for_select(SchoolYear.find(:all).collect {|sy| [sy.name, sy.id.to_s]},
         @options["school_year"]),
-      :multiple => true
-    %>
-  </div>
-
-  <div class="adfieldbox">
-    Role: <br/>
-    <%= select_tag 'role[]',
-      options_for_select(MinistryRole.find(:all).collect {|r| [r.name, r.id.to_s]},
-        @options["role"]),
-      :multiple => true
+      :multiple => true, :class => "multiSelect"
     %>
   </div>
 
@@ -63,7 +54,7 @@
     <%= select_tag 'ministry[]',
       options_for_select(ministries_for_select, @options["ministry"]),
       :multiple => true,
-      :class => 'wide'
+      :class => 'wide', :class => "multiSelect"
     %>
   </div>
     
@@ -74,7 +65,16 @@
         @campuses.collect {|campus| [campus.name, campus.id.to_s]},
           @options["campus"]),
       :multiple => true,
-      :class => 'doublewide'
+      :class => "doublewide multiSelect"
+    %>
+  </div>
+
+  <div class="adfieldbox">
+    Role: <br/>
+    <%= select_tag 'role[]',
+      options_for_select(MinistryRole.find(:all, :order => "type ASC, position ASC").collect {|r| [r.name, r.id.to_s]}.insert(0, ["", "0"]),
+        @options["role"]),
+      :multiple => false
     %>
   </div>
 
