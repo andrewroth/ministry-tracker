@@ -1,6 +1,4 @@
-
-page << "jQuery('#events').hide();"
-
-page.replace_html("events", :partial => "events")
-
+#page << "jQuery('#events').hide();"
+page["#events"].append(render(:partial => "events"))
+page["#eventsSpinnerContainer"].hide
 page["events"].visual_effect :fade_in

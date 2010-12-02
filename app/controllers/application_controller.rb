@@ -103,9 +103,9 @@ class ApplicationController < ActionController::Base
       get_my_ministry_involvement(ministry).try(:ministry_role)
     end
 
-    def get_ministry_involvement(ministry, person = @person)
+    def get_ministry_involvement(ministry, person = @person, force_only_this_ministry = false)
       # TODO: can do this in one query without using ancestor_ids now
-      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", force_only_this_ministry ? ministry.id : ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -457,6 +457,10 @@ class ApplicationController < ActionController::Base
 
     def get_person_campuses
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
+    end
+
+    def get_person_current_campuses
+      @person_current_campuses = @my.campus_list(get_ministry_involvement(get_ministry), get_ministry)
     end
 
     def force_required_data
