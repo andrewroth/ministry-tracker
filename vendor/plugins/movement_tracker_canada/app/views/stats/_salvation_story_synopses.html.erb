@@ -3,12 +3,15 @@
 
 
     <tr>
-        <td><span class="statsTableTitle">Date</span></td>
-        <td><span class="statsTableTitle">New Believer</span></td>
-        <td><span class="statsTableTitle">Witness</span></td>
-        <td><span class="statsTableTitle">Method</span></td>
-        <td><span class="statsTableTitle">Synopses</span></td>
-        <td><span class="statsTableTitle">Follow-up Complete</span></td>
+        <td><span class="statsTableTitle"><%= order_by_link('Date', 'prc_date') %></span></td>
+	<% unless @campus_ids.nil? || @campus_ids.length <= 1 %>
+        <td><span class="statsTableTitle"><%= order_by_link('Campus', 'campus_desc') %></span></td>
+	<% end %>
+        <td><span class="statsTableTitle"><%= order_by_link('Witness', 'prc_witnessName') %></span></td>
+        <td><span class="statsTableTitle"><%= order_by_link('New Believer', 'prc_firstName') %></span></td>
+        <td><span class="statsTableTitle"><%= order_by_link('Method', 'prcMethod_id') %></span></td>
+        <td><span class="statsTableTitle"><%= order_by_link('Synopses', 'prc_notes') %></span></td>
+        <td><span class="statsTableTitle"><%= order_by_link('Follow-up Complete', 'prc_7upCompleted') %></span></td>
     </tr>
 
     <% @prcs.each do |prc| %>
@@ -17,15 +20,20 @@
 	            <td>
                   <%= prc.prc_date %>
 	            </td>
-	            <td>
-                  <%= prc.prc_firstName %>
-	            </td>
+  <% unless @campus_ids.nil? || @campus_ids.length <= 1 %>
+              <td>
+                  <%= @campuses[prc.campus_id].campus_desc %>
+              </td>
+  <% end %>
 	            <td>
                   <%= prc.prc_witnessName %>
 	            </td>
 	            <td>
-                <% if !prc.prcMethod.nil? %>
-                  <%= prc.prcMethod.prcMethod_desc %>
+                  <%= prc.prc_firstName %>
+	            </td>
+	            <td>
+                <% if !prc.prcMethod_id.nil? %>
+                  <%= @prc_methods[prc.prcMethod_id].prcMethod_desc %>
                 <% end %>
 	            </td>
 	            <td>
