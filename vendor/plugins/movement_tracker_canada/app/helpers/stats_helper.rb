@@ -40,6 +40,10 @@ module StatsHelper
     @get_links_for_report_types ||= report_type_links_to_show.collect {| key | report_type_link_to_remote(key)}
   end
   
+  def order_by_link(text, column)
+    link_to_remote(text, :url => {:action => "select_report"}, :with => "'order_by=#{column}'", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
+  end
+  
   def show_summary_report(report_type, permission_granted)
     render :partial => 'stats/show_specific_summary_report',
     :locals => {
