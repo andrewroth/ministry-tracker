@@ -103,9 +103,9 @@ class ApplicationController < ActionController::Base
       get_my_ministry_involvement(ministry).try(:ministry_role)
     end
 
-    def get_ministry_involvement(ministry, person = @person)
+    def get_ministry_involvement(ministry, person = @person, force_only_this_ministry = false)
       # TODO: can do this in one query without using ancestor_ids now
-      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", force_only_this_ministry ? ministry.id : ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -459,6 +459,10 @@ class ApplicationController < ActionController::Base
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
+    def get_person_current_campuses
+      @person_current_campuses = @my.campus_list(get_ministry_involvement(get_ministry), get_ministry)
+    end
+
     def force_required_data
       return false unless force_email_set
       return false unless force_campus_set
@@ -493,7 +497,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_notices
-      @dismissed_notice_ids = [0] + @my.dismissed_notices(:select => Notice._(:id)).collect(&:id)
+      @dismissed_notice_ids = [0] + @my.dismissed_notices.collect(&:notice_id)
       @notices = Notice.find(:all, :conditions => [ 
         "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
       ])
@@ -501,5 +505,14 @@ class ApplicationController < ActionController::Base
 
     def self.skip_standard_login_stack(additional_params = {})
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
+    end
+
+    def redirect_unless_is_active_hrdb_staff
+      unless @me.cim_hrdb_staff.boolean_is_active == true
+        flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
+        redirect_to :action => "index", :controller => "stats"
+        return false
+      end
+      return true
     end
 end

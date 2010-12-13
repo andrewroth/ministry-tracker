@@ -59,8 +59,51 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-    info += "#{person.email.downcase}" if person.email.present?
+    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
   end
- 
+
+  def info_for_group(group)
+    info = ""
+
+
+    # display group campus, semester and time
+    
+    info += (["#{group.try(:campus_desc)}", "#{group.try(:semester_desc)}", "#{group.meeting_day_and_time_to_string}"]-[""]-[nil]).join("<b> · </b>")
+
+    info += "<br/>" unless info.blank?
+
+
+    # display leaders of the group
+
+    leaders = group.leaders + group.co_leaders
+
+    leaders_array = leaders.collect do |person|
+      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}"
+    end
+
+    info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
+
+
+    # display number of members and any members that matched the search query
+
+    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}") if group.num_members.present?
+
+    if group.try(:involvements)
+      people_ids = group.involvements.split(",")
+
+      people_array = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).collect do |person|
+        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}" if leaders.index(person).nil?
+      end
+      people_array = people_array-[""]-[nil]
+
+      if people_array.first.present?
+        info += "<b> · </b>" if group.num_members.present?
+        info += people_array.join(", ")
+        info += people_array.size > 1 ? " are in this group" : " is in this group"
+      end
+    end
+
+    info
+  end
 end
 

@@ -5,7 +5,8 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_goals_report, week, weekly_report, year, staff
+  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_report, annual_goals_report, week, weekly_report, year, staff
+  <%= "pat_#{RAILS_ENV}" %>: pat/project, pat/profile, pat/appln, pat/form
 
 tables:
   user: accountadmin_viewer
@@ -45,6 +46,7 @@ tables:
   year: cim_stats_year
   monthly_report: cim_stats_monthlyreport
   annual_goals_report: cim_stats_annualgoalsreport
+  annual_report: cim_stats_annualreport
   staff: cim_hrdb_staff
 
 # ciministry
@@ -283,6 +285,9 @@ annual_goals_report:
   indicated_decisions: annualGoalsReport_prcTotal
   followup_completed: annualGoalsReport_integBelievers
   large_event_attendance: annualGoalsReport_lrgEventAttend 
+
+annual_report:
+  id: annualReport_id
     
 staff:
   id: staff_id

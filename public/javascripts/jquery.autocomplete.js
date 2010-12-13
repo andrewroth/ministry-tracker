@@ -136,6 +136,8 @@ $.Autocompleter = function(input, options) {
 			case options.multiple && $.trim(options.multipleSeparator) == "," && KEY.COMMA:
 			case KEY.TAB:
 			case KEY.RETURN:
+                stopLoading();
+
 				if( selectCurrent() ) {
 					// stop default to prevent a form submit, Opera needs special handling
 					event.preventDefault();
@@ -604,7 +606,9 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			select();
 			// TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
 			input.focus();
-			return false;
+
+            // Don't return false so that we can have clickable events (e.g. a hyperlink) inside autocomplete results
+			//return false;
 		}).mousedown(function() {
 			config.mouseDownOnSelect = true;
 		}).mouseup(function() {

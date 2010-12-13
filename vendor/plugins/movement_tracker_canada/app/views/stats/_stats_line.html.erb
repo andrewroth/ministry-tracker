@@ -7,7 +7,7 @@
         <% stats_array.each do | stat | %>
           <td>
               <%= stat %>
-              <% total += stat if special_total.nil? || !print_total %>
+              <% total += stat if special_total.nil? && print_total %>
           </td>
         <% end %>
 

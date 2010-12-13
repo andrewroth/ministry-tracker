@@ -1042,7 +1042,7 @@ background:#fff7d2;
 border:1px dotted orange;
 }
 
-.flash_notice b {
+div.flash b, div.flash_notice b  {
   color: #1F429B;
   font-weight: bold;
 }
@@ -1793,14 +1793,58 @@ td.eventAttendees {
 
 #searchFilterControlsContainer {
   height: 100%;
-  width: 150px;
+  width: 120px;
   float: left;
+  padding-left: 20px;
+  line-height: 2em;
+}
+
+#searchFilterControlsContainer a {
+  display: block;
+  width: 100px;
+}
+
+#searchFilterControlsContainer .searchFilterHighlighted {
+  font-weight: bold;
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+#searchFilterControlsContainer a:hover {
+  background-color: #F5F5F7;
+  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+}
+
+#searchFilterControlsContainer a.searchFilterAll {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/zoom.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterPeople {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/user.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+#searchFilterControlsContainer a.searchFilterGroups {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/group.png");
+  background-repeat: no-repeat;
+  background-position: left;
 }
 
 #searchResultsContainer {
   height: 100%;
   width: 65%;
   float: left;
+  padding-left: 50px;
+  border-left: 1px solid #E6E6E6;
 }
 
 .searchResultsTitle {
@@ -1843,11 +1887,32 @@ td.eventAttendees {
   font-weight: normal;
 }
 
-.searchResult {
-  height: 100px; /* for IE */
+.searchResultGroup {
+  height: 110px;
   margin: 0 0 10px 10px;
   line-height: 16px;
   overflow: hidden;
+}
+
+.searchResultPerson {
+  height: 100px;
+  margin: 0 0 10px 10px;
+  line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultMore {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.searchResultMore a {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 .searchResult:hover {
@@ -1870,22 +1935,57 @@ td.eventAttendees {
   float: right;
 }
 
+.searchResultActions a, .searchResultActions b {
+  padding-right: 20px;
+}
+
+.searchResultActions a.emailGroupLeaders {
+  padding-right: 0px;
+}
+
+.searchResult:hover .searchResultActions .viewTimetable {
+  background-image: url("/images/silk/calendar.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResult:hover .searchResultActions .sendEmail, .searchResult:hover .searchResultActions .emailGroupMembers {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.searchResultGroup:hover .searchResultActions .joinGroup {
+  background-image: url("/images/silk/group_go.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-top: 2px;
+}
+
 .searchResultName {
   font-size: 14px;
   font-weight: bold;
 }
 
 .searchResultInfo {
-  margin: 7px 0 0 15px;
   font-size: 11px;
   overflow: hidden;
   height: 93px;
-  width: 300px;
 }
 
 .searchResultInfo strong {
   color: #1F429B;
   font-weight: normal;
+}
+
+.searchResultPerson .searchResultInfo {
+  margin: 7px 0 0 15px;
+  width: 300px;
+}
+
+.searchResultGroup .searchResultInfo {
+  margin: 7px 0 0 10px;
+  width: 350px;
 }
 
 .autoCompleteMore {
@@ -1917,6 +2017,31 @@ td.eventAttendees {
   font-weight: normal;
 }
 
+li.ac_over .autoCompleteTimetable {
+  display: inline;
+  float: right;
+}
+
+.autoCompleteTimetable {
+  display: none;
+}
+
+.autoCompleteResult a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.autoCompleteResult a:hover {
+  text-decoration: underline;
+  color: #1F429B;
+}
+
+li.ac_over .autoCompleteEmail {
+  background-image: url("/images/silk/email_edit.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 20px;
+}
 
 .ac_results {
   padding: 18px 0 0 0;
@@ -2013,7 +2138,7 @@ td.eventAttendees {
 
 .autoCompleteExtraInfo {
   height: 39px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .autoCompleteExtraInfo strong {
@@ -2031,10 +2156,6 @@ td.eventAttendees {
 .autoCompleteResult a :hover {
 /*  color: #1F429B;*/
   text-decoration: none;
-}
-
-.autoCompleteResult a {
-  display: block;
 }
 
 .noSearchHighlight strong {
@@ -2112,4 +2233,14 @@ table.groupInvolvementList th {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.modulecontent tr.total td.eventAttendees {
+  /*border-top: 1px solid;
+  border-color: #E6E6E6;*/
+  font-weight:bold;
+}
+
+.modulecontent tr.pat_no_project_chosen td {
+  font-style: italic;
 }

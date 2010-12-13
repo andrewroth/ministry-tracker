@@ -788,8 +788,8 @@ color: #1F429B;
 
 .bad {background:#ff152b;}
 .poor {background:#fdff4f;}
-.ok {background:#50aff1;}
-.good {background:#08a001;}
+.ok {background:#61e6cb;}
+.good {background:#0bbf03;}
 
 .allbad {background:#FD4239;}
 .allgood {background:#66BD29;}
@@ -810,8 +810,8 @@ margin-bottom:10px;
 
 .badhead {background:url(/images/status_bad_print_legend.png) 50% 50% #ff152b;}
 .poorhead {background:url(/images/status_poor_print.png) 50% 50% #fdff4f;}
-.okhead {background:url(/images/status_ok_print_legend.png) 50% 50% #50aff1;}
-.goodhead {background:url(/images/status_good_print_legend.png) 50% 50% #08a001;}
+.okhead {background:url(/images/status_ok_print_legend.png) 50% 50% #61e6cb;}
+.goodhead {background:url(/images/status_good_print_legend.png) 50% 50% #0bbf03;}
 
 .headselected,
 a.badhead:hover,

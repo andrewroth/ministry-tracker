@@ -20,5 +20,63 @@ namespace :hrdb do
       end
     end
   end
+
+  namespace :migrate do
+    task :assignments => :environment do
+      current_student_assignment_status_id = ::Assignmentstatus.find_by_assignmentstatus_desc("Current Student").try(:id)
+      unknown_assignment_status_id = ::Assignmentstatus.find_by_assignmentstatus_desc("Unknown Status").try(:id)
+      unknown_school_year = SchoolYear.find 9
+
+      if ENV['eg'].present?
+        people = Person.find(:all, :select => "#{Person.__(:id)}, #{Person.__(:person_fname)}, #{Person.__(:person_lname)}", :joins => %|
+          INNER JOIN #{Access.table_name} ON #{Person.__(:id)} = #{Access.__(:person_id)}
+          INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
+          INNER JOIN #{Pat::Profile.table_name} ON #{User.__(:id)} = #{Pat::Profile.__(:viewer_id)}
+          INNER JOIN #{Pat::Appln.table_name} ON #{Pat::Appln.__(:id)} = #{Pat::Profile.__(:appln_id)}
+          INNER JOIN #{Pat::Form.table_name} ON #{Pat::Form.__(:id)} = #{Pat::Appln.__(:form_id)} AND
+                     #{Pat::Form.__(:event_group_id)} = #{ENV['eg']}
+        |)
+        #throw people.collect(&:id)
+      else
+        throw "need eg="
+      end
+
+      #Person.all.each do |person|
+      #[ Person.find(13822) ].each do |person|
+      people.each do |person|
+        next if person.campus_involvements.present?
+
+        # look for current assignment first
+        if current_student_assignment_status_id
+          cs = person.assignments.find_all_by_assignmentstatus_id current_student_assignment_status_id, :include => :campus
+          c = cs.detect{ |cr| cr.campus.present? }
+        end
+
+        if !c && unknown_assignment_status_id
+          us = person.assignments.find_all_by_assignmentstatus_id unknown_assignment_status_id, :include => :campus
+          u = us.detect{ |ur| ur.campus.present? }
+        end
+
+        a = c || u
+
+        if a && a.campus
+          year_orig = person.cim_hrdb_school_years.first
+          year = year_orig || unknown_school_year
+          puts "Person #{person.id} #{person.full_name} has student assignment to #{a.campus.try(:abbrv)} year #{year_orig.try(:year_desc)}"
+          m = a.campus.derive_ministry
+          if m
+            ci = person.campus_involvements.find_or_create_by_campus_id(a.campus.id)
+            ci.ministry_id = m.id
+            ci.campus_id ||= a.campus.id
+            ci.start_date ||= Date.today
+            mi = ci.find_or_create_ministry_involvement
+            puts "    -> #{m.name} #{mi.ministry_role.name}"
+            ci.save!
+          end
+        end
+
+      end
+    end
+  end
 end
 
