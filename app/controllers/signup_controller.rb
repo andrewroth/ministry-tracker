@@ -136,13 +136,18 @@ class SignupController < ApplicationController
   def step1_verify_submit
     # send verification email
     session[:needs_verification] = true
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @user = @person.user
-    @email = @person.email.downcase
-    pass = { :person => session[:signup_person_params], 
-      :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
-    link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
-    UserMailer.deliver_signup_confirm_email(@person.email, link)
+    unless session[:signup_person_id].blank?
+      @me = @my = @person = Person.find(session[:signup_person_id])
+      @user = @person.user
+      @email = @person.email.downcase
+      pass = { :person => session[:signup_person_params],
+        :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
+      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
+      UserMailer.deliver_signup_confirm_email(@person.email, link)
+    else
+      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
+      redirect_to :action => :step1_info
+    end
   end
 
   def step1_email_verified
