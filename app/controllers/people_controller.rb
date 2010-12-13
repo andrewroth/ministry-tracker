@@ -143,6 +143,7 @@ class PeopleController < ApplicationController
         @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = #{MinistryInvolvement.table_name}.#{_(:person_id, :ministry_involvement)}"
         @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
         @advanced = true
+        @searched_ministry_roles = params[:role]
       end
 
       conditions = add_involvement_conditions(conditions)

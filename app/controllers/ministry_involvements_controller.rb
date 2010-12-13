@@ -178,13 +178,18 @@ class MinistryInvolvementsController < ApplicationController
     if params[:search_by_ministry_ids] && params[:person]
       people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
 
-      if params[:search_by_ministry_role_id]
-#        @involvements = MinistryInvolvement.all(:conditions => ["#{MinistryInvolvement._(:person_id)} IN (?) AND
-                                                                 #{MinistryInvolvement._(:ministry_id)} IN (?) AND
-                                                                 #{MinistryInvolvement._(:ministry_role_id)} = ? AND
-                                                                 #{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
-                                                                 #{MinistryInvolvement._(:end_date)} IS NULL#",
-#                                                                 people_ids, params[:search_by_ministry_ids], params[:search_by_ministry_role_id]])
+      if params[:search_by_ministry_role_ids]
+        @involvements = MinistryInvolvement.all(:include => [:person],
+                                                :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
+                                                :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
+
+                                                                 #{MinistryInvolvement._(:ministry_role_id)} IN (?) AND
+
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
+                                                                 people_ids, params[:search_by_ministry_ids], params[:search_by_ministry_role_ids]])
+                                                             
       else
         @involvements = MinistryInvolvement.all(:include => [:person],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
@@ -220,24 +225,32 @@ class MinistryInvolvementsController < ApplicationController
       involvement_ids.each do |involvement_id|
         mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})
 
-        # current role is type staff but demoting to student
-        if mi.ministry_role.class == StaffRole && new_role.class == StudentRole
-          mi.demote_staff_to_student(new_role.id)
+        if @me.has_permission_to_update_role(mi, new_role)
 
-        # current role is type student but promoting to staff
-        elsif mi.ministry_role.class == StudentRole && new_role.class == StaffRole
-          mi.promote_student_to_staff(new_role.id)
+          # current role is type staff but demoting to student
+          if mi.ministry_role.class == StaffRole && new_role.class == StudentRole
+            mi.demote_staff_to_student(new_role.id)
 
-        # current role type is the same as new role type
+          # current role is type student but promoting to staff
+          elsif mi.ministry_role.class == StudentRole && new_role.class == StaffRole
+            mi.promote_student_to_staff(new_role.id)
+
+          # current role type is the same as new role type
+          else
+            mi.update_ministry_role_and_history(new_role.id) unless new_role.id == mi.ministry_role.id
+          end
+
+          mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
+          people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{mi.person.full_name} is now a #{mi.ministry_role.name} at #{mi.ministry.name}<br/>"
+
         else
-          mi.update_ministry_role_and_history(new_role.id) unless new_role.id == mi.ministry_role.id
+          # failed to get permission to update this person
+          mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
+          people_notice += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> <b> #{mi.person.full_name} is currently a #{mi.ministry_role.name} at #{mi.ministry.name}, you can't set them to #{new_role.name} </b><br/>"
         end
-
-        mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
-        people_notice += "• #{mi.person.full_name} is now a #{mi.ministry_role.name} at #{mi.ministry.name}<br/>"
       end
 
-      flash[:notice] = "<img src='/images/silk/accept.png'> <b> Successfully updated the following people's roles: </b> <br/> <br/> #{people_notice}"
+      flash[:notice] = "<big><b> Updated the following people's roles: </b></big> <br/> <br/> #{people_notice}"
     end
 
     redirect_to :action => "directory", :controller => "people"

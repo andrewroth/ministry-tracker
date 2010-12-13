@@ -1,6 +1,6 @@
 <% form_tag(directory_people_path(:format => 'html')) do %>
   <div class="adfieldbox">
-    First Name:<br />
+    <big>First Name<br /></big>
     <%= text_field_tag :first_name,
       @options['first_name'],
       :class => 'wide'
@@ -8,7 +8,7 @@
   </div>
   
   <div class="adfieldbox">
-    Last Name:<br />
+    <big>Last Name<br /></big>
     <%= text_field_tag :last_name,
       @options['last_name'],
       :class => 'wide'
@@ -16,7 +16,7 @@
   </div>
   
   <div class="adfieldbox">
-    Gender:<br />
+    <big>Gender<br /></big>
     <% ['1','0'].each do |gender| %>
         <%= check_box_tag "gender[]",
           gender,
@@ -27,7 +27,7 @@
   </div>
   
   <div class="adfieldbox">
-    Email:<br />
+    <big>Email<br /></big>
     <%= text_field_tag :email,
       @options['email'],
       :class => 'wide'
@@ -37,7 +37,7 @@
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <div class="adfieldbox">
-    Year in School: <br/>
+    <big>Year in School <br/></big>
     <%= select_tag 'school_year[]',
       options_for_select(SchoolYear.find(:all).collect {|sy| [sy.name, sy.id.to_s]},
         @options["school_year"]),
@@ -46,7 +46,7 @@
   </div>
 
   <div class="adfieldbox">
-    Ministry: <br/>
+    <big>Ministry <br/></big>
     <%
       ministries_for_select = @ministries.collect {|ministry| [ministry.name, ministry.id.to_s]}
       ministries_for_select.sort! {|a,b| a[0] <=> b[0]}
@@ -59,7 +59,7 @@
   </div>
     
   <div class="adfieldbox">
-    Campus: <br/>
+    <big>Campus <br/></big>
     <%= select_tag 'campus[]',
       options_for_select(
         @campuses.collect {|campus| [campus.name, campus.id.to_s]},
@@ -70,11 +70,19 @@
   </div>
 
   <div class="adfieldbox">
-    Role: <br/>
+    <big>Role <br/></big>
+    <% #options_for_select(MinistryRole.find(:all, :order => "type ASC, position ASC").collect {|r| [r.name, r.id.to_s]}, %>
+    <%  #grouped_options = {'North America' => [['United States','US'], 'Canada'], 'Europe' => ['Denmark','Germany','France'] }  %>
+
+    <%
+    grouped_options = {}
+    grouped_options[StaffRole.human_name_plural] = StaffRole.find(:all, :order => "type ASC, position ASC").collect{|r| [r.name, r.id.to_s]}
+    grouped_options[StudentRole.human_name_plural] = StudentRole.find(:all, :order => "type ASC, position ASC").collect{|r| [r.name, r.id.to_s]}
+    %>
+
     <%= select_tag 'role[]',
-      options_for_select(MinistryRole.find(:all, :order => "type ASC, position ASC").collect {|r| [r.name, r.id.to_s]}.insert(0, ["", "0"]),
-        @options["role"]),
-      :multiple => false
+        grouped_options_for_select(grouped_options, @options["role"]),
+        :multiple => true, :class => "multiSelect"
     %>
   </div>
 
