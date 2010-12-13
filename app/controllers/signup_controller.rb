@@ -83,13 +83,14 @@ class SignupController < ApplicationController
         @person.last_name = params[:person][:last_name]
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
-        @person.save!
+        
         # in order to save major, update it manually again, 
         # since it's stored in a second table in the Cdn schema
         @person.clear_extra_ref
         @person.major = params[:person][:major]
         @person.curr_dorm = params[:person][:curr_dorm]
-        @person.save!
+
+        # don't save @person yet in case we need to verify their email first
       end
 
       session[:signup_person_params] = params[:person]
@@ -101,6 +102,8 @@ class SignupController < ApplicationController
         @email = params[:person][:email]
         redirect_to :action => :step1_verify
       else
+        @person.save!
+
         ci = @person.campus_involvements.find :first, :conditions => {
           :campus_id => @primary_campus_involvement.campus_id
         }
