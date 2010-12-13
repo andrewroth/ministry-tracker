@@ -642,7 +642,7 @@
       },
       :annual_goals_report => {
           :students_in_ministry => {:column => :annualGoalsReport_studInMin, 
-           :label => "Total students involved in campus ministry",
+           :label => "Total students involved in DGs",
             :collected => :yearly,
             :column_type => :database_column,
             :grouping_method => :sum,
