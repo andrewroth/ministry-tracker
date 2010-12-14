@@ -209,9 +209,9 @@ class StatsController < ApplicationController
     end
 
     @annual_goals_progress = {}
-    @annual_goals_progress[:students_in_ministry] = @monthly_sum["total_students_in_dg"].to_i
-    @annual_goals_progress[:spiritual_multipliers] = @monthly_sum["total_spiritual_multipliers"].to_i
-    @annual_goals_progress[:first_years] = @monthly_sum["number_frosh_involved"].to_i
+    @annual_goals_progress[:students_in_ministry] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:students_dg]) #@monthly_sum["total_students_in_dg"].to_i
+    @annual_goals_progress[:spiritual_multipliers] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:spirit_mult]) #@monthly_sum["total_spiritual_multipliers"].to_i
+    @annual_goals_progress[:first_years] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:frosh]) #@monthly_sum["number_frosh_involved"].to_i
     @annual_goals_progress[:total_went_to_summit] = @semester_sum["total_students_to_summit"].to_i
     @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
     @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i
