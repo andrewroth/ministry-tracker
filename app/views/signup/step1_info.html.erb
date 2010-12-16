@@ -7,20 +7,17 @@
     FB.login(function(response) {
       if (response.session) {
         // user successfully logged in
-        alert('user successfully logged in');
+        FB.api('/me', function(response) {
+          alert(response.first_name);
+          $('#person_first_name').value = response.first_name;
+        });
+
       } else {
         // user cancelled login
         alert('user cancelled login');
       }
     });
 
-    FB.getLoginStatus(function(response) {
-      if (response.session) {
-        alert('Welcome! Facebook user.');
-      } else {
-        alert('Who are you?');
-      }
-    });
 
   };
   (function() {
