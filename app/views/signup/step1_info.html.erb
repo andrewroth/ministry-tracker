@@ -1,3 +1,20 @@
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({appId: '147429778642985', status: true, cookie: true,
+             xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+</script>
+
+
+
+
 <% instruction_block do %>
 <B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged in as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
 <BR/>
