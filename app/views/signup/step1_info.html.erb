@@ -4,6 +4,16 @@
     FB.init({appId: '147429778642985', status: true, cookie: true,
              xfbml: true});
 
+    FB.login(function(response) {
+      if (response.session) {
+        // user successfully logged in
+        alert('user successfully logged in');
+      } else {
+        // user cancelled login
+        alert('user cancelled login');
+      }
+    });
+
     FB.getLoginStatus(function(response) {
       if (response.session) {
         alert('Welcome! Facebook user.');
