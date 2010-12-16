@@ -8,8 +8,10 @@
       if (response.session) {
         // user successfully logged in
         FB.api('/me', function(response) {
+
+          jQuery("#person_first_name").value = response.first_name;
           alert(response.first_name);
-          $('#person_first_name').value = response.first_name;
+          jQuery("#person_first_name")[0].value = response.first_name;
         });
 
       } else {
@@ -17,7 +19,6 @@
         alert('user cancelled login');
       }
     });
-
 
   };
   (function() {
