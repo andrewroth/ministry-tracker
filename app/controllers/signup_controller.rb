@@ -6,17 +6,13 @@ class SignupController < ApplicationController
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
+  before_filter :facebook_oauth, :only => [:facebook]
 
   def index
     redirect_to :action => :step1_info
   end
 
   def facebook
-    @oauth = Koala::Facebook::OAuth.new
-    
-    redirect_to @oauth.url_for_oauth_code(:callback => Facebook::CANVAS_URL,
-                                          :permissions => "email")
-
     if params[:signed_request].present?
       @facebook_request = @oauth.parse_signed_request(params[:signed_request])
     end
@@ -36,8 +32,12 @@ class SignupController < ApplicationController
     setup_campuses
     @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
 
-    @graph = Koala::Facebook::GraphAPI.new(@facebook_request["oauth_token"])
-    @facebook_person = @graph.get_object("me")
+    if @facebook_request
+      @graph = Koala::Facebook::GraphAPI.new(@facebook_request["oauth_token"])
+      @facebook_person = @graph.get_object("me")
+    else
+      @facebook_person = ":("
+    end
   end
 
   def get_dorms
@@ -264,4 +264,11 @@ class SignupController < ApplicationController
   def set_custom_userbar_title
     @custom_userbar_title = "Signup"
   end
+
+  private
+
+  def facebook_oauth
+    facebook_koala_oauth_redirect("email")
+  end
+
 end
