@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico">
+
+      <title>
+        <% if Cmt::CONFIG[:web_title] %>
+          <%= Cmt::CONFIG[:web_title] %>
+        <% else %>
+          Campus Movement Tracker
+        <% end %>
+        <%= ': ' + @site_title if @site_title -%>
+      </title>
+
+    <%= javascript_include_tag "facebook_sdk_helpers.js" %>
+
+    <%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>
+  </head> 
+  <body> 
+    <%= init_facebook_js_sdk_async %>
+		<div id="loginBody">
+			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
+			<div id="loginwrapper">
+				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
+				<map name="getin">
+				  <area shape="rect" coords="320,53,662,117" href="#" alt="Join a Group! (No need to login)" onClick="facebookOAuthRequest('alert();', 'email')" />
+				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+				</map>
+				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
+				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
+				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
+				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
+			</div>
+		</div>
+	</body>
+</html>
