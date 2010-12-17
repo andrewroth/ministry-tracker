@@ -11,6 +11,14 @@ class SignupController < ApplicationController
     redirect_to :action => :step1_info
   end
 
+  def facebook
+    if params[:signed_request].present?
+      @oauth = Koala::Facebook::OAuth.new
+      @oauth.parse_signed_request(params[:signed_request])
+    end
+    redirect_to :action => :step1_info
+  end
+
   def step1_info
     @person ||= get_person || Person.new
     UserCodesController.clear(session)
