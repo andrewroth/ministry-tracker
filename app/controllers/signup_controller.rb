@@ -12,8 +12,8 @@ class SignupController < ApplicationController
   end
 
   def facebook
-    if params[:signed_request].present?
-      @facebook_request = @oauth.parse_signed_request(params[:signed_request])
+    if params["signed_request"].present?
+      @facebook_request = @oauth.parse_signed_request(params["signed_request"])
     end
     
     redirect_to :action => :step1_info
