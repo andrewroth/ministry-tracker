@@ -1,5 +1,5 @@
 
-function facebookOAuthRequest(callback, permissions) {
+function facebookOAuthRequest(redirect, permissions) {
   FB.login(function(response) {
     if (response.session) {
       if (response.perms) {
@@ -15,6 +15,6 @@ function facebookOAuthRequest(callback, permissions) {
       // user is not logged in
       alert("user is not logged in");
     }
-    callback();
+    if (redirect != undefined) { window.location = redirect; }
   }, {perms:permissions});
 }
