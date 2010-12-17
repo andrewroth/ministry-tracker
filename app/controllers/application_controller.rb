@@ -515,4 +515,9 @@ class ApplicationController < ActionController::Base
       end
       return true
     end
+
+    def facebook_koala_oauth_redirect(permissions = "", callback = Facebook::CANVAS_URL)
+      @oauth ||= Koala::Facebook::OAuth.new
+      redirect_to @oauth.url_for_oauth_code(:callback => callback, :permissions => permissions)
+    end
 end
