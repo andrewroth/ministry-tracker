@@ -12,10 +12,17 @@ class SignupController < ApplicationController
   end
 
   def facebook
+    puts "====================================================================="
     if params[:signed_request].present?
+      puts "signed request present: #{params[:signed_request]}"
       @oauth = Koala::Facebook::OAuth.new
       @oauth.parse_signed_request(params[:signed_request])
+      puts "#{@oauth}"
+    else
+      puts "NO signed request"
     end
+    puts "====================================================================="
+    
     redirect_to :action => :step1_info
   end
 
