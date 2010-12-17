@@ -6,6 +6,7 @@ module Facebook
   CONFIG = YAML.load_file(Rails.root.join("config/koala.yml"))[Rails.env]
   APP_ID = CONFIG['app_id']
   SECRET = CONFIG['secret_key']
+  CANVAS_URL = "http://apps.facebook.com/moosepulse/"
 end
 
 Koala::Facebook::OAuth.class_eval do
