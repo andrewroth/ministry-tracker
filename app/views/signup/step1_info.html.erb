@@ -8,10 +8,8 @@
       if (response.session) {
         // user successfully logged in
         FB.api('/me', function(response) {
-
-          jQuery("#person_first_name").value = response.first_name;
-          alert(response.first_name);
           jQuery("#person_first_name")[0].value = response.first_name;
+          jQuery("#person_last_name")[0].value = response.last_name;
         });
 
       } else {
@@ -28,6 +26,13 @@
     document.getElementById('fb-root').appendChild(e);
   }());
 </script>
+
+
+
+PARAMS
+================================================================================
+<%= params.inspect %>
+================================================================================
 
 
 
@@ -49,6 +54,13 @@ All fields are required except for major and dorm.
   </P>
 </DIV>
 <%- end -%>
+
+
+
+<div id="fb-root"></div><script src="https://connect.facebook.net/en_US/all.js#appId=147429778642985&amp;xfbml=1"></script><fb:login-button show-faces="true" width="400" max-rows="1"></fb:login-button>
+
+
+
 <%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
   <%= f.error_messages %>
   <table>
