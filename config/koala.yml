@@ -1,0 +1,9 @@
+development:
+  app_id: 1f7bb7461da2fc28d06e13cc2630a450
+  secret_key: 95bf88723d6066291998d0538a6cf280
+test:
+  app_id: 1f7bb7461da2fc28d06e13cc2630a450
+  secret_key: 95bf88723d6066291998d0538a6cf280
+development:
+  app_id: 1f7bb7461da2fc28d06e13cc2630a450
+  secret_key: 95bf88723d6066291998d0538a6cf280
