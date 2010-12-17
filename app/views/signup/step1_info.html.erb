@@ -1,33 +1,3 @@
-<div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({appId: '147429778642985', status: true, cookie: true,
-             xfbml: true});
-
-    /*
-    FB.login(function(response) {
-      if (response.session) {
-        // user successfully logged in
-        FB.api('/me', function(response) {
-          jQuery("#person_first_name")[0].value = response.first_name;
-          jQuery("#person_last_name")[0].value = response.last_name;
-        });
-
-      } else {
-        // user cancelled login
-        alert('user cancelled login');
-      }
-    });
-    */
-
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol +
-      '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
-</script>
 
 <%= "@facebook_request:#{@facebook_request.inspect}" %>
 <br/>
