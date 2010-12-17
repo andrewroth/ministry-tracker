@@ -12,9 +12,13 @@ class SignupController < ApplicationController
   end
 
   def facebook
+    @oauth = Koala::Facebook::OAuth.new
+    
+    redirect_to @oauth.url_for_oauth_code(:callback => Facebook::CANVAS_URL,
+                                          :permissions => "email")
+
     if params[:signed_request].present?
-      @oauth = Koala::Facebook::OAuth.new
-      @oauth.parse_signed_request(params[:signed_request])
+      @facebook_request = @oauth.parse_signed_request(params[:signed_request])
     end
     
     redirect_to :action => :step1_info
@@ -31,6 +35,9 @@ class SignupController < ApplicationController
 
     setup_campuses
     @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
+
+    @graph = Koala::Facebook::GraphAPI.new(@facebook_request["oauth_token"])
+    @facebook_person = @graph.get_object("me")
   end
 
   def get_dorms
