@@ -6,7 +6,7 @@ class SignupController < ApplicationController
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
-  before_filter :facebook_oauth, :only => [:facebook]
+  before_filter :facebook_oauth_redirect, :only => [:facebook]
 
   def index
     redirect_to :action => :step1_info
@@ -275,8 +275,8 @@ class SignupController < ApplicationController
 
   private
 
-  def facebook_oauth
-    facebook_koala_oauth_redirect("email")
+  def facebook_oauth_redirect
+    facebook_koala_oauth_redirect("email", url_for(:controller => "signup", :action => "facebook"))
   end
 
 end

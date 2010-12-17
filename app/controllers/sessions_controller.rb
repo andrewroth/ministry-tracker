@@ -15,6 +15,10 @@ class SessionsController < ApplicationController
     get_ministry if @person
   end
 
+  def facebook_canvas_new
+    render :layout => false
+  end
+
   # render new.rhtml
   def new
     # force current user to be made again -- not sure why, but sometimes the
