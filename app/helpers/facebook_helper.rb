@@ -4,19 +4,20 @@ module FacebookHelper
     <div id="fb-root"></div>
     <script>
       window.fbAsyncInit = function() {
-      FB.init({appId: '#{Facebook::APP_ID}',
-               status: true,
-               cookie: true,
-               xfbml: true});
-              };
+        FB.init({appId: '#{Facebook::APP_ID}',
+                 status: true,
+                 cookie: true,
+                 xfbml: true
+        });
 
-      FB.getLoginStatus(function(response) {
-            if (response.session) {
-              alert('Welcome! Facebook user.');
-            } else {
-              alert('Who are you?');
-            }
-          });
+        FB.getLoginStatus(function(response) {
+              if (response.session) {
+                alert('Welcome! Facebook user.');
+              } else {
+                alert('Who are you?');
+              }
+        });
+      };
 
       (function() {
         var e = document.createElement('script');
