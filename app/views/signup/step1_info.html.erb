@@ -10,9 +10,9 @@
       setValueIfNotSet('person_email', response.email);
 
       if(response.gender == "Male") {
-        document.getElementById('person_gender').value = 0;
+        document.getElementById('person_gender').selectedIndex = 1;
       } else if(response.gender == "Female") {
-        document.getElementById('person_gender').value = 1;
+        document.getElementById('person_gender').selectedIndex = 0;
       }
     });
   }
