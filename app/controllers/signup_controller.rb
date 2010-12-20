@@ -13,6 +13,7 @@ class SignupController < ApplicationController
 
   def facebook
     if params["signed_request"].present?
+      @oauth ||= Koala::Facebook::OAuth.new
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
     end
     
