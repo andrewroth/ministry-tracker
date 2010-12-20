@@ -13,9 +13,7 @@ class SignupController < ApplicationController
 
   def facebook
     if params["code"].present?
-      @oauth ||= Koala::Facebook::OAuth.new
-      @graph ||= Koala::Facebook::GraphAPI.new( @oauth.get_access_token(params["code"]) )
-      @facebook_person = @graph.get_object("me")
+      load_my_facebook_graph_into_session_from_code(params["code"])
     end
 
     redirect_to :action => :step1_info
