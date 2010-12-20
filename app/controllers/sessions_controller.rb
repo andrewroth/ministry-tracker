@@ -16,6 +16,13 @@ class SessionsController < ApplicationController
   end
 
   def facebook_canvas_new
+    if params["signed_request"].present?
+      @oauth = Koala::Facebook::OAuth.new
+      @facebook_request = @oauth.parse_signed_request(params["signed_request"])
+      @graph = Koala::Facebook::GraphAPI.new(@facebook_request["oauth_token"])
+      @facebook_person = @graph.get_object("me")
+    end
+    
     render :layout => false
   end
 

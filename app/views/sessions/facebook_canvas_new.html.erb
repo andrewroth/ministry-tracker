@@ -35,6 +35,12 @@
 				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
 				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
 				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
+
+        <%= @oauth.inspect %>
+        <%= @facebook_request.inspect %>
+        <%= @graph.inspect %>
+        <%= @facebook_person.inspect %>
+
 			</div>
 		</div>
 	</body>
