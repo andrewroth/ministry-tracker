@@ -11,11 +11,11 @@ module FacebookHelper
         });
 
         FB.getLoginStatus(function(response) {
-              if (response.session) {
-                alert('Welcome! Facebook user.');
-              } else {
-                alert('Who are you?');
-              }
+          if (response.session) {
+            facebook_logged_in_callback(response.session);
+          } else {
+            facebook_not_logged_in_callback(response.session);
+          }
         });
       };
 

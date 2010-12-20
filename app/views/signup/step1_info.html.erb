@@ -2,9 +2,15 @@
 <%= init_facebook_js_sdk_async %>
 <%= javascript_include_tag "facebook_sdk_helpers.js" %>
 
-<br/>
-<%= "facebook_person:#{session[:facebook_person].inspect}" %>
-<br/>
+<script>
+  function facebook_logged_in_callback(session) {
+    alert("hi facebook user!");
+  };
+
+  function facebook_not_logged_in_callback() {
+    alert(":(");
+  };
+</script>
 
 <% instruction_block do %>
 <B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged in as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
@@ -26,9 +32,8 @@ All fields are required except for major and dorm.
 <%- end -%>
 
 
-
 <fb:login-button show-faces="true" width="400" max-rows="1"></fb:login-button>
-
+<br/>
 
 
 <%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
