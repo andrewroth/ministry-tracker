@@ -14,3 +14,19 @@ function facebookOAuthRequest(redirect, permissions) {
     if (redirect != undefined) { window.location = redirect; }
   }, {perms:permissions});
 }
+
+function setValueIfNotSet(inputID, newValue) {
+  e = document.getElementById(inputID);
+
+  if(e.value.trim() == "") {
+    e.value = newValue;
+  }
+}
+
+if(typeof(String.prototype.trim) === "undefined")
+{
+  String.prototype.trim = function()
+  {
+    return String(this).replace(/^\s+|\s+$/g, '');
+  };
+}
