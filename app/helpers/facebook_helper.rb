@@ -12,9 +12,9 @@ module FacebookHelper
 
         FB.getLoginStatus(function(response) {
           if (response.session) {
-            facebook_logged_in_callback(response.session);
+            facebook_login_callback(response.session);
           } else {
-            facebook_not_logged_in_callback(response.session);
+            facebook_didnt_login_callback(response.session);
           }
         });
       };
