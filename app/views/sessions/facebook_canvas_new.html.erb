@@ -27,20 +27,13 @@
 			<div id="loginwrapper">
 				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
 				<map name="getin">
-				  <area shape="rect" coords="320,53,662,117" href="#" alt="Join a Group! (No need to login)"
-                onClick="facebookOAuthRequest('<%=url_for(:controller => "signup", :action => "facebook", :signed_request => params["signed_request"])%>', 'email')" />
+				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)" href="<%=@join_a_group_url%>" />
 				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
 				</map>
 				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
 				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
 				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
 				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
-
-        <%= @oauth.inspect %>
-        <%= @facebook_request.inspect %>
-        <%= @graph.inspect %>
-        <%= @facebook_person.inspect %>
-
 			</div>
 		</div>
 	</body>
