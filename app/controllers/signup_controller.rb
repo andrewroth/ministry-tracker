@@ -12,10 +12,6 @@ class SignupController < ApplicationController
   end
 
   def facebook
-    if params["code"].present?
-      load_my_facebook_graph_into_session_from_code(params["code"])
-    end
-
     redirect_to :action => :step1_info
   end
 
