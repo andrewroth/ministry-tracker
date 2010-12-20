@@ -18,11 +18,11 @@ class SessionsController < ApplicationController
   def facebook_canvas_new
     
     # if user_id is not in the signed_request we need to redirect the user to authenticate our app
+    @oauth = Koala::Facebook::OAuth.new
     @join_a_group_url = @oauth.url_for_oauth_code(:permissions => "email",
                                                   :callback => url_for(:controller => "signup", :action => "facebook"))
 
     if params["signed_request"].present?
-      @oauth = Koala::Facebook::OAuth.new
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
 
       if @facebook_request["user_id"].present?
