@@ -257,7 +257,7 @@ class SignupController < ApplicationController
   private
 
   def get_layout
-    params["fb_sig_iframe_key"].present? ? "facebook_canvas" : "application"
+    request.host == "apps.facebook.com" ? "facebook_canvas" : "application"
   end
 
 end
