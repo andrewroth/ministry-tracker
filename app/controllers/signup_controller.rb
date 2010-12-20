@@ -1,6 +1,7 @@
 class SignupController < ApplicationController
   include PersonForm
   include SemesterSet
+  layout :get_layout
   skip_standard_login_stack
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
@@ -259,6 +260,12 @@ class SignupController < ApplicationController
 
   def set_custom_userbar_title
     @custom_userbar_title = "Signup"
+  end
+
+  private
+
+  def get_layout
+    params["fb_sig_iframe_key"].present? ? "facebook_canvas" : "application"
   end
 
 end
