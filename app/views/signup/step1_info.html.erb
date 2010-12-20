@@ -5,17 +5,17 @@
 <script>
   function facebook_login_callback(session) {
     FB.api('/me', function(response) {
-      document.getElementById('person_first_name').value = response.first_name;
-      document.getElementById('person_last_name').value = response.last_name;
-      document.getElementById('person_email').value = response.email;
+      setValueIfNotSet('person_first_name', response.first_name);
+      setValueIfNotSet('person_last_name', response.last_name);
+      setValueIfNotSet('person_email', response.email);
 
       if(response.gender == "Male") {
-        document.getElementById('person_gender').value = 1;
-      } else if(response.gender == "Female") {
         document.getElementById('person_gender').value = 0;
-      };
+      } else if(response.gender == "Female") {
+        document.getElementById('person_gender').value = 1;
+      }
     });
-  };
+  }
 </script>
 
 <% instruction_block do %>
