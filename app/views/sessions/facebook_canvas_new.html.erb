@@ -27,7 +27,12 @@
 			<div id="loginwrapper">
 				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
 				<map name="getin">
-				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)" href="<%=@join_a_group_url%>" />
+				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)"
+                <% if @facebook_person.present? %>
+                  href="<%=@join_a_group_url%>"
+                <% else %>
+                  href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=@additional_facebook_permissions%>')" />
+                <% end %>
 				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
 				</map>
 				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
