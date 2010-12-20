@@ -27,8 +27,7 @@ class SessionsController < ApplicationController
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
 
       if @facebook_request["user_id"].present?
-        @graph = Koala::Facebook::GraphAPI.new(@facebook_request["oauth_token"])
-        @facebook_person = @graph.get_object("me")
+        load_my_facebook_graph_into_session_from_oauth_token(@facebook_request["oauth_token"])
         @join_a_group_url = url_for(:only_path => false, :controller => "signup", :action => "facebook")
       end
     end

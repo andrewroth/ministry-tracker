@@ -1,8 +1,7 @@
 
-<%= "@facebook_request:#{@facebook_request.inspect}" %>
 <br/>
+<%= "facebook_person:#{session[:facebook_person].inspect}" %>
 <br/>
-<%= "@facebook_person:#{@facebook_person.inspect}" %>
 
 <% instruction_block do %>
 <B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged in as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
