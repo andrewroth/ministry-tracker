@@ -9,6 +9,15 @@ module FacebookHelper
                cookie: true,
                xfbml: true});
               };
+
+      FB.getLoginStatus(function(response) {
+            if (response.session) {
+              alert('Welcome! Facebook user.');
+            } else {
+              alert('Who are you?');
+            }
+          });
+
       (function() {
         var e = document.createElement('script');
         e.type = 'text/javascript';

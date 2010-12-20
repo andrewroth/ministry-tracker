@@ -1,4 +1,7 @@
 
+<%= init_facebook_js_sdk_async %>
+<%= javascript_include_tag "facebook_sdk_helpers.js" %>
+
 <br/>
 <%= "facebook_person:#{session[:facebook_person].inspect}" %>
 <br/>
@@ -24,7 +27,7 @@ All fields are required except for major and dorm.
 
 
 
-<div id="fb-root"></div><script src="https://connect.facebook.net/en_US/all.js#appId=147429778642985&amp;xfbml=1"></script><fb:login-button show-faces="true" width="400" max-rows="1"></fb:login-button>
+<fb:login-button show-faces="true" width="400" max-rows="1"></fb:login-button>
 
 
 

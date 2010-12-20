@@ -516,7 +516,7 @@ class ApplicationController < ActionController::Base
       return true
     end
 
-    # code is received from facebook on callback after a user authorizes the app, this code allows us to get the oauth token
+    # code is received from facebook on callback after a user authorizes the app using redirects, the code allows us to get the oauth token
     def load_my_facebook_graph_into_session_from_code(code)
       @oauth ||= Koala::Facebook::OAuth.new
       load_my_facebook_graph_into_session_from_oauth_token(@oauth.get_access_token(code))
