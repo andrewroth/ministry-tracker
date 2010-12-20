@@ -28,7 +28,7 @@
 				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
 				<map name="getin">
 				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)"
-                <% if @facebook_person.present? %>
+                <% if session[:facebook_person].present? %>
                   href="<%=@join_a_group_url%>"
                 <% else %>
                   href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=@additional_facebook_permissions%>')" />
