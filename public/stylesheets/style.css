@@ -379,8 +379,8 @@ h1 {
 
 #wrapper.facebook_canvas {
   border:7px solid #3B5998;
-  min-width: none;
-	max-width: none;
+  min-width: 0;
+	max-width: 758px; /* currently this is the max width of an iframe on Facebook canvas */
 }
 
 #footer {

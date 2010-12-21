@@ -1,6 +1,4 @@
 
-<%= init_facebook_js_sdk_async %>
-<%= javascript_include_tag "facebook_sdk_helpers.js" %>
 
 <script>
   function facebook_login_callback(session) {
@@ -21,7 +19,7 @@
 
 
 <% instruction_block do %>
-<B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged in as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
+<B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
 <BR/>
 <BR/>
 All fields are required except for major and dorm.
