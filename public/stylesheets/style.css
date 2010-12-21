@@ -378,9 +378,10 @@ h1 {
 }
 
 #wrapper.facebook_canvas {
-  border:7px solid #3B5998;
+  border: 7px solid #3B5998;
   min-width: 0;
-	max-width: 758px; /* currently this is the max width of an iframe on Facebook canvas */
+	max-width: 744px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders (2x7px) */
+  margin-top: 0;
 }
 
 #footer {
@@ -1742,11 +1743,11 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 50%; float: left; padding-left: 4em;
+  width: 60%; float: left; padding-left: 4em;
 }
 
 #signup_step1_columns {
-  width:100%; display:inline-block;
+  width: 100%; display: inline-block; padding: 2em 0 1em 0;
 }
 
 
