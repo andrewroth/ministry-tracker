@@ -265,7 +265,7 @@ class SignupController < ApplicationController
   private
 
   def get_layout
-    session[:from_facebook_canvas_iframe] == true ? "facebook_canvas" : "application"
+    session[:from_facebook_canvas] == true ? "facebook_canvas" : "application"
   end
 
 end
