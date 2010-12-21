@@ -10,6 +10,11 @@ module FacebookHelper
                  xfbml: true
         });
 
+        iframe_body = document.getElementById("facebook_canvas_body");
+        if(iframe_body) {
+          FB.Canvas.setSize({ width: 758, height: iframe_body.offsetHeight });
+        }
+
         FB.getLoginStatus(function(response) {
           if (response.session) {
             facebook_login_callback(response.session);

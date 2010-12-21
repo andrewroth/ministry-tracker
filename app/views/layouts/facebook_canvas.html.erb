@@ -15,6 +15,9 @@
       <% end %>
       <%= ': ' + @site_title if @site_title -%>
     </title>
+    <%= init_facebook_js_sdk_async %>
+    <%= javascript_include_tag "facebook_sdk_helpers.js" %>
+    
 		<%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
 		<%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
 		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
@@ -26,7 +29,7 @@
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
 
 	</head>
-	<body class="facebook_canvas">
+	<body id="facebook_canvas_body" class="facebook_canvas">
 
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
