@@ -45,11 +45,11 @@ All fields are required except for major and dorm.
   <%= f.error_messages %>
   <table id="signup_step1_info">
   <tr>
-    <td>First Name: </td>
+    <td>First Name </td>
     <td><%= f.text_field :first_name %></td>
   </tr>
   <tr>
-    <td>Last Name: </td>
+    <td>Last Name </td>
     <td><%= f.text_field :last_name %></td>
   </tr>
   <%- unless logged_in? %>
@@ -59,11 +59,11 @@ All fields are required except for major and dorm.
   </tr>
   <%- end %>
   <tr>
-    <td>Gender: </td>
+    <td>Gender </td>
     <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => "" %></td>
   </tr>
   <tr>
-    <td>Phone: </td>
+    <td>Phone </td>
     <td><%= f.text_field :local_phone %></td>
   </tr>
   <%= render :partial => 'people/primary_campus_involvement', :locals => { 
@@ -76,18 +76,20 @@ All fields are required except for major and dorm.
         :with => "primary_campus_involvement_campus_id"
   %>
   <tr>
-    <td>Major: </td>
+    <td>Major </td>
     <td><%= f.text_field :major %></td>
   </tr>
   <%= render :partial => "dorm_tr" %>
   </table>
 
-  <fb:login-button show-faces="true" width="400" max-rows="2" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
+  <fb:login-button show-faces="true" width="200" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
 
 </div>
 
-  <div class="center">
-  <%= submit_tag "Next", :class => 'action-button' %>  
-  </div>
+<br/>
+
+<div class="center">
+<%= submit_tag "Next", :class => 'action-button' %>  
+</div>
 
 <%- end -%>
