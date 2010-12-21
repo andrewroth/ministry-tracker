@@ -10,7 +10,7 @@ module FacebookHelper
                  xfbml: true
         });
 
-        FB.Canvas.setSize({ width: 758, height: 1000 });
+        facebook_init_callback();
 
         FB.getLoginStatus(function(response) {
           if (response.session) {
