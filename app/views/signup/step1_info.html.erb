@@ -40,13 +40,12 @@ All fields are required except for major and dorm.
 <%- end -%>
 
 
-<fb:login-button show-faces="true" width="400" max-rows="2" perms="<%=Facebook::SIGNUP_PERMS%>"></fb:login-button>
-<br/>
 
+<div id="signup_step1_columns">
 
 <%- form_for @person, :url => { :action => :step1_info_submit, :method => :post } do |f| -%>
   <%= f.error_messages %>
-  <table>
+  <table id="signup_step1_info">
   <tr>
     <td>First Name: </td>
     <td><%= f.text_field :first_name %></td>
@@ -84,6 +83,10 @@ All fields are required except for major and dorm.
   </tr>
   <%= render :partial => "dorm_tr" %>
   </table>
+
+  <fb:login-button show-faces="true" width="400" max-rows="2" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
+
+</div>
 
   <div class="center">
   <%= submit_tag "Next", :class => 'action-button' %>  

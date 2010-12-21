@@ -1,12 +1,24 @@
 <%- instruction_block do %>
-<B>You're done!</B>  You'll receive further information once groups are set up.  Clicking the 'Finished' button will take you <% unless logged_in? %> back to the Sign In page.<% else %> back to the dashboard.<% end %>
+  <B>You're done!</B>  You'll receive further information once groups are set up.  Clicking the 'Finished' button will take you
+  <% if session[:from_facebook_canvas] == true %>
+    back to Facebook!
+  <% elsif logged_in? %>
+    back to the dashboard.
+  <% else %>
+    back to the Sign In page.
+  <% end %>
 <%- end %>
 
 <center>
   <%= render :partial => 'progress', :locals => { :done => true } %>
 </center>
 
-<DIV class="center">
+<div class="center">
   <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
-  <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
-</DIV>
+
+  <% if session[:from_facebook_canvas] == true %>
+    <%= link_to "Finished", Facebook::FANPAGE_URL, :class => "action-button" %>
+  <% else %>
+    <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
+  <% end %>
+</div>

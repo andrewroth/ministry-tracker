@@ -7,6 +7,7 @@ module Facebook
   APP_ID = CONFIG['app_id']
   SECRET = CONFIG['secret_key']
   CANVAS_URL = "http://apps.facebook.com/moosepulse/"
+  FANPAGE_URL = "https://www.facebook.com/campusforchrist"
   SIGNUP_PERMS = "email"
 end
 
