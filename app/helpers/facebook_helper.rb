@@ -11,7 +11,11 @@ module FacebookHelper
         });
 
         facebook_init_callback();
-        FB.Canvas.setSize({ width: 758, height: document.getElementById('facebook_canvas_body').offsetHeight });
+
+        /* runs after entire page has finished loading (not just DOM) */
+        $(window).bind("load", function() {
+          FB.Canvas.setSize({ width: 758, height: document.getElementById('facebook_canvas_body').offsetHeight });
+        });
 
         FB.getLoginStatus(function(response) {
           if (response.session) {
