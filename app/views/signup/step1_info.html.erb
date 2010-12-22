@@ -30,7 +30,7 @@ All fields are required except for major and dorm.
 <% end %>
 
 <center>
-  <%= render :partial => 'progress', :locals => { :step => 1 } %>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 1 } %>
 </center>
 
 <%- if logged_in? %>
@@ -86,7 +86,7 @@ All fields are required except for major and dorm.
   <%= render :partial => "dorm_tr" %>
   </table>
 
-  <fb:login-button show-faces="true" width="200" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
+  <fb:login-button show-faces="true" width="250" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
 
 </div>
 
