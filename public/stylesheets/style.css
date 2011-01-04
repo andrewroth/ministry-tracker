@@ -378,9 +378,9 @@ h1 {
 }
 
 #wrapper.facebook_canvas {
-  border-color: #3B5998 #B3B3B3;
+  border-color: #3B5998 #B3B3B3 #B3B3B3;
   border-style: solid;
-  border-width: 9px 1px 40px;
+  border-width: 9px 1px 1px;
   min-width: 0;
 	max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
   margin-top: 0;

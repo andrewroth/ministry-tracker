@@ -14,7 +14,7 @@ module FacebookHelper
 
         /* runs after entire page has finished loading (not just DOM) */
         $(window).bind("load", function() {
-          FB.Canvas.setSize({ width: 758, height: document.getElementById('facebook_canvas_body').offsetHeight+50 });
+          FB.Canvas.setAutoResize();
         });
 
         FB.getLoginStatus(function(response) {
