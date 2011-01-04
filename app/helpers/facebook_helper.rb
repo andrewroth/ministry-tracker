@@ -10,11 +10,13 @@ module FacebookHelper
                  xfbml: true
         });
 
+        FB.Canvas.setAutoResize();
+
         facebook_init_callback();
 
         /* runs after entire page has finished loading (not just DOM) */
         $(window).bind("load", function() {
-          FB.Canvas.setAutoResize();
+          
         });
 
         FB.getLoginStatus(function(response) {
