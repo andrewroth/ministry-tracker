@@ -22,7 +22,7 @@
   </head> 
   <body> 
     <script type="text/javascript">
-      window.parent.location = 'https://graph.facebook.com/oauth/authorize?client_id=<%=Facebook::APP_ID%>&redirect_uri=<%=@join_a_group_url%>';
+      window.parent.location = 'https://graph.facebook.com/oauth/authorize?client_id=<%=Facebook::APP_ID%>&redirect_uri=<%=@redirect_uri%>';
     </script>
     <%= init_facebook_js_sdk_async %>
 
