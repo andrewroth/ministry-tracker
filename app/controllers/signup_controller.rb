@@ -1,6 +1,7 @@
 class SignupController < ApplicationController
   include PersonForm
   include SemesterSet
+  layout :get_layout
   skip_standard_login_stack
   before_filter :set_is_staff_somewhere
   before_filter :restrict_everything
@@ -8,6 +9,10 @@ class SignupController < ApplicationController
   before_filter :set_current_and_next_semester
 
   def index
+    redirect_to :action => :step1_info
+  end
+
+  def facebook
     redirect_to :action => :step1_info
   end
 
@@ -248,4 +253,11 @@ class SignupController < ApplicationController
   def set_custom_userbar_title
     @custom_userbar_title = "Signup"
   end
+
+  private
+
+  def get_layout
+    session[:from_facebook_canvas] == true ? "facebook_canvas" : "application"
+  end
+
 end

@@ -1,7 +1,7 @@
 <% instruction_block do %>A verification email has been sent to <%= @email %>.  Click the link in the email to continue the registration process.<% end %>
 
 <center>
-  <%= render :partial => 'progress', :locals => { :step => 1 } %>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 1 } %>
 </center>
 
 <P class="center"><%= link_to "Back to the login page", "/", :class => "action-button" %></P>
