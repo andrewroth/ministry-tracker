@@ -88,13 +88,14 @@ class SignupController < ApplicationController
         @person.last_name = params[:person][:last_name]
         @person.gender = params[:person][:gender]
         @person.local_phone = params[:person][:local_phone]
-        @person.save!
+        
         # in order to save major, update it manually again, 
         # since it's stored in a second table in the Cdn schema
         @person.clear_extra_ref
         @person.major = params[:person][:major]
         @person.curr_dorm = params[:person][:curr_dorm]
-        @person.save!
+
+        # don't save @person yet in case we need to verify their email first
       end
 
       session[:signup_person_params] = params[:person]
@@ -106,6 +107,8 @@ class SignupController < ApplicationController
         @email = params[:person][:email]
         redirect_to :action => :step1_verify
       else
+        @person.save!
+
         ci = @person.campus_involvements.find :first, :conditions => {
           :campus_id => @primary_campus_involvement.campus_id
         }
@@ -138,13 +141,18 @@ class SignupController < ApplicationController
   def step1_verify_submit
     # send verification email
     session[:needs_verification] = true
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @user = @person.user
-    @email = @person.email.downcase
-    pass = { :person => session[:signup_person_params], 
-      :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
-    link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
-    UserMailer.deliver_signup_confirm_email(@person.email, link)
+    unless session[:signup_person_id].blank?
+      @me = @my = @person = Person.find(session[:signup_person_id])
+      @user = @person.user
+      @email = @person.email.downcase
+      pass = { :person => session[:signup_person_params],
+        :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
+      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
+      UserMailer.deliver_signup_confirm_email(@person.email, link)
+    else
+      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
+      redirect_to :action => :step1_info
+    end
   end
 
   def step1_email_verified
