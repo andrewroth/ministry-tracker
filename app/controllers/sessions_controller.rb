@@ -140,6 +140,13 @@ class SessionsController < ApplicationController
       logout_keeping_session!
     end
   end
+
+  def leave_facebook_and_js_redirect
+    @js_redirect_url = params[:js_redirect_url]
+    session[:from_facebook_canvas] = false
+    
+    render :layout => false
+  end
     
 
 end
