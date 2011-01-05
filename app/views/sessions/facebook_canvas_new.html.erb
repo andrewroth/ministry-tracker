@@ -22,6 +22,12 @@
   </head> 
   <body> 
     <%= init_facebook_js_sdk_async %>
+    <script>
+      function facebook_init_callback() {
+        facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>');
+      }
+    </script>
+
 		<div id="loginBody">
 			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
 			<div id="loginwrapper">
