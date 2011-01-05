@@ -21,12 +21,10 @@
     <%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>
   </head> 
   <body> 
-    <%= init_facebook_js_sdk_async %>
-    <script>
-      function facebook_init_callback() {
-        facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>');
-      }
+    <script type="text/javascript">
+      window.parent.location = 'https://graph.facebook.com/oauth/authorize?client_id=<%=Facebook::APP_ID%>&redirect_uri=<%=@join_a_group_url%>';
     </script>
+    <%= init_facebook_js_sdk_async %>
 
 		<div id="loginBody">
 			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
