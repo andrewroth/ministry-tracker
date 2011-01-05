@@ -10,14 +10,9 @@ module FacebookHelper
                  xfbml: true
         });
 
-        FB.Canvas.setAutoResize();
+        FB.Canvas.setAutoResize(true);
 
         facebook_init_callback();
-
-        /* runs after entire page has finished loading (not just DOM) */
-        $(window).bind("load", function() {
-          
-        });
 
         FB.getLoginStatus(function(response) {
           if (response.session) {
