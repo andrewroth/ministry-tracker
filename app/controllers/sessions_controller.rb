@@ -21,6 +21,8 @@ class SessionsController < ApplicationController
 
     @oauth = Koala::Facebook::OAuth.new
     @join_a_group_url = url_for(:only_path => false, :controller => "signup", :action => "facebook")
+    
+    @redirect_uri = "https://graph.facebook.com/oauth/authorize?client_id=#{Facebook::APP_ID}&redirect_uri=#{@join_a_group_url}"
 
     if params["signed_request"].present?
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
@@ -28,6 +30,7 @@ class SessionsController < ApplicationController
       # if user_id is not in the signed_request they have not authenticated our app
       if @facebook_request["user_id"].present?
         load_my_facebook_graph_into_session_from_oauth_token(@facebook_request["oauth_token"])
+        @redirect_uri = @join_a_group_url
       else
         session[:facebook_person] = nil
       end
