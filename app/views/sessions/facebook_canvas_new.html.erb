@@ -22,6 +22,7 @@
   <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
 
+    <br/>
 		<div id="loginBody">
 			<div id="facebookLoginWrapper">
 				<%= image_tag("facebook_log_in_main_img.gif", :usemap => "#mainimg", :id => "loginMainImg", :style => "border:none;")%>
@@ -35,10 +36,8 @@
           />
 				</map>
 
-        <div style="text-align:center; margin-left:auto; margin-right:auto;">
-          <br/><br/>
+        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:7em;">
           <fb:login-button show-faces="true" width="300" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
-          <br/><br/>
         </div>
 
         <%= image_tag("facebook_log_in_bottom_img.gif", :usemap => "#bottomimg", :id => "loginMainImg", :style => "border:none;")%>
