@@ -20,7 +20,7 @@
   <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
   <% if session[:from_facebook_canvas] == true %>
-    <%= link_to "Finished", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
+    <%= link_to "Finished", '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
   <% else %>
     <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>

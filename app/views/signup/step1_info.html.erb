@@ -36,7 +36,7 @@ All fields are required except for major and dorm.
 <DIV class="center">
   <P>
   <% if session[:from_facebook_canvas] == true %>
-    <%= link_to "Start Again", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
+    <%= link_to "Start Again", "#", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
   <% else %>
     <%= link_to "Start Again", logout_url, :class => 'action-button' %>
   <% end %>
