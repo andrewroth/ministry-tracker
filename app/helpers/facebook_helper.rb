@@ -11,6 +11,7 @@ module FacebookHelper
         });
 
         window.setTimeout(function() {
+          alert("oh hai");
           FB.Canvas.setAutoResize(true);
         }, 250);
 
