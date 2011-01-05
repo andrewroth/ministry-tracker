@@ -10,7 +10,9 @@ module FacebookHelper
                  xfbml: true
         });
 
-        FB.Canvas.setAutoResize(true);
+        window.setTimeout(function() {
+          FB.Canvas.setAutoResize(true);
+        }, 250);
 
         facebook_init_callback();
 
