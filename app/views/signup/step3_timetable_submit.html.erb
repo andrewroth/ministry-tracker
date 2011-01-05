@@ -1,13 +1,13 @@
 <%- instruction_block do %>
   <B>You're done!</B>  You'll receive further information once groups are set up.
   
-  <% unless session[:from_facebook_canvas] == true %>
-    Clicking the 'Finished' button will take you
-    <% if logged_in? %>
-      back to the dashboard.
-    <% else %>
-      back to the Sign In page.
-    <% end %>
+  Clicking the 'Finished' button will take you
+  <% if session[:from_facebook_canvas] == true %>
+    back to Facebook.
+  <% elsif logged_in? %>
+    back to the dashboard.
+  <% else %>
+    back to the Sign In page.
   <% end %>
 
 <%- end %>
@@ -19,7 +19,9 @@
 <div class="center">
   <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
-  <% unless session[:from_facebook_canvas] == true %>
+  <% if session[:from_facebook_canvas] == true %>
+    <%= link_to "Finished", :onclick => "top.location.href='#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
+  <% else %>
     <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
 
