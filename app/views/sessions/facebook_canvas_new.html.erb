@@ -18,31 +18,23 @@
 
     <%= javascript_include_tag "facebook_sdk_helpers.js" %>
 
-    <%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>
   </head> 
-  <body> 
-    <script type="text/javascript">
-      window.parent.location = 'https://graph.facebook.com/oauth/authorize?client_id=<%=Facebook::APP_ID%>&redirect_uri=<%=@redirect_uri%>';
-    </script>
+  <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
 
 		<div id="loginBody">
-			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
-			<div id="loginwrapper">
-				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
+			<div id="facebookLoginWrapper">
+				<%= image_tag("facebook_log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg", :style => "border:none;")%>
 				<map name="getin">
-				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)"
+				  <area shape="rect" coords="238,62,580,108" alt="Join a Group! (No need to login)"
                 <% if session[:facebook_person].present? %>
                   href="<%=@join_a_group_url%>"
                 <% else %>
                   href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>')" />
                 <% end %>
-				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+				  <area shape="rect" coords="630,186,723,224" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+				  <area shape="rect" coords="691,259,723,270" href="https://www.mygcx.org/Pulse_Help_Center/screen/home" alt="Help!" />
 				</map>
-				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
-				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
-				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
-				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
 			</div>
 		</div>
 	</body>
