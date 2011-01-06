@@ -7,6 +7,8 @@ class UserCodesController < ApplicationController
       session[:code_valid_for_user_id] = uc.user.id
       session[:code_valid_for_person_id] = uc.user.person.id
       pass_params = uc.pass_hash.merge(:controller => params[:send_to_controller], :action => params[:send_to_action])
+      uc.click_count += 1
+      uc.save!
       logger.info pass_params.inspect
       redirect_to pass_params
     else
