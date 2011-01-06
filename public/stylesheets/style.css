@@ -1745,7 +1745,7 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 400px; float: left; padding: 0 2em 0 3em;
+  width: 400px; float: left; padding: 0 1em 0 1em;
 }
 
 #signup_step1_columns {

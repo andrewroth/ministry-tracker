@@ -1,13 +1,13 @@
 <%- instruction_block do %>
   <B>You're done!</B>  You'll receive further information once groups are set up.
   
-  <% unless session[:from_facebook_canvas] == true %>
-    Clicking the 'Finished' button will take you
-    <% if logged_in? %>
-      back to the dashboard.
-    <% else %>
-      back to the Sign In page.
-    <% end %>
+  Click 'Finished' to go
+  <% if session[:from_facebook_canvas] == true %>
+    back to Facebook.
+  <% elsif logged_in? %>
+    back to the dashboard.
+  <% else %>
+    back to the Sign In page.
   <% end %>
 
 <%- end %>
@@ -19,11 +19,13 @@
 <div class="center">
   <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
-  <% unless session[:from_facebook_canvas] == true %>
+  <% if session[:from_facebook_canvas] == true %>
+    <%= link_to "Finished", '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
+  <% else %>
     <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
 
   <br/><br/>
-  <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fcampusforchrist&amp;width=407&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=560" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:407px; height:560px;" allowTransparency="true"></iframe>
+  <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fcampusforchrist&amp;width=407&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=557" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:407px; height:557px;" allowTransparency="true"></iframe>
 
 </div>
