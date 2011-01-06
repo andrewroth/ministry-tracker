@@ -217,7 +217,7 @@ module Koala
         sig = base64_url_decode(encoded_sig)
 
         # if the signature matches, return the data, decoded and parsed as JSON
-        if OpenSSL::HMAC.digest("sha256", @app_secret, payload) == sig
+        if OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @app_secret, payload) == sig
           JSON.parse(base64_url_decode(payload))
         else
           nil
