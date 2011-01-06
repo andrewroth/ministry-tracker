@@ -36,6 +36,10 @@ class SessionsController < ApplicationController
     render :layout => false
   end
 
+  def facebook_tab_new
+    render :layout => false
+  end
+
   # render new.rhtml
   def new
     # force current user to be made again -- not sure why, but sometimes the

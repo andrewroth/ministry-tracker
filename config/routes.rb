@@ -79,7 +79,8 @@ ActionController::Routing::Routes.draw do |map|
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.new_gcx '/new_gcx', :controller => 'sessions', :action => 'new_gcx'
-  map.leave_facebook_and_js_redirect '/leave_facebook_and_js_redirect', :controller => 'sessions', :action => 'leave_facebook_and_js_redirect'
+  map.facebook_canvas_new '/sessions/facebook_canvas_new', :controller => 'sessions', :action => 'facebook_canvas_new'
+  map.facebook_tab_new '/sessions/facebook_canvas_new/facebook_tab_new', :controller => 'sessions', :action => 'facebook_tab_new'
   map.resource :session
   
   map.resources :developers
