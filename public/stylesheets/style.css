@@ -136,6 +136,10 @@ body {
     background-color:#E6E6E6;
 }
 
+body.facebook_canvas {
+    background-color:white;
+}
+
 img {border:0px;}
 td {vertical-align:top;}
 table {width:100%; font-size:1em;}
@@ -357,80 +361,89 @@ a.small:active, a.small:hover {
 }
 /* MORE (S)PACIFIC */
 h1 {
-    color: #1F429B;
-    font-weight:normal;
+  color: #1F429B;
+  font-weight:normal;
 }
 
 /* LAYOUT */
 
 #wrapper {
-    margin: 10px auto 10px auto;
-    width:auto;
-    border:7px solid #CCCCCC;
-    text-align:left;
+  margin: 10px auto 10px auto;
+  width:auto;
+  border:7px solid #CCCCCC;
+  text-align:left;
 	min-width:900px;
 	max-width:900px;
 	background:#FFFFFF;
+}
+
+#wrapper.facebook_canvas {
+  border-color: #3B5998 #B3B3B3 #B3B3B3;
+  border-style: solid;
+  border-width: 9px 1px 1px;
+  min-width: 0;
+	max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
+  margin-top: 0;
 }
 
 #footer {
 	min-width:900px;
 	max-width:900px;
 	height:120px;
-    margin:auto;
-    margin-top:10px;
+  margin:auto;
+  margin-top:10px;
 }
 
 #header {
-    float:left;
-    position:relative;
-    top:33px;
-    left:10px;
+  float:left;
+  position:relative;
+  top:33px;
+  left:10px;
 }
 
 
 
 
 #content {
-    margin:10px;
+  margin:10px;
 }
 .leftColumn {
 	max-width: 220px;
 }
 .leftColumn a.norm {
-    font-size:1.1em;
+  font-size:1.1em;
 }
 
 /* TABS */
 .tablist {
-    width:65%;
-    background:#FFCB05 url("") repeat-x bottom;
-    float:right;
-    margin-top: 4px;
-    border-bottom: #FFCB05 solid 0px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+  width:65%;
+  background:#FFCB05 url("") repeat-x bottom;
+  float:right;
+  margin-top: 4px;
+  border-bottom: #FFCB05 solid 0px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .tablist ul {
-    margin:0 5px;
+  margin:0 5px;
 }
 
 .tablist li {
-    float:right;
-    background:url("../images/yellowtab.png") no-repeat left top;
-    margin-left:4px;
+  float:right;
+  background:url("../images/yellowtab.png") no-repeat left top;
+  margin-left:4px;
 	width: 86px;
 	
 }
 
 .tablist a {
-    float:right;
-    display:block;
-    color:#1F429B; font-weight:bold;
-    padding:8px 10px 7px 0;
-    margin-left:11px;
+  float:right;
+  display:block;
+  color:#1F429B; font-weight:bold;
+  padding:8px 10px 7px 0;
+  margin-left:11px;
 	text-align: center;
 }
 
@@ -1731,6 +1744,13 @@ td.eventAttendees {
   border-right: 1px solid #999999;
 }
 
+#signup_step1_info {
+  width: 400px; float: left; padding: 0 1em 0 1em;
+}
+
+#signup_step1_columns {
+  width: 100%; display: inline-block; padding: 1em 0 1em 0;
+}
 
 
 /************************************************/

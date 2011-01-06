@@ -15,6 +15,27 @@ class SessionsController < ApplicationController
     get_ministry if @person
   end
 
+  def facebook_canvas_new
+
+    session[:from_facebook_canvas] = true
+
+    @oauth = Koala::Facebook::OAuth.new
+    @join_a_group_url = url_for(:only_path => false, :controller => "signup", :action => "facebook")
+    
+    if params["signed_request"].present?
+      @facebook_request = @oauth.parse_signed_request(params["signed_request"])
+
+      # if user_id is not in the signed_request they have not authenticated our app
+      if @facebook_request["user_id"].present?
+        load_my_facebook_graph_into_session_from_oauth_token(@facebook_request["oauth_token"])
+      else
+        session[:facebook_person] = nil
+      end
+    end
+    
+    render :layout => false
+  end
+
   # render new.rhtml
   def new
     # force current user to be made again -- not sure why, but sometimes the
@@ -118,6 +139,13 @@ class SessionsController < ApplicationController
       flash[:notice] = "You have been logged out."
       logout_keeping_session!
     end
+  end
+
+  def leave_facebook_and_js_redirect
+    @js_redirect_url = params[:js_redirect_url]
+    session[:from_facebook_canvas] = false
+    
+    render :layout => false
   end
     
 

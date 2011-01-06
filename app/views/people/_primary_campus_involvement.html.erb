@@ -49,7 +49,7 @@ no_table ||= false
     <% end %>
     <% unless hide_campus %>
     <tr id='campuses' style='<%= "display:none;" if @campus_country.nil? %>'>
-      <th <%= highlight_if_requested %>>Campus</th>
+      <td class="label" <%= highlight_if_requested %>>Campus </td>
       <td <%= highlight_if_requested %>>
         <%= cif.collection_select :campus_id, @campuses, :id, :name, options = {:include_blank => true} %>
         <% unless @no_campus_scope %>
@@ -76,7 +76,7 @@ no_table ||= false
     <%- end %>
     <%- unless hide_school_year -%>
     <tr class='pcd'>
-      <th>Year</th>
+      <td class="label">Year </td>
       <td><%= cif.select :school_year_id, school_year_options %></td>
     </tr>
     <%- end -%>

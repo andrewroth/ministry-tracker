@@ -1,0 +1,45 @@
+
+<%= stylesheet_link_tag "jquery-ui" %>
+
+
+<% steps = [ "Info", "Group", "Timetable" ] %>
+<% step_position = [ nil, 1, 3, 5 ] %>
+
+
+<% width_per_step = 100 / steps.length %>
+
+
+<% current_step ||= 1 %>
+
+<% if current_step.to_i == current_step %>
+
+  <% current_step = current_step > steps.length ? steps.length-1 : current_step %>
+  <% percent_done = (step_position[current_step].to_f / (steps.length.to_f*2)) * 100.00 %>
+
+<% elsif current_step == "done" %>
+  <% percent_done = 100 %>
+
+<% else %>
+  <% percent_done = 0 %>
+
+<% end %>
+
+
+<div id="signup_progress_bar_container" style="width: 75%; text-align: center;">
+
+  <% steps.each_with_index do |step, index| %>
+    <div style="width:<%=width_per_step%>%; float: left;">
+       <%= "<b>" if index+1 == current_step %>
+       <%= step %>
+       <%= "</b>" if index+1 == current_step %>
+    </div>
+  <% end %>
+
+  <br/>
+  <div id="signup_progress_bar"></div>
+  <br/>
+  <br/>
+</div>
+
+
+<script>$("#signup_progress_bar").progressbar({ value: <%= percent_done %> });</script>

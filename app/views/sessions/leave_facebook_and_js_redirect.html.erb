@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+      <title>
+        <% if Cmt::CONFIG[:web_title] %>
+          <%= Cmt::CONFIG[:web_title] %>
+        <% else %>
+          Campus Movement Tracker
+        <% end %>
+        <%= ': ' + @site_title if @site_title -%>
+      </title>
+
+  </head> 
+  <body style="margin:0;">
+    <script>
+      top.location.href="<%=@js_redirect_url%>"
+    </script>
+	</body>
+</html>
