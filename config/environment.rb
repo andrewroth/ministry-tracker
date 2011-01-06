@@ -52,7 +52,6 @@ Rails::Initializer.run do |config|
   config.gem 'daemons'
   config.gem 'httparty' # for eventbright
   config.gem 'tzinfo'   # for eventbright
-  config.gem 'koala'    # for Facebook Graph API and OAuth
   
   config.time_zone = 'UTC'
 
