@@ -1074,10 +1074,14 @@ div.flash b, div.flash_notice b  {
 .setLink a:link {color: #1F429B;}
 .setLink a:visited {color: #1F429B;}
 
+div.fieldWithErrors{
+  display: inline-block;
+}
+
 .fieldWithErrors input {
   display: block;
-border:1px solid red;
-background:pink;
+  border:1px solid red;
+  background:pink;
 }
 
 #errorExplanation {
