@@ -1,11 +1,11 @@
 class SearchController < ApplicationController
   unloadable
 
-  skip_standard_login_stack :only => [:autocomplete, :prepare]
+  skip_standard_login_stack :only => [:autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
 
-  before_filter :setup_session_for_search, :only => [:index, :people, :groups, :autocomplete, :prepare]
+  before_filter :setup_session_for_search, :only => [:index, :people, :groups, :autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
 
-  before_filter :get_query, :only => [:index, :people, :groups, :autocomplete]
+  before_filter :get_query, :only => [:index, :people, :groups, :autocomplete, :autocomplete_mentors, :autocomplete_mentees]
 
 
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
@@ -15,6 +15,7 @@ class SearchController < ApplicationController
   SEARCH_RANK = {:person => {:first_name => 4, :last_name => 1, :ministry => 3},
                  :group  => {:name => 5, :ministry => 4, :semester_current => 3, :semester_next => 1, :involvement => 2}}
   
+  FILTER_MENTOR_NONE = 0
 
   def index
     @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
@@ -47,9 +48,21 @@ class SearchController < ApplicationController
 
   def autocomplete
     @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
-
+  
     render :layout => false
   end
+  
+  def autocomplete_mentors
+    @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+ 
+    render :layout => false
+  end
+  
+  def autocomplete_mentees
+    @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+ 
+    render :layout => false
+  end  
 
   def prepare
     # call to prepare search via before filter - hopefully to make auto complete faster
@@ -211,7 +224,8 @@ class SearchController < ApplicationController
 
                :select => select_str,
 
-               :conditions => ["#{session[:search][:person_search_limit_condition]} AND (" +
+               :conditions => ["#{session[:search][:person_search_limit_condition]} " +
+                               "AND #{Person.__(:mentor_id)} = #{FILTER_MENTOR_NONE} AND (" +
                                "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                "or #{_(:first_name, :person)} like ? " +
                                "or #{_(:last_name, :person)} like ? " +

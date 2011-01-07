@@ -19,6 +19,8 @@ class PeopleController < ApplicationController
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
                   :set_initial_ministry]
   skip_standard_login_stack :only => free_actions
+     
+  MENTOR_ID_NONE = 0
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -263,6 +265,29 @@ class PeopleController < ApplicationController
       render :nothing => true
     end
   end
+  
+ 
+   # GET /people/remove_mentor
+  # Updates a person's mentor via a person_id parameter  
+  def remove_mentor
+    # We don't actually delete people, just set the 'mentor_id' to 0
+    #@person = Person.find(params[:id], :include => [:mentor_id])
+    @person.mentor_id = MENTOR_ID_NONE
+    @person.save
+    render :partial => "mentor_search_box", :locals => { :person => @person, :q => @q }
+  end
+  
+  
+  # GET /people/remove_mentee
+  # Removes a person's mentee via a person_id parameter  
+  def remove_mentee
+    # We don't actually delete people, just find the person_id for the mentee
+    # then set the 'mentor_id' to 0
+    person = Person.find(params[:id])
+    person.mentor_id = MENTOR_ID_NONE
+    person.save
+    render :nothing => true
+  end
 
   # GET /people/show
   # Shows a person's profile (address info, assignments, involvements, etc)
@@ -276,13 +301,35 @@ class PeopleController < ApplicationController
         @person.primary_campus_involvement = @person.campus_involvements.last
         @person.save!
       end
+      
+      # check GET parameters generated from mentor auto-complete search; set new mentor if ID found
+      if params[:m]
+        @person.mentor_id = params[:m];
+        @person.save
+      end     
+      
+       # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
+      if params[:mt]
+        person = Person.find(params[:mt])
+        person.mentor_id = @person.id
+        person.save
+      end          
+      
       get_ministry_involvement(get_ministry)
       get_people_responsible_for
       setup_vars
-      respond_to do |format|
-        format.html { render :action => :show }# show.rhtml
-        format.xml  { render :xml => @person.to_xml }
-      end
+      
+#      if (!params[:m])
+        respond_to do |format|
+          format.html { render :action => :show }# show.rhtml
+          format.xml  { render :xml => @person.to_xml }
+        end
+#      else
+#        respond_to do |format|
+#          format.xml  { head :ok }
+#          format.html { render :partial => "mentors" }
+#        end
+#      end
     end
   end
   
