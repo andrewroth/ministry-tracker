@@ -1,1 +1,52 @@
-Test
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico">
+
+      <title>
+        <% if Cmt::CONFIG[:web_title] %>
+          <%= Cmt::CONFIG[:web_title] %>
+        <% else %>
+          Campus Movement Tracker
+        <% end %>
+        <%= ': ' + @site_title if @site_title -%>
+      </title>
+
+    <%= javascript_include_tag "facebook_sdk_helpers.js" %>
+
+  </head>
+  <body style="margin:0;">
+    <%= init_facebook_js_sdk_async %>
+
+    <br/>
+		<div id="loginBody">
+			<div id="facebookLoginWrapper">
+				<%= image_tag("facebook_log_in_main_img.gif", :usemap => "#mainimg", :id => "loginMainImg", :style => "border:none;")%>
+				<map name="mainimg">
+				  <area shape="rect" coords="238,62,580,108" alt="Join a Group! (No need to login)"
+            <% if session[:facebook_person].present? %>
+              href="<%=@join_a_group_url%>"
+            <% else %>
+              href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>')"
+            <% end %>
+          />
+				</map>
+
+        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:7em;">
+          <fb:login-button show-faces="true" width="300" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
+        </div>
+
+        <%= image_tag("facebook_log_in_bottom_img.gif", :usemap => "#bottomimg", :id => "loginMainImg", :style => "border:none;")%>
+        <map name="bottomimg">
+				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css'" alt="Sign In" />
+				  <area shape="rect" coords="691,83,723,94" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=https://www.mygcx.org/Pulse_Help_Center/screen/home'" alt="Help!" />
+        </map>
+			</div>
+		</div>
+
+	</body>
+</html>
