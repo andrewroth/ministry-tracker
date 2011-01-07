@@ -244,29 +244,31 @@ class SearchController < ApplicationController
 
 
   def setup_my_ministry_and_campus_ids
-    get_person
+    if get_person
 
-    if is_staff_somewhere
+      if is_staff_somewhere
 
-      # return anyone at or underneath a ministry that I'm involved in or one of those ministry's campuses
+        # return anyone at or underneath a ministry that I'm involved in or one of those ministry's campuses
 
-      ministries = @my.ministries.collect {|m| m.self_plus_descendants }.flatten.uniq
-      @ministry_search_ids = ministries.collect {|m| m.id}
-      
-      campuses = ministries.collect {|m| m.campuses}.flatten.uniq
-      @campus_search_ids ||= campuses.collect {|c| c.id}
+        ministries = @my.ministries.collect {|m| m.self_plus_descendants }.flatten.uniq
+        @ministry_search_ids = ministries.collect {|m| m.id}
 
-    else # is student
+        campuses = ministries.collect {|m| m.campuses}.flatten.uniq
+        @campus_search_ids ||= campuses.collect {|c| c.id}
 
-      # return anyone at a campus I'm involved in or a ministry I'm involved in
+      else # is student
 
-      @ministry_search_ids = @my.ministries.collect {|ministry| ministry.id}
+        # return anyone at a campus I'm involved in or a ministry I'm involved in
 
-      @campus_search_ids ||= @my.campuses.collect {|c| c.id}
+        @ministry_search_ids = @my.ministries.collect {|ministry| ministry.id}
+
+        @campus_search_ids ||= @my.campuses.collect {|c| c.id}
+      end
+
+      @ministry_search_ids = [0] if (@ministry_search_ids.blank? || @ministry_search_ids.empty?)
+      @campus_search_ids = [0] if (@campus_search_ids.blank? || @campus_search_ids.empty?)
+
     end
-
-    @ministry_search_ids = [0] if (@ministry_search_ids.blank? || @ministry_search_ids.empty?)
-    @campus_search_ids = [0] if (@campus_search_ids.blank? || @campus_search_ids.empty?)
   end
 
 
@@ -299,8 +301,8 @@ class SearchController < ApplicationController
       session[:search][:search_ministry_id] = session[:ministry_id]
     end
 
-    session[:search][:authorized_to_search_people] ||= (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
-    session[:search][:authorized_to_search_groups] ||= (authorized?(:return_groups, :search) && authorized?(:show, :groups))
+    session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+    session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
     
     session[:search][:search_prepared] ||= true
   end

@@ -3,7 +3,7 @@
 <% end %>
 
 <center>
-  <%= render :partial => 'progress', :locals => { :step => 2 } %>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 2 } %>
 </center>
 
 
@@ -36,8 +36,9 @@
   
 <BR/>
 <BR/>
-<P>
-  <B>If you just want to join a group and have leaders put you into a group that fits your timetable, please choose a collection group below:</B>
+<BR/>
+<P style="width: 400px; margin-left: auto; margin-right: auto;">
+  If you just want to join a group and have leaders put you into a group that fits your timetable, please choose a collection group below:
 </P>
 
 <%= link_to "Collection group for the <u>#{@current_semester.desc}</u> semester", { :action => "step2_default_group", :semester_id => "#{@current_semester.id}" }, :class => "action-button" %>
@@ -47,7 +48,7 @@
 <BR/>
 <BR/>
 <P>
-  <small>Please note: Fall semesters are from September - December, Winter months are from January - April, and Summer months are from May - July</small>
+  <small>Fall months are from September - December<br>Winter months are from January - April<br>Summer months are from May - July</small>
 </P>
 
 <BR/>

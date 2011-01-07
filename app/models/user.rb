@@ -4,4 +4,6 @@ class User < ActiveRecord::Base
   load_mappings
   include Common::Core::User
   include Common::Core::Ca::User
+
+  has_many :user_codes
 end

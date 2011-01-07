@@ -42,7 +42,7 @@ class StatsController < ApplicationController
 
   def select_report
     session[:stats_ministry_id] = params['ministry'] if params['ministry'].present?
-    session[:stats_time] = params['time']
+    session[:stats_time] = params['time'] if params['time'].present?
     session[:stats_report_type] = params['report_type'] if params['report_type'].present?
     session[:stats_report_scope] = params['report_scope'] if params['report_scope'].present?
 
@@ -182,7 +182,7 @@ class StatsController < ApplicationController
       sum(#{MonthlyReport.table_name}.#{_(:event_gospel_prensentations, :monthly_report)}) as event_gospel_prensentations,
       sum(#{MonthlyReport.table_name}.#{_(:media_spiritual_conversations, :monthly_report)}) as media_spiritual_conversations,
       sum(#{MonthlyReport.table_name}.#{_(:media_gospel_prensentations, :monthly_report)}) as media_gospel_prensentations,
-      sum(#{MonthlyReport.table_name}.#{_(:total_core_students, :monthly_report)}) as total_core_students,
+      sum(#{MonthlyReport.table_name}.#{_(:total_students_in_dg, :monthly_report)}) as total_students_in_dg,
       sum(#{MonthlyReport.table_name}.#{_(:total_spiritual_multipliers, :monthly_report)}) as total_spiritual_multipliers,
       sum(#{MonthlyReport.table_name}.#{_(:total_integrated_new_believers, :monthly_report)}) as followup_completed",
       :conditions => ["#{_(:campus_id, :monthly_report)} in (?) AND #{_(:month_id, :monthly_report)} in (?)", @campus_ids, month_ids])
@@ -209,9 +209,9 @@ class StatsController < ApplicationController
     end
 
     @annual_goals_progress = {}
-    @annual_goals_progress[:students_in_ministry] = @monthly_sum["total_core_students"].to_i
-    @annual_goals_progress[:spiritual_multipliers] = @monthly_sum["total_spiritual_multipliers"].to_i
-    @annual_goals_progress[:first_years] = @monthly_sum["number_frosh_involved"].to_i
+    @annual_goals_progress[:students_in_ministry] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:students_dg]) #@monthly_sum["total_students_in_dg"].to_i
+    @annual_goals_progress[:spiritual_multipliers] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:spirit_mult]) #@monthly_sum["total_spiritual_multipliers"].to_i
+    @annual_goals_progress[:first_years] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:frosh]) #@monthly_sum["number_frosh_involved"].to_i
     @annual_goals_progress[:total_went_to_summit] = @semester_sum["total_students_to_summit"].to_i
     @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
     @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i
@@ -286,7 +286,14 @@ class StatsController < ApplicationController
 
     end
 
-    @prcs = Prc.all(:conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{_(:campus_id, :prc)} in (?)", date_start, date_end, @campus_ids], :order => 'prc_date ASC')
+    modify_order_by(params['order_by']) if params['order_by'].present?
+
+    set_order_by_if_none(["prc_date"])
+
+    @prcs = Prc.all(:joins => :campus, :conditions => ["#{_(:prc_date, :prc)} >= ? and #{_(:prc_date, :prc)} < ? and #{Prc.table_name}.#{_(:campus_id, :prc)} in (?)", date_start, date_end, @campus_ids], :order => get_order_by)
+
+    @prc_methods = {}
+    Prcmethod.all.each { |pm| @prc_methods[pm.prcMethod_id] = pm }
 
     @results_partial = "salvation_story_synopses"
   end
@@ -563,7 +570,12 @@ class StatsController < ApplicationController
       @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }
     end
     
-    @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN
+    @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN 
+
+    if @report_type == 'story' && @campuses.nil?
+      @campuses = {}
+      @campus_ids.each{ |c_id| @campuses[c_id] = Campus.find(c_id) }
+    end
   end
   #----------------------------------------------------------------------------------------
   # Stuff for Staff drill down
@@ -775,6 +787,66 @@ class StatsController < ApplicationController
 
   def campusDrillDownAccess
     @campusDrillDownAccess ||= is_ministry_admin || @me.has_permission_from_ministry_or_higher("drill_down_access", "stats", @stats_ministry)
+  end
+  
+  def default_order(column)
+    ret = "ASC"
+    ret = "DESC" if column =~ /date/i
+    ret
+  end
+  
+  def set_order_by_if_none(columns_array)
+    unless session["#{@report_type}_order_by"].present?
+      columns_array.reverse.each{ |c| modify_order_by(c)}
+    end
+  end
+  
+  def get_order_by
+    ob_columns = []
+
+    unless session["#{@report_type}_order_by"].nil?
+      session["#{@report_type}_order_by"].split(' ').each do |sob|
+        sob_split = sob.split(/([a-zA-Z0-9_]+)\[([A-Z]+)\]/)
+        ob_columns << (sob_split[1] + " " + sob_split[2])
+      end
+    end
+    ob_columns.join(', ')    
+  end
+  
+  def modify_order_by(column)
+    ob_columns = []
+    ob_order = {}
+    unless session["#{@report_type}_order_by"].nil?
+      session["#{@report_type}_order_by"].split(' ').each do |sob|
+        sob_split = sob.split(/([a-zA-Z0-9_]+)\[([A-Z]+)\]/)
+        ob_columns << sob_split[1]
+        ob_order[sob_split[1]] = sob_split[2]
+      end
+    end
+    
+    #case 1: User clicked on a columns that hasn't been ordered yet
+    if !ob_order.has_key?(column)
+      #create that column with the default order, place it in first place
+      ob_columns.insert(0, column)
+      ob_order[column] = default_order(column)
+      
+    #case 2: User clicked again on the same column to reverse the order
+    elsif column == ob_columns[0]
+      #reverse the order
+      ob_order[column] = ob_order[column] == 'ASC' ? 'DESC' : 'ASC'
+      
+    #case 3: User clicked on a columns that was ordered but wasn't the last selected
+    else
+      #place it in first place with the default order
+      ob_columns.delete(column)
+      ob_columns.insert(0, column)
+      ob_order[column] = default_order(column)
+    end 
+    
+    #reconstruct the string for session
+    final_string = ""
+    ob_columns.each{ |obc| final_string += "#{obc}[#{ob_order[obc]}] "}
+    session["#{@report_type}_order_by"] = final_string
   end
   
 end

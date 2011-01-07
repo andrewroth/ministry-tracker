@@ -6,6 +6,7 @@ lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
   <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_report, annual_goals_report, week, weekly_report, year, staff
+  <%= "pat_#{RAILS_ENV}" %>: pat/project, pat/profile, pat/appln, pat/form
 
 tables:
   user: accountadmin_viewer

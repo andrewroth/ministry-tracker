@@ -103,9 +103,9 @@ class ApplicationController < ActionController::Base
       get_my_ministry_involvement(ministry).try(:ministry_role)
     end
 
-    def get_ministry_involvement(ministry, person = @person)
+    def get_ministry_involvement(ministry, person = @person, force_only_this_ministry = false)
       # TODO: can do this in one query without using ancestor_ids now
-      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
+      @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", force_only_this_ministry ? ministry.id : ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
     
     def setup_ministries
@@ -459,6 +459,10 @@ class ApplicationController < ActionController::Base
       @person_campuses = @my.working_campuses(get_ministry_involvement(get_ministry))
     end
 
+    def get_person_current_campuses
+      @person_current_campuses = @my.campus_list(get_ministry_involvement(get_ministry), get_ministry)
+    end
+
     def force_required_data
       return false unless force_email_set
       return false unless force_campus_set
@@ -504,11 +508,23 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_unless_is_active_hrdb_staff
-      unless @me.cim_hrdb_staff.boolean_is_active == true
+      unless @me.cim_hrdb_staff.try(:boolean_is_active)
         flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
         redirect_to :action => "index", :controller => "stats"
         return false
       end
       return true
     end
+
+    # code is received from facebook on callback after a user authorizes the app using redirects, the code allows us to get the oauth token
+    def load_my_facebook_graph_into_session_from_code(code)
+      @oauth ||= Koala::Facebook::OAuth.new
+      load_my_facebook_graph_into_session_from_oauth_token(@oauth.get_access_token(code))
+    end
+
+    def load_my_facebook_graph_into_session_from_oauth_token(oauth_token)
+      @graph = Koala::Facebook::GraphAPI.new(oauth_token)
+      session[:facebook_person] = @graph.get_object("me")
+    end
+
 end

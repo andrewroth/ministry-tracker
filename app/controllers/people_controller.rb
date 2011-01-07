@@ -778,7 +778,7 @@ class PeopleController < ApplicationController
       order_column_id = session[:order_column_id]
       @order = ''
       if order_column_id
-        column = @view.columns.find(order_column_id)
+        column = @view.columns.find(:first, :conditions => [ "#{Column.__(:id)} = ?", order_column_id ]) || @view.columns.last
         @order += column.title.gsub(' ','_')
         @order += (params[:direction] == 'asc' ? ' ASC' : ' DESC')
         @order += ',' # get ready for appending standard order
