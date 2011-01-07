@@ -25,9 +25,10 @@
     <br/>
 		<div id="loginBody">
 			<div id="facebookLoginWrapper">
+				<%= image_tag("c4c_logo.gif", :style => "float: left;")%>
 				<%= image_tag("facebook_log_in_main_img.gif", :usemap => "#mainimg", :id => "loginMainImg", :style => "border:none;")%>
 				<map name="mainimg">
-				  <area shape="rect" coords="238,62,580,108" alt="Join a Group! (No need to login)"
+				  <area shape="rect" coords="29,62,371,108" alt="Join a Group! (No need to login)"
             <% if session[:facebook_person].present? %>
               href="<%=@join_a_group_url%>"
             <% else %>

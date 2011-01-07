@@ -18,7 +18,9 @@
   </head> 
   <body style="margin:0;">
     <script>
-      top.location.href="<%=@js_redirect_url%>"
+      <% if @js_redirect_url.present? %>
+        top.location.href="<%=@js_redirect_url%>"
+      <% end %>
     </script>
 	</body>
 </html>
