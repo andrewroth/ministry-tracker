@@ -182,7 +182,7 @@ class StatsController < ApplicationController
       sum(#{MonthlyReport.table_name}.#{_(:event_gospel_prensentations, :monthly_report)}) as event_gospel_prensentations,
       sum(#{MonthlyReport.table_name}.#{_(:media_spiritual_conversations, :monthly_report)}) as media_spiritual_conversations,
       sum(#{MonthlyReport.table_name}.#{_(:media_gospel_prensentations, :monthly_report)}) as media_gospel_prensentations,
-      sum(#{MonthlyReport.table_name}.#{_(:total_core_students, :monthly_report)}) as total_core_students,
+      sum(#{MonthlyReport.table_name}.#{_(:total_students_in_dg, :monthly_report)}) as total_students_in_dg,
       sum(#{MonthlyReport.table_name}.#{_(:total_spiritual_multipliers, :monthly_report)}) as total_spiritual_multipliers,
       sum(#{MonthlyReport.table_name}.#{_(:total_integrated_new_believers, :monthly_report)}) as followup_completed",
       :conditions => ["#{_(:campus_id, :monthly_report)} in (?) AND #{_(:month_id, :monthly_report)} in (?)", @campus_ids, month_ids])
@@ -209,9 +209,9 @@ class StatsController < ApplicationController
     end
 
     @annual_goals_progress = {}
-    @annual_goals_progress[:students_in_ministry] = @monthly_sum["total_core_students"].to_i
-    @annual_goals_progress[:spiritual_multipliers] = @monthly_sum["total_spiritual_multipliers"].to_i
-    @annual_goals_progress[:first_years] = @monthly_sum["number_frosh_involved"].to_i
+    @annual_goals_progress[:students_in_ministry] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:students_dg]) #@monthly_sum["total_students_in_dg"].to_i
+    @annual_goals_progress[:spiritual_multipliers] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:spirit_mult]) #@monthly_sum["total_spiritual_multipliers"].to_i
+    @annual_goals_progress[:first_years] = year.evaluate_stat(@campus_ids, stats_reports[:monthly_report][:frosh]) #@monthly_sum["number_frosh_involved"].to_i
     @annual_goals_progress[:total_went_to_summit] = @semester_sum["total_students_to_summit"].to_i
     @annual_goals_progress[:total_went_to_wc] = @semester_sum["total_students_to_wc"].to_i
     @annual_goals_progress[:total_went_on_project] = @semester_sum["total_students_to_project"].to_i

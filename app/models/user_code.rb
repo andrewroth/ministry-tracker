@@ -5,6 +5,7 @@ class UserCode < ActiveRecord::Base
   include Common::Core::UserCode
 
   def self.new_code
-    MD5.hexdigest((object_id + Time.now.to_i).to_s)
+    `uuidgen`.chomp
+    #MD5.hexdigest((object_id + Time.now.to_i).to_s)
   end
 end

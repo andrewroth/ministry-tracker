@@ -14,6 +14,8 @@ class DashboardControllerTest < ActionController::TestCase
   end
 
   def test_flash_helper
+    setup_years
+    setup_months
     get :index
     assert_response :success
   end

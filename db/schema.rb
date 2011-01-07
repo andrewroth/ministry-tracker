@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100823202111) do
+ActiveRecord::Schema.define(:version => 20110106155626) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -181,6 +181,13 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.datetime "updated_at"
   end
 
+  create_table "dismissed_notices", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "notice_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "dorms", :force => true do |t|
     t.integer "campus_id"
     t.string  "name"
@@ -213,23 +220,26 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.datetime "updated_at"
   end
 
-  create_table "emergs", :force => true do |t|
-    t.integer "person_id"
-    t.string  "passport_num"
-    t.string  "passport_origin"
-    t.string  "passport_expiry"
-    t.text    "notes"
-    t.text    "meds"
-    t.string  "health_coverage_state"
-    t.string  "health_number"
-    t.string  "medical_plan_number"
-    t.string  "medical_plan_carrier"
-    t.string  "doctor_name"
-    t.string  "doctor_phone"
-    t.string  "dentist_name"
-    t.string  "dentist_phone"
-    t.string  "blood_type"
-    t.string  "blood_rh_factor"
+  create_table "event_campuses", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "campus_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "event_groups", :force => true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "events", :force => true do |t|
+    t.integer  "registrar_event_id"
+    t.integer  "event_group_id"
+    t.string   "register_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "free_times", :force => true do |t|
@@ -294,7 +304,7 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
   add_index "groups", ["campus_id"], :name => "index_groups_on_campus_id"
   add_index "groups", ["dorm_id"], :name => "index_groups_on_dorm_id"
   add_index "groups", ["ministry_id"], :name => "index_groups_on_ministry_id"
-  add_index "groups", ["semester_id"], :name => "index_c4c_pulse_staging.groups_on_semester_id"
+  add_index "groups", ["semester_id"], :name => "index_emu.groups_on_semester_id"
 
   create_table "imports", :force => true do |t|
     t.integer  "person_id"
@@ -340,9 +350,14 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.date    "updated_at"
     t.integer "ministries_count"
     t.string  "type"
+    t.integer "lft"
+    t.integer "rgt"
   end
 
+  add_index "ministries", ["lft"], :name => "index_emu.ministries_on_lft"
+  add_index "ministries", ["parent_id"], :name => "index_emu.ministries_on_parent_id"
   add_index "ministries", ["parent_id"], :name => "index_ministries_on_parent_id"
+  add_index "ministries", ["rgt"], :name => "index_emu.ministries_on_rgt"
 
   create_table "ministry_campuses", :force => true do |t|
     t.integer "ministry_id"
@@ -381,6 +396,13 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
   end
 
   add_index "ministry_roles", ["ministry_id"], :name => "index_ministry_roles_on_ministry_id"
+
+  create_table "notices", :force => true do |t|
+    t.text     "message"
+    t.boolean  "live"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "people", :force => true do |t|
     t.integer "user_id"
@@ -472,17 +494,6 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.datetime "updated_at"
   end
 
-  create_table "semesters", :force => true do |t|
-    t.integer  "year_id"
-    t.date     "start_date"
-    t.string   "desc"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "semesters", ["start_date"], :name => "index_semesters_on_start_date"
-  add_index "semesters", ["year_id"], :name => "index_semesters_on_year_id"
-
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -544,7 +555,10 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "updated_by_person_id"
   end
+
+  add_index "timetables", ["person_id"], :name => "index_emu.timetables_on_person_id"
 
   create_table "training_answers", :force => true do |t|
     t.integer  "training_question_id"
@@ -580,9 +594,12 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
   end
 
   create_table "user_codes", :force => true do |t|
-    t.integer "user_id"
-    t.string  "code"
-    t.string  "pass"
+    t.integer  "user_id"
+    t.string   "code"
+    t.text     "pass"
+    t.integer  "click_count", :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "user_codes", ["user_id"], :name => "index_user_codes_on_user_id"
@@ -624,12 +641,6 @@ ActiveRecord::Schema.define(:version => 20100823202111) do
     t.boolean  "default_view"
     t.string   "select_clause", :limit => 2000
     t.string   "tables_clause", :limit => 2000
-  end
-
-  create_table "years", :force => true do |t|
-    t.string   "desc"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end
