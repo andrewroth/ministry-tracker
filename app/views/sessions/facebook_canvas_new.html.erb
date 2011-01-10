@@ -21,7 +21,11 @@
   </head> 
   <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
-
+<br/>_________________________________________________<br/>
+<%=Facebook::APP_ID%><br/>
+<%=Facebook::CANVAS_URL%><br/>
+<%=session[:from_facebook_canvas]%><br/>
+<br/>_________________________________________________<br/>
     <br/>
 		<div id="loginBody">
 			<div id="facebookLoginWrapper">
