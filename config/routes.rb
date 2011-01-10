@@ -81,6 +81,7 @@ ActionController::Routing::Routes.draw do |map|
   map.new_gcx '/new_gcx', :controller => 'sessions', :action => 'new_gcx'
   map.facebook_canvas_new '/sessions/facebook_canvas_new', :controller => 'sessions', :action => 'facebook_canvas_new'
   map.facebook_tab_new '/sessions/facebook_canvas_new/tab', :controller => 'sessions', :action => 'facebook_tab_new'
+  map.leave_facebook_and_js_redirect '/leave_facebook_and_js_redirect', :controller => 'sessions', :action => 'leave_facebook_and_js_redirect'
   map.resource :session
   
   map.resources :developers
