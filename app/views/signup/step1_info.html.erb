@@ -89,7 +89,7 @@ All fields are required except for major and dorm.
   <%= render :partial => "dorm_tr" %>
   </table>
 
-  <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=147429778642985&amp;width=300&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
+  <fb:login-button show-faces="true" width="300" max-rows="2" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
 
 </div>
 
