@@ -6,8 +6,8 @@ module Facebook
   CONFIG = YAML.load_file(Rails.root.join("config/koala.yml"))[Rails.env]
   APP_ID = CONFIG['app_id']
   SECRET = CONFIG['secret_key']
-  CANVAS_URL = "https://apps.facebook.com/joinpulse/"
-  FANPAGE_URL = "https://www.facebook.com/campusforchrist"
+  CANVAS_URL = "http://apps.facebook.com/joinpulse/"
+  FANPAGE_URL = "http://www.facebook.com/campusforchrist"
   SIGNUP_PERMS = "email"
 end
 

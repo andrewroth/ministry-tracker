@@ -22,7 +22,7 @@
 
 
 <% instruction_block do %>
-<B>Step 1:</B> Please fill out your info and click next.  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.  This form will update your personal information.  If this is not you, please hit the ‘Start again’ button and click on the sign up link in the front page.  Thank you!</B><% end %>
+<B>Step 1:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Start again’ button and return to this page. Thank you!<% end %>
 <% end %>
 
 <center>
@@ -86,7 +86,7 @@
   <%= render :partial => "dorm_tr" %>
   </table>
 
-  <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=147429778642985&amp;width=300&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
+  <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=147429778642985&amp;width=250&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px;" allowTransparency="true"></iframe>
 
 </div>
 
