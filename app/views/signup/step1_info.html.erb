@@ -22,10 +22,7 @@
 
 
 <% instruction_block do %>
-<B>Step 1:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you, please hit the ‘Start again’ button and then return to this page. Thank you!<% end %>
-<BR/>
-<BR/>
-All fields are required except for major and dorm.
+<B>Step 1:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you, please hit the ‘Start again’ return to this page. Thank you!<% end %>
 <% end %>
 
 <center>
@@ -84,7 +81,7 @@ All fields are required except for major and dorm.
   %>
   <tr>
     <td class="label">Major </td>
-    <td><%= f.text_field :major %></td>
+    <td><%= f.text_field :major %> <small> Not required</small></td>
   </tr>
   <%= render :partial => "dorm_tr" %>
   </table>
