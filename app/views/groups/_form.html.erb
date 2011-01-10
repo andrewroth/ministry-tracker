@@ -10,9 +10,9 @@
   	<table border="0" cellspacing="5" cellpadding="5">
   	  <tr>
   	    <td>Type: </td>
-        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
+        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %><small> required</small></td>
   	  </tr>
-  		<tr><td>Name: </td><td><%= f.text_field :name %></td></tr>
+  		<tr><td>Name: </td><td><%= f.text_field :name %><small> required</small></td></tr>
   		<tr>
   			<td>Campus: </td>
   			<td>
@@ -23,6 +23,7 @@
   				                                    :with => "campus_id",
   				                                    :loading => "$('#spinnerc').show()",
   				                                    :complete => "$('#spinnerc').hide()") %>
+          <small> required</small>
   			</td>
   		</tr>
   		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
