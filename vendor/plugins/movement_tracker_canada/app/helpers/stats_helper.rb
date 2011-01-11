@@ -140,7 +140,7 @@ module StatsHelper
                           :title => stat_hash[:label], 
                           :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
                           :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
-                          :print_total => stat_hash[:grouping_method] == :last_non_zero ? false : true } 
+                          :print_total => (stat_hash[:show_total] == false || stat_hash[:grouping_method] == :last_non_zero) ? false : true } 
                       )
     end
     result
