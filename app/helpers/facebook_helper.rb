@@ -3,8 +3,6 @@ module FacebookHelper
     %|
     <div id="fb-root"></div>
     <script>
-      window.scroll(); // prevent user confusion when navigating from bottom of a long page to a shorter page
-
       window.fbAsyncInit = function() {
         FB.init({appId: '#{Facebook::APP_ID}',
                  status: true,
@@ -13,7 +11,8 @@ module FacebookHelper
         });
 
         window.setTimeout(function() {
-          FB.Canvas.setAutoResize();
+          $('html, body').animate({scrollTop:0}, 'slow'); // prevent confusion when navigating from long page to short page
+          FB.Canvas.setAutoResize(); // auto resize iframe size to prevent scroll bars (must be enabled in the app's settings)
         }, 250);
 
         facebook_init_callback();
