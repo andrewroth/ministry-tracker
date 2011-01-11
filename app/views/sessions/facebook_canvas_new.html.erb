@@ -21,16 +21,7 @@
   </head> 
   <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
-<br/>_________________________________________________<br/>
-<%=Rails.env%><br/>
-<%=Facebook::APP_ID%><br/>
-<%=Facebook::CANVAS_URL%><br/>
-<%=session[:from_facebook_canvas]%><br/>
-_________________________________________________<br/>
-<%=@oauth.inspect%><br/>
-_________________________________________________<br/>
-<%=@facebook_request.inspect%><br/>
-_________________________________________________<br/>
+
     <br/>
 		<div id="loginBody">
 			<div id="facebookLoginWrapper">
@@ -46,7 +37,7 @@ _________________________________________________<br/>
           />
 				</map>
 
-        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:1em;">
+        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:0em;">
           <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=<%=Facebook::APP_ID%>&amp;width=300&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
         </div>
 
