@@ -1,5 +1,5 @@
 
-
+<% if session[:from_facebook_canvas] == true %>
 <script>
   function facebook_init_callback() {
   }
@@ -19,6 +19,7 @@
     });
   }
 </script>
+<% end %>
 
 
 <% instruction_block do %>
