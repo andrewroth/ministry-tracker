@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
 
       # if user_id is not in the signed_request they have not authenticated our app
-      if @facebook_request["user_id"].present?
+      if @facebook_request.present? && @facebook_request["user_id"].present?
         load_my_facebook_graph_into_session_from_oauth_token(@facebook_request["oauth_token"])
       else
         session[:facebook_person] = nil
