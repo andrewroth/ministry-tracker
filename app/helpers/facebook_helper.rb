@@ -11,7 +11,7 @@ module FacebookHelper
         });
 
         window.setTimeout(function() {
-          top.location.href="#"; // prevent confusion when navigating from long page to short page by navigating to the top
+          scrollTo(0,0); // prevent confusion when navigating from long page to short page by navigating to the top
           FB.Canvas.setAutoResize(); // auto resize iframe size to prevent scroll bars (must be enabled in the app's settings)
         }, 250);
 
