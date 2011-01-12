@@ -37,13 +37,13 @@
           />
 				</map>
 
-        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:7em;">
-          <fb:login-button show-faces="true" width="300" max-rows="4" perms="<%=Facebook::SIGNUP_PERMS%>" style="float:left;"></fb:login-button>
+        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:0em;">
+          <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=<%=Facebook::APP_ID%>&amp;width=300&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
         </div>
 
         <%= image_tag("facebook_log_in_bottom_img.gif", :usemap => "#bottomimg", :id => "loginMainImg", :style => "border:none;")%>
         <map name="bottomimg">
-				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css'" alt="Sign In" />
+				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=<%=u "https://signin.mygcx.org/cas/login.htm?service=https://pulse.campusforchrist.org/&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" %>'" alt="Sign In" />
 				  <area shape="rect" coords="691,83,723,94" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=https://www.mygcx.org/Pulse_Help_Center/screen/home'" alt="Help!" />
         </map>
 			</div>
