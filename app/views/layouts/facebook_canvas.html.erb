@@ -28,7 +28,11 @@
 
 	</head>
 	<body id="facebook_canvas_body" class="facebook_canvas">
-
+<br/>~~<br/>
+<%=session[:from_facebook_canvas]%>
+<br/>~<br/>
+<%=request.inspect%>
+<br/>~~<br/>
     <%= javascript_include_tag "facebook_sdk_helpers.js" %>
     <%= init_facebook_js_sdk_async %>
     
