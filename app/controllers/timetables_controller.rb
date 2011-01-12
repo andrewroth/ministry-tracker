@@ -252,8 +252,11 @@ class TimetablesController < ApplicationController
 
     def get_layout ()
       if params[:print_it] == "true"
-         return 'printable';
+        return 'printable'
+      elsif @signup && session[:from_facebook_canvas] == true
+        return "facebook_canvas"
       end
+      
       @signup ? 'application' : 'people'
     end
 end

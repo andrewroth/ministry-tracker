@@ -13,7 +13,7 @@ module Pat
   end
 
   def project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", event_group_id = current_event_group_id, secondary_sort = {})
-    return [] unless campus_ids.present?
+    return [{}, {}] unless campus_ids.present?
     campus_ids << 0 unless campus_ids.include?(0)
 
     campuses = Campus.find(:all,

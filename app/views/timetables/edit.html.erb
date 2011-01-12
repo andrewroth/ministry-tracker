@@ -1,13 +1,11 @@
 <%- if @signup %>
   <%- instruction_block do %>
-<b>Step 3:</b> You're almost done! Enter your timetable so that friends know when you're free to meet!<br/><br/>This step is optional - if you don't have your timetable just hit the 'Edit Timetable Later' button at the bottom of this page and you'll receive an email with a link back to this page.
+    <b>Step 3:</b> You're almost done! Enter your timetable to indicate when you're free to meet!<br/><br/>If you don't have your timetable just hit the 'Edit Timetable Later' button at the bottom of this page and you'll receive an email with a link back to this page.
   <%- end %>
-  <script>
-      $(document).ready(function() {
-        jQuery("#instructions").after("<center>\n  \n\n<table id=\"progress-table\" style=\"width: 600px; margin-bottom:0px;\" class=\"center\" border=\"0\">\n  <tr class=\"progress-label\">\n    <td colspan=\"2\">\n      Info\n    </td>\n    <td colspan=\"2\">\n      Group\n    </td>\n    <td colspan=\"2\">\n      Timetable\n    </td>\n  </tr>\n  <tr class=\"bar\">\n    <td style=\"width:50px\" class=\"progress-done\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td style=\"width:50px\" class=\"progress-done\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td style=\"width:50px\" class=\"progress-done\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td style=\"width:50px\" class=\"progress-done\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td style=\"width:50px\" class=\"progress-done current-progress\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td style=\"width:50px\" class=\"progress-todo\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n  </tr>\n  <tr class=\"progress-bottom\">\n    <td colspan=\"2\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td colspan=\"2\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n    <td colspan=\"2\">\n      <img alt=\"S\" src=\"/images/s.gif?1276531214\" />\n    </td>\n  </tr>\n</table>\n\n</center>\n" +
-        "<DIV style=\"clear:both\" class=\"center\"><A HREF=\"step2_group\" class=\"action-button\">Back</A></DIV>");
-    });
-  </script>
+    
+  <center><%= render :partial => 'signup/jquery_ui_progress', :locals => { :current_step => 3 } %></center>
+
+  <div class="center"><a href="step2_group" class="action-button">Back</a></div>
 <%- end %>
 
 <h1><%= @person.full_name %></h1> 
