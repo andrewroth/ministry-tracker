@@ -28,9 +28,8 @@
 
 	</head>
 	<body id="facebook_canvas_body" class="facebook_canvas">
-
-    <%= init_facebook_js_sdk_async %>
     <%= javascript_include_tag "facebook_sdk_helpers.js" %>
+    <%= init_facebook_js_sdk_async %>
     
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
