@@ -189,7 +189,7 @@ class MinistryInvolvementsController < ApplicationController
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
                                                                  people_ids, params[:search_by_ministry_ids], params[:search_by_ministry_role_ids]])
-                                                             
+        
       else
         @involvements = MinistryInvolvement.all(:include => [:person],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
@@ -200,9 +200,15 @@ class MinistryInvolvementsController < ApplicationController
                                                                  people_ids, params[:search_by_ministry_ids]])
       end
 
-      involvement_ids = @involvements.collect{|involvement| involvement.id}
+      people_with_involvements_ids = @involvements.collect{|involvement| involvement.person.id}
 
-      @people = Person.all(:conditions => ["#{Person._(:id)} IN (?)", involvement_ids])
+      # find people who do not have an involvement
+      people_without_involvements_ids = []
+      people_ids.each do |id|
+        people_without_involvements_ids << id.to_i if people_with_involvements_ids.index(id.to_i).nil?
+      end
+      @people_without_involvements = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_without_involvements_ids]) unless people_without_involvements_ids.empty?
+      
     end
   end
 
@@ -246,11 +252,11 @@ class MinistryInvolvementsController < ApplicationController
         else
           # failed to get permission to update this person
           mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
-          people_notice += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> <b> #{mi.person.full_name} is currently a #{mi.ministry_role.name} at #{mi.ministry.name}, you can't set them to #{new_role.name} </b><br/>"
+          people_notice += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> <b> #{mi.person.full_name} is currently a #{mi.ministry_role.name} at #{mi.ministry.name}, sorry you can't set them to #{new_role.name} </b><br/>"
         end
       end
 
-      flash[:notice] = "<big><b> Updated the following people's roles: </b></big> <br/> <br/> #{people_notice}"
+      flash[:notice] = "<big><b> The following role changes were made: </b></big> <br/> <br/> #{people_notice}"
     end
 
     redirect_to :action => "directory", :controller => "people"
