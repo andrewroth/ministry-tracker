@@ -87,7 +87,7 @@ class PeopleControllerTest < ActionController::TestCase
     get :directory, :search_id => 1
 
     assert_response :success
-    assert_equal("50000", assigns["people"][0]["person_id"])
+    assert_equal(50000, assigns["people"][0]["person_id"])
     assert_equal(1, assigns["people"].size)
 
     #Factory(:address_1)

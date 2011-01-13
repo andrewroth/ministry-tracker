@@ -5,6 +5,7 @@ class GroupTypeTest < ActiveSupport::TestCase
   def setup
     setup_campuses
     setup_ministries
+    setup_ministry_campuses
     setup_groups
     setup_semesters
   end

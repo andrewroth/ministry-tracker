@@ -13,7 +13,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_index
     get :index
     assert_response :success
-    assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
+    assert_array_similarity([ Group.find(3), Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
   end
 
   def test_join
@@ -83,6 +83,7 @@ class GroupsControllerTest < ActionController::TestCase
       assert_response :success
       post :create, :group => {:name => 'Water Water Water', :address => 'here', :city => 'there', 
                                :state => 'IL', :country => 'United States',
+                               :campus_id => '1', :ministry_id => '1',
                                :email => 'asdf', :group_type_id => 1, :semester_id => 1  }
     end
     assert_not_nil assigns(:group) 
@@ -95,6 +96,7 @@ class GroupsControllerTest < ActionController::TestCase
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
                              :state => 'IL', :country => 'United States',
+                             :campus_id => '2', :ministry_id => '1',
                              :email => 'asdf', :group_type_id => 1, :semester_id => 1 },
                              :person => [2000, 3000]
     assert_equal old_count+1, Group.count
@@ -106,6 +108,7 @@ class GroupsControllerTest < ActionController::TestCase
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
                              :state => 'IL', :country => 'United States',
+                             :campus_id => '2', :ministry_id => '1',
                              :email => 'asdf', :group_type_id => 1, :semester_id => 1 }, :isleader => "1"
     assert_equal old_count+1, Group.count
     assert_not_equal([], ::GroupInvolvement.all(:conditions => { :person_id => 50000, :group_id => Group.last.id }) )
@@ -116,6 +119,7 @@ class GroupsControllerTest < ActionController::TestCase
     old_count = Group.count
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there', 
                              :state => 'IL', :country => 'United States',
+                             :campus_id => '2', :ministry_id => '1',
                              :email => 'asdf', :group_type_id => 1, :semester_id => 1  }
     assert_equal old_count+1, Group.count
   end
