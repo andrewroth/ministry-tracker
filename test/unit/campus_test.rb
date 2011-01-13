@@ -12,6 +12,7 @@ class CampusTest < ActiveSupport::TestCase
     Factory(:access_1)
     Factory(:access_3)
     setup_ministry_involvements
+    setup_ministry_campuses
     setup_groups
     setup_semesters
   end
