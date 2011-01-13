@@ -102,7 +102,7 @@ class MinistryRolesController < ApplicationController
     end
     render :nothing => true
   end
-  
+
   protected
   def find_ministry_role
     @ministry_role = MinistryRole.find(params[:id])
