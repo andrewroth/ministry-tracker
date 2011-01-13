@@ -461,7 +461,9 @@
             :label => "Number of people in evangelistic studies",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :sum,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_p2c_numInEvangStudies,
+                                    :annual_report => :annualreport_lnz_p2c_numInEvangStudies},
             :display_type => :text_positive_integer,
             :order => 1
           }, 
@@ -485,7 +487,9 @@
             :label => "Number of people who are sharing their faith a. with P2C",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :sum,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_p2c_numSharingInP2c,
+                                    :annual_report => :annualreport_lnz_p2c_numSharingInP2c},
             :display_type => :text_positive_integer,
             :order => 4
           }, 
@@ -493,7 +497,9 @@
             :label => "b. outside P2C",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :sum,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_p2c_numSharingOutP2c,
+                                    :annual_report => :annualreport_lnz_p2c_numSharingOutP2c},
             :display_type => :text_positive_integer,
             :order => 5
           }
@@ -521,6 +527,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
+          :show_total => false,
           :order => 3
         },
         :build_group_members => {
@@ -528,6 +535,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :core_students}],
+          :show_total => false,
           :order => 4
         },
         :send_group_leaders => {
@@ -535,6 +543,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
+          :show_total => false,
           :order => 5
         },
         :send_laborers => {
@@ -581,6 +590,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :evang_studies}],
+          :show_total => false,
           :order => 3
         },
         :integrated_new_believers => {
@@ -595,6 +605,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
+          :show_total => false,
           :order => 5
         },
         :commit_filled_hs => {
@@ -609,6 +620,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_in}],
+          :show_total => false,
           :order => 7
         },
         :sharing_out => {
@@ -616,6 +628,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_p2c_special, :line => :sharing_out}],
+          :show_total => false,
           :order => 8
         },
         :trained_to_share_in => {
@@ -637,6 +650,7 @@
           :collected => :monthly,
           :column_type => :sum,
           :columns_sum => [{:report => :monthly_report, :line => :spirit_mult}],
+          :show_total => false,
           :order => 11
         }
       },
