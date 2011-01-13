@@ -18,28 +18,35 @@
 
     <%= javascript_include_tag "facebook_sdk_helpers.js" %>
 
-    <%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>
   </head> 
-  <body> 
+  <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
+    <br/>
 		<div id="loginBody">
-			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
-			<div id="loginwrapper">
-				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
-				<map name="getin">
-				  <area shape="rect" coords="320,53,662,117" alt="Join a Group! (No need to login)"
-                <% if session[:facebook_person].present? %>
-                  href="<%=@join_a_group_url%>"
-                <% else %>
-                  href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>')" />
-                <% end %>
-				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+			<div id="facebookLoginWrapper">
+				<%= image_tag("c4c_logo.gif", :style => "float: left;")%>
+				<%= image_tag("facebook_log_in_main_img.gif", :usemap => "#mainimg", :id => "loginMainImg", :style => "border:none;")%>
+				<map name="mainimg">
+				  <area shape="rect" coords="29,62,371,108" alt="Join a Group! (No need to login)"
+            <% if session[:facebook_person].present? %>
+              href="<%=@join_a_group_url%>"
+            <% else %>
+              href="#" onClick="facebookOAuthRequest('<%=@join_a_group_url%>', '<%=Facebook::SIGNUP_PERMS%>')"
+            <% end %>
+          />
 				</map>
-				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
-				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
-				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
-				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
+
+        <div style="width:300px; text-align:center; margin:0 auto; padding-top:3em; padding-bottom:0em;">
+          <iframe src="http://www.facebook.com/plugins/facepile.php?app_id=<%=Facebook::APP_ID%>&amp;width=300&amp;max_rows=2" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px;" allowTransparency="true"></iframe>
+        </div>
+
+        <%= image_tag("facebook_log_in_bottom_img.gif", :usemap => "#bottomimg", :id => "loginMainImg", :style => "border:none;")%>
+        <map name="bottomimg">
+				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=<%=u "https://signin.mygcx.org/cas/login.htm?service=https://pulse.campusforchrist.org/&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" %>'" alt="Sign In" />
+				  <area shape="rect" coords="691,83,723,94" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=https://www.mygcx.org/Pulse_Help_Center/screen/home'" alt="Help!" />
+        </map>
 			</div>
 		</div>
+    
 	</body>
 </html>

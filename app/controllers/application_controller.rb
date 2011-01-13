@@ -508,7 +508,7 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_unless_is_active_hrdb_staff
-      unless @me.cim_hrdb_staff.boolean_is_active == true
+      unless @me.cim_hrdb_staff.try(:boolean_is_active)
         flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
         redirect_to :action => "index", :controller => "stats"
         return false

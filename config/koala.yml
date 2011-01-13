@@ -1,9 +1,12 @@
-development:
-  app_id: 1f7bb7461da2fc28d06e13cc2630a450
+dev:
+  app_id: 137413172985837
+  secret_key: 10128b10aaf2140a6afa659f15f765e8
+  canvas_url: "http://apps.facebook.com/joinmoose/"
+staging:
+  app_id: 147429778642985
   secret_key: 95bf88723d6066291998d0538a6cf280
-test:
-  app_id: 1f7bb7461da2fc28d06e13cc2630a450
+  canvas_url: "http://apps.facebook.com/joinpulse/"
+prod:
+  app_id: 147429778642985
   secret_key: 95bf88723d6066291998d0538a6cf280
-production:
-  app_id: 1f7bb7461da2fc28d06e13cc2630a450
-  secret_key: 95bf88723d6066291998d0538a6cf280
+  canvas_url: "http://apps.facebook.com/joinpulse/"

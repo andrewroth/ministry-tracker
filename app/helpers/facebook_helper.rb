@@ -10,12 +10,12 @@ module FacebookHelper
                  xfbml: true
         });
 
-        facebook_init_callback();
+        window.setTimeout(function() {
+          scrollTo(0,0); // prevent confusion when navigating from long page to short page by navigating to the top
+          FB.Canvas.setAutoResize(); // auto resize iframe size to prevent scroll bars (must be enabled in the app's settings)
+        }, 250);
 
-        /* runs after entire page has finished loading (not just DOM) */
-        $(window).bind("load", function() {
-          FB.Canvas.setSize({ width: 758, height: document.getElementById('facebook_canvas_body').offsetHeight+50 });
-        });
+        facebook_init_callback();
 
         FB.getLoginStatus(function(response) {
           if (response.session) {

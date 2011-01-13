@@ -70,7 +70,7 @@ class PersonTest < ActiveSupport::TestCase
   test "group_involvements_by_group_type should filter by ministry" do
     person = @josh
     assert_equal 2, person.ministry_involvements.length
-    assert_equal 1, person.group_group_involvements(:all, :ministry => Ministry.first).length
+    assert_equal 2, person.group_group_involvements(:all, :ministry => Ministry.first).length
   end
 
   test "is_leading_group_with? works" do

@@ -215,10 +215,9 @@ class SignupController < ApplicationController
 
     @campus = Campus.find session[:signup_campus_id]
     @group = @campus.find_or_create_ministry_group gt, nil, semester
-    gi = @group.group_involvements.find_or_create_by_person_id_and_level :person_id => @person.id, :level => 'member'
+    gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
     gi.send_later(:join_notifications, base_url)
 
-    flash[:notice] = "Thank you!  You'll be put into a group and someone will notify you of the group details."
 
     redirect_to :action => :step3_timetable
   end

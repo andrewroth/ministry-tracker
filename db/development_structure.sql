@@ -557,7 +557,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=75369 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75377 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -675,6 +675,9 @@ CREATE TABLE `user_codes` (
   `user_id` int(11) DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
   `pass` text,
+  `click_count` int(11) DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_user_codes_on_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1013,6 +1016,16 @@ INSERT INTO schema_migrations (version) VALUES ('20101122190758');
 INSERT INTO schema_migrations (version) VALUES ('20101122193317');
 
 INSERT INTO schema_migrations (version) VALUES ('20101122201256');
+
+INSERT INTO schema_migrations (version) VALUES ('20101126185106');
+
+INSERT INTO schema_migrations (version) VALUES ('20101214173232');
+
+INSERT INTO schema_migrations (version) VALUES ('20110106155626');
+
+INSERT INTO schema_migrations (version) VALUES ('20110111182832');
+
+INSERT INTO schema_migrations (version) VALUES ('20110111183813');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

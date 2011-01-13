@@ -4,7 +4,8 @@
 class SessionsController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data
   filter_parameter_logging :password
-  skip_before_filter :cas_filter, :cas_gateway_filter, :only => :create
+  skip_before_filter :cas_filter, :cas_gateway_filter, :only => [:create, :facebook_canvas_new, :facebook_tab_new]
+  before_filter :facebook_session, :only => [:new, :new_gcx, :facebook_canvas_new]
 
   def crash
     throw("Forced crash.  env: #{RAILS_ENV}")
@@ -16,23 +17,24 @@ class SessionsController < ApplicationController
   end
 
   def facebook_canvas_new
-
-    session[:from_facebook_canvas] = true
-
     @oauth = Koala::Facebook::OAuth.new
     @join_a_group_url = url_for(:only_path => false, :controller => "signup", :action => "facebook")
-
+    
     if params["signed_request"].present?
       @facebook_request = @oauth.parse_signed_request(params["signed_request"])
 
       # if user_id is not in the signed_request they have not authenticated our app
-      if @facebook_request["user_id"].present?
+      if @facebook_request.present? && @facebook_request["user_id"].present?
         load_my_facebook_graph_into_session_from_oauth_token(@facebook_request["oauth_token"])
       else
         session[:facebook_person] = nil
       end
     end
     
+    render :layout => false
+  end
+
+  def facebook_tab_new
     render :layout => false
   end
 
@@ -138,6 +140,24 @@ class SessionsController < ApplicationController
     else
       flash[:notice] = "You have been logged out."
       logout_keeping_session!
+    end
+  end
+
+  
+  def leave_facebook_and_js_redirect
+    @js_redirect_url = params[:js_redirect_url]
+    session[:from_facebook_canvas] = false
+    
+    render :layout => false
+  end
+
+
+  def facebook_session
+    case params[:action]
+    when "facebook_canvas_new"
+      session[:from_facebook_canvas] = true
+    else
+      session[:from_facebook_canvas] = nil
     end
   end
     

@@ -378,9 +378,9 @@ h1 {
 }
 
 #wrapper.facebook_canvas {
-  border-color: #3B5998 #B3B3B3;
+  border-color: #3B5998 #B3B3B3 #B3B3B3;
   border-style: solid;
-  border-width: 9px 1px 40px;
+  border-width: 9px 1px 1px;
   min-width: 0;
 	max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
   margin-top: 0;
@@ -1074,10 +1074,14 @@ div.flash b, div.flash_notice b  {
 .setLink a:link {color: #1F429B;}
 .setLink a:visited {color: #1F429B;}
 
+div.fieldWithErrors{
+  display: inline-block;
+}
+
 .fieldWithErrors input {
   display: block;
-border:1px solid red;
-background:pink;
+  border:1px solid red;
+  background:pink;
 }
 
 #errorExplanation {
@@ -1745,7 +1749,7 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 400px; float: left; padding: 0 2em 0 3em;
+  width: 475px; float: left; padding: 0 1em 0 1em;
 }
 
 #signup_step1_columns {
