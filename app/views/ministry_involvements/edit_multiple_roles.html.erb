@@ -6,7 +6,12 @@
   <big><%= image_tag("silk/error.png") %> You're about to change all of the following people's roles to the role that you select below, regardless of their current role.</big>
   <br/>
   <br/>
-  A person may have different roles at different ministries, only the role at the ministry specified for each person below will be changed.
+  Some people may have different roles at different ministries, only the role at the ministry specified beside each person below will be changed.
+  <br/>
+  <br/>
+  <%= image_tag("silk/arrow_up.png") %> You may promote someone up to and including your role.
+  <br/>
+  <%= image_tag("silk/arrow_down.png") %> You may demote someone only if they have a lower role than you.
   <br/>
   <br/>
   <br/>
@@ -17,6 +22,7 @@
       <th>Ministry</th>
       <th>Current Role</th>
     </tr>
+
     <% @involvements.each do |involvement| %>
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
       <td><%= link_to("#{involvement.person.full_name}", "/people/#{involvement.person.id}", {:title => "Goto #{involvement.person.first_name.capitalize}'s profile"}) -%></td>
@@ -27,8 +33,17 @@
   </table>
 
   <br/>
-  <br/>
+
+  <% unless @people_without_involvements.blank? || @people_without_involvements.empty? %>
+    <%= image_tag("silk/exclamation.png") %> <b> The following people cannot be included, please update their roles on an individual basis: </b> <br/>
+    <%= @people_without_involvements.collect{|person| link_to("#{person.full_name}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"}) }.join(', ') %>
+    <br/>
+    <br/>
+  <% end %>
   
+  <br/>
+  <br/>
+
   <% form_tag({:action => "update_multiple_roles", :controller => "ministry_involvements", :method => "get"},
     {:onSubmit => "if( $('#role_id').val() == '' || $('#role_id :selected').text() == '') { alert('Please select a new role to change to first!'); return false; } else { return true; }"}) do %>
     
@@ -50,6 +65,8 @@
   <% end %>
 
 <% else %>
+  <br/>
+  Sorry, the ministry involvements that you want to edit were not received properly. Please try again!<br/><br/>
   <%= link_to("Back", :back) %>
 <% end %>
 </div>
