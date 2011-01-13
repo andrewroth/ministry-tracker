@@ -581,8 +581,9 @@ class PeopleController < ApplicationController
   end
   
   # Question: what does it do? Are there customisable views, and this changes
-  # the currently used one?
+  # the currently used one? Yes - see the directory
   def change_view
+    session[:user_changed_view] = true
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
     session[:order_column_id] = nil
@@ -707,6 +708,15 @@ class PeopleController < ApplicationController
     end
    
     def get_view
+      # first automatically change the view if the user has not chosen their own view
+      if params[:view].blank? && session[:user_changed_view].blank? && params[:role].present?
+        # change view to one that actually shows roles because we're searching by role
+        session[:view_id] = View.first(:conditions => {:ministry_id => @ministry.id, :title => "Roles"}).id
+        # Clear session[:order] since this view might not have the same columns
+        session[:order_column_id] = nil
+      end
+
+
       view_id = session[:view_id]
       if view_id
         @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
