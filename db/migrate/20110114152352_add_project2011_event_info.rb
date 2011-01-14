@@ -1,6 +1,6 @@
 class AddProject2011EventInfo < ActiveRecord::Migration
 
-  NEW_EVENT_GROUPS = [{:title => "Project Registration 2011", :descripton => "Project Registration 2011"}]
+  NEW_EVENT_GROUPS = [{:title => "Project", :description => "Project"}]
 
   NEW_EVENTS = [{:registrar_event_id => "893920741", :event_group_title => NEW_EVENT_GROUPS[0][:title], :register_url => "http://projectreg2011.eventbrite.com/",
                  :campuses => [72, 43, 76, 73, 37, 74, 84, 61, 46, 75, 87, 48, 70, 49, 40, 77, 14, 80, 88, 62, 64, 63, 65, 7, 19, 8, 51, 24, 83, 141, 53, 67, 68, 54, 85, 1, 2, 55, 56, 57]}
