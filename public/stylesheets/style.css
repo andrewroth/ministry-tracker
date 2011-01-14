@@ -153,6 +153,8 @@ float:left;
 	display:inline;
 }
 strong {font-weight:bold;}
+a:link strong, a:visited strong {color: #1F429B; font-weight:bold;}
+a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 
 
 .directorytable {
@@ -576,9 +578,11 @@ div.sectionHeader h2 {
 
 #searchBox {
   margin:10px 0 10px;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 15px 0px;
   /*border: 1px solid #ccc;*/
   background:#F7F7FA;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  margin: 2em 0;
 }
 
 
@@ -813,6 +817,9 @@ a.action-button:hover, input.action-button:hover {
 }
 a.action-button u {
 color: #1F429B;
+}
+a.action-button img {
+  vertical-align: middle;
 }
 
 .drag_me {cursor:pointer;}
@@ -1124,12 +1131,12 @@ list-style-type:round;
 .adfieldbox {
 float:left;
 margin-right:15px;
-min-width:180px;
+/*min-width:180px;*/
 }
 
-.adfieldbox input.wide{width:175px; padding:3px 0 3px 0;}
-.adfieldbox select.wide, .adfieldbox select.doublewide{width:175px; padding:0; height:65px;}
-.adfieldbox select.doublewide {width:371px;}
+.adfieldbox input.wide {width:200px; padding:3px 0;}
+.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 250px;}
+.adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
 a.help_block {
   float: right;
@@ -1243,7 +1250,7 @@ div.choose_ministry_tree {
 #statsTitle, #reportTitle {
   color: #1F429B;
   border-bottom:1px dotted #1F429B;
-	margin: 0 0 10px 3px;
+  margin: 0 0 10px 3px;
 }
 
 #newWeeklyReportLink {
@@ -1256,7 +1263,7 @@ div.choose_ministry_tree {
 }
 
 #formHeading {
-	text-align: center;
+  text-align: center;
 }
 
 .campusSemesterStats {
@@ -1283,7 +1290,7 @@ div.choose_ministry_tree {
 .statsFormBoxTitle {
   font-size: 130%;
   margin-bottom: 0.5em;
-	text-align:center;  
+  text-align:center;
 }
 
 .statsFormField label {
