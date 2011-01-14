@@ -15,6 +15,7 @@ Factory.define :group_2, :class => Group, :singleton => true, :singleton => true
   g.group_type_id '2'
   g.ministry_id '1'
   g.semester_id 14
+  g.campus_id '2'
 end
 
 Factory.define :group_3, :class => Group, :singleton => true, :singleton => true do |g|
@@ -31,4 +32,6 @@ Factory.define :group_4, :class => Group, :singleton => true, :singleton => true
   g.name '\'Other\''
   g.group_type_id '3'
   g.semester_id 14
+  g.campus_id '2'
+  g.ministry_id '1'
 end
