@@ -9,6 +9,8 @@
       setValueIfNotSet('person_first_name', response.first_name);
       setValueIfNotSet('person_last_name', response.last_name);
       setValueIfNotSet('person_email', response.email);
+      setValueIfNotSet('person_local_phone', response.mobile_phone);
+      setValueIfNotSet('person_major', response.address);
 
       // don't confuse gender index with the value
       if(response.gender == "male") {
