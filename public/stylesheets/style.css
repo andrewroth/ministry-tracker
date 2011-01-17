@@ -1756,6 +1756,15 @@ td.eventAttendees {
   width: 100%; display: inline-block; padding: 1em 0 1em 0;
 }
 
+tr.required_field td.label {
+  font-weight: bold;
+}
+
+tr.required_field input {
+  border: 1px solid #FFCB05;
+}
+
+
 
 /************************************************/
 /* Search section                               */
