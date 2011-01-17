@@ -46,8 +46,10 @@ class SearchController < ApplicationController
   end
 
   def autocomplete
-    @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
-
+    @people = []
+    if logged_in? # necessary because we skip standard login stack for performance gain
+      @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+    end
     render :layout => false
   end
 
@@ -277,20 +279,22 @@ class SearchController < ApplicationController
 
 
   def setup_session_for_search
-    session[:search] ||= {}
-    
-    session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
-    session[:search][:group_search_limit_condition] ||= get_involvement_limit_condition_for_group_search
+    if logged_in? # necessary because we skip standard login stack for performance gain
+      session[:search] ||= {}
 
-    if session[:search][:search_ministry_name].nil? || session[:search][:search_ministry_id].nil? || session[:search][:search_ministry_id] != session[:ministry_id]
-      session[:search][:search_ministry_name] = get_ministry.name
-      session[:search][:search_ministry_id] = session[:ministry_id]
+      session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
+      session[:search][:group_search_limit_condition] ||= get_involvement_limit_condition_for_group_search
+
+      if session[:search][:search_ministry_name].nil? || session[:search][:search_ministry_id].nil? || session[:search][:search_ministry_id] != session[:ministry_id]
+        session[:search][:search_ministry_name] = get_ministry.name
+        session[:search][:search_ministry_id] = session[:ministry_id]
+      end
+
+      session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+      session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
+
+      session[:search][:search_prepared] ||= true
     end
-
-    session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
-    session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
-    
-    session[:search][:search_prepared] ||= true
   end
 
 end
