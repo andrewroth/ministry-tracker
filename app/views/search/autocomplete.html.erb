@@ -1,9 +1,13 @@
-<%= render :partial => "person_ac", :collection => @people %>
-<% unless @people.size < @max_num_ac_results %>
-  <%= link_to("<div class='autoCompleteResult'>" +
-      "<div class='acLinkPath' style='display: none;'>/search?q=#{@q}</div>" +
-      "<div class='autoCompleteMorePic'>#{image_tag("/images/silk/zoom.png")}</div>" +
-      "<div class='autoCompleteMore'>See all results for <span class='autoCompleteName'>#{@q}</span></div>" +
-      "<div class='autoCompleteMoreInfo'>displaying top #{@max_num_ac_results} results</div>" +
-      "</div>", "/search?q=#{@q}") %>
+<% if @people.present? %>
+  <%= render :partial => "person_ac", :collection => @people %>
+  <% unless @people.size < @max_num_ac_results %>
+    <%= link_to("<div class='autoCompleteResult'>" +
+        "<div class='acLinkPath' style='display: none;'>/search?q=#{@q}</div>" +
+        "<div class='autoCompleteMorePic'>#{image_tag("/images/silk/zoom.png")}</div>" +
+        "<div class='autoCompleteMore'>See all results for <span class='autoCompleteName'>#{@q}</span></div>" +
+        "<div class='autoCompleteMoreInfo'>displaying top #{@max_num_ac_results} results</div>" +
+        "</div>", "/search?q=#{@q}") %>
+  <% end %>
+<% elsif !logged_in? %>
+  <br/><%= image_tag("silk/exclamation.png") %> <b>You have logged out,<br/>please login and try searching again.</b><br/>&nbsp;
 <% end %>
