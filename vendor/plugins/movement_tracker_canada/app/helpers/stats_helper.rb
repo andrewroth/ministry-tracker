@@ -28,7 +28,7 @@ module StatsHelper
   end
 
   def report_type_links_to_show
-    @report_type_links_to_show ||= report_types.collect {| key, value | key if authorized?(value[:action], value[:controller]) }.compact.sort { |x, y| report_types[x][:order] <=> report_types[y][:order] }
+    @report_type_links_to_show ||= report_types.collect {| key, value | key if (authorized?(value[:action], value[:controller]) && !(value[:hidden] == true)) }.compact.sort { |x, y| report_types[x][:order] <=> report_types[y][:order] }
   end
 
   def report_type_link_to_remote(report_type)
@@ -42,6 +42,10 @@ module StatsHelper
   
   def order_by_link(text, column)
     link_to_remote(text, :url => {:action => "select_report"}, :with => "'order_by=#{column}'", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
+  end
+  
+  def single_stat_link(stat_hash, single_stat_reference)
+    link_to_remote(stat_hash[:label], :url => {:action => "select_report"}, :with => "'report_type=one_stat&statreport=#{single_stat_reference[0]}&stat=#{single_stat_reference[1]}'", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
   end
   
   def show_summary_report(report_type, permission_granted)
@@ -128,16 +132,19 @@ module StatsHelper
     special_total
   end
 
-  def show_stat_hash_line(period_model_array, campus_ids, stat_hash, staff_id = nil)
+  def show_stat_hash_line(period_model_array, campus_ids, stat_hash, staff_id = nil, alternate_title = nil, single_stat_reference = nil)
     result = ""
+    title = stat_hash[:label]
+    title = alternate_title unless alternate_title.nil?
+    title = single_stat_link(stat_hash, single_stat_reference) unless single_stat_reference.nil?
 
     if stat_hash[:column_type] == :blank_line
       result = render(:partial => 'stats/blank_line')
     elsif line_should_show(period_model_array, stat_hash)
       result = render(:partial => 'stats/stats_line',
-                      :locals => {
+                      :locals => { 
                           :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
-                          :title => stat_hash[:label], 
+                          :title => title, 
                           :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
                           :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
                           :print_total => (stat_hash[:show_total] == false || stat_hash[:grouping_method] == :last_non_zero) ? false : true } 
