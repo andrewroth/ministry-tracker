@@ -21,6 +21,7 @@ class PeopleController < ApplicationController
   skip_standard_login_stack :only => free_actions
      
   MENTOR_ID_NONE = 0
+  ID_CONVERTED_FROM_NON_NUMERIC = 0
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -272,9 +273,11 @@ class PeopleController < ApplicationController
   def remove_mentor
     # We don't actually delete people, just set the 'mentor_id' to 0
     #@person = Person.find(params[:id], :include => [:mentor_id])
-    @person.mentor_id = MENTOR_ID_NONE
-    @person.save
-    render :partial => "mentor_search_box", :locals => { :person => @person, :q => @q }
+    
+    person = Person.find(params[:id]) # for some reason @person is always the Pulse user
+    person.mentor_id = MENTOR_ID_NONE
+    person.save
+    render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
   end
   
   
@@ -287,6 +290,7 @@ class PeopleController < ApplicationController
     person.mentor_id = MENTOR_ID_NONE
     person.save
     render :nothing => true
+    #render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
   end
 
   # GET /people/show
@@ -304,16 +308,33 @@ class PeopleController < ApplicationController
       
       # check GET parameters generated from mentor auto-complete search; set new mentor if ID found
       if params[:m]
-        @person.mentor_id = params[:m];
-        @person.save
+        begin
+          mentor_id = params[:m].to_i
+          ensure_existence = Person.find(mentor_id)         
+          if mentor_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+            @person.mentor_id = params[:m];
+            @person.save
+          end
+          
+        rescue ActiveRecord::RecordNotFound
+          # DO NOTHING
+        end        
       end     
       
        # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
       if params[:mt]
-        person = Person.find(params[:mt])
-        person.mentor_id = @person.id
-        person.save
-      end          
+        begin
+          mentee_id = params[:mt].to_i
+          if mentee_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+            person = Person.find(params[:mt])
+            person.mentor_id = @person.id
+            person.save 
+          end
+               
+        rescue ActiveRecord::RecordNotFound
+          # DO NOTHING
+        end     
+      end
       
       get_ministry_involvement(get_ministry)
       get_people_responsible_for

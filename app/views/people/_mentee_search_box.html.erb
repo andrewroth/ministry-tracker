@@ -1,5 +1,6 @@
 <% if authorized?(:index, :search) %>
-  <% if (authorized?(:return_people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
+  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) 
+      && ((authorized?(:add_mentee, :people)&&(person == @me)) || authorized?(:add_mentee_other, :people))) %>
 
     <div id="uberMenteeSearchContainer">
       <% default_search_box_text = "search" %>
@@ -19,7 +20,7 @@
       <%= javascript_include_tag "jquery.ajaxQueue.js" %>
       <%= javascript_include_tag "jquery.autocomplete.js" %>
       <script>
-        $("#uberMenteeSearchBox").autocomplete("/search/autocomplete_mentees", {
+        $("#uberMenteeSearchBox").autocomplete("/search/autocomplete_mentees/?p="+<%= person.id %>+"", {
           resultsClass: "alt_ac_results",
           minChars: 2,
           selectFirst: false,

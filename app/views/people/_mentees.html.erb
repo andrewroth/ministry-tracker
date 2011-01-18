@@ -4,8 +4,10 @@
     -%>
           <%= render :partial => 'profile_mentee_li', :locals => { :mentee => mentee } %>				
     <%- end -%>
-		<br>
-     <div id="search_mentee">
-       <%= render :partial => "mentee_search_box", :locals => { :person => @person, :q2 => @q2 } %> 
-     </div> 
+		  <div class="floatLeft"><%= spinner('m2') %></div>
+  <div id="progress-bar"></div>
   </ul>
+  <br>
+  <div id="search_mentee">
+    <%= render :partial => "mentee_search_box", :locals => { :person => @person, :q2 => @q2 } %> 
+  </div> 

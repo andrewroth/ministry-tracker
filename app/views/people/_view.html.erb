@@ -127,50 +127,57 @@
 
   
   <!-- MENTORSHIP ----------------------->
-  
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship">
-<tr>
-<td>
-  
-  <tr>
-  <td colspan="1"><h4 class="title">My Mentor</h4></td>
-  <td class="spacer">&nbsp;</td>
-  <td colspan="1"><h4 class="title">I'm Mentoring</h4></td>
-  </tr>
-</td>
-
-<tr>
-<td>
-  
-  <!-- - contains one name only
-                    - student role has read-only
-                    - involved student role able to choose name from students on their campus and any staff
-                    - staff able to choose anybody
-                    - if no mentor chosen, display AJAX search box -->
-  <table class="halftab">
-  <div id="mentors_div">
-    <%= render :partial => 'mentors' %>
-  </div>
-	<div class="floatLeft"><%= spinner('m') %></div>
-  <div id="progress-bar"></div>
-  </table>
-
-</td>
-<td class="spacer">&nbsp;</td>
-</td>
-<td>
-  <table class="halftab">
-  <div id="mentees_div">
-    <%= render :partial => 'mentees' %>
-  </div>
-	<div class="floatLeft"><%= spinner('m2') %></div>
-  <div id="progress-bar"></div>
-  </table>
-</td>
-</tr>
-</table>
-<br />
-
+<% if authorized?(:show_mentor, :people) || authorized?(:show_mentees, :people) %>   
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship">
+	<tr>
+	<td>
+	  
+	  <tr>
+	  <% if authorized?(:show_mentor, :people) %>
+	    <td colspan="1"><h4 class="title">My Mentor</h4></td>
+		<% end %>
+		<% if authorized?(:show_mentees, :people) %>
+	    <td class="spacer">&nbsp;</td>
+	    <td colspan="1"><h4 class="title">I'm Mentoring</h4></td>	
+		<% end %>
+	  </tr>
+	</td>
+	</tr> <!-- added Jan 14, 2011 -->
+	<tr>
+		
+	<% if authorized?(:show_mentor, :people) %>	
+		<td>
+		  
+		  <!-- - contains one name only
+		                    - student role has read-only
+		                    - involved student role able to choose name from students on their campus and any staff
+		                    - staff able to choose anybody
+		                    - if no mentor chosen, display AJAX search box -->
+		  <table class="halftab">
+		  <div id="mentors_div">
+		    <%= render :partial => 'mentors' %>
+		  </div>
+			<div class="floatLeft"><%= spinner('m') %></div>
+		  <div id="progress-bar"></div>
+		  </table>
+		
+		</td> 
+	<% end %>
+	<% if authorized?(:show_mentees, :people) %>
+		<td class="spacer">&nbsp;</td>
+		<!-- was </td> here -->
+		<td>
+		  <table class="halftab">
+		  <div id="mentees_div">
+		    <%= render :partial => 'mentees' %>
+		  </div>
+		  </table>
+		</td>
+	<% end %>
+	</tr>
+	</table>
+	<br />
+<% end %>
 
 
 <% if is_ministry_admin %>
