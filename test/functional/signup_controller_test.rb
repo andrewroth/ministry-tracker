@@ -37,7 +37,7 @@ class SignupControllerTest < ActionController::TestCase
   end
 
   test "step1_info_submit" do
-    post :step1_info_submit, {:person => {:gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
+    post :step1_info_submit, {:person => {:local_phone => "111-111-1111", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
 
     assert assigns(:person).errors.blank?
     assert assigns(:primary_campus_involvement).errors.blank?
@@ -61,7 +61,7 @@ class SignupControllerTest < ActionController::TestCase
   end
 
   test "step2_group" do
-    post :step1_info_submit, {:person => {:gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
+    post :step1_info_submit, {:person => {:local_phone => "111-111-1111", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
     get :step2_group
 
     assert_array_similarity [Factory(:group_1)], assigns(:groups1)
@@ -69,7 +69,7 @@ class SignupControllerTest < ActionController::TestCase
   end
 
   test "step2_default_group" do
-    post :step1_info_submit, {:person => {:gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
+    post :step1_info_submit, {:person => {:local_phone => "111-111-1111", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
     get :step2_group
     get :step2_default_group, {:semester_id => 14}
 
@@ -82,7 +82,7 @@ class SignupControllerTest < ActionController::TestCase
   end
 
   test "finished" do
-    post :step1_info_submit, {:person => {:gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
+    post :step1_info_submit, {:person => {:local_phone => "111-111-1111", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future"}, :primary_campus_involvement => {:campus_id => "1", :school_year_id => "1"}}
     get :step2_group
     get :step2_default_group, {:semester_id => 14}
 

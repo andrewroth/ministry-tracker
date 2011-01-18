@@ -15,11 +15,14 @@ class Group < ActiveRecord::Base
     Group::LEVEL_TITLES[Group::LEVELS.index(level) - 1].titleize
   end
 
+  validates_presence_of :ministry
+  validates_presence_of :campus
   validates_presence_of :name
   validates_presence_of :group_type
   unless Cmt::CONFIG[:semesterless_groups]
     validates_presence_of :semester_id
   end
+
   
   belongs_to :ministry
   belongs_to :campus
