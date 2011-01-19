@@ -74,6 +74,15 @@ CREATE TABLE `delayed_jobs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `dismissed_notices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) DEFAULT NULL,
+  `notice_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `emails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject` varchar(255) DEFAULT NULL,
@@ -82,6 +91,34 @@ CREATE TABLE `emails` (
   `missing_address_ids` text,
   `search_id` int(11) DEFAULT NULL,
   `sender_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `event_campuses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) DEFAULT NULL,
+  `campus_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `event_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `registrar_event_id` int(11) DEFAULT NULL,
+  `event_group_id` int(11) DEFAULT NULL,
+  `register_url` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -198,6 +235,15 @@ CREATE TABLE `news_comments` (
   `news_id` int(11) DEFAULT NULL,
   `person_id` int(11) DEFAULT NULL,
   `comment` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `notices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` text,
+  `live` tinyint(1) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -320,6 +366,7 @@ CREATE TABLE `timetables` (
   `person_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `updated_by_person_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -368,7 +415,10 @@ CREATE TABLE `user_codes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
-  `pass` varchar(255) DEFAULT NULL,
+  `pass` text,
+  `click_count` int(11) DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_user_codes_on_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -422,3 +472,19 @@ INSERT INTO schema_migrations (version) VALUES ('20100816023643');
 INSERT INTO schema_migrations (version) VALUES ('20100818015210');
 
 INSERT INTO schema_migrations (version) VALUES ('20100818015834');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830184234');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830195510');
+
+INSERT INTO schema_migrations (version) VALUES ('20100830195718');
+
+INSERT INTO schema_migrations (version) VALUES ('20100923050109');
+
+INSERT INTO schema_migrations (version) VALUES ('20101103192208');
+
+INSERT INTO schema_migrations (version) VALUES ('20101108025347');
+
+INSERT INTO schema_migrations (version) VALUES ('20101108035650');
+
+INSERT INTO schema_migrations (version) VALUES ('20110106155626');
