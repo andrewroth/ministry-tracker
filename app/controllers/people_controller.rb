@@ -546,17 +546,11 @@ class PeopleController < ApplicationController
       @person.last_name = params[:person][:last_name]
       @person.gender = params[:person][:gender]
       @person.local_phone = params[:person][:local_phone]
-#      [:first_name, :last_name, :gender, :local_phone].each do |c|
-        @person.errors.add_on_blank([:first_name, :last_name, :gender, :local_phone])
-#      end
+      @person.errors.add_on_blank([:first_name, :last_name, :local_phone])
+      @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
 
       @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
       @primary_campus_involvement.errors.add_on_blank([:campus_id, :school_year_id])
-#      [:campus_id, :school_year_id].each do |c|
-#        unless @primary_campus_involvement.send(c).present?
-#          @primary_campus_involvement.errors.add(c, :blank)
-#        end
-#      end
 
       unless @person.errors.present? || @primary_campus_involvement.errors.present?
         @person.save!
