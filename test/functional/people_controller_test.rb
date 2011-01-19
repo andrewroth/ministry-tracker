@@ -86,7 +86,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:address_1)
     get :directory, :school_year => ["1"], :gender => ["1"], :first_name => "Josh", :last_name => "Starcher", :email => "josh.starcher@uscm.org"
     assert_response :success
-    assert_equal("50000", assigns["people"][0]["person_id"])
+    assert_equal(50000, assigns["people"][0]["person_id"].to_i)
   end
 
 =begin
