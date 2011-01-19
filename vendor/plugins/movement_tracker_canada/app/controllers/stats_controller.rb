@@ -18,6 +18,7 @@ class StatsController < ApplicationController
   DEFAULT_REPORT_SCOPE = SUMMARY 
   COMPLIANCE_REPORT = 'comp'
   PERSONAL_STATS = 'perso'
+  ONE_STAT = 'one_stat'
 
 
   def index
@@ -59,6 +60,8 @@ class StatsController < ApplicationController
         setup_annual_goals_report
       when PERSONAL_STATS
         setup_personal_report
+      when ONE_STAT
+        setup_one_stat_report
       else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
@@ -112,6 +115,8 @@ class StatsController < ApplicationController
     @report_type = session[:stats_report_type] 
     @report_scope = session[:stats_report_scope]
     
+    setup_secondary_data_from_get
+    
     setup_summary_drilldown_radio_visibility
     check_stats_time_availability
     setup_reports_to_show
@@ -123,6 +128,13 @@ class StatsController < ApplicationController
  
     @selected_results_div_id = "stats#{@stats_time.capitalize}Results"
     @selected_time_tab_id = @stats_time
+  end
+
+  def setup_secondary_data_from_get
+    if @report_type == ONE_STAT
+      session[:one_stat_report] = @one_stat_report = params['statreport'].present? ? params['statreport'] : session[:one_stat_report].present? ? session[:one_stat_report] : 'weekly_report'
+      session[:one_stat_stat] = @one_stat_stat = params['stat'].present? ? params['stat'] : session[:one_stat_stat].present? ? session[:one_stat_stat] : 'gospel_pres'
+    end
   end
 
 
@@ -326,6 +338,14 @@ class StatsController < ApplicationController
         @results_partial = "campus_drill_down"
     end
     
+  end
+
+  def setup_one_stat_report
+      setup_selected_period_for_summary    
+      setup_selected_time_tab
+      setup_campus_ids
+      setup_report_description
+      @results_partial = "one_stat_report"
   end
 
   def setup_staff_drill_down
@@ -532,6 +552,8 @@ class StatsController < ApplicationController
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
         end
+      when ONE_STAT
+        report_name = "#{one_stat[:label]} for #{ministry_name}"
       when 'c4c'
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
@@ -570,7 +592,9 @@ class StatsController < ApplicationController
       @campus_ids ||= @stats_ministry.unique_campuses.collect { |c| c.id }
     end
     
-    @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc } if @report_scope == CAMPUS_DRILL_DOWN 
+    if @report_scope == CAMPUS_DRILL_DOWN || @report_type == ONE_STAT 
+      @campuses ||= @campus_ids.collect{ |c_id| Campus.find(c_id) }.sort { |x, y| x.campus_desc <=> y.campus_desc }
+    end
 
     if @report_type == 'story' && @campuses.nil?
       @campuses = {}
@@ -686,8 +710,25 @@ class StatsController < ApplicationController
         hide_time_tabs([:week, :month, :semester])
       when PERSONAL_STATS
         # no more time tabs to hide
+      when ONE_STAT
+        hide_time_tabs_for_summary_according_to_stat(one_stat)
       end
    
+  end
+ 
+  def hide_time_tabs_for_summary_according_to_stat(stat_hash)
+    case stat_hash[:collected]
+      when :weekly
+        hide_time_tabs([:week])
+      when :monthly
+        hide_time_tabs([:week, :month])
+      when :semesterly
+        hide_time_tabs([:week, :month, :semester])
+      when :yearly
+        hide_time_tabs([:week, :month, :semester, :year])
+      when :prc
+        hide_time_tabs([:week])
+    end
   end
 
   def show_scope_radio(scope)
@@ -763,6 +804,10 @@ class StatsController < ApplicationController
         period_dropdown = @weeks = Week.all(:conditions => ["#{_(:end_date, :week)} <= ?", current_period.end_date], :order => :week_endDate)
     end
     period_dropdown
+  end
+
+  def one_stat
+    @one_stat ||= stats_reports[:"#{@one_stat_report}"][:"#{@one_stat_stat}"]
   end
 
   def current_report_type
