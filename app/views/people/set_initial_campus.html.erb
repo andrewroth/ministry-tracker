@@ -5,33 +5,27 @@
 <br/>
 
 <% remote_form_for @person, :url => set_initial_campus_person_url(@person.id), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do |f| %>
+<div id='errors'>
+  <%= error_messages_for 'person', 'primary_campus_involvement' %>
+</div>
+
 <table id="set_initial_campus">
   <tr class="required_field">
     <td class="label">First Name </td>
-    <td><%= f.text_field :first_name %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+    <td><%= f.text_field :first_name %> </td>
   </tr>
   <tr class="required_field">
     <td class="label">Last Name </td>
-    <td><%= f.text_field :last_name %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+    <td><%= f.text_field :last_name %> </td>
   </tr>
-  <%- unless logged_in? %>
-  <tr class="required_field">
-    <td class="label">Email </td>
-    <td><%= f.text_field :email %> <%= image_tag("silk/asterisk_yellow.png") %></td>
-  </tr>
-  <%- end %>
   <tr class="required_field">
     <td class="label">Gender </td>
-    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => "" %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+    <td><%= f.select :gender,	[['Male', '1'],['Female', '0']], :selected => @person.gender_us_id, :prompt => "" %> </td>
   </tr>
   <tr class="required_field">
     <td class="label">Phone </td>
-    <td><%= f.text_field :local_phone %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+    <td><%= f.text_field :local_phone %> </td>
   </tr>
-
-  <div id='errors'>
-    <%= error_messages_for 'campus_involvement' %>
-  </div>
   <%= render :partial => 'primary_campus_involvement', :locals => { 
        :hide_grad_date => true, :hide_major => true, :hide_minor => true,
        :no_table => true, :hide_campus => false } %>
@@ -49,7 +43,7 @@
 
 <div class="center">
   <br/>
-  <div><%= spinner('p') %><br/></div>
+  <div><%= spinner('p') %><br/><br/></div>
   <%= submit_tag 'Save' %>
 </div>
 

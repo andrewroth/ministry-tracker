@@ -71,14 +71,13 @@ no_table ||= false
         }
         update_pc_visibility();
       </script>
-      <%= image_tag("silk/asterisk_yellow.png") %>
       </td>
     </tr>
     <%- end %>
     <%- unless hide_school_year -%>
     <tr class='pcd required_field'>
       <td class="label">Year </td>
-      <td><%= cif.select :school_year_id, school_year_options %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+      <td><%= cif.select :school_year_id, school_year_options %> </td>
     </tr>
     <%- end -%>
     <%- unless hide_grad_date -%>

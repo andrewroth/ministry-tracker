@@ -1749,7 +1749,7 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 475px; float: left; padding: 0 1em 0 1em;
+  width: 450px; float: left; padding: 0 2em 0 2em;
 }
 
 #signup_step1_columns {
@@ -1757,15 +1757,19 @@ td.eventAttendees {
 }
 
 tr.required_field td.label {
-  font-weight: bold;
-}
-
-tr.required_field input {
-  border: 1px solid #FFCB05;
+  background-position: right;
+  background-image: url("/images/silk/asterisk_yellow.png");
+  background-repeat: no-repeat;
+  padding-right: 20px;
+  padding-top: 2px;
 }
 
 table#set_initial_campus {
   width: 475px; padding: 0 1em 0 1em; display: block;
+}
+
+table#set_initial_campus tr {
+  height: 2em;
 }
 
 
