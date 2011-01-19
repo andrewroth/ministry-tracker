@@ -17,12 +17,13 @@ class UserMailer < ActionMailer::Base
     @body[:code]  = User.secure_digest(email)
   end
 
-  def signup_finished_email(email, link)
+  def signup_finished_email(email, link, joined_collection_group)
     @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
     @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
     @sent_on      = Time.now
     @content_type = "text/html"
+    @body[:joined_collection_group] = joined_collection_group
     @body[:link]  = link
   end
 
