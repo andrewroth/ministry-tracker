@@ -1,8 +1,56 @@
-<% remote_form_for @person, :url => set_initial_campus_person_url(@person.id), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do %>
-  <div>Please choose your campus. <%= spinner('p') %></div>
+<% instruction_block do %>
+<b>Please fill out your info and click Save.</b>
+<% end %>
+
+<br/>
+
+<% remote_form_for @person, :url => set_initial_campus_person_url(@person.id), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()" do |f| %>
+<table id="set_initial_campus">
+  <tr class="required_field">
+    <td class="label">First Name </td>
+    <td><%= f.text_field :first_name %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">Last Name </td>
+    <td><%= f.text_field :last_name %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+  </tr>
+  <%- unless logged_in? %>
+  <tr class="required_field">
+    <td class="label">Email </td>
+    <td><%= f.text_field :email %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+  </tr>
+  <%- end %>
+  <tr class="required_field">
+    <td class="label">Gender </td>
+    <td><%= f.select :gender, [["Male", 1], ['Female', 0]], :prompt => "" %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">Phone </td>
+    <td><%= f.text_field :local_phone %> <%= image_tag("silk/asterisk_yellow.png") %></td>
+  </tr>
+
   <div id='errors'>
     <%= error_messages_for 'campus_involvement' %>
   </div>
-  <%= render :partial => 'primary_campus_involvement', :locals => { :hide_campus => false } %>
+  <%= render :partial => 'primary_campus_involvement', :locals => { 
+       :hide_grad_date => true, :hide_major => true, :hide_minor => true,
+       :no_table => true, :hide_campus => false } %>
+
+  <%= observe_field "primary_campus_involvement_campus_id",
+        :url => { :controller => 'signup', :action => 'get_dorms' },
+        :with => "primary_campus_involvement_campus_id"
+  %>
+  <tr>
+    <td class="label">Major </td>
+    <td><%= f.text_field :major %></td>
+  </tr>
+  <%= render :partial => "signup/dorm_tr" %>
+</table>
+
+<div class="center">
+  <br/>
+  <div><%= spinner('p') %><br/></div>
   <%= submit_tag 'Save' %>
+</div>
+
 <% end %>

@@ -523,6 +523,8 @@ class PeopleController < ApplicationController
     return unless login_required
     get_person
     if request.method == :put
+      @person.update_attributes(params[:person])
+
       ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
       if ministry_campus
         ministry = ministry_campus.ministry

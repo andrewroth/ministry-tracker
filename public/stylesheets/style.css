@@ -1764,6 +1764,10 @@ tr.required_field input {
   border: 1px solid #FFCB05;
 }
 
+table#set_initial_campus {
+  width: 475px; padding: 0 1em 0 1em; display: block;
+}
+
 
 
 /************************************************/
