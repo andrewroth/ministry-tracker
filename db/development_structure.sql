@@ -363,7 +363,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=612 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=617 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -546,7 +546,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7078 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7079 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -557,7 +557,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95294 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95296 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

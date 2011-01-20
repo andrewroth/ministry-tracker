@@ -82,6 +82,11 @@
     <%= select_tag(:interval, options_for_select(options)) %>
     <%= observe_field(:interval, :function => "if($('#interval').val() != '') document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
   <% end %>
+    
+  <% action_options_array = [['Perform Action with Selected','']] %>
+  <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
+  <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
+  <% action_options_array << ['Change Roles...', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
 
   <%- if authorized?(:email) -%>
     <%= select_tag(:perform_action, options_for_select([['Perform Action with Selected',''],['Send Email',new_email_path],['Create Group', new_group_path]])) %>
