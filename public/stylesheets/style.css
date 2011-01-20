@@ -1756,7 +1756,7 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 450px; float: left; padding: 0 2em 0 2em;
+  width: 425px; float: left; padding: 0 3em 0 3em;
 }
 
 #signup_step1_columns {
@@ -1764,11 +1764,11 @@ td.eventAttendees {
 }
 
 tr.required_field td.label {
-  background-position: right;
-  background-image: url("/images/silk/asterisk_yellow.png");
+  background-position: right top;
+  background-image: url("/images/asterisk_yellow_smaller.png");
   background-repeat: no-repeat;
-  padding-right: 20px;
-  padding-top: 2px;
+  padding-right: 13px;
+  padding-top: 1px;
 }
 
 table#set_initial_campus {
