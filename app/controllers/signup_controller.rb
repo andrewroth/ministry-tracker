@@ -24,6 +24,7 @@ class SignupController < ApplicationController
     session[:signup_person_id] = nil
     session[:signup_campus_id] = nil
     session[:needs_verification] = nil
+    session[:joined_collection_group] = nil
 
     setup_campuses
     @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
@@ -218,7 +219,7 @@ class SignupController < ApplicationController
     @group = @campus.find_or_create_ministry_group gt, nil, semester
     gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
     gi.send_later(:join_notifications, base_url)
-
+    session[:joined_collection_group] = true
 
     redirect_to :action => :step3_timetable
   end
@@ -230,7 +231,7 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
-    UserMailer.deliver_signup_finished_email(@person.email, link)
+    UserMailer.deliver_signup_finished_email(@person.email, link, session[:joined_collection_group])
   end
 
   def finished
