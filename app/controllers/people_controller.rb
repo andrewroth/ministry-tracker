@@ -768,7 +768,7 @@ class PeopleController < ApplicationController
       @ministry_ids ||= get_ministries.collect(&:id).collect(&:to_s)
     end
 
-    def add_involvement_conditions(conditions)
+    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true, hidden_by_default = true)
       if params[:ministry]
         ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
         ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
@@ -777,9 +777,18 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
-      ministry_condition = " (MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL"
-      ministry_condition += " AND MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
+      ministry_condition = "("
+      ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
+      ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
+
+
+      # hide roles marked as hide by default in database
+      if hidden_by_default
+        role_condition = "(MinistryRole.#{_(:position, :ministry_role)} = 1)"
+        @tables[MinistryRole] = "#{MinistryInvolvement.__(:ministry_role_id)} = #{MinistryRole.__(:id)}" if @tables
+      end
+
     
       # Check campus
       if params[:campus]
@@ -800,7 +809,8 @@ class PeopleController < ApplicationController
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
       end
-      
+
+
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
         conditions << "(#{ministry_condition} AND #{campus_condition})"
@@ -809,6 +819,8 @@ class PeopleController < ApplicationController
       elsif !is_staff_somewhere
         conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
+      
+      conditions << "(#{role_condition})"
 
       return conditions
     end
