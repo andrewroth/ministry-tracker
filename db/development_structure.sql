@@ -42,7 +42,7 @@ CREATE TABLE `campus_involvements` (
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4485 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4486 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campus_ministry_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -363,7 +363,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=617 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=639 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -411,7 +411,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8596 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8597 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -430,6 +430,7 @@ CREATE TABLE `ministry_roles` (
   `description` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   `involved` tinyint(1) DEFAULT NULL,
+  `hide_by_default` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
@@ -546,7 +547,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7079 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7082 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1024,6 +1025,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110111183813');
 INSERT INTO schema_migrations (version) VALUES ('20110112213956');
 
 INSERT INTO schema_migrations (version) VALUES ('20110119215939');
+
+INSERT INTO schema_migrations (version) VALUES ('20110120212424');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
