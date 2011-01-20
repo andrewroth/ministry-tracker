@@ -15,6 +15,7 @@
   <br/>
   <br/>
   <br/>
+  <br/>
 
   <table cellspacing="0" cellpadding="5" border="0" class="groupInvolvementList">
     <tr>
@@ -50,13 +51,14 @@
     <big>
     <%= image_tag("silk/pencil.png") %>
     Change to the new role
-    <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, :include_blank => true) %>
+    <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: 1em;"}) %>
     </big>
   
     <% for involvement in @involvements %>
       <%= hidden_field_tag "involvement_id[]", involvement.id %>
     <% end %>
 
+    <br/>
     <br/>
     <br/>
     <%= submit_tag "Change roles" %> or <%= link_to("Cancel", :back) %>
