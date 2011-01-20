@@ -63,7 +63,8 @@
       :hpctc => {:order => 2, :label => "How people came to Christ", :controller => :stats, :action => :how_people_came_to_christ, :scopes => [:summary]},
       :story => {:order => 3, :label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses, :scopes => [:summary]},
       :annual_goals => {:order => 3, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]},
-      :perso => {:order => 7, :label => "My personal stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]}
+      :perso => {:order => 7, :label => "My personal stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]},
+      :one_stat => {:hidden => true, :order => 0, :label => "Single Stat Report", :controller => :stats, :action => :one_stat, :scopes => [:one_stat]}
     }
   end
   
@@ -89,6 +90,13 @@
                     :title => "See individual staff members under [MINISTRY_NAME]",
                     :radio_id => "report_scope_staff_drill_down",
                     :show => :yes
+      },
+      :one_stat => {
+                    :order => 4,
+                    :label => "Single Stat", 
+                    :title => "See campus drill-down over time for a single stat under [MINISTRY_NAME]",
+                    :radio_id => "report_scope_one_stat",
+                    :show => :no
       }
     }
   end
