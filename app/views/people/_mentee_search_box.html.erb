@@ -1,6 +1,6 @@
 <% if authorized?(:index, :search) %>
-  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) 
-      && ((authorized?(:add_mentee, :people)&&(person == @me)) || authorized?(:add_mentee_other, :people))) %>
+
+  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) && ((authorized?(:add_mentee, :people)&&(person == @me)) || authorized?(:add_mentee_other, :people))) %>
 
     <div id="uberMenteeSearchContainer">
       <% default_search_box_text = "search" %>
