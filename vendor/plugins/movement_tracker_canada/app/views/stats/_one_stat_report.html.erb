@@ -1,0 +1,31 @@
+<% total_stat = {} %>
+<p class="statsTitle"><%= @report_description %></p>
+<table class="statsTable">
+  <tr>
+      <td class="statsTableTitle"></td>
+        <% @periods.each do |p| %>
+          <td class="statsTableTitle">
+            <%= period_description_for_column_title(p) %>
+          </td>
+        <% end %>
+
+        <td class="statsTableTitle">
+            Total
+        </td>
+  </tr>
+  <% @campuses.each do |campus|
+        show_campus = true
+        unless @staff_id.nil?
+          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id) 
+        end 
+
+        if show_campus
+
+          %><%= show_stat_hash_line(@periods, [campus.id], @one_stat, @staff_id, campus.campus_shortDesc)%><%     
+       end
+     end %>
+
+  <tr><td><br/></td></tr>
+    <%= show_stat_hash_line(@periods, @campus_ids, @one_stat, @staff_id, 'Totals:')%>
+
+</table>
