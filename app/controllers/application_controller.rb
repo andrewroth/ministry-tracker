@@ -234,6 +234,8 @@ class ApplicationController < ActionController::Base
             return true
           end
           
+          ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
+          
           # also return true if person is destroying self-involvements (don't return true for creation of new profile)
           if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
             return true

@@ -275,7 +275,7 @@ class PeopleController < ApplicationController
     #@person = Person.find(params[:id], :include => [:mentor_id])
     
     person = Person.find(params[:id]) # for some reason @person is always the Pulse user
-    person.mentor_id = MENTOR_ID_NONE
+    person.person_mentor_id = MENTOR_ID_NONE
     person.save
     render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
   end
@@ -287,7 +287,7 @@ class PeopleController < ApplicationController
     # We don't actually delete people, just find the person_id for the mentee
     # then set the 'mentor_id' to 0
     person = Person.find(params[:id])
-    person.mentor_id = MENTOR_ID_NONE
+    person.person_mentor_id = MENTOR_ID_NONE
     person.save
     render :nothing => true
     #render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
@@ -312,7 +312,7 @@ class PeopleController < ApplicationController
           mentor_id = params[:m].to_i
           ensure_existence = Person.find(mentor_id)         
           if mentor_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
-            @person.mentor_id = params[:m];
+            @person.person_mentor_id = params[:m];
             @person.save
           end
           
@@ -327,7 +327,7 @@ class PeopleController < ApplicationController
           mentee_id = params[:mt].to_i
           if mentee_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
             person = Person.find(params[:mt])
-            person.mentor_id = @person.id
+            person.person_mentor_id = @person.id
             person.save 
           end
                

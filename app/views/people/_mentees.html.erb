@@ -1,6 +1,6 @@
 
   <ul id='profile_mentees'>
-    <%- Person.find_all_by_mentor_id(@person.id).each do |mentee| 
+    <%- Person.find_all_by_person_mentor_id(@person.id).each do |mentee| 
     -%>
           <%= render :partial => 'profile_mentee_li', :locals => { :mentee => mentee } %>				
     <%- end -%>

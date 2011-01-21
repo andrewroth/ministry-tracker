@@ -1,9 +1,9 @@
   <ul id='profile_mentor'>
-		<li id="mi_<%= @person.mentor_id %>">
-			<%- if @person.mentor_id != 0 -%>						
-         <%- mentor = Person.find(@person.mentor_id) -%>	 
+		<li id="mi_<%= @person.person_mentor_id %>">
+			<%- if @person.person_mentor_id != 0 -%>						
+         <%- mentor = Person.find(@person.person_mentor_id) -%>	 
 	       <%= link_to_remote(image_tag('silk/link_break.png'), 
-		        :update => "mi_#{@person.mentor_id}",
+		        :update => "mi_#{@person.person_mentor_id}",
 		        :url => { :action => :remove_mentor, :params => {:id => "#{@person.id}"}  },
 		        :confirm => "Are you sure you want to remove #{@person.full_name} from being mentored by #{mentor.full_name} ?", 
 		        :loading => "$('#spinnerm').show()", :complete => "$('#spinnerm').hide()")  if is_ministry_leader || @person == @me %>

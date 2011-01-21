@@ -1,7 +1,7 @@
 # hide from main page   (patterned after /involvements/destroy.js.rjs)
-page["#{@short}_#{@person.mentor_id}"].fade
+page["#{@short}_#{@person.person_mentor_id}"].fade
 if params[:from_profile] == 'true'
-  page << %|$('##{@short}_#{@person.mentor_id}').fadeOut(500, function() { $(this).remove(); });|
-  page << %|$('##{@short}_li_#{@person.mentor_id}').fadeOut(500, function() { $(this).remove(); });|
+  page << %|$('##{@short}_#{@person.person_mentor_id}').fadeOut(500, function() { $(this).remove(); });|
+  page << %|$('##{@short}_li_#{@person.person_mentor_id}').fadeOut(500, function() { $(this).remove(); });|
 end
 page.hide('spinnerm')
