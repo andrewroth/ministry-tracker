@@ -9,6 +9,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_ministry_roles
+    setup_people
+    setup_ministry_involvements
     
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
@@ -121,5 +123,65 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   def test_new
     xhr :get, :new
     assert_not_nil(assigns["ministry_involvement"])
+  end
+
+  test "edit multiple roles" do
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"]
+    
+    assert assigns(:involvements)
+    assert_equal 2, assigns(:involvements).size
+
+    assert assigns(:people_without_involvements)
+    assert_equal 1, assigns(:people_without_involvements).size
+
+  end
+
+  test "edit multiple roles with role search" do
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"], :search_by_ministry_role_ids => ["7"]
+
+    assert assigns(:involvements)
+    assert_equal 1, assigns(:involvements).size
+
+    assert assigns(:people_without_involvements)
+    assert_equal 2, assigns(:people_without_involvements).size
+  end
+
+  test "update multiple roles" do
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
+
+    assert_equal 5, MinistryInvolvement.find(5).ministry_role_id
+    assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
+  end
+
+  test "update multiple roles fails because not involved in the ministry" do
+    login "fred@uscm.org"
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
+
+    assert_equal 5, MinistryInvolvement.find(5).ministry_role_id
+    assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
   end
 end

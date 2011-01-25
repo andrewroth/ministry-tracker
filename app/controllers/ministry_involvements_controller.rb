@@ -200,7 +200,8 @@ class MinistryInvolvementsController < ApplicationController
                                                                  people_ids, params[:search_by_ministry_ids]])
       end
 
-      people_with_involvements_ids = @involvements.collect{|involvement| involvement.person.id}
+      people_with_involvements_ids = []
+      people_with_involvements_ids = @involvements.collect{|involvement| involvement.person.id} if @involvements
 
       # find people who do not have an involvement
       people_without_involvements_ids = []
@@ -230,7 +231,7 @@ class MinistryInvolvementsController < ApplicationController
 
       involvement_ids.each do |involvement_id|
         mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})
-
+debugger
         if @me.has_permission_to_update_role(mi, new_role)
 
           # current role is type staff but demoting to student
