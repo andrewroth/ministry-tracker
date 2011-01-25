@@ -1,0 +1,1 @@
+page["#groups"].html render(:partial => "step2_groups")

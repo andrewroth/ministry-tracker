@@ -1,0 +1,41 @@
+<% instruction_block do %>
+<b>Step 1:</b> Join a group!
+<% end %>
+
+<center>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 1 } %>
+</center>
+
+What campus are you on?
+
+  <%= render :partial => 'people/primary_campus_involvement', :locals => {
+       :hide_grad_date => true, :hide_major => true, :hide_minor => true,
+       :no_table => true, :hide_campus => false, :hide_school_year => true,
+       :hide_label => true
+      }
+  %>
+
+<%= image_tag "spinner.gif", :id => "spinner", :style => "display:none" %>
+
+<script>
+  jQuery('#primary_campus_involvement_campus_id').change(
+    function(element, value) {
+      update_groups();
+    }
+  );
+
+  function update_groups() {
+    value = $("#primary_campus_involvement_campus_id").val();
+    jQuery.ajax({data:'primary_campus_involvement_campus_id=' + value, dataType:'script', 
+                 beforeSend: function() { $("#spinner").show() },
+                 complete: function() { $("#spinner").hide() },
+                 type:'post', url:'/signup/step1_group_from_campus'});
+  }
+
+  if ($("#primary_campus_involvement_campus_id").val() != "") {
+    update_groups();
+  }
+</script>
+
+<div id="groups">
+</div>

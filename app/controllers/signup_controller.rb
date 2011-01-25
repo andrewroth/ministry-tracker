@@ -16,6 +16,7 @@ class SignupController < ApplicationController
     redirect_to :action => :step1_info
   end
 
+  # TODO: this will have to be renamed to step 2?
   def step1_info
     @person ||= get_person || Person.new
     UserCodesController.clear(session)
@@ -35,6 +36,7 @@ class SignupController < ApplicationController
     @dorms = c.try(:dorms)
   end
 
+  # TODO: this will have to be renamed to step 2?
   def step1_info_submit
     @person = Person.new(params[:person])
     [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
@@ -161,7 +163,18 @@ class SignupController < ApplicationController
     redirect_to params.merge(:action => :step1_info_submit)
   end
 
-  def step2_group
+  # this is actually more of just showing the campus dropdown
+  def step1_group
+    @person = Person.new
+    setup_campuses
+  end
+
+  def step1_group_submit
+
+  end
+
+  def step1_group_from_campus
+=begin
     @signup = true
     if session[:needs_verification] && !session[:code_valid_for_user_id]
       flash[:notice] = "Sorry, your email has not been verified yet."
@@ -171,10 +184,19 @@ class SignupController < ApplicationController
       redirect_to :action => :step1_info
       return
     end
+=end
+
+    if params[:primary_campus_involvement_campus_id] == ""
+      render :update do |page|
+        page["#groups"].html "Sorry, you must provide a campus to choose a group."
+      end
+      return
+    end
 
     @ministry = Ministry.default_ministry
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @campus = Campus.find session[:signup_campus_id]
+    #@me = @my = @person = Person.find(session[:signup_person_id])
+    #@campus = Campus.find session[:signup_campus_id]
+    @campus = Campus.find params[:primary_campus_involvement_campus_id]
     @groups1 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
       @current_semester.id ],
       :joins => :ministry, :include => { :group_involvements => :person },
