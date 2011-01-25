@@ -160,7 +160,11 @@
                   if person[column.safe_name].present?
                     # CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00') conversion is hard coded in the db, but rails will receive this time and think it's your system time
                     # we need to convert to UTC to properly do the comparison
-                    time = Time.parse(person[column.safe_name]) # this is the time in PST (-08:00) but rails thinks it's your local system time
+                    if (t = person[column.safe_name]).class == Time
+                      time = t
+                    else
+                      time = Time.parse(t) # this is the time in PST (-08:00) but rails thinks it's your local system time
+                    end
                     time = time + 8.hours # this is the time in UTC but rails still thinks it's your local system time
                     time = Time.utc(time.year, time.month, time.day, time.hour, time.min, time.sec) # this is the time in UTC and now rails thinks it's UTC
                     "#{distance_of_time_in_words(Time.now.utc, time)} ago"
