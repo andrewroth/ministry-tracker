@@ -1,0 +1,9 @@
+<li id="mentee_<%= mentee.id %>">
+  <%= link_to_remote(image_tag('silk/link_break.png'), 
+        :update => "mentee_#{mentee.id}",
+        :url => { :action => :remove_mentee, :params => {:id => "#{mentee.id}"}  },
+        :confirm => "Are you sure you want to remove #{mentee.full_name} from being mentored by #{@person.full_name} ?", 
+        :loading => "$('#spinnerm2').show()", :complete => "$('#spinnerm2').hide()")  if is_ministry_leader || @person == @me %>       
+  <%= link_to(mentee.full_name, person_path(mentee.person_id)) %>
+
+</li>
