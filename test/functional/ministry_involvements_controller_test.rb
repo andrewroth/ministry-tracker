@@ -9,8 +9,6 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_ministry_roles
-    setup_people
-    setup_ministry_involvements
     
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
@@ -126,6 +124,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "edit multiple roles" do
+    setup_people
+    setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:person_2)
@@ -143,6 +143,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "edit multiple roles with role search" do
+    setup_people
+    setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:person_2)
@@ -159,6 +161,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "update multiple roles" do
+    setup_people
+    setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:person_2)
@@ -172,6 +176,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "update multiple roles fails because not involved in the ministry" do
+    setup_people
+    setup_ministry_involvements
     Factory(:user_2)
     Factory(:person_2)
     Factory(:access_2)
