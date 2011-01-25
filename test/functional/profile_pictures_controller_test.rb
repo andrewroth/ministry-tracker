@@ -15,7 +15,9 @@ class ProfilePicturesControllerTest < ActionController::TestCase
     login
   end
 
-  #If test fails, install image science as a gem
+  # If test fails, install image science as a gem
+  # On some systems, may also have to apt-get install libfreeimage3
+  # and gem install RubyInline
   def test_should_create_profile_picture
     image = fixture_file_upload('/files/rails.png', 'image/png')
     assert_difference('ProfilePicture.count', 4) do
