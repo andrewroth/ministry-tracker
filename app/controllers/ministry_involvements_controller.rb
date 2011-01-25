@@ -231,8 +231,7 @@ class MinistryInvolvementsController < ApplicationController
 
       involvement_ids.each do |involvement_id|
         mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})
-debugger
-        if @me.has_permission_to_update_role(mi, new_role)
+        if @me.has_permission_to_update_role(mi, new_role) || is_ministry_admin
 
           # current role is type staff but demoting to student
           if mi.ministry_role.class == StaffRole && new_role.class == StudentRole
@@ -257,7 +256,7 @@ debugger
         end
       end
 
-      flash[:notice] = "<big><b> The following role changes were made: </b></big> <br/> <br/> #{people_notice}"
+      flash[:notice] = "<big> The following role changes were made: </big> <br/> <br/> #{people_notice}"
     end
 
     redirect_to :action => "directory", :controller => "people"
