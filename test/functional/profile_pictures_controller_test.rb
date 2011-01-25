@@ -20,7 +20,7 @@ class ProfilePicturesControllerTest < ActionController::TestCase
   # and gem install RubyInline
   def test_should_create_profile_picture
     image = fixture_file_upload('/files/rails.png', 'image/png')
-    assert_difference('ProfilePicture.count', 1) do
+    assert_difference('ProfilePicture.count', 4) do
       post :create, :profile_picture => {:uploaded_data => image },  :html => { :multipart => true }
     end
   
