@@ -172,6 +172,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "update multiple roles fails because not involved in the ministry" do
+    Factory(:user_2)
+    Factory(:person_2)
+    Factory(:access_2)
     login "fred@uscm.org"
     setup_ministries
     Factory(:ministryinvolvement_8)
@@ -181,7 +184,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
 
     put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
 
-    assert_equal 5, MinistryInvolvement.find(5).ministry_role_id
-    assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
+    assert_equal 4, MinistryInvolvement.find(5).ministry_role_id
+    assert_equal 7, MinistryInvolvement.find(8).ministry_role_id
   end
 end
