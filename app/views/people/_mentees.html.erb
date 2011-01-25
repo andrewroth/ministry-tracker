@@ -1,9 +1,13 @@
 
   <ul id='profile_mentees'>
-    <%- Person.find_all_by_person_mentor_id(@person.id).each do |mentee| 
+  	<%- mentees = Person.find_all_by_person_mentor_id(@person.id) %>
+    <%- mentees.each do |mentee| 
     -%>
           <%= render :partial => 'profile_mentee_li', :locals => { :mentee => mentee } %>				
     <%- end -%>
+		<%- if mentees.size == 0 %>
+		  No mentee(s) currently
+		<%- end -%>
 		  <div class="floatLeft"><%= spinner('m2') %></div>
   <div id="progress-bar"></div>
   </ul>

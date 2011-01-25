@@ -9,7 +9,11 @@
 		        :loading => "$('#spinnerm').show()", :complete => "$('#spinnerm').hide()")  if is_ministry_leader || @person == @me %>
 				 <%= mentor.full_name %>
 			<%- else -%>  <!-- no mentor found, show search box -->
-			   <div id="search_mentor">
+			   <div>
+			   	 No mentor currently
+			   </div>			 
+				 <br>
+			   <div id="search_mentor">		   
            <%= render :partial => "mentor_search_box", :locals => { :person => @person, :q => @q } %>	
 				 </div> 
       <%- end -%>  
