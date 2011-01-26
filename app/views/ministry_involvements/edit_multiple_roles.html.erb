@@ -9,10 +9,6 @@
   Some people may have different roles at different ministries, only the role at the ministry specified beside each person below will be changed.
   <br/>
   <br/>
-  <%= image_tag("silk/arrow_up.png") %> You may promote someone up to and including your role.
-  <br/>
-  <%= image_tag("silk/arrow_down.png") %> You may demote someone only if they have a lower role than you.
-  <br/>
   <br/>
   <br/>
   <br/>
@@ -53,18 +49,25 @@
     Change to the new role
     <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: 1em;"}) %>
     </big>
-  
+    
     <% for involvement in @involvements %>
       <%= hidden_field_tag "involvement_id[]", involvement.id %>
     <% end %>
 
     <br/>
     <br/>
+    <%= image_tag("silk/arrow_up.png") %> You may promote someone up to and including your role.
+    <br/>
+    <%= image_tag("silk/arrow_down.png") %> You may demote someone only if they have a lower role than you.
+    <br/>
+    <br/>
+
     <br/>
     <%= submit_tag "Change roles" %> or <%= link_to("Cancel", :back) %>
     <br/>
     
   <% end %>
+    
 
 <% else %>
   <br/>

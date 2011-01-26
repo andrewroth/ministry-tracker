@@ -1062,6 +1062,10 @@ background:#fff7d2;
 border:1px dotted orange;
 }
 
+div.flash big {
+  color: #1F429B;
+}
+
 div.flash b, div.flash_notice b  {
   color: #1F429B;
   font-weight: bold;

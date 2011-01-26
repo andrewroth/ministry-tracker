@@ -14,6 +14,11 @@ def run_coverage(files)
     exclude = '--exclude "gems/*" --exclude "Library/Frameworks/*"'
   elsif RUBY_PLATFORM =~ /java/
     exclude = '--exclude "rubygems/*,jruby/*,parser*,gemspec*,_DELEGATION*,eval*,recognize_optimized*,yaml,yaml/*,fcntl"'
+  elsif RUBY_PLATFORM =~ /linux/
+    exclude_paths = "~/.gems/*,/var/lib/gems/*"
+    exclude_paths += ",#{ENV['GEM_PATH']}/*" if ENV['GEM_PATH']
+    exclude_paths += ",#{ENV['GEM_HOME']}/*" if ENV['GEM_HOME']
+    exclude = '--exclude "' + exclude_paths + '"'
   else
     exclude = '--exclude "rubygems/*"'
   end
