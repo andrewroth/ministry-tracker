@@ -71,11 +71,10 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
 
   test "update role" do
     old_mi = MinistryInvolvement.find(1)
-    old_mr_id = old_mi.ministry_role_id
+    old_mi_ministry_role_id = old_mi.ministry_role_id
     xhr :put, :update, :id => old_mi.id, :ministry_involvement => {:ministry_role_id => 4}
-    new_mr = assigns(:ministry_involvement)
-    new_mr_id = new_mr.ministry_role_id
-    assert_not_equal old_mr_id, new_mr_id
+    assert mi = assigns(:ministry_involvement)
+    assert_not_equal old_mi_ministry_role_id, mi.ministry_role_id
   end
 
   test "add a person to a ministry" do
