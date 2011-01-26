@@ -7,8 +7,8 @@ class MinistryInvolvementsController; def rescue_action(e) raise e end; end
 class MinistryInvolvementsControllerTest < ActionController::TestCase
 
   def setup
-    setup_default_user
     setup_ministry_roles
+    setup_default_user
     
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
