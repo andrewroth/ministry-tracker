@@ -175,9 +175,12 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
   end
 
-  test "update multiple roles fails because not involved in the ministry" do
+  test "update multiple roles no permission" do
     setup_people
     setup_ministry_involvements
+    Factory(:permission_5)
+    Factory(:ministryrolepermission_6)
+    Factory(:ministryrolepermission_7)
     Factory(:user_2)
     Factory(:person_2)
     Factory(:access_2)
@@ -192,5 +195,29 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
 
     assert_equal 4, MinistryInvolvement.find(5).ministry_role_id
     assert_equal 7, MinistryInvolvement.find(8).ministry_role_id
+  end
+
+  test "update multiple roles promote student to staff" do
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_8)
+
+    put :update_multiple_roles, :involvement_id => ["8"], :role => {:id => "10"}
+
+    assert_equal 10, MinistryInvolvement.find(8).ministry_role_id
+  end
+
+  test "update multiple roles demote staff to student" do
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:ministryinvolvement_6)
+    Factory(:person_7)
+
+    put :update_multiple_roles, :involvement_id => ["6"], :role => {:id => "7"}
+
+    assert_equal 7, MinistryInvolvement.find(6).ministry_role_id
   end
 end
