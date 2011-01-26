@@ -2,7 +2,7 @@
   <div id="basic_search"
     <%= 'style="display:none"' if @advanced and authorized?(:advanced) %> >
     <%- form_tag directory_people_url(:format => 'html') do -%>
-	    Search by name or email:
+        <big>Search by name or email </big>
 	    <%= text_field_tag "search"%>
 	    <%= submit_tag "Go"%> &nbsp;&nbsp;
     <!-- <div class="butNormal" ><%= link_to "Show all from "+@ministry.name, directory_people_url, :method => :post %></div> -->

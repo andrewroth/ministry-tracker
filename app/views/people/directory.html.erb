@@ -1,37 +1,46 @@
 <% @site_title = 'Directory' -%>
+
 <div id="timetable_link"
 </div>
+
 <div class="sectionHeader">
-	<h2><%= @campus ? @campus.name : @ministry.name %> Directory</h2>
+  <h1 id="reportTitle"><%= @campus ? @campus.name : @ministry.name %> Directory</h1>
 </div>
+
 <%- if authorized?(:new) -%>
-	<div id="addStudentLink" style="vertical-align:middle;">
-		<%= link_to_remote(image_tag("add_student.png"), :url => add_student_people_url,
-		                                                 :loading => "$('#spinneradd_student').show();",
-		                                                 :complete => "$('#spinneradd_student').hide();
-		                                                                show_add_student()",
-                            											 	 :method => :get) %>
+  <div id="addStudentLink" style="vertical-align:middle;">
+    <%= link_to_remote("#{image_tag("silk/user_add.png")} Add new student",
+                       :url => add_student_people_url,
+                       :loading => "$('#spinneradd_student').show();",
+                       :complete => "$('#spinneradd_student').hide();
+                                      show_add_student()",
+                       :method => :get,
+                       :html => {:class => "action-button"}) %>
     <%= spinner('add_student') %>
+
     <%- if authorized?(:new, :imports) -%>
-      <%= link_to(image_tag('import.png') + ' Mass import tool', new_import_path, :class => 'massimport') %>
+      <%= link_to("#{image_tag('import.png')} Mass import tool", new_import_path, :class => 'massimport action-button') %>
     <%- end -%>
-	</div>
+  </div>
 <%- end -%>
+
 <%- if @me.ministries.length > 1 -%>
   <%- if authorized?(:change_ministry_and_goto_directory) -%>
 	  <div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
-    <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
-    <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
-    <%- tooltip do -%> 
-      This will allow to to view the directory of another ministry you are involved in.
+      <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+      <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
+      <%- tooltip do -%>
+      View the directory of another ministry you are involved in.
     <%- end -%>
   <%- end -%>
 <%- end -%>
+
 <%- if @ministry.views.length > 1 -%>
-	View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
-	<%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
+  View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
+  <%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
+
   <%- tooltip do -%> 
-    These are defined in the Manage tab, under the Customize option. Views are different ways to look at the directory.
+    Views are different ways to look at the directory.<br/><br/>Each view shows different columns of information about the people in the directory.
   <%- end -%>
 <%- end -%>
 
@@ -41,11 +50,12 @@
 
 
 <%- if authorized?(:advanced) %>
-	<div class="butDExcel" style="float:right;">
+  <div class="butDExcel" style="float:right;">
     <%= link_to "Excel Download", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search_id => @search.id) %>
   </div>
+  
   <div style= "float:right;">
-  <%- tooltip do -%> 
+    <%- tooltip do -%>
       You can download an excel spreadsheet with all the information you see in your current view.
     <%- end -%>
   </div>
@@ -54,10 +64,15 @@
 
 <%= form_tag(perform_task_people_path, :name => 'people_form', :id => 'people_form') %>
 <div class="yoursearch">
-<p>Search Results for: <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>  | (<%= @count %>) <%= @count != 1 ? 'people' : 'person' %> found<br />
+<p>
+  Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found
+  <br />
+  <br />
+
   <script type="text/javascript" charset="utf-8">
     var total_people = <%= @count %>
   </script>
+
   <%  options = [['Filter by Last Name','']] %>
   <%- if @count > 2000 -%>
     <!-- | -->
@@ -82,19 +97,28 @@
     <%= select_tag(:interval, options_for_select(options)) %>
     <%= observe_field(:interval, :function => "if($('#interval').val() != '') document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
   <% end %>
+    
+  <% action_options_array = [['Perform Action with Selected','']] %>
+  <% action_options_array << ['Send Email',new_email_path] if authorized?(:email) %>
+  <% action_options_array << ['Create Group', new_group_path] if authorized?(:new, :groups) %>
+  <% action_options_array << ['Change Roles', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
 
-  <%- if authorized?(:email) -%>
-    <%= select_tag(:perform_action, options_for_select([['Perform Action with Selected',''],['Send Email',new_email_path],['Create Group', new_group_path]])) %>
+  <% if action_options_array.size > 1 %>
+    <%= select_tag(:perform_action, options_for_select(action_options_array)) %>
     <%= observe_field :perform_action, :function => "performAction()" %>
-  <%- end -%>
+  <% end %>
+
+  
+  <%- unless params[:start].to_s.empty? -%>
+    <br/>
+    <br/>
+    Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
+  <% end %>
 </p>
 </div>
 
 
 
-<%- unless params[:start].to_s.empty? -%>
-	Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
-<% end %>
 <div id="people">
 	<table cellpadding="0" cellspacing="0" class="directorytable">
 		<thead class="center">
