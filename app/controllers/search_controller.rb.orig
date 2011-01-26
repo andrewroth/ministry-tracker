@@ -247,8 +247,8 @@ class SearchController < ApplicationController
   
                     
                     :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                   "AND #{Person.__(:person_mentor_id)} = #{FILTER_MENTOR_NONE} " +
-                                   "AND #{Person.__(:person_id)} <> #{person.person_mentor_id} " +
+                                   "AND #{Person.__(:mentor_id)} = #{FILTER_MENTOR_NONE} " +
+                                   "AND #{Person.__(:person_id)} <> #{person.mentor_id} " +
                                    "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
                                    "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                    "or #{_(:first_name, :person)} like ? " +
@@ -280,7 +280,7 @@ class SearchController < ApplicationController
 
 
             :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                 "AND #{Person.__(:person_mentor_id)} <> #{@person_id} " +
+                                 "AND #{Person.__(:mentor_id)} <> #{@person_id} " +
                                  "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
                                  "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                  "or #{_(:first_name, :person)} like ? " +

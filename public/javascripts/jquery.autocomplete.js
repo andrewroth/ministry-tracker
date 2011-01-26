@@ -590,6 +590,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	function init() {
 		if (!needsInit)
 			return;
+
 		element = $("<div/>")
 		.hide()
 		.addClass(options.resultsClass)
@@ -686,8 +687,8 @@ $.Autocompleter.Select = function (options, input, select, config) {
 	}
 	
 	return {
-		display: function(d, q) {
-			init();
+		display: function(d, q, a) {
+			init(a);
 			data = d;
 			term = q;
 			fillList();

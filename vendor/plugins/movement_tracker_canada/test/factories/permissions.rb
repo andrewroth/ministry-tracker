@@ -28,6 +28,62 @@ end
 
 Factory.define :permission_5, :class => Permission do |p|
   p.id '5'
+  p.action 'add_mentor_to_other'
+  p.controller 'people'
+  p.description 'Add mentor to other'
+end
+
+Factory.define :permission_6, :class => Permission do |p|
+  p.id '6'
+  p.action 'add_mentee_to_other'
+  p.controller 'people'
+  p.description 'Add mentee to other'
+end
+
+Factory.define :permission_7, :class => Permission do |p|
+  p.id '7'
+  p.action 'add_mentor'
+  p.controller 'people'
+  p.description 'Add mentor'
+end
+
+Factory.define :permission_8, :class => Permission do |p|
+  p.id '8'
+  p.action 'add_mentee'
+  p.controller 'people'
+  p.description 'Add mentee'
+end
+
+Factory.define :permission_9, :class => Permission do |p|
+  p.id '9'
+  p.action 'remove_mentor'
+  p.controller 'people'
+  p.description 'Remove mentor'
+end
+
+Factory.define :permission_10, :class => Permission do |p|
+  p.id '10'
+  p.action 'remove_mentee'
+  p.controller 'people'
+  p.description 'Remove mentee'
+end
+
+Factory.define :permission_11, :class => Permission do |p|
+  p.id '11'
+  p.action 'show_mentor'
+  p.controller 'people'
+  p.description 'Show mentor'
+end
+
+Factory.define :permission_12, :class => Permission do |p|
+  p.id '12'
+  p.action 'show_mentees'
+  p.controller 'people'
+  p.description 'Show mentees'
+end
+
+Factory.define :permission_13, :class => Permission do |p|
+  p.id '13'
   p.action 'update_multiple_roles'
   p.controller 'ministry_involvements'
   p.description 'Update multiple ministry involvement roles'

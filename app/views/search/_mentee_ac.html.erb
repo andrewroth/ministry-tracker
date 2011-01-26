@@ -1,0 +1,10 @@
+<%
+  result = "<div class='autoCompletePic'>#{ac_profile_picture_for_person(mentee_ac)}</div>" +
+
+           "<div class='autoCompleteName'>#{mentee_ac.first_name.capitalize} #{mentee_ac.last_name.capitalize}</div>" +
+
+           "<div class='hiddenMenteeID'>#{mentee_ac.person_id}</div>"
+
+%>
+
+<%= result %>
