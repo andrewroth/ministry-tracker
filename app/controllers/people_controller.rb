@@ -743,7 +743,7 @@ class PeopleController < ApplicationController
       @sql =   'SELECT ' + @view.select_clause
       @sql += ', ' + extra_select if extra_select.present?
       tables_clause ||= @view.tables_clause
-      @sql += ' FROM ' + @view.tables_clause
+      @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
       @sql += ' ORDER BY ' + @order
     end
@@ -813,7 +813,7 @@ class PeopleController < ApplicationController
       # hide roles marked as hide by default in database
       if hidden_by_default
         role_condition = "(MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0)"
-        @tables[MinistryRole] = "#{MinistryInvolvement.__(:ministry_role_id)} = #{MinistryRole.__(:id)}" if @tables
+        @tables[MinistryRole] = "MinistryInvolvement.#{MinistryInvolvement._(:ministry_role_id)} = MinistryRole.#{MinistryRole._(:id)}" if @tables
       end
 
     
@@ -847,7 +847,7 @@ class PeopleController < ApplicationController
         conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
       
-      conditions << "(#{role_condition})"
+      conditions << "(#{role_condition})" if hidden_by_default
 
       return conditions
     end
