@@ -363,7 +363,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=639 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=648 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -411,7 +411,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8597 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8599 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -547,7 +547,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7082 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7088 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -558,7 +558,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95296 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95301 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -628,7 +628,7 @@ CREATE TABLE `timetables` (
   `updated_by_person_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_c4c_pulse_dev.timetables_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4352 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4356 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

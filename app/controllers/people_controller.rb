@@ -98,11 +98,13 @@ class PeopleController < ApplicationController
           conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
         end
       end
+
     
       # Advanced search options
       @options = {}
       @tables = {}
       @search_for = []
+      # Check year in school
       # Check year in school
       if params[:school_year].present?
         conditions << database_search_conditions(params)[:school_year]
@@ -135,7 +137,15 @@ class PeopleController < ApplicationController
         @search_for << "Email: #{params[:email]}"
         @advanced = true
       end
-    
+
+      if params[:role].present? && params[:role].first.to_i > 0
+        conditions << database_search_conditions(params)[:role]
+        @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = #{MinistryInvolvement.table_name}.#{_(:person_id, :ministry_involvement)}"
+        @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
+        @advanced = true
+        @searched_ministry_roles = params[:role]
+      end
+
       conditions = add_involvement_conditions(conditions)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
@@ -186,6 +196,13 @@ class PeopleController < ApplicationController
       @people = []
       @count = 0
     end
+
+    # pass which ministries were searched for to the view
+    if params[:ministry]
+      ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
+      @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
+    end
+    @searched_ministry_ids ||= get_ministry_ids
     
     respond_to do |format|
       format.html { render :layout => 'application' }
@@ -564,8 +581,9 @@ class PeopleController < ApplicationController
   end
   
   # Question: what does it do? Are there customisable views, and this changes
-  # the currently used one?
+  # the currently used one? Yes - see the directory
   def change_view
+    session[:user_changed_view] = true
     session[:view_id] = params[:view]
     # Clear session[:order] since this view might not have the same columns
     session[:order_column_id] = nil
@@ -690,6 +708,15 @@ class PeopleController < ApplicationController
     end
    
     def get_view
+      # first automatically change the view if the user has not chosen their own view
+      if params[:view].blank? && session[:user_changed_view].blank? && params[:role].present?
+        # change view to one that actually shows roles because we're searching by role
+        session[:view_id] = View.first(:conditions => {:ministry_id => @ministry.id, :title => "Roles"}).id
+        # Clear session[:order] since this view might not have the same columns
+        session[:order_column_id] = nil
+      end
+
+
       view_id = session[:view_id]
       if view_id
         @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
