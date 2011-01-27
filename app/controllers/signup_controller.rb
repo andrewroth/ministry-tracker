@@ -124,7 +124,13 @@ class SignupController < ApplicationController
         ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
 
-        redirect_to :action => :step2_group
+        # join groups here
+        joingroups_from_hash(session[:signup_groups])
+        if semester_id = session[:signup_collection_group_semester_id]
+          join_default_group(session[:signup_campus_id], semester_id)
+        end
+
+        redirect_to :action => :step3_timetable
       end
     end
   end
@@ -142,8 +148,10 @@ class SignupController < ApplicationController
       @user = @person.user
       @email = @person.email.downcase
       pass = { :person => session[:signup_person_params],
-        :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
-      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
+        :primary_campus_involvement => session[:signup_primary_campus_involvement_params],
+        :signup_groups => session[:signup_groups],
+        :signup_campus_id => session[:signup_campus_id] }
+      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else
       flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
@@ -151,7 +159,9 @@ class SignupController < ApplicationController
     end
   end
 
-  def step1_email_verified
+  def step2_email_verified
+    session[:signup_groups] = params[:signup_groups]
+    session[:signup_campus_id] = params[:signup_campus_id]
     flash[:notice] = "Your email has been verified."
     redirect_to params.merge(:action => :step2_info_submit)
   end
@@ -167,14 +177,14 @@ class SignupController < ApplicationController
     session[:needs_verification] = nil
     session[:joined_collection_group] = nil
 
-    @person = Person.new
+    @person = get_person || Person.new
     setup_campuses
   end
 
   def step1_default_group
     get_person
     if @person
-      join_default_group
+      join_default_group(session[:signup_campus_id], params[:semester_id])
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
@@ -269,20 +279,30 @@ class SignupController < ApplicationController
     @custom_userbar_title = "Signup"
   end
 
-  def join_default_group
+  def join_default_group(campus_id, semester_id)
     throw "join_group requires @person" unless @person
-    @campus = Campus.find session[:signup_campus_id]
+    @campus = Campus.find campus_id
 
-    semester = params[:semester_id].present? ? Semester.find(params[:semester_id]) : Semester.current
+    semester = semester_id.present? ? Semester.find(semester_id) : Semester.current
 
     # Special case - add them to the Bible study group by default
     gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
 
-    @campus = Campus.find session[:signup_campus_id]
     @group = @campus.find_or_create_ministry_group gt, nil, semester
     gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
     gi.send_later(:join_notifications, base_url)
     session[:joined_collection_group] = true
+  end
+
+  def joingroups_from_hash(involvement_info)
+    involvement_info.each_pair do |group_id, level|
+      if %w(member interested).include?(level)
+        group = Group.find group_id
+        requested = (level == "member" ? group.needs_approval : false)
+        gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
+        gi.send_later(:join_notifications, base_url)
+      end
+    end
   end
 
   private

@@ -94,8 +94,8 @@
 <br/>
 
 <div class="center">
-<%= submit_tag "Next", :class => 'action-button' %>  
-<%= link_to "Back", { :action => "step1_info" }, :class => "action-button" %>
+  <%= submit_tag "Back", :type => "button", :onClick => "window.location.href = '/signup/step1_group'", :class => "action-button", :style => "margin-right: 10px" %>
+<%= submit_tag "Next", :class => 'action-button' %>
 </div>
 
 <%- end -%>
