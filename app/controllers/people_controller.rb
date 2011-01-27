@@ -804,6 +804,12 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
+      # hide roles marked as hide by default in database
+      if hidden_by_default
+        role_condition = "(MinistryRole.#{_(:position, :ministry_role)} = 1)"
+        @tables[MinistryRole] = "#{MinistryInvolvement.__(:ministry_role_id)} = #{MinistryRole.__(:id)}" if @tables
+      end
+
       ministry_condition = "("
       ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
       ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
