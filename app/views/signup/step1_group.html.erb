@@ -1,5 +1,5 @@
 <% instruction_block do %>
-<b>Step 1:</b> Join a group!
+  <b>Step 1:</b> Join a group!  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Log Out’ button and return to this page. Thank you!<% end %>
 <% end %>
 
 <center>
@@ -39,3 +39,24 @@ What campus are you on?
 
 <div id="groups">
 </div>
+
+<DIV class="center">
+  <BR/>
+  <P>
+    <small>FALL: September - December<br>WINTER: January - April<br>SUMMER: May - July</small>
+  </P>
+  <BR/>
+  <BR/>
+  <%- if logged_in? %>
+  <DIV class="center">
+    <P>
+    <% if session[:from_facebook_canvas] == true %>
+      <%= link_to "Log Out", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
+    <% else %>
+      <%= link_to "Log Out", logout_url, :class => 'action-button' %>
+    <% end %>
+    </P>
+  </DIV>
+  <%- end -%>
+</DIV>
+

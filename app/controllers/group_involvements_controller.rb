@@ -16,11 +16,18 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def joingroup_signup
-    params[:person_id] = session[:signup_person_id]
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @join = @signup = true
-    joingroup
-    render :action => :joingroup
+    get_person
+    if @person
+      @join = @signup = true
+      joingroup
+      render :action => :joingroup
+    else
+      # anon user is joining groups, need to remember which groups s/he wants to join
+      session[:signup_groups] ||= {}
+      session[:signup_groups] << { @group.id => params[:level] }
+      @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
+      render :action => :joingroup_signup
+    end
   end
 
   def joingroup
