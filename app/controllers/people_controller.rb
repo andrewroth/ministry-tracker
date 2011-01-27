@@ -819,7 +819,7 @@ class PeopleController < ApplicationController
       # hide roles marked as hide by default in database
       if hidden_by_default
         role_condition = "(MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0)"
-        @tables[MinistryRole] = "MinistryInvolvement.#{MinistryInvolvement._(:ministry_role_id)} = MinistryRole.#{MinistryRole._(:id)}" if @tables
+        @tables[MinistryRole] = "MinistryInvolvement.#{MinistryInvolvement._(:ministry_role_id)} = MinistryRole.#{MinistryRole._(:id)} AND MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0" if @tables
       end
 
     
