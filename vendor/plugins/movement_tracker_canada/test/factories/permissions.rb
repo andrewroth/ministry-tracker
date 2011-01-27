@@ -25,3 +25,10 @@ Factory.define :permission_4, :class => Permission do |p|
   p.controller 'people'
   p.description 'View Directory'
 end
+
+Factory.define :permission_5, :class => Permission do |p|
+  p.id '5'
+  p.action 'update_multiple_roles'
+  p.controller 'ministry_involvements'
+  p.description 'Update multiple ministry involvement roles'
+end
