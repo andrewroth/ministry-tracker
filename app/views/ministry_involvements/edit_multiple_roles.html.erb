@@ -48,6 +48,7 @@
     <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: 1em;"}) %>
     </big>
     
+  
     <% for involvement in @involvements %>
       <%= hidden_field_tag "involvement_id[]", involvement.id %>
     <% end %>
@@ -65,7 +66,6 @@
     <br/>
     
   <% end %>
-    
 
 <% else %>
   <br/>

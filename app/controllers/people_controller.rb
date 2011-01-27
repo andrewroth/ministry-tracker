@@ -158,7 +158,7 @@ class PeopleController < ApplicationController
     end
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-    tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
+    tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
     if params[:search_id].blank?
       @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
       if @search
@@ -833,7 +833,7 @@ class PeopleController < ApplicationController
       @sql =   'SELECT ' + @view.select_clause
       @sql += ', ' + extra_select if extra_select.present?
       tables_clause ||= @view.tables_clause
-      @sql += ' FROM ' + @view.tables_clause
+      @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
       @sql += ' ORDER BY ' + @order
     end
@@ -885,7 +885,7 @@ class PeopleController < ApplicationController
       @ministry_ids ||= get_ministries.collect(&:id).collect(&:to_s)
     end
 
-    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true)
+    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true, hidden_by_default = true)
       if params[:ministry]
         ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
         ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
@@ -894,10 +894,24 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
+      # hide roles marked as hide by default in database
+      if hidden_by_default
+        role_condition = "(MinistryRole.#{_(:position, :ministry_role)} = 1)"
+        @tables[MinistryRole] = "#{MinistryInvolvement.__(:ministry_role_id)} = #{MinistryRole.__(:id)}" if @tables
+      end
+
       ministry_condition = "("
       ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
       ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
+
+
+      # hide roles marked as hide by default in database
+      if hidden_by_default
+        role_condition = "(MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0)"
+        @tables[MinistryRole] = "MinistryInvolvement.#{MinistryInvolvement._(:ministry_role_id)} = MinistryRole.#{MinistryRole._(:id)} AND MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0" if @tables
+      end
+
     
       # Check campus
       if params[:campus]
@@ -918,7 +932,8 @@ class PeopleController < ApplicationController
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
       end
-      
+
+
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
         conditions << "(#{ministry_condition} AND #{campus_condition})"
@@ -927,6 +942,8 @@ class PeopleController < ApplicationController
       elsif !is_staff_somewhere
         conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
+      
+      conditions << "(#{role_condition})" if hidden_by_default
 
       return conditions
     end
