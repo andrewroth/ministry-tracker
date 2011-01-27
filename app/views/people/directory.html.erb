@@ -1,3 +1,7 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
 <% @site_title = 'Directory' -%>
 
 <div id="timetable_link"
@@ -27,16 +31,17 @@
 <%- if @me.ministries.length > 1 -%>
   <%- if authorized?(:change_ministry_and_goto_directory) -%>
 	  <div class="butNormal" ><%= link_to_function("Switch directories", "$(this).hide();$('#current_ministry').show()") %></div>
-      <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
-      <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
-      <%- tooltip do -%>
+    <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+    <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry'} ) -%>
+    <%- tooltip do -%>
       View the directory of another ministry you are involved in.
     <%- end -%>
+    &nbsp;&nbsp;
   <%- end -%>
 <%- end -%>
 
 <%- if @ministry.views.length > 1 -%>
-  View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
+  View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id)) %>
   <%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
 
   <%- tooltip do -%> 
