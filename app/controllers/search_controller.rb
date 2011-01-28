@@ -234,7 +234,7 @@ class SearchController < ApplicationController
       if person.person_mentor_id == nil
         person_mentor_id_condition = 'IS NOT NULL'
       else
-        person_mentor_id_condition = '<> person.person_mentor_id'
+        person_mentor_id_condition = '<> ' + person.person_mentor_id.to_s
       end
                  
       people = Person.all(:limit => MAX_NUM_AUTOCOMPLETE_RESULTS,
