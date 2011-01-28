@@ -9,11 +9,11 @@ class SignupController < ApplicationController
   before_filter :set_current_and_next_semester
 
   def index
-    redirect_to :action => :step1_info
+    redirect_to :action => :step1_group
   end
 
   def facebook
-    redirect_to :action => :step1_info
+    redirect_to :action => :step1_group
   end
 
   # TODO: this will have to be renamed to step 2?
@@ -101,7 +101,7 @@ class SignupController < ApplicationController
 
       if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created)
         @email = params[:person][:email]
-        redirect_to :action => :step1_verify
+        redirect_to :action => :step2_verify
       else
         @person.save!
 
@@ -151,6 +151,7 @@ class SignupController < ApplicationController
         :primary_campus_involvement => session[:signup_primary_campus_involvement_params],
         :signup_groups => session[:signup_groups],
         :signup_campus_id => session[:signup_campus_id] }
+      debugger
       link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else
