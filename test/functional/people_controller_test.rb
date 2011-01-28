@@ -7,8 +7,8 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-    setup_default_user
     setup_ministry_roles
+    setup_default_user
     setup_regions
     Factory(:country_1)
     Factory(:country_2)
@@ -498,10 +498,20 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "people with a role marked hide by default should not appear in directory" do
+    setup_users
+    setup_people
+    setup_ministry_roles
+    setup_ministry_involvements
+
     get :directory
-    p = assigns(:people)
-    debugger
-    p = assigns(:people)
+    assert_equal 2, assigns(:people).size
+
+    mr = MinistryRole.find(4)
+    mr.hide_by_default = true
+    mr.save!
+
+    get :directory
+    assert_equal 1, assigns(:people).size
   end
 
 end
