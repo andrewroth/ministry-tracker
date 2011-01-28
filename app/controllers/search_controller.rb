@@ -15,7 +15,7 @@ class SearchController < ApplicationController
   SEARCH_RANK = {:person => {:first_name => 4, :last_name => 1, :ministry => 3},
                  :group  => {:name => 5, :ministry => 4, :semester_current => 3, :semester_next => 1, :involvement => 2}}
   
-  FILTER_MENTOR_NONE = 0
+  FILTER_MENTOR_NONE = 'NULL'
 
   def index
     @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
@@ -230,6 +230,12 @@ class SearchController < ApplicationController
         " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
 
     if @filter_out_mentored == true   # i.e. we are searching for a mentee (that is not being mentored)          
+            
+      if person.person_mentor_id == nil
+        person_mentor_id_condition = 'IS NOT NULL'
+      else
+        person_mentor_id_condition = '<> person.person_mentor_id'
+      end
                  
       people = Person.all(:limit => MAX_NUM_AUTOCOMPLETE_RESULTS,
                  :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
@@ -247,8 +253,8 @@ class SearchController < ApplicationController
   
                     
                     :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                   "AND #{Person.__(:person_mentor_id)} = #{FILTER_MENTOR_NONE} " +
-                                   "AND #{Person.__(:person_id)} <> #{person.person_mentor_id} " +
+                                   "AND #{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
+                                   "AND #{Person.__(:person_id)} #{person_mentor_id_condition} " +
                                    "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
                                    "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                    "or #{_(:first_name, :person)} like ? " +
@@ -280,7 +286,8 @@ class SearchController < ApplicationController
 
 
             :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                 "AND #{Person.__(:person_mentor_id)} <> #{@person_id} " +
+                                 "AND (#{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
+                                 "OR #{Person.__(:person_mentor_id)} <> #{@person_id}) " +
                                  "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
                                  "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
                                  "or #{_(:first_name, :person)} like ? " +

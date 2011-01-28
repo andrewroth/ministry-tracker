@@ -20,7 +20,7 @@ class PeopleController < ApplicationController
                   :set_initial_ministry]
   skip_standard_login_stack :only => free_actions
      
-  MENTOR_ID_NONE = 0
+  MENTOR_ID_NONE = nil
   ID_CONVERTED_FROM_NON_NUMERIC = 0
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
