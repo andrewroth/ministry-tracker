@@ -1,6 +1,6 @@
   <ul id='profile_mentor'>
 		<li id="mi_<%= @person.person_mentor_id %>">
-			<%- if @person.person_mentor_id != 0 -%>						
+			<%- if @person.person_mentor_id != nil -%>						
          <%- mentor = Person.find(@person.person_mentor_id) -%>	 
 	       <%= link_to_remote(image_tag('silk/link_break.png'), 
 		        :update => "mi_#{@person.person_mentor_id}",
