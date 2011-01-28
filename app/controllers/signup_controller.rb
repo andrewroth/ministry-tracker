@@ -32,10 +32,11 @@ class SignupController < ApplicationController
   # TODO: this will have to be renamed to step 2?
   def step2_info_submit
     @person = Person.new(params[:person])
-    [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
+    [:email, :first_name, :last_name, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
+    @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
 
     # verify email
     email = params[:person] && params[:person][:email]

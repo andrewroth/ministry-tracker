@@ -1749,12 +1749,29 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 475px; float: left; padding: 0 1em 0 1em;
+  width: 425px; float: left; padding: 0 3em 0 3em;
 }
 
 #signup_step1_columns {
   width: 100%; display: inline-block; padding: 1em 0 1em 0;
 }
+
+tr.required_field td.label {
+  background-position: right top;
+  background-image: url("/images/asterisk_yellow_smaller.png");
+  background-repeat: no-repeat;
+  padding-right: 13px;
+  padding-top: 1px;
+}
+
+table#set_initial_campus {
+  width: 475px; padding: 0 1em 0 1em; display: block;
+}
+
+table#set_initial_campus tr {
+  height: 2em;
+}
+
 
 
 /************************************************/
