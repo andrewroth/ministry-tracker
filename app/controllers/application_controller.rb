@@ -165,6 +165,7 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_admin(ministry = nil, person = nil)
+      return false unless person
       session[:admins] ||= {}
       ministry ||= current_ministry
       return false unless ministry
