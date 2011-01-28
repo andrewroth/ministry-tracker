@@ -63,7 +63,7 @@ class SearchController < ApplicationController
 
 
   def get_query
-    @q = params["q"].squeeze(" ").strip
+    @q = params["q"].squeeze(" ").strip if params["q"]
   end
 
 
