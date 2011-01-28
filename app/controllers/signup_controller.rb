@@ -297,7 +297,7 @@ class SignupController < ApplicationController
   end
 
   def joingroups_from_hash(involvement_info)
-    involvement_info.each_pair do |group_id, level|
+    (involvement_info || {}).each_pair do |group_id, level|
       if %w(member interested).include?(level)
         group = Group.find group_id
         requested = (level == "member" ? group.needs_approval : false)
