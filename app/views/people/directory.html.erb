@@ -4,7 +4,7 @@
 
 <% @site_title = 'Directory' -%>
 
-<div id="timetable_link"
+<div id="timetable_link">
 </div>
 
 <div class="sectionHeader">
@@ -21,10 +21,6 @@
                        :method => :get,
                        :html => {:class => "action-button"}) %>
     <%= spinner('add_student') %>
-
-    <%- if authorized?(:new, :imports) -%>
-      <%= link_to("#{image_tag('import.png')} Mass import tool", new_import_path, :class => 'massimport action-button') %>
-    <%- end -%>
   </div>
 <%- end -%>
 
@@ -40,7 +36,7 @@
   <%- end -%>
 <%- end -%>
 
-<%- if @ministry.views.length > 1 -%>
+<%- if @search_params_present && @ministry.views.length > 1 -%>
   View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id)) %>
   <%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
 

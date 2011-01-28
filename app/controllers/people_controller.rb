@@ -15,6 +15,7 @@ class PeopleController < ApplicationController
 
   before_filter  :get_profile_person, :only => [:edit, :update, :show]
   before_filter  :set_use_address2
+  before_filter  :advanced_search_permission, :only => [:directory]
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
                   :set_initial_ministry]
@@ -70,10 +71,40 @@ class PeopleController < ApplicationController
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
     get_ministries
     get_campuses
+    
+    @advanced = true # we're now using advanced search by default
+    @options = {}
+    
+    do_directory_search if @search_params_present = search_params_present?
+
+    respond_to do |format|
+      format.html { render :layout => 'application' }
+      format.xls  do
+        filename = @search_for.gsub(';',' -') + ".xls"    
+
+        #this is required if you want this to work with IE        
+        if request.env['HTTP_USER_AGENT'] =~ /msie/i
+          headers['Pragma'] = 'public'
+          headers["Content-type"] = "text/plain" 
+          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
+          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
+          headers['Expires'] = "0" 
+        else
+          headers["Content-Type"] ||= 'text/xml'
+          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
+        end
+        render :action => 'excel', :layout => false
+      end
+      format.xml  { render :xml => @people.to_xml }
+    end
+  end
+
+
+  def do_directory_search
     first_name_col = "Person.#{_(:first_name, :person)}"
     last_name_col = "Person.#{_(:last_name, :person)}"
     email = _(:email, :address)
-    
+
     if params[:search_id]
       @search = @my.searches.find(params[:search_id])
       @conditions = @search.query
@@ -102,9 +133,9 @@ class PeopleController < ApplicationController
         end
       end
 
-    
+
       # Advanced search options
-      @options = {}
+
       @tables = {}
       @search_for = []
       # Check year in school
@@ -115,26 +146,26 @@ class PeopleController < ApplicationController
         @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
         @advanced = true
       end
-    
+
       # Check gender
       if params[:gender].present?
         conditions << database_search_conditions(params)[:gender]
         @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
         @advanced = true
       end
-    
+
       if params[:first_name].present?
         conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
         @search_for << "First Name: #{params[:first_name]}"
         @advanced = true
       end
-      
+
       if params[:last_name].present?
         conditions << "Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'"
         @search_for << "Last Name: #{params[:last_name]}"
         @advanced = true
       end
-      
+
       if params[:email].present?
         conditions << database_search_conditions(params)[:email]
         @search_for << "Email: #{params[:email]}"
@@ -154,11 +185,11 @@ class PeopleController < ApplicationController
       conditions = add_involvement_conditions(conditions, nil, hide_by_default)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
-    
+
       @conditions = conditions.join(' AND ')
       @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
     end
-    
+
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
     if params[:search_id].blank?
@@ -171,7 +202,7 @@ class PeopleController < ApplicationController
       # Only keep the last 5 searches
       @my.searches.last.destroy if @my.searches.length > 5
     end
-    
+
     # If these conditions will result in too large a set, use pagination
     @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
@@ -187,13 +218,13 @@ class PeopleController < ApplicationController
           end
         end
         if finish.blank?
-          conditions << "#{last_name_col} >= '#{start}'"          
+          conditions << "#{last_name_col} >= '#{start}'"
         else
           conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
         end
         @conditions = conditions.join(' AND ')
       end
-      
+
       build_sql(tables_clause)
       @people = ActiveRecord::Base.connection.select_all(@sql)
       post_process_directory(@people)
@@ -208,27 +239,7 @@ class PeopleController < ApplicationController
       @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
     end
     @searched_ministry_ids ||= get_ministry_ids
-    
-    respond_to do |format|
-      format.html { render :layout => 'application' }
-      format.xls  do
-        filename = @search_for.gsub(';',' -') + ".xls"    
 
-        #this is required if you want this to work with IE        
-        if request.env['HTTP_USER_AGENT'] =~ /msie/i
-          headers['Pragma'] = 'public'
-          headers["Content-type"] = "text/plain" 
-          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
-          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
-          headers['Expires'] = "0" 
-        else
-          headers["Content-Type"] ||= 'text/xml'
-          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
-        end
-        render :action => 'excel', :layout => false
-      end
-      format.xml  { render :xml => @people.to_xml }
-    end
   end
   
   # Executes a search according to provided criteria.
@@ -965,5 +976,27 @@ class PeopleController < ApplicationController
           false
         end
       }
+    end
+
+    def search_params_present?
+      if params[:search_id].present? ||
+         params[:search].present? ||
+         params[:school_year].present? ||
+         params[:gender].present? ||
+         params[:first_name].present? ||
+         params[:last_name].present? ||
+         params[:email].present? ||
+         params[:role].present?
+
+        return true
+      else
+        return false
+      end
+    end
+
+    def advanced_search_permission
+      unless authorized?(:advanced, :people)
+        redirect_to :action => :index, :controller => :search
+      end
     end
 end
