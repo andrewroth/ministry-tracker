@@ -664,4 +664,12 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
     assert_template :partial => '_view', :count => 1    
   end
+
+  test "people with a role marked hide by default should not appear in directory" do
+    get :directory
+    p = assigns(:people)
+    debugger
+    p = assigns(:people)
+  end
+
 end
