@@ -36,7 +36,7 @@
   <%- end -%>
 <%- end -%>
 
-<%- if @search_params_present && @ministry.views.length > 1 -%>
+<%- if @ministry.views.length > 1 -%>
   View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id)) %>
   <%= observe_field(:view, {:url => change_view_people_url, :with => 'view'} ) -%>
 
