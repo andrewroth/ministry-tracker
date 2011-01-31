@@ -177,9 +177,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   test "update multiple roles no permission" do
     setup_people
     setup_ministry_involvements
-    Factory(:permission_5)
-    Factory(:ministryrolepermission_6)
-    Factory(:ministryrolepermission_7)
+    Factory(:permission_13)
+    Factory(:ministryrolepermission_20)
+    Factory(:ministryrolepermission_21)
     Factory(:user_2)
     Factory(:person_2)
     Factory(:access_2)

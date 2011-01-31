@@ -37,7 +37,12 @@
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <div class="adfieldbox">
-    <big>Year in School <br/></big>
+    <big>Year in School</big>
+    <%- tooltip do -%>
+      Pressing Ctrl/Command will help selecting and deselecting multiple years.
+    <%- end -%>
+    <br/>
+    
     <%= select_tag 'school_year[]',
       options_for_select(SchoolYear.find(:all).collect {|sy| [sy.name, sy.id.to_s]},
         @options["school_year"]),
@@ -46,7 +51,12 @@
   </div>
 
   <div class="adfieldbox">
-    <big>Ministry <br/></big>
+    <big>Ministry</big>
+    <%- tooltip do -%>
+      Pressing Ctrl/Command will help selecting and deselecting multiple ministries.
+    <%- end -%>
+    <br/>
+    
     <%
       ministries_for_select = @ministries.collect {|ministry| [ministry.name, ministry.id.to_s]}
       ministries_for_select.sort! {|a,b| a[0] <=> b[0]}
@@ -59,7 +69,12 @@
   </div>
     
   <div class="adfieldbox">
-    <big>Campus <br/></big>
+    <big>Campus</big>
+    <%- tooltip do -%>
+      Pressing Ctrl/Command will help selecting and deselecting multiple campuses.
+    <%- end -%>
+    <br/>
+    
     <%= select_tag 'campus[]',
       options_for_select(
         @campuses.collect {|campus| [campus.name, campus.id.to_s]},
@@ -70,7 +85,12 @@
   </div>
 
   <div class="adfieldbox">
-    <big>Role <br/></big>
+    <big>Role</big>
+    <%- tooltip do -%>
+      Pressing Ctrl/Command will help selecting and deselecting multiple roles.
+    <%- end -%>
+    <br/>
+    
     <% #options_for_select(MinistryRole.find(:all, :order => "type ASC, position ASC").collect {|r| [r.name, r.id.to_s]}, %>
     <%  #grouped_options = {'North America' => [['United States','US'], 'Canada'], 'Europe' => ['Denmark','Germany','France'] }  %>
 
@@ -90,7 +110,5 @@
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <%= submit_tag 'Search' %>
-  <%= link_to_function "Back to Basic Search",
-    "$('#basic_search').show();$('#advanced_search').hide();"
-  %>
+  
 <% end %>

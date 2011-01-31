@@ -16,8 +16,8 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     Factory(:access_3)
     Factory(:campusinvolvement_2)
     Factory(:campusinvolvement_4)
-    Factory(:ministryinvolvement_4)
     setup_ministry_roles
+    Factory(:ministryinvolvement_4)
 
     @controller = CampusInvolvementsController.new
     @request    = ActionController::TestRequest.new
