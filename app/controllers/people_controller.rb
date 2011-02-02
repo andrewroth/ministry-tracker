@@ -314,7 +314,6 @@ class PeopleController < ApplicationController
             mentor_id = params[:m].to_i
             ensure_existence = Person.find(mentor_id)         
             if mentor_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
-              debugger
               @person.person_mentor_id = params[:m];
               @person.save
             end
