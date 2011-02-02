@@ -121,6 +121,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     xhr :get, :new
     assert_not_nil(assigns["ministry_involvement"])
   end
+  
+
 
   test "edit multiple roles" do
     setup_people
@@ -219,4 +221,46 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
 
     assert_equal 7, MinistryInvolvement.find(6).ministry_role_id
   end
+  
+  test "remove_involvements_for_multiple_people" do  
+    @today = Date.today     #.strftime("%Y-%m-%d") 
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:campusinvolvement_8)   #1008, tied to mi 5
+    Factory(:campusinvolvement_9)   #1009, tied to mi 8
+    Factory(:groupinvolvement_8)   #1 tied to person 4001
+    Factory(:groupinvolvement_9)   #2 tied to person 4001
+    
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "-1"}
+    
+    assert_equal @today, MinistryInvolvement.find(5).end_date
+    assert_equal @today, MinistryInvolvement.find(8).end_date
+   
+    assert_equal @today, CampusInvolvement.find(Factory(:campusinvolvement_8).id).end_date
+    assert_equal @today, CampusInvolvement.find(Factory(:campusinvolvement_9).id).end_date
+    
+    record_not_found = false
+    begin
+      try_to_find_gi8 = GroupInvolvement.find(8)
+    rescue ActiveRecord::RecordNotFound
+      record_not_found = true
+    end   
+    assert_equal true, record_not_found
+    
+    record_not_found = false
+    begin
+      try_to_find_gi9 = GroupInvolvement.find(9)
+    rescue ActiveRecord::RecordNotFound
+      record_not_found = true
+    end
+    assert_equal true, record_not_found
+    
+  end
+  
 end
