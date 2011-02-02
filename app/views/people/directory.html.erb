@@ -13,7 +13,7 @@
 
 <%- if @me.ministries.length > 1 -%>
   <%- if authorized?(:change_ministry_and_goto_directory) -%>
-      <%= link_to_function("#{image_tag("page_white_excel.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
+      <%= link_to_function("#{image_tag("bullet_go.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
       <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
       <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
       <%- tooltip do -%>
