@@ -37,9 +37,13 @@
     <%= spinner('GroupSemester') %>
     <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
                                            :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
-                                           :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').hide(); $('#interestedGroups').hide(); $('#requestedGroups').hide();",
-                                           :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').show(); $('#interestedGroups').show(); $('#requestedGroups').show();" %>
+                                           :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').fadeOut(); $('#interestedGroups').fadeOut(); $('#requestedGroups').fadeOut();",
+                                           :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').fadeIn();  $('#interestedGroups').fadeIn();  $('#requestedGroups').fadeIn();" %>
+
+    <!-- in case of browser refresh keep selection list in sync with groups displayed on the page (some browsers keep the selection list value that the user chose even after refreshing) -->
+    <script>$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
   </h5>
+  
   <div id="involvedGroups">
     <%= render :partial => 'group_list', :locals => { :list_title => "",
       :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})
