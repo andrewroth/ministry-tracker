@@ -3,6 +3,7 @@ Factory.define :grouptype_1, :class => GroupType, :singleton => true do |g|
   g.ministry_id '1'
   g.group_type 'Bible Study'
   g.mentor_priority 'true'
+  g.has_collection_groups true
 end
 
 Factory.define :grouptype_2, :class => GroupType, :singleton => true do |g|
@@ -10,6 +11,7 @@ Factory.define :grouptype_2, :class => GroupType, :singleton => true do |g|
   g.ministry_id '1'
   g.group_type 'Team'
   g.mentor_priority 'true'
+  g.has_collection_groups true
 end
 
 Factory.define :grouptype_3, :class => GroupType, :singleton => true do |g|
@@ -17,4 +19,5 @@ Factory.define :grouptype_3, :class => GroupType, :singleton => true do |g|
   g.ministry_id '2'
   g.group_type 'Bible Study Chicago'
   g.mentor_priority 'true'
+  g.has_collection_groups false
 end

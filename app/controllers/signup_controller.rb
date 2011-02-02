@@ -197,7 +197,7 @@ class SignupController < ApplicationController
     semester = params[:semester_id].present? ? Semester.find(params[:semester_id]) : Semester.current
 
     # Special case - add them to the Bible study group by default
-    gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
+    gt = GroupType.find_by_group_type "Bible Study" # TODO this should be a config var
 
     @campus = Campus.find session[:signup_campus_id]
     @group = @campus.find_or_create_ministry_group gt, nil, semester
