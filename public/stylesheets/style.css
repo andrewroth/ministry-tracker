@@ -571,7 +571,16 @@ div.sectionHeader h2 {
 		cursor:default;
 }
 
+.directoryResultControl {
+  display: inline;
+  margin-right: 2em;
+}
 
+.directoryMinistryTitle {
+  font-size: 1.5em;
+  display: inline;
+  margin-right: 1em;
+}
 
 .directorytable tr{vertical-align:middle; height:25px;}
 .directorytable td{vertical-align:middle;}
@@ -583,12 +592,13 @@ div.sectionHeader h2 {
   background:#F7F7FA;
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
   margin: 2em 0;
+  display: inline-block;
 }
 
 #advancedSearchLink {
   position: relative;
   left: 300px;
-  top: 45px;
+  top: 40px;
 }
 
 
@@ -1142,7 +1152,7 @@ margin-right:15px;
 /*min-width:180px;*/
 }
 
-.adfieldbox input.wide {width:200px; padding:3px 0;}
+.adfieldbox input.wide {width:185px; padding:3px 0;}
 .adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 250px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
@@ -1780,7 +1790,6 @@ td.eventAttendees {
   float: left;
   left: 140px;
   position: relative;
-  margin-top: 6px;
 }
 
 #uberSearchBoxContainer {
@@ -2090,7 +2099,7 @@ li.ac_over .autoCompleteEmail {
   border: solid #CCCCCC; /*#1F429B;*/
   border-width: 0 2px 5px 2px;
 
-  top: 79px !important;
+  top: 70px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
