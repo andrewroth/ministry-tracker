@@ -1,5 +1,5 @@
 module SemesterSet
-  def set_current_and_next_semester
+    def set_current_and_next_semester
     @current_semester = Semester.current
     unless @current_semester
       Semester.create_default_semesters(1)
