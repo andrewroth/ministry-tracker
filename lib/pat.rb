@@ -23,7 +23,8 @@ module Pat
           AND #{CampusInvolvement.__(:end_date)} IS NULL
           AND #{Campus.__(:id)} IN (#{campus_ids.join(',')})
         INNER JOIN #{Person.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:id)}
-        INNER JOIN #{User.table_name} ON #{User.__(:id)} = #{Person.__(:user_id)}
+        INNER JOIN #{Access.table_name} ON #{Person.__(:id)} = #{Access.__(:person_id)}
+        INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
         INNER JOIN #{Profile.table_name} ON #{User.__(:id)} = #{Profile.__(:viewer_id)} AND 
            #{Profile.__(:type)} = '#{type}'
         LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
