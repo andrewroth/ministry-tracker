@@ -308,7 +308,7 @@ class PeopleController < ApplicationController
       
       # check GET parameters generated from mentor auto-complete search; set new mentor if ID found
       profile_person = Person.find(params[:id]) # for some reason @person is always the Pulse user
-      if ((authorized?(:add_mentor, :people)&&(profile_person == @me)) || authorized?(:add_mentor_other, :people))
+      if ((authorized?(:add_mentor, :people)&&(profile_person == @me)) || authorized?(:add_mentor_to_other, :people))
         if params[:m]
           begin
             mentor_id = params[:m].to_i
@@ -325,7 +325,7 @@ class PeopleController < ApplicationController
       end
       
        # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
-      if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_other, :people))
+      if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_to_other, :people))
         if params[:mt]
           begin
             mentee_id = params[:mt].to_i
