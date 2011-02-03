@@ -11,6 +11,15 @@ The following recipients didn't have an email address:
 <%- @missing.each do |person| -%>
  - <%= person.full_name %>
 <%- end -%>
+<%- end -%>
 
+<%- if @errors.present? %>
+There was an error sending the email to the following people:
+<%- @errors.each_pair do |email, error| -%>
+"<%= email %>": "<%= error %>"
+<%- end -%>
+<%- end -%>
+
+<%- if @errors.present? || @missing.present? %>
 We'd suggest you go update their profiles.
 <%- end -%>
