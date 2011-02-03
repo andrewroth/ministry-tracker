@@ -21,7 +21,8 @@ class SignupController < ApplicationController
     @person ||= get_person || Person.new
     UserCodesController.clear(session)
     setup_campuses
-    @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
+    @campus = Campus.find(session[:signup_campus_id])
+    @dorms ||= @campus.try(:dorms)
   end
 
   def get_dorms

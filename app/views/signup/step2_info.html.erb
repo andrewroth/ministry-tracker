@@ -59,17 +59,7 @@
   </tr>
   <tr class="required_field">
     <td class="label">Campus </td>
-    <td>
-  <%= select_tag "primary_campus_involvement_campus_id", 
-        options_for_select([""] + @campuses.collect{ |c| [ c.name, c.id.to_s ] }, 
-                       session[:signup_campus_id].to_s),
-        :name => "primary_campus_involvement[campus_id]"
-  %>
-  <%= observe_field "primary_campus_involvement_campus_id",
-        :url => { :controller => 'signup', :action => 'get_dorms' },
-        :with => "primary_campus_involvement_campus_id"
-        %>
-    </td>
+    <td><%= @campus.name %></td>
   </tr>
   <tr class="required_field">
     <td class="label">School Year </td>
