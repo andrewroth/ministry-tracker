@@ -85,4 +85,34 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal false, @josh.is_leading_mentor_priority_group_with?(@person2)
   end
 
+  test "all group involvements" do
+    setup_semesters
+    setup_groups
+    Factory(:group_5)
+    Factory(:group_6)
+    Factory(:groupinvolvement_7)
+    Factory(:groupinvolvement_8)
+    Factory(:groupinvolvement_9)
+    Factory(:groupinvolvement_10)
+
+    gis = @josh.all_group_involvements
+    assert_equal 6, gis.size
+
+    gis = @josh.all_group_involvements(Factory(:current_semester))
+    assert_equal 4, gis.size
+
+  end
+
+  test "group involvements" do
+
+  end
+
+  test "group involvement interests" do
+
+  end
+
+  test "group involvement requests" do
+
+  end
+
 end

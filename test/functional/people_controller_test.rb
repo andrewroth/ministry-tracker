@@ -496,4 +496,14 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
     assert_template :partial => '_view', :count => 1    
   end
+
+  test "show group involvements per semester" do
+    person = Factory(:person_1)
+
+    post :show_group_involvements, :id => person.id, :semester_id => 14
+
+    assert_equal 14, assigns(:semester).id
+
+    # actual group involvements are fetched in the js view...
+  end
 end
