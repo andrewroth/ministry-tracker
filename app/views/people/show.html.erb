@@ -32,7 +32,7 @@
 	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
 
 	<h5 class="title">
-    I'm Involved In
+    Involvements
     <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
     <%= spinner('GroupSemester') %>
     <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
