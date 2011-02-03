@@ -167,6 +167,7 @@ class ApplicationController < ActionController::Base
     def is_ministry_admin(ministry = nil, person = nil)
       person ||= (@me || get_person)
       return false unless person
+      return false if person.new_record?
       session[:admins] ||= {}
       ministry ||= current_ministry
       return false unless ministry
