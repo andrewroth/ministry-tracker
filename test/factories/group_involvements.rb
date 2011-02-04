@@ -48,15 +48,15 @@ Factory.define :groupinvolvement_7, :class => GroupInvolvement do |g|
   g.requested '1'
 end
 
-Factory.define :groupinvolvement_8, :class => GroupInvolvement, :singleton => true do |g|
-  g.id '8'
+Factory.define :groupinvolvement_11, :class => GroupInvolvement, :singleton => true do |g|
+  g.id '11'
   g.person_id '4001'
   g.group_id '4'
   g.level 'member'    
 end
 
-Factory.define :groupinvolvement_9, :class => GroupInvolvement, :singleton => true do |g|
-  g.id '9'
+Factory.define :groupinvolvement_12, :class => GroupInvolvement, :singleton => true do |g|
+  g.id '12'
   g.person_id '4001'
   g.group_id '5'
   g.level 'leader'   

@@ -222,7 +222,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     assert_equal 7, MinistryInvolvement.find(6).ministry_role_id
   end
   
-  test "remove_involvements_for_multiple_people" do  
+  test "remove involvements for multiple people" do  
     @today = Date.today     #.strftime("%Y-%m-%d") 
     setup_people
     setup_ministry_involvements
@@ -230,8 +230,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_8)
     Factory(:campusinvolvement_8)   #1008, tied to mi 5
     Factory(:campusinvolvement_9)   #1009, tied to mi 8
-    Factory(:groupinvolvement_8)   #1 tied to person 4001
-    Factory(:groupinvolvement_9)   #2 tied to person 4001
+    Factory(:groupinvolvement_11)   #11 tied to person 4001
+    Factory(:groupinvolvement_12)   #12 tied to person 4001
     
     Factory(:person_2)
     Factory(:person_6)
@@ -247,7 +247,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     
     record_not_found = false
     begin
-      try_to_find_gi8 = GroupInvolvement.find(8)
+      try_to_find_gi11 = GroupInvolvement.find(11)
     rescue ActiveRecord::RecordNotFound
       record_not_found = true
     end   
@@ -255,12 +255,68 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     
     record_not_found = false
     begin
-      try_to_find_gi9 = GroupInvolvement.find(9)
+      try_to_find_gi12 = GroupInvolvement.find(12)
     rescue ActiveRecord::RecordNotFound
       record_not_found = true
     end
     assert_equal true, record_not_found
     
+  end
+  
+  
+  test "remove involvements for multiple people no permission" do
+    setup_people
+    setup_ministry_involvements
+    # setup permissions for roles other than that of the logged-in user
+    Factory(:permission_14)
+    Factory(:ministryrolepermission_22)
+    Factory(:ministryrolepermission_23)
+    
+    Factory(:user_2)
+    Factory(:person_2)
+    Factory(:access_2)
+    login "fred@uscm.org"
+    setup_ministries
+    Factory(:ministryinvolvement_12)
+    Factory(:campusinvolvement_8)   #1008, tied to mi 5
+    Factory(:campusinvolvement_9)   #1009, tied to mi 8
+    Factory(:groupinvolvement_11)   #11 tied to person 4001
+    Factory(:groupinvolvement_12)   #12 tied to person 4001    
+    Factory(:person_2)
+    Factory(:person_6)
+    Factory(:person_8)
+
+    put :update_multiple_roles, :involvement_id => ["5","12"], :role => {:id => "-1"}
+
+    assert_equal 4, MinistryInvolvement.find(5).ministry_role_id
+    assert_equal 7, MinistryInvolvement.find(12).ministry_role_id
+    
+    assert_nil MinistryInvolvement.find(5).end_date
+    assert_nil MinistryInvolvement.find(12).end_date
+   
+    assert_nil CampusInvolvement.find(Factory(:campusinvolvement_8).id).end_date
+    assert_nil CampusInvolvement.find(Factory(:campusinvolvement_9).id).end_date
+   
+    
+    record_found = false
+    begin
+      try_to_find_gi11 = GroupInvolvement.find(11)
+      assert_equal 11, GroupInvolvement.find(11).id
+      record_found = true
+    rescue ActiveRecord::RecordNotFound
+      record_found = false
+    end   
+    assert_equal true, record_found
+    
+    record_found = false
+    begin
+      try_to_find_gi12 = GroupInvolvement.find(12)
+      assert_equal 12, GroupInvolvement.find(12).id
+      record_found = true
+    rescue ActiveRecord::RecordNotFound
+      record_found = false
+    end   
+    assert_equal true, record_found
   end
   
 end

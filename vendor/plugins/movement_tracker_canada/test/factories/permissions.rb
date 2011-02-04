@@ -88,3 +88,10 @@ Factory.define :permission_13, :class => Permission do |p|
   p.controller 'ministry_involvements'
   p.description 'Update multiple ministry involvement roles'
 end
+
+Factory.define :permission_14, :class => Permission do |p|
+  p.id '14'
+  p.action 'destroy'
+  p.controller 'people'
+  p.description 'Remove involvements' # also located in MinistryInvolvements under 'update roles'
+end

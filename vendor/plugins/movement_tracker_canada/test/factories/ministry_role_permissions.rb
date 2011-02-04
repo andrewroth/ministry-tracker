@@ -90,8 +90,6 @@ Factory.define :ministryrolepermission_19, :class => MinistryRolePermission do |
   m.permission_id '7'
 end
 
-
-
 Factory.define :ministryrolepermission_20, :class => MinistryRolePermission do |m|
   m.id '20'
   m.ministry_role_id '5'
@@ -103,4 +101,18 @@ Factory.define :ministryrolepermission_21, :class => MinistryRolePermission do |
   m.ministry_role_id '10'
   m.permission_id '13'
 end
+
+Factory.define :ministryrolepermission_22, :class => MinistryRolePermission do |m|
+  m.id '22'
+  m.ministry_role_id '5'
+  m.permission_id '14'
+end
+
+Factory.define :ministryrolepermission_23, :class => MinistryRolePermission do |m|
+  m.id '23'
+  m.ministry_role_id '10'
+  m.permission_id '14'
+end
+
+
 
