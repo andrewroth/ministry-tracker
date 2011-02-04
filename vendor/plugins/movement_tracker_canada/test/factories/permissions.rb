@@ -87,7 +87,6 @@ Factory.define :permission_12, :class => Permission do |p|
   p.action 'show_mentees'
   p.controller 'people'
   p.description 'Show mentees'
->>>>>>> c4c.staging.mentorship_profile_data
 end
 
 Factory.define :permission_14, :class => Permission do |p|
