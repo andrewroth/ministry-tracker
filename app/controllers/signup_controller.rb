@@ -55,6 +55,7 @@ class SignupController < ApplicationController
     end
 
     @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
+    @primary_campus_involvement.campus_id = session[:signup_campus_id]
     [:campus_id, :school_year_id].each do |c|
       unless @primary_campus_involvement.send(c).present?
         @person.errors.add(c, :blank)
