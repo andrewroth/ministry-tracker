@@ -1,28 +1,27 @@
-<% @site_title = 'Directory' -%>
+<% @site_title = 'Advanced Search' -%>
 
 <div id="timetable_link">
 </div>
 
 <div class="sectionHeader">
   <h1 id="reportTitle">Advanced Search</h1>
-</div>
 
-<br/>
+  <br/>
 
-<div class="directoryMinistryTitle"><%= @campus ? @campus.name : @ministry.name %></div>
+  <div class="directoryMinistryTitle"><%= @campus ? @campus.name : @ministry.name %></div>
 
-<%- if @me.ministries.length > 1 -%>
-  <%- if authorized?(:change_ministry_and_goto_directory) -%>
-      <%= link_to_function("#{image_tag("bullet_go.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
-      <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
-      <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
-      <%- tooltip do -%>
-      View the directory of another ministry you are involved in.
-      <%- end -%>
-      <%= spinner('_change_ministry') %>
+  <%- if @me.ministries.length > 1 -%>
+    <%- if authorized?(:change_ministry_and_goto_directory) -%>
+        <%= link_to_function("#{image_tag("bullet_go.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
+        <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
+        <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
+        <%- tooltip do -%>
+        Search a different ministry that you are involved in.
+        <%- end -%>
+        <%= spinner('_change_ministry') %>
+    <%- end -%>
   <%- end -%>
-<%- end -%>
-
+</div>
 
 
 <%= render :partial => 'search_box' %>
@@ -62,21 +61,28 @@
   		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id, :format => :html)] %>
   	<%- end -%>
   <%- end -%>
-  <% if @count > 500 %>
-    <%= select_tag(:interval, options_for_select(options)) %>
-    <%= observe_field(:interval, :function => "if($('#interval').val() != '') document.location = $('#interval').val().replace(/&amp;/g,'&');") %>
-  <% end %>
-    
-  <% action_options_array = [['Perform Action with Selected','']] %>
-  <% action_options_array << ['Send Email',new_email_path] if authorized?(:email) %>
-  <% action_options_array << ['Create Group', new_group_path] if authorized?(:new, :groups) %>
-  <% action_options_array << ['Change Roles', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
-  
+
+
   <div>
+    <% if @count > 500 %>
+      <div class="directoryResultControl">
+        <%= select_tag(:interval, options_for_select(options)) %>
+        <%= observe_field(:interval, :function => "if($('#interval').val() != '') { $('#spinner_interval').show(); document.location = $('#interval').val().replace(/&amp;/g,'&'); }") %>
+        <%= spinner('_interval') %>
+      </div>
+    <% end %>
+
+
+    <% action_options_array = [['Perform Action with Selected','']] %>
+    <% action_options_array << ['Send Email',new_email_path] if authorized?(:email) %>
+    <% action_options_array << ['Create Group', new_group_path] if authorized?(:new, :groups) %>
+    <% action_options_array << ['Change Roles', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
+
     <% if action_options_array.size > 1 %>
       <div class="directoryResultControl">
         <%= select_tag(:perform_action, options_for_select(action_options_array)) %>
-        <%= observe_field :perform_action, :function => "performAction()" %>
+        <%= observe_field(:perform_action, {:function => "performAction();"}) %>
+        <%= spinner('_perform_action') %>
       </div>
     <% end %>
 
@@ -84,10 +90,10 @@
     <%- if @ministry.views.length > 1 -%>
       <div class="directoryResultControl">
         View: <%= select_tag("view", options_for_select(@ministry.views.collect {|v| [v.title, v.id]}, @view.id), :style => 'width:100px') %>
-        <%= observe_field(:view, {:url => change_view_people_url, :with => 'view', :before => "$('#spinner_change_view').show();"} ) -%>
+        <%= observe_field(:view, {:url => change_view_people_url, :with => 'view', :before => "$('#spinner_change_view').show()"} ) -%>
 
         <%- tooltip do -%>
-          Views are different ways to look at the directory.<br/><br/>Each view shows different columns of information about the people in the directory.
+          Views are different ways to look at the same search results.<br/><br/>Each view shows different columns of information about people.
         <%- end -%>
         <%= spinner('_change_view') %>
       </div>
@@ -120,7 +126,6 @@
   </div>
 
   <%- unless params[:start].to_s.empty? -%>
-    <br/>
     <br/>
     Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
   <% end %>
