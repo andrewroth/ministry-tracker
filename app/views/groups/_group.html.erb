@@ -24,24 +24,26 @@
   <%= gi.level.capitalize %> 
 <%- else %>
   <%- if @join -%>
-    <%= link_to_remote 'Join',
-      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
-        :person_id => @person.id,
-        :group_id => group.id,
-        :level => 'member'
-      },
-      :method => :post
-    %>
-    or
-    <%= link_to_remote 'Interested',
-      :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
-        :gt_id => group.group_type.id,
-        :person_id => @person.id,
-        :group_id => group.id,
-        :level => 'interested'
-      },
-      :method => :post
-    %>
+    <span class="join_links">
+      <%= link_to_remote 'Join',
+        :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
+          :person_id => @person.id,
+          :group_id => group.id,
+          :level => 'member'
+        },
+        :method => :post
+      %>
+      or
+      <%= link_to_remote 'Interested',
+        :url => { :action => "joingroup#{"_signup" if @signup}", :controller => 'group_involvements',
+          :gt_id => group.group_type.id,
+          :person_id => @person.id,
+          :group_id => group.id,
+          :level => 'interested'
+        },
+        :method => :post
+      %>
+    </span>
   <%- end -%>
 <%- end %>
 <br/>

@@ -34,4 +34,13 @@ class GroupInvolvement < ActiveRecord::Base
                                           join_time, school_year, group_link)
     end
   end
+
+  def self.create_group_involvement(person_id, group_id, level, requested)
+    # If the person is already in the group, find them. otherwise, create a new record
+    gi = find_or_create_by_person_id_and_group_id(person_id, group_id)
+    gi.level = level
+    gi.requested = requested
+    gi.save!
+    return gi
+  end
 end

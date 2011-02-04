@@ -1,0 +1,93 @@
+
+<% if session[:from_facebook_canvas] == true %>
+<script>
+  function facebook_init_callback() {
+  }
+
+  function facebook_login_callback(session) {
+    FB.api('/me', function(response) {
+      setValueIfNotSet('person_first_name', response.first_name);
+      setValueIfNotSet('person_last_name', response.last_name);
+      setValueIfNotSet('person_email', response.email);
+
+      // don't confuse gender index with the value
+      if(response.gender == "male") {
+        document.getElementById('person_gender').selectedIndex = 0;
+      } else if(response.gender == "female") {
+        document.getElementById('person_gender').selectedIndex = 1;
+      }
+    });
+  }
+</script>
+<% end %>
+
+
+<% instruction_block do %>
+<B>Step 2:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Back’ button and then the ‘Log Out’ button. Thank you!<% end %>
+<% end %>
+
+<center>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 2 } %>
+</center>
+
+<div id="signup_step1_columns">
+
+<%- form_for @person, :url => { :action => :step2_info_submit, :method => :post } do |f| -%>
+  <%= f.error_messages %>
+  <table id="signup_step2_info">
+  <tr class="required_field">
+    <td class="label">First Name </td>
+    <td><%= f.text_field :first_name %> </td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">Last Name </td>
+    <td><%= f.text_field :last_name %> </td>
+  </tr>
+  <%- unless logged_in? %>
+  <tr class="required_field">
+    <td class="label">Email </td>
+    <td><%= f.text_field :email %> </td>
+  </tr>
+  <%- end %>
+  <tr class="required_field">
+    <td class="label">Gender </td>
+    <td><%= f.select :gender, [["Male", "1"], ["Female", "0"]], :selected => @person.gender_us_id, :prompt => "" %> </td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">Phone </td>
+    <td><%= f.text_field :local_phone %> </td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">Campus </td>
+    <td><%= @campus.name %></td>
+  </tr>
+  <tr class="required_field">
+    <td class="label">School Year </td>
+    <td>
+      <%= select_tag "primary_campus_involvement_school_year_id", 
+            options_for_select(school_year_options),
+            :name => "primary_campus_involvement[school_year_id]"
+      %>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">Major </td>
+    <td><%= f.text_field :major %></td>
+  </tr>
+  <%= render :partial => "dorm_tr" %>
+  <tr>
+    <td> </td>
+    <td><small><br/><%= image_tag("asterisk_yellow_smaller.png") %> are required fields</small></td>
+  </tr>
+  </table>
+
+</div>
+
+<br/>
+
+<div class="center">
+  <%= submit_tag "Back", :type => "button", :onClick => "window.location.href = '/signup/step1_group'", :class => "action-button", :style => "margin-right: 10px" %>
+<%= submit_tag "Next", :class => 'action-button' %>
+</div>
+
+<%- end -%>

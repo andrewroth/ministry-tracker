@@ -7,8 +7,8 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-    setup_default_user
     setup_ministry_roles
+    setup_default_user
     setup_regions
     Factory(:country_1)
     Factory(:country_2)
@@ -151,8 +151,176 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
     assert assigns(:people)
   end
+
   
-  test "A user should be able to see a directory a directory on a ministry with no campuses" do
+  def test_ministry_leader_show_own_mentorship
+    Factory(:user_5)
+    Factory(:access_5)
+    Factory(:person_6)
+    Factory(:ministry_1)
+    Factory(:ministryrole_3)
+    Factory(:campus_1)
+    Factory(:campusinvolvement_5)
+    Factory(:ministryinvolvement_8)
+    Factory(:permission_11)  # show_mentor    
+    Factory(:ministryrolepermission_11)
+    Factory(:permission_12)  # show_mentees  
+    Factory(:ministryrolepermission_12)
+    
+    login('min_leader_with_no_permanent_address')
+    
+    get :show, :id => Factory(:person_6).id   # navigate to own profile
+
+    assert_template :show
+    assert_template :partial => '_mentors', :count => 1
+    assert_template :partial => '_mentees', :count => 1
+  end  
+  
+  def test_student_show_own_mentorship
+    Factory(:user_3)
+    Factory(:access_3)
+    Factory(:person_3)
+    Factory(:ministryrole_6)
+    Factory(:campusinvolvement_4) 
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:ministryinvolvement_9)
+    Factory(:permission_11)  # show_mentor    
+    Factory(:ministryrolepermission_13)
+    
+    login('sue@student.org')
+    
+    get :show, :id => Factory(:person_3).id   # navigate to own profile
+    
+    assert_template :show
+#debugger
+   # puts @response.body
+    assert_template :partial => '_mentors', :count => 1
+    assert_template :partial => '_mentees', :count => 0
+  end    
+  
+  
+  def test_student_remove_own_mentor
+    Factory(:person_6)  # mentor
+    Factory(:user_2)
+    Factory(:access_2)
+    Factory(:person_2)
+    Factory(:ministryrole_6)
+    Factory(:campusinvolvement_6) 
+    Factory(:ministry_1)
+    Factory(:campus_1)
+    Factory(:ministryinvolvement_10)
+    Factory(:permission_11)  # show_mentor  
+    Factory(:permission_9)  # remove_mentor  
+    Factory(:ministryrolepermission_13)
+    Factory(:ministryrolepermission_14)   
+    
+    login('fred@uscm.org')
+    
+    get :show, :id => Factory(:person_2).id   # navigate to own profile
+    
+    assert_template :show
+    assert_template :partial => '_mentors', :count => 1
+    
+    assert_equal Factory(:person_6).id, @person.person_mentor_id  # ensure mentor relation
+
+    xhr :get, :remove_mentor, :id => @person.id
+    # use Person.find because @person doesn't change due to scope
+    assert_nil Person.find(@person.id).person_mentor_id
+  end    
+  
+  def test_ministry_leader_remove_own_mentee
+    Factory(:person_2)    #mentee
+    Factory(:user_5)
+    Factory(:access_5)
+    Factory(:person_6)
+    Factory(:ministry_1)
+    Factory(:ministryrole_3)
+    Factory(:campus_1)
+    Factory(:campusinvolvement_5)
+    Factory(:ministryinvolvement_8)
+    Factory(:permission_12)  # show_mentees  
+    Factory(:ministryrolepermission_12)
+     Factory(:permission_10)  # remove_mentee 
+    Factory(:ministryrolepermission_15)   
+    
+    login('min_leader_with_no_permanent_address')
+    
+    get :show, :id => Factory(:person_6).id # show own profile
+
+    assert_template :show
+    assert_template :partial => '_mentees', :count => 1
+    
+    assert_equal @person.id, Factory(:person_2).person_mentor_id  # ensure person 2 is mentee
+    
+    xhr :get, :remove_mentee, :id => Factory(:person_2).id
+
+    # use Person.find because @person doesn't change due to scope
+    assert_nil Person.find(Factory(:person_2).id).person_mentor_id
+  end      
+  
+  def test_student_leader_add_own_mentee
+    Factory(:person_3)    #mentee
+    Factory(:user_1)
+    Factory(:access_1)
+    Factory(:person_1)
+    Factory(:ministry_1)
+    Factory(:ministryrole_4) #id 5
+    Factory(:campus_1)
+    Factory(:campusinvolvement_3)
+    Factory(:ministryinvolvement_11)
+    Factory(:permission_12)  # show_mentees  
+    Factory(:ministryrolepermission_16)
+    Factory(:permission_8)  # add_mentee 
+    Factory(:ministryrolepermission_17)   
+    
+    login('josh.starcher@example.com')
+    
+    get :show, :id => Factory(:person_1).id # show own profile
+
+    assert_template :show
+    assert_template :partial => '_mentees', :count => 1
+    
+    assert_not_equal @person.id, Factory(:person_3).person_mentor_id  # ensure person 3 is NOT mentee
+    
+    xhr :get, :show, :id => Factory(:person_1).id, :mt => Factory(:person_3).id
+
+    # use Person.find because @person doesn't change due to scope
+    assert_equal @person.id, Person.find(Factory(:person_3).id).person_mentor_id  
+  end  
+  
+  def test_student_leader_add_own_mentor
+    Factory(:person_6)    #mentor
+    Factory(:user_1)
+    Factory(:access_1)
+    Factory(:person_1)
+    Factory(:ministry_1)
+    Factory(:ministryrole_4) #id 5
+    Factory(:campus_1)
+    Factory(:campusinvolvement_3)
+    Factory(:ministryinvolvement_11)
+    Factory(:permission_11)  # show_mentor  
+    Factory(:ministryrolepermission_18)
+     Factory(:permission_7)  # add_mentor 
+    Factory(:ministryrolepermission_19)   
+    
+    login('josh.starcher@example.com')
+    
+    get :show, :id => Factory(:person_1).id # show own profile
+
+    assert_template :show
+    assert_template :partial => '_mentors', :count => 1
+    
+    assert_not_equal Factory(:person_6).id, @person.person_mentor_id  # ensure person 6 is NOT mentor
+  debugger  
+    xhr :get, :show, :id => Factory(:person_1).id, :m => Factory(:person_6).id
+
+    # use Person.find because @person doesn't change due to scope
+    assert_equal Factory(:person_6).id, Person.find(Factory(:person_1).id).person_mentor_id  
+  end        
+  
+  
+  test "A user should be able to see a directory on a ministry with no campuses" do
     Factory(:user_6)
     Factory(:access_6)
     Factory(:person_7)
@@ -496,4 +664,22 @@ class PeopleControllerTest < ActionController::TestCase
     assert_response :success
     assert_template :partial => '_view', :count => 1    
   end
+
+  test "people with a role marked hide by default should not appear in directory" do
+    setup_users
+    setup_people
+    setup_ministry_roles
+    setup_ministry_involvements
+
+    get :directory
+    assert_equal 2, assigns(:people).size
+
+    mr = MinistryRole.find(4)
+    mr.hide_by_default = true
+    mr.save!
+
+    get :directory
+    assert_equal 1, assigns(:people).size
+  end
+
 end
