@@ -144,11 +144,9 @@ class PeopleController < ApplicationController
         @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
         @advanced = true
         @searched_ministry_roles = params[:role]
-        hide_by_default = false
       end
 
-      hide_by_default ||= nil
-      conditions = add_involvement_conditions(conditions, nil, hide_by_default)
+      conditions = add_involvement_conditions(conditions, nil)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
     
@@ -797,7 +795,7 @@ class PeopleController < ApplicationController
       @ministry_ids ||= get_ministries.collect(&:id).collect(&:to_s)
     end
 
-    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true, hidden_by_default = true)
+    def add_involvement_conditions(conditions, only_null_ministry_involvement_end_date = true)
       if params[:ministry]
         ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
         ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
@@ -806,11 +804,6 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
-      # hide roles marked as hide by default in database
-      if hidden_by_default
-        role_condition = "(MinistryRole.#{_(:position, :ministry_role)} = 1)"
-        @tables[MinistryRole] = "#{MinistryInvolvement.__(:ministry_role_id)} = #{MinistryRole.__(:id)}" if @tables
-      end
 
       ministry_condition = "("
       ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
@@ -818,13 +811,6 @@ class PeopleController < ApplicationController
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
 
 
-      # hide roles marked as hide by default in database
-      if hidden_by_default
-        role_condition = "(MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0)"
-        @tables[MinistryRole] = "MinistryInvolvement.#{MinistryInvolvement._(:ministry_role_id)} = MinistryRole.#{MinistryRole._(:id)} AND MinistryRole.#{_(:hide_by_default, :ministry_role)} = 0" if @tables
-      end
-
-    
       # Check campus
       if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
@@ -836,7 +822,8 @@ class PeopleController < ApplicationController
       if !is_staff_somewhere
         campus_ids ||= get_campus_ids
       end
-      
+
+
       if params[:campus] || !is_staff_somewhere
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
@@ -855,8 +842,6 @@ class PeopleController < ApplicationController
         conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
       
-      conditions << "(#{role_condition})" if hidden_by_default
-
       return conditions
     end
     
