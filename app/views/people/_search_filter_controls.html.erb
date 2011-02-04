@@ -1,0 +1,8 @@
+
+<br/>
+
+<%= link_to("All results", {:action => "index", :controller => "search", :q => @q}, {:class => "searchFilterAll #{' searchFilterHighlighted' if controller.action_name == 'index'}"}) %>
+
+<%= link_to("People", {:action => "people", :controller => "search", :q => @q}, {:class => "searchFilterPeople #{' searchFilterHighlighted' if controller.action_name == 'people'}"}) %>
+
+<%= link_to("Groups", {:action => "groups", :controller => "search", :q => @q}, {:class => "searchFilterGroups #{' searchFilterHighlighted' if controller.action_name == 'groups'}"}) %>
