@@ -1825,44 +1825,6 @@ td.eventAttendees {
   position: relative;
 }
 
-#uberSearchBox {
-  width: 240px;
-  font-size: 18px;
-  position: absolute;
-  top: 4px;
-  left: 9px;
-  height: 25px;
-/*  background: #E6E6E6; use to blend in with bg more */
-  background: white;
-  color: #B3B3B3;
-  border: 2px solid white;
-  padding-left: 10px;
-
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
-}
-
-#uberSearchBox.focused, #uberSearchBox:focus {
-  background: white;
-  color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
-  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
-}
-
-#uberSearchBox.ac_loading {
-  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
-}
-
-#uberSearchButton {
-  border: 0px;
-  background-color: transparent;
-  position: absolute;
-  top: 5px;
-  left: 220px;
-  padding: 7px 20px;
-  cursor: pointer;
-}
-
-
 /* hsmit (dec 2010): added these to customize mentor quick search */
 #uberMentorSearchContainer {
   z-index: 99;
