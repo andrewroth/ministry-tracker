@@ -46,7 +46,6 @@ Factory.define :ministryrolepermission_9, :class => MinistryRolePermission do |m
   m.permission_id '7'
 end
 
-
 Factory.define :ministryrolepermission_11, :class => MinistryRolePermission do |m|
   m.id '11'
   m.ministry_role_id '4'
@@ -99,5 +98,28 @@ Factory.define :ministryrolepermission_19, :class => MinistryRolePermission do |
   m.id '19'
   m.ministry_role_id '5'    #student leader
   m.permission_id '7'
->>>>>>> c4c.staging.mentorship_profile_data
+end
+
+Factory.define :ministryrolepermission_20, :class => MinistryRolePermission do |m|
+  m.id '20'
+  m.ministry_role_id '5'
+  m.permission_id '13'
+end
+
+Factory.define :ministryrolepermission_21, :class => MinistryRolePermission do |m|
+  m.id '21'
+  m.ministry_role_id '10'
+  m.permission_id '13'
+end
+
+Factory.define :ministryrolepermission_22, :class => MinistryRolePermission do |m|
+  m.id '22'
+  m.ministry_role_id '5'
+  m.permission_id '14'
+end
+
+Factory.define :ministryrolepermission_23, :class => MinistryRolePermission do |m|
+  m.id '23'
+  m.ministry_role_id '10'
+  m.permission_id '14'
 end

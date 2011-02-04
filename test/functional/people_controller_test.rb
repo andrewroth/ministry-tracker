@@ -226,7 +226,7 @@ class PeopleControllerTest < ActionController::TestCase
 
     xhr :get, :remove_mentor, :id => @person.id
     # use Person.find because @person doesn't change due to scope
-    assert_equal 0, Person.find(@person.id).person_mentor_id
+    assert_nil Person.find(@person.id).person_mentor_id
   end    
   
   def test_ministry_leader_remove_own_mentee
@@ -252,11 +252,11 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_mentees', :count => 1
     
     assert_equal @person.id, Factory(:person_2).person_mentor_id  # ensure person 2 is mentee
-    debugger
+    
     xhr :get, :remove_mentee, :id => Factory(:person_2).id
 
     # use Person.find because @person doesn't change due to scope
-    assert_equal 0, Person.find(Factory(:person_2).id).person_mentor_id
+    assert_nil Person.find(Factory(:person_2).id).person_mentor_id
   end      
   
   def test_student_leader_add_own_mentee
@@ -271,7 +271,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_11)
     Factory(:permission_12)  # show_mentees  
     Factory(:ministryrolepermission_16)
-     Factory(:permission_8)  # add_mentee 
+    Factory(:permission_8)  # add_mentee 
     Factory(:ministryrolepermission_17)   
     
     login('josh.starcher@example.com')
