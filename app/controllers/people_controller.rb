@@ -539,16 +539,32 @@ class PeopleController < ApplicationController
   def set_initial_campus
     return unless login_required
     get_person
+
     if request.method == :put
-      ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
-      if ministry_campus
-        ministry = ministry_campus.ministry
-      else
-        ministry = Ministry.default_ministry
-        throw "add some ministries" unless ministry
+
+      @person.first_name = params[:person][:first_name]
+      @person.last_name = params[:person][:last_name]
+      @person.gender = params[:person][:gender]
+      @person.local_phone = params[:person][:local_phone]
+      @person.errors.add_on_blank([:first_name, :last_name, :local_phone])
+      @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
+
+      @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
+      @primary_campus_involvement.errors.add_on_blank([:campus_id, :school_year_id])
+
+      unless @person.errors.present? || @primary_campus_involvement.errors.present?
+        @person.save!
+
+        ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
+        if ministry_campus
+          ministry = ministry_campus.ministry
+        else
+          ministry = Ministry.default_ministry
+          throw "add some ministries" unless ministry
+        end
+        @primary_campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
+        @primary_campus_involvement.find_or_create_ministry_involvement
       end
-      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
-      @campus_involvement.find_or_create_ministry_involvement
     end
 
     # assume they are not staff at all
