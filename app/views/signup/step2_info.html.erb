@@ -6,9 +6,10 @@
 
   function facebook_login_callback(session) {
     FB.api('/me', function(response) {
-      setValueIfNotSet('person_first_name', response.first_name);
-      setValueIfNotSet('person_last_name', response.last_name);
-      setValueIfNotSet('person_email', response.email);
+      setValueIfNotSetButPresent('person_first_name', response.first_name);
+      setValueIfNotSetButPresent('person_last_name', response.last_name);
+      setValueIfNotSetButPresent('person_email', response.email);
+      setValueIfNotSetButPresent('person_local_phone', response.mobile_phone);
 
       // don't confuse gender index with the value
       if(response.gender == "male") {

@@ -586,7 +586,11 @@ div.sectionHeader h2 {
   margin: 2em 0;
 }
 
-
+#advancedSearchLink {
+  position: relative;
+  left: 300px;
+  top: 45px;
+}
 
 
 div.uploadStatus {

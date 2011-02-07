@@ -89,6 +89,13 @@ Factory.define :permission_12, :class => Permission do |p|
   p.description 'Show mentees'
 end
 
+Factory.define :permission_13, :class => Permission do |p|
+  p.id '13'
+  p.action 'update_multiple_roles'
+  p.controller 'ministry_involvements'
+  p.description 'Update multiple ministry involvement roles'
+end
+
 Factory.define :permission_14, :class => Permission do |p|
   p.id '14'
   p.action 'destroy'
