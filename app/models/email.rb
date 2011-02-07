@@ -9,6 +9,7 @@ class Email < ActiveRecord::Base
   
   def send_email
     missing = []
+    errors = {}
     if search
       ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
       @people = Person.find(ids)
@@ -17,12 +18,21 @@ class Email < ActiveRecord::Base
     end
     @people.each do |person|
       if person.primary_email.present?
-        Mailers::EmailMailer.deliver_email(person, self)
+        begin
+          Mailers::EmailMailer.deliver_email(person, self)
+        rescue Net::SMTPFatalError => e
+          errors[person.primary_email] = e.message
+        end
       else
         missing << person
       end
     end
-    Mailers::EmailMailer.deliver_report(self, missing)
+    begin
+      Mailers::EmailMailer.deliver_report(self, missing, errors)
+    rescue Net::SMTPFatalError => e
+      logger.info "Could not send confirmation email to #{sender.primary_email}: #{e.message}"
+      logger.flush
+    end
     self.missing_address_ids = missing.collect(&:id).to_json
   end
 

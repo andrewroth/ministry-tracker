@@ -72,17 +72,17 @@ class MonthlyReportsController < ReportsController
     @get_year_id ||= get_year.id
   end
 
-  def create_semester_report
+  def create_semester_report(campus_id = @report[:campus_id], semester_id = get_semester_id)
     sr = SemesterReport.new()
-    sr[:campus_id] = @report[:campus_id]
-    sr[:semester_id] = get_semester_id
+    sr[:campus_id] = campus_id
+    sr[:semester_id] = semester_id
     sr
   end
   
-  def create_annual_report
+  def create_annual_report(campus_id = @report[:campus_id], year_id = get_year_id)
     ar = AnnualReport.new()
-    ar[:campus_id] = @report[:campus_id]
-    ar[:year_id] = get_year_id
+    ar[:campus_id] = campus_id
+    ar[:year_id] = year_id
     ar
   end
   
