@@ -1,0 +1,7 @@
+<% if @people.blank? %>
+  <br/><%= image_tag("silk/exclamation.png") %> <b>Sorry, no search results <br>were found.</b><br/>&nbsp;
+<% elsif !logged_in? %>
+  <br/><%= image_tag("silk/exclamation.png") %> <b>You have logged out,<br/>please login and try searching again.</b><br/>&nbsp;
+<% else %>
+  <%= render :partial => "mentor_ac", :collection => @people %>
+<% end %>
