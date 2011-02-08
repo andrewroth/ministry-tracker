@@ -7,12 +7,12 @@ config.after_initialize do
   # require the base app/models files in the lib_path model files)
   @@map_hash ||= ''
   if @@map_hash && @@map_hash['lib_path']
-    found_lib_path = ActiveSupport::Dependencies.load_paths.find{ |item| item[@@map_hash['lib_path']] }
+    found_lib_path = ActiveSupport::Dependencies.autoload_paths.find{ |item| item[@@map_hash['lib_path']] }
     if found_lib_path
-      ActiveSupport::Dependencies.load_paths.delete found_lib_path
-      ActiveSupport::Dependencies.load_paths.unshift found_lib_path
+      ActiveSupport::Dependencies.autoload_paths.delete found_lib_path
+      ActiveSupport::Dependencies.autoload_paths.unshift found_lib_path
     else
-      ActiveSupport::Dependencies.load_paths.unshift @@map_hash['lib_path']
+      ActiveSupport::Dependencies.autoload_paths.unshift @@map_hash['lib_path']
     end
   end
 end
