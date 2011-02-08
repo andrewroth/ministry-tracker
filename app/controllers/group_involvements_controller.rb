@@ -154,9 +154,9 @@ class GroupInvolvementsController < ApplicationController
     
     def create_group_involvement
       @gi = GroupInvolvement.find_or_create_by_person_id_and_group_id(params[:person_id],
-                                                                      params[:group_id],
-                                                                      params[:level],
-                                                                      params[:requested])
+                                                                      params[:group_id])
+      @gi.level = params[:level]
+      @gi.requested = params[:requested]
     end
 
     def set_group_involvement_and_group
