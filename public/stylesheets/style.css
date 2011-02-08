@@ -1857,20 +1857,6 @@ table#set_initial_campus tr {
   cursor: pointer;
 }
 
-#uberSearchContainer {
-  z-index: 99;
-  float: left;
-  left: 140px;
-  position: relative;
-  margin-top: 6px;
-}
-
-#uberSearchBoxContainer {
-  padding: 0px;
-  margin: 0px;
-  position: relative;
-}
-
 /* hsmit (dec 2010): added these to customize mentor quick search */
 #uberMentorSearchContainer {
   z-index: 99;
