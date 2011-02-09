@@ -11,6 +11,11 @@
         <%- end %>
     </td>
     <td style="text-align: center;">
+      <%- if group_type.in_directory_search_not_in -%>
+        <%= image_tag('silk/accept.png') %>
+      <%- end -%>
+    </td>
+    <td style="text-align: center;">
         <%- if group_type.has_collection_groups -%>
         <%= image_tag('silk/accept.png') %>
         <%- end %>
