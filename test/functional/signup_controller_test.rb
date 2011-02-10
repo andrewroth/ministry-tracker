@@ -90,5 +90,44 @@ class SignupControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  test "person info validation" do
+    
+    # submit without first name
+    post :step2_info_submit, {:person => {:local_phone => "(123) 456.7890", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => "1"}},
+                             {:signup_campus_id => "1"}
+    assert_equal false, assigns(:person).errors.empty?
+
+    # submit without last name
+    post :step2_info_submit, {:person => {:local_phone => "(123) 456.7890", :gender => "1", :last_name => "", :email => "leader@future.com", :first_name => "future", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => "1"}},
+                             {:signup_campus_id => "1"}
+    assert_equal false, assigns(:person).errors.empty?
+
+    # submit without email
+    post :step2_info_submit, {:person => {:local_phone => "(123) 456.7890", :gender => "1", :last_name => "leader", :email => "", :first_name => "future", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => "1"}},
+                             {:signup_campus_id => "1"}
+    assert_equal false, assigns(:person).errors.empty?
+
+    # submit without phone
+    post :step2_info_submit, {:person => {:local_phone => "", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => "1"}},
+                             {:signup_campus_id => "1"}
+    assert_equal false, assigns(:person).errors.empty?
+
+    # submit without school year
+    post :step2_info_submit, {:person => {:local_phone => "(123) 456.7890", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => ""}},
+                             {:signup_campus_id => "1"}
+    assert_equal false, assigns(:person).errors.empty?
+
+    # submit with everything
+    post :step2_info_submit, {:person => {:local_phone => "(123) 456.7890", :gender => "1", :last_name => "leader", :email => "leader@future.com", :first_name => "future", :local_dorm => ""},
+                              :primary_campus_involvement => {:school_year_id => "1"}},
+                             {:signup_campus_id => "1"}
+    assert_equal true, assigns(:person).errors.empty?
+  end
+
 
 end
