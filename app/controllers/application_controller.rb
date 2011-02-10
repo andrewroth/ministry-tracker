@@ -137,7 +137,7 @@ class ApplicationController < ActionController::Base
       @is_ministry_leader ||= {}
       @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
          ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
-         person.id, get_ministry.root.leader_roles_ids]).nil?
+         person.id, get_ministry.root.leader_role_ids]).nil?
     end
     
     def is_staff_somewhere(person = nil)
@@ -165,11 +165,13 @@ class ApplicationController < ActionController::Base
     end
     
     def is_ministry_admin(ministry = nil, person = nil)
+      person ||= (@me || get_person)
+      return false unless person
+      return false if person.new_record?
       session[:admins] ||= {}
       ministry ||= current_ministry
       return false unless ministry
       session[:admins][ministry.id] ||= {}
-      person ||= (@me || get_person)
       unless session[:admins][ministry.id][person.id]
         session[:admins][ministry.id][person.id] = person.admin?(ministry)
       end
@@ -183,7 +185,7 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -233,6 +235,8 @@ class ApplicationController < ActionController::Base
           if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
             return true
           end
+          
+          ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
           
           # also return true if person is destroying self-involvements (don't return true for creation of new profile)
           if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"

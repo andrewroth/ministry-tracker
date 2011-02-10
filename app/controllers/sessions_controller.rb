@@ -136,7 +136,8 @@ class SessionsController < ApplicationController
       clear_session
       session[:user] = session[:impersonator]
       session[:impersonator] = nil
-      redirect_to :back
+      # (below) clear out any GET '?' parameters from string before navigating back a page
+      redirect_to request.env["HTTP_REFERER"].gsub(/\?[\=\&A-z0-9]+/,'')    # :back
     else
       flash[:notice] = "You have been logged out."
       logout_keeping_session!

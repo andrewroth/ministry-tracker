@@ -45,7 +45,7 @@ class GroupsController < ApplicationController
 
   unless Cmt::CONFIG[:joingroup_from_index]
     def join
-      redirect_to :controller => "signup", :action => "step1_info"
+      redirect_to :controller => "signup", :action => "step1_group"
     end
   else
     def join
