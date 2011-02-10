@@ -682,4 +682,89 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal 1, assigns(:people).size
   end
 
+  test "set initial campus validates first name" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without first name
+    xhr :put, :set_initial_campus, {:person => {:first_name => "", :last_name => "leader", :gender => "1", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => "1"}}
+    assert_equal false, assigns(:person).errors.empty?
+    assert_equal true, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validates last name" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without last name
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "", :gender => "1", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => "1"}}
+    assert_equal false, assigns(:person).errors.empty?
+    assert_equal true, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validates gender" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without gender
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "leader", :gender => "", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => "1"}}
+    assert_equal false, assigns(:person).errors.empty?
+    assert_equal true, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validates phone" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without phone
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "leader", :gender => "1", :local_phone => "", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => "1"}}
+    assert_equal false, assigns(:person).errors.empty?
+    assert_equal true, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validates campus" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without campus
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "leader", :gender => "1", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "", :school_year_id => "1"}}
+    assert_equal true, assigns(:person).errors.empty?
+    assert_equal false, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validates school year" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit without school year
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "leader", :gender => "1", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => ""}}
+    assert_equal true, assigns(:person).errors.empty?
+    assert_equal false, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+  test "set initial campus validation pass" do
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:schoolyear_1)
+
+    # submit with everything
+    xhr :put, :set_initial_campus, {:person => {:first_name => "future", :last_name => "leader", :gender => "1", :local_phone => "123-456-7890", :local_dorm => "", :major => ""},
+                                    :primary_campus_involvement => {:campus_id => "2", :school_year_id => "1"}}
+    assert_equal true, assigns(:person).errors.empty?
+    assert_equal true, assigns(:primary_campus_involvement).errors.empty?
+  end
+
+
 end
