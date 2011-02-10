@@ -1,4 +1,4 @@
-require 'person_methods'
+#require 'person_methods'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -21,6 +21,9 @@ class PeopleController < ApplicationController
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
                   :set_initial_ministry]
   skip_standard_login_stack :only => free_actions
+     
+  MENTOR_ID_NONE = nil
+  ID_CONVERTED_FROM_NON_NUMERIC = 0
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -148,7 +151,7 @@ class PeopleController < ApplicationController
         @searched_ministry_roles = params[:role]
       end
 
-      conditions = add_involvement_conditions(conditions)
+      conditions = add_involvement_conditions(conditions, nil)
     
       @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
     
@@ -157,7 +160,7 @@ class PeopleController < ApplicationController
     end
     
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-    tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
+    tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
     if params[:search_id].blank?
       @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
       if @search
@@ -282,6 +285,32 @@ class PeopleController < ApplicationController
       render :nothing => true
     end
   end
+  
+ 
+   # GET /people/remove_mentor
+  # Updates a person's mentor via a person_id parameter  
+  def remove_mentor
+    # We don't actually delete people, just set the 'mentor_id' to 0
+    #@person = Person.find(params[:id], :include => [:mentor_id])
+    
+    person = Person.find(params[:id]) # for some reason @person is always the Pulse user
+    person.person_mentor_id = MENTOR_ID_NONE
+    person.save
+    render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
+  end
+  
+  
+  # GET /people/remove_mentee
+  # Removes a person's mentee via a person_id parameter  
+  def remove_mentee
+    # We don't actually delete people, just find the person_id FOR THE MENTEE
+    # then set the 'mentor_id' to 0
+    person = Person.find(params[:id])   # find MENTEE
+    person.person_mentor_id = MENTOR_ID_NONE
+    person.save
+    render :nothing => true
+    #render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
+  end
 
   # GET /people/show
   # Shows a person's profile (address info, assignments, involvements, etc)
@@ -295,13 +324,57 @@ class PeopleController < ApplicationController
         @person.primary_campus_involvement = @person.campus_involvements.last
         @person.save!
       end
+      
+      # check GET parameters generated from mentor auto-complete search; set new mentor if ID found
+      profile_person = Person.find(params[:id]) # for some reason @person is always the Pulse user
+      if ((authorized?(:add_mentor, :people)&&(profile_person == @me)) || authorized?(:add_mentor_to_other, :people))
+        if params[:m]
+          begin
+            mentor_id = params[:m].to_i
+            ensure_existence = Person.find(mentor_id)         
+            if mentor_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+              @person.person_mentor_id = params[:m];
+              @person.save
+            end
+            
+          rescue ActiveRecord::RecordNotFound
+            # DO NOTHING
+          end        
+        end     
+      end
+      
+       # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
+      if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_to_other, :people))
+        if params[:mt]
+          begin
+            mentee_id = params[:mt].to_i
+            if mentee_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+              person = Person.find(params[:mt])
+              person.person_mentor_id = @person.id
+              person.save 
+            end
+                 
+          rescue ActiveRecord::RecordNotFound
+            # DO NOTHING
+          end     
+        end
+      end
+      
       get_ministry_involvement(get_ministry)
       get_people_responsible_for
       setup_vars
-      respond_to do |format|
-        format.html { render :action => :show }# show.rhtml
-        format.xml  { render :xml => @person.to_xml }
-      end
+      
+#      if (!params[:m])
+        respond_to do |format|
+          format.html { render :action => :show }# show.rhtml
+          format.xml  { render :xml => @person.to_xml }
+        end
+#      else
+#        respond_to do |format|
+#          format.xml  { head :ok }
+#          format.html { render :partial => "mentors" }
+#        end
+#      end
     end
   end
   
@@ -541,16 +614,32 @@ class PeopleController < ApplicationController
   def set_initial_campus
     return unless login_required
     get_person
+
     if request.method == :put
-      ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
-      if ministry_campus
-        ministry = ministry_campus.ministry
-      else
-        ministry = Ministry.default_ministry
-        throw "add some ministries" unless ministry
+
+      @person.first_name = params[:person][:first_name]
+      @person.last_name = params[:person][:last_name]
+      @person.gender = params[:person][:gender]
+      @person.local_phone = params[:person][:local_phone]
+      @person.errors.add_on_blank([:first_name, :last_name, :local_phone])
+      @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
+
+      @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
+      @primary_campus_involvement.errors.add_on_blank([:campus_id, :school_year_id])
+
+      unless @person.errors.present? || @primary_campus_involvement.errors.present?
+        @person.save!
+
+        ministry_campus = MinistryCampus.find(:last, :conditions => { :campus_id => params[:primary_campus_involvement][:campus_id] })
+        if ministry_campus
+          ministry = ministry_campus.ministry
+        else
+          ministry = Ministry.default_ministry
+          throw "add some ministries" unless ministry
+        end
+        @primary_campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
+        @primary_campus_involvement.find_or_create_ministry_involvement
       end
-      @campus_involvement = CampusInvolvement.create params[:primary_campus_involvement].merge(:person_id => @person.id, :ministry_id => ministry.id)
-      @campus_involvement.find_or_create_ministry_involvement
     end
 
     # assume they are not staff at all
@@ -754,7 +843,7 @@ class PeopleController < ApplicationController
       @sql =   'SELECT ' + @view.select_clause
       @sql += ', ' + extra_select if extra_select.present?
       tables_clause ||= @view.tables_clause
-      @sql += ' FROM ' + @view.tables_clause
+      @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
       @sql += ' ORDER BY ' + @order
     end
@@ -815,11 +904,13 @@ class PeopleController < ApplicationController
       end
       ministry_ids ||= get_ministry_ids
 
+
       ministry_condition = "("
       ministry_condition += " MinistryInvolvement.#{_(:end_date, :ministry_involvement)} is NULL AND " if only_null_ministry_involvement_end_date
       ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
-    
+
+
       # Check campus
       if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
@@ -831,7 +922,8 @@ class PeopleController < ApplicationController
       if !is_staff_somewhere
         campus_ids ||= get_campus_ids
       end
-      
+
+
       if params[:campus] || !is_staff_somewhere
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
@@ -839,7 +931,8 @@ class PeopleController < ApplicationController
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
       end
-      
+
+
       # students should not have access to everyone in the ministry
       if is_staff_somewhere && campus_condition
         conditions << "(#{ministry_condition} AND #{campus_condition})"
@@ -848,7 +941,7 @@ class PeopleController < ApplicationController
       elsif !is_staff_somewhere
         conditions << "(#{ministry_condition} AND #{campus_condition})"
       end
-
+      
       return conditions
     end
     

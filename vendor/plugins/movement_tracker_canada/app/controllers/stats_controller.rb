@@ -558,6 +558,9 @@ class StatsController < ApplicationController
         if @report_scope == SUMMARY
           report_name = "Summary of #{ministry_name}"
         end
+      else
+        rtype = :"#{@report_type}"
+        report_name = "#{report_types[rtype][:label].singularize} for #{ministry_name}"
     end
 
     if @report_scope == CAMPUS_DRILL_DOWN

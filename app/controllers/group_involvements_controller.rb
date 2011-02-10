@@ -16,11 +16,18 @@ class GroupInvolvementsController < ApplicationController
   end
   
   def joingroup_signup
-    params[:person_id] = session[:signup_person_id]
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @join = @signup = true
-    joingroup
-    render :action => :joingroup
+    get_person
+    if @person
+      @join = @signup = true
+      joingroup
+      render :action => :joingroup
+    else
+      # anon user is joining groups, need to remember which groups s/he wants to join
+      session[:signup_groups] ||= {}
+      session[:signup_groups][@group.id] = params[:level]
+      @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
+      render :action => :joingroup_signup
+    end
   end
 
   def joingroup
@@ -146,9 +153,8 @@ class GroupInvolvementsController < ApplicationController
     end
     
     def create_group_involvement
-      # If the person is already in the group, find them. otherwise, create a new record
-      @gi = find_by_person_id_and_group_id(params[:person_id], params[:group_id])
-      @gi ||= GroupInvolvement.new(:person_id => params[:person_id], :group_id => params[:group_id])
+      @gi = GroupInvolvement.find_or_create_by_person_id_and_group_id(params[:person_id],
+                                                                      params[:group_id])
       @gi.level = params[:level]
       @gi.requested = params[:requested]
       @gi.save!

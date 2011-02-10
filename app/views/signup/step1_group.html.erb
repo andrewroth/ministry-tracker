@@ -1,0 +1,61 @@
+<% instruction_block do %>
+  <b>Step 1:</b> Join a group!  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Log Out’ button and return to this page. Thank you!<% end %>
+<% end %>
+
+<center>
+  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 1 } %>
+</center>
+
+What campus are you on?
+
+  <%= select_tag "primary_campus_involvement_campus_id",
+        options_for_select([""] + @campuses.collect{ |c| [ c.name, c.id.to_s ] },
+          session[:signup_campus_id].to_s),
+        :name => "primary_campus_involvement[campus_id]"
+  %>
+
+<%= image_tag "spinner.gif", :id => "spinner", :style => "display:none" %>
+
+<script>
+  jQuery('#primary_campus_involvement_campus_id').change(
+    function(element, value) {
+      update_groups();
+    }
+  );
+
+  function update_groups() {
+    value = $("#primary_campus_involvement_campus_id").val();
+    jQuery.ajax({data:'primary_campus_involvement_campus_id=' + value, dataType:'script', 
+                 beforeSend: function() { $("#spinner").show() },
+                 complete: function() { $("#spinner").hide() },
+                 type:'post', url:'/signup/step1_group_from_campus'});
+  }
+
+  if ($("#primary_campus_involvement_campus_id").val() != "") {
+    update_groups();
+  }
+</script>
+
+<div id="groups">
+</div>
+
+<DIV class="center">
+  <BR/>
+  <P>
+    <small>FALL: September - December<br>WINTER: January - April<br>SUMMER: May - July</small>
+  </P>
+  <BR/>
+  <BR/>
+  <%- if logged_in? %>
+  <DIV class="center">
+    <P>
+    <% if session[:from_facebook_canvas] == true %>
+      <%= link_to "Log Out", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
+    <% else %>
+      <%= link_to "Log Out", logout_url, :class => 'action-button' %>
+    <% end %>
+    </P>
+  </DIV>
+  <%- end -%>
+</DIV>
+
