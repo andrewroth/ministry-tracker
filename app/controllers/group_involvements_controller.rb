@@ -157,6 +157,7 @@ class GroupInvolvementsController < ApplicationController
                                                                       params[:group_id])
       @gi.level = params[:level]
       @gi.requested = params[:requested]
+      @gi.save!
     end
 
     def set_group_involvement_and_group
