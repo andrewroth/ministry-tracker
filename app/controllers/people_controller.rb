@@ -685,7 +685,7 @@ class PeopleController < ApplicationController
         conditions = add_involvement_conditions(conditions)
 
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
-
+        
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
@@ -971,7 +971,9 @@ class PeopleController < ApplicationController
          params[:first_name].present? ||
          params[:last_name].present? ||
          params[:email].present? ||
-         params[:role].present?
+         params[:role].present? ||
+         params[:ministry].present? ||
+         params[:campus].present?
 
         return true
       else
