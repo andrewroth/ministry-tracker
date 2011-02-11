@@ -13,7 +13,7 @@
   <td>
     <% if person.timetable.present? && person.timetable.updated_at.present? %>
       <% last_updated = "#{time_ago_in_words(person.timetable.updated_at)} ago" %>
-      <% last_updated += ", by #{person.timetable.updated_by_person.full_name}" if person.timetable.updated_by_person.present? %>
+      <% last_updated += ", by #{person.timetable.updated_by_person.full_name}" if person.timetable.updated_by_person.present? && person.timetable.updated_by_person != person %>
       <%= link_to(last_updated, "/people/#{person.id}/timetables/#{person.timetable.id}", :title => "Goto #{person.first_name}'s timetable") %>
     <% else %>
       never
