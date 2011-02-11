@@ -73,7 +73,7 @@
 
   <div id="interestedGroups">
     <%- if @person.group_involvement_interests(@current_semester).count > 0 -%>
-      <%= render :partial => 'group_list', :locals => { :list_title => "I'm Interested In",
+      <%= render :partial => 'group_list', :locals => { :list_title => "Interested",
         :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
       } %>
     <%- end -%>
@@ -81,7 +81,7 @@
 
   <div id="requestedGroups">
     <%- if @person.group_involvement_requests(@current_semester).count > 0 -%>
-      <%= render :partial => 'group_list', :locals => { :list_title => "I've Requested",
+      <%= render :partial => 'group_list', :locals => { :list_title => "Requested",
         :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
       } %>
     <%- end -%>
