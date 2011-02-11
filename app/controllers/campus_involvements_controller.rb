@@ -65,6 +65,7 @@ class CampusInvolvementsController < ApplicationController
   def update
     @campus_involvement = @person.campus_involvements.find params[:id]
     update_campus_involvement
+    @campus_involvement = @person.campus_involvements.find params[:id] # it may have changed, e.g. person graduated
     render :template => 'involvements/update'
   end
 

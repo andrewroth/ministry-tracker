@@ -9,25 +9,20 @@ class SignupController < ApplicationController
   before_filter :set_current_and_next_semester
 
   def index
-    redirect_to :action => :step1_info
+    redirect_to :action => :step1_group
   end
 
   def facebook
-    redirect_to :action => :step1_info
+    redirect_to :action => :step1_group
   end
 
-  def step1_info
+  # TODO: this will have to be renamed to step 2?
+  def step2_info
     @person ||= get_person || Person.new
     UserCodesController.clear(session)
-    session[:signup_person_params] = nil
-    session[:signup_primary_campus_involvement_params] = nil
-    session[:signup_person_id] = nil
-    session[:signup_campus_id] = nil
-    session[:needs_verification] = nil
-    session[:joined_collection_group] = nil
-
     setup_campuses
-    @dorms ||= @person.primary_campus_involvement.try(:campus).try(:dorms)
+    @campus = Campus.find(session[:signup_campus_id])
+    @dorms ||= @campus.try(:dorms)
   end
 
   def get_dorms
@@ -35,12 +30,14 @@ class SignupController < ApplicationController
     @dorms = c.try(:dorms)
   end
 
-  def step1_info_submit
+  # TODO: this will have to be renamed to step 2?
+  def step2_info_submit
     @person = Person.new(params[:person])
-    [:email, :first_name, :last_name, :gender, :local_phone].each do |c|
+    [:email, :first_name, :last_name, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
+    @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
 
     # verify email
     email = params[:person] && params[:person][:email]
@@ -58,6 +55,7 @@ class SignupController < ApplicationController
     end
 
     @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
+    @primary_campus_involvement.campus_id = session[:signup_campus_id]
     [:campus_id, :school_year_id].each do |c|
       unless @primary_campus_involvement.send(c).present?
         @person.errors.add(c, :blank)
@@ -66,8 +64,8 @@ class SignupController < ApplicationController
 
     if @person.errors.present? || @primary_campus_involvement.errors.present?
       @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
-      step1_info
-      render :action => "step1_info"
+      step2_info
+      render :action => "step2_info"
     else
       if logged_in?
         @user = current_user
@@ -106,7 +104,7 @@ class SignupController < ApplicationController
 
       if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created)
         @email = params[:person][:email]
-        redirect_to :action => :step1_verify
+        redirect_to :action => :step2_verify
       else
         @person.save!
 
@@ -129,17 +127,23 @@ class SignupController < ApplicationController
         ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
 
-        redirect_to :action => :step2_group
+        # join groups here
+        joingroups_from_hash(session[:signup_groups])
+        if semester_id = session[:signup_collection_group_semester_id]
+          join_default_group(session[:signup_campus_id], semester_id)
+        end
+
+        redirect_to :action => :step3_timetable
       end
     end
   end
 
-  def step1_verify
+  def step2_verify
     @me = @my = @person = Person.find(session[:signup_person_id])
     @email = @person.email.downcase
   end
 
-  def step1_verify_submit
+  def step2_verify_submit
     # send verification email
     session[:needs_verification] = true
     unless session[:signup_person_id].blank?
@@ -147,21 +151,52 @@ class SignupController < ApplicationController
       @user = @person.user
       @email = @person.email.downcase
       pass = { :person => session[:signup_person_params],
-        :primary_campus_involvement => session[:signup_primary_campus_involvement_params] }
-      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step1_email_verified")
+        :primary_campus_involvement => session[:signup_primary_campus_involvement_params],
+        :signup_groups => session[:signup_groups],
+        :signup_campus_id => session[:signup_campus_id] }
+      debugger
+      link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else
       flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
-      redirect_to :action => :step1_info
+      redirect_to :action => :step2_info
     end
   end
 
-  def step1_email_verified
+  def step2_email_verified
+    session[:signup_groups] = params[:signup_groups]
+    session[:signup_campus_id] = params[:signup_campus_id]
     flash[:notice] = "Your email has been verified."
-    redirect_to params.merge(:action => :step1_info_submit)
+    redirect_to params.merge(:action => :step2_info_submit)
   end
 
-  def step2_group
+  # this is actually more of just showing the campus dropdown
+  def step1_group
+    session[:signup_person_params] = nil
+    session[:signup_primary_campus_involvement_params] = nil
+    session[:signup_person_id] = nil
+    session[:signup_campus_id] = nil
+    session[:signup_groups] = nil
+    session[:signup_collection_group_semester_id] = nil
+    session[:needs_verification] = nil
+    session[:joined_collection_group] = nil
+
+    @person = get_person || Person.new
+    setup_campuses
+  end
+
+  def step1_default_group
+    get_person
+    if @person
+      join_default_group(session[:signup_campus_id], params[:semester_id])
+    else
+      session[:signup_collection_group_semester_id] = params[:semester_id]
+    end
+    redirect_to :action => :step2_info
+  end
+
+  def step1_group_from_campus
+=begin
     @signup = true
     if session[:needs_verification] && !session[:code_valid_for_user_id]
       flash[:notice] = "Sorry, your email has not been verified yet."
@@ -171,10 +206,23 @@ class SignupController < ApplicationController
       redirect_to :action => :step1_info
       return
     end
+=end
+
+    if params[:primary_campus_involvement_campus_id] == ""
+      render :update do |page|
+        page["#groups"].html "Sorry, you must provide a campus to choose a group."
+      end
+      return
+    end
 
     @ministry = Ministry.default_ministry
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @campus = Campus.find session[:signup_campus_id]
+    get_person
+    unless @person
+      @me = @my = @person = Person.new
+    end
+    #@campus = Campus.find session[:signup_campus_id]
+    session[:signup_campus_id] = params[:primary_campus_involvement_campus_id]
+    @campus = Campus.find params[:primary_campus_involvement_campus_id]
     @groups1 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
       @current_semester.id ],
       :joins => :ministry, :include => { :group_involvements => :person },
@@ -194,33 +242,6 @@ class SignupController < ApplicationController
     # cache of campus names
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", ( @groups1 + @groups2 ).collect(&:campus_id).uniq ])
     @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
-  end
-
-  def step2_default_group
-    if session[:needs_verification] && !session[:code_valid_for_user_id]
-      flash[:notice] = "Sorry, your email has not been verified yet."
-      render :inline => "", :layout => true
-      return
-    elsif !session[:signup_person_id]
-      redirect_to :action => :step1_info
-      return
-    end
-
-    @me = @my = @person = Person.find(session[:signup_person_id])
-    @campus = Campus.find session[:signup_campus_id]
-
-    semester = params[:semester_id].present? ? Semester.find(params[:semester_id]) : Semester.current
-
-    # Special case - add them to the Bible study group by default
-    gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
-
-    @campus = Campus.find session[:signup_campus_id]
-    @group = @campus.find_or_create_ministry_group gt, nil, semester
-    gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
-    gi.send_later(:join_notifications, base_url)
-    session[:joined_collection_group] = true
-
-    redirect_to :action => :step3_timetable
   end
 
   def step3_timetable_submit
@@ -260,6 +281,32 @@ class SignupController < ApplicationController
 
   def set_custom_userbar_title
     @custom_userbar_title = "Signup"
+  end
+
+  def join_default_group(campus_id, semester_id)
+    throw "join_group requires @person" unless @person
+    @campus = Campus.find campus_id
+
+    semester = semester_id.present? ? Semester.find(semester_id) : Semester.current
+
+    # Special case - add them to the Bible study group by default
+    gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
+
+    @group = @campus.find_or_create_ministry_group gt, nil, semester
+    gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
+    gi.send_later(:join_notifications, base_url)
+    session[:joined_collection_group] = true
+  end
+
+  def joingroups_from_hash(involvement_info)
+    (involvement_info || {}).each_pair do |group_id, level|
+      if %w(member interested).include?(level)
+        group = Group.find group_id
+        requested = (level == "member" ? group.needs_approval : false)
+        gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
+        gi.send_later(:join_notifications, base_url)
+      end
+    end
   end
 
   private

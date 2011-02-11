@@ -524,11 +524,12 @@ h1#title {
 }
 
 form .label {
-    float:left;
+    float:right;
     width:100px;
     text-align:right;
-    margin-right:8px;
+    margin-right:10px;
 }
+
 div.sectionHeader h2 {
 	border-bottom: 1px solid #000;
 	padding: 5px  0 2px 0;
@@ -921,6 +922,10 @@ label {
   display: block;
   float: left;
   padding: 5px 8px 5px 0px;
+}
+
+#form_div label {
+  float:none;
 }
 
 .clearfix:after {
@@ -1760,12 +1765,29 @@ td.eventAttendees {
 }
 
 #signup_step1_info {
-  width: 475px; float: left; padding: 0 1em 0 1em;
+  width: 425px; float: left; padding: 0 3em 0 3em;
 }
 
 #signup_step1_columns {
   width: 100%; display: inline-block; padding: 1em 0 1em 0;
 }
+
+tr.required_field td.label {
+  background-position: right top;
+  background-image: url("/images/asterisk_yellow_smaller.png");
+  background-repeat: no-repeat;
+  padding-right: 13px;
+  padding-top: 1px;
+}
+
+table#set_initial_campus {
+  width: 475px; padding: 0 1em 0 1em; display: block;
+}
+
+table#set_initial_campus tr {
+  height: 2em;
+}
+
 
 
 /************************************************/
@@ -1776,7 +1798,6 @@ td.eventAttendees {
   float: left;
   left: 140px;
   position: relative;
-  margin-top: 6px;
 }
 
 #uberSearchBoxContainer {
@@ -1821,6 +1842,115 @@ td.eventAttendees {
   padding: 7px 20px;
   cursor: pointer;
 }
+
+#uberSearchContainer {
+  z-index: 99;
+  float: left;
+  left: 140px;
+  position: relative;
+  margin-top: 6px;
+}
+
+#uberSearchBoxContainer {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+/* hsmit (dec 2010): added these to customize mentor quick search */
+#uberMentorSearchContainer {
+  z-index: 99;
+  float: left;
+  position: relative;
+  margin-top: 6px;
+}
+
+#uberMentorSearchBoxContainer {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+#uberMentorSearchBox {
+  width: 240px;
+  font-size: 18px;
+  position: relative;
+  height: 25px;
+/*  background: #E6E6E6; use to blend in with bg more */
+  background: white;
+  color: #B3B3B3;
+  border: 2px solid silver;
+  padding-left: 10px;
+
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+}
+
+#uberMentorSearchBox.focused, #uberSearchBox:focus {
+  background: white;
+  color: black;
+  border: 2px solid #00268D; /* #FFCB05; yellow */
+  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
+}
+
+#uberMentorSearchBox.ac_loading {
+  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+}
+
+#uberMentorSearchButton {
+  border: 0px;
+  background-color: transparent;
+  position: relative;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+/* hsmit (dec 2010): added these to customize mentee quick search */
+#uberMenteeSearchContainer {
+  z-index: 99;
+  float: left;
+  position: relative;
+  margin-top: 6px;
+}
+
+#uberMenteeSearchBoxContainer {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+#uberMenteeSearchBox {
+  width: 240px;
+  font-size: 18px;
+  position: relative;
+  height: 25px;
+/*  background: #E6E6E6; use to blend in with bg more */
+  background: white;
+  color: #B3B3B3;
+  border: 2px solid silver;
+  padding-left: 10px;
+
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+}
+
+#uberMenteeSearchBox.focused, #uberSearchBox:focus {
+  background: white;
+  color: black;
+  border: 2px solid #00268D; /* #FFCB05; yellow */
+  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
+}
+
+#uberMenteeSearchBox.ac_loading {
+  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+}
+
+#uberMenteeSearchButton {
+  border: 0px;
+  background-color: transparent;
+  position: relative;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
 
 #searchHeaderInfo {
   float: left;
@@ -2077,6 +2207,66 @@ li.ac_over .autoCompleteEmail {
   background-position: right;
   padding-right: 20px;
 }
+
+/** mentor-specific search-results styling */
+.hiddenMentorID {
+	visibility:hidden;
+}
+
+/** mentee-specific search-results styling */
+.hiddenMenteeID {
+  visibility:hidden;
+}
+
+/** added this set of 'alt' styling for mentor [and mentee] quick search */
+.alt_ac_results {
+  padding: 18px 0 0 0;
+  background-color: white;
+  overflow: hidden;
+  z-index: 98;
+  border: solid #CCCCCC; /*#1F429B;*/
+  border-width: 0 2px 5px 2px;
+
+  -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
+  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+}
+
+.alt_ac_results ul {
+  width: 100%;
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.alt_ac_results li {
+  margin: 0;
+  cursor: default;
+  display: block;
+
+  /*
+  if width will be 100% horizontal scrollbar will apear
+  when scroll mode will be used
+  (right now scroll is turned off because there is a fixed amount of results)
+  */
+  /*width: 100%;*/
+
+  font: menu;
+  font-size: 12px;
+
+  /*
+  it is very important, if line-height not setted or setted
+  in relative units scroll will be broken in firefox
+  */
+  line-height: 12px;
+  overflow: hidden;
+  color: black;
+  border: 2px solid white;
+
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+/** end mentor-specific search-results styling **/
+
 
 .ac_results {
   padding: 18px 0 0 0;

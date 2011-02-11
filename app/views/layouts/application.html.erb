@@ -125,6 +125,10 @@
 		</table>
 		</div>
 		<%= I18n.t :analytics, :default => "" %>
-                <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
+
+    <% user_agent = request.env['HTTP_USER_AGENT'].downcase %>
+    <% unless user_agent =~ /msie/i %>
+      <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
+    <% end %>
 	</body>
 </html>
