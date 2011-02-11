@@ -151,7 +151,7 @@
 		    </td>
 	    </tr>
 		  <tr>
-  <%- if authorized?(:email) -%>
+  <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
       <th>
         <%= check_box_tag 'select_all', 1, false %>
       </th>
@@ -187,7 +187,7 @@
 		<% @can_delete = authorized?(:new) %>
 		<%- @people.each_with_index do |person, i|  -%>
 			<tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
-  <%- if authorized?(:email) -%>
+  <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
       <td width="10px">
         <%= check_box_tag 'person[]', person["person_id"] %> 
       </td>
