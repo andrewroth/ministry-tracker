@@ -41,7 +41,7 @@
     var total_people = <%= @count %>
   </script>
 
-  <%  options = [['Filter by Last Name','']] %>
+  <%  options = [['Filtering by last name','']] %>
   <%- if @count > 2000 -%>
     <!-- | -->
   	<%- ('A'..'Z').each do |l| -%>
@@ -65,6 +65,7 @@
   <div>
     <% if @count > 500 %>
       <div class="directoryResultControl">
+        <%= image_tag("silk/find.png") %>
         <%= select_tag(:interval, options_for_select(options)) %>
         <%= observe_field(:interval, :function => "if($('#interval').val() != '') { $('#spinner_interval').show(); document.location = $('#interval').val().replace(/&amp;/g,'&'); }") %>
         <%= spinner('_interval') %>
@@ -72,7 +73,7 @@
     <% end %>
 
 
-    <% action_options_array = [['Perform Action with Selected','']] %>
+    <% action_options_array = [['More actions','']] %>
     <% action_options_array << ['Send Email',new_email_path] if authorized?(:email) %>
     <% action_options_array << ['Create Group', new_group_path] if authorized?(:new, :groups) %>
     <% action_options_array << ['Change Roles', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
