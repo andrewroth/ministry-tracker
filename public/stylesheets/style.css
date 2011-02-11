@@ -817,8 +817,11 @@ a.action-button:hover, input.action-button:hover {
   background: #F2B700;
 }
 a.action-button:active, input.action-button:active {
-  text-decoration: underline;
+  text-decoration: none;
   background: #F2B700;
+  position: relative;
+  top: 1px;
+  left: 1px;
   -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;
 }
 a.action-button u {
