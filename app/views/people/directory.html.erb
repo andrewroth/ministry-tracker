@@ -16,7 +16,7 @@
         <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
         <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
         <%- tooltip do -%>
-        Search a different ministry that you are involved in.
+        Search a different ministry that you're involved in.
         <%- end -%>
         <%= spinner('_change_ministry') %>
     <%- end -%>
@@ -74,9 +74,9 @@
 
 
     <% action_options_array = [['More actions','']] %>
-    <% action_options_array << ['Send Email',new_email_path] if authorized?(:email) %>
-    <% action_options_array << ['Create Group', new_group_path] if authorized?(:new, :groups) %>
-    <% action_options_array << ['Change Roles', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
+    <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
+    <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
+    <% action_options_array << ['Change Roles...', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
 
     <% if action_options_array.size > 1 %>
       <div class="directoryResultControl">
