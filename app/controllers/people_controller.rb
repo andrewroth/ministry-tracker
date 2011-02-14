@@ -159,6 +159,19 @@ class PeopleController < ApplicationController
       @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
     end
     
+    if params[:group_involvement] == [ "-1" ]
+      @search_for << ", not in a group"
+      @check_no_group = true
+    elsif gi = params[:group_involvement]
+      @not_group_type = GroupType.find gi.first
+      @semester = Semester.current
+      conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
+        " AND group_type_id = #{@not_group_type.id}"
+      @not_group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
+      @not_group_type_groups_ids = @not_group_type_groups.collect(&:id).collect(&:to_s)
+      @search_for << ", not in a #{@not_group_type.group_type}"
+    end
+
     new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
     tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
     if params[:search_id].blank?
@@ -979,5 +992,18 @@ class PeopleController < ApplicationController
           false
         end
       }
+
+      if @not_group_type_groups.present?
+        people.reject!{ |person|
+          in_groups = person['GroupInvolvements'].to_s.split(',') & @not_group_type_groups_ids
+          in_groups.present?
+        }
+      end
+
+      if @check_no_group.present?
+        people.reject!{ |person|
+          person['GroupInvolvements'].to_s != ""
+        }
+      end
     end
 end

@@ -19,7 +19,8 @@ class View < ActiveRecord::Base
     select_clause = ['DISTINCT(Person.' + _(:id, :person) + ') as person_id'] # person id
     select_clause += ['Person.' + _(:first_name, :person) + ' as First_Name'] # first name
     select_clause += ['Person.' + _(:last_name, :person) + ' as Last_Name'] # last name
-    select_clause += ['GROUP_CONCAT(GroupInvolvement.' + _(:group_id, :group_involvement) + ') as GroupInvolvements']
+    select_clause += ['GROUP_CONCAT(GroupInvolvement.' + _(:group_id, :group_involvement) + 
+      " SEPARATOR ',') as GroupInvolvements"]
     
     # Always include the person table
     tables = ['Person']
