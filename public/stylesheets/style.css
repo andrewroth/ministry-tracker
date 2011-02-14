@@ -800,24 +800,32 @@ table#schedule_header {
 }
 
 a.action-button, input.action-button {
-background: #FFCB05;
-border: 1px solid #ABB7EC;
-color: #1F429B;
-padding: 5px;
-display: inline-block;
-font-weight: bold;
-margin:0px 0 5px 0;
-cursor: pointer;
+  background: #FFCB05;
+  border: 1px solid #ABB7EC;
+  color: #1F429B;
+  padding: 5px;
+  display: inline-block;
+  font-weight: bold;
+  margin:0px 0 5px 0;
+  cursor: pointer;
 
--moz-border-radius: 5px; -webkit-border-radius: 5px;
--moz-box-shadow:0 -7px 7px #F2B700 inset; -webkit-box-shadow:0 -7px 7px #F2B700 inset;
+  -moz-border-radius: 5px; -webkit-border-radius: 5px;
+  -moz-box-shadow:0 -7px 7px #F2B700 inset; -webkit-box-shadow:0 -7px 7px #F2B700 inset;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   background: #F2B700;
 }
+a.action-button:active, input.action-button:active {
+  text-decoration: none;
+  background: #F2B700;
+  position: relative;
+  top: 1px;
+  left: 1px;
+  -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;
+}
 a.action-button u {
-color: #1F429B;
+  color: #1F429B;
 }
 a.action-button img {
   vertical-align: middle;

@@ -30,9 +30,9 @@
   <br/>
 
   <% unless @people_without_involvements.blank? || @people_without_involvements.empty? %>
+    <br/>
     <%= image_tag("silk/exclamation.png") %> <b> The following people cannot be included, please update their roles on an individual basis: </b> <br/>
     <%= @people_without_involvements.collect{|person| link_to("#{person.full_name}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"}) }.join(', ') %>
-    <br/>
     <br/>
   <% end %>
   
@@ -45,7 +45,7 @@
     <big>
     <%= image_tag("silk/pencil.png") %>
     Change to the new role
-    <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: 1em;"}) %>
+    <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: .8em;"}) %>
     </big>
   
     <% for involvement in @involvements %>
@@ -61,7 +61,7 @@
     <br/>
 
     <br/>
-    <%= submit_tag "Change roles" %> or <%= link_to("Cancel", :back) %>
+    <%= submit_tag "Change roles", :class => "action-button" %> or <%= link_to("Cancel", :back) %>
     <br/>
     
   <% end %>
