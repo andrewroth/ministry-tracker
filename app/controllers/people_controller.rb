@@ -173,6 +173,9 @@ class PeopleController < ApplicationController
     end
     
     # If these conditions will result in too large a set, use pagination
+    @group = "GroupInvolvement.id"
+    build_sql(tables_clause)
+=begin
     @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
     if @count > 0
       # Build range for pagination
@@ -201,6 +204,17 @@ class PeopleController < ApplicationController
       @people = []
       @count = 0
     end
+=end
+    @people = ActiveRecord::Base.connection.select_all(@sql)
+    post_process_directory(@people)
+    @count = @people.length
+    @page = (params[:page] || 1).to_i
+    @per_page = 100
+    @total_pages = @count / 100 + (@count % @per_page > 0 ? 1 : 0)
+    @results_floor = (@page - 1) * @per_page
+    @results_ceiling = @page * @per_page
+    @results_ceiling = @results_ceiling < @count ? @results_ceiling : @count
+    @people = @people[@results_floor, @results_ceiling]
 
     # pass which ministries were searched for to the view
     if params[:ministry]
@@ -836,6 +850,7 @@ class PeopleController < ApplicationController
       tables_clause ||= @view.tables_clause
       @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
+      @sql += ' GROUP BY ' + @group if @group
       @sql += ' ORDER BY ' + @order
     end
   

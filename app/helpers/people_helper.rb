@@ -26,4 +26,27 @@ module PeopleHelper
   def currently_impersonating
     session[:impersonator].present?
   end
+
+  def paginate
+    @html = ""
+    if @page > 0
+      @html += link_to("« Previous ", directory_people_url(:page => @page - 1))
+    else
+      @html += "« Previous "
+    end
+    @total_pages.times do |i|
+      j = i + 1
+      if j != @page
+        @html += link_to j, directory_people_url(:page => j)
+      else
+        @html += j.to_s
+      end
+      @html += " "
+    end
+    if @page < @total_pages
+      @html += link_to("Next »", directory_people_url(:page => @page + 1))
+    else
+      @html += "Next »"
+    end
+  end
 end

@@ -67,6 +67,7 @@
 <p>
   Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found
   <br />
+  <%= paginate %> (Showing results <%= @results_floor + 1%> to <%= @results_ceiling %>)
   <br />
 
   <script type="text/javascript" charset="utf-8">
