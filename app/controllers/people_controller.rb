@@ -796,7 +796,11 @@ class PeopleController < ApplicationController
       @staff = is_staff_somewhere(@person)
       @student = !@staff
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
-      @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?",@current_semester.id])
+
+      # we want to show two semesters into the future
+      last_shown_semester = @current_semester
+      2.times { last_shown_semester = last_shown_semester.next_semester unless last_shown_semester.next_semester.nil? }
+      @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?", last_shown_semester.id])
     end
     
     def set_dorms
