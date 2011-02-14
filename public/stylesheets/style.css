@@ -2477,3 +2477,30 @@ table.groupInvolvementList th {
 .modulecontent tr.pat_no_project_chosen td {
   font-style: italic;
 }
+
+
+
+/************************************************/
+/*  Fancy Horizontal Timetable Compare section  */
+/************************************************/
+
+#horizTableCompareContainer { width: 100%; position: relative; }
+
+.horizTableCompare .timelineHeader .timesContainer { float: left; width: 100%; }
+.horizTableCompare .timelineHeader .day { width: 14.285%; position: absolute; }
+.horizTableCompare .timelineHeader .time { position: absolute; top: 12px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

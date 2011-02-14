@@ -1,0 +1,28 @@
+<h4 class="title">Compare Timetables</h4>
+
+<div id="notices">
+	<%= render :partial => 'groups/show_notices' %>
+</div>
+
+<div id="horizTableCompareContainer" class="horizTableCompare">
+
+  <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
+    
+    <div class="timesContainer">
+      <div class="day">
+        Funday
+        <% i = 0 %>
+        <% 32.times do %>
+        <div class="time" style="left:<%= 3.125*i %>%;"> 6:00am </div>
+        <% i = i+1 %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="horizTableCompareRows">
+
+  </div>
+
+</div>
