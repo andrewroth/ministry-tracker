@@ -30,9 +30,9 @@
   <br/>
 
   <% unless @people_without_involvements.blank? || @people_without_involvements.empty? %>
+    <br/>
     <%= image_tag("silk/exclamation.png") %> <b> The following people cannot be included, please update their roles on an individual basis: </b> <br/>
     <%= @people_without_involvements.collect{|person| link_to("#{person.full_name}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"}) }.join(', ') %>
-    <br/>
     <br/>
   <% end %>
   
@@ -49,7 +49,7 @@
 		<% blank_option = "<option value=\"""\"></option>" %>
 		<% not_involved_group = "<optgroup label=\"Remove all roles & involvements\"><option value=\"#{MinistryInvolvementsHelper::NOT_INVOLVED_ROLE}\">No Longer Involved</option></optgroup>" %>
     <% option_groups = blank_option + option_groups_from_collection_for_select([ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, selected_key = nil) + not_involved_group %>
-		<%= select('role', :id, option_groups) %>
+		<%= select('role', :id, option_groups, {:style => "font-size: .8em;"}) %>
     </big>
     
   
@@ -66,7 +66,7 @@
     <br/>
 
     <br/>
-    <%= submit_tag "Change roles" %> or <%= link_to("Cancel", :back) %>
+    <%= submit_tag "Change roles", :class => "action-button" %> or <%= link_to("Cancel", :back) %>
     <br/>
     
   <% end %>
