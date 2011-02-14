@@ -10,6 +10,10 @@ class GroupsController < ApplicationController
   skip_before_filter :authorization_filter, :email_helper
   before_filter :set_current_and_next_semester
 
+  COMPARE_TABLES_STYLES = {"vertical_table" => "groups/compare_timetables",
+                           "fancy_horizontal" => ""}
+
+
   def index
     if Cmt::CONFIG[:joingroup_from_index]
       @join = true
@@ -172,6 +176,8 @@ class GroupsController < ApplicationController
   
   def compare_timetables
     @display_compare_table = true
+    compare_tables_style = params[:style].present? && COMPARE_TABLES_STYLES[params[:style]].present? ? COMPARE_TABLES_STYLES[params[:style]] : COMPARE_TABLES_STYLES["vertical_table"]
+
     @notices = []
     if (Cmt::CONFIG[:hide_poor_status_in_scheduler] == false)
       @notices << "Poor state is currently enabled in the timetables. The 'Compare timetables' feature will not include the poor states during comparison."
@@ -202,7 +208,7 @@ class GroupsController < ApplicationController
     respond_to do |format|
       format.js{
          render :update do |page|
-            page.replace_html("compare", :partial => "groups/compare_timetables")
+            page.replace_html("compare", :partial => compare_tables_style)
          end
       }
     end
