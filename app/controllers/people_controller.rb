@@ -77,7 +77,7 @@ class PeopleController < ApplicationController
     @advanced = true # we're now using advanced search by default
     @options = {}
     
-    do_directory_search if @search_params_present = search_params_present?
+    do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true'
 
     respond_to do |format|
       format.html { render :layout => 'application' }
@@ -686,11 +686,9 @@ class PeopleController < ApplicationController
           @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
           @advanced = true
           @searched_ministry_roles = params[:role]
-          hide_by_default = false
         end
 
-        hide_by_default ||= nil
-        conditions = add_involvement_conditions(conditions, nil, hide_by_default)
+        conditions = add_involvement_conditions(conditions, nil)
       
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
       
