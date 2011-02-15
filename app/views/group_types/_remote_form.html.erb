@@ -31,6 +31,14 @@
                     <%= f.check_box :public %>
                 </td>
     		</tr>
+        <tr>
+          <td>
+            <%= f.label :in_directory_search_not_in %><%- tooltip do -%><p>If this is set to true, this group type will show up as one of the options in the directory search, to show all people NOT in this group type.</p><%- end -%>
+          </td>
+          <td>
+            <%= f.check_box :in_directory_search_not_in %>
+          </td>
+        </tr>
     		<%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
     		<tr>
     		    <td>

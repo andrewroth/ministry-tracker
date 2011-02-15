@@ -19,6 +19,8 @@ class View < ActiveRecord::Base
     select_clause = ['DISTINCT(Person.' + _(:id, :person) + ') as person_id'] # person id
     select_clause += ['Person.' + _(:first_name, :person) + ' as First_Name'] # first name
     select_clause += ['Person.' + _(:last_name, :person) + ' as Last_Name'] # last name
+    select_clause += ['GROUP_CONCAT(GroupInvolvement.' + _(:group_id, :group_involvement) + 
+      " SEPARATOR ',') as GroupInvolvements"]
     
     # Always include the person table
     tables = ['Person']
@@ -32,6 +34,9 @@ class View < ActiveRecord::Base
     # Always include the current address
     tables << 'CurrentAddress'
     tables_clause += " LEFT JOIN #{CurrentAddress.table_name} as CurrentAddress on Person.#{_(:id, :person)} = CurrentAddress.#{_(:person_id, :address)} AND #{_(:address_type, :address)} = 'current'"
+    # Always include group involvements
+    tables << 'GroupInvolvement'
+    tables_clause += " LEFT JOIN #{GroupInvolvement.table_name} as GroupInvolvement on Person.#{_(:id, :person)} = GroupInvolvement.#{_(:person_id, :address)}"
     # Hooks to support different schemas
     tables += build_query_parts_custom_tables if self.respond_to?(:build_query_parts_custom_tables)
     tables_clause += build_query_parts_custom_tables_clause if self.respond_to?(:build_query_parts_custom_tables_clause)

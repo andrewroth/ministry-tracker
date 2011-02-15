@@ -86,6 +86,22 @@
     %>
   </div>
 
+  <div class="adfieldbox">
+    <big>Group<br/></big>
+
+    <%
+    involvement_options = [ [ "Not in a group", -1 ] ]
+    involvement_options += GroupType.find_all_by_in_directory_search_not_in(true).collect{ |gt|
+      [ "Not in a #{gt.group_type}", gt.id ]
+    }
+    %>
+
+    <%= select_tag 'group_involvement[]',
+        options_for_select(involvement_options, @options["group involvement"]),
+        :multiple => true, :class => "multiSelect"
+    %>
+  </div>
+
 
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   

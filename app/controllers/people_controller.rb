@@ -603,10 +603,6 @@ class PeopleController < ApplicationController
   private
 
     def do_directory_search
-      first_name_col = "Person.#{_(:first_name, :person)}"
-      last_name_col = "Person.#{_(:last_name, :person)}"
-      email = _(:email, :address)
-
       if params[:search_id]
         @search = @my.searches.find(params[:search_id])
         @conditions = @search.query
@@ -635,9 +631,9 @@ class PeopleController < ApplicationController
           end
         end
 
-
+      
         # Advanced search options
-
+        @options = {}
         @tables = {}
         @search_for = []
         # Check year in school
@@ -648,26 +644,26 @@ class PeopleController < ApplicationController
           @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
           @advanced = true
         end
-
+      
         # Check gender
         if params[:gender].present?
           conditions << database_search_conditions(params)[:gender]
           @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
           @advanced = true
         end
-
+      
         if params[:first_name].present?
           conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
           @search_for << "First Name: #{params[:first_name]}"
           @advanced = true
         end
-
+        
         if params[:last_name].present?
           conditions << "Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'"
           @search_for << "Last Name: #{params[:last_name]}"
           @advanced = true
         end
-
+        
         if params[:email].present?
           conditions << database_search_conditions(params)[:email]
           @search_for << "Email: #{params[:email]}"
@@ -680,18 +676,33 @@ class PeopleController < ApplicationController
           @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
           @advanced = true
           @searched_ministry_roles = params[:role]
+          hide_by_default = false
         end
 
-        conditions = add_involvement_conditions(conditions)
-
+        hide_by_default ||= nil
+        conditions = add_involvement_conditions(conditions, nil, hide_by_default)
+      
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
-        
+      
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
+      
+      if params[:group_involvement] == [ "-1" ]
+        @search_for << ", not in a group"
+        @check_no_group = true
+      elsif gi = params[:group_involvement]
+        @not_group_type = GroupType.find gi.first
+        @semester = Semester.current
+        conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
+          " AND group_type_id = #{@not_group_type.id}"
+        @not_group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
+        @not_group_type_groups_ids = @not_group_type_groups.collect(&:id).collect(&:to_s)
+        @search_for << ", not in a #{@not_group_type.group_type}"
+      end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-      tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
+      tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
       if params[:search_id].blank?
         @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
         if @search
@@ -702,8 +713,11 @@ class PeopleController < ApplicationController
         # Only keep the last 5 searches
         @my.searches.last.destroy if @my.searches.length > 5
       end
-
+      
       # If these conditions will result in too large a set, use pagination
+      @group = "GroupInvolvement.id"
+      build_sql(tables_clause)
+  =begin
       @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
       if @count > 0
         # Build range for pagination
@@ -718,13 +732,13 @@ class PeopleController < ApplicationController
             end
           end
           if finish.blank?
-            conditions << "#{last_name_col} >= '#{start}'"
+            conditions << "#{last_name_col} >= '#{start}'"          
           else
             conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
           end
           @conditions = conditions.join(' AND ')
         end
-
+        
         build_sql(tables_clause)
         @people = ActiveRecord::Base.connection.select_all(@sql)
         post_process_directory(@people)
@@ -732,13 +746,17 @@ class PeopleController < ApplicationController
         @people = []
         @count = 0
       end
-
-      # pass which ministries were searched for to the view
-      if params[:ministry]
-        ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
-        @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
-      end
-      @searched_ministry_ids ||= get_ministry_ids
+  =end
+      @people = ActiveRecord::Base.connection.select_all(@sql)
+      post_process_directory(@people)
+      @count = @people.length
+      @page = (params[:page] || 1).to_i
+      @per_page = 100
+      @total_pages = @count / 100 + (@count % @per_page > 0 ? 1 : 0)
+      @results_floor = (@page - 1) * @per_page
+      @results_ceiling = @page * @per_page
+      @results_ceiling = @results_ceiling < @count ? @results_ceiling : @count
+      @people = @people[@results_floor, @results_ceiling]
     end
 
     
@@ -845,6 +863,7 @@ class PeopleController < ApplicationController
       tables_clause ||= @view.tables_clause
       @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
+      @sql += ' GROUP BY ' + @group if @group
       @sql += ' ORDER BY ' + @order
     end
   
@@ -961,6 +980,19 @@ class PeopleController < ApplicationController
           false
         end
       }
+
+      if @not_group_type_groups.present?
+        people.reject!{ |person|
+          in_groups = person['GroupInvolvements'].to_s.split(',') & @not_group_type_groups_ids
+          in_groups.present?
+        }
+      end
+
+      if @check_no_group.present?
+        people.reject!{ |person|
+          person['GroupInvolvements'].to_s != ""
+        }
+      end
     end
 
     def search_params_present?
