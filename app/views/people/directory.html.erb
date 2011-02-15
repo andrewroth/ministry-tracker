@@ -1,4 +1,8 @@
 <% @site_title = 'Advanced Search' -%>
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
 
 <div id="timetable_link">
 </div>
@@ -20,6 +24,7 @@
         <%- end -%>
         <%= spinner('_change_ministry') %>
     <%- end -%>
+    &nbsp;&nbsp;
   <%- end -%>
 </div>
 

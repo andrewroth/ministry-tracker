@@ -1,8 +1,8 @@
-<% if @show_my_events %>
+<% content_for :javascripts do %>
   <%= javascript_include_tag "dashboard.js" %>
-<% end %>
+<% end if @show_my_events %>
 
-<div id="timetable_link"
+<div id="timetable_link">
 </div>
 <% @site_title = 'Dashboard' -%>
 <%- help_block do -%>
