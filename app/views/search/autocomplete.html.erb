@@ -9,5 +9,5 @@
         "</div>", "/search?q=#{@q}") %>
   <% end %>
 <% elsif !logged_in? %>
-  <br/><%= image_tag("silk/exclamation.png") %> <b>You have logged out,<br/>please login and try searching again.</b><br/>&nbsp;
+  <span class='autoCompleteName' style='display: none;'><%=@q%></span><br/><%= image_tag("silk/exclamation.png") %> <b>You have logged out,<br/>please login and try searching again.</b><br/>&nbsp;
 <% end %>

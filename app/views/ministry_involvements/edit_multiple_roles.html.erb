@@ -45,8 +45,13 @@
     <big>
     <%= image_tag("silk/pencil.png") %>
     Change to the new role
-    <%= grouped_collection_select('role', :id, [ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, {:include_blank => true}, {:style => "font-size: 1em;"}) %>
+
+		<% blank_option = "<option value=\"""\"></option>" %>
+		<% not_involved_group = "<optgroup label=\"Remove all roles & involvements\"><option value=\"#{MinistryInvolvementsHelper::NOT_INVOLVED_ROLE}\">No Longer Involved</option></optgroup>" %>
+    <% option_groups = blank_option + option_groups_from_collection_for_select([ StaffRole, StudentRole ], :all, :human_name_plural, :id, :name, selected_key = nil) + not_involved_group %>
+		<%= select('role', :id, option_groups) %>
     </big>
+    
   
     <% for involvement in @involvements %>
       <%= hidden_field_tag "involvement_id[]", involvement.id %>
