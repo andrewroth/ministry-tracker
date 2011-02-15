@@ -12,10 +12,12 @@
 class PeopleController < ApplicationController
   include PersonMethodsEmu
   include PersonForm
+  include SemesterSet
 
-  before_filter  :get_profile_person, :only => [:edit, :update, :show]
-  before_filter  :set_use_address2
+  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements]
+  before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
+  before_filter :set_current_and_next_semester
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
                   :set_initial_ministry]
@@ -600,6 +602,14 @@ class PeopleController < ApplicationController
     @permanent_address_states = CmtGeo.states_for_country(params[:perm_address_country]) || []
   end
 
+  def show_group_involvements
+    @semester = Semester.find(params[:semester_id].to_i)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   private
 
     def do_directory_search
@@ -797,6 +807,11 @@ class PeopleController < ApplicationController
       @staff = is_staff_somewhere(@person)
       @student = !@staff
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
+
+      # we want to show two semesters into the future
+      last_shown_semester = @current_semester
+      2.times { last_shown_semester = last_shown_semester.next_semester unless last_shown_semester.next_semester.nil? }
+      @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?", last_shown_semester.id])
     end
     
     def set_dorms
