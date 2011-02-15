@@ -53,7 +53,7 @@
   <%- if @staff -%>
   <div id="ministries_div">
   <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
-  <%- if @person.ministries.count > 0 -%>
+  <%- if @person.ministries.size > 0 -%>
   	<ul id="profile_ministries">
   	<%- @person.ministries.uniq.each do |ministry| 
   	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
@@ -72,7 +72,7 @@
 	<br />
 
   <div id="interestedGroups">
-    <%- if @person.group_involvement_interests(@current_semester).count > 0 -%>
+    <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
       <%= render :partial => 'group_list', :locals => { :list_title => "Interested",
         :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
       } %>
@@ -80,7 +80,7 @@
   </div>
 
   <div id="requestedGroups">
-    <%- if @person.group_involvement_requests(@current_semester).count > 0 -%>
+    <%- if @person.group_involvement_requests(@current_semester).size > 0 -%>
       <%= render :partial => 'group_list', :locals => { :list_title => "Requested",
         :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
       } %>
