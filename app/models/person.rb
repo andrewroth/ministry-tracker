@@ -17,31 +17,71 @@ class Person < ActiveRecord::Base
 
     # Group Involvements
   # all
-  has_many :all_group_involvements, :class_name => 'GroupInvolvement'
-  has_many :all_groups, :through => :all_group_involvements,
+  has_many :all_group_involvements_assoc, :class_name => 'GroupInvolvement'
+  has_many :all_groups, :through => :all_group_involvements_assoc,
     :source => :group
   # no interested or requests
-  has_many :group_involvements,
-           :conditions =>["#{_(:level, :group_involvement)} != ? AND " +
-                          "(#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)", 'interested', false]
+  has_many :group_involvements_assoc,
+    :class_name => 'GroupInvolvement',
+    :conditions =>["#{_(:level, :group_involvement)} != ? AND " +
+                   "(#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)", 'interested', false]
 
-  has_many :groups, :through => :group_involvements
+  has_many :groups, :through => :group_involvements_assoc
   # interests
-  has_many :group_involvement_interests,
+  has_many :group_involvement_interests_assoc,
     :class_name => 'GroupInvolvement',
     :conditions =>["#{_(:level, :group_involvement)} = ? AND " +
                    "(#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)", 'interested', false]
 
-     has_many :group_interests, :through => :group_involvement_interests,
+  has_many :group_interests, :through => :group_involvement_interests_assoc,
     :class_name => 'Group', :source => :group
   # requests
-  has_many :group_involvement_requests,
+  has_many :group_involvement_requests_assoc,
     :class_name => 'GroupInvolvement',
     :conditions => { _(:requested, :group_involvement) => true }
-  has_many :group_requests, :through => :group_involvement_requests,
+  has_many :group_requests, :through => :group_involvement_requests_assoc,
     :class_name => 'Group', :source => :group
   has_many :dismissed_notices
-              
+
+
+  def all_group_involvements(semester = nil)
+    return self.all_group_involvements_assoc unless semester && semester.id
+
+    ::GroupInvolvement.all(:joins => :group,
+      :conditions => ["#{Person._(:id)} = ? AND #{Group._(:semester_id)} = ?",
+                      self.id, semester.id])
+  end
+
+  def group_involvements(semester = nil)
+    return self.group_involvements_assoc unless semester && semester.id
+
+    ::GroupInvolvement.all(:joins => :group,
+      :conditions => ["#{Person._(:id)} = ? AND #{Group._(:semester_id)} = ? AND " +
+                      "#{_(:level, :group_involvement)} != ? AND " +
+                      "(#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)",
+                      self.id, semester.id, 'interested', false])
+  end
+
+  def group_involvement_interests(semester = nil)
+    return self.group_involvement_interests_assoc unless semester && semester.id
+
+    ::GroupInvolvement.all(:joins => :group,
+      :conditions => ["#{Person._(:id)} = ? AND #{Group._(:semester_id)} = ? AND " +
+                      "#{_(:level, :group_involvement)} = ? AND " +
+                      "(#{_(:requested, :group_involvement)} is null OR #{_(:requested, :group_involvement)} = ?)",
+                      self.id, semester.id, 'interested', false])
+  end
+
+  def group_involvement_requests(semester = nil)
+    return self.group_involvement_requests_assoc unless semester && semester.id
+
+    ::GroupInvolvement.all(:joins => :group,
+      :conditions => ["#{Person._(:id)} = ? AND #{Group._(:semester_id)} = ? AND " +
+                      "#{_(:requested, :group_involvement)} = ?",
+                      self.id, semester.id, true])
+  end
+  
+
   def custom_value_hash
     if @custom_value_hash.nil?
       @custom_value_hash = {}
@@ -75,13 +115,13 @@ class Person < ActiveRecord::Base
   def group_group_involvements(filter, options = {})
     case filter
     when :all
-      gis = all_group_involvements
+      gis = all_group_involvements(options[:semester])
     when :involved
-      gis = group_involvements
+      gis = group_involvements(options[:semester])
     when :interests
-      gis = group_involvement_interests
+      gis = group_involvement_interests(options[:semester])
     when :requests
-      gis = group_involvement_requests
+      gis = group_involvement_requests(options[:semester])
     end
     if options[:ministry]
       gis.delete_if{ |gi| 

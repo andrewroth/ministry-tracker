@@ -665,6 +665,16 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_view', :count => 1    
   end
 
+  test "show group involvements per semester" do
+    person = Factory(:person_1)
+
+    post :show_group_involvements, :id => person.id, :semester_id => 14
+
+    assert_equal 14, assigns(:semester).id
+
+    # actual group involvements are fetched in the js view...
+  end
+
   test "people with a role marked hide by default should not appear in directory" do
     setup_users
     setup_people
