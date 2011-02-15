@@ -43,7 +43,9 @@
 		  <div id="userbar">
 
 
-            <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
+        <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
+
+        <%= link_to("Advanced Search", directory_people_path, :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
 
 
     		<% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
