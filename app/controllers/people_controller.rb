@@ -717,7 +717,7 @@ class PeopleController < ApplicationController
       # If these conditions will result in too large a set, use pagination
       @group = "GroupInvolvement.id"
       build_sql(tables_clause)
-  =begin
+=begin
       @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
       if @count > 0
         # Build range for pagination
@@ -746,7 +746,7 @@ class PeopleController < ApplicationController
         @people = []
         @count = 0
       end
-  =end
+=end
       @people = ActiveRecord::Base.connection.select_all(@sql)
       post_process_directory(@people)
       @count = @people.length
