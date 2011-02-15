@@ -31,10 +31,24 @@
 	</div>
 	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
 
-	<h5 class="title">I'm Involved In</h5>
-  <%= render :partial => 'group_list', :locals => { 
-    :group_types_and_involvements => @person.group_group_involvements(:involved)
-  } %>
+	<h5 class="title">
+    Joined&nbsp;
+    <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
+    <%= spinner('GroupSemester') %>
+    <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
+                                           :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
+                                           :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').fadeOut(); $('#interestedGroups').fadeOut(); $('#requestedGroups').fadeOut();",
+                                           :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').fadeIn();  $('#interestedGroups').fadeIn();  $('#requestedGroups').fadeIn();" %>
+
+    <!-- in case of browser refresh keep selection list in sync with groups displayed on the page (some browsers keep the selection list value that the user chose even after refreshing) -->
+    <script>$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
+  </h5>
+  
+  <div id="involvedGroups">
+    <%= render :partial => 'group_list', :locals => { :list_title => "",
+      :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})
+    } %>
+  </div>
 	
   <%- if @staff -%>
   <div id="ministries_div">
@@ -57,19 +71,22 @@
 
 	<br />
 
-	<%- if @person.group_interests.count > 0 -%>
-		<h5 class="title">I'm Interested In</h5>
-    <%= render :partial => 'group_list', :locals => {
-      :group_types_and_involvements => @person.group_group_involvements(:interests)
-    } %>
-	<%- end -%>	
+  <div id="interestedGroups">
+    <%- if @person.group_involvement_interests(@current_semester).count > 0 -%>
+      <%= render :partial => 'group_list', :locals => { :list_title => "Interested",
+        :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
+      } %>
+    <%- end -%>
+  </div>
 
-	<%- if @person.group_requests.count > 0 -%>
-		<h5 class="title">I've Requested</h5>
-    <%= render :partial => 'group_list', :locals => {
-      :group_types_and_involvements => @person.group_group_involvements(:requests)
-    } %>
-	<%- end -%>	
+  <div id="requestedGroups">
+    <%- if @person.group_involvement_requests(@current_semester).count > 0 -%>
+      <%= render :partial => 'group_list', :locals => { :list_title => "Requested",
+        :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
+      } %>
+    <%- end -%>
+  </div>
+
 </div>
 <div class="rightColumn">
 	<div class="clearDivider">&nbsp;</div>

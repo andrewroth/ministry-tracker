@@ -85,4 +85,68 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal false, @josh.is_leading_mentor_priority_group_with?(@person2)
   end
 
+  test "all group involvements" do
+    setup_semesters
+    Factory(:group_5)
+    Factory(:group_6)
+    Factory(:groupinvolvement_7)
+    Factory(:groupinvolvement_8)
+    Factory(:groupinvolvement_9)
+    Factory(:groupinvolvement_10)
+
+    gis = @josh.all_group_involvements
+    assert_equal 6, gis.size
+
+    gis = @josh.all_group_involvements(Factory(:current_semester))
+    assert_equal 4, gis.size
+  end
+
+  test "group involvements" do
+    setup_semesters
+    Factory(:group_5)
+    Factory(:group_6)
+    Factory(:groupinvolvement_7)
+    Factory(:groupinvolvement_8)
+    Factory(:groupinvolvement_9)
+    Factory(:groupinvolvement_10)
+
+    gis = @josh.group_involvements
+    assert_equal 3, gis.size
+
+    gis = @josh.group_involvements(Factory(:current_semester))
+    assert_equal 2, gis.size
+  end
+
+  test "group involvement interests" do
+    setup_semesters
+    Factory(:group_5)
+    Factory(:group_6)
+    Factory(:groupinvolvement_7)
+    Factory(:groupinvolvement_8)
+    Factory(:groupinvolvement_9)
+    Factory(:groupinvolvement_10)
+
+    gis = @josh.group_involvement_interests
+    assert_equal 1, gis.size
+
+    gis = @josh.group_involvement_interests(Factory(:current_semester))
+    assert_equal 1, gis.size
+  end
+
+  test "group involvement requests" do
+    setup_semesters
+    Factory(:group_5)
+    Factory(:group_6)
+    Factory(:groupinvolvement_7)
+    Factory(:groupinvolvement_8)
+    Factory(:groupinvolvement_9)
+    Factory(:groupinvolvement_10)
+
+    gis = @josh.group_involvement_requests
+    assert_equal 2, gis.size
+
+    gis = @josh.group_involvement_requests(Factory(:current_semester))
+    assert_equal 1, gis.size
+  end
+
 end
