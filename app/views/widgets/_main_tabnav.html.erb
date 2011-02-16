@@ -71,15 +71,16 @@ render_tabnav :main,
    t.links_to person_path(@me)
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
   end 
-  
-  if authorized?(:directory, :people)
-    add_tab do |t|
-      t.named 'Directory'
-      t.titled 'Directory for ' + @ministry.name
-      t.links_to directory_people_path
-      t.highlights_on :controller => "people", :action => "directory"
-    end if session[:ministry_id]
-  end
+
+  # remove directory tab - directory now accessed via Advanced Search link
+  #if authorized?(:directory, :people)
+    #add_tab do |t|
+      #t.named 'Directory'
+      #t.titled 'Directory for ' + @ministry.name
+      #t.links_to directory_people_path
+      #t.highlights_on :controller => "people", :action => "directory"
+    #end if session[:ministry_id]
+  #end
   
   add_tab do |t|
    t.named 'Dashboard'

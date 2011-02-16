@@ -98,7 +98,7 @@ this system, along with any other information we think would be helpful to you.<
         <input type="submit" class="searchdashsubmit" value="Search"/><br />
         <%- end -%>
         <% if authorized?(:advanced, :people) %>
-        <%= link_to('Advanced Search', advanced_people_path()) %>
+        <%= link_to('Advanced Search', directory_people_path) %>
         <% end %>
         </div>
 
