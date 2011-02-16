@@ -2484,13 +2484,20 @@ table.groupInvolvementList th {
 /*  Fancy Horizontal Timetable Compare section  */
 /************************************************/
 
-#horizTableCompareContainer { width: 100%; position: relative; }
+#horizTableCompareContainer { width: 1500%; position: relative; }
+#horizTableCompareTimelineHeaderContainer { height: 28px; }
 
 .horizTableCompare .timelineHeader .timesContainer { float: left; width: 100%; }
-.horizTableCompare .timelineHeader .day { width: 14.285%; position: absolute; }
-.horizTableCompare .timelineHeader .time { position: absolute; top: 12px; }
+.horizTableCompare .timelineHeader .dayHeader { width: 14.285%; position:relative; float:left; }
+.horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 12px; }
 
+/* column of names */
+.horizTableCompare .timelineHeader .timesContainer { position: relative; left: 200px; }
+.horizTableCompare .personName { width: 200px; overflow: hidden; height: 14px; }
 
+.horizTableCompare .personRow { position: relative; }
+.horizTableCompare .personTimes { position: absolute; left: 200px; right: 100px; top: 0px; }
+.horizTableCompare .personTimeBlock { position: relative; }
 
 
 

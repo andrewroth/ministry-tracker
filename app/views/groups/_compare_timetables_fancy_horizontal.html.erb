@@ -7,33 +7,32 @@
 <div id="horizTableCompareContainer" class="horizTableCompare">
 
   <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
-    
     <div class="timesContainer">
-
       <% Date::DAYNAMES.each_with_index do |day| %>
-
-        <div id="<%=day.downcase%>" class="day" style="width:14.285%; position:relative; float:left;">
-          <%=day%>
+        <div id="<%=day[0].downcase%>" class="dayHeader" style="width:14.285%;">
+          <%=day[0]%>
 
           <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
           <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
 
           <% i=0 %>
           <% while time < end_time %>
-            <div class="time" style="left:<%=3.125*i%>%;"> <%= time.to_s(:time) %> </div>
+            <div class="timeHeader" style="left:<%=3.125*i%>%;"> <%= time.to_s(:time) %> </div>
             <% time += Timetable::INTERVAL %>
             <% i+=1 %>
           <% end %>
         </div>
-
       <% end %>
-
     </div>
-
   </div>
 
   <div id="horizTableCompareRows">
-
+    <div class="personRow">
+      <div class="personName">Somedudewitha Prettylongnameandstuff</div>
+      <div class="personTimes">
+        <div class="personTimeBlock" style="left:20%;"></div>
+      </div>
+    </div>
   </div>
 
 </div>
