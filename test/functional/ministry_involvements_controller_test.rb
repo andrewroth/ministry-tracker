@@ -127,6 +127,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryinvolvement_12)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)
@@ -146,6 +147,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryinvolvement_12)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)

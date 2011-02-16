@@ -19,7 +19,7 @@ class GroupsControllerTest < ActionController::TestCase
   def test_join
     get :join
     unless Cmt::CONFIG[:joingroup_from_index]
-      assert_redirected_to :controller => "signup", :action => "step1_info"
+      assert_redirected_to :controller => "signup", :action => "step1_group"
     else
       assert_response :success
       assert_array_similarity([ Group.find(1), Group.find(2), Group.find(4) ], assigns("groups"))
@@ -31,7 +31,7 @@ class GroupsControllerTest < ActionController::TestCase
     p.campus_involvements.delete_all
     get :join
     unless Cmt::CONFIG[:joingroup_from_index]
-      assert_redirected_to :controller => "signup", :action => "step1_info"
+      assert_redirected_to :controller => "signup", :action => "step1_group"
     else
       assert_response :success
     end
