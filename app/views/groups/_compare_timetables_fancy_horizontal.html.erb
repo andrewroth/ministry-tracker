@@ -9,14 +9,25 @@
   <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
     
     <div class="timesContainer">
-      <div class="day">
-        Funday
-        <% i = 0 %>
-        <% 32.times do %>
-        <div class="time" style="left:<%= 3.125*i %>%;"> 6:00am </div>
-        <% i = i+1 %>
-        <% end %>
-      </div>
+
+      <% Date::DAYNAMES.each_with_index do |day| %>
+
+        <div id="<%=day.downcase%>" class="day" style="width:14.285%; position:relative; float:left;">
+          <%=day%>
+
+          <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
+          <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+
+          <% i=0 %>
+          <% while time < end_time %>
+            <div class="time" style="left:<%=3.125*i%>%;"> <%= time.to_s(:time) %> </div>
+            <% time += Timetable::INTERVAL %>
+            <% i+=1 %>
+          <% end %>
+        </div>
+
+      <% end %>
+
     </div>
 
   </div>
