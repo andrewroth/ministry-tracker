@@ -22,6 +22,18 @@
 		<div id="loginBody">
 			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
 			<div id="loginwrapper">
+				<%
+				if @ie_browser
+          %>
+					<div id='browser_warning'>
+					 The Pulse works best with the following browsers:
+           <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome' %>
+           <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/' %>
+           <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/' %>
+          </div>
+				  <%
+        end
+        %>
 				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
 				<map name="getin">
 				  <area shape="rect" coords="320,53,662,117" href="<%= signup_url %>" alt="Join a Group! (No need to login)" />
