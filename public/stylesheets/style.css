@@ -2486,15 +2486,28 @@ table.groupInvolvementList th {
 
 #horizTableCompareContainer { width: 100%; position: relative; }
 .horizTableCompare .namesList { float:left; padding-top:28px; }
-.horizTableCompare .frame { position: relative; overflow: auto; border: 2px #1F429B solid; border-top:0; border-bottom:0; }
+.horizTableCompare .frame { position: relative; overflow: auto; border: 3px #1F429B solid; border-top:0; border-bottom:0; }
 .horizTableCompare .tableContainer { width: 2000%; position: relative; }
-.horizTableCompare .tableContainer .timelineHeaderContainer { height: 28px; }
+.horizTableCompare .tableContainer .timelineHeaderContainer { height: 100%; }
+.horizTableCompare .tableContainer .rows { margin-top: 28px; }
 
-.horizTableCompare .timelineHeader .timesContainer { float: left; }
+.horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
 .horizTableCompare .day { width: 14.285%; position:relative; float:left; }
-.horizTableCompare .day.dayHeader { font-weight:bold; color:black; }
-.horizTableCompare .time.timeHeader { font-weight:normal; }
+.horizTableCompare .day.dayHeader { font-weight:bold; color:black; height:100%; font-size:1.12em; }
+.horizTableCompare .time.timeHeader { font-weight:normal; font-size: .8em; }
 .horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 12px; }
+
+.horizTableCompare .timelineHeader .hour5, .horizTableCompare .timelineHeader .hour21  { color:#173E4A; border-color:#173E4A;}
+.horizTableCompare .timelineHeader .hour6, .horizTableCompare .timelineHeader .hour20  { color:#173E4A; border-color:#173E4A;}
+.horizTableCompare .timelineHeader .hour7, .horizTableCompare .timelineHeader .hour19  { color:#235E71; border-color:#235E71;}
+.horizTableCompare .timelineHeader .hour8, .horizTableCompare .timelineHeader .hour18  { color:#2E7E99; border-color:#2E7E99;}
+.horizTableCompare .timelineHeader .hour9, .horizTableCompare .timelineHeader .hour17  { color:#3A9FC0; border-color:#3A9FC0;}
+.horizTableCompare .timelineHeader .hour10, .horizTableCompare .timelineHeader .hour16 { color:#72BCD4; border-color:#72BCD4;}
+.horizTableCompare .timelineHeader .hour11, .horizTableCompare .timelineHeader .hour15 { color:#72BCD4; border-color:#72BCD4;}
+.horizTableCompare .timelineHeader .hour12, .horizTableCompare .timelineHeader .hour14 { color:#72BCD4; border-color:#72BCD4;}
+.horizTableCompare .timelineHeader .hour13                                             { color:#72BCD4; border-color:#72BCD4;}
+
+.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:28px; opacity:.25; }
 
 .horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
@@ -2510,7 +2523,6 @@ table.groupInvolvementList th {
 .horizTableCompare .personTimeBlock { position: relative; float: left; height:16px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 .horizTableCompare .personTimeBlock.busy { background-color: red; }
 .horizTableCompare .personTimeBlock.free { background-color: green; }
-
 
 
 

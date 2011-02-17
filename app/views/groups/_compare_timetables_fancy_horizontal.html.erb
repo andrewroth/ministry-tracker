@@ -28,7 +28,11 @@
 
               <% i=0 %>
               <% while time < end_time %>
-                <div class="time timeHeader <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"> <%= time.to_s(:time) %> </div>
+                <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;">
+                  <%= time_header_text(time) %>
+                </div>
+                <div class="line hour<%=time.hour%>" style="left:<%=interval_width*i%>%;"></div>
+                
                 <% time += Timetable::INTERVAL %>
                 <% i+=1 %>
               <% end %>
@@ -37,7 +41,7 @@
         </div>
       </div>
 
-      <div id="rows">
+      <div class="rows">
         <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
       </div>
     </div>
