@@ -7,32 +7,41 @@
 <% day_width = 14.285 %>
 <% interval_width = 3.125 %>
 
-<div id="horizTableCompareFrame">
-  <div id="horizTableCompareContainer" class="horizTableCompare">
+<div id="horizTableCompareContainer" class="horizTableCompare">
+  <div class="namesList">
+    <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
+    <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
+    <%= "<div class='noTable'>* has not submitted their timetable</div>" if @people_without_table.present? %>
+  </div>
 
-    <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
-      <div class="timesContainer">
-        <% Date::DAYNAMES.each do |day| %>
-          <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
-            <%=day%>
+  <div class="frame">
 
-            <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
-            <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+    <div class="tableContainer">
+      <div class="timelineHeaderContainer timelineHeader">
+        <div class="timesContainer">
+          <% Date::DAYNAMES.each do |day| %>
+            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
+              <%=day%>
 
-            <% i=0 %>
-            <% while time < end_time %>
-              <div class="time timeHeader <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"> <%= time.to_s(:time) %> </div>
-              <% time += Timetable::INTERVAL %>
-              <% i+=1 %>
-            <% end %>
-          </div>
-        <% end %>
+              <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
+              <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+
+              <% i=0 %>
+              <% while time < end_time %>
+                <div class="time timeHeader <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"> <%= time.to_s(:time) %> </div>
+                <% time += Timetable::INTERVAL %>
+                <% i+=1 %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="rows">
+        <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
       </div>
     </div>
 
-    <div id="horizTableCompareRows">
-      <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
-    </div>
-
   </div>
+  
 </div>

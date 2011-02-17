@@ -2,9 +2,6 @@
 
 <div class="personRowContainer <%= cycle("even", "odd") %>">
   <div class="personRow">
-    <div class="personNameContainer">
-      <div class="personName"><%="#{person.first_name} #{person.last_name}"%></div>
-    </div>
     <div class="personTimes">
       <% Date::DAYNAMES.each_with_index do |day, i| %>
         <% total_intervals_printed = 0 %>

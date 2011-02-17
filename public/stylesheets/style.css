@@ -2484,39 +2484,32 @@ table.groupInvolvementList th {
 /*  Fancy Horizontal Timetable Compare section  */
 /************************************************/
 
-#horizTableCompareFrame { width: 100%; position: relative; overflow: auto; }
-#horizTableCompareContainer { width: 1500%; position: relative; }
-#horizTableCompareTimelineHeaderContainer { height: 28px; }
+#horizTableCompareContainer { width: 100%; position: relative; }
+.horizTableCompare .namesList { float:left; padding-top:28px; }
+.horizTableCompare .frame { position: relative; overflow: auto; border: 2px #1F429B solid; border-top:0; border-bottom:0; }
+.horizTableCompare .tableContainer { width: 2000%; position: relative; }
+.horizTableCompare .tableContainer .timelineHeaderContainer { height: 28px; }
 
 .horizTableCompare .timelineHeader .timesContainer { float: left; }
 .horizTableCompare .day { width: 14.285%; position:relative; float:left; }
+.horizTableCompare .day.dayHeader { font-weight:bold; color:black; }
+.horizTableCompare .time.timeHeader { font-weight:normal; }
 .horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 12px; }
 
-/* column of names */
-.horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 200px; right: 100px; }
-.horizTableCompare .personTimes { position: absolute; left: 200px; right: 100px; top: 0px; }
-.horizTableCompare .personNameContainer { width: 190px; overflow: hidden; height: 14px; text-align: right; }
+.horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }
+.horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
+.horizTableCompare .personNameContainer { overflow: hidden; height:26px; text-align: right; }
 
-.horizTableCompare .personTimetableLink { position: relative; top: -1px; margin: 0 5px; }
-.horizTableCompare .personName { display:inline; position:relative; top:-5px; cursor:pointer; background-color:#1F429B; color:white; padding:0 10px; font-weight:bold; white-space:nowrap; line-height:24px; }
+.horizTableCompare .personName { display:inline; position:relative; cursor:pointer; background-color:#1F429B; color:white; padding:3px 10px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 3px 0px 0px 3px; -webkit-border-radius: 3px; }
+.horizTableCompare .noTable { cursor:default; background-color:white; color:black; font-weight:bold; }
 
-.horizTableCompare .personRowContainer { height: 24px; }
+.horizTableCompare .personRowContainer { height: 26px; }
 .horizTableCompare .personRowContainer.even { background-color: white; }
 .horizTableCompare .personRowContainer.odd { background-color: #F5F5F5; }
 .horizTableCompare .personRow { position: relative; top: 5px; }
-.horizTableCompare .personTimeBlock { position: relative; float: left; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+.horizTableCompare .personTimeBlock { position: relative; float: left; height:16px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 .horizTableCompare .personTimeBlock.busy { background-color: red; }
 .horizTableCompare .personTimeBlock.free { background-color: green; }
-
-.time.timeHeader.zoom1 { font-weight:bold; display: block; }
-.time.timeHeader.zoom2 { font-weight:bold; display: block; }
-.time.timeHeader.zoom3 { font-weight:bold; display: block; }
-.time.timeHeader.zoom4 { font-weight:bold; display: block; }
-
-
-
-
-
 
 
 

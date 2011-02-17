@@ -189,11 +189,13 @@ class GroupsController < ApplicationController
 
     # remove those who haven't submitted timetable (and make sure the group involvement is valid
     # while we're at it, ie. no requests, and valid person)
+    @people_without_table = []
     @people = gis.reject { |gi|
       if gi.person.nil? || gi.requested
         true
       elsif !gi.person.free_times.present?
         @notices << "<b><i>" + gi.person.full_name + "</i></b> has not submitted their timetable, they are excluded from the comparison."
+        @people_without_table << gi.person
         true
       else
         false
