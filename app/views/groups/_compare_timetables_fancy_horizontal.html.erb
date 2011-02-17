@@ -7,76 +7,32 @@
 <% day_width = 14.285 %>
 <% interval_width = 3.125 %>
 
-<div id="horizTableCompareContainer" class="horizTableCompare">
+<div id="horizTableCompareFrame">
+  <div id="horizTableCompareContainer" class="horizTableCompare">
 
-  <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
-    <div class="timesContainer">
-      <% Date::DAYNAMES.each_with_index do |day| %>
-        <div id="<%=day[0].downcase%>" class="day dayHeader" style="width:<%=day_width%>%;">
-          <%=day[0]%>
+    <div id="horizTableCompareTimelineHeaderContainer" class="timelineHeader">
+      <div class="timesContainer">
+        <% Date::DAYNAMES.each do |day| %>
+          <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
+            <%=day%>
 
-          <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
-          <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+            <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
+            <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
 
-          <% i=0 %>
-          <% while time < end_time %>
-            <div class="time timeHeader" style="left:<%=interval_width*i%>%;"> <%= time.to_s(:time) %> </div>
-            <% time += Timetable::INTERVAL %>
-            <% i+=1 %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div id="horizTableCompareRows">
-
-    <div class="personRowContainer even">
-      <div class="personRow">
-        <div class="personName">Somedudewitha Prettylongnameandstuff</div>
-        <div class="personTimes">
-          <% Date::DAYNAMES.each_with_index do |day| %>
-            <div id="<%=day[0].downcase%>" class="day" style="width:<%=day_width%>%;">
-              <div class="personTimeBlock busy" style="left:<%=interval_width*3%>%; width:<%=interval_width*2%>%;">&nbsp;</div>
-              <div class="personTimeBlock free" style="left:<%=interval_width*6%>%; width:<%=interval_width%>%;">&nbsp;</div>
-            </div>
-          <% end %>
-        </div>
+            <% i=0 %>
+            <% while time < end_time %>
+              <div class="time timeHeader <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"> <%= time.to_s(:time) %> </div>
+              <% time += Timetable::INTERVAL %>
+              <% i+=1 %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
 
-
-
-    <div class="personRowContainer odd">
-      <div class="personRow">
-        <div class="personName">Somedudewitha Prettylongnameandstuff</div>
-        <div class="personTimes">
-          <% Date::DAYNAMES.each_with_index do |day| %>
-            <div id="<%=day[0].downcase%>" class="day" style="width:<%=day_width%>%;">
-              <div class="personTimeBlock busy" style="left:<%=interval_width*3%>%; width:<%=interval_width*2%>%;">&nbsp;</div>
-              <div class="personTimeBlock free" style="left:<%=interval_width*6%>%; width:<%=interval_width%>%;">&nbsp;</div>
-            </div>
-          <% end %>
-        </div>
-      </div>
+    <div id="horizTableCompareRows">
+      <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
     </div>
-    
-    <div class="personRowContainer even">
-      <div class="personRow">
-        <div class="personName">Somedudewitha Prettylongnameandstuff</div>
-        <div class="personTimes">
-          <% Date::DAYNAMES.each_with_index do |day| %>
-            <div id="<%=day[0].downcase%>" class="day" style="width:<%=day_width%>%;">
-              <div class="personTimeBlock busy" style="left:<%=interval_width*3%>%; width:<%=interval_width*2%>%;">&nbsp;</div>
-              <div class="personTimeBlock free" style="left:<%=interval_width*6%>%; width:<%=interval_width%>%;">&nbsp;</div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    
-
 
   </div>
-
 </div>
