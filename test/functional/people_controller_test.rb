@@ -16,6 +16,8 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:person_1)
     Factory(:ministryrole_1)
     Factory(:ministryinvolvement_1)
+    Factory(:campus_1)
+    Factory(:campusinvolvement_setperson, :person_id => "50000")
     
     login('josh.starcher@example.com')
   end
@@ -716,11 +718,21 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should show discipleship tree" do
-    #person1 = Factory(:person_mentor, :id => 0, :person_mentor_id => 1)
-    person_mentor = Factory(:person_mentor)
+    login_admin_user
+ 
+    # setup mentorship
+    person1 = Factory(:person_mentor)
+    person2 = Factory(:person_mentor)
     person3 = Factory(:person_mentor)
+    
+    person3.person_mentor_id = person2.id
+    person2.person_mentor_id = person1.id
+    
+#        xhr :get, :discipleship,
+#        :id => 50000
+
+    get :directory, :id => person1.id
     debugger
-    get :show, :id => Factory(:timetable_1).id
     assert_response :success
   end
 

@@ -1,9 +1,11 @@
 <%- first_level = true %>
+<%- last_level = -1 %>
 <%- Person.each_with_level(@person.self_and_descendants) do |o, level| %>
-<div style="padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= PeopleHelper::MENTEES_BASE_FONTSIZE - level %>px; <%- if first_level == true %> font-weight: bold; <%- first_level = false %><%- end %>">
-  <%= link_to_remote(o.full_name, 
-            :update => "mentee_#{@person.id}",
-            :url => { :action => :show_mentee_summary, :params => {:mentee_id => "#{o.id}"}  }) %>
-</div>
+	<div style="padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= PeopleHelper::MENTEES_BASE_FONTSIZE - level %>px; <%- if first_level == true %> font-weight: bold; <%- first_level = false %><%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
+	  <%= link_to_remote(o.full_name, 
+	            :update => "mentee_#{@person.id}",
+	            :url => { :action => :show_mentee_summary, :params => {:mentee_id => "#{o.id}"}  }) %>
+	</div>
+	<%- last_level = level %>
 <%- end -%>
 

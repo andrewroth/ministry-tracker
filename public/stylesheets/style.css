@@ -2503,9 +2503,14 @@ td.nameTitle {
 .headerNameTitle {
     width:auto;
     float:left;	
+		margin-left:50px;
 		font-size: 18px;
 		font-weight: bold;
 }
 
-
+.headerContactInfo {
+    width:auto;
+    float:left; 
+    margin-left:50px;
+}
 
