@@ -2470,3 +2470,42 @@ table.groupInvolvementList th {
 .modulecontent tr.pat_no_project_chosen td {
   font-style: italic;
 }
+
+/** Discipleship Tree **/
+td.discTree {
+	width:50%;
+}
+
+.treeColumn {
+    width:auto;
+    float:right;
+  background:#F5F5F5; padding:15px 20px 20px 20px;
+}
+
+.detailsColumn {
+    margin-left:30px;
+}
+
+td.profilePic {
+  width:5%;
+}
+
+.headerProfilePic {
+    width: 50px;
+    float:left; 
+    padding:0px 15px 15px 0px;
+}
+
+td.nameTitle {
+  width:95%;
+}
+
+.headerNameTitle {
+    width:auto;
+    float:left;	
+		font-size: 18px;
+		font-weight: bold;
+}
+
+
+

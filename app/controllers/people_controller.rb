@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
   skip_standard_login_stack :only => free_actions
      
   MENTOR_ID_NONE = nil
-  ID_CONVERTED_FROM_NON_NUMERIC = 0
+  
   
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
@@ -48,6 +48,32 @@ class PeopleController < ApplicationController
       end
     end
   end
+
+  def discipleship
+    @p_user = @person
+    @person = Person.find(params[:id])    # needed so that current Pulse user is not used
+  end
+  
+  
+ # displays summary profile info for mentee in partial beside discipleship tree
+ def show_mentee_summary
+   
+   mentee = nil
+   begin
+       mentee = Person.find(params[:mentee_id])     
+   rescue ActiveRecord::RecordNotFound 
+    # DO NOTHING IF NO PERSON FOUND FOR MENTEE ID
+    # TODO?: post a temporary flash notice (although this error should not ever happen)
+  end  
+
+  if (is_ministry_leader == true || mentee.campus == @person.campus)
+    render :partial => "mentee_summary", :locals => { :mentee => mentee}
+  else
+    render :partial => "mentee_summary_not_permitted", :locals => { :mentee => mentee}
+  end
+  
+ end
+ 
 
   def advanced
     get_campuses
@@ -331,11 +357,18 @@ class PeopleController < ApplicationController
         if params[:m]
           begin
             mentor_id = params[:m].to_i
-            ensure_existence = Person.find(mentor_id)         
-            if mentor_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+            person_exists_check = Person.find(mentor_id)         
+            if mentor_id.is_a?(Numeric) # & mentor_id != MENTOR_ID_NONE
               @person.person_mentor_id = params[:m];
               @person.save
             end
+          rescue ActiveRecord::ActiveRecordError  #NOTE: this code should *never* get to execute because of "mentor exists?" check in SQL (search_controller)
+            if person != nil
+              flash[:notice] = "<b>WARNING:</b> " + person_exists_check.full_name + " already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
+            else
+              flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentor already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
+            end
+            mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
             
           rescue ActiveRecord::RecordNotFound
             # DO NOTHING
@@ -344,18 +377,26 @@ class PeopleController < ApplicationController
       end
       
        # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
+      mentorship_cycle_error = false
       if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_to_other, :people))
         if params[:mt]
           begin
             mentee_id = params[:mt].to_i
-            if mentee_id.is_a?(Numeric) & mentor_id != ID_CONVERTED_FROM_NON_NUMERIC
+            if mentee_id.is_a?(Numeric) # & mentor_id != MENTOR_ID_NONE
               person = Person.find(params[:mt])
               person.person_mentor_id = @person.id
               person.save 
+            end   
+          rescue ActiveRecord::ActiveRecordError
+            if person != nil
+              flash[:notice] = "<b>WARNING:</b> " + person.full_name + " already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
+            else
+              flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentee already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
             end
-                 
-          rescue ActiveRecord::RecordNotFound
-            # DO NOTHING
+            mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
+          rescue ActiveRecord::RecordNotFound 
+            # DO NOTHING  
+
           end     
         end
       end
@@ -364,17 +405,19 @@ class PeopleController < ApplicationController
       get_people_responsible_for
       setup_vars
       
-#      if (!params[:m])
+     if (mentorship_cycle_error == true)
+        set_notices   # make sure error notice is displayed
         respond_to do |format|
           format.html { render :action => :show }# show.rhtml
           format.xml  { render :xml => @person.to_xml }
         end
-#      else
-#        respond_to do |format|
-#          format.xml  { head :ok }
-#          format.html { render :partial => "mentors" }
-#        end
-#      end
+      else
+        flash[:notice] = nil
+        respond_to do |format|
+          format.html { render :action => :show }# show.rhtml
+          format.xml  { render :xml => @person.to_xml }
+        end
+      end
     end
   end
   

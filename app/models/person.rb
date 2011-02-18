@@ -1,5 +1,7 @@
 class Person < ActiveRecord::Base
   load_mappings
+  acts_as_nested_set :parent_column => "person_mentor_id", :left_column => "person_mentees_lft",
+    :right_column => "person_mentees_rgt", :id_column_name => _(:id)
   include Common::Core::Person
   include Common::Core::Ca::Person
   include Legacy::Stats::Core::Person
@@ -41,7 +43,10 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests,
     :class_name => 'Group', :source => :group
   has_many :dismissed_notices
-              
+   
+  has_one :mentor, :class_name => "Person", :primary_key => "person_mentor_id"
+  has_many :mentees, :class_name => "Person", :foreign_key => "person_mentor_id"
+
   def custom_value_hash
     if @custom_value_hash.nil?
       @custom_value_hash = {}
