@@ -8,11 +8,13 @@
         <% fts = person.free_times.select{|ft| ft.day_of_week == i} %>
 
         <div class="day <%=day.downcase%>" style="width:<%=day_width%>%;">
-          <% fts.select{|ft| ft.css_class != Timetable::GOOD_CLASS}.each do |ft| %>
+          <% times_to_print = fts.select{|ft| ft.css_class != Timetable::GOOD_CLASS} %>
+          <%= "&nbsp;" if times_to_print.blank? %>
+          <% times_to_print.each do |ft| %>
             <% num_intervals_width = (ft.end_time-ft.start_time)/Timetable::INTERVAL %>
             <% num_intervals_to_left = (ft.start_time-Timetable::EARLIEST) > 0  ?  (ft.start_time-Timetable::EARLIEST)/Timetable::INTERVAL : 0 %>
 
-            <div class="personTimeBlock <%= ft.css_class %>" style="left:<%= interval_width*(num_intervals_to_left-total_intervals_printed) %>%; width:<%= interval_width*num_intervals_width %>%;">&nbsp;</div>
+            <div class="personTimeBlock <%= ft.css_class %>" style="left:<%= interval_width*(num_intervals_to_left-total_intervals_printed) %>%; width:<%= interval_width*num_intervals_width %>%;"></div>
 
             <% total_intervals_printed += num_intervals_width %>
           <% end %>

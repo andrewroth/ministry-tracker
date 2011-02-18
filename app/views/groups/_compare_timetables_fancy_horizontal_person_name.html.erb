@@ -1,4 +1,7 @@
 
 <div class="personNameContainer">
-  <div class="personName <%= "noTable" if !has_table %>"><%="#{person.first_name} #{person.last_name}"%> <%= "*" if !has_table %></div>
+  <div class="personName <%= "noTable" if !has_table %>">
+    <%="#{person.first_name} #{person.last_name}"%> <%= "*" if !has_table %>
+    <div class="personTimetableLink"><%= link_to(image_tag('silk/calendar.png'), "/people/#{person.id}/timetables/#{person.timetable.try(:id)}", :title => "Goto #{person.first_name}'s timetable") %></div>
+  </div>
 </div>

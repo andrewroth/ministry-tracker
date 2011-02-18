@@ -21,7 +21,7 @@
         <div class="timesContainer">
           <% Date::DAYNAMES.each do |day| %>
             <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
-              <%=day%>
+              <div class="dayName"><%=day%></div>
 
               <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
               <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
