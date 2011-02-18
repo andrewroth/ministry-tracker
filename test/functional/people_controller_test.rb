@@ -14,6 +14,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:user_1)
     Factory(:access_1)
     Factory(:person_1)
+    Factory(:ministry_1)
     Factory(:ministryrole_1)
     Factory(:ministryinvolvement_1)
     Factory(:campus_1)
@@ -726,14 +727,84 @@ class PeopleControllerTest < ActionController::TestCase
     person3 = Factory(:person_mentor)
     
     person3.person_mentor_id = person2.id
+    person3.save!
     person2.person_mentor_id = person1.id
-    
-#        xhr :get, :discipleship,
-#        :id => 50000
+    person2.save!
 
-    get :directory, :id => person1.id
-    debugger
-    assert_response :success
+    get :discipleship, :id => person1.id
+    
+    assert_response :success   
+ 
+     # test to see that default summary is shown (i.e. for the person at root of tree)    
+     xhr :get, :show_mentee_summary,
+      :mentee_id => person1.id
+       
+     assert_template :partial => '_mentee_summary', :count => 1
+     assert_response :success   
+  end
+  
+  test "should show discipleship tree" do
+    login_admin_user
+ 
+    # setup mentorship
+    person1 = Factory(:person_mentor)
+    person2 = Factory(:person_mentor)
+    person3 = Factory(:person_mentor)
+    
+    person3.person_mentor_id = person2.id
+    person3.save!
+    person2.person_mentor_id = person1.id
+    person2.save!
+
+    get :discipleship, :id => person1.id
+    
+    assert_response :success   
+ 
+     # test to see that default summary is shown (i.e. for the person at root of tree)    
+     xhr :get, :show_mentee_summary,
+      :mentee_id => person1.id
+       
+     assert_template :partial => '_mentee_summary', :count => 1
+     assert_response :success   
+  end
+
+  test "should show invalid access page for mentee summary" do
+    # log in as student leader with proper permissions
+#    Factory(:user_1)
+#    Factory(:access_1)
+#    Factory(:person_1)
+#    Factory(:ministry_1)
+#    Factory(:ministryrole_4) #id 5
+#    Factory(:campus_1)
+#    Factory(:campusinvolvement_3)
+#    Factory(:ministryinvolvement_11)
+#    Factory(:permission_273)  # show discipleship tree  
+#    Factory(:ministryrolepermission_273)
+#    Factory(:permission_274)  # show mentee summary info (if within campus scope)
+#    Factory(:ministryrolepermission_274)   
+#    
+#    login('josh.starcher@example.com')
+# 
+#    # setup mentorship
+#    person1 = Factory(:person_mentor)
+#    person2 = Factory(:person_mentor)
+#    person3 = Factory(:person_mentor)
+#    
+#    person3.person_mentor_id = person2.id
+#    person3.save!
+#    person2.person_mentor_id = person1.id
+#    person2.save!
+#
+#    get :discipleship, :id => person1.id
+#    
+#    assert_response :success   
+# 
+#     # test to see that default summary is shown (i.e. for the person at root of tree)    
+#     xhr :get, :show_mentee_summary,
+#      :mentee_id => person1.id
+#       
+#     assert_template :partial => '_mentee_summary', :count => 1
+#     assert_response :success   
   end
 
 end
