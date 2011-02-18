@@ -1,2 +1,0 @@
-module MinistryInvolovementsHelper
-end
