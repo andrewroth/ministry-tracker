@@ -7,14 +7,47 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-    setup_ministry_roles
-    setup_default_user
-    setup_regions
-    Factory(:country_1)
-    Factory(:country_2)
-    Factory(:state_1)
-    Factory(:state_1)
-    login
+
+  end
+  
+  def login_admin_user
+    Factory(:user_1)
+    Factory(:access_1)
+    Factory(:person_1)
+    Factory(:ministryrole_1)
+    Factory(:ministryinvolvement_1)
+    
+    login('josh.starcher@example.com')
+  end
+  
+  def setup_mentorship
+    
+    #Person 6
+    Factory(:person_6)
+    Factory(:ministry_1)
+    Factory(:ministryrole_3)
+    Factory(:campus_1)
+    Factory(:campusinvolvement_5)
+    Factory(:ministryinvolvement_8)
+    Factory(:profilepicture_6)
+    
+    #Person 3
+    Factory(:person_3)
+    Factory(:ministryrole_6)
+    Factory(:campusinvolvement_4) 
+    Factory(:ministry_1)
+    Factory(:campus_2)
+    Factory(:ministryinvolvement_9)
+    Factory(:profilepicture_30)
+    
+    #Person 2
+    Factory(:person_2)
+    Factory(:ministryrole_6)
+    Factory(:campusinvolvement_6) 
+    Factory(:ministry_1)
+    Factory(:campus_1)
+    Factory(:ministryinvolvement_10)   
+    Factory(:profilepicture_20)
   end
 
   def test_update
@@ -680,6 +713,15 @@ class PeopleControllerTest < ActionController::TestCase
 
     get :directory
     assert_equal 1, assigns(:people).size
+  end
+  
+  test "should show discipleship tree" do
+    #person1 = Factory(:person_mentor, :id => 0, :person_mentor_id => 1)
+    person_mentor = Factory(:person_mentor)
+    person3 = Factory(:person_mentor)
+    debugger
+    get :show, :id => Factory(:timetable_1).id
+    assert_response :success
   end
 
 end
