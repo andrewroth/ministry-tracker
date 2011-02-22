@@ -828,15 +828,18 @@ a.action-button, input.action-button {
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
-  background: #F2B700;
+  border: 1px solid #8493D9;
+/*  background: #F2B700;*/
 }
 a.action-button:active, input.action-button:active {
   text-decoration: none;
-  background: #F2B700;
+/*  background: #F2B700;*/
+  border: 1px solid #1F429B;
   position: relative;
-  top: 1px;
-  left: 1px;
-  -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;
+/*  top: 1px;
+  left: 1px;*/
+/*  -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;*/
+  -moz-box-shadow:0 5px 5px #D9A400 inset; -webkit-box-shadow:0 5px 5px #D9A400 inset;
 }
 a.action-button u {
   color: #1F429B;
@@ -2487,9 +2490,10 @@ table.groupInvolvementList th {
 #horizTableCompareContainer { width: 100%; position: relative; }
 .horizTableCompare .namesList { float:left; padding-top:45px; }
 .horizTableCompare .frame { position: relative; overflow: auto; border: 3px #1F429B solid; border-top:0; border-bottom:0; }
+.horizTableCompare .frameControls { float:left; padding:1em; }
 .horizTableCompare .tableContainer { width: 2000%; position: relative; }
 .horizTableCompare .tableContainer .timelineHeaderContainer { height: 100%; }
-.horizTableCompare .tableContainer .rows { margin-top: 45px; }
+.horizTableCompare .tableContainer .rows { padding-top: 45px; }
 
 .horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
 .horizTableCompare .day { width: 14.285%; position:relative; float:left; }
@@ -2512,7 +2516,7 @@ table.groupInvolvementList th {
 
 .horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
-.horizTableCompare .personNameContainer { overflow: hidden; height:26px; text-align: right; }
+.horizTableCompare .personNameContainer { overflow: hidden; height:26px; text-align: right; width:100%; }
 
 .horizTableCompare .personName { display:inline; position:relative; cursor:pointer; background-color:#E9E9E9; color:#1F429B; padding:4px 8px 4px 10px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 3px 0px 0px 3px; -webkit-border-radius: 3px; }
 .horizTableCompare .personName:hover { background-color:#1F429B; color:white; }
@@ -2527,7 +2531,8 @@ table.groupInvolvementList th {
 .horizTableCompare .personTimeBlock.busy { background-color: red; }
 .horizTableCompare .personTimeBlock.free { background-color: green; }
 
+.horizTableCompare.timeControlsContainer { text-align:center; }
+.horizTableCompare .timeControl { display:inline-block; vertical-align:middle; margin:0.5em 1.5em; }
 
-
-
+.horizTableCompare #zoomSlider { width:150px; display:inline-block; margin:0 10px; }
 

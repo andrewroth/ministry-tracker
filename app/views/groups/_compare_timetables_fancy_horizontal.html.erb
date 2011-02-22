@@ -1,11 +1,31 @@
+<%= stylesheet_link_tag "jquery-ui" %>
+
+
 <h4 class="title">Compare Timetables</h4>
 
-<div id="notices">
-	<%= render :partial => 'groups/show_notices' %>
+
+<div class="horizTableCompare timeControlsContainer">
+  <% form_for @group do |form| %>
+    <div class="timeControl">
+      Day: <%= form.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %>
+    </div>
+    <div class="timeControl">
+      Start time: <%= form.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+    </div>
+    <div class="timeControl">
+      End time: <%= form.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+    </div>
+    <div class="timeControl"><%= submit_tag 'Save', :class => 'action-button' %></div>
+  <% end %>
 </div>
+
+
+<br/>
+
 
 <% day_width = 14.285 %>
 <% interval_width = 3.125 %>
+
 
 <div id="horizTableCompareContainer" class="horizTableCompare">
   <div class="namesList">
@@ -47,5 +67,24 @@
     </div>
 
   </div>
+
+  <div class="frameControls">
+    <div class="zoomSliderContainer">
+      <%= image_tag "silk/zoom_out.png" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png" %>
+    </div>
+  </div>
   
 </div>
+
+
+<style>
+	#demo-frame > div.demo { padding: 10px !important; }
+	</style>
+	<script>
+	$(function() {
+		$("#zoomSlider").slider({min:75, max:2000, value:$(".horizTableCompare .tableContainer").width()});
+	});
+  $("#zoomSlider").bind( "slide", function(event, ui) {
+    $(".horizTableCompare .tableContainer").width(ui.value + "%");
+  });
+</script>

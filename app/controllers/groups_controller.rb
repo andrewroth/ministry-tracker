@@ -156,9 +156,10 @@ class GroupsController < ApplicationController
 
   def update
     if @group.update_attributes(params[:group])
-      flash[:notice] = 'Group was successfully updated'
+      flash[:notice] = 'Group was successfully updated!'
     end
     respond_to do |format|
+      format.html { redirect_to group_url(@group) }
       format.js
     end
   end
