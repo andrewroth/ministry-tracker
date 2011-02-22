@@ -1,5 +1,7 @@
 <%= stylesheet_link_tag "jquery-ui" %>
 
+<%= javascript_include_tag "timetable" %>
+
 
 <h4 class="title">Compare Timetables</h4>
 
@@ -51,7 +53,7 @@
                 <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;">
                   <%= time_header_text(time) %>
                 </div>
-                <div class="line hour<%=time.hour%>" style="left:<%=interval_width*i%>%;"></div>
+                <div class="line <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;"></div>
                 
                 <% time += Timetable::INTERVAL %>
                 <% i+=1 %>
@@ -77,14 +79,14 @@
 </div>
 
 
-<style>
-	#demo-frame > div.demo { padding: 10px !important; }
-	</style>
-	<script>
+
+<script>
+
 	$(function() {
-		$("#zoomSlider").slider({min:75, max:2000, value:$(".horizTableCompare .tableContainer").width()});
+		$("#zoomSlider").slider({min:95, max:2000, step: 3, value:$(".horizTableCompare .tableContainer").width()});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
     $(".horizTableCompare .tableContainer").width(ui.value + "%");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
   });
 </script>

@@ -2498,7 +2498,7 @@ table.groupInvolvementList th {
 .horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
 .horizTableCompare .day { width: 14.285%; position:relative; float:left; }
 .horizTableCompare .day.dayHeader {  height:100%; }
-.horizTableCompare .day.dayHeader .dayName { font-weight:bold; color:black; font-size:2.12em; }
+.horizTableCompare .day.dayHeader .dayName { font-weight:bold; color:black; font-size:1.12em; }
 .horizTableCompare .time.timeHeader { font-weight:normal; font-size: .8em; }
 .horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 32px; }
 
@@ -2512,7 +2512,7 @@ table.groupInvolvementList th {
 .horizTableCompare .timelineHeader .hour12, .horizTableCompare .timelineHeader .hour14 { color:#72BCD4; border-color:#72BCD4;}
 .horizTableCompare .timelineHeader .hour13                                             { color:#72BCD4; border-color:#72BCD4;}
 
-.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:.25; }
+.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; }
 
 .horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
