@@ -1,6 +1,8 @@
+
 <%= stylesheet_link_tag "jquery-ui" %>
 
-<%= javascript_include_tag "timetable" %>
+<%= javascript_include_tag "jquery.tooltip.js" %>
+<%= javascript_include_tag "timetable.js" %>
 
 
 <h4 class="title">Compare Timetables</h4>
@@ -36,12 +38,14 @@
     <%= "<div class='noTable'>* has not submitted their timetable</div>" if @people_without_table.present? %>
   </div>
 
+  <div class="cursorHoverLine"></div>
+  
   <div class="frame">
 
     <div class="tableContainer">
       <div class="timelineHeaderContainer timelineHeader">
         <div class="timesContainer">
-          <% Date::DAYNAMES.each do |day| %>
+          <% Date::DAYNAMES.each_with_index do |day, di| %>
             <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
               <div class="dayName"><%=day%></div>
 
@@ -53,12 +57,16 @@
                 <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;">
                   <%= time_header_text(time) %>
                 </div>
-                <div class="line <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;"></div>
+
+                <div class="line <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"></div>
+
+                <div class="timeTooltip" style="left:<%=interval_width*i%>%; width:<%=interval_width%>%;" title="<%=time_header_text(time)%> - <%=day%>"></div>
                 
                 <% time += Timetable::INTERVAL %>
                 <% i+=1 %>
               <% end %>
             </div>
+            <div class="dayBackground <%=day.downcase%>" style="left:<%=day_width*di%>%; width:<%=day_width%>%;"></div>
           <% end %>
         </div>
       </div>
@@ -89,4 +97,27 @@
     $(".horizTableCompare .tableContainer").width(ui.value + "%");
     zoom_adjustments($(".horizTableCompare .tableContainer").width());
   });
+
+  $(".timeTooltip").tooltip({
+    track: true,
+    delay: 0,
+    showURL: false,
+    showBody: " - ",
+    fade: 0,
+    extraClass: "horizTableCompare"
+  });
+
+  $(".frame").hover(
+    function (e) {
+      $(".cursorHoverLine").height($(".rows").height());
+      $(".cursorHoverLine").show();
+    },
+    function (e) {
+      $(".cursorHoverLine").hide();
+    }
+  );
+  $(".frame").mousemove(function(e){
+    $(".cursorHoverLine").css( { "left": (e.pageX - $("#horizTableCompareContainer").offset().left) + "px" } );
+  });
+
 </script>
