@@ -40,39 +40,17 @@
 <p>
   Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found
   <br />
-  <%= paginate %> (Showing results <%= @results_floor + 1%> to <%= @results_ceiling %>)
+  <%= will_paginate @people %>
   <br />
 
   <script type="text/javascript" charset="utf-8">
     var total_people = <%= @count %>
   </script>
 
-  <%  options = [['Filtering by last name','']] %>
-  <%- if @count > 2000 -%>
-    <!-- | -->
-  	<%- ('A'..'Z').each do |l| -%>
-      <!-- <%#= link_to l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id) %> | -->
-  		<% options << [l+'-'+l+'m', directory_people_url(:start => l, :finish => l+'n', :search_id => @search.id, :format => :html)] %>
-  		<%- finish = (l == 'Z') ? '' : l.next -%>
-      <!-- <%#= link_to l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id) %> |  -->
-  		<% options << [l+'n-'+l+'z', directory_people_url(:start => l+'n', :finish => finish, :search_id => @search.id, :format => :html)] %>
-  	<%- end -%>
-  <%- elsif @count > 500 
-  	# set the default start value to A
-  	params[:start] ||= 'A'
-  	-%>
-  	<%- ('A'..'Z').each do |l| 
-  		finish = (l == 'Z') ? '' : l.next -%>
-      <!-- <%#= link_to l, directory_people_url(:start => l, :finish => finish, :search_id => @search.id) %> | -->
-  		<% options << [l+'-'+finish, directory_people_url(:start => l, :finish => finish, :search_id => @search.id, :format => :html)] %>
-  	<%- end -%>
-  <%- end -%>
-
   <div>
     <% if @count > 500 %>
       <div class="directoryResultControl">
         <%= image_tag("silk/find.png") %>
-        <%= select_tag(:interval, options_for_select(options)) %>
         <%= observe_field(:interval, :function => "if($('#interval').val() != '') { $('#spinner_interval').show(); document.location = $('#interval').val().replace(/&amp;/g,'&'); }") %>
         <%= spinner('_interval') %>
       </div>

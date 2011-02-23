@@ -77,7 +77,7 @@ class PeopleController < ApplicationController
     @advanced = true # we're now using advanced search by default
     @options = {}
     
-    do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true'
+    do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
 
     respond_to do |format|
       format.html { render :layout => 'application' }
@@ -646,6 +646,7 @@ class PeopleController < ApplicationController
         @options = {}
         @tables = {}
         @search_for = []
+        @having = []
         # Check year in school
         # Check year in school
         if params[:school_year].present?
@@ -696,17 +697,39 @@ class PeopleController < ApplicationController
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
       
-      if params[:group_involvement] == [ "-1" ]
-        @search_for << ", not in a group"
-        @check_no_group = true
-      elsif gi = params[:group_involvement]
-        @not_group_type = GroupType.find gi.first
+      conditions = ""
+
+      if !params[:group_involvement].present?
+      elsif params[:group_involvement].include?("not_group")
+        @search_for << ", Not in a group"
+        @having << "GroupInvolvements IS NULL"
+        @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
+        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
+      elsif params[:group_involvement].include?("in_group")
+        @search_for << ", In a group"
+        @having << "GroupInvolvements IS NOT NULL"
+        @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
+        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
+      end
+
+      for i in params[:group_involvement] || []
+        next if i == 'in_group' || i == 'not_group'
+        i = i.to_i
+
+        group_type = GroupType.find (i < 0 ? -i : i)
         @semester = Semester.current
         conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
-          " AND group_type_id = #{@not_group_type.id}"
-        @not_group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
-        @not_group_type_groups_ids = @not_group_type_groups.collect(&:id).collect(&:to_s)
-        @search_for << ", not in a #{@not_group_type.group_type}"
+          " AND group_type_id = #{group_type.id}"
+        @group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
+        @group_type_group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
+        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_type_group_ids.join(',')}))"
+        if i > 0
+          @search_for << ", In a #{group_type.short_name}"
+          @having << "GroupInvolvements IS NOT NULL"
+        elsif i < 0
+          @search_for << ", Not in a #{group_type.short_name}"
+          @having << "GroupInvolvements IS NULL"
+        end
       end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
@@ -723,7 +746,7 @@ class PeopleController < ApplicationController
       end
       
       # If these conditions will result in too large a set, use pagination
-      @group = "GroupInvolvement.id"
+      @group = Person._(:id)
       build_sql(tables_clause)
 =begin
       @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
@@ -755,6 +778,7 @@ class PeopleController < ApplicationController
         @count = 0
       end
 =end
+=begin
       @people = ActiveRecord::Base.connection.select_all(@sql)
       post_process_directory(@people)
       @count = @people.length
@@ -765,6 +789,9 @@ class PeopleController < ApplicationController
       @results_ceiling = @page * @per_page
       @results_ceiling = @results_ceiling < @count ? @results_ceiling : @count
       @people = @people[@results_floor, @results_ceiling]
+=end
+      @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+      @count = @people.total_entries
     end
 
     
@@ -877,6 +904,7 @@ class PeopleController < ApplicationController
       @sql += ' FROM ' + tables_clause
       @sql += ' WHERE ' + @conditions
       @sql += ' GROUP BY ' + @group if @group
+      @sql += ' HAVING ' + @having.join(" AND ") if @having.present?
       @sql += ' ORDER BY ' + @order
     end
   
@@ -942,7 +970,6 @@ class PeopleController < ApplicationController
       ministry_condition += " MinistryInvolvement.#{_(:ministry_id, :ministry_involvement)} IN(#{quote_string(ministry_ids.join(','))}))"
       @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}" if @tables
 
-
       # Check campus
       if params[:campus]
         # Only consider campus ids that this person is allowed to see (stop deviousness)
@@ -954,7 +981,6 @@ class PeopleController < ApplicationController
       if !is_staff_somewhere
         campus_ids ||= get_campus_ids
       end
-
 
       if params[:campus] || !is_staff_somewhere
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')

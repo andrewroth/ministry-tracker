@@ -110,9 +110,13 @@
     <big>Group<br/></big>
 
     <%
-    involvement_options = [ [ "Not in a group", -1 ] ]
+    involvement_options = [ [ "Not in a group", "not_group" ] ]
     involvement_options += GroupType.find_all_by_in_directory_search_not_in(true).collect{ |gt|
-      [ "Not in a #{gt.group_type}", gt.id ]
+      [ "Not in a #{gt.short_name}", -gt.id ]
+    }
+    involvement_options += [ [ "In a group", "in_group" ] ]
+    involvement_options += GroupType.find_all_by_in_directory_search_in(true).collect{ |gt|
+      [ "In a #{gt.short_name}", gt.id ]
     }
     %>
 
