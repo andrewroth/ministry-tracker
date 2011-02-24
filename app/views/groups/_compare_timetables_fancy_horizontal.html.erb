@@ -32,10 +32,16 @@
 
 
 <div id="horizTableCompareContainer" class="horizTableCompare">
+  <div class="colourLegend">
+    <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
+    <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
+    <div class="legendItem"><div class="personTimeBlock bad "></div> Busy </div>
+  </div>
+
   <div class="namesList">
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTable'><br/>* has not submitted their timetable</div>" if @people_without_table.present? %>
+    <%= "<div class='noTable'><br/><big>*</big> has not submitted their timetable</div>" if @people_without_table.present? %>
   </div>
 
   <div class="cursorHoverLine"></div>
@@ -60,7 +66,7 @@
 
                 <div class="line <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"></div>
 
-                <div class="timeTooltip" style="left:<%=interval_width*i%>%; width:<%=interval_width%>%;" title="<%=time_header_text(time)%> - <%=day%>"></div>
+                <div class="timeTooltip" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;" title="<%=time_header_text(time)%> - <%=day%>"></div>
                 
                 <% time += Timetable::INTERVAL %>
                 <% i+=1 %>
