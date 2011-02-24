@@ -35,7 +35,7 @@
   <div class="namesList">
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTable'>* has not submitted their timetable</div>" if @people_without_table.present? %>
+    <%= "<div class='noTable'><br/>* has not submitted their timetable</div>" if @people_without_table.present? %>
   </div>
 
   <div class="cursorHoverLine"></div>
@@ -54,7 +54,7 @@
 
               <% i=0 %>
               <% while time < end_time %>
-                <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%>" style="left:<%=interval_width*i%>%;">
+                <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
                   <%= time_header_text(time) %>
                 </div>
 
@@ -91,13 +91,14 @@
 <script>
 
 	$(function() {
-		$("#zoomSlider").slider({min:95, max:2000, step: 3, value:$(".horizTableCompare .tableContainer").width()});
+		$("#zoomSlider").slider({min:650, max:13000, step: 3, value:$(".horizTableCompare .tableContainer").width()});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
-    $(".horizTableCompare .tableContainer").width(ui.value + "%");
+    $(".horizTableCompare .tableContainer").width(ui.value + "px");
     zoom_adjustments($(".horizTableCompare .tableContainer").width());
   });
 
+  // show tooltip with time and day when hovering over timetable
   $(".timeTooltip").tooltip({
     track: true,
     delay: 0,
@@ -107,6 +108,7 @@
     extraClass: "horizTableCompare"
   });
 
+  // show line under cusor when hovering over timetable
   $(".frame").hover(
     function (e) {
       $(".cursorHoverLine").height($(".rows").height());
@@ -119,5 +121,22 @@
   $(".frame").mousemove(function(e){
     $(".cursorHoverLine").css( { "left": (e.pageX - $("#horizTableCompareContainer").offset().left) + "px" } );
   });
+
+  // toggle visibility of person's time by clicking their name
+  $(".personNameContainer").not(".noTable").children(".personName").click(function () {
+    $("." + $(this).parent().attr("pid") + " .personTimes").toggle();
+    $(this).toggleClass("rowsHidden");
+  });
+
+  // remove person from timetable comparison
+  $(".removePersonLink").click(function() {
+    $(".personRowContainer." + $(this).parent().attr("pid")).remove();
+    $(this).parent().remove();
+
+    $(".personRowContainer").removeClass("odd even");
+    $(".personRowContainer:even").addClass("even");
+    $(".personRowContainer:odd").addClass("odd");
+  });
+
 
 </script>

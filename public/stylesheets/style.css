@@ -2488,10 +2488,10 @@ table.groupInvolvementList th {
 /************************************************/
 
 #horizTableCompareContainer { width: 100%; position: relative; }
-.horizTableCompare .namesList { float:left; padding-top:45px; }
-.horizTableCompare .frame { position: relative; overflow: auto; border: 8px #FFCB05 solid; border-top:0; border-bottom:0; }
+.horizTableCompare .namesList { float:left; padding-top:60px; min-height:50px; }
+.horizTableCompare .frame { position: relative; overflow: auto; border: 8px #FFCB05 solid; border-top:0; border-bottom:0; padding:15px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .horizTableCompare .frameControls { float:left; padding:1em; }
-.horizTableCompare .tableContainer { width: 2000%; position: relative; }
+.horizTableCompare .tableContainer { width: 13000px; position: relative; }
 .horizTableCompare .tableContainer .timelineHeaderContainer { height: 100%; }
 .horizTableCompare .tableContainer .rows { padding-top: 45px; }
 
@@ -2513,24 +2513,31 @@ table.groupInvolvementList th {
 .horizTableCompare .timelineHeader .hour12, .horizTableCompare .timelineHeader .hour14 { color:#728ED4; border-color:#728ED4;}
 .horizTableCompare .timelineHeader .hour13                                             { color:#728ED4; border-color:#728ED4;}
 
+.horizTableCompare .hour6.min0 { padding-left:4px; }
+
 .horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.25; }
 .horizTableCompare .timeTooltip { position: absolute; top:0; bottom:0; z-index:11; margin-top:45px; }
-.horizTableCompare .cursorHoverLine { position:absolute; top:0; height:100%; border-left:1px solid #666766; display:none; z-index:1; margin-top:45px; }
+.horizTableCompare .cursorHoverLine { position:absolute; top:0; height:100%; border-left:1px solid #666766; display:none; z-index:1; margin-top:60px; }
 
 .horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
-.horizTableCompare .personNameContainer { overflow: hidden; height:26px; text-align: right; width:100%; }
+.horizTableCompare .personNameContainer { position:relative; overflow: hidden; height:26px; text-align: right; width:100%; }
 
-.horizTableCompare .personName { display:inline; position:relative; cursor:pointer; background-color:#E9E9E9; color:#1F429B; padding:4px 8px 4px 10px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 3px 0px 0px 3px; -webkit-border-radius: 3px; }
-.horizTableCompare .personName:hover { background-color:#FFCB05; }
-.horizTableCompare .personName .personTimetableLink { display:inline; position:relative; top:4px; padding-left:6px; }
-.horizTableCompare .noTable, .horizTableCompare .noTable:hover { cursor:default; background-color:white; color:black; font-weight:bold; }
+
+.horizTableCompare .personName { display:inline; position:relative; cursor:pointer; background-color:#E9E9E9; color:#1F429B; padding:4px 30px 4px 10px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 3px 0px 0px 3px; -webkit-border-radius: 3px; }
+.horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; }
+.horizTableCompare .personName.rowsHidden { background-color:white; color:#666766; }
+.horizTableCompare .personTimetableLink { display:inline; position:absolute; top:5px; right:7px; }
+.horizTableCompare .noTable .personTimetableLink { opacity:0.6; }
+.horizTableCompare .noTable .personName, .horizTableCompare .noTable .personName:hover { cursor:default; background-color:white; color:#666766; font-weight:bold; }
+.horizTableCompare .removePersonLink { display:none; position:relative; top:4px; cursor:pointer; }
+.horizTableCompare .personNameContainer:hover>.removePersonLink { display:inline; }
 
 .horizTableCompare .personRowContainer { height: 26px; z-index:0; }
 .horizTableCompare .personRowContainer.even { background-color: white; }
 .horizTableCompare .personRowContainer.odd { background-color: #F5F5F5; }
-.horizTableCompare .personRow { position: relative; top: 5px; }
-.horizTableCompare .personTimeBlock { position: relative; float: left; height:16px; z-index:2; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.horizTableCompare .personRow { position: relative; top: 4px; }
+.horizTableCompare .personTimeBlock { position: relative; float: left; height:18px; z-index:2; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 .horizTableCompare .personTimeBlock.busy { background-color: red; }
 .horizTableCompare .personTimeBlock.free { background-color: green; }
 

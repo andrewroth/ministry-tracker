@@ -1,6 +1,6 @@
 
 
-<div class="personRowContainer <%= cycle("even", "odd") %>">
+<div class="personRowContainer <%= cycle("even", "odd") %> <%=person.id%>">
   <div class="personRow">
     <div class="personTimes">
       <% Date::DAYNAMES.each_with_index do |day, i| %>
