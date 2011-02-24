@@ -1,1 +1,11 @@
-here
+Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;<%= spinner %><br/>
+
+<%= observe_field :location, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
+MCC: <br/>
+<br/>
+<div id="stats">
+Male: <%= @genders["male"] %><br/>
+Female: <%= @genders["female"] %><br/>
+Unknown: <%= @genders[""] %><br/>
+</div>
