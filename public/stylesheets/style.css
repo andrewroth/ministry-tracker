@@ -2521,6 +2521,7 @@ table.groupInvolvementList th {
 
 .horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.25; }
 .horizTableCompare .timeTooltip { position: absolute; top:0; bottom:0; z-index:11; margin-top:45px; }
+.horizTableCompare .meetingTimeSelector { cursor:pointer; }
 .horizTableCompare .cursorHoverLine { position:absolute; top:0; height:100%; border-left:1px solid #666766; display:none; z-index:1; margin-top:90px; }
 
 .horizTableCompare .timelineHeader .timesContainer { position: absolute; left: 0px; right: 0px; }

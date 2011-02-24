@@ -25,6 +25,7 @@
 
 
 <br/>
+<br/>
 
 
 <% day_width = 14.285 %>
@@ -66,7 +67,10 @@
 
                 <div class="line <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"></div>
 
-                <div class="timeTooltip" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;" title="<%=time_header_text(time)%> - <%=day%>"></div>
+                <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
+                     title="<%=time_header_text(time)%> - <%=day%>"
+                     min="<%=time.min%>" hour="<%=time.hour%>" day="<%=di%>">
+                </div>
                 
                 <% time += Timetable::INTERVAL %>
                 <% i+=1 %>
@@ -144,5 +148,19 @@
     $(".personRowContainer:odd").addClass("odd");
   });
 
+  // selection of meeting time
+  $(".meetingTimeSelector").click(function() {
 
+    hour = parseInt($(this).attr("hour"));
+    min = parseInt($(this).attr("min"));
+    day = parseInt($(this).attr("day"));
+
+    secs = (hour*60*60) + (min*60);
+
+    $("#group_start_time").val(secs);
+    $("#group_end_time").val(secs+<%=Timetable::DEFAULT_MEETING_LENGTH%>);
+    $("#group_day").val(day);
+
+    $(".timeControlsContainer").effect("highlight", {}, 1000);
+  });
 </script>

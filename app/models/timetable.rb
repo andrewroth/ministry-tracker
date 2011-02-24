@@ -25,6 +25,10 @@ class Timetable < ActiveRecord::Base
   
   # defines the maximum number of characters available for displaying names in cells of compare view
   MAX_CELL_WIDTH = 16
+
+  # default length of a meeting in seconds
+  DEFAULT_MEETING_LENGTH = 3600
+
   
   belongs_to :person, :class_name => "Person", :foreign_key => _(:person_id)
   belongs_to :updated_by_person, :class_name => "Person", :foreign_key => _(:updated_by_person_id)
