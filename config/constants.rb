@@ -355,7 +355,7 @@
       }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
-            :label => "Average - hours of prayer",
+            :label => "Average - weekly hours of prayer",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,

@@ -12,7 +12,6 @@
   <p><%= f.label :name %> <%= f.text_field :name %></p>
   <p><%= f.label :description %> <%= f.text_field :description, :size => 80 %></p>
   <p><%= f.label :type %> <%= f.select :type, [[t(:Staff, :default => 'Staff'),'StaffRole'],['Student','StudentRole'],['Other','OtherRole']] %></p>
-  <p><%= f.label :hide_by_default %> <%= f.check_box :hide_by_default %></p>
-  <p><%= submit_tag 'Save' %> or <%= link_to_function('cancel', "$('#form_div').parent().hide();$('#add_link').show()", :class => 'cancel') %>
+  <p><%= submit_tag 'Save' %> or <%= link_to_function('cancel', "$('#form_div').parent().hide();$('#add_link').show()", :class => 'cancel') %></p>
 <%- end -%>
 </div>
