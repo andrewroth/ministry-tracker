@@ -127,25 +127,25 @@
 
   // zoom slider
 	$(function() {
-		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:false});
+		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true, orientation:'horzontal'});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
-    zoom_event($("#zoomSlider"));
-  });
-
-  function zoom_event(slider) {
-    $(".horizTableCompare .tableContainer").width(slider.slider("value") + "px");
+    $(".horizTableCompare .tableContainer").width(ui.value + "px");
     zoom_adjustments($(".horizTableCompare .tableContainer").width());
-  }
-
+  });
+  
   // slider zoom buttons
   $(".zoomSliderOut").click(function(e) {
     $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")-2470);
-    zoom_event($("#zoomSlider"));
+
+    $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
   });
   $(".zoomSliderIn").click(function(e) {
     $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")+2470);
-    zoom_event($("#zoomSlider"));
+    
+    $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
   });
 
 
