@@ -40,7 +40,8 @@
 <p>
   Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found
   <br />
-  <%= will_paginate @people %>
+  <%= will_paginate @people, :class => "searchResultsPagination" %>
+  <br />
   <br />
 
   <script type="text/javascript" charset="utf-8">
@@ -48,15 +49,6 @@
   </script>
 
   <div>
-    <% if @count > 500 %>
-      <div class="directoryResultControl">
-        <%= image_tag("silk/find.png") %>
-        <%= observe_field(:interval, :function => "if($('#interval').val() != '') { $('#spinner_interval').show(); document.location = $('#interval').val().replace(/&amp;/g,'&'); }") %>
-        <%= spinner('_interval') %>
-      </div>
-    <% end %>
-
-
     <% action_options_array = [['More actions','']] %>
     <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
     <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
@@ -227,4 +219,9 @@
 	</table>
   
 </div>
+
+<br />
+<%= will_paginate @people, :class => "searchResultsPagination" %>
+<br />
+
 <%- end -%>
