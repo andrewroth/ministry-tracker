@@ -1,0 +1,12 @@
+
+page.replace_html("involvedGroups", :partial => "group_list", :locals => { :list_title => "",
+      :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @semester})
+    })
+
+page.replace_html("interestedGroups", :partial => "group_list", :locals => { :list_title => "Interested #{'('+@semester.description+')' unless @semester == @current_semester}",
+      :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @semester})
+    })
+
+page.replace_html("requestedGroups", :partial => "group_list", :locals => { :list_title => "Requested #{'('+@semester.description+')' unless @semester == @current_semester}",
+      :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @semester})
+    })

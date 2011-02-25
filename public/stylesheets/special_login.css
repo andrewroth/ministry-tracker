@@ -65,5 +65,15 @@ body {
   top: 465px;
 }
 
+/****************************************************/
+/* Special message for IE users                     */  
+/****************************************************/
+
+#browser_warning {
+  float: right;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	color: #666666;
+	margin: 43px 0 0 0;
+}
 
  */

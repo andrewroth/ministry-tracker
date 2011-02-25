@@ -20,11 +20,13 @@ function facebookOAuthRequest(redirect, permissions) {
   }, {perms:permissions});
 }
 
-function setValueIfNotSet(inputID, newValue) {
-  e = document.getElementById(inputID);
+function setValueIfNotSetButPresent(inputID, newValue) {
+  if(typeof newValue != "undefined") {
+    e = document.getElementById(inputID);
 
-  if(e.value.trim() == "") {
-    e.value = newValue;
+    if(e.value.trim() == "") {
+      e.value = newValue;
+    }
   }
 }
 

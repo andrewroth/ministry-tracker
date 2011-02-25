@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -233,6 +233,8 @@ class ApplicationController < ActionController::Base
         case controller.to_sym
         when :people
           if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
+            return true
+          elsif action == 'show_group_involvements' && authorized?(:show, :people)
             return true
           end
           

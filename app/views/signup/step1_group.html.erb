@@ -4,17 +4,18 @@
 
 <center>
   <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 1 } %>
-</center>
 
-What campus are you on?
+  <big>What campus are you on? </big>
 
   <%= select_tag "primary_campus_involvement_campus_id",
         options_for_select([""] + @campuses.collect{ |c| [ c.name, c.id.to_s ] },
           session[:signup_campus_id].to_s),
-        :name => "primary_campus_involvement[campus_id]"
+        :name => "primary_campus_involvement[campus_id]",
+        :style => "font-size:0.9em;"
   %>
-
-<%= image_tag "spinner.gif", :id => "spinner", :style => "display:none" %>
+  
+  <%= image_tag "spinner.gif", :id => "spinner", :style => "display:none" %>
+</center>
 
 <script>
   jQuery('#primary_campus_involvement_campus_id').change(
@@ -36,8 +37,10 @@ What campus are you on?
   }
 </script>
 
+<br/>
 <div id="groups">
 </div>
+
 
 <DIV class="center">
   <BR/>
@@ -58,4 +61,3 @@ What campus are you on?
   </DIV>
   <%- end -%>
 </DIV>
-
