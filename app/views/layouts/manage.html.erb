@@ -1,98 +1,100 @@
 <%- inside_layout 'application' do -%>
-<div id="manage">
 
+<div id="manage">
   <div id="left-body">
     <%= yield %>
   </div>
-
 </div>
 
 <div id="right-menu" class="right-menu">
+
 	<ul class="right-menu-list">
 	  <%- if authorized?(:new, :ministries) || authorized?(:edit, :ministries) -%>
   		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
   		<%= link_to 'Ministries', ministries_path %></li>
 		<%- end -%>
-		
-	    <%- if authorized?(:index, :staff) -%>
-		    <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
-		    <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
-	    <%- end -%>
-      
+
+    <%- if authorized?(:index, :staff) -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "staff" %>>
+      <%= link_to "Leaders/#{t(:Staff_plural, :default => 'Staff')}", {:controller => :staff} %></li>
+    <%- end -%>
+
 		<%- if authorized?(:new, :involvement_questions) || authorized?(:new, :training_questions) ||
 		       authorized?(:new, :views) || authorized?(:new, :custom_attributes) ||
            authorized?(:new, :group_types) || authorized?(:new, :dorms) ||
            authorized?(:new, :training_categories) -%>
-  		    <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
-  		    <%= link_to 'Customize', customize_path(@ministry) %></li>
-                 <%- if authorized?(:new, :training_categories) -%>
-  		    <li<%= ' class="highlighted"' if params[:controller] == "notices" %>>
-  		    <%= link_to 'Notices', notices_path() %></li>
-                 <%- end -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "customize" %>>
+      <%= link_to 'Customize', customize_path(@ministry) %></li>
   	<%- end -%>
-    
-  	</ul>
 
-  
-    <%- if is_ministry_admin -%>
-    <br/><br/>
-    <h3>Account Admin</h3>
-    <ul class="right-menu-list">
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accesscategories" %>>
-      <%= link_to 'Access Categories', accountadmin_accesscategories_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accessgroups" %>>
-      <%= link_to 'Access Groups', accountadmin_accessgroups_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accountadminaccesses" %>>
-      <%= link_to 'Account Admin Access', accountadmin_accountadminaccesses_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accountgroups" %>>
-      <%= link_to 'Account Groups', accountadmin_accountgroups_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_languages" %>>
-      <%= link_to 'Languages', accountadmin_languages_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_users" %>>
-      <%= link_to 'Users', accountadmin_users_path %></li>
-  	</ul>
-
-    <br/><br/>
-    <h3>HRDB</h3>
-    <ul class="right-menu-list">
-      <li<%= ' class="highlighted"' if params[:controller] == "assignmentstatuses" %>>
-      <%= link_to 'Assignment Statuses', assignmentstatuses_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_campuses" %>>
-      <%= link_to 'Campuses', cim_hrdb_campuses_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_countries" %>>
-      <%= link_to 'Countries', cim_hrdb_countries_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "genders" %>>
-      <%= link_to 'Genders', genders_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_people" %>>
-      <%= link_to 'People', cim_hrdb_people_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_states" %>>
-      <%= link_to 'Provinces', cim_hrdb_states_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "regions" %>>
-      <%= link_to 'Regions', regions_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "titles" %>>
-      <%= link_to 'Titles', titles_path %></li>
-  	</ul>
+    <%- if authorized?(:new, :notices) -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "notices" %>>
+      <%= link_to 'Notices', notices_path() %></li>
     <%- end -%>
+  </ul>
 
 
-    <%- if authorized?(:edit, :ministry_roles) -%>
-    <br/><br/>
-    <h3>System Settings</h3>
-    <h5>(These affect all ministries)</h5>
-    <ul class="right-menu-list">
-      <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
-      <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
-      <li<%= ' class="highlighted"' if params[:controller] == "school_years" %>>
-      <%= link_to 'School Years', school_years_path %></li>
-      <%- if current_user.developer? -%>
-        <li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
-        <%= link_to 'Columns', columns_path %></li>
-        <li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
-        <%= link_to 'ACL Permissions', permissions_path %></li>
-        <!-- <li<%= ' class="highlighted"' if params[:controller] == "correspondences" %>>
-        <% link_to 'Correspondences', correspondences_path %></li> -->
-      <%- end -%>
-    </ul>
+  <%- if is_ministry_admin -%>
+  <br/><br/>
+  <h3>Account Admin</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accesscategories" %>>
+    <%= link_to 'Access Categories', accountadmin_accesscategories_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accessgroups" %>>
+    <%= link_to 'Access Groups', accountadmin_accessgroups_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accountadminaccesses" %>>
+    <%= link_to 'Account Admin Access', accountadmin_accountadminaccesses_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accountgroups" %>>
+    <%= link_to 'Account Groups', accountadmin_accountgroups_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_languages" %>>
+    <%= link_to 'Languages', accountadmin_languages_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_users" %>>
+    <%= link_to 'Users', accountadmin_users_path %></li>
+  </ul>
+
+  <br/><br/>
+  <h3>HRDB</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "assignmentstatuses" %>>
+    <%= link_to 'Assignment Statuses', assignmentstatuses_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_campuses" %>>
+    <%= link_to 'Campuses', cim_hrdb_campuses_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_countries" %>>
+    <%= link_to 'Countries', cim_hrdb_countries_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "genders" %>>
+    <%= link_to 'Genders', genders_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_people" %>>
+    <%= link_to 'People', cim_hrdb_people_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_hrdb_states" %>>
+    <%= link_to 'Provinces', cim_hrdb_states_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "regions" %>>
+    <%= link_to 'Regions', regions_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "titles" %>>
+    <%= link_to 'Titles', titles_path %></li>
+  </ul>
+  <%- end -%>
+
+
+  <%- if authorized?(:edit, :ministry_roles) -%>
+  <br/><br/>
+  <h3>System Settings</h3>
+  <h5>(These affect all ministries)</h5>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "ministry_roles" %>>
+    <%= link_to 'Roles/Permissions', ministry_roles_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "school_years" %>>
+    <%= link_to 'School Years', school_years_path %></li>
+    <%- if current_user.developer? -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "columns" %>>
+      <%= link_to 'Columns', columns_path %></li>
+      <li<%= ' class="highlighted"' if params[:controller] == "permissions" %>>
+      <%= link_to 'ACL Permissions', permissions_path %></li>
+      <!-- <li<%= ' class="highlighted"' if params[:controller] == "correspondences" %>>
+      <% link_to 'Correspondences', correspondences_path %></li> -->
     <%- end -%>
+  </ul>
+  <%- end -%>
+
 </div>
+
 <%- end -%>

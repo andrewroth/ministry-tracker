@@ -1,9 +1,15 @@
 class AddMentorIdColumn < ActiveRecord::Migration
   def self.up
-    add_column Person.table_name, :person_mentor_id, :integer, :default => 0
+    begin
+      add_column Person.table_name, :person_mentor_id, :integer, :default => 0
+    rescue
+    end
   end
 
   def self.down
-    remove_column Person.table_name, :person_mentor_id
+    begin
+      remove_column Person.table_name, :person_mentor_id
+    rescue
+    end
   end
 end
