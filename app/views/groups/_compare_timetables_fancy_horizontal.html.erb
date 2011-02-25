@@ -6,9 +6,11 @@
 
 
 <h4 class="title">Compare Timetables&nbsp;&nbsp;
+  <% types = Group::LEVELS %>
+  <% data = data_string(types) %>
   <%= link_to_remote 'switch to old version', {
     :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
-    :complete => "location.hash = 'compare';", :before => "$('#spinner_change_style').show()"},
+    :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
     {:class => 'small'}
   %>
   &nbsp;
@@ -125,7 +127,7 @@
 
   // zoom slider
 	$(function() {
-		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true});
+		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:false});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
     zoom_event($("#zoomSlider"));

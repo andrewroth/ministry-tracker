@@ -210,7 +210,7 @@ class GroupsController < ApplicationController
     if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
       compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
     else
-      compare_style = cookies[:timetable_compare_style]
+      compare_style = TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i]
     end
 
     case compare_style

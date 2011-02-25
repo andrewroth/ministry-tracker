@@ -18,7 +18,7 @@
 
 <%- if authorized?(:compare_timetables, :groups) -%>
   <%= link_to_remote 'Compare Timetables', {
-    :url => compare_timetables_group_url(:id => @group.id, :compare_style => cookies[:timetable_compare_style]),
+    :url => compare_timetables_group_url(:id => @group.id),
     :with => "#{data}", :complete => "window.location = '#compare'; $('#spinner_compare_timetables').hide();", :before => "$('#spinner_compare_timetables').show()"
   }, {:class => 'small'} 
   %>

@@ -21,4 +21,9 @@ module GroupsHelper
       return "zoom1"
     end
   end
+
+  def data_string(types)
+    data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end
+    data += "+'&'+$('#transfer_to_form').serialize()"
+  end
 end
