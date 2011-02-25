@@ -70,13 +70,13 @@ function zoom_adjustments(width) {
     $(".horizTableCompare .zoom3").show();
     $(".horizTableCompare .zoom4").hide();
   }
-  else if (width >= 1500) {
+  else if (width >= 1700) {
     $(".horizTableCompare .zoom1").show();
     $(".horizTableCompare .zoom2").show();
     $(".horizTableCompare .zoom3").hide();
     $(".horizTableCompare .zoom4").hide();
   }
-  else if (width >= 800) {
+  else if (width >= 900) {
     $(".horizTableCompare .zoom1").show();
     $(".horizTableCompare .zoom2").hide();
     $(".horizTableCompare .zoom3").hide();

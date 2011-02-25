@@ -11,6 +11,8 @@ class GroupsController < ApplicationController
   before_filter :set_current_and_next_semester
 
 
+  TIMETABLE_COMPARE_STYLE = ["VERTICAL_TABLE", "FANCY_HORIZONTAL"]
+
   def index
     if Cmt::CONFIG[:joingroup_from_index]
       @join = true
@@ -203,7 +205,22 @@ class GroupsController < ApplicationController
       end
     }.collect(&:person)
 
-    compare_timetables_fancy_horizontal
+    @user_agent = request.env['HTTP_USER_AGENT'].downcase
+    
+    if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
+      compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
+    else
+      compare_style = cookies[:timetable_compare_style]
+    end
+
+    case compare_style
+    when TIMETABLE_COMPARE_STYLE[0]
+      cookies[:timetable_compare_style] = 0
+      compare_timetables_vertical_table
+    else
+      cookies[:timetable_compare_style] = 1
+      compare_timetables_fancy_horizontal
+    end
   end
 
   def set_start_time

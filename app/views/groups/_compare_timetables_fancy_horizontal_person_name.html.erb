@@ -1,7 +1,9 @@
 
 <div pid="<%=person.id%>" class="personNameContainer <%= "noTable" if !has_table %>">
-  <div class="removePersonLink" title="Remove <%=person.first_name%>"><%=image_tag "silk/cross.png"%></div>
   <div class="personName" <%="title='Hide #{person.first_name}&#39;s timetable'" if has_table%>>
+    <div class="removePersonLink" title="Remove <%=person.first_name%>">
+      <%=image_tag "silk/cross.png"%>
+    </div>
     <%="#{person.first_name} #{person.last_name}"%> <%= "<big>*</big>" if !has_table %>
   </div>
   <div class="personTimetableLink"><%= link_to(image_tag('silk/calendar.png'), "/people/#{person.id}/timetables/#{person.timetable.try(:id)}", :title => "Goto #{person.first_name}'s timetable") %></div>

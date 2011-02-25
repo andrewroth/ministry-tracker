@@ -5,7 +5,15 @@
 <%= javascript_include_tag "timetable.js" %>
 
 
-<h4 class="title">Compare Timetables</h4>
+<h4 class="title">Compare Timetables&nbsp;&nbsp;
+  <%= link_to_remote 'switch to old and busted', {
+    :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
+    :complete => "location.hash = 'compare';", :before => "$('#spinner_change_style').show()"},
+    {:class => 'small'}
+  %>
+  &nbsp;
+  <%= spinner('_change_style') %>
+</h4>
 
 
 <div class="horizTableCompare timeControlsContainer">
@@ -33,6 +41,7 @@
 
 
 <div id="horizTableCompareContainer" class="horizTableCompare">
+
   <div class="colourLegend">
     <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
     <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
@@ -42,7 +51,7 @@
   <div class="namesList">
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTable'><br/><big>*</big> has not submitted their timetable</div>" if @people_without_table.present? %>
+    <%= "<div class='noTable'><br/><big>*</big> hasn't submitted their timetable<br/></div>" if @people_without_table.present? %>
   </div>
 
   <div class="cursorHoverLine"></div>
@@ -53,7 +62,7 @@
       <div class="timelineHeaderContainer timelineHeader">
         <div class="timesContainer">
           <% Date::DAYNAMES.each_with_index do |day, di| %>
-            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
+            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%; <%= 'padding-left:1px;' if @user_agent =~ /applewebkit/i %>">
               <div class="dayName"><%=day%></div>
 
               <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
@@ -76,7 +85,7 @@
                 <% i+=1 %>
               <% end %>
             </div>
-            <div class="dayBackground <%=day.downcase%>" style="left:<%=day_width*di%>%; width:<%=day_width%>%;"></div>
+            <div class="dayBackground" style="left:<%=day_width*di%>%; width:<%=day_width%>%;"></div>
           <% end %>
         </div>
       </div>
@@ -92,6 +101,13 @@
     <div class="zoomSliderContainer">
       <%= image_tag "silk/zoom_out.png" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png" %>
     </div>
+    <div class="visibleDaysControls">
+      <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
+        &nbsp;
+        <%= check_box_tag 'visibleDays[]', Date::DAYNAMES[i].downcase, true, :class => "toggleDay" %>
+        <%= day %>
+      <% end %>
+    </div>
   </div>
   
 </div>
@@ -101,7 +117,7 @@
 <script>
 
 	$(function() {
-		$("#zoomSlider").slider({min:650, max:13000, step: 3, value:$(".horizTableCompare .tableContainer").width()});
+		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
     $(".horizTableCompare .tableContainer").width(ui.value + "px");
@@ -129,7 +145,8 @@
     }
   );
   $(".frame").mousemove(function(e){
-    $(".cursorHoverLine").css( { "left": (e.pageX - $("#horizTableCompareContainer").offset().left) + "px" } );
+    // the +1 is to prevent the line from interfering with mouse clicks
+    $(".cursorHoverLine").css( { "left": (e.pageX +1 - $("#horizTableCompareContainer").offset().left) + "px" } );
   });
 
   // toggle visibility of person's time by clicking their name
@@ -140,8 +157,8 @@
 
   // remove person from timetable comparison
   $(".removePersonLink").click(function() {
-    $(".personRowContainer." + $(this).parent().attr("pid")).remove();
-    $(this).parent().remove();
+    $(".personRowContainer." + $(this).parents(".personNameContainer").attr("pid")).remove();
+    $(this).parents(".personNameContainer").remove();
 
     $(".personRowContainer").removeClass("odd even");
     $(".personRowContainer:even").addClass("even");
@@ -161,6 +178,11 @@
     $("#group_end_time").val(secs+<%=Timetable::DEFAULT_MEETING_LENGTH%>);
     $("#group_day").val(day);
 
-    $(".timeControlsContainer").effect("highlight", {}, 1000);
+    $(".timeControlsContainer").effect("highlight", {}, 2000);
+  });
+
+  // checkboxes to toggle day visibility
+  $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
+    $("." + $(this).attr("value")).toggle();
   });
 </script>

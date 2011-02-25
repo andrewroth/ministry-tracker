@@ -1,3 +1,14 @@
+
+<h4 class="title">Compare Timetables&nbsp;&nbsp;
+  <%= link_to_remote 'switch to new hotness', {
+    :url => compare_timetables_group_url(:id => @group.id, :compare_style => 1),
+    :complete => "location.hash = 'compare';", :before => "$('#spinner_change_style').show()"},
+    {:class => 'small'}
+  %>
+  &nbsp;
+  <%= spinner('_change_style') %>
+</h4>
+
 <div id = "notices">
 	<%= render :partial => 'groups/show_notices' %>
 </div>
