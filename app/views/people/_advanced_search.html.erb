@@ -107,8 +107,12 @@
   </div>
 
   <div class="adfieldbox">
-    <big>Group<br/></big>
-
+    <big>Group</big>
+    <%- tooltip do -%>
+      Pressing Ctrl/Command will help selecting and deselecting multiple group options.
+    <%- end -%>
+    <br/>
+    
     <%
     involvement_options = [ [ "Not in a group", "not_group" ] ]
     involvement_options += GroupType.find_all_by_in_directory_search_not_in(true).collect{ |gt|
