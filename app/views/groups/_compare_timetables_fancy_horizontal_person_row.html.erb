@@ -7,7 +7,7 @@
         <% total_intervals_printed = 0 %>
         <% fts = person.free_times.select{|ft| ft.day_of_week == i} %>
 
-        <div class="day <%=day.downcase%>" style="width:<%=day_width%>%; <%= 'padding-left:1px;' if @user_agent =~ /applewebkit/i %>">
+        <div class="day <%=day.downcase%>" style="width:<%=day_width%>%;">
           <% times_to_print = fts.select{|ft| ft.css_class != Timetable::GOOD_CLASS} %>
           <%= "&nbsp;" if times_to_print.blank? %>
           <% times_to_print.each do |ft| %>

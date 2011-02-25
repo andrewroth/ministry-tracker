@@ -36,7 +36,7 @@
 <br/>
 
 
-<% day_width = 14.285 %>
+<% day_width = 14.285714  %>
 <% interval_width = 3.125 %>
 
 
@@ -62,7 +62,7 @@
       <div class="timelineHeaderContainer timelineHeader">
         <div class="timesContainer">
           <% Date::DAYNAMES.each_with_index do |day, di| %>
-            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%; <%= 'padding-left:1px;' if @user_agent =~ /applewebkit/i %>">
+            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
               <div class="dayName"><%=day%></div>
 
               <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
@@ -85,7 +85,14 @@
                 <% i+=1 %>
               <% end %>
             </div>
-            <div class="dayBackground" style="left:<%=day_width*di%>%; width:<%=day_width%>%;"></div>
+          <% end %>
+        </div>
+
+        <div class="timesContainer">
+          <% Date::DAYNAMES.take(6).each_with_index do |day, di| %>
+            <!-- this is so complicated in order to accommodate funny percentage math some browsers do -->
+            <% border_width = 3 %>
+            <div class="dayBackground" style="left: -<%=di*border_width%>px; width:<%=day_width%>%;"></div>
           <% end %>
         </div>
       </div>
@@ -99,7 +106,7 @@
 
   <div class="frameControls">
     <div class="zoomSliderContainer">
-      <%= image_tag "silk/zoom_out.png" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png" %>
+      <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn" %>
     </div>
     <div class="visibleDaysControls">
       <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
@@ -116,13 +123,29 @@
 
 <script>
 
+  // zoom slider
 	$(function() {
 		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true});
 	});
   $("#zoomSlider").bind( "slide", function(event, ui) {
-    $(".horizTableCompare .tableContainer").width(ui.value + "px");
-    zoom_adjustments($(".horizTableCompare .tableContainer").width());
+    zoom_event($("#zoomSlider"));
   });
+
+  function zoom_event(slider) {
+    $(".horizTableCompare .tableContainer").width(slider.slider("value") + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
+  }
+
+  // slider zoom buttons
+  $(".zoomSliderOut").click(function(e) {
+    $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")-2470);
+    zoom_event($("#zoomSlider"));
+  });
+  $(".zoomSliderIn").click(function(e) {
+    $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")+2470);
+    zoom_event($("#zoomSlider"));
+  });
+
 
   // show tooltip with time and day when hovering over timetable
   $(".timeTooltip").tooltip({
@@ -185,4 +208,5 @@
   $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
     $("." + $(this).attr("value")).toggle();
   });
+
 </script>

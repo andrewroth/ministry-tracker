@@ -2500,10 +2500,10 @@ table.groupInvolvementList th {
 .horizTableCompare .colourLegend div.personTimeBlock { width:18px; border:1px #666766 solid; margin-right:4px; }
 
 .horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
-.horizTableCompare .day { width: 14.285%; position:relative; float:left; }
+.horizTableCompare .day { position:relative; float:left; }
 .horizTableCompare .day.dayHeader {  height:100%; }
 .horizTableCompare .day.dayHeader .dayName { font-weight:bold; color:#666766; font-size:1.12em; padding:0.5em 0 0 1em; }
-.horizTableCompare .dayBackground { position: absolute; top:0; bottom:0; border-right:3px dashed #666766; z-index:10; }
+.horizTableCompare .dayBackground { position:relative; height:100%; float:left; border-right:3px dashed #666766; z-index:10; }
 .horizTableCompare .time.timeHeader { font-weight:normal; font-size: .8em; }
 .horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 32px; }
 
@@ -2532,7 +2532,7 @@ table.groupInvolvementList th {
 .horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; }
 .horizTableCompare .personName.rowsHidden { background-color:white; color:#666766; }
 .horizTableCompare .personTimetableLink { display:inline; position:absolute; top:5px; right:23px; }
-.horizTableCompare .noTable .personTimetableLink { opacity:0.6; }
+.horizTableCompare .noTable .personTimetableLink { opacity:0.5; }
 .horizTableCompare .noTable .personName, .horizTableCompare .noTable .personName:hover { cursor:default; background-color:white; color:#666766; font-weight:bold; }
 .horizTableCompare .personName .removePersonLink { display:inline; position:absolute; top:3px; left:-20px; cursor:pointer; }
 .horizTableCompare .personName .removePersonLink img { display:none; }
@@ -2552,10 +2552,10 @@ table.groupInvolvementList th {
 
 .horizTableCompare #zoomSlider { width:100px; display:inline-block; margin:0 10px; }
 .horizTableCompare .zoomSliderContainer { float:right; padding-left:3em; }
-.horizTableCompare .visibleDaysControls { float:right; }
+.horizTableCompare .visibleDaysControls { float:right; cursor:default; }
 .horizTableCompare .visibleDaysControls input { position:relative; bottom:-2px; }
 
-.horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider { cursor:pointer; }
+.horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
 #tooltip.horizTableCompare {
   position: absolute;
