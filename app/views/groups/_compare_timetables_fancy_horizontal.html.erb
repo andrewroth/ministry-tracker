@@ -53,7 +53,7 @@
   <div class="namesList">
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTable'><br/><big>*</big> hasn't submitted their timetable<br/></div>" if @people_without_table.present? %>
+    <%= "<div class='noTableNote'><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
   </div>
 
   <div class="cursorHoverLine"></div>
@@ -76,7 +76,7 @@
                   <%= time_header_text(time) %>
                 </div>
 
-                <div class="line <%=time_header_zoom_class(time)%>" style="left:<%=interval_width*i%>%;"></div>
+                <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
 
                 <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
                      title="<%=time_header_text(time)%> - <%=day%>"
@@ -159,6 +159,17 @@
     extraClass: "horizTableCompare"
   });
 
+  $(".personTimetableLink").tooltip({
+    track: false,
+    delay: 0,
+    showURL: false,
+    showBody: " - ",
+    fade: 0,
+    extraClass: "horizTableCompare"
+  });
+
+
+
   // show line under cusor when hovering over timetable
   $(".frame").hover(
     function (e) {
@@ -203,7 +214,7 @@
     $("#group_end_time").val(secs+<%=Timetable::DEFAULT_MEETING_LENGTH%>);
     $("#group_day").val(day);
 
-    $(".timeControlsContainer").effect("highlight", {}, 2000);
+    $(".timeControlsContainer").effect("highlight", {}, 1000);
   });
 
   // checkboxes to toggle day visibility
