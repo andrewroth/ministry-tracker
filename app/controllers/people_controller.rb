@@ -792,6 +792,13 @@ class PeopleController < ApplicationController
 =end
       @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
       @count = @people.total_entries
+
+      # pass which ministries were searched for to the view
+      if params[:ministry]
+        ministries = Ministry.find :all, :conditions => "#{Ministry._(:id)} IN (#{params[:ministry].join(",")})"
+        @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
+      end
+      @searched_ministry_ids ||= get_ministry_ids
     end
 
     
