@@ -1,5 +1,8 @@
 <div id="stats">
-  Male: <%= @genders["male"] %><br/>
-  Female: <%= @genders["female"] %><br/>
-  Unknown: <%= @genders[""] %><br/>
+<%= render :partial => "genders" %>
+<%= render :partial => "languages" %>
+<%= render :partial => "mccs" %>
+<%= render :partial => "staff_status" %>
+<%= render :partial => "position" %>
+<%= render :partial => "scope" %>
 </div>

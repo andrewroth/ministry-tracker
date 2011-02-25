@@ -1,0 +1,24 @@
+<div class="dashmodule">
+  <div class="moduletitle">
+    <h2><%= header %></h2>
+  </div>
+  <div class="modulecontent">
+    <table align="right">
+    <%- stat.keys.sort.each do |k| %>
+      <%- if k != "" -%>
+      <tr align="right">
+        <td style="width: 50%"><%= k %></td><td style="width: 50px"><%= stat[k] %><td/>
+      </tr>
+      <%- end -%>
+    <%- end -%>
+    <%- if stat[""].present? %>
+      <tr align="right">
+        <td style="width: 50%">No value entered</td><td style="width: 50px"><%= stat[""] %></td><br/>
+      </tr>
+    <%- end %>
+      <tr align="right">
+        <td style="width: 50%"><b>Total</b></td><td><b><%= @genders.values.sum %></b></td>
+      </tr>
+    </table>
+  </div>
+</div>

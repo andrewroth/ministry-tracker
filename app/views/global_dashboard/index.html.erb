@@ -1,11 +1,14 @@
-Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;<%= spinner %><br/>
+Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;
+Mission Critical Component (MCC): <%= select_tag "mcc", options_for_select(@mcc_options) %>&nbsp;
+<%= spinner %><br/>
 
 <%= observe_field :location, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
       :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
-MCC: <br/>
+
+<%= observe_field :mcc, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
 <br/>
-<div id="stats">
-Male: <%= @genders["male"] %><br/>
-Female: <%= @genders["female"] %><br/>
-Unknown: <%= @genders[""] %><br/>
-</div>
+
+<%= render 'stats' %>
