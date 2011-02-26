@@ -1,25 +1,30 @@
 
 <div pid="<%=person.id%>" class="personNameContainer <%= "noTable" if !has_table %>">
+
   <div class="personName" <%="title='Hide or show #{person.first_name}&#39;s timetable'" if has_table%>>
     <div class="removePersonLink" title="Remove <%=person.first_name%>">
       <%=image_tag "silk/cross.png"%>
     </div>
     <%="#{person.first_name} #{person.last_name}"%> <%= "<big>*</big>" if !has_table %>
   </div>
+  
 
   <% timetable_path = person_timetable_path(person.id, (person.timetable || Timetable.create(:person_id => person.id)).id) %>
 
   <% if has_table && person.timetable.present? && person.timetable.updated_at.present? && (Time.now-person.timetable.updated_at) >= Timetable::WARNING_TIME %>
-    <div class="personTimetableLink" title="<%=person.first_name%>'s timetable was last updated <span class='outdated'><%=time_ago_in_words(person.timetable.updated_at)%> ago</span> - Click to goto the timetable">
+    <div class="personTimetableLink" title="<span class='whiteFont'><%=person.first_name%>'s timetable was last updated <span class='outdated'><%=time_ago_in_words(person.timetable.updated_at)%> ago</span></span> - <span class='whiteFont'>Click to goto the timetable</span>">
       <%= link_to(image_tag('silk/error.png'), timetable_path) %>
     </div>
+
   <% elsif has_table %>
-    <div class="personTimetableLink" title="<%=person.first_name%>'s timetable was last updated <%=time_ago_in_words(person.timetable.updated_at)%> ago - Click to goto the timetable">
+    <div class="personTimetableLink" title="<span class='whiteFont'><%=person.first_name%>'s timetable was last updated <%=time_ago_in_words(person.timetable.updated_at)%> ago</span> - <span class='whiteFont'>Click to goto the timetable</span>">
       <%= link_to(image_tag('silk/calendar.png'), timetable_path) %>
     </div>
+
   <% else %>
-    <div class="personTimetableLink" title="<%=person.first_name%> hasn't submitted their timetable - Click to goto the timetable">
+    <div class="personTimetableLink" title="<span class='whiteFont'><%=person.first_name%> hasn't submitted their timetable</span> - <span class='whiteFont'>Click to goto the timetable</span>">
       <%= link_to(image_tag('silk/calendar.png'), timetable_path) %>
     </div>
   <% end %>
+
 </div>

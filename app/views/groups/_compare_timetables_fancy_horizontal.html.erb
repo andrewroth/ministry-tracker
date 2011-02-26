@@ -53,7 +53,7 @@
   <div class="namesList">
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
     <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTableNote'><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
+    <%= "<div class='noTableNote'><br/><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
   </div>
 
   <div class="cursorHoverLine"></div>
@@ -79,7 +79,7 @@
                 <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
 
                 <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
-                     title="<%=time_header_text(time)%> - <%=day%>"
+                     title="<span class='whiteFont'><%=time_header_text(time)%></span> - <span class='whiteFont'><%=day%></span>"
                      min="<%=time.min%>" hour="<%=time.hour%>" day="<%=di%>">
                 </div>
                 
@@ -159,6 +159,8 @@
     extraClass: "horizTableCompare"
   });
 
+
+  // show tooltip on hover over timetable link
   $(".personTimetableLink").tooltip({
     track: false,
     delay: 0,
@@ -167,7 +169,6 @@
     fade: 0,
     extraClass: "horizTableCompare"
   });
-
 
 
   // show line under cusor when hovering over timetable
@@ -185,11 +186,13 @@
     $(".cursorHoverLine").css( { "left": (e.pageX +1 - $("#horizTableCompareContainer").offset().left) + "px" } );
   });
 
+
   // toggle visibility of person's time by clicking their name
   $(".personNameContainer").not(".noTable").children(".personName").click(function () {
     $("." + $(this).parent().attr("pid") + " .personTimes").toggle();
     $(this).toggleClass("rowsHidden");
   });
+
 
   // remove person from timetable comparison
   $(".removePersonLink").click(function() {
@@ -200,6 +203,7 @@
     $(".personRowContainer:even").addClass("even");
     $(".personRowContainer:odd").addClass("odd");
   });
+
 
   // selection of meeting time
   $(".meetingTimeSelector").click(function() {
@@ -216,6 +220,7 @@
 
     $(".timeControlsContainer").effect("highlight", {}, 1000);
   });
+
 
   // checkboxes to toggle day visibility
   $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
