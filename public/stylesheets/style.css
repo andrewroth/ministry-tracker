@@ -310,7 +310,7 @@ font-weight:normal;
 input, textarea {
 font-size:1.1em;
 color: #000;
-font-family:Arial, Verdana, Helvetica;
+font-family: Helvetica, Arial, Sans-Serif;
 padding:2px 5px 2px 5px;
 border:1px solid #ddd;
 }
@@ -883,7 +883,7 @@ a.goodhead:hover {border:2px solid gray;}
 
 .inputtext {
   border: 1px solid #bdc768;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-family: Helvetica, Arial, Sans-Serif;
   font-size: 11px;
   padding: 3px;
   width: 180px;
@@ -1817,7 +1817,7 @@ table#set_initial_campus tr {
   right: 0;
   top: 0;
   height: 40px;
-  width: 370px;
+  width: 295px;
   background-color: #D8D8D8;
   z-index: 99;
 
@@ -1831,40 +1831,49 @@ table#set_initial_campus tr {
 }
 
 #uberSearchBox {
-  width: 240px;
+  width: 166px;
   font-size: 13px;
   position: absolute;
-  top: 8px;
-  left: 8px;
-  height: 18px;
-/*  background: #E6E6E6; use to blend in with bg more */
+  top: 9px;
+  left: 9px;
+  height: 16px;
   background: white;
-  color: #B3B3B3;
+  color: #DADADA;
   border: 1px solid white;
   padding-left: 8px;
 
-  -moz-border-radius: 4px; -webkit-border-radius: 4px;
+  -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D;
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
 #uberSearchBox.ac_loading {
-  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+  background: url("/images/spinner.gif") no-repeat scroll 135px 8px white !important;
 }
 
 #uberSearchButton {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 5px;
-  left: 220px;
-  padding: 7px 20px;
+  top: 6px;
+  left: 165px;
+  padding: 5px;
   cursor: pointer;
+}
+
+#uberSearchButton div {
+  background: url("/images/debicons/Gmagniglass.png") no-repeat 0px 0px;
+  height: 18px;
+  width: 18px;
+}
+
+#uberSearchButton:hover div {
+  background: url("/images/debicons/Ymagniglass.png") no-repeat 0px 0px;
 }
 
 /* hsmit (dec 2010): added these to customize mentor quick search */
@@ -1895,7 +1904,7 @@ table#set_initial_campus tr {
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
-#uberMentorSearchBox.focused, #uberSearchBox:focus {
+#uberMentorSearchBox.focused, #uberMentorSearchBox:focus {
   background: white;
   color: black;
   border: 2px solid #00268D; /* #FFCB05; yellow */
@@ -1942,7 +1951,7 @@ table#set_initial_campus tr {
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
-#uberMenteeSearchBox.focused, #uberSearchBox:focus {
+#uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
   background: white;
   color: black;
   border: 2px solid #00268D; /* #FFCB05; yellow */
@@ -2279,7 +2288,7 @@ li.ac_over .autoCompleteEmail {
 
 
 .ac_results {
-  padding: 18px 0 0 0;
+  padding: 10px 0 0 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;
@@ -2289,7 +2298,7 @@ li.ac_over .autoCompleteEmail {
   top: 70px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
-  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+  -moz-box-shadow: 0 4px 10px #C8C8C8; -webkit-box-shadow: 0 4px 10px #C8C8C8;
 }
 
 .ac_results ul {

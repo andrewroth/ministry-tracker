@@ -2,7 +2,7 @@
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
 
     <div id="uberSearchContainer">
-      <% default_search_box_text = "search" %>
+      <% default_search_box_text = "Search the Pulse" %>
 
       <div id="uberSearchBoxContainer">
         <% form_tag url_for(:controller => :search), :method => 'get' do %>
@@ -13,8 +13,8 @@
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
           <% end %>
 
-          <button type="submit" id="uberSearchButton" value="">
-            <img src="/images/silk/zoom.png" alt="Search" title="Click to search" />
+          <button type="submit" id="uberSearchButton" value="" title="Click to search">
+            <div></div>
           </button>
 
         <% end %>
@@ -33,7 +33,7 @@
           scroll: false,
           cacheLength: 10,
           matchSubset: false,
-          width: 255,
+          width: 275,
           delay: 400,
           formatItem: function(data, i, n, value) {
             return value;
@@ -83,6 +83,7 @@
           };
           
         });
+
       </script>
     </div>
 
