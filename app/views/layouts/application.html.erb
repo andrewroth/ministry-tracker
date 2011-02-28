@@ -56,17 +56,18 @@
             } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
         <% end %>
 
-        <div id="userblock">
-          <div id="username"><%= @my.full_name %> </div>
-          <small><%= link_to(image_tag('silk/page_white_edit.png'), person_path(@me), :title => "Goto your profile") %></small>
-          <small><%= link_to(image_tag('silk/calendar_edit.png'), "/people/#{@my.id}/timetables/#{@my.timetable.try(:id)}", :title => "Goto your timetable") %></small>
+        <div id="userblock" class="link_bar">
+          Hi&nbsp;
+          <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
+          
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>Viewing <%= @ministry.name %> <%= link_to_remote "Change▼", :url => switch_list_ministries_url %><%- end -%></div>
+            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote "#{@ministry.name} ▼", :url => switch_list_ministries_url %><%- end -%></div>
             <div id="switch_ministries_list" style="display:none">
               &nbsp;
             </div>
           <%- end -%>
         </div>
+        
         <div class="clear"></div>
 
       </div>

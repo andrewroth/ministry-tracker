@@ -1072,8 +1072,9 @@ div#userbar {
 div#logos { padding:27px 0 0 32px; }
 div#logos img { padding-right:20px; }
 
-div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock { position:absolute; top:-40px; right:0; text-align: right;}
+div#userblock { font-size:12px; color:#D8D8D8; position:absolute; top:-30px; right:70px; text-align: right; display:inline; }
+div#username { font-weight:bold; display:inline; }
+div#userblock div#switch_ministries { display:inline; }
 
 div#userbar small {font-size:11px;}
 
@@ -1219,11 +1220,15 @@ div.section {
 }
 
 #switch_ministries_list {
-  position: absolute;  
+  position: absolute;
   z-index: 500;
   text-align: left;
+  left:100px;
+  border:6px solid #666766;
+  border-top:0px;
 
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
+  -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
 }
 
 div.choose_ministry_tree {
@@ -2314,7 +2319,7 @@ li.ac_over .autoCompleteEmail {
 
 
 .ac_results {
-  padding: 10px 0 0 0;
+  padding: 12px 0 0 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;

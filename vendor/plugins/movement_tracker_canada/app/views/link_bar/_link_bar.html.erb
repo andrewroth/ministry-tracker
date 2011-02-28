@@ -43,7 +43,7 @@
 </script>
 
 <div id="link_bar_wrapper">
-  <div id="link_bar">
+  <div class="link_bar">
 
     <div id="tools">
       <nobr>
@@ -63,7 +63,7 @@
     <div id="user">
       <nobr>
         <b class="rl"><% @my.email %></b>
-        <%= link_to("Log out", session_url, :method => :delete, :class => "rl log_out") %>
+        <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
       </nobr>
     </div>
 
