@@ -106,38 +106,38 @@ margin-top:5px;
 }
 
 #person_staff_notes {
-width:98%;
-height:200px;
-margin:5px 0 0 0;
+  width:98%;
+  height:200px;
+  margin:5px 0 0 0;
 }
 
 
 /* OVERALL STUFF */
 
 .directorytable tr:hover  {
-/*    background-color:#fff193;*/
+  /*background-color:#fff193;*/
 }
 
 #profileCaption {
-margin:3px 0 0 0;
-text-align:center;
+  margin:3px 0 0 0;
+  text-align:center;
 }
 
 * {
-    margin:0;
-    padding:0;
-    font-family: Helvetica, Arial, Sans-Serif;
-    color:#747474;
+  margin:0;
+  padding:0;
+  font-family: Helvetica, Arial, Sans-Serif;
+  color:#747474;
 }
 
 body {
-    font-size:75%;
-    text-align:center;
-    background-color:white;
+  font-size:12px;
+  text-align:center;
+  background-color:white;
 }
 
 body.facebook_canvas {
-    background-color:white;
+  background-color:white;
 }
 
 img {border:0px;}
@@ -146,7 +146,7 @@ table {width:100%; font-size:1em;}
 
 
 .floatleft {
-float:left;
+  float:left;
 }
 
 .inline {
@@ -158,138 +158,138 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 
 
 .directorytable {
-width:100%;
+  width:100%;
 }
 
 
 
 .profileImage {
-padding:8px 0 0 0;
+  padding:8px 0 0 0;
 }
 
 .profileImage img{
-border:0px solid #333333;
+  border:0px solid #333333;
 }
 
 #profileCaption img{
-border:0px solid black;
-padding-right:5px;
-vertical-align:bottom;
+  border:0px solid black;
+  padding-right:5px;
+  vertical-align:bottom;
 }
 
 #profileCaption a{
-border:1px solid #f5f5f5;
-height:18px;
-padding:2px;
-margin:1px;
-font-size:10px;
-font-weight:bold;
+  border:1px solid #f5f5f5;
+  height:18px;
+  padding:2px;
+  margin:1px;
+  font-size:10px;
+  font-weight:bold;
 }
 
 #profileCaption a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc;
 }
 
 
 .butProfile a {
-padding-left:20px;
-border:0px solid black;
-height:18px;
-background:url(../images/zoom.png) top left no-repeat;
+  padding-left:20px;
+  border:0px solid black;
+  height:18px;
+  background:url(../images/zoom.png) top left no-repeat;
 }
 
 .butUpdate a, .butDelete a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  height:18px;
 }
 
 .butUpdate a {
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
+  background: #fff url(../images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a {
-background: #fff url(../images/delete.png) 3px 5px no-repeat;
+  background: #fff url(../images/delete.png) 3px 5px no-repeat;
 }
 
 
 .butUpdate a:hover, .butDelete a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
+  text-decoration:none;
+  border:1px solid #1F429B;
 }
 
 .butUpdate a:hover {
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+  background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a:hover {
-background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
+  background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;
 }
 
 .butUpdate, .butDelete {
-margin:5px 0 0 0;
-float:right;
+  margin:5px 0 0 0;
+  float:right;
 }
 
 .actionButtons {
+  float:left;
   margin: 5px 0;
-float:left;
 }
 
+  display:inline;
+  margin:5px 0 0 0;
 .butDExcel {
-display:inline;
-margin:5px 0 0 0;
 }
 
 .butDExcel a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
+  height:18px;
 }
 
 .butDExcel a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
 }
 
 
 .butNormal {
-display:inline;
-margin:5px 0 0 0;
+  display:inline;
+  margin:5px 0 0 0;
 }
 
 .butNormal a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
+  height:18px;
 }
 
 .butNormal a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
 }
 
 
 .butAdd {
-display:block;
-margin:10px 10px 10px 5px;
+  display:block;
+  margin:10px 10px 10px 5px;
 }
 
 .butAdd a {
-padding:0;
-padding-left:20px;
-border:0px solid #ccc;
-background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
-height:18px;
+  padding:0;
+  padding-left:20px;
+  border:0px solid #ccc;
+  background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
+  height:18px;
 }
 
 
@@ -304,19 +304,19 @@ h4 {font-size:1.12em;}
 h5, p {font-size:1em;}
 
 th {
-font-weight:normal;
+  font-weight:normal;
 }
 
 input, textarea {
-font-size:1.1em;
-color: #000;
-font-family: Helvetica, Arial, Sans-Serif;
-padding:2px 5px 2px 5px;
-border:1px solid #ddd;
+  font-size:1.1em;
+  color: #000;
+  font-family: Helvetica, Arial, Sans-Serif;
+  padding:2px 5px 2px 5px;
+  border:1px solid #ddd;
 }
 
 input:focus, textarea:focus {
-background:#FFFFCC;
+  background:#FFFFCC;
 }
 
 /*select {width:175px; height:1.5em;}*/
@@ -390,7 +390,7 @@ h1 {
 #footer {
 	min-width:900px;
 	max-width:900px;
-	height:120px;
+	height:100px;
   margin:auto;
   margin-top:10px;
 }
@@ -466,16 +466,16 @@ h1 {
   text-decoration: none;
 }
 
-.tablist #dashboardTab { background-image: url(/images/debicons/Gdashboard.png); }
+.tablist #dashboardTab { background: url(/images/debicons/Gdashboard.png) no-repeat scroll 0 0 transparent; }
 .tablist a.active #dashboardTab, .tablist #dashboardTab:hover { background-image: url(/images/debicons/Ydashboard.png); }
 
-.tablist #profileTab { background-image: url(/images/debicons/Gprofile.png); }
+.tablist #profileTab { background: url(/images/debicons/Gprofile.png) no-repeat scroll 1px 3px transparent; }
 .tablist a.active #profileTab, .tablist #profileTab:hover { background-image: url(/images/debicons/Yprofile.png); }
 
-.tablist #groupsTab { background-image: url(/images/debicons/Ggroups.png); padding-left:25px; }
+.tablist #groupsTab { background: url(/images/debicons/Ggroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
 .tablist a.active #groupsTab, .tablist #groupsTab:hover { background-image: url(/images/debicons/Ygroups.png); }
 
-.tablist #insightsTab { background-image: url(/images/debicons/Ginsights.png); padding-left:22px; }
+.tablist #insightsTab { background: url(/images/debicons/Ginsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
 .tablist a.active #insightsTab, .tablist #insightsTab:hover { background-image: url(/images/debicons/Yinsights.png); }
 
 
@@ -733,49 +733,47 @@ margin-bottom:10px;
 
 
 #subtabs {
-display:block;
-clear:both;
-background:#cbd1e8;
-padding:10px;
-margin: 0 0 10px 0;
+  display:block;
+  clear:both;
+  padding:10px;
+  margin: 0 0 10px 0;
 }
 
 .subtabs-menu {
-list-style-type:none;
+  list-style-type:none;
 }
 
 ul.subtabs-menu li {
-display:inline;
+  display:inline;
+  padding:0px 32px 0 0;f
 }
 
 a.subtabs-menu-active {
-text-decoration:none;
-background:white;
-padding:5px 10px 5px 10px;
-font-weight:bold;
-
+  color:#FFCB05;
+  text-decoration:none;
+  background:white;
+  font-weight:bold;
 }
 
 a.subtabs-menu-inactive {
-text-decoration:underline;
-padding:5px 10px 5px 10px;
-font-weight:bold;
+  color:#666766;
+  font-weight:bold;
 }
 
 a.subtabs-menu-inactive:hover {
-text-decoration:none;
-background:white;
+  color:#FFCB05;
+  text-decoration:none;
 }
 
 #profiletitle {
-margin-bottom:10px;
+  margin-bottom:10px;
 }
 
 #profiletitle h1 {
-padding:0 0 0 10px;
-font-size:18px;
-font-weight:bold;
-line-height:28px;
+  padding:0 0 0 10px;
+  font-size:18px;
+  font-weight:bold;
+  line-height:28px;
 }
 
 #campuses, #campus-details {
@@ -788,13 +786,13 @@ line-height:28px;
 }
 
 table#legend {
-border-collapse:collapse;
-width:100%
+  border-collapse:collapse;
+  width:100%
 }
 
 
 table#legend th {
-font-weight:bold;
+  font-weight:bold;
 }
 
 table#legend td {
