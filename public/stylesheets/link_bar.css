@@ -7,9 +7,7 @@ div#link_bar_wrapper {
 div.link_bar {
     display: block;
     height: 30px;
-    padding-top: 3px;
-/*    font-size: 13px;*/
-    width: 914px; /* page wrapper width plus it's 7px border */
+    width: 900px; /* page wrapper width */
     margin-left: auto;
     margin-right: auto;
 }
@@ -20,7 +18,6 @@ div#tools {
 
 div#tools nobr, div#user nobr, div.link_menu_box {
   padding-top: 1px;
-/*  font-size: 13px;*/
 }
 
 div#user {

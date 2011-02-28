@@ -466,17 +466,17 @@ h1 {
   text-decoration: none;
 }
 
-.tablist #dashboardTab { background: url(/images/debicons/Gdashboard.png) no-repeat scroll 0 0 transparent; }
-.tablist a.active #dashboardTab, .tablist #dashboardTab:hover { background-image: url(/images/debicons/Ydashboard.png); }
+.tablist #dashboardTab                                        { background: url(/images/debicons/Gdashboard.png) no-repeat scroll 0 0 transparent; }
+.tablist a.active #dashboardTab, .tablist #dashboardTab:hover { background: url(/images/debicons/Ydashboard.png) no-repeat scroll 0 0 transparent; }
 
-.tablist #profileTab { background: url(/images/debicons/Gprofile.png) no-repeat scroll 1px 3px transparent; }
-.tablist a.active #profileTab, .tablist #profileTab:hover { background-image: url(/images/debicons/Yprofile.png); }
+.tablist #profileTab                                      { background: url(/images/debicons/Gprofile.png) no-repeat scroll 1px 3px transparent; }
+.tablist a.active #profileTab, .tablist #profileTab:hover { background: url(/images/debicons/Yprofile.png) no-repeat scroll 1px 3px transparent; }
 
-.tablist #groupsTab { background: url(/images/debicons/Ggroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
-.tablist a.active #groupsTab, .tablist #groupsTab:hover { background-image: url(/images/debicons/Ygroups.png); }
+.tablist #groupsTab                                     { background: url(/images/debicons/Ggroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
+.tablist a.active #groupsTab, .tablist #groupsTab:hover { background: url(/images/debicons/Ygroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
 
-.tablist #insightsTab { background: url(/images/debicons/Ginsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
-.tablist a.active #insightsTab, .tablist #insightsTab:hover { background-image: url(/images/debicons/Yinsights.png); }
+.tablist #insightsTab                                       { background: url(/images/debicons/Ginsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
+.tablist a.active #insightsTab, .tablist #insightsTab:hover { background: url(/images/debicons/Yinsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
 
 
 /* Commented Backslash Hack
@@ -2317,7 +2317,7 @@ li.ac_over .autoCompleteEmail {
 
 
 .ac_results {
-  padding: 12px 0 0 0;
+  padding: 10px 0 0 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;
