@@ -50,6 +50,7 @@ class GlobalDashboardController < ApplicationController
       }.flatten
 
       @genders = { "male" => 0, "female" => 0, "" => 0 }
+      @marital_status = {}
       @languages = {}
       @mccs = {}
       @funding_source = {}
@@ -61,6 +62,8 @@ class GlobalDashboardController < ApplicationController
         if filters_isos.include?(profile.ministry_location_country) &&
           mcc_filters.include?(profile.mission_critical_components)
           @genders[profile.gender] += 1
+          @marital_status[profile.marital_status] ||= 0
+          @marital_status[profile.marital_status] += 1
           @languages[profile.language] ||= 0
           @languages[profile.language] += 1
           @mccs[profile.mission_critical_components] ||= 0
