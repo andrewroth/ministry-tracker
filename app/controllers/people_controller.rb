@@ -701,15 +701,15 @@ class PeopleController < ApplicationController
 
       if !params[:group_involvement].present?
       elsif params[:group_involvement].include?("not_group")
-        @search_for << ", Not in a group"
-        @having << "GroupInvolvements IS NULL"
+        @search_for << ", Not in a group this semester"
+        #@having << "GroupInvolvements IS NULL"
         @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
-        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
+        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id NOT IN (#{@group_ids.join(',')}))"
       elsif params[:group_involvement].include?("in_group")
-        @search_for << ", In a group"
-        @having << "GroupInvolvements IS NOT NULL"
+        @search_for << ", In a group this semester"
+        #@having << "GroupInvolvements IS NOT NULL"
         @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
-        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
+        @conditions += " AND (GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
       end
 
       for i in params[:group_involvement] || []
@@ -722,13 +722,14 @@ class PeopleController < ApplicationController
           " AND group_type_id = #{group_type.id}"
         @group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
         @group_type_group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
-        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id IN (#{@group_type_group_ids.join(',')}))"
         if i > 0
-          @search_for << ", In a #{group_type.short_name}"
-          @having << "GroupInvolvements IS NOT NULL"
+          @conditions += " AND (GroupInvolvement.group_id IN (#{@group_type_group_ids.join(',')}))"
+          @search_for << ", In a #{group_type.short_name} this semester"
+          #@having << "GroupInvolvements IS NOT NULL"
         elsif i < 0
-          @search_for << ", Not in a #{group_type.short_name}"
-          @having << "GroupInvolvements IS NULL"
+          @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id NOT IN (#{@group_type_group_ids.join(',')}))"
+          @search_for << ", Not in a #{group_type.short_name} this semester"
+          #@having << "GroupInvolvements IS NULL"
         end
       end
 
