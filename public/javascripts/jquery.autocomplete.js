@@ -730,7 +730,7 @@ $.Autocompleter.Select = function (options, input, select, config) {
 				width: typeof options.width == "string" || options.width > 0 ? options.width : $(input).width(),
 				top: offset.top + input.offsetHeight,
 				left: offset.left
-			}).slideToggle();
+			}).show();
             if(options.scroll) {
                 list.scrollTop(0);
                 list.css({
