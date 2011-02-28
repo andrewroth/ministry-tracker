@@ -8,7 +8,7 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar {background:#FFCB05; height:33px; padding: 5px 0px; position: relative;}
+#greenbar { height:33px; padding: 5px 0px; position: relative;}
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -126,14 +126,14 @@ text-align:center;
 * {
     margin:0;
     padding:0;
-    font-family: Tahoma, Arial, Sans-Serif;
+    font-family: Helvetica, Arial, Sans-Serif;
     color:#747474;
 }
 
 body {
     font-size:75%;
     text-align:center;
-    background-color:#E6E6E6;
+    background-color:white;
 }
 
 body.facebook_canvas {
@@ -372,7 +372,6 @@ h1 {
 #wrapper {
   margin: 10px auto 10px auto;
   width:auto;
-  border:7px solid #CCCCCC;
   text-align:left;
 	min-width:900px;
 	max-width:900px;
@@ -419,10 +418,8 @@ h1 {
 /* TABS */
 .tablist {
   width:65%;
-  background:#FFCB05 url("") repeat-x bottom;
   float:right;
   margin-top: 4px;
-  border-bottom: #FFCB05 solid 0px;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -597,9 +594,10 @@ div.sectionHeader h2 {
 }
 
 #advancedSearchLink {
-  position: relative;
-  left: 312px;
-  top: 38px;
+  position: absolute;
+  right: 9px;
+  top: 13px;
+  font-size: 11px;
 }
 
 
@@ -1041,16 +1039,15 @@ ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding
 ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
 
 div#userbar {
-  background:#e6e6e6; 
-  background-image: url(/images/resized_c4c.png); 
-  background-repeat: no-repeat;
-  background-position: 10px 10px;
-  padding: 10px; 
-  height: 50px;
+  position: relative;
+  height: 80px;
 }
 
+div#logos { padding:27px 0 0 32px; }
+div#logos img { padding-right:20px; }
+
 div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 10px; margin-top: 6px; text-align: right;}
+div#userblock { position:absolute; top:-40px; right:0; text-align: right;}
 
 div#userbar small {font-size:11px;}
 
@@ -1816,10 +1813,15 @@ table#set_initial_campus tr {
 /* Search section                               */
 
 #uberSearchContainer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 40px;
+  width: 370px;
+  background-color: #D8D8D8;
   z-index: 99;
-  float: left;
-  left: 140px;
-  position: relative;
+
+  -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
 }
 
 #uberSearchBoxContainer {
@@ -1830,18 +1832,18 @@ table#set_initial_campus tr {
 
 #uberSearchBox {
   width: 240px;
-  font-size: 18px;
+  font-size: 13px;
   position: absolute;
-  top: 4px;
-  left: 9px;
-  height: 25px;
+  top: 8px;
+  left: 8px;
+  height: 18px;
 /*  background: #E6E6E6; use to blend in with bg more */
   background: white;
   color: #B3B3B3;
-  border: 2px solid white;
-  padding-left: 10px;
+  border: 1px solid white;
+  padding-left: 8px;
 
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
 }
 
 #uberSearchBox.focused, #uberSearchBox:focus {

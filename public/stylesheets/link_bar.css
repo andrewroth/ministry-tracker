@@ -1,12 +1,12 @@
 div#link_bar_wrapper {
     width: 100%;
     padding-top: 1px;
-    margin-bottom: 7px;
+    background-color: #666766;
 }
 
 div#link_bar {
     display: block;
-    height: 22px;
+    height: 36px;
     padding-top: 3px;
     font-size: 13px;
     width: 914px; /* page wrapper width plus it's 7px border */
