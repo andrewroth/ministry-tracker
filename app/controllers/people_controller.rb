@@ -14,6 +14,11 @@ class PeopleController < ApplicationController
   include PersonForm
   include SemesterSet
 
+  class CustomTable
+    attr_accessor :table_name, :to_s
+    attr_writer :table_name, :to_s
+  end
+
   before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements]
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
@@ -702,14 +707,10 @@ class PeopleController < ApplicationController
       if !params[:group_involvement].present?
       elsif params[:group_involvement].include?("not_group")
         @search_for << ", Not in a group this semester"
-        #@having << "GroupInvolvements IS NULL"
-        @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
-        @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id NOT IN (#{@group_ids.join(',')}))"
+        @having << "GroupInvolvements2 IS NULL"
       elsif params[:group_involvement].include?("in_group")
         @search_for << ", In a group this semester"
-        #@having << "GroupInvolvements IS NOT NULL"
-        @group_ids = [ 0 ] + Semester.current.groups.collect(&:id)
-        @conditions += " AND (GroupInvolvement.group_id IN (#{@group_ids.join(',')}))"
+        @having << "GroupInvolvements2 IS NOT NULL"
       end
 
       for i in params[:group_involvement] || []
@@ -721,16 +722,25 @@ class PeopleController < ApplicationController
         conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
           " AND group_type_id = #{group_type.id}"
         @group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
-        @group_type_group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
+        @group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
         if i > 0
-          @conditions += " AND (GroupInvolvement.group_id IN (#{@group_type_group_ids.join(',')}))"
           @search_for << ", In a #{group_type.short_name} this semester"
-          #@having << "GroupInvolvements IS NOT NULL"
+          @having << "GroupInvolvements2 IS NOT NULL"
         elsif i < 0
-          @conditions += " AND (GroupInvolvement.group_id IS NULL OR GroupInvolvement.group_id NOT IN (#{@group_type_group_ids.join(',')}))"
           @search_for << ", Not in a #{group_type.short_name} this semester"
-          #@having << "GroupInvolvements IS NULL"
+          @having << "GroupInvolvements2 IS NULL"
         end
+      end
+
+      if params[:group_involvement].present?
+        @extra_select = "GI2.GroupInvolvements2 as GroupInvolvements2"
+        table = CustomTable.new
+        @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
+        table.table_name = "(SELECT Person.person_id as person_id, GROUP_CONCAT(GroupInvolvement.group_id SEPARATOR ',') as GroupInvolvements2 FROM c4c_intranet_dev.cim_hrdb_person as Person LEFT JOIN 
+            c4c_pulse_dev.group_involvements as GroupInvolvement on Person.person_id = GroupInvolvement.person_id AND GroupInvolvement.group_id IN (#{@group_ids.join(',')}) 
+            GROUP BY person_id ORDER BY Person.person_id)"
+        table.to_s = "GI2"
+        @tables[table] = "Person.person_id = GI2.person_id"
       end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
@@ -748,7 +758,7 @@ class PeopleController < ApplicationController
       
       # If these conditions will result in too large a set, use pagination
       @group = Person._(:id)
-      build_sql(tables_clause)
+      build_sql(tables_clause, @extra_select)
 =begin
       @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
       if @count > 0
