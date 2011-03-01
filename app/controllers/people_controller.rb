@@ -351,9 +351,9 @@ class PeopleController < ApplicationController
 
             # If this is an Involved Student record that has plain_password value, 
             # this is a new user who should be notified of the account creation
-            if @person.user.plain_password.present? && is_involved_somewhere(@person)
-              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
-            end
+#            if @person.user.plain_password.present? && is_involved_somewhere(@person)
+#              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
+#            end
           end
 
           # create ministry involvement if it doesn't already exist
