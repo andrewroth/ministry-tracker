@@ -747,7 +747,8 @@ class PeopleController < ApplicationController
                                               #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
                                               #{CurrentAddress.table_name} as CurrentAddress READ, #{Access.table_name} as Access READ,
                                               #{Campus.table_name} as Campus READ, #{SchoolYear.table_name} as SchoolYear READ,
-                                              #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE
+                                              #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
+                                              time_zone_name READ
 
                                               |)
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
