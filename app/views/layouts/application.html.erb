@@ -61,7 +61,7 @@
           <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
           
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote "#{@ministry.name} ▼", :url => switch_list_ministries_url %><%- end -%></div>
+            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url %><%- end -%></div>
             <div id="switch_ministries_list" style="display:none">
               &nbsp;
             </div>

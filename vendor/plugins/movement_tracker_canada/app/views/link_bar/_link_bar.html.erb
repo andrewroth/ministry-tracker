@@ -11,7 +11,7 @@
       box = $("div#" + $(e.target).attr("link_menu_box_id"));
       box.css('left', $(e.target).offset().left);
       $(e.target).addClass('menu_expanded');
-      box.toggle();
+      box.slideToggle();
     });
 
     $(document).mouseup(function(e) {
@@ -32,10 +32,10 @@
       <div class="active"><b class="ll">THE PULSE</b></div>
 
       <a class="ll" href="http://resources.campusforchrist.org" title="C4C Resources Wiki">RESOURCES</a>
-      <a class="ll menu_link project" href="" link_menu_box_id="events_box">EVENTS<small>▼</small></a>
-      <a class="ll menu_link more_tools" href="" link_menu_box_id="more_tools_box">MORE<small>▼</small></a>
+      <a class="ll menu_link project" href="" link_menu_box_id="events_box">EVENTS</a>
+      <a class="ll menu_link more_tools" href="" link_menu_box_id="more_tools_box">MORE</a>
       <% if is_staff_somewhere(@me) %>
-        <a class="ll menu_link staff" href="" link_menu_box_id="staff_box">STAFF<small>▼</small></a>
+        <a class="ll menu_link staff" href="" link_menu_box_id="staff_box">STAFF</a>
       <% end %>
     </div>
 

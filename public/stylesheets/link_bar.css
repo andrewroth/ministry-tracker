@@ -1,32 +1,38 @@
 div#link_bar_wrapper {
-    width: 100%;
-    padding-top: 9px;
-    background-color: #666766;
+  width: 100%;
+  padding-top: 9px;
+  background-color: #666766;
 }
 
 div.link_bar {
-    display: block;
-    position:relative;
-    height: 30px;
-    width: 900px; /* page wrapper width */
-    margin-left: auto;
-    margin-right: auto;
-    font-size:11px;
-    font-weight:bold;
+  display: block;
+  position:relative;
+  height: 30px;
+  width: 900px; /* page wrapper width */
+  margin-left: auto;
+  margin-right: auto;
+  font-size:11px;
+  font-weight:bold;
+}
+
+div#tools, div#user {
+  position:absolute;
+  bottom:6px;
 }
 
 div#tools {
-  position:absolute;
   left:0;
-  bottom:6px;
+}
+
+div#user {
+  right:0;
+  padding-right:9px;
+  text-align: right;
+  font-weight:normal;
 }
 
 div#tools nobr, div#user nobr, div.link_menu_box {
   padding-top: 1px;
-}
-
-div#user {
-  text-align: right;
 }
 
 div.link_bar .rl {
@@ -40,13 +46,22 @@ div.link_bar b {
   padding-right: 0px;
 }
 
-div.link_bar a, div.link_bar u {
-  padding: 7px 8px 6px 8px;
+div.link_bar a {
   color: #D8D8D8;
 }
 
+div.link_bar a:hover, div.link_menu_box a:hover {
+  color:#FFCB05;
+}
+
+div.link_bar a.ll {
+  padding-bottom: 6px;
+  border: solid #666766 8px;
+  border-bottom:0;
+}
+
 div.link_bar a:hover, div.link_bar u:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 div.link_menu_box {
@@ -72,31 +87,31 @@ div.link_menu_box a {
   text-decoration: none;
 }
 
-div.link_menu_box a:hover {
-  color:#D8D8D8;
-  text-decoration: underline;
+div.link_bar a.menu_link {
+  background: url("/images/Garrowdown_s.png") no-repeat scroll right 6px transparent;
+  padding-right: 11px;
 }
 
-div.link_bar a.menu_link {
-  text-decoration: none;
+div.link_bar a.menu_link:hover {
+  background-image: url("/images/Yarrowdown_s.png");
 }
 
 div.link_bar small {
   color: #1F429B;
 }
 
-div.link_bar a.log_out {
-  padding: 1px 0 0 20px;
-}
-
 div.link_bar .ll {
   display:inline;
 }
 
+div.link_bar a.ll:hover {
+  color:#FFCB05;
+}
+
 div.link_bar a.ll:hover, div.link_bar a.ll.menu_expanded {
   background-color:#4c4c4c;
+  border-color:#4c4c4c;
   -moz-border-radius: 10px 10px 0 0; -webkit-border-radius: 10px 10px 0 0;
-  text-decoration:underline;
 }
 
 div.link_bar b.ll {
@@ -109,7 +124,7 @@ div.link_bar a small {
 
 div.link_bar a img {
   position:relative;
-  top:7px;
+  top:6px;
 }
 
 div.active {
