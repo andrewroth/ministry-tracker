@@ -742,7 +742,14 @@ class PeopleController < ApplicationController
       if params[:group_involvement].present?
         @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
-        ActiveRecord::Base.connection.execute("LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, #{Search.table_name} WRITE")
+        ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
+                                              #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
+                                              #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
+                                              #{CurrentAddress.table_name} as CurrentAddress READ, #{Access.table_name} as Access READ,
+                                              #{Campus.table_name} as Campus READ, #{SchoolYear.table_name} as SchoolYear READ,
+                                              #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE
+
+                                              |)
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
             #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')}) 
