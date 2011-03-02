@@ -748,8 +748,7 @@ class PeopleController < ApplicationController
                                               #{CurrentAddress.table_name} as CurrentAddress READ, #{Access.table_name} as Access READ,
                                               #{Campus.table_name} as Campus READ, #{SchoolYear.table_name} as SchoolYear READ,
                                               #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
-                                              time_zone_name READ
-
+                                              mysql.time_zone_name READ
                                               |)
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
