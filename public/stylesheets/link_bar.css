@@ -6,14 +6,18 @@ div#link_bar_wrapper {
 
 div.link_bar {
     display: block;
+    position:relative;
     height: 30px;
     width: 900px; /* page wrapper width */
     margin-left: auto;
     margin-right: auto;
+    font-size:12px;
 }
 
 div#tools {
-  float: left;
+  position:absolute;
+  left:0;
+  bottom:0;
 }
 
 div#tools nobr, div#user nobr, div.link_menu_box {
@@ -22,10 +26,6 @@ div#tools nobr, div#user nobr, div.link_menu_box {
 
 div#user {
   text-align: right;
-}
-
-div.link_bar .ll {
-  margin-right: 0.6em;
 }
 
 div.link_bar .rl {
@@ -82,4 +82,24 @@ div.link_bar small {
 
 div.link_bar a.log_out {
   padding: 1px 0 0 20px;
+}
+
+div.link_bar .ll {
+  padding:9px;
+  display:inline-block;
+}
+
+div.link_bar a.ll:hover {
+  background-color:#4c4c4c;
+  -moz-border-radius: 10px 10px 0 0; -webkit-border-radius: 10px 10px 0 0;
+}
+
+div.link_bar b.ll {
+  background-color:white;
+  color:#666766;
+}
+
+div.link_bar img {
+  position:absolute;
+  bottom:0;
 }

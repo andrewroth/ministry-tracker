@@ -46,25 +46,23 @@
   <div class="link_bar">
 
     <div id="tools">
-      <nobr>
-        <a class="ll" href="http://www.campusforchrist.org" title="Campus for Christ">C4C</a>
-        <a class="ll" href="http://resources.campusforchrist.org">Resources</a>
-        <a class="ll menu_link project" href=""><u>Projects</u><small>▼</small></a>
-        <b class="ll">Pulse</b>
-        <a class="ll" href="http://campusforchrist.eventbrite.com">Events</a>
-        <a class="ll" href="http://www.mygcx.org" title="Global ConneXion">GCX</a>
-        <a class="ll menu_link more_tools" href=""><u>more</u><small>▼</small></a>
-        <% if is_staff_somewhere(@me) %>
-          <a class="ll menu_link staff" href=""><u>Staff</u><small>▼</small></a>
-        <% end %>
-      </nobr>
+      <a class="ll" href="http://www.campusforchrist.org" title="Campus for Christ">C4C.ORG</a>
+
+      <%= image_tag "/images/link_bar_tab_left.png" %><b class="ll">THE PULSE</b><%= image_tag "/images/link_bar_tab_right.png" %>
+
+      <a class="ll" href="http://resources.campusforchrist.org">RESOURCES</a>
+
+      <a class="ll menu_link project" href=""><u>Projects</u><small>▼</small></a>
+      <a class="ll" href="http://campusforchrist.eventbrite.com">Events</a>
+      <a class="ll" href="http://www.mygcx.org" title="Global ConneXion">GCX</a>
+      <a class="ll menu_link more_tools" href=""><u>more</u><small>▼</small></a>
+      <% if is_staff_somewhere(@me) %>
+        <a class="ll menu_link staff" href=""><u>Staff</u><small>▼</small></a>
+      <% end %>
     </div>
 
     <div id="user">
-      <nobr>
-        <b class="rl"><% @my.email %></b>
-        <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
-      </nobr>
+      <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
     </div>
 
   </div>
