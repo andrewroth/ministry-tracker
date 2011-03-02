@@ -44,7 +44,7 @@
         </div>
 
 
-        <% if logged_in? && @me && !@custom_userbar_title%>
+        <% if logged_in? && @me && !@custom_userbar_title %>
 
 
         <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
@@ -80,13 +80,12 @@
       <%- else -%>
 
         <div id="userblock">
-          <div id="username"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
         </div>
         <div class="clear"></div>
       </div>
 
       <div id="greenbar">
-        <%= render :partial => 'tabnav/auth' %>
+        <div id="signin"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
       </div>
 
       <%- end -%>

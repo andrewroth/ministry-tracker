@@ -437,6 +437,7 @@ h1 {
   float:right;
   display:block;
 	text-align: center;
+  cursor:pointer;
 }
 
 .tablist a:hover {
@@ -451,7 +452,7 @@ h1 {
   padding-left: 18px;
   background-repeat: no-repeat;
   line-height: 25px;
-}
+}us
 
 .tablist a.active {
   background:url("/images/P1bracket.png") no-repeat scroll center bottom transparent;
@@ -1089,7 +1090,9 @@ div#userbar {
 div#logos { padding:27px 0 0 32px; }
 div#logos img { padding-right:20px; }
 
-div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-22px; right:60px; text-align: right; display:inline; }
+div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-21px; right:60px; text-align: right; display:inline; }
+div#signin { text-align:right; font-weight:bold; font-size: 14px; }
+div#signin a { color: #666766; text-transform: uppercase; }
 div#username { font-weight:bold; font-size:12px; display:inline; }
 div#userblock div#switch_ministries { display:inline; }
 div#userblock div#switch_ministries a { background: url("/images/Garrowdown_s.png") no-repeat scroll right 6px transparent; padding-right: 11px; }
@@ -1244,7 +1247,6 @@ div.section {
   text-align: left;
   left:100px;
   border:6px solid #666766;
-  border-top:0px;
 
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
   -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;

@@ -102,6 +102,7 @@ div.link_bar small {
 
 div.link_bar .ll {
   display:inline;
+  position:relative;
 }
 
 div.link_bar a.ll:hover {
@@ -138,4 +139,29 @@ div.active {
 div.active, div.link_bar b {
   padding-top: 10px;
   padding-bottom: 6px;
+}
+
+div.link_bar .icon_link {
+  padding-top:14px;
+  padding-right:24px;
+}
+
+div.link_bar a.icon_link:hover {
+  background-color:#666766;
+  border-color:#666766;
+}
+
+div.link_bar a.facebook {
+  background: url("/images/debicons/facebooklogo.png") no-repeat scroll center transparent;
+}
+div.link_bar a.facebook:hover {
+  background-image: url("/images/debicons/Yfacebooklogo.png");
+}
+
+div.link_bar a.twitter {
+  background: url("/images/debicons/twitterlogo.png") no-repeat scroll center transparent;
+  border-width: 0;
+}
+div.link_bar a.twitter:hover {
+  background-image: url("/images/debicons/Ytwitterlogo.png");
 }
