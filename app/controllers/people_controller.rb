@@ -14,11 +14,6 @@ class PeopleController < ApplicationController
   include PersonForm
   include SemesterSet
 
-  class CustomTable
-    attr_accessor :table_name, :to_s
-    attr_writer :table_name, :to_s
-  end
-
   before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements]
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
@@ -82,6 +77,13 @@ class PeopleController < ApplicationController
     @advanced = true # we're now using advanced search by default
     @options = {}
     
+    if params[:page].present?
+      session[:last_options].each_pair do |k,v|
+        next if k == :page || k == "page"
+        params[k] = v  
+      end
+    end
+
     do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
 
     respond_to do |format|
@@ -618,12 +620,17 @@ class PeopleController < ApplicationController
   private
 
     def do_directory_search
+      @having = []
       if params[:search_id]
         @search = @my.searches.find(params[:search_id])
         @conditions = @search.query
         conditions = @conditions.split(' AND ')
         @options = JSON::Parser.new(@search.options).parse
-        @tables = JSON::Parser.new(@search.tables).parse
+        tables_with_string_keys = JSON::Parser.new(@search.tables).parse
+        @tables = {}
+        tables_with_string_keys.each_pair do |k,v|
+          @tables[k.constantize] = v
+        end
         @search_for = @search.description
         @search.update_attribute(:updated_at, Time.now)
         @advanced = true if @tables.present?
@@ -651,7 +658,6 @@ class PeopleController < ApplicationController
         @options = {}
         @tables = {}
         @search_for = []
-        @having = []
         # Check year in school
         # Check year in school
         if params[:school_year].present?
@@ -697,6 +703,7 @@ class PeopleController < ApplicationController
         conditions = add_involvement_conditions(conditions, nil)
       
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
+        session[:last_options] = @options
       
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
@@ -707,10 +714,10 @@ class PeopleController < ApplicationController
       if !params[:group_involvement].present?
       elsif params[:group_involvement].include?("not_group")
         @search_for << ", Not in a group this semester"
-        @having << "GroupInvolvements2 IS NULL"
+        @having << "GroupInvolvements IS NULL"
       elsif params[:group_involvement].include?("in_group")
         @search_for << ", In a group this semester"
-        @having << "GroupInvolvements2 IS NOT NULL"
+        @having << "GroupInvolvements IS NOT NULL"
       end
 
       for i in params[:group_involvement] || []
@@ -725,22 +732,24 @@ class PeopleController < ApplicationController
         @group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
         if i > 0
           @search_for << ", In a #{group_type.short_name} this semester"
-          @having << "GroupInvolvements2 IS NOT NULL"
+          @having << "GroupInvolvements IS NOT NULL"
         elsif i < 0
           @search_for << ", Not in a #{group_type.short_name} this semester"
-          @having << "GroupInvolvements2 IS NULL"
+          @having << "GroupInvolvements IS NULL"
         end
       end
 
       if params[:group_involvement].present?
-        @extra_select = "GI2.GroupInvolvements2 as GroupInvolvements2"
-        table = CustomTable.new
+        @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
-        table.table_name = "(SELECT Person.person_id as person_id, GROUP_CONCAT(GroupInvolvement.group_id SEPARATOR ',') as GroupInvolvements2 FROM c4c_intranet_dev.cim_hrdb_person as Person LEFT JOIN 
-            c4c_pulse_dev.group_involvements as GroupInvolvement on Person.person_id = GroupInvolvement.person_id AND GroupInvolvement.group_id IN (#{@group_ids.join(',')}) 
-            GROUP BY person_id ORDER BY Person.person_id)"
-        table.to_s = "GI2"
-        @tables[table] = "Person.person_id = GI2.person_id"
+        ActiveRecord::Base.connection.execute("LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, #{Search.table_name} WRITE")
+        sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
+            GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
+            #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')}) 
+            GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
+        ActiveRecord::Base.connection.execute(sql)
+        @temp_group_involvements_locked = true
+        @tables[TempGroupInvolvement] = "Person.person_id = TempGroupInvolvement.person_id"
       end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
@@ -759,49 +768,10 @@ class PeopleController < ApplicationController
       # If these conditions will result in too large a set, use pagination
       @group = Person._(:id)
       build_sql(tables_clause, @extra_select)
-=begin
-      @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
-      if @count > 0
-        # Build range for pagination
-        if @count > 500
-          finish = params[:finish]
-          if (start = params[:start]).blank?
-            start = ''
-            if @count > 2000
-              finish ||= 'am'
-            else
-              finish ||= 'b'
-            end
-          end
-          if finish.blank?
-            conditions << "#{last_name_col} >= '#{start}'"          
-          else
-            conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
-          end
-          @conditions = conditions.join(' AND ')
-        end
-        
-        build_sql(tables_clause)
-        @people = ActiveRecord::Base.connection.select_all(@sql)
-        post_process_directory(@people)
-      else
-        @people = []
-        @count = 0
-      end
-=end
-=begin
-      @people = ActiveRecord::Base.connection.select_all(@sql)
-      post_process_directory(@people)
-      @count = @people.length
-      @page = (params[:page] || 1).to_i
-      @per_page = 100
-      @total_pages = @count / 100 + (@count % @per_page > 0 ? 1 : 0)
-      @results_floor = (@page - 1) * @per_page
-      @results_ceiling = @page * @per_page
-      @results_ceiling = @results_ceiling < @count ? @results_ceiling : @count
-      @people = @people[@results_floor, @results_ceiling]
-=end
       @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+      if @temp_group_involvements_locked
+        ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+      end
       @count = @people.total_entries
 
       # pass which ministries were searched for to the view
@@ -1062,6 +1032,7 @@ class PeopleController < ApplicationController
          params[:email].present? ||
          params[:role].present? ||
          params[:ministry].present? ||
+         params[:group_involvement].present? ||
          params[:campus].present?
 
         return true
