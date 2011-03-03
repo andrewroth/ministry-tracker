@@ -1,0 +1,94 @@
+<%  
+# this partial renders a tabnav, you can call it in your views with:
+#   <%= tabnav :main % > (just the tabnav) 
+# or, if you want a boxed tabnav:
+#   <% tabnav :main do % >
+#     your html here
+#   <% end % >
+# (remove the space between % and >, we don't want to mess up your brand new tabnav :-))
+#
+# you can pass render_tabnav a few options:
+#   :generate_css => true|false #=> generates a default inline css for the tabnav, defaults to false
+#   :html => aHash #=> sets html options for the tabnav's div (es :html => {:class=> 'myCssClass', :id=>'myCssId'}) 
+#     
+return if @restrict_all_links
+
+render_tabnav :main, 
+              :html => {:class => 'verticalTablist', :id => 'verticalTablist' } do
+
+
+  add_tab do |t|
+   t.named "<div id='dashboardTab' class='tab'>DASHBOARD</div>"
+   t.titled 'This is your Dashboard'
+   t.links_to :controller => 'dashboard'
+  end
+
+  add_tab do |t|
+   t.named "<div id='profileTab' class='tab'>PROFILE</div>"
+   t.titled "You're special"
+   t.links_to person_path(@me)
+   t.highlights_on :controller => "people", :action => "show", :id => @me.id
+  end
+
+  add_tab do |t|
+   t.named "<div id='scheduleTab' class='tab'>SCHEDULE</div>"
+   t.titled "You're schedule"
+   t.links_to person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id)
+   t.highlights_on :controller => "timetables"
+  end
+
+  if authorized?(:new, :groups)
+    add_tab do |t|
+      t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
+      t.titled 'Groups for ' + @ministry.name
+      t.links_to :controller => "groups"
+      t.highlights_on :controller => "groups", :action => "index"
+    end if session[:ministry_id]
+  end
+  
+  if authorized?(:index, :stats)
+    add_tab do |t|
+      t.named "<div id='insightsTab' class='tab'>INSIGHTS</div>"
+      t.titled "Measuring the movement"
+      t.links_to :controller => 'stats'
+      t.highlights_on :controller => "stats"
+      t.highlights_on :controller => "weekly_reports"
+      t.highlights_on :controller => "semester_reports"
+    end
+  end
+
+  
+  
+  #  
+  # you can use restful routes with:
+  #
+  #add_tab do |t|
+  #  t.named 'Users'
+  #  t.links_to hash_for_users_path
+  #end
+  #
+  #add_tab do |t|
+  #  t.named 'Customers'
+  #  t.links_to :controller => 'customers'
+  #end
+  #  
+  # # A tab can be initialized with a Hash like this:
+  # 
+  # add_tab :name => 'welcome', :link => {:controller=>'welcome'}
+  #
+  # # You can have a dynamic name or link 
+  # # (this partial is evaluated in the page context, so it sees every helper or instance variable)
+  #  
+  # add_tab do |t|
+  #   t.named "#{current_user} details"
+  #   t.links_to :controller => 'users', :action => 'show', :id => current_user.id
+  # end
+  #
+  # # You can have an image inside 
+  #
+  # add_tab do |t|
+  #   t.named image_tag('test')
+  #   t.links_to :controller => 'users', :action => 'show', :id => current_user.id
+  # end
+end 
+%>

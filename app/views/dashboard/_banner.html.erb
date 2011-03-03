@@ -1,3 +1,5 @@
 <div id="banner">
+  <a id="leftBubble" href="<%= url_for :controller => "groups", :action => "join" %>"</a>
+  <a id="rightBubble" href="<%= person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id) %>"></a>
   <%= image_tag "/images/bannerdashboard.png" %>
 </div>

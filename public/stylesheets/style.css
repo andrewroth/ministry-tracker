@@ -418,6 +418,12 @@ h1 {
 
 /* TABS */
 
+/* the idea here is the regular horizontal tablist styles are defined first while the verticalTablist are defined later to override */
+
+#verticalTablistContainer { position: relative; height:100%; }
+
+#verticalTablist { background:url("/images/bracket_vertical.png") no-repeat scroll right top transparent; height:100%; margin-left:20px; }
+
 #tablist_container { position: relative; height: 50px; }
 
 #tablist {
@@ -447,12 +453,17 @@ h1 {
 	text-align: center;
   cursor:pointer;
 }
+.verticalTablist a {
+  display:block;
+  cursor:pointer;
+  text-align:left;
+}
 
-.tablist a:hover {
+.tablist a:hover, .verticalTablist a:hover {
   text-decoration: none;
 }
 
-.tablist div {
+.tablist div, .verticalTablist div {
   color: #666766;
   font-weight:bold;
   font-size: 14px;
@@ -462,31 +473,55 @@ h1 {
   background-repeat: no-repeat;
   line-height: 24px;
 }
+.verticalTablist div {
+  height: 30px;
+  line-height: 30px;
+}
 
 .tablist a.active {
   background:url("/images/P1bracket.png") no-repeat scroll center bottom transparent;
 }
+.verticalTablist a.active {
+  background:url("/images/bracket_vertical_knotch.png") no-repeat scroll right center transparent;
+}
 
-.tablist a.active div {
+.tablist a.active div, .verticalTablist a.active div {
   color: #FFCB05;
 }
 
-.tablist div:hover {
+.tablist div:hover, .verticalTablist div:hover {
   color: #FFCB05;
   text-decoration: none;
 }
 
-.tablist #dashboardTab                                        { background: url(/images/debicons/Gdashboard.png) no-repeat scroll 0 0 transparent; }
-.tablist a.active #dashboardTab, .tablist #dashboardTab:hover { background: url(/images/debicons/Ydashboard.png) no-repeat scroll 0 0 transparent; }
+#dashboardTab                               { background: url(/images/debicons/Gdashboard.png) no-repeat scroll transparent; }
+a.active #dashboardTab, #dashboardTab:hover { background: url(/images/debicons/Ydashboard.png) no-repeat scroll transparent; }
+.tablist #dashboardTab, .tablist a.active #dashboardTab { background-position:0px 0px; }
+.verticalTablist #dashboardTab, .verticalTablist a.active #dashboardTab  { background-position:6px center; }
 
-.tablist #profileTab                                      { background: url(/images/debicons/Gprofile.png) no-repeat scroll 1px 3px transparent; }
-.tablist a.active #profileTab, .tablist #profileTab:hover { background: url(/images/debicons/Yprofile.png) no-repeat scroll 1px 3px transparent; }
+#profileTab                             { background: url(/images/debicons/Gprofile.png) no-repeat scroll transparent; }
+a.active #profileTab, #profileTab:hover { background: url(/images/debicons/Yprofile.png) no-repeat scroll transparent; }
+.tablist #profileTab, .tablist a.active #profileTab { background-position:1px 3px; }
+.verticalTablist #profileTab, .verticalTablist a.active #profileTab { background-position:7px center; }
 
-.tablist #groupsTab                                     { background: url(/images/debicons/Ggroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
-.tablist a.active #groupsTab, .tablist #groupsTab:hover { background: url(/images/debicons/Ygroups.png) no-repeat scroll 0px 4px transparent; padding-left:25px; }
+#groupsTab                            { background: url(/images/debicons/Ggroups.png) no-repeat scroll transparent; }
+a.active #groupsTab, #groupsTab:hover { background: url(/images/debicons/Ygroups.png) no-repeat scroll transparent; }
+.tablist #groupsTab, .tablist a.active #groupsTab { background-position:0px 4px; padding-left:25px; }
+.verticalTablist #groupsTab, .verticalTablist a.active #groupsTab { background-position:0 center; }
 
-.tablist #insightsTab                                       { background: url(/images/debicons/Ginsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
-.tablist a.active #insightsTab, .tablist #insightsTab:hover { background: url(/images/debicons/Yinsights.png) no-repeat scroll 1px 8px transparent; padding-left:22px; }
+#insightsTab                              { background: url(/images/debicons/Ginsights.png) no-repeat scroll transparent; }
+a.active #insightsTab, #insightsTab:hover { background: url(/images/debicons/Yinsights.png) no-repeat scroll transparent; }
+.tablist #insightsTab, .tablist a.active #insightsTab { background-position:1px 8px; padding-left:22px; }
+.verticalTablist #insightsTab, .verticalTablist a.active #insightsTab { background-position:2px center; }
+
+#scheduleTab                              { background: url(/images/debicons/Gschicon.png) no-repeat scroll transparent; }
+a.active #scheduleTab, #scheduleTab:hover { background: url(/images/debicons/Yschicon.png) no-repeat scroll transparent; }
+.verticalTablist #scheduleTab, .verticalTablist a.active #scheduleTab { background-position:6px center; }
+
+.verticalTablist .tab {
+  padding-left:25px;
+  background-position: left center;
+}
 
 
 /* Commented Backslash Hack
@@ -1049,7 +1084,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
 
-div#logos.dashboard { padding:15px 0 0 50px; }
+div#logos.dashboard { padding:15px 0 0 40px; }
 div#logos.dashboard img { padding-right:20px; }
 
 #banner_container {
@@ -1066,6 +1101,28 @@ div#logos.dashboard img { padding-right:20px; }
   background: url("/images/bannerdashboardbg.png") repeat scroll transparent;
 }
 
+#banner #leftBubble {
+  position: absolute;
+  background: url("/images/bannerleftbubbleG.png") no-repeat scroll center transparent;
+  left: 660px;
+  top: 15px;
+  padding: 70px 84px;
+}
+#banner #leftBubble:hover {
+  background-image: url("/images/bannerleftbubbleY.png");
+}
+
+#banner #rightBubble {
+  position: absolute;
+  background: url("/images/bannerrightbubbleG.png") no-repeat scroll center transparent;
+  left: 844px;
+  top: 15px;
+  padding: 73px 89px;
+}
+#banner #rightBubble:hover {
+  background-image: url("/images/bannerrightbubbleY.png");
+}
+
 #gettingstarted {
   margin-bottom:5px;
 }
@@ -1080,13 +1137,20 @@ div#logos.dashboard img { padding-right:20px; }
 }
 
 div#col_1{
-width:49.5%;
-float:left;
+  width:205px;
+  height:500px;
+  float:left;
+  padding-right:40px;
 }
 
 div#col_2 {
-width:49.5%;
-float:right;
+  width:40%;
+  float:left;
+}
+
+div#col_3 {
+  width:25%;
+  float:right;
 }
 
 #dashwrap {padding:0;}
