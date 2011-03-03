@@ -449,10 +449,11 @@ h1 {
   color: #666766;
   font-weight:bold;
   font-size: 14px;
+  font-family: Arial, Helvetica, Sans-Serif;
   height: 40px;
   padding-left: 18px;
   background-repeat: no-repeat;
-  line-height: 25px;
+  line-height: 24px;
 }
 
 .tablist a.active {
@@ -752,7 +753,7 @@ margin-bottom:10px;
 
 ul.subtabs-menu li {
   display:inline;
-  padding:0px 32px 0 0;f
+  padding:0px 32px 0 0;
 }
 
 a.subtabs-menu-inactive:hover, a.subtabs-menu-active:hover {
@@ -762,6 +763,8 @@ a.subtabs-menu-inactive:hover, a.subtabs-menu-active:hover {
 a.subtabs-menu-inactive div, a.subtabs-menu-active div {
   display:inline;
   padding-left:14px;
+  font-size:12px;
+  font-family: Arial, Helvetica, Sans-Serif;
 }
 
 a.subtabs-menu-active div {
