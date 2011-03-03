@@ -518,6 +518,14 @@ a.active #insightsTab, #insightsTab:hover { background: url(/images/debicons/Yin
 a.active #scheduleTab, #scheduleTab:hover { background: url(/images/debicons/Yschicon.png) no-repeat scroll transparent; }
 .verticalTablist #scheduleTab, .verticalTablist a.active #scheduleTab { background-position:6px center; }
 
+#addStudentTab                                { background: url(/images/debicons/Gaddicon.png) no-repeat scroll transparent; }
+a.active #addStudentTab, #addStudentTab:hover { background: url(/images/debicons/Yaddicon.png) no-repeat scroll transparent; }
+.verticalTablist #addStudentTab, .verticalTablist a.active #addStudentTab { background-position:8px center; }
+
+div.tab.subtab                                { background: url(/images/debicons/Garroicon.png) no-repeat scroll transparent; position:relative; top:-12px; left:15px; height:20px; }
+a.active div.tab.subtab, div.tab.subtab:hover { background: url(/images/debicons/Yarroicon.png) no-repeat scroll transparent; }
+.verticalTablist div.tab.subtab, .verticalTablist a.active div.tab.subtab { background-position:10px 7px; }
+
 .verticalTablist .tab {
   padding-left:25px;
   background-position: left center;

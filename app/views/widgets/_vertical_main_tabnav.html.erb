@@ -13,7 +13,7 @@
 #     
 return if @restrict_all_links
 
-render_tabnav :main, 
+render_tabnav :vertical_main,
               :html => {:class => 'verticalTablist', :id => 'verticalTablist' } do
 
 
@@ -37,6 +37,7 @@ render_tabnav :main,
    t.highlights_on :controller => "timetables"
   end
 
+
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
@@ -44,8 +45,15 @@ render_tabnav :main,
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
     end if session[:ministry_id]
+
+    add_tab do |t|
+      t.named "<div id='createGroupTab' class='tab subtab'>create a group</div>"
+      t.titled 'Create a groups for ' + @ministry.name
+      t.links_to new_group_path
+    end if session[:ministry_id]
   end
-  
+
+
   if authorized?(:index, :stats)
     add_tab do |t|
       t.named "<div id='insightsTab' class='tab'>INSIGHTS</div>"
@@ -54,6 +62,22 @@ render_tabnav :main,
       t.highlights_on :controller => "stats"
       t.highlights_on :controller => "weekly_reports"
       t.highlights_on :controller => "semester_reports"
+    end
+
+    if authorized?(:new, :weekly_reports)
+      add_tab do |t|
+        t.named "<div id='weeklyStatsTab' class='tab subtab'>enter weekly stats</div>"
+        t.titled "Enter your weekly stats"
+        t.links_to :controller => :weekly_reports, :action => :new
+      end
+    end
+  end
+
+
+  if authorized?(:new)
+    add_tab do |t|
+      t.named "<div id='addStudentTab' class='tab'>add a student</div>"
+      t.links_to add_student_people_url
     end
   end
 
