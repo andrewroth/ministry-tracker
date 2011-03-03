@@ -8,7 +8,7 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar { height:50px; position: relative; background:url("/images/P2bracket.png") no-repeat scroll center bottom transparent; }
+
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -417,6 +417,13 @@ h1 {
 }
 
 /* TABS */
+
+#tablist_container { position: relative; height: 50px; }
+
+#tablist {
+  background:url("/images/P2bracket.png") no-repeat scroll center bottom transparent;
+}
+
 .tablist {
   width:100%;
   float:right;
@@ -1041,6 +1048,23 @@ border:1px solid #1F429B;
 div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
+
+div#logos.dashboard { padding:15px 0 0 50px; }
+div#logos.dashboard img { padding-right:20px; }
+
+#banner_container {
+  padding-bottom: 10px;
+  height: 172px;
+}
+
+#banner_container #banner {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: url("/images/bannerdashboardbg.png") repeat scroll transparent;
+}
 
 #gettingstarted {
   margin-bottom:5px;

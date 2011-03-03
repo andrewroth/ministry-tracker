@@ -38,7 +38,7 @@
 
 		<div id="wrapper">
 		  <div id="userbar">
-        <div id="logos">
+        <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
           <%= image_tag "c4clogo.png" %>
           <%= image_tag "pulselogo.png" %>
         </div>
@@ -73,9 +73,15 @@
 
       </div>
 
-      <div id="greenbar">
+      <% unless controller.controller_name == "dashboard" %>
+      <div id="tablist_container">
         <%= tabnav :main %>
+      <% else %>
+      <div id="banner_container">
+        <%= render :partial => "/dashboard/banner" %>
+      <% end %>
       </div>
+
 
 
       <%- else -%>
