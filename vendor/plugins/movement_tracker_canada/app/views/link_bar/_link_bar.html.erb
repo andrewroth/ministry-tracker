@@ -10,13 +10,15 @@
       e.preventDefault();
       box = $("div#" + $(e.target).attr("link_menu_box_id"));
       box.css('left', $(e.target).offset().left);
-      $(e.target).addClass('menu_expanded');
+      $(e.target).toggleClass('menu_expanded');
       box.slideToggle();
     });
 
-    $(document).mouseup(function(e) {
-      $("a.ll").removeClass('menu_expanded');
-      $(".link_menu_box").hide();
+    $(document).mousedown(function(e) {
+      if(!$(e.target).hasClass('menu_expanded')) {
+        $("a.ll").removeClass('menu_expanded');
+        $(".link_menu_box").hide();
+      }
     });
 
   });

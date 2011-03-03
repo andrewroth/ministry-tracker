@@ -15,23 +15,23 @@ div.link_bar {
   font-weight:bold;
 }
 
-div#tools, div#user {
+div.link_bar div#tools, div.link_bar div#user {
   position:absolute;
   bottom:6px;
 }
 
-div#tools {
+div.link_bar div#tools {
   left:0;
 }
 
-div#user {
+div.link_bar div#user {
   right:0;
   padding-right:9px;
   text-align: right;
   font-weight:normal;
 }
 
-div#tools nobr, div#user nobr, div.link_menu_box {
+div.link_bar div#tools nobr, div.link_bar div#user nobr, div.link_menu_box {
   padding-top: 1px;
 }
 
@@ -74,6 +74,7 @@ div.link_menu_box {
   border: 6px solid #4c4c4c;
   z-index: 1001;
   background: #4c4c4c;
+  font-size: 11px;
 
   -moz-box-shadow: 1px 4px 5px #C8C8C8; -webkit-box-shadow: 1px 4px 5px #C8C8C8;
   -moz-border-radius: 0 0 10px 10px; -webkit-border-radius: 0 0 10px 10px;
@@ -128,7 +129,7 @@ div.link_bar a img {
   top:6px;
 }
 
-div.active {
+div.link_bar div.active {
   display: inline;
   background: url("/images/link_bar_tab_right.png") no-repeat scroll right bottom transparent;
   padding-right: 12px;
@@ -136,7 +137,7 @@ div.active {
   cursor: default;
 }
 
-div.active, div.link_bar b {
+div.link_bar div.active, div.link_bar b {
   padding-top: 10px;
   padding-bottom: 6px;
 }
