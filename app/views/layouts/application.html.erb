@@ -57,11 +57,12 @@
         <% end %>
 
         <div id="userblock" class="link_bar">
-          Hi&nbsp;
+          <%= spinner('_switch_ministries', 'opaqueWhite') %>
+          &nbsp;Hi&nbsp;
           <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
           
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url %><%- end -%></div>
+            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();" %><%- end -%></div>
             <div id="switch_ministries_list" style="display:none">
               &nbsp;
             </div>
