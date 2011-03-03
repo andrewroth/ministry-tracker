@@ -76,7 +76,7 @@ div.link_menu_box {
   background: #4c4c4c;
   font-size: 11px;
 
-  -moz-box-shadow: 1px 4px 5px #C8C8C8; -webkit-box-shadow: 1px 4px 5px #C8C8C8;
+  -moz-box-shadow: 1px 5px 5px #C8C8C8; -webkit-box-shadow: 1px 5px 5px #C8C8C8;
   -moz-border-radius: 0 0 10px 10px; -webkit-border-radius: 0 0 10px 10px;
 }
 
