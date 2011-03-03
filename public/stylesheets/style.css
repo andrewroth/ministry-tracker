@@ -420,9 +420,13 @@ h1 {
 
 /* the idea here is the regular horizontal tablist styles are defined first while the verticalTablist are defined later to override */
 
-#verticalTablistContainer { position: relative; height:100%; }
+#verticalTablistContainer { position:relative; background:url("/images/bracket_vertical_bg.png") repeat-y scroll right transparent; height:100%; }
 
-#verticalTablist { background:url("/images/bracket_vertical.png") no-repeat scroll right top transparent; height:100%; margin-left:20px; }
+#verticalTablistContainer img.top    { position:absolute; top:0; right:0; }
+#verticalTablistContainer img.bottom { position:absolute; bottom:0; right:0; }
+
+#verticalTablist { margin-left:20px; }
+#verticalTablistBottom { background:url("/images/bracket_vertical_bottom.png") no-repeat scroll right top transparent; padding-top:7px; }
 
 #tablist_container { position: relative; height: 50px; }
 
@@ -1145,6 +1149,7 @@ div#logos.dashboard img { padding-right:20px; }
 }
 
 div#col_1{
+  position:absolute;
   width:205px;
   height:500px;
   float:left;
@@ -1153,7 +1158,8 @@ div#col_1{
 
 div#col_2 {
   width:40%;
-  float:left;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 div#col_3 {
@@ -1161,7 +1167,7 @@ div#col_3 {
   float:right;
 }
 
-#dashwrap {padding:0;}
+#dashwrap {padding:0; position:relative; }
 .dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
 .moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
 .moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
