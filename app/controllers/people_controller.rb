@@ -750,6 +750,7 @@ class PeopleController < ApplicationController
                                               #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
                                               mysql.time_zone_name READ
                                               |)
+        TempGroupInvolvement.delete_all
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
             #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')}) 
