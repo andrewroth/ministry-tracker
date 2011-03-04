@@ -81,6 +81,14 @@ render_tabnav :vertical_main,
     end
   end
 
+
+  if authorized?(:index, :manage)
+    add_tab do |t|
+      t.named "<div id='manageTab' class='tab'>manage ministries</div>"
+      t.links_to link_to('Manage your ministries', '/manage')
+    end
+  end
+
   
   
   #  
