@@ -1182,15 +1182,15 @@ div#logos.dashboard img { padding-right:20px; }
 }
 .threecol .col1 {
 	width:46%;			/* width of center column content (column width minus padding on either side) */
-	left:102%;			/* 100% plus left padding of center column */
+	left:103%;			/* 100% plus left padding of center column */
 }
 .threecol .col2 {
-	width:21%;			/* Width of left column content (column width minus padding on either side) */
-	left:31%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+	width:24%;			/* Width of left column content (column width minus padding on either side) */
+	left:29%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
 .threecol .col3 {
 	width:21%;			/* Width of right column content (column width minus padding on either side) */
-	left:85%;			/* Please make note of the brackets here:
+	left:82%;			/* Please make note of the brackets here:
 					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
 

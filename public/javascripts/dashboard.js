@@ -1,4 +1,8 @@
-$(document).ready(function(){requestMyEvents()});
+$(document).ready(function(){
+  $("#verticalTablistContainer").height($(".colmask").height());
+
+  requestMyEvents();
+});
 
 function requestMyEvents() {
   jQuery.ajax({
