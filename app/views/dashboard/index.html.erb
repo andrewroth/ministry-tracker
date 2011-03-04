@@ -8,10 +8,10 @@
 <%- if @ministry -%>
 
 
+<!-- credit for three column layout: http://matthewjamestaylor.com/blog/perfect-3-column.htm -->
 <div id="dashwrap" class="colmask threecol">
   <div class="colmid">
     <div class="colleft">
-
 
 
       <div class="col1">
@@ -36,7 +36,10 @@
         <% if @show_my_events %>
         <div class="dashmodule">
           <div class="moduletitle">
-            <h2>My Events</h2>
+            <h2>
+              My Events&nbsp;
+              <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
+            </h2>
             <div class="modulecontrols">
               <a href="" class="minmodule"></a>
               <a href="" class="movemodule"></a>
@@ -47,13 +50,6 @@
           <div id="events">
             <div class="modulecontent" style="min-height: 0px">
               <%= render :partial => 'projects' %>
-              <div id="eventsSpinnerContainer">
-                <br/>
-                <div class="lightgray">
-                  We're fetching your events from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>
-                  <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
-                </div>
-              </div>
             </div>
           </div>
         </div>

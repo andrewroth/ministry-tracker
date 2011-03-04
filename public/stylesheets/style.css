@@ -1195,49 +1195,28 @@ div#logos.dashboard img { padding-right:20px; }
 }
 
 
-/* DELETE
-div#col_1{
-  width:210px;
-  height:500px;
-  float:left;
-}
-
-div#col_2 {
-  width:40%;
-  margin-left:auto;
-  margin-right:auto;
-}
-
-div#col_3 {
-  width:25%;
-  float:right;
-}
-*/
-
-
 #dashwrap {padding:0; position:relative; }
-.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
-.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
-.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
+.dashmodule {float:left; width:100%; margin-top:10px;}
+.moduletitle {height:30px;}
+.moduletitle h2 {float:left; font-weight:bold; font-size:14px; padding:7px;}
 .modulecontrols {float:right;}
-.modulecontent {min-height:100px; padding:5px;}
+.modulecontent {min-height:50px; padding:7px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
 a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
-.modulecontent h6 {font-size:13px; }
-.modulecontent .norm {font-size:13px; font-weight: normal;}
-.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;}
+.modulecontent h6 {font-size:12px; }
+.modulecontent .norm {font-size:12px; font-weight: normal;}
+.lightgray { background:#EFEFEF; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 
 .modulesearchbox {margin-bottom:1em;}
 input.searchdash {font-size:16px; width:250px;}
 input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padding:3px 3px 2px 3px; position:absolute;}
 .modulesearchbox small {line-height:2em; font-size:11px; font-weight:bold;}
 
-a.modulecontent, .modulecontent ul {font-size:13px;}
+a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
-ul.groupicon li{background:url(/images/silk/user_go.png) no-repeat 0% 0%; padding-left:22px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
 ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
 
