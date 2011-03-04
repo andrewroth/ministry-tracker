@@ -8,107 +8,114 @@
 <%- if @ministry -%>
 
 
-<div id="dashwrap">
+<div id="dashwrap" class="colmask threecol">
+  <div class="colmid">
+    <div class="colleft">
 
-  <div id="col_1">
-    <div id="verticalTablistContainer">
-      <%= image_tag "/images/bracket_vertical_top.png", :class => "top" %>
-      <%= tabnav :vertical_main %>
-      <%= image_tag "/images/bracket_vertical_bottom.png", :class => "bottom" %>
-    </div>
-    <div class="clear"></div>
-  </div><!-- col 1 -->
-  
-  <div id="col_2">
-  
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>My Groups
-				<%= spinner('gt') %></h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
+
+
+      <div class="col1">
+
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>My Groups
+            <%= spinner('gt') %></h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+
+          <div id = "groups">
+            <%= render :partial => "dashboard/groups" %>
+          </div>
         </div>
-      </div>
-			
-      <div id = "groups">
-      	<%= render :partial => "dashboard/groups" %>
-      </div>
-    </div>
 
 
-    <% if @show_my_events %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>My Events</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
-        </div>
-      </div>
+        <% if @show_my_events %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>My Events</h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
 
-      <div id="events">
-        <div class="modulecontent" style="min-height: 0px">
-          <%= render :partial => 'projects' %>
-          <div id="eventsSpinnerContainer">
-            <br/>
-            <div class="lightgray">
-              We're fetching your events from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>
-              <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
+          <div id="events">
+            <div class="modulecontent" style="min-height: 0px">
+              <%= render :partial => 'projects' %>
+              <div id="eventsSpinnerContainer">
+                <br/>
+                <div class="lightgray">
+                  We're fetching your events from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>
+                  <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <% end %>
+        <% end %>
 
 
-    <% if is_ministry_leader %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>Stats</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
+        <% if is_ministry_leader %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>Stats</h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+          <div class="modulecontent">
+            <%= render :partial => "stats" %>
+          </div>
         </div>
-      </div>
-      <div class="modulecontent">
-        <%= render :partial => "stats" %>
-      </div>
-    </div>
-    <% end %>
+        <% end %>
 
 
-  
-    <div class="clear"></div>
-  </div><!-- col2 -->
+
+        <div class="clear"></div>
+      </div><!-- col1 -->
 
 
-  <div id="col_3">
-
-    <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>God at Work</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
+      <div class="col2">
+        <div id="verticalTablistContainer">
+          <%= image_tag "/images/bracket_vertical_top.png", :class => "top" %>
+          <%= tabnav :vertical_main %>
+          <%= image_tag "/images/bracket_vertical_bottom.png", :class => "bottom" %>
         </div>
-      </div>
-      <div class="modulecontent">
-        <%= render :partial => "insights" %>
-      </div>
+        <div class="clear"></div>
+      </div><!-- col2 -->
+
+      
+      <div class="col3">
+
+        <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>God at Work</h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+          <div class="modulecontent">
+            <%= render :partial => "insights" %>
+          </div>
+        </div>
+        <% end %>
+
+        <div class="clear"></div>
+      </div><!-- col3 -->
+      
+      
     </div>
-    <% end %>
-
-    <div class="clear"></div>
-  </div><!-- col3 -->
-
-  <div class="clear"></div>
+  </div>
 </div>
 
 
