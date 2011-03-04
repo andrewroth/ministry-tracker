@@ -1189,7 +1189,7 @@ div#logos.dashboard img { padding-right:20px; }
 	left:29%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
 .threecol .col3 {
-	width:21%;			/* Width of right column content (column width minus padding on either side) */
+	width:24%;			/* Width of right column content (column width minus padding on either side) */
 	left:82%;			/* Please make note of the brackets here:
 					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
@@ -2620,53 +2620,29 @@ table.groupInvolvementList th {
 #dashboardInsightsContainer {
   background-image: url(/images/canada.gif);
   background-repeat: no-repeat;
-  background-position: top center;
-  height: 140px;
+  background-position: left center;
+  height: 190px;
   text-align: center;
   position: relative;
+  font-weight:bold;
 }
 
-#dashboardInsightsContainer #campusInsights {
-  font-size: 70%;
+#dashboardInsightsContainer .insight {
+  padding: 10px 0 10px 10px;
 }
 
-#dashboardInsightsContainer #totalInsights {
-  font-size: 140%;
+#campusInsights .number {
+  font-size: 150%;
 }
 
-#dashboardInsightsContainer h1 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 4em;
-}
-
-#dashboardInsightsContainer h2 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 1.5em;
-}
-
-#dashboardInsightsContainer #campusInsights {
-  float: left;
-  width: 35%;
-  text-align: center;
-  margin-top: 3em;
-}
-
-#dashboardInsightsContainer #totalInsights {
-  float: right;
-  width: 35%;
-  text-align: center;
+#totalInsights .number {
+  font-size: 225%;
 }
 
 #dashboardInsightsContainer #insightsSubTitle {
-  width: 100%;
-  text-align: center;
-  font-size: 1em;
-  float: left;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  text-align: left;
+  font-weight: normal;
+  padding-bottom: 10px;
 }
 
 .modulecontent tr.total td.eventAttendees {
