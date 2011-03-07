@@ -159,10 +159,10 @@ class ApplicationController < ActionController::Base
       session[:can_manage]
     end
     
-    def is_involved_somewhere(person = nil)
-      person ||= (@me || get_person)
-      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
-    end
+#    def is_involved_somewhere(person = nil)
+#      person ||= (@me || get_person)
+#      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
+#    end
     
     def is_ministry_admin(ministry = nil, person = nil)
       person ||= (@me || get_person)
