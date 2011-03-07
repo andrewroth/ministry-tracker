@@ -24,7 +24,7 @@ end
 
 Factory.define :ministryrolepermission_6, :class => MinistryRolePermission do |m|
   m.id '6'
-  m.ministry_role_id '5'	# Ministry Leader
+  m.ministry_role_id '5'           # Ministry Leader
   m.permission_id '4'
 end
 
@@ -131,18 +131,3 @@ Factory.define :ministryrolepermission_23, :class => MinistryRolePermission do |
   m.ministry_role_id '10'
   m.permission_id '14'
 end
-
-Factory.define :ministryrolepermission_2222, :class => MinistryRolePermission do |m|
-  m.id '2222'				# formerly 22 (in 'remove_multiple_...' feature?)
-  m.ministry_role_id '5'
-  m.permission_id '14'
-end
-
-Factory.define :ministryrolepermission_2323, :class => MinistryRolePermission do |m|
-  m.id '2323'				# formerly 23 (in 'remove_multiple_...' feature?)
-  m.ministry_role_id '10'
-  m.permission_id '14'
-end
-
-
-
