@@ -1,4 +1,5 @@
 <% if authorized?(:index, :search) %>
+
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) && ((authorized?(:add_mentor, :people)&&(person == @me)) || authorized?(:add_mentor_to_other, :people))) %>
 
     <div id="uberMentorSearchContainer">

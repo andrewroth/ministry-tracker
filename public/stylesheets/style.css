@@ -2485,12 +2485,42 @@ td.discTree {
 
 .treeColumn {
     width:auto;
-    float:right;
-  background:#F5F5F5; padding:15px 20px 20px 20px;
+    float:left;
+		margin-right:30px;
+}
+
+.treeBranch {
+    color: #FFCB05;	
+}
+
+.treeBranchLink span {
+    color: #1F429B;
+}
+
+.treeBranchLink span:hover {
+    color: #ECAC00;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.bracketColumn {
+		float: left;
+}
+
+.bracketArrow {
+    float: left;
+    font-weight: bold;
+    color: #FFCB05; 
+}
+
+.bracketPic {
+    float: right;
 }
 
 .detailsColumn {
     margin-left:30px;
+		float:none
 }
 
 td.profilePic {
@@ -2513,6 +2543,7 @@ td.nameTitle {
 		margin-left:50px;
 		font-size: 18px;
 		font-weight: bold;
+		padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
 }
 
 .headerContactInfo {

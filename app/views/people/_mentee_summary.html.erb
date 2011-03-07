@@ -1,4 +1,4 @@
-<div id="mentee_<%= @person.id %>">
+<div id="person_details">
 <table>
   <tr>    
     <td>
@@ -11,7 +11,7 @@
            <%= image_tag 'photo_coming.png', :size => '100x100' %>
           <%- end -%>
         <%- else -%>
-           <%= image_tag(mentee.profile_picture.public_filename(:medium), :size => '100x100') %>
+           <%= image_tag 'photo_coming.png', :size => '100x100' %>
         <%- end -%>
       </div>     	
 
@@ -38,8 +38,8 @@
 <table>
 	<tr>
 		<td>
-			  <%= render :partial => 'group_list', :locals => { 
-    :group_types_and_involvements => mentee.group_group_involvements(:involved)
+			  <%= render :partial => 'group_list', :locals => { :list_title => "",
+    :group_types_and_involvements => mentee.group_group_involvements(:involved, {:semester => semester})
   } %>
 		</td>
 	</tr>

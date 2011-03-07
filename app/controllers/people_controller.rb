@@ -54,6 +54,7 @@ class PeopleController < ApplicationController
 
   def discipleship
     @p_user = @person
+    @semester = @current_semester
     @person = Person.find(params[:id])    # needed so that current Pulse user is not used
   end
   
@@ -67,15 +68,33 @@ class PeopleController < ApplicationController
    rescue ActiveRecord::RecordNotFound 
     # DO NOTHING IF NO PERSON FOUND FOR MENTEE ID
     # TODO?: post a temporary flash notice (although this error should not ever happen)
-  end  
-
-  if (is_ministry_leader == true || mentee.campus == @person.campus)
-    render :partial => "mentee_summary", :locals => { :mentee => mentee}
-  else
-    render :partial => "mentee_summary_not_permitted", :locals => { :mentee => mentee}
+    end  
+  
+    if (is_ministry_leader == true || mentee.campus == @person.campus)
+      render :partial => "mentee_summary", :locals => { :mentee => mentee, :semester => @current_semester }
+    else
+      render :partial => "mentee_summary_not_permitted", :locals => { :mentee => mentee}
+    end
+    
   end
   
- end
+  def show_mentee_profile_summary
+    begin
+      @person = Person.find(params[:mentor_id])    # needed so that current Pulse user is not used
+      @selected_mentee = Person.find(params[:mentee_id]) 
+      @bracket_level = params[:y]
+      @is_first_level = params[:is_first_level]
+      
+      respond_to do |format|
+        format.js
+      end     
+        
+    rescue ActiveRecord::RecordNotFound 
+    # DO NOTHING IF NO PERSON FOUND FOR MENTEE ID
+    # TODO?: post a temporary flash notice (although this error should not ever happen)
+    end  
+ 
+  end
  
 
   def advanced

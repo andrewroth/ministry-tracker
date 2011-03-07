@@ -1,0 +1,12 @@
+
+	<div class="bracketArrow" style="position: absolute; top: <%- if is_first_level == "true" %><%= PeopleHelper::MENTORSHIP_TREE_ROOT_HEIGHT + (PeopleHelper::MENTEES_BASE_FONTSIZE/2)%><%- else %><%= bracket_depth.to_i %><%- end %>px; left:<%= PeopleHelper::ARROW_LEFT_INDENT %>px; z-index: 2; ">
+		<%= image_tag 'bracket_vertical_knotch.png' %>
+	</div>
+	<div class="bracketPic" style="z-index: 1;">
+	  <%- names_shown = @person.self_and_descendants.size %>
+	  <%- bracket_length = names_shown*PeopleHelper::BRACKET_LENGTH_INCREMENT_PER_MENTEE %>
+	  <%- if bracket_length < PeopleHelper::BRACKET_LENGTH_MIN %>
+	      <%- bracket_length = PeopleHelper::BRACKET_LENGTH_MIN %>
+	  <%- end %>
+	  <%= image_tag 'bracket.png', :size => '18x'+bracket_length.to_s %>
+	</div>
