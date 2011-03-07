@@ -194,12 +194,16 @@ class DashboardController < ApplicationController
   def setup_insights
     @total_indicated_decisions = Year.current.evaluate_stat(nil, stats_reports[:indicated_decisions_report][:indicated_decisions])
 
-    my_campus = @person.primary_campus
-    my_campus = @my.campuses.first unless my_campus.present?
+    if is_staff_somewhere
+      my_campuses = @ministry.campuses
+    else
+      my_campuses = [@person.primary_campus]
+      my_campuses ||= @my.campuses
+    end
 
-    if my_campus.present?
-      @campus_indicated_decisions = Year.current.evaluate_stat(my_campus.id, stats_reports[:indicated_decisions_report][:indicated_decisions])
-      @insights_campus = my_campus
+    if my_campuses.present?
+      @campus_indicated_decisions = Year.current.evaluate_stat(my_campuses.collect{|c| c.id}, stats_reports[:indicated_decisions_report][:indicated_decisions])
+      @insights_campuses = my_campuses
     else
       @campus_indicated_decisions = nil
     end

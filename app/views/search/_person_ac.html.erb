@@ -8,14 +8,14 @@
 
   if person_ac.timetable_id.present?
     result += "<div class='autoCompleteIconLink'>" +
-              link_to(image_tag('silk/calendar.png'), "/people/#{person_ac.id}/timetables/#{person_ac.timetable_id}", :title => "Goto #{person_ac.first_name.capitalize}&rsquo;s timetable") +
-              "</div>"
+              link_to(image_tag('debicons/Gschicon.png'), "/people/#{person_ac.id}/timetables/#{person_ac.timetable_id}", :title => "Goto #{person_ac.first_name.capitalize}&rsquo;s timetable") +
+              "&nbsp;</div>"
   end
 
   if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?)
     result += "<div class='autoCompleteIconLink'>" +
               link_to(image_tag('debicons/Gimpicon.png'), impersonate_person_path(person_ac.id), :title => "Impersonate #{person_ac.first_name.capitalize}") +
-              "&nbsp;</div>"
+              "&nbsp;&nbsp;</div>"
   end
 
   result += "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac)}</div>" +

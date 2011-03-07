@@ -2,10 +2,10 @@
   <div id="insightsSubTitle">
     Indicated decisions
   </div>
-  <% if @insights_campus.present? && @campus_indicated_decisions.present? %>
+  <% if @insights_campuses.present? && @campus_indicated_decisions.present? %>
   <div id="campusInsights" class="insight">
     <div class="number"><%= @campus_indicated_decisions %></div>
-    <%= @insights_campus.desc %>
+    <%= @insights_campuses.collect {|c| c.desc }.join(', ') %>
   </div>
   <% end %>
   <div id="totalInsights" class="insight">
