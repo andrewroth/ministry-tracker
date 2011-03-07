@@ -78,6 +78,25 @@ class GlobalDashboardController < ApplicationController
           @scope[profile.scope] += 1
         end
       end
+
+      @stage = {}
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          stage = country.stage
+          @stage[stage] ||= 0
+          @stage[stage] += 1
+        end
+      end
+
+      @whq = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
+            @whq[stat] ||= 0
+            @whq[stat] += country.send(stat).to_i
+          end
+        end
+      end
     end
 
     def ensure_permission

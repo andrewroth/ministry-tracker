@@ -1,0 +1,17 @@
+<div class="dashmodule">
+  <div class="moduletitle">
+    <h2>WHQ Stats</h2>
+  </div>
+  <div class="modulecontent">
+    <table align="right">
+      <% @whq.each_pair do |k,v| %>
+        <tr align="right">
+          <td style="width: 50%"><%= k.humanize %></td><td style="width: 50px"><%= v %><td/>
+        </tr>
+      <% end %>
+      <tr align="right">
+        <td style="width: 50%"><b>Total</b></td><td><b><%= @whq.values.sum %></b></td>
+      </tr>
+    </table>
+  </div>
+</div>
