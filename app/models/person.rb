@@ -1,4 +1,5 @@
 class Person < ActiveRecord::Base
+  @@per_page = 500
   load_mappings
   include Common::Core::Person
   include Common::Core::Ca::Person

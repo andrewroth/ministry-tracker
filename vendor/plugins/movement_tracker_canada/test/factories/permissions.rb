@@ -26,11 +26,18 @@ Factory.define :permission_4, :class => Permission do |p|
   p.description 'View Directory'
 end
 
-Factory.define :permission_5, :class => Permission do |p|
+Factory.define :permission_5_sheldon, :class => Permission do |p|
   p.id '5'
   p.action 'update_multiple_roles'
   p.controller 'ministry_involvements'
   p.description 'Update multiple ministry involvement roles'
+end
+
+Factory.define :permission_5_hobbe, :class => Permission do |p|
+  p.id '555' # originally 5
+  p.action 'add_mentor_to_other'
+  p.controller 'people'
+  p.description 'Add mentor to other'
 end
 
 Factory.define :permission_6, :class => Permission do |p|
