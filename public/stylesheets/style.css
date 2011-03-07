@@ -1214,7 +1214,7 @@ div#logos.dashboard img { padding-right:20px; }
 .moduletitle {height:30px;}
 .moduletitle h2 {float:left; font-weight:bold; font-size:14px; padding:7px;}
 .modulecontrols {float:right;}
-.modulecontent {min-height:50px; padding:7px;}
+.modulecontent {padding:7px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
 a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
