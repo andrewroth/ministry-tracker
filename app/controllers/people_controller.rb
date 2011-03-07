@@ -318,7 +318,7 @@ class PeopleController < ApplicationController
     CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
-    flash[:notice] = "All of #{@person.full_name}'s involvements have been ended."
+    flash[:notice] = "#{@person.full_name} has successfully been removed."
     
     if (params[:logout] == 'true')
        redirect_to logout_url
@@ -358,9 +358,9 @@ class PeopleController < ApplicationController
 
             # If this is an Involved Student record that has plain_password value, 
             # this is a new user who should be notified of the account creation
-            if @person.user.plain_password.present? && is_involved_somewhere(@person)
-              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
-            end
+#            if @person.user.plain_password.present? && is_involved_somewhere(@person)
+#              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
+#            end
           end
 
           # create ministry involvement if it doesn't already exist

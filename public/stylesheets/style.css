@@ -2190,12 +2190,12 @@ table#set_initial_campus tr {
   font-weight: normal;
 }
 
-li.ac_over .autoCompleteTimetable {
+li.ac_over .autoCompleteIconLink {
   display: inline;
   float: right;
 }
 
-.autoCompleteTimetable {
+.autoCompleteIconLink {
   display: none;
 }
 
