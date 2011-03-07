@@ -1981,6 +1981,11 @@ td.eventAttendees {
   border-right: 1px solid #999999;
 }
 
+#signup_step2_info tr.campus td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 #signup_step1_info {
   width: 425px; float: left; padding: 0 3em 0 3em;
 }

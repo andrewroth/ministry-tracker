@@ -1,5 +1,5 @@
 <% instruction_block do %>
-  <b>Step 1:</b> Join a group!  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Log Out’ button and return to this page. Thank you!<% end %>
+  <b>Step 1:</b> Join a group!  <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Logout’ button and return to this page. Thank you!<% end %>
 <% end %>
 
 <center>
@@ -11,7 +11,7 @@
         options_for_select([""] + @campuses.collect{ |c| [ c.name, c.id.to_s ] },
           session[:signup_campus_id].to_s),
         :name => "primary_campus_involvement[campus_id]",
-        :style => "font-size:0.9em;"
+        :style => "font-size:1em;"
   %>
   
   <%= image_tag "spinner.gif", :id => "spinner", :style => "display:none" %>
@@ -53,9 +53,9 @@
   <DIV class="center">
     <P>
     <% if session[:from_facebook_canvas] == true %>
-      <%= link_to "Log Out", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
+      <%= link_to "Logout", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'", :class => "action-button" %>
     <% else %>
-      <%= link_to "Log Out", logout_url, :class => 'action-button' %>
+      <%= link_to "Logout", logout_url, :class => 'action-button' %>
     <% end %>
     </P>
   </DIV>
