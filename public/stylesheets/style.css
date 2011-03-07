@@ -420,7 +420,7 @@ h1 {
 
 /* the idea here is the regular horizontal tablist styles are defined first while the verticalTablist are defined later to override */
 
-#verticalTablistContainer { position:relative; background:url("/images/bracket_vertical_bg.png") repeat-y scroll right transparent; height:100%; }
+#verticalTablistContainer { position:relative; background:url("/images/bracket_vertical_bg.png") repeat-y scroll right transparent; min-height:300px; }
 
 #verticalTablistContainer img.top    { position:absolute; top:0; right:0; }
 #verticalTablistContainer img.bottom { position:absolute; bottom:0; right:0; }
@@ -516,7 +516,7 @@ a.active #groupsTab, #groupsTab:hover { background: url(/images/debicons/Ygroups
 #insightsTab                              { background: url(/images/debicons/Ginsights.png) no-repeat scroll transparent; }
 a.active #insightsTab, #insightsTab:hover { background: url(/images/debicons/Yinsights.png) no-repeat scroll transparent; }
 .tablist #insightsTab, .tablist a.active #insightsTab { background-position:1px 8px; padding-left:22px; }
-.verticalTablist #insightsTab, .verticalTablist a.active #insightsTab { background-position:2px center; }
+.verticalTablist #insightsTab, .verticalTablist a.active #insightsTab { background-position:2px 12px; }
 
 #scheduleTab                              { background: url(/images/debicons/Gschicon.png) no-repeat scroll transparent; }
 a.active #scheduleTab, #scheduleTab:hover { background: url(/images/debicons/Yschicon.png) no-repeat scroll transparent; }
@@ -1151,6 +1151,12 @@ div#logos.dashboard img { padding-right:20px; }
 #gettingstarted img {
   vertical-align: middle;
 }
+
+.groupSemesterTitle {
+  width: 100px;
+}
+
+
 
 
 
@@ -2662,6 +2668,15 @@ table.groupInvolvementList th {
   /*border-top: 1px solid;
   border-color: #E6E6E6;*/
   font-weight:bold;
+}
+
+.eventOpen {
+  font-weight: bold;
+  color: #6FBE44;
+}
+
+.eventClosed {
+  font-weight: bold;
 }
 
 .modulecontent tr.pat_no_project_chosen td {

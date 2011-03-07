@@ -1,26 +1,31 @@
 <div class="modulecontent">
-  <ul class="groupicon">
+  <table class="groupicon">
+    <% has_a_group = false %>
     <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL") + @person.all_groups.current_and_next_semester).group_by(&:semester).each do |semester, groups| %>
-      <div><%= semester ? semester.desc.upcase : "No Semester Set" %></div>
-      <%- for group in groups %>
-      <li>
-        <%- if authorized?(:accept_request, :group_involvements) || 
-              authorized?(:decline_requests, :group_involvements) %>
-          <%= link_to(group.name, group) %>
-          <ul class="requesticon">
-            <%= render :partial => 'groups/member_request', :collection => group.requests, 
-              :locals => { :source => 'dashboard' } %>
-          </ul>
-        <%- elsif group.is_interested(@me) -%>
-          <%= link_to(group.name, group) %>, Interested
-        <%- elsif group.has_requested(@me) -%>
-          <%= link_to(group.name, group) %>, Awaiting join request decision
-        <%- else -%>
-          <%= link_to(group.name, group) %>
-        <%- end -%>
-      </li>
+      <% has_a_group = true %>
+      <tr>
+        <td class="groupSemesterTitle"><%= semester ? semester.desc.upcase : "No Semester Set" %></td>
+        <% groups.each_with_index do |group, i| %>
+        <%= "<tr><td></td>" if i > 0 %>
+        <td>
+          <%- if authorized?(:accept_request, :group_involvements) ||
+                authorized?(:decline_requests, :group_involvements) %>
+            <%= link_to(group.name, group) %>
+            <ul class="requesticon">
+              <%= render :partial => 'groups/member_request', :collection => group.requests,
+                :locals => { :source => 'dashboard' } %>
+            </ul>
+          <%- elsif group.is_interested(@me) -%>
+            <%= link_to(group.name, group) %>, Interested
+          <%- elsif group.has_requested(@me) -%>
+            <%= link_to(group.name, group) %>, Awaiting join request decision
+          <%- else -%>
+            <%= link_to(group.name, group) %>
+          <%- end -%>
+        </td>
+      </tr>
       <%- end %>
     <%- end -%>
-  </ul>
-  <br/><%= link_to 'Join more groups', :controller => "groups", :action => "join"%>
+  </table>
+  <%= link_to has_a_group ? '<br/>Join more groups' : 'Join a group!', :controller => "groups", :action => "join"%>
 </div>
