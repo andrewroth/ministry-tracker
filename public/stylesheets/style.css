@@ -1210,7 +1210,7 @@ div#logos.dashboard img { padding-right:20px; }
 
 
 #dashwrap {padding:0; position:relative; }
-.dashmodule {float:left; width:100%; margin-top:10px;}
+.dashmodule {float:left; width:100%; margin-top:10px; margin-bottom:20px;}
 .moduletitle {height:30px;}
 .moduletitle h2 {float:left; font-weight:bold; font-size:14px; padding:7px;}
 .modulecontrols {float:right;}
@@ -1242,7 +1242,7 @@ div#userbar {
 div#logos { padding:27px 0 0 32px; }
 div#logos img { padding-right:20px; }
 
-div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-21px; right:60px; text-align: right; display:inline; }
+div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-22px; right:60px; text-align: right; display:inline; }
 div#signin { text-align:right; font-weight:bold; font-size: 14px; }
 div#signin a { color: #666766; text-transform: uppercase; }
 div#username { font-weight:bold; font-size:12px; display:inline; }
@@ -1281,10 +1281,11 @@ padding-bottom:5px;
 /* ************* */
 /* Flash Notices */
 #flash_notice, .flash_notice {
-margin:10px;
-padding:10px;
-background:#fff7d2;
-border:1px dotted orange;
+  color: #747474;
+  margin:10px;
+  padding:10px;
+  background:#EFEFEF;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 div.flash big {
@@ -1297,7 +1298,6 @@ div.flash b, div.flash_notice b  {
 }
 
 .flash {
-
 	margin-left: 10px;
 }
 .notice {
@@ -1330,8 +1330,8 @@ div.fieldWithErrors{
 }
 
 #errorExplanation ul li{
-padding-left:20px;
-list-style-type:round;
+  padding-left:20px;
+  list-style-type:round;
 }
 
 #errorExplanation h2 {
@@ -1358,9 +1358,9 @@ list-style-type:round;
 
 
 .adfieldbox {
-float:left;
-margin-right:15px;
-/*min-width:180px;*/
+  float:left;
+  margin-right:15px;
+  /*min-width:180px;*/
 }
 
 .adfieldbox input.wide {width:185px; padding:3px 0;}

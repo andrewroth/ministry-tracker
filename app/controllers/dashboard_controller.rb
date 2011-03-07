@@ -25,6 +25,12 @@ class DashboardController < ApplicationController
     end
 
     @show_my_events = Event.first.present? ? true : false
+
+    # update my schedule flash notice
+    my_timetable = (@my.timetable || Timetable.create(:person_id => @me.id))
+    if my_timetable.updated_at.blank? || my_timetable.updated_at == my_timetable.created_at
+      flash[:notice] = "You haven't filled out your schedule yet. <a href='#{person_timetable_path(@me.id, my_timetable.id)}'>UPDATE MY SCHEDULE</a>"
+    end
   end
 
   def events
