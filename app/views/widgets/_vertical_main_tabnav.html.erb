@@ -76,8 +76,8 @@ render_tabnav :vertical_main,
 
   if authorized?(:new)
     add_tab do |t|
-      t.named "<div id='addStudentTab' class='tab'>add a student</div>"
-      t.links_to add_student_people_url
+      t.named "<div id='addStudentTab' class='tab'>add a student #{spinner('add_student', 'opaqueWhite')}</div>"
+      t.links_to "#"
     end
   end
 

@@ -154,6 +154,7 @@ div.link_bar a.icon_link:hover {
 
 div.link_bar a.facebook {
   background: url("/images/debicons/facebooklogo.png") no-repeat scroll center transparent;
+  border-width: 0;
 }
 div.link_bar a.facebook:hover {
   background-image: url("/images/debicons/Yfacebooklogo.png");
@@ -162,6 +163,7 @@ div.link_bar a.facebook:hover {
 div.link_bar a.twitter {
   background: url("/images/debicons/twitterlogo.png") no-repeat scroll center transparent;
   border-width: 0;
+  padding-left: 10px;
 }
 div.link_bar a.twitter:hover {
   background-image: url("/images/debicons/Ytwitterlogo.png");

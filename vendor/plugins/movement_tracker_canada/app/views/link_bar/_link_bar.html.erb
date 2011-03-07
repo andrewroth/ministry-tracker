@@ -11,11 +11,11 @@
       box = $("div#" + $(e.target).attr("link_menu_box_id"));
       box.css('left', $(e.target).offset().left);
       $(e.target).toggleClass('menu_expanded');
-      box.slideToggle();
+      box.slideToggle('fast');
     });
 
     $(document).mousedown(function(e) {
-      if(!$(e.target).hasClass('menu_expanded')) {
+      if(!$(e.target).hasClass('menu_expanded') && !$(e.target).parent().hasClass('link_menu_box')) {
         $("a.ll").removeClass('menu_expanded');
         $(".link_menu_box").hide();
       }
@@ -66,8 +66,9 @@
 <% if is_staff_somewhere(@me) %>
 <div id="staff_box" class="link_menu_box">
   <a href="https://www.mygcx.org/C4C_Staff_Intranet/screen/home" title="Staff Dashboard">STASH</a>
-  <a href="https://docs.google.com/a/c4c.ca" title="Google Documents">DOCUMENTS</a>
-  <a href="https://www.google.com/calendar/hosted/c4c.ca" title="Google Calendar">CALENDAR</a>
+  <a href="http://mail.c4c.ca/" title="Google Mail">MAIL</a>
+  <a href="http://docs.c4c.ca/" title="Google Documents">DOCUMENTS</a>
+  <a href="http://calendar.c4c.ca/" title="Google Calendar">CALENDAR</a>
   <a href="https://focus.crusade.org">FOCUS</a>
   <a href="http://staff.powertochange.org">THE LOOP</a>
 </div>

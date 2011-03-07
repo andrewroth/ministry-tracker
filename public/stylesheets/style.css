@@ -456,6 +456,7 @@ h1 {
   display:block;
 	text-align: center;
   cursor:pointer;
+  overflow:hidden;
 }
 .verticalTablist a {
   display:block;
@@ -467,15 +468,20 @@ h1 {
   text-decoration: none;
 }
 
+.tablist div {
+  float: left;
+}
+
 .tablist div, .verticalTablist div {
   color: #666766;
-  font-weight:bold;
+  font-weight: bold;
   font-size: 14px;
   font-family: Arial, Helvetica, Sans-Serif;
   height: 40px;
   padding-left: 18px;
   background-repeat: no-repeat;
   line-height: 24px;
+  display: block;
 }
 .verticalTablist div {
   height: 30px;

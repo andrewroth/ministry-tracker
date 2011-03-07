@@ -16,6 +16,12 @@ $(document).ready(function(){
       });
   });
 
+  // add student tab is a remote link
+  $("#addStudentTab").click(function(e) {
+    e.preventDefault();
+    $.ajax({beforeSend:function(request){$('#spinneradd_student').show();}, complete:function(request){$('#spinneradd_student').hide(); show_add_student()}, dataType:'script', type:'get', url:'/people/add_student'});
+  });
+
   // eventbrite
   requestMyEvents();
 });
