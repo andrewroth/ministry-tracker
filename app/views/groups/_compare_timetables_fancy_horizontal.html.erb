@@ -124,7 +124,11 @@
 
 
 <script>
+  // we use absolute positioning to make the timetable compare width 100% of the page and therefore we need to specify the height of the compare container
+  // this is important to keep the footer in the correct spot
+  $("#compare").height($("#horizTableComparePageWidthContainer").height() + 150 + "px");
 
+  
   // zoom slider
 	$(function() {
 		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true, orientation:'horzontal'});
@@ -231,9 +235,5 @@
     $("." + $(this).attr("value")).toggle();
   });
 
-
-  // we use absolute positioning to make the timetable compare width 100% of the page and therefore we need to specify the height of the compare container
-  // this is important to keep the footer in the correct spot
-  $("#compare").height($("#horizTableComparePageWidthContainer").height() + 200 + "px");
 
 </script>
