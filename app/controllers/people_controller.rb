@@ -759,6 +759,7 @@ class PeopleController < ApplicationController
             GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
         ActiveRecord::Base.connection.execute(sql)
         @temp_group_involvements_locked = true
+        Lock.establish_lock("not_in_group")
         @tables[TempGroupInvolvement] = "Person.person_id = TempGroupInvolvement.person_id"
       end
 
@@ -780,7 +781,7 @@ class PeopleController < ApplicationController
       build_sql(tables_clause, @extra_select)
       @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
       if @temp_group_involvements_locked
-        #ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+        Lock.free_lock("not_in_group")
       end
       @count = @people.total_entries
 
