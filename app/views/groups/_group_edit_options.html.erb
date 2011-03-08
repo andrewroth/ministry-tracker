@@ -18,14 +18,17 @@
 
 <%- if authorized?(:compare_timetables, :groups) -%>
   <%= link_to_remote 'Compare Timetables', {
-    :url => compare_timetables_group_url(:id => @group.id), 
-    :with => "#{data}", :complete => "location.hash = 'compare';"
+    :url => compare_timetables_group_url(:id => @group.id),
+    :with => "#{data}", :complete => "window.location = '#compare'; $('#spinner_compare_timetables').hide();", :before => "$('#spinner_compare_timetables').show()"
   }, {:class => 'small'} 
   %>
 
   <%- tooltip do -%>
     <p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p>
   <%- end -%>
+
+  &nbsp;
+  <%= spinner('_compare_timetables') %>
 <%- end -%>
 
 <%- if authorized?(:transfer, :group_involvements) -%>
