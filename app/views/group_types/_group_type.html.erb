@@ -1,5 +1,6 @@
 <tr id="<%= dom_id(group_type) %>">
     <td><%=h group_type.group_type %></td>
+    <td><%=h group_type.short_name %></td>
     <td style="text-align: center;">
         <%- if group_type.mentor_priority? -%>
         <%= image_tag('silk/accept.png') %>
@@ -9,6 +10,16 @@
         <%- if group_type.public? -%>
         <%= image_tag('silk/accept.png') %>
         <%- end %>
+    </td>
+    <td style="text-align: center;">
+      <%- if group_type.in_directory_search_not_in -%>
+        <%= image_tag('silk/accept.png') %>
+      <%- end -%>
+    </td>
+    <td style="text-align: center;">
+      <%- if group_type.in_directory_search_in -%>
+        <%= image_tag('silk/accept.png') %>
+      <%- end -%>
     </td>
     <td style="text-align: center;">
         <%- if group_type.has_collection_groups -%>

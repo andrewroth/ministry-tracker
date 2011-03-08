@@ -121,24 +121,27 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     xhr :get, :new
     assert_not_nil(assigns["ministry_involvement"])
   end
+  
+
 
   test "edit multiple roles" do
     setup_people
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryinvolvement_12)
+    Factory(:ministryinvolvement_13)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)
 
     get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"]
-    
+ 
     assert assigns(:involvements)
     assert_equal 2, assigns(:involvements).size
 
     assert assigns(:people_without_involvements)
     assert_equal 1, assigns(:people_without_involvements).size
-
   end
 
   test "edit multiple roles with role search" do
@@ -146,6 +149,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryinvolvement_12)
+    Factory(:ministryinvolvement_13)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)
@@ -177,9 +182,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   test "update multiple roles no permission" do
     setup_people
     setup_ministry_involvements
-    Factory(:permission_5)
-    Factory(:ministryrolepermission_6)
-    Factory(:ministryrolepermission_7)
+    Factory(:permission_13)
+    Factory(:ministryrolepermission_20)
+    Factory(:ministryrolepermission_21)
     Factory(:user_2)
     Factory(:person_2)
     Factory(:access_2)
@@ -201,6 +206,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryrole_10)
+    Factory(:person_6)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["8"], :role => {:id => "10"}

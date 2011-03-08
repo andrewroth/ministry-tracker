@@ -9,9 +9,9 @@
         <% form_tag url_for(:controller => :search), :method => 'get' do %>
 
           <%  if controller.controller_name == "search" && (controller.action_name == "people") %>
-            <input type="text" id="uberMenteeSearchBox" class="search" name="q2" value="<%= q2 %>"/>
+            <input type="text" id="uberMenteeSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
-            <input type="text" id="uberMenteeSearchBox" class="search" name="q2" value="<%= default_search_box_text %>"/>
+            <input type="text" id="uberMenteeSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
           <% end %>
 
         <% end %>
@@ -51,21 +51,6 @@
           mentee_id = selectedRow.substring(selectedRow.indexOf('>', indexOfId)+1, selectedRow.indexOf('<', indexOfId));
           location.href = "/people/"+<%= person.id %>+"?mt="+mentee_id;
         });
-
-
-        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
-        var prepare = function() {
-          jQuery.ajax({
-            dataType:'script',
-            type:'get',
-            url: 'people/prepare'});
-          $('#uberMenteeSearchBox').unbind('mouseover', prepare);
-          $('#uberMenteeSearchBox').unbind('focus', prepare);
-        };
-
-        $('#uberMenteeSearchBox').bind('mouseover', prepare);
-        $('#uberMenteeSearchBox').bind('focus', prepare);
-        <% end %>
 
 
         $(document).ready(function() {

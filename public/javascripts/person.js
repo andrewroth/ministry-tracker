@@ -29,11 +29,12 @@ $(function() {
 function performAction() {
 	if($('#perform_action').val() != '') {
 		if($("form#people_form INPUT[@name=person[]]:checkbox:checked").length > 0) {
+      $('#spinner_perform_action').show();
 			$('#people_form').attr('action', $('#perform_action').val());
 			$('#people_form').submit();
 		} else {
 			alert("Please check at least one person to perform that action on.")
-			$('#perform_action').val('')
+			$('#perform_action').val('');
 		}
 	}
 }

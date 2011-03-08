@@ -18,14 +18,7 @@ class CimHrdbPeopleController < ApplicationController
     @people = Person.search(params[:search], params[:page], params[:per_page]) if @search
 
     respond_to do |format|
-      format.html
-      format.js {
-        render :update do |page|
-          # 'page.replace' will replace full "results" block...works for this example
-          # 'page.replace_html' will replace "results" inner html...useful elsewhere
-          page.replace 'people', :partial => 'people'
-        end
-      }
+      format.js
     end
   end
 

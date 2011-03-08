@@ -1,3 +1,6 @@
+<%- if list_title.present? && group_types_and_involvements.present? -%>
+  <h5 class="title"><%= list_title %></h5>
+<%- end -%>
 <%- group_types_and_involvements.each do |group_type, gis| -%>
   <h4><%= group_type.group_type.pluralize %></h4>
   <ul> 
