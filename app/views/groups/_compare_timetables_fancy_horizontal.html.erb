@@ -35,7 +35,6 @@
 
 
 <br/>
-<br/>
 
 
 <% day_width = 14.285714  %>
@@ -231,5 +230,10 @@
   $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
     $("." + $(this).attr("value")).toggle();
   });
+
+
+  // we use absolute positioning to make the timetable compare width 100% of the page and therefore we need to specify the height of the compare container
+  // this is important to keep the footer in the correct spot
+  $("#compare").height($("#horizTableComparePageWidthContainer").height() + 200 + "px");
 
 </script>

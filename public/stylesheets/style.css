@@ -503,6 +503,10 @@ h1#title {
     margin-right:15px;
 }
 
+#helpLink {
+  float: right;
+}
+
 
 /* LITTLE THINGS */
 
@@ -2487,7 +2491,7 @@ table.groupInvolvementList th {
 /*  Fancy Horizontal Timetable Compare section  */
 /************************************************/
 
-#horizTableComparePageWidthContainer { position:absolute; left:0; right:0; width:100%; padding-bottom:10em; }
+#horizTableComparePageWidthContainer { position:absolute; left:0; right:0; width:100%; }
 #horizTableCompareContainer { position: relative; padding:0 4em;}
 .horizTableCompare .colourLegend { display:inline-block; width:100%; height:40px; }
 .horizTableCompare .namesList { float:left; padding-top:60px; min-height:50px; }
