@@ -39,8 +39,8 @@
 		<div id="wrapper">
 		  <div id="userbar">
         <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-          <%= image_tag "c4clogo.png" %>
-          <%= image_tag "pulselogo.png" %>
+          <%= link_to image_tag("c4clogo.png"), :controller => 'dashboard', :action => 'index' %>
+          <%= link_to image_tag("pulselogo.png"), :controller => 'dashboard', :action => 'index' %>
         </div>
 
 

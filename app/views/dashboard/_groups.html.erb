@@ -16,9 +16,9 @@
                 :locals => { :source => 'dashboard' } %>
             </ul>
           <%- elsif group.is_interested(@me) -%>
-            <%= link_to(group.name, group) %>, Interested
+            <%= link_to(group.name, group) %>, interested
           <%- elsif group.has_requested(@me) -%>
-            <%= link_to(group.name, group) %>, Awaiting join request decision
+            <%= link_to(group.name, group) %>, awaiting join request decision
           <%- else -%>
             <%= link_to(group.name, group) %>
           <%- end -%>
