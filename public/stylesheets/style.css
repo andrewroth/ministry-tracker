@@ -743,6 +743,23 @@ text-decoration:none;
 background:white;
 }
 
+<<<<<<< HEAD
+=======
+#subtabs #profileSubTab                                                      { background: url(/images/debicons/Gprofile_s.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #profileSubTab, #subtabs #profileSubTab:hover { background: url(/images/debicons/Yprofile_s.png) no-repeat scroll 0 1px transparent; }
+
+#subtabs #timetableSubTab                                                        { background: url(/images/debicons/Gschicon_s.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background: url(/images/debicons/Yschicon_s.png) no-repeat scroll 0 1px transparent; }
+
+#subtabs #discipleshipSubTab                                                        { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 1px transparent; }
+
+
+#subtabs #impersonateSubTab                                                          { background: url(/images/debicons/Gimpicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
+
+
+>>>>>>> 907cd9c... Used new technique to ensure disc tree bracket arrow works in Chrome & Firefox
 #profiletitle {
 margin-bottom:10px;
 }
@@ -2491,6 +2508,7 @@ td.discTree {
 
 .treeBranch {
     color: #FFCB05;	
+    background: url("/images/bracket_vertical_bg.png") repeat-y scroll right center transparent;
 }
 
 .treeBranchLink span {
@@ -2503,6 +2521,13 @@ td.discTree {
     cursor: pointer;
 }
 
+.bracketTop {
+		float: right;
+}
+
+.bracketBottom {
+		float: right;
+}
 
 .bracketColumn {
 		float: left;

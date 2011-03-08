@@ -1,5 +1,5 @@
 
-	<div class="bracketArrow" style="position: absolute; top: <%- if is_first_level == "true" %><%= PeopleHelper::MENTORSHIP_TREE_ROOT_HEIGHT + (PeopleHelper::MENTEES_BASE_FONTSIZE/2)%><%- else %><%= bracket_depth.to_i %><%- end %>px; left:<%= PeopleHelper::ARROW_LEFT_INDENT %>px; z-index: 2; ">
+	<div class="bracketArrow" style="position: relative; top: <%- if is_first_level == "true" %><%= (PeopleHelper::MENTEES_BASE_FONTSIZE/2) %><%- else %><%= bracket_depth.to_i - PeopleHelper::MENTORSHIP_TREE_ROOT_HEIGHT - name_height.to_i %><%- end %>px; left:<%= PeopleHelper::ARROW_LEFT_INDENT %>px; z-index: 2; ">
 		<%= image_tag 'bracket_vertical_knotch.png' %>
 	</div>
 	<div class="bracketPic" style="z-index: 1;">

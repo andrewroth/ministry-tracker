@@ -2,18 +2,13 @@
 <table>
 	<tr>		
 		<td class="discTree" id="mentorship">
-			<div class="treeColumn">
+
 				<%= render :partial => 'discipleship_tree', :locals => { :selected => @person } %>
-			</div>
+
 		</td>
-		<td>
-      <div class="bracketColumn" id="bracket">
-      	<%- top_name_tree_depth = PeopleHelper::MENTORSHIP_TREE_ROOT_HEIGHT %>
-      	<%- is_first_level = "true" %>
-        <%= render :partial => 'tree_summary_divider', :locals => { :bracket_depth => top_name_tree_depth, :is_first_level => is_first_level } %>
-      </div>			
+		<td>		
 			<div class="detailsColumn" id="profile_summary">       
-				<%- if (is_ministry_leader == true || @p_user.campus == @person.campus) %>
+		<%- if (is_ministry_leader == true || @p_user.campus == @person.campus) %>
           <%= render :partial => 'mentee_summary', :locals => { :mentee => @person, :semester => @semester } %>
         <%-else %> 
           <%= render :partial => "mentee_summary_not_permitted", :locals => { :mentee => @person}  %>

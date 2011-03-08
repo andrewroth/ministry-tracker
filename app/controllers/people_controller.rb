@@ -84,7 +84,8 @@ class PeopleController < ApplicationController
       @selected_mentee = Person.find(params[:mentee_id]) 
       @bracket_level = params[:y]
       @is_first_level = params[:is_first_level]
-      
+      @name_height = params[:name_height]
+
       respond_to do |format|
         format.js
       end     
@@ -761,6 +762,60 @@ class PeopleController < ApplicationController
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
+<<<<<<< HEAD
+=======
+      
+      conditions = ""
+
+      if !params[:group_involvement].present?
+      elsif params[:group_involvement].include?("not_group")
+        @search_for << ", Not in a group this semester"
+        @having << "GroupInvolvements IS NULL"
+      elsif params[:group_involvement].include?("in_group")
+        @search_for << ", In a group this semester"
+        @having << "GroupInvolvements IS NOT NULL"
+      end
+
+      for i in params[:group_involvement] || []
+        next if i == 'in_group' || i == 'not_group'
+        i = i.to_i
+
+        group_type = GroupType.find(i < 0 ? -i : i)
+        @semester = Semester.current
+        conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
+          " AND group_type_id = #{group_type.id}"
+        @group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
+        @group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
+        if i > 0
+          @search_for << ", In a #{group_type.short_name} this semester"
+          @having << "GroupInvolvements IS NOT NULL"
+        elsif i < 0
+          @search_for << ", Not in a #{group_type.short_name} this semester"
+          @having << "GroupInvolvements IS NULL"
+        end
+      end
+
+      if params[:group_involvement].present?
+        @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
+        @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
+        ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
+                                              #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
+                                              #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
+                                              #{CurrentAddress.table_name} as CurrentAddress READ, #{Access.table_name} as Access READ,
+                                              #{Campus.table_name} as Campus READ, #{SchoolYear.table_name} as SchoolYear READ,
+                                              #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
+                                              mysql.time_zone_name READ
+                                              |)
+        TempGroupInvolvement.delete_all
+        sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
+            GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
+            #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')}) 
+            GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
+        ActiveRecord::Base.connection.execute(sql)
+        @temp_group_involvements_locked = true
+        @tables[TempGroupInvolvement] = "Person.person_id = TempGroupInvolvement.person_id"
+      end
+>>>>>>> 907cd9c... Used new technique to ensure disc tree bracket arrow works in Chrome & Firefox
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
       tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')

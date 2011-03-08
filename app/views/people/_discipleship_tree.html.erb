@@ -10,6 +10,9 @@
 	}
 	</script>
 
+<div id="bracketTop" style="background: url('/images/bracket_vertical_top.png') no-repeat scroll right bottom transparent;">
+	&nbsp;
+</div>
 
 <%- first_level = true %>
 <%- last_level = -1 %>
@@ -18,11 +21,11 @@
 <%- Person.each_with_level(@person.self_and_descendants) do |o, level| %>
   <%- name_font_size = PeopleHelper::MENTEES_BASE_FONTSIZE - level %>
 
-	<div id="<%= "treeBranch"+o.id.to_s %>" class="treeBranch" style="padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
+	<div id="<%= "treeBranch"+o.id.to_s %>" class="treeBranch" style="<%- if o == selected %>background: url('/images/bracket_vertical_knotch_plus_line.png') no-repeat scroll right center transparent;<%- end %> padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
 		  <%- if o == selected %>
 			  <%= o.full_name %>
 		  <%- else %>				
-				<div class="treeBranchLink" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=@person.id%>"><span><%=o.full_name%></span></div>
+				<div class="treeBranchLink" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=@person.id%>"><span><%=o.full_name%></span></div>
 	    <%- end %>
 	</div>
 	<%- if first_level == true %>
@@ -31,9 +34,14 @@
 	<%- last_level = level %>
 <%- end -%>
 
+<div id="bracketBottom" style="background: url('/images/bracket_vertical_bottom.png') no-repeat scroll right top transparent;">
+	&nbsp;
+</div>
+
+
 <script>
   $(".treeBranchLink").click(function() { 
-  	jQuery.ajax({data:"is_first_level=" + $(this).attr("is_first_level") + "&mentee_id=" + $(this).attr("mentee_id") + "&mentor_id=" + $(this).attr("mentor_id") + 
+  	jQuery.ajax({data:"name_height=" + $(this).attr("name_height") + "&is_first_level=" + $(this).attr("is_first_level") + "&mentee_id=" + $(this).attr("mentee_id") + "&mentor_id=" + $(this).attr("mentor_id") + 
   	                      "&y=" + getY(this), 
   	             dataType:'script', type:'get', url:'/people/'+$(this).attr("mentee_id")+'/show_mentee_profile_summary'});
   });
