@@ -14,7 +14,7 @@
     {:class => 'small'}
   %>
   &nbsp;
-  <%= spinner('_change_style') %>
+  <%= spinner('_change_style', 'opaqueWhite') %>
 </h4>
 
 
@@ -41,84 +41,85 @@
 <% day_width = 14.285714  %>
 <% interval_width = 3.125 %>
 
+<div id="horizTableComparePageWidthContainer">
+  <div id="horizTableCompareContainer" class="horizTableCompare">
 
-<div id="horizTableCompareContainer" class="horizTableCompare">
+    <div class="colourLegend">
+      <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
+      <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
+      <div class="legendItem"><div class="personTimeBlock bad "></div> Busy </div>
+    </div>
 
-  <div class="colourLegend">
-    <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
-    <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
-    <div class="legendItem"><div class="personTimeBlock bad "></div> Busy </div>
-  </div>
+    <div class="namesList">
+      <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
+      <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
+      <%= "<div class='noTableNote'><br/><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
+    </div>
 
-  <div class="namesList">
-    <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
-    <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
-    <%= "<div class='noTableNote'><br/><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
-  </div>
+    <div class="cursorHoverLine"></div>
 
-  <div class="cursorHoverLine"></div>
-  
-  <div class="frame">
+    <div class="frame">
 
-    <div class="tableContainer">
-      <div class="timelineHeaderContainer timelineHeader">
-        <div class="timesContainer">
-          <% Date::DAYNAMES.each_with_index do |day, di| %>
-            <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
-              <div class="dayName"><%=day%></div>
+      <div class="tableContainer">
+        <div class="timelineHeaderContainer timelineHeader">
+          <div class="timesContainer">
+            <% Date::DAYNAMES.each_with_index do |day, di| %>
+              <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
+                <div class="dayName"><%=day%></div>
 
-              <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
-              <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+                <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
+                <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
 
-              <% i=0 %>
-              <% while time < end_time %>
-                <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
-                  <%= time_header_text(time) %>
-                </div>
+                <% i=0 %>
+                <% while time < end_time %>
+                  <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
+                    <%= time_header_text(time) %>
+                  </div>
 
-                <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
+                  <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
 
-                <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
-                     title="<span class='whiteFont'><%=time_header_text(time)%></span> - <span class='whiteFont'><%=day%></span>"
-                     min="<%=time.min%>" hour="<%=time.hour%>" day="<%=di%>">
-                </div>
-                
-                <% time += Timetable::INTERVAL %>
-                <% i+=1 %>
-              <% end %>
-            </div>
-          <% end %>
+                  <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
+                       title="<span class='whiteFont'><%=time_header_text(time)%></span> - <span class='whiteFont'><%=day%></span>"
+                       min="<%=time.min%>" hour="<%=time.hour%>" day="<%=di%>">
+                  </div>
+
+                  <% time += Timetable::INTERVAL %>
+                  <% i+=1 %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="timesContainer">
+            <% Date::DAYNAMES.take(6).each_with_index do |day, di| %>
+              <!-- this is so complicated in order to accommodate funny percentage math some browsers do -->
+              <% border_width = 3 %>
+              <div class="dayBackground" style="left: -<%=di*border_width%>px; width:<%=day_width%>%;"></div>
+            <% end %>
+          </div>
         </div>
 
-        <div class="timesContainer">
-          <% Date::DAYNAMES.take(6).each_with_index do |day, di| %>
-            <!-- this is so complicated in order to accommodate funny percentage math some browsers do -->
-            <% border_width = 3 %>
-            <div class="dayBackground" style="left: -<%=di*border_width%>px; width:<%=day_width%>%;"></div>
-          <% end %>
+        <div class="rows">
+          <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
         </div>
       </div>
 
-      <div class="rows">
-        <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
+    </div>
+
+    <div class="frameControls">
+      <div class="zoomSliderContainer">
+        <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut", :title => "Zoom out" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn", :title => "Zoom in" %>
+      </div>
+      <div class="visibleDaysControls">
+        <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
+          &nbsp;
+          <%= check_box_tag 'visibleDays[]', Date::DAYNAMES[i].downcase, true, :class => "toggleDay" %>
+          <%= day %>
+        <% end %>
       </div>
     </div>
 
   </div>
-
-  <div class="frameControls">
-    <div class="zoomSliderContainer">
-      <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn" %>
-    </div>
-    <div class="visibleDaysControls">
-      <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
-        &nbsp;
-        <%= check_box_tag 'visibleDays[]', Date::DAYNAMES[i].downcase, true, :class => "toggleDay" %>
-        <%= day %>
-      <% end %>
-    </div>
-  </div>
-  
 </div>
 
 
@@ -137,6 +138,10 @@
   // slider zoom buttons
   $(".zoomSliderOut").click(function(e) {
     $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")-2470);
+
+    if ($(".horizTableCompare .frame").width() > $("#zoomSlider").slider("value")) {
+      $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-10 );
+    }
 
     $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
     zoom_adjustments($(".horizTableCompare .tableContainer").width());
