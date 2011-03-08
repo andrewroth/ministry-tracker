@@ -1,0 +1,27 @@
+<style>
+#dashwrap {padding:0;}
+.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
+.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
+.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
+.modulecontrols {float:right;}
+.modulecontent {min-height:100px; padding:5px;}
+.modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
+</style>
+
+Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;
+Mission Critical Component (MCC): <%= select_tag "mcc", options_for_select(@mcc_options) %>&nbsp;
+<%= spinner %><br/>
+
+<%= observe_field :location, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
+
+<%= observe_field :mcc, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
+<br/>
+
+<%= render 'stats' %>

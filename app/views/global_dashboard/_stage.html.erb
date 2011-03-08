@@ -1,0 +1,21 @@
+<div class="dashmodule">
+  <div class="moduletitle">
+    <h2><%= "Stage" %></h2>
+  </div>
+  <div class="modulecontent">
+    <table align="right">
+      <tr align="right">
+        <td style="width: 50%">Stage 1</td><td style="width: 50px"><%= @stage[1] %><td/>
+      </tr><tr align="right">
+        <td style="width: 50%">Stage 2</td><td style="width: 50px"><%= @stage[2] %><td/>
+      </tr><tr align="right">
+        <td style="width: 50%">Stage 3</td><td style="width: 50px"><%= @stage[3] %><td/>
+      </tr><tr align="right">
+        <td style="width: 50%">No value entered</td><td style="width: 50px"><%= @stage[nil] %><td/>
+      </tr>
+      <tr align="right">
+        <td style="width: 50%"><b>Total</b></td><td><b><%= @stage.values.sum %></b></td>
+      </tr>
+    </table>
+  </div>
+</div>
