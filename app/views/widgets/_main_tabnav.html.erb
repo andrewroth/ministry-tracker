@@ -72,6 +72,8 @@ render_tabnav :main,
    t.titled "You're special"
    t.links_to person_path(@me)
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
+   t.highlights_on :controller => "people", :action => "discipleship", :id => @me.id
+   t.highlights_on :controller => "timetables", :id => (@my.timetable || Timetable.create(:person_id => @me.id)).id
   end 
 
   # remove directory tab - directory now accessed via Advanced Search link

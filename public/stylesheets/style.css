@@ -1201,15 +1201,15 @@ div#logos.dashboard img { padding-right:20px; }
 	right:50%;			/* width of the middle column */
 }
 .threecol .col1 {
-	width:46%;			/* width of center column content (column width minus padding on either side) */
+	width:50%;			/* width of center column content (column width minus padding on either side) */
 	left:103%;			/* 100% plus left padding of center column */
 }
 .threecol .col2 {
 	width:24%;			/* Width of left column content (column width minus padding on either side) */
-	left:29%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+	left:25%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
 .threecol .col3 {
-	width:24%;			/* Width of right column content (column width minus padding on either side) */
+	width:20%;			/* Width of right column content (column width minus padding on either side) */
 	left:82%;			/* Please make note of the brackets here:
 					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
