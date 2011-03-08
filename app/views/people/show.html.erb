@@ -34,7 +34,7 @@
 	<h5 class="title">
     Joined&nbsp;
     <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
-    <%= spinner('GroupSemester') %>
+    <%= spinner('GroupSemester', 'opaqueWhite') %>
     <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
                                            :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
                                            :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').fadeOut(); $('#interestedGroups').fadeOut(); $('#requestedGroups').fadeOut();",
