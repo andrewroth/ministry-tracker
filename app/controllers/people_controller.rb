@@ -59,7 +59,7 @@ class PeopleController < ApplicationController
   end
   
   
- # displays summary profile info for mentee in partial beside discipleship tree
+ # provides INITIAL display of summary profile info for mentee in partial beside discipleship tree
  def show_mentee_summary
    
    mentee = nil
@@ -78,10 +78,19 @@ class PeopleController < ApplicationController
     
   end
   
+  # used for subsequent displays of mentee summary profile info (as above), as accessed by tree-links
   def show_mentee_profile_summary
     begin
+      
+      @selected_mentee = Person.find(params[:mentee_id])     
+      
+      if (is_ministry_leader == true || @selected_mentee.campus == @person.campus)
+      	@mentee_page_to_display = "mentee_summary"
+      else
+      	@mentee_page_to_display = "mentee_summary_not_permitted"
+      end          
+      
       @person = Person.find(params[:mentor_id])    # needed so that current Pulse user is not used
-      @selected_mentee = Person.find(params[:mentee_id]) 
       @bracket_level = params[:y]
       @is_first_level = params[:is_first_level]
       @name_height = params[:name_height]
