@@ -2645,8 +2645,7 @@ table.groupInvolvementList th {
 #dashboardInsightsContainer {
   background-image: url(/images/canada.gif);
   background-repeat: no-repeat;
-  background-position: left center;
-  height: 190px;
+  background-position: left 40px;
   text-align: center;
   position: relative;
   font-weight:bold;

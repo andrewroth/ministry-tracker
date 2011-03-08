@@ -5,7 +5,7 @@
   <% if @insights_campuses.present? && @campus_indicated_decisions.present? %>
   <div id="campusInsights" class="insight">
     <div class="number"><%= @campus_indicated_decisions %></div>
-    <%= @insights_campuses.collect {|c| c.desc }.join(', ') %>
+    <%= is_staff_somewhere ? @ministry.name : @insights_campuses.collect {|c| c.desc }.join(', ') %>
   </div>
   <% end %>
   <div id="totalInsights" class="insight">
