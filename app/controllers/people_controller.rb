@@ -742,6 +742,7 @@ class PeopleController < ApplicationController
       if params[:group_involvement].present?
         @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
+=begin
         ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
                                               #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
                                               #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
@@ -750,6 +751,7 @@ class PeopleController < ApplicationController
                                               #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
                                               mysql.time_zone_name READ
                                               |)
+=end
         TempGroupInvolvement.delete_all
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
@@ -778,7 +780,7 @@ class PeopleController < ApplicationController
       build_sql(tables_clause, @extra_select)
       @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
       if @temp_group_involvements_locked
-        ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+        #ActiveRecord::Base.connection.execute("UNLOCK TABLES")
       end
       @count = @people.total_entries
 
