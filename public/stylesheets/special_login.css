@@ -71,9 +71,11 @@ body {
 
 #browser_warning {
   float: right;
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	color: #666666;
-	margin: 43px 0 0 0;
+	font-family: Helvetica, Arial, sans-serif;
+  color: #666666;
+	margin: 20px 0 0 0;
 }
 
- */
+#browser_warning b {
+	color: red;
+}
