@@ -1,4 +1,7 @@
 #page << "jQuery('#events').hide();"
-page["#events"].append(render(:partial => "events"))
-page["#eventsSpinnerContainer"].hide
+page["#events .modulecontent"].prepend(render(:partial => "events"))
+page["#eventsSpinner"].hide
 page["events"].visual_effect :fade_in
+
+# update yellow menu bracket height
+page << "$('#verticalTablistContainer').height($('.colmask').height());"
