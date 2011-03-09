@@ -1251,13 +1251,14 @@ div#userbar {
 div#logos { padding:27px 0 0 32px; }
 div#logos img { padding-right:20px; }
 
-div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-22px; right:60px; text-align: right; display:inline; }
+div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-22px; right:10px; text-align: right; display:inline; }
 div#signin { text-align:right; font-weight:bold; font-size: 14px; }
 div#signin a { color: #666766; text-transform: uppercase; }
 div#username { font-weight:bold; font-size:12px; display:inline; }
 div#userblock div#switch_ministries { display:inline; }
-div#userblock div#switch_ministries a { background: url("/images/Garrowdown_s.png") no-repeat scroll right 6px transparent; padding-right: 11px; }
+div#userblock div#switch_ministries a { background: url("/images/Garrowdown_s.png") no-repeat scroll right 5px transparent; padding-right: 11px; }
 div#userblock div#switch_ministries a:hover { background-image: url("/images/Yarrowdown_s.png"); }
+div#userblock .log_out { padding-left:10px; }
 
 div#userbar small {font-size:11px;}
 

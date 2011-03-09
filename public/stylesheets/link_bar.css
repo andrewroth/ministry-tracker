@@ -15,7 +15,7 @@ div.link_bar {
   font-weight:bold;
 }
 
-div.link_bar div#tools, div.link_bar div#user {
+div.link_bar div#tools {
   position:absolute;
   bottom:6px;
 }
@@ -24,14 +24,7 @@ div.link_bar div#tools {
   left:0;
 }
 
-div.link_bar div#user {
-  right:0;
-  padding-right:9px;
-  text-align: right;
-  font-weight:normal;
-}
-
-div.link_bar div#tools nobr, div.link_bar div#user nobr, div.link_menu_box {
+div.link_bar div#tools nobr, div.link_menu_box {
   padding-top: 1px;
 }
 
@@ -89,7 +82,7 @@ div.link_menu_box a {
 }
 
 div.link_bar a.menu_link {
-  background: url("/images/Garrowdown_s.png") no-repeat scroll right 6px transparent;
+  background: url("/images/Garrowdown_s.png") no-repeat scroll right 5px transparent;
   padding-right: 11px;
 }
 
