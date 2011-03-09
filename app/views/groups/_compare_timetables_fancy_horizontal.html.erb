@@ -1,17 +1,15 @@
 
 <%= stylesheet_link_tag "jquery-ui" %>
 
-<% content_for :javascripts do %>
-  <%= javascript_include_tag "jquery.tooltip.js" %>
-  <%= javascript_include_tag "timetable.js" %>
-<% end %>
+<%= javascript_include_tag "jquery.tooltip.js" %>
+<%= javascript_include_tag "timetable.js" %>
 
 
 
 <h4 class="title">Compare Timetables&nbsp;&nbsp;
   <% types = Group::LEVELS %>
   <% data = data_string(types) %>
-  <%= link_to_remote 'switch to table compare (original style)', {
+  <%= link_to_remote 'Layered Compare (Original)', {
     :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
     :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
     {:class => 'small'}
