@@ -1,7 +1,7 @@
 
 <div pid="<%=person.id%>" class="personNameContainer <%= "noTable" if !has_table %>">
 
-  <div class="personName" <%="title='Hide or show #{person.first_name}&#39;s timetable'" if has_table%>>
+  <div class="personName <%= cycle("even", "odd") %>" <%="title='Hide or show #{person.first_name}&#39;s timetable'" if has_table%>>
     <div class="removePersonLink" title="Remove <%=person.first_name%>">
       <%=image_tag "silk/cross.png"%>
     </div>
