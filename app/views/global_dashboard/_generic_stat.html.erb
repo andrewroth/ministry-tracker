@@ -1,6 +1,6 @@
-<div class="dashmodule">
+<div class="dashmodule" id="<%= id %>">
   <div class="moduletitle">
-    <h2><%= header %></h2>
+    <h2><%= link_to_function "#{header} <span>-</span>", "toggle('#{id}')" %></h2>
   </div>
   <div class="modulecontent">
     <table align="right">

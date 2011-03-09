@@ -1,6 +1,6 @@
 <style>
 #dashwrap {padding:0;}
-.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
+.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px; max-width: 350px; margin-right: 7px;}
 .moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
 .moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
 .modulecontrols {float:right;}
@@ -10,6 +10,12 @@ a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; d
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 </style>
+
+<script>
+  function toggle(id) {
+    $('#'+id+' div.modulecontent').hide();
+  }
+</script>
 
 Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;
 Mission Critical Component (MCC): <%= select_tag "mcc", options_for_select(@mcc_options) %>&nbsp;
