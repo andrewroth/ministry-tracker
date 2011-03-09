@@ -17,6 +17,7 @@
     	<table border="0" cellspacing="5" cellpadding="5">
     		<tr><th colspan="2"><%= group_type.new_record? ? 'New Group Type' : group_type.group_type %></th></tr>
     		<tr><td><%= f.label :group_type %></td><td><%= f.text_field :group_type %></td></tr>
+    		<tr><td><%= f.label :short_name %></td><td><%= f.text_field :short_name %></td></tr>
     		<tr>
     			<td><%= f.label :mentor_priority %><%- tooltip do -%><p>Should the leader of the group have mentor privileges over group members? (eg a prayer group would be No, the leader does not have the right to view and alter details of group members)</p><%- end -%></td>
     			<td>
@@ -31,6 +32,22 @@
                     <%= f.check_box :public %>
                 </td>
     		</tr>
+        <tr>
+          <td>
+            <%= f.label :in_directory_search_not_in %><%- tooltip do -%><p>If this is set to true, this group type will show up as one of the options in the directory search, to show all people NOT in this group type.</p><%- end -%>
+          </td>
+          <td>
+            <%= f.check_box :in_directory_search_not_in %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <%= f.label :in_directory_search_in %><%- tooltip do -%><p>If this is set to true, this group type will show up as one of the options in the directory search, to show all people in this group type.</p><%- end -%>
+          </td>
+          <td>
+            <%= f.check_box :in_directory_search_in %>
+          </td>
+        </tr>
     		<%- unless Cmt::CONFIG[:disable_group_timetable_impact] == true -%>
     		<tr>
     		    <td>

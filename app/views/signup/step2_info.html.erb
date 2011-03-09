@@ -6,9 +6,10 @@
 
   function facebook_login_callback(session) {
     FB.api('/me', function(response) {
-      setValueIfNotSet('person_first_name', response.first_name);
-      setValueIfNotSet('person_last_name', response.last_name);
-      setValueIfNotSet('person_email', response.email);
+      setValueIfNotSetButPresent('person_first_name', response.first_name);
+      setValueIfNotSetButPresent('person_last_name', response.last_name);
+      setValueIfNotSetButPresent('person_email', response.email);
+      setValueIfNotSetButPresent('person_local_phone', response.mobile_phone);
 
       // don't confuse gender index with the value
       if(response.gender == "male") {
@@ -23,7 +24,7 @@
 
 
 <% instruction_block do %>
-<B>Step 2:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Back’ button and then the ‘Log Out’ button. Thank you!<% end %>
+<B>Step 2:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Back’ button and then the ‘Logout’ button. Thank you!<% end %>
 <% end %>
 
 <center>
@@ -57,9 +58,9 @@
     <td class="label">Phone </td>
     <td><%= f.text_field :local_phone %> </td>
   </tr>
-  <tr class="required_field">
+  <tr class="required_field campus">
     <td class="label">Campus </td>
-    <td><%= @campus.name %></td>
+    <td><b><%= @campus.name %></b></td>
   </tr>
   <tr class="required_field">
     <td class="label">School Year </td>

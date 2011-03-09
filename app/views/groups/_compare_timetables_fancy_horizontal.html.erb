@@ -1,0 +1,248 @@
+
+<%= stylesheet_link_tag "jquery-ui" %>
+
+<%= javascript_include_tag "jquery.tooltip.js" %>
+<%= javascript_include_tag "timetable.js" %>
+
+
+
+<h4 class="title">Compare Timetables&nbsp;&nbsp;
+  <% types = Group::LEVELS %>
+  <% data = data_string(types) %>
+  <%= link_to_remote 'Layered Compare (Original)', {
+    :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
+    :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
+    {:class => 'small'}
+  %>
+  &nbsp;
+  <%= spinner('_change_style', 'opaqueWhite') %>
+</h4>
+
+
+<div class="horizTableCompare timeControlsContainer">
+  <% form_for @group do |form| %>
+    <div class="timeControl">
+      Day: <%= form.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %>
+    </div>
+    <div class="timeControl">
+      Start time: <%= form.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+    </div>
+    <div class="timeControl">
+      End time: <%= form.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+    </div>
+    <div class="timeControl"><%= submit_tag 'Save', :class => 'action-button' %></div>
+  <% end %>
+</div>
+
+
+<br/>
+
+
+<% day_width = 14.285714  %>
+<% interval_width = 3.125 %>
+
+<div id="horizTableComparePageWidthContainer">
+  <div id="horizTableCompareContainer" class="horizTableCompare">
+
+    <div class="colourLegend">
+      <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
+      <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
+      <div class="legendItem"><div class="personTimeBlock bad "></div> Busy </div>
+    </div>
+
+    <div class="namesList">
+      <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people, :as => :person, :locals => {:has_table => true} %>
+      <%= render :partial => "compare_timetables_fancy_horizontal_person_name", :collection => @people_without_table, :as => :person, :locals => {:has_table => false} %>
+      <%= "<div class='noTableNote'><br/><br/><big>*</big> hasn't submitted their timetable<br/><br/></div>" if @people_without_table.present? %>
+    </div>
+
+    <div class="cursorHoverLine"></div>
+
+    <div class="frame">
+
+      <div class="tableContainer">
+        <div class="timelineHeaderContainer timelineHeader">
+          <div class="timesContainer">
+            <% Date::DAYNAMES.each_with_index do |day, di| %>
+              <div class="day dayHeader <%=day.downcase%>" style="width:<%=day_width%>%;">
+                <div class="dayName"><%=day%></div>
+
+                <% time = Time.now.beginning_of_day + Timetable::EARLIEST %>
+                <% end_time = Time.now.beginning_of_day + Timetable::LATEST %>
+
+                <% i=0 %>
+                <% while time < end_time %>
+                  <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
+                    <%= time_header_text(time) %>
+                  </div>
+
+                  <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
+
+                  <div class="timeTooltip meetingTimeSelector" style="left:<%=interval_width*i%>%; width:<%=interval_width + 1.0%>%;"
+                       title="<span class='whiteFont'><%=time_header_text(time)%></span> - <span class='whiteFont'><%=day%></span>"
+                       min="<%=time.min%>" hour="<%=time.hour%>" day="<%=di%>">
+                  </div>
+
+                  <% time += Timetable::INTERVAL %>
+                  <% i+=1 %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="timesContainer">
+            <% 6.times do |i| %>
+              <!-- this is so complicated in order to accommodate funny percentage math some browsers do -->
+              <% border_width = 3 %>
+              <div class="dayBackground" style="left: -<%=i*border_width%>px; width:<%=day_width%>%;"></div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="rows">
+          <%= render :partial => "compare_timetables_fancy_horizontal_person_row", :collection => @people, :as => :person, :locals => {:day_width => day_width, :interval_width => interval_width} %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="frameControls">
+      <div class="zoomSliderContainer">
+        <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut", :title => "Zoom out" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn", :title => "Zoom in" %>
+      </div>
+      <div class="visibleDaysControls">
+        <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
+          &nbsp;
+          <%= check_box_tag 'visibleDays[]', Date::DAYNAMES[i].downcase, true, :class => "toggleDay" %>
+          <%= day %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+  // we use absolute positioning to make the timetable compare width 100% of the page and therefore we need to specify the height of the compare container
+  // this is important to keep the footer in the correct spot
+  $("#compare").height($("#horizTableComparePageWidthContainer").height() + 150 + "px");
+  
+
+  // zoom slider
+	$(function() {
+		$("#zoomSlider").slider({min:650, max:13000, step:100, value:$(".horizTableCompare .tableContainer").width(), animate:true, orientation:'horzontal'});
+	});
+  $("#zoomSlider").bind( "slide", function(event, ui) {
+    $(".horizTableCompare .tableContainer").width(ui.value + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
+  });
+  
+  // slider zoom buttons
+  $(".zoomSliderOut").click(function(e) {
+    $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")-2470);
+
+    if ($(".horizTableCompare .frame").width() > $("#zoomSlider").slider("value")) {
+      $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-10 );
+    }
+
+    $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
+  });
+  $(".zoomSliderIn").click(function(e) {
+    $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")+2470);
+    
+    $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
+    zoom_adjustments($(".horizTableCompare .tableContainer").width());
+  });
+
+  // set the default zoom to be the width of the frame
+  $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-10 );
+  $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
+  zoom_adjustments($(".horizTableCompare .tableContainer").width());
+
+  
+  // show tooltip with time and day when hovering over timetable
+  $(".timeTooltip").tooltip({
+    track: true,
+    delay: 0,
+    showURL: false,
+    showBody: " - ",
+    fade: 0,
+    extraClass: "horizTableCompare"
+  });
+
+
+  // show tooltip on hover over timetable link
+  $(".personTimetableLink").tooltip({
+    track: false,
+    delay: 0,
+    showURL: false,
+    showBody: " - ",
+    fade: 0,
+    extraClass: "horizTableCompare"
+  });
+
+
+  // show line under cusor when hovering over timetable
+  $(".frame").hover(
+    function (e) {
+      $(".cursorHoverLine").height($(".rows").height());
+      $(".cursorHoverLine").show();
+    },
+    function (e) {
+      $(".cursorHoverLine").hide();
+    }
+  );
+  $(".frame").mousemove(function(e){
+    // the +1 is to prevent the line from interfering with mouse clicks
+    $(".cursorHoverLine").css( { "left": (e.pageX +1 - $("#horizTableCompareContainer").offset().left) + "px" } );
+  });
+
+
+  // toggle visibility of person's time by clicking their name
+  $(".personNameContainer").not(".noTable").children(".personName").click(function () {
+    $("." + $(this).parent().attr("pid") + " .personTimes").toggle();
+    $(this).toggleClass("rowsHidden");
+  });
+
+
+  // remove person from timetable comparison
+  $(".removePersonLink").click(function() {
+    $(".personRowContainer." + $(this).parents(".personNameContainer").attr("pid")).remove();
+    $(this).parents(".personNameContainer").remove();
+
+    $(".personRowContainer").removeClass("odd even");
+    $(".personName").removeClass("odd even");
+    $(".personRowContainer:even").addClass("even");
+    $(".personName:even").addClass("even");
+    $(".personRowContainer:odd").addClass("odd");
+    $(".personName:odd").addClass("odd");
+  });
+
+
+  // selection of meeting time
+  $(".meetingTimeSelector").click(function() {
+
+    hour = parseInt($(this).attr("hour"));
+    min = parseInt($(this).attr("min"));
+    day = parseInt($(this).attr("day"));
+
+    secs = (hour*60*60) + (min*60);
+
+    $("#group_start_time").val(secs);
+    $("#group_end_time").val(secs+<%=Timetable::DEFAULT_MEETING_LENGTH%>);
+    $("#group_day").val(day);
+
+    $(".timeControlsContainer").effect("highlight", {}, 1000);
+  });
+
+
+  // checkboxes to toggle day visibility
+  $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
+    $("." + $(this).attr("value")).toggle();
+  });
+
+
+</script>

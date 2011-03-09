@@ -280,7 +280,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "Signup"
+    @custom_userbar_title = "Join a group"
   end
 
   def join_default_group(campus_id, semester_id)

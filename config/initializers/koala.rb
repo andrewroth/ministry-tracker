@@ -8,7 +8,7 @@ module Facebook
   SECRET = CONFIG['secret_key']
   CANVAS_URL = CONFIG['canvas_url']
   FANPAGE_URL = "http://www.facebook.com/campusforchrist"
-  SIGNUP_PERMS = "email"
+  SIGNUP_PERMS = "email, user_mobile_phone, user_address, user_education_history"
 end
 
 Koala::Facebook::OAuth.class_eval do
