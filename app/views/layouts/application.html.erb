@@ -126,15 +126,30 @@
 
       <%- end -%>
 
-
       <div class="clear">&nbsp;</div>
 
+
+      <!--[if lt IE 8]>
+        <div id='browser_warning' class='flash_notice warning'>
+          <%= image_tag "/images/silk/exclamation.png" %>
+          <b>You are using an outdated browser.</b>
+          For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
+
+          <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+          <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+          <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+          <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+        </div>
+      <![endif]-->
+
       <noscript>
-        <div class="flash_notice warning"><%= image_tag "/images/silk/exclamation.png" %>
-        For full functionality of this site it is necessary to enable JavaScript.
-        Here are the <a href="http://www.enable-javascript.com/" target="_blank">
-        instructions how to enable JavaScript in your web browser</a>.</div>
+        <div class="flash_notice warning">
+          <%= image_tag "/images/silk/exclamation.png" %>
+          <b>For full functionality of this site it is necessary to enable JavaScript.</b>
+          <a href="http://www.enable-javascript.com/" target="_blank">Here are the instructions how to enable JavaScript in your web browser.</a>
+        </div>
       </noscript>
+
 
       <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
                         <%- if @notices -%>
