@@ -9,8 +9,7 @@
   <%- end -%>
   <br />
   <% types = Group::LEVELS %>
-  <% data = ""; types.each_with_index do |t,i| data += "$('#transfer_form_" + t + "').serialize()"; if(i!=(types.length-1))then data+="+'&'+" end end -%>
-  <% data += "+'&'+$('#transfer_to_form').serialize()" -%>
+  <% data = data_string(types) %>
 
   <h2 id="name">
     <%= @group.name %>
@@ -59,5 +58,4 @@
 </div>
 <br/>
 <div id="compare">
-  <%= render :partial => 'groups/compare_timetables' %>
 </div>
