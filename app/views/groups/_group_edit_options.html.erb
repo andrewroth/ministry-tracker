@@ -1,3 +1,7 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
 <%- if authorized?(:transfer, :group_involvements) -%>
   <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
 <%- end -%>
