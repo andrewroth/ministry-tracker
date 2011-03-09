@@ -2539,7 +2539,7 @@ table.groupInvolvementList th {
 .horizTableCompare .personName.odd  { background-color:#E9E9E9; }
 .horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; text-decoration:underline; }
 .horizTableCompare .personName:active, .horizTableCompare .personName.rowsHidden:active { background:none;}
-.horizTableCompare .personName.rowsHidden { background-color:white; }
+.horizTableCompare .personName.rowsHidden { background-color:white; opacity:0.5; }
 .horizTableCompare .personTimetableLink { display:inline; position:absolute; top:5px; right:23px; }
 .horizTableCompare span.outdated { font-weight:bold; font-style: italic; color:white; }
 .horizTableCompare .noTableNote { float:right; }
