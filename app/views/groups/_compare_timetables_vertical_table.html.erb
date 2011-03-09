@@ -2,7 +2,7 @@
 <h4 class="title">Compare Timetables&nbsp;&nbsp;
   <% types = Group::LEVELS %>
   <% data = data_string(types) %>
-  <%= link_to_remote 'switch to horizontal compare (new style)', {
+  <%= link_to_remote 'Side by Side Compare (NEW)', {
     :url => compare_timetables_group_url(:id => @group.id, :compare_style => 1),
     :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
     {:class => 'small'}
