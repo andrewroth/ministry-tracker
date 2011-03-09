@@ -1,16 +1,16 @@
-<div class="dashmodule">
+<div class="dashmodule" id='whq'>
   <div class="moduletitle">
-    <h2>WHQ Stats</h2>
+    <h2><%= link_to_function "WHQ Stats <span>-</span>", "toggle('whq')" %></h2>
   </div>
   <div class="modulecontent">
     <table align="right">
       <% @whq.each_pair do |k,v| %>
         <tr align="right">
-          <td style="width: 50%"><%= k.humanize %></td><td style="width: 50px"><%= v %><td/>
+          <td style="width: 50%"><%= k.humanize %></td><td style="width: 50px"><%= number_with_delimiter(v) %><td/>
         </tr>
       <% end %>
       <tr align="right">
-        <td style="width: 50%"><b>Total</b></td><td><b><%= @whq.values.sum %></b></td>
+        <td style="width: 50%"><b>Total</b></td><td><b><%= number_with_delimiter(@whq.values.sum) %></b></td>
       </tr>
     </table>
   </div>
