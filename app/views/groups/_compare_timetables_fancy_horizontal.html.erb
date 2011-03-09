@@ -8,7 +8,7 @@
 <h4 class="title">Compare Timetables&nbsp;&nbsp;
   <% types = Group::LEVELS %>
   <% data = data_string(types) %>
-  <%= link_to_remote 'switch to old version', {
+  <%= link_to_remote 'switch to table compare (original style)', {
     :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
     :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
     {:class => 'small'}

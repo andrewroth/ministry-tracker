@@ -2492,7 +2492,7 @@ table.groupInvolvementList th {
 /************************************************/
 
 #horizTableComparePageWidthContainer { position:absolute; left:0; right:0; width:100%; }
-#horizTableCompareContainer { position: relative; padding:0 4em;}
+#horizTableCompareContainer { position: relative; padding:0 4em 0 1em;}
 .horizTableCompare .colourLegend { display:inline-block; width:100%; height:40px; }
 .horizTableCompare .namesList { float:left; padding-top:60px; min-height:50px; }
 .horizTableCompare .frame { position: relative; overflow: auto; padding:15px 0; margin-bottom:2em; }
