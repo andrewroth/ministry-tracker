@@ -10,6 +10,9 @@ class GroupsController < ApplicationController
   skip_before_filter :authorization_filter, :email_helper
   before_filter :set_current_and_next_semester
 
+
+  TIMETABLE_COMPARE_STYLE = ["VERTICAL_TABLE", "FANCY_HORIZONTAL"]
+
   def index
     if Cmt::CONFIG[:joingroup_from_index]
       @join = true
@@ -155,9 +158,10 @@ class GroupsController < ApplicationController
 
   def update
     if @group.update_attributes(params[:group])
-      flash[:notice] = 'Group was successfully updated'
+      flash[:notice] = 'Group was successfully updated!'
     end
     respond_to do |format|
+      format.html { redirect_to group_url(@group) }
       format.js
     end
   end
@@ -169,14 +173,15 @@ class GroupsController < ApplicationController
       format.js   { index }
     end
   end
-  
+
   def compare_timetables
-    @display_compare_table = true
     @notices = []
     if (Cmt::CONFIG[:hide_poor_status_in_scheduler] == false)
       @notices << "Poor state is currently enabled in the timetables. The 'Compare timetables' feature will not include the poor states during comparison."
     end
-    @group = Group.find(params[:id], :include => :people)
+
+    @group = Group.find(params[:id], :include => {:people => [:free_times]})
+
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
     # if nobody is selected, compare schedules of everyone in group
     if person_ids.present?
@@ -184,30 +189,40 @@ class GroupsController < ApplicationController
     else
       gis = @group.group_involvements
     end
-    
+
     # remove those who haven't submitted timetable (and make sure the group involvement is valid
     # while we're at it, ie. no requests, and valid person)
-    @people = gis.reject { |gi| 
+    @people_without_table = []
+    @people = gis.reject { |gi|
       if gi.person.nil? || gi.requested
         true
       elsif !gi.person.free_times.present?
-        @notices << "<i>" + gi.person.full_name + "</i> has not submitted their timetable. Hence, they will be excluded from comparison."
+        @notices << "<b><i>" + gi.person.full_name + "</i></b> has not submitted their timetable, they are excluded from the comparison."
+        @people_without_table << gi.person
         true
       else
         false
       end
     }.collect(&:person)
+
+    @user_agent = request.env['HTTP_USER_AGENT'].downcase
     
-    @comparison_map = Timetable.generate_compare_table(@people)
-    respond_to do |format|
-      format.js{
-         render :update do |page|
-            page.replace_html("compare", :partial => "groups/compare_timetables")
-         end
-      }
+    if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
+      compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
+    else
+      compare_style = TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i]
+    end
+
+    case compare_style
+    when TIMETABLE_COMPARE_STYLE[0]
+      cookies[:timetable_compare_style] = 0
+      compare_timetables_vertical_table
+    else
+      cookies[:timetable_compare_style] = 1
+      compare_timetables_fancy_horizontal
     end
   end
-  
+
   def set_start_time
     @notices ||=[]
     stime = params[:time].to_i
@@ -386,5 +401,33 @@ class GroupsController < ApplicationController
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
     @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
   end
+
+
+  private
+  
+  def compare_timetables_vertical_table
+    @display_compare_table = true
+
+    @comparison_map = Timetable.generate_compare_table(@people)
+
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace_html("compare", :partial => "groups/compare_timetables_vertical_table")
+        end
+      }
+    end
+  end
+
+  def compare_timetables_fancy_horizontal
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace_html("compare", :partial => "groups/compare_timetables_fancy_horizontal")
+        end
+      }
+    end
+  end
+
 
 end

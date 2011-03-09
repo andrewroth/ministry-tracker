@@ -1,0 +1,28 @@
+
+
+<div class="personRowContainer <%= cycle("even", "odd") %> <%=person.id%>">
+  <div class="personRow">
+    <div class="personTimes">
+      <% Date::DAYNAMES.each_with_index do |day, i| %>
+        <% total_intervals_printed = 0 %>
+        <% fts = person.free_times.select{|ft| ft.day_of_week == i} %>
+
+        <div class="day <%=day.downcase%>" style="width:<%=day_width%>%;">
+          <% times_to_print = fts.select{|ft| ft.css_class != Timetable::GOOD_CLASS} %>
+          <%= "&nbsp;" if times_to_print.blank? %>
+          <% times_to_print.each do |ft| %>
+            <% num_intervals_width = (ft.end_time-ft.start_time)/Timetable::INTERVAL %>
+            <% num_intervals_to_left = (ft.start_time-Timetable::EARLIEST) > 0  ?  (ft.start_time-Timetable::EARLIEST)/Timetable::INTERVAL : 0 %>
+
+            <div class="personTimeBlock <%= ft.css_class %>" style="left:<%= interval_width*(num_intervals_to_left-total_intervals_printed) %>%; width:<%= interval_width*num_intervals_width %>%;"></div>
+
+            <% total_intervals_printed += num_intervals_width %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+

@@ -368,6 +368,15 @@ CREATE TABLE `involvement_histories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1353 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `locks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `locked` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
@@ -550,7 +559,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9533 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9534 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -561,7 +570,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=288348 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=288349 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1064,6 +1073,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110301154810');
 INSERT INTO schema_migrations (version) VALUES ('20110301203231');
 
 INSERT INTO schema_migrations (version) VALUES ('20110301222940');
+
+INSERT INTO schema_migrations (version) VALUES ('20110308210209');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
