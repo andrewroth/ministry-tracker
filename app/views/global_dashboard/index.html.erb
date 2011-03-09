@@ -13,7 +13,15 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 
 <script>
   function toggle(id) {
-    $('#'+id+' div.modulecontent').hide();
+    if ($('#'+id).attr('hidden') == 'true') {
+      $('#'+id).attr('hidden', 'false')
+      $('#'+id+' div.modulecontent').show();
+      $('#'+id+' div.moduletitle span').html('-');
+    } else {
+      $('#'+id).attr('hidden', 'true')
+      $('#'+id+' div.modulecontent').hide();
+      $('#'+id+' div.moduletitle span').html('+');
+    }
   }
 </script>
 
