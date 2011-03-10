@@ -48,7 +48,7 @@ render_tabnav :vertical_main,
 
     add_tab do |t|
       t.named "<div id='createGroupTab' class='tab subtab'>create a group</div>"
-      t.titled 'Create a groups for ' + @ministry.name
+      t.titled 'Create a group at ' + @ministry.name
       t.links_to new_group_path
     end if session[:ministry_id]
   end

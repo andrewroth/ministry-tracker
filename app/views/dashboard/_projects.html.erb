@@ -131,14 +131,14 @@
                   <td class="center eventAttendees"></td>
                 </tr>
                 <tr>
-                  <td class="eventIcon"></td>
-                  <td>
+                  <td colspan="2">
+                    <br/>
                     <%- if @staff -%>
-                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>--></td>
+                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>-->
                     <%- else -%>
-                      <%= link_to "Apply for project today", "https://pat.powertochange.org", :target => "_blank" %>
+                      <%= link_to "Apply for project!", "https://pat.powertochange.org", :target => "_blank" %>
                     <%- end -%>
-                  <td></td>
+                  </td>
                 </tr>
               </tbody>
             </table>
