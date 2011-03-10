@@ -343,11 +343,13 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_6)
     Factory(:ministryrolepermission_5)
     Factory(:permission_4)
+    Factory(:permission_15) # advanced search
+    Factory(:ministryrolepermission_24) # advanced search
     Factory(:ministry_4)
 
     login('staff_on_ministry_with_no_campus')
     session[:ministry_id] = Factory(:ministry_4).id
-    get :directory
+    get :directory, :force => 'true'
     assert_response :success, @response.body
     assert(ppl = assigns(:people), "@people wasn't assigned")
     assert(ppl.detect {|p| p['person_id'].to_i == Factory(:person_7).id}, "staff_on_ministry_with_no_campus didn't show up.")

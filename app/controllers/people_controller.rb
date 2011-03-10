@@ -742,6 +742,7 @@ class PeopleController < ApplicationController
       if params[:group_involvement].present?
         @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
+=begin
         ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
                                               #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
                                               #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
@@ -750,6 +751,7 @@ class PeopleController < ApplicationController
                                               #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
                                               mysql.time_zone_name READ
                                               |)
+=end
         TempGroupInvolvement.delete_all
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
@@ -757,6 +759,7 @@ class PeopleController < ApplicationController
             GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
         ActiveRecord::Base.connection.execute(sql)
         @temp_group_involvements_locked = true
+        Lock.establish_lock("not_in_group")
         @tables[TempGroupInvolvement] = "Person.person_id = TempGroupInvolvement.person_id"
       end
 
@@ -778,7 +781,7 @@ class PeopleController < ApplicationController
       build_sql(tables_clause, @extra_select)
       @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
       if @temp_group_involvements_locked
-        ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+        Lock.free_lock("not_in_group")
       end
       @count = @people.total_entries
 
@@ -979,6 +982,9 @@ class PeopleController < ApplicationController
       end
 
       if params[:campus] || !is_staff_somewhere
+        if campus_ids.nil? || campus_ids.empty?
+          campus_ids = [ 0 ] # so that the query doesn't crash
+        end
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
         @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
         @advanced = true
