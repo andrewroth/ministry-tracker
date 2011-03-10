@@ -83,4 +83,3 @@ Factory.define :groupinvolvement_12, :class => GroupInvolvement, :singleton => t
   g.group_id '5'
   g.level 'leader'   
 end
-

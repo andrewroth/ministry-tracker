@@ -8,7 +8,7 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-#greenbar {background:#FFCB05; height:33px; padding: 5px 0px; position: relative;}
+
 
 #campus, #person, #training_question, #training_category {
 	border:1px dotted silver;
@@ -106,38 +106,38 @@ margin-top:5px;
 }
 
 #person_staff_notes {
-width:98%;
-height:200px;
-margin:5px 0 0 0;
+  width:98%;
+  height:200px;
+  margin:5px 0 0 0;
 }
 
 
 /* OVERALL STUFF */
 
 .directorytable tr:hover  {
-/*    background-color:#fff193;*/
+  /*background-color:#fff193;*/
 }
 
 #profileCaption {
-margin:3px 0 0 0;
-text-align:center;
+  margin:3px 0 0 0;
+  text-align:center;
 }
 
 * {
-    margin:0;
-    padding:0;
-    font-family: Tahoma, Arial, Sans-Serif;
-    color:#747474;
+  margin:0;
+  padding:0;
+  font-family: Helvetica, Arial, Sans-Serif;
+  color:#747474;
 }
 
 body {
-    font-size:75%;
-    text-align:center;
-    background-color:#E6E6E6;
+  font-size:12px;
+  text-align:center;
+  background-color:white;
 }
 
 body.facebook_canvas {
-    background-color:white;
+  background-color:white;
 }
 
 img {border:0px;}
@@ -146,7 +146,7 @@ table {width:100%; font-size:1em;}
 
 
 .floatleft {
-float:left;
+  float:left;
 }
 
 .inline {
@@ -158,139 +158,140 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 
 
 .directorytable {
-width:100%;
+  width:100%;
 }
 
 
 
 .profileImage {
-padding:8px 0 0 0;
+  padding:8px 0 0 0;
 }
 
 .profileImage img{
-border:0px solid #333333;
+  border:0px solid #333333;
 }
 
 #profileCaption img{
-border:0px solid black;
-padding-right:5px;
-vertical-align:bottom;
+  border:0px solid black;
+  padding-right:5px;
+  vertical-align:bottom;
 }
 
 #profileCaption a{
-border:1px solid #f5f5f5;
-height:18px;
-padding:2px;
-margin:1px;
-font-size:10px;
-font-weight:bold;
+  border:1px solid #f5f5f5;
+  height:18px;
+  padding:2px;
+  margin:1px;
+  font-size:10px;
+  font-weight:bold;
 }
 
 #profileCaption a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc;
 }
 
 
 .butProfile a {
-padding-left:20px;
-border:0px solid black;
-height:18px;
-background:url(../images/zoom.png) top left no-repeat;
+  padding-left:20px;
+  border:0px solid black;
+  height:18px;
+  background:url(../images/zoom.png) top left no-repeat;
 }
 
 .butUpdate a, .butDelete a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  height:18px;
 }
 
 .butUpdate a {
-background: #fff url(../images/edit.png) 3px 5px no-repeat;
+  background: #fff url(../images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a {
-background: #fff url(../images/delete.png) 3px 5px no-repeat;
+  background: #fff url(../images/delete.png) 3px 5px no-repeat;
 }
 
 
 .butUpdate a:hover, .butDelete a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
+  text-decoration:none;
+  border:1px solid #1F429B;
 }
 
 .butUpdate a:hover {
-background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;	
+  background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a:hover {
-background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;  
+  background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;
 }
 
 .butUpdate, .butDelete {
-margin:5px 0 0 0;
-float:right;
+  margin:5px 0 0 0;
+  float:right;
 }
 
 .actionButtons {
+  float:left;
   margin: 5px 0;
-float:left;
 }
 
+  display:inline;
+  margin:5px 0 0 0;
 .butDExcel {
-display:inline;
-margin:5px 0 0 0;
 }
 
 .butDExcel a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
+  height:18px;
 }
 
 .butDExcel a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
 }
 
 
 .butNormal {
-display:inline;
-margin:5px 0 0 0;
+  display:inline;
+  margin:5px 0 0 0;
 }
 
 .butNormal a {
-padding:5px 5px 5px 5px;
-padding-left:20px;
-border:1px solid #ccc;
-background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
-height:18px;
+  padding:5px 5px 5px 5px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
+  height:18px;
 }
 
 .butNormal a:hover {
-text-decoration:none;
-border:1px solid #1F429B;
-background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
+  text-decoration:none;
+  border:1px solid #1F429B;
+  background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
 }
 
 
 .butAdd {
-display:block;
-margin:10px 10px 10px 5px;
+  display:block;
+  margin:10px 10px 10px 5px;
 }
 
 .butAdd a {
-padding:0;
-padding-left:20px;
-border:0px solid #ccc;
-background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
-height:18px;
+  padding:0;
+  padding-left:20px;
+  border:0px solid #ccc;
+  background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
+  height:18px;
 }
+
 
 
 
@@ -304,19 +305,19 @@ h4 {font-size:1.12em;}
 h5, p {font-size:1em;}
 
 th {
-font-weight:normal;
+  font-weight:normal;
 }
 
 input, textarea {
-font-size:1.1em;
-color: #000;
-font-family:Arial, Verdana, Helvetica;
-padding:2px 5px 2px 5px;
-border:1px solid #ddd;
+  font-size:1.1em;
+  color: #000;
+  font-family: Helvetica, Arial, Sans-Serif;
+  padding:2px 5px 2px 5px;
+  border:1px solid #ddd;
 }
 
 input:focus, textarea:focus {
-background:#FFFFCC;
+  background:#FFFFCC;
 }
 
 /*select {width:175px; height:1.5em;}*/
@@ -372,7 +373,6 @@ h1 {
 #wrapper {
   margin: 10px auto 10px auto;
   width:auto;
-  border:7px solid #CCCCCC;
   text-align:left;
 	min-width:900px;
 	max-width:900px;
@@ -391,7 +391,7 @@ h1 {
 #footer {
 	min-width:900px;
 	max-width:900px;
-	height:120px;
+	height:100px;
   margin:auto;
   margin-top:10px;
 }
@@ -417,37 +417,134 @@ h1 {
 }
 
 /* TABS */
+
+/* the idea here is the regular horizontal tablist styles are defined first while the verticalTablist are defined later to override */
+
+#verticalTablistContainer { position:relative; background:url("/images/bracket_vertical_bg.png") repeat-y scroll right transparent; min-height:300px; }
+
+#verticalTablistContainer img.top    { position:absolute; top:0; right:0; }
+#verticalTablistContainer img.bottom { position:absolute; bottom:0; right:0; }
+
+#verticalTablist { margin-left:20px; }
+#verticalTablistBottom { background:url("/images/bracket_vertical_bottom.png") no-repeat scroll right top transparent; padding-top:7px; }
+
+#tablist_container { position: relative; height: 50px; }
+
+#tablist {
+  background:url("/images/P2bracket.png") no-repeat scroll center bottom transparent;
+}
+
 .tablist {
-  width:65%;
-  background:#FFCB05 url("") repeat-x bottom;
+  width:100%;
   float:right;
-  margin-top: 4px;
-  border-bottom: #FFCB05 solid 0px;
   position: absolute;
   bottom: 0;
   right: 0;
 }
 
 .tablist ul {
-  margin:0 5px;
+  margin:0 23px;
 }
 
 .tablist li {
   float:right;
-  background:url("../images/yellowtab.png") no-repeat left top;
-  margin-left:4px;
-	width: 86px;
-	
+  margin-left: 27px;
 }
 
 .tablist a {
   float:right;
   display:block;
-  color:#1F429B; font-weight:bold;
-  padding:8px 10px 7px 0;
-  margin-left:11px;
 	text-align: center;
+  cursor:pointer;
+  overflow:hidden;
 }
+.verticalTablist a {
+  display:block;
+  cursor:pointer;
+  text-align:left;
+}
+
+.tablist a:hover, .verticalTablist a:hover {
+  text-decoration: none;
+}
+
+.tablist div {
+  float: left;
+}
+
+.tablist div, .verticalTablist div {
+  color: #666766;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Arial, Helvetica, Sans-Serif;
+  height: 40px;
+  padding-left: 18px;
+  background-repeat: no-repeat;
+  line-height: 24px;
+  display: block;
+}
+.verticalTablist div {
+  height: 30px;
+  line-height: 30px;
+}
+
+.tablist a.active {
+  background:url("/images/P1bracket.png") no-repeat scroll center bottom transparent;
+}
+.verticalTablist a.active {
+  background:url("/images/bracket_vertical_knotch.png") no-repeat scroll right center transparent;
+}
+
+.tablist a.active div, .verticalTablist a.active div {
+  color: #FFCB05;
+}
+
+.tablist div:hover, .verticalTablist div:hover {
+  color: #FFCB05;
+  text-decoration: none;
+}
+
+#dashboardTab                               { background: url(/images/debicons/Gdashboard.png) no-repeat scroll transparent; }
+a.active #dashboardTab, #dashboardTab:hover { background: url(/images/debicons/Ydashboard.png) no-repeat scroll transparent; }
+.tablist #dashboardTab, .tablist a.active #dashboardTab { background-position:0px 0px; }
+.verticalTablist #dashboardTab, .verticalTablist a.active #dashboardTab  { background-position:6px center; }
+
+#profileTab                             { background: url(/images/debicons/Gprofile.png) no-repeat scroll transparent; }
+a.active #profileTab, #profileTab:hover { background: url(/images/debicons/Yprofile.png) no-repeat scroll transparent; }
+.tablist #profileTab, .tablist a.active #profileTab { background-position:1px 3px; }
+.verticalTablist #profileTab, .verticalTablist a.active #profileTab { background-position:7px center; }
+
+#groupsTab                            { background: url(/images/debicons/Ggroups.png) no-repeat scroll transparent; }
+a.active #groupsTab, #groupsTab:hover { background: url(/images/debicons/Ygroups.png) no-repeat scroll transparent; }
+.tablist #groupsTab, .tablist a.active #groupsTab { background-position:0px 4px; padding-left:25px; }
+.verticalTablist #groupsTab, .verticalTablist a.active #groupsTab { background-position:0 center; }
+
+#insightsTab                              { background: url(/images/debicons/Ginsights.png) no-repeat scroll transparent; }
+a.active #insightsTab, #insightsTab:hover { background: url(/images/debicons/Yinsights.png) no-repeat scroll transparent; }
+.tablist #insightsTab, .tablist a.active #insightsTab { background-position:1px 8px; padding-left:22px; }
+.verticalTablist #insightsTab, .verticalTablist a.active #insightsTab { background-position:2px 12px; }
+
+#scheduleTab                              { background: url(/images/debicons/Gschicon.png) no-repeat scroll transparent; }
+a.active #scheduleTab, #scheduleTab:hover { background: url(/images/debicons/Yschicon.png) no-repeat scroll transparent; }
+.verticalTablist #scheduleTab, .verticalTablist a.active #scheduleTab { background-position:6px center; }
+
+#addStudentTab                                { background: url(/images/debicons/Gaddicon.png) no-repeat scroll transparent; }
+a.active #addStudentTab, #addStudentTab:hover { background: url(/images/debicons/Yaddicon.png) no-repeat scroll transparent; }
+.verticalTablist #addStudentTab, .verticalTablist a.active #addStudentTab { background-position:8px center; }
+
+#manageTab                                { background: url(/images/debicons/Gmanaicon.png) no-repeat scroll transparent; }
+a.active #manageTab, #manageTab:hover { background: url(/images/debicons/Ymanaicon.png) no-repeat scroll transparent; }
+.verticalTablist #manageTab, .verticalTablist a.active #manageTab { background-position:7px center; }
+
+div.tab.subtab                                { background: url(/images/debicons/Garroicon.png) no-repeat scroll transparent; position:relative; top:-10px; left:16px; height:20px; }
+a.active div.tab.subtab, div.tab.subtab:hover { background: url(/images/debicons/Yarroicon.png) no-repeat scroll transparent; }
+.verticalTablist div.tab.subtab, .verticalTablist a.active div.tab.subtab { background-position:10px 7px; }
+
+.verticalTablist .tab {
+  padding-left:25px;
+  background-position: left center;
+}
+
 
 /* Commented Backslash Hack
    hides rule from IE5-Mac \*/
@@ -457,13 +554,6 @@ h1 {
 .tablist a:hover {
 }
 
-.tablist li.active {
-    background-image:url("../images/whitetab.png");
-}
- 
-.tablist li.active a {
-	color: #1F429B;
-}
 
 /* MISC LAYOUT */
 
@@ -543,6 +633,11 @@ div.sectionHeader h2 {
 .center {
     text-align:center;
 }
+
+img.opaqueWhite {
+  background-color:white; border:3px solid white; -moz-border-radius: 10px; -webkit-border-radius: 10px;
+}
+
 .directorytable {
     background-color:#f5f5f5;
     padding:8px;
@@ -601,9 +696,10 @@ div.sectionHeader h2 {
 }
 
 #advancedSearchLink {
-  position: relative;
-  left: 312px;
-  top: 38px;
+  position: absolute;
+  right: 9px;
+  top: 13px;
+  font-size: 11px;
 }
 
 
@@ -713,49 +809,68 @@ margin-bottom:10px;
 
 
 #subtabs {
-display:block;
-clear:both;
-background:#cbd1e8;
-padding:10px;
-margin: 0 0 10px 0;
+  display:block;
+  clear:both;
+  padding:10px;
+  margin: 0 0 10px 0;
 }
 
 .subtabs-menu {
-list-style-type:none;
+  list-style-type:none;
 }
 
 ul.subtabs-menu li {
-display:inline;
+  display:inline;
+  padding:0px 32px 0 0;
 }
 
-a.subtabs-menu-active {
-text-decoration:none;
-background:white;
-padding:5px 10px 5px 10px;
-font-weight:bold;
-
+a.subtabs-menu-inactive:hover, a.subtabs-menu-active:hover {
+  text-decoration:none;
 }
 
-a.subtabs-menu-inactive {
-text-decoration:underline;
-padding:5px 10px 5px 10px;
-font-weight:bold;
+a.subtabs-menu-inactive div, a.subtabs-menu-active div {
+  display:inline;
+  padding-left:14px;
+  font-size:12px;
+  font-family: Arial, Helvetica, Sans-Serif;
 }
 
-a.subtabs-menu-inactive:hover {
-text-decoration:none;
-background:white;
+a.subtabs-menu-active div {
+  color:#FFCB05;
+  text-decoration:none;
+  background:white;
+  font-weight:bold;
 }
+
+a.subtabs-menu-inactive div {
+  color:#666766;
+  font-weight:bold;
+}
+
+a.subtabs-menu-inactive div:hover {
+  color:#FFCB05;
+  text-decoration:none;
+}
+
+#subtabs #profileSubTab                                                      { background: url(/images/debicons/Gprofile_s.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #profileSubTab, #subtabs #profileSubTab:hover { background: url(/images/debicons/Yprofile_s.png) no-repeat scroll 0 1px transparent; }
+
+#subtabs #timetableSubTab                                                        { background: url(/images/debicons/Gschicon_s.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background: url(/images/debicons/Yschicon_s.png) no-repeat scroll 0 1px transparent; }
+
+#subtabs #impersonateSubTab                                                          { background: url(/images/debicons/Gimpicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
+
 
 #profiletitle {
-margin-bottom:10px;
+  margin-bottom:10px;
 }
 
 #profiletitle h1 {
-padding:0 0 0 10px;
-font-size:18px;
-font-weight:bold;
-line-height:28px;
+  padding:0 0 0 10px;
+  font-size:18px;
+  font-weight:bold;
+  line-height:28px;
 }
 
 #campuses, #campus-details {
@@ -768,13 +883,13 @@ line-height:28px;
 }
 
 table#legend {
-border-collapse:collapse;
-width:100%
+  border-collapse:collapse;
+  width:100%
 }
 
 
 table#legend th {
-font-weight:bold;
+  font-weight:bold;
 }
 
 table#legend td {
@@ -892,7 +1007,7 @@ a.goodhead:hover {border:2px solid gray;}
 
 .inputtext {
   border: 1px solid #bdc768;
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+  font-family: Helvetica, Arial, Sans-Serif;
   font-size: 11px;
   padding: 3px;
   width: 180px;
@@ -998,6 +1113,41 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
 
+div#logos.dashboard { padding:15px 0 0 40px; }
+div#logos.dashboard img { padding-right:20px; }
+
+#banner_container {
+  padding-bottom: 10px;
+  height: 172px;
+}
+
+#banner_container #banner_img {
+  background: url("/images/bannerdashboard.png") no-repeat scroll center transparent;
+  height: 172px;
+}
+
+#banner_container #banner_bg {
+  background: url("/images/bannerdashboardbg.png") repeat scroll transparent;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 172px;
+  text-align: center;
+}
+
+#banner_container #leftBubble {
+  position: relative;
+  left: -2px;
+  top: 38px;
+}
+
+#banner_container #rightBubble {
+  position: relative;
+  left: 33px;
+  top: 33px;
+}
+
+
 #gettingstarted {
   margin-bottom:5px;
 }
@@ -1011,53 +1161,104 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   vertical-align: middle;
 }
 
-div#col_1{
-width:49.5%;
-float:left;
+.groupSemesterTitle {
+  width: 100px;
 }
 
-div#col_2 {
-width:49.5%;
-float:right;
+
+
+
+
+/* column container */
+.colmask {
+	position:relative;	/* This fixes the IE7 overflow hidden bug */
+	clear:both;
+	float:left;
+	width:100%;			/* width of whole page */
+	overflow:hidden;		/* This chops off any overhanging divs */
+}
+/* common column settings */
+.colright,
+.colmid,
+.colleft {
+	float:left;
+	width:100%;			/* width of page */
+	position:relative;
+}
+.col1,
+.col2,
+.col3 {
+	float:left;
+	position:relative;
+	padding:0 0 1em 0;	/* no left and right padding on columns, we just make them narrower instead
+					only padding top and bottom is included here, make it whatever value you need */
+	overflow:hidden;
+}
+/* 3 Column settings */
+.threecol {
+}
+.threecol .colmid {
+	right:25%;			/* width of the right column */
+}
+.threecol .colleft {
+	right:50%;			/* width of the middle column */
+}
+.threecol .col1 {
+	width:50%;			/* width of center column content (column width minus padding on either side) */
+	left:103%;			/* 100% plus left padding of center column */
+}
+.threecol .col2 {
+	width:24%;			/* Width of left column content (column width minus padding on either side) */
+	left:25%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+}
+.threecol .col3 {
+	width:20%;			/* Width of right column content (column width minus padding on either side) */
+	left:82%;			/* Please make note of the brackets here:
+					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
 
-#dashwrap {padding:0;}
-.dashmodule {border:1px dotted silver; float:left; width:100%; margin-bottom:7px;}
-.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
-.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
+
+#dashwrap {padding:0; position:relative; }
+.dashmodule {float:left; width:100%; margin-top:10px; margin-bottom:20px;}
+.moduletitle {height:30px;}
+.moduletitle h2 {float:left; font-weight:bold; font-size:14px; padding:7px;}
 .modulecontrols {float:right;}
-.modulecontent {min-height:100px; padding:5px;}
+.modulecontent {padding:7px;}
 .modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
 a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
 a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
 a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
 
-.modulecontent h6 {font-size:13px; }
-.modulecontent .norm {font-size:13px; font-weight: normal;}
-.lightgray { background:#F7F7FA /*was f0f0f0*/ ; padding:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;}
+.modulecontent h6 {font-size:12px; }
+.modulecontent .norm {font-size:12px; font-weight: normal;}
+.lightgray { background:#EFEFEF; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 
 .modulesearchbox {margin-bottom:1em;}
 input.searchdash {font-size:16px; width:250px;}
 input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padding:3px 3px 2px 3px; position:absolute;}
 .modulesearchbox small {line-height:2em; font-size:11px; font-weight:bold;}
 
-a.modulecontent, .modulecontent ul {font-size:13px;}
+a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
-ul.groupicon li{background:url(/images/silk/user_go.png) no-repeat 0% 0%; padding-left:22px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
-ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
+ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
 
 div#userbar {
-  background:#e6e6e6; 
-  background-image: url(/images/resized_c4c.png); 
-  background-repeat: no-repeat;
-  background-position: 10px 10px;
-  padding: 10px; 
-  height: 50px;
+  position: relative;
+  height: 80px;
 }
 
-div#username {font-size:20px; font-weight:bold; color:#000; display:inline; margin-right:0px; }
-div#userblock {float: right; padding-right: 10px; margin-top: 6px; text-align: right;}
+div#logos { padding:27px 0 0 32px; }
+div#logos img { padding-right:20px; }
+
+div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:300px; position:absolute; top:-22px; right:10px; text-align: right; display:inline; }
+div#signin { text-align:right; font-weight:bold; font-size: 14px; }
+div#signin a { color: #666766; text-transform: uppercase; }
+div#username { font-weight:bold; font-size:12px; display:inline; }
+div#userblock div#switch_ministries { display:inline; }
+div#userblock div#switch_ministries a { background: url("/images/Garrowdown_s.png") no-repeat scroll right 5px transparent; padding-right: 11px; }
+div#userblock div#switch_ministries a:hover { background-image: url("/images/Yarrowdown_s.png"); }
+div#userblock .log_out { padding-left:10px; }
 
 div#userbar small {font-size:11px;}
 
@@ -1090,10 +1291,11 @@ padding-bottom:5px;
 /* ************* */
 /* Flash Notices */
 #flash_notice, .flash_notice {
-margin:10px;
-padding:10px;
-background:#fff7d2;
-border:1px dotted orange;
+  color: #666766;
+  margin:10px;
+  padding:10px;
+  background:#EFEFEF;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 div.flash big {
@@ -1104,9 +1306,11 @@ div.flash b, div.flash_notice b  {
   color: #1F429B;
   font-weight: bold;
 }
+div.flash_notice.warning b  {
+	color:red;
+}
 
 .flash {
-
 	margin-left: 10px;
 }
 .notice {
@@ -1139,8 +1343,8 @@ div.fieldWithErrors{
 }
 
 #errorExplanation ul li{
-padding-left:20px;
-list-style-type:round;
+  padding-left:20px;
+  list-style-type:round;
 }
 
 #errorExplanation h2 {
@@ -1167,13 +1371,13 @@ list-style-type:round;
 
 
 .adfieldbox {
-float:left;
-margin-right:15px;
-/*min-width:180px;*/
+  float:left;
+  margin-right:15px;
+  /*min-width:180px;*/
 }
 
 .adfieldbox input.wide {width:185px; padding:3px 0;}
-.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 250px;}
+.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 200px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
 a.help_block {
@@ -1203,11 +1407,14 @@ div.section {
 }
 
 #switch_ministries_list {
-  position: absolute;  
+  position: absolute;
   z-index: 500;
   text-align: left;
+  left:100px;
+  border:6px solid #666766;
 
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
+  -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
 }
 
 div.choose_ministry_tree {
@@ -1793,6 +2000,11 @@ td.eventAttendees {
   border-right: 1px solid #999999;
 }
 
+#signup_step2_info tr.campus td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 #signup_step1_info {
   width: 425px; float: left; padding: 0 3em 0 3em;
 }
@@ -1823,10 +2035,15 @@ table#set_initial_campus tr {
 /* Search section                               */
 
 #uberSearchContainer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 40px;
+  width: 295px;
+  background-color: #D8D8D8;
   z-index: 99;
-  float: left;
-  left: 140px;
-  position: relative;
+
+  -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
 }
 
 #uberSearchBoxContainer {
@@ -1836,40 +2053,49 @@ table#set_initial_campus tr {
 }
 
 #uberSearchBox {
-  width: 240px;
-  font-size: 18px;
+  width: 166px;
+  font-size: 13px;
   position: absolute;
-  top: 4px;
+  top: 9px;
   left: 9px;
-  height: 25px;
-/*  background: #E6E6E6; use to blend in with bg more */
+  height: 16px;
   background: white;
-  color: #B3B3B3;
-  border: 2px solid white;
-  padding-left: 10px;
+  color: #DADADA;
+  border: 1px solid white;
+  padding-left: 8px;
 
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
 #uberSearchBox.focused, #uberSearchBox:focus {
   background: white;
   color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D;
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
 #uberSearchBox.ac_loading {
-  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+  background: url("/images/spinner.gif") no-repeat scroll 135px 8px white !important;
 }
 
 #uberSearchButton {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 5px;
-  left: 220px;
-  padding: 7px 20px;
+  top: 6px;
+  left: 165px;
+  padding: 5px;
   cursor: pointer;
+}
+
+#uberSearchButton div {
+  background: url("/images/debicons/Gmagniglass.png") no-repeat 0px 0px;
+  height: 18px;
+  width: 18px;
+}
+
+#uberSearchButton:hover div {
+  background: url("/images/debicons/Ymagniglass.png") no-repeat 0px 0px;
 }
 
 /* hsmit (dec 2010): added these to customize mentor quick search */
@@ -1900,7 +2126,7 @@ table#set_initial_campus tr {
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
-#uberMentorSearchBox.focused, #uberSearchBox:focus {
+#uberMentorSearchBox.focused, #uberMentorSearchBox:focus {
   background: white;
   color: black;
   border: 2px solid #00268D; /* #FFCB05; yellow */
@@ -1947,7 +2173,7 @@ table#set_initial_campus tr {
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
-#uberMenteeSearchBox.focused, #uberSearchBox:focus {
+#uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
   background: white;
   color: black;
   border: 2px solid #00268D; /* #FFCB05; yellow */
@@ -2284,7 +2510,7 @@ li.ac_over .autoCompleteEmail {
 
 
 .ac_results {
-  padding: 18px 0 0 0;
+  padding: 10px 0 0 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;
@@ -2294,7 +2520,7 @@ li.ac_over .autoCompleteEmail {
   top: 70px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
-  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+  -moz-box-shadow: 0 4px 10px #C8C8C8; -webkit-box-shadow: 0 4px 10px #C8C8C8;
 }
 
 .ac_results ul {
@@ -2426,59 +2652,51 @@ table.groupInvolvementList th {
 #dashboardInsightsContainer {
   background-image: url(/images/canada.gif);
   background-repeat: no-repeat;
-  background-position: top center;
-  height: 140px;
+  background-position: left 40px;
   text-align: center;
   position: relative;
+  font-weight:bold;
 }
 
-#dashboardInsightsContainer #campusInsights {
-  font-size: 70%;
+#dashboardInsightsContainer .insight {
+  padding: 10px 0 10px 10px;
 }
 
-#dashboardInsightsContainer #totalInsights {
-  font-size: 140%;
+#campusInsights {
+  font-size: 12px;
 }
 
-#dashboardInsightsContainer h1 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 4em;
+#campusInsights .number {
+  font-size: 16px;
 }
 
-#dashboardInsightsContainer h2 {
-  font-weight: bold;
-  color: #1F429B;
-  font-size: 1.5em;
+#totalInsights {
+  font-size: 14px;
 }
 
-#dashboardInsightsContainer #campusInsights {
-  float: left;
-  width: 35%;
-  text-align: center;
-  margin-top: 3em;
-}
-
-#dashboardInsightsContainer #totalInsights {
-  float: right;
-  width: 35%;
-  text-align: center;
+#totalInsights .number {
+  font-size: 22px;
 }
 
 #dashboardInsightsContainer #insightsSubTitle {
-  width: 100%;
-  text-align: center;
-  font-size: 1em;
-  float: left;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  text-align: left;
+  font-weight: normal;
+  padding-bottom: 10px;
 }
 
 .modulecontent tr.total td.eventAttendees {
   /*border-top: 1px solid;
   border-color: #E6E6E6;*/
   font-weight:bold;
+}
+
+.eventOpen {
+  font-weight: bold;
+  color: #6FBE44;
+}
+
+.eventClosed {
+  font-weight: bold;
 }
 
 .modulecontent tr.pat_no_project_chosen td {

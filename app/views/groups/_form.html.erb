@@ -8,13 +8,13 @@
   <tr>
     <td style="vertical-align:top;">
   	<table border="0" cellspacing="5" cellpadding="5">
-  	  <tr>
-  	    <td>Type: </td>
-        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %><small> required</small></td>
+  	  <tr class="required_field">
+  	    <td class="label">Type: </td>
+        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
   	  </tr>
-  		<tr><td>Name: </td><td><%= f.text_field :name %><small> required</small></td></tr>
-  		<tr>
-  			<td>Campus: </td>
+  		<tr class="required_field"><td class="label">Name: </td><td><%= f.text_field :name %></td></tr>
+  		<tr class="required_field">
+  			<td class="label">Campus: </td>
   			<td>
   				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
   				<%= spinner('c') %>
@@ -23,30 +23,30 @@
   				                                    :with => "campus_id",
   				                                    :loading => "$('#spinnerc').show()",
   				                                    :complete => "$('#spinnerc').hide()") %>
-          <small> required</small>
   			</td>
   		</tr>
   		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
-   		<tr><td>Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
-  		<tr><td>Address: </td><td><%= f.text_field :address %></td></tr>
-  		<tr><td>City: </td><td><%= f.text_field :city %></td></tr>
-  		<tr><td><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
-                <tr><td>Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc, :include_blank => Cmt::CONFIG[:semesterless_groups] %></td></tr>
+   		<tr><td class="label">Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
+  		<tr><td class="label">Address: </td><td><%= f.text_field :address %></td></tr>
+  		<tr><td class="label">City: </td><td><%= f.text_field :city %></td></tr>
+  		<tr><td class="label"><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
+                <tr><td class="label">Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc, :include_blank => Cmt::CONFIG[:semesterless_groups] %></td></tr>
   	</table>
 	  </td>
 	  <td style="vertical-align:top;">
 	    <table border="0" cellspacing="5" cellpadding="5">
-    		<tr><td><%= I18n.t :Zip, :default => 'Zip' %>: </td><td><%= f.text_field :zip %></td></tr>
-        <tr><td>Country: </td><td><%= f.select :country, ['United States', 'Canada','Australia'] %></td></tr>
-    		<tr><td>Email: </td><td><%= f.text_field :email %></td></tr>
-    		<tr><td>Website: </td><td><%= f.text_field :url %></td></tr>
-        <tr><td>
+    		<tr><td class="label"><%= I18n.t :Zip, :default => 'Zip' %>: </td><td><%= f.text_field :zip %></td></tr>
+        <tr><td class="label">Country: </td><td><%= f.select :country, ['United States', 'Canada','Australia'] %></td></tr>
+    		<tr><td class="label">Email: </td><td><%= f.text_field :email %></td></tr>
+    		<tr><td class="label">Website: </td><td><%= f.text_field :url %></td></tr>
+        <tr><td class="label">
             Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
-    		<tr><td>End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
-    		<tr><td>Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
+    		<tr><td class="label">End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
+    		<tr><td class="label">Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
 	    </table>
 	  </td>
 	</tr>
+  <br/>
   <tr>
     <td colspan='2'>
       <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
@@ -61,8 +61,11 @@
      </td>
    </tr>
 </table>
+<small><br/><%= image_tag("asterisk_yellow_smaller.png") %> are required fields</small>
+<br/>
+<br/>
 <%= yield :before_buttons %>
-<%= submit_tag 'Save' %> or 
+<%= submit_tag 'Save', :class => "action-button" %> or
 <%- if params[:action] == 'new' -%>
 	<%= link_to_function 'cancel', "$('#group').fadeOut();$('#new_group_link').show()",
  															:class => 'cancel'%>
@@ -70,3 +73,5 @@
 	<%= link_to_function 'cancel', "$('#address_form').fadeOut();$('#address').show()",
  															:class => 'cancel'%>
 <%- end -%>
+<br/>
+<br/>

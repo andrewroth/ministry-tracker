@@ -28,7 +28,6 @@ end
 
 Factory.define :permission_5_sheldon, :class => Permission do |p|
   p.id '5'
-<<<<<<< HEAD
   p.action 'update_multiple_roles'
   p.controller 'ministry_involvements'
   p.description 'Update multiple ministry involvement roles'
@@ -36,8 +35,6 @@ end
 
 Factory.define :permission_5_hobbe, :class => Permission do |p|
   p.id '555' # originally 5
-=======
->>>>>>> c4c.staging.remove_multiple_student_involvements
   p.action 'add_mentor_to_other'
   p.controller 'people'
   p.description 'Add mentor to other'
@@ -104,4 +101,11 @@ Factory.define :permission_14, :class => Permission do |p|
   p.action 'destroy'
   p.controller 'people'
   p.description 'Remove involvements' # also located in MinistryInvolvements under 'update roles'
+end
+
+Factory.define :permission_15, :class => Permission do |p|
+  p.id '15'
+  p.action 'advanced'
+  p.controller 'people'
+  p.description 'Advanced Search'
 end

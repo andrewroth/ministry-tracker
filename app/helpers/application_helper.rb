@@ -36,8 +36,8 @@ module ApplicationHelper
     {:include_blank => true, :start_year => year}
   end
   
-  def spinner(id='')
-    image_tag('spinner.gif', :id => 'spinner'+id.to_s, :style => 'display:none')
+  def spinner(id='', optional_class='')
+    image_tag('spinner.gif', :id => 'spinner'+id.to_s, :class => optional_class, :style => 'display:none')
   end
   
   def hide_spinner(page, id='')

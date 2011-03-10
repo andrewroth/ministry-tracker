@@ -3,7 +3,7 @@
  
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
 <head> 
-  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+  <meta http-equiv="X-UA-Compatible" />
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
   <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico"> 
     
@@ -22,18 +22,20 @@
 		<div id="loginBody">
 			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
 			<div id="loginwrapper">
-				<%
-				if @ie_browser
-          %>
-					<div id='browser_warning'>
-					 The Pulse works best with the following browsers:
-           <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome' %>
-           <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/' %>
-           <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/' %>
+
+        <!--[if lt IE 8]>
+          <div id='browser_warning'>
+            <%= image_tag("exclamation.gif") %>
+            <b>You are using an outdated browser.</b><br/>
+            For a faster, safer browsing experience, upgrade for free to one of these browsers today:<br/>
+            
+            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
           </div>
-				  <%
-        end
-        %>
+        <![endif]-->
+
 				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
 				<map name="getin">
 				  <area shape="rect" coords="320,53,662,117" href="<%= signup_url %>" alt="Join a Group! (No need to login)" />
@@ -42,7 +44,7 @@
 				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
 				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
 				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
-				<%= link_to image_tag("log_in_help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
+				<%= link_to image_tag("help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
 			</div>
 		</div>
 	</body>

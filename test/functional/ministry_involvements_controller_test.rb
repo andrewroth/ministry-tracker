@@ -130,18 +130,18 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:ministryinvolvement_12)
+    Factory(:ministryinvolvement_13)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)
 
     get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"]
-    
+ 
     assert assigns(:involvements)
     assert_equal 2, assigns(:involvements).size
 
     assert assigns(:people_without_involvements)
     assert_equal 1, assigns(:people_without_involvements).size
-
   end
 
   test "edit multiple roles with role search" do
@@ -150,6 +150,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:ministryinvolvement_12)
+    Factory(:ministryinvolvement_13)
     Factory(:person_2)
     Factory(:person_6)
     Factory(:person_8)
@@ -197,7 +198,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
 
     assert_equal 4, MinistryInvolvement.find(5).ministry_role_id
-    assert_equal 7, MinistryInvolvement.find(8).ministry_role_id
+    assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
   end
 
   test "update multiple roles promote student to staff" do
@@ -205,6 +206,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryrole_10)
+    Factory(:person_6)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["8"], :role => {:id => "10"}
