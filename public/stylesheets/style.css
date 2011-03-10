@@ -1306,6 +1306,9 @@ div.flash b, div.flash_notice b  {
   color: #1F429B;
   font-weight: bold;
 }
+div.flash_notice.warning b  {
+	color:red;
+}
 
 .flash {
 	margin-left: 10px;
