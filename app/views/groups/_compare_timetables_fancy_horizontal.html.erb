@@ -72,8 +72,8 @@
 
                 <% i=0 %>
                 <% while time < end_time %>
-                  <div class="time timeHeader <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
-                    <%= time_header_text(time) %>
+                  <div class="time timeHeaderContainer <%=time_header_zoom_class(time)%> hour<%=time.hour%> min<%=time.min%>" style="left:<%=interval_width*i%>%;">
+                    <div class="timeHeader"><%= time_header_text(time) %></div>
                   </div>
 
                   <div class="line <%=time_header_zoom_class(time)%> <%="halfHour" if time.min==30%>" style="left:<%=interval_width*i%>%;"></div>
@@ -144,7 +144,7 @@
     $("#zoomSlider").slider("value", $("#zoomSlider").slider("value")-2470);
 
     if ($(".horizTableCompare .frame").width() > $("#zoomSlider").slider("value")) {
-      $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-10 );
+      $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-20 );
     }
 
     $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
@@ -158,7 +158,7 @@
   });
 
   // set the default zoom to be the width of the frame
-  $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-10 );
+  $("#zoomSlider").slider("value", $(".horizTableCompare .frame").width()-20 );
   $(".horizTableCompare .tableContainer").width($("#zoomSlider").slider("value") + "px");
   zoom_adjustments($(".horizTableCompare .tableContainer").width());
 
@@ -203,7 +203,8 @@
 
   // toggle visibility of person's time by clicking their name
   $(".personNameContainer").not(".noTable").children(".personName").click(function () {
-    $("." + $(this).parent().attr("pid") + " .personTimes").toggle();
+    pid = $(this).parent().attr("pid");
+    $("." + pid + " .personTimes").toggleClass("hiddenPerson");
     $(this).toggleClass("rowsHidden");
   });
 
@@ -213,6 +214,7 @@
     $(".personRowContainer." + $(this).parents(".personNameContainer").attr("pid")).remove();
     $(this).parents(".personNameContainer").remove();
 
+    // redo odd/even row classes
     $(".personRowContainer").removeClass("odd even");
     $(".personName").removeClass("odd even");
     $(".personRowContainer:even").addClass("even");
@@ -241,7 +243,7 @@
 
   // checkboxes to toggle day visibility
   $("input.toggleDay").bind($.browser.msie ? 'propertychange': 'change', function(e) {
-    $("." + $(this).attr("value")).toggle();
+    $("." + $(this).attr("value")).toggleClass("hiddenDay");
   });
 
 
