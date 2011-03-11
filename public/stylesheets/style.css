@@ -852,11 +852,15 @@ a.subtabs-menu-inactive div:hover {
   text-decoration:none;
 }
 
+
 #subtabs #profileSubTab                                                      { background: url(/images/debicons/Gprofile_s.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #profileSubTab, #subtabs #profileSubTab:hover { background: url(/images/debicons/Yprofile_s.png) no-repeat scroll 0 1px transparent; }
 
 #subtabs #timetableSubTab                                                        { background: url(/images/debicons/Gschicon_s.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background: url(/images/debicons/Yschicon_s.png) no-repeat scroll 0 1px transparent; }
+
+#subtabs #discipleshipSubTab                                                        { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 1px transparent; }
 
 #subtabs #impersonateSubTab                                                          { background: url(/images/debicons/Gimpicon.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
@@ -2705,6 +2709,7 @@ table.groupInvolvementList th {
 
 
 
+
 /************************************************/
 /*  Fancy Horizontal Timetable Compare section  */
 /************************************************/
@@ -2799,3 +2804,86 @@ table.groupInvolvementList th {
 }
 #tooltip h3, #tooltip div { margin: 0; }
 #tooltip span.whiteFont { color:white; }
+
+/** Discipleship Tree **/
+td.discTree {
+	width:50%;
+}
+
+.treeColumn {
+    width:auto;
+    float:left;
+		margin-right:30px;
+}
+
+.treeBranch {
+    color: #FFCB05;	
+    background: url("/images/bracket_vertical_bg.png") repeat-y scroll right center transparent;
+}
+
+.treeBranchLink span {
+    color: #1F429B;
+}
+
+.treeBranchLink span:hover {
+    color: #ECAC00;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.bracketTop {
+		float: right;
+}
+
+.bracketBottom {
+		float: right;
+}
+
+.bracketColumn {
+		float: left;
+}
+
+.bracketArrow {
+    float: left;
+    font-weight: bold;
+    color: #FFCB05; 
+}
+
+.bracketPic {
+    float: right;
+}
+
+.detailsColumn {
+    margin-left:30px;
+		float:none
+}
+
+td.profilePic {
+  width:5%;
+}
+
+.headerProfilePic {
+    width: 50px;
+    float:left; 
+    padding:0px 15px 15px 0px;
+}
+
+td.nameTitle {
+  width:95%;
+}
+
+.headerNameTitle {
+    width:auto;
+    float:left;	
+		margin-left:50px;
+		font-size: 18px;
+		font-weight: bold;
+		padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
+}
+
+.headerContactInfo {
+    width:auto;
+    float:left; 
+    margin-left:50px;
+}
+
