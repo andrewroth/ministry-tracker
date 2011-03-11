@@ -11,7 +11,7 @@
            <%= image_tag 'photo_coming.png', :size => '100x100' %>
           <%- end -%>
         <%- else -%>
-           <%= image_tag(mentee.profile_picture.public_filename(:medium)) %>
+           <%= image_tag(mentee.profile_picture.public_filename(:medium), :size => '100x100') %>
         <%- end -%>
       </div>     	
 
