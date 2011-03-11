@@ -8,6 +8,8 @@ module GroupsHelper
   end
 
   def time_header_zoom_class(time)
+    return "" if time.hour == 6 && time.min == 0 # don't display 6am
+    
     return "zoom4" if time.min != 0
 
     case time.hour % 4
