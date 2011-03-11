@@ -1,14 +1,16 @@
 
 <h4 class="title">Compare Timetables&nbsp;&nbsp;
-  <% types = Group::LEVELS %>
-  <% data = data_string(types) %>
-  <%= link_to_remote 'Side by Side Compare (NEW)', {
-    :url => compare_timetables_group_url(:id => @group.id, :compare_style => 1),
-    :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
-    {:class => 'small'}
-  %>
-  &nbsp;
-  <%= spinner('_change_style', 'opaqueWhite') %>
+  <![if gte IE 8]>
+    <% types = Group::LEVELS %>
+    <% data = data_string(types) %>
+    <%= link_to_remote 'Side by Side Compare (NEW)', {
+      :url => compare_timetables_group_url(:id => @group.id, :compare_style => 1),
+      :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
+      {:class => 'small'}
+    %>
+    &nbsp;
+    <%= spinner('_change_style', 'opaqueWhite') %>
+  <![endif]>
 </h4>
 
 <div id = "notices">
