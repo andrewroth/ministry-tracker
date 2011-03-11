@@ -205,7 +205,6 @@ class GroupsController < ApplicationController
       end
     }.collect(&:person)
 
-    @user_agent = request.env['HTTP_USER_AGENT'].downcase
     
     if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
       compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
