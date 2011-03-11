@@ -2725,24 +2725,24 @@ table.groupInvolvementList th {
 .horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
 .horizTableCompare .day { position:relative; float:left; }
 .horizTableCompare .day.dayHeader {  height:100%; }
-.horizTableCompare .day.dayHeader .dayName { font-weight:bold; color:#666766; font-size:1.12em; padding:0.5em 0 0 1em; }
+.horizTableCompare .day.dayHeader .dayName { font-weight:bold; color:#666766; font-size:14px; padding-left:0.5em; }
 .horizTableCompare .dayBackground { position:relative; height:100%; float:left; border-right:3px dashed #666766; z-index:10; }
-.horizTableCompare .time.timeHeader { font-weight:normal; font-size: .9em; }
-.horizTableCompare .timelineHeader .timeHeader { position: absolute; top: 30px; }
+.horizTableCompare .timelineHeader .timeHeaderContainer { position: absolute; top: 30px; z-index:11; }
+.horizTableCompare .timeHeaderContainer .timeHeader { font-weight:normal; font-size: .9em; position:relative; left:-30px; width:60px; text-align:center; }
 
-.horizTableCompare .timelineHeader .hour5, .horizTableCompare .timelineHeader .hour21  { color:#17254A; border-color:#17254A;}
-.horizTableCompare .timelineHeader .hour6, .horizTableCompare .timelineHeader .hour20  { color:#17254A; border-color:#17254A;}
-.horizTableCompare .timelineHeader .hour7, .horizTableCompare .timelineHeader .hour19  { color:#233971; border-color:#233971;}
-.horizTableCompare .timelineHeader .hour8, .horizTableCompare .timelineHeader .hour18  { color:#2E4C99; border-color:#2E4C99;}
-.horizTableCompare .timelineHeader .hour9, .horizTableCompare .timelineHeader .hour17  { color:#3A60C0; border-color:#3A60C0;}
-.horizTableCompare .timelineHeader .hour10, .horizTableCompare .timelineHeader .hour16 { color:#4C6EC5; border-color:#4C6EC5;}
-.horizTableCompare .timelineHeader .hour11, .horizTableCompare .timelineHeader .hour15 { color:#5B7ACB; border-color:#5B7ACB;}
-.horizTableCompare .timelineHeader .hour12, .horizTableCompare .timelineHeader .hour14 { color:#728ED4; border-color:#728ED4;}
-.horizTableCompare .timelineHeader .hour13                                             { color:#728ED4; border-color:#728ED4;}
+.horizTableCompare .timelineHeader .hour5 .timeHeader, .horizTableCompare .timelineHeader .hour21 .timeHeader  { color:#17254A; border-color:#17254A;}
+.horizTableCompare .timelineHeader .hour6 .timeHeader, .horizTableCompare .timelineHeader .hour20 .timeHeader  { color:#17254A; border-color:#17254A;}
+.horizTableCompare .timelineHeader .hour7 .timeHeader, .horizTableCompare .timelineHeader .hour19 .timeHeader  { color:#233971; border-color:#233971;}
+.horizTableCompare .timelineHeader .hour8 .timeHeader, .horizTableCompare .timelineHeader .hour18 .timeHeader  { color:#2E4C99; border-color:#2E4C99;}
+.horizTableCompare .timelineHeader .hour9 .timeHeader, .horizTableCompare .timelineHeader .hour17 .timeHeader  { color:#3A60C0; border-color:#3A60C0;}
+.horizTableCompare .timelineHeader .hour10 .timeHeader, .horizTableCompare .timelineHeader .hour16 .timeHeader { color:#4C6EC5; border-color:#4C6EC5;}
+.horizTableCompare .timelineHeader .hour11 .timeHeader, .horizTableCompare .timelineHeader .hour15 .timeHeader { color:#5B7ACB; border-color:#5B7ACB;}
+.horizTableCompare .timelineHeader .hour12 .timeHeader, .horizTableCompare .timelineHeader .hour14 .timeHeader { color:#728ED4; border-color:#728ED4;}
+.horizTableCompare .timelineHeader .hour13 .timeHeader                                                         { color:#728ED4; border-color:#728ED4;}
 
-.horizTableCompare .hour6.min0 { padding-left:6px; }
+.horizTableCompare .hour6.min0 { padding-left:15px; display:none; }
 
-.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.5; }
+.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.3; }
 .horizTableCompare .line.halfHour { border-left: 1px dotted; }
 .horizTableCompare .timeTooltip { position: absolute; top:0; bottom:0; z-index:11; margin-top:45px; }
 .horizTableCompare .meetingTimeSelector { cursor:pointer; z-index:12; }
@@ -2757,11 +2757,11 @@ table.groupInvolvementList th {
 .horizTableCompare .personName.odd  { background-color:#E9E9E9; }
 .horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; text-decoration:underline; }
 .horizTableCompare .personName:active, .horizTableCompare .personName.rowsHidden:active { background:none;}
-.horizTableCompare .personName.rowsHidden { background-color:white; }
-.horizTableCompare .personTimetableLink { display:inline; position:absolute; top:5px; right:23px; }
+.horizTableCompare .personName.rowsHidden { background-color:white; opacity:0.6; }
+.horizTableCompare .personTimetableLink { display:inline; position:absolute; top:1px; right:19px; padding:4px; }
 .horizTableCompare span.outdated { font-weight:bold; font-style: italic; color:white; }
 .horizTableCompare .noTableNote { float:right; }
-.horizTableCompare .noTable, .horizTableCompare .noTableNote { opacity:0.5; }
+.horizTableCompare .noTable, .horizTableCompare .noTableNote { opacity:0.7; }
 .horizTableCompare .noTable .personName, .horizTableCompare .noTable .personName:hover { cursor:default; background-color:white; color:#666766; font-weight:bold; text-decoration:none; }
 .horizTableCompare .personName .removePersonLink { display:inline; position:absolute; top:3px; left:-20px; cursor:pointer; }
 .horizTableCompare .personName .removePersonLink img { display:none; }
@@ -2783,6 +2783,8 @@ table.groupInvolvementList th {
 .horizTableCompare .zoomSliderContainer { float:right; padding-left:3em; }
 .horizTableCompare .visibleDaysControls { float:right; cursor:default; }
 .horizTableCompare .visibleDaysControls input { position:relative; bottom:-2px; }
+
+.horizTableCompare .hiddenPerson, .horizTableCompare .hiddenDay { display:none; }
 
 .horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
