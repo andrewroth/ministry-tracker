@@ -16,20 +16,22 @@ return if @restrict_all_links
 render_tabnav :main, 
               :html => {:class => 'tablist', :id => 'tablist' } do 
 
-  link = I18n.t :help_link, :default => ''
-  if link.present?
-    add_tab do |t|
-      t.named 'Help'
-      t.titled "Bug and feature forms, user manual and help forum"
-      t.links_to link
-      t.new_window true
-    end
-  end
+  # help tab not used in current layout
+  # 
+  #link = I18n.t :help_link, :default => ''
+  #if link.present?
+    #add_tab do |t|
+      #t.named "<div id='helpTab'>HELP</div>"
+      #t.titled "Bug and feature forms, user manual and help forum"
+      #t.links_to link
+      #t.new_window true
+    #end
+  #end
 
 
   if authorized?(:index, :stats)
     add_tab do |t|
-      t.named 'Insights'
+      t.named "<div id='insightsTab' class='tab'>INSIGHTS</div>"
       t.titled "Measuring the movement"
       t.links_to :controller => 'stats'
       t.highlights_on :controller => "stats"
@@ -41,7 +43,7 @@ render_tabnav :main,
 
   if authorized?(:new, :groups)
     add_tab do |t|
-      t.named 'Groups'
+      t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
       t.titled 'Groups for ' + @ministry.name
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
@@ -66,7 +68,7 @@ render_tabnav :main,
   # end if @groups.size > 0
   
   add_tab do |t|
-   t.named 'My Profile'
+   t.named "<div id='profileTab' class='tab'>PROFILE</div>"
    t.titled "You're special"
    t.links_to person_path(@me)
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
@@ -83,7 +85,7 @@ render_tabnav :main,
   #end
   
   add_tab do |t|
-   t.named 'Dashboard'
+   t.named "<div id='dashboardTab' class='tab'>DASHBOARD</div>"
    t.titled 'This is your Dashboard'
    t.links_to :controller => 'dashboard'
   end 

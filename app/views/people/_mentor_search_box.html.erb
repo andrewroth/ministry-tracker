@@ -53,21 +53,6 @@
         });
 
 
-        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
-        var prepare = function() {
-          jQuery.ajax({
-            dataType:'script',
-            type:'get',
-            url: 'people/prepare'});
-          $('#uberMentorSearchBox').unbind('mouseover', prepare);
-          $('#uberMentorSearchBox').unbind('focus', prepare);
-        };
-
-        $('#uberMentorSearchBox').bind('mouseover', prepare);
-        $('#uberMentorSearchBox').bind('focus', prepare);
-        <% end %>
-
-
         $(document).ready(function() {
           var fields = jQuery("#uberMentorSearchBox");
           for (var i = 0; i < fields.length; i++) {
