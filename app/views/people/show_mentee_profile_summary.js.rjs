@@ -1,0 +1,9 @@
+
+page.replace_html("mentorship", :partial => "discipleship_tree", :locals => { :selected => @selected_mentee
+    })
+
+#page.replace_html("bracket", :partial => "tree_summary_divider", :locals => { :name_height => @name_height, :bracket_depth => @bracket_level, :is_first_level => @is_first_level
+#    })
+
+page.replace_html("profile_summary", :partial => @mentee_page_to_display, :locals => { :mentee => @selected_mentee, :semester => @current_semester
+})
