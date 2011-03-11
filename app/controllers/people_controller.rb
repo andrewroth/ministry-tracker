@@ -685,16 +685,17 @@ class PeopleController < ApplicationController
   private
 
     def do_directory_search
-      first_name_col = "Person.#{_(:first_name, :person)}"
-      last_name_col = "Person.#{_(:last_name, :person)}"
-      email = _(:email, :address)
-
+      @having = []
       if params[:search_id]
         @search = @my.searches.find(params[:search_id])
         @conditions = @search.query
         conditions = @conditions.split(' AND ')
         @options = JSON::Parser.new(@search.options).parse
-        @tables = JSON::Parser.new(@search.tables).parse
+        tables_with_string_keys = JSON::Parser.new(@search.tables).parse
+        @tables = {}
+        tables_with_string_keys.each_pair do |k,v|
+          @tables[k.constantize] = v
+        end
         @search_for = @search.description
         @search.update_attribute(:updated_at, Time.now)
         @advanced = true if @tables.present?
@@ -717,9 +718,9 @@ class PeopleController < ApplicationController
           end
         end
 
-
+      
         # Advanced search options
-
+        @options = {}
         @tables = {}
         @search_for = []
         # Check year in school
@@ -730,26 +731,26 @@ class PeopleController < ApplicationController
           @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
           @advanced = true
         end
-
+      
         # Check gender
         if params[:gender].present?
           conditions << database_search_conditions(params)[:gender]
           @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
           @advanced = true
         end
-
+      
         if params[:first_name].present?
           conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
           @search_for << "First Name: #{params[:first_name]}"
           @advanced = true
         end
-
+        
         if params[:last_name].present?
           conditions << "Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'"
           @search_for << "Last Name: #{params[:last_name]}"
           @advanced = true
         end
-
+        
         if params[:email].present?
           conditions << database_search_conditions(params)[:email]
           @search_for << "Email: #{params[:email]}"
@@ -764,15 +765,14 @@ class PeopleController < ApplicationController
           @searched_ministry_roles = params[:role]
         end
 
-        conditions = add_involvement_conditions(conditions)
-
+        conditions = add_involvement_conditions(conditions, nil)
+      
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
-        
+        session[:last_options] = @options
+      
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
-<<<<<<< HEAD
-=======
       
       conditions = ""
 
@@ -807,6 +807,7 @@ class PeopleController < ApplicationController
       if params[:group_involvement].present?
         @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
+=begin
         ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
                                               #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
                                               #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
@@ -815,6 +816,7 @@ class PeopleController < ApplicationController
                                               #{Timetable.table_name} as Timetable READ, #{TempGroupInvolvement.table_name} as TempGroupInvolvement WRITE,
                                               mysql.time_zone_name READ
                                               |)
+=end
         TempGroupInvolvement.delete_all
         sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
             GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
@@ -822,12 +824,12 @@ class PeopleController < ApplicationController
             GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
         ActiveRecord::Base.connection.execute(sql)
         @temp_group_involvements_locked = true
+        Lock.establish_lock("not_in_group")
         @tables[TempGroupInvolvement] = "Person.person_id = TempGroupInvolvement.person_id"
       end
->>>>>>> 907cd9c... Used new technique to ensure disc tree bracket arrow works in Chrome & Firefox
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-      tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join('')
+      tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
       if params[:search_id].blank?
         @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
         if @search
@@ -838,36 +840,15 @@ class PeopleController < ApplicationController
         # Only keep the last 5 searches
         @my.searches.last.destroy if @my.searches.length > 5
       end
-
+      
       # If these conditions will result in too large a set, use pagination
-      @count = ActiveRecord::Base.connection.select_value("SELECT count(distinct(Person.#{_(:id, :person)})) FROM #{tables_clause} WHERE #{@conditions}").to_i
-      if @count > 0
-        # Build range for pagination
-        if @count > 500
-          finish = params[:finish]
-          if (start = params[:start]).blank?
-            start = ''
-            if @count > 2000
-              finish ||= 'am'
-            else
-              finish ||= 'b'
-            end
-          end
-          if finish.blank?
-            conditions << "#{last_name_col} >= '#{start}'"
-          else
-            conditions << "#{last_name_col} BETWEEN '#{start}' AND '#{finish}'"
-          end
-          @conditions = conditions.join(' AND ')
-        end
-
-        build_sql(tables_clause)
-        @people = ActiveRecord::Base.connection.select_all(@sql)
-        post_process_directory(@people)
-      else
-        @people = []
-        @count = 0
+      @group = Person._(:id)
+      build_sql(tables_clause, @extra_select)
+      @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+      if @temp_group_involvements_locked
+        Lock.free_lock("not_in_group")
       end
+      @count = @people.total_entries
 
       # pass which ministries were searched for to the view
       if params[:ministry]
