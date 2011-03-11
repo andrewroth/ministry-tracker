@@ -15,7 +15,7 @@ class Mailers::EmailMailer < ActionMailer::Base
     content_type "text/html"
     @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email sent on your behalf"
     @sent_on     = Time.now
-    @body = {:email => "<html>#{email}</html>", :missing => missing, :errors => errors}
+    @body = {:email => email, :missing => missing, :errors => errors}
   end
 
   def emails_working(emails)
