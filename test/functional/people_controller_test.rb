@@ -54,6 +54,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_update
+    login_admin_user
     xhr :get, :update,
         :id => 50000,
         :user => { :guid => "test" },
@@ -73,12 +74,14 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_set_permanent_address_states
+    login_admin_user
     xhr :get, :set_permanent_address_states, :perm_address_country => 'USA'
     assert_not_nil(assigns["permanent_address_states"])
     assert_equal(1, assigns["permanent_address_states"].size)
   end
 
   def test_get_campus_states
+    login_admin_user
     setup_campuses
     xhr :get, :get_campus_states, :primary_campus_country => 'USA'
     assert_not_nil(assigns["campus_states"])
@@ -86,12 +89,14 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_me
+    login_admin_user
     xhr :get, :me
     assert_not_nil(assigns["person"])
     assert_equal(50000, assigns["person"].id)
   end
 
   def test_get_campuses_for_state
+    login_admin_user
     setup_campuses
 
     xhr :get, :get_campuses_for_state, :primary_campus_state => 'CA', :primary_campus_country => 'US'
@@ -181,6 +186,7 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   test "when i do a search, save it" do
+    login_admin_user
     assert_difference "Search.count" do
       post :directory, :search => 'all'
     end
@@ -463,11 +469,13 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
+    login_admin_user
     get :new
     assert_response :success
   end
   
   test "should change view" do
+    login_admin_user
     post :change_view, :view => '1'
     assert_redirected_to directory_people_path(:format => :html)
   end
@@ -490,11 +498,13 @@ class PeopleControllerTest < ActionController::TestCase
   end
  
   test "should have all campuses on directory for staff" do
+    login_admin_user
     get :directory
     assert_array_similarity(Ministry.first.campuses + Ministry.first.children.collect(&:campuses).flatten, assigns(:campuses))
   end
 
   test "should clear session order when changing view" do
+    login_admin_user
     get :directory, :order => Person._(:first_name)
     post :change_view, :view => '1'
     assert_redirected_to directory_people_path(:format => :html)
@@ -502,6 +512,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should re-create staff" do
+    login_admin_user
     #Factory(:address_1)
     Factory(:accessgroup_1)
     old_count = Person.count
@@ -514,6 +525,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should create student" do
+    login_admin_user
     Factory(:accessgroup_1)
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
@@ -538,6 +550,7 @@ class PeopleControllerTest < ActionController::TestCase
   # end
   
   test "should re-create student" do
+    login_admin_user
     #Factory(:address_1)
     Factory(:accessgroup_1)
     assert_no_difference('Person.count') do
@@ -560,6 +573,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_show_person" do
+    login_admin_user
     get :show, :id => Factory(:person_1).id
     
     assert_template :show
@@ -568,6 +582,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_show_rp" do
+    login_admin_user
     get :show, :id => Factory(:person_3).id
     
     assert_template :show
@@ -576,6 +591,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should_get_edit" do
+    login_admin_user
     get :edit, :id => 50000
     assert_response :success
   end
@@ -597,6 +613,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "should_show_possible_responsible_people" do
+    login_admin_user
     if Cmt::CONFIG[:rp_system_enabled]
       Factory(:person_3)
       get :edit, :id => 2000
@@ -608,6 +625,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should update person" do
+    login_admin_user
     Factory(:person_2)
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
@@ -625,6 +643,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should end a person's involvements" do
+    login_admin_user
     @request.env["HTTP_REFERER"] = directory_people_path
     delete :destroy, :id => Factory(:person_3).id
     assert person = assigns(:person)
@@ -634,6 +653,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should end a person's campus involvements with no ministry involvements" do
+    login_admin_user
     @request.env["HTTP_REFERER"] = directory_people_path
     reset_people_sequences
     Factory(:person)
@@ -650,6 +670,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "change to a ministry that is under my assigned level" do
+    login_admin_user
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_3).id
     assert_response :success
     assert_equal(3, session[:ministry_id])
@@ -675,6 +696,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "change to a ministry that is NOT under my assigned level should still work for staff" do
+    login_admin_user
     get :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_4).id
     assert_response :redirect
     assert_equal(Factory(:ministry_4), assigns(:ministry))
@@ -693,6 +715,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "ministry leader with no permanent address should render when updating notes" do
+    login_admin_user
   
     # setup session
     Factory(:ministry_4)
@@ -723,6 +746,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "show group involvements per semester" do
+    login_admin_user
     person = Factory(:person_1)
 
     post :show_group_involvements, :id => person.id, :semester_id => 14
@@ -733,6 +757,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "people with a role marked hide by default should not appear in directory" do
+    login_admin_user
     setup_users
     setup_people
     setup_ministry_roles
