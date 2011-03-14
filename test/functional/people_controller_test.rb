@@ -348,7 +348,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_mentors', :count => 1
     
     assert_not_equal Factory(:person_6).id, @person.person_mentor_id  # ensure person 6 is NOT mentor
-  debugger  
+  #debugger  
     xhr :get, :show, :id => Factory(:person_1).id, :m => Factory(:person_6).id
 
     # use Person.find because @person doesn't change due to scope
@@ -376,18 +376,22 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:user_6)
     Factory(:access_6)
     Factory(:person_7)
+    Factory(:ministryrole_9)
     Factory(:ministryinvolvement_6)
     Factory(:ministryrolepermission_5)
     Factory(:permission_4)
     Factory(:permission_15) # advanced search
     Factory(:ministryrolepermission_24) # advanced search
-    Factory(:ministry_4)
+    Factory(:ministry_1)
+    Factory(:campusinvolvement_10)
+    Ministry.rebuild!
 
     login('staff_on_ministry_with_no_campus')
     session[:ministry_id] = Factory(:ministry_4).id
-    get :directory, :force => 'true'
+    get :directory, :force => 'true', :campus => "2"
     assert_response :success, @response.body
     assert(ppl = assigns(:people), "@people wasn't assigned")
+    throw assigns(:people).inspect
     assert(ppl.detect {|p| p['person_id'].to_i == Factory(:person_7).id}, "staff_on_ministry_with_no_campus didn't show up.")
   end
   
@@ -755,31 +759,6 @@ class PeopleControllerTest < ActionController::TestCase
      assert_response :success   
   end
   
-  test "should show discipleship tree" do
-    login_admin_user
- 
-    # setup mentorship
-    person1 = Factory(:person_mentor)
-    person2 = Factory(:person_mentor)
-    person3 = Factory(:person_mentor)
-    
-    person3.person_mentor_id = person2.id
-    person3.save!
-    person2.person_mentor_id = person1.id
-    person2.save!
-
-    get :discipleship, :id => person1.id
-    
-    assert_response :success   
- 
-     # test to see that default summary is shown (i.e. for the person at root of tree)    
-     xhr :get, :show_mentee_summary,
-      :mentee_id => person1.id
-       
-     assert_template :partial => '_mentee_summary', :count => 1
-     assert_response :success   
-  end
-
   test "should show invalid access page for mentee summary" do
     # log in as student leader with proper permissions
 #    Factory(:user_1)

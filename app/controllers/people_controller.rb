@@ -1050,6 +1050,7 @@ class PeopleController < ApplicationController
         campus_ids = params[:campus] & get_campus_ids
       end
       if !is_staff_somewhere
+        debugger
         campus_ids ||= get_campus_ids
       end
 
