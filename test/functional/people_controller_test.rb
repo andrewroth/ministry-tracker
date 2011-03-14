@@ -66,6 +66,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_set_current_address_states
+    login_admin_user
     xhr :get, :set_current_address_states, :current_address_country => 'USA'
     assert_not_nil(assigns["current_address_states"])
     assert_equal(1, assigns["current_address_states"].size)
@@ -101,6 +102,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_set_initial_campus
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_1)
     xhr :put, :set_initial_campus, :primary_campus_involvement => { :campus_id => 1 }
@@ -116,6 +118,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_directory
+    login_admin_user
     Factory(:search_1)
     Factory(:column_5)
     @ministry = Ministry.find(1)
@@ -162,6 +165,7 @@ class PeopleControllerTest < ActionController::TestCase
 =end
 
   test "full directory" do
+    login_admin_user
     get :directory
     assert_response :success
     assert assigns(:people)
@@ -183,6 +187,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "directory pagination" do
+    login_admin_user
     post :directory, :search => 'all'
     assert_response :success
     assert assigns(:people)
@@ -546,6 +551,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should NOT create person" do
+    login_admin_user
     assert_no_difference('Person.count') do
       post :create, :person => { }
     end
@@ -612,6 +618,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should NOT update person" do
+    login_admin_user
     xhr :put, :update, :id => 50000, :person => {:first_name => '' }
     assert_response :success
     assert_template '_edit'
@@ -637,6 +644,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "change ministry and goto directory" do
+    login_admin_user
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => '1'
     assert_response :success
   end
@@ -806,6 +814,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates first name" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -818,6 +827,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates last name" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -830,6 +840,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates gender" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -842,6 +853,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates phone" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -854,6 +866,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates campus" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -866,6 +879,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validates school year" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
@@ -878,6 +892,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validation pass" do
+    login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
