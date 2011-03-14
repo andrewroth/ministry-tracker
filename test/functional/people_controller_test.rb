@@ -229,7 +229,6 @@ class PeopleControllerTest < ActionController::TestCase
     get :show, :id => Factory(:person_3).id   # navigate to own profile
     
     assert_template :show
-#debugger
    # puts @response.body
     assert_template :partial => '_mentors', :count => 1
     assert_template :partial => '_mentees', :count => 0
@@ -348,7 +347,6 @@ class PeopleControllerTest < ActionController::TestCase
     assert_template :partial => '_mentors', :count => 1
     
     assert_not_equal Factory(:person_6).id, @person.person_mentor_id  # ensure person 6 is NOT mentor
-  #debugger  
     xhr :get, :show, :id => Factory(:person_1).id, :m => Factory(:person_6).id
 
     # use Person.find because @person doesn't change due to scope
@@ -383,15 +381,14 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:permission_15) # advanced search
     Factory(:ministryrolepermission_24) # advanced search
     Factory(:ministry_1)
-    Factory(:campusinvolvement_10)
+    Factory(:campus_2)
+    Factory(:ministrycampus_4)
     Ministry.rebuild!
 
     login('staff_on_ministry_with_no_campus')
-    session[:ministry_id] = Factory(:ministry_4).id
-    get :directory, :force => 'true', :campus => "2"
+    get :directory, :force => 'true'
     assert_response :success, @response.body
     assert(ppl = assigns(:people), "@people wasn't assigned")
-    throw assigns(:people).inspect
     assert(ppl.detect {|p| p['person_id'].to_i == Factory(:person_7).id}, "staff_on_ministry_with_no_campus didn't show up.")
   end
   
