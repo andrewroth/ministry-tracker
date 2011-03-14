@@ -11,7 +11,7 @@
            <%= image_tag 'photo_coming.png', :height => '100%', :width => '100%' %>
           <%- end -%>
         <%- else -%>
-           <%= image_tag(mentee.profile_picture.public_filename(:mini)) %>
+           <%= image_tag(mentee.profile_picture.public_filename(:medium)) %>
         <%- end -%>
       </div>     	
 
