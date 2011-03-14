@@ -396,24 +396,28 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "perform search by firstname" do
+    login_admin_user
     post :directory, :search => 'josh'
     assert_response :success
     assert assigns(:people)
   end
   
   test "perform search by fullname" do
+    login_admin_user
     post :directory, :search => 'josh starcher'
     assert_response :success
     assert assigns(:people)
   end
   
   test "perform search by email" do
+    login_admin_user
     post :directory, :search => 'josh.starcher@uscm.org'
     assert_response :success
     assert assigns(:people)
   end
   
   test "directory paginate Z" do
+    login_admin_user
     post :directory, :first => 'Z', :finish => ''
     assert_response :success
     assert assigns(:people)
@@ -436,16 +440,19 @@ class PeopleControllerTest < ActionController::TestCase
 =end
   
   test "search full name" do
+    login_admin_user
     xhr :post, :search, :search => 'Josh Starcher', :context => 'group_involvements', :group_id => 2, :type => 'leader'
     assert_response :success
   end
   
   test "search first name" do
+    login_admin_user
     xhr :post, :search, :search => 'Josh', :context => 'group_involvements', :group_id => 2, :type => 'leader'
     assert_response :success
   end
   
   test "search with no results" do
+    login_admin_user
     get :search, :search => 'xyz', :context => 'group_involvements'
     assert_response :success
   end

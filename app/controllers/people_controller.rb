@@ -716,12 +716,12 @@ class PeopleController < ApplicationController
           names = search.split(' ')
           first = names[0].strip
           last = names[1].strip
-          conditions << "#{last_name_col} LIKE '#{quote_string(last)}%' AND #{first_name_col} LIKE '#{quote_string(first)}%'"
+          conditions << "#{Person._(:last_name)} LIKE '#{quote_string(last)}%' AND #{Person._(:first_name)} LIKE '#{quote_string(first)}%'"
         when !search.scan('@').empty?
           conditions << search_email_conditions(search)
         else
           if search.present?
-            conditions << "(#{last_name_col} LIKE '#{quote_string(search)}%' OR #{first_name_col} LIKE '#{quote_string(search)}%')"
+            conditions << "(#{Person._(:last_name)} LIKE '#{quote_string(search)}%' OR #{Person._(:first_name)} LIKE '#{quote_string(search)}%')"
           end
         end
 
