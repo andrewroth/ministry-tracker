@@ -22,7 +22,7 @@
            		<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
            		<%- pic_height = pic_height * scale_factor %>           
            <%- end %>
-           <%= image_tag(mentee.profile_picture.public_filename(:medium), :width => '#{pic_width}', :height => '#{pic_height}') %>
+           <%= image_tag(mentee.profile_picture.public_filename(:medium), :width => pic_width, :height => pic_height) %>
         <%- end -%>
       </div>     	
 
