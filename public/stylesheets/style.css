@@ -2717,9 +2717,12 @@ td.profilePic {
 }
 
 .headerProfilePic {
-    width: 50px;
-    float:left; 
-    padding:0px 15px 15px 0px;
+  float:left; 
+  padding:0px 15px 15px 0px;
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+  text-align: center;    
 }
 
 td.nameTitle {

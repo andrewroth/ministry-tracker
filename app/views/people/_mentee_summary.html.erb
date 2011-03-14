@@ -6,12 +6,12 @@
         <%- if mentee.profile_picture.nil? -%>
           
           <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
-            <%= image_tag 'no_photo.png', :size => '100x100' %>
+            <%= image_tag 'no_photo.png', :height => '100%', :width => '100%' %>
           <%- else -%>
-           <%= image_tag 'photo_coming.png', :size => '100x100' %>
+           <%= image_tag 'photo_coming.png', :height => '100%', :width => '100%' %>
           <%- end -%>
         <%- else -%>
-           <%= image_tag(mentee.profile_picture.public_filename(:medium), :size => '100x100') %>
+           <%= image_tag(mentee.profile_picture.public_filename(:mini)) %>
         <%- end -%>
       </div>     	
 
