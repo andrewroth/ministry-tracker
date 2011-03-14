@@ -11,7 +11,18 @@
            <%= image_tag 'photo_coming.png', :height => '100%', :width => '100%' %>
           <%- end -%>
         <%- else -%>
-           <%= image_tag(mentee.profile_picture.public_filename(:medium)) %>
+           <%- pic_width = mentee.profile_picture.width %>
+           <%- pic_height = mentee.profile_picture.height %>
+           <%- if pic_height > pic_width %>	
+           		<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_height.to_f %>
+           		<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
+           		<%- pic_width = pic_width * scale_factor %>
+           <%- else %>
+           		<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_width.to_f %>
+           		<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
+           		<%- pic_height = pic_height * scale_factor %>           
+           <%- end %>
+           <%= image_tag(mentee.profile_picture.public_filename(:medium), :width => '#{pic_width}', :height => '#{pic_height}') %>
         <%- end -%>
       </div>     	
 
