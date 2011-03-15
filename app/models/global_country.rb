@@ -7,7 +7,6 @@ class GlobalCountry < ActiveRecord::Base
     iso3
   end
 
-  # NOTE: there were 254 countries.  GlobalCountry.count 319.
   def GlobalCountry.import_stages
     area_mappings = {
       "E. Asia Opportunties" => "East Asia Opportunities",
@@ -91,4 +90,35 @@ class GlobalCountry < ActiveRecord::Base
     end
   end
 
+  def GlobalCountry.import_demog
+    h1 = false
+    h2 = false
+    CSV::Reader.parse(File.open('CCCCountryDemogDataQuery.csv')) do |values|
+      if !h1
+        h1 = true
+      elsif !h2
+        h2 = true
+      else
+        puts values.inspect
+        name = values.shift
+        iso = values.shift
+        fips = values.shift
+        pop_2010 = values.shift
+        pop_2015 = values.shift
+        pop_2020 = values.shift
+        pop_wfb_gdppp = values.shift
+        perc_christian = values.shift
+        perc_evangelical = values.shift
+
+        country = GlobalCountry.find_or_create_by_name name
+        country.pop_2010 = pop_2010.to_i
+        country.pop_2015 = pop_2015.to_i
+        country.pop_2020 = pop_2020.to_i
+        country.pop_wfb_gdppp = pop_wfb_gdppp.to_i
+        country.perc_christian = perc_christian.to_f
+        country.perc_evangelical = perc_evangelical.to_f
+        country.save!
+      end
+    end
+  end
 end
