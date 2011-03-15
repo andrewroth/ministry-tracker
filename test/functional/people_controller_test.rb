@@ -330,8 +330,6 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:access_1)
     Factory(:person_1)
     Factory(:ministry_1)
-    Factory(:ministryrole_4) #id 5
-    Factory(:campus_1)
     Factory(:campusinvolvement_3)
     Factory(:ministryinvolvement_11)
     Factory(:permission_11)  # show_mentor  
@@ -356,16 +354,23 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "A user should be able to see a directory on a ministry with no campuses" do
     Factory(:user_6)
-    Factory(:access_6)
-    Factory(:person_7)
-    Factory(:ministryinvolvement_6)
-    Factory(:ministryrolepermission_5)
-    Factory(:permission_4)
-    Factory(:ministry_4)
+    Factory(:access_6) # person_id 4002   viewer_id 6
+    Factory(:person_7) # person_id 4002
+    Factory(:ministryrole_9) # ministryrole_id 10    ministry_id 1
+    Factory(:ministryinvolvement_14) # person_id 4002   ministry_id 4   ministryrole_id 10
+    Factory(:ministryrolepermission_5) # ministry_role_id 10    permission_id 4
+    Factory(:permission_4) # action=directory controller=people
+    Factory(:permission_15) # action=advanced controller=people
+    Factory(:ministryrolepermission_24) # advanced search ministry_role_id 10  permission_id 15
+    Factory(:ministry_4) 
+
+    # I think it's not finding ministry roles for ministry 4!!!
+    
+    #debugger
 
     login('staff_on_ministry_with_no_campus')
-    @request.session[:ministry_id] = Factory(:ministry_5).id #under_top is under top, which I am a member of
-    get :directory
+    #@request.session[:ministry_id] = Factory(:ministry_5).id #under_top is under top, which I am a member of
+    get :directory, :force => 'true'
     assert_response :success
     assert assigns(:people)
   end
