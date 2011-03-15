@@ -1,4 +1,17 @@
 class GlobalDashboardController < ApplicationController
+  ALLOWED_GUIDS = [
+    "250F5FAB-E473-36D8-D406-DFB1C00DD1F2",
+    "556CD6D6-1C80-3F12-C288-F8F62E0BEB55",
+    "109EFFA5-C99F-4429-88D8-2B4DB0143B7F",
+    "2F093DB0-7ED2-CF56-BBAA-2F3D5DAF8D4A",
+    "C37B7FEA-1091-84C5-FA82-64F70A26814C",
+    "C7634543-62CB-A3F2-934A-9389E786D454",
+    "F6874A2D-C08F-DFE7-7763-5664B8E56621",
+    "33910AAE-5EE5-ED88-23A2-36FF4509F107",
+    "80B0D053-3A82-8D0C-0A17-3DC64421DDF6",
+    "2BAE7844-59E4-39F7-7A4D-B02450289513"
+  ]
+
   before_filter :ensure_permission
 
   def index
@@ -121,7 +134,8 @@ class GlobalDashboardController < ApplicationController
     end
 
     def ensure_permission
-      access_denied unless [283, 5173].include?(@person.id)
+      access_denied unless [283, 5173].include?(@person.id) || 
+        ALLOWED_GUIDS.include?(@person.try(:user).try(:guid))
     end
 
     def all_mccs
