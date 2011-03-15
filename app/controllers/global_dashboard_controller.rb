@@ -97,6 +97,27 @@ class GlobalDashboardController < ApplicationController
           end
         end
       end
+
+      @demog = ActiveSupport::OrderedHash.new
+      @demog_avg_total = ActiveSupport::OrderedHash.new
+      @demog_avg_n = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(pop_2010 pop_2015 pop_2020 pop_wfb_gdppp).each do |stat|
+            @demog[stat] ||= 0
+            @demog[stat] += country.send(stat).to_i
+          end
+          %w(perc_christian perc_evangelical).each do |stat|
+            @demog_avg_n[stat] ||= 0
+            @demog_avg_n[stat] += 1
+            @demog_avg_total[stat] ||= 0.0
+            @demog_avg_total[stat] += country.send(stat).to_f
+          end
+          %w(perc_christian perc_evangelical).each do |stat|
+            @demog[stat] = @demog_avg_total[stat] / @demog_avg_n[stat].to_f
+          end
+        end
+      end
     end
 
     def ensure_permission
