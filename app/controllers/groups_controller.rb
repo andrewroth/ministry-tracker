@@ -205,21 +205,23 @@ class GroupsController < ApplicationController
       end
     }.collect(&:person)
 
-    @user_agent = request.env['HTTP_USER_AGENT'].downcase
     
     if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
       compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
-    else
+    elsif cookies[:timetable_compare_style].present? && TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i].present?
       compare_style = TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i]
+    else
+      # default style
+      compare_style = TIMETABLE_COMPARE_STYLE[1]
     end
 
     case compare_style
-    when TIMETABLE_COMPARE_STYLE[0]
-      cookies[:timetable_compare_style] = 0
-      compare_timetables_vertical_table
-    else
+    when TIMETABLE_COMPARE_STYLE[1]
       cookies[:timetable_compare_style] = 1
       compare_timetables_fancy_horizontal
+    else
+      cookies[:timetable_compare_style] = 0
+      compare_timetables_vertical_table
     end
   end
 

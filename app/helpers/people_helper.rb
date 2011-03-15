@@ -1,4 +1,13 @@
 module PeopleHelper
+  
+  ARROW_LEFT_INDENT = 11
+  BRACKET_LENGTH_INCREMENT_PER_MENTEE = 25
+  BRACKET_LENGTH_MIN = 110
+  MENTORSHIP_TREE_ROOT_HEIGHT = 210
+  MENTEES_VISUAL_INDENT = 30
+  MENTEES_BASE_FONTSIZE = 20
+  CAMPUS_NOT_ASSIGNED = "Not associated with a campus"
+  
   def highlight_if_requested
     if params[:set_campus_requested] == 'true'
       %|class="warning"|
