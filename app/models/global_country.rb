@@ -121,4 +121,22 @@ class GlobalCountry < ActiveRecord::Base
       end
     end
   end
-end
+
+  def GlobalCountry.import_fiscal
+    CSV::Reader.parse(File.open('Fiscal_Year_2010.csv')) do |values|
+      next if values.include?("Ministry office")
+      if values.second.present?
+        name = values.second
+        total_income_FY10 = values.fourth
+        values.third =~ /(.*)%/
+        locally_funded_FY10 = $1
+        #puts "values: #{values.inspect} #{locally_funded_FY10} #{total_income_FY10}"
+        c = GlobalCountry.find_or_create_by_name name
+        c.locally_funded_FY10 = locally_funded_FY10
+        c.total_income_FY10 = total_income_FY10
+        #puts locally_funded_FY10, total_income_FY10
+        c.save!
+      end
+    end
+  end
+ end

@@ -16,7 +16,6 @@ class SignupController < ApplicationController
     redirect_to :action => :step1_group
   end
 
-  # TODO: this will have to be renamed to step 2?
   def step2_info
     @person ||= get_person || Person.new
     UserCodesController.clear(session)
@@ -30,7 +29,6 @@ class SignupController < ApplicationController
     @dorms = c.try(:dorms)
   end
 
-  # TODO: this will have to be renamed to step 2?
   def step2_info_submit
     @person = Person.new(params[:person])
     [:email, :first_name, :last_name, :local_phone].each do |c|

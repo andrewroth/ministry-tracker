@@ -9,7 +9,8 @@ class GlobalDashboardController < ApplicationController
     "F6874A2D-C08F-DFE7-7763-5664B8E56621",
     "33910AAE-5EE5-ED88-23A2-36FF4509F107",
     "80B0D053-3A82-8D0C-0A17-3DC64421DDF6",
-    "2BAE7844-59E4-39F7-7A4D-B02450289513"
+    "2BAE7844-59E4-39F7-7A4D-B02450289513",
+    "999D463E-AC3D-34E8-B18C-45D153DF5545"
   ]
 
   before_filter :ensure_permission
@@ -131,6 +132,28 @@ class GlobalDashboardController < ApplicationController
           end
         end
       end
+
+      @fiscal = ActiveSupport::OrderedHash.new
+      @fiscal_avg_total = ActiveSupport::OrderedHash.new
+      @fiscal_avg_n = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(total_income_FY10).each do |stat|
+            @fiscal[stat] ||= 0
+            @fiscal[stat] += country.send(stat).to_i
+          end
+          %w(locally_funded_FY10).each do |stat|
+            @fiscal_avg_n[stat] ||= 0
+            @fiscal_avg_n[stat] += 1
+            @fiscal_avg_total[stat] ||= 0.0
+            @fiscal_avg_total[stat] += country.send(stat).to_f
+          end
+          %w(locally_funded_FY10).each do |stat|
+            @fiscal[stat] = @fiscal_avg_total[stat] / @fiscal_avg_n[stat].to_f
+          end
+        end
+      end
+
     end
 
     def ensure_permission

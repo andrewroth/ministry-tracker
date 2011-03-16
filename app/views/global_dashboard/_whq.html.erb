@@ -9,9 +9,6 @@
           <td style="width: 50%"><%= k.humanize %></td><td style="width: 50px"><%= number_with_delimiter(v) %><td/>
         </tr>
       <% end %>
-      <tr align="right">
-        <td style="width: 50%"><b>Total</b></td><td><b><%= number_with_delimiter(@whq.values.sum) %></b></td>
-      </tr>
     </table>
   </div>
 </div>

@@ -1,3 +1,4 @@
+<%- hide_total = true %>
 <div class="dashmodule" id="<%= id %>">
   <div class="moduletitle">
     <h2><%= link_to_function "#{header} <span>-</span>", "toggle('#{id}')" %></h2>
@@ -17,9 +18,11 @@
         <td style="width: 50%">No value entered</td><td style="width: 50px"><%= number_with_delimiter(stat[""]) %></td><br/>
       </tr>
     <%- end %>
+    <%- unless hide_total -%>
       <tr align="right">
         <td style="width: 50%"><b>Total</b></td><td><b><%= number_with_delimiter(stat.values.sum) %></b></td>
       </tr>
+    <%- end -%>
     </table>
   </div>
 </div>
