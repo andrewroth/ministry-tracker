@@ -672,6 +672,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "change to a ministry that is under my assigned level" do
+    Factory(:ministry_2)
     login_admin_user
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_3).id
     assert_response :success
@@ -685,6 +686,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:user_5)
     Factory(:access_5)
     Factory(:person_6)
+    Factory(:ministryrole_3)
     Factory(:ministryinvolvement_5)
     Factory(:ministry_4)
     Factory(:ministry_5)
