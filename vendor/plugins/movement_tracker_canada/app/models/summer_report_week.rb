@@ -1,4 +1,5 @@
 class SummerReportWeek < ActiveRecord::Base
+  unloadable
   load_mappings
 
   belongs_to :summer_report, :class_name => 'SummerReport', :foreign_key => _(:summer_report_id, :summer_report_week)

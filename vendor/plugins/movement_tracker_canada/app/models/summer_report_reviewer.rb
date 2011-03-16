@@ -1,4 +1,5 @@
 class SummerReportReviewer < ActiveRecord::Base
+  unloadable
   load_mappings
 
   belongs_to :person, :class_name => 'Person', :foreign_key => _(:person_id, :summer_report_reviewer)

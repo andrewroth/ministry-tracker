@@ -1,4 +1,6 @@
 class SummerReportsController < ApplicationController
+  unloadable
+
   # GET /summer_reports
   # GET /summer_reports.xml
   def index

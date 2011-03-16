@@ -1,4 +1,5 @@
 class SummerReportSummerDefinition < ActiveRecord::Base
+  unloadable
   load_mappings
 
   belongs_to :year, :class_name => 'Year', :foreign_key => _(:year_id, :summer_report_summer_definition)
