@@ -1,4 +1,4 @@
-<%- hide_total = false %>
+<%- hide_total ||= false %>
 <div class="dashmodule" id="<%= id %>">
   <div class="moduletitle">
     <h2><%= link_to_function "#{header} <span>-</span>", "toggle('#{id}')" %></h2>
