@@ -1,0 +1,47 @@
+<h1>New summer_report</h1>
+
+<% form_for(@summer_report) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :joined_staff %><br />
+    <%= f.text_field :joined_staff %>
+  </p>
+  <p>
+    <%= f.label :weeks_of_holiday %><br />
+    <%= f.text_field :weeks_of_holiday %>
+  </p>
+  <p>
+    <%= f.label :monthly_goal %><br />
+    <%= f.text_field :monthly_goal %>
+  </p>
+  <p>
+    <%= f.label :monthly_have %><br />
+    <%= f.text_field :monthly_have %>
+  </p>
+  <p>
+    <%= f.label :monthly_needed %><br />
+    <%= f.text_field :monthly_needed %>
+  </p>
+  <p>
+    <%= f.label :num_weeks_of_mpd %><br />
+    <%= f.text_field :num_weeks_of_mpd %>
+  </p>
+  <p>
+    <%= f.label :support_coach %><br />
+    <%= f.check_box :support_coach %>
+  </p>
+  <p>
+    <%= f.label :accountability_partner %><br />
+    <%= f.text_field :accountability_partner %>
+  </p>
+  <p>
+    <%= f.label :notes %><br />
+    <%= f.text_area :notes %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', summer_reports_path %>
