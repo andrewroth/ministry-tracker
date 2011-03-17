@@ -14,6 +14,7 @@ class GlobalDashboardController < ApplicationController
   ]
 
   before_filter :ensure_permission
+  skip_before_filter :authorization_filter
 
   def index
     setup
