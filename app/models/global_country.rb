@@ -127,9 +127,9 @@ class GlobalCountry < ActiveRecord::Base
       next if values.include?("Ministry office")
       if values.second.present?
         name = values.second
-        total_income_FY10 = values.fourth
         values.third =~ /(.*)%/
         locally_funded_FY10 = $1
+        total_income_FY10 = values.fourth.gsub(',','').to_i
         #puts "values: #{values.inspect} #{locally_funded_FY10} #{total_income_FY10}"
         c = GlobalCountry.find_or_create_by_name name
         c.locally_funded_FY10 = locally_funded_FY10
