@@ -5,6 +5,7 @@ class CreateSummerReportReviewers < ActiveRecord::Migration
       t.integer :person_id
       t.boolean :reviewed
       t.boolean :approved
+      t.text :review_notes
 
       t.timestamps
     end
