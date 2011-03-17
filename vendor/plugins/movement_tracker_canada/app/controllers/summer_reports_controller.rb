@@ -1,85 +1,89 @@
 class SummerReportsController < ApplicationController
   unloadable
 
-  # GET /summer_reports
-  # GET /summer_reports.xml
+  SUMMER_START_MONTH = 4 # april
+  SUMMER_END_MONTH = 8 # august
+  SUMMER_START_DAY = 17 # april 17th
+  SUMMER_END_DAY = 14 # august 14th
+
+
+  
   def index
-    @summer_reports = SummerReport.all
+    @current_year = Year.current
+    @report_for_this_summer = @me.summer_reports.all(:conditions => {:year_id => @current_year.id})
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @summer_reports }
     end
   end
 
-  # GET /summer_reports/1
-  # GET /summer_reports/1.xml
+
   def show
     @summer_report = SummerReport.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @summer_report }
     end
   end
 
-  # GET /summer_reports/new
-  # GET /summer_reports/new.xml
+
   def new
+    @current_year = Year.current
+    
+    # find the weeks that make up summer
+    summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
+    summer_end_date =   Date.new(@current_year.desc[-4..-1].to_i, SUMMER_END_MONTH, SUMMER_END_DAY)
+    summer_start_week = Week.find_week_containing_date(summer_start_date)
+    summer_end_week = Week.find_week_containing_date(summer_end_date)
+    @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
+
     @summer_report = SummerReport.new
+    @summer_report.summer_report_weeks_attributes = @summer_weeks.collect{|week| {:week_id => week.id} }
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @summer_report }
-    end
-  end
-
-  # GET /summer_reports/1/edit
-  def edit
-    @summer_report = SummerReport.find(params[:id])
-  end
-
-  # POST /summer_reports
-  # POST /summer_reports.xml
-  def create
-    @summer_report = SummerReport.new(params[:summer_report])
-
-    respond_to do |format|
-      if @summer_report.save
-        format.html { redirect_to(@summer_report, :notice => 'SummerReport was successfully created.') }
-        format.xml  { render :xml => @summer_report, :status => :created, :location => @summer_report }
+      if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank?
+        format.html # new.html.erb
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @summer_report.errors, :status => :unprocessable_entity }
+        flash[:notice] = "You've already submitted a summer report for this year, you can't submit another one."
+        format.html { redirect_to(:action => "index") }
       end
     end
   end
 
-  # PUT /summer_reports/1
-  # PUT /summer_reports/1.xml
+
+  def edit
+    @summer_report = SummerReport.find(params[:id])
+  end
+
+
+  def create
+    @summer_report = SummerReport.new(params[:summer_report])
+    @summer_report.person_id = @me.id
+    @summer_report.year_id = Year.current.id
+
+    respond_to do |format|
+      if @summer_report.save
+        flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
+        format.html { redirect_to(:action => "index") }
+      else
+        format.html { render :action => "new" }
+      end
+    end
+  end
+
+
   def update
     @summer_report = SummerReport.find(params[:id])
 
     respond_to do |format|
       if @summer_report.update_attributes(params[:summer_report])
-        format.html { redirect_to(@summer_report, :notice => 'SummerReport was successfully updated.') }
-        format.xml  { head :ok }
+        flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
+        format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @summer_report.errors, :status => :unprocessable_entity }
       end
     end
   end
+  
 
-  # DELETE /summer_reports/1
-  # DELETE /summer_reports/1.xml
-  def destroy
-    @summer_report = SummerReport.find(params[:id])
-    @summer_report.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(summer_reports_url) }
-      format.xml  { head :ok }
-    end
-  end
 end

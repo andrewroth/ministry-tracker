@@ -1,8 +1,12 @@
-<h1>New summer_report</h1>
+<h3>Hi <%= @me.full_name %>,</h3>
+<h2>Submit your summer schedule</h2>
+<br/>
 
-<% form_for(@summer_report) do |f| %>
+<% form_for [@me, @summer_report] do |f| %>
+
+  <br/>
   <%= f.error_messages %>
-
+  <br/>
   <p>
     <%= f.label :joined_staff %><br />
     <%= f.text_field :joined_staff %>
@@ -11,6 +15,11 @@
     <%= f.label :weeks_of_holiday %><br />
     <%= f.text_field :weeks_of_holiday %>
   </p>
+
+
+  <br/>
+  <br/>
+  <h3>MPD</h3>
   <p>
     <%= f.label :monthly_goal %><br />
     <%= f.text_field :monthly_goal %>
@@ -35,13 +44,35 @@
     <%= f.label :accountability_partner %><br />
     <%= f.text_field :accountability_partner %>
   </p>
+
+
+  <br/>
+  <br/>
+  <h3>Schedule</h3>
+  <table>
+    <tr>
+      <th></th>
+      <th>Main assignment</th>
+      <th>Description</th>
+    </tr>
+
+    <% f.fields_for :summer_report_weeks do |week_f| %>
+      <tr>
+        <%= week_f.hidden_field :week_id %>
+        <td><%= week_f.collection_select :summer_report_assignment_id, SummerReportAssignment.all, :id, :assignment, {:prompt => true} %></td>
+        <td><%= week_f.text_field :description %></td>
+      </tr>
+    <% end %>
+  </table>
   <p>
     <%= f.label :notes %><br />
     <%= f.text_area :notes %>
   </p>
+
+
+  <br/>
+  <br/>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'Submit', :class => "action-button" %>
   </p>
 <% end %>
-
-<%= link_to 'Back', summer_reports_path %>

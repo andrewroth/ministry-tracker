@@ -1,3 +1,7 @@
-<h1>Staff Summer Schedules</h1>
+<h2>Staff Summer Schedules <%= @current_year.desc %></h2>
 
-<%= link_to "new summer report", new_person_summer_report_path(@me) %>
+<% if @report_for_this_summer.blank? %>
+  <%= link_to "Submit your summer schedule", new_person_summer_report_path(@me) %>
+<% else %>
+  <%= link_to "View the schedule you submitted", person_summer_report_path(@me, @report_for_this_summer) %>
+<% end %>
