@@ -10,5 +10,5 @@ class SummerReportWeek < ActiveRecord::Base
   validates_uniqueness_of :week_id, :scope => [:summer_report_id], :message => "(can't create multiple summer_report_weeks for a week for the same summer report)"
   validates_presence_of :summer_report
   validates_presence_of :week_id
-  validates_presence_of :summer_report_assignment_id
+  validates_presence_of :summer_report_assignment_id, :message => "(you need to select a Main Assignment for every week of the summer)"
 end

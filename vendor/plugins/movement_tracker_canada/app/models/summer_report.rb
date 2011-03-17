@@ -11,6 +11,13 @@ class SummerReport < ActiveRecord::Base
   accepts_nested_attributes_for :summer_report_weeks
   accepts_nested_attributes_for :summer_report_reviewers
 
+  before_validation_on_create :initialize_weeks
+
+  def initialize_weeks
+    summer_report_weeks.each { |w| w.summer_report = self }
+  end
+
+
   validates_associated :person, :year
   validates_uniqueness_of :year_id, :scope => [:person_id], :message => "(you've already submitted a summer report for this year, you can't submit another one)"
   validates_presence_of :person_id
@@ -22,4 +29,20 @@ class SummerReport < ActiveRecord::Base
   validates_presence_of :monthly_needed
   validates_presence_of :num_weeks_of_mpd
   validates_presence_of :accountability_partner
+
+
+  def approved?
+    summer_report_reviewers.each {|r| return true if r.reviewed && r.approved }
+    false
+  end
+
+  def disproved?
+    return true if reviewed? && !approved?
+    false
+  end
+
+  def reviewed?
+    summer_report_reviewers.each {|r| return true if r.reviewed }
+    false
+  end
 end

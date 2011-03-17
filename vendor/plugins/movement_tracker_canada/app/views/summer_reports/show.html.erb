@@ -1,45 +1,6 @@
-<p>
-  <b>Joined staff:</b>
-  <%=h @summer_report.joined_staff %>
-</p>
 
-<p>
-  <b>Weeks of holiday:</b>
-  <%=h @summer_report.weeks_of_holiday %>
-</p>
+<%= render :partial => "show", :locals => {:summer_report => @summer_report, :person => @me, :year => @current_year} %>
 
-<p>
-  <b>Monthly goal:</b>
-  <%=h @summer_report.monthly_goal %>
-</p>
+<br/>
 
-<p>
-  <b>Monthly have:</b>
-  <%=h @summer_report.monthly_have %>
-</p>
-
-<p>
-  <b>Monthly needed:</b>
-  <%=h @summer_report.monthly_needed %>
-</p>
-
-<p>
-  <b>Num weeks of mpd:</b>
-  <%=h @summer_report.num_weeks_of_mpd %>
-</p>
-
-<p>
-  <b>Support coach:</b>
-  <%=h @summer_report.support_coach %>
-</p>
-
-<p>
-  <b>Accountability partner:</b>
-  <%=h @summer_report.accountability_partner %>
-</p>
-
-<p>
-  <b>Notes:</b>
-  <%=h @summer_report.notes %>
-</p>
-
+<%= link_to "Back", :back %>

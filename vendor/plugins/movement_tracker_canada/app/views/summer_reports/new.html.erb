@@ -56,12 +56,15 @@
       <th>Description</th>
     </tr>
 
+    <% i = 0 %>
     <% f.fields_for :summer_report_weeks do |week_f| %>
       <tr>
+        <td><%= "#{Date::MONTHNAMES[(@summer_weeks[i].end_date-6.days).month]} #{(@summer_weeks[i].end_date-6.days).day} - #{@summer_weeks[i].end_date.day}" %></td>
         <%= week_f.hidden_field :week_id %>
         <td><%= week_f.collection_select :summer_report_assignment_id, SummerReportAssignment.all, :id, :assignment, {:prompt => true} %></td>
         <td><%= week_f.text_field :description %></td>
       </tr>
+      <% i += 1 %>
     <% end %>
   </table>
   <p>
@@ -69,6 +72,12 @@
     <%= f.text_area :notes %>
   </p>
 
+
+  <br/>
+  <br/>
+  <h3>Approval</h3>
+  Who needs to review your summer schedule?
+  
 
   <br/>
   <br/>

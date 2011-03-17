@@ -1,6 +1,8 @@
 class SummerReportsController < ApplicationController
   unloadable
 
+  before_filter :get_summer_weeks, :only => [:new, :create, :update, :edit, :show]
+
   SUMMER_START_MONTH = 4 # april
   SUMMER_END_MONTH = 8 # august
   SUMMER_START_DAY = 17 # april 17th
@@ -10,7 +12,7 @@ class SummerReportsController < ApplicationController
   
   def index
     @current_year = Year.current
-    @report_for_this_summer = @me.summer_reports.all(:conditions => {:year_id => @current_year.id})
+    @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,15 +30,6 @@ class SummerReportsController < ApplicationController
 
 
   def new
-    @current_year = Year.current
-    
-    # find the weeks that make up summer
-    summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
-    summer_end_date =   Date.new(@current_year.desc[-4..-1].to_i, SUMMER_END_MONTH, SUMMER_END_DAY)
-    summer_start_week = Week.find_week_containing_date(summer_start_date)
-    summer_end_week = Week.find_week_containing_date(summer_end_date)
-    @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
-
     @summer_report = SummerReport.new
     @summer_report.summer_report_weeks_attributes = @summer_weeks.collect{|week| {:week_id => week.id} }
 
@@ -83,6 +76,22 @@ class SummerReportsController < ApplicationController
         format.html { render :action => "edit" }
       end
     end
+  end
+
+
+  private
+
+  # find the weeks that make up summer
+  def get_summer_weeks
+    @current_year = Year.current
+
+    summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
+    summer_end_date =   Date.new(@current_year.desc[-4..-1].to_i, SUMMER_END_MONTH, SUMMER_END_DAY)
+
+    summer_start_week = Week.find_week_containing_date(summer_start_date)
+    summer_end_week = Week.find_week_containing_date(summer_end_date)
+    
+    @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
   end
   
 
