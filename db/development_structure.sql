@@ -307,8 +307,12 @@ CREATE TABLE `global_countries` (
   `pop_wfb_gdppp` int(11) DEFAULT NULL,
   `perc_christian` float DEFAULT NULL,
   `perc_evangelical` float DEFAULT NULL,
+  `locally_funded_FY10` int(11) DEFAULT NULL,
+  `total_income_FY10` int(11) DEFAULT NULL,
+  `staff_count_2002` int(11) DEFAULT NULL,
+  `staff_count_2009` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=505 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=542 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `global_profiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -618,7 +622,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=304182 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=304191 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1143,6 +1147,10 @@ INSERT INTO schema_migrations (version) VALUES ('20110308205916');
 INSERT INTO schema_migrations (version) VALUES ('20110308210209');
 
 INSERT INTO schema_migrations (version) VALUES ('20110315171910');
+
+INSERT INTO schema_migrations (version) VALUES ('20110316204341');
+
+INSERT INTO schema_migrations (version) VALUES ('20110317151157');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
