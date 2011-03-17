@@ -81,11 +81,15 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_get_campus_states
+    Factory(:country_1)
+    Factory(:country_2)
+    Factory(:state_1)
+    Factory(:state_2)
     login_admin_user
     setup_campuses
     xhr :get, :get_campus_states, :primary_campus_country => 'USA'
     assert_not_nil(assigns["campus_states"])
-    assert_equal(1, assigns["campus_states"].size)
+    assert_equal(2, assigns["campus_states"].size)
   end
 
   def test_me
@@ -110,16 +114,12 @@ class PeopleControllerTest < ActionController::TestCase
     login_admin_user
     Factory(:ministry_1)
     Factory(:campus_1)
-    xhr :put, :set_initial_campus, :primary_campus_involvement => { :campus_id => 1 }
-    assert_not_nil(assigns["campus_involvement"])
-    assert_equal(50000, assigns["campus_involvement"].person_id)
-    assert_equal(1, assigns["campus_involvement"].campus_id)
-
-    MinistryCampus.all.each {|mc| mc.destroy}
-    xhr :put, :set_initial_campus, :primary_campus_involvement => { :campus_id => 1 }
-    assert_not_nil(assigns["campus_involvement"])
-    assert_equal(50000, assigns["campus_involvement"].person_id)
-    assert_equal(1, assigns["campus_involvement"].campus_id)
+    xhr :put, :set_initial_campus, :person => { :school_year => ["1"], :gender => ["1"], :first_name => "Josh", 
+      :local_phone => "123-456-7890", :last_name => "Starcher", :email => "josh.starcher@uscm.org" },
+      :primary_campus_involvement => { :campus_id => 1, :school_year_id => 1 }
+    assert_not_nil(assigns["primary_campus_involvement"])
+    assert_equal(50000, assigns["primary_campus_involvement"].person_id)
+    assert_equal(1, assigns["primary_campus_involvement"].campus_id)
   end
 
   def test_directory
@@ -171,7 +171,7 @@ class PeopleControllerTest < ActionController::TestCase
 
   test "full directory" do
     login_admin_user
-    get :directory
+    get :directory, :force => 'true'
     assert_response :success
     assert assigns(:people)
     assert_template('directory')
@@ -276,10 +276,10 @@ class PeopleControllerTest < ActionController::TestCase
   end    
   
   def test_ministry_leader_remove_own_mentee
+    Factory(:person_6)    #4001 -- the mentee's mentor, so needs to be done first
     Factory(:person_2)    #mentee
     Factory(:user_5)
     Factory(:access_5)
-    Factory(:person_6)
     Factory(:ministry_1)
     Factory(:ministryrole_3)
     Factory(:campus_1)
@@ -287,7 +287,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_8)
     Factory(:permission_12)  # show_mentees  
     Factory(:ministryrolepermission_12)
-     Factory(:permission_10)  # remove_mentee 
+    Factory(:permission_10)  # remove_mentee 
     Factory(:ministryrolepermission_15)   
     
     login('min_leader_with_no_permanent_address')
@@ -429,12 +429,14 @@ class PeopleControllerTest < ActionController::TestCase
     assert assigns(:people)
   end
   
+=begin
   test "directory paginate Z" do
     login_admin_user
     post :directory, :first => 'Z', :finish => ''
     assert_response :success
     assert assigns(:people)
   end
+=end
 
 =begin
 # test is broken - setup_n_ministry_involvements was never implemented by SD, or
@@ -672,6 +674,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "change to a ministry that is under my assigned level" do
+    Factory(:ministry_1)
     Factory(:ministry_2)
     login_admin_user
     xhr :post, :change_ministry_and_goto_directory, :current_ministry => Factory(:ministry_3).id
@@ -708,6 +711,7 @@ class PeopleControllerTest < ActionController::TestCase
  
   
   test "user with no ministry involvements should be redirected to set their initial campus" do
+    Factory(:ministry_1)
     Factory(:user_4)
     Factory(:person_5)
     Factory(:access_4)
@@ -731,6 +735,7 @@ class PeopleControllerTest < ActionController::TestCase
     @request.session[:ministry_id] = ministry.id
     
     person = Factory(:person_6)
+    Factory(:ministryrole_3)
     Factory(:ministryinvolvement_5)
     Factory(:campusinvolvement_5)
     Factory(:campus_1)
@@ -759,25 +764,7 @@ class PeopleControllerTest < ActionController::TestCase
 
     # actual group involvements are fetched in the js view...
   end
-
-  test "people with a role marked hide by default should not appear in directory" do
-    login_admin_user
-    setup_users
-    setup_people
-    setup_ministry_roles
-    setup_ministry_involvements
-
-    get :directory
-    assert_equal 2, assigns(:people).size
-
-    mr = MinistryRole.find(4)
-    mr.hide_by_default = true
-    mr.save!
-
-    get :directory
-    assert_equal 1, assigns(:people).size
-  end
-  
+ 
   test "should show discipleship tree" do
     login_admin_user
  
