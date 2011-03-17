@@ -154,6 +154,17 @@ class GlobalDashboardController < ApplicationController
         end
       end
 
+      @staff_counts = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(staff_count_2002 staff_count_2009).each do |stat|
+            @staff_counts[stat] ||= 0
+            @staff_counts[stat] += country.send(stat).to_i
+          end
+        end
+      end
+
+
     end
 
     def ensure_permission

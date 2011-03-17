@@ -139,4 +139,22 @@ class GlobalCountry < ActiveRecord::Base
       end
     end
   end
- end
+
+  def GlobalCountry.import_staff_count
+    head = false
+    CSV::Reader.parse(File.open('staff_count_2010.csv')) do |values|
+      if head
+        head = true
+      else
+        name = values.first
+        staff_count_2002 = values.second
+        staff_count_2009 = values.third
+        puts name
+        c = GlobalCountry.find_or_create_by_name name
+        c.staff_count_2002 = staff_count_2002
+        c.staff_count_2009 = staff_count_2009
+        c.save!
+      end
+    end
+  end
+end
