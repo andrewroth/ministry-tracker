@@ -79,6 +79,16 @@ class SummerReportsController < ApplicationController
   end
 
 
+  def search_people
+    get_query
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @people = search_people if session[:search][:authorized_to_search_people]
+    end
+  end
+
+
   private
 
   # find the weeks that make up summer
