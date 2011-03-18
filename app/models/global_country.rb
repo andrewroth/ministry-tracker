@@ -44,7 +44,6 @@ class GlobalCountry < ActiveRecord::Base
     end
   end
 
-  # NOTE: there were 254 countries.  GlobalCountry.count 319.
   def GlobalCountry.import_whq
     area_mappings = {
       "ASEO" => "South East Asia",
@@ -117,6 +116,7 @@ class GlobalCountry < ActiveRecord::Base
         country.pop_wfb_gdppp = pop_wfb_gdppp.to_i
         country.perc_christian = perc_christian.to_f
         country.perc_evangelical = perc_evangelical.to_f
+        country.iso3 = iso
         country.save!
       end
     end
