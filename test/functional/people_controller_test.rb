@@ -23,6 +23,16 @@ class PeopleControllerTest < ActionController::TestCase
     login('josh.starcher@example.com')
   end
   
+  def barebones_login_admin_user
+    Factory(:user_1)
+    Factory(:access_1)
+    Factory(:person_1)
+    Factory(:ministry_1)
+    Factory(:ministryrole_1)
+    
+    login('josh.starcher@example.com')
+  end
+    
   def setup_mentorship
     
     #Person 6
@@ -59,11 +69,11 @@ class PeopleControllerTest < ActionController::TestCase
         :id => 50000,
         :user => { :guid => "test" },
         :person => { :middle_name => "new middle name" },
-        :primary_campus_involvement => { :start_date => '2010-03-31' }
+        :primary_campus_involvement => { :start_date => '2010-03-31' }       
 
     assert_equal("test", ::User.all(:conditions => {User._(:id) => 1}).first.guid)
     assert_equal("new middle name", ::Person.all(:conditions => {Person._(:id) => 50000}).first.middle_name)
-    assert_equal("03/31/2010", ::CampusInvolvement.all(:conditions => {:id => 1003}).first.start_date.to_s)
+    assert_equal("03/31/2010", ::CampusInvolvement.all(:conditions => {:id => 1}).first.start_date.to_s)
   end
 
   def test_set_current_address_states
@@ -111,9 +121,10 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_set_initial_campus
-    login_admin_user
+    barebones_login_admin_user
     Factory(:ministry_1)
     Factory(:campus_1)
+    Factory(:schoolyear_1)
     xhr :put, :set_initial_campus, :person => { :school_year => ["1"], :gender => ["1"], :first_name => "Josh", 
       :local_phone => "123-456-7890", :last_name => "Starcher", :email => "josh.starcher@uscm.org" },
       :primary_campus_involvement => { :campus_id => 1, :school_year_id => 1 }
@@ -280,6 +291,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:person_2)    #mentee
     Factory(:user_5)
     Factory(:access_5)
+
     Factory(:ministry_1)
     Factory(:ministryrole_3)
     Factory(:campus_1)
@@ -341,6 +353,8 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:access_1)
     Factory(:person_1)
     Factory(:ministry_1)
+    Factory(:ministryrole_4)
+    Factory(:campus_1)
     Factory(:campusinvolvement_3)
     Factory(:ministryinvolvement_11)
     Factory(:permission_11)  # show_mentor  
@@ -368,7 +382,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:access_6) # person_id 4002   viewer_id 6
     Factory(:person_7) # person_id 4002
     Factory(:ministryrole_9) # ministryrole_id 10    ministry_id 1
-    Factory(:ministryinvolvement_14) # person_id 4002   ministry_id 4   ministryrole_id 10
+    Factory(:ministryinvolvement_979) # person_id 4002   ministry_id 4   ministryrole_id 10
     Factory(:ministryrolepermission_5) # ministry_role_id 10    permission_id 4
     Factory(:permission_4) # action=directory controller=people
     Factory(:permission_15) # action=advanced controller=people
@@ -488,6 +502,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:user_3)
     Factory(:person_3)
     Factory(:access_3)
+    Factory(:ministryrole_3)
     Factory(:ministryinvolvement_4)
     Factory(:ministryrolepermission_4)
     Factory(:permission_4)
@@ -531,9 +546,10 @@ class PeopleControllerTest < ActionController::TestCase
   test "should create student" do
     login_admin_user
     Factory(:accessgroup_1)
+    Factory(:ministryrole_6)
     assert_difference "Person.count" do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => '1' }, 
-                    :current_address => {:email => "josh.starcsher@gmail.org"}, 
+                    :current_address => {:email => "josh.starcher@gmail.org"}, 
                     :modalbox => 'true', 
                     :ministry_involvement => { :ministry_id => 1, :ministry_role_id => StudentRole.first.id }, 
                     :campus_involvement => { :campus_id => 1, :school_year_id => 1 }
@@ -557,6 +573,7 @@ class PeopleControllerTest < ActionController::TestCase
     login_admin_user
     #Factory(:address_1)
     Factory(:accessgroup_1)
+    Factory(:ministryrole_6)
     assert_no_difference('Person.count') do
       post :create, :person => {:first_name => 'Josh', :last_name => 'Starcher', :gender => 'Male' }, 
                     :current_address => {:email => "josh.starcher@example.com"},
@@ -604,6 +621,7 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:user_3)
     Factory(:person_3)
     Factory(:access_3)
+    Factory(:ministryrole_3)
     Factory(:ministryinvolvement_4)
     Factory(:ministry_1)
     Factory(:campus_1)
@@ -630,6 +648,7 @@ class PeopleControllerTest < ActionController::TestCase
   
   test "should update person" do
     login_admin_user
+    Factory(:person_6) # required as mentor for person #2
     Factory(:person_2)
     xhr :put, :update, :id => 50000, :person => {:first_name => 'josh', :last_name => 'starcher' }, 
                        :current_address => {:email => "josh.starcher@uscm.org"}, 
@@ -757,6 +776,11 @@ class PeopleControllerTest < ActionController::TestCase
   test "show group involvements per semester" do
     login_admin_user
     person = Factory(:person_1)
+    Factory(:campus_2)
+    Factory(:grouptype_1)
+    Factory(:group_3)
+    Factory(:groupinvolvement_7)
+    Factory(:semester_414)
 
     post :show_group_involvements, :id => person.id, :semester_id => 14
 
@@ -908,7 +932,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "set initial campus validation pass" do
-    login_admin_user
+    barebones_login_admin_user
     Factory(:ministry_1)
     Factory(:campus_2)
     Factory(:schoolyear_1)
