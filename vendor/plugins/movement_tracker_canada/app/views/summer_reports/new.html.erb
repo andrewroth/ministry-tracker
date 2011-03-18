@@ -57,9 +57,12 @@
     </tr>
 
     <% i = 0 %>
+    <% report_weeks = @summer_report.summer_report_weeks %>
+
     <% f.fields_for :summer_report_weeks do |week_f| %>
       <tr>
-        <td><%= "#{Date::MONTHNAMES[(@summer_weeks[i].end_date-6.days).month]} #{(@summer_weeks[i].end_date-6.days).day} - #{@summer_weeks[i].end_date.day}" %></td>
+        <td><%= "#{Date::MONTHNAMES[(report_weeks[i].week.end_date-6.days).month]} #{(report_weeks[i].week.end_date-6.days).day} - #{report_weeks[i].week.end_date.day}" %></td>
+
         <%= week_f.hidden_field :week_id %>
         <td><%= week_f.collection_select :summer_report_assignment_id, SummerReportAssignment.all, :id, :assignment, {:prompt => true} %></td>
         <td><%= week_f.text_field :description %></td>
@@ -76,12 +79,51 @@
   <br/>
   <br/>
   <h3>Approval</h3>
-  Who needs to review your summer schedule?
-  
-  
+  Who needs to review your summer schedule?<br/>
+  Use the search to add at least one person to do the review.<br/>
+
+  <p id="chosenReviewersNames">
+    <% @summer_report.summer_report_reviewers.each do |reviewer| %>
+      <br/>
+      <%= reviewer.person.full_name %>
+    <% end %>
+  </p>
+  <div id="chosenReviewers" style="display:none;">
+    <% f.fields_for :summer_report_reviewers do |reviewer_f| %>
+      <%= reviewer_f.hidden_field :person_id %>
+    <% end %>
+  </div>
+
+  <br/>
+  <input type="text" id="search_for_reviewers" value=""/>
+  <%= link_to_remote "Search", {:url => {:action => "search_for_reviewers"}, :with => "'q=' + $('#search_for_reviewers').attr('value')", :before => "$('#spinner_search').show()", :complete => "$('#spinner_search').hide()"}, {:id => "search_for_reviewers_link"} %>
+  &nbsp;<%= spinner('_search') %>
+  <div id="search_for_reviewers_results"></div>
+
+  <br/>
+  <br/>
+  <br/>
+  You may only submit your schedule once!
   <br/>
   <br/>
   <p>
-    <%= f.submit 'Submit', :class => "action-button" %>
+    <%= f.submit 'Submit', :class => "action-button" %> <%= spinner('_submit') %>
   </p>
 <% end %>
+
+
+
+<script type="text/javascript">
+  // don't submit form when enter is pressed
+  $(window).keypress(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      
+      if(event.target.id == "search_for_reviewers"){
+        $("#search_for_reviewers_link").trigger('click');
+      }
+
+      return false;
+    }
+  });
+</script>

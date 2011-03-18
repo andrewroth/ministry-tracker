@@ -74,7 +74,7 @@ module Searching
   end
 
 
-  def search_people
+  def search_people(query = @q)
 
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
@@ -88,7 +88,7 @@ module Searching
         "IF(#{Person.__(:first_name)} LIKE ?, #{SEARCH_RANK[:person][:first_name]}, 0) + " +
         "IF(#{Person.__(:last_name)} LIKE ?, #{SEARCH_RANK[:person][:last_name]}, 0) + " +
         "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{SEARCH_RANK[:person][:ministry]}, 0) " +
-        " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
+        " AS rank", "#{query}%", "#{query}%", session[:search][:search_ministry_name] ], '')
 
 
     people = Person.paginate(:page => params[:page],
@@ -117,7 +117,7 @@ module Searching
                               "or #{_(:email, :person)} like ? " +
                               "or #{Person.table_name}.#{_(:id, :person)} like ? " +
                               ")",
-                              "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
+                              "#{query}%", "#{query}%", "#{query}%", "%#{query}%", "%#{query}%"],
 
               :order => 'rank DESC',
 

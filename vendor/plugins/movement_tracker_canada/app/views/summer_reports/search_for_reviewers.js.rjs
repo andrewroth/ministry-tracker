@@ -1,0 +1,1 @@
+page.replace_html("search_for_reviewers_results", :partial => "people", :object => [@people, @q])

@@ -1,6 +1,11 @@
 class SummerReportsController < ApplicationController
   unloadable
 
+  include Searching
+
+  before_filter :setup_session_for_search, :only => [:search_for_reviewers]
+  before_filter :get_query, :only => [:search_for_reviewers]
+
   before_filter :get_summer_weeks, :only => [:new, :create, :update, :edit, :show]
 
   SUMMER_START_MONTH = 4 # april
@@ -79,12 +84,14 @@ class SummerReportsController < ApplicationController
   end
 
 
-  def search_people
-    get_query
-
+  def search_for_reviewers
     if @q.present?
-      params[:per_page] = @num_results_per_page
-      @people = search_people if session[:search][:authorized_to_search_people]
+      params[:per_page] = Searching::DEFAULT_NUM_SEARCH_RESULTS
+      @people = search_people(@q) if session[:search][:authorized_to_search_people]
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
 
