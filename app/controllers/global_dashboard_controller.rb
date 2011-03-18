@@ -62,7 +62,7 @@ class GlobalDashboardController < ApplicationController
     def setup_stats(area_filters, mcc_filters)
       filters_isos = area_filters.collect { |f|
         f.isos
-      }.flatten
+      }.flatten.compact
 
       @genders = { "male" => 0, "female" => 0, "" => 0 }
       @marital_status = {}
