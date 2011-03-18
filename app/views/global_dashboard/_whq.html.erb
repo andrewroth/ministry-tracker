@@ -6,7 +6,7 @@
     <table align="right">
       <% @whq.each_pair do |k,v| %>
         <tr align="right">
-          <td style="width: 50%"><%= k.humanize %></td><td style="width: 50px"><%= number_with_delimiter(v) %><td/>
+          <td style="width: 50%"><%= column_humanize(k.humanize) %></td><td style="width: 50px"><%= number_with_delimiter(v) %><td/>
         </tr>
       <% end %>
     </table>

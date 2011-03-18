@@ -75,7 +75,7 @@ class GlobalDashboardController < ApplicationController
       @profiles.each do |profile|
         if filters_isos.include?(profile.ministry_location_country) &&
           mcc_filters.include?(profile.mission_critical_components)
-          @genders[profile.gender] += 1
+          @genders[profile.gender] += 1 if profile.gender
           @marital_status[profile.marital_status] ||= 0
           @marital_status[profile.marital_status] += 1
           @languages[profile.language] ||= 0
@@ -173,7 +173,7 @@ class GlobalDashboardController < ApplicationController
     end
 
     def all_mccs
-      @all_mccs ||= GlobalProfile.all.collect(&:mission_critical_components).uniq.sort
+      @all_mccs ||= GlobalProfile.all.collect(&:mission_critical_components).uniq.compact.sort
     end
 
     def all_mcc_options
