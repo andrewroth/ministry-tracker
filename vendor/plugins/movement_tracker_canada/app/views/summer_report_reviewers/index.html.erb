@@ -1,0 +1,38 @@
+<h2>Schedules to Review</h2>
+<br/>
+
+<% if @reviewable_reports.present? %>
+
+
+  <table>
+    <tr>
+      <th></th>
+      <th>Monthly Needed</th>
+      <th>Weeks of MPD</th>
+      <th>Weeks of Holiday</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    <% @reviewable_reports.each do |review| %>
+    <tr>
+      <td><%= review.summer_report.person.full_name %></td>
+      <td><%= review.summer_report.monthly_needed %></td>
+      <td><%= review.summer_report.num_weeks_of_mpd %></td>
+      <td><%= review.summer_report.weeks_of_holiday %></td>
+      <td><%= review.summer_report.status %></td>
+      <td><%= link_to_remote "Review", {:url => {:action => "edit"}, :with => "'id='+#{review.id}", :before => "$('#spinner_review').show()", :complete => "$('#spinner_review').hide()"} %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <%= spinner('_review') %>
+  <div id="review_report"></div>
+
+
+<% else %>
+  <br/>
+  You have no reports to review.
+<% end %>
+
+<br/>
+<br/>

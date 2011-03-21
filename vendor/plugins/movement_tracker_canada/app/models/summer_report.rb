@@ -26,6 +26,11 @@ class SummerReport < ActiveRecord::Base
   validates_presence_of :num_weeks_of_mpd
   validates_presence_of :accountability_partner
 
+  STATUS_WAITING = "waiting for review"
+  STATUS_APPROVED = "approved!"
+  STATUS_DISPROVED = "disapproved (needs amending)"
+  WEEKS_OF_MPD = [0,1,2,3,4,5,6,7,8,9,10]
+
 
   def initialize_nested_attributes
     summer_report_weeks.each { |w| w.summer_report = self }
@@ -43,7 +48,7 @@ class SummerReport < ActiveRecord::Base
     false
   end
 
-  def disproved?
+  def disapproved?
     return true if reviewed? && !approved?
     false
   end
@@ -51,5 +56,12 @@ class SummerReport < ActiveRecord::Base
   def reviewed?
     summer_report_reviewers.each {|r| return true if r.reviewed }
     false
+  end
+
+  def status
+    status = STATUS_WAITING
+    status = STATUS_APPROVED if approved?
+    status = STATUS_DISPROVED if disapproved?
+    status
   end
 end

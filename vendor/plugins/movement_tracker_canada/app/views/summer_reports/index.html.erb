@@ -8,9 +8,9 @@
   You schedule has been approved!<br/>
   <%= link_to "Look at your schedule", person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
 
-<% elsif @report_for_this_summer.disproved? %>
-  Your schedule has been disproved, please amend it and resubmit it for review.<br/>
-  <%= link_to "Amend your schedule", edit_person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
+<% elsif @report_for_this_summer.disapproved? %>
+  Your schedule has been disapproved, please amend it and resubmit it for review.<br/>
+  <%= link_to "Amend your schedule", new_person_summer_report_path(@me), :class => "action-button" %>
 
 <% else %>
   Your schedule is waiting to be reviewed.<br/>
@@ -21,8 +21,9 @@
 <br/>
 <br/>
 
-<% if @has_reports_to_review.present? %>
-  <%= link_to "Schedules to review", person_summer_report_reviews_path(@me), :class => "action-button" %>
+<% if @reports_to_review.present? %>
+  <%= link_to "Review schedules", person_summer_report_reviewers_path(@me), :class => "action-button" %>
+  <%= "&nbsp;(#{pluralize(@num_reports_to_review, "schedule")} waiting for review)" %>
 <% else %>
   (you have no schedules to review)
 <% end %>

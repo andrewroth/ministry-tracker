@@ -192,7 +192,7 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :training
     person.resources :profile_pictures
     person.resources :summer_reports
-    person.resources :summer_report_reviews
+    person.resources :summer_report_reviewers
   end                             
                                           
   map.resources :customize

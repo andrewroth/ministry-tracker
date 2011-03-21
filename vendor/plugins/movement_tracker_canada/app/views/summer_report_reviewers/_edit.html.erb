@@ -1,0 +1,35 @@
+
+<%= render :partial => "summer_reports/show", :locals => { :person => @person, :summer_report => @report, :year => @year }  %>
+
+
+<% form_for @review, :url => {:action => "update"} do |f| %>
+  <p>
+    <%= f.hidden_field :id %>
+    <%= f.label :review_notes %><br />
+    <%= f.text_area :review_notes %>
+    <%= f.hidden_field :approved %>
+  </p>
+  <p>
+    <%= link_to 'Approve',  "", :id => "summer_report_reviewer_approve",  :class => "action-button" %>
+    <%= link_to 'Disapprove', "", :id => "summer_report_reviewer_disprove", :class => "action-button" %>
+  </p>
+
+  <%= spinner('_review_submit') %>
+<% end %>
+
+
+<script type="text/javascript">
+  $("#summer_report_reviewer_approve").click(function(event){
+    event.preventDefault();
+    $("#summer_report_reviewer_approved").val("true");
+    $("#spinner_review_submit").show();
+    $(this).parents('form:first').submit();
+  });
+  
+  $("#summer_report_reviewer_disprove").click(function(event){
+    event.preventDefault();
+    $("#summer_report_reviewer_approved").val("false");
+    $("#spinner_review_submit").show();
+    $(this).parents('form:first').submit();
+  });
+</script>

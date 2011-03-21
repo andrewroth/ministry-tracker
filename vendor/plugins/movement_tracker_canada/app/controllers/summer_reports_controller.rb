@@ -19,6 +19,9 @@ class SummerReportsController < ApplicationController
     @current_year = Year.current
     @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
 
+    @reports_to_review = @me.summer_report_reviewers.present?
+    @num_reports_to_review = @me.summer_report_reviewers.all(:conditions => ["#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?", false]).size
+
     respond_to do |format|
       format.html # index.html.erb
     end
@@ -27,6 +30,7 @@ class SummerReportsController < ApplicationController
 
   def show
     @summer_report = SummerReport.find(params[:id])
+    @person = @summer_report.person
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,23 +38,26 @@ class SummerReportsController < ApplicationController
   end
 
 
-  def new
-    @summer_report = SummerReport.new
-    @summer_report.summer_report_weeks_attributes = @summer_weeks.collect{|week| {:week_id => week.id} }
+  def new # edit is also done through this action
+    
+    @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
+
+    if @report_for_this_summer.present?
+      @summer_report = @report_for_this_summer
+    else
+      @summer_report = SummerReport.new
+      @summer_report.summer_report_weeks_attributes = @summer_weeks.collect{|week| {:week_id => week.id} }
+      @summer_report.support_coach = false if @summer_report.support_coach.nil?
+    end
 
     respond_to do |format|
-      if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank?
+      if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
       else
-        flash[:notice] = "You've already submitted a summer report for this year, you can't submit another one."
+        flash[:notice] = "You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved."
         format.html { redirect_to(:action => "index") }
       end
     end
-  end
-
-
-  def edit
-    @summer_report = SummerReport.find(params[:id])
   end
 
 
@@ -75,6 +82,8 @@ class SummerReportsController < ApplicationController
 
     respond_to do |format|
       if @summer_report.update_attributes(params[:summer_report])
+        @summer_report.summer_report_reviewers.each {|r| r.reviewed = nil; r.approved = nil; r.save; }
+        
         flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
         format.html { redirect_to(:action => "index") }
       else

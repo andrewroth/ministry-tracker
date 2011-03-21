@@ -1,0 +1,1 @@
+page.replace_html("review_report", :partial => "edit", :object => [@report, @review, @person, @year])

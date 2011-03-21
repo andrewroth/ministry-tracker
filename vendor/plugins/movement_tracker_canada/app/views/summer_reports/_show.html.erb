@@ -4,8 +4,8 @@
 
 <% if summer_report.approved? %>
   This schedule has been approved!<br/>
-<% elsif summer_report.disproved? %>
-  This schedule has been disproved, it needs to be amended and resubmit for review.<br/>
+<% elsif summer_report.disapproved? %>
+  This schedule has been disapproved, it's waiting to be amended and resubmit for review.<br/>
 <% else %>
   This schedule is waiting to be reviewed.<br/>
 <% end %>

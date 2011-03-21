@@ -1,6 +1,5 @@
-<br/>
-<hr></hr>
-<br/>
+
+<a id="closeLink" href="">×</a>
 
 <% if @people and @q.present? and @people.size > 0 %>
 
@@ -11,12 +10,12 @@
   <br/>
   <div id='profileCaption'>
   </div>
-  <table cellspacing="0" cellpadding="5" border="0" class="groupInvolvementList">
+  <table cellspacing="0" cellpadding="5" border="0" id="reviewerSearchResults" class="groupInvolvementList">
     <tbody>
       <% @people.each do |person| %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="person_row" person_link=<%= cim_hrdb_person_path(person) %>><%=h person.full_name %></td>
-        <td><a class="addReviewerLink" href="" person_id="<%= person.id %>" person_name="<%= person.full_name %>">Add as reviewer</a></td>
+        <td class="person_row"><%= link_to person.full_name, person_path(person), :title => "Goto #{person.full_name}'s profile", :target => '_blank' %></td>
+        <td><a class="addReviewerLink" href="" title="<%="Add #{person.full_name} to review your schedule"%>" person_id="<%= person.id %>" person_name="<%= person.full_name %>">Add as reviewer</a></td>
       </tr>
       <% end %>
     </tbody>
@@ -33,11 +32,14 @@
   
 <% end %>
   
-<br/>
-<hr></hr>
 
 
 <script type="text/javascript">
+  $("#closeLink").click(function(e) {
+    e.preventDefault();
+    $("#search_for_reviewers_results").fadeOut();
+  });
+
   $(".addReviewerLink").click(function(e) {
     e.preventDefault();
     pid = $(this).attr("person_id");
@@ -52,7 +54,8 @@
 
     if(this_person_was_already_added == false){
       $("#chosenReviewers").append("<input type='hidden' value='"+pid+"' name='summer_report[summer_report_reviewers_attributes]["+i+"][person_id]' id='summer_report_summer_report_reviewers_attributes_"+i+"_person_id'>");
-      $("#chosenReviewersNames").append("<br/>"+pname).effect("highlight", {}, 1000);
+      $("#chosenReviewersNames").append(pname+"<br/>").effect("highlight", {}, 1000);
+      $("#chosenReviewersNames").show();
     }
     else {
       alert("You've already added "+pname+" to review your schedule.");
