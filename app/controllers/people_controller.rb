@@ -329,6 +329,7 @@ class PeopleController < ApplicationController
   end
   
   def me
+    params[:id] = @person.id
     @person = current_user.person
     show
   end
