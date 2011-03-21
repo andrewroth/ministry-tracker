@@ -1,0 +1,45 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <meta charset="utf-8" /> 
+  <title>
+    <% if Cmt::CONFIG[:web_title] %>
+      <%= Cmt::CONFIG[:web_title] %>
+    <% else %>
+      The Pulse :: Mobile
+    <% end %>      
+    <%= ': ' + @site_title if @site_title -%>
+  </title>
+	<%= stylesheet_link_tag "mobile", :cache => false %>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script> 
+  <script type="text/javascript" src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script> 
+  <%= yield :javascripts %>
+</head> 
+<body> 
+<div data-role="page" data-theme="e" id="jqm-home"> 
+  <div id="jqm-homeheader"> 
+    <%= image_tag 'pulse_in_hand.gif' %>
+  </div> 
+<noscript>
+  <div class="flash_notice warning">
+  For full functionality of this site it is necessary to enable JavaScript.
+  Here are the <a href="http://www.enable-javascript.com/" target="_blank">
+  instructions how to enable JavaScript in your web browser</a>.</div>
+</noscript>     
+      <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+                        <%- if @notices -%>
+                          <%- for notice in @notices -%>
+                            <div class="flash_notice" id="notice_<%= notice.id %>"><%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %></div>
+                          <%- end %>
+                        <%- end %>
+      <div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
+      <div id="instructions" class="flash_notice notice" style="display:none;"></div> 
+  
+  <div data-role="content"> 
+
+        <%= yield %>
+	
+	 </div> 
+</div> 
+</body> 
+</html> 
