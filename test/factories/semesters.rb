@@ -39,3 +39,11 @@ Factory.define :next_semester, :class => Semester, :singleton => true do |p|
   p.start_date 1.month.from_now.to_date.to_s
   p.year_id '2'
 end
+
+
+Factory.define :semester_414, :class => Semester, :singleton => true do |p|
+  p.id '14'
+  p.desc 'Fall 2010'
+  p.start_date '2010-09-01'
+  p.year_id '2'
+end

@@ -108,7 +108,7 @@ Factory.define :permission_15, :class => Permission do |p|
   p.action 'advanced'
   p.controller 'people'
   p.description 'Advanced Search'
-
+end
 
 Factory.define :permission_273, :class => Permission do |p|
   p.id '273'

@@ -148,6 +148,7 @@ Factory.define :ministryrolepermission_24, :class => MinistryRolePermission do |
   m.id '24'
   m.ministry_role_id '10'
   m.permission_id '15'
+end
 
 Factory.define :ministryrolepermission_273, :class => MinistryRolePermission do |m|
   m.id '273'

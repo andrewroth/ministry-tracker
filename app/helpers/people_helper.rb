@@ -7,6 +7,7 @@ module PeopleHelper
   MENTEES_VISUAL_INDENT = 30
   MENTEES_BASE_FONTSIZE = 20
   CAMPUS_NOT_ASSIGNED = "Not associated with a campus"
+  MEDIUM_PROFILE_PIC_MAX_DIMENSION = 100
   
   def highlight_if_requested
     if params[:set_campus_requested] == 'true'

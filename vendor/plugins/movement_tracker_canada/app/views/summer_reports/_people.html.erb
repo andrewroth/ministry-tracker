@@ -1,0 +1,66 @@
+
+<a id="closeLink" href="">×</a>
+
+<% if @people and @q.present? and @people.size > 0 %>
+
+  Found <%= pluralize(@people.total_entries, "person") %> for <strong><%=h @q %></strong>
+  <%= ", displaying top #{Searching::DEFAULT_NUM_SEARCH_RESULTS} results" if @people.total_entries > Searching::DEFAULT_NUM_SEARCH_RESULTS %>
+  
+  <br/>
+  <br/>
+  <div id='profileCaption'>
+  </div>
+  <table cellspacing="0" cellpadding="5" border="0" id="reviewerSearchResults" class="groupInvolvementList">
+    <tbody>
+      <% @people.each do |person| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="person_row"><%= link_to person.full_name, person_path(person), :title => "Goto #{person.full_name}'s profile", :target => '_blank' %></td>
+        <td><a class="addReviewerLink" href="" title="<%="Add #{person.full_name} to review your schedule"%>" person_id="<%= person.id %>" person_name="<%= person.full_name %>">Add as reviewer</a></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% elsif @q.present? %>
+  No people found for <strong><%= @q %></strong>.<br/>
+  Try searching for just their first name, last name or email.
+  <br/>
+
+<% else %>
+  Try searching for someone's first name, last name or email.
+  <br/>
+  
+<% end %>
+  
+
+
+<script type="text/javascript">
+  $("#closeLink").click(function(e) {
+    e.preventDefault();
+    $("#search_for_reviewers_results").fadeOut();
+  });
+
+  $(".addReviewerLink").click(function(e) {
+    e.preventDefault();
+    pid = $(this).attr("person_id");
+    pname = $(this).attr("person_name");
+    i = $("#chosenReviewers > input").size();
+
+    // check if the person has been selected as a reviewer already
+    this_person_was_already_added = false;
+    $("#chosenReviewers > input").each(function() {
+      if(pid == $(this).attr("value")) { this_person_was_already_added = true; }
+    });
+
+    if(this_person_was_already_added == false){
+      $("#chosenReviewers").append("<input type='hidden' value='"+pid+"' name='summer_report[summer_report_reviewers_attributes]["+i+"][person_id]' id='summer_report_summer_report_reviewers_attributes_"+i+"_person_id'>");
+      $("#chosenReviewersNames").append(pname+"<br/>").effect("highlight", {}, 1000);
+      $("#chosenReviewersNames").show();
+    }
+    else {
+      alert("You've already added "+pname+" to review your schedule.");
+    }
+    
+    $(this).replaceWith("Added");
+  });
+</script>

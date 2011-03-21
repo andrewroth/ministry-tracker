@@ -1,0 +1,142 @@
+<h3>Hi <%= @me.full_name %>,</h3>
+<h2>Submit your summer schedule</h2>
+
+<% form_for [@me, @summer_report] do |f| %>
+  <h3><br/></h3>
+
+  <%= f.error_messages %>
+  <br/>
+  <p>
+    <%= f.label :joined_staff, "Year you joined staff or internship" %>
+    <%= f.text_field :joined_staff, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :weeks_of_holiday, "Weeks of holiday" %>
+    <%= f.text_field :weeks_of_holiday, :class => "short" %>
+  </p>
+
+
+  <br/>
+  <br/>
+  <h3>MPD</h3>
+  <p>
+    <%= f.label :monthly_goal, "MPD monthly goal" %>
+    <%= f.text_field :monthly_goal, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :monthly_have, "Monthly solid" %>
+    <%= f.text_field :monthly_have, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :monthly_needed, "Monthly needed" %>
+    <%= f.text_field :monthly_needed, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :num_weeks_of_mpd, "Weeks of MPD/MPM requested" %>
+    <%= f.select :num_weeks_of_mpd, SummerReport::WEEKS_OF_MPD, {:prompt => true} %>
+  </p>
+  <p>
+    <%= f.label :support_coach, "I would like a support coach (if available)" %>
+    <%= f.radio_button :support_coach, false, :class => "radio" %>no
+    &nbsp;
+    <%= f.radio_button :support_coach, true, :class => "radio" %>yes
+  </p>
+  <p>
+    <%= f.label :accountability_partner, "The following person will be my MPD accountability partner" %>
+    <%= f.text_field :accountability_partner %>
+  </p>
+
+
+  <br/>
+  <br/>
+  <h3>Schedule</h3>
+  <table id="weeklySchedule">
+    <tr>
+      <th></th>
+      <th>Main assignment</th>
+      <th>Optional description</th>
+    </tr>
+
+    <% i = 0 %>
+    <% report_weeks = @summer_report.summer_report_weeks %>
+
+    <% f.fields_for :summer_report_weeks do |week_f| %>
+      <tr>
+        <td class="week"><%= "#{Date::MONTHNAMES[(report_weeks[i].week.end_date-6.days).month]} #{(report_weeks[i].week.end_date-6.days).day} - #{report_weeks[i].week.end_date.day}" %></td>
+
+        <%= week_f.hidden_field :week_id %>
+        <td><%= week_f.collection_select :summer_report_assignment_id, SummerReportAssignment.all, :id, :assignment, {:prompt => true} %></td>
+        <td><%= week_f.text_field :description %></td>
+      </tr>
+      <% i += 1 %>
+    <% end %>
+
+    <tr><td><br/></td></tr>
+    <tr>
+      <td>
+        <%= f.label :notes %>
+      </td>
+      <td colspan="2">
+        <%= f.text_area :notes %>
+      </td>
+    </tr>
+  </table>
+
+
+  <br/>
+  <br/>
+  <h3>Approval</h3>
+  <p>Who needs to review your summer schedule?<br/>
+  Use the search to add at least one person to do the review.</p>
+
+  <div id="chosenReviewersNames" style="<%= "display:none;" unless @summer_report.summer_report_reviewers.present? %>">
+    <span>Reviewers:</span><br/>
+    <% @summer_report.summer_report_reviewers.each do |r| %>
+      <%= "#{r.person.full_name}<br/>" %>
+    <% end %>
+  </div>
+  <div id="chosenReviewers" style="display:none;">
+    <% f.fields_for :summer_report_reviewers do |reviewer_f| %>
+      <%= reviewer_f.hidden_field :person_id %>
+    <% end %>
+  </div>
+
+  <br/>
+  <br/>
+  <input type="text" id="search_for_reviewers" value=""/>
+  <%= link_to_remote "Search", {:url => {:action => "search_for_reviewers"}, :with => "'q=' + $('#search_for_reviewers').attr('value')", :before => "$('#spinner_search').show()", :complete => "$('#spinner_search').hide()"}, {:id => "search_for_reviewers_link"} %>
+  &nbsp; <%= spinner('_search') %>
+  <div id="search_for_reviewers_results" style="display:none;"></div>
+
+
+  <br/>
+  <h3><br/></h3>
+  <br/>
+  You may only submit your schedule once!
+  <br/>
+  <br/>
+  <p>
+    <%= f.submit 'Submit for review', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
+  </p>
+<% end %>
+
+
+
+<script type="text/javascript">
+  // don't submit form when enter is pressed
+  $(window).keypress(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      
+      if(event.target.id == "search_for_reviewers"){
+        $("#search_for_reviewers_link").trigger('click');
+      }
+
+      return false;
+    }
+  });
+
+  $("#summer_report_submit").click(function(){
+    $("#spinner_submit").show();
+  });
+</script>

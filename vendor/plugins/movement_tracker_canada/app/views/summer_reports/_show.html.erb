@@ -1,0 +1,59 @@
+<h3><%= person.full_name %>'s schedule for <%= year.desc[-4..-1] %> </h3>
+
+<br/>
+
+<% if summer_report.approved? %>
+  This schedule has been approved!<br/>
+<% elsif summer_report.disapproved? %>
+  This schedule has been disapproved, it's waiting to be amended and resubmit for review.<br/>
+<% else %>
+  This schedule is waiting to be reviewed.<br/>
+<% end %>
+
+<br/>
+
+<p>
+  <b>Joined staff:</b>
+  <%=h summer_report.joined_staff %>
+</p>
+
+<p>
+  <b>Weeks of holiday:</b>
+  <%=h summer_report.weeks_of_holiday %>
+</p>
+
+<p>
+  <b>Monthly goal:</b>
+  <%=h summer_report.monthly_goal %>
+</p>
+
+<p>
+  <b>Monthly have:</b>
+  <%=h summer_report.monthly_have %>
+</p>
+
+<p>
+  <b>Monthly needed:</b>
+  <%=h summer_report.monthly_needed %>
+</p>
+
+<p>
+  <b>Num weeks of mpd:</b>
+  <%=h summer_report.num_weeks_of_mpd %>
+</p>
+
+<p>
+  <b>Support coach:</b>
+  <%=h summer_report.support_coach %>
+</p>
+
+<p>
+  <b>Accountability partner:</b>
+  <%=h summer_report.accountability_partner %>
+</p>
+
+<p>
+  <b>Notes:</b>
+  <%=h summer_report.notes %>
+</p>
+
