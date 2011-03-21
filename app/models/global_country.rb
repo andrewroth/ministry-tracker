@@ -7,154 +7,190 @@ class GlobalCountry < ActiveRecord::Base
     iso3
   end
 
-  def GlobalCountry.import_stages
-    area_mappings = {
-      "E. Asia Opportunties" => "East Asia Opportunities",
-      "E. Asia Orient" => "East Asia Orient",
-      "Eastern Europe & Russia" => "Eastern Europe",
-      "N. America, Oceania" => "CanOceUS",
-      "Southern & Eastern Africa" => "Southern/Eastern Africa"
-    }
+  def GlobalCountry.reset_data
+    GlobalCountry.delete_all
+    GlobalProfile.delete_all
+    GlobalArea.delete_all
 
-    f = File.read("stages.csv")
-    lines = f.split("\n")
-    lines.shift # remove header
+    GlobalCountry.import_00_metadata
+    GlobalCountry.import_01_staging
+    GlobalCountry.import_02_fiscal
+    GlobalCountry.import_03_a_staff_demographics
+    GlobalCountry.import_03_b_staff_count
+    GlobalCountry.import_04_country_stats_campus
+  end
 
-    header = true
-    CSV::Reader.parse(File.open('stages.csv')) do |values|
-      if header
-        header = false
-        next
-      end
+  def GlobalCountry.import_00_metadata
+    parse('global_dashboard_data/00_metadata.csv', 1) do |values|
+      country_name = values[column('D')]
+      country_iso3 = values[column('E')]
+      area_name = values[column('A')]
 
-      area = values.first
-      country = values.second
-      stage = values.third
+      global_area = GlobalArea.find_or_create_by_area area_name 
 
-      area = area_mappings[area] || area
-
-      puts area, country, stage
-
-      global_area = GlobalArea.find_or_create_by_area area
-      global_country = GlobalCountry.find_or_create_by_name_and_global_area_id country, global_area.id
-      global_country.stage = stage
-      global_country.save!
-
-      #puts global_area.inspect, global_country.inspect
+      c = GlobalCountry.find_or_create_by_iso3 country_iso3
+      c.name = country_name
+      c.global_area = global_area
+      c.save!
     end
   end
 
-  def GlobalCountry.import_whq
-    area_mappings = {
-      "ASEO" => "South East Asia",
-      "E.Eu." => "Eastern Europe",
-      "EA Opps" => "East Asia Opportunities",
-      "EA Orient" => "East Asia Orient",
-      "Francophon" => "Francophone Africa",
-      "NAMEstan" => "NAMESTAN",
-      "Oceania" => "CanOceUS",
-      "SE Africa" => "Southern/Eastern Africa",
-      "SouthAmer" => "Latin America",
-      "SouthAsia" => "South East Asia",
-      "USA" => "CanOceUS"
-    }
-
-    f = File.read("stages.csv")
-    lines = f.split("\n")
-    lines.shift # remove header
-
-    header = true
-    headers = nil
-    CSV::Reader.parse(File.open('whq.csv')) do |values|
-      if header
-        headers = values
-        headers.shift # remove country
-        headers.shift # remove area
-        header = false
-        next
-      end
-
-      country = values.shift
-      area = values.shift
-      area = area_mappings[area] || area
-
-      global_area = GlobalArea.find_or_create_by_area area
-      global_country = GlobalCountry.find_or_create_by_name_and_global_area_id country, global_area.id
-
-      headers.each do |att|
-        value = values.shift
-        global_country.send("#{att.gsub(' ','').underscore}=", value)
-      end
-      global_country.save!
-    end
-  end
-
-  def GlobalCountry.import_demog
-    h1 = false
-    h2 = false
-    CSV::Reader.parse(File.open('CCCCountryDemogDataQuery.csv')) do |values|
-      if !h1
-        h1 = true
-      elsif !h2
-        h2 = true
+  def GlobalCountry.import_01_staging
+    parse('global_dashboard_data/01_staging.csv', 1) do |values|
+      iso = values[column('C')]
+      stage = values[column('D')].to_i
+      c = GlobalCountry.find_by_iso3 iso
+      if c.nil?
+        puts "Could not find country by iso code #{iso}"
       else
-        puts values.inspect
-        name = values.shift
-        iso = values.shift
-        fips = values.shift
-        pop_2010 = values.shift
-        pop_2015 = values.shift
-        pop_2020 = values.shift
-        pop_wfb_gdppp = values.shift
-        perc_christian = values.shift
-        perc_evangelical = values.shift
-
-        country = GlobalCountry.find_or_create_by_name name
-        country.pop_2010 = pop_2010.to_i
-        country.pop_2015 = pop_2015.to_i
-        country.pop_2020 = pop_2020.to_i
-        country.pop_wfb_gdppp = pop_wfb_gdppp.to_i
-        country.perc_christian = perc_christian.to_f
-        country.perc_evangelical = perc_evangelical.to_f
-        country.iso3 = iso
-        country.save!
-      end
-    end
-  end
-
-  def GlobalCountry.import_fiscal
-    CSV::Reader.parse(File.open('Fiscal_Year_2010.csv')) do |values|
-      next if values.include?("Ministry office")
-      if values.second.present?
-        name = values.second
-        values.third =~ /(.*)%/
-        locally_funded_FY10 = $1
-        total_income_FY10 = values.fourth.gsub(',','').to_i
-        #puts "values: #{values.inspect} #{locally_funded_FY10} #{total_income_FY10}"
-        c = GlobalCountry.find_or_create_by_name name
-        c.locally_funded_FY10 = locally_funded_FY10
-        c.total_income_FY10 = total_income_FY10
-        #puts locally_funded_FY10, total_income_FY10
+        c.stage = stage
         c.save!
       end
     end
   end
 
-  def GlobalCountry.import_staff_count
-    head = false
-    CSV::Reader.parse(File.open('staff_count_2010.csv')) do |values|
-      if head
-        head = true
+  def GlobalCountry.import_02_fiscal
+    parse('global_dashboard_data/02_fiscal.csv', 1) do |values|
+      iso = values[column('D')]
+      perc = values[column('E')]
+      if perc == "Missing" then perc = nil
+      else perc =~ /(\d+)%/
+        perc = $1
+      end
+      inc = values[column('F')].gsub(',','').to_i
+
+      c = GlobalCountry.find_by_iso3 iso
+      if c.nil?
+        puts "Could not find country by iso code #{iso}"
       else
-        name = values.first
-        staff_count_2002 = values.second
-        staff_count_2009 = values.third
-        puts name
-        c = GlobalCountry.find_or_create_by_name name
-        c.staff_count_2002 = staff_count_2002
-        c.staff_count_2009 = staff_count_2009
+        c.locally_funded_FY10 = perc
+        c.total_income_FY10 = inc
         c.save!
       end
+    end
+  end
+
+  def GlobalCountry.import_03_a_staff_demographics
+    parse('global_dashboard_data/03_a_staff_demographics.csv', 1) do |values|
+      gc = GlobalProfile.new
+      gc.gender = values[column('A')]
+      gc.marital_status = values[column('B')]
+      gc.language = values[column('C')]
+      gc.mission_critical_components = values[column('D')]
+      gc.funding_source = values[column('E')]
+      gc.staff_status = values[column('F')]
+      gc.employment_country = values[column('G')]
+      gc.ministry_location_country = values[column('H')]
+      gc.position = values[column('I')]
+      gc.scope = values[column('J')]
+      gc.save!
+    end
+  end
+
+  def GlobalCountry.import_03_b_staff_count
+    parse('global_dashboard_data/03_b_staff_count.csv', 1) do |values|
+      iso = values[column('B')]
+
+      c = GlobalCountry.find_by_iso3 iso
+      if c.nil?
+        puts "Could not find country by iso code #{iso}"
+      else
+        c.staff_count_2002 = values[column('C')]
+        c.staff_count_2009 = values[column('D')]
+        c.save!
+      end
+    end
+  end
+
+  def GlobalCountry.import_04_country_stats_campus
+    parse('global_dashboard_data/04_a_country_stats_campus.csv', 2) do |values|
+      handle_stats_row(values)
+    end
+    parse('global_dashboard_data/04_b_country_stats_community.csv', 2) do |values|
+      handle_stats_row(values)
+    end
+    parse('global_dashboard_data/04_c_country_stats_coverage.csv', 2) do |values|
+      handle_stats_row(values)
+    end
+    parse('global_dashboard_data/04_d_country_stats_internet.csv', 2) do |values|
+      handle_stats_row(values)
+    end
+  end
+
+  def GlobalCountry.handle_stats_row(values)
+    iso = values[column('C')]
+
+    c = GlobalCountry.find_by_iso3 iso
+    if c.nil?
+      puts "Could not find country by iso code #{iso}"
+    else
+      c.live_exp = values[column('A')]
+      c.live_dec = values[column('B')]
+      c.new_grth_mbr = values[column('C')]
+      c.mvmt_mbr = values[column('D')]
+      c.mvmt_ldr = values[column('E')]
+      c.new_staff = values[column('F')]
+      c.lifetime_lab = values[column('G')]
+      c.save!
+    end
+  end
+
+  def GlobalCountry.import_05_country_demographics
+    parse('global_dashboard_data/05_ccc_country_demographic_data.csv', 1) do |values|
+      iso = values[column('D')]
+
+      c = GlobalCountry.find_by_iso3 iso
+      if c.nil?
+        puts "Could not find country by iso code #{iso}"
+      else
+        c.pop_2010 = values[column('E')]
+        c.pop_2015 = values[column('F')]
+        c.pop_2020 = values[column('G')]
+        c.pop_wfb_gdppp = values[column('H')]
+        c.perc_christian = values[column('I')]
+        c.perc_evangelical = values[column('J')]
+        c.save!
+      end
+    end
+  end
+
+  def GlobalCountry.import_06_slm_critical_measures
+    parse('global_dashboard_data/06_slm_critical_measures.csv', 3) do |values|
+      iso = values[column('D')]
+
+      c = GlobalCountry.find_by_iso3 iso
+      if c.nil?
+        puts "Could not find country by iso code #{iso}"
+      else
+        c.total_students = values[column('E')]
+        c.total_schools = values[column('F')]
+        c.total_spcs = values[column('G')]
+        c.names_priority_spcs = values[column('H')]
+        c.total_spcs_presence = values[column('I')]
+        c.total_spcs_movement = values[column('J')]
+        c.total_slm_staff = values[column('K')]
+        c.total_new_slm_staff = values[column('L')]
+        c.save!
+      end
+    end
+  end
+
+  private
+
+  def self.column(c)
+    c[0] - 'A'[0]
+  end
+
+  def self.parse(filename, skip = 0)
+    CSV::Reader.parse(File.open(filename)) do |values|
+      if skip > 0
+        skip -=  1
+        next
+      end
+
+      # remove [#] comment strings
+      values = values.collect{ |v| v.to_s.gsub(/\[\d+\]/, '') }
+      yield values
     end
   end
 end
