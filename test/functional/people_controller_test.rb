@@ -77,17 +77,25 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   def test_set_current_address_states
+    Factory(:country_1)
+    Factory(:country_2)
+    Factory(:state_1)
+    Factory(:state_2)
     login_admin_user
     xhr :get, :set_current_address_states, :current_address_country => 'USA'
     assert_not_nil(assigns["current_address_states"])
-    assert_equal(1, assigns["current_address_states"].size)
+    assert_equal(2, assigns["current_address_states"].size)
   end
 
   def test_set_permanent_address_states
+    Factory(:country_1)
+    Factory(:country_2)
+    Factory(:state_1)
+    Factory(:state_2)
     login_admin_user
     xhr :get, :set_permanent_address_states, :perm_address_country => 'USA'
     assert_not_nil(assigns["permanent_address_states"])
-    assert_equal(1, assigns["permanent_address_states"].size)
+    assert_equal(2, assigns["permanent_address_states"].size)
   end
 
   def test_get_campus_states
@@ -512,7 +520,8 @@ class PeopleControllerTest < ActionController::TestCase
     Factory(:campusinvolvement_4)
 
     login 'sue@student.org'
-    get :directory
+    get :directory, :force => true
+    puts @response.body
     assert_equal @person.campuses, assigns(:campuses)
   end
  
