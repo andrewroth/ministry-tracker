@@ -18,6 +18,8 @@ class GlobalCountry < ActiveRecord::Base
     GlobalCountry.import_03_a_staff_demographics
     GlobalCountry.import_03_b_staff_count
     GlobalCountry.import_04_country_stats_campus
+    GlobalCountry.import_05_country_demographics
+    GlobalCountry.import_06_slm_critical_measures
   end
 
   def GlobalCountry.import_00_metadata
@@ -124,13 +126,13 @@ class GlobalCountry < ActiveRecord::Base
     if c.nil?
       puts "Could not find country by iso code #{iso}"
     else
-      c.live_exp = values[column('A')]
-      c.live_dec = values[column('B')]
-      c.new_grth_mbr = values[column('C')]
-      c.mvmt_mbr = values[column('D')]
-      c.mvmt_ldr = values[column('E')]
-      c.new_staff = values[column('F')]
-      c.lifetime_lab = values[column('G')]
+      c.live_exp = values[column('E')].to_i
+      c.live_dec = values[column('F')].to_i
+      c.new_grth_mbr = values[column('G')].to_i
+      c.mvmt_mbr = values[column('H')].to_i
+      c.mvmt_ldr = values[column('I')].to_i
+      c.new_staff = values[column('J')].to_i
+      c.lifetime_lab = values[column('K')].to_i
       c.save!
     end
   end

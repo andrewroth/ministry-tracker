@@ -63,6 +63,19 @@ class GlobalDashboardController < ApplicationController
         f.isos
       }.flatten.compact
 
+      if area_filters.length == 1 && area_filters.first.is_a?(GlobalCountry)
+        country = area_filters.first
+        @country_name = country.name
+        @country_stage = country.stage
+        @country_funding = country.locally_funded_FY10
+        @country_area = country.global_area.area
+      elsif area_filters.length == 1 && area_filters.first.is_a?(GlobalArea)
+        area = area_filters.first
+        @country_area = area.area
+      elsif params["l"] == "all" || params[:action] == "index"
+        @country_area = "All"
+      end
+
       @genders = { "male" => 0, "female" => 0, "" => 0 }
       @marital_status = {}
       @languages = {}
@@ -71,9 +84,11 @@ class GlobalDashboardController < ApplicationController
       @staff_status = {}
       @position = {}
       @scope = {}
+      @gcx_profile_count = {}
       @profiles = GlobalProfile.all
       @profiles.each do |profile|
-        if filters_isos.include?(profile.ministry_location_country) &&
+        if (filters_isos.include?(profile.ministry_location_country) || 
+           filters_isos.include?(profile.employment_country)) &&
           mcc_filters.include?(profile.mission_critical_components)
           @genders[profile.gender] += 1 if profile.gender
           @marital_status[profile.marital_status] ||= 0
@@ -90,6 +105,16 @@ class GlobalDashboardController < ApplicationController
           @position[profile.position] += 1
           @scope[profile.scope] ||= 0
           @scope[profile.scope] += 1
+          @gcx_profile_count["total"] ||= 0
+          @gcx_profile_count["total"] += 1
+          if filters_isos.include?(profile.ministry_location_country)
+            @gcx_profile_count["serving_here"] ||= 0
+            @gcx_profile_count["serving_here"] += 1
+          end
+          if filters_isos.include?(profile.employment_country)
+            @gcx_profile_count["employed_here"] ||= 0
+            @gcx_profile_count["employed_here"] += 1
+          end
         end
       end
 
@@ -161,10 +186,29 @@ class GlobalDashboardController < ApplicationController
             @staff_counts[stat] ||= 0
             @staff_counts[stat] += country.send(stat).to_i
           end
+          @staff_counts["difference"] = @staff_counts["staff_count_2009"] - @staff_counts["staff_count_2002"]
         end
       end
 
+      @schools = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(total_students total_schools total_spcs).each do |stat|
+            @schools[stat] ||= 0
+            @schools[stat] += country.send(stat).to_i
+          end
+        end
+      end
 
+      @slm = ActiveSupport::OrderedHash.new
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          %w(total_spcs_presence total_spcs_movement total_slm_staff total_new_slm_staff).each do |stat|
+            @slm[stat] ||= 0
+            @slm[stat] += country.send(stat).to_i
+          end
+        end
+      end
     end
 
     def ensure_permission
