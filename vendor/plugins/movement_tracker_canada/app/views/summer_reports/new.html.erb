@@ -1,6 +1,7 @@
 <h3>Hi <%= @me.full_name %>,</h3>
-<h2>Submit your summer schedule</h2>
+<h2>Submit your Summer Schedule for <%= @current_year.desc[-4..-1] %></h2>
 
+<div id="submit_summer_report">
 <% form_for [@me, @summer_report] do |f| %>
   <h3><br/></h3>
 
@@ -87,7 +88,7 @@
   <br/>
   <h3>Approval</h3>
   <p>Who needs to review your summer schedule?<br/>
-  Use the search to add at least one person to do the review.</p>
+  Use the search to find and add at least one person to do the review.</p>
 
   <div id="chosenReviewersNames" style="<%= "display:none;" unless @summer_report.summer_report_reviewers.present? %>">
     <span>Reviewers:</span><br/>
@@ -116,10 +117,10 @@
   <br/>
   <br/>
   <p>
-    <%= f.submit 'Submit for review', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
+    <%= f.submit 'Submit', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
   </p>
 <% end %>
-
+</div>
 
 
 <script type="text/javascript">

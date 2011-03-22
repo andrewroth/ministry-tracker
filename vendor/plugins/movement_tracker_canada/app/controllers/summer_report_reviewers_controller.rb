@@ -4,7 +4,7 @@ class SummerReportReviewersController < ApplicationController
 
   
   def index
-
+    @current_year = Year.current
     @reviewable_reports = @me.summer_report_reviewers.all
 
     respond_to do |format|

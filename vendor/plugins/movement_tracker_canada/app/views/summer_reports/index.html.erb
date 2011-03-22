@@ -2,18 +2,19 @@
 <br/>
 
 <% if @report_for_this_summer.blank? %>
+  <br/>
   <%= link_to "Submit your summer schedule", new_person_summer_report_path(@me), :class => "action-button" %>
 
 <% elsif @report_for_this_summer.approved? %>
-  You schedule has been approved!<br/>
+  You schedule has been <span class="report_approved">approved!</span><br/><br/>
   <%= link_to "Look at your schedule", person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
 
 <% elsif @report_for_this_summer.disapproved? %>
-  Your schedule has been disapproved, please amend it and resubmit it for review.<br/>
+  Your schedule has been <span class="report_disapproved">disapproved</span>, please amend it and resubmit it for review.<br/><br/>
   <%= link_to "Amend your schedule", new_person_summer_report_path(@me), :class => "action-button" %>
 
 <% else %>
-  Your schedule is waiting to be reviewed.<br/>
+  Your schedule is <span class="report_waiting">waiting</span> to be reviewed.<br/><br/>
   <%= link_to "Look at your schedule", person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
 
 <% end %>

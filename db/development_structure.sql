@@ -466,7 +466,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8585 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8586 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -474,7 +474,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=589 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -535,7 +535,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -612,7 +612,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95368 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95372 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -688,7 +688,7 @@ CREATE TABLE `timetables` (
   `updated_by_person_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_c4c_pulse_dev.timetables_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4365 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4367 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1143,6 +1143,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110316175406');
 INSERT INTO schema_migrations (version) VALUES ('20110316175449');
 
 INSERT INTO schema_migrations (version) VALUES ('20110316175901');
+
+INSERT INTO schema_migrations (version) VALUES ('20110322200323');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
