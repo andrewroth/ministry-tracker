@@ -44,8 +44,15 @@ class SummerReport < ActiveRecord::Base
   end
 
   def approved?
-    summer_report_reviewers.each {|r| return true if r.reviewed && r.approved }
-    false
+    approved = false
+    disapproved = false
+
+    summer_report_reviewers.each do |r|
+      approved    = true if r.reviewed == true && r.approved == true
+      disapproved = true if r.reviewed == true && r.approved == false
+    end
+
+    (approved && !disapproved)
   end
 
   def disapproved?
@@ -62,6 +69,13 @@ class SummerReport < ActiveRecord::Base
     status = STATUS_WAITING
     status = STATUS_APPROVED if approved?
     status = STATUS_DISPROVED if disapproved?
+    status
+  end
+
+  def status_style
+    status = "report_waiting"
+    status = "report_approved" if approved?
+    status = "report_disapproved" if disapproved?
     status
   end
 end
