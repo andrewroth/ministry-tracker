@@ -7,7 +7,7 @@ Factory.define :summer_report_1_reviewer_1, :class => SummerReportReviewer do |r
   r.review_notes nil
 end
 
-Factory.define :summer_report_1_reviewer_2, :class => SummerReportReviewer do |w|
+Factory.define :summer_report_1_reviewer_2, :class => SummerReportReviewer do |r|
   r.id '2'
   r.summer_report_id '1'
   r.person_id '2000'
