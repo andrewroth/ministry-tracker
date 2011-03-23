@@ -1415,8 +1415,9 @@ div.section {
   position: absolute;
   z-index: 500;
   text-align: left;
-  left:100px;
-  border:6px solid #666766;
+  border:6px solid #4C4C4C;
+  border-top:none;
+  margin-top:6px;
 
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
   -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
