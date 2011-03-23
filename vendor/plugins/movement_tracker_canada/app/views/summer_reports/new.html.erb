@@ -1,3 +1,4 @@
+<br/>
 <h3>Hi <%= @me.full_name %>,</h3>
 <h2>Submit your Summer Schedule for <%= @current_year.desc[-4..-1] %></h2>
 
@@ -39,7 +40,6 @@
   <p>
     <%= f.label :support_coach, "I would like a support coach (if available)" %>
     <%= f.radio_button :support_coach, false, :class => "radio" %>no
-    &nbsp;
     <%= f.radio_button :support_coach, true, :class => "radio" %>yes
   </p>
   <p>
@@ -111,6 +111,7 @@
 
 
   <br/>
+  <br/>
   <h3><br/></h3>
   <br/>
   You may only submit your schedule once!
@@ -125,14 +126,11 @@
 
 <script type="text/javascript">
   // don't submit form when enter is pressed
-  $(window).keypress(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      
-      if(event.target.id == "search_for_reviewers"){
+  $("form").bind("keypress", function(e) {
+    if (e.keyCode == 13) {
+      if(e.target.id == "search_for_reviewers"){
         $("#search_for_reviewers_link").trigger('click');
       }
-
       return false;
     }
   });

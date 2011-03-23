@@ -2901,7 +2901,7 @@ td.nameTitle {
 
 #submit_summer_report input.short { width:75px; }
 #submit_summer_report textarea, .edit_summer_report_reviewer textarea { height:150px; }
-#submit_summer_report input.radio { margin-right: 2px; position: relative; top: 3px; }
+#submit_summer_report input.radio { margin:0 2px 0 10px; position: relative; top: 3px; }
 
 table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { border-collapse: collapse; }
 #submit_summer_report table#weeklySchedule { width:500px; }
@@ -2909,13 +2909,14 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #submit_summer_report td.week { text-align:right; padding-right:10px; }
 #submit_summer_report tr { padding-bottom:10px; }
 #submit_summer_report td { padding:5px 5px 0 0; }
+#submit_summer_report th { text-align:left; }
 
 #submit_summer_report #chosenReviewersNames { font-size:110%; font-weight:bold; display:inline; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
 
 #submit_summer_report #search_for_reviewers_results { position:relative; width:50%; border:#DDDDDD solid 1px; padding:10px; margin:10px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 
-#closeLink { font-size: 24px; position: absolute; right: 5px; top: -5px; }
+#closeLink { font-size:24px; position:absolute; right:4px; top:-2px; height:24px; }
 
 #reviewableReports th { font-weight:bold; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }
