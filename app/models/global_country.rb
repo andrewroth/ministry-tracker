@@ -126,13 +126,13 @@ class GlobalCountry < ActiveRecord::Base
     if c.nil?
       puts "Could not find country by iso code #{iso}"
     else
-      c.live_exp = values[column('E')].to_i
-      c.live_dec = values[column('F')].to_i
-      c.new_grth_mbr = values[column('G')].to_i
-      c.mvmt_mbr = values[column('H')].to_i
-      c.mvmt_ldr = values[column('I')].to_i
-      c.new_staff = values[column('J')].to_i
-      c.lifetime_lab = values[column('K')].to_i
+      c.live_exp = strip_commas(values[column('E')]).to_i
+      c.live_dec = strip_commas(values[column('F')]).to_i
+      c.new_grth_mbr = strip_commas(values[column('G')]).to_i
+      c.mvmt_mbr = strip_commas(values[column('H')]).to_i
+      c.mvmt_ldr = strip_commas(values[column('I')]).to_i
+      c.new_staff = strip_commas(values[column('J')]).to_i
+      c.lifetime_lab = strip_commas(values[column('K')]).to_i
       c.save!
     end
   end
@@ -164,14 +164,14 @@ class GlobalCountry < ActiveRecord::Base
       if c.nil?
         puts "Could not find country by iso code #{iso}"
       else
-        c.total_students = strip_columns(values[column('E')])
-        c.total_schools = strip_columns(values[column('F')])
-        c.total_spcs = strip_columns(values[column('G')])
+        c.total_students = strip_commas(values[column('E')])
+        c.total_schools = strip_commas(values[column('F')])
+        c.total_spcs = strip_commas(values[column('G')])
         c.names_priority_spcs = values[column('H')]
-        c.total_spcs_presence = strip_columns(values[column('I')])
-        c.total_spcs_movement = strip_columns(values[column('J')])
-        c.total_slm_staff = strip_columns(values[column('K')])
-        c.total_new_slm_staff = strip_columns(values[column('L')])
+        c.total_spcs_presence = strip_commas(values[column('I')])
+        c.total_spcs_movement = strip_commas(values[column('J')])
+        c.total_slm_staff = strip_commas(values[column('K')])
+        c.total_new_slm_staff = strip_commas(values[column('L')])
         c.save!
       end
     end
@@ -196,7 +196,7 @@ class GlobalCountry < ActiveRecord::Base
     end
   end
 
-  def self.strip_columns(s)
+  def self.strip_commas(s)
     return s if s.nil?
     s.gsub(",","")
   end
