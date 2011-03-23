@@ -42,13 +42,17 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
       <BR/>
       Staff Count 2002: <%= number_with_delimiter(@staff_counts["staff_count_2002"]) %><BR/>
       Staff Count 2009: <%= number_with_delimiter(@staff_counts["staff_count_2009"]) %><BR/>
-      02-09 Difference: <%= number_with_delimiter(@staff_counts["difference"]) %><BR/>
+      02-09 Difference: <%- if d = @staff_counts["difference"] %><span style="color: <%= if d < 0 then 'red' else 'green' end %>"><%= number_with_delimiter(@staff_counts["difference"]) %></span>
+      <%- end %>
+      <BR/>
     </TD>
     <TD width="50%">
       <U>Stage:</U> <%= @country_stage %><BR/>
       <BR/>
       <BR/>
-      <U>% local funding:</U> <%= number_to_percentage(@country_funding) %><BR/>
+      <U>% local funding:</U> <%- if @country_funding %>
+        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then 'yellow' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
+      <%- end %><br/>
       <BR/>
       GCX Profile Count: <%= number_with_delimiter(@gcx_profile_count["total"]) %><BR/>
       GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
