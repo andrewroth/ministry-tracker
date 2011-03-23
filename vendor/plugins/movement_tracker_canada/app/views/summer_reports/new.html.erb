@@ -126,14 +126,11 @@
 
 <script type="text/javascript">
   // don't submit form when enter is pressed
-  $(window).keypress(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      
-      if(event.target.id == "search_for_reviewers"){
+  $("form").bind("keypress", function(e) {
+    if (e.keyCode == 13) {
+      if(e.target.id == "search_for_reviewers"){
         $("#search_for_reviewers_link").trigger('click');
       }
-
       return false;
     }
   });
