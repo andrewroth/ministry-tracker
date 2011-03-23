@@ -124,13 +124,18 @@ class GlobalDashboardController < ApplicationController
       end
 
       @stage = {}
+      @stage["countries_with_stage"] ||= []
+      @stage["countries_no_stage"] ||= []
       GlobalCountry.all(:order => "name").each do |country|
         if filters_isos.include?(country.iso3)
           stage = country.stage
           @stage[stage] ||= 0
           @stage[stage] += 1
-          @stage["countries"] ||= []
-          @stage["countries"] << { country.name => country.stage }
+          if country.stage.nil? || country.stage == ""
+            @stage["countries_no_stage"] << country.name
+          else
+            @stage["countries_with_stage"] << { country.name => country.stage }
+          end
         end
       end
 

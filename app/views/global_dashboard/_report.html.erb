@@ -220,10 +220,16 @@ Staging Levels
     <td class="pb" width="50%"><b>Country</b></td>
     <td class="pb" width="50%"><b>Stage</b></td>
   </tr>
-  <%- @stage["countries"].each do |name_to_stage| %>
+  <%- @stage["countries_with_stage"].each do |name_to_stage| %>
   <tr class="pb">
     <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
     <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
   </tr>
   <%- end -%>
 </table><%- end -%>
+
+<br/>
+Countries in this area without a staging level<br/>
+<%- @stage["countries_no_stage"].each do |name| %>
+  <%= name %><br/>
+<%- end %>
