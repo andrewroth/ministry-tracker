@@ -1,5 +1,7 @@
 <h1>New email</h1>
 
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+
 <% form_for(@email) do |f| %>
   <%- if @people -%>
   <p>
@@ -20,7 +22,9 @@
   </p>
   <p>
     <%= f.label :body %>
-    <%= f.text_area :body, :cols => 80 %>
+    <br/>
+    <br/>
+    <%= f.text_area :body, :cols => 80, :class => "ckeditor" %>
   </p>
   <p>
     <%= f.submit 'Send Email' %> or 
