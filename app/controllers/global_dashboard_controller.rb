@@ -17,6 +17,7 @@ class GlobalDashboardController < ApplicationController
   skip_before_filter :authorization_filter
 
   def index
+    @area = true
     setup
     setup_stats(GlobalArea.all, all_mccs)
   end
@@ -25,10 +26,13 @@ class GlobalDashboardController < ApplicationController
     case params[:l]
     when "all"
       location_filter_arr = GlobalArea.all
+      @area = true
     when /a_(.*)/
       location_filter_arr = [ GlobalArea.find $1 ]
+      @area = true
     when /c_(.*)/
       location_filter_arr = [ GlobalCountry.find $1 ]
+      @area = false
     end
 
     case params[:mcc]
@@ -120,11 +124,13 @@ class GlobalDashboardController < ApplicationController
       end
 
       @stage = {}
-      GlobalCountry.all.each do |country|
+      GlobalCountry.all(:order => "name").each do |country|
         if filters_isos.include?(country.iso3)
           stage = country.stage
           @stage[stage] ||= 0
           @stage[stage] += 1
+          @stage["countries"] ||= []
+          @stage["countries"] << { country.name => country.stage }
         end
       end
 
@@ -192,14 +198,17 @@ class GlobalDashboardController < ApplicationController
       end
 
       @schools = ActiveSupport::OrderedHash.new
+      @names_priority_spcs = []
       GlobalCountry.all.each do |country|
         if filters_isos.include?(country.iso3)
           %w(total_students total_schools total_spcs).each do |stat|
             @schools[stat] ||= 0
             @schools[stat] += country.send(stat).to_i
           end
+          @names_priority_spcs << country.names_priority_spcs
         end
       end
+      @names_priority_spcs = @names_priority_spcs.compact.delete_if{ |s| s == "" }.join(", ")
 
       @slm = ActiveSupport::OrderedHash.new
       GlobalCountry.all.each do |country|

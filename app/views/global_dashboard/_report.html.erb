@@ -1,0 +1,229 @@
+<style>
+#dashwrap {padding:0;}
+.dashmodule {border:1px dotted silver; width:100%; margin-bottom:7px; margin-right: 7px;}
+.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
+.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
+.modulecontrols {float:right;}
+.modulecontent {min-height:100px; padding:5px;}
+.modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
+
+.ul {
+  text-decoration:underline;
+}
+
+</style>
+
+<script>
+  function toggle(id) {
+    if ($('#'+id).attr('hidden') == 'true') {
+      $('#'+id).attr('hidden', 'false')
+      $('#'+id+' div.modulecontent').show();
+      $('#'+id+' div.moduletitle span').html('-');
+    } else {
+      $('#'+id).attr('hidden', 'true')
+      $('#'+id+' div.modulecontent').hide();
+      $('#'+id+' div.moduletitle span').html('+');
+    }
+  }
+</script>
+
+<H2>Organizational Info</H2>
+
+<TABLE>
+  <TR VALIGN="top">
+    <TD width="50%">
+      <U>Country:</U> <%= @country_name %><BR/>
+      <U>Area:</U> <%= @country_area %><BR/>
+      <BR/>
+      <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
+      <BR/>
+      Staff Count 2002: <%= @staff_counts["staff_count_2002"] %><BR/>
+      Staff Count 2009: <%= @staff_counts["staff_count_2009"] %><BR/>
+      02-09 Difference: <%= @staff_counts["difference"] %><BR/>
+    </TD>
+    <TD width="50%">
+      <U>Stage:</U> <%= @country_stage %><BR/>
+      <BR/>
+      <BR/>
+      <U>% local funding:</U> <%= number_to_percentage(@country_funding) %><BR/>
+      <BR/>
+      GCX Profile Count: <%= @gcx_profile_count["total"] %><BR/>
+      GCX Profile - Serving here: <%= @gcx_profile_count["serving_here"] %><BR/>
+      GCX Profile - Employed here: <%= @gcx_profile_count["employed_here"] %><BR/>
+    </TD>
+  </TR>
+</TABLE>
+
+<BR/>
+
+<H2>2010 WHQ Ministry Metric Snapshot</H2>
+
+<table id="whq" style="">
+  <tr>
+    <td width="50%">Live Exposures</td>
+    <td width="50%"><%= @whq["live_exp"] %></td>
+  </tr><tr>
+    <td width="50%">Live Decisions</td>
+    <td width="50%"><%= @whq["live_dec"] %></td>
+  </tr><tr>
+    <td width="50%">New Growth Group Members</td>
+    <td width="50%"><%= @whq["new_grth_mbr"] %></td>
+  </tr><tr>
+    <td width="50%">Movement Members</td>
+    <td width="50%"><%= @whq["mvmt_mbr"] %></td>
+  </tr><tr>
+    <td width="50%">Movement Leaders</td>
+    <td width="50%"><%= @whq["mvmt_ldr"] %></td>
+  </tr><tr>
+    <td width="50%">New Staff</td>
+    <td width="50%"><%= @whq["new_staff"] %></td>
+  </tr><tr>
+    <td width="50%">Lifetime Labourers</td>
+    <td width="50%"><%= @whq["lifetime_lab"] %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<H2>SLM Critical Measures</H2>
+Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
+
+<table id="whq" style="">
+  <tr>
+    <td width="50%">1. Total # University and College Students</td>
+    <td width="50%"><%= @schools["total_students"] %></td>
+  </tr><tr>
+    <td width="50%">2. Total # Universities and College Institutions</td>
+    <td width="50%"><%= @schools["total_schools"] %></td>
+  </tr><tr>
+    <td width="50%">3. # Student Population Centers (SPCs)</td>
+    <td width="50%"><%= @schools["total_spcs"] %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<span class="ul" style="">4. Names of Next Priority SPCs:</span> <%= @names_priority_spcs %><BR/><BR/>
+
+<P>Evaluating Current Movement Reality</P>
+
+<table id="whq" style="">
+  <tr>
+    <td width="50%">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
+    <td width="50%"><%= @slm["total_spcs_presence"] %></td>
+  </tr><tr>
+    <td width="50%">6. # SPCs with movements</td>
+    <td width="50%"><%= @slm["total_spcs_movement"] %></td>
+  </tr><tr>
+    <td width="50%">7. Total # SLM Staff (of any nationality serving in the country)</td>
+    <td width="50%"><%= @slm["total_slm_staff"] %></td>
+  </tr><tr>
+    <td width="50%">8. New National SLM staff joining 2009-2010 academic year</td>
+    <td width="50%"><%= @slm["total_new_slm_staff"] %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<H2>Country Demographics</H2>
+<span class='ul'>Pop2010:</span> <%= @demog["pop_2010"] %><br/>
+<span class='ul'>Pop2015:</span> <%= @demog["pop_2015"] %><br/>
+<span class='ul'>Pop2020:</span> <%= @demog["pop_2020"] %><br/>
+<br/>
+<span class='ul'>WFB_GDPPP:</span> <%= @demog["pop_2020"] %> <br/>
+<br/>
+<span class='ul'>PercChristian:</span> 57<%= "&nbsp;"*20 %><span class='ul'>PercChristian:</span> 8
+<br/>
+
+<BR/>
+<H2>GCX Profile Data</H2>
+
+<style>
+  table#whq, table#whq td, table#cm, table#cm td.pixel_border {
+    border-color: gray;
+    border-style: solid;
+  }
+  table#whq, table#cm {
+    border-width: 0 0 1px 1px;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  table#whq td, table#cm td.pixel_border {
+    margin: 0;
+    padding: 4px;
+    border-width: 1px 1px 0 0;
+    background-color: white;
+  }
+  
+  table.pb, table.pb td.pb {
+    border-color: gray;
+    border-style: solid;
+  }
+  table.pb {
+    border-width: 0 0 1px 1px;
+    border-spacing: 0;
+  }
+  table.pb td.pb {
+    margin: 0;
+    padding: 4px;
+    border-width: 1px 1px 0 0;
+    background-color: white;
+  }
+</style>
+
+<table id="cm" style="">
+  <tr>
+    <td width="50%" class="pixel_border">
+      <%= render :partial => "genders" %>
+      <%= render :partial => "mccs" %>
+      <%= render :partial => "funding_source" %>
+      <%= render :partial => "scope" %>
+    </td>
+    <td width="50%" class="pixel_border">
+      <%= render :partial => "marital_status" %>
+      <%= render :partial => "staff_status" %>
+      <%= render :partial => "position" %>
+      <%= render :partial => "languages" %>
+    </td>
+  </tr>
+</table>
+
+<%- if @area %>
+<BR/>
+<H2>Area Breakdown</H2>
+<BR/>
+Staging Breakdown<BR/>
+<table class="pb">
+  <tr class="pb">
+    <td class="pb"></td>
+    <td class="pb">Stage 1</td>
+    <td class="pb">Stage 2</td>
+    <td class="pb">Stage 3</td>
+  </tr>
+  <tr class="pb">
+    <td class="pb">Total</td>
+    <td class="pb"><%= @stage[1] %></td>
+    <td class="pb"><%= @stage[2] %></td>
+    <td class="pb"><%= @stage[3] %></td>
+  </tr>
+</table>
+
+<br/>
+Staging Levels
+</br>
+
+<table class="pb" cellspacing="0">
+  <tr class="pb">
+    <td class="pb" width="50%"><b>Country</b></td>
+    <td class="pb" width="50%"><b>Stage</b></td>
+  </tr>
+  <%- @stage["countries"].each do |name_to_stage| %>
+  <tr class="pb">
+    <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
+    <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
+  </tr>
+  <%- end -%>
+</table><%- end -%>
