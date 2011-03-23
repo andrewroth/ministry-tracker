@@ -164,14 +164,14 @@ class GlobalCountry < ActiveRecord::Base
       if c.nil?
         puts "Could not find country by iso code #{iso}"
       else
-        c.total_students = values[column('E')]
-        c.total_schools = values[column('F')]
-        c.total_spcs = values[column('G')]
+        c.total_students = strip_columns(values[column('E')])
+        c.total_schools = strip_columns(values[column('F')])
+        c.total_spcs = strip_columns(values[column('G')])
         c.names_priority_spcs = values[column('H')]
-        c.total_spcs_presence = values[column('I')]
-        c.total_spcs_movement = values[column('J')]
-        c.total_slm_staff = values[column('K')]
-        c.total_new_slm_staff = values[column('L')]
+        c.total_spcs_presence = strip_columns(values[column('I')])
+        c.total_spcs_movement = strip_columns(values[column('J')])
+        c.total_slm_staff = strip_columns(values[column('K')])
+        c.total_new_slm_staff = strip_columns(values[column('L')])
         c.save!
       end
     end
@@ -194,5 +194,10 @@ class GlobalCountry < ActiveRecord::Base
       values = values.collect{ |v| v.to_s.gsub(/\[\d+\]/, '') }
       yield values
     end
+  end
+
+  def self.strip_columns(s)
+    return s if s.nil?
+    s.gsub(",","")
   end
 end

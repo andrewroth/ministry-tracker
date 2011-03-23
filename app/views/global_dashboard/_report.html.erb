@@ -40,9 +40,9 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
       <BR/>
       <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
       <BR/>
-      Staff Count 2002: <%= @staff_counts["staff_count_2002"] %><BR/>
-      Staff Count 2009: <%= @staff_counts["staff_count_2009"] %><BR/>
-      02-09 Difference: <%= @staff_counts["difference"] %><BR/>
+      Staff Count 2002: <%= number_with_delimiter(@staff_counts["staff_count_2002"]) %><BR/>
+      Staff Count 2009: <%= number_with_delimiter(@staff_counts["staff_count_2009"]) %><BR/>
+      02-09 Difference: <%= number_with_delimiter(@staff_counts["difference"]) %><BR/>
     </TD>
     <TD width="50%">
       <U>Stage:</U> <%= @country_stage %><BR/>
@@ -50,9 +50,9 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
       <BR/>
       <U>% local funding:</U> <%= number_to_percentage(@country_funding) %><BR/>
       <BR/>
-      GCX Profile Count: <%= @gcx_profile_count["total"] %><BR/>
-      GCX Profile - Serving here: <%= @gcx_profile_count["serving_here"] %><BR/>
-      GCX Profile - Employed here: <%= @gcx_profile_count["employed_here"] %><BR/>
+      GCX Profile Count: <%= number_with_delimiter(@gcx_profile_count["total"]) %><BR/>
+      GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
+      GCX Profile - Employed here: <%= number_with_delimiter(@gcx_profile_count["employed_here"]) %><BR/>
     </TD>
   </TR>
 </TABLE>
@@ -64,25 +64,25 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <table id="whq" style="">
   <tr>
     <td width="50%">Live Exposures</td>
-    <td width="50%"><%= @whq["live_exp"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["live_exp"]) %></td>
   </tr><tr>
     <td width="50%">Live Decisions</td>
-    <td width="50%"><%= @whq["live_dec"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["live_dec"]) %></td>
   </tr><tr>
     <td width="50%">New Growth Group Members</td>
-    <td width="50%"><%= @whq["new_grth_mbr"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["new_grth_mbr"]) %></td>
   </tr><tr>
     <td width="50%">Movement Members</td>
-    <td width="50%"><%= @whq["mvmt_mbr"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["mvmt_mbr"]) %></td>
   </tr><tr>
     <td width="50%">Movement Leaders</td>
-    <td width="50%"><%= @whq["mvmt_ldr"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["mvmt_ldr"]) %></td>
   </tr><tr>
     <td width="50%">New Staff</td>
-    <td width="50%"><%= @whq["new_staff"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["new_staff"]) %></td>
   </tr><tr>
     <td width="50%">Lifetime Labourers</td>
-    <td width="50%"><%= @whq["lifetime_lab"] %></td>
+    <td width="50%"><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
   </tr>
 </table>
 
@@ -94,13 +94,13 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <table id="whq" style="">
   <tr>
     <td width="50%">1. Total # University and College Students</td>
-    <td width="50%"><%= @schools["total_students"] %></td>
+    <td width="50%"><%= number_with_delimiter(@schools["total_students"]) %></td>
   </tr><tr>
     <td width="50%">2. Total # Universities and College Institutions</td>
-    <td width="50%"><%= @schools["total_schools"] %></td>
+    <td width="50%"><%= number_with_delimiter(@schools["total_schools"]) %></td>
   </tr><tr>
     <td width="50%">3. # Student Population Centers (SPCs)</td>
-    <td width="50%"><%= @schools["total_spcs"] %></td>
+    <td width="50%"><%= number_with_delimiter(@schools["total_spcs"]) %></td>
   </tr>
 </table>
 
@@ -113,29 +113,29 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <table id="whq" style="">
   <tr>
     <td width="50%">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
-    <td width="50%"><%= @slm["total_spcs_presence"] %></td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_spcs_presence"]) %></td>
   </tr><tr>
     <td width="50%">6. # SPCs with movements</td>
-    <td width="50%"><%= @slm["total_spcs_movement"] %></td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_spcs_movement"]) %></td>
   </tr><tr>
     <td width="50%">7. Total # SLM Staff (of any nationality serving in the country)</td>
-    <td width="50%"><%= @slm["total_slm_staff"] %></td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_slm_staff"]) %></td>
   </tr><tr>
     <td width="50%">8. New National SLM staff joining 2009-2010 academic year</td>
-    <td width="50%"><%= @slm["total_new_slm_staff"] %></td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_new_slm_staff"]) %></td>
   </tr>
 </table>
 
 <BR/>
 
 <H2>Country Demographics</H2>
-<span class='ul'>Pop2010:</span> <%= @demog["pop_2010"] %><br/>
-<span class='ul'>Pop2015:</span> <%= @demog["pop_2015"] %><br/>
-<span class='ul'>Pop2020:</span> <%= @demog["pop_2020"] %><br/>
+<span class='ul'>Pop2010:</span> <%= number_with_delimiter(@demog["pop_2010"]) %><br/>
+<span class='ul'>Pop2015:</span> <%= number_with_delimiter(@demog["pop_2015"]) %><br/>
+<span class='ul'>Pop2020:</span> <%= number_with_delimiter(@demog["pop_2020"]) %><br/>
 <br/>
-<span class='ul'>WFB_GDPPP:</span> <%= @demog["pop_2020"] %> <br/>
+<span class='ul'>WFB_GDPPP:</span> <%= number_with_delimiter(@demog["pop_wfb_gdppp"]) %> <br/>
 <br/>
-<span class='ul'>PercChristian:</span> 57<%= "&nbsp;"*20 %><span class='ul'>PercChristian:</span> 8
+<span class='ul'>PercChristian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %><span class='ul'>PercEvangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
 <br/>
 
 <BR/>
