@@ -2898,7 +2898,7 @@ td.nameTitle {
 
 #submit_summer_report input.short { width:75px; }
 #submit_summer_report textarea, .edit_summer_report_reviewer textarea { height:150px; }
-#submit_summer_report input.radio { margin-right: 2px; position: relative; top: 3px; }
+#submit_summer_report input.radio { margin:0 2px 0 10px; position: relative; top: 3px; }
 
 table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { border-collapse: collapse; }
 #submit_summer_report table#weeklySchedule { width:500px; }
