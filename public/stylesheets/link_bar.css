@@ -41,6 +41,8 @@ div.link_bar b {
 
 div.link_bar a {
   color: #D8D8D8;
+  
+  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
 }
 
 div.link_bar a:hover, div.link_menu_box a:hover {
@@ -69,7 +71,7 @@ div.link_menu_box {
   background: #4c4c4c;
   font-size: 11px;
 
-  -moz-box-shadow: 1px 5px 5px #C8C8C8; -webkit-box-shadow: 1px 5px 5px #C8C8C8;
+  -moz-box-shadow: 1px 6px 4px #C8C8C8; -webkit-box-shadow: 1px 6px 4px #C8C8C8;
   -moz-border-radius: 0 0 10px 10px; -webkit-border-radius: 0 0 10px 10px;
 }
 
@@ -79,6 +81,8 @@ div.link_menu_box a {
   padding: 0.2em 0.6em;
   display: block;
   text-decoration: none;
+
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 
 div.link_bar a.menu_link {
