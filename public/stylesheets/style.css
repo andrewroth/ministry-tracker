@@ -462,6 +462,7 @@ h1 {
   display:block;
   cursor:pointer;
   text-align:left;
+  
 }
 
 .tablist a:hover, .verticalTablist a:hover {
@@ -482,6 +483,8 @@ h1 {
   background-repeat: no-repeat;
   line-height: 24px;
   display: block;
+  
+  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
 }
 .verticalTablist div {
   height: 30px;
@@ -813,6 +816,7 @@ margin-bottom:10px;
   clear:both;
   padding:10px;
   margin: 0 0 10px 0;
+
 }
 
 .subtabs-menu {
@@ -845,6 +849,7 @@ a.subtabs-menu-active div {
 a.subtabs-menu-inactive div {
   color:#666766;
   font-weight:bold;
+  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
 }
 
 a.subtabs-menu-inactive div:hover {
@@ -859,8 +864,8 @@ a.subtabs-menu-inactive div:hover {
 #subtabs #timetableSubTab                                                        { background: url(/images/debicons/Gschicon_s.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background: url(/images/debicons/Yschicon_s.png) no-repeat scroll 0 1px transparent; }
 
-#subtabs #discipleshipSubTab                                                        { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 1px transparent; }
-#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs #discipleshipSubTab                                                           { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 0 transparent; }
+#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 0 transparent; }
 
 #subtabs #impersonateSubTab                                                          { background: url(/images/debicons/Gimpicon.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
@@ -946,23 +951,19 @@ a.action-button, input.action-button {
   margin:0px 0 5px 0;
   cursor: pointer;
 
-  -moz-border-radius: 5px; -webkit-border-radius: 5px;
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
   -moz-box-shadow:0 -7px 7px #F2B700 inset; -webkit-box-shadow:0 -7px 7px #F2B700 inset;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   border: 1px solid #8493D9;
-/*  background: #F2B700;*/
 }
 a.action-button:active, input.action-button:active {
   text-decoration: none;
-/*  background: #F2B700;*/
   border: 1px solid #1F429B;
   position: relative;
-/*  top: 1px;
-  left: 1px;*/
-/*  -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;*/
-  -moz-box-shadow:0 5px 5px #D9A400 inset; -webkit-box-shadow:0 5px 5px #D9A400 inset;
+
+  -moz-box-shadow:0 4px 4px #D9A400 inset; -webkit-box-shadow:0 4px 4px #D9A400 inset;
 }
 a.action-button u {
   color: #1F429B;
@@ -2068,6 +2069,7 @@ table#set_initial_campus tr {
   border: 1px solid white;
   padding-left: 8px;
 
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
   -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
