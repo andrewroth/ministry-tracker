@@ -51,7 +51,7 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
       <BR/>
       <BR/>
       <U>% local funding:</U> <%- if @country_funding %>
-        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then 'yellow' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
+        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
       <%- end %><br/>
       <BR/>
       GCX Profile Count: <%= number_with_delimiter(@gcx_profile_count["total"]) %><BR/>
