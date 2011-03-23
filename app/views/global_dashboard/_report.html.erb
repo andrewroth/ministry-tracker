@@ -32,7 +32,7 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 
 <H2>Organizational Info</H2>
 
-<TABLE>
+<TABLE class="pb">
   <TR VALIGN="top">
     <TD width="50%">
       <U>Country:</U> <%= @country_name %><BR/>
@@ -61,28 +61,28 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 
 <H2>2010 WHQ Ministry Metric Snapshot</H2>
 
-<table id="whq" style="">
+<table id="whq" class="pb twocols">
   <tr>
-    <td width="50%">Live Exposures</td>
-    <td width="50%"><%= number_with_delimiter(@whq["live_exp"]) %></td>
+    <td>Live Exposures</td>
+    <td><%= number_with_delimiter(@whq["live_exp"]) %></td>
   </tr><tr>
-    <td width="50%">Live Decisions</td>
-    <td width="50%"><%= number_with_delimiter(@whq["live_dec"]) %></td>
+    <td>Live Decisions</td>
+    <td><%= number_with_delimiter(@whq["live_dec"]) %></td>
   </tr><tr>
-    <td width="50%">New Growth Group Members</td>
-    <td width="50%"><%= number_with_delimiter(@whq["new_grth_mbr"]) %></td>
+    <td>New Growth Group Members</td>
+    <td><%= number_with_delimiter(@whq["new_grth_mbr"]) %></td>
   </tr><tr>
-    <td width="50%">Movement Members</td>
-    <td width="50%"><%= number_with_delimiter(@whq["mvmt_mbr"]) %></td>
+    <td>Movement Members</td>
+    <td><%= number_with_delimiter(@whq["mvmt_mbr"]) %></td>
   </tr><tr>
-    <td width="50%">Movement Leaders</td>
-    <td width="50%"><%= number_with_delimiter(@whq["mvmt_ldr"]) %></td>
+    <td>Movement Leaders</td>
+    <td><%= number_with_delimiter(@whq["mvmt_ldr"]) %></td>
   </tr><tr>
-    <td width="50%">New Staff</td>
-    <td width="50%"><%= number_with_delimiter(@whq["new_staff"]) %></td>
+    <td>New Staff</td>
+    <td><%= number_with_delimiter(@whq["new_staff"]) %></td>
   </tr><tr>
-    <td width="50%">Lifetime Labourers</td>
-    <td width="50%"><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
+    <td>Lifetime Labourers</td>
+    <td><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
   </tr>
 </table>
 
@@ -91,16 +91,16 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <H2>SLM Critical Measures</H2>
 Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 
-<table id="whq" style="">
+<table id="whq" class="pb twocols">
   <tr>
-    <td width="50%">1. Total # University and College Students</td>
-    <td width="50%"><%= number_with_delimiter(@schools["total_students"]) %></td>
+    <td>1. Total # University and College Students</td>
+    <td><%= number_with_delimiter(@schools["total_students"]) %></td>
   </tr><tr>
-    <td width="50%">2. Total # Universities and College Institutions</td>
-    <td width="50%"><%= number_with_delimiter(@schools["total_schools"]) %></td>
+    <td>2. Total # Universities and College Institutions</td>
+    <td><%= number_with_delimiter(@schools["total_schools"]) %></td>
   </tr><tr>
-    <td width="50%">3. # Student Population Centers (SPCs)</td>
-    <td width="50%"><%= number_with_delimiter(@schools["total_spcs"]) %></td>
+    <td>3. # Student Population Centers (SPCs)</td>
+    <td><%= number_with_delimiter(@schools["total_spcs"]) %></td>
   </tr>
 </table>
 
@@ -110,7 +110,7 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 
 <P>Evaluating Current Movement Reality</P>
 
-<table id="whq" style="">
+<table id="whq" class="pb twocols">
   <tr>
     <td width="50%">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
     <td width="50%"><%= number_with_delimiter(@slm["total_spcs_presence"]) %></td>
@@ -142,22 +142,7 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <H2>GCX Profile Data</H2>
 
 <style>
-  table#whq, table#whq td, table#cm, table#cm td.pixel_border {
-    border-color: gray;
-    border-style: solid;
-  }
-  table#whq, table#cm {
-    border-width: 0 0 1px 1px;
-    border-spacing: 0;
-    border-collapse: collapse;
-  }
-  table#whq td, table#cm td.pixel_border {
-    margin: 0;
-    padding: 4px;
-    border-width: 1px 1px 0 0;
-    background-color: white;
-  }
-  
+ /* 
   table.pb, table.pb td.pb {
     border-color: gray;
     border-style: solid;
@@ -171,6 +156,20 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
     padding: 4px;
     border-width: 1px 1px 0 0;
     background-color: white;
+  }
+  */
+  table.pb.twocols {
+    width: 537px;
+    border-style: none;
+  }
+
+  table.pb.twocols td:nth-child(1) {
+    width: 437px;
+  }
+
+  table.pb.twocols td:nth-child(2) {
+    width: 100px;
+    text-align: right;
   }
 </style>
 
@@ -212,8 +211,10 @@ Staging Breakdown<BR/>
 </table>
 
 <br/>
+<br/>
 Staging Levels
-</br>
+<br/>
+<br/>
 
 <table class="pb" cellspacing="0">
   <tr class="pb">
