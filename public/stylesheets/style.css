@@ -462,6 +462,7 @@ h1 {
   display:block;
   cursor:pointer;
   text-align:left;
+  
 }
 
 .tablist a:hover, .verticalTablist a:hover {
@@ -482,6 +483,8 @@ h1 {
   background-repeat: no-repeat;
   line-height: 24px;
   display: block;
+  
+  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
 }
 .verticalTablist div {
   height: 30px;
@@ -813,6 +816,7 @@ margin-bottom:10px;
   clear:both;
   padding:10px;
   margin: 0 0 10px 0;
+
 }
 
 .subtabs-menu {
@@ -845,6 +849,7 @@ a.subtabs-menu-active div {
 a.subtabs-menu-inactive div {
   color:#666766;
   font-weight:bold;
+  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
 }
 
 a.subtabs-menu-inactive div:hover {
@@ -859,8 +864,8 @@ a.subtabs-menu-inactive div:hover {
 #subtabs #timetableSubTab                                                        { background: url(/images/debicons/Gschicon_s.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background: url(/images/debicons/Yschicon_s.png) no-repeat scroll 0 1px transparent; }
 
-#subtabs #discipleshipSubTab                                                        { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 1px transparent; }
-#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 1px transparent; }
+#subtabs #discipleshipSubTab                                                           { background: url(/images/debicons/GDTicon.png) no-repeat scroll 0 0 transparent; }
+#subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background: url(/images/debicons/YDTicon.png) no-repeat scroll 0 0 transparent; }
 
 #subtabs #impersonateSubTab                                                          { background: url(/images/debicons/Gimpicon.png) no-repeat scroll 0 1px transparent; }
 #subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
@@ -946,23 +951,19 @@ a.action-button, input.action-button {
   margin:0px 0 5px 0;
   cursor: pointer;
 
-  -moz-border-radius: 5px; -webkit-border-radius: 5px;
+  -moz-border-radius: 4px; -webkit-border-radius: 4px;
   -moz-box-shadow:0 -7px 7px #F2B700 inset; -webkit-box-shadow:0 -7px 7px #F2B700 inset;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   border: 1px solid #8493D9;
-/*  background: #F2B700;*/
 }
 a.action-button:active, input.action-button:active {
   text-decoration: none;
-/*  background: #F2B700;*/
   border: 1px solid #1F429B;
   position: relative;
-/*  top: 1px;
-  left: 1px;*/
-/*  -moz-box-shadow:0 -7px 7px #FFCC00 inset; -webkit-box-shadow:0 -7px 7px #FFCC00 inset;*/
-  -moz-box-shadow:0 5px 5px #D9A400 inset; -webkit-box-shadow:0 5px 5px #D9A400 inset;
+
+  -moz-box-shadow:0 4px 4px #D9A400 inset; -webkit-box-shadow:0 4px 4px #D9A400 inset;
 }
 a.action-button u {
   color: #1F429B;
@@ -1414,8 +1415,9 @@ div.section {
   position: absolute;
   z-index: 500;
   text-align: left;
-  left:100px;
-  border:6px solid #666766;
+  border:6px solid #4C4C4C;
+  border-top:none;
+  margin-top:6px;
 
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
   -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
@@ -2068,6 +2070,7 @@ table#set_initial_campus tr {
   border: 1px solid white;
   padding-left: 8px;
 
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
   -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
@@ -2899,7 +2902,7 @@ td.nameTitle {
 
 #submit_summer_report input.short { width:75px; }
 #submit_summer_report textarea, .edit_summer_report_reviewer textarea { height:150px; }
-#submit_summer_report input.radio { margin-right: 2px; position: relative; top: 3px; }
+#submit_summer_report input.radio { margin:0 2px 0 10px; position: relative; top: 3px; }
 
 table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { border-collapse: collapse; }
 #submit_summer_report table#weeklySchedule { width:500px; }
@@ -2907,13 +2910,14 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #submit_summer_report td.week { text-align:right; padding-right:10px; }
 #submit_summer_report tr { padding-bottom:10px; }
 #submit_summer_report td { padding:5px 5px 0 0; }
+#submit_summer_report th { text-align:left; }
 
 #submit_summer_report #chosenReviewersNames { font-size:110%; font-weight:bold; display:inline; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
 
 #submit_summer_report #search_for_reviewers_results { position:relative; width:50%; border:#DDDDDD solid 1px; padding:10px; margin:10px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 
-#closeLink { font-size: 24px; position: absolute; right: 5px; top: -5px; }
+#closeLink { font-size:24px; position:absolute; right:4px; top:-2px; height:24px; }
 
 #reviewableReports th { font-weight:bold; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }

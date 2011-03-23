@@ -31,7 +31,7 @@
     <div id="tools">
       <a class="ll" href="http://www.campusforchrist.org" title="Campus for Christ"><%=image_tag "/images/c4corg.png"%>.ORG</a>
 
-      <div class="active"><b class="ll">THE PULSE</b></div>
+      <div class="active"><b class="ll"><a href="<%= url_for :action => :index, :controller => :dashboard %>">THE PULSE</a></b></div>
 
       <a class="ll" href="http://resources.campusforchrist.org" title="C4C Resources Wiki">RESOURCES</a>
       <a class="ll menu_link project" href="" link_menu_box_id="events_box">EVENTS</a>
@@ -54,7 +54,8 @@
 </div>
 
 <div id="more_tools_box" class="link_menu_box">
-  <a class="ll" href="http://www.mygcx.org" title="Global ConneXion">GCX</a>
+  <a href="http://www.mygcx.org" title="Global ConneXion">GCX</a>
+  <a href="https://pat.powertochange.org" title="Project Application Tool">PAT</a>
   <a href="https://mpdtool.powertochange.org" title="Ministry Partner Development Tool">MPD TOOL</a>
   <a href="http://www.glclive.com" title="Global Learning Center">GLC</a>
 </div>

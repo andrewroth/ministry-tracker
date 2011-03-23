@@ -4,10 +4,12 @@ class CreateSummerReportAssignments < ActiveRecord::Migration
     {:assignment => "MPD/MPM"},
     {:assignment => "Summer Project"},
     {:assignment => "Vacation"},
-    {:assignment => "Sabatical"},
+    {:assignment => "Sabbatical"},
     {:assignment => "IBS/Seminary"},
     {:assignment => "Special Project"},
     {:assignment => "Regular Job"},
+    {:assignment => "Maternity/Paternity leave"},
+    {:assignment => "Zone Conference"},
     {:assignment => "Other"}
   ]
 

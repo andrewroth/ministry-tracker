@@ -14,6 +14,7 @@ class SummerReport < ActiveRecord::Base
   before_validation_on_create :initialize_nested_attributes
 
   validate :has_a_reviewer
+  validate :has_a_week
   validates_associated :person, :year
   validates_uniqueness_of :year_id, :scope => [:person_id], :message => "(you've already submitted a summer report for this year, you can't submit another one)"
   validates_presence_of :person_id
@@ -31,7 +32,6 @@ class SummerReport < ActiveRecord::Base
   STATUS_DISPROVED = "disapproved (needs amending)"
   WEEKS_OF_MPD = [0,1,2,3,4,5,6,7,8,9,10]
 
-
   def initialize_nested_attributes
     summer_report_weeks.each { |w| w.summer_report = self }
     summer_report_reviewers.each { |r| r.summer_report = self }
@@ -42,6 +42,14 @@ class SummerReport < ActiveRecord::Base
       errors.add_to_base("You must choose at least one person to review you summer schedule")
     end
   end
+
+  def has_a_week
+    if self.summer_report_weeks.size < 1 || self.summer_report_weeks.all?{|r| r.marked_for_destruction? }
+      errors.add_to_base("Your schedule must have at least one week")
+    end
+  end
+
+  
 
   def approved?
     approved = false
