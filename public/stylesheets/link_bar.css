@@ -3,7 +3,7 @@ div#link_bar_wrapper {
   padding-top: 9px;
   background-color: #666766;
 
-  -moz-box-shadow:0 -5px 10px #4C4C4C inset; -webkit-box-shadow:0 -5px 10px #4C4C4C inset;
+  -moz-box-shadow:0 -5px 10px #595959 inset; -webkit-box-shadow:0 -5px 10px #595959 inset;
 }
 
 div.link_bar {
@@ -14,7 +14,6 @@ div.link_bar {
   margin-left: auto;
   margin-right: auto;
   font-size:11px;
-  font-weight:bold;
 }
 
 div.link_bar div#tools {
@@ -101,6 +100,7 @@ div.link_bar small {
 }
 
 div.link_bar .ll {
+  font-weight:bold;
   display:inline;
   position:relative;
 }

@@ -8,9 +8,9 @@
   <table id="reviewableReports" class="groupInvolvementList">
     <tr>
       <th></th>
-      <th>Monthly Needed</th>
-      <th>Weeks of MPD</th>
-      <th>Weeks of Holiday</th>
+      <th>Monthly support to raise</th>
+      <th>Weeks of MPD/MPM</th>
+      <th>Days of Holiday</th>
       <th>Status</th>
       <th></th>
     </tr>
@@ -18,8 +18,8 @@
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
       <td class="name"><%= review.summer_report.person.full_name %></td>
       <td><%= number_to_currency(review.summer_report.monthly_needed.gsub("$","")) %></td>
-      <td><%= review.summer_report.num_weeks_of_mpd %></td>
-      <td><%= review.summer_report.weeks_of_holiday %></td>
+      <td><%= review.summer_report.num_weeks_of_mpd.to_i + review.summer_report.num_weeks_of_mpm.to_i %></td>
+      <td><%= review.summer_report.days_of_holiday %></td>
       <td class="<%= review.summer_report.status_style %>"><%= review.summer_report.status %></td>
       <td><%= link_to_remote "Review", {:url => {:action => "edit"}, :with => "'id='+#{review.id}", :before => "$('#review_report').fadeOut(); $('#spinner_review').show()", :complete => "$('#spinner_review').hide()"} %></td>
     </tr>

@@ -50,6 +50,8 @@ class SummerReportsController < ApplicationController
       @summer_report.support_coach = false if @summer_report.support_coach.nil?
     end
 
+    @contact_person = Person.find(1698)
+
     respond_to do |format|
       if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
