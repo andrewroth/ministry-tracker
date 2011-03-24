@@ -20,7 +20,7 @@ class SummerReport < ActiveRecord::Base
   validates_presence_of :person_id
   validates_presence_of :year_id
   validates_presence_of :joined_staff
-  validates_presence_of :weeks_of_holiday
+  validates_presence_of :days_of_holiday
   validates_presence_of :monthly_goal
   validates_presence_of :monthly_have
   validates_presence_of :monthly_needed
