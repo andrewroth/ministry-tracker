@@ -2,9 +2,33 @@ require 'csv'
 
 class GlobalCountry < ActiveRecord::Base
   belongs_to :global_area
+  has_many :global_profiles_serving, :foreign_key => "ministry_location_country", :primary_key => "iso3", 
+    :class_name => "GlobalProfile"
+  has_many :global_profiles_employed, :foreign_key => "employment_country", :primary_key => "iso3", 
+    :class_name => "GlobalProfile"
+
+  WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
+  WHQ_MCCS_TO_PARAMS = {
+    "virtually_led" => "virtually-led",
+    "church_led" => "church-led",
+    "leader_led" => "leader-led",
+    "student_led" => "student-led"
+  }
 
   def isos
     iso3
+  end
+
+  def serving_here
+    global_profiles_serving.count
+  end
+
+  def employed_here_serving_here
+    global_profiles_serving.find_all_by_employment_country(self.iso3).count
+  end
+
+  def employed_here_serving_elsewhere
+    global_profiles_employed.find(:all, :conditions => [ "ministry_location_country != ?" , self.iso3 ]).count
   end
 
   def GlobalCountry.reset_data
@@ -43,7 +67,7 @@ class GlobalCountry < ActiveRecord::Base
       stage = values[column('D')].to_i
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[01_staging] Could not find country by iso code #{iso}"
       else
         c.stage = stage
         c.save!
@@ -63,7 +87,7 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[02_fiscal] Could not find country by iso code #{iso}"
       else
         c.locally_funded_FY10 = perc
         c.total_income_FY10 = inc
@@ -95,7 +119,7 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[03_staff_count] Could not find country by iso code #{iso}"
       else
         c.staff_count_2002 = values[column('C')]
         c.staff_count_2009 = values[column('D')]
@@ -105,45 +129,46 @@ class GlobalCountry < ActiveRecord::Base
   end
 
   def GlobalCountry.import_04_country_stats_campus
+    #WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
     parse('global_dashboard_data/04_a_country_stats_campus.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("student_led", values)
     end
     parse('global_dashboard_data/04_b_country_stats_community.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("leader_led", values)
     end
     parse('global_dashboard_data/04_c_country_stats_coverage.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("church_led", values)
     end
     parse('global_dashboard_data/04_d_country_stats_internet.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("virtually_led", values)
     end
   end
 
-  def GlobalCountry.handle_stats_row(values)
+  def GlobalCountry.handle_stats_row(type, values)
     iso = values[column('C')]
 
     c = GlobalCountry.find_by_iso3 iso
     if c.nil?
-      puts "Could not find country by iso code #{iso}"
+      puts "[04_country] Could not find country by iso code #{iso}"
     else
-      c.live_exp = values[column('E')].to_i
-      c.live_dec = values[column('F')].to_i
-      c.new_grth_mbr = values[column('G')].to_i
-      c.mvmt_mbr = values[column('H')].to_i
-      c.mvmt_ldr = values[column('I')].to_i
-      c.new_staff = values[column('J')].to_i
-      c.lifetime_lab = values[column('K')].to_i
+      c.send("#{type}_live_exp=", strip_commas(values[column('E')]).to_i)
+      c.send("#{type}_live_dec=", strip_commas(values[column('F')]).to_i)
+      c.send("#{type}_new_grth_mbr=", strip_commas(values[column('G')]).to_i)
+      c.send("#{type}_mvmt_mbr=", strip_commas(values[column('H')]).to_i)
+      c.send("#{type}_mvmt_ldr=", strip_commas(values[column('I')]).to_i)
+      c.send("#{type}_new_staff=", strip_commas(values[column('J')]).to_i)
+      c.send("#{type}_lifetime_lab=", strip_commas(values[column('K')]).to_i)
       c.save!
     end
   end
 
   def GlobalCountry.import_05_country_demographics
-    parse('global_dashboard_data/05_ccc_country_demographic_data.csv', 1) do |values|
+    parse('global_dashboard_data/05_ccc_country_demographic_data.csv', 2) do |values|
       iso = values[column('D')]
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[05_country] Could not find country by iso code #{iso}"
       else
         c.pop_2010 = values[column('E')]
         c.pop_2015 = values[column('F')]
@@ -162,16 +187,16 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[06_slm] Could not find country by iso code #{iso}"
       else
-        c.total_students = strip_columns(values[column('E')])
-        c.total_schools = strip_columns(values[column('F')])
-        c.total_spcs = strip_columns(values[column('G')])
+        c.total_students = strip_commas(values[column('E')])
+        c.total_schools = strip_commas(values[column('F')])
+        c.total_spcs = strip_commas(values[column('G')])
         c.names_priority_spcs = values[column('H')]
-        c.total_spcs_presence = strip_columns(values[column('I')])
-        c.total_spcs_movement = strip_columns(values[column('J')])
-        c.total_slm_staff = strip_columns(values[column('K')])
-        c.total_new_slm_staff = strip_columns(values[column('L')])
+        c.total_spcs_presence = strip_commas(values[column('I')])
+        c.total_spcs_movement = strip_commas(values[column('J')])
+        c.total_slm_staff = strip_commas(values[column('K')])
+        c.total_new_slm_staff = strip_commas(values[column('L')])
         c.save!
       end
     end
@@ -196,7 +221,7 @@ class GlobalCountry < ActiveRecord::Base
     end
   end
 
-  def self.strip_columns(s)
+  def self.strip_commas(s)
     return s if s.nil?
     s.gsub(",","")
   end

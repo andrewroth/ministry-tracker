@@ -35,24 +35,36 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <TABLE class="pb">
   <TR VALIGN="top">
     <TD width="50%">
+      <%- unless @area -%>
       <U>Country:</U> <%= @country_name %><BR/>
+      <%- end -%>
       <U>Area:</U> <%= @country_area %><BR/>
       <BR/>
       <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
       <BR/>
       Staff Count 2002: <%= number_with_delimiter(@staff_counts["staff_count_2002"]) %><BR/>
       Staff Count 2009: <%= number_with_delimiter(@staff_counts["staff_count_2009"]) %><BR/>
-      02-09 Difference: <%= number_with_delimiter(@staff_counts["difference"]) %><BR/>
+      02-09 Difference: <%- if d = @staff_counts["difference"] %><span style="color: <%= if d < 0 then 'red' else 'green' end %>"><%= number_with_delimiter(@staff_counts["difference"]) %></span>
+      <%- end %>
+      <BR/>
     </TD>
     <TD width="50%">
+      <%- unless @area -%>
       <U>Stage:</U> <%= @country_stage %><BR/>
+      <%- end -%>
       <BR/>
       <BR/>
-      <U>% local funding:</U> <%= number_to_percentage(@country_funding) %><BR/>
+      <%- unless @area -%>
+      <U>% local funding:</U> <%- if @country_funding %>
+        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
+      <%- end %><br/>
+      <%- end %>
       <BR/>
-      GCX Profile Count: <%= number_with_delimiter(@gcx_profile_count["total"]) %><BR/>
+      <%- unless @area %>
       GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
-      GCX Profile - Employed here: <%= number_with_delimiter(@gcx_profile_count["employed_here"]) %><BR/>
+      GCX Profile - Employed here, serving here: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %><BR/>
+      GCX Profile - Employed here, serving elsewhere: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %><BR/>
+      <%- end %>
     </TD>
   </TR>
 </TABLE>
@@ -89,7 +101,8 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <BR/>
 
 <H2>SLM Critical Measures</H2>
-Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
+
+<H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
 
 <table id="whq" class="pb twocols">
   <tr>
@@ -108,7 +121,8 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 
 <span class="ul" style="">4. Names of Next Priority SPCs:</span> <%= @names_priority_spcs %><BR/><BR/>
 
-<P>Evaluating Current Movement Reality</P>
+<H3>Evaluating Current Movement Reality</H3>
+<BR/>
 
 <table id="whq" class="pb twocols">
   <tr>
@@ -129,15 +143,34 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <BR/>
 
 <H2>Country Demographics</H2>
-<span class='ul'>Pop2010:</span> <%= number_with_delimiter(@demog["pop_2010"]) %><br/>
-<span class='ul'>Pop2015:</span> <%= number_with_delimiter(@demog["pop_2015"]) %><br/>
-<span class='ul'>Pop2020:</span> <%= number_with_delimiter(@demog["pop_2020"]) %><br/>
+<table id="" class="pb twocols">
+  <tr>
+    <td width="50%">
+      <span class=''>2010 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2010"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2015 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2015"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2020 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2020"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>World Fact Book - GDP per Person (USD):</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %></td>
+  </tr>
+</table>
 <br/>
-<span class='ul'>WFB_GDPPP:</span> <%= number_with_delimiter(@demog["pop_wfb_gdppp"]) %> <br/>
-<br/>
-<span class='ul'>PercChristian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %><span class='ul'>PercEvangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
-<br/>
-
+<span class='ul'>Percent Christian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %>
+<span class='ul'>Percent Evangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
+<br/><br/>
+<I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
 <BR/>
 <H2>GCX Profile Data</H2>
 
@@ -227,10 +260,12 @@ Staging Levels
     <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
   </tr>
   <%- end -%>
-</table><%- end -%>
+</table>
 
 <br/>
 Countries in this area without a staging level<br/>
 <%- @stage["countries_no_stage"].each do |name| %>
   <%= name %><br/>
 <%- end %>
+
+<%- end -%>
