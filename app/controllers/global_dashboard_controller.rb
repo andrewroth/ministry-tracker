@@ -188,23 +188,25 @@ class GlobalDashboardController < ApplicationController
         if (filters_isos.include?(profile.ministry_location_country) || 
            filters_isos.include?(profile.employment_country)) &&
           mcc_filters.include?(profile.mission_critical_components)
-          @genders[profile.gender] += 1 if profile.gender
-          @marital_status[profile.marital_status] ||= 0
-          @marital_status[profile.marital_status] += 1
-          @languages[profile.language] ||= 0
-          @languages[profile.language] += 1
-          @mccs[profile.mission_critical_components] ||= 0
-          @mccs[profile.mission_critical_components] += 1
-          @funding_source[profile.funding_source] ||= 0
-          @funding_source[profile.funding_source] += 1
-          @staff_status[profile.staff_status] ||= 0
-          @staff_status[profile.staff_status] += 1
-          @position[profile.position] ||= 0
-          @position[profile.position] += 1
-          @scope[profile.scope] ||= 0
-          @scope[profile.scope] += 1
-          @gcx_profile_count["total"] ||= 0
-          @gcx_profile_count["total"] += 1
+          if filters_isos.include?(profile.ministry_location_country)
+            @genders[profile.gender] += 1 if profile.gender
+            @marital_status[profile.marital_status] ||= 0
+            @marital_status[profile.marital_status] += 1
+            @languages[profile.language] ||= 0
+            @languages[profile.language] += 1
+            @mccs[profile.mission_critical_components] ||= 0
+            @mccs[profile.mission_critical_components] += 1
+            @funding_source[profile.funding_source] ||= 0
+            @funding_source[profile.funding_source] += 1
+            @staff_status[profile.staff_status] ||= 0
+            @staff_status[profile.staff_status] += 1
+            @position[profile.position] ||= 0
+            @position[profile.position] += 1
+            @scope[profile.scope] ||= 0
+            @scope[profile.scope] += 1
+            @gcx_profile_count["total"] ||= 0
+            @gcx_profile_count["total"] += 1
+          end
           if filters_isos.include?(profile.ministry_location_country)
             @gcx_profile_count["serving_here"] += 1
           end
@@ -238,9 +240,13 @@ class GlobalDashboardController < ApplicationController
       @whq = ActiveSupport::OrderedHash.new
       GlobalCountry.all.each do |country|
         if filters_isos.include?(country.iso3)
-          %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
-            @whq[stat] ||= 0
-            @whq[stat] += country.send(stat).to_i
+          GlobalCountry::WHQ_MCCS.each do |whq_mcc|
+            if mcc_filters.include?(GlobalCountry::WHQ_MCCS_TO_PARAMS[whq_mcc])
+              %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
+                @whq[stat] ||= 0
+                @whq[stat] += country.send("#{whq_mcc}_#{stat}").to_i
+              end
+            end
           end
         end
       end
@@ -255,10 +261,12 @@ class GlobalDashboardController < ApplicationController
             @demog[stat] += country.send(stat).to_i
           end
           %w(perc_christian perc_evangelical).each do |stat|
-            @demog_avg_n[stat] ||= 0
-            @demog_avg_n[stat] += 1
-            @demog_avg_total[stat] ||= 0.0
-            @demog_avg_total[stat] += country.send(stat).to_f
+            if country.send(stat) != "" && country.send(stat) != 0 && country.send(stat) != nil
+              @demog_avg_n[stat] ||= 0
+              @demog_avg_n[stat] += 1
+              @demog_avg_total[stat] ||= 0.0
+              @demog_avg_total[stat] += country.send(stat).to_f
+            end
           end
           %w(perc_christian perc_evangelical).each do |stat|
             @demog[stat] = @demog_avg_total[stat] / @demog_avg_n[stat].to_f

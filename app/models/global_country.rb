@@ -3,6 +3,14 @@ require 'csv'
 class GlobalCountry < ActiveRecord::Base
   belongs_to :global_area
 
+  WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
+  WHQ_MCCS_TO_PARAMS = {
+    "virtually_led" => "virtually-led",
+    "church_led" => "church-led",
+    "leader_led" => "leader-led",
+    "student_led" => "student-led"
+  }
+
   def isos
     iso3
   end
@@ -105,34 +113,35 @@ class GlobalCountry < ActiveRecord::Base
   end
 
   def GlobalCountry.import_04_country_stats_campus
+    #WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
     parse('global_dashboard_data/04_a_country_stats_campus.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("student_led", values)
     end
     parse('global_dashboard_data/04_b_country_stats_community.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("leader_led", values)
     end
     parse('global_dashboard_data/04_c_country_stats_coverage.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("church_led", values)
     end
     parse('global_dashboard_data/04_d_country_stats_internet.csv', 2) do |values|
-      handle_stats_row(values)
+      handle_stats_row("virtually_led", values)
     end
   end
 
-  def GlobalCountry.handle_stats_row(values)
+  def GlobalCountry.handle_stats_row(type, values)
     iso = values[column('C')]
 
     c = GlobalCountry.find_by_iso3 iso
     if c.nil?
       puts "Could not find country by iso code #{iso}"
     else
-      c.live_exp = strip_commas(values[column('E')]).to_i
-      c.live_dec = strip_commas(values[column('F')]).to_i
-      c.new_grth_mbr = strip_commas(values[column('G')]).to_i
-      c.mvmt_mbr = strip_commas(values[column('H')]).to_i
-      c.mvmt_ldr = strip_commas(values[column('I')]).to_i
-      c.new_staff = strip_commas(values[column('J')]).to_i
-      c.lifetime_lab = strip_commas(values[column('K')]).to_i
+      c.send("#{type}_live_exp=", strip_commas(values[column('E')]).to_i)
+      c.send("#{type}_live_dec=", strip_commas(values[column('F')]).to_i)
+      c.send("#{type}_new_grth_mbr=", strip_commas(values[column('G')]).to_i)
+      c.send("#{type}_mvmt_mbr=", strip_commas(values[column('H')]).to_i)
+      c.send("#{type}_mvmt_ldr=", strip_commas(values[column('I')]).to_i)
+      c.send("#{type}_new_staff=", strip_commas(values[column('J')]).to_i)
+      c.send("#{type}_lifetime_lab=", strip_commas(values[column('K')]).to_i)
       c.save!
     end
   end
