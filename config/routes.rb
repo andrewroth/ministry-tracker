@@ -221,6 +221,7 @@ ActionController::Routing::Routes.draw do |map|
   # root to dashboard
   map.dashboard '', :controller => "dashboard"
   map.global_dashboard '', :controller => "global_dashboard"
+  map.export_global_dashboard '', :controller => "global_dashboard", :action => "export"
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id.:format'
