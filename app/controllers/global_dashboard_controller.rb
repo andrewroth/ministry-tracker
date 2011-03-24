@@ -21,6 +21,97 @@ class GlobalDashboardController < ApplicationController
     setup_stats(GlobalArea.all, all_mccs)
   end
 
+  def export
+    case params[:location]
+    when "all"
+      countries = GlobalArea.all.collect(&:global_countries).flatten
+      @area = true
+    when /a_(.*)/
+      countries = GlobalArea.find($1).global_countries
+      @area = true
+    when /c_(.*)/
+      countries = [ GlobalCountry.find $1 ]
+      @area = false
+    end
+
+    case params[:mcc]
+    when "all"
+      mcc_filters = all_mccs
+    else
+      mcc_filters = [ params[:mcc] ]
+    end
+
+    country_column_names_to_strings = {
+      "name" => 'Name',
+      "iso3" => 'Iso',
+      "stage" => 'Stage',
+      "live_exp" => 'Live Exposures',
+      "live_dec" => 'Live Decisions',
+      "new_grth_mbr" => 'New Growth Group Members',
+      "mvmt_mbr" => 'Movement Members',
+      "mvmt_ldr" => 'Movement Leaders',
+      "new_staff" => 'New Staff',
+      "lifetime_lab" => 'Lifetime Labourers',
+      "pop_2010" => 'Pop 2010',
+      "pop_2015" => 'Pop 2015',
+      "pop_2020" => 'Pop 2020',
+      "pop_wfb_gdppp" => 'Pop WFB GDP',
+      "perc_christian" => 'Perc Christian',
+      "perc_evangelical" => 'Perc Evangelical',
+      "locally_funded_FY10" => '% Locally Funded in FY10',
+      "total_income_FY10" => 'Total Income in FY10',
+      "staff_count_2002" => 'Staff Count 2002',
+      "staff_count_2009" => 'Staff Count 2009',
+      "total_students" => 'Total Students',
+      "total_schools" => 'Total Schools',
+      "total_spcs" => 'Total Student Population Centers (SPCs)',
+      "names_priority_spcs" => 'Names of Priority SPCs',
+      "total_spcs_presence" => 'Total SPCs with presence',
+      "total_spcs_movement" => 'Total SPCs with movement',
+      "total_slm_staff" => 'Total SLM Staff',
+      "total_new_slm_staff" => "Total New Staff 2009-2010"
+    }
+    columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff" ]
+    instance_vars_to_export = %w(genders marital_status mccs staff_status funding_source position scope)
+    #outfile = File.open('csvout', 'wb')
+    csv_out = ""
+    CSV::Writer.generate(csv_out) do |csv|
+=begin
+      csv << [ "Country Name", "Area", "% Local Funding", "Fiscal 2010 Income", "Staff Count 2002", 
+        "Staff Count 2009", "02-09 Difference", "GCX Profile - Serving Here", 
+        "GCX Profile - Employed Here, Serving Here", "GCX Profile - Employed Here, Serving Elsewhere", 
+        "Live Exposures", "Live Decisions", "New Growth Group Members", "Movement Members",
+        "New Staff", "Lifetime Labourers", "Total # Univ & College Students", "Total # Univ & College Inst",
+        "# Student Pop Centers", "SPCs w/ any ministry or movement activity or CCC presence",
+        "SPCs with movements", "Total # SLM Staff (of any nationality serving in the country)",
+        "New National SLM staff joining 2009-2010 academic year", "Pop2010", "Pop2015", "Pop2020",
+        "WFB_GDPPP", "PercChristian", "PercEvangelical" ]
+=end
+      setup_stats([ GlobalCountry.first ], mcc_filters) # to get the instance var hashes set
+      csv << columns.collect{ |c| country_column_names_to_strings[c] } #+ 
+      #  instance_vars_to_export.collect{ |v|
+      #    h = eval("@#{v}")
+      #    h.keys.collect{ |k| k == nil ? "#{v}_no_value" : "#{v}_#{k}" }
+      #  }.flatten
+      #throw instance_vars_to_export.collect{ |v| h = eval("@#{v}"); h.keys.collect{ |k| k == nil || k == "" ? "#{v}_no_value" : "#{v}_#{k}" }; }.flatten
+
+      for c in countries
+        #setup_stats([c], mcc_filters)
+        csv << columns.collect{ |col| c.send(col) } #+ 
+#          instance_vars_to_export.collect{ |v|
+#            h = eval("@#{v}")
+#            h.values
+#          }.flatten
+      end
+    end
+
+    #outfile.close
+    send_data(csv_out,
+              :type => 'text/csv; charset=utf-8; header=present',
+              :filename => "export.csv")
+
+  end
+
   def update_stats
     case params[:l]
     when "all"
@@ -90,6 +181,9 @@ class GlobalDashboardController < ApplicationController
       @scope = {}
       @gcx_profile_count = {}
       @profiles = GlobalProfile.all
+      @gcx_profile_count["serving_here"] ||= 0
+      @gcx_profile_count["employed_here_serving_elsewhere"] ||= 0
+      @gcx_profile_count["employed_here_serving_here"] ||= 0
       @profiles.each do |profile|
         if (filters_isos.include?(profile.ministry_location_country) || 
            filters_isos.include?(profile.employment_country)) &&
@@ -112,12 +206,15 @@ class GlobalDashboardController < ApplicationController
           @gcx_profile_count["total"] ||= 0
           @gcx_profile_count["total"] += 1
           if filters_isos.include?(profile.ministry_location_country)
-            @gcx_profile_count["serving_here"] ||= 0
             @gcx_profile_count["serving_here"] += 1
           end
           if filters_isos.include?(profile.employment_country)
-            @gcx_profile_count["employed_here"] ||= 0
-            @gcx_profile_count["employed_here"] += 1
+
+            if filters_isos.include?(profile.ministry_location_country)
+              @gcx_profile_count["employed_here_serving_here"] += 1
+            else
+              @gcx_profile_count["employed_here_serving_elsewhere"] += 1
+            end
           end
         end
       end

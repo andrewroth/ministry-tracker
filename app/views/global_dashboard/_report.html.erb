@@ -54,9 +54,9 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
         <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
       <%- end %><br/>
       <BR/>
-      GCX Profile Count: <%= number_with_delimiter(@gcx_profile_count["total"]) %><BR/>
       GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
-      GCX Profile - Employed here: <%= number_with_delimiter(@gcx_profile_count["employed_here"]) %><BR/>
+      GCX Profile - Employed here, serving here: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %><BR/>
+      GCX Profile - Employed here, serving elsewhere: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %><BR/>
     </TD>
   </TR>
 </TABLE>
