@@ -70,9 +70,12 @@ class GlobalDashboardController < ApplicationController
       "total_spcs_presence" => 'Total SPCs with presence',
       "total_spcs_movement" => 'Total SPCs with movement',
       "total_slm_staff" => 'Total SLM Staff',
-      "total_new_slm_staff" => "Total New Staff 2009-2010"
+      "total_new_slm_staff" => "Total New Staff 2009-2010",
+      "serving_here" => "Serving Here",
+      "employed_here_serving_here" => "Employed Here Serving Here",
+      "employed_here_serving_elsewhere" => "Employed Here Serving Elsewhere"
     }
-    columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff" ]
+    columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff", "serving_here", "employed_here_serving_here", "employed_here_serving_elsewhere" ]
     instance_vars_to_export = %w(genders marital_status mccs staff_status funding_source position scope)
     #outfile = File.open('csvout', 'wb')
     csv_out = ""

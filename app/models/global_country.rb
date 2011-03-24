@@ -2,6 +2,10 @@ require 'csv'
 
 class GlobalCountry < ActiveRecord::Base
   belongs_to :global_area
+  has_many :global_profiles_serving, :foreign_key => "ministry_location_country", :primary_key => "iso3", 
+    :class_name => "GlobalProfile"
+  has_many :global_profiles_employed, :foreign_key => "employment_country", :primary_key => "iso3", 
+    :class_name => "GlobalProfile"
 
   WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
   WHQ_MCCS_TO_PARAMS = {
@@ -13,6 +17,18 @@ class GlobalCountry < ActiveRecord::Base
 
   def isos
     iso3
+  end
+
+  def serving_here
+    global_profiles_serving.count
+  end
+
+  def employed_here_serving_here
+    global_profiles_serving.find_all_by_employment_country(self.iso3).count
+  end
+
+  def employed_here_serving_elsewhere
+    global_profiles_employed.find(:all, :conditions => [ "ministry_location_country != ?" , self.iso3 ]).count
   end
 
   def GlobalCountry.reset_data
