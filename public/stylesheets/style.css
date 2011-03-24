@@ -2899,8 +2899,7 @@ td.nameTitle {
 
 #submit_summer_report label { width:250px; text-align:right; padding:2px 10px; }
 #submit_summer_report h3, .edit_summer_report_reviewer h3 { margin:50px 0 20px 0; border-bottom:#DDDDDD solid 1px; font-weight:bold; }
-#submit_summer_report small { margin-bottom:20px; display:block; font-style:italic; }
-#submit_summer_report small, #submit_summer_report small b, #submit_summer_report small td { /*color:#8C8C8C;*/ }
+#submit_summer_report small { margin-bottom:30px; display:block; font-style:italic; }
 #submit_summer_report small table { width:50%; }
 
 #submit_summer_report input.short { width:75px; }
@@ -2914,6 +2913,8 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #submit_summer_report tr { padding-bottom:10px; }
 #submit_summer_report td { padding:5px 5px 0 0; }
 #submit_summer_report th { text-align:left; }
+#submit_summer_report #reviewerSearchResults td { padding:5px; }
+#submit_summer_report .addReviewerLink {cursor:pointer;}
 
 #submit_summer_report #chosenReviewersNames { font-size:110%; font-weight:bold; display:inline; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
