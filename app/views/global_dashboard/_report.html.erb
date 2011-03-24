@@ -101,7 +101,8 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <BR/>
 
 <H2>SLM Critical Measures</H2>
-Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
+
+<H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
 
 <table id="whq" class="pb twocols">
   <tr>
@@ -120,7 +121,8 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 
 <span class="ul" style="">4. Names of Next Priority SPCs:</span> <%= @names_priority_spcs %><BR/><BR/>
 
-<P>Evaluating Current Movement Reality</P>
+<H3>Evaluating Current Movement Reality</H3>
+<BR/>
 
 <table id="whq" class="pb twocols">
   <tr>
@@ -141,15 +143,34 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <BR/>
 
 <H2>Country Demographics</H2>
-<span class='ul'>Pop2010:</span> <%= number_with_delimiter(@demog["pop_2010"]) %><br/>
-<span class='ul'>Pop2015:</span> <%= number_with_delimiter(@demog["pop_2015"]) %><br/>
-<span class='ul'>Pop2020:</span> <%= number_with_delimiter(@demog["pop_2020"]) %><br/>
+<table id="" class="pb twocols">
+  <tr>
+    <td width="50%">
+      <span class=''>2010 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2010"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2015 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2015"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2020 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2020"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>World Fact Book - GDP per Person (USD):</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %></td>
+  </tr>
+</table>
 <br/>
-<span class='ul'>WFB_GDPPP:</span> <%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %> <br/>
-<br/>
-<span class='ul'>PercChristian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %><span class='ul'>PercEvangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
-<br/>
-
+<span class='ul'>Percent Christian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %>
+<span class='ul'>Percent Evangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
+<br/><br/>
+<I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
 <BR/>
 <H2>GCX Profile Data</H2>
 
