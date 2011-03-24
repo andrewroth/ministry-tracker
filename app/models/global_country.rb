@@ -51,7 +51,7 @@ class GlobalCountry < ActiveRecord::Base
       stage = values[column('D')].to_i
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[01_staging] Could not find country by iso code #{iso}"
       else
         c.stage = stage
         c.save!
@@ -71,7 +71,7 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[02_fiscal] Could not find country by iso code #{iso}"
       else
         c.locally_funded_FY10 = perc
         c.total_income_FY10 = inc
@@ -103,7 +103,7 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[03_staff_count] Could not find country by iso code #{iso}"
       else
         c.staff_count_2002 = values[column('C')]
         c.staff_count_2009 = values[column('D')]
@@ -133,7 +133,7 @@ class GlobalCountry < ActiveRecord::Base
 
     c = GlobalCountry.find_by_iso3 iso
     if c.nil?
-      puts "Could not find country by iso code #{iso}"
+      puts "[04_country] Could not find country by iso code #{iso}"
     else
       c.send("#{type}_live_exp=", strip_commas(values[column('E')]).to_i)
       c.send("#{type}_live_dec=", strip_commas(values[column('F')]).to_i)
@@ -147,12 +147,12 @@ class GlobalCountry < ActiveRecord::Base
   end
 
   def GlobalCountry.import_05_country_demographics
-    parse('global_dashboard_data/05_ccc_country_demographic_data.csv', 1) do |values|
+    parse('global_dashboard_data/05_ccc_country_demographic_data.csv', 2) do |values|
       iso = values[column('D')]
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[05_country] Could not find country by iso code #{iso}"
       else
         c.pop_2010 = values[column('E')]
         c.pop_2015 = values[column('F')]
@@ -171,7 +171,7 @@ class GlobalCountry < ActiveRecord::Base
 
       c = GlobalCountry.find_by_iso3 iso
       if c.nil?
-        puts "Could not find country by iso code #{iso}"
+        puts "[06_slm] Could not find country by iso code #{iso}"
       else
         c.total_students = strip_commas(values[column('E')])
         c.total_schools = strip_commas(values[column('F')])
