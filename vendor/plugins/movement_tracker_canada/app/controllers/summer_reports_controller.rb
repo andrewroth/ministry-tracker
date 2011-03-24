@@ -5,6 +5,7 @@ class SummerReportsController < ApplicationController
 
   before_filter :setup_session_for_search, :only => [:search_for_reviewers]
   before_filter :get_query, :only => [:search_for_reviewers]
+  before_filter :get_contact_person
 
   before_filter :get_summer_weeks, :only => [:new, :create, :update, :edit, :show]
 
@@ -49,8 +50,6 @@ class SummerReportsController < ApplicationController
       @summer_report.summer_report_weeks_attributes = @summer_weeks.collect{|week| {:week_id => week.id} }
       @summer_report.support_coach = false if @summer_report.support_coach.nil?
     end
-
-    @contact_person = Person.find(1698)
 
     respond_to do |format|
       if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank? || @summer_report.disapproved?
@@ -121,6 +120,10 @@ class SummerReportsController < ApplicationController
     
     @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
   end
-  
+
+
+  def get_contact_person # for questions about summer schedules
+    @contact_person = Person.find(1698) #currently this is Selene Lau
+  end
 
 end
