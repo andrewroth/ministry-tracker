@@ -35,7 +35,9 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
 <TABLE class="pb">
   <TR VALIGN="top">
     <TD width="50%">
+      <%- unless @area -%>
       <U>Country:</U> <%= @country_name %><BR/>
+      <%- end -%>
       <U>Area:</U> <%= @country_area %><BR/>
       <BR/>
       <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
@@ -47,16 +49,22 @@ a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;displ
       <BR/>
     </TD>
     <TD width="50%">
+      <%- unless @area -%>
       <U>Stage:</U> <%= @country_stage %><BR/>
+      <%- end -%>
       <BR/>
       <BR/>
+      <%- unless @area -%>
       <U>% local funding:</U> <%- if @country_funding %>
         <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
       <%- end %><br/>
+      <%- end %>
       <BR/>
+      <%- unless @area %>
       GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
       GCX Profile - Employed here, serving here: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %><BR/>
       GCX Profile - Employed here, serving elsewhere: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %><BR/>
+      <%- end %>
     </TD>
   </TR>
 </TABLE>
@@ -137,7 +145,7 @@ Demographics and Prioritized Growth in Movement Scope<BR/><BR/>
 <span class='ul'>Pop2015:</span> <%= number_with_delimiter(@demog["pop_2015"]) %><br/>
 <span class='ul'>Pop2020:</span> <%= number_with_delimiter(@demog["pop_2020"]) %><br/>
 <br/>
-<span class='ul'>WFB_GDPPP:</span> <%= number_with_delimiter(@demog["pop_wfb_gdppp"]) %> <br/>
+<span class='ul'>WFB_GDPPP:</span> <%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %> <br/>
 <br/>
 <span class='ul'>PercChristian:</span> <%= number_to_percentage(@demog["perc_christian"]) %><%= "&nbsp;"*20 %><span class='ul'>PercEvangelical:</span> <%= number_to_percentage(@demog["perc_evangelical"]) %>
 <br/>
