@@ -5,7 +5,7 @@
 lib_path: vendor/plugins/movement_tracker_canada/app/models
 
 databases:
-  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_report, annual_goals_report, week, weekly_report, year, staff
+  <%= "intranet_#{RAILS_ENV}" %>: user, person, access, campus, school_year, year_in_school, campus, assignment, assignmentstatus, cim_hrdb_current_address, cim_hrdb_permanent_address, country, title, emerg, gender, region, state, cim_hrdb_admin, cim_hrdb_priv, cim_hrdb_staff, cim_hrdb_person_year, accountadmin_accessgroup, accountadmin_accountadminaccess, accountadmin_accesscategory, accountadmin_accountgroup, accountadmin_language, accountadmin_vieweraccessgroup, site_multilingual_label, month, prc, prcmethod, semester, semester_report, monthly_report, annual_report, annual_goals_report, week, weekly_report, year, staff, summer_report, summer_report_reviewer, summer_report_assignment, summer_report_week
   <%= "pat_#{RAILS_ENV}" %>: pat/project, pat/profile, pat/appln, pat/form
 
 tables:
@@ -48,6 +48,10 @@ tables:
   annual_goals_report: cim_stats_annualgoalsreport
   annual_report: cim_stats_annualreport
   staff: cim_hrdb_staff
+  summer_report: summer_reports
+  summer_report_assignment: summer_report_assignments
+  summer_report_reviewer: summer_report_reviewers
+  summer_report_week: summer_report_weeks
 
 # ciministry
 #year_in_school:
