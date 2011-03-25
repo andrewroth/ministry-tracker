@@ -284,7 +284,11 @@ class GlobalDashboardController < ApplicationController
             end
           end
           %w(perc_christian perc_evangelical pop_wfb_gdppp).each do |stat|
-            @demog[stat] = @demog_avg_total[stat].to_f / @demog_avg_n[stat].to_f
+            if @demog_avg_n[stat].to_f > 0
+              @demog[stat] = @demog_avg_total[stat].to_f / @demog_avg_n[stat].to_f
+            else
+              @demog[stat] = nil
+            end
           end
         end
       end
