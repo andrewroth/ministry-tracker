@@ -1,0 +1,301 @@
+<style>
+#dashwrap {padding:0;}
+.dashmodule {border:1px dotted silver; width:100%; margin-bottom:7px; margin-right: 7px;}
+.moduletitle {background:#E9E9E9; height:30px; border-bottom:1px dotted silver;}
+.moduletitle h2 {float:left; color:#1F429B; font-weight:bold; font-size:1.12em; padding:7px;}
+.modulecontrols {float:right;}
+.modulecontent {min-height:100px; padding:5px;}
+.modulecontrols a { margin-left:3px;width:20px; height:20px; display:block; margin-top:5px; float:left;}
+a.closemodule {background:url(/images/silk/delete_gray.png) no-repeat 50% 50%; display:none;}
+a.minmodule {background:url(/images/maxim.png) no-repeat 50% 50%; display:none;}
+a.movemodule {background:url(/images/silk/arrow_out.png) no-repeat 50% 50%;display:none;}
+
+.ul {
+  text-decoration:underline;
+}
+
+h2 {
+  padding-bottom: 10px;
+}
+
+h3, .sub {
+  padding-left: 50px;
+}
+
+</style>
+
+<script>
+  function toggle(id) {
+    if ($('#'+id).attr('hidden') == 'true') {
+      $('#'+id).attr('hidden', 'false')
+      $('#'+id+' div.modulecontent').show();
+      $('#'+id+' div.moduletitle span').html('-');
+    } else {
+      $('#'+id).attr('hidden', 'true')
+      $('#'+id+' div.modulecontent').hide();
+      $('#'+id+' div.moduletitle span').html('+');
+    }
+  }
+</script>
+
+<H2>Organizational Info</H2>
+
+<TABLE class="pb sub">
+  <TR VALIGN="top">
+    <TD width="50%">
+      <%- unless @area -%>
+      <U>Country:</U> <%= @country_name %><BR/>
+      <%- end -%>
+      <U>Area:</U> <%= @country_area %><BR/>
+      <BR/>
+      <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
+    </TD><TD>
+      <%- unless @area -%>
+      <U>Stage:</U> <%= @country_stage %><BR/>
+      <BR/>
+      <BR/>
+      <U>% local funding:</U> <%- if @country_funding %>
+        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
+      <%- end %>
+      <%- end %>
+    </TD>
+  </TR><TR>
+    <TD colspan="2">
+      <BR/>
+      <I>Note: Income does not include amounts from such entities as schools of theology or some other special projects. </I><BR/><BR/>
+    </TD>
+  </TR>
+  </TR><TR VALIGN="top">
+    <TD width="50%">
+      Staff Count 2002: <%= number_with_delimiter(@staff_counts["staff_count_2002"]) %><BR/>
+      Staff Count 2009: <%= number_with_delimiter(@staff_counts["staff_count_2009"]) %><BR/>
+      02-09 Difference: <%- if d = @staff_counts["difference"] %><span style="color: <%= if d < 0 then 'red' else 'green' end %>"><%= number_with_delimiter(@staff_counts["difference"]) %></span>
+      <%- end %>
+    </TD>
+    <TD>
+      <%- unless @area %>
+      GCX Profile - Serving here: <%= number_with_delimiter(@gcx_profile_count["serving_here"]) %><BR/>
+      GCX Profile - Employed here, serving here: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %><BR/>
+      GCX Profile - Employed here, serving elsewhere: <%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %><BR/>
+      <%- end %>
+    </TD>
+</TABLE>
+
+<BR/>
+
+<H2>2010 WHQ Ministry Metric Snapshot</H2>
+
+<table id="whq" class="pb twocols">
+  <tr>
+    <td>Live Exposures</td>
+    <td><%= number_with_delimiter(@whq["live_exp"]) %></td>
+  </tr><tr>
+    <td>Live Decisions</td>
+    <td><%= number_with_delimiter(@whq["live_dec"]) %></td>
+  </tr><tr>
+    <td>New Growth Group Members</td>
+    <td><%= number_with_delimiter(@whq["new_grth_mbr"]) %></td>
+  </tr><tr>
+    <td>Movement Members</td>
+    <td><%= number_with_delimiter(@whq["mvmt_mbr"]) %></td>
+  </tr><tr>
+    <td>Movement Leaders</td>
+    <td><%= number_with_delimiter(@whq["mvmt_ldr"]) %></td>
+  </tr><tr>
+    <td>New Staff</td>
+    <td><%= number_with_delimiter(@whq["new_staff"]) %></td>
+  </tr><tr>
+    <td>Lifetime Labourers</td>
+    <td><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<H2>SLM Critical Measures</H2>
+
+<H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
+
+<table id="whq" class="pb twocols">
+  <tr>
+    <td>1. Total # University and College Students</td>
+    <td><%= number_with_delimiter(@schools["total_students"]) %></td>
+  </tr><tr>
+    <td>2. Total # Universities and College Institutions</td>
+    <td><%= number_with_delimiter(@schools["total_schools"]) %></td>
+  </tr><tr>
+    <td>3. # Student Population Centers (SPCs)</td>
+    <td><%= number_with_delimiter(@schools["total_spcs"]) %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<%- unless @area -%>
+<span class="ul sub" style="">4. Names of Next Priority SPCs:</span> <%= @names_priority_spcs %><BR/><BR/>
+<%- end %>
+
+<H3>Evaluating Current Movement Reality</H3>
+<BR/>
+
+<table id="whq" class="pb twocols">
+  <tr>
+    <td width="50%">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_spcs_presence"]) %></td>
+  </tr><tr>
+    <td width="50%">6. # SPCs with movements</td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_spcs_movement"]) %></td>
+  </tr><tr>
+    <td width="50%">7. Total # SLM Staff (of any nationality serving in the country)</td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_slm_staff"]) %></td>
+  </tr><tr>
+    <td width="50%">8. New National SLM staff joining 2009-2010 academic year</td>
+    <td width="50%"><%= number_with_delimiter(@slm["total_new_slm_staff"]) %></td>
+  </tr>
+</table>
+
+<BR/>
+
+<H2>Country Demographics</H2>
+<table id="" class="pb twocols">
+  <tr>
+    <td width="50%">
+      <span class=''>2010 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2010"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2015 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2015"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Projected 2020 Population:</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_2020"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>World Fact Book - GDP per Person (USD):</span>
+    </td>
+    <td width="50%"><%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Percent Christian</span>
+    </td>
+    <td width="50%"><%= number_to_percentage(@demog["perc_christian"]) %></td>
+  </tr><tr>
+    <td width="50%">
+      <span class=''>Percent Evangelical</span>
+    </td>
+    <td width="50%"><%= number_to_percentage(@demog["perc_evangelical"]) %></td>
+  </tr>
+</table>
+<br/>
+<I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
+<BR/>
+<H2>GCX Profile Data</H2>
+
+<style>
+ /* 
+  table.pb, table.pb td.pb {
+    border-color: gray;
+    border-style: solid;
+  }
+  table.pb {
+    border-width: 0 0 1px 1px;
+    border-spacing: 0;
+  }
+  table.pb td.pb {
+    margin: 0;
+    padding: 4px;
+    border-width: 1px 1px 0 0;
+    background-color: white;
+  }
+  */
+  table.pb.twocols {
+    width: 500px;
+    border-style: none;
+    padding-left: 50px;
+  }
+
+  table.pb.twocols td:nth-child(1) {
+    width: 437px;
+  }
+
+  table.pb.twocols td:nth-child(2) {
+    width: 100px;
+    text-align: right;
+  }
+</style>
+
+<table id="cm" style="">
+  <tr>
+    <td width="50%" class="pixel_border">
+      <%= render :partial => "genders" %>
+      <%= render :partial => "mccs" %>
+      <%= render :partial => "funding_source" %>
+      <%= render :partial => "scope" %>
+      <%- unless @area -%>
+        <%= render :partial => "serving_here_from_elsewhere" %>
+      <%- end -%>
+    </td>
+    <td width="50%" class="pixel_border">
+      <%= render :partial => "marital_status" %>
+      <%= render :partial => "staff_status" %>
+      <%= render :partial => "position" %>
+      <%= render :partial => "languages" %>
+      <%- unless @area -%>
+        <%= render :partial => "employed_here_serving_elsewhere" %>
+      <%- end -%>
+    </td>
+  </tr>
+</table>
+
+<%- if @area %>
+<BR/>
+<H2>Area Breakdown</H2>
+<BR/>
+<H3>Staging Breakdown</H3>
+<BR/>
+<table class="pb sub" style="width:500px">
+  <tr class="pb">
+    <td class="pb"></td>
+    <td class="pb">Stage 1</td>
+    <td class="pb">Stage 2</td>
+    <td class="pb">Stage 3</td>
+  </tr>
+  <tr class="pb">
+    <td class="pb">Total</td>
+    <td class="pb"><%= @stage[1] %></td>
+    <td class="pb"><%= @stage[2] %></td>
+    <td class="pb"><%= @stage[3] %></td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<H3>Staging Levels</H3>
+<br/>
+
+<table class="pb sub" cellspacing="0">
+  <tr class="pb">
+    <td class="pb" width="50%"><b>Country</b></td>
+    <td class="pb" width="50%"><b>Stage</b></td>
+  </tr>
+  <%- @stage["countries_with_stage"].each do |name_to_stage| %>
+  <tr class="pb">
+    <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
+    <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
+  </tr>
+  <%- end -%>
+</table>
+
+<br/>
+<H3>Countries in this area without a staging level</H3>
+<BR/>
+<DIV class="sub">
+<%- @stage["countries_no_stage"].each do |name| %>
+  <%= name %><br/>
+<%- end %>
+</DIV>
+<%- end -%>

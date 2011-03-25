@@ -1,0 +1,14 @@
+<div class="dashmodule" id='whq'>
+  <div class="moduletitle">
+    <h2><%= link_to_function "WHQ Stats <span>-</span>", "toggle('whq')" %></h2>
+  </div>
+  <div class="modulecontent">
+    <table align="right">
+      <% @whq.each_pair do |k,v| %>
+        <tr align="right">
+          <td style="width: 50%"><%= column_humanize(k.humanize) %></td><td style="width: 50px"><%= number_with_delimiter(v) %><td/>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
