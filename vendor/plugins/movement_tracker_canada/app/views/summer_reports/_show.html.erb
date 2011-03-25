@@ -86,7 +86,7 @@
     <tr><td><br/></td></tr>
     <tr>
       <td class="notes week">
-        <b>Notes:</b>
+        <b><%= summer_report.person.first_name %>'s notes:</b>
       </td>
       <td colspan="2">
         <%= summer_report.notes %>
@@ -97,8 +97,6 @@
   <br/>
   <br/>
 
-  <p>
-    <b>Reviewers:</b> <%= summer_report.summer_report_reviewers.collect{|r| link_to r.person.full_name, person_path(r.person) }.join(", ") %>
-  </p>
+  <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => summer_report} %>
 
 </div>
