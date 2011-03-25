@@ -1,0 +1,24 @@
+<h1>2010 Global Data Snapshot</h1>
+
+<%- form_tag("global_dashboard/export") do |f| %>
+
+Location: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;
+Mission Critical Component (MCC): <%= select_tag "mcc", options_for_select(@mcc_options) %>&nbsp;
+<%= spinner %><%= submit_tag "Export" %>
+<br/>
+
+<%= observe_field :location, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
+
+<%= observe_field :mcc, :url => { :controller => :global_dashboard, :action => :update_stats },
+      :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()",
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()" %>
+
+<br/>
+
+<div id="report">
+  <%= render :partial => "report" %>
+</div>
+
+<%- end %>
