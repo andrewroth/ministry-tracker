@@ -2898,7 +2898,7 @@ td.nameTitle {
 /* Summer Report */
 
 #submit_summer_report label { width:250px; text-align:right; padding:2px 10px; }
-#submit_summer_report h3, .edit_summer_report_reviewer h3 { margin:50px 0 20px 0; border-bottom:#DDDDDD solid 1px; font-weight:bold; }
+#submit_summer_report h3, .edit_summer_report_reviewer h3 { margin:70px 0 20px 0; border-bottom:#DDDDDD solid 1px; font-weight:bold; }
 #submit_summer_report small { margin-bottom:30px; display:block; font-style:italic; }
 #submit_summer_report small table { width:50%; }
 
@@ -2937,6 +2937,6 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #show_summer_report #weeklySchedule td.assignment { width:150px; }
 #show_summer_report p b { display: inline-block; margin-right: 5px; text-align: right; width: 250px; }
 
-.report_waiting { font-weight:bold; color:#F2C105; }
-.report_approved { font-weight:bold; color:ForestGreen; }
-.report_disapproved { font-weight:bold; color:FireBrick; }
+.report_waiting { font-weight:bold; color:#C4AA43; }
+.report_approved { font-weight:bold; color:#5B9739; }
+.report_disapproved { font-weight:bold; color:#9E4043; }
