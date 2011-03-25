@@ -31,6 +31,9 @@ class SummerReport < ActiveRecord::Base
   STATUS_WAITING = "waiting for review"
   STATUS_APPROVED = "approved!"
   STATUS_DISPROVED = "disapproved (needs amending)"
+  STATUS_WAITING_STYLE = "report_waiting"
+  STATUS_APPROVED_STYLE = "report_approved"
+  STATUS_DISPROVED_STYLE = "report_disapproved"
   WEEKS_OF_MPD = [0,1,2,3,4,5,6,7,8,9,10]
   WEEKS_OF_MPM = [0,1,2,3,4,5,6,7,8,9,10]
 
@@ -83,9 +86,19 @@ class SummerReport < ActiveRecord::Base
   end
 
   def status_style
-    status = "report_waiting"
-    status = "report_approved" if approved?
-    status = "report_disapproved" if disapproved?
-    status
+    style = STATUS_WAITING_STYLE
+    style = STATUS_APPROVED_STYLE if approved?
+    style = STATUS_DISPROVED_STYLE if disapproved?
+    style
+  end
+
+  def send_submission_email(base_url)
+    self.summer_report_reviewers.each do |r|
+      UserMailer.deliver_summer_report_submitted(r, base_url)
+    end
+  end
+
+  def send_reviewed_email(base_url)
+    UserMailer.deliver_summer_report_reviewed(self, base_url)
   end
 end
