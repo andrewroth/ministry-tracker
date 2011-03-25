@@ -30,10 +30,13 @@ class SummerReportReviewersController < ApplicationController
     @review.reviewed = true
 
     if @review.update_attributes(params[:summer_report_reviewer])
+
+      @review.summer_report.send_later(:send_reviewed_email, base_url)
+
       if @review.approved
-        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule is now approved!"
+        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule is now approved and they'll be notified by email!"
       else
-        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule was disapproved."
+        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule was disapproved and they'll be notified by email."
       end
     end
 

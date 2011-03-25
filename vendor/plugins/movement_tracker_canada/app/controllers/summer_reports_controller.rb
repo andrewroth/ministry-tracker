@@ -70,7 +70,10 @@ class SummerReportsController < ApplicationController
 
     respond_to do |format|
       if @summer_report.save
-        flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
+
+        @summer_report.send_later(:send_submission_email, base_url)
+
+        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -87,8 +90,10 @@ class SummerReportsController < ApplicationController
         
         # reset the review statuses
         @summer_report.summer_report_reviewers.each {|r| r.reviewed = nil; r.approved = nil; r.save; }
-        
-        flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
+
+        @summer_report.send_later(:send_submission_email, base_url)
+
+        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -127,6 +132,7 @@ class SummerReportsController < ApplicationController
 
   def get_contact_person # for questions about summer schedules
     @contact_person = Person.find(1698) #currently this is Selene Lau
+    @contact_phone = "604-514-1970"
   end
 
 
@@ -138,5 +144,7 @@ class SummerReportsController < ApplicationController
       end
     end
   end
+
+
 
 end

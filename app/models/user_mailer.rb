@@ -63,6 +63,36 @@ class UserMailer < ActionMailer::Base
     @body[:group_link] = group_link
   end
 
+  def summer_report_submitted(review, base_url)
+    @content_type = "text/html"
+    @recipients = review.person.email
+    @from = Cmt::CONFIG[:email_from_address]
+    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{review.summer_report.person.full_name} submitted summer schedule"
+    @sent_on = Time.now
+
+    @body[:reviewer_first_name] = review.person.first_name
+    @body[:submitter_name] = review.summer_report.person.full_name
+    @body[:review_link] = "#{base_url}/people/#{review.person_id}/summer_report_reviewers"
+  end
+
+  def summer_report_reviewed(summer_report, base_url)
+    @content_type = "text/html"
+    @recipients = summer_report.person.email
+    @from = Cmt::CONFIG[:email_from_address]
+    @sent_on = Time.now
+
+    if summer_report.approved?
+      @subject = "#{Cmt::CONFIG[:email_subject_prefix]} Your summer schedule was approved!"
+    elsif summer_report.disapproved?
+      @subject = "#{Cmt::CONFIG[:email_subject_prefix]} Your summer schedule was disapproved..."
+    end
+
+    @body[:summer_report] = summer_report
+    @body[:submitter_first_name] = summer_report.person.first_name
+    @body[:show_report_link] = "#{base_url}/people/#{summer_report.person_id}/summer_reports/#{summer_report.id}"
+    @body[:edit_report_link] = "#{base_url}/people/#{summer_report.person_id}/summer_reports/new"
+  end
+
    # 
   # def created_staff(person, ministry, added_by, password = nil)
   #   created(person, ministry, added_by, password)
