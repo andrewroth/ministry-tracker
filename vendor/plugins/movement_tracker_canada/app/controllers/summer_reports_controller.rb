@@ -7,7 +7,8 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_weeks, :only => [:new, :create, :update, :edit, :show]
+  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show]
+  before_filter :remove_self_from_reviewers, :only => [:create, :update]
 
   SUMMER_START_MONTH = 4 # april
   SUMMER_END_MONTH = 8 # august
@@ -83,12 +84,14 @@ class SummerReportsController < ApplicationController
 
     respond_to do |format|
       if @summer_report.update_attributes(params[:summer_report])
+        
+        # reset the review statuses
         @summer_report.summer_report_reviewers.each {|r| r.reviewed = nil; r.approved = nil; r.save; }
         
         flash[:notice] = 'Your summer schedule was successfully submitted and is now waiting for review.'
         format.html { redirect_to(:action => "index") }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "new" }
       end
     end
   end
@@ -124,6 +127,16 @@ class SummerReportsController < ApplicationController
 
   def get_contact_person # for questions about summer schedules
     @contact_person = Person.find(1698) #currently this is Selene Lau
+  end
+
+
+  def remove_self_from_reviewers
+    # make sure none of the reviewers are me
+    if params[:summer_report]["summer_report_reviewers_attributes"].present?
+      params[:summer_report]["summer_report_reviewers_attributes"].each do |k,v|
+        v["_destroy"] = true if v["person_id"].to_i == @my.id # this is a Rails nested attributes thing
+      end
+    end
   end
 
 end

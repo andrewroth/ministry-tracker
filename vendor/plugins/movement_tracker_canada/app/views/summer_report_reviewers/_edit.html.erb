@@ -3,23 +3,24 @@
 
 <%= render :partial => "summer_reports/show", :locals => { :person => @person, :summer_report => @report, :year => @year }  %>
 
-<br/>
-
 <% form_for @review, :url => {:action => "update"} do |f| %>
   <h3><br/></h3>
   <p>
     <%= f.hidden_field :id %>
-    <%= f.label :review_notes %>
-    <%= f.text_area :review_notes %>
     <%= f.hidden_field :approved %>
+
+    <%= f.label :review_notes, "Your review notes <br/> (#{@person.first_name} will see these notes)" %>
+    <%= f.text_area :review_notes %>
+    
   </p>
-  <p>
+  <p id="reviewButtons">
     <br/>
     <br/>
     <%= link_to 'Approve',  "", :id => "summer_report_reviewer_approve",  :class => "action-button" %>
-    &nbsp;<%= spinner('_review_submit_approve') %>
     <%= link_to 'Disapprove', "", :id => "summer_report_reviewer_disprove", :class => "action-button" %>
-    &nbsp;<%= spinner('_review_submit_disapprove') %>
+    <br/>
+    <br/>
+    <%= spinner('_review_submit') %>
   </p>
 
 <% end %>
@@ -34,14 +35,14 @@
   $("#summer_report_reviewer_approve").click(function(event){
     event.preventDefault();
     $("#summer_report_reviewer_approved").val("true");
-    $("#spinner_review_submit_approve").show();
+    $("#spinner_review_submit").show();
     $(this).parents('form:first').submit();
   });
   
   $("#summer_report_reviewer_disprove").click(function(event){
     event.preventDefault();
     $("#summer_report_reviewer_approved").val("false");
-    $("#spinner_review_submit_disapprove").show();
+    $("#spinner_review_submit").show();
     $(this).parents('form:first').submit();
   });
 </script>
