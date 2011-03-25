@@ -175,6 +175,7 @@ class GlobalDashboardController < ApplicationController
         @country_area = "All"
       end
 
+      isos_to_country_name = Hash[GlobalCountry.all.collect{ |c| [ c.iso3, c.name ] }]
       @genders = { "male" => 0, "female" => 0, "" => 0 }
       @marital_status = {}
       @languages = {}
@@ -184,10 +185,12 @@ class GlobalDashboardController < ApplicationController
       @position = {}
       @scope = {}
       @gcx_profile_count = {}
+      @serving_here_employed_elsewhere = {}
+      @employed_here_serving_elsewhere = {}
       @profiles = GlobalProfile.all
-      @gcx_profile_count["serving_here"] ||= 0
-      @gcx_profile_count["employed_here_serving_elsewhere"] ||= 0
-      @gcx_profile_count["employed_here_serving_here"] ||= 0
+      @gcx_profile_count["serving_here"] = 0
+      @gcx_profile_count["employed_here_serving_elsewhere"] = 0
+      @gcx_profile_count["employed_here_serving_here"] = 0
       @profiles.each do |profile|
         if (filters_isos.include?(profile.ministry_location_country) || 
            filters_isos.include?(profile.employment_country)) &&
@@ -213,12 +216,20 @@ class GlobalDashboardController < ApplicationController
           end
           if filters_isos.include?(profile.ministry_location_country)
             @gcx_profile_count["serving_here"] += 1
+            #if !filters_isos.include?(profile.employment_country)
+              # serving here, from elsewhere
+              k = profile.employment_country.present? ? isos_to_country_name[profile.employment_country] : "Volunteer"
+              @serving_here_employed_elsewhere[k] ||= 0
+              @serving_here_employed_elsewhere[k] += 1
+            #end
           end
           if filters_isos.include?(profile.employment_country)
-
             if filters_isos.include?(profile.ministry_location_country)
               @gcx_profile_count["employed_here_serving_here"] += 1
             else
+              k = profile.ministry_location_country.present? ? isos_to_country_name[profile.ministry_location_country] : "No value entered"
+              @employed_here_serving_elsewhere[k] ||= 0
+              @employed_here_serving_elsewhere[k] += 1
               @gcx_profile_count["employed_here_serving_elsewhere"] += 1
             end
           end
