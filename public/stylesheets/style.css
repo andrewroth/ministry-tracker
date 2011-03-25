@@ -2216,6 +2216,7 @@ table#set_initial_campus tr {
 #searchFilterControlsContainer a {
   display: block;
   width: 100px;
+  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
 }
 
 #searchFilterControlsContainer .searchFilterHighlighted {
@@ -2327,6 +2328,10 @@ table#set_initial_campus tr {
   display: block;
   height: 100%;
   width: 100%;
+}
+
+.searchResult {
+  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
 }
 
 .searchResult:hover {
