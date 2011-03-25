@@ -103,7 +103,6 @@ Factory.define :permission_14, :class => Permission do |p|
   p.description 'Remove involvements' # also located in MinistryInvolvements under 'update roles'
 end
 
-
 Factory.define :permission_15, :class => Permission do |p|
   p.id '15'
   p.action 'advanced'
