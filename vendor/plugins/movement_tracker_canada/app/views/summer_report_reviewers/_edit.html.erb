@@ -9,11 +9,13 @@
     <%= f.hidden_field :id %>
     <%= f.hidden_field :approved %>
 
-    <%= f.label :review_notes, "Your review notes <br/> (#{@person.first_name} will see these notes)" %>
+    <%= f.label :review_notes, "Your review notes:" %>
     <%= f.text_area :review_notes %>
     
   </p>
   <p id="reviewButtons">
+    <br/>
+    <%= "#{@person.first_name} will recieve an email notification with your notes." %>
     <br/>
     <br/>
     <%= link_to 'Approve',  "", :id => "summer_report_reviewer_approve",  :class => "action-button" %>

@@ -51,7 +51,7 @@
     });
 
     this_person_is_me = false;
-    if(pid == <%= @my.id %>) { this_person_is_me = false; }
+    if(pid == <%= @my.id %>) { this_person_is_me = true; }
 
     if(this_person_was_already_added == false && this_person_is_me == false){
       $("#chosenReviewers").append("<input type='hidden' value='"+pid+"' name='summer_report[summer_report_reviewers_attributes]["+i+"][person_id]' id='summer_report_summer_report_reviewers_attributes_"+i+"_person_id'>");
