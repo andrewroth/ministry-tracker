@@ -188,7 +188,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dismissed_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -234,7 +234,7 @@ CREATE TABLE `emails` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `event_campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -474,7 +474,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=700 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=715 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -535,7 +535,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -557,7 +557,7 @@ CREATE TABLE `person_extras` (
   `curr_room` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_person_extras_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2190 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2191 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `profile_pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -612,7 +612,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95383 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95384 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
