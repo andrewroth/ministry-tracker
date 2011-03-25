@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :global_dashboard_accesses
+
   map.resources :notices, :member => { :dismiss => :post }
 
   map.resources :annual_goals_reports
