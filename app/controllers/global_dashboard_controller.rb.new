@@ -1,5 +1,5 @@
 class GlobalDashboardController < ApplicationController
-  ALLOWED_GUIDS = [ # TODO: this will be removed once data is imported to GlobalDashboardAccess rows
+  ALLOWED_GUIDS = [
     "250F5FAB-E473-36D8-D406-DFB1C00DD1F2",
     "556CD6D6-1C80-3F12-C288-F8F62E0BEB55",
     "109EFFA5-C99F-4429-88D8-2B4DB0143B7F",
@@ -70,12 +70,9 @@ class GlobalDashboardController < ApplicationController
       "total_spcs_presence" => 'Total SPCs with presence',
       "total_spcs_movement" => 'Total SPCs with movement',
       "total_slm_staff" => 'Total SLM Staff',
-      "total_new_slm_staff" => "Total New Staff 2009-2010",
-      "serving_here" => "Serving Here",
-      "employed_here_serving_here" => "Employed Here Serving Here",
-      "employed_here_serving_elsewhere" => "Employed Here Serving Elsewhere"
+      "total_new_slm_staff" => "Total New Staff 2009-2010"
     }
-    columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff", "serving_here", "employed_here_serving_here", "employed_here_serving_elsewhere" ]
+    columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff" ]
     instance_vars_to_export = %w(genders marital_status mccs staff_status funding_source position scope)
     #outfile = File.open('csvout', 'wb')
     csv_out = ""
@@ -175,7 +172,6 @@ class GlobalDashboardController < ApplicationController
         @country_area = "All"
       end
 
-      isos_to_country_name = Hash[GlobalCountry.all.collect{ |c| [ c.iso3, c.name ] }]
       @genders = { "male" => 0, "female" => 0, "" => 0 }
       @marital_status = {}
       @languages = {}
@@ -185,12 +181,10 @@ class GlobalDashboardController < ApplicationController
       @position = {}
       @scope = {}
       @gcx_profile_count = {}
-      @serving_here_employed_elsewhere = {}
-      @employed_here_serving_elsewhere = {}
       @profiles = GlobalProfile.all
-      @gcx_profile_count["serving_here"] = 0
-      @gcx_profile_count["employed_here_serving_elsewhere"] = 0
-      @gcx_profile_count["employed_here_serving_here"] = 0
+      @gcx_profile_count["serving_here"] ||= 0
+      @gcx_profile_count["employed_here_serving_elsewhere"] ||= 0
+      @gcx_profile_count["employed_here_serving_here"] ||= 0
       @profiles.each do |profile|
         if (filters_isos.include?(profile.ministry_location_country) || 
            filters_isos.include?(profile.employment_country)) &&
@@ -216,20 +210,12 @@ class GlobalDashboardController < ApplicationController
           end
           if filters_isos.include?(profile.ministry_location_country)
             @gcx_profile_count["serving_here"] += 1
-            #if !filters_isos.include?(profile.employment_country)
-              # serving here, from elsewhere
-              k = profile.employment_country.present? ? isos_to_country_name[profile.employment_country] : "Volunteer"
-              @serving_here_employed_elsewhere[k] ||= 0
-              @serving_here_employed_elsewhere[k] += 1
-            #end
           end
           if filters_isos.include?(profile.employment_country)
+
             if filters_isos.include?(profile.ministry_location_country)
               @gcx_profile_count["employed_here_serving_here"] += 1
             else
-              k = profile.ministry_location_country.present? ? isos_to_country_name[profile.ministry_location_country] : "No value entered"
-              @employed_here_serving_elsewhere[k] ||= 0
-              @employed_here_serving_elsewhere[k] += 1
               @gcx_profile_count["employed_here_serving_elsewhere"] += 1
             end
           end
@@ -284,11 +270,7 @@ class GlobalDashboardController < ApplicationController
             end
           end
           %w(perc_christian perc_evangelical pop_wfb_gdppp).each do |stat|
-            if @demog_avg_n[stat].to_f > 0
-              @demog[stat] = @demog_avg_total[stat].to_f / @demog_avg_n[stat].to_f
-            else
-              @demog[stat] = nil
-            end
+            @demog[stat] = @demog_avg_total[stat].to_f / @demog_avg_n[stat].to_f
           end
         end
       end
@@ -351,8 +333,7 @@ class GlobalDashboardController < ApplicationController
 
     def ensure_permission
       access_denied unless [283, 5173].include?(@person.id) || 
-        GlobalDashboardAccess.find_by_guid(@person.try(:user).try(:guid))
-        #ALLOWED_GUIDS.include?(@person.try(:user).try(:guid))
+        ALLOWED_GUIDS.include?(@person.try(:user).try(:guid))
     end
 
     def all_mccs
