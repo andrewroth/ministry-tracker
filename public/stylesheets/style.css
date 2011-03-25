@@ -484,7 +484,7 @@ h1 {
   line-height: 24px;
   display: block;
   
-  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 .verticalTablist div {
   height: 30px;
@@ -849,7 +849,7 @@ a.subtabs-menu-active div {
 a.subtabs-menu-inactive div {
   color:#666766;
   font-weight:bold;
-  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 
 a.subtabs-menu-inactive div:hover {
