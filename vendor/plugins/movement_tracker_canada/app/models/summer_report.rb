@@ -9,7 +9,7 @@ class SummerReport < ActiveRecord::Base
   has_many :summer_report_reviewers, :foreign_key => _(:summer_report_id, :summer_report_reviewer)
 
   accepts_nested_attributes_for :summer_report_weeks
-  accepts_nested_attributes_for :summer_report_reviewers
+  accepts_nested_attributes_for :summer_report_reviewers, :allow_destroy => true
 
   before_validation_on_create :initialize_nested_attributes
 
@@ -41,7 +41,7 @@ class SummerReport < ActiveRecord::Base
 
   def has_a_reviewer
     if self.summer_report_reviewers.size < 1 || self.summer_report_reviewers.all?{|r| r.marked_for_destruction? }
-      errors.add_to_base("You must choose at least one person to review you summer schedule")
+      errors.add_to_base("You must choose at least one person, other than yourself, to review your summer schedule")
     end
   end
 

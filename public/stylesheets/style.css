@@ -484,7 +484,7 @@ h1 {
   line-height: 24px;
   display: block;
   
-  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 .verticalTablist div {
   height: 30px;
@@ -849,7 +849,7 @@ a.subtabs-menu-active div {
 a.subtabs-menu-inactive div {
   color:#666766;
   font-weight:bold;
-  -moz-transition: 0.05s ease 0s; -webkit-transition: 0.05s ease 0s;
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 
 a.subtabs-menu-inactive div:hover {
@@ -2917,7 +2917,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #submit_summer_report #reviewerSearchResults td { padding:5px; }
 #submit_summer_report .addReviewerLink {cursor:pointer;}
 
-#submit_summer_report #chosenReviewersNames { font-size:110%; font-weight:bold; display:inline; }
+#submit_summer_report #chosenReviewersNames { font-size:110%; display:inline-block; border:1px solid #DDDDDD; padding:2px 5px; cursor:default; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
 
 #submit_summer_report #search_for_reviewers_results { position:relative; width:50%; border:#DDDDDD solid 1px; padding:10px; margin:10px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
@@ -2929,7 +2929,9 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 
 #review_report { position:relative; margin:30px; border:#DDDDDD solid 1px; padding:20px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
 #spinner_review { margin-left:auto; margin-right:auto; display:block; }
-.edit_summer_report_reviewer .action-button { margin-left:50px; }
+.edit_summer_report_reviewer .action-button { margin:0 50px; }
+.edit_summer_report_reviewer #reviewButtons { text-align:center; }
+.edit_summer_report_reviewer label { width:250px; text-align:right; }
 #show_summer_report #weeklySchedule th { font-weight:bold; }
 #show_summer_report #weeklySchedule td, #show_summer_report #weeklySchedule th { padding-left:20px; }
 #show_summer_report #weeklySchedule td.week { width:230px; text-align:right; }

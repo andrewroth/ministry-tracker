@@ -11,6 +11,7 @@
 
 <% elsif @report_for_this_summer.disapproved? %>
   Your schedule has been <span class="report_disapproved">disapproved</span>, please amend it and resubmit it for review.<br/><br/>
+  <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @report_for_this_summer} if @report_for_this_summer.disapproved? %>
   <%= link_to "Amend your schedule", new_person_summer_report_path(@me), :class => "action-button" %>
 
 <% else %>

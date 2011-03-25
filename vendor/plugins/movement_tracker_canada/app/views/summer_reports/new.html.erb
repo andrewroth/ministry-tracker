@@ -11,6 +11,8 @@
     <small><b>Questions?</b> Contact <%= link_to @contact_person.full_name, person_path(@contact_person), :target => "_blank" %> or refer to the <%= link_to "policy manual", "https://focus.crusade.org/hr/manual/StaffHandbook.pdf", :target => "_blank" %>.</small>
     <%= f.error_messages %>
   </p>
+  
+  <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @summer_report} if @summer_report.disapproved? %>
 
   <h3>Vacation Entitlement</h3>
   <small>
@@ -130,25 +132,27 @@
     <b>Campus Directors:</b> you will need your Regional Director(s)’ approval for your summer schedule.<br/>
     <b>Campus staff:</b> you will need your Campus Director(s)’ and Regional Director(s)’ approval for your summer schedule.<br/>
     <br/>
-    <b>*</b>If you work on more than one team, please allow both your directors to review your schedule.
-  </small>
-  <p>
+    <b>*</b>If you work on more than one team, please allow both your directors to review your schedule.</br>
+    </br>
     Use the search to find and add at least one person to review your summer schedule.
-  </p>
+  </small>
 
-  <div id="chosenReviewersNames" style="<%= "display:none;" unless @summer_report.summer_report_reviewers.present? %>">
-    <span>Reviewers:</span><br/>
-    <% @summer_report.summer_report_reviewers.each do |r| %>
-      <%= "#{r.person.full_name}<br/>" %>
-    <% end %>
-  </div>
-  <div id="chosenReviewers" style="display:none;">
-    <% f.fields_for :summer_report_reviewers do |reviewer_f| %>
-      <%= reviewer_f.hidden_field :person_id %>
-    <% end %>
+  <div id="reviewers" style="<%= "display:none;" unless @summer_report.summer_report_reviewers.present? %>">
+    <p>
+      <%= label_tag "Reviewers" %>
+      <div id="chosenReviewersNames">
+        <% @summer_report.summer_report_reviewers.each do |r| %>
+          <%= "#{r.person.full_name}<br/>" %>
+        <% end %>
+      </div>
+      <div id="chosenReviewers" style="display:none;">
+        <% f.fields_for :summer_report_reviewers do |reviewer_f| %>
+          <%= reviewer_f.hidden_field :person_id %>
+        <% end %>
+      </div>
+    </p>
   </div>
 
-  <br/>
   <br/>
   <input type="text" id="search_for_reviewers" value=""/>
   <%= link_to_remote "Search", {:url => {:action => "search_for_reviewers"}, :with => "'q=' + $('#search_for_reviewers').attr('value')", :before => "$('#spinner_search').show()", :complete => "$('#spinner_search').hide()"}, {:id => "search_for_reviewers_link"} %>
@@ -156,15 +160,13 @@
   <div id="search_for_reviewers_results" style="display:none;"></div>
 
 
-  <br/>
-  <br/>
   <h3><br/></h3>
   <br/>
   You may only submit your schedule once!
   <br/>
   <br/>
   <p>
-    <%= f.submit 'Submit', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
+    <%= f.submit 'Submit for review', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
   </p>
 <% end %>
 </div>

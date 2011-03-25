@@ -1,29 +1,20 @@
 class AddSummerReportSubmitAndReviewPermissions < ActiveRecord::Migration
-  NEW_PERMISSIONS = [{ :description => "Summer report front page", :controller => "summer_reports", :action => "index" },
-                     { :description => "Show summer report", :controller => "summer_reports", :action => "show" },
-                     { :description => "Submit summer report", :controller => "summer_reports", :action => "new" },
-                     { :description => "Resubmit summer report", :controller => "summer_reports", :action => "edit" },
+  NEW_PERMISSIONS = [{ :description => "Show summer report", :controller => "summer_reports", :action => "show" },
+                     { :description => "Show summer reports main page", :controller => "summer_reports", :action => "index" },
                      { :description => "Search for summer report reviewers", :controller => "summer_reports", :action => "search_for_reviewers" },
 
                      { :description => "Review summer reports", :controller => "summer_report_reviewers", :action => "index" },
                      { :description => "Approve/disapprove summer reports", :controller => "summer_report_reviewers", :action => "edit" }
                     ]
 
-  NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "index" },
-                                   { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "index" },
-                                   { :ministry_role_name => "Staff",        :permission_controller => "summer_reports", :permission_action => "index" },
-                                   
+  NEW_MINISTRY_ROLE_PERMISSIONS = [
                                    { :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "show" },
                                    { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "show" },
                                    { :ministry_role_name => "Staff",        :permission_controller => "summer_reports", :permission_action => "show" },
 
-                                   { :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "new" },
-                                   { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "new" },
-                                   { :ministry_role_name => "Staff",        :permission_controller => "summer_reports", :permission_action => "new" },
-
-                                   { :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "edit" },
-                                   { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "edit" },
-                                   { :ministry_role_name => "Staff",        :permission_controller => "summer_reports", :permission_action => "edit" },
+                                   { :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "index" },
+                                   { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "index" },
+                                   { :ministry_role_name => "Staff",        :permission_controller => "summer_reports", :permission_action => "index" },
 
                                    { :ministry_role_name => "Team Leader",  :permission_controller => "summer_reports", :permission_action => "search_for_reviewers" },
                                    { :ministry_role_name => "Team Member",  :permission_controller => "summer_reports", :permission_action => "search_for_reviewers" },
