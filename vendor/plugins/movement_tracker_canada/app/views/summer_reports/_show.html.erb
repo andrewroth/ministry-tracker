@@ -21,8 +21,8 @@
   </p>
 
   <p>
-    <b>Weeks of holiday:</b>
-    <%= summer_report.weeks_of_holiday %>
+    <b>Days of holiday:</b>
+    <%= summer_report.days_of_holiday %>
   </p>
 
   <p>
@@ -31,18 +31,23 @@
   </p>
 
   <p>
-    <b>Monthly solid:</b>
+    <b>Current solid monthly support:</b>
     <%= number_to_currency(summer_report.monthly_have.gsub("$","")) %>
   </p>
 
   <p>
-    <b>Monthly needed:</b>
+    <b>Monthly support to raise:</b>
     <%= number_to_currency(summer_report.monthly_needed.gsub("$","")) %>
   </p>
 
   <p>
-    <b>Weeks of MPD/MPM requested:</b>
+    <b>Weeks of MPD requested:</b>
     <%= summer_report.num_weeks_of_mpd %>
+  </p>
+
+  <p>
+    <b>Weeks of MPM requested:</b>
+    <%= summer_report.num_weeks_of_mpm %>
   </p>
 
   <p>

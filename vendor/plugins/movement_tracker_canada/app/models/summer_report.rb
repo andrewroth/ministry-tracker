@@ -20,17 +20,19 @@ class SummerReport < ActiveRecord::Base
   validates_presence_of :person_id
   validates_presence_of :year_id
   validates_presence_of :joined_staff
-  validates_presence_of :weeks_of_holiday
+  validates_presence_of :days_of_holiday
   validates_presence_of :monthly_goal
   validates_presence_of :monthly_have
   validates_presence_of :monthly_needed
   validates_presence_of :num_weeks_of_mpd
+  validates_presence_of :num_weeks_of_mpm
   validates_presence_of :accountability_partner
 
   STATUS_WAITING = "waiting for review"
   STATUS_APPROVED = "approved!"
   STATUS_DISPROVED = "disapproved (needs amending)"
   WEEKS_OF_MPD = [0,1,2,3,4,5,6,7,8,9,10]
+  WEEKS_OF_MPM = [0,1,2,3,4,5,6,7,8,9,10]
 
   def initialize_nested_attributes
     summer_report_weeks.each { |w| w.summer_report = self }
