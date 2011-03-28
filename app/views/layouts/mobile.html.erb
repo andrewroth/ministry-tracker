@@ -13,6 +13,8 @@
 	<%= stylesheet_link_tag "mobile", :cache => false %>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script> 
   <script type="text/javascript" src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script> 
+  <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
+                              'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
   <%= yield :javascripts %>
 </head> 
 <body> 
