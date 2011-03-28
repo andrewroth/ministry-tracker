@@ -29,6 +29,16 @@ class SummerReportTest < ActiveSupport::TestCase
     assert_equal false, sr.valid?
   end
 
+  test "accountability partner if doing mpd" do
+    sr = Factory(:summer_report_1)
+
+    assert_equal true, sr.valid?
+    sr.accountability_partner = nil
+    assert_equal false, sr.valid?
+    sr.num_weeks_of_mpd = 0
+    assert_equal true, sr.valid?
+  end
+
   test "approved" do
     sr = Factory(:summer_report_1)
 
@@ -50,7 +60,7 @@ class SummerReportTest < ActiveSupport::TestCase
     r.save
 
     assert_equal true, sr.disapproved?
-    assert_equal SummerReport::STATUS_DISAPPROVED, sr.status
+    assert_equal SummerReport::STATUS_DISPROVED, sr.status
   end
 
   test "waiting" do
@@ -63,6 +73,6 @@ class SummerReportTest < ActiveSupport::TestCase
   test "status style" do
     sr = Factory(:summer_report_1)
 
-    assert_equal String, sr.status_style
+    assert_equal String, sr.status_style.type
   end
 end
