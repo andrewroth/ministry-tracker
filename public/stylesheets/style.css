@@ -2943,6 +2943,6 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #show_summer_report #weeklySchedule td.assignment { width:150px; }
 #show_summer_report p b { display: inline-block; margin-right: 5px; text-align: right; width: 250px; }
 
-.report_waiting { font-weight:bold; color:#C4AA43; }
+.report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }
 .report_disapproved { font-weight:bold; color:#9E4043; }
