@@ -159,7 +159,7 @@
   </div>
 
   <br/>
-  <input type="text" id="search_for_reviewers" value=""/>
+  <input type="text" id="search_for_reviewers" value="" autocomplete="off"/>
   <%= link_to_remote "Search", {:url => {:action => "search_for_reviewers"}, :with => "'q=' + $('#search_for_reviewers').attr('value')", :before => "$('#spinner_search').show()", :complete => "$('#spinner_search').hide()"}, {:id => "search_for_reviewers_link"} %>
   &nbsp; <%= spinner('_search') %>
   <div id="search_for_reviewers_results" style="display:none;"></div>
@@ -185,6 +185,19 @@
         $("#search_for_reviewers_link").trigger('click');
       }
       return false;
+    }
+  });
+
+  // auto-submit search to be like autocomplete
+  $('#search_for_reviewers').keyup(function(e) {
+    clearTimeout(this.search_submit_timer); // important
+
+    if(e.currentTarget.value.length > 1){
+      this.search_submit_timer = setTimeout(function(){
+        if(e.currentTarget.value.length > 1){
+          $("#search_for_reviewers_link").trigger('click');
+        }
+      },500);
     }
   });
 

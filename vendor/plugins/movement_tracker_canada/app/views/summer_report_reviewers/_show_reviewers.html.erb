@@ -4,13 +4,13 @@
     <% if r.reviewed %>
 
       <% if r.review_notes.present? %>
-        <b><%= "#{r.person.full_name} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule and noted <i>"<%= r.review_notes %>"</i>.
+        <b><%= "#{r.person.full_name} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule and noted <i>"<%= r.review_notes %>"</i>
       <% else %>
-        <b><%= "#{r.person.full_name} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule but left no notes.
+        <b><%= "#{r.person.full_name} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule but left no notes
       <% end %>
 
     <% else %>
-      <b><%= "#{r.person.full_name} " %></b>hasn't reviewed this schedule.
+      <b><%= "#{r.person.full_name} " %></b>hasn't reviewed this schedule
     <% end %>
   </p>
 <% end %>
