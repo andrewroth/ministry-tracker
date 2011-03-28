@@ -1,3 +1,7 @@
+<% 
+unless @mobile
+%>
+
 <% content_for :javascripts do %>
   <%= javascript_include_tag "dashboard.js" %>
 <% end %>
@@ -124,3 +128,17 @@
 
 <%- end -%>
 </div>
+
+<%
+else #(if the website is viewed from a mobile)
+%>
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
+      <li><%= link_to 'Search', url_for(:controller => :search, :action => :index) %></li> 
+      <li><%= link_to 'Profile', "/people/#{@me.id}" %></li> 
+      <li><%= link_to 'Groups', url_for(:controller => :groups, :action => :index) %></li> 
+      <li><%= link_to 'Update Stats', url_for(:controller => :stats, :action => :index) %></li> 
+    </ul> 
+
+<%
+end
+%>

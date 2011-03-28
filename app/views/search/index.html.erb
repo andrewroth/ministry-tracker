@@ -1,7 +1,14 @@
 
 <h1 id="reportTitle">Search</h1>
+<%
+  if @mobile
+    %><%= render :partial => "search_box", :locals => { :q => @q } %><%
+  end
+%>
 
 <% if @q.present? %>
+
+
 
 <div id="searchHeaderInfo">
 </div>
@@ -92,7 +99,7 @@
 </div>
 
 
-<% else %>
+<% elsif !@mobile %>
 
 <br/>
 <big>Don't be shy, search for a person or group by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
