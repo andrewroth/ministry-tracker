@@ -131,8 +131,12 @@ class SummerReportsController < ApplicationController
 
 
   def get_contact_person # for questions about summer schedules
-    @contact_person = Person.find(1698) #currently this is Selene Lau
-    @contact_phone = "604-514-1970"
+    begin
+      @contact_person = Person.find(1698) #currently this is Selene Lau
+      @contact_phone = "604-514-1970"
+    rescue
+      @contact_person = @contact_phone = nil
+    end
   end
 
 
