@@ -13,7 +13,7 @@
     <tbody>
       <% @people.each do |person| %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td class="addReviewerLink person_row" title="<%="Add #{person.full_name} to review your schedule"%>" person_id="<%= person.id %>" person_name="<%= person.full_name %>"><a href=""><%= person.full_name %></a></td>
+        <td class="addReviewerLink person_row" title="<%="Add #{person.full_name} to review your schedule"%>" person_id="<%= person.id %>" person_name="<%= person.full_name %>"><a href=""><%= person.full_name %></a> (<%= person.email %>)</td>
       </tr>
       <% end %>
     </tbody>

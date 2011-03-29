@@ -57,7 +57,7 @@
 
   <p>
     <b>MPD accountability partner:</b>
-    <%= summer_report.accountability_partner %>
+    <%= summer_report.num_weeks_of_mpd > 0 || summer_report.accountability_partner.present? ? summer_report.accountability_partner : "requested 0 weeks of MPD" %>
   </p>
 
   <br/>

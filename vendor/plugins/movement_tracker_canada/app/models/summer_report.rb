@@ -26,7 +26,7 @@ class SummerReport < ActiveRecord::Base
   validates_presence_of :monthly_needed
   validates_presence_of :num_weeks_of_mpd
   validates_presence_of :num_weeks_of_mpm
-  validates_presence_of :accountability_partner
+  validate :accountability_partner_if_doing_mpd
 
   STATUS_WAITING = "waiting for review"
   STATUS_APPROVED = "approved!"
@@ -51,6 +51,12 @@ class SummerReport < ActiveRecord::Base
   def has_a_week
     if self.summer_report_weeks.size < 1 || self.summer_report_weeks.all?{|r| r.marked_for_destruction? }
       errors.add_to_base("Your schedule must have at least one week")
+    end
+  end
+
+  def accountability_partner_if_doing_mpd
+    if self.num_weeks_of_mpd.to_i > 0  &&  self.accountability_partner.blank?
+      errors.add_to_base("Since you are doing MPD you must also enter an accountability partner")
     end
   end
 
