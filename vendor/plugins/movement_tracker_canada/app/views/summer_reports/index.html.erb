@@ -29,3 +29,13 @@
 <% else %>
   (you have no schedules to review)
 <% end %>
+
+
+<% if authorized?(:report_staff_answers, :summer_reports) %>
+  <br/>
+  <br/>
+  <br/>
+  <h3>Reports</h3>
+  <br/>
+  <%= link_to "#{image_tag "silk/report.png"} All staff schedules", url_for(:action => :report_staff_answers) %>
+<% end %>

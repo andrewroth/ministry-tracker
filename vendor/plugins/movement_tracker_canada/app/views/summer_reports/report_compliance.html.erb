@@ -1,0 +1,54 @@
+<h2>Compliance Report for Staff Summer Schedules <%= @current_year.desc[-4..-1] %></h2>
+
+<br/>
+<br/>
+
+<div class="summerReportMinistryTitle"><%= @summer_report_ministry.name %></div>
+
+<br/>
+<br/>
+<br/>
+
+<table class="groupInvolvementList">
+  <tr>
+    <th>Not submitted</th>
+    <th colspan="3">Submitted</th>
+  </tr>
+  <tr>
+    <th></th>
+    <th>Disapproved</th>
+    <th>Waiting</th>
+    <th>Approved</th>
+  </tr>
+
+
+  <% status_count = {SummerReport::STATUS_WAITING => 0, SummerReport::STATUS_APPROVED => 0, SummerReport::STATUS_DISPROVED => 0 } %>
+
+  <tr>
+    <td>
+      <% @not_submitted_people.each do |person| %>
+        <%= person.full_name %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% @disapproved_reports.each do |report| %>
+        <%= report.person.full_name %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% @waiting_reports.each do |report| %>
+        <%= report.person.full_name %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% @approved_reports.each do |report| %>
+        <%= report.person.full_name %><br/>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+
+<%= link_to "Back", :action => :index %>

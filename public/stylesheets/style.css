@@ -2943,6 +2943,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #show_summer_report p b { display: inline-block; margin-right: 5px; text-align: right; width: 250px; }
 
 .summerReportMinistryTitle { display: inline; font-size: 16px; margin: 1em; }
+#summer_report_ministry { font-size:13px; }
 
 .report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }

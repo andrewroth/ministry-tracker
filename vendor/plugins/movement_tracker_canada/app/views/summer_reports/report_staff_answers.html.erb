@@ -3,12 +3,12 @@
 <br/>
 <br/>
 
-<div class="summerReportMinistryTitle"><%= @ministry.name %></div>
+<div class="summerReportMinistryTitle"><%= @summer_report_ministry.name %></div>
 
-<%- if @me.ministry_tree.length > 1 -%>
-  <%= link_to_function("#{image_tag("bullet_go.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
-  <%= collection_select(:ministry, :id, @my.ministry_tree.sort{|a,b| a.name <=> b.name}, "id", "name", {},
-    {:id => "current_ministry", :style => "display:none", :onchange => "document.location = '/summer_reports/report_staff_answers?current_ministry=' + this.value"}) %>
+<%- if @me.ministries_involved_in_with_children.length > 1 -%>
+  <%= link_to_function("Change Ministry", "$(this).hide(); $('#summer_report_ministry').show();", :class => "action-button") %>
+  <%= collection_select(:summer_report_ministry, :id, @my.ministries_involved_in_with_children.sort{|a,b| a.name <=> b.name}, "id", "name", {},
+    {:id => "summer_report_ministry", :style => "display:none", :onchange => "document.location = '/summer_reports/report_staff_answers?summer_report_ministry=' + this.value"}) %>
   <%- tooltip do -%>
   Report on a different ministry.
   <%- end -%>
@@ -77,12 +77,12 @@
 
   <tr>
     <td><%= @summer_reports.size %> total</td>
-    <td><%= joined_array.inject(0) { |s,v| s += v } / joined_array.size %> average</td>
-    <td><%= holidays_array.inject(0) { |s,v| s += v } / holidays_array.size %> average</td>
-    <td><%= number_to_currency( mpd_goal_array.inject(0) { |s,v| s += v } / mpd_goal_array.size, :precision => 0) %> average</td>
-    <td><%= number_to_currency( mpd_current_array.inject(0) { |s,v| s += v } / mpd_current_array.size, :precision => 0) %> average</td>
-    <td><%= number_to_currency( mpd_needed_array.inject(0) { |s,v| s += v } / mpd_needed_array.size, :precision => 0) %> average</td>
-    <td><%= mpd_mpm_array.inject(0) { |s,v| s += v } / mpd_mpm_array.size %> average</td>
+    <td><%= average_from_array(joined_array) %> average</td>
+    <td><%= average_from_array(holidays_array) %> average</td>
+    <td><%= number_to_currency(average_from_array(mpd_goal_array), :precision => 0) %> average</td>
+    <td><%= number_to_currency(average_from_array(mpd_current_array), :precision => 0) %> average</td>
+    <td><%= number_to_currency(average_from_array(mpd_needed_array), :precision => 0) %> average</td>
+    <td><%= average_from_array(mpd_mpm_array) %> average</td>
     <td>
       <%= coach_count["true"] %> yes <br/>
       <%= coach_count["false"] %> no
@@ -100,4 +100,4 @@
 <br/>
 <br/>
 
-<%= link_to "Back", :back %>
+<%= link_to "Back", :action => :index %>
