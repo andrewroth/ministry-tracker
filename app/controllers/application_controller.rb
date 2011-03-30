@@ -192,7 +192,7 @@ class ApplicationController < ActionController::Base
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
       :ministry_involvements => [:new, :edit, :index],
-      :summer_reports => [:new, :create, :update, :edit, :report_staff_answers]
+      :summer_reports => [:new, :create, :update, :edit, :report_staff_answers, :report_compliance]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -280,7 +280,7 @@ class ApplicationController < ActionController::Base
             return true
           end
         when :summer_reports
-          if action == 'report_staff_answers'
+          if action == 'report_staff_answers' || action == 'report_compliance'
 
             # all Team Leaders and Team Members of Campus for Christ and it's immediate children have access
             # (i.e. national and regional staff, including people that would be HR)

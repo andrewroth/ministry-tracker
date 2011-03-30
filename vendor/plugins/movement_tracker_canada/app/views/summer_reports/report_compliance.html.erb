@@ -3,47 +3,70 @@
 <br/>
 <br/>
 
-<div class="summerReportMinistryTitle"><%= @summer_report_ministry.name %></div>
-
-<br/>
-<br/>
-<br/>
-
-<table class="groupInvolvementList">
+<table id="summerReportCompliance">
   <tr>
-    <th>Not submitted</th>
-    <th colspan="3">Submitted</th>
+    <th class="borderRight"><h4>Not submitted</h4></th>
+    <th colspan="3"><center><h4>Submitted</h4></center></th>
   </tr>
   <tr>
-    <th></th>
-    <th>Disapproved</th>
-    <th>Waiting</th>
-    <th>Approved</th>
+    <th class="borderRight"></th>
+    <th class="report_disapproved">Disapproved</th>
+    <th class="report_waiting">Waiting</th>
+    <th class="report_approved">Approved</th>
   </tr>
 
-
-  <% status_count = {SummerReport::STATUS_WAITING => 0, SummerReport::STATUS_APPROVED => 0, SummerReport::STATUS_DISPROVED => 0 } %>
-
   <tr>
-    <td>
+    <td class="notSubmitted borderRight">
       <% @not_submitted_people.each do |person| %>
-        <%= person.full_name %><br/>
+        <%= link_to person.full_name, person_path(person), :title => "Goto #{person.first_name}'s profile" %><br/>
+      <% end %>
+    </td>
+    <td class="borderRight">
+      <% @disapproved_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
+        <%= link_to report.person.full_name, person_path(report.person), :title => "Goto #{report.person.first_name}'s profile" %><br/>
+      <% end %>
+    </td>
+    <td class="borderRight">
+      <% @waiting_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
+        <%= link_to report.person.full_name, person_path(report.person), :title => "Goto #{report.person.first_name}'s profile" %><br/>
       <% end %>
     </td>
     <td>
-      <% @disapproved_reports.each do |report| %>
-        <%= report.person.full_name %><br/>
+      <% @approved_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
+        <%= link_to report.person.full_name, person_path(report.person), :title => "Goto #{report.person.first_name}'s profile" %><br/>
       <% end %>
     </td>
+  </tr>
+
+  <tr><td><br/></td></tr>
+
+  <tr>
     <td>
-      <% @waiting_reports.each do |report| %>
-        <%= report.person.full_name %><br/>
-      <% end %>
+      <%= @not_submitted_people.size %> total not submitted
     </td>
     <td>
-      <% @approved_reports.each do |report| %>
-        <%= report.person.full_name %><br/>
-      <% end %>
+      <%= @disapproved_reports.size %> total disapproved
+    </td>
+    <td>
+      <%= @waiting_reports.size %> total waiting
+    </td>
+    <td>
+      <%= @approved_reports.size %> total approved
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @not_submitted_people), :class => "emailLink", :title => "Compose an email to staff who haven't submitted their schedule") if @not_submitted_people.present? -%>
+    </td>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @disapproved_reports.collect{|r| r.person}), :class => "emailLink", :title => "Compose an email to staff who's schedules were disapproved") if @disapproved_reports.present? -%>
+    </td>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @waiting_reports.collect{|r| r.person}), :class => "emailLink", :title => "Compose an email to staff who's schedules are waiting for review") if @waiting_reports.present? -%>
+    </td>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @approved_reports.collect{|r| r.person}), :class => "emailLink", :title => "Compose an email to staff who's schedules are approved") if @approved_reports.present? -%>
     </td>
   </tr>
 </table>
