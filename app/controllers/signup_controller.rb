@@ -152,7 +152,6 @@ class SignupController < ApplicationController
         :primary_campus_involvement => session[:signup_primary_campus_involvement_params],
         :signup_groups => session[:signup_groups],
         :signup_campus_id => session[:signup_campus_id] }
-      debugger
       link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else

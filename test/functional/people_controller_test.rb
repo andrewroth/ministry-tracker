@@ -384,30 +384,6 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal Factory(:person_6).id, Person.find(Factory(:person_1).id).person_mentor_id  
   end        
   
-  
-  test "A user should be able to see a directory on a ministry with no campuses" do
-    Factory(:user_6)
-    Factory(:access_6) # person_id 4002   viewer_id 6
-    Factory(:person_7) # person_id 4002
-    Factory(:ministryrole_9) # ministryrole_id 10    ministry_id 1
-    Factory(:ministryinvolvement_979) # person_id 4002   ministry_id 4   ministryrole_id 10
-    Factory(:ministryrolepermission_5) # ministry_role_id 10    permission_id 4
-    Factory(:permission_4) # action=directory controller=people
-    Factory(:permission_15) # action=advanced controller=people
-    Factory(:ministryrolepermission_24) # advanced search ministry_role_id 10  permission_id 15
-    Factory(:ministry_4) 
-
-    # I think it's not finding ministry roles for ministry 4!!!
-    
-    #debugger
-
-    login('staff_on_ministry_with_no_campus')
-    #@request.session[:ministry_id] = Factory(:ministry_5).id #under_top is under top, which I am a member of
-    get :directory, :force => 'true'
-    assert_response :success
-    assert assigns(:people)
-  end
-  
   test "A person with no campus involvements should still show in the directory" do
     Factory(:user_6)
     Factory(:access_6)
@@ -506,25 +482,6 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to directory_people_path(:format => :html)
   end
   
-  test "should restrict students directory to their campuses" do
-    Factory(:user_3)
-    Factory(:person_3)
-    Factory(:access_3)
-    Factory(:ministryrole_3)
-    Factory(:ministryinvolvement_4)
-    Factory(:ministryrolepermission_4)
-    Factory(:permission_4)
-    Factory(:campus_1)
-    Factory(:campus_2)
-    Factory(:campusinvolvement_2)
-    Factory(:campusinvolvement_4)
-
-    login 'sue@student.org'
-    get :directory, :force => true
-    puts @response.body
-    assert_equal @person.campuses, assigns(:campuses)
-  end
- 
   test "should have all campuses on directory for staff" do
     login_admin_user
     get :directory

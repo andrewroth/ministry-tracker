@@ -7,7 +7,7 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show]
+  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show, :report_staff_answers, :report_compliance]
   before_filter :remove_self_from_reviewers, :only => [:create, :update]
 
   SUMMER_START_MONTH = 4 # april
@@ -110,6 +110,55 @@ class SummerReportsController < ApplicationController
 
     respond_to do |format|
       format.js
+    end
+  end
+
+
+  def report_staff_answers
+    mid = params[:summer_report_ministry].present? ? params[:summer_report_ministry] : get_ministry.id
+    @summer_report_ministry = Ministry.find(mid)
+
+    ministry_ids = @summer_report_ministry.myself_and_descendants.collect{|m| m.id}
+    @summer_reports = SummerReport.all(:joins => {:person => [:ministry_involvements]},
+                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?)", ministry_ids],
+                                       :group => "#{SummerReport._(:id)}",
+                                       :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+
+
+  def report_compliance
+    @summer_report_ministry = Ministry.find(2)
+    
+    summer_reports = SummerReport.all(:include => [:summer_report_reviewers], :conditions => {:year_id => @current_year.id})
+    
+    @approved_reports = []
+    @disapproved_reports = []
+    @waiting_reports = []
+
+    summer_reports.each do |r|
+      if r.approved?
+        @approved_reports << r
+      elsif r.disapproved?
+        @disapproved_reports << r
+      else
+        @waiting_reports << r
+      end
+    end
+
+    reported_people_ids = [] << @approved_reports.collect{|r| r.person_id} << @disapproved_reports.collect{|r| r.person_id} << @waiting_reports.collect{|r| r.person_id}
+    reported_people_ids.flatten!
+
+    @not_submitted_people = Person.all(:joins => {:ministry_involvements => :ministry_role},
+      :conditions => ["#{MinistryRole._(:type)} = 'StaffRole' && #{MinistryRole._(:involved)} = 1 && #{Person.table_name}.#{Person._(:id)} not in (?)", reported_people_ids],
+      :group => "#{Person.table_name}.#{Person._(:id)}",
+      :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
+
+    respond_to do |format|
+      format.html
     end
   end
 
