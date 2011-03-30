@@ -31,6 +31,9 @@ class SummerReport < ActiveRecord::Base
   STATUS_WAITING = "waiting for review"
   STATUS_APPROVED = "approved!"
   STATUS_DISPROVED = "disapproved (needs amending)"
+  STATUS_WAITING_SHORT = "waiting"
+  STATUS_APPROVED_SHORT = "approved"
+  STATUS_DISPROVED_SHORT = "disapproved"
   STATUS_WAITING_STYLE = "report_waiting"
   STATUS_APPROVED_STYLE = "report_approved"
   STATUS_DISPROVED_STYLE = "report_disapproved"
@@ -88,6 +91,13 @@ class SummerReport < ActiveRecord::Base
     status = STATUS_WAITING
     status = STATUS_APPROVED if approved?
     status = STATUS_DISPROVED if disapproved?
+    status
+  end
+
+  def status_short
+    status = STATUS_WAITING_SHORT
+    status = STATUS_APPROVED_SHORT if approved?
+    status = STATUS_DISPROVED_SHORT if disapproved?
     status
   end
 

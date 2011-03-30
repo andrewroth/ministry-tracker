@@ -7,7 +7,7 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show]
+  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show, :report_staff_answers]
   before_filter :remove_self_from_reviewers, :only => [:create, :update]
 
   SUMMER_START_MONTH = 4 # april
@@ -110,6 +110,22 @@ class SummerReportsController < ApplicationController
 
     respond_to do |format|
       format.js
+    end
+  end
+
+
+  def report_staff_answers
+    session[:ministry_id] = params[:current_ministry].to_i if params[:current_ministry].present?
+    @ministry = nil; get_ministry # reset the active ministry
+
+    ministry_ids = @ministry.myself_and_descendants.collect{|m| m.id}
+    @summer_reports = SummerReport.all(:joins => {:person => [:ministry_involvements]},
+                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?)", ministry_ids],
+                                       :group => "#{SummerReport._(:id)}",
+                                       :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
+    
+    respond_to do |format|
+      format.html
     end
   end
 
