@@ -193,7 +193,8 @@ class ApplicationController < ActionController::Base
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
       :ministry_involvements => [:new, :edit, :index],
-      :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance]
+      :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
+      :summer_report_reviewers => [:edit, :update]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -307,6 +308,11 @@ class ApplicationController < ActionController::Base
 
           elsif @my.id == params[:person_id].to_i
             return true
+          end
+        when :summer_report_reviewers
+          if action == 'edit' || action == 'update'
+            # can edit reports that you are chosen to review
+            return true if SummerReportReviewer.first(params[:id]).person_id == @my.id
           end
         end # case
       end # if
