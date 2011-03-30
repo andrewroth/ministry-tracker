@@ -2911,7 +2911,7 @@ td.nameTitle {
 #submit_summer_report textarea, .edit_summer_report_reviewer textarea { height:150px; }
 #submit_summer_report input.radio { margin:0 2px 0 10px; position: relative; top: 3px; }
 
-table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { border-collapse: collapse; }
+table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, table#summerReportCompliance { border-collapse: collapse; }
 #submit_summer_report table#weeklySchedule { width:500px; }
 #submit_summer_report table#reviewerSearchResults { width:100%; }
 #submit_summer_report td.week { text-align:right; padding-right:10px; }
@@ -2941,6 +2941,14 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule { bor
 #show_summer_report #weeklySchedule td.week { width:230px; text-align:right; }
 #show_summer_report #weeklySchedule td.assignment { width:150px; }
 #show_summer_report p b { display: inline-block; margin-right: 5px; text-align: right; width: 250px; }
+
+.summerReportMinistryTitle { display: inline; font-size: 16px; margin: 1em; }
+#summer_report_ministry { font-size:13px; }
+
+#summerReportCompliance .emailLink { background-image: url("/images/silk/email_edit.png"); background-repeat: no-repeat; background-position: left; padding-left: 20px; }
+.reportLink { background-image: url("/images/silk/report.png"); background-repeat: no-repeat; background-position: left; padding-left: 20px; }
+#summerReportCompliance td.borderRight, #summerReportCompliance th.borderRight { border-right:1px solid #D8D8D8; }
+#summerReportCompliance td, #summerReportCompliance th { padding:5px 10px; }
 
 .report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }
