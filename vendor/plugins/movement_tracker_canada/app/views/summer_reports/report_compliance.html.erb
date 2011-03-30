@@ -23,17 +23,17 @@
     </td>
     <td class="borderRight">
       <% @disapproved_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
-        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s profile" %><br/>
+        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s report" %><br/>
       <% end %>
     </td>
     <td class="borderRight">
       <% @waiting_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
-        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s profile" %><br/>
+        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s report" %><br/>
       <% end %>
     </td>
     <td>
       <% @approved_reports.sort{|a,b| a.person.full_name <=> b.person.full_name}.each do |report| %>
-        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s profile" %><br/>
+        <%= link_to report.person.full_name, person_summer_report_path(report.person, report), :title => "Goto #{report.person.first_name}'s report" %><br/>
       <% end %>
     </td>
   </tr>
