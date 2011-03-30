@@ -27,17 +27,17 @@
 
   <p>
     <b>MPD monthly goal:</b>
-    <%= number_to_currency(summer_report.monthly_goal.gsub("$","")) %>
+    <%= number_to_currency(summer_report.monthly_goal.gsub("$",""), :precision => 0) %>
   </p>
 
   <p>
     <b>Current solid monthly support:</b>
-    <%= number_to_currency(summer_report.monthly_have.gsub("$","")) %>
+    <%= number_to_currency(summer_report.monthly_have.gsub("$",""), :precision => 0) %>
   </p>
 
   <p>
     <b>Monthly support to raise:</b>
-    <%= number_to_currency(summer_report.monthly_needed.gsub("$","")) %>
+    <%= number_to_currency(summer_report.monthly_needed.gsub("$",""), :precision => 0) %>
   </p>
 
   <p>
