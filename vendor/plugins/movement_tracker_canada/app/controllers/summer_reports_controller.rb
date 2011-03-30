@@ -149,7 +149,7 @@ class SummerReportsController < ApplicationController
       end
     end
 
-    reported_people_ids = [] << @approved_reports.collect{|r| r.person_id} << @disapproved_reports.collect{|r| r.person_id} << @waiting_reports.collect{|r| r.person_id}
+    reported_people_ids = [0] << @approved_reports.collect{|r| r.person_id} << @disapproved_reports.collect{|r| r.person_id} << @waiting_reports.collect{|r| r.person_id}
     reported_people_ids.flatten!
 
     @not_submitted_people = Person.all(:joins => {:ministry_involvements => :ministry_role},
