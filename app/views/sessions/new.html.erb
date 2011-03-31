@@ -23,34 +23,36 @@ unless @mobile
 <%= stylesheet_link_tag "special_login", :media => "screen", :cache => false %>					
   </head> 
   <body> 
-		<div id="loginBody">
-			<%= image_tag("log_in_c4c_logo.gif", :id => "loginC4cLogo")%>
-			<div id="loginwrapper">
 
-        <!--[if lt IE 8]>
-          <div id='browser_warning'>
-            <%= image_tag("exclamation.gif") %>
-            <b>You are using an outdated browser.</b><br/>
-            For a faster, safer browsing experience, upgrade for free to one of these browsers today:<br/>
-            
-            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
-          </div>
-        <![endif]-->
+    <!--[if lt IE 8]>
+      <div id='browser_warning'>
+        <%= image_tag("exclamation.gif") %>
+        <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
+        For a faster, safer browsing experience, upgrade for free to one of these browsers today:<br/>
 
-				<%= image_tag("log_in_main_img.gif", :usemap => "#getin", :id => "loginMainImg")%>
-				<map name="getin">
-				  <area shape="rect" coords="320,53,662,117" href="<%= signup_url %>" alt="Join a Group! (No need to login)" />
-				  <area shape="rect" coords="511,187,605,232" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
-				</map>
-				<%= image_tag("log_in_c4c_modo.gif", :id => "loginDiscoChange")%>
-				<%= image_tag("log_in_pulse_explanation.gif", :id => "loginPulseExplan")%>
-				<%= link_to image_tag("log_in_create_account.gif", :id => "loginCreateAccount"), new_gcx_url %>
-				<%= link_to image_tag("help.gif", :id => "loginHelpLink"), "https://www.mygcx.org/Pulse_Help_Center/screen/home" %>
-			</div>
-		</div>
+        <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+        <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+        <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+        <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+      </div>
+    <![endif]-->
+
+    <%= image_tag("log_in_c4c_logo.png", :id => "c4c_logo")%>
+    <div id="banner_container">
+      <div id="banner_bg">
+        <%= image_tag("log_in_main_img.png", :usemap => "#getin")%>
+        <map name="getin">
+          <area shape="rect" coords="313,67,498,205" href="<%= signup_url %>" alt="Join a Group (No need to login!)" />
+          <area shape="rect" coords="519,120,614,190" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+        </map>
+      </div>
+    </div>
+    
+    <%= image_tag("log_in_c4c_disco_change.png", :id => "disco_change")%>
+    <%= image_tag("log_in_pulse_explanation.png", :id => "pulse_explain")%>
+    <%= link_to image_tag("log_in_create_login.png"), new_gcx_url, :id => "create_logon" %>
+    <%= link_to image_tag("help.gif"), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
+    
 	</body>
 </html>
 <%
