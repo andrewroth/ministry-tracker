@@ -1,3 +1,8 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
+
 <h2>Report of Staff Summer Schedules <%= @current_year.desc[-4..-1] %></h2>
 
 <br/>
