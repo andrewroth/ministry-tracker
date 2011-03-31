@@ -2922,7 +2922,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #submit_summer_report #reviewerSearchResults td { padding:5px; }
 #submit_summer_report .addReviewerLink {cursor:pointer;}
 
-#submit_summer_report #chosenReviewersNames { font-size:110%; display:inline-block; border:1px solid #DDDDDD; padding:2px 5px; cursor:default; }
+#submit_summer_report #chosenReviewersNames { font-size:110%; display:inline-block; border:1px solid #DDDDDD; padding:2px 5px; cursor:default; min-height:17px; min-width:75px; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
 
 #submit_summer_report #search_for_reviewers_results { position:relative; width:50%; border:#DDDDDD solid 1px; padding:10px; margin:10px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
