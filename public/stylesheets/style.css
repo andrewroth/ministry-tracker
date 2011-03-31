@@ -2655,11 +2655,12 @@ table.groupInvolvementList .highlight {
 }
 
 table.groupInvolvementList td {
-  padding: 5px 0;
+  padding: 4px;
 }
 
 table.groupInvolvementList th {
   font-weight: bold;
+  padding: 4px;
 }
 
 #dashboardInsightsContainer {
@@ -2922,7 +2923,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #submit_summer_report #reviewerSearchResults td { padding:5px; }
 #submit_summer_report .addReviewerLink {cursor:pointer;}
 
-#submit_summer_report #chosenReviewersNames { font-size:110%; display:inline-block; border:1px solid #DDDDDD; padding:2px 5px; cursor:default; }
+#submit_summer_report #chosenReviewersNames { font-size:110%; display:inline-block; border:1px solid #DDDDDD; padding:2px 5px; cursor:default; min-height:17px; min-width:75px; }
 #submit_summer_report #chosenReviewersNames span { font-size:100%; font-weight:normal; }
 
 #submit_summer_report #search_for_reviewers_results { position:relative; width:50%; border:#DDDDDD solid 1px; padding:10px; margin:10px 0; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
@@ -2941,10 +2942,12 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #show_summer_report #weeklySchedule td, #show_summer_report #weeklySchedule th { padding-left:20px; }
 #show_summer_report #weeklySchedule td.week { width:230px; text-align:right; }
 #show_summer_report #weeklySchedule td.assignment { width:150px; }
-#show_summer_report p b { display: inline-block; margin-right: 5px; text-align: right; width: 250px; }
+#show_summer_report p b { display: inline-block; margin-right: 4px; text-align: right; width: 250px; float:left; }
+#show_summer_report p span.note { float:left; width:500px; }
+#show_summer_report p.review_notes { display:inline-block; width:100%; }
 
 .summerReportMinistryTitle { display: inline; font-size: 16px; margin: 1em; }
-#summer_report_ministry { font-size:13px; }
+#summer_report_ministry { font-size:14px; }
 
 #summerReportCompliance .emailLink { background-image: url("/images/silk/email_edit.png"); background-repeat: no-repeat; background-position: left; padding-left: 20px; }
 .reportLink { background-image: url("/images/silk/report.png"); background-repeat: no-repeat; background-position: left; padding-left: 20px; }
@@ -2953,4 +2956,4 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 
 .report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }
-.report_disapproved { font-weight:bold; color:#9E4043; }
+.report_disapproved { font-weight:bold; color:#8C4A4B; }

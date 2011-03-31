@@ -7,7 +7,7 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show, :report_staff_answers, :report_compliance]
+  before_filter :get_summer_year_and_weeks
   before_filter :remove_self_from_reviewers, :only => [:create, :update]
 
   SUMMER_START_MONTH = 4 # april
@@ -18,11 +18,14 @@ class SummerReportsController < ApplicationController
 
   
   def index
-    @current_year = Year.current
     @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
 
-    @reports_to_review = @me.summer_report_reviewers.present?
-    @num_reports_to_review = @me.summer_report_reviewers.all(:conditions => ["#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?", false]).size
+    @reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ?", @current_year.id, @my.id]).present?
+    
+    @num_reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ? and " +
+          "(#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?)", @current_year.id, @my.id, false]).size
 
     respond_to do |format|
       format.html # index.html.erb
@@ -53,7 +56,7 @@ class SummerReportsController < ApplicationController
     end
 
     respond_to do |format|
-      if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank? || @summer_report.disapproved?
+      if @me.summer_reports.all(:conditions => {:year_id => @current_year.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
       else
         flash[:notice] = "You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved."
@@ -66,7 +69,7 @@ class SummerReportsController < ApplicationController
   def create
     @summer_report = SummerReport.new(params[:summer_report])
     @summer_report.person_id = @me.id
-    @summer_report.year_id = Year.current.id
+    @summer_report.year_id = @current_year.id
 
     respond_to do |format|
       if @summer_report.save
@@ -120,7 +123,7 @@ class SummerReportsController < ApplicationController
 
     ministry_ids = @summer_report_ministry.myself_and_descendants.collect{|m| m.id}
     @summer_reports = SummerReport.all(:joins => {:person => [:ministry_involvements]},
-                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?)", ministry_ids],
+                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?) and #{SummerReport.__(:year_id)} = ?", ministry_ids, @current_year.id],
                                        :group => "#{SummerReport._(:id)}",
                                        :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
     
@@ -166,7 +169,7 @@ class SummerReportsController < ApplicationController
   private
 
   # find the weeks that make up summer
-  def get_summer_weeks
+  def get_summer_year_and_weeks
     @current_year = Year.current
 
     summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
