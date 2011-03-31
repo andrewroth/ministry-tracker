@@ -1,3 +1,8 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
+
 <h2>Report of Staff Summer Schedules <%= @current_year.desc[-4..-1] %></h2>
 
 <br/>
@@ -10,7 +15,7 @@
   <%= collection_select(:summer_report_ministry, :id, @my.ministries_involved_in_with_children.sort{|a,b| a.name <=> b.name}, "id", "name", {},
     {:id => "summer_report_ministry", :style => "display:none", :onchange => "document.location = '/summer_reports/report_staff_answers?summer_report_ministry=' + this.value"}) %>
   <%- tooltip do -%>
-  Report on a different ministry.
+  Report on a different ministry. Choose <%= @summer_report_ministry.root.children.first.name %> to list all staff.
   <%- end -%>
   &nbsp;&nbsp;
   <%= spinner('_change_ministry') %>
@@ -77,21 +82,21 @@
 
   <tr>
     <td><%= @summer_reports.size %> total</td>
-    <td><%= average_from_array(joined_array) %> average</td>
-    <td><%= average_from_array(holidays_array) %> average</td>
-    <td><%= number_to_currency(average_from_array(mpd_goal_array), :precision => 0) %> average</td>
-    <td><%= number_to_currency(average_from_array(mpd_current_array), :precision => 0) %> average</td>
-    <td><%= number_to_currency(average_from_array(mpd_needed_array), :precision => 0) %> average</td>
-    <td><%= average_from_array(mpd_mpm_array) %> average</td>
+    <td><%= average_from_array(joined_array) %> mean</td>
+    <td><%= average_from_array(holidays_array) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_goal_array), :precision => 0) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_current_array), :precision => 0) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_needed_array), :precision => 0) %> mean</td>
+    <td><%= average_from_array(mpd_mpm_array) %> mean</td>
     <td>
-      <%= coach_count["true"] %> yes <br/>
-      <%= coach_count["false"] %> no
+      <%= coach_count["true"] %>&nbsp;yes<br/>
+      <%= coach_count["false"] %>&nbsp;no
     </td>
     <td></td>
     <td>
-      <%= status_count[SummerReport::STATUS_WAITING] %> <%= SummerReport::STATUS_WAITING_SHORT %> <br/>
-      <%= status_count[SummerReport::STATUS_APPROVED] %> <%= SummerReport::STATUS_APPROVED_SHORT %> <br/>
-      <%= status_count[SummerReport::STATUS_DISPROVED] %> <%= SummerReport::STATUS_DISPROVED_SHORT %>
+      <%= status_count[SummerReport::STATUS_WAITING] %>&nbsp;<%= SummerReport::STATUS_WAITING_SHORT %> <br/>
+      <%= status_count[SummerReport::STATUS_APPROVED] %>&nbsp;<%= SummerReport::STATUS_APPROVED_SHORT %> <br/>
+      <%= status_count[SummerReport::STATUS_DISPROVED] %>&nbsp;<%= SummerReport::STATUS_DISPROVED_SHORT %>
     </td>
   </tr>
   

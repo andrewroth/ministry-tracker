@@ -54,10 +54,13 @@
     if(pid == <%= @my.id %>) { this_person_is_me = true; }
 
     if(this_person_was_already_added == false && this_person_is_me == false){
-      $("#chosenReviewers").append("<input type='hidden' value='"+pid+"' name='summer_report[summer_report_reviewers_attributes]["+i+"][person_id]' id='summer_report_summer_report_reviewers_attributes_"+i+"_person_id'>");
-      $("#chosenReviewersNames").append(pname+"<br/>").effect("highlight", {}, 1000);
+      $("#chosenReviewers").append("<input id='chosenReviewer"+pid+"' type='hidden' value='"+pid+"' name='summer_report[summer_report_reviewers_attributes]["+i+"][person_id]' id='summer_report_summer_report_reviewers_attributes_"+i+"_person_id'>");
+
+      $("#chosenReviewersNames").append("<span id='chosenReviewerName"+pid+"'>" + pname + " <a class='removeReviewerLink' pid='"+pid+"' href='' title='Remove this reviewer'>×</a><br/></span>").effect("highlight", {}, 1000);
+
       $("#reviewers").show();
       $(this).replaceWith("<td>"+pname+" added to review your schedule</td>");
+
     }
     else if(this_person_was_already_added == true) {
       alert("You've already added "+pname+" to review your schedule.");
@@ -65,6 +68,13 @@
     else if(this_person_is_me == true) {
       alert("Sorry... you can't review your own schedule.");
     }
-    
+
+    $("a.removeReviewerLink").click(function(e) {
+      e.preventDefault();
+      pid = $(this).attr("pid");
+      $("#chosenReviewerName"+pid).remove();
+      $("#chosenReviewer"+pid).remove();
+    });
   });
+  
 </script>

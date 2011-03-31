@@ -1,7 +1,7 @@
 
 <a id="closeLink" href="">×</a>
 
-<%= render :partial => "summer_reports/show", :locals => { :person => @person, :summer_report => @report, :year => @year }  %>
+<%= render :partial => "summer_reports/show", :locals => { :person => @person, :summer_report => @report, :year => @current_year }  %>
 
 <% form_for @review, :url => {:action => "update"} do |f| %>
   <h3><br/></h3>

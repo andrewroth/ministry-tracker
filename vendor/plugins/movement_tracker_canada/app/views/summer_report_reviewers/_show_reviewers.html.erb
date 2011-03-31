@@ -1,16 +1,16 @@
 
 <% summer_report.summer_report_reviewers.each do |r| %>
-  <p>
+  <p class="review_notes">
     <% if r.reviewed %>
 
       <% if r.review_notes.present? %>
-        <b><%= "#{r.person.try(:full_name)} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule and noted <i>"<%= r.review_notes %>"</i>
+        <b><%= "#{r.person.try(:full_name)} " %></b><span class="note"><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule and noted <i>"<%= r.review_notes %>"</i></span>
       <% else %>
-        <b><%= "#{r.person.try(:full_name)} " %></b><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule but left no notes
+        <b><%= "#{r.person.try(:full_name)} " %></b><span class="note"><%= r.approved ? "<span class='#{SummerReport::STATUS_APPROVED_STYLE}'>approved" : "<span class='#{SummerReport::STATUS_DISPROVED_STYLE}'>disapproved" %></span> this schedule but left no notes</span>
       <% end %>
 
     <% else %>
-      <b><%= "#{r.person.try(:full_name)} " %></b>hasn't reviewed this schedule
+      <b><%= "#{r.person.try(:full_name)} " %></b><span class="note">hasn't reviewed this schedule</span>
     <% end %>
   </p>
 <% end %>
