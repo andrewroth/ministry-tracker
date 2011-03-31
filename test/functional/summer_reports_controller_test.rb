@@ -88,4 +88,39 @@ class SummerReportsControllerTest < ActionController::TestCase
     post :search_for_reviewers, :q => "josh"
     assert_equal 1, assigns(:people).size
   end
+
+  test "report staff answers" do
+    setup_ministries
+    setup_ministry_roles
+    setup_ministry_involvements
+    sr = Factory(:summer_report_1)
+
+    get :report_staff_answers, :summer_report_ministry => 2
+
+    assert_not_nil assigns(:summer_reports)
+    assert_equal sr.id, assigns(:summer_reports).first.id
+  end
+
+  test "report compliance" do
+    setup_ministries
+    setup_ministry_roles
+    setup_ministry_involvements
+    Factory(:person_6)
+    p2 = Factory(:person_2)
+    p7 = Factory(:person_7)
+    Factory(:ministryinvolvement_6)
+    Factory(:ministryinvolvement_3)
+    sr = Factory(:summer_report_1)
+
+    get :report_compliance
+
+    assert_equal sr.id, assigns(:approved_reports).first.id
+    assert_equal 0, assigns(:disapproved_reports).size
+    assert_equal 0, assigns(:waiting_reports).size
+
+    assert_not_nil assigns(:not_submitted_people)
+    assert_nil assigns(:not_submitted_people).index(sr.person)
+    assert_not_nil assigns(:not_submitted_people).index(p2)
+    assert_not_nil assigns(:not_submitted_people).index(p7)
+  end
 end
