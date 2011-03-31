@@ -1,11 +1,11 @@
 class SummerReportReviewersController < ApplicationController
   unloadable
 
-
+  before_filter :get_summer_year
   
   def index
-    @current_year = Year.current
-    @reviewable_reports = @me.summer_report_reviewers.all
+    @reviewable_reports = SummerReportReviewer.all(:joins => :summer_report,
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ?", @current_year.id, @my.id])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +17,6 @@ class SummerReportReviewersController < ApplicationController
     @review = SummerReportReviewer.find(params[:id])
     @report = @review.summer_report
     @person = @review.summer_report.person
-    @year = Year.current
     
     respond_to do |format|
       format.js
@@ -45,4 +44,10 @@ class SummerReportReviewersController < ApplicationController
     end
   end
 
+
+  private
+
+  def get_summer_year
+    @current_year = Year.current
+  end
 end
