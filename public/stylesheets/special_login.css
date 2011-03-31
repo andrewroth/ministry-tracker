@@ -2,6 +2,7 @@
 body {
 	margin: 0;
 	padding: 0;
+  text-align: center;
 }
 
 /******************************/
@@ -10,7 +11,6 @@ body {
 
 #banner_container {
   height: 234px;
-  text-align: center;
 }
 
 #banner_container #banner_bg {
@@ -24,32 +24,32 @@ body {
 
 #c4c_logo {
   position: relative;
-  left: 450px;
+  left: -290px;
   top: 0px;
   padding: 25px;
 }
 
 #disco_change {
   position: relative;
-  left: 475px;
+  left: -45px;
   top: 25px;
 }
 
 #pulse_explain {
   position: relative;
-  left: 482px;
+  left: -38px;
   top: 60px;
 }
 
 #create_logon {
-  left: 630px;
+  left: 110px;
   position: relative;
   top: 57px;
 }
 
 #help_link {
   position: relative;
-  left: 650px;
+  left: 130px;
   top: 60px;
 }
 
