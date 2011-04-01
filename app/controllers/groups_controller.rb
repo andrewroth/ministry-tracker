@@ -108,9 +108,22 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new :country => Cmt::CONFIG[:default_country]
+    if params[:entire_search].to_i == 1
+      search = Search.find params[:search_id]
+      ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      @people = Person.find(ids)
+      session[:people_to_add] = @people.collect(&:id)
+    elsif params[:person]
+      @people = Person.find(ids)
+      session[:people_to_add] = @people.collect(&:id)
+    else
+      session[:people_to_add] = nil
+    end
+
     unless Cmt::CONFIG[:semesterless_groups]
       @group.semester_id = @current_semester.id
     end
+
     respond_to do |format|
       format.html 
       format.js
@@ -127,11 +140,20 @@ class GroupsController < ApplicationController
       @gi.requested = false
       @gi.save!
       @group = @gi.group
+    else
+      if session[:people_to_add].present?
+        # so that the line about people who will be added will work
+        @people = Person.find session[:people_to_add]
+      end
     end
     if group_save
       # If an array of people have been passed in, add them as members
-      Array.wrap(params[:person]).each do |person_id|
-        GroupInvolvement.create!(:person_id => person_id, :group_id => @group.id, :level => "member", :requested => false)
+      if session[:people_to_add].present?
+        session[:people_to_add].each do |person_id|
+          if GroupInvolvement.find_by_person_id_and_group_id(person_id, @group.id).nil?
+            GroupInvolvement.create!(:person_id => person_id, :group_id => @group.id, :level => "member", :requested => false)
+          end
+        end
       end
     end
     @group_type = @group.group_type
