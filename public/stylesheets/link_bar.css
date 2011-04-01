@@ -3,7 +3,7 @@ div#link_bar_wrapper {
   padding-top: 9px;
   background-color: #666766;
 
-  -moz-box-shadow:0 -5px 10px #545454 inset; -webkit-box-shadow:0 -5px 10px #545454 inset;
+  -moz-box-shadow:0 -5px 10px #575757 inset; -webkit-box-shadow:0 -5px 10px #575757 inset;
 }
 
 div.link_bar {

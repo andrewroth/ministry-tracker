@@ -7,7 +7,7 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_weeks, :only => [:new, :create, :update, :show]
+  before_filter :get_summer_year_and_weeks
   before_filter :remove_self_from_reviewers, :only => [:create, :update]
 
   SUMMER_START_MONTH = 4 # april
@@ -18,11 +18,14 @@ class SummerReportsController < ApplicationController
 
   
   def index
-    @current_year = Year.current
     @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
 
-    @reports_to_review = @me.summer_report_reviewers.present?
-    @num_reports_to_review = @me.summer_report_reviewers.all(:conditions => ["#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?", false]).size
+    @reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ?", @current_year.id, @my.id]).present?
+    
+    @num_reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ? and " +
+          "(#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?)", @current_year.id, @my.id, false]).size
 
     respond_to do |format|
       format.html # index.html.erb
@@ -53,7 +56,7 @@ class SummerReportsController < ApplicationController
     end
 
     respond_to do |format|
-      if @me.summer_reports.all(:conditions => {:year_id => Year.current.id}).blank? || @summer_report.disapproved?
+      if @me.summer_reports.all(:conditions => {:year_id => @current_year.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
       else
         flash[:notice] = "You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved."
@@ -66,7 +69,7 @@ class SummerReportsController < ApplicationController
   def create
     @summer_report = SummerReport.new(params[:summer_report])
     @summer_report.person_id = @me.id
-    @summer_report.year_id = Year.current.id
+    @summer_report.year_id = @current_year.id
 
     respond_to do |format|
       if @summer_report.save
@@ -114,10 +117,59 @@ class SummerReportsController < ApplicationController
   end
 
 
+  def report_staff_answers
+    mid = params[:summer_report_ministry].present? ? params[:summer_report_ministry] : get_ministry.id
+    @summer_report_ministry = Ministry.find(mid)
+
+    ministry_ids = @summer_report_ministry.myself_and_descendants.collect{|m| m.id}
+    @summer_reports = SummerReport.all(:joins => {:person => [:ministry_involvements]},
+                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?) and #{SummerReport.__(:year_id)} = ?", ministry_ids, @current_year.id],
+                                       :group => "#{SummerReport._(:id)}",
+                                       :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+
+
+  def report_compliance
+    @summer_report_ministry = Ministry.find(2)
+    
+    summer_reports = SummerReport.all(:include => [:summer_report_reviewers], :conditions => {:year_id => @current_year.id})
+    
+    @approved_reports = []
+    @disapproved_reports = []
+    @waiting_reports = []
+
+    summer_reports.each do |r|
+      if r.approved?
+        @approved_reports << r
+      elsif r.disapproved?
+        @disapproved_reports << r
+      else
+        @waiting_reports << r
+      end
+    end
+
+    reported_people_ids = [0] << @approved_reports.collect{|r| r.person_id} << @disapproved_reports.collect{|r| r.person_id} << @waiting_reports.collect{|r| r.person_id}
+    reported_people_ids.flatten!
+
+    @not_submitted_people = Person.all(:joins => {:ministry_involvements => :ministry_role},
+      :conditions => ["#{MinistryRole._(:type)} = 'StaffRole' && #{MinistryRole._(:involved)} = 1 && #{Person.table_name}.#{Person._(:id)} not in (?)", reported_people_ids],
+      :group => "#{Person.table_name}.#{Person._(:id)}",
+      :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+
   private
 
   # find the weeks that make up summer
-  def get_summer_weeks
+  def get_summer_year_and_weeks
     @current_year = Year.current
 
     summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
