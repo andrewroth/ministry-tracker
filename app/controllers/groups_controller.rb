@@ -100,6 +100,8 @@ class GroupsController < ApplicationController
 
     #@ministry = @group.ministry
     @gi = @group.group_involvements.find_by_person_id @me.id
+    @is_staff = is_staff_somewhere
+
     respond_to do |format|
       format.html 
       format.js
