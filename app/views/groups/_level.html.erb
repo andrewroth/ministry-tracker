@@ -28,8 +28,10 @@
                     :method => :post
 } ) do 
 -%>
-<%- @hide_extra_info = !@is_staff && (level == Group::MEMBER || level == Group::INTERESTED) && 
-  (@gi.nil? || @gi.level == Group::MEMBER || @gi.level == Group::INTERESTED) %>
+<%- @hide_extra_info = !@group.show_group_info && !@is_staff && 
+  (level == Group::MEMBER || level == Group::INTERESTED) && 
+  (@gi.nil? || @gi.level == Group::MEMBER || @gi.level == Group::INTERESTED)
+%>
 
 <table width="70%" border="0" cellspacing="0" cellpadding="5" class="groupInvolvementList">
   <tr>
