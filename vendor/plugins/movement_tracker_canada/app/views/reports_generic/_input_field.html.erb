@@ -17,7 +17,11 @@ end
         <td>
         <%= case input_stat[:display_type]
             when :text_positive_integer
-              f.text_field input_stat[:column], :size => 4, :class => "positiveinteger" 
+              if !@auto_collected_stats.nil? && @auto_collected_stats[input_stat[:column].to_s]
+              	f.text_field input_stat[:column], :size => 4, :class => "positiveinteger", :value =>  @auto_collected_stats[input_stat[:column].to_s]
+              else
+              	f.text_field input_stat[:column], :size => 4, :class => "positiveinteger"
+              end	
 
             when :text_area
               required = true
