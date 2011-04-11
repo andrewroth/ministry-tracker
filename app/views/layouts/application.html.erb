@@ -18,12 +18,12 @@
     <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
                             "/javascripts/jscalendar-1.0/skins/aqua/theme.css",
                             :media => "screen",
-                            :cache => true %>
+                            :cache => "cache/all" %>
 
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
                                'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'application',
                                "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js",
-                               :cache => true %>
+                               :cache => "cache/all" %>
 
     <%= yield :javascripts %>
 

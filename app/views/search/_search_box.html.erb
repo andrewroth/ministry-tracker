@@ -22,7 +22,7 @@
 
       <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
 
-      <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "jquery.forSearch" %>
+      <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
       <script>
         $("#uberSearchBox").autocomplete("/search/autocomplete", {
           minChars: 2,
