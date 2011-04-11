@@ -47,8 +47,6 @@ h3, .sub {
       <U>Country:</U> <%= @country_name %><BR/>
       <%- end -%>
       <U>Area:</U> <%= @country_area %><BR/>
-      <BR/>
-      <U>Fiscal 2010 Income (USD):</U> <%= number_with_delimiter(@fiscal["total_income_FY10"]) %><BR/>
     </TD><TD>
       <%- unless @area -%>
       <U>Stage:</U> <%= @country_stage %><BR/>
@@ -59,18 +57,12 @@ h3, .sub {
       <%- end %>
       <%- end %>
     </TD>
-  </TR><TR>
-    <TD colspan="2">
-      <BR/>
-      <I>Note: Income does not include amounts from such entities as schools of theology or some other special projects. </I><BR/><BR/>
-    </TD>
   </TR>
   </TR><TR VALIGN="top">
     <TD width="50%">
-      Staff Count 2002: <%= number_with_delimiter(@staff_counts["staff_count_2002"]) %><BR/>
-      Staff Count 2009: <%= number_with_delimiter(@staff_counts["staff_count_2009"]) %><BR/>
-      02-09 Difference: <%- if d = @staff_counts["difference"] %><span style="color: <%= if d < 0 then 'red' else 'green' end %>"><%= number_with_delimiter(@staff_counts["difference"]) %></span>
-      <%- end %>
+      <BR/>
+      <BR/>
+      <span></span>
     </TD>
     <TD>
       <%- unless @area %>
@@ -145,12 +137,6 @@ h3, .sub {
   </tr><tr>
     <td width="50%">6. # SPCs with movements</td>
     <td width="50%"><%= number_with_delimiter(@slm["total_spcs_movement"]) %></td>
-  </tr><tr>
-    <td width="50%">7. Total # SLM Staff (of any nationality serving in the country)</td>
-    <td width="50%"><%= number_with_delimiter(@slm["total_slm_staff"]) %></td>
-  </tr><tr>
-    <td width="50%">8. New National SLM staff joining 2009-2010 academic year</td>
-    <td width="50%"><%= number_with_delimiter(@slm["total_new_slm_staff"]) %></td>
   </tr>
 </table>
 
