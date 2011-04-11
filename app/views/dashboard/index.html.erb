@@ -3,7 +3,7 @@ unless @mobile
 %>
 
 <% content_for :javascripts do %>
-  <%= javascript_include_tag "dashboard.js" %>
+  <%= javascript_include_tag "dashboard.js", :cache => 'cache/dashboard' %>
 <% end %>
 
 <% @site_title = 'Dashboard' -%>
