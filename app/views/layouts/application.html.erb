@@ -14,19 +14,26 @@
       <% end %>
       <%= ': ' + @site_title if @site_title -%>
     </title>
-    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
+
+    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
+                            "/javascripts/jscalendar-1.0/skins/aqua/theme.css",
+                            :media => "screen",
+                            :cache => "cache/all" %>
+
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
-                                'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
+                               'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'application',
+                               "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js",
+                               :cache => "cache/all" %>
+
     <%= yield :javascripts %>
 
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
-    <%= javascript_include_tag "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => 'calendar' %>
 
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
   </head>
+
 
 	<body>
     <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
@@ -83,9 +90,10 @@
         <%= render :partial => "/dashboard/banner" %>
       <% end %>
         
-        <script>
-          // preload mouseover images
-          preload([
+        <script type="text/javascript">
+          $(document).ready(function(){
+            // preload mouseover images
+            $([
               '/images/debicons/Ydashboard.png',
               '/images/debicons/Yprofile.png',
               '/images/debicons/Ygroups.png',
@@ -107,8 +115,13 @@
               '/images/bannerleftbubble.png',
               '/images/bannerleftbubbleY.png',
               '/images/bannerrightbubble.png',
-              '/images/bannerrightbubbleY.png'
-          ]);
+              '/images/bannerrightbubbleY.png',
+              '/images/expand.png',
+              '/images/contract.png'
+            ]).each(function(){
+                $('<img/>')[0].src = this;
+            });
+          });
         </script>
       </div>
 
