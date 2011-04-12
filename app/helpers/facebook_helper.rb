@@ -2,7 +2,7 @@ module FacebookHelper
   def init_facebook_js_sdk_async
     %|
     <div id="fb-root"></div>
-    <script>
+    <script type='text/javascript'>
       window.fbAsyncInit = function() {
         FB.init({appId: '#{Facebook::APP_ID}',
                  status: true,
