@@ -28,7 +28,7 @@
 
 <% unless @mobile %>
       <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
-      <script>
+      <script type="text/javascript">
         $("#uberSearchBox").autocomplete("/search/autocomplete", {
           minChars: 2,
           selectFirst: false,
