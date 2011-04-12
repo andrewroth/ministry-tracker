@@ -19,7 +19,7 @@
 
       <%= javascript_include_tag "jquery.ajaxQueue.js" %>
       <%= javascript_include_tag "jquery.autocomplete.js" %>
-      <script>
+      <script type="text/javascript">
         $("#uberMentorSearchBox").autocomplete("/search/autocomplete_mentors/?p="+<%= person.id %>+"", {
 					resultsClass: "alt_ac_results",
           minChars: 2,

@@ -116,7 +116,7 @@ module ApplicationHelper
 
   def instruction_block(html = nil, &proc)
     html ||= capture(&proc) if block_given?
-    render_s = "<script>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
+    render_s = "<script type='text/javascript'>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
 
     if block_given?
       concat(render_s)
