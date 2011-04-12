@@ -19,7 +19,7 @@
 
       <%= javascript_include_tag "jquery.ajaxQueue.js" %>
       <%= javascript_include_tag "jquery.autocomplete.js" %>
-      <script>
+      <script type="text/javascript">
         $("#uberMenteeSearchBox").autocomplete("/search/autocomplete_mentees/?p="+<%= person.id %>+"", {
           resultsClass: "alt_ac_results",
           minChars: 2,

@@ -2,7 +2,7 @@
 <span id='chosen_ministry'></span> <%= link_to_function 'Choose Ministry▼', "", :id => 'choose_ministry_link' %>
 <%= hidden_field_tag 'ministry_involvement[ministry_id]' %>
 <div id='choose_ministry_tree_<%=uid%>' class='choose_ministry_tree' style='display:none'></div>
-<script>
+<script type="text/javascript">
   Ext.onReady(function(){
     // shorthand
     var Tree = Ext.tree;
