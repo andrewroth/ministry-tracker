@@ -18,7 +18,8 @@ class EmailsControllerTest < ActionController::TestCase
   end
 
   test "should get new with entire search" do
-    get :new, :entire_search => '1'
+    Factory(:search_1)
+    get :new, :entire_search => '1', :search_id => 1
     assert_response :success
   end
 

@@ -178,7 +178,12 @@ class MinistryInvolvementsController < ApplicationController
 
   def edit_multiple_roles
     if params[:search_by_ministry_ids] && params[:person]
-      people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      if params[:entire_search].to_i == 1
+        search = Search.find params[:search_id]
+        people_ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      else
+        people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      end
 
       if params[:search_by_ministry_role_ids]
         @involvements = MinistryInvolvement.all(:include => [:person],

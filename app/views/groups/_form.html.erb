@@ -43,6 +43,7 @@
             Start Time: </td><td><%= f.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
     		<tr><td class="label">End Time: </td><td><%= f.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %></td></tr>
     		<tr><td class="label">Day of Week: </td><td><%= f.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %></td></tr>
+    		<tr><td class="label">Show Group Info to Members: </td><td><%= f.check_box :show_group_info %></td></tr>
 	    </table>
 	  </td>
 	</tr>

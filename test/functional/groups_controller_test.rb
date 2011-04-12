@@ -95,6 +95,8 @@ class GroupsControllerTest < ActionController::TestCase
     Factory(:person_3)
     login
     old_count = Group.count
+    session[:people_to_add] = [2000,3000]
+
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
                              :state => 'IL', :country => 'United States',
                              :campus_id => '2', :ministry_id => '1',
