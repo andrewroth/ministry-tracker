@@ -4,7 +4,7 @@ module MinistriesHelper
     my_tree = @my.ministry_tree
     ministries_to_root_ids = @ministry.ancestors.collect(&:id)
     expand.children.each do |ministry| 
-      if is_ministry_admin(expand) || my_tree.include?(ministry)
+      if is_ministry_admin(expand) || is_ministry_admin || my_tree.include?(ministry)
         json += '{"text":"' + ministry.name + '",' 
         json +=  '"id":"' + ministry.id.to_s + '",'
         json += '"singleClickExpand":true,'
