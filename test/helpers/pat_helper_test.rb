@@ -22,20 +22,20 @@ class PatHelperTest < ActionView::TestCase
 
   def test_project_acceptance_totals
     results_by_campus, results_by_project = project_acceptance_totals(Campus.all.collect(&:id))
-    assert results_by_campus["UoCD"][:total] == 1
-    assert results_by_campus["UoCD"]["project 1"] == 1
+    assert results_by_campus["UoCD"][:total].to_i == 1
+    assert results_by_campus["UoCD"]["project 1"].to_i == 1
     assert results_by_project.keys.first == "project 1"
-    assert results_by_project["project 1"]["UoCD"] == 1
-    assert results_by_project["project 1"][:total] == 1
+    assert results_by_project["project 1"]["UoCD"].to_i == 1
+    assert results_by_project["project 1"][:total].to_i == 1
   end
 
   def test_project_applying_totals
     results_by_campus, results_by_project = project_applying_totals(Campus.all.collect(&:id))
-    assert results_by_campus["UoCD"][:total] == 1
-    assert results_by_campus["UoCD"]["project 1"] == 1
+    assert results_by_campus["UoCD"][:total].to_i == 1
+    assert results_by_campus["UoCD"]["project 1"].to_i == 1
     assert results_by_project.keys.first == "project 1"
-    assert results_by_project["project 1"]["UoCD"] == 1
-    assert results_by_project["project 1"][:total] == 1
+    assert results_by_project["project 1"]["UoCD"].to_i == 1
+    assert results_by_project["project 1"][:total].to_i == 1
   end
 
   
