@@ -50,11 +50,6 @@ h3, .sub {
     </TD><TD>
       <%- unless @area -%>
       <U>Stage:</U> <%= @country_stage %><BR/>
-      <BR/>
-      <BR/>
-      <U>% local funding:</U> <%- if @country_funding %>
-        <span style="color: <%= if @country_funding < 50 then 'red' elsif @country_funding < 85 then '#C0C000' else 'green' end %>"><%= number_to_percentage(@country_funding) %></span>
-      <%- end %>
       <%- end %>
     </TD>
   </TR>
