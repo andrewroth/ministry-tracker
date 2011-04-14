@@ -129,7 +129,15 @@ module Searching
 
 
   def search_web(query = @q)
-    g = Gasohol::Search.new(google_search_appliance_config.merge({:num => params[:per_page]}))
+    proxy_ticket = ""
+    service_uri = google_search_appliance_config[:url]
+    proxy_granting_ticket = session[:cas_pgt]
+    
+    proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.nil?
+    
+    g = Gasohol::Search.new(google_search_appliance_config.merge({:num => params[:per_page],
+                                                                  :service => "#{CGI::escape(proxy_ticket.service)}",
+                                                                  :ticket => "#{proxy_ticket.ticket}"}))
     g.search(query)
   end
 
