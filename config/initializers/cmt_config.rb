@@ -1,7 +1,7 @@
 module Cmt
   CONFIG = {
     # Show gcx connexion bar
-    :gcx_connexion_bar => true,
+    :gcx_connexion_bar => false,
 
     # Allow GCX logins in the form on the CMT login page.
     :gcx_direct_logins => false,
