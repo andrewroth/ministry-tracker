@@ -35,7 +35,7 @@
 
         <% if @people.total_entries > @num_results_per_page %>
           <li class="searchResult searchResultMore">
-            <%= link_to("See more results »", :action => "people", :controller => "search", :q => @q, :page => 2) %>
+            <%= link_to("See more people results »", :action => "people", :controller => "search", :q => @q, :page => 2) %>
           </li>
         <% end %>
 
@@ -74,7 +74,7 @@
 
         <% if @groups.total_entries > @num_results_per_page %>
           <li class="searchResult searchResultMore">
-            <%= link_to("See more results »", :action => "groups", :controller => "search", :q => @q, :page => 2) %>
+            <%= link_to("See more group results »", :action => "groups", :controller => "search", :q => @q, :page => 2) %>
           </li>
         <% end %>
 
@@ -89,12 +89,51 @@
     <br/>
   <% end %>
 
+
+
+  <% if session[:search][:authorized_to_search_web] %>
+    <div class="searchResultsTitle">
+      <%= image_tag("silk/world.png") %> <strong>Web</strong> results for <strong><%= @q %></strong>
+
+      <div class="searchResultsSize">
+        <% if @web.total_results > @web.per_page %>
+          <% onCurPageEnd = @web.current_page * @web.per_page %>
+          <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
+          <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+        <% end %>
+        <%= pluralize(@web.total_results, "web result") %>
+      </div>
+
+    </div>
+
+    <ul id="WebSearchResults">
+      <% if @web.results.size > 0 %>
+        <%= render :partial => "web_result", :collection => @web.results -%>
+
+        <% if @web.total_results > @num_results_per_page %>
+          <li class="searchResult searchResultMore">
+            <%= link_to("See more web results »", :action => "web", :controller => "search", :q => @q, :page => 2) %>
+          </li>
+        <% end %>
+
+      <% else %>
+        <p>
+          No web results found for <strong><%= @q %></strong>.<br/>
+          Try using different or more general search terms.
+        </p>
+      <% end %>
+    </ul>
+
+    <br/>
+  <% end %>
+
 </div>
 
 
 <% else %>
 
 <br/>
-<big>Don't be shy, search for a person or group by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
+<big>Don't be shy, search for something by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
 
 <% end %>

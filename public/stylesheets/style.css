@@ -2254,6 +2254,14 @@ table#set_initial_campus tr {
   background-position: left;
 }
 
+#searchFilterControlsContainer a.searchFilterWeb {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/world.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
 #searchResultsContainer {
   height: 100%;
   width: 65%;
@@ -2313,6 +2321,11 @@ table#set_initial_campus tr {
   height: 100px;
   margin: 0 0 10px 10px;
   line-height: 16px;
+  overflow: hidden;
+}
+
+.searchResultWeb {
+  margin: 20px 0 20px 10px;
   overflow: hidden;
 }
 
@@ -2386,10 +2399,24 @@ table#set_initial_campus tr {
   font-weight: bold;
 }
 
+.searchResultWeb .searchResultName {
+  font-weight: normal;
+}
+
+.searchResultWeb .searchResultName b {
+  color: #1F429B;
+  font-weight: bold;
+}
+
+.searchResultUrlLine, .searchResultMime {
+  color:#666766;
+  font-size:12px;
+}
+
 .searchResultInfo {
   font-size: 11px;
   overflow: hidden;
-  height: 93px;
+  /*height: 93px;*/
 }
 
 .searchResultInfo strong {

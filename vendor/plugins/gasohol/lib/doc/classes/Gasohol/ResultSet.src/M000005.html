@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Gasohol::ResultSet)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File gasohol/result_set.rb, line 42</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">query</span>,<span class="ruby-identifier">full_query_path</span>,<span class="ruby-identifier">xml</span>,<span class="ruby-identifier">num_per_page</span>)
+      <span class="ruby-ivar">@google_query</span> = <span class="ruby-identifier">query</span>
+      <span class="ruby-ivar">@full_query_path</span> = <span class="ruby-identifier">full_query_path</span>
+      <span class="ruby-ivar">@time</span> = <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">:tm</span>).<span class="ruby-identifier">inner_html</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
+      <span class="ruby-ivar">@total_results</span> = <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">:m</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">:m</span>).<span class="ruby-identifier">inner_html</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">:res</span>)
+        <span class="ruby-ivar">@from_num</span> = <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">:res</span>).<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'sn'</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-ivar">@to_num</span> = <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">:res</span>).<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'en'</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-ivar">@params</span> = {}
+      <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">:param</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@params</span>.<span class="ruby-identifier">merge!</span>({<span class="ruby-identifier">param</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'name'</span>].<span class="ruby-identifier">to_sym</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">param</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'value'</span>].<span class="ruby-identifier">to_s</span>})
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-comment cmt"># intialize to empty arrays, Gasohol::Search will add these</span>
+      <span class="ruby-ivar">@featured</span> = []
+      <span class="ruby-ivar">@results</span> = []
+      
+      <span class="ruby-comment cmt"># for will_paginate</span>
+      <span class="ruby-ivar">@total_pages</span> = (<span class="ruby-ivar">@total_results</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">num_per_page</span>).<span class="ruby-identifier">ceil</span>
+      <span class="ruby-ivar">@current_page</span> = (<span class="ruby-ivar">@from_num</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">num_per_page</span>).<span class="ruby-identifier">ceil</span>
+      <span class="ruby-ivar">@previous_page</span> = (<span class="ruby-ivar">@current_page</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@current_page</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+      <span class="ruby-ivar">@next_page</span> = (<span class="ruby-ivar">@current_page</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@total_pages</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@current_page</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
