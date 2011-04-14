@@ -767,3 +767,11 @@
       :num_days_to_display_event_after_completed => 10
     }
   end
+
+
+  def google_search_appliance_config
+    {
+      :url => "https://search.mygcx.org/search",
+      :client => "global"
+    }
+  end

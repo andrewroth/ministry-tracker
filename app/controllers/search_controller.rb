@@ -7,7 +7,7 @@ class SearchController < ApplicationController
 
   before_filter :setup_session_for_search, :only => [:index, :people, :groups, :autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
 
-  before_filter :get_query, :only => [:index, :people, :groups, :autocomplete, :autocomplete_mentors, :autocomplete_mentees]
+  before_filter :get_query, :only => [:index, :people, :groups, :web, :autocomplete, :autocomplete_mentors, :autocomplete_mentees]
 
 
   FILTER_MENTOR_NONE = 'NULL'
@@ -20,6 +20,7 @@ class SearchController < ApplicationController
       params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
+      @web = search_web if session[:search][:authorized_to_search_web]
     end
   end
 
@@ -39,6 +40,15 @@ class SearchController < ApplicationController
       params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
+    end
+  end
+
+  def web
+    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
+
+    if @q.present?
+      params[:per_page] = @num_results_per_page
+      @web = search_web if session[:search][:authorized_to_search_web]
     end
   end
 

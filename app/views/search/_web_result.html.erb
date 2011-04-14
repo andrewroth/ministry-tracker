@@ -1,0 +1,18 @@
+<li class='searchResult searchResultWeb'>
+
+  <div class='searchResultInfo'>
+    <div class='searchResultName'>
+      <%= "<span class='searchResultMime'>[#{web_result.mime.sub(/.*\//,"")}]</span>" if web_result.mime.present? %>
+      <%=link_to("#{CGI::unescapeHTML web_result.title}", "#{web_result.url_encoded}")%>
+    </div>
+
+    <div class='searchResultExtraInfo'>
+      <%= CGI::unescapeHTML web_result.abstract %> <br/>
+      <span class="searchResultUrlLine">
+        <%= display_url(web_result.url) %>
+        <%= " - #{web_result.crawl_date.strftime("%Y/%m/%d")}" if web_result.crawl_date.present? %>
+      </span>
+    </div>
+  </div>
+
+</li>

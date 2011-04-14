@@ -1,0 +1,58 @@
+
+<h1 id="reportTitle">Search the Web</h1>
+
+<% if @q.present? %>
+
+<div id="searchHeaderInfo">
+</div>
+
+<div id="searchFilterControlsContainer">
+  <%= render :partial => "filter_controls" %>
+</div>
+
+<div id="searchResultsContainer">
+  <br/>
+  
+  <% if session[:search][:authorized_to_search_web] %>
+    <div class="searchResultsTitle">
+      <%= image_tag("silk/world.png") %> <strong>Web</strong> results for <strong><%= @q %></strong>
+
+      <div class="searchResultsSize">
+        <% if @web.total_results > @web.per_page %>
+          <% onCurPageEnd = @web.current_page * @web.per_page %>
+          <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
+          <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+        <% end %>
+        <%= pluralize(@web.total_results, "web result") %>
+      </div>
+
+    </div>
+
+    <ul id="WebSearchResults">
+      <% if @web.results.size > 0 %>
+        <%= render :partial => "web_result", :collection => @web.results -%>
+
+      <% else %>
+        <p>
+          No web results found for <strong><%= @q %></strong>.<br/>
+          Try using different or more general search terms.
+        </p>
+      <% end %>
+    </ul>
+
+    <br/>
+    <div class="searchResultsPagination">
+      <%= will_paginate @web %>
+    </div>
+  <% end %>
+
+</div>
+
+
+<% else %>
+
+<br/>
+<p><h3>Don't be shy, search for something by using the search box!</h3></p>
+
+<% end %>

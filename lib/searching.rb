@@ -128,8 +128,10 @@ module Searching
   end
 
 
-
-
+  def search_web(query = @q)
+    g = Gasohol::Search.new(google_search_appliance_config.merge({:num => params[:per_page]}))
+    g.search(query)
+  end
 
 
   def setup_my_ministry_and_campus_ids
@@ -196,6 +198,7 @@ module Searching
 
       session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
       session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
+      session[:search][:authorized_to_search_web] ||= authorized?(:web, :search)
 
       session[:search][:search_prepared] ||= true
     end
