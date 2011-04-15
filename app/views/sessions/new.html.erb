@@ -47,12 +47,13 @@ unless @mobile
         </map>
       </div>
     </div>
-    
-    <%= image_tag("log_in_c4c_disco_change.png", :id => "disco_change")%>
-    <%= image_tag("log_in_pulse_explanation.png", :id => "pulse_explain")%>
-    <%= link_to image_tag("log_in_create_login.png"), new_gcx_url, :id => "create_logon" %>
-    <%= link_to image_tag("help.gif"), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
-    
+
+    <div id="footer_container">
+      <%= image_tag("log_in_c4c_disco_change.png", :id => "disco_change")%>
+      <%= image_tag("log_in_pulse_explanation.png", :id => "pulse_explain")%>
+      <%= link_to image_tag("log_in_create_login.png"), new_gcx_url, :id => "create_logon" %>
+      <%= link_to image_tag("help.gif"), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
+    </div>
 	</body>
 </html>
 <%

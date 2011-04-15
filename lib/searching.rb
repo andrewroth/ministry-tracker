@@ -6,7 +6,7 @@ module Searching
 
   # rank search result relevance, higher is more relevant and therefore higher in results
   SEARCH_RANK = {:person => {:first_name => 4, :last_name => 1, :ministry => 3},
-                 :group  => {:name => 5, :ministry => 4, :semester_current => 3, :semester_next => 1, :involvement => 2}}
+                 :group  => {:name => 5, :ministry => 4, :semester_current => 4, :semester_next => 1, :involvement => 2}}
 
 
   def get_query
