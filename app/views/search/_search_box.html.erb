@@ -5,7 +5,7 @@
       <% default_search_box_text = "Search the Pulse" %>
 
       <div id="uberSearchBoxContainer">
-        <% form_tag url_for(:controller => :search), :method => 'get' do %>
+        <% form_tag url_for(:controller => :search), :method => 'get', :id => 'uberSearchForm' do %>
 
           <%  if q.present? && controller.controller_name == "search" && (controller.action_name == "index" || controller.action_name == "people" || controller.action_name == "groups") %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
@@ -85,7 +85,18 @@
               if(this.value=='') this.value='<%= default_search_box_text %>';
             }
           };
-          
+
+          $('#uberSearchForm').submit(function() {
+            // don't submit if the search box is empty
+            if( !$('#uberSearchBox').val() ) {
+              return false;
+            }
+            else {
+              // visual cue that seach has started
+              $('#uberSearchButton div').css('background', 'url(/images/debicons/Ymagniglass.png) no-repeat 0px 0px');
+              return true;
+            }
+          });
         });
 
       </script>
