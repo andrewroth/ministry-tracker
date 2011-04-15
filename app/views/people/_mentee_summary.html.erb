@@ -6,7 +6,7 @@
         <%- if mentee.profile_picture.nil? -%>
         	<%- #Profile pic placeholder scaling function used to fit formatting (below) 
         	%>
-           	<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_FILLER_DIMENSION %>
+           	<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_FILLER_DIMENSION %>
           	<%- pic_height = pic_width %>
           	<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_height.to_f %>
        		<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
