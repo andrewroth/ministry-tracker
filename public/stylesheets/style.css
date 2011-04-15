@@ -2352,6 +2352,10 @@ table#set_initial_campus tr {
   -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
 }
 
+.searchResult blockquote {
+  margin-left: 40px;
+}
+
 .searchResultPic, .searchResultInfo {
   float: left;
 }
