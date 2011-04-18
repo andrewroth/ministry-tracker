@@ -43,20 +43,8 @@ class GlobalDashboardAccessesController < ApplicationController
   # POST /global_dashboard_accesses.xml
   def create
     @global_dashboard_access = GlobalDashboardAccess.new(params[:global_dashboard_access])
-    # try to find the user already
-    u = User.find_by_guid(@global_dashboard_access.guid)
-    unless u
-      u = Person.create_new_cim_hrdb_account(@global_dashboard_access.guid, 
-                                         @global_dashboard_access.fn, 
-                                         @global_dashboard_access.ln, 
-                                         @global_dashboard_access.email)
-      p = u.person
-      p.timetable
-      mi = p.ministry_involvements.new
-      mi.ministry = Ministry.find_by_name "CCCI Global Team"
-      mi.ministry_role = StaffRole.find_by_name "International Staff"
-      mi.save!
-    end
+    GlobalDashboardAccess.setup(@global_dashboard_access.guid, @global_dashboard_access.fn,
+                                @global_dashboard_access.ln, @global_dashboard_access.email)
 
     respond_to do |format|
       if @global_dashboard_access.save
