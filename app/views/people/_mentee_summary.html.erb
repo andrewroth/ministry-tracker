@@ -4,13 +4,21 @@
     <td>
       <div class="headerProfilePic">
         <%- if mentee.profile_picture.nil? -%>
-          
+        	<%- #Profile pic placeholder scaling function used to fit formatting (below) 
+        	%>
+           	<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_FILLER_DIMENSION %>
+          	<%- pic_height = pic_width %>
+          	<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_height.to_f %>
+       		<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
+       		<%- pic_width = pic_width * scale_factor %>         
           <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
-            <%= image_tag 'no_photo.png', :height => '100%', :width => '100%' %>
+            <%= image_tag 'no_photo.png', :width => pic_width, :height => pic_height %>
           <%- else -%>
-           <%= image_tag 'photo_coming.png', :height => '100%', :width => '100%' %>
+           <%= image_tag 'photo_coming.png', :width => pic_width, :height => pic_height %>
           <%- end -%>
         <%- else -%>
+        	<%- #Profile pic scaling function to fit formatting
+        	%>
            <%- pic_width = mentee.profile_picture.width %>
            <%- pic_height = mentee.profile_picture.height %>
            <%- if pic_height > pic_width %>	
