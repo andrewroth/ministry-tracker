@@ -53,8 +53,8 @@ class GlobalDashboardAccessesController < ApplicationController
       p = u.person
       p.timetable
       mi = p.ministry_involvements.new
-      mi.ministry = Ministry.find_by_name Cmt::CONFIG[:default_ministry_name]
-      mi.ministry_role = StaffRole.find_by_name "Staff"
+      mi.ministry = Ministry.find_by_name "CCCI Global Team"
+      mi.ministry_role = StaffRole.find_by_name "International Staff"
       mi.save!
     end
 
