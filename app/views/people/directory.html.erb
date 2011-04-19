@@ -92,7 +92,7 @@
 
     <%- if authorized?(:advanced) %>
       <div class="directoryResultControl">
-        <%= link_to "#{image_tag("page_white_excel.png")} Excel Download", directory_people_url(:format => 'xls', :start => 'A', :finish => '', :search_id => @search.id), :class => "action-button" %>
+        <%= link_to "#{image_tag("page_white_excel.png")} Excel Download", directory_people_url(:format => 'csv', :search_id => @search.id), :class => "action-button" %>
 
         <%- tooltip do -%>
           You can download an excel spreadsheet with all the information you see in your current view.
