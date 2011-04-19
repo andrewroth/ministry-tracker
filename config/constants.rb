@@ -772,6 +772,9 @@
   def google_search_appliance_config
     {
       :url => "https://search.mygcx.org/search",
-      :client => "global"
+      :client => "global",
+      :ud => "1",
+      :output => "xml_no_dtd",
+      :site => "default_collection"
     }
   end

@@ -108,7 +108,7 @@ module SearchHelper
 
   def display_url(url)
     url = CGI::unescape(url).sub(/http(|s):\/\//, "")
-    truncate(url, :length => 50, :omission => "...#{url[url.length-20,url.length-1]}")
+    truncate(url, :length => 50, :omission => "...#{url[url.length-25,url.length-1]}")
   end
     
 end
