@@ -129,15 +129,23 @@ module Searching
 
 
   def search_web(query = @q)
-    service_uri = google_search_appliance_config[:url]
-    proxy_granting_ticket = session[:cas_pgt]
+    config = google_search_appliance_config
     
+    # CAS proxy authentication requires that the service url and params stay in the same order so we will manually construct the request
+    service_uri = config.delete(:url)
+    service_uri += "#{service_uri.include?('?') ? '&' : '?'}q=#{CGI::escape(query)}"
+    config.each do |k,v|
+      service_uri += "&#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"
+    end
+
+    proxy_granting_ticket = session[:cas_pgt]
     proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
 
-    g = Gasohol::Search.new(google_search_appliance_config.merge({:num => params[:per_page],
-                                                                  :ticket => "#{proxy_ticket.try(:ticket)}"}))
-#                                                                  :service => "#{CGI::escape(proxy_ticket.service)}",
-    g.search(query)
+    # CAS proxy authentication requires that the ticket be the last param in query string
+    service_uri += "&ticket=#{proxy_ticket.try(:ticket)}"
+
+    g = Gasohol::Search.new(google_search_appliance_config)
+    g.search_request_string(service_uri)
   end
 
 

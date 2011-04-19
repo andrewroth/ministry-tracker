@@ -83,9 +83,10 @@ module Gasohol
     # The result that comes back is ready to be used in your app (looping through +pizzas.results+ and displaying them
     # however you like
   
-    def search(query,options={})
+    def search(query="",options={},request_string=nil)
+
       all_options = @config.merge(options)    # merge options that were passed directly to this method
-      full_query_path = query_path(query,all_options)        # creates the full URL to the GSA
+      full_query_path = request_string.present? ? request_string : query_path(query,all_options)     # creates the full URL to the GSA
       
       begin
         agent = Mechanize.new
@@ -118,13 +119,20 @@ module Gasohol
       return rs
     end
 
+    # Optionally accept the entire request as a string and just trust that it's correct
+    def search_request_string(request_string)
+      search("",{},request_string)
+    end
+
 
     private
     
     # Creates the combination of the URL, query and options into one big URI
     def query_path(query,options)
       url = options.delete(:url)  # sets url to the value of options[:url] and then removes it from the hash
-      output = url + '?q=' + CGI::escape(query)
+
+      output = "#{url}#{url.include?('?') ? '&' : '?'}q=#{CGI::escape(query)}"
+      
       options.each do |option|
         output += "&#{CGI::escape(option.first.to_s)}=#{CGI::escape(option.last.to_s)}" unless option.last.nil?
       end
