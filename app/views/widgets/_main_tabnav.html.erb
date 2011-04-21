@@ -44,7 +44,7 @@ render_tabnav :main,
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
-      t.titled 'Groups for ' + @ministry.name
+      t.titled 'Groups for ' + @ministry.try(:name)
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
     end if session[:ministry_id]
