@@ -5,7 +5,7 @@ class SearchController < ApplicationController
 
   skip_standard_login_stack :only => [:autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
 
-  before_filter :setup_session_for_search, :only => [:index, :people, :groups, :autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
+  before_filter :setup_session_for_search, :only => [:index, :people, :groups, :web, :autocomplete, :autocomplete_mentors, :autocomplete_mentees, :prepare]
 
   before_filter :get_query, :only => [:index, :people, :groups, :web, :autocomplete, :autocomplete_mentors, :autocomplete_mentees]
 

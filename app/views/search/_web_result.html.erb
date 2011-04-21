@@ -8,10 +8,14 @@
     </div>
 
     <div class='searchResultExtraInfo'>
-      <%= CGI::unescapeHTML web_result.abstract %> <br/>
+      <%= CGI::unescapeHTML(web_result.abstract).gsub("<b></b>", "<b>...</b>") %><%= "<br/>" if web_result.abstract.present? %>
       <span class="searchResultUrlLine">
         <%= display_url(web_result.url) %>
         <%= " - #{web_result.crawl_date.strftime("%Y/%m/%d")}" if web_result.crawl_date.present? %>
+        <% if web_result.level.to_i > 1 %>
+          <br/>
+          [ <%= link_to "More results from #{web_result.host}#{web_result.path}", url_for(:controller => :search, :action => :web, :q => "#{@q} site:#{web_result.host}#{web_result.path}") %> ]
+        <% end %>
       </span>
     </div>
   </div>

@@ -48,6 +48,7 @@
     </ul>
 
     <br/>
+    <br/>
   <% end %>
 
 
@@ -87,22 +88,23 @@
     </ul>
 
     <br/>
+    <br/>
   <% end %>
 
 
 
   <% if session[:search][:authorized_to_search_web] %>
     <div class="searchResultsTitle">
-      <%= image_tag("silk/world.png") %> <strong>Web</strong> results for <strong><%= @q %></strong>
+      <%= image_tag("silk/world.png") %> <%= "Public " if @gsa_results_unauthenticated.present? %><strong>Web</strong> results for <strong><%= @q %></strong>
 
       <div class="searchResultsSize">
+        web results
         <% if @web.total_results > @web.per_page %>
           <% onCurPageEnd = @web.current_page * @web.per_page %>
           <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
           <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+          <%= "#{onCurPageBegin}-#{onCurPageEnd}" %>
         <% end %>
-        <%= pluralize(@web.total_results, "web result") %>
       </div>
 
     </div>
@@ -125,6 +127,7 @@
       <% end %>
     </ul>
 
+    <br/>
     <br/>
   <% end %>
 
