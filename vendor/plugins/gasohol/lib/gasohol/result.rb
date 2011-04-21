@@ -4,7 +4,7 @@ module Gasohol
   
   class Result
   
-    attr_reader :result,:num,:mime,:level,:url,:url_encoded,:title,:language,:abstract,:crawl_date,:has,:meta,:featured
+    attr_reader :result,:num,:mime,:level,:url,:url_encoded,:host,:path,:file,:title,:language,:abstract,:crawl_date,:has,:meta,:featured
   
     def initialize(xml)
       @num = xml.attributes['n'].to_i
@@ -12,6 +12,10 @@ module Gasohol
       @level = xml.attributes['l'].to_i > 0 ? xml.attributes['l'].to_i : 1
       @url = xml.at(:u) ? xml.at(:u).inner_html : ''
       @url_encoded = xml.at(:ue) ? xml.at(:ue).inner_html : ''
+      uri = URI.parse(@url)
+      @host = uri.host
+      @path = File.dirname(CGI::unescape(uri.path))
+      @file = File.basename(CGI::unescape(uri.path))
       @title = xml.at(:t) ? xml.at(:t).inner_html : ''
       @language = xml.at(:lang) ? xml.at(:lang).inner_html : ''
       @abstract = xml.at(:s) ? xml.at(:s).inner_html.gsub(/&lt;br&gt;/i,'').gsub(/\.\.\./,'') : ''

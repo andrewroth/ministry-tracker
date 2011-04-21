@@ -121,7 +121,9 @@ module Gasohol
 
     # Optionally accept the entire request as a string and just trust that it's correct
     def search_request_string(request_string)
-      search("",{},request_string)
+      params = CGI.parse(URI.parse(request_string).query).symbolize_keys
+      params.each_pair{|k,v| params[k]=v[0]}
+      search("",params,request_string)
     end
 
 
