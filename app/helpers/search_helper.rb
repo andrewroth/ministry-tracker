@@ -107,9 +107,13 @@ module SearchHelper
   end
 
   def display_url(url)
-    url = CGI::unescape(url).sub(/http(|s):\/\//, "")
-    truncate(url, :length => 50, :omission => "...#{url[url.length-25,url.length-1]}")
+    uri = URI.parse(url)
+    host = uri.host
+    file = File.basename(CGI::unescape(uri.path))
+    path = File.dirname(CGI::unescape(uri.path))
+    path = "#{path}/" unless path.length == 1
+    CGI::unescape "#{host}#{truncate(path, :length => 30, :omission => "...#{path[path.length-15,path.length-1]}")}#{file}"
   end
-    
+
 end
 

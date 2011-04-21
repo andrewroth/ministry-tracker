@@ -2221,13 +2221,13 @@ table#set_initial_campus tr {
 
 #searchFilterControlsContainer .searchFilterHighlighted {
   font-weight: bold;
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
 #searchFilterControlsContainer a:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
 #searchFilterControlsContainer a.searchFilterAll {
@@ -2264,7 +2264,7 @@ table#set_initial_campus tr {
 
 #searchResultsContainer {
   height: 100%;
-  width: 65%;
+  width: 72%;
   float: left;
   padding-left: 50px;
   border-left: 1px solid #E6E6E6;
@@ -2348,12 +2348,12 @@ table#set_initial_campus tr {
 }
 
 .searchResult:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
 .searchResult blockquote {
-  margin-left: 40px;
+  margin-left: 30px;
 }
 
 .searchResultPic, .searchResultInfo {

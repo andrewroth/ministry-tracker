@@ -773,8 +773,13 @@
     {
       :url => "https://search.mygcx.org/search",
       :client => "global",
-      :ud => "1",
+      :ud => "0",
       :output => "xml_no_dtd",
-      :site => "default_collection"
+      :site => "default_collection",
+      :oe => "UTF-8",
+      :ie => "UTF-8",
+      :entqr => "3",
+      :entsp => "a",
+      :access => "a"
     }
   end
