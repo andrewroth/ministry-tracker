@@ -2311,8 +2311,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultGroup {
-  height: 110px;
-  margin: 0 0 10px 10px;
+  margin: 10px 0 20px 10px;
   line-height: 16px;
   overflow: hidden;
 }
@@ -2400,6 +2399,10 @@ table#set_initial_campus tr {
 
 .searchResultName {
   font-size: 14px;
+}
+
+.searchResultName b {
+  color: #1F429B;
   font-weight: bold;
 }
 
@@ -2420,12 +2423,16 @@ table#set_initial_campus tr {
 .searchResultInfo {
   font-size: 11px;
   overflow: hidden;
-  /*height: 93px;*/
 }
 
 .searchResultInfo strong {
   color: #1F429B;
   font-weight: normal;
+}
+
+.searchResultExtraInfo strong {
+  color: #666766;
+  font-weight: bold;
 }
 
 .searchResultPerson .searchResultInfo {
@@ -2434,8 +2441,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultGroup .searchResultInfo {
-  margin: 7px 0 0 10px;
-  width: 350px;
+  width: 400px;
 }
 
 .autoCompleteMore {
@@ -2491,6 +2497,14 @@ li.ac_over .autoCompleteEmail {
   background-repeat: no-repeat;
   background-position: right;
   padding-right: 20px;
+}
+
+li.ac_over .autoCompleteName {
+  text-decoration:underline;
+}
+
+li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
+  color: #1F429B;
 }
 
 /** mentor-specific search-results styling */
@@ -2616,7 +2630,7 @@ li.ac_over .autoCompleteEmail {
 }
 
 .autoCompleteName {
-  font-weight: bold;
+  color: #1F429B;
   font-size: 12px;
   display: inline;
 }
@@ -2651,7 +2665,7 @@ li.ac_over .autoCompleteEmail {
   overflow: visible;
 }
 
-.autoCompleteExtraInfo strong {
+.autoCompleteExtraInfo strong, a.autoCompleteEmail {
   color: #1F429B;
   font-weight: normal;
 }

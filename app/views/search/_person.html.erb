@@ -4,7 +4,7 @@
   </div>
 
   <div class='searchResultInfo'>
-    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}", "/people/#{person.id}")-%></div>
+    <div class='searchResultName'><%=link_to("#{person.first_name.capitalize} #{person.last_name.capitalize}".gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"}, "/people/#{person.id}")-%></div>
     <div class='searchResultExtraInfo'><%="#{info_for_person(person)}"-%></div>
   </div>
 
