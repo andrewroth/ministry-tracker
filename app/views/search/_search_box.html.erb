@@ -25,7 +25,7 @@
       <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
       <script type="text/javascript">
         $("#uberSearchBox").autocomplete("/search/autocomplete", {
-          minChars: 2,
+          minChars: 3,
           selectFirst: false,
           matchContains: true,
           autoFill: false,
@@ -83,7 +83,7 @@
 
           $('#uberSearchForm').submit(function() {
             // don't submit if the search box is empty
-            if( !$('#uberSearchBox').val() ) {
+            if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_search_box_text %>") {
               return false;
             }
             else {
