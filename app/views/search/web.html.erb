@@ -18,6 +18,7 @@
       <%= image_tag("silk/world.png") %> <%= "Public " if @gsa_results_unauthenticated.present? %><strong>Web</strong> results for <strong><%= @q %></strong>
 
       <div class="searchResultsSize">
+        <%= "0 " if @web.total_results == 0 %>
         web results
         <% if @web.total_results > @web.per_page %>
           <% onCurPageEnd = @web.current_page * @web.per_page %>

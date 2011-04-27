@@ -35,7 +35,10 @@ module SearchHelper
       info += person.ministries_concat.present? ? "#{person.ministries_concat}<b> · </b>Staff<br/>" : "Staff<br/>"
     end
 
-    info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
+    if person.email.present?
+      email = person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")
+      info += "#{link_to(email, new_email_url("person[]" => person.id), :class => "sendEmail subtle", :title => "Compose an email to #{person.first_name.capitalize}")}"
+    end
 
     if person.cell_phone.present?
       info += "<b> · </b>" if person.email.present?
@@ -78,7 +81,7 @@ module SearchHelper
     leaders = group.leaders + group.co_leaders
 
     leaders_array = leaders.collect do |person|
-      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}"
+      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}", :class => "subtle")}"
     end
 
     info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
@@ -86,13 +89,13 @@ module SearchHelper
 
     # display number of members and any members that matched the search query
 
-    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}") if group.num_members.present?
+    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}", :class => "subtle") if group.num_members.present?
 
     if group.try(:involvements)
       people_ids = group.involvements.split(",")
 
       people_array = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).collect do |person|
-        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}" if leaders.index(person).nil?
+        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}", :class => "subtle")}" if leaders.index(person).nil?
       end
       people_array = people_array-[""]-[nil]
 

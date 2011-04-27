@@ -2264,6 +2264,7 @@ table#set_initial_campus tr {
 
 #searchResultsContainer {
   height: 100%;
+  min-height: 200px;
   width: 72%;
   float: left;
   padding-left: 50px;
@@ -2317,7 +2318,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultPerson {
-  height: 100px;
+  height: 70px;
   margin: 0 0 10px 10px;
   line-height: 16px;
   overflow: hidden;
@@ -2351,6 +2352,14 @@ table#set_initial_campus tr {
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
+.searchResult .subtle {
+  opacity: .7;
+}
+
+.searchResult:hover .subtle {
+  opacity: 1;
+}
+
 .searchResult blockquote {
   margin-left: 30px;
 }
@@ -2360,12 +2369,12 @@ table#set_initial_campus tr {
 }
 
 .searchResultPic {
-  width: 100px;
+  width: 70px;
   text-align: center;
 }
 
 .searchResultActions {
-  margin: 5px 10px 0 0;
+  margin: 0 10px 0 0;
   text-align: right;
   float: right;
 }
@@ -2436,8 +2445,8 @@ table#set_initial_campus tr {
 }
 
 .searchResultPerson .searchResultInfo {
-  margin: 7px 0 0 15px;
-  width: 300px;
+  margin: 5px 0 0 10px;
+  width: 400px;
 }
 
 .searchResultGroup .searchResultInfo {
@@ -2490,13 +2499,6 @@ li.ac_over .autoCompleteIconLink {
 .autoCompleteResult a:hover {
   text-decoration: underline;
   color: #1F429B;
-}
-
-li.ac_over .autoCompleteEmail {
-  background-image: url("/images/silk/email_edit.png");
-  background-repeat: no-repeat;
-  background-position: right;
-  padding-right: 20px;
 }
 
 li.ac_over .autoCompleteName {
@@ -2654,7 +2656,7 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
 }
 
 .autoCompleteInfo {
-  margin: 0 auto auto 60px;
+  margin: 0 auto auto 57px;
   padding-top: 6px;
   font-size: 10px;
   height: 100%;
@@ -2663,6 +2665,14 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
 .autoCompleteExtraInfo {
   height: 39px;
   overflow: visible;
+}
+
+.autoCompleteExtraInfo a {
+  opacity: .7;
+}
+
+.ac_over .autoCompleteExtraInfo a {
+  opacity: 1;
 }
 
 .autoCompleteExtraInfo strong, a.autoCompleteEmail {
