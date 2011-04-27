@@ -112,6 +112,8 @@ module Gasohol
           rs.featured = xml.search(:gm).collect { |xml_featured| parse_featured(xml_featured) }           # get featured results (called 'sponsored links' on the results page, displayed at the top)
           rs.results = xml.search(:r).collect { |xml_result| parse_result(xml_result) }                   # get regular results
         end
+
+        Rails.logger.info "\tGSA returned in #{rs.time}"
       rescue => e
         LOGGER.error("\nERROR PARSING GOOGLE SEARCH APPLIANCE RESPONSE: \n"+e.class.to_s+"\n"+e.message+"\n")
       end

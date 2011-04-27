@@ -14,7 +14,7 @@
         <%= " - #{web_result.crawl_date.strftime("%Y/%m/%d")}" if web_result.crawl_date.present? %>
         <% if web_result.level.to_i > 1 %>
           <br/>
-          [ <%= link_to "More results from #{web_result.host}#{web_result.path}", url_for(:controller => :search, :action => :web, :q => "#{@q} site:#{web_result.host}#{web_result.path}") %> ]
+          [ <%= link_to "More results from #{web_result.host}#{web_result.path}", url_for(:controller => :search, :action => :web, :q => "#{@q} site:#{web_result.host}#{web_result.path}"), :class => "subtle" %> ]
         <% end %>
       </span>
     </div>

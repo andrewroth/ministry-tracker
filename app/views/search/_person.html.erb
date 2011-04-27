@@ -8,7 +8,7 @@
     <div class='searchResultExtraInfo'><%="#{info_for_person(person)}"-%></div>
   </div>
 
-  <div class='searchResultActions'>
+  <div class='searchResultActions subtle'>
     <%- if authorized?(:show, :timetables) && person.timetable_id.present? -%>
       <br/>
       <%=link_to("View Timetable", "/people/#{person.id}/timetables/#{person.timetable_id}", :class => "viewTimetable", :title => "Goto #{person.first_name.capitalize}&rsquo;s timetable")-%>
