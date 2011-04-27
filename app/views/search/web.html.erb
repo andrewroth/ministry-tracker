@@ -14,38 +14,7 @@
   <br/>
   
   <% if session[:search][:authorized_to_search_web] %>
-    <div class="searchResultsTitle">
-      <%= image_tag("silk/world.png") %> <%= "Public " if @gsa_results_unauthenticated.present? %><strong>Web</strong> results for <strong><%= @q %></strong>
-
-      <div class="searchResultsSize">
-        <%= "0 " if @web.total_results == 0 %>
-        web results
-        <% if @web.total_results > @web.per_page %>
-          <% onCurPageEnd = @web.current_page * @web.per_page %>
-          <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
-          <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd}" %>
-        <% end %>
-      </div>
-
-    </div>
-
-    <ul id="WebSearchResults">
-      <% if @web.results.size > 0 %>
-        <%= render :partial => "web_result", :collection => @web.results -%>
-
-      <% else %>
-        <p>
-          No web results found for <strong><%= @q %></strong>.<br/>
-          Try using different or more general search terms.
-        </p>
-      <% end %>
-    </ul>
-
-    <br/>
-    <div class="searchResultsPagination">
-      <%= will_paginate @web, :page_links => false %>
-    </div>
+    <%= render :partial => "web_results", :locals => { :pagination => true } %>
   <% end %>
 
 </div>

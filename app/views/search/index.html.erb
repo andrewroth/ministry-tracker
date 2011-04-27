@@ -94,40 +94,12 @@
 
 
   <% if session[:search][:authorized_to_search_web] %>
-    <div class="searchResultsTitle">
-      <%= image_tag("silk/world.png") %> <%= "Public " if @gsa_results_unauthenticated.present? %><strong>Web</strong> results for <strong><%= @q %></strong>
-
-      <div class="searchResultsSize">
-        <%= "0 " if @web.total_results == 0 %>
-        web results
-        <% if @web.total_results > @web.per_page %>
-          <% onCurPageEnd = @web.current_page * @web.per_page %>
-          <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
-          <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd}" %>
-        <% end %>
+    <div id="webResults">
+      <div class="searchResultsTitle">
+        <%= image_tag("silk/world.png") %> Fetching <strong>Web</strong> results for <strong><%= @q %></strong>
       </div>
-
+      <%= image_tag("default/shared/blue-loading.gif") %>
     </div>
-
-    <ul id="WebSearchResults">
-      <% if @web.results.size > 0 %>
-        <%= render :partial => "web_result", :collection => @web.results -%>
-
-        <% if @web.total_results > @num_results_per_page %>
-          <li class="searchResult searchResultMore">
-            <%= link_to("See more web results »", :action => "web", :controller => "search", :q => @q, :page => 2) %>
-          </li>
-        <% end %>
-
-      <% else %>
-        <p>
-          No web results found for <strong><%= @q %></strong>.<br/>
-          Try using different or more general search terms.
-        </p>
-      <% end %>
-    </ul>
-
     <br/>
     <br/>
   <% end %>
@@ -141,3 +113,17 @@
 <big>Don't be shy, search for something by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
 
 <% end %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    requestWebResults();
+  });
+
+  function requestWebResults() {
+    jQuery.ajax({
+      dataType:'script',
+      type:'post',
+      url:'<%= url_for :controller => :search, :action => :web_remote, :q => "#{@q}" %>'})
+  }
+</script>

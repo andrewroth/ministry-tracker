@@ -1,0 +1,2 @@
+
+page["#webResults"].replace(render(:partial => "web_results", :locals => { :pagination => false }))
