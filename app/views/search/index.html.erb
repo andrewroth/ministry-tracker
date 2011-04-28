@@ -47,6 +47,14 @@
 
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    jQuery.ajax({
+      dataType:'script',
+      type:'post',
+      url:'<%= url_for :controller => :search, :action => :web_remote, :q => "#{@q}" %>'});
+  });
+</script>
 
 <% else %>
 
@@ -56,11 +64,3 @@
 <% end %>
 
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    jQuery.ajax({
-      dataType:'script',
-      type:'post',
-      url:'<%= url_for :controller => :search, :action => :web_remote, :q => "#{@q}" %>'});
-  });
-</script>
