@@ -1,5 +1,5 @@
 
-<h1 id="reportTitle">Search People</h1>
+<h1 id="reportTitle">Search the Web</h1>
 
 <% if @q.present? %>
 
@@ -13,8 +13,8 @@
 <div id="searchResultsContainer">
   <br/>
   
-  <% if session[:search][:authorized_to_search_people] %>
-    <%= render :partial => "people", :locals => { :pagination => true } %>
+  <% if session[:search][:authorized_to_search_web] %>
+    <%= render :partial => "web_results", :locals => { :pagination => true } %>
   <% end %>
 </div>
 

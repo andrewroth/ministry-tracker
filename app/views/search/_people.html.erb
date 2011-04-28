@@ -1,0 +1,40 @@
+
+<div class="searchResultsTitle">
+  <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
+
+  <div class="searchResultsSize">
+    <% if @people.total_entries > @people.per_page %>
+      <% onCurPageEnd = @people.current_page * @people.per_page %>
+      <% onCurPageBegin = (onCurPageEnd-@people.per_page)+1 %>
+      <% onCurPageEnd = onCurPageEnd > @people.total_entries ? @people.total_entries : onCurPageEnd %>
+      <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
+    <% end %>
+    <%= pluralize(@people.total_entries, "person") %>
+  </div>
+
+</div>
+
+<ul id="peopleSearchResults">
+  <% if @people.size > 0 %>
+    <%= render :partial => "person", :collection => @people %>
+
+    <% if pagination == true %>
+      <br/>
+      <div class="searchResultsPagination">
+        <%= will_paginate @people %>
+      </div>
+    <% else %>
+      <% if @people.total_entries > @num_results_per_page %>
+        <li class="searchResult searchResultMore">
+          <%= link_to("See more people results »", :action => "people", :controller => "search", :q => "#{@q}", :page => 2) %>
+        </li>
+      <% end %>
+    <% end %>
+
+  <% else %>
+    <p>
+      No people found for <strong><%= @q %></strong> within your ministry.<br/>
+      Try searching for just their first name, last name or email.
+    </p>
+  <% end %>
+</ul>
