@@ -229,4 +229,10 @@ module Searching
     end
   end
 
+
+  def set_num_results_per_page
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+    params[:per_page] = @num_results_per_page
+  end
+
 end

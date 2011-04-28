@@ -2318,7 +2318,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultPerson {
-  height: 70px;
+  height: 65px;
   margin: 0 0 10px 10px;
   line-height: 16px;
   overflow: hidden;
@@ -2352,11 +2352,11 @@ table#set_initial_campus tr {
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
-.searchResult .subtle {
-  opacity: .7;
+.searchResult .subtle, .autoCompleteExtraInfo a {
+  opacity: .8;
 }
 
-.searchResult:hover .subtle {
+.searchResult:hover .subtle, .ac_over .autoCompleteExtraInfo a {
   opacity: 1;
 }
 
@@ -2369,7 +2369,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultPic {
-  width: 70px;
+  width: 65px;
   text-align: center;
 }
 
@@ -2422,6 +2422,10 @@ table#set_initial_campus tr {
 .searchResultWeb .searchResultName b {
   color: #1F429B;
   font-weight: bold;
+}
+
+.searchResultWeb .spinner {
+  margin-bottom: 500px;
 }
 
 .searchResultUrlLine, .searchResultMime {
@@ -2665,14 +2669,6 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
 .autoCompleteExtraInfo {
   height: 39px;
   overflow: visible;
-}
-
-.autoCompleteExtraInfo a {
-  opacity: .7;
-}
-
-.ac_over .autoCompleteExtraInfo a {
-  opacity: 1;
 }
 
 .autoCompleteExtraInfo strong, a.autoCompleteEmail {
