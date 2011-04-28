@@ -28,12 +28,14 @@
 
 
   <% if session[:search][:authorized_to_search_web] %>
-    <div id="webResults">
-      <div class="searchResultsTitle">
-        <%= image_tag("silk/world.png") %> Fetching <strong>Web</strong> results for <strong><%= @q %></strong>
-      </div>
-      <div class="searchResult searchResultWeb">
-        <%= image_tag("default/shared/blue-loading.gif", :class => "spinner") %>
+    <div id="webResultsContainer">
+      <div id="webResults">
+        <div class="searchResultsTitle">
+          <%= image_tag("silk/world.png") %> Fetching <strong>Web</strong> results for <strong><%= @q %></strong>
+        </div>
+        <div class="searchResult searchResultWeb">
+          <%= image_tag("default/shared/blue-loading.gif", :class => "spinner") %>
+        </div>
       </div>
     </div>
     
