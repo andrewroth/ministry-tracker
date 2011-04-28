@@ -1,5 +1,11 @@
+
+<%= javascript_include_tag "jquery.tooltip.js" %>
+
 <div class="searchResultsTitle">
-  <%= image_tag("silk/world.png") %> <%= "Public " if @gsa_results_unauthenticated.present? %><strong>Web</strong> results for <strong><%= @q %></strong>
+  <%= image_tag("silk/world.png") %>
+  <%= @gsa_results_unauthenticated.present? ? "Public " : "#{image_tag("silk/key.png", :class => "theKey",
+    :title => " - <span class='whiteFont'>You can see these personalized web results because you are logged into TheKey.</span>")} " %>
+  <strong>Web</strong> results for <strong><%= @q %></strong>
 
   <div class="searchResultsSize">
     <%= "0 " if @web.total_results == 0 %>
@@ -39,3 +45,13 @@
   <% end %>
 </ul>
 
+<script type="text/javascript">
+  // show tooltip on hover over key icon
+  $(".theKey").tooltip({
+    track: true,
+    delay: 0,
+    showURL: false,
+    showBody: " - ",
+    fade: 100
+  });
+</script>

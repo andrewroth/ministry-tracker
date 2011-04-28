@@ -2425,7 +2425,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultWeb .spinner {
-  margin-bottom: 500px;
+  margin-bottom: 300px;
 }
 
 .searchResultUrlLine, .searchResultMime {
@@ -2854,12 +2854,11 @@ table.groupInvolvementList th {
 
 .horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
-#tooltip.horizTableCompare {
+#tooltip.horizTableCompare, #tooltip {
   position: absolute;
 	z-index: 3000;
 	background-color: #666766;
 	padding: 10px;
-  /*opacity: 0.85;*/
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
   -moz-box-shadow: 1px 4px 5px #C8C8C8; -webkit-box-shadow: 1px 4px 5px #C8C8C8;
 }
