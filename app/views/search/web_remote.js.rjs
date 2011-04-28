@@ -1,2 +1,4 @@
 
-page["#webResults"].replace(render(:partial => "web_results", :locals => { :pagination => false }))
+page["#webResults"].hide
+page["#webResults"].html(render(:partial => "web_results", :locals => { :pagination => false }))
+page["#webResults"].visual_effect :fade_in

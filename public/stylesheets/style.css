@@ -2313,19 +2313,20 @@ table#set_initial_campus tr {
 
 .searchResultGroup {
   margin: 10px 0 20px 10px;
-  line-height: 16px;
+  line-height: 15px;
   overflow: hidden;
 }
 
 .searchResultPerson {
   height: 65px;
   margin: 0 0 10px 10px;
-  line-height: 16px;
+  line-height: 15px;
   overflow: hidden;
 }
 
 .searchResultWeb {
   margin: 20px 0 20px 10px;
+  line-height: 15px;
   overflow: hidden;
 }
 
@@ -2425,7 +2426,7 @@ table#set_initial_campus tr {
 }
 
 .searchResultWeb .spinner {
-  margin-bottom: 300px;
+  margin-bottom: 200px;
 }
 
 .searchResultUrlLine, .searchResultMime {
