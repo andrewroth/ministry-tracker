@@ -40,7 +40,7 @@ Rails::Initializer.run do |config|
   config.gem  'hpricot'
   config.gem  'rubyzip', :lib => 'zip/zip'
   config.gem  'roo', :version => '1.3.11'
-  config.gem  'mechanize'
+  config.gem  'mechanize', :version => '1.0.0'
   config.gem  'erubis'
   config.gem  'aws-s3', :lib => 'aws/s3'
   config.gem  'jrails'
