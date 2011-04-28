@@ -193,7 +193,8 @@ class ApplicationController < ActionController::Base
       :campus_involvements => [:new, :edit, :index],
       :ministry_involvements => [:new, :edit, :index],
       :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
-      :summer_report_reviewers => [:edit, :update]
+      :summer_report_reviewers => [:edit, :update],
+      :search => [:web_remote]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -313,6 +314,10 @@ class ApplicationController < ActionController::Base
             # can edit reports that you are chosen to review
             return true if SummerReportReviewer.first(params[:id]).person_id == @my.id
           end
+          
+        when :search
+          return true if action == 'web_remote' && authorized?(:web, :search)
+          
         end # case
       end # if
 
