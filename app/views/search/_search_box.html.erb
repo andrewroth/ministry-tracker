@@ -7,7 +7,7 @@
       <div id="uberSearchBoxContainer">
         <% form_tag url_for(:controller => :search), :method => 'get', :id => 'uberSearchForm' do %>
 
-          <%  if q.present? && controller.controller_name == "search" && (controller.action_name == "index" || controller.action_name == "people" || controller.action_name == "groups") %>
+          <% if q.present? && controller.controller_name == "search" %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= @mobile ? '' : default_search_box_text %>"/>
@@ -94,6 +94,7 @@
             else {
               // visual cue that seach has started
               $('#uberSearchButton div').css('background', 'url(/images/debicons/Ymagniglass.png) no-repeat 0px 0px');
+              $('div.ac_results').hide();
               return true;
             }
           });

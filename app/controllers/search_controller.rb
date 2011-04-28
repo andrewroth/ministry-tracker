@@ -9,53 +9,40 @@ class SearchController < ApplicationController
 
   before_filter :get_query, :only => [:index, :people, :groups, :web, :web_remote, :autocomplete, :autocomplete_mentors, :autocomplete_mentees]
 
+  before_filter :set_num_results_per_page, :only => [:index, :people, :groups, :web, :web_remote]
+
 
   FILTER_MENTOR_NONE = 'NULL'
 
 
   def index
-    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
-
     if @q.present?
-      params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
     end
   end
 
   def people
-    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
-
     if @q.present?
-      params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
     end
   end
 
   def groups
-    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
-
     if @q.present?
-      params[:per_page] = @num_results_per_page
       @people = search_people if session[:search][:authorized_to_search_people]
       @groups = search_groups(@people) if session[:search][:authorized_to_search_groups]
     end
   end
 
   def web
-    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
-
     if @q.present?
-      params[:per_page] = @num_results_per_page
       @web = search_web if session[:search][:authorized_to_search_web]
     end
   end
 
   def web_remote
-    @num_results_per_page = Searching::DEFAULT_NUM_SEARCH_RESULTS
-
     if @q.present?
-      params[:per_page] = @num_results_per_page
       @web = search_web if session[:search][:authorized_to_search_web]
     end
 

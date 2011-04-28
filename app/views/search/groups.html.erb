@@ -18,40 +18,10 @@
 
 <div id="searchResultsContainer">
   <br/>
-  
+
   <% if session[:search][:authorized_to_search_groups] %>
-    <div class="searchResultsTitle">
-      <%= image_tag("silk/group.png") %> <strong>Group</strong> results for <strong><%= @q %></strong>
-
-      <div class="searchResultsSize">
-        <% if @groups.total_entries > @groups.per_page %>
-          <% onCurPageEnd = @groups.current_page * @groups.per_page %>
-          <% onCurPageBegin = (onCurPageEnd-@groups.per_page)+1 %>
-          <% onCurPageEnd = onCurPageEnd > @groups.total_entries ? @groups.total_entries : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
-        <% end %>
-        <%= pluralize(@groups.total_entries, "group") %>
-      </div>
-
-    </div>
-
-    <ul id="GroupSearchResults">
-      <% if @groups.size > 0 %>
-        <%= render :partial => "group", :collection => @groups %>
-      <% else %>
-        <p>
-          No groups found for <strong><%= @q %></strong> within your ministry.<br/>
-          Try searching for part of the group name or the name of someone who's in the group you're looking for.
-        </p>
-      <% end %>
-    </ul>
-
-    <br/>
-    <div class="searchResultsPagination">
-      <%= will_paginate @groups %>
-    </div>
+    <%= render :partial => "groups", :locals => { :pagination => true } %>
   <% end %>
-
 </div>
 
 

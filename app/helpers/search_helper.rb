@@ -114,8 +114,8 @@ module SearchHelper
     host = uri.host
     file = File.basename(CGI::unescape(uri.path))
     path = File.dirname(CGI::unescape(uri.path))
-    path = "#{path}/" unless path.length == 1
-    CGI::unescape "#{host}#{truncate(path, :length => 30, :omission => "...#{path[path.length-15,path.length-1]}")}#{file}"
+    path = "#{path}/" unless path == "/"
+    CGI::unescape "#{host}#{truncate(path, :length => 30, :omission => "...#{path[path.length-15,path.length-1]}")}#{file unless file == '/'}"
   end
 
 end
