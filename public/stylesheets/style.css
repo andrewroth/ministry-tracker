@@ -2425,8 +2425,8 @@ table#set_initial_campus tr {
   font-weight: bold;
 }
 
-.searchResultWeb .spinner {
-  margin-bottom: 200px;
+#webResultsContainer {
+  min-height: 300px;
 }
 
 .searchResultUrlLine, .searchResultMime {
