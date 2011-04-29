@@ -197,7 +197,7 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding-left:20px;
   border:0px solid black;
   height:18px;
-  background:url(../images/zoom.png) top left no-repeat;
+  background:url(/images/zoom.png) top left no-repeat;
 }
 
 .butUpdate a, .butDelete a {
@@ -208,11 +208,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 }
 
 .butUpdate a {
-  background: #fff url(../images/edit.png) 3px 5px no-repeat;
+  background: #fff url(/images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a {
-  background: #fff url(../images/delete.png) 3px 5px no-repeat;
+  background: #fff url(/images/delete.png) 3px 5px no-repeat;
 }
 
 
@@ -222,11 +222,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 }
 
 .butUpdate a:hover {
-  background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a:hover {
-  background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/delete.png) 3px 5px no-repeat;
 }
 
 .butUpdate, .butDelete {
@@ -248,14 +248,14 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:5px 5px 5px 5px;
   padding-left:20px;
   border:1px solid #ccc;
-  background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
+  background: #fff url(/images/page_white_excel.png) 3px 5px no-repeat;
   height:18px;
 }
 
 .butDExcel a:hover {
   text-decoration:none;
   border:1px solid #1F429B;
-  background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/page_white_excel.png) 3px 5px no-repeat;
 }
 
 
@@ -268,14 +268,14 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:5px 5px 5px 5px;
   padding-left:20px;
   border:1px solid #ccc;
-  background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
+  background: #fff url(/images/bullet_go.png) 3px 5px no-repeat;
   height:18px;
 }
 
 .butNormal a:hover {
   text-decoration:none;
   border:1px solid #1F429B;
-  background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/bullet_go.png) 3px 5px no-repeat;
 }
 
 
@@ -288,7 +288,7 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:0;
   padding-left:20px;
   border:0px solid #ccc;
-  background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
+  background: #fff url(/images/silk/add.png) 0px -1px no-repeat;
   height:18px;
 }
 
@@ -2221,13 +2221,13 @@ table#set_initial_campus tr {
 
 #searchFilterControlsContainer .searchFilterHighlighted {
   font-weight: bold;
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
 #searchFilterControlsContainer a:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
 #searchFilterControlsContainer a.searchFilterAll {
@@ -2254,9 +2254,18 @@ table#set_initial_campus tr {
   background-position: left;
 }
 
+#searchFilterControlsContainer a.searchFilterWeb {
+  padding-left: 20px;
+  padding-top: 2px;
+  background-image: url("/images/silk/world.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
 #searchResultsContainer {
   height: 100%;
-  width: 65%;
+  min-height: 200px;
+  width: 72%;
   float: left;
   padding-left: 50px;
   border-left: 1px solid #E6E6E6;
@@ -2303,16 +2312,21 @@ table#set_initial_campus tr {
 }
 
 .searchResultGroup {
-  height: 110px;
-  margin: 0 0 10px 10px;
-  line-height: 16px;
+  margin: 10px 0 20px 10px;
+  line-height: 15px;
   overflow: hidden;
 }
 
 .searchResultPerson {
-  height: 100px;
+  height: 65px;
   margin: 0 0 10px 10px;
-  line-height: 16px;
+  line-height: 15px;
+  overflow: hidden;
+}
+
+.searchResultWeb {
+  margin: 20px 0 20px 10px;
+  line-height: 15px;
   overflow: hidden;
 }
 
@@ -2335,8 +2349,22 @@ table#set_initial_campus tr {
 }
 
 .searchResult:hover {
-  background-color: #F5F5F7;
-  -moz-box-shadow: 0 0 10px rgba(237, 237, 240, 1); -webkit-box-shadow: 0 0 10px rgba(239, 239, 242, 1);
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
+}
+
+.searchResult .subtle, .searchResult .subtle strong, .searchResult .subtle a,
+.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong {
+  color: #5674BF;
+}
+
+.searchResult:hover .subtle, .searchResult:hover .subtle strong, .searchResult:hover .subtle a,
+.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong {
+  color: #1F429B;
+}
+
+.searchResult blockquote {
+  margin-left: 30px;
 }
 
 .searchResultPic, .searchResultInfo {
@@ -2344,12 +2372,19 @@ table#set_initial_campus tr {
 }
 
 .searchResultPic {
-  width: 100px;
+  width: 65px;
+  height: 65px;
+  overflow: hidden;
   text-align: center;
 }
 
+.searchResultPic img {
+  max-width: 65px;
+  max-height: 65px;
+}
+
 .searchResultActions {
-  margin: 5px 10px 0 0;
+  margin: 0 10px 0 0;
   text-align: right;
   float: right;
 }
@@ -2383,13 +2418,34 @@ table#set_initial_campus tr {
 
 .searchResultName {
   font-size: 14px;
+}
+
+.searchResultName b {
+  color: #1F429B;
   font-weight: bold;
+}
+
+.searchResultWeb .searchResultName {
+  font-weight: normal;
+}
+
+.searchResultWeb .searchResultName b {
+  color: #1F429B;
+  font-weight: bold;
+}
+
+#webResultsContainer {
+  min-height: 300px;
+}
+
+.searchResultUrlLine, .searchResultMime {
+  color:#666766;
+  font-size:12px;
 }
 
 .searchResultInfo {
   font-size: 11px;
   overflow: hidden;
-  height: 93px;
 }
 
 .searchResultInfo strong {
@@ -2397,14 +2453,18 @@ table#set_initial_campus tr {
   font-weight: normal;
 }
 
+.searchResultExtraInfo strong {
+  color: #666766;
+  font-weight: bold;
+}
+
 .searchResultPerson .searchResultInfo {
-  margin: 7px 0 0 15px;
-  width: 300px;
+  margin: 5px 0 0 10px;
+  width: 400px;
 }
 
 .searchResultGroup .searchResultInfo {
-  margin: 7px 0 0 10px;
-  width: 350px;
+  width: 400px;
 }
 
 .autoCompleteMore {
@@ -2455,11 +2515,8 @@ li.ac_over .autoCompleteIconLink {
   color: #1F429B;
 }
 
-li.ac_over .autoCompleteEmail {
-  background-image: url("/images/silk/email_edit.png");
-  background-repeat: no-repeat;
-  background-position: right;
-  padding-right: 20px;
+li.ac_over .autoCompleteName {
+  text-decoration:underline;
 }
 
 /** mentor-specific search-results styling */
@@ -2585,7 +2642,7 @@ li.ac_over .autoCompleteEmail {
 }
 
 .autoCompleteName {
-  font-weight: bold;
+  color: #1F429B;
   font-size: 12px;
   display: inline;
 }
@@ -2608,8 +2665,13 @@ li.ac_over .autoCompleteEmail {
   text-align: center;
 }
 
+.autoCompletePic img {
+  max-height: 50px;
+  max-width: 50px;
+}
+
 .autoCompleteInfo {
-  margin: 0 auto auto 60px;
+  margin: 0 auto auto 57px;
   padding-top: 6px;
   font-size: 10px;
   height: 100%;
@@ -2618,11 +2680,6 @@ li.ac_over .autoCompleteEmail {
 .autoCompleteExtraInfo {
   height: 39px;
   overflow: visible;
-}
-
-.autoCompleteExtraInfo strong {
-  color: #1F429B;
-  font-weight: normal;
 }
 
 .autoCompleteResult {
@@ -2802,12 +2859,11 @@ table.groupInvolvementList th {
 
 .horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
-#tooltip.horizTableCompare {
+#tooltip.horizTableCompare, #tooltip {
   position: absolute;
 	z-index: 3000;
 	background-color: #666766;
 	padding: 10px;
-  /*opacity: 0.85;*/
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
   -moz-box-shadow: 1px 4px 5px #C8C8C8; -webkit-box-shadow: 1px 4px 5px #C8C8C8;
 }

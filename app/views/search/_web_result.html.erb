@@ -1,0 +1,24 @@
+<li class='searchResult searchResultWeb'>
+  <% (web_result.level.to_i-1).times do %><blockquote><% end %>
+
+  <div class='searchResultInfo'>
+    <div class='searchResultName'>
+      <%= "<span class='searchResultMime'>[#{web_result.mime.sub(/.*[\/,\.]/,"")}]</span>" if web_result.mime.present? %>
+      <%=link_to("#{CGI::unescapeHTML web_result.title}".gsub(/<b>/i, "<strong>").gsub(/<\/b>/i, "</strong>"), "#{CGI::unescape web_result.url}")%>
+    </div>
+
+    <div class='searchResultExtraInfo'>
+      <%= CGI::unescapeHTML(web_result.abstract).gsub("<b></b>", "<b>...</b>") %><%= "<br/>" if web_result.abstract.present? %>
+      <span class="searchResultUrlLine">
+        <%= display_url(web_result.url) %>
+        <%= " - #{web_result.crawl_date.strftime("%Y/%m/%d")}" if web_result.crawl_date.present? %>
+        <% if web_result.level.to_i > 1 %>
+          <br/>
+          [ <%= link_to "More results from #{web_result.host}#{web_result.path}", url_for(:controller => :search, :action => :web, :q => "#{@q} site:#{web_result.host}#{web_result.path}"), :class => "subtle" %> ]
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <% (web_result.level.to_i-1).times do %></blockquote><% end %>
+</li>
