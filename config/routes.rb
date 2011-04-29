@@ -1,5 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :global_dashboard_accesses
+
+  map.resources :label_people
+
+  map.resources :labels
 
   map.resources :notices, :member => { :dismiss => :post }
 
@@ -183,6 +188,7 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state             => :any,
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
+                                          :set_label => :get,
                                           #:perform_task => :post},
                                           :perform_task => :post} do |person|
                          #:has_many => [:timetables] do |person|

@@ -2957,8 +2957,6 @@ td.nameTitle {
     margin-left:50px;
 }
 
-
-
 /* Summer Report */
 
 #submit_summer_report label { width:250px; text-align:right; padding:2px 10px; }
@@ -3014,3 +3012,22 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 .report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }
 .report_disapproved { font-weight:bold; color:#8C4A4B; }
+
+.personLabel {
+	float:left;
+	padding:0px 8px 0px 0px;
+}
+
+.personLabelText {
+	color:#000000;
+	border: 2px silver solid;
+	border-style: outset;
+	font-variant:small-caps;
+	font-family:"Copperplate Gothic Bold";
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.personLabelAdd {
+  display: inline;
+}

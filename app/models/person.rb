@@ -6,6 +6,10 @@ class Person < ActiveRecord::Base
   include Common::Core::Person
   include Common::Core::Ca::Person
   include Legacy::Stats::Core::Person
+  
+  # Labels
+  has_many :label_persons, :class_name => "LabelPerson", :foreign_key => _(:person_id, :label_id)
+  has_many :labels, :through => :label_persons, :order => "#{Label.table_name}.#{_(:priority)} asc"
 
   # Training Questions
   has_many :training_answers, :class_name => "TrainingAnswer", :foreign_key => _(:person_id, :training_answer)
