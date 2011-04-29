@@ -1,0 +1,3 @@
+page["global_country_stage_edit"].hide
+page["global_country_stage_show"].html(@country.stage)
+page["global_country_stage_change"].show
