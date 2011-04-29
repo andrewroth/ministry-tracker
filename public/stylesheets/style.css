@@ -2353,12 +2353,14 @@ table#set_initial_campus tr {
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
-.searchResult .subtle, .autoCompleteExtraInfo a {
-  opacity: .8;
+.searchResult .subtle, .searchResult .subtle strong, .searchResult .subtle a,
+.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong {
+  color: #5674BF;
 }
 
-.searchResult:hover .subtle, .ac_over .autoCompleteExtraInfo a {
-  opacity: 1;
+.searchResult:hover .subtle, .searchResult:hover .subtle strong, .searchResult:hover .subtle a,
+.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong {
+  color: #1F429B;
 }
 
 .searchResult blockquote {
@@ -2515,10 +2517,6 @@ li.ac_over .autoCompleteIconLink {
 
 li.ac_over .autoCompleteName {
   text-decoration:underline;
-}
-
-li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
-  color: #1F429B;
 }
 
 /** mentor-specific search-results styling */
@@ -2682,11 +2680,6 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
 .autoCompleteExtraInfo {
   height: 39px;
   overflow: visible;
-}
-
-.autoCompleteExtraInfo strong, a.autoCompleteEmail {
-  color: #1F429B;
-  font-weight: normal;
 }
 
 .autoCompleteResult {
