@@ -2371,7 +2371,14 @@ table#set_initial_campus tr {
 
 .searchResultPic {
   width: 65px;
+  height: 65px;
+  overflow: hidden;
   text-align: center;
+}
+
+.searchResultPic img {
+  max-width: 65px;
+  max-height: 65px;
 }
 
 .searchResultActions {
@@ -2658,6 +2665,11 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
   width: 50px;
   height: 50px;
   text-align: center;
+}
+
+.autoCompletePic img {
+  max-height: 50px;
+  max-width: 50px;
 }
 
 .autoCompleteInfo {
