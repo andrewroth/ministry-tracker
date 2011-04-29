@@ -12,6 +12,17 @@ class MonthlyReportsController < ReportsController
   def input_reports
     [:monthly_report, :monthly_p2c_special]
   end
+  
+  def stat_details
+  	#render :partial => "stat_details", :locals => { :stats => params['stats'] }
+  	#render :template => 'stat_details'
+  end
+  
+  def change_school_year
+  	# record_to_change = YearInSchool.find_by_person_id(person_id)
+  	# record_to_change.year_id = MonthlyReportsHelper::SCHOOL_YEAR_OTHER_IDX
+  	# record_to_change.save!
+  end
 
   def after_saving
     monthly_reports_this_year = get_monthly_reports_for_period(get_year)

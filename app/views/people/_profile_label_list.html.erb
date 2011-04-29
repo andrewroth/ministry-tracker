@@ -1,0 +1,10 @@
+<div class="personLabel"><div class="personLabelText">
+<div id="plabel_<%= person_label.id %>">
+	<%= person_label.content %>
+    <%= link_to_remote(image_tag('cross_tiny.png'), 
+        :update => "plabel_#{person_label.id}",
+        :url => { :action => :remove_label, :params => {:label_id => "#{person_label.id}", :person_id => @person.id}  },
+        :confirm => "Are you sure you want to remove the '#{person_label.content}' label from #{@person.full_name} ?", 
+        :loading => "$('#spinnerlbls').show()", :complete => "$('#spinnerlbls').hide()")  if authorized?(:remove_profile_label, :people) %>       
+</div>
+</div></div>

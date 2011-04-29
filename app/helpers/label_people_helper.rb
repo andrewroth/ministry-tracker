@@ -1,0 +1,2 @@
+module LabelPeopleHelper
+end

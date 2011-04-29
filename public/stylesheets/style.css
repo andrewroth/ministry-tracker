@@ -2889,3 +2889,21 @@ td.nameTitle {
     margin-left:50px;
 }
 
+.personLabel {
+	float:left;
+	padding:0px 8px 0px 0px;
+}
+
+.personLabelText {
+	color:#000000;
+	border: 2px silver solid;
+	border-style: outset;
+	font-variant:small-caps;
+	font-family:"Copperplate Gothic Bold";
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.personLabelAdd {
+  display: inline;
+}

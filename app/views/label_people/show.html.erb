@@ -1,0 +1,13 @@
+<p>
+  <b>Label:</b>
+  <%=h @label_person.label_id %>
+</p>
+
+<p>
+  <b>Person:</b>
+  <%=h @label_person.person_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_label_person_path(@label_person) %> |
+<%= link_to 'Back', label_people_path %>
