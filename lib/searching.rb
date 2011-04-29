@@ -128,8 +128,35 @@ module Searching
   end
 
 
+  def search_web(query = @q)
+    num = params[:per_page].present? ? params[:per_page].to_i : DEFAULT_NUM_SEARCH_RESULTS.to_i
+    start = params[:page].present? ? (params[:page].to_i*num)-num : 0
+    config = google_search_appliance_config.merge({:num => num, :start => start})
+    
+    # CAS proxy authentication requires that the service url and params stay in the same order
+    # (i.e. the service uri must not change between when the ticket is requested and when the actual request is made or else the proxy ticket validation will fail)
+    # therefore we will manually construct the request in a string
+    service_uri = config.delete(:url)
+    service_uri += "#{service_uri.include?('?') ? '&' : '?'}q=#{CGI::escape(query)}"
+    config.each do |k,v|
+      service_uri += "&#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"
+    end
 
+    begin
+      proxy_granting_ticket = session[:cas_pgt]
+      proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
 
+      # CAS proxy authentication requires that the ticket be the last param in query string
+      raise("no proxy ticket") if proxy_ticket.ticket.blank?
+      service_uri += "&ticket=#{proxy_ticket.ticket}"
+    rescue => e
+      Rails.logger.error("\nERROR GETTING GOOGLE SEARCH APPLIANCE CAS PROXY TICKET: \n"+e.class.to_s+"\n"+e.message+"\n")
+      @gsa_results_unauthenticated = true
+    end
+
+    g = Gasohol::Search.new(google_search_appliance_config)
+    g.search_request_string(service_uri)
+  end
 
 
   def setup_my_ministry_and_campus_ids
@@ -196,9 +223,16 @@ module Searching
 
       session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
       session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
+      session[:search][:authorized_to_search_web] ||= authorized?(:web, :search)
 
       session[:search][:search_prepared] ||= true
     end
+  end
+
+
+  def set_num_results_per_page
+    @num_results_per_page = DEFAULT_NUM_SEARCH_RESULTS
+    params[:per_page] = @num_results_per_page
   end
 
 end

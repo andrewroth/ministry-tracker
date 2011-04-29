@@ -767,3 +767,19 @@
       :num_days_to_display_event_after_completed => 10
     }
   end
+
+
+  def google_search_appliance_config
+    {
+      :url => "https://search.mygcx.org/search",
+      :client => "global",
+      :ud => "0",
+      :output => "xml_no_dtd",
+      :site => "default_collection",
+      :oe => "UTF-8",
+      :ie => "UTF-8",
+      :entqr => "3",
+      :entsp => "a",
+      :access => "a"
+    }
+  end
