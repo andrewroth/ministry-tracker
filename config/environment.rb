@@ -37,7 +37,7 @@ Rails::Initializer.run do |config|
   # config.gem  'json'
   config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
-  config.gem  'hpricot'
+  config.gem  'hpricot', :version => '0.8.3'
   config.gem  'rubyzip', :lib => 'zip/zip'
   config.gem  'roo', :version => '1.3.11'
   config.gem  'mechanize', :version => '1.0.0'

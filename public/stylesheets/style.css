@@ -197,7 +197,7 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding-left:20px;
   border:0px solid black;
   height:18px;
-  background:url(../images/zoom.png) top left no-repeat;
+  background:url(/images/zoom.png) top left no-repeat;
 }
 
 .butUpdate a, .butDelete a {
@@ -208,11 +208,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 }
 
 .butUpdate a {
-  background: #fff url(../images/edit.png) 3px 5px no-repeat;
+  background: #fff url(/images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a {
-  background: #fff url(../images/delete.png) 3px 5px no-repeat;
+  background: #fff url(/images/delete.png) 3px 5px no-repeat;
 }
 
 
@@ -222,11 +222,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 }
 
 .butUpdate a:hover {
-  background: #ffffcc url(../images/edit.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/edit.png) 3px 5px no-repeat;
 }
 
 .butDelete a:hover {
-  background: #ffffcc url(../images/delete.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/delete.png) 3px 5px no-repeat;
 }
 
 .butUpdate, .butDelete {
@@ -248,14 +248,14 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:5px 5px 5px 5px;
   padding-left:20px;
   border:1px solid #ccc;
-  background: #fff url(../images/page_white_excel.png) 3px 5px no-repeat;
+  background: #fff url(/images/page_white_excel.png) 3px 5px no-repeat;
   height:18px;
 }
 
 .butDExcel a:hover {
   text-decoration:none;
   border:1px solid #1F429B;
-  background: #ffffcc url(../images/page_white_excel.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/page_white_excel.png) 3px 5px no-repeat;
 }
 
 
@@ -268,14 +268,14 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:5px 5px 5px 5px;
   padding-left:20px;
   border:1px solid #ccc;
-  background: #fff url(../images/bullet_go.png) 3px 5px no-repeat;
+  background: #fff url(/images/bullet_go.png) 3px 5px no-repeat;
   height:18px;
 }
 
 .butNormal a:hover {
   text-decoration:none;
   border:1px solid #1F429B;
-  background: #ffffcc url(../images/bullet_go.png) 3px 5px no-repeat;
+  background: #ffffcc url(/images/bullet_go.png) 3px 5px no-repeat;
 }
 
 
@@ -288,7 +288,7 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding:0;
   padding-left:20px;
   border:0px solid #ccc;
-  background: #fff url(../images/silk/add.png) 0px -1px no-repeat;
+  background: #fff url(/images/silk/add.png) 0px -1px no-repeat;
   height:18px;
 }
 
@@ -2353,12 +2353,14 @@ table#set_initial_campus tr {
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
 }
 
-.searchResult .subtle, .autoCompleteExtraInfo a {
-  opacity: .8;
+.searchResult .subtle, .searchResult .subtle strong, .searchResult .subtle a,
+.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong {
+  color: #5674BF;
 }
 
-.searchResult:hover .subtle, .ac_over .autoCompleteExtraInfo a {
-  opacity: 1;
+.searchResult:hover .subtle, .searchResult:hover .subtle strong, .searchResult:hover .subtle a,
+.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong {
+  color: #1F429B;
 }
 
 .searchResult blockquote {
@@ -2515,10 +2517,6 @@ li.ac_over .autoCompleteIconLink {
 
 li.ac_over .autoCompleteName {
   text-decoration:underline;
-}
-
-li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
-  color: #1F429B;
 }
 
 /** mentor-specific search-results styling */
@@ -2682,11 +2680,6 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
 .autoCompleteExtraInfo {
   height: 39px;
   overflow: visible;
-}
-
-.autoCompleteExtraInfo strong, a.autoCompleteEmail {
-  color: #1F429B;
-  font-weight: normal;
 }
 
 .autoCompleteResult {
