@@ -1,4 +1,5 @@
 class GlobalDashboardController < ApplicationController
+
   ALLOWED_GUIDS = [ # TODO: this will be removed once data is imported to GlobalDashboardAccess rows
     "250F5FAB-E473-36D8-D406-DFB1C00DD1F2",
     "556CD6D6-1C80-3F12-C288-F8F62E0BEB55",
@@ -163,7 +164,7 @@ class GlobalDashboardController < ApplicationController
       }.flatten.compact
 
       if area_filters.length == 1 && area_filters.first.is_a?(GlobalCountry)
-        country = area_filters.first
+        @country = country = area_filters.first
         @country_name = country.name
         @country_stage = country.stage
         @country_funding = country.locally_funded_FY10
@@ -349,9 +350,13 @@ class GlobalDashboardController < ApplicationController
       end
     end
 
+    def ensure_permission_by_person_id
+      [283, 5173].include?(@person.id) 
+    end
+
     def ensure_permission
-      access_denied unless [283, 5173].include?(@person.id) || 
-        GlobalDashboardAccess.find_by_guid(@person.try(:user).try(:guid))
+      access_denied unless ensure_permission_by_person_id || 
+        GlobalDashboardAccess.find_by_guid(ensure_permission_by_person_id, @person.try(:user).try(:guid))
         #ALLOWED_GUIDS.include?(@person.try(:user).try(:guid))
     end
 
