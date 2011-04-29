@@ -15,6 +15,7 @@ class GlobalDashboardController < ApplicationController
   ]
 
   before_filter :ensure_permission
+  before_filter :set_can_edit_stages
   skip_before_filter :authorization_filter
 
   def index
@@ -368,5 +369,9 @@ class GlobalDashboardController < ApplicationController
       @all_mcc_options ||= all_mccs.collect{ |mcc|
         mcc == "" ? "No mcc chosen" : mcc
       }
+    end
+
+    def set_can_edit_stages
+      @can_edit_stages = ensure_permission_by_person_id
     end
 end
