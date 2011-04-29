@@ -2667,6 +2667,11 @@ li.ac_over .autoCompleteName strong, .autoCompleteEmail:hover strong {
   text-align: center;
 }
 
+.autoCompletePic img {
+  max-height: 50px;
+  max-width: 50px;
+}
+
 .autoCompleteInfo {
   margin: 0 auto auto 57px;
   padding-top: 6px;
