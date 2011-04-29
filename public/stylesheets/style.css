@@ -2371,7 +2371,14 @@ table#set_initial_campus tr {
 
 .searchResultPic {
   width: 65px;
+  height: 65px;
+  overflow: hidden;
   text-align: center;
+}
+
+.searchResultPic img {
+  max-width: 65px;
+  max-height: 65px;
 }
 
 .searchResultActions {
