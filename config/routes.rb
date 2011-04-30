@@ -1,10 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :global_dashboard_accesses
-
   map.resources :label_people
-
   map.resources :labels
+
+  map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
 

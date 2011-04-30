@@ -3,7 +3,9 @@
 	<%= render :partial => 'person_labels' %>
 </div>
   <div class="floatLeft"><%= spinner('lbls') %></div>
-<br>
+  <%- if authorized?(:set_label, :people) || @person.labels.count > 0 %>
+    <br>
+  <%- end %>
 <% end %>
 
 <h3><%= @person.primary_campus.try(:name) %>&nbsp;</h3>
