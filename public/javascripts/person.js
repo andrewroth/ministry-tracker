@@ -55,10 +55,12 @@ function clearSelection() {
 
 // Used to dynamically add labels to a person's profile
 function performLabelAdd() {
-	if($('#perform_action').val() != '') {
+	if($('#label').val() != '') {
       $('#spinnerlbls').show();
-			$('#label_add_form').attr('action', $('#perform_action').val());
-			$('#label_add_form').submit();
+			//$('#label_add_form').attr('action', $('#perform_action').val());
+			//$('#label_add_form').submit();
+	  jQuery.ajax({data:jQuery.param($('#label_add_form').serializeArray()), dataType:'script', type:'post', 
+	  url:$("#label_add_form").attr('action')});
 	  $('#spinnerlbls').hide();	
 	}
 }

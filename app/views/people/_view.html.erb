@@ -1,5 +1,5 @@
 <% if authorized?(:show_profile_labels, :people) %>
-<div class="personLabels">
+<div id="personLabels" class="personLabels">
 	<%= render :partial => 'person_labels' %>
 </div>
   <div class="floatLeft"><%= spinner('lbls') %></div>
