@@ -1,17 +1,11 @@
-<% @person.labels.each do |label_to_display| %>	
-	<%= render :partial => 'profile_label_list', :locals => { :person_label => label_to_display } %>		
-<% end %>
+<%= render :partial => 'profile_label_li', :collection => @person.labels %>
 
 <% if authorized?(:add_profile_label, :people) %>
-	<%= form_tag(perform_task_people_path, :name => "label_add_form", :id => "label_add_form") %>
-	    <% action_options_array = [['Add label','']] %>
-			<%- Label.all.each do |label| %>
-				<% action_options_array << [label.content, set_label_people_path(:id => @person.id.to_s, :lbl => label.id.to_s)] %>
-			<%- end %>
-	    <% if action_options_array.size > 1 %>
+	<%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
+	    <% if Label.count > 0 %>
 	      <div class="personLabelAdd">
-	        <%= select_tag(:perform_action, options_for_select(action_options_array)) %>
-	        <%= observe_field(:perform_action, {:function => "performLabelAdd();"}) %>
+	        <%= select_tag(:label, options_for_select([['Add Label', nil]] + Label.all.collect{|label| [ label.content, label.id ]}, nil)) %>
+	        <%= observe_field(:label, {:function => "performLabelAdd();"}) %>
 	      </div>
 	    <% end %>
 <% else %>

@@ -175,7 +175,9 @@ ActionController::Routing::Routes.draw do |map|
                                       :set_initial_ministry => :any,
                                       :discipleship => :any,
                                       :impersonate => :get,
-                                      :show_mentee_profile_summary => :get},
+                                      :show_mentee_profile_summary => :get,
+                                      :set_label => :post
+                                      },
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
                                           :change_ministry_and_goto_directory => :any,
@@ -188,7 +190,6 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state             => :any,
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
-                                          :set_label => :get,
                                           #:perform_task => :post},
                                           :perform_task => :post} do |person|
                          #:has_many => [:timetables] do |person|

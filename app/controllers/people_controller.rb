@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
   include PersonForm
   include SemesterSet
 
-  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements]
+  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label]
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
@@ -54,31 +54,29 @@ class PeopleController < ApplicationController
   end
   
   # sets label (i.e. "Spiritual Multiplier") for a person and then redirects to the "show" action
-  def set_label      
-
-	  @error_notice = nil
-      if params[:lbl]
-	      begin
+  def set_label
+    if params[:label]
+      # begin
+        
+        @label = Label.find params[:label]
+        
+        unless @person.labels.include?(@label)
+      		# @label_person = LabelPerson.create(:label_id => params[:label], :person_id => params[:id])
+      		@person.labels << @label
+      	else
+      		# potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
+      		# could follow up with same record create code
+      	  
+          @error_notice = "The '#{@label.content}' label has already been applied to #{@person.full_name}"
+      	end
 	        
-	        @found_labels = LabelPerson.find_all_by_person_id_and_label_id(params[:id], params[:lbl])
-	              	
-	        if @found_labels.count == 0
-	      		@label_person = LabelPerson.create(:label_id => params[:lbl], :person_id => params[:id])
-	      		@label_person.save
-	      	else
-	      		# potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
-	      		# could follow up with same record create code
-	      		@current_person = Person.find(params[:id])
-	      		@error_notice = 'The "'+Label.find(params[:lbl]).content+'" label has already been applied to '+@current_person.person_fname+' '+@current_person.person_lname
-	      	end
-		        
-	      rescue ActiveRecord::ActiveRecordError
-	      rescue ActiveRecord::RecordNotFound
-	        # DO NOTHING
-	      end      	
-      end     
+      # rescue ActiveRecord::ActiveRecordError
+      # rescue ActiveRecord::RecordNotFound
+      #   # DO NOTHING
+      # end      	
+    end
     
-    redirect_back(:action => 'show', :id => params[:id], :error_notice => @error_notice)
+    #redirect_back(:action => 'show', :id => params[:id], :error_notice => @error_notice)
   end
   
      # GET /people/remove_label
@@ -326,14 +324,6 @@ class PeopleController < ApplicationController
   # GET /people/show
   # Shows a person's profile (address info, assignments, involvements, etc)
   def show
-    
-    if params[:error_notice] != nil
-    	flash[:notice] = params[:error_notice]
-    	show_error_notice = true
-    else
-    	show_error_notice = false
-    end
-    
     if @person.nil?
       flash[:notice] = "No person found with the requested id."
       redirect_to :controller => "dashboard"
