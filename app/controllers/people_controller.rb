@@ -1,4 +1,5 @@
 #require 'person_methods'
+require 'csv'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -197,6 +198,44 @@ class PeopleController < ApplicationController
         render :action => 'excel', :layout => false
       end
       format.xml  { render :xml => @people.to_xml }
+      format.csv do
+        do_directory_search
+        @people = ActiveRecord::Base.connection.select_all(@sql)
+        fn = "tmp/#{Time.now.to_i}"
+        csv_string = FasterCSV.open(fn, "w") do |csv|
+          csv << @view.columns.collect(&:title)
+          for person in @people
+            csv << @view.columns.collect do |column|
+              value = case column.column_type
+                      when 'date'
+                        format_date(person[column.safe_name])
+                      when 'gender'
+                        @person.human_gender(person[column.safe_name])
+                      else
+                        person[column.safe_name] 
+                      end
+
+            end
+          end
+        end
+
+        #this is required if you want this to work with IE        
+=begin
+        if request.env['HTTP_USER_AGENT'] =~ /msie/i
+          headers['Pragma'] = 'public'
+          headers["Content-type"] = "text/plain" 
+          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
+          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
+          headers['Expires'] = "0" 
+        else
+          headers["Content-Type"] ||= 'text/xml'
+          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
+        end
+=end
+
+        user_fn = @search_for.gsub(';',' -') + ".csv"    
+        send_file fn, :filename => user_fn, :type => "text/csv"
+      end
     end
   end
 

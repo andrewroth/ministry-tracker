@@ -191,7 +191,10 @@ class ApplicationController < ActionController::Base
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
       :campus_involvements => [:new, :edit, :index],
-      :ministry_involvements => [:new, :edit, :index]
+      :ministry_involvements => [:new, :edit, :index],
+      :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
+      :summer_report_reviewers => [:edit, :update],
+      :search => [:web_remote]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil)
@@ -278,6 +281,42 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
+        when :summer_reports
+          if action == 'show' || action == 'report_staff_answers' || action == 'report_compliance'
+
+            if action == 'show'
+              return true if @my.id == params[:person_id].to_i # can always view your own report
+
+              # can view reports that you are chosen to review
+              SummerReport.find(params[:id]).summer_report_reviewers.each do |review|
+                return true if review.person_id == @my.id
+              end
+            end
+
+            # all Team Leaders and Team Members of Campus for Christ and it's immediate children have access
+            # (i.e. national team and regional team, including people that would be HR)
+            summer_report_ministries = [Ministry.find(2)] << Ministry.find(2).children
+            summer_report_ministries = summer_report_ministries.flatten.collect{|m| m.id}
+            summer_report_ministry_roles = StaffRole.all(:conditions => ["#{StaffRole._(:position)} < 3"]).collect{|r| r.id}
+            
+            return MinistryInvolvement.first(
+                :conditions => ["#{MinistryInvolvement._(:person_id)} = ? and " +
+                  "#{MinistryInvolvement._(:ministry_id)} in (?) and " +
+                  "#{MinistryInvolvement._(:ministry_role_id)} in (?)",
+                  @my.id, summer_report_ministries, summer_report_ministry_roles]
+              ).present? ? true : false
+
+          elsif @my.id == params[:person_id].to_i
+            return true
+          end
+        when :summer_report_reviewers
+          if action == 'edit' || action == 'update'
+            # can edit reports that you are chosen to review
+            return true if SummerReportReviewer.first(params[:id]).person_id == @my.id
+          end
+          
+        when :search
+          return true if action == 'web_remote' && authorized?(:web, :search)
           
         end # case
       end # if

@@ -1,0 +1,4 @@
+
+page["#webResults"].hide
+page["#webResults"].html(render(:partial => "web_results", :locals => { :pagination => false }))
+page["#webResults"].show

@@ -1,0 +1,211 @@
+<br/>
+<h3>Hi <%= @me.full_name %>,</h3>
+<h2>Submit your Summer Schedule for <%= @current_year.desc[-4..-1] %></h2>
+<br/>
+
+
+<div id="submit_summer_report">
+<% form_for [@me, @summer_report] do |f| %>
+
+  <p>
+    <% if @contact_person.present? && @contact_phone.present? %>
+      <small>
+        <b>Questions?</b> Contact <%= @contact_person.full_name %>
+        (<%= "#{link_to "#{@contact_person.email.downcase}", new_email_url("person[]" => @contact_person.id), :target => "_blank" if @contact_person.email.present?} #{@contact_phone}" %>)
+        or refer to the <%= link_to "policy manual", "https://focus.crusade.org/hr/manual/StaffHandbook.pdf", :target => "_blank" %>.
+      </small>
+    <% end %>
+
+    <%= f.error_messages %>
+  </p>
+  
+  <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @summer_report} if @summer_report.disapproved? %>
+
+  <h3>Vacation Entitlement</h3>
+  <small>
+    <b>How to calculate:</b> Year 1 is the year you joined staff.<br/>
+    (Example: If I joined staff sometime in 2009 (Year 1), in 2011 I would be in year 3. I would get 15 working days of vacation.)
+    <br/>
+    <table>
+      <tr><td>1-2 years</td><td>10 working days (in SK, then it is 15 working days by law)</td></tr>
+      <tr><td>3-8 years</td><td>15 working days</td></tr>
+      <tr><td>9-20 years</td><td>20 working days</td></tr>
+      <tr><td>21-34 years</td><td>25 working days</td></tr>
+      <tr><td>35 years +</td><td>30 working days</td></tr>
+    </table>
+  </small>
+  <p>
+    <%= f.label :joined_staff, "Year you joined staff or internship" %>
+    <%= f.text_field :joined_staff, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :days_of_holiday, "Number of vacation days you're entitled to" %>
+    <%= f.text_field :days_of_holiday, :class => "short" %>
+  </p>
+
+
+  <h3>MPD</h3>
+  <small>
+    <b>Guideline:</b> For every $200/monthly support needed, one week will be given for full-time
+    Ministry Partner Development (MPD) to a maximum of 4 weeks. The <%= link_to "policy manual", "https://focus.crusade.org/hr/manual/StaffHandbook.pdf", :target => "_blank" %> also allows
+    for 2 weeks Ministry Partner Maintenance (MPM) per year.
+    <br/><br/>
+    <b>*New:</b>
+    If you are requesting 2 or more weeks of MPD in the summer, to help you use this time
+    successfully, we are requiring a weekly MPD report to be sent to Campus HR at the end
+    of each week on MPD. (Details will be sent to you.)
+  </small>
+  <p>
+    <%= f.label :monthly_goal, "MPD monthly goal" %>
+    <%= f.text_field :monthly_goal, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :monthly_have, "Current solid monthly support" %>
+    <%= f.text_field :monthly_have, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :monthly_needed, "Monthly support to raise" %>
+    <%= f.text_field :monthly_needed, :class => "short" %>
+  </p>
+  <p>
+    <%= f.label :num_weeks_of_mpd, "Weeks of MPD requested" %>
+    <%= f.select :num_weeks_of_mpd, SummerReport::WEEKS_OF_MPD, {:prompt => true} %>
+  </p>
+  <p>
+    <%= f.label :num_weeks_of_mpm, "Weeks of MPM requested" %>
+    <%= f.select :num_weeks_of_mpm, SummerReport::WEEKS_OF_MPM, {:prompt => true} %>
+  </p>
+  <p>
+    <%= f.label :support_coach, "Would you like a support coach (if available)" %>
+    <%= f.radio_button :support_coach, false, :class => "radio" %>no
+    <%= f.radio_button :support_coach, true, :class => "radio" %>yes
+  </p>
+  <p>
+    <%= f.label :accountability_partner, "The following person will be your MPD accountability partner" %>
+    <%= f.text_field :accountability_partner %>
+  </p>
+
+
+  <h3>Summer Schedule</h3>
+  <small>
+    <b>Projects:</b> Staffing national and international projects is unique and demanding. For each week on a
+    project, take one day when you get home for recovery time. LIST it under the project on your
+    schedule.
+    <br/>
+    <b>Sabbatical:</b> The earned 30 day leave (20 work days) is available after 8 years on staff and every 4 years
+    after. Please fill out a Change of Information form (found on the <%= link_to "FOCUS site", "https://focus.crusade.org", :target => "_blank" %>) and send it into
+    Corporate HR in Langley.
+    <br/>
+    <b>IBS:</b> You can register and find more information about your courses <%= link_to "here", "http://ibs.campuscrusadeforchrist.com", :target => "_blank" %>.
+    It is your responsibility to have support raised to cover tuition, travel, housing, and books. The
+    beginning of May to mid-June is a good time to buy your books and prepare for your classes
+  </small>
+  <table id="weeklySchedule">
+    <tr>
+      <th></th>
+      <th>Main assignment</th>
+      <th>Optional description</th>
+    </tr>
+
+    <% i = 0 %>
+    <% report_weeks = @summer_report.summer_report_weeks %>
+
+    <% f.fields_for :summer_report_weeks do |week_f| %>
+      <tr>
+        <td class="week"><%= "#{Date::MONTHNAMES[(report_weeks[i].week.end_date-6.days).month]} #{(report_weeks[i].week.end_date-6.days).day} - #{report_weeks[i].week.end_date.day}" %></td>
+
+        <%= week_f.hidden_field :week_id %>
+        <td><%= week_f.collection_select :summer_report_assignment_id, SummerReportAssignment.all, :id, :assignment, {:prompt => true} %></td>
+        <td><%= week_f.text_field :description %></td>
+      </tr>
+      <% i += 1 %>
+    <% end %>
+
+    <tr><td><br/></td></tr>
+    <tr>
+      <td>
+        <%= f.label :notes %>
+      </td>
+      <td colspan="2">
+        <%= f.text_area :notes %>
+      </td>
+    </tr>
+  </table>
+
+
+  <h3>Approval and Review</h3>
+  <small>
+    <b>Ops, NEST, Marketing, and Regional teams:</b> you will need your director(s)’ approval for your summer schedule.<br/>
+    <b>Campus Directors:</b> you will need your Regional Director(s)’ approval for your summer schedule.<br/>
+    <b>Campus staff:</b> you will need your Campus Director(s)’ approval for your summer schedule.<br/>
+    <br/>
+    <b>*</b>If you work on more than one team, please allow both your directors to review your schedule.</br>
+    </br>
+    Use the search to find and add at least one person to review your summer schedule. They will each receive an email notification.
+  </small>
+
+  <div id="reviewers" style="<%= "display:none;" unless @summer_report.summer_report_reviewers.present? %>">
+    <p>
+      <%= label_tag "Reviewers" %>
+      <div id="chosenReviewersNames">
+        <% @summer_report.summer_report_reviewers.each do |r| %>
+          <%= "#{r.person.full_name}<br/>" %>
+        <% end %>
+      </div>
+      <div id="chosenReviewers" style="display:none;">
+        <% f.fields_for :summer_report_reviewers do |reviewer_f| %>
+          <%= reviewer_f.hidden_field :person_id %>
+        <% end %>
+      </div>
+    </p>
+  </div>
+
+  <br/>
+  <input type="text" id="search_for_reviewers" value="" autocomplete="off"/>
+  <%= link_to_remote "Search", {:url => {:action => "search_for_reviewers"}, :with => "'q=' + $('#search_for_reviewers').attr('value')", :before => "$('#spinner_search').show()", :complete => "$('#spinner_search').hide()"}, {:id => "search_for_reviewers_link"} %>
+  &nbsp; <%= spinner('_search') %>
+  <div id="search_for_reviewers_results" style="display:none;"></div>
+
+
+  <h3><br/></h3>
+  <br/>
+  <br/>
+  <br/>
+  You may only submit your schedule once!
+  <br/>
+  <br/>
+  <p>
+    <%= f.submit 'Submit for review', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
+  </p>
+<% end %>
+</div>
+
+
+<script type="text/javascript">
+  // don't submit form when enter is pressed
+  $("form").bind("keypress", function(e) {
+    if (e.keyCode == 13) {
+      if(e.target.id == "search_for_reviewers"){
+        $("#search_for_reviewers_link").trigger('click');
+      }
+      return false;
+    }
+  });
+
+  // auto-submit search to be like autocomplete
+  $('#search_for_reviewers').keyup(function(e) {
+    clearTimeout(this.search_submit_timer); // important
+
+    if(e.currentTarget.value.length > 1){
+      this.search_submit_timer = setTimeout(function(){
+        if(e.currentTarget.value.length > 1){
+          $("#search_for_reviewers_link").trigger('click');
+        }
+      },500);
+    }
+  });
+
+  $("#summer_report_submit").click(function(){
+    $("#spinner_submit").show();
+  });
+</script>

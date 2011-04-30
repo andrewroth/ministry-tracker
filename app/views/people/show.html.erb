@@ -41,7 +41,7 @@
                                            :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').fadeIn();  $('#interestedGroups').fadeIn();  $('#requestedGroups').fadeIn();" %>
 
     <!-- in case of browser refresh keep selection list in sync with groups displayed on the page (some browsers keep the selection list value that the user chose even after refreshing) -->
-    <script>$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
+    <script type="text/javascript">$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
   </h5>
   
   <div id="involvedGroups">

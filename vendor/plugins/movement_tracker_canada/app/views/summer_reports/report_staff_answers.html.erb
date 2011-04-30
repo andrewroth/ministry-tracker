@@ -1,0 +1,108 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
+
+<h2>Report of Staff Summer Schedules <%= @current_year.desc[-4..-1] %></h2>
+
+<br/>
+<br/>
+
+<div class="summerReportMinistryTitle"><%= @summer_report_ministry.name %></div>
+
+<%- if @me.ministries_involved_in_with_children.length > 1 -%>
+  <%= link_to_function("Change Ministry", "$(this).hide(); $('#summer_report_ministry').show();", :class => "action-button") %>
+  <%= collection_select(:summer_report_ministry, :id, @my.ministries_involved_in_with_children.sort{|a,b| a.name <=> b.name}, "id", "name", {},
+    {:id => "summer_report_ministry", :style => "display:none", :onchange => "document.location = '/summer_reports/report_staff_answers?summer_report_ministry=' + this.value"}) %>
+  <%- tooltip do -%>
+  Report on a different ministry. Choose <%= @summer_report_ministry.root.children.first.name %> to list all staff.
+  <%- end -%>
+  &nbsp;&nbsp;
+  <%= spinner('_change_ministry') %>
+<%- end -%>
+
+<br/>
+<br/>
+<br/>
+
+<table class="groupInvolvementList">
+  <tr>
+    <th>Name</th>
+    <th>Joined</th>
+    <th>Holidays</th>
+    <th>Goal</th>
+    <th>Current</th>
+    <th>Needed</th>
+    <th>MPD/MPM Weeks</th>
+    <th>Coach</th>
+    <th>MPD Partner</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+
+
+  <% mpd_mpm_array = [] %>
+  <% mpd_goal_array = [] %>
+  <% mpd_needed_array = [] %>
+  <% mpd_current_array = [] %>
+  <% holidays_array = [] %>
+  <% joined_array = [] %>
+  <% status_count = {SummerReport::STATUS_WAITING => 0, SummerReport::STATUS_APPROVED => 0, SummerReport::STATUS_DISPROVED => 0 } %>
+  <% coach_count = {"true" => 0, "false" => 0} %>
+
+
+  <% @summer_reports.each do |summer_report| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td><%= summer_report.person.full_name %></td>
+      <td><%= summer_report.joined_staff %></td>
+      <td><%= summer_report.days_of_holiday %></td>
+      <td><%= number_to_currency(summer_report.monthly_goal.gsub("$",""), :precision => 0) %></td>
+      <td><%= number_to_currency(summer_report.monthly_have.gsub("$",""), :precision => 0) %></td>
+      <td><%= number_to_currency(summer_report.monthly_needed.gsub("$",""), :precision => 0) %></td>
+      <td><%= summer_report.num_weeks_of_mpd %> / <%= summer_report.num_weeks_of_mpm %></td>
+      <td><%= summer_report.support_coach == true ? "yes" : "no" %></td>
+      <td><%= summer_report.accountability_partner %></td>
+      <td class="<%= summer_report.status_style %>"><%= summer_report.status_short %></td>
+      <td><%= link_to "View", person_summer_report_path(summer_report.person, summer_report) %></td>
+    </tr>
+
+
+    <% joined_array << summer_report.joined_staff.to_i %>
+    <% holidays_array << summer_report.days_of_holiday.to_i %>
+    <% mpd_goal_array << summer_report.monthly_goal.to_i %>
+    <% mpd_needed_array << summer_report.monthly_needed.to_i %>
+    <% mpd_current_array << summer_report.monthly_have.to_i %>
+    <% mpd_mpm_array << summer_report.num_weeks_of_mpd.to_i + summer_report.num_weeks_of_mpm.to_i %>
+    <% status_count[summer_report.status] += 1 %>
+    <% coach_count[summer_report.support_coach.to_s] += 1 %>
+  <% end %>
+
+
+  <tr><td><br/></td></tr>
+
+  <tr>
+    <td><%= @summer_reports.size %> total</td>
+    <td><%= average_from_array(joined_array) %> mean</td>
+    <td><%= average_from_array(holidays_array) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_goal_array), :precision => 0) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_current_array), :precision => 0) %> mean</td>
+    <td><%= number_to_currency(average_from_array(mpd_needed_array), :precision => 0) %> mean</td>
+    <td><%= average_from_array(mpd_mpm_array) %> mean</td>
+    <td>
+      <%= coach_count["true"] %>&nbsp;yes<br/>
+      <%= coach_count["false"] %>&nbsp;no
+    </td>
+    <td></td>
+    <td>
+      <%= status_count[SummerReport::STATUS_WAITING] %>&nbsp;<%= SummerReport::STATUS_WAITING_SHORT %> <br/>
+      <%= status_count[SummerReport::STATUS_APPROVED] %>&nbsp;<%= SummerReport::STATUS_APPROVED_SHORT %> <br/>
+      <%= status_count[SummerReport::STATUS_DISPROVED] %>&nbsp;<%= SummerReport::STATUS_DISPROVED_SHORT %>
+    </td>
+  </tr>
+  
+</table>
+
+<br/>
+<br/>
+
+<%= link_to "Back", :action => :index %>

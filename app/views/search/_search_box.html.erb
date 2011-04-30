@@ -5,9 +5,9 @@
       <% default_search_box_text = "Search the Pulse" %>
 
       <div id="uberSearchBoxContainer">
-        <% form_tag url_for(:controller => :search), :method => 'get' do %>
+        <% form_tag url_for(:controller => :search), :method => 'get', :id => 'uberSearchForm' do %>
 
-          <%  if q.present? && controller.controller_name == "search" && (controller.action_name == "index" || controller.action_name == "people" || controller.action_name == "groups") %>
+          <% if q.present? && controller.controller_name == "search" %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
@@ -22,11 +22,10 @@
 
       <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
 
-      <%= javascript_include_tag "jquery.ajaxQueue.js" %>
-      <%= javascript_include_tag "jquery.autocomplete.js" %>
-      <script>
+      <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
+      <script type="text/javascript">
         $("#uberSearchBox").autocomplete("/search/autocomplete", {
-          minChars: 2,
+          minChars: 3,
           selectFirst: false,
           matchContains: true,
           autoFill: false,
@@ -34,7 +33,7 @@
           cacheLength: 10,
           matchSubset: false,
           width: 275,
-          delay: 400,
+          delay: 300,
           formatItem: function(data, i, n, value) {
             return value;
           },
@@ -81,7 +80,19 @@
               if(this.value=='') this.value='<%= default_search_box_text %>';
             }
           };
-          
+
+          $('#uberSearchForm').submit(function() {
+            // don't submit if the search box is empty
+            if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_search_box_text %>") {
+              return false;
+            }
+            else {
+              // visual cue that seach has started
+              $('#uberSearchButton div').css('background', 'url(/images/debicons/Ymagniglass.png) no-repeat 0px 0px');
+              $('div.ac_results').hide();
+              return true;
+            }
+          });
         });
 
       </script>
