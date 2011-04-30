@@ -1,6 +1,8 @@
+<%- if @person.labels.count > 0 %>
 <%= render :partial => 'profile_label_li', :collection => @person.labels %>
+<%- end %>
 
-<% if authorized?(:add_profile_label, :people) %>
+<% if authorized?(:set_label, :people) %>
 	<%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
 	    <% if Label.count > 0 %>
 	      <div class="personLabelAdd">
@@ -8,6 +10,6 @@
 	        <%= observe_field(:label, {:function => "performLabelAdd();"}) %>
 	      </div>
 	    <% end %>
-<% else %>
+<% elsif @person.labels.count > 0 %>
 	<br>
 <% end %>
