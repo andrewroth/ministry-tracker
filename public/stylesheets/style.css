@@ -2330,6 +2330,16 @@ table#set_initial_campus tr {
   overflow: hidden;
 }
 
+.searchAuthenticationWarning {
+  background-color: #FFCB05;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  color: #666766;
+  font-size: 12px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
 .searchResultMore {
   height: 30px;
   line-height: 30px;
