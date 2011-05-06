@@ -142,8 +142,17 @@ class SessionsController < ApplicationController
       # (below) clear out any GET '?' parameters from string before navigating back a page
       redirect_to request.env["HTTP_REFERER"].gsub(/\?[\=\&A-z0-9]+/,'')    # :back
     else
-      flash[:notice] = "You have been logged out." unless params[:destination].present? # don't display flash message if we're relogging and going somewhere, not just logging out
-      params[:destination].present? ? logout_keeping_session!(params[:destination]) : logout_keeping_session!
+      flash[:notice] = "You have been logged out."
+      logout_keeping_session!
+    end
+  end
+  
+  def recreate
+    if session[:impersonator].present?
+      redirect_to :action => destroy
+    else
+      dest = params[:destination].present? ? "#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI::escape(params[:destination])}&gateway=false" : nil
+      logout_keeping_session!(dest, false)
     end
   end
 
