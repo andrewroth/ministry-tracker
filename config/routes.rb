@@ -27,6 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
   map.resources :cim_hrdb_staff
+  map.resources :cim_reg_events
 
   map.resources :titles
 
