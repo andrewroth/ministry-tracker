@@ -5,7 +5,7 @@
   <% if @gsa_results_unauthenticated.present? %>
     <%= "Public " %>
   <% else %>
-    <%= "#{image_tag("silk/key.png", :class => "theKey", :title => " - <span class='whiteFont'>You can see these personalized web results because you are logged into TheKey.</span>")} " %>
+    <%= "#{image_tag("silk/key.png", :class => "theKey", :title => " - <span class='whiteFont'>You can see these secure and personalized web results because you're logged into TheKey.</span>")} " %>
   <% end %>
 
   <strong>Web</strong> results for <strong><%= @q %></strong>
@@ -24,9 +24,8 @@
   <% if @gsa_results_unauthenticated.present? %>
     <div class="searchAuthenticationWarning">
       These are publicly available search results.
-      To see the complete set of secure search results,<br/>personalized for you, we'll need to check your ID.
-      <%= link_to("Click here to login to TheKey.", :controller => :sessions, :action => :destroy,
-        :destination => "https://signin.mygcx.org/cas/login?service=#{CGI::escape(url_for(:action => "index", :controller => "search", :q => @q,:only_path=> false))}&gateway=false") %>
+      To see the complete set of secure and personalized search results we'll need to check your ID, 
+      <%= link_to("click here to login to TheKey.", :controller => :sessions, :action => :recreate, :destination => "#{url_for(:action => :web, :controller => :search, :q => @q,:only_path=> false)}") %>
     </div>
   <% end %>
 </div>
