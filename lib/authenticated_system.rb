@@ -137,14 +137,14 @@ module AuthenticatedSystem
     end
 
     
-    def logout_keeping_session!
+    def logout_keeping_session!(redirect_path_if_no_cas = nil, force_cas_logout = nil)
       # Kill server-side auth cookie
       @current_user.forget_me if @current_user.is_a? User
       @current_user = false     # not logged in, and don't do it for me
       kill_remember_cookie!     # Kill client-side auth cookie
       # explicitly kill any other session variables you set
       need_cas_logout = false
-      if session[:cas_user]
+      if (session[:cas_user] || force_cas_logout == true) && force_cas_logout != false
         need_cas_logout = true
       end
       clear_session
@@ -152,7 +152,7 @@ module AuthenticatedSystem
       if need_cas_logout
         CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
       else
-        redirect_back_or_default(new_session_path)
+        redirect_path_if_no_cas.present? ? redirect_back_or_default(redirect_path_if_no_cas) : redirect_back_or_default(new_session_path)
       end
     end
   

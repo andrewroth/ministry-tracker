@@ -144,6 +144,15 @@ class SessionsController < ApplicationController
       logout_keeping_session!
     end
   end
+  
+  def recreate
+    if session[:impersonator].present?
+      redirect_to :action => destroy
+    else
+      dest = params[:destination].present? ? "#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI::escape(params[:destination])}&gateway=false" : nil
+      logout_keeping_session!(dest, false)
+    end
+  end
 
   
   def leave_facebook_and_js_redirect
