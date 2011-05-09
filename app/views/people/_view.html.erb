@@ -184,7 +184,6 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
   <tr>
   <td colspan="1"><h4 class="title">Recent Activity</h4></td>
-    <td class="spacer">&nbsp;</td>
   </tr>
 
   <tr>
@@ -228,6 +227,27 @@
   </tr>
 </table>
 <% end %>
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+  <tr>
+  <td colspan="1"><h4 class="title">Events</h4></td>
+  </tr>
+
+  <tr>
+    <td>
+      <table class="halftab">
+        <tr>
+          <td>
+            <nobr>
+              <%= render :partial => "events" %>
+           </nobr>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
 
 <%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
