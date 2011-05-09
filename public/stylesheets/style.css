@@ -1293,6 +1293,51 @@ padding-bottom:5px;
 
 
 
+/* PROFILE PAGE */
+
+
+/* column container */
+#profilewrap .colmask {
+	position:relative;	/* This fixes the IE7 overflow hidden bug */
+	clear:both;
+	float:left;
+	width:100%;			/* width of whole page */
+	overflow:hidden;		/* This chops off any overhanging divs */
+}
+/* common column settings */
+#profilewrap .colright,
+#profilewrap .colmid,
+#profilewrap .colleft {
+	float:left;
+	width:100%;
+	position:relative;
+}
+#profilewrap .col1,
+#profilewrap .col2,
+#profilewrap .col3 {
+	float:left;
+	position:relative;
+	padding:0 0 1em 0;
+	overflow:hidden;
+}
+/* 2 Column (left menu) settings */
+#profilewrap.leftmenu {
+}
+#profilewrap.leftmenu .colleft {
+	right:75%;			/* right column width */
+}
+#profilewrap.leftmenu .col1 {
+	width:71%;			/* right column content width */
+	left:104%;			/* 100% plus left column left padding */
+}
+#profilewrap.leftmenu .col2 {
+	width:28%;			/* left column content width (column width minus left and right padding) */
+	left:4%;			/* (right column left and right padding) plus (left column left padding) */
+}
+
+
+
+
 /* ************* */
 /* Flash Notices */
 #flash_notice, .flash_notice {
