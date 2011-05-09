@@ -1175,7 +1175,7 @@ div#logos.dashboard img { padding-right:20px; }
 
 
 /* column container */
-.colmask {
+#dashwrap .colmask {
 	position:relative;	/* This fixes the IE7 overflow hidden bug */
 	clear:both;
 	float:left;
@@ -1183,16 +1183,16 @@ div#logos.dashboard img { padding-right:20px; }
 	overflow:hidden;		/* This chops off any overhanging divs */
 }
 /* common column settings */
-.colright,
-.colmid,
-.colleft {
+#dashwrap .colright,
+#dashwrap .colmid,
+#dashwrap .colleft {
 	float:left;
 	width:100%;			/* width of page */
 	position:relative;
 }
-.col1,
-.col2,
-.col3 {
+#dashwrap .col1,
+#dashwrap .col2,
+#dashwrap .col3 {
 	float:left;
 	position:relative;
 	padding:0 0 1em 0;	/* no left and right padding on columns, we just make them narrower instead
@@ -1200,23 +1200,23 @@ div#logos.dashboard img { padding-right:20px; }
 	overflow:hidden;
 }
 /* 3 Column settings */
-.threecol {
+#dashwrap.threecol {
 }
-.threecol .colmid {
+#dashwrap.threecol .colmid {
 	right:25%;			/* width of the right column */
 }
-.threecol .colleft {
+#dashwrap.threecol .colleft {
 	right:50%;			/* width of the middle column */
 }
-.threecol .col1 {
+#dashwrap.threecol .col1 {
 	width:50%;			/* width of center column content (column width minus padding on either side) */
 	left:103%;			/* 100% plus left padding of center column */
 }
-.threecol .col2 {
+#dashwrap.threecol .col2 {
 	width:24%;			/* Width of left column content (column width minus padding on either side) */
 	left:25%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
-.threecol .col3 {
+#dashwrap.threecol .col3 {
 	width:20%;			/* Width of right column content (column width minus padding on either side) */
 	left:82%;			/* Please make note of the brackets here:
 					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
