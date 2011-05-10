@@ -22,6 +22,10 @@ body {
   text-align: center;
 }
 
+#footer_container {
+  height: 200px;
+}
+
 #c4c_logo {
   position: relative;
   left: -290px;
