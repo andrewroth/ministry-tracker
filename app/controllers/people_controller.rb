@@ -549,7 +549,7 @@ class PeopleController < ApplicationController
         @ministry.training_questions.each do |q|
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
-        flash[:notice] = 'Profile was successfully updated.'
+        flash[:notice] = 'Your profile has been updated!'
         if params[:set_campus_requested] == 'true'
           flash[:notice] += "  Thank you for setting your campus.  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
         end

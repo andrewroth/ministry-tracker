@@ -3,7 +3,7 @@
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) && ((authorized?(:add_mentor, :people)&&(person == @me)) || authorized?(:add_mentor_to_other, :people))) %>
 
     <div id="uberMentorSearchContainer">
-      <% default_search_box_text = "search" %>
+      <% default_search_box_text = "Search for mentor" %>
 
       <div id="uberMentorSearchBoxContainer">
         <% form_tag url_for(:controller => :search), :method => 'get' do %>

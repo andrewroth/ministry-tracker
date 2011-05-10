@@ -3,6 +3,8 @@
 
            "<div class='autoCompleteName'>#{mentor_ac.first_name.capitalize} #{mentor_ac.last_name.capitalize}</div>" +
 
+           "<div class='autoCompleteInfo'>#{mentor_ac.staff_role_ids.blank? ? mentor_ac.campuses_concat : mentor_ac.ministries_concat }</div>" +
+
            "<div class='hiddenMentorID'>#{mentor_ac.person_id}</div>"
 
 %>

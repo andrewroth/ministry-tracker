@@ -38,10 +38,6 @@ padding:0px;
 margin:15px 0 10px 0;
 }
 
-table.address td, table.activity td {
-width:50%;
-}
-
 table.address td.spacer, table.activity td.spacer {width:5px;}
 
 #left-body {width:650px; float:left;}
@@ -74,9 +70,8 @@ padding:0 10px 10px 10px;
 h3.lbtitle  {
 font-weight:bold; 
 font-size:14px;
-background:black;
-padding:5px;
-color:white;
+padding:5px 0;
+color:#666766;
 }
 
 input.lbbutton {
@@ -118,11 +113,6 @@ margin-top:5px;
   /*background-color:#fff193;*/
 }
 
-#profileCaption {
-  margin:3px 0 0 0;
-  text-align:center;
-}
-
 * {
   margin:0;
   padding:0;
@@ -160,38 +150,6 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 .directorytable {
   width:100%;
 }
-
-
-
-.profileImage {
-  padding:8px 0 0 0;
-}
-
-.profileImage img{
-  border:0px solid #333333;
-}
-
-#profileCaption img{
-  border:0px solid black;
-  padding-right:5px;
-  vertical-align:bottom;
-}
-
-#profileCaption a{
-  border:1px solid #f5f5f5;
-  height:18px;
-  padding:2px;
-  margin:1px;
-  font-size:10px;
-  font-weight:bold;
-}
-
-#profileCaption a:hover {
-  text-decoration:none;
-  border:1px solid #1F429B;
-  background: #ffffcc;
-}
-
 
 .butProfile a {
   padding-left:20px;
@@ -871,16 +829,6 @@ a.subtabs-menu-inactive div:hover {
 #subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { background: url(/images/debicons/Yimpicon.png) no-repeat scroll 0 1px transparent; }
 
 
-#profiletitle {
-  margin-bottom:10px;
-}
-
-#profiletitle h1 {
-  padding:0 0 0 10px;
-  font-size:18px;
-  font-weight:bold;
-  line-height:28px;
-}
 
 #campuses, #campus-details {
 	margin: 5px;
@@ -1317,7 +1265,6 @@ padding-bottom:5px;
 #profilewrap .col3 {
 	float:left;
 	position:relative;
-	padding:0 0 1em 0;
 	overflow:hidden;
 }
 /* 2 Column (left menu) settings */
@@ -1327,14 +1274,181 @@ padding-bottom:5px;
 	right:75%;			/* right column width */
 }
 #profilewrap.leftmenu .col1 {
-	width:71%;			/* right column content width */
-	left:104%;			/* 100% plus left column left padding */
+	width:68%;			/* right column content width */
+	left:106%;			/* 100% plus left column left padding */
+	padding-top:15px;
 }
 #profilewrap.leftmenu .col2 {
-	width:28%;			/* left column content width (column width minus left and right padding) */
-	left:4%;			/* (right column left and right padding) plus (left column left padding) */
+	width:23%;			/* left column content width (column width minus left and right padding) */
+	left:7%;  			/* (right column left and right padding) plus (left column left padding) */
+	background:#EBEBEB;
+	border:#EBEBEB solid 15px;
+  -moz-border-radius: 6px; -webkit-border-radius: 6px;
 }
 
+#profileImageBox {
+  height:202px;
+}
+
+.profileImage {
+  text-align:left;
+  width:202px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.profileImage img{
+  border:1px solid;
+  border-color: #9B9B9B;
+  border-color: rgba(0, 0, 0, 0.25);
+  display:block;
+  width:200px;
+  height:200px;
+}
+
+#profileCaption a {
+  color: white;
+}
+
+#profileCaption {
+  background-color: #9B9B9B;
+  background-color: rgba(0, 0, 0, 0.25);
+  display: inline;
+  font-size: 10px;
+  left: 1px;
+  padding: 7px;
+  position: relative;
+  text-align: left;
+  top: -21px;
+}
+
+#semesterSelectContainer {
+  display:block;
+}
+
+#semesterSelectBorder {
+  border: 2px solid white;
+  border-radius: 6px;
+  display: inline-block;
+  margin: 7px 0 0 0;
+  background:white;
+}
+
+#group_semester_id {
+  display:block;
+}
+
+#spinnerGroupSemester {
+  margin:5px;
+}
+
+#profilewrap .col2 ul li {
+  padding-left:10px;
+  font-size:11px;
+  line-height:11px;
+}
+
+#profilewrap .col2 h5 {
+  padding-top:10px;
+}
+
+#profilewrap div.involvementType {
+  margin-bottom:10px;
+}
+
+#profilewrap h4 {
+  color: #666766;
+  font-weight:normal;
+  font-size:14px;
+  margin-top:10px;
+}
+
+#profilewrap h5 {
+  color: #666766;
+  font-family: Arial,Helvetica,Sans-Serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#profiletitle {
+  margin-bottom:10px;
+}
+
+#profiletitle h1 {
+  color: #666766;
+  font-family: Arial,Helvetica,Sans-Serif;
+  font-size:18px;
+  font-weight:bold; 
+}
+
+#profiletitle #spinnerp {
+  padding:4px;
+  float:right;
+}
+
+.profileButton a {
+  -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
+}
+
+.profileButton {
+  display:inline;
+  float:right;
+  padding:0 0 0 32px;
+}
+
+.profileButton a:hover {
+  color:#FFCB05;
+  text-decoration:none;
+}
+
+.profileButton a {
+  color:#666766;
+  font-weight:bold;
+  font-size:12px;
+  padding-left:14px;
+  font-family:Arial,Helvetica,Sans-Serif;
+}
+
+#profileTitle .profileButton       { background: url(/images/debicons/Gprofile_s.png) no-repeat scroll 0 1px transparent; }
+#profileTitle .profileButton:hover { background: url(/images/debicons/Yprofile_s.png) no-repeat scroll 0 1px transparent; }
+
+#profilewrap table {
+  padding:0;
+  border:0;
+}
+
+#profilewrap table th {
+  width:120px;
+}
+
+#profilewrap table tr, #profilewrap table td.half {
+  width:50%;
+}
+
+#profilewrap table th, #profilewrap table tr {
+  vertical-align:top;
+  font-size:11px;
+  line-height:12px;
+  text-align:left;
+}
+
+#profilewrap table.editpad th, #profilewrap table.editpad tr {
+  padding-top:4px;
+}
+
+#profilewrap table h5 {
+  padding: 10px 0;
+}
+
+#profilewrap table input, #profilewrap table select {
+  font-size:11px;
+  max-width:145px;
+}
+
+#profilewrap #removeMe {
+  padding-top:10px;
+  text-align:right;
+}
 
 
 
@@ -2151,46 +2265,45 @@ table#set_initial_campus tr {
   background: url("/images/debicons/Ymagniglass.png") no-repeat 0px 0px;
 }
 
-/* hsmit (dec 2010): added these to customize mentor quick search */
-#uberMentorSearchContainer {
+#uberMentorSearchContainer, #uberMenteeSearchContainer {
   z-index: 99;
   float: left;
   position: relative;
   margin-top: 6px;
 }
 
-#uberMentorSearchBoxContainer {
+#uberMentorSearchBoxContainer, #uberMenteeSearchBoxContainer {
   padding: 0px;
   margin: 0px;
   position: relative;
 }
 
-#uberMentorSearchBox {
-  width: 240px;
-  font-size: 18px;
-  position: relative;
-  height: 25px;
-/*  background: #E6E6E6; use to blend in with bg more */
+#uberMentorSearchBox, #uberMenteeSearchBox {
+  width: 166px;
+  font-size: 13px;
+  height: 16px;
   background: white;
-  color: #B3B3B3;
-  border: 2px solid silver;
-  padding-left: 10px;
+  color: #CCCCCC;
+  border: 1px solid #CCCCCC;
+  padding-left: 8px;
 
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
+  -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
-#uberMentorSearchBox.focused, #uberMentorSearchBox:focus {
+#uberMentorSearchBox.focused, #uberMentorSearchBox:focus, #uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
   background: white;
   color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D; /* #FFCB05; yellow */
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
-#uberMentorSearchBox.ac_loading {
-  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
+#uberMentorSearchBox.ac_loading, #uberMenteeSearchBox.ac_loading {
+  -moz-transition: none; -webkit-transition: none;
+  background: url("/images/spinner.gif") no-repeat scroll 130px 8px white !important;
 }
 
-#uberMentorSearchButton {
+#uberMentorSearchButton, #uberMenteeSearchButton {
   border: 0px;
   background-color: transparent;
   position: relative;
@@ -2198,52 +2311,8 @@ table#set_initial_campus tr {
   cursor: pointer;
 }
 
-/* hsmit (dec 2010): added these to customize mentee quick search */
-#uberMenteeSearchContainer {
-  z-index: 99;
-  float: left;
-  position: relative;
-  margin-top: 6px;
-}
 
-#uberMenteeSearchBoxContainer {
-  padding: 0px;
-  margin: 0px;
-  position: relative;
-}
 
-#uberMenteeSearchBox {
-  width: 240px;
-  font-size: 18px;
-  position: relative;
-  height: 25px;
-/*  background: #E6E6E6; use to blend in with bg more */
-  background: white;
-  color: #B3B3B3;
-  border: 2px solid silver;
-  padding-left: 10px;
-
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
-}
-
-#uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
-  background: white;
-  color: black;
-  border: 2px solid #00268D; /* #FFCB05; yellow */
-  -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
-}
-
-#uberMenteeSearchBox.ac_loading {
-  background: url("/images/spinner.gif") no-repeat scroll 200px 12px white !important;
-}
-
-#uberMenteeSearchButton {
-  border: 0px;
-  background-color: transparent;
-  position: relative;
-  padding: 7px 20px;
-  cursor: pointer;
-}
 
 
 #searchHeaderInfo {
@@ -2574,27 +2643,21 @@ li.ac_over .autoCompleteName {
   text-decoration:underline;
 }
 
-/** mentor-specific search-results styling */
-.hiddenMentorID {
-	visibility:hidden;
-}
-
-/** mentee-specific search-results styling */
-.hiddenMenteeID {
+/** added this set of 'alt' styling for mentor [and mentee] quick search */
+.hiddenMentorID, .hiddenMenteeID {
   visibility:hidden;
 }
 
-/** added this set of 'alt' styling for mentor [and mentee] quick search */
 .alt_ac_results {
-  padding: 18px 0 0 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 2px 5px 2px;
+  border-width: 2px 2px 5px 2px;
+  margin-bottom:100px;
 
-  -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
-  -moz-box-shadow: 0 4px 10px #8B8B8B; -webkit-box-shadow: 0 4px 10px #8B8B8B;
+  -moz-border-radius: 0 5px 7px 7px; -webkit-border-radius: 0 5px 7px 7px;
+  -moz-box-shadow: 0 3px 6px #8B8B8B; -webkit-box-shadow: 0 3px 6px #8B8B8B;
 }
 
 .alt_ac_results ul {
@@ -2628,8 +2691,14 @@ li.ac_over .autoCompleteName {
   overflow: hidden;
   color: black;
   border: 2px solid white;
+  text-align:left;
 
   -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+
+.alt_ac_results .autoCompleteName {
+  display:inline-block;
+  padding:6px 0 0 3px;
 }
 /** end mentor-specific search-results styling **/
 
