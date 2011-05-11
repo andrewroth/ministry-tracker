@@ -58,7 +58,6 @@
         <%= render :partial => 'image' %>
       </div>
       <div>
-	      <div class="floatLeft"><%= spinner %></div>
 	      <div id="progress-bar"></div>
       </div>
       <iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
@@ -87,7 +86,7 @@
       <%- if @staff -%>
         <div id="ministries_div" class="involvementType">
           <h4>
-            <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>Ministries
+            <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), {:url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')"}, {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements"} %><%- end -%>Ministries
           </h4>
           
           <%- if @person.ministries.size > 0 -%>
