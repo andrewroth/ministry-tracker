@@ -1299,30 +1299,31 @@ padding-bottom:5px;
   color: #666766;
   margin:10px;
   padding:10px;
-  background:#EFEFEF;
+  background:#FFCB05;
+  font-size:13px;
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 div.flash big {
-  color: #1F429B;
+  color: #666766;
 }
 
 div.flash b, div.flash_notice b  {
-  color: #1F429B;
+  color: #666766;
   font-weight: bold;
 }
 div.flash_notice.warning b  {
-	color:red;
+	color:FireBrick;
 }
 
 .flash {
 	margin-left: 10px;
 }
 .notice {
-	color:#1F429B;
+	color:#666766;
 }
 .warning {
-	color:red;
+	color:FireBrick;
 }
 
 .setLink a:link {color: #1F429B;}
