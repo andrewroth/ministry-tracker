@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
   // set vertical bracket height
-  $("#verticalTablistContainer").height($(".colmask").height());
+  $("#verticalTablistContainer").height($("#dashwrap .colmid").height());
 
   // change img source on mouseover
   $(function() {
