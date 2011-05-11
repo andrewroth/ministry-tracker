@@ -151,11 +151,11 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship">
 	  <tr>
       <% if authorized?(:show_mentor, :people) %>
-        <td colspan="1"><h5>My Mentor</h5></td>
+        <td colspan="1"><h5>My Mentor <%= spinner('m','opaqueWhite') %></h5></td>
 	    <% end %>
 	    <% if authorized?(:show_mentees, :people) %>
         <td class="spacer">&nbsp;</td>
-        <td colspan="1"><h5>I'm Mentoring</h5></td>
+        <td colspan="1"><h5>I'm Mentoring <%= spinner('m2','opaqueWhite') %></h5></td>
 	    <% end %>
 	  </tr> <!-- added Jan 14, 2011 -->
 	  <tr>
@@ -171,7 +171,6 @@
 		        <div id="mentors_div">
 		          <%= render :partial => 'mentors' %>
 		        </div>
-			      <div class="floatLeft"><%= spinner('m') %></div>
 		        <div id="progress-bar"></div>
 		      </table>
 		
