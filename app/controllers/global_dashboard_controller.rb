@@ -352,7 +352,7 @@ class GlobalDashboardController < ApplicationController
     end
 
     def ensure_permission_by_person_id
-      [283, 5173].include?(@person.id) 
+      [283, 5173, 1301246379].include?(@person.id) 
     end
 
     def ensure_permission
