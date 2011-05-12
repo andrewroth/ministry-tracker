@@ -2588,6 +2588,9 @@ li.ac_over .autoCompleteName {
 }
 /** end mentor-specific search-results styling **/
 
+.ac_results_layout {
+  top: 70px !important;  
+}
 
 .ac_results {
   padding: 10px 0 0 0;
@@ -2596,8 +2599,6 @@ li.ac_over .autoCompleteName {
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
   border-width: 0 2px 5px 2px;
-
-  top: 70px !important;
 
   -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
   -moz-box-shadow: 0 4px 10px #C8C8C8; -webkit-box-shadow: 0 4px 10px #C8C8C8;

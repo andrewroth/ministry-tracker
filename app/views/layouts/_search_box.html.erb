@@ -1,0 +1,51 @@
+
+<div id="uberSearchContainer">
+
+  <div id="uberSearchBoxContainer">
+    <% form_tag url_for(:controller => :search), :method => 'get', :id => 'uberSearchForm' do %>
+
+      <%= render :partial => "/search/uber_search_box", :locals => { :q => q,
+                                                                     :default_text => default_text,
+                                                                     :input_id => "uberSearchBox",
+                                                                     :input_class => "search",
+                                                                     :formatResultFunction => "layoutSearchBoxFormatResult",
+                                                                     :resultFunction => "layoutSearchBoxResultAction",
+                                                                     :resultsClass => "ac_results ac_results_layout" } %>
+
+      <button type="submit" id="uberSearchButton" value="" title="Click to search">
+        <div></div>
+      </button>
+
+    <% end %>
+  </div>
+
+  <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#uberSearchForm').submit(function() {
+        // don't submit if the search box is empty
+        if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_text %>") {
+          return false;
+        }
+        else {
+          // visual cue that seach has started
+          $('#uberSearchButton div').css('background', 'url(/images/debicons/Ymagniglass.png) no-repeat 0px 0px');
+          $('div.ac_results').hide();
+          return true;
+        }
+      });
+    });
+    
+    function layoutSearchBoxFormatResult(data, value) {
+      // find the name, it's inside the div with id autoCompleteName
+      indexOfId = value.indexOf('autoCompleteName');
+      return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
+    }
+    
+    function layoutSearchBoxResultAction(event, info) {
+      location.href = $(".acLinkPath", info[0]).html();
+    }
+  </script>
+</div>
+
