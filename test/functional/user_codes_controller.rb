@@ -12,6 +12,7 @@ class UserCodesControllerTest < ActionController::TestCase
   end
 
   def test_show_found
+    Factory(:login_code_1)
     Factory(:user_code_1)
     login
     get :show, :code => '91d76u0f86jjecc25740128eee0b61c7', :send_to_controller => 'c', :send_to_action => 'a'
@@ -19,6 +20,7 @@ class UserCodesControllerTest < ActionController::TestCase
   end
 
   def test_show_not_found
+    Factory(:login_code_1)
     Factory(:user_code_1)
     login
     get :show, :code => 'code-not-there'
