@@ -1,0 +1,17 @@
+Invite people to <%= @group.name %>
+
+
+<%= render :partial => "/search/uber_search_box", :locals => { :default_text => "search for a person or simply enter their email",
+                                                               :input_id => "inviteSearchBox",
+                                                               :input_class => "invitePersonSearch uberSearchBox",
+                                                               :resultsClass => "ac_results ac_results_group_invite",
+                                                               :action_params => "all_results_link=false&actions=false&max_results=7",
+                                                               :resultFunction => "groupInvitationSearchBoxResultAction" } %>
+                                                               
+                                                               
+<script type="text/javascript">
+  function groupInvitationSearchBoxResultAction(event, info) {
+    alert($(".acEmail", info[0]).html());
+    $("#inviteSearchBox").val("");
+  }
+</script>

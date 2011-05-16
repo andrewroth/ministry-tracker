@@ -129,7 +129,10 @@ ActionController::Routing::Routes.draw do |map|
                                      :email => :post,
                                      :clone_pre => :get,
                                      :clone => :post },
-                         :collection => {:join => :get}
+                         :collection => {:join => :get} do |group|
+                           
+    group.resources :group_invitations
+  end
 
   map.resources :manage
   
