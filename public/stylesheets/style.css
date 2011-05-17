@@ -2748,6 +2748,7 @@ table.groupInvolvementList th {
   text-align: center;
   position: relative;
   font-weight:bold;
+  min-height:170px;
 }
 
 #dashboardInsightsContainer .insight {
