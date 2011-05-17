@@ -77,7 +77,7 @@
     :html => {:onsubmit => "set_times_field()"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%- unless @signup -%>
-    <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
+    <%= f.submit 'Save Timetable', :class => 'action-button' %>
     <br/>
     <br/>
     <%- end %>
@@ -98,7 +98,7 @@
     <%= render :partial => 'timetable' %>
 
     <br/>
-    <%= f.submit 'Save Timetable', :class => ('action-button' if @signup) %>
+    <%= f.submit 'Save Timetable', :class => 'action-button' %>
     <%- if @signup -%>
     <%= f.submit 'Edit Timetable Later', :class => 'action-button', :style => 'margin-left: 12px' %>
     <%- end %>
