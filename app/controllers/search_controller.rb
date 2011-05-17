@@ -52,9 +52,14 @@ class SearchController < ApplicationController
   end
 
   def autocomplete
+    @all_results_link = params[:all_results_link] == "true" ? true : false if params[:all_results_link].present?
+    @ac_actions = params[:actions] == "true" ? true : false if params[:actions].present?
+    @ac_title = params[:title].present? ? params[:title] : ""
+    max_results = params[:max_results].present? ? params[:max_results].to_i : Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
+    
     @people = []
     if logged_in? # necessary because we skip standard login stack for performance gain
-      @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+      @people = autocomplete_people(max_results) if session[:search][:authorized_to_search_people] && @q.present?
     end
     render :layout => false
   end
@@ -91,9 +96,9 @@ class SearchController < ApplicationController
   private
 
 
-  def autocomplete_people
+  def autocomplete_people(max_results = nil)
 
-    @max_num_ac_results = Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
+    @max_num_ac_results = max_results || Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
 
     if !@person_id
       person = get_person           # i don't really like this, since it looks up Pulse user
@@ -123,7 +128,7 @@ class SearchController < ApplicationController
         person_mentor_id_condition = '<> ' + person.person_mentor_id.to_s
       end
 
-      people = Person.all(:limit => Searching::MAX_NUM_AUTOCOMPLETE_RESULTS,
+      people = Person.all(:limit => @max_num_ac_results,
                  :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
                            "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
                            "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
@@ -156,7 +161,7 @@ class SearchController < ApplicationController
 
    elsif @search_for_mentor == true
 
-     people = Person.all(:limit => Searching::MAX_NUM_AUTOCOMPLETE_RESULTS,
+     people = Person.all(:limit => @max_num_ac_results,
          :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
                    "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
                    "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
@@ -189,7 +194,7 @@ class SearchController < ApplicationController
 
     else
 
-       people = Person.all(:limit => Searching::MAX_NUM_AUTOCOMPLETE_RESULTS,
+       people = Person.all(:limit => @max_num_ac_results,
      :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
                "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
                "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +

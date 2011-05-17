@@ -92,6 +92,17 @@ class UserMailer < ActionMailer::Base
     @body[:show_report_link] = "#{base_url}/people/#{summer_report.person_id}/summer_reports/#{summer_report.id}"
     @body[:edit_report_link] = "#{base_url}/people/#{summer_report.person_id}/summer_reports/new"
   end
+  
+  def group_invitation(group_invitation, base_url)
+    @content_type = "text/html"
+    @recipients = group_invitation.recipient_email
+    @from = Cmt::CONFIG[:email_from_address]
+    @sent_on = Time.now
+    
+    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} You're invited to join the group #{group_invitation.group.name}"
+    
+    @body[:group_invitation] = group_invitation
+  end
 
    # 
   # def created_staff(person, ministry, added_by, password = nil)

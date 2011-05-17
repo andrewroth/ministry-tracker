@@ -83,3 +83,10 @@ function serialize_array(obj)
 
     return string;
 }
+
+function simpleValidateEmail(email) 
+{ 
+  var re = /\S+@\S+\.\S+/;
+  return email.match(re);
+}
+

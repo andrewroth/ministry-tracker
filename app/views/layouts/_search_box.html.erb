@@ -7,10 +7,10 @@
       <%= render :partial => "/search/uber_search_box", :locals => { :q => q,
                                                                      :default_text => default_text,
                                                                      :input_id => "uberSearchBox",
-                                                                     :input_class => "search",
-                                                                     :formatResultFunction => "layoutSearchBoxFormatResult",
+                                                                     :input_class => "search uberSearchBox",
                                                                      :resultFunction => "layoutSearchBoxResultAction",
-                                                                     :resultsClass => "ac_results ac_results_layout" } %>
+                                                                     :resultsClass => "ac_results ac_results_layout",
+                                                                     :action_params => "all_results_link=true&actions=true&title=Goto their profile" } %>
 
       <button type="submit" id="uberSearchButton" value="" title="Click to search">
         <div></div>
@@ -36,13 +36,7 @@
         }
       });
     });
-    
-    function layoutSearchBoxFormatResult(data, value) {
-      // find the name, it's inside the div with id autoCompleteName
-      indexOfId = value.indexOf('autoCompleteName');
-      return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
-    }
-    
+        
     function layoutSearchBoxResultAction(event, info) {
       location.href = $(".acLinkPath", info[0]).html();
     }

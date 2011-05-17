@@ -188,7 +188,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dismissed_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -382,12 +382,15 @@ CREATE TABLE `group_invitations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) DEFAULT NULL,
   `recipient_email` varchar(255) DEFAULT NULL,
+  `recipient_person_id` int(11) DEFAULT NULL,
   `sender_person_id` int(11) DEFAULT NULL,
   `accepted` tinyint(1) DEFAULT NULL,
   `login_code_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_c4c_pulse_dev.group_invitations_on_group_id` (`group_id`),
+  KEY `index_c4c_pulse_dev.group_invitations_on_login_code_id` (`login_code_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `group_involvements` (
@@ -400,7 +403,7 @@ CREATE TABLE `group_involvements` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5136 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5138 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -500,7 +503,7 @@ CREATE TABLE `login_codes` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_c4c_pulse_dev.login_codes_on_code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -694,7 +697,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95303 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95309 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1252,6 +1255,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110506202051');
 INSERT INTO schema_migrations (version) VALUES ('20110512155352');
 
 INSERT INTO schema_migrations (version) VALUES ('20110512184517');
+
+INSERT INTO schema_migrations (version) VALUES ('20110512212548');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

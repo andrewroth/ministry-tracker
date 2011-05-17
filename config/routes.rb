@@ -132,6 +132,7 @@ ActionController::Routing::Routes.draw do |map|
                          :collection => {:join => :get} do |group|
                            
     group.resources :group_invitations
+    group.create_multiple '/group_invitations/create_multiple', :controller => 'group_invitations', :action => 'create_multiple', :conditions => { :method => :post }
   end
 
   map.resources :manage
