@@ -1,0 +1,27 @@
+<table>
+  <tr>
+    <th>&nbsp;</th>
+    <th>Stage 1</th>
+    <th>Stage 2</th>
+    <th>Stage 3</th>
+  </tr>
+  <%- @areas.each do |area| %>
+  <tr>
+    <td><%= area.area %></td>
+    <td><%= @stage_count[area][1] %></td>
+    <td><%= @stage_count[area][2] %></td>
+    <td><%= @stage_count[area][3] %></td>
+  </tr>
+  <%- end -%>
+  <tr>
+    <td><b>Total</b></td>
+    <td><b><%= @totals[1] %></b></td>
+    <td><b><%= @totals[2] %></b></td>
+    <td><b><%= @totals[3] %></b></td>
+  </tr>
+</table>
+
+<BR/>
+<BR/>
+
+<%= link_to "Back to the Global Dashboard", global_dashboard_path %>
