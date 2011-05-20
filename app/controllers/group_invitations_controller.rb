@@ -78,7 +78,7 @@ class GroupInvitationsController < ApplicationController
   
   
   def accept
-    invitation = GroupInvitation.first(:conditions => {:login_code_id => session[:login_code].id, :id => params[:id], :group_id => params[:group_id]})
+    invitation = GroupInvitation.first(:conditions => {:login_code_id => session[:login_code_id], :id => params[:id], :group_id => params[:group_id]})
     
     unless invitation.present? || invitation.has_responded?
       if invitation.has_responded?

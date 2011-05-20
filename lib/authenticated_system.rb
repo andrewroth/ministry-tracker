@@ -146,7 +146,7 @@ module AuthenticatedSystem
         if lc.present? && lc.acceptable?
           you_shall_pass = true
           lc.increment_times_used
-          session[:login_code] = lc
+          session[:login_code_id] = lc.id
         else
           flash[:notice] = "<big>We're sorry, the link you came from has expired!</big>"
         end
