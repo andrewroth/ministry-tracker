@@ -24,6 +24,40 @@ class GlobalDashboardController < ApplicationController
     setup_stats(GlobalArea.all, all_mccs)
   end
 
+  def staging_summary
+    @areas = GlobalArea.all(:order => :area, :include => :global_countries)
+    @stage_count = { }
+    @totals = { }
+    @areas.each do |area|
+      area.global_countries.each do |country|
+        if stage = country.stage
+          @stage_count[area] ||= {}
+          @stage_count[area][stage] ||= 0
+          @stage_count[area][stage] += 1
+          @totals[stage] ||= 0
+          @totals[stage] += 1
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv_out = ""
+        CSV::Writer.generate(csv_out) do |csv|
+          csv << [ "", "Stage 1", "Stage 2", "Stage 3" ]
+          @areas.each do |area|
+            csv << [ area.area, @stage_count[area][1], @stage_count[area][2], @stage_count[area][3] ]
+          end
+          csv << [ "total", @totals[1], @totals[2], @totals[3] ]
+        end
+        send_data(csv_out,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "export.csv")
+      }
+    end
+  end
+
   def export
     case params[:location]
     when "all"
