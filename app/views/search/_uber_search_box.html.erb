@@ -42,8 +42,8 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
     <% if q.present? && controller.controller_name == "search" %>
       <input type="text" id="<%=input_id%>" class="<%=input_class%>" name="q" value="<%=q%>"/>
     <% else %>
-    <% end %>
       <input type="text" id="<%=input_id%>" class="<%=input_class%>" name="q" value="<%=default_text%>"/>
+    <% end %>
 
     <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
     <script type="text/javascript">

@@ -7,6 +7,7 @@ class SignupController < ApplicationController
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
+  before_filter :get_invitation, :only => [:step2_info, :step2_info_submit]
 
   def index
     redirect_to :action => :step1_group
@@ -18,10 +19,16 @@ class SignupController < ApplicationController
 
   def step2_info
     @person ||= get_person || Person.new
+    @person.email = @group_invitation.recipient_email if @group_invitation
     UserCodesController.clear(session)
     setup_campuses
     @campus = Campus.find(session[:signup_campus_id])
     @dorms ||= @campus.try(:dorms)
+    
+    if @group_invitation.present?
+      @back_button = false
+      @next_button_text = "Join group"
+    end
   end
 
   def get_dorms
@@ -30,70 +37,72 @@ class SignupController < ApplicationController
   end
 
   def step2_info_submit
-    @person = Person.new(params[:person])
+    # if no person in params get person from session
+    @person = params[:person].present? ? Person.new(params[:person]) : get_person
+    @person.email = @group_invitation.recipient_email if @group_invitation
+    debugger
+    # make sure we have all the right info
     [:email, :first_name, :last_name, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
-    @person.errors.add(:gender, :blank) if params['person']['gender'].blank?
+    @person.errors.add(:gender, :blank) if @person.gender.blank?
+    @person.errors.add(:school_year, :blank) unless (@person.primary_campus_involvement && @person.primary_campus_involvement.school_year_id.present?) ||
+                                                    (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id].present?)
 
     # verify email
-    email = params[:person] && params[:person][:email]
+    email = @person && @person.user && @person.email
     if email.present?
-      email_regex = ValidatesEmailFormatOf::Regex
-      email_error = "Please enter a valid email address.  If the email is already in the Pulse, enter it anyways and a verification email will be sent."
+      email_error = "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
       begin
-        domain, local = email.reverse.split('@', 2)
-        unless email =~ email_regex and not email =~ /\.\./ and domain.length <= 255 and local.length <= 64 and email.length >= 6
-          @person.errors.add_to_base(email_error)
-        end
+        @person.errors.add_to_base(email_error) unless ValidatesEmailFormatOf::validate_email_format(email).nil?
       rescue
         @person.errors.add_to_base(email_error)
       end
     end
 
-    @primary_campus_involvement = CampusInvolvement.new params[:primary_campus_involvement]
-    @primary_campus_involvement.campus_id = session[:signup_campus_id]
-    [:campus_id, :school_year_id].each do |c|
-      unless @primary_campus_involvement.send(c).present?
-        @person.errors.add(c, :blank)
-      end
-    end
-
-    if @person.errors.present? || @primary_campus_involvement.errors.present?
+    if @person.errors.present?
       @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step2_info
       render :action => "step2_info"
     else
+      school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
+                       @person.primary_campus_involvement.school_year_id
+      @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
+      [:campus_id, :school_year_id].each do |c|
+        unless @primary_campus_involvement.send(c).present?
+          @person.errors.add(c, :blank)
+        end
+      end
+      
       if logged_in?
         @user = current_user
-        @person = @user.person 
-        # update user based on what was submitted
-        @person.first_name = params[:person][:first_name]
-        @person.last_name = params[:person][:last_name]
-        @person.gender = params[:person][:gender]
-        @person.local_phone = params[:person][:local_phone]
-        @person.save!
+        old_person = @user.person
+        old_person.first_name = @person.first_name if @person.first_name.present?
+        old_person.last_name = @person.last_name if @person.last_name.present?
+        old_person.gender_id = @person.gender_id if @person.gender_id.present?
+        old_person.local_phone = @person.local_phone if @person.local_phone.present?
+        old_person.save!
       else
-        @user = User.find_or_create_from_guid_or_email(nil, params[:person][:email], 
-                                                       params[:person][:first_name],
-                                                       params[:person][:last_name],
-                                                      false)
+        @user = User.find_or_create_from_guid_or_email(nil, @person.email, 
+                                                       @person.first_name,
+                                                       @person.last_name,
+                                                       false)
         # it's possible that an old person row was found, so update attributes
-        @person = @user.person 
-        @person.first_name = params[:person][:first_name]
-        @person.last_name = params[:person][:last_name]
-        @person.gender = params[:person][:gender]
-        @person.local_phone = params[:person][:local_phone]
+        old_person = @user.person
+        old_person.first_name = @person.first_name if @person.first_name.present?
+        old_person.last_name = @person.last_name if @person.last_name.present?
+        old_person.gender_id = @person.gender_id if @person.gender_id.present?
+        old_person.local_phone = @person.local_phone if @person.local_phone.present?
         
         # in order to save major, update it manually again, 
         # since it's stored in a second table in the Cdn schema
-        @person.clear_extra_ref
-        @person.major = params[:person][:major]
-        @person.curr_dorm = params[:person][:curr_dorm]
-
+        old_person.clear_extra_ref
+        old_person.major = @person.major if @person.major.present?
+        old_person.curr_dorm = @person.curr_dorm if @person.curr_dorm.present?
         # don't save @person yet in case we need to verify their email first
       end
+      @person = old_person
 
       session[:signup_person_params] = params[:person]
       session[:signup_primary_campus_involvement_params] = params[:primary_campus_involvement]
@@ -105,7 +114,7 @@ class SignupController < ApplicationController
         redirect_to :action => :step2_verify
       else
         @person.save!
-
+        
         ci = @person.campus_involvements.find :first, :conditions => {
           :campus_id => @primary_campus_involvement.campus_id
         }
@@ -124,13 +133,14 @@ class SignupController < ApplicationController
         end
         ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
-
+        
         # join groups here
-        joingroups_from_hash(session[:signup_groups])
+        joingroups_from_hash(session[:signup_groups], !@group_invitation.present?) # if group invitation then join group even if it requires approval
         if semester_id = session[:signup_collection_group_semester_id]
           join_default_group(session[:signup_campus_id], semester_id)
         end
-
+        @group_invitation.accept if @group_invitation
+        
         redirect_to :action => :step3_timetable
       end
     end
@@ -249,6 +259,16 @@ class SignupController < ApplicationController
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
     UserMailer.deliver_signup_finished_email(@person.email, link, session[:joined_collection_group])
+    
+    @group_contact_email = session[:joined_group_contact_email]
+    
+    if session[:from_facebook_canvas] == true
+      @finished_button_text = "Goto Facebook"
+    elsif logged_in?
+      @finished_button_text = "Goto the dashboard"
+    else
+      @finished_button_text = "Goto the sign in page"
+    end
   end
 
   def finished
@@ -277,7 +297,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "Join a group"
+    @custom_userbar_title = "JOIN A GROUP"
   end
 
   def join_default_group(campus_id, semester_id)
@@ -295,13 +315,14 @@ class SignupController < ApplicationController
     session[:joined_collection_group] = true
   end
 
-  def joingroups_from_hash(involvement_info)
+  def joingroups_from_hash(involvement_info, requested = nil)
     (involvement_info || {}).each_pair do |group_id, level|
       if %w(member interested).include?(level)
         group = Group.find group_id
-        requested = (level == "member" ? group.needs_approval : false)
+        requested = (level == "member" ? group.needs_approval : false) if requested.nil?
         gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
         gi.send_later(:join_notifications, base_url)
+        session[:joined_group_contact_email] = group.email
       end
     end
   end
@@ -311,5 +332,30 @@ class SignupController < ApplicationController
   def get_layout
     session[:from_facebook_canvas] == true ? "facebook_canvas" : "application"
   end
+  
+  def get_invitation
+    if session[:signup_group_invitation_id]
+      @group_invitation = GroupInvitation.first(:conditions => {:id => session[:signup_group_invitation_id]}) 
+      
+      if logged_in? && current_user.person && current_user.person.id != @group_invitation.recipient_person_id
+        @group_invitation = nil
+        session[:signup_group_invitation_id] = nil
+        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!</big>"
+        redirect_to signup_url
+        return
+      elsif @group_invitation.has_response?
+        @group_invitation = nil
+        session[:signup_group_invitation_id] = nil
+      else
+        # setup the group to join
+        session[:signup_groups] ||= {}
+        session[:signup_groups][@group_invitation.group_id] = GroupInvitation::GROUP_INVITE_LEVEL
+        session[:signup_campus_id] = @group_invitation.group.campus.id
+      end
+    end
+  end
 
 end
+
+
+

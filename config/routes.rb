@@ -133,6 +133,8 @@ ActionController::Routing::Routes.draw do |map|
                            
     group.resources :group_invitations
     group.create_multiple '/group_invitations/create_multiple', :controller => 'group_invitations', :action => 'create_multiple', :conditions => { :method => :post }
+    group.accept '/group_invitations/:id/accept', :controller => 'group_invitations', :action => 'accept', :conditions => { :method => :get }
+    group.decline '/group_invitations/:id/decline', :controller => 'group_invitations', :action => 'decline', :conditions => { :method => :get }
   end
 
   map.resources :manage

@@ -1,3 +1,19 @@
 <p>Hi!</p>
 
-<p>You're invited to join the group: <%= group_invitation.group.name %></p>
+<p><%= group_invitation.sender_person.full_name %> has invited you to join their group, <%= group_invitation.group.name %>.</p>
+
+<p>
+  <blockquote>
+    <p>
+      <%= "<a href='#{accept_link}'>" if accept_link.present? %>
+      ACCEPT
+      <%= "</a>" if accept_link.present? %>
+    </p>
+    <br/>
+    <p>
+      <%= "<a href='#{decline_link}'>" if decline_link.present? %>
+      DECLINE
+      <%= "</a>" if decline_link.present? %>
+    </p>
+  </blockquote>
+</p>

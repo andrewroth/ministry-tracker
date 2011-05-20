@@ -1,19 +1,30 @@
 class GroupInvitationsController < ApplicationController
   unloadable
   
+  login_code_authentication :only => [:accept, :decline]
+  
   ALREADY_INVOLVED_MSG = "is already involved in this group so the invitation was not sent"
   ALREADY_INVITED_MSG = "has already been invited to this group so the invitation was not sent"
-  INVITATION_SENT_MSG = "was sent an invitation"
-
+  INVITATION_SENT_MSG = "was sent an invitation!"
+  INVALID_EMAIL_MSG = "appears to be an invalid email address so the invitation was not sent"
+  
+  
   def new
     @group = Group.find(params[:group_id].to_i)
     @group_invitation = GroupInvitation.new({:group_id => params[:group_id].to_i})
     @preview_group_invitation = GroupInvitation.new({:group_id => @group.id, :recipient_email => @my.email, :sender_person_id => @my.id})
     
+    unless @group && (@group.leaders | @group.co_leaders).include?(@me)
+      flash[:notice] = "<big>Sorry but you need to be a leader or co-leader of the group to send invitations.</big>"
+      redirect_to dashboard_url
+      return
+    end
+    
     respond_to do |format|
       format.html
     end
   end
+  
   
   def create_multiple
     @group = Group.find(params[:group_id])
@@ -27,13 +38,18 @@ class GroupInvitationsController < ApplicationController
         already_invited = GroupInvitation.all(:conditions => {:recipient_email => email, :group_id => @group.id, :accepted => nil}).empty? ? false : true  # :accepted => nil means the haven't responded to the invite
 
         # check if the person is already involved in this group
-        user = User.first(:conditions => ["#{User._(:username)} = ?", email])
+        user = User.find_by_email(email).first
         recipient_person = user.person if user.present?
         if recipient_person.present?
           already_involved = @group.is_associated(recipient_person) && !@group.is_interested(recipient_person) ? true : false
         end
         
-        if already_involved
+        # check if valid email
+        valid_email = ValidatesEmailFormatOf::validate_email_format(email).nil? ? true : false
+        
+        if !valid_email
+          flash[:notice] += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> #{email} #{INVALID_EMAIL_MSG} <br/>"
+        elsif already_involved
           flash[:notice] += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> #{email} #{ALREADY_INVOLVED_MSG} <br/>"
         elsif already_invited
           flash[:notice] += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> #{email} #{ALREADY_INVITED_MSG} <br/>"
@@ -60,10 +76,46 @@ class GroupInvitationsController < ApplicationController
     end
   end
   
+  
   def accept
+    invitation = GroupInvitation.first(:conditions => {:login_code_id => session[:login_code].id, :id => params[:id], :group_id => params[:group_id]})
+    
+    unless invitation.present? || invitation.has_responded?
+      if invitation.has_responded?
+        flash[:notice] = "<big>This invitation has already been responded to.<br/><br/>If this is a mistake we'd still love you to join, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+      else
+        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+      end
+      access_denied
+      return
+    end
+    
+    # get person if they exist in DB
+    if invitation.recipient_person_id.present? || User.find_by_email(invitation.recipient_email).present?
+      @person = Person.first(:conditions => {:person_id => invitation.recipient_person_id}) || User.find_by_email(invitation.recipient_email).first.person
+      # log this person in
+      session[:user] = @person.user.id if @person.user 
+      login_from_session
+    end
+    
+    session[:signup_group_invitation_id] = invitation.id
+    flash[:notice] = "<big>Great! Welcome to your group, #{invitation.group.name}</big>"
+    
+    if logged_in?
+      redirect_to :controller => :signup, :action => :step2_info_submit
+    else
+      redirect_to :controller => :signup, :action => :step2_info
+    end
   end
   
+  
   def decline
+    flash[:notice] = "<big>Okay, you've declined the invite to join #{invitation.group.name}</big><br/><br/>Maybe you'd like to join a different group? Check out the list below..."
   end
   
 end
+
+
+
+
+

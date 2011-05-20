@@ -99,9 +99,10 @@ class UserMailer < ActionMailer::Base
     @from = Cmt::CONFIG[:email_from_address]
     @sent_on = Time.now
     
-    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} You're invited to join the group #{group_invitation.group.name}"
+    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_invitation.sender_person.first_name} invites you to join #{group_invitation.group.name}"
     
     @body[:group_invitation] = group_invitation
+    @body[:accept_link] = "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/accept?login_code=#{group_invitation.login_code.code}"
   end
 
    # 

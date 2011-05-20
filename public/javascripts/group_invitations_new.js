@@ -7,14 +7,25 @@ $(document).ready(function(){
     }
     else {
       addInviteEmail($("#inviteSearchBox").val());
+      $("div.ac_results_group_invite").hide();
       $("#inviteSearchBox").val("");
     }
     return false; // never actually submit this form
   });
   
   
-  $("#invitationSubmit").click(function(){
-    $("#spinner_submit").show();
+  $("#invitationSubmit").click(function() {
+    if (simpleValidateEmail($("#inviteSearchBox").val()) != null) {
+      $("#invitationSearchForm").submit();
+    }
+  
+    if($("#invitations input").size() > 0) {
+      $("#spinner_submit").show();
+    }
+    else {
+      alert("You didn't choose anyone to invite. Use the search to find a friend or just type in their email and press enter.");
+      return false;
+    }
   });
   
 });
@@ -33,7 +44,7 @@ function addInviteEmail(email, pname) {
 
   email_already_added = false;
   $("#invitations > input").each(function() {
-    if(email == $(this).attr("value")) { email_already_added = true; }
+    if(email.toLowerCase() == $(this).attr("value").toLowerCase()) { email_already_added = true; }
   });
   
   if(email_already_added == false){
@@ -45,12 +56,8 @@ function addInviteEmail(email, pname) {
     if(pname != null && pname != "") { display += " "+pname+" &lt;"+email+"&gt;" }
     else { display += " "+email }
     
-    $("#invitationsDisplay").append("<span id='groupInvitationDisplay"+i+"'>" + display + " <a class='removeInvitationLink' i='"+i+"' href='' title='Remove'>×</a><br/></span>").effect("highlight", {}, 1000);
+    $("#invitationsDisplay").append("<span id='groupInvitationDisplay"+i+"'>" + display + " <a class='removeInvitationLink' i='"+i+"' href='' title='Remove'>×</a><br/></span>").effect("highlight", {}, 1500);
   }
-  else if(email_already_added == true) {
-    alert("You've already added "+email+"!");
-  }
-
 
   $("a.removeInvitationLink").click(function(e) {
     e.preventDefault();

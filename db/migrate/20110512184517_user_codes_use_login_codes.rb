@@ -26,7 +26,7 @@ class UserCodesUseLoginCodes < ActiveRecord::Migration
     end
     
     UserCode.all.each do |uc|
-      uc.code = uc.login_code.code
+      uc.code = uc.login_code.code if uc.login_code.present?
       uc.save!
     end
     
