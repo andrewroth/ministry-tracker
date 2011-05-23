@@ -102,8 +102,21 @@ class UserMailer < ActionMailer::Base
     @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_invitation.sender_person.first_name} invites you to join #{group_invitation.group.name}"
     
     @body[:group_invitation] = group_invitation
-    @body[:accept_link] = "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/accept?login_code=#{group_invitation.login_code.code}"
+    @body[:accept_link] =  "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/accept?login_code=#{group_invitation.login_code.code}"
+    @body[:decline_link] = "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/decline?login_code=#{group_invitation.login_code.code}"
   end
+  
+  def group_invitation_decline(group_invitation, base_url)
+    @content_type = "text/html"
+    @recipients = group_invitation.recipient_email
+    @from = Cmt::CONFIG[:email_from_address]
+    @sent_on = Time.now
+    
+    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_invitation.recipient_email} declined your invite to join #{group_invitation.group.name}"
+    
+    @body[:group_invitation] = group_invitation
+  end
+  
 
    # 
   # def created_staff(person, ministry, added_by, password = nil)

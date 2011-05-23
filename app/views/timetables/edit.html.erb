@@ -96,12 +96,13 @@
     <br/>
     <% if @signup %>
       <br/>
-      <a href="step2_info" class="action-button">Back</a>
       <div style="float:right;">
-        <%= f.submit 'Edit Timetable Later', :class => 'action-button', :confirm => "Filling in your timetable helps your group find a meeting time that's best for everyone.\n\nIf you don't have your timetable yet, click OK and you'll receive an email with a link back to this page.", :style => 'margin: 0 30px' %>
+        <%= f.submit 'Edit Timetable Later', :class => 'action-button', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page.", :style => 'margin: 0 30px' %>
     <% end %>
     
     <%= f.submit 'Save Timetable', :class => 'action-button' %>
+    <br/>
+    <br/>
     
     <% if @signup %>
       </div>

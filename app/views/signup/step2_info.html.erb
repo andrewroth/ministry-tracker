@@ -24,7 +24,15 @@
 
 
 <% instruction_block do %>
-We'd like to know a bit about you! <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Back’ button and then the ‘Logout’ button.<% end %>
+  We'd like to know a bit about you!
+  <% if logged_in? %><br/><b>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</b>
+    If this is not you
+    <% if session[:from_facebook_canvas] == true %>
+      <%= link_to "click here to logout.", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
+    <% else %>
+      <%= link_to "click here to logout.", logout_url %>
+    <% end %>
+  <% end %>
 <% end %>
 
 
@@ -76,7 +84,6 @@ We'd like to know a bit about you! <% if logged_in? %><B>Please note that you’
 <br/>
 
 <div class="center">
-  <%= submit_tag("Back", :type => "button", :onClick => "window.location.href = '/signup/step1_group'", :class => "action-button", :style => "margin-right: 10px") if @back_button %>
   <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :class => 'action-button') %>
 </div>
 

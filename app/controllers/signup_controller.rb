@@ -26,7 +26,6 @@ class SignupController < ApplicationController
     @dorms ||= @campus.try(:dorms)
     
     if @group_invitation.present?
-      @back_button = false
       @next_button_text = "Join group"
     end
   end
@@ -40,13 +39,14 @@ class SignupController < ApplicationController
     # if no person in params get person from session
     @person = params[:person].present? ? Person.new(params[:person]) : get_person
     @person.email = @group_invitation.recipient_email if @group_invitation
-    debugger
+    
     # make sure we have all the right info
     [:email, :first_name, :last_name, :local_phone].each do |c|
       next if c == :email && logged_in?
       @person.errors.add_on_blank(c)
     end
-    @person.errors.add(:gender, :blank) if @person.gender.blank?
+    
+    @person.errors.add(:gender, :blank) if @person.gender.blank? || @person.gender == Gender::UNKNOWN
     @person.errors.add(:school_year, :blank) unless (@person.primary_campus_involvement && @person.primary_campus_involvement.school_year_id.present?) ||
                                                     (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id].present?)
 
@@ -109,7 +109,7 @@ class SignupController < ApplicationController
       session[:signup_person_id] = @person.id
       session[:signup_campus_id] = @primary_campus_involvement.campus_id
 
-      if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created)
+      if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created) && !session[:signup_group_invitation_id]
         @email = params[:person][:email]
         redirect_to :action => :step2_verify
       else
@@ -187,6 +187,7 @@ class SignupController < ApplicationController
     session[:signup_collection_group_semester_id] = nil
     session[:needs_verification] = nil
     session[:joined_collection_group] = nil
+    session[:signup_group_invitation_id] = nil
 
     @person = get_person || Person.new
     setup_campuses
@@ -275,6 +276,7 @@ class SignupController < ApplicationController
     @signup = true
     params[:person_id] = session[:signup_person_id]
     @me = @my = @person = Person.find(session[:signup_person_id])
+    session[:signup_group_invitation_id] = nil
 
     redirect_to logged_in? ? dashboard_url : login_url
   end
@@ -297,7 +299,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "JOIN A GROUP"
+    @custom_userbar_title = "Join a Group"
   end
 
   def join_default_group(campus_id, semester_id)
@@ -344,8 +346,7 @@ class SignupController < ApplicationController
         redirect_to signup_url
         return
       elsif @group_invitation.has_response?
-        @group_invitation = nil
-        session[:signup_group_invitation_id] = nil
+        # do nothing...
       else
         # setup the group to join
         session[:signup_groups] ||= {}
@@ -354,7 +355,6 @@ class SignupController < ApplicationController
       end
     end
   end
-
 end
 
 

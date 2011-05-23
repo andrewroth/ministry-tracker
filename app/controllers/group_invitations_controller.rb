@@ -2,6 +2,7 @@ class GroupInvitationsController < ApplicationController
   unloadable
   
   login_code_authentication :only => [:accept, :decline]
+  before_filter :get_and_check_invitation, :only => [:accept, :decline]
   
   ALREADY_INVOLVED_MSG = "is already involved in this group so the invitation was not sent"
   ALREADY_INVITED_MSG = "has already been invited to this group so the invitation was not sent"
@@ -78,28 +79,10 @@ class GroupInvitationsController < ApplicationController
   
   
   def accept
-    invitation = GroupInvitation.first(:conditions => {:login_code_id => session[:login_code_id], :id => params[:id], :group_id => params[:group_id]})
+    session[:signup_group_invitation_id] = @invitation.id
+    flash[:notice] = "<big>Great! Welcome to your group, #{@invitation.group.name}</big>"
     
-    unless invitation.present? || invitation.has_responded?
-      if invitation.has_responded?
-        flash[:notice] = "<big>This invitation has already been responded to.<br/><br/>If this is a mistake we'd still love you to join, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
-      else
-        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
-      end
-      access_denied
-      return
-    end
-    
-    # get person if they exist in DB
-    if invitation.recipient_person_id.present? || User.find_by_email(invitation.recipient_email).present?
-      @person = Person.first(:conditions => {:person_id => invitation.recipient_person_id}) || User.find_by_email(invitation.recipient_email).first.person
-      # log this person in
-      session[:user] = @person.user.id if @person.user 
-      login_from_session
-    end
-    
-    session[:signup_group_invitation_id] = invitation.id
-    flash[:notice] = "<big>Great! Welcome to your group, #{invitation.group.name}</big>"
+    # don't actually accept invitation until join a group process is done
     
     if logged_in?
       redirect_to :controller => :signup, :action => :step2_info_submit
@@ -110,9 +93,40 @@ class GroupInvitationsController < ApplicationController
   
   
   def decline
-    flash[:notice] = "<big>Okay, you've declined the invite to join #{invitation.group.name}</big><br/><br/>Maybe you'd like to join a different group? Check out the list below..."
+    @invitation.decline
+    
+    UserMailer.deliver_group_invitation_decline(@invitation, base_url)
+    
+    session[:signup_group_invitation_id] = @invitation.id
+    flash[:notice] = "<big>Okay, you've declined the invite to join #{@invitation.group.name}</big><br/><br/>Maybe you'd like to join a different group? Check out other groups below..."
+    
+    redirect_to :controller => :signup, :action => :index
   end
+
+
+  private
   
+  def get_and_check_invitation
+    @invitation = GroupInvitation.first(:conditions => {:login_code_id => session[:login_code_id], :id => params[:id], :group_id => params[:group_id]})
+    
+    if @invitation.blank? || @invitation.has_response?
+      if @invitation.present? && @invitation.has_response?
+        flash[:notice] = "<big>This invitation has already been responded to.<br/><br/>If this is a mistake we'd still love you to join, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+      else
+        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+      end
+      access_denied
+      return
+    end
+    
+    # get person if they exist in DB
+    if @invitation.recipient_person_id.present? || User.find_by_email(@invitation.recipient_email).present?
+      @person = Person.first(:conditions => {:person_id => @invitation.recipient_person_id}) || User.find_by_email(@invitation.recipient_email).first.person
+      # log this person in
+      session[:user] = @person.user.id if @person.user 
+      login_from_session
+    end
+  end
 end
 
 

@@ -8,7 +8,6 @@
 <%- end %>
 
 <div class="center">
-  <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
   <% if session[:from_facebook_canvas] == true %>
     <%= link_to @finished_button_text, '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>

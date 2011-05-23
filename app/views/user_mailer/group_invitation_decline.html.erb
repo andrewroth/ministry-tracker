@@ -1,0 +1,5 @@
+<html>
+  <p>Hi <%= @group_invitation.sender_person.first_name %>,</p>
+  
+  <p><%= @group_invitation.recipient_email %> has declined your invitation to join the group <%= @group_invitation.group.name %></p>
+</html>

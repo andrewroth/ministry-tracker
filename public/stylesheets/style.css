@@ -314,7 +314,7 @@ input, textarea {
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
-  border-radius:2px;
+  border-radius:3px;
 }
 
 input:focus, textarea:focus {

@@ -33,7 +33,7 @@ class TimetablesController < ApplicationController
   end
 
   def edit_signup
-    @custom_userbar_title = "JOIN A GROUP"
+    @custom_userbar_title = "Join a Group"
     render :action => "edit"
   end
 
