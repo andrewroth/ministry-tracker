@@ -8,3 +8,9 @@
   <%= link_to(mentee.full_name, person_path(mentee.person_id)) %>
 
 </li>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    strikeParentOnHover($(".removeMentorIconLink"));
+  });
+</script>
