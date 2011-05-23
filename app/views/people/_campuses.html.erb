@@ -1,5 +1,9 @@
 <h4>
-  <% if authorized?(:edit, :campus_involvements) %><%= link_to_remote image_tag('button_edit_grey_tiny.gif'), {:url => person_campus_involvements_url(@person), :method => :get, :success => "show_dialog('Manage Campuses')"}, {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} campus involvements"} %><% end %>Campuses
+  <% if authorized?(:edit, :campus_involvements) %><%= link_to_remote "", {:url => person_campus_involvements_url(@person), :method => :get,
+                                                                           :before => "$('#spinnerCampuses').show()", :success => "$('#spinnerCampuses').hide(); show_dialog('Manage Campuses')"},
+                                                                          {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} campus involvements",
+                                                                           :class => "editInvolvementIconLink"} %><% end %> Campuses
+  <%= spinner('Campuses') %>
 </h4>
 <ul id='profile_campuses'>
   <%- @person.campus_involvements.each do |ci| 

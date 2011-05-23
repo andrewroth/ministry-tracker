@@ -7,7 +7,7 @@
       <%= image_tag 'no_photo.png', :size => '200x200', :class => "profilePicture" %>
         <%- if authorized?(:edit, :people) -%>
 	    <div id="profileCaption">
-	      <%= link_to_function 'Change Picture', "show_upload_picture()"  %>
+	      <%= link_to_function "#{image_tag 'debicons/Wpencil.png'} Change Picture", "show_upload_picture()"  %>
 	    </div>
 	    <%- end -%>
 	  <%- else -%>
@@ -18,12 +18,13 @@
     <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
         <%- if authorized?(:edit, :people) -%>
 	      <div id="profileCaption">
-	        <%= link_to_function 'Change Picture', "show_upload_picture()"  %>
+	        <%= link_to_function "#{image_tag 'debicons/Wpencil.png'} Change", "show_upload_picture()"  %>
 	        &nbsp;
-      	  <%= link_to_remote('Delete Picture', :url => profile_picture_url(:id => @person.profile_picture.try(:id), :person_id => @person.id),
-                                           	   :confirm => "Delete your profile picture?",
-                                               :method => :delete,
-                                               :before => "$('#spinner').show()") %>
+      	  <%= link_to_remote("#{image_tag 'debicons/Wremoveicon.png'} Delete",
+      	                     :url => profile_picture_url(:id => @person.profile_picture.try(:id), :person_id => @person.id),
+                         	   :confirm => "Delete your profile picture?",
+                             :method => :delete,
+                             :before => "$('#spinner').show()") %>
 	      </div>
 	    <%- end -%>
 	  <%- end -%>

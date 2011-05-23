@@ -16,7 +16,7 @@
             <%- if @person == @me && @person.user.guid -%>
               <div id="passwordButton" class="profileButton"><a href="https://signin.mygcx.org/cas/selfservice.htm" target="_blank">CHANGE PASSWORD</a></div> 
             <%- else -%>
-              <div id="passwordButton" class="profileButton"><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+              <div id="passwordButton" class="profileButton"><%= link_to("CHANGE PASSWORD", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
             <%- end -%>
             
             <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
@@ -86,7 +86,11 @@
       <%- if @staff -%>
         <div id="ministries_div" class="involvementType">
           <h4>
-            <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), {:url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')"}, {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements"} %><%- end -%>Ministries
+            <%- if authorized?(:edit, :people) -%><%= link_to_remote "", {:url => person_ministry_involvements_url(@person.id), :method => :get,
+                                                                          :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"}, 
+                                                                         {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
+                                                                          :class => "editInvolvementIconLink"} %><%- end -%> Ministries
+            <%= spinner('Ministries') %>
           </h4>
           
           <%- if @person.ministries.size > 0 -%>
@@ -132,3 +136,8 @@
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>
 
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".removeInvolvementIconLink").hover(function(){$(this).parent().css("text-decoration", "line-through")}, function(){$(this).parent().css("text-decoration", "none")});
+  });
+</script>

@@ -1,7 +1,11 @@
 
 <ul id='profile_events'>
-  <%- @person.cim_reg_events.each do |reg| -%>
-    <%- next if reg.hide_from_profile -%>
-    <li><%= reg.event_name %><li>
-  <%- end -%>
+  <% if @person.cim_reg_events.present? %>
+    <%- @person.cim_reg_events.each do |reg| -%>
+      <%- next if reg.hide_from_profile -%>
+      <li><%= reg.event_name %><li>
+    <%- end -%>
+  <% else %>
+    No events currently
+  <% end %>
 </ul>

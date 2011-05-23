@@ -10,3 +10,5 @@ page.replace_html("interestedGroups", :partial => "group_list", :locals => { :li
 page.replace_html("requestedGroups", :partial => "group_list", :locals => { :list_title => "Requested #{'('+@semester.description+')' unless @semester == @current_semester}", :show_type_titles => false,
       :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @semester})
     })
+    
+page << "$('.removeInvolvementIconLink').hover(function(){$(this).parent().css('text-decoration', 'line-through')}, function(){$(this).parent().css('text-decoration', 'none')});"
