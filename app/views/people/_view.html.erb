@@ -9,7 +9,11 @@
       <tr>
         <th>Email</th>
         <td>
-          <%=link_to(@current_address.email, new_email_url("person[]" => @person.id), :class => "sendEmail", :title => "Compose an email to #{@person.first_name.capitalize}") if @current_address -%>
+          <% if @current_address && @person != @me && authorized?(:new, :emails) %>
+            <%=link_to(@current_address.email, new_email_url("person[]" => @person.id), :class => "sendEmail", :title => "Compose an email to #{@person.first_name.capitalize}") -%>
+          <% elsif @current_address %>
+            <%= @current_address.email %>
+          <% end %>
         </td>
       </tr>
       
