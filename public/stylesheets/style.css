@@ -1441,6 +1441,9 @@ padding-bottom:5px;
 .removeInvolvementIconLink       { padding-left:12px; background: url(/images/debicons/Gremoveicon_s.png) no-repeat scroll 0 0 transparent; }
 .removeInvolvementIconLink:hover { padding-left:12px; background: url(/images/debicons/Yremoveicon_s.png) no-repeat scroll 0 0 transparent; }
 
+.removeMentorIconLink       { padding-left:12px; background: url(/images/debicons/Glink_break.png) no-repeat scroll 0 0 transparent; }
+.removeMentorIconLink:hover { padding-left:12px; background: url(/images/debicons/Ylink_break.png) no-repeat scroll 0 0 transparent; }
+
 #passwordButton a       { background: url(/images/debicons/Gpassword.png) no-repeat scroll 0 0 transparent; }
 #passwordButton a:hover { background: url(/images/debicons/Ypassword.png) no-repeat scroll 0 0 transparent; }
 
