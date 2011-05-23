@@ -83,3 +83,8 @@ function serialize_array(obj)
 
     return string;
 }
+
+function strikeParentOnHover(e) {
+  e.hover(function(){$(this).parent().css("text-decoration", "line-through")}, function(){$(this).parent().css("text-decoration", "none")});
+}
+
