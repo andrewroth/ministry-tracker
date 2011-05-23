@@ -830,6 +830,7 @@ a.subtabs-menu-inactive div:hover {
 
 
 
+
 #campuses, #campus-details {
 	margin: 5px;
 }
@@ -1323,10 +1324,13 @@ padding-bottom:5px;
 #profileCaption a {
   color: white;
 }
+#profileCaption a img {
+  vertical-align:top;
+}
 
 #profileCaption {
   background-color: #9B9B9B;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.35);
   display: inline;
   font-size: 10px;
   position: absolute;
@@ -1424,12 +1428,24 @@ padding-bottom:5px;
   color:#666766;
   font-weight:bold;
   font-size:12px;
-  padding-left:14px;
+  padding-left:12px;
   font-family:Arial,Helvetica,Sans-Serif;
 }
 
-#profileTitle .profileButton       { background: url(/images/debicons/Gprofile_s.png) no-repeat scroll 0 1px transparent; }
-#profileTitle .profileButton:hover { background: url(/images/debicons/Yprofile_s.png) no-repeat scroll 0 1px transparent; }
+.addInvolvementIconLink       { padding-left:12px; background: url(/images/debicons/Gaddicon.png) no-repeat scroll 0 0 transparent; }
+.addInvolvementIconLink:hover { padding-left:12px; background: url(/images/debicons/Yaddicon.png) no-repeat scroll 0 0 transparent; }
+
+.editInvolvementIconLink       { padding-left:12px; background: url(/images/debicons/Gpencil.png) no-repeat scroll 0 0 transparent; }
+.editInvolvementIconLink:hover { padding-left:12px; background: url(/images/debicons/Ypencil.png) no-repeat scroll 0 0 transparent; }
+
+.removeInvolvementIconLink       { padding-left:12px; background: url(/images/debicons/Gremoveicon_s.png) no-repeat scroll 0 0 transparent; }
+.removeInvolvementIconLink:hover { padding-left:12px; background: url(/images/debicons/Yremoveicon_s.png) no-repeat scroll 0 0 transparent; }
+
+#passwordButton a       { background: url(/images/debicons/Gpassword.png) no-repeat scroll 0 0 transparent; }
+#passwordButton a:hover { background: url(/images/debicons/Ypassword.png) no-repeat scroll 0 0 transparent; }
+
+#editButton a       { background: url(/images/debicons/Gpencil.png) no-repeat scroll 0 0 transparent; }
+#editButton a:hover { background: url(/images/debicons/Ypencil.png) no-repeat scroll 0 0 transparent; }
 
 #profilewrap table {
   padding:0;
