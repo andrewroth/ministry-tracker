@@ -104,6 +104,7 @@ class UserMailer < ActionMailer::Base
     @body[:group_invitation] = group_invitation
     @body[:accept_link] =  "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/accept?login_code=#{group_invitation.login_code.code}"
     @body[:decline_link] = "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/decline?login_code=#{group_invitation.login_code.code}"
+    @body[:other_groups_link] = "#{base_url}/signup?login_code=#{group_invitation.login_code.code}"
   end
   
   def group_invitation_decline(group_invitation, base_url)

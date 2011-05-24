@@ -188,6 +188,7 @@ class SignupController < ApplicationController
     session[:needs_verification] = nil
     session[:joined_collection_group] = nil
     session[:signup_group_invitation_id] = nil
+    session[:sent_timetable_email] = nil
 
     @person = get_person || Person.new
     setup_campuses
@@ -259,7 +260,8 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
-    UserMailer.deliver_signup_finished_email(@person.email, link, session[:joined_collection_group])
+    UserMailer.deliver_signup_finished_email(@person.email, link, session[:joined_collection_group]) unless session[:sent_timetable_email] == true
+    session[:sent_timetable_email] = true # make sure we don't notify people twice this session
     
     @group_contact_email = session[:joined_group_contact_email]
     
@@ -312,8 +314,10 @@ class SignupController < ApplicationController
     gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
 
     @group = @campus.find_or_create_ministry_group gt, nil, semester
-    gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
-    gi.send_later(:join_notifications, base_url)
+    unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => @group.id, :level => 'member'}).present? # make sure we don't notify people twice 
+      gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
+      gi.send_later(:join_notifications, base_url)
+    end
     session[:joined_collection_group] = true
   end
 
@@ -322,8 +326,11 @@ class SignupController < ApplicationController
       if %w(member interested).include?(level)
         group = Group.find group_id
         requested = (level == "member" ? group.needs_approval : false) if requested.nil?
-        gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
-        gi.send_later(:join_notifications, base_url)
+        
+        unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => group_id, :level => level, :requested => requested}).present? # make sure we don't notify people twice 
+          gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
+          gi.send_later(:join_notifications, base_url)
+        end
         session[:joined_group_contact_email] = group.email
       end
     end

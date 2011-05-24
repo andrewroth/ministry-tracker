@@ -1,19 +1,34 @@
 <p>Hi!</p>
 
-<p><%= group_invitation.sender_person.full_name %> has invited you to join their group, <%= group_invitation.group.name %>.</p>
+<p><%= group_invitation.sender_person.full_name %> has invited you to join their Campus for Christ group, <%= group_invitation.group.name %></p>
+
+<br/>
 
 <p>
   <blockquote>
     <p>
       <%= "<a href='#{accept_link}'>" if accept_link.present? %>
-      ACCEPT
+      <b>JOIN!</b>
       <%= "</a>" if accept_link.present? %>
     </p>
     <br/>
     <p>
       <%= "<a href='#{decline_link}'>" if decline_link.present? %>
-      DECLINE
+      <b>DECLINE</b>
       <%= "</a>" if decline_link.present? %>
     </p>
   </blockquote>
+</p>
+
+<br/>
+
+<p>
+  You can get in touch with <%= group_invitation.sender_person.first_name %> at <b><%= group_invitation.sender_person.email %></b>
+</p>
+
+<p>
+  Looking for a different group?
+  <%= "<a href='#{other_groups_link}'>" if other_groups_link.present? %>
+  Check out other Campus for Christ groups at <%= group_invitation.group.campus.name %>
+  <%= "</a>" if other_groups_link.present? %>
 </p>
