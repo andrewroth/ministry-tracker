@@ -49,6 +49,7 @@ class PeopleController < ApplicationController
         redirect_to :back
       else
         flash[:notice] = "No user for person #{params[:id]}"
+        redirect_to :back
       end
     end
   end

@@ -42,7 +42,7 @@ CREATE TABLE `campus_involvements` (
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4469 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6021 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campus_ministry_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -50,7 +50,7 @@ CREATE TABLE `campus_ministry_groups` (
   `campus_id` int(11) DEFAULT NULL,
   `ministry_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -91,7 +91,7 @@ CREATE TABLE `columns` (
   `source_column` varchar(255) DEFAULT NULL,
   `foreign_key` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `conference_registrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -188,7 +188,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dismissed_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -197,7 +197,7 @@ CREATE TABLE `dismissed_notices` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dorms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -206,7 +206,7 @@ CREATE TABLE `dorms` (
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_dorms_on_campus_id` (`campus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `email_templates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -234,7 +234,7 @@ CREATE TABLE `emails` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=716 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `event_campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -276,7 +276,7 @@ CREATE TABLE `free_times` (
   `weight` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `free_times_timetable_id` (`timetable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106772 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=192138 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `global_areas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -284,7 +284,7 @@ CREATE TABLE `global_areas` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `global_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -348,7 +348,7 @@ CREATE TABLE `global_countries` (
   `total_slm_staff` int(11) DEFAULT NULL,
   `total_new_slm_staff` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `global_dashboard_accesses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -359,7 +359,7 @@ CREATE TABLE `global_dashboard_accesses` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `global_profiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -376,7 +376,7 @@ CREATE TABLE `global_profiles` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3669 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_involvements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -388,7 +388,7 @@ CREATE TABLE `group_involvements` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5178 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10920 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -435,7 +435,7 @@ CREATE TABLE `groups` (
   KEY `index_groups_on_dorm_id` (`dorm_id`),
   KEY `index_groups_on_ministry_id` (`ministry_id`),
   KEY `index_emu.groups_on_semester_id` (`semester_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=662 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1268 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `imports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -467,7 +467,7 @@ CREATE TABLE `involvement_histories` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=599 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1403 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `locks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -476,7 +476,7 @@ CREATE TABLE `locks` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -502,7 +502,7 @@ CREATE TABLE `ministries` (
   KEY `index_emu.ministries_on_lft` (`lft`),
   KEY `index_emu.ministries_on_rgt` (`rgt`),
   KEY `index_emu.ministries_on_parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_campuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -524,7 +524,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8586 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10528 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -532,7 +532,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=720 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=570 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -545,7 +545,7 @@ CREATE TABLE `ministry_roles` (
   `involved` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -554,7 +554,7 @@ CREATE TABLE `notices` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `people` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -593,7 +593,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -615,7 +615,7 @@ CREATE TABLE `person_extras` (
   `curr_room` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_person_extras_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2191 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12642 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `profile_pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -629,7 +629,7 @@ CREATE TABLE `profile_pictures` (
   `thumbnail` varchar(255) DEFAULT NULL,
   `uploaded_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=521 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=889 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) NOT NULL,
@@ -659,7 +659,7 @@ CREATE TABLE `searches` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7088 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9802 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -670,7 +670,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=95439 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=344546 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -736,7 +736,7 @@ CREATE TABLE `temp_group_involvements` (
   `person_id` int(11) DEFAULT NULL,
   `group_involvements` varchar(255) DEFAULT NULL,
   KEY `index_temp_group_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `timetables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -745,8 +745,8 @@ CREATE TABLE `timetables` (
   `updated_at` datetime DEFAULT NULL,
   `updated_by_person_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_c4c_pulse_dev.timetables_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4367 DEFAULT CHARSET=utf8;
+  KEY `index_emu.timetables_on_person_id` (`person_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5864 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `training_answers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -799,7 +799,7 @@ CREATE TABLE `user_codes` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_user_codes_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4331 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -830,7 +830,7 @@ CREATE TABLE `view_columns` (
   PRIMARY KEY (`id`),
   KEY `view_columns_column_id` (`column_id`,`view_id`),
   KEY `index_view_columns_on_view_id` (`view_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=770 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=857 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `views` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -842,7 +842,7 @@ CREATE TABLE `views` (
   `select_clause` varchar(2000) DEFAULT NULL,
   `tables_clause` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -1221,6 +1221,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110325195018');
 INSERT INTO schema_migrations (version) VALUES ('20110401194148');
 
 INSERT INTO schema_migrations (version) VALUES ('20110428200504');
+
+INSERT INTO schema_migrations (version) VALUES ('20110506202051');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

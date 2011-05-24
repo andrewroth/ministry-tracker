@@ -72,8 +72,14 @@
     <li<%= ' class="highlighted"' if params[:controller] == "titles" %>>
     <%= link_to 'Titles', titles_path %></li>
   </ul>
-  <%- end -%>
 
+  <br/><br/>
+  <h3>Registration</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_reg_events" %>>
+    <%= link_to 'Events', cim_reg_events_path %></li>
+  </ul>
+  <%- end -%>
 
   <%- if authorized?(:edit, :ministry_roles) -%>
   <br/><br/>
