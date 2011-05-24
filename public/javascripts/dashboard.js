@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
   // set vertical bracket height
-  $("#verticalTablistContainer").height($(".colmask").height());
+  adjustBracketHeight();
 
   // change img source on mouseover
   $(function() {
@@ -31,4 +31,8 @@ function requestMyEvents() {
     dataType:'script',
     type:'post',
     url:'/dashboard/events'})
+}
+
+function adjustBracketHeight() {
+  $("#verticalTablistContainer").height($("#dashwrap .col1").height());
 }

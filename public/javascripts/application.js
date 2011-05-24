@@ -1,5 +1,5 @@
 function show_upload_picture() {
-	tb_show('Upload Picture', '#TB_inline?width=300&height=300&inlineId=uploadPicture')
+	tb_show('Change Picture', '#TB_inline?width=300&height=200&inlineId=uploadPicture')
 }
 
 // use as a general dialog utility
@@ -84,9 +84,12 @@ function serialize_array(obj)
     return string;
 }
 
-function simpleValidateEmail(email) 
-{ 
+function simpleValidateEmail(email) { 
   var re = /\S+@\S+\.\S+/;
   return email.match(re);
+}
+  
+function strikeParentOnHover(e) {
+  e.hover(function(){$(this).parent().css("text-decoration", "line-through")}, function(){$(this).parent().css("text-decoration", "none")});
 }
 
