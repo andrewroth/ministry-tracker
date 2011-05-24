@@ -84,6 +84,11 @@ function serialize_array(obj)
     return string;
 }
 
+function simpleValidateEmail(email) { 
+  var re = /\S+@\S+\.\S+/;
+  return email.match(re);
+}
+  
 function strikeParentOnHover(e) {
   e.hover(function(){$(this).parent().css("text-decoration", "line-through")}, function(){$(this).parent().css("text-decoration", "none")});
 }

@@ -2,7 +2,8 @@ class UserCodesController < ApplicationController
   skip_before_filter :login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus
 
   def show
-    uc = UserCode.find_by_code(params[:code])
+    lc = LoginCode.find_by_code(params[:code])
+    uc = UserCode.find_by_login_code_id(lc.id) if lc
     if uc
       session[:code_valid_for_user_id] = uc.user.id
       session[:code_valid_for_person_id] = uc.user.person.id

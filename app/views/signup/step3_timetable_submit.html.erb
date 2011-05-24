@@ -1,28 +1,18 @@
 <%- instruction_block do %>
-  <B>You're done!</B>  You'll receive further information once groups are set up.
-  
-  Click 'Finished' to go
-  <% if session[:from_facebook_canvas] == true %>
-    back to Facebook.
-  <% elsif logged_in? %>
-    back to the dashboard.
-  <% else %>
-    back to the Sign In page.
+  You're done! Your group leader will contact you with more information.
+  <br/>
+  <% if @group_contact_email.present? %>
+    <br/>
+    Feel free to email your group leader at <b><%=@group_contact_email%></b>
   <% end %>
-
 <%- end %>
 
-<center>
-  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => "done" } %>
-</center>
-
 <div class="center">
-  <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
   <% if session[:from_facebook_canvas] == true %>
-    <%= link_to "Finished", '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
+    <%= link_to @finished_button_text, '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
   <% else %>
-    <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
+    <%= link_to @finished_button_text, { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
 
   <br/><br/>

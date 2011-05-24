@@ -272,10 +272,18 @@ input, textarea {
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
+  border-radius:3px;
 }
 
 input:focus, textarea:focus {
   background:#FFFFCC;
+  border-color:#8493D9;
+}
+
+input[disabled='disabled'] {
+  color:#8C8C8C;
+  background-color:transparent;
+  border-color:transparent;
 }
 
 /*select {width:175px; height:1.5em;}*/
@@ -954,7 +962,7 @@ margin-bottom:10px;
 a.badhead:hover,
 a.poorhead:hover,
 a.okhead:hover,
-a.goodhead:hover {border:2px solid gray;}
+a.goodhead:hover {border:2px solid #1F429B;}
 
 .statusheadwrap {height:24px; width:200px; background:none; display:block;margin:10px 0 10px 0; clear:both;}
 
@@ -1493,7 +1501,7 @@ padding-bottom:5px;
 /* ************* */
 /* Flash Notices */
 #flash_notice, .flash_notice {
-  color: #666766;
+  color: #585958;
   margin:10px;
   padding:10px;
   background:#FFCB05;
@@ -1502,11 +1510,11 @@ padding-bottom:5px;
 }
 
 div.flash big {
-  color: #666766;
+  color: #585958;
 }
 
 div.flash b, div.flash_notice b  {
-  color: #666766;
+  color: #585958;
   font-weight: bold;
 }
 div.flash_notice.warning b  {
@@ -1517,10 +1525,19 @@ div.flash_notice.warning b  {
 	margin-left: 10px;
 }
 .notice {
-	color:#666766;
+	color:#585958;
 }
 .warning {
 	color:FireBrick;
+}
+
+div #instructions {
+  color: #585958;
+  margin:20px;
+  font-size:13px;
+}
+div #instructions b {
+  color: #585958;
 }
 
 .setLink a:link {color: #1F429B;}
@@ -2204,17 +2221,21 @@ td.eventAttendees {
   border-right: 1px solid #999999;
 }
 
-#signup_step2_info tr.campus td {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
 #signup_step1_info {
   width: 425px; float: left; padding: 0 3em 0 3em;
 }
 
 #signup_step1_columns {
   width: 100%; display: inline-block; padding: 1em 0 1em 0;
+}
+
+#signup_step2_info input, #signup_step2_info select {
+  font-size:14px;
+}
+
+#signup_step2_info .label {
+  font-size:13px;
+  padding-top:3px;
 }
 
 tr.required_field td.label {
@@ -2247,7 +2268,12 @@ table#set_initial_campus tr {
   background-color: #D8D8D8;
   z-index: 99;
 
+  -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
   -moz-border-radius: 0 0 6px 6px; -webkit-border-radius: 0 0 6px 6px;
+}
+
+#uberSearchContainer.focused {
+  width:395px;
 }
 
 #uberSearchBoxContainer {
@@ -2257,31 +2283,39 @@ table#set_initial_campus tr {
 }
 
 #uberSearchBox {
-  width: 166px;
-  font-size: 13px;
   position: absolute;
   top: 9px;
   left: 9px;
+  padding-left: 8px;
+  border: 1px solid white;
+}
+
+.uberSearchBox {
+  font-size: 13px;
   height: 16px;
+  width: 166px;
   background: white;
   color: #DADADA;
-  border: 1px solid white;
-  padding-left: 8px;
 
-  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
+  -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
   -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
-#uberSearchBox.focused, #uberSearchBox:focus {
+#uberSearchBox.focused, .uberSearchBox.focused, .uberSearchBox:focus {
   background: white;
   color: black;
   border: 1px solid #00268D;
+  width: 266px;
   -moz-box-shadow: 1px 1px 3px #8B8B8B inset; -webkit-box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
-#uberSearchBox.ac_loading {
+.uberSearchBox.ac_loading {
   -moz-transition: none; -webkit-transition: none;
-  background: url("/images/spinner.gif") no-repeat scroll 135px 8px white !important;
+  background: url("/images/spinner.gif") no-repeat scroll 145px 8px white !important;
+}
+
+#uberSearchBox.ac_loading {
+  background-position: 230px 8px !important;
 }
 
 #uberSearchButton {
@@ -2289,7 +2323,7 @@ table#set_initial_campus tr {
   background-color: transparent;
   position: absolute;
   top: 6px;
-  left: 165px;
+  right: 100px;
   padding: 5px;
   cursor: pointer;
 }
@@ -2369,7 +2403,7 @@ table#set_initial_campus tr {
 #searchFilterControlsContainer a {
   display: block;
   width: 100px;
-  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
+  -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
 }
 
 #searchFilterControlsContainer .searchFilterHighlighted {
@@ -2508,7 +2542,7 @@ table#set_initial_campus tr {
 }
 
 .searchResult {
-  -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s;
+  -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
 }
 
 .searchResult:hover {
@@ -2741,18 +2775,21 @@ li.ac_over .autoCompleteName {
 }
 /** end mentor-specific search-results styling **/
 
+.ac_results_layout {
+  top: 70px !important;
+  padding: 8px 0 0 0 !important;
+}
 
 .ac_results {
-  padding: 10px 0 0 0;
+  padding: 0;
   background-color: white;
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 0 2px 5px 2px;
+  border-width: 1px 2px 5px 2px;
+  margin: 0 1px;
 
-  top: 70px !important;
-
-  -moz-border-radius: 5px 5px 10px 10px; -webkit-border-radius: 5px 5px 10px 10px;
+  -moz-border-radius: 0 0 10px 10px; -webkit-border-radius: 0 0 10px 10px;
   -moz-box-shadow: 0 4px 10px #C8C8C8; -webkit-box-shadow: 0 4px 10px #C8C8C8;
 }
 
@@ -2861,6 +2898,45 @@ li.ac_over .autoCompleteName {
   color: #747474;
   font-weight: normal;
 }
+
+#inviteSearchBox {
+  width: 350px;
+  font-size: 16px;
+  height: 22px;
+  border-color: #808080;
+  box-shadow: 1px 1px 5px #8B8B8B;
+}
+
+#inviteSearchBox.focused {
+  border-color: #00268D;
+  box-shadow: 1px 1px 3px #8B8B8B inset;
+}
+
+#inviteSearchBox.ac_loading {
+  background: url("/images/spinner.gif") no-repeat scroll 330px 10px white !important;
+}
+
+#invitationsDisplay {
+  width:350px;
+  padding:2px 5px;
+  border:1px solid #E6E6E6;
+  cursor:default;
+  min-height:40px;
+}
+
+#invitePreview {
+  padding:5px 0 0 15px;
+}
+
+#invitationsDisplay span {
+  line-height:20px;
+  vertical-align:bottom;
+}
+
+#invitationsDisplay a.removeInvitationLink {
+  font-size: 20px;
+}
+
 
 .jqueryValidationInformation {
 	color: green;
@@ -2987,7 +3063,7 @@ table.groupInvolvementList th {
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
 .horizTableCompare .personNameContainer { position:relative; overflow: hidden; height:26px; text-align: right; padding-left:16px; }
 
-.horizTableCompare .personName { display:inline; position:relative; right:-20px; overflow:visible; cursor:pointer; color:#1F429B; padding:4px 51px 4px 13px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 10px 0 0 10px; -webkit-border-radius: 10px 0 0 10px; -moz-transition: 0.2s ease 0s; -webkit-transition: 0.2s ease 0s; }
+.horizTableCompare .personName { display:inline; position:relative; right:-20px; overflow:visible; cursor:pointer; color:#1F429B; padding:4px 51px 4px 13px; font-weight:bold; white-space:nowrap; line-height:26px; -moz-border-radius: 10px 0 0 10px; -webkit-border-radius: 10px 0 0 10px; -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s; }
 .horizTableCompare .personName.even { background-color:#F0F0F0; }
 .horizTableCompare .personName.odd  { background-color:#E9E9E9; }
 .horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; text-decoration:underline; }

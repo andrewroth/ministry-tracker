@@ -1,16 +1,13 @@
 <%- if @signup %>
   <%- instruction_block do %>
-    <b>Step 3:</b> You're almost done! Enter your timetable to indicate when you're free to meet!<br/><br/>If you don't have your timetable just hit the 'Edit Timetable Later' button at the bottom of this page and you'll receive an email with a link back to this page.
+    You're almost done! Enter your timetable to indicate when you're free to meet!
   <%- end %>
-    
-  <center><%= render :partial => 'signup/jquery_ui_progress', :locals => { :current_step => 3 } %></center>
-
-  <div class="center"><a href="step2_info" class="action-button">Back</a></div>
 <%- end %>
 
-<h1><%= @person.full_name %></h1> 
-<div class="divider" style="margin-bottom:0;">&nbsp;</div>
+<div id="profiletitle"><h1><%= @person.full_name %></h1></div>
+
 <br />
+
 <script type="text/javascript" charset="utf-8">
   // Loop over the table cells and collect the ones that are checked
   // 61 td cells per column
@@ -98,10 +95,20 @@
     <%= render :partial => 'timetable' %>
 
     <br/>
+    <% if @signup %>
+      <br/>
+      <div style="float:right;">
+        <%= f.submit 'Edit Timetable Later', :class => 'action-button', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page.", :style => 'margin: 0 30px' %>
+    <% end %>
+    
     <%= f.submit 'Save Timetable', :class => 'action-button' %>
-    <%- if @signup -%>
-    <%= f.submit 'Edit Timetable Later', :class => 'action-button', :style => 'margin-left: 12px' %>
-    <%- end %>
+    <br/>
+    <br/>
+    
+    <% if @signup %>
+      </div>
+    <% end %>
+    
   <%- end -%><br/>
 <%- else -%>
   Nothing to see here. Please move on.
