@@ -1,10 +1,20 @@
 <div>
-<%= link_to_remote image_tag('delete.png'), :url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_profile => @from_profile), :method => :delete, :confirm => "Are you sure you want to archive this involvement?" %> 
+<%= link_to_remote "", {:url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_profile => @from_profile), :method => :delete,
+                        :confirm => "Are you sure you want to archive this involvement?"},
+                       {:title => "Remove", :class => "removeInvolvementIconLink"} %>
 <%= ministry_involvement.ministry.name %>, 
 <%= ministry_involvement.ministry_role.try(:name) %>, 
 <%- if ministry_involvement.end_date.present? -%> from <%= ministry_involvement.start_date %> to <%= ministry_involvement.end_date %>
 <%- else -%>
  since <%= ministry_involvement.start_date %>
 <%- end -%>
-<%= link_to_remote image_tag('button_edit_tiny.gif'), :url => edit_person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true), :method => :get %>
+&nbsp;
+<%= link_to_remote "", {:url => edit_person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_manage => true), :method => :get},
+                       {:title => "Edit", :class => "editInvolvementIconLink"} %>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    strikeParentOnHover($(".removeInvolvementIconLink"));
+  });
+</script>

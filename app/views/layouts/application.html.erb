@@ -149,10 +149,12 @@
           <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
           For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
 
-          <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-          <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-          <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-          <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          <div style='background-color:white; display:inline; padding:5px 5px 0;'>
+            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          </div>
         </div>
       <![endif]-->
 
