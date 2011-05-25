@@ -246,22 +246,25 @@ class GlobalDashboardController < ApplicationController
     if request.xhr?
       @areas_present = {}
       @areas_total = {}
+      stage = params[:s]
       #area_find = params[:a].present? ? params[:a] : :all
       GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
         ga.global_countries.each do |gc|
           @areas_present[ga] ||= 0
           @areas_total[ga] ||= 0
-          if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
+          if (stage == "all" || gc.stage.to_s == stage) && 
+            gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
+          #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
             @areas_present[ga] += 1
-          else
-            @areas_total[ga] += 1
           end
+          @areas_total[ga] += 1
         end
       end
     end
     setup
     @mcc_options = all_mccs
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
+    @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3 ] ]
   end
 
   def submission_area_report
