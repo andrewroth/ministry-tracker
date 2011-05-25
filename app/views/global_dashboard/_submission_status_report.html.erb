@@ -1,0 +1,16 @@
+<%= stylesheet_link_tag "jquery-ui" %>
+
+<table>
+<%- @areas_total.each_pair do |area, count| %>
+  <tr>
+    <td style="width: 200px">
+      <%= area.area %>: <%= @areas_present[area] %> of <%= count %><BR/>
+    </td>
+    <td style="width: 500px"> 
+      <div id="<%= area.id %>"></div>
+      <%- percent_done = (@areas_present[area].to_f / count.to_f * 100).to_i %>
+      <script type="text/javascript">$("#<%= area.id %>").progressbar({ value: <%= percent_done %> });</script>
+    </td>
+  </tr>
+<%- end %>
+</table>

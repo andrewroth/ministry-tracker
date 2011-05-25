@@ -1,15 +1,20 @@
-<div id="stats">
-  <%= render :partial => "genders" %>
-  <%= render :partial => "marital_status" %>
-  <%= render :partial => "languages" %>
-  <%= render :partial => "mccs" %>
-  <%= render :partial => "funding_source" %>
-  <%= render :partial => "staff_status" %>
-  <%= render :partial => "position" %>
-  <%= render :partial => "scope" %>
-  <%= render :partial => "stage" %>
-  <%= render :partial => "whq" %>
-  <%= render :partial => "demog" %>
-  <%= render :partial => "fiscal" %>
-  <%= render :partial => "staff_count" %>
-</div>
+  <%= label :gd, :live_exp, "Live Exposures" %>
+  <%= text_field :gd, :live_exp %>
+  <BR/>
+  <%= label :live_dec, "Live Decisions" %>
+  <%= text_field :gd, :live_dec %>
+  <BR/>
+  <%= label :new_grth_mbr, "New Growth Group Members" %>
+  <%= text_field :gd, :new_grth_mbr %>
+  <BR/>
+  <%= label :mvmt_mbr, "Movement Members" %>
+  <%= text_field :gd, :mvmt_mbr %>
+  <BR/>
+  <%= label :mvmt_ldr, "Movement Leaders" %>
+  <%= text_field :gd, :mvmt_ldr %>
+  <BR/>
+  <%= label :new_staff, "New Staff" %>
+  <%= text_field :gd, :new_staff %>
+  <BR/>
+  <%= label :lifetime_lab, "Lifetime Labourers" %>
+  <%= text_field :gd, :lifetime_lab %>
