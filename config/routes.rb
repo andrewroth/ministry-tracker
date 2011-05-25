@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
   map.resources :cim_hrdb_staff
+  map.resources :cim_reg_events
 
   map.resources :titles
 
@@ -221,7 +222,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # root to dashboard
   map.dashboard '', :controller => "dashboard"
-  map.global_dashboard '/global_dashboard', :controller => "global_dashboard"
+  map.global_dashboard '/global_dashboard/:action.:format', :controller => "global_dashboard"
   map.export_global_dashboard '/global_dashboard/export', :controller => "global_dashboard", :action => "export"
 
   map.resources :global_countries, :member => { :set_global_country_stage => :post }

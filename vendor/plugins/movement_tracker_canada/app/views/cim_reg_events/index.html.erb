@@ -1,0 +1,27 @@
+<h1>Listing Legacy Registrations</h1>
+<br/>
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Start Date</th>
+      <th>Hide From Profile</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cim_reg_events.each do |reg_event| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.event_name %></td>
+        <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.event_startDate %></td>
+        <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.hide_from_profile %></td>
+        <td><%= link_to 'Show', cim_reg_events_path(reg_event.id) %></td>
+        <td><%= link_to 'Edit', edit_cim_reg_event_path(reg_event.id) %></td>
+        <td><%= link_to 'Destroy', cim_reg_event_path(reg_event.id), :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New Reg Event', new_cim_reg_event_path %>

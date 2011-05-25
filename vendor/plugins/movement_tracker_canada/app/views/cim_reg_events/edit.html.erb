@@ -1,0 +1,20 @@
+<h1>Editing Reg Event</h1>
+<br/>
+<% form_for(@cim_reg_event, :url => cim_reg_event_path(@cim_reg_event), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :cim_reg_event_name, "Event Name" %><br />
+    <%= f.text_field :event_name %>
+  </p>
+  <p>
+    <%= f.label :cim_reg_hide_from_profile, "Hide From Profile" %><br />
+    <%= f.check_box :hide_from_profile %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Show', cim_reg_event_path(@cim_reg_event.id) %> |
+<%= link_to 'Back', cim_reg_events_path %>

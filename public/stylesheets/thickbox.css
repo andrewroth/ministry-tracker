@@ -16,11 +16,11 @@
 	color:#666666;
 }
 
-#TB_window a:link {color: #666666;}
-#TB_window a:visited {color: #666666;}
-#TB_window a:hover {color: #000;}
-#TB_window a:active {color: #666666;}
-#TB_window a:focus{color: #666666;}
+#TB_window a:link {color: #1F429B;}
+#TB_window a:visited {color: #1F429B;}
+#TB_window a:hover {color: #ECAC00;}
+#TB_window a:active {color: #ECAC00;}
+#TB_window a:focus{color: #1F429B;}
 
 /* ----------------------------------------------------------------------------------------------------------------*/
 /* ---------->>> thickbox settings <<<-----------------------------------------------------------------------------*/
@@ -97,6 +97,8 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	float:left;
 	padding:7px 0 5px 10px;
 	margin-bottom:1px;
+	font-size:14px;
+	font-weight:bold;
 }
 
 #TB_title{

@@ -15,12 +15,47 @@ class GlobalDashboardController < ApplicationController
   ]
 
   before_filter :ensure_permission
+  before_filter :set_can_edit_stages
   skip_before_filter :authorization_filter
 
   def index
     @area = true
     setup
     setup_stats(GlobalArea.all, all_mccs)
+  end
+
+  def staging_summary
+    @areas = GlobalArea.all(:order => :area, :include => :global_countries)
+    @stage_count = { }
+    @totals = { }
+    @areas.each do |area|
+      area.global_countries.each do |country|
+        if stage = country.stage
+          @stage_count[area] ||= {}
+          @stage_count[area][stage] ||= 0
+          @stage_count[area][stage] += 1
+          @totals[stage] ||= 0
+          @totals[stage] += 1
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv_out = ""
+        CSV::Writer.generate(csv_out) do |csv|
+          csv << [ "", "Stage 1", "Stage 2", "Stage 3" ]
+          @areas.each do |area|
+            csv << [ area.area, @stage_count[area][1], @stage_count[area][2], @stage_count[area][3] ]
+          end
+          csv << [ "total", @totals[1], @totals[2], @totals[3] ]
+        end
+        send_data(csv_out,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "export.csv")
+      }
+    end
   end
 
   def export
@@ -351,7 +386,7 @@ class GlobalDashboardController < ApplicationController
     end
 
     def ensure_permission_by_person_id
-      [283, 5173].include?(@person.id) 
+      [283, 5173, 1301246379].include?(@person.id) 
     end
 
     def ensure_permission
@@ -368,5 +403,9 @@ class GlobalDashboardController < ApplicationController
       @all_mcc_options ||= all_mccs.collect{ |mcc|
         mcc == "" ? "No mcc chosen" : mcc
       }
+    end
+
+    def set_can_edit_stages
+      @can_edit_stages = ensure_permission_by_person_id
     end
 end
