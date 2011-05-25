@@ -7,17 +7,17 @@
 
 <% form_for(:whq_stat) do |f| %>
   <tr>
-  <%= f.label :global_area, "Area" %>
-  <%= f.select :global_area_id, options_for_select([""] + @area_options, "") %>
-  <BR/>
   <%= f.label :mcc %>
   <%= f.select :mcc, options_for_select(@mcc_options, "") %>
   <BR/>
   <%= f.label :month %>
   <%= f.select :month_id, options_for_select([""] + @month_options, Semester.current.month.id) %>
   <BR/>
+  <%= f.label :stage %>
+  <%= f.select :stage_id, options_for_select([""] + @stage_options, "") %>
+  <BR/>
 
-  <%- with_str = "'a='+$('#whq_stat_global_area_id').val()+'&mcc='+$('#whq_stat_mcc').val()+'&m='+$('#whq_stat_month_id').val()" %>
+  <%- with_str = "'s='+$('#whq_stat_stage_id').val()+'&mcc='+$('#whq_stat_mcc').val()+'&m='+$('#whq_stat_month_id').val()" %>
   <%= observe_field :whq_stat_month_id, 
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
         :with => with_str
@@ -26,7 +26,7 @@
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
         :with => with_str
    %>
-   <%= observe_field :whq_stat_global_area_id, 
+   <%= observe_field :whq_stat_stage_id, 
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
         :with => with_str
    %>
@@ -41,7 +41,7 @@
    </style> 
 
    <div id="stats">
-     Choose a country, mcc and month to see the country submission stats.
+     Choose an mcc, month and stage to see the country submission stats.
    </div>
 
    <br/><br/><%= submit_tag "Save" %>
