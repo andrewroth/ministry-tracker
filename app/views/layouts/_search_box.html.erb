@@ -1,0 +1,53 @@
+<% if authorized?(:index, :search) %>
+  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
+  
+    <div id="uberSearchContainer">
+
+      <div id="uberSearchBoxContainer">
+        <% form_tag url_for(:controller => :search), :method => 'get', :id => 'uberSearchForm' do %>
+
+          <%= render :partial => "/search/uber_search_box", :locals => { :q => q,
+                                                                         :default_text => default_text,
+                                                                         :input_id => "uberSearchBox",
+                                                                         :input_class => "search uberSearchBox",
+                                                                         :resultFunction => "layoutSearchBoxResultAction",
+                                                                         :resultsClass => "ac_results ac_results_layout",
+                                                                         :action_params => "all_results_link=true&actions=true&title=Goto their profile" } %>
+
+          <button type="submit" id="uberSearchButton" value="" title="Click to search">
+            <div></div>
+          </button>
+
+        <% end %>
+      </div>
+
+      <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
+      
+      <script type="text/javascript">
+        $(document).ready(function() {
+          
+          $('#uberSearchBox').focus(function() { $('#uberSearchContainer').addClass('focused'); });
+          $('#uberSearchBox').blur(function() { $('#uberSearchContainer').removeClass('focused'); });
+          
+          $('#uberSearchForm').submit(function() {
+            // don't submit if the search box is empty
+            if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_text %>") {
+              return false;
+            }
+            else {
+              // visual cue that seach has started
+              $('#uberSearchButton div').css('background', 'url(/images/debicons/Ymagniglass.png) no-repeat 0px 0px');
+              $('div.ac_results').hide();
+              return true;
+            }
+          });
+        });
+            
+        function layoutSearchBoxResultAction(event, info) {
+          location.href = $(".acLinkPath", info[0]).html();
+        }
+      </script>
+    </div>
+
+  <% end %>
+<% end %>

@@ -1,15 +1,17 @@
 <div style="display:none" id="uploadPicture" class="passwordbox">
-<div><h3 class="lbtitle">Change profile picture</h3></div>
   <%- @upid = Time.now.to_i.to_s -%>
   <%- form_for([@person, @profile_picture], :html => {:multipart => true}) do |f|  -%>
     <div class="popupfield">
-      <p>Profile pictures have a 10mb limit.</p>
-		  <h3>New Picture:</h3> 
+      <br/>
+      <p>Select an image file on your computer (max 10 MB):</p>
     	
-		<%= f.file_field :uploaded_data, :size => '18px' %>
-		<%#= f.hidden_field :person_id %>
-		<%= f.submit 'Upload', :id => 'upload', :onclick => "tb_remove()" %>
-	  </div><br>
+		  <%= f.file_field :uploaded_data, :size => '18px' %>
+		  <%#= f.hidden_field :person_id %>
+		  <br/>
+		  <br/>
+		  <%= f.submit 'Upload selected image', :id => 'upload', :class => "action-button", :onclick => "tb_remove(); $('#spinner').show()" %>
+	  </div>
+	  <br/>
 	  <%= link_to_function("cancel", "tb_remove()") %>
   <%- end -%>
 </div>

@@ -4,4 +4,4 @@ page["#eventsSpinner"].hide
 page["events"].visual_effect :fade_in
 
 # update yellow menu bracket height
-page << "$('#verticalTablistContainer').height($('.colmask').height());"
+page << "adjustBracketHeight();"

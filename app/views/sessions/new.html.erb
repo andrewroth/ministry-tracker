@@ -37,6 +37,8 @@ unless @mobile
       </div>
     <![endif]-->
 
+    <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+
     <%= image_tag("log_in_c4c_logo.png", :id => "c4c_logo")%>
     <div id="banner_container">
       <div id="banner_bg">

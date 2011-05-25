@@ -1,6 +1,6 @@
 <% if @people.present? %>
   <%= render :partial => "person_ac", :collection => @people %>
-  <% unless @people.size < @max_num_ac_results %>
+  <% unless @people.size < @max_num_ac_results || !@all_results_link %>
     <%= link_to("<div class='autoCompleteResult'>" +
         "<div class='acLinkPath' style='display: none;'>/search?q=#{@q}</div>" +
         "<div class='autoCompleteMorePic'>#{image_tag("/images/debicons/Gmagniglass.png")}</div>" +

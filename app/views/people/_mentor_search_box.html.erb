@@ -3,18 +3,10 @@
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) && ((authorized?(:add_mentor, :people)&&(person == @me)) || authorized?(:add_mentor_to_other, :people))) %>
 
     <div id="uberMentorSearchContainer">
-      <% default_search_box_text = "search" %>
+      <% default_search_box_text = "Search for mentor" %>
 
       <div id="uberMentorSearchBoxContainer">
-        <% form_tag url_for(:controller => :search), :method => 'get' do %>
-
-          <%  if controller.controller_name == "search" && (controller.action_name == "people") %>
-            <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= q %>"/>
-          <% else %>
-            <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
-          <% end %>
-
-        <% end %>
+        <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
       </div>
 
       <%= javascript_include_tag "jquery.ajaxQueue.js" %>

@@ -8,22 +8,28 @@
   <%- end %>
 <% end %>
 
-<h3><%= @person.primary_campus.try(:name) %>&nbsp;</h3>
+
+<h4><%= @person.primary_campus.try(:name) %></h4>
+<br/>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="address">
 <tr>
 
-  <td>
-    <table class="halftab">
+  <td class="half">
+    <table>
       <tr>
-        <th width="120px">Email</th>
-        <td width="200px">
-          <%= @current_address.email if @current_address %>
+        <th>Email</th>
+        <td>
+          <% if @current_address && @person != @me && authorized?(:new, :emails) %>
+            <%=link_to(@current_address.email, new_email_url("person[]" => @person.id), :class => "sendEmail", :title => "Compose an email to #{@person.first_name.capitalize}") -%>
+          <% elsif @current_address %>
+            <%= @current_address.email %>
+          <% end %>
         </td>
       </tr>
       
       <%- # If the person is under 21, show their full birthdate. Otherwise just show the day/month 
         format = @person.birth_date < 21.years.ago.to_date ? :short_ordinal : :long_ordinal if @person.birth_date -%>
-      <tr><th>Birth Day</th><td><%= format_date(@person.birth_date, format) %></td></tr>
+      <tr><th>Birth Date</th><td><%= format_date(@person.birth_date, format) %></td></tr>
       <tr><th>Gender</th><td><%= @person.human_gender %></td></tr>
       <%- if @person.user && Cmt::CONFIG[:facebook_connectivity_enabled] -%>
         <tr>
@@ -49,22 +55,24 @@
   
   <td class="spacer">&nbsp;</td>
   
-  <td>
-    <table class="halftab">
-      <tr><th width="100px">Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:name) %></td></tr>
+  <td class="half">
+    <table>
+      <tr><th>Year in School</th><td><%= @person.most_recent_involvement.try(:school_year).try(:name) %></td></tr>
       <tr><th>Graduation Date</th><td><%= format_date(@person.most_recent_involvement.try(:graduation_date)) %></td></tr>
       <tr><th>Major</th><td><%= @person.major %></td></tr>
       <tr><th>Minor</th><td><%= @person.minor %></td></tr>
-  <%- if Cmt::CONFIG[:rp_system_enabled] -%>
-    <tr><th>Responsible Person<th><td> 
-      <% if @person.responsible_person %>
-        <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
-      <% end %>
-      <%- tooltip do -%> 
-        Your Responsible Person can either be a mentor or a contact that knows you very well and who is of a higher ministry role than you.
+      
+      <%- if Cmt::CONFIG[:rp_system_enabled] -%>
+        <tr><th>Responsible Person<th><td> 
+          <% if @person.responsible_person %>
+            <%= link_to @person.responsible_person.full_name, person_url(@person.responsible_person.id) %>
+          <% end %>
+          <%- tooltip do -%> 
+            Your Responsible Person can either be a mentor or a contact that knows you very well and who is of a higher ministry role than you.
+          <%- end -%>
+        </td></tr>
       <%- end -%>
-    </td></tr>
-  <%- end -%>
+      
       <%- if !@person.url.blank?
             desc, url = parse_url(@person.url) -%>
       <tr><th>Website</th><td><%= link_to(desc, url, :target => '_blank')  %></td></tr>
@@ -74,21 +82,27 @@
 
 </tr>
 
+<tr><td><br/></td></tr>
+
 <tr>
-  <td colspan="1"><h4 class="title">Current Address</h4></td>
+  <td colspan="1"><h5>Current Address</h5></td>
   <td class="spacer">&nbsp;</td>
-  <td colspan="1"><h4 class="title">Permanent Address</h4></td>
+  <td colspan="1"><h5>Permanent Address</h5></td>
 </tr>
 
 <tr>
 <td>
   
   <table class="halftab">
-  <tr><th width="150">Phone</th><td><%= @current_address.phone if @current_address %></td></tr>
+  <tr><th>Phone</th><td><%= @current_address.phone if @current_address %></td></tr>
   <tr><th><%= I18n.t :alternate_phone, :default => "Alternate Phone" %>
       </th><td><%= @current_address.alternate_phone if @current_address %></td></tr>
   <tr><th>Address</th><td><%= @current_address.mailing if @current_address %></td></tr>
-  <tr><th>&nbsp;</th><td><%= @current_address.dorm if @current_address %> <%= "Room " + @current_address.room unless @current_address.nil? || @current_address.room.to_s.empty? %></td></tr>
+  
+  <% if @current_address && (@current_address.dorm.present? || @current_address.room.present?) %>
+    <tr><th>Dorm</th><td><%= @current_address.dorm if @current_address %> <%= "Room " + @current_address.room unless @current_address.nil? || @current_address.room.to_s.empty? %></td></tr>
+  <% end %>
+  
   <tr>
     <th>Valid from</th>
     <td>
@@ -111,7 +125,7 @@
 <td>
   <table class="halftab">
     <tr>
-      <th width="150">Phone</th>
+      <th>Phone</th>
       <td>
         <%=
           @perm_address.phone if @perm_address
@@ -136,69 +150,84 @@
 
 
   
-  <!-- MENTORSHIP ----------------------->
+<!-- MENTORSHIP ----------------------->
 <% if authorized?(:show_mentor, :people) || authorized?(:show_mentees, :people) %>   
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship">
-	<tr>
-	<td>
-	  
 	  <tr>
-	  <% if authorized?(:show_mentor, :people) %>
-	    <td colspan="1"><h4 class="title">My Mentor</h4></td>
-		<% end %>
-		<% if authorized?(:show_mentees, :people) %>
-	    <td class="spacer">&nbsp;</td>
-	    <td colspan="1"><h4 class="title">I'm Mentoring</h4></td>	
-		<% end %>
+      <% if authorized?(:show_mentor, :people) %>
+        <td colspan="1"><h5>Mentor <%= spinner('m','opaqueWhite') %></h5></td>
+	    <% end %>
+	    <% if authorized?(:show_mentees, :people) %>
+        <td class="spacer">&nbsp;</td>
+        <td colspan="1"><h5>Mentoring <%= spinner('m2','opaqueWhite') %></h5></td>
+	    <% end %>
+	  </tr> <!-- added Jan 14, 2011 -->
+	  <tr>
+	    <% if authorized?(:show_mentor, :people) %>	
+		    <td class="half">
+		      
+		      <!-- - contains one name only
+		                        - student role has read-only
+		                        - involved student role able to choose name from students on their campus and any staff
+		                        - staff able to choose anybody
+		                        - if no mentor chosen, display AJAX search box -->
+		      <table>
+		        <div id="mentors_div">
+		          <%= render :partial => 'mentors' %>
+		        </div>
+		        <div id="progress-bar"></div>
+		      </table>
+		
+		    </td> 
+	    <% end %>
+	    <% if authorized?(:show_mentees, :people) %>
+		    <td class="spacer">&nbsp;</td>
+		    <!-- was </td> here -->
+		    <td class="half">
+		      <table>
+		        <div id="mentees_div">
+		          <%= render :partial => 'mentees' %>
+		        </div>
+		      </table>
+		    </td>
+	    <% end %>
 	  </tr>
-	</td>
-	</tr> <!-- added Jan 14, 2011 -->
-	<tr>
-		
-	<% if authorized?(:show_mentor, :people) %>	
-		<td>
-		  
-		  <!-- - contains one name only
-		                    - student role has read-only
-		                    - involved student role able to choose name from students on their campus and any staff
-		                    - staff able to choose anybody
-		                    - if no mentor chosen, display AJAX search box -->
-		  <table class="halftab">
-		  <div id="mentors_div">
-		    <%= render :partial => 'mentors' %>
-		  </div>
-			<div class="floatLeft"><%= spinner('m') %></div>
-		  <div id="progress-bar"></div>
-		  </table>
-		
-		</td> 
-	<% end %>
-	<% if authorized?(:show_mentees, :people) %>
-		<td class="spacer">&nbsp;</td>
-		<!-- was </td> here -->
-		<td>
-		  <table class="halftab">
-		  <div id="mentees_div">
-		    <%= render :partial => 'mentees' %>
-		  </div>
-		  </table>
-		</td>
-	<% end %>
-	</tr>
 	</table>
 	<br />
 <% end %>
 
 
-<% if is_ministry_admin %>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
   <tr>
-  <td colspan="1"><h4 class="title">Recent Activity</h4></td>
+  <td colspan="1"><h5>Events</h5></td>
   </tr>
 
   <tr>
-    <td>
-      <table class="halftab">
+    <td class="half">
+      <table>
+        <tr>
+          <td>
+            <nobr>
+              <%= render :partial => "events" %>
+           </nobr>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br/>
+
+<% if is_ministry_admin %>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+  <tr>
+  <td colspan="1"><h5>Recent Activity</h5></td>
+    <td class="spacer">&nbsp;</td>
+  </tr>
+
+  <tr>
+    <td class="half">
+      <table>
           <tr>
             <td>
               <p>
@@ -238,26 +267,6 @@
 </table>
 <% end %>
 
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
-  <tr>
-  <td colspan="1"><h4 class="title">Events</h4></td>
-  </tr>
-
-  <tr>
-    <td>
-      <table class="halftab">
-        <tr>
-          <td>
-            <nobr>
-              <%= render :partial => "events" %>
-           </nobr>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
 
 
 <%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
