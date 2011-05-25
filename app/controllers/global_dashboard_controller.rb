@@ -24,6 +24,66 @@ class GlobalDashboardController < ApplicationController
     setup_stats(GlobalArea.all, all_mccs)
   end
 
+  def staging_summary
+    @areas = GlobalArea.all(:order => :area, :include => :global_countries)
+    @stage_count = { }
+    @totals = { }
+    @areas.each do |area|
+      area.global_countries.each do |country|
+        if stage = country.stage
+          @stage_count[area] ||= {}
+          @stage_count[area][stage] ||= 0
+          @stage_count[area][stage] += 1
+          @totals[stage] ||= 0
+          @totals[stage] += 1
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv_out = ""
+        CSV::Writer.generate(csv_out) do |csv|
+          csv << [ "", "Stage 1", "Stage 2", "Stage 3" ]
+          @areas.each do |area|
+            csv << [ area.area, @stage_count[area][1], @stage_count[area][2], @stage_count[area][3] ]
+          end
+          csv << [ "total", @totals[1], @totals[2], @totals[3] ]
+        end
+        send_data(csv_out,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "staging_summary_export.csv")
+      }
+    end
+  end
+
+  def staging_breakdown
+    @rows = []
+    areas = GlobalArea.all(:order => :area, :include => :global_countries)
+    areas.each do |area|
+      area.global_countries.each do |gc|
+        @rows << [ area.area, gc.name, gc.stage ]
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        csv_out = ""
+        CSV::Writer.generate(csv_out) do |csv|
+          csv << [ "Area", "Country", "Stage" ]
+          @rows.each do |row|
+            csv << row
+          end
+        end
+        send_data(csv_out,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "staging_breakdown_export.csv")
+      }
+    end
+  end
+
   def export
     case params[:location]
     when "all"
@@ -143,6 +203,72 @@ class GlobalDashboardController < ApplicationController
     setup_stats(location_filter_arr, mcc_filters) unless @no_filter
   end
 
+  def submit_whq
+    if request.post?
+      @gd = GlobalDashboardWhqStat.find_by_mcc_and_month_id_and_global_country_id(params[:whq_stat][:mcc], 
+                                                                                  params[:whq_stat][:month_id], 
+                                                                                  params[:whq_stat][:global_country_id])
+      @gd ||= GlobalDashboardWhqStat.new
+      @gd.update_attributes(params[:gd])
+      @whq_message = "WHQ Data saved."
+      redirect_to :action => :index
+      return
+    end
+
+    setup
+    @mcc_options = all_mccs
+    @country_options = GlobalCountry.all.collect{ |gc| [ gc.name, gc.id ] }
+  end
+
+  def update_whq_submit_fields
+    unless params[:mcc].present?
+      @whq_message = "Choose an MCC."
+      return
+    end
+    unless params[:m].present?
+      @whq_message = "Choose a month."
+      return
+    end
+    unless params[:c].present?
+      @whq_message = "Choose a country."
+      return
+    end
+    @gd = GlobalDashboardWhqStat.find_by_mcc_and_month_id_and_global_country_id(params[:mcc], 
+                                                                               params[:m], params[:c])
+    if @gd.nil? 
+      @whq_message = "No data for that period currently."
+      @gd = GlobalDashboardWhqStat.new
+    else
+      @whq_message = "Existing data found."
+    end
+  end
+
+  def submission_status_report
+    if request.xhr?
+      @areas_present = {}
+      @areas_total = {}
+      #area_find = params[:a].present? ? params[:a] : :all
+      GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
+        ga.global_countries.each do |gc|
+          @areas_present[ga] ||= 0
+          @areas_total[ga] ||= 0
+          if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
+            @areas_present[ga] += 1
+          else
+            @areas_total[ga] += 1
+          end
+        end
+      end
+    end
+    setup
+    @mcc_options = all_mccs
+    @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
+  end
+
+  def submission_area_report
+
+  end
+
   protected
 
     def setup
@@ -157,6 +283,7 @@ class GlobalDashboardController < ApplicationController
       end
 
       @mcc_options = [["All", "all"]] + all_mcc_options
+      @month_options = Month.all.collect{ |m| [ m.month_desc, m.month_id ] }
     end
 
     def setup_stats(area_filters, mcc_filters)
@@ -352,7 +479,7 @@ class GlobalDashboardController < ApplicationController
     end
 
     def ensure_permission_by_person_id
-      [283, 5173].include?(@person.id) 
+      [283, 5173, 1301246379].include?(@person.id) 
     end
 
     def ensure_permission
