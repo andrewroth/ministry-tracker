@@ -205,10 +205,9 @@ class GlobalDashboardController < ApplicationController
 
   def submit_whq
     if request.post?
-      @gd = GlobalDashboardWhqStat.find_by_mcc_and_month_id_and_global_country_id(params[:whq_stat][:mcc], 
+      @gd = GlobalDashboardWhqStat.find_or_create_by_mcc_and_month_id_and_global_country_id(params[:whq_stat][:mcc], 
                                                                                   params[:whq_stat][:month_id], 
                                                                                   params[:whq_stat][:global_country_id])
-      @gd ||= GlobalDashboardWhqStat.new
       @gd.update_attributes(params[:gd])
       @whq_message = "WHQ Data saved."
       redirect_to :action => :index
