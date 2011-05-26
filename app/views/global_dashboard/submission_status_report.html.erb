@@ -5,6 +5,8 @@
   }
 </style>
 
+<h3>Submission Status Report</h3><br/><br/>
+
 <% form_for(:whq_stat) do |f| %>
   <tr>
   <%= f.label :mcc %>
@@ -44,5 +46,5 @@
      Choose an mcc, month and stage to see the country submission stats.
    </div>
 
-   <br/><br/><%= submit_tag "Save" %>
+   <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>
 <% end %>

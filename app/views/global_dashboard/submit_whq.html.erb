@@ -5,6 +5,8 @@
   }
 </style>
 
+<h3>Submit or Edit WHQ Stats</h3><br/>
+
 <% form_for(:whq_stat) do |f| %>
   <tr>
   <%= f.label :global_country, "Country" %>
@@ -43,6 +45,8 @@
    <div id="stats">
    <%= render :partial => "stats", :locals => { :f => f } %>
    </div>
+
+   <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>
 
    <br/><br/><%= submit_tag "Save" %>
 <% end %>
