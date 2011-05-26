@@ -125,6 +125,8 @@ ActionController::Routing::Routes.draw do |map|
                                                  :transfer => :post,
                                                  :change_level => :post,
                                                  :destroy_own => :delete}
+  map.joingroup_signup '/joingroup_signup', :controller => "group_involvements", :action => "joingroup_signup", :conditions => { :method => :post }
+  map.joingroup '/joingroup', :controller => "group_involvements", :action => "joingroup", :conditions => { :method => :post }
 
   map.resources :groups, :member => {:find_times => :post,
                                      :compare_timetables => :any,

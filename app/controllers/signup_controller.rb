@@ -9,6 +9,7 @@ class SignupController < ApplicationController
   before_filter :set_current_and_next_semester
   before_filter :get_invitation, :only => [:step2_info, :step2_info_submit]
 
+
   def index
     redirect_to :action => :step1_group
   end
@@ -16,6 +17,82 @@ class SignupController < ApplicationController
   def facebook
     redirect_to :action => :step1_group
   end
+
+
+  def step1_group
+    session[:signup_joined_group_id] = nil
+    session[:signup_person_params] = nil
+    session[:signup_primary_campus_involvement_params] = nil
+    session[:signup_person_id] = nil
+    session[:signup_campus_id] = nil
+    session[:signup_groups] = nil
+    session[:signup_collection_group_semester_id] = nil
+    session[:needs_verification] = nil
+    session[:joined_collection_group] = nil
+    session[:signup_group_invitation_id] = nil
+    session[:sent_timetable_email] = nil
+
+    @person = get_person || Person.new
+    setup_campuses
+    session[:signup_campus_id] ||= params[:campus_id] if params[:campus_id]
+    session[:signup_campus_id] ||= @primary_campus_involvement.campus_id if @primary_campus_involvement.present?
+    @semesters = [] << @current_semester << @next_semester
+    @ask_campus = session[:signup_campus_id].blank? ? true : false
+  end
+
+  def step1_default_group
+    get_person
+    if @person
+      join_default_group(session[:signup_campus_id], params[:semester_id])
+    else
+      session[:signup_collection_group_semester_id] = params[:semester_id]
+    end
+    flash[:notice] = "<big>Great! We'll help you find your group</big>"
+    redirect_to :action => :step2_info
+  end
+
+  def step1_group_from_campus
+
+    if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
+      flash[:notice] = "<big>Sorry, we didn't recieve the campus and semester that you chose, please try again.</big>"
+      redirect_to :action => :step1_group
+      return
+    end
+
+    @ministry = Ministry.default_ministry
+    get_person
+    unless @person
+      @me = @my = @person = Person.new
+    end
+    
+    session[:signup_campus_id] = params[:primary_campus_involvement_campus_id]
+    @campus = Campus.first(:conditions => {:campus_id => params[:primary_campus_involvement_campus_id]})
+    @semester = Semester.first(:conditions => {:semester_id => params[:group_semester_id]})
+    @semester = (@semester == @current_semester || @semester == @next_semester) ? @semester : @current_semester
+    
+    if @campus && @semester
+      @groups = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", @semester.id ],
+                                    :joins => :ministry, :include => { :group_involvements => :person },
+                                    :order => "#{Group.__(:name)} ASC")
+      
+      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
+      @group_types = GroupType.all
+      @join = true
+      @signup = true
+      @campus.ensure_campus_ministry_groups_created
+      @collection_group = @campus.collection_groups
+      @groups.delete_if { |g| @collection_group.index(g) }
+      # cache of campus names
+      campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
+      @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
+    else
+      render :update do |page|
+        page["#groups"].html "Sorry, something didn't work with the campus or semester that you picked, please try again."
+      end
+      return
+    end
+  end
+
 
   def step2_info
     @person ||= get_person || Person.new
@@ -177,81 +254,6 @@ class SignupController < ApplicationController
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
-  # this is actually more of just showing the campus dropdown
-  def step1_group
-    session[:signup_person_params] = nil
-    session[:signup_primary_campus_involvement_params] = nil
-    session[:signup_person_id] = nil
-    session[:signup_campus_id] = nil
-    session[:signup_groups] = nil
-    session[:signup_collection_group_semester_id] = nil
-    session[:needs_verification] = nil
-    session[:joined_collection_group] = nil
-    session[:signup_group_invitation_id] = nil
-    session[:sent_timetable_email] = nil
-
-    @person = get_person || Person.new
-    setup_campuses
-  end
-
-  def step1_default_group
-    get_person
-    if @person
-      join_default_group(session[:signup_campus_id], params[:semester_id])
-    else
-      session[:signup_collection_group_semester_id] = params[:semester_id]
-    end
-    redirect_to :action => :step2_info
-  end
-
-  def step1_group_from_campus
-=begin
-    @signup = true
-    if session[:needs_verification] && !session[:code_valid_for_user_id]
-      flash[:notice] = "Sorry, your email has not been verified yet."
-      render :inline => "", :layout => true
-      return
-    elsif !session[:signup_person_id]
-      redirect_to :action => :step1_info
-      return
-    end
-=end
-
-    if params[:primary_campus_involvement_campus_id] == ""
-      render :update do |page|
-        page["#groups"].html "Sorry, you must provide a campus to choose a group."
-      end
-      return
-    end
-
-    @ministry = Ministry.default_ministry
-    get_person
-    unless @person
-      @me = @my = @person = Person.new
-    end
-    #@campus = Campus.find session[:signup_campus_id]
-    session[:signup_campus_id] = params[:primary_campus_involvement_campus_id]
-    @campus = Campus.find params[:primary_campus_involvement_campus_id]
-    @groups1 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
-      @current_semester.id ],
-      :joins => :ministry, :include => { :group_involvements => :person },
-      :order => "#{Group.__(:name)} ASC")
-    @groups2 = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", 
-      @next_semester.id ],
-      :joins => :ministry, :include => { :group_involvements => :person },
-      :order => "#{Group.__(:name)} ASC")
-    @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
-    @group_types = GroupType.all
-    @join = true
-    @signup = true
-    @campus.ensure_campus_ministry_groups_created
-    @collection_group = @campus.collection_groups
-    @groups1.delete_if { |g| @collection_group.index(g) }
-    @groups2.delete_if { |g| @collection_group.index(g) }
-    # cache of campus names
-    campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", ( @groups1 + @groups2 ).collect(&:campus_id).uniq ])
-    @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
-  end
 
   def step3_timetable_submit
     flash[:notice] = nil
@@ -260,10 +262,11 @@ class SignupController < ApplicationController
     @me = @my = @person = Person.find(session[:signup_person_id])
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
-    UserMailer.deliver_signup_finished_email(@person.email, link, session[:joined_collection_group]) unless session[:sent_timetable_email] == true
+    UserMailer.send_later(:deliver_signup_finished_email, @person.email, link, session[:joined_collection_group]) unless session[:sent_timetable_email] == true
     session[:sent_timetable_email] = true # make sure we don't notify people twice this session
     
-    @group_contact_email = session[:joined_group_contact_email]
+    @group = Group.first(:conditions => {:id => session[:signup_joined_group_id]}) if session[:signup_joined_group_id].present?
+    @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
       @finished_button_text = "Goto Facebook"
@@ -273,6 +276,7 @@ class SignupController < ApplicationController
       @finished_button_text = "Goto the sign in page"
     end
   end
+
 
   def finished
     @signup = true
@@ -289,6 +293,7 @@ class SignupController < ApplicationController
     @me = @my = @person = @user.person
     redirect_to edit_person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id)
   end
+
 
   protected
 
@@ -311,13 +316,14 @@ class SignupController < ApplicationController
     semester = semester_id.present? ? Semester.find(semester_id) : Semester.current
 
     # Special case - add them to the Bible study group by default
-    gt = GroupType.find_by_group_type "Discipleship Group (DG)" # TODO this should be a config var
+    gt = GroupType.find_by_group_type GroupType::DG
 
     @group = @campus.find_or_create_ministry_group gt, nil, semester
     unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => @group.id, :level => 'member'}).present? # make sure we don't notify people twice 
       gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
       gi.send_later(:join_notifications, base_url)
     end
+    session[:signup_joined_group_id] = @group.id
     session[:joined_collection_group] = true
   end
 
@@ -331,10 +337,12 @@ class SignupController < ApplicationController
           gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
           gi.send_later(:join_notifications, base_url)
         end
-        session[:joined_group_contact_email] = group.email
+        session[:signup_joined_group_id] = gi.group_id
+        session[:joined_collection_group] = nil
       end
     end
   end
+  
 
   private
 

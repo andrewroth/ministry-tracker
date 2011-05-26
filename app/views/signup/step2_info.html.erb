@@ -24,15 +24,17 @@
 
 
 <% instruction_block do %>
-  We'd like to know a bit about you!
-  <% if logged_in? %><br/><b>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</b>
-    If this is not you
+  <% if logged_in? %>Hi <b><%= @person.full_name %>,</b>
+    if that's not you
     <% if session[:from_facebook_canvas] == true %>
-      <%= link_to "click here to logout.", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
+      <%= link_to "click here to logout", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
     <% else %>
-      <%= link_to "click here to logout.", logout_url %>
+      <%= link_to "click here to logout", logout_url %>
     <% end %>
+    <br/>
+    <br/>
   <% end %>
+  We'd like to know a bit about you!
 <% end %>
 
 
