@@ -266,6 +266,13 @@ th {
   font-weight:normal;
 }
 
+hr {
+  background-color: #999999;
+  border: medium none;
+  height: 1px;
+  -moz-box-shadow: 0 0 3px #BFBFBF; -webkit-box-shadow: 0 0 3px #BFBFBF;
+}
+
 input, textarea {
   font-size:1.1em;
   color: #000;
@@ -1549,17 +1556,17 @@ div.fieldWithErrors{
 
 .fieldWithErrors input {
   display: block;
-  border:1px solid red;
+  border:1px solid FireBrick;
   background:pink;
 }
 
 #errorExplanation {
   width: 97%;
-  border: 1px solid red;
+  border: 4px solid FireBrick;
   padding: 7px;
   padding-bottom: 12px;
   margin-bottom: 20px;
-  background-color: #f0f0f0;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
 #errorExplanation ul li{
@@ -1570,22 +1577,23 @@ div.fieldWithErrors{
 #errorExplanation h2 {
   text-align: left;
   font-weight: bold;
-  padding: 5px 5px 5px 15px;
+  padding: 7px 7px 7px 10px;
   font-size: 12px;
   margin: -7px;
-  background-color: #c00;
+  background-color: FireBrick;
   color: #fff;
+  -moz-border-radius: 3px 3px 0 0; -webkit-border-radius: 3px 3px 0 0;
 }
 
 #errorExplanation p {
-  color: #333;
   margin-bottom: 0px;
-  margin-top: 5px;
+  margin-top: 10px;
   padding: 5px;
 }
 
 #errorExplanation ul li {
-  font-size: 12px;
+  font-size: 14px;
+  color:#666766;
   list-style: none;
 }
 
@@ -2254,7 +2262,112 @@ table#set_initial_campus tr {
   height: 2em;
 }
 
+h2.group_type_title {
+  margin-top:30px;
+  color:#666766;
+}
 
+.groupMinimal {
+  display:inline-block;
+  margin-top:20px;
+  width:100%;
+  -moz-transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+}
+
+.groupMinimal:hover {
+  background-color: #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
+}
+
+.groupMinimalInfoContainer {
+  float:left;
+  width:400px;
+}
+
+.groupMinimalInfoContainer a {
+  color:#5674BF;
+}
+
+.groupMinimal:hover .groupMinimalInfoContainer a {
+  color:#1F429B;
+}
+
+.groupMinimalActionsContainer {
+  margin:10px 10px 0 0;
+  float:right;
+  text-align:right;
+}
+
+.groupMinimalActionsContainer b {
+  margin-right:20px;
+  position:relative;
+  top:10px;
+}
+
+.groupNameContainer {
+  font-weight:bold;
+  font-size:14px;
+}
+
+.group_type_list {
+  margin-bottom:30px;
+}
+
+#display_other_group_types_list_link {
+  display:block;
+  padding:10px 10px 10px 20px;
+  background: url("/images/Garrowdown_s.png") no-repeat 8px 16px #F7F7F7;
+  -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0;
+}
+
+#display_other_group_types_list_link:hover {
+  background: url("/images/Yarrowdown_s.png") no-repeat 8px 16px #F7F7F7;
+}
+
+#signup_group_select_container {
+  margin-top:30px;
+  font-size:18px;
+}
+
+#signup_group_select_container select {
+  display:inline;
+  font-size:18px;
+}
+
+#spinner.signup_groups {
+  color: #B3B3B3;
+  font-size: 14px;
+  padding: 40px 0;
+  text-align: center;
+  width: 120px;
+}
+
+#group_list {
+  width:75%;
+  float:left;
+}
+
+#collection_group_list {
+  width:20%;
+  float:right;
+}
+
+#collection_group_link {
+  position:fixed;
+}
+
+#collection_group_link_title {
+  font-size:14px;
+}
+
+#collection_group_link a {
+  padding-left:15px;
+  background: url("/images/debicons/Garroicon.png") no-repeat 0 0;
+}
+
+#collection_group_link a:hover {
+  background: url("/images/debicons/Yarroicon.png") no-repeat 0 0;
+}
 
 /************************************************/
 /* Search section                               */

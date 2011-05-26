@@ -1,10 +1,29 @@
 <%- instruction_block do %>
-  You're done! Your group leader will contact you with more information.
-  <br/>
-  <% if @group_contact_email.present? %>
-    <br/>
-    Feel free to email your group leader at <b><%=@group_contact_email%></b>
+
+  You're done!
+  <% if session[:joined_collection_group] == true %>
+    Someone will contact you with more info soon.
+  <% else %>
+    Your group leader will contact you with more info.
   <% end %>
+  <br/>
+  
+  <% if @leaders.present? %>
+    <br/>
+    Feel free to email
+    <%=
+      @leaders.map{ |i|
+        if i.person.present? && i.person.email
+          mail_to i.person.email, i.person.full_name, :title => i.person.email
+        end
+      }.join(', ')
+    %>
+    <% if @group.email.present? %>
+      or <%= mail_to @group.email %>
+    <% end %>
+    <br />
+  <% end %>
+  
 <%- end %>
 
 <div class="center">

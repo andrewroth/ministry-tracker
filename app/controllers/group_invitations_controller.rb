@@ -58,7 +58,7 @@ class GroupInvitationsController < ApplicationController
           invitation = GroupInvitation.new({:group_id => @group.id, :recipient_email => email, :sender_person_id => @my.id})
           invitation.recipient_person_id = recipient_person.id if recipient_person.present?
           invitation.save!
-          invitation.send_invite_email(base_url)
+          invitation.send_later(:send_invite_email, base_url)
           flash[:notice] += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{email} #{INVITATION_SENT_MSG} <br/>"
         end
       end
@@ -95,12 +95,12 @@ class GroupInvitationsController < ApplicationController
   def decline
     @invitation.decline
     
-    UserMailer.deliver_group_invitation_decline(@invitation, base_url)
+    UserMailer.send_later(:deliver_group_invitation_decline, @invitation, base_url)
     
     session[:signup_group_invitation_id] = @invitation.id
-    flash[:notice] = "<big>Okay, you've declined the invite to join #{@invitation.group.name}</big><br/><br/>Maybe you'd like to join a different group? Check out other groups at #{@invitation.group.campus.name} below..."
+    flash[:notice] = "<big>Okay, you've declined the invite to join #{@invitation.group.name}</big><br/><br/>Maybe you're looking for a different group? Check out other groups at #{@invitation.group.campus.name} below..."
     
-    redirect_to :controller => :signup, :action => :index
+    redirect_to :controller => :signup, :action => :step1_group, :campus_id => @invitation.group.campus_id
   end
 
 

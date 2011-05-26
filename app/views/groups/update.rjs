@@ -10,6 +10,9 @@ else
     page[:address].visual_effect("highlight")
     page[:name].replace_html(@group.name)
     page[:type].replace_html(@group.group_type.group_type.humanize)
+    page[:flash_notice].replace_html(flash[:notice])
+    page[:flash_notice].show
+    flash.discard
   else
     page[:address_form].replace_html(:partial => 'new_remote', :locals => {:group => @group})
   end
