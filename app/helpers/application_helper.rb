@@ -134,5 +134,9 @@ module ApplicationHelper
     end
    abs_path
   end
-  
+
+  def message_span(id, classname)
+    " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
+  end
+    
 end

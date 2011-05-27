@@ -1,4 +1,5 @@
 
+
 <% if session[:from_facebook_canvas] == true %>
 <script type="text/javascript">
   function facebook_init_callback() {
@@ -45,33 +46,49 @@
   <table id="signup_step2_info">
   <tr>
     <td class="label">First Name </td>
-    <td><%= f.text_field :first_name %> </td>
+    <td>
+      <%= f.text_field :first_name, :class => "required" %>
+      <%= message_span("person[first_name]", "required") %>
+    </td>
   </tr>
   <tr>
     <td class="label">Last Name </td>
-    <td><%= f.text_field :last_name %> </td>
+    <td>
+      <%= f.text_field :last_name, :class => "required" %>
+      <%= message_span("person[last_name]", "required") %>
+    </td>
   </tr>
-  <%- unless logged_in? || @person.email.present? %>
+  <%- unless logged_in? %>
   <tr>
     <td class="label">Email </td>
-    <td><%= f.text_field :email %></td>
+    <td>
+      <%= f.text_field :email, :class => "required" %>
+      <%= message_span("person[email]", "required") %>
+    </td>
   </tr>
   <%- end %>
   <tr>
     <td class="label">Gender </td>
-    <td><%= f.select :gender, [["Male", "1"], ["Female", "0"]], :selected => @person.gender_us_id, :prompt => "" %> </td>
+    <td>
+      <%= f.select :gender, [["Male", "1"], ["Female", "0"]], {:selected => @person.gender_us_id, :prompt => ""}, {:class => "required"} %>
+      <%= message_span("person[gender]", "required") %>
+    </td>
   </tr>
   <tr>
     <td class="label">Phone </td>
-    <td><%= f.text_field :local_phone %> </td>
+    <td>
+      <%= f.text_field :local_phone, :class => "required" %>
+      <%= message_span("person[local_phone]", "required") %>
+    </td>
   </tr>
   <tr>
     <td class="label">School Year </td>
     <td>
       <%= select_tag "primary_campus_involvement_school_year_id", 
-            options_for_select(school_year_options),
-            :name => "primary_campus_involvement[school_year_id]"
+            options_for_select(school_year_options, @primary_campus_involvement.school_year_id.to_i),
+            {:name => "primary_campus_involvement[school_year_id]", :class => "required"}
       %>
+      <%= message_span("primary_campus_involvement[school_year_id]", "required") %>
     </td>
   </tr>
   <tr>
@@ -84,9 +101,25 @@
 </div>
 
 <br/>
+<br/>
 
 <div class="center">
-  <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :class => 'action-button') %>
+  <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :id => "submit", :class => 'action-button submit validateRequiredOnSubmit') %>
 </div>
 
 <%- end -%>
+
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    $("input#submit").click(function(e){
+      
+    });
+  });
+  
+</script>  
+  
+  
+  
+  <%= javascript_include_tag "inputLiveValidations.js" %>

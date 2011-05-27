@@ -2,7 +2,7 @@
   <%= javascript_include_tag "widgets/tooltip.js" %>
 <% end %>
 
-<%- if authorized?(:new, :group_invitations) && (@group.leaders | @group.co_leaders).include?(@me) -%>
+<%- if authorized?(:new, :group_invitations, nil, :group_id => @group.id) -%>
   <%= link_to "Invite Friends to Join", new_group_group_invitation_path(@group), :class => 'small' %>
 <%- end -%>
 

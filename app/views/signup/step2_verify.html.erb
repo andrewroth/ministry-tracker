@@ -1,4 +1,6 @@
-<% instruction_block do %><B>Your email is already in the Pulse.</B> If this email is yours, please click the 'Verify Email' button and an email will be sent to <B><%= @email %></B> so that you can finish the joining a group process. This is to ensure that you own this email address.<% end %>
+<% instruction_block do %>
+  <B><%= @email %> is already in the Pulse.</B> If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address.
+<% end %>
 
 <% form_tag({ :controller => :signup, :action => :step2_verify_submit }, :class => 'center')do %>
   <%= submit_tag "Verify Email", :class => 'action-button' %>
