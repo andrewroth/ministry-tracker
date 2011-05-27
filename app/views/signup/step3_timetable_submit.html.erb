@@ -2,7 +2,7 @@
 
   You're done!
   <% if session[:joined_collection_group] == true %>
-    Someone will contact you with more info soon.
+    A group leader will contact you with more info soon.
   <% else %>
     Your group leader will contact you with more info.
   <% end %>
@@ -10,7 +10,7 @@
   
   <% if @leaders.present? %>
     <br/>
-    Feel free to email
+    Or feel free to email them:
     <%=
       @leaders.map{ |i|
         if i.person.present? && i.person.email

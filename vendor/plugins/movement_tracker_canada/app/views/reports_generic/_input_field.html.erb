@@ -4,10 +4,6 @@ def show_label(input_stat, required_indicator)
   "#{show_label}#{required_indicator}: "
 end
 
-def message_span(id, classname)
-  " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
-end
-
   required = false
   if input_stat[:column_type] == :database_column
     required_indicator = input_stat[:required] ? "*" : ""

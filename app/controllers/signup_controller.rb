@@ -47,7 +47,7 @@ class SignupController < ApplicationController
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
-    flash[:notice] = "<big>Great! We'll help you find your group</big>"
+    flash[:notice] = "<big>Great! We'll help you find a group that suits you.</big>"
     redirect_to :action => :step2_info
   end
 
