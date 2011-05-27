@@ -38,7 +38,7 @@ $(document).ready(function(){
 		if(rVDate.test(sdate)) sdate = sdate.replace(rVDate, "$1/$2/$3");
 		else if(rVDateN.test(sdate)) sdate = sdate.replace(rVDateN, "$1/$2/$3");
 		else valid = false;
-		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/check_green.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/exclamation.gif\" /> Invalid, use yyyy/mm/dd");
+		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> Invalid, use yyyy/mm/dd");
 		inputCtrl.value = sdate;
 	}
 	
@@ -46,7 +46,7 @@ $(document).ready(function(){
 	{
 		valid = true;
 		if(inputCtrl.value == "" || typeof inputCtrl.value  == "undefined") valid = false;
-		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/check_green.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/exclamation.gif\" /> required");
+		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> required");
 		return valid;
 	}
 

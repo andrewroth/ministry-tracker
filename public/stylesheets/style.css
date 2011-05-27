@@ -962,7 +962,7 @@ a.action-button img {
 .poor:hover {background-color:rgba(255,192,0,0.8);}
 .ok:hover {background-color:rgba(97,230,203,0.8);}
 .good:hover {background-color:rgba(92,228,10,0.8);}
-.bad:hover, .poor:hover, .ok:hover, .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,1); }
+.bad:hover, .poor:hover, .ok:hover, .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,0.8); }
 .bad:active, .poor:active, .ok:active, .good:active {-moz-box-shadow: none; }
 
 .headselected, .badhead, .poorhead, .okhead, .goodhead, .bad, .poor, .ok, .good { -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s; }
@@ -982,7 +982,7 @@ a.action-button img {
   margin-right:2px;
   border:4px solid white;
   margin-bottom:10px;
-  -moz-box-shadow: 0 -3px 10px rgba(102,102,102,0.5) inset;
+  -moz-box-shadow: 0 -3px 10px rgba(102,102,102,0.3) inset;
 }
 
 .badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}

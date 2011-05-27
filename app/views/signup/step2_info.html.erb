@@ -58,7 +58,7 @@
       <%= message_span("person[last_name]", "required") %>
     </td>
   </tr>
-  <%- unless logged_in? || @person.email.present? %>
+  <%- unless logged_in? %>
   <tr>
     <td class="label">Email </td>
     <td>
@@ -85,8 +85,8 @@
     <td class="label">School Year </td>
     <td>
       <%= select_tag "primary_campus_involvement_school_year_id", 
-            options_for_select(school_year_options),
-            :name => "primary_campus_involvement[school_year_id]", :class => "required"
+            options_for_select(school_year_options, @primary_campus_involvement.school_year_id.to_i),
+            {:name => "primary_campus_involvement[school_year_id]", :class => "required"}
       %>
       <%= message_span("primary_campus_involvement[school_year_id]", "required") %>
     </td>
@@ -100,6 +100,7 @@
 
 </div>
 
+<br/>
 <br/>
 
 <div class="center">

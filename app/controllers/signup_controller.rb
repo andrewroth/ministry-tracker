@@ -101,6 +101,7 @@ class SignupController < ApplicationController
     setup_campuses
     @campus = Campus.find(session[:signup_campus_id])
     @dorms ||= @campus.try(:dorms)
+    @school_year_id = @person.primary_campus_involvement && @person.primary_campus_involvement.school_year_id
     
     if @group_invitation.present?
       @next_button_text = "Join group"
@@ -124,11 +125,9 @@ class SignupController < ApplicationController
     end
     
     @person.errors.add(:gender, :blank) if @person.gender.blank? || @person.gender == Gender::UNKNOWN
-    @person.errors.add(:school_year, :blank) unless (@person.primary_campus_involvement && @person.primary_campus_involvement.school_year_id.present?) ||
-                                                    (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id].present?)
-
+    
     # verify email
-    email = @person && @person.user && @person.email
+    email = @person && @person.email
     if email.present?
       email_error = "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
       begin
@@ -138,19 +137,20 @@ class SignupController < ApplicationController
       end
     end
 
+    school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
+                     @person.primary_campus_involvement.school_year_id
+    @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
+    [:campus_id, :school_year_id].each do |c|
+      unless @primary_campus_involvement.send(c).present?
+        @person.errors.add(c, :blank)
+      end
+    end
+
     if @person.errors.present?
       @dorms = @primary_campus_involvement.try(:campus).try(:dorms)
       step2_info
       render :action => "step2_info"
     else
-      school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
-                       @person.primary_campus_involvement.school_year_id
-      @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
-      [:campus_id, :school_year_id].each do |c|
-        unless @primary_campus_involvement.send(c).present?
-          @person.errors.add(c, :blank)
-        end
-      end
       
       if logged_in?
         @user = current_user
@@ -250,7 +250,7 @@ class SignupController < ApplicationController
   def step2_email_verified
     session[:signup_groups] = params[:signup_groups]
     session[:signup_campus_id] = params[:signup_campus_id]
-    flash[:notice] = "Your email has been verified."
+    flash[:notice] = "<big>Your email has been verified, thanks!</big>"
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
@@ -273,7 +273,7 @@ class SignupController < ApplicationController
     elsif logged_in?
       @finished_button_text = "Goto the dashboard"
     else
-      @finished_button_text = "Goto the sign in page"
+      @finished_button_text = nil
     end
   end
 

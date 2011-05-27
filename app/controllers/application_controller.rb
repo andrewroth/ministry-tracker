@@ -194,10 +194,11 @@ class ApplicationController < ActionController::Base
       :ministry_involvements => [:new, :edit, :index],
       :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
       :summer_report_reviewers => [:edit, :update],
-      :search => [:web_remote]
+      :search => [:web_remote],
+      :group_invitations => [:new, :create_multiple]
     }
     
-    def authorized?(action = nil, controller = nil, ministry = nil)
+    def authorized?(action = nil, controller = nil, ministry = nil, options = {})
       return true if is_ministry_admin
       ministry ||= get_ministry
       return false unless ministry
@@ -317,6 +318,15 @@ class ApplicationController < ActionController::Base
           
         when :search
           return true if action == 'web_remote' && authorized?(:web, :search)
+          
+        when :group_invitations
+          if action == 'new' || action == 'create_multiple'
+            if params[:group_id] || options[:group_id]
+              group = Group.first(:conditions => {:id => params[:group_id] || options[:group_id]})
+              return true if group && (group.leaders | group.co_leaders).include?(@me)
+            end
+          end
+          return false # necessary
           
         end # case
       end # if
