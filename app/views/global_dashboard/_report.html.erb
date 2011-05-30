@@ -24,6 +24,10 @@ h3, .sub {
 
 </style>
 
+<script src="/javascripts/raphael.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/g.raphael-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/g.pie-min.js" type="text/javascript" charset="utf-8"></script>
+
 <script type="text/javascript">
   function toggle(id) {
     if ($('#'+id).attr('hidden') == 'true') {
@@ -86,40 +90,200 @@ h3, .sub {
 
 <H2>2010 WHQ Ministry Metric Snapshot</H2>
 
-<table id="whq" class="pb twocols">
+<style>
+  tr.stat_numbers td {
+    font-weight: bold;
+    text-align: center;
+    width: 14%;
+    font-size: 120%;
+    border-right: 1px solid gray;
+  }
+  tr.stat_labels td {
+    font-weight: bold;
+    text-align: center;
+    width: 14%;
+    font-size: 80%;
+  }
+  tr.stat_numbers td.last {
+    border-right: 0px;
+  }
+</style>
+
+<table id="whq" class="" style="width:100%">
   <tr>
-    <td colspan="2">
+    <td colspan="7">
       <!--<%= link_to "Submit WHQ Stats", :action => :submit_whq %> |-->
       <%= link_to "Submission Status Report", :action => :submission_status_report %> |
       <%= link_to "Submission Area Report", :action => :submission_area_report %><BR/>
+      <br/>
     </td>
   </tr>
-  <tr>
-    <td>Live Exposures</td>
+  <tr class="stat_numbers">
     <td><%= number_with_delimiter(@whq["live_exp"]) %></td>
-  </tr><tr>
-    <td>Live Decisions</td>
     <td><%= number_with_delimiter(@whq["live_dec"]) %></td>
-  </tr><tr>
-    <td>New Growth Group Members</td>
     <td><%= number_with_delimiter(@whq["new_grth_mbr"]) %></td>
-  </tr><tr>
-    <td>Movement Members</td>
     <td><%= number_with_delimiter(@whq["mvmt_mbr"]) %></td>
-  </tr><tr>
-    <td>Movement Leaders</td>
     <td><%= number_with_delimiter(@whq["mvmt_ldr"]) %></td>
-  </tr><tr>
-    <td>New Staff</td>
     <td><%= number_with_delimiter(@whq["new_staff"]) %></td>
-  </tr><tr>
-    <td>Lifetime Labourers</td>
-    <td><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
+    <td class="last"><%= number_with_delimiter(@whq["lifetime_lab"]) %></td>
+  </tr>
+  <tr class="stat_labels">
+    <td>Live Exposures</td>
+    <td>Live Decisions</td>
+    <td>New Growth Group Members</td>
+    <td>Movement Members</td>
+    <td>Movement Leaders</td>
+    <td>New Staff</td>
+    <td class="last">Lifetime Labourers</td>
   </tr>
 </table>
 
 <BR/>
 
+<BR/>
+<H2>GCX Profile Data</H2>
+
+<style>
+ /* 
+  table.pb, table.pb td.pb {
+    border-color: gray;
+    border-style: solid;
+  }
+  table.pb {
+    border-width: 0 0 1px 1px;
+    border-spacing: 0;
+  }
+  table.pb td.pb {
+    margin: 0;
+    padding: 4px;
+    border-width: 1px 1px 0 0;
+    background-color: white;
+  }
+  */
+  table.pb.twocols {
+    width: 500px;
+    border-style: none;
+    padding-left: 50px;
+  }
+
+  table.pb.twocols td:nth-child(1) {
+    width: 437px;
+  }
+
+  table.pb.twocols td:nth-child(2) {
+    width: 100px;
+    text-align: right;
+  }
+  .selected {
+    color: black;
+  }
+</style>
+
+<script>
+  function switch_to_gcx(div_id) {
+    $(".gcx_stat_wrapper").removeClass('selected');
+    $(".gcx_stat_wrapper").fadeOut(200, function() {
+      //$("#'+div_id+'").appear();
+      setTimeout('$("#'+div_id+'").appear()', 200);
+      $("#"+div_id).addClass('selected');
+    });
+    //setTimeout('$("#'+div_id+'").appear()', 200);
+  }
+  setTimeout('$(".gcx_stat_wrapper").hide()', 500);
+</script>
+
+<style>
+  #gcx_stats td {
+    vertical-align: middle;
+  }
+</style>
+
+<table id="gcx_stats" style="height: 344px" border="0">
+  <tr>
+    <td width="25%">
+      <ul>
+        <li><%= link_to_function "Genders", "switch_to_gcx('genders')", :id => 'genders_menu' %></li>
+        <li><%= link_to_function "Mccs", "switch_to_gcx('mccs')", :id => 'mccs_menu' %></li>
+        <li><%= link_to_function "Funding Source", "switch_to_gcx('funding_source')", :id => 'funding_source_menu' %></li>
+        <li><%= link_to_function "Scope", "switch_to_gcx('scope')", :id => 'scope_menu' %></li>
+        <%- unless @area -%> 
+        <li><%= link_to_function "Employment Country", "switch_to_gcx('employment_country')", :id => 'employment_country_menu' %></li>
+        <%- end -%>
+        <li><%= link_to_function "Marital Status", "switch_to_gcx('marital_status')", 
+          :id => 'marital_status_menu' %></li>
+        <li><%= link_to_function "Staff Status", "switch_to_gcx('staff_status')", :id => 'staff_status_menu' %></li>
+        <li><%= link_to_function "Position", "switch_to_gcx('position')", :id => 'position_menu' %></li>
+        <li><%= link_to_function "Languages", "switch_to_gcx('languages')", :id => 'languages_menu' %></li>
+      </ul>
+    </td>
+    <td width="75%">
+      <%= render :partial => "genders" %>
+      <%= render :partial => "mccs" %>
+      <%= render :partial => "funding_source" %>
+      <%= render :partial => "scope" %>
+      <%- unless @area -%>
+        <%= render :partial => "serving_here_from_elsewhere" %>
+      <%- end -%>
+      <%= render :partial => "marital_status" %>
+      <%= render :partial => "staff_status" %>
+      <%= render :partial => "position" %>
+      <%= render :partial => "languages" %>
+      <%- unless @area -%>
+        <%= render :partial => "employed_here_serving_elsewhere" %>
+      <%- end -%>
+    </td>
+  </tr>
+</table>
+
+<%- if @area %>
+<BR/>
+<H2>Area Breakdown</H2>
+<BR/>
+<H3>Staging Breakdown</H3>
+<BR/>
+<table class="pb sub" style="width:500px">
+  <tr class="pb">
+    <td class="pb"></td>
+    <td class="pb">Stage 1</td>
+    <td class="pb">Stage 2</td>
+    <td class="pb">Stage 3</td>
+  </tr>
+  <tr class="pb">
+    <td class="pb">Total</td>
+    <td class="pb"><%= @stage[1] %></td>
+    <td class="pb"><%= @stage[2] %></td>
+    <td class="pb"><%= @stage[3] %></td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<H3>Staging Levels</H3>
+<br/>
+
+<table class="pb sub" cellspacing="0">
+  <tr class="pb">
+    <td class="pb" width="50%"><b>Country</b></td>
+    <td class="pb" width="50%"><b>Stage</b></td>
+  </tr>
+  <%- @stage["countries_with_stage"].each do |name_to_stage| %>
+  <tr class="pb">
+    <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
+    <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
+  </tr>
+  <%- end -%>
+</table>
+
+<br/>
+<H3>Countries in this area without a staging level</H3>
+<BR/>
+<DIV class="sub">
+<%- @stage["countries_no_stage"].each do |name| %>
+  <%= name %><br/>
+<%- end %>
+</DIV>
+
+<br/>
 <H2>SLM Critical Measures</H2>
 
 <H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
@@ -194,110 +358,36 @@ h3, .sub {
 </table>
 <br/>
 <I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
-<BR/>
-<H2>GCX Profile Data</H2>
 
-<style>
- /* 
-  table.pb, table.pb td.pb {
-    border-color: gray;
-    border-style: solid;
-  }
-  table.pb {
-    border-width: 0 0 1px 1px;
-    border-spacing: 0;
-  }
-  table.pb td.pb {
-    margin: 0;
-    padding: 4px;
-    border-width: 1px 1px 0 0;
-    background-color: white;
-  }
-  */
-  table.pb.twocols {
-    width: 500px;
-    border-style: none;
-    padding-left: 50px;
-  }
-
-  table.pb.twocols td:nth-child(1) {
-    width: 437px;
-  }
-
-  table.pb.twocols td:nth-child(2) {
-    width: 100px;
-    text-align: right;
-  }
-</style>
-
-<table id="cm" style="">
-  <tr>
-    <td width="50%" class="pixel_border">
-      <%= render :partial => "genders" %>
-      <%= render :partial => "mccs" %>
-      <%= render :partial => "funding_source" %>
-      <%= render :partial => "scope" %>
-      <%- unless @area -%>
-        <%= render :partial => "serving_here_from_elsewhere" %>
-      <%- end -%>
-    </td>
-    <td width="50%" class="pixel_border">
-      <%= render :partial => "marital_status" %>
-      <%= render :partial => "staff_status" %>
-      <%= render :partial => "position" %>
-      <%= render :partial => "languages" %>
-      <%- unless @area -%>
-        <%= render :partial => "employed_here_serving_elsewhere" %>
-      <%- end -%>
-    </td>
-  </tr>
-</table>
-
-<%- if @area %>
-<BR/>
-<H2>Area Breakdown</H2>
-<BR/>
-<H3>Staging Breakdown</H3>
-<BR/>
-<table class="pb sub" style="width:500px">
-  <tr class="pb">
-    <td class="pb"></td>
-    <td class="pb">Stage 1</td>
-    <td class="pb">Stage 2</td>
-    <td class="pb">Stage 3</td>
-  </tr>
-  <tr class="pb">
-    <td class="pb">Total</td>
-    <td class="pb"><%= @stage[1] %></td>
-    <td class="pb"><%= @stage[2] %></td>
-    <td class="pb"><%= @stage[3] %></td>
-  </tr>
-</table>
-
-<br/>
-<br/>
-<H3>Staging Levels</H3>
-<br/>
-
-<table class="pb sub" cellspacing="0">
-  <tr class="pb">
-    <td class="pb" width="50%"><b>Country</b></td>
-    <td class="pb" width="50%"><b>Stage</b></td>
-  </tr>
-  <%- @stage["countries_with_stage"].each do |name_to_stage| %>
-  <tr class="pb">
-    <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
-    <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
-  </tr>
-  <%- end -%>
-</table>
-
-<br/>
-<H3>Countries in this area without a staging level</H3>
-<BR/>
-<DIV class="sub">
-<%- @stage["countries_no_stage"].each do |name| %>
-  <%= name %><br/>
-<%- end %>
-</DIV>
 <%- end -%>
+
+<h3>GRAPHING TEST</h3>
+
+<div id="holder"></div>
+
+<script type="text/javascript" charset="utf-8">
+  window.onload = function () {
+    var r = Raphael("holder");
+    r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
+
+    r.g.text(320, 100, "Interactive Pie Chart").attr({"font-size": 20});
+
+    var pie = r.g.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2, 10], {legend: ["%%.%% – Enterprise Users", "IE Users"], legendpos: "west", href: ["http://raphaeljs.com", "http://g.raphaeljs.com"]});
+    pie.hover(function () {
+      this.sector.stop();
+      this.sector.scale(1.1, 1.1, this.cx, this.cy);
+      if (this.label) {
+        this.label[0].stop();
+        this.label[0].scale(1.5);
+        this.label[1].attr({"font-weight": 800});
+      }
+    }, function () {
+      this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
+      if (this.label) {
+        this.label[0].animate({scale: 1}, 500, "bounce");
+        this.label[1].attr({"font-weight": 400});
+      }
+    });
+  };
+</script>
+
