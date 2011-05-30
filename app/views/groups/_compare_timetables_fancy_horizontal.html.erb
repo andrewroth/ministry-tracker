@@ -108,7 +108,9 @@
 
     <div class="frameControls">
       <div class="zoomSliderContainer">
-        <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut", :title => "Zoom out" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn", :title => "Zoom in" %>
+        <div class="zoomSliderOut" title="Zoom out"></div>
+        <div id="zoomSlider"></div>
+        <div class="zoomSliderIn" title="Zoom in"></div>
       </div>
       <div class="visibleDaysControls">
         <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>

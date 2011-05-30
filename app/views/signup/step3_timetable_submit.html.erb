@@ -1,17 +1,42 @@
 <%- instruction_block do %>
-  You're done! Your group leader will contact you with more information.
-  <br/>
-  <% if @group_contact_email.present? %>
-    <br/>
-    Feel free to email your group leader at <b><%=@group_contact_email%></b>
+
+  <b>You're done!</b>
+  <% if session[:joined_collection_group] == true %>
+    A group leader will contact you with more info soon.
+  <% else %>
+    Your group leader will contact you with more info.
   <% end %>
+  <br/>
+  
+  <% if @leaders.present? %>
+    <br/>
+    Feel free to email them:
+    <%=
+      @leaders.map{ |i|
+        if i.person.present? && i.person.email
+          mail_to i.person.email, i.person.full_name, :title => i.person.email
+        end
+      }.join(', ')
+    %>
+    <% if @group.email.present? %>
+      or <%= mail_to @group.email %>
+    <% end %>
+    <br />
+  <% end %>
+  
+  <% if @group.campus && @group.campus.campus_website %>
+    <br/>
+    Visit <%= @group.campus.short_name %>'s website: <%= link_to @group.campus.campus_website, @group.campus.campus_website %>
+    <br/>
+  <% end %>
+  
 <%- end %>
 
 <div class="center">
 
-  <% if session[:from_facebook_canvas] == true %>
+  <% if session[:from_facebook_canvas] == true && @finished_button_text.present? %>
     <%= link_to @finished_button_text, '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
-  <% else %>
+  <% elsif @finished_button_text.present? %>
     <%= link_to @finished_button_text, { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
 

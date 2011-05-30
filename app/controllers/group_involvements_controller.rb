@@ -19,14 +19,26 @@ class GroupInvolvementsController < ApplicationController
     get_person
     if @person
       @join = @signup = true
-      joingroup
-      render :action => :joingroup
-    else
-      # anon user is joining groups, need to remember which groups s/he wants to join
-      session[:signup_groups] ||= {}
-      session[:signup_groups][@group.id] = params[:level]
-      @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
-      render :action => :joingroup_signup
+    end
+    
+    session[:signup_groups] ||= {}
+    session[:signup_groups][@group.id] = params[:level]
+    @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
+    
+    respond_to do |format|
+      format.html {
+        if @group.needs_approval && params[:level] == 'member'
+          flash[:notice] = "<big>Great! Your request to join has been sent to #{@group.name}</big>"
+        elsif params[:level] == 'member'
+          flash[:notice] = "<big>Great! Welcome to your group, #{@group.name}</big>"
+        end
+        if logged_in?
+          redirect_to :controller => :signup, :action => :step2_info_submit
+        else
+          redirect_to :controller => :signup, :action => :step2_info
+        end
+      }
+      format.js { render :layout => false }
     end
   end
 
