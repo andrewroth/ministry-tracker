@@ -204,6 +204,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
+  map.show_user_codes '/user_codes/report_generated_codes', :controller => :user_codes, :action => :report_generated_codes
+  map.connect '/user_codes/generate_code_for_involved',
+              :conditions => { :method => :post },
+              :controller => :user_codes,
+              :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
 
   # The priority is based upon order of creation: first created -> highest priority.

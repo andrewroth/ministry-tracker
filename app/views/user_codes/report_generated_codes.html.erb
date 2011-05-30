@@ -1,0 +1,34 @@
+<big>
+  <%= @user_codes.size %> codes with unique emails
+</big>
+
+<table style="position:absolute; left:1%; width:98%; margin:30px 0;">
+  <tr>
+    <th><big>ID</big></th>
+    <th><big>Email</big></th>
+    <th><big>First Name</big></th>
+    <th><big>Last Name</big></th>
+    <th><big>Primary Campus</big></th>
+    <th><big>Primary Campus Short</big></th>
+    <th><big>Code</big></th>
+    <th><big>Link</big></th>
+  </tr>
+  
+  <% @user_codes.each do |code| %>  
+    <tr>
+      <td><%= code.user.person.id %></td>
+      <td><%= code.user.person.email %></td>
+      <td><%= code.user.person.first_name %></td>
+      <td><%= code.user.person.last_name %></td>
+      
+      <% campus = code.user.person.primary_campus_involvement ? code.user.person.primary_campus_involvement.campus : code.user.person.most_recent_group_involvement.group.campus %>
+      <td><%= campus.name %></td>
+      <td><%= campus.short_name %></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
+
+<br/>
+<br/>

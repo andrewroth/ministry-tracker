@@ -1,0 +1,26 @@
+<big>
+  Generate a new user code for every involved person.
+  <br/>
+  <br/>
+  i.e. every person that is involved in a group during the current semester (<%= @current_semester.desc %>) or involved in a group during the previous semester (<%= @current_semester.previous_semester.desc if @current_semester.previous_semester %>).
+  <br/>
+  <br/>
+  If you supply a controller, action and optional parameters a link utilizing the user code will also be output.
+  <br/>
+  <br/>
+</big>
+<% form_tag url_for(:controller => :user_codes, :action => :generate_code_for_involved), :id => "generateForm" do %>
+
+  <p>Link controller <%= text_field :code, :controller %></p>
+  <p>Link action <%= text_field :code, :action %></p>
+  <br/>
+  <p>
+    <%= submit_tag "Generate lots of codes", :id => 'generateSubmit', :class => 'action-button',
+                   :confirm => "This will generate many user codes.\n\nPress OK to continue.",
+                   :onclick => "$('#spinner_generate').show();" %>
+    &nbsp;
+    <%= spinner('_generate') %>
+  </p>
+<% end %>
+
+
