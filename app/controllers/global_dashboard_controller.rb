@@ -268,7 +268,22 @@ class GlobalDashboardController < ApplicationController
   end
 
   def submission_area_report
-
+    @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
+    if request.xhr?
+      @month_short = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
+      @month_long = %w[January February March April May June July August September October November December]
+      @area = GlobalArea.find params[:a]
+      @countries = @area.global_countries(:order => :name)
+      @month_data = {}
+      @countries.each do |c|
+        @month_long.each_with_index do |ml, i|
+          m = Month.find_by_month_desc "#{ml} 2011"
+          stat = c.global_dashboard_whq_stats.find_by_month_id m.id
+          @month_data[c] ||= {}
+          @month_data[c][@month_short[i]] = stat.present?
+        end
+      end
+    end
   end
 
   protected
