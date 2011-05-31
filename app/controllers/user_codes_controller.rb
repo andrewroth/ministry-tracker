@@ -31,17 +31,21 @@ class UserCodesController < ApplicationController
   def generate_code_for_involved
     people = get_involved_people
 
+    ActiveRecord::Base.connection.execute("LOCK TABLES #{UserCode.table_name} WRITE")
     user_codes = people.collect do |person|
-      UserCode.create! :user_id => person.user.id
+      UserCode.create! :user_id => person.user.id, :code => UserCode.new_code
     end
+    ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+    
     user_codes.sort! { |a,b| a.id <=> b.id }
     
-    redirect_to :action => :report_generated_codes, :low_id => user_codes.first.id, :high_id => user_codes.last.id, :controller => params[:controller], :action => params[:action]
+    redirect_to :action => :report_generated_codes, :low_id => user_codes.first.id, :high_id => user_codes.last.id, :code_controller => params[:code][:controller], :code_action => params[:code][:action]
   end
   
   def report_generated_codes
-    @code_controller = params[:controller]
-    @code_action = params[:action]
+    @code_controller = params[:code_controller]
+    @code_action = params[:code_action]
+    @base_url = base_url
     @user_codes = UserCode.all(:conditions => ["#{UserCode._(:id)} <= ? and #{UserCode._(:id)} >= ?", params[:high_id].to_i, params[:low_id].to_i])
   end
   

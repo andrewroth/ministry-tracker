@@ -16,7 +16,7 @@
   <br/>
   <p>
     <%= submit_tag "Generate lots of codes", :id => 'generateSubmit', :class => 'action-button',
-                   :confirm => "This will generate many user codes.\n\nPress OK to continue.",
+                   :confirm => "This will generate many user codes and may hog the server for a few minutes.\n\nPress OK to continue.",
                    :onclick => "$('#spinner_generate').show();" %>
     &nbsp;
     <%= spinner('_generate') %>
