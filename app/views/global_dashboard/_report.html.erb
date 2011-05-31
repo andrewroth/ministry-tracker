@@ -88,6 +88,13 @@ h3, .sub {
 
 <table id="whq" class="pb twocols">
   <tr>
+    <td colspan="2">
+      <!--<%= link_to "Submit WHQ Stats", :action => :submit_whq %> |-->
+      <%= link_to "Submission Status Report", :action => :submission_status_report %> |
+      <%= link_to "Submission Area Report", :action => :submission_area_report %><BR/>
+    </td>
+  </tr>
+  <tr>
     <td>Live Exposures</td>
     <td><%= number_with_delimiter(@whq["live_exp"]) %></td>
   </tr><tr>

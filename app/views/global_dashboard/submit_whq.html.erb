@@ -1,0 +1,52 @@
+<style>
+  label {
+    padding: 0 0 0 0;
+    width: 160px;
+  }
+</style>
+
+<h3>Submit or Edit WHQ Stats</h3><br/>
+
+<% form_for(:whq_stat) do |f| %>
+  <tr>
+  <%= f.label :global_country, "Country" %>
+  <%= f.select :global_country_id, options_for_select([""] + @country_options, "") %>
+  <BR/>
+  <%= f.label :mcc %>
+  <%= f.select :mcc, options_for_select(@mcc_options, "") %>
+  <BR/>
+  <%= f.label :month %>
+  <%= f.select :month_id, options_for_select([""] + @month_options, Semester.current.month.id) %>
+  <BR/>
+
+  <%- with_str = "'c='+$('#whq_stat_global_country_id').val()+'&mcc='+$('#whq_stat_mcc').val()+'&m='+$('#whq_stat_month_id').val()" %>
+  <%= observe_field :whq_stat_month_id, 
+        :url => { :controller => :global_dashboard, :action => :update_whq_submit_fields },
+        :with => with_str
+   %>
+   <%= observe_field :whq_stat_mcc, 
+        :url => { :controller => :global_dashboard, :action => :update_whq_submit_fields },
+        :with => with_str
+   %>
+   <%= observe_field :whq_stat_global_country_id, 
+        :url => { :controller => :global_dashboard, :action => :update_whq_submit_fields },
+        :with => with_str
+   %>
+
+   <br/><h3 id="whq_message">&nbsp;</h3><br/>
+
+   <style> 
+     label { 
+       padding: 0 0 0 0; 
+       width: 160px; 
+     } 
+   </style> 
+
+   <div id="stats">
+   <%= render :partial => "stats", :locals => { :f => f } %>
+   </div>
+
+   <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>
+
+   <br/><br/><%= submit_tag "Save" %>
+<% end %>

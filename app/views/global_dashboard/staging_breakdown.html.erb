@@ -1,0 +1,35 @@
+<%= link_to "Export to CSV", "/global_dashboard/staging_breakdown.csv" %><BR/>
+<BR/>
+<h3>Staging Breakdown</h3>
+
+<style>
+  tr.even td {
+    /*border-bottom: 1px solid gray;*/
+    border-bottom: 1px solid #CCCCCC;
+  }
+  tr.odd td {
+    border-bottom: 1px solid #CCCCCC;
+  }
+</style>
+
+<center>
+  <table style="max-width: 500px">
+    <tr align='right'>
+      <th style="max-width: 200px">Area</th>
+      <th style="max-width: 200px">Country</th>
+      <th style="max-width: 120px">Stage</th>
+    </tr>
+
+    <%- @rows.each_with_index do |row, i| %>
+      <tr align='right' class='<%= i.even? ? 'even' : 'odd' %>'>
+        <td style='max-width: 200px'><%= row[0] %></td>
+        <td style='max-width: 200px'><%= row[1] %></td>
+        <td style='max-width: 120px'><%= row[2] %></td>
+      </tr>
+    <%- end -%>
+  </table>
+</center>
+<BR/>
+
+<%= link_to "Back to the Global Dashboard", global_dashboard_path %>
+
