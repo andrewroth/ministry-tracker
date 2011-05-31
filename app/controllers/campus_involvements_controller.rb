@@ -4,6 +4,8 @@ class CampusInvolvementsController < ApplicationController
   before_filter :set_inv_type
   before_filter :set_roles, :only => [ :new, :edit ]
   before_filter :set_student, :only => [ :index, :new, :edit ]
+  
+  skip_standard_login_stack :only => [:graduated]
 
   def index
     @campus_involvements = @person.campus_involvements
@@ -61,12 +63,44 @@ class CampusInvolvementsController < ApplicationController
     @ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
     render :template => 'involvements/edit'
   end
-
+  
+  def edit_school_year
+    @campus_involvement = @person.campus_involvements.find params[:id]
+    @campus_involvement.school_year_id = params[:school_year_id] if params[:school_year_id]
+  end
+  
+  def graduated # intended to be used from a user code
+    @user = User.find session[:code_valid_for_user_id]
+    self.current_user = @user
+    @me = @my = @person = @user.person
+    
+    if @my.primary_campus_involvement
+      campus_involvement_id = @my.primary_campus_involvement.id
+      redirect_to edit_school_year_path(@my.id, campus_involvement_id, :school_year_id => SchoolYear.first(:conditions => ["#{SchoolYear._(:name)} = 'Graduated'"]).id)
+      
+    elsif @my.all_campus_involvements.blank?
+      redirect_to set_initial_campus_person_url(@my.id)
+      
+    else
+      flash[:notice] = "<big>It looks like you've already graduated, but thanks anyways.</big><br/><br/>You can make sure your profile info is correct below..."
+      redirect_to person_path @my.id
+    end
+  end
+  
   def update
     @campus_involvement = @person.campus_involvements.find params[:id]
     update_campus_involvement
     @campus_involvement = @person.campus_involvements.find params[:id] # it may have changed, e.g. person graduated
-    render :template => 'involvements/update'
+    
+    respond_to do |format|
+      format.html {
+        msg = "Thanks, your school year has been saved."
+        msg += " Congrats on your graduation!" if @campus_involvement.school_year.name == "Graduated"
+        flash[:notice] = "<big>#{msg}</big>"
+        redirect_to person_path @campus_involvement.person_id
+      }
+      format.js { render :template => 'involvements/update' }
+    end
   end
 
   def update_campus_involvement

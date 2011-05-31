@@ -90,6 +90,10 @@ class Person < ActiveRecord::Base
                       "#{_(:requested, :group_involvement)} = ?",
                       self.id, semester.id, true])
   end
+  
+  def most_recent_group_involvement
+    self.group_involvements.all(:first, :conditions => ["#{Person._(:id)} = ?", self.id], :order => "created_at desc").first
+  end
 
   def custom_value_hash
     if @custom_value_hash.nil?
