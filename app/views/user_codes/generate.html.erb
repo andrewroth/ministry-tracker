@@ -1,11 +1,16 @@
+<h2>
+Generate New User Codes
+</h2>
+
+<br/>
+
 <big>
   Generate a new user code for every involved person.
-  <br/>
   <br/>
   i.e. every person that is involved in a group during the current semester (<%= @current_semester.desc %>) or involved in a group during the previous semester (<%= @current_semester.previous_semester.desc if @current_semester.previous_semester %>).
   <br/>
   <br/>
-  If you supply a controller, action and optional parameters a link utilizing the user code will also be output.
+  If you supply a controller and action a link utilizing the user code will also be output.
   <br/>
   <br/>
 </big>

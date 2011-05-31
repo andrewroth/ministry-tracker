@@ -139,6 +139,19 @@
 <script type="text/javascript">
   $(document).ready(function(){
     strikeParentOnHover($(".removeInvolvementIconLink"));
+    
+    <% if session[:edit_profile] == true %>
+      <% session[:edit_profile] = nil %>
+      $('#spinnerp').show();
+      jQuery.ajax({
+        complete:function(request){$('#spinnerp').hide()},
+        dataType:'script',
+        type:'get',
+        url:'<%= edit_person_path(@person, :format => 'js') %>'
+      });
+    <% end %>
   });
 </script>
+
+
 

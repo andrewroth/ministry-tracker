@@ -25,7 +25,6 @@ class UserCodesController < ApplicationController
   end
   
   def generate
-    
   end
   
   def generate_code_for_involved

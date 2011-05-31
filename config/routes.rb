@@ -174,6 +174,7 @@ ActionController::Routing::Routes.draw do |map|
                                       :show_mentee_profile_summary => :get},
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
+                                          :edit_me                            => :get,
                                           :change_ministry_and_goto_directory => :any,
                                           :change_view                        => :any,
                                           :search                             => :any,
@@ -201,6 +202,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :ministry_involvements
 
+  map.edit_school_year '/people/:person_id/campus_involvements/:id/edit_school_year', :controller => :campus_involvements, :action => :edit_school_year
 
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show

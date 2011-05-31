@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new, :edit, :index],
+      :campus_involvements => [:new, :edit, :index, :edit_school_year],
       :ministry_involvements => [:new, :edit, :index],
       :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
       :summer_report_reviewers => [:edit, :update],

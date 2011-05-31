@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
   before_filter :set_current_and_next_semester
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
-                  :set_initial_ministry]
+                  :set_initial_ministry, :edit_me]
   skip_standard_login_stack :only => free_actions
      
   MENTOR_ID_NONE = nil
@@ -359,7 +359,6 @@ class PeopleController < ApplicationController
           format.xml  { render :xml => @person.to_xml }
         end
       else
-        flash[:notice] = nil
         respond_to do |format|
           format.html { render :action => :show }# show.rhtml
           format.xml  { render :xml => @person.to_xml }
@@ -372,6 +371,15 @@ class PeopleController < ApplicationController
     params[:id] = @person.id
     @person = current_user.person
     show
+  end
+  
+  def edit_me # intended to be used from a user code
+    @user = User.find session[:code_valid_for_user_id]
+    self.current_user = @user
+    @me = @my = @person = @user.person
+    session[:edit_profile] = true
+    
+    redirect_to :action => :show, :id => @my.id
   end
   
   def setup_new
