@@ -32,7 +32,7 @@ class UserCodesController < ApplicationController
 
     ActiveRecord::Base.connection.execute("LOCK TABLES #{UserCode.table_name} WRITE")
     user_codes = people.collect do |person|
-      UserCode.create! :user_id => person.user.id, :code => UserCode.new_code
+      person.user.find_or_create_user_code
     end
     ActiveRecord::Base.connection.execute("UNLOCK TABLES")
     
