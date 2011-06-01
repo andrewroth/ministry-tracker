@@ -10,7 +10,7 @@
   
   <% if @leaders.present? %>
     <br/>
-    Feel free to email them:
+    Or feel free to email them:
     <%=
       @leaders.map{ |i|
         if i.person.present? && i.person.email
