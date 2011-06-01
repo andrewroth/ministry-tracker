@@ -306,7 +306,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "Join a Group"
+    @custom_userbar_title = "Join a Group" unless logged_in? || session[:from_facebook_canvas] == true
   end
 
   def join_default_group(campus_id, semester_id)

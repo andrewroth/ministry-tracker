@@ -13,10 +13,10 @@
       setValueIfNotSetButPresent('person_local_phone', response.mobile_phone);
 
       // don't confuse gender index with the value
-      if(response.gender == "male") {
-        document.getElementById('person_gender').selectedIndex = 0;
-      } else if(response.gender == "female") {
+      if(response.gender == "male" && document.getElementById('person_gender').value == "") {
         document.getElementById('person_gender').selectedIndex = 1;
+      } else if(response.gender == "female" && document.getElementById('person_gender').value == "") {
+        document.getElementById('person_gender').selectedIndex = 2;
       }
     });
   }
@@ -25,17 +25,13 @@
 
 
 <% instruction_block do %>
-  <% if logged_in? %>Hi <b><%= @person.full_name %>,</b>
-    if that's not you
-    <% if session[:from_facebook_canvas] == true %>
-      <%= link_to "click here to logout", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
-    <% else %>
-      <%= link_to "click here to logout", logout_url %>
-    <% end %>
+  <% if logged_in? && session[:from_facebook_canvas] == true %>
+    Hi <b><%= @person.full_name %></b>, if that's not you
+    <%= link_to "click here to logout", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
     <br/>
     <br/>
   <% end %>
-  We'd like to know a bit about you!
+  Register for your group!
 <% end %>
 
 
@@ -109,17 +105,7 @@
 
 <%- end -%>
 
+  
+<%= javascript_include_tag "inputLiveValidations.js" %>
 
-<script type="text/javascript">
-  
-  $(document).ready(function(){
-    $("input#submit").click(function(e){
-      
-    });
-  });
-  
-</script>  
-  
-  
-  
-  <%= javascript_include_tag "inputLiveValidations.js" %>
+
