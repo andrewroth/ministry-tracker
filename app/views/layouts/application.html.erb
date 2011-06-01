@@ -16,9 +16,10 @@
     </title>
 
     <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
-                            "/javascripts/jscalendar-1.0/skins/aqua/theme.css",
                             :media => "screen",
                             :cache => "cache/all" %>
+
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
 
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
                                'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'application',
