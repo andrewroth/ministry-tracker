@@ -959,11 +959,11 @@ a.action-button img {
 .ok {background-color:rgba(97,230,203,0.9);}
 .good {background-color:rgba(92,228,10,0.9);}
 
-.bad:hover {background-color:rgba(188,10,10,0.8);}
-.poor:hover {background-color:rgba(255,192,0,0.8);}
-.ok:hover {background-color:rgba(97,230,203,0.8);}
-.good:hover {background-color:rgba(92,228,10,0.8);}
-.bad:hover, .poor:hover, .ok:hover, .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,0.8); }
+.editing .bad:hover {background-color:rgba(188,10,10,0.7);}
+.editing .poor:hover {background-color:rgba(255,192,0,0.7);}
+.editing .ok:hover {background-color:rgba(97,230,203,0.7);}
+.editing .good:hover {background-color:rgba(92,228,10,0.7);}
+.editing .bad:hover, .editing .poor:hover, .editing .ok:hover, .editing .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,0.8); }
 .bad:active, .poor:active, .ok:active, .good:active {-moz-box-shadow: none; }
 
 .headselected, .badhead, .poorhead, .okhead, .goodhead, .bad, .poor, .ok, .good { -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s; }
@@ -983,7 +983,10 @@ a.action-button img {
   margin-right:2px;
   border:4px solid white;
   margin-bottom:10px;
-  -moz-box-shadow: 0 -3px 10px rgba(102,102,102,0.3) inset;
+  opacity: 0.9;
+}
+.editing .badhead, .editing .poorhead, .editing .okhead, .editing .goodhead {
+  -moz-box-shadow: 0 -3px 10px rgba(102,102,102,1) inset;
 }
 
 .badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
@@ -991,11 +994,16 @@ a.action-button img {
 .okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
 .goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
 
-.headselected,
-a.badhead:hover,
-a.poorhead:hover,
-a.okhead:hover,
-a.goodhead:hover {border:4px solid #4C4D4C; border-radius:7px; -moz-box-shadow: 0 -3px 10px rgba(102,102,102,0.8) inset;}
+.editing .headselected,
+.editing a.badhead:hover,
+.editing a.poorhead:hover,
+.editing a.okhead:hover,
+.editing a.goodhead:hover {border:4px solid #4C4D4C; border-radius:7px; -moz-box-shadow: 0 -3px 10px rgba(102,102,102,1) inset; opacity:1; }
+
+.editing a.badhead:active,
+.editing a.poorhead:active,
+.editing a.okhead:active,
+.editing a.goodhead:active {border:4px solid #4C4D4C; border-radius:7px; -moz-box-shadow: 0 3px 10px rgba(102,102,102,1) inset; background-position: center 33px; }
 
 .statusheadwrap {background:none; display:block;margin:0 0 20px 0; clear:both;}
 
