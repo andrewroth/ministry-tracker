@@ -560,7 +560,7 @@ class PeopleController < ApplicationController
         end
         flash[:notice] = '<big>Your profile has been updated, thanks!</big>'
         if params[:set_campus_requested] == 'true'
-          flash[:notice] += "  Thanks for setting your campus.  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
+          flash[:notice] += "  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
         end
 
         @person = Person.find(params[:id])
