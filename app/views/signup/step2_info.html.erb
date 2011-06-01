@@ -27,7 +27,7 @@
 <% instruction_block do %>
   <% if logged_in? && session[:from_facebook_canvas] == true %>
     Hi <b><%= @person.full_name %></b>, if that's not you
-    <%= link_to "click here to logout", "#", :onclick => "preventDefault(); top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{logout_url}'" %>
+    <%= leave_facebook_link_to "click here to logout", logout_url %>
     <br/>
     <br/>
   <% end %>

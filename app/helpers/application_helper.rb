@@ -138,5 +138,11 @@ module ApplicationHelper
   def message_span(id, classname)
     " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
   end
+  
+  def leave_facebook_link_to(name, url, options = {})
+    link_to "#{name}", "#", options, :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{url}'"
+  end
     
 end
+
+

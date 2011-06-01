@@ -140,7 +140,7 @@ class SessionsController < ApplicationController
       # (below) clear out any GET '?' parameters from string before navigating back a page
       redirect_to request.env["HTTP_REFERER"].gsub(/\?[\=\&A-z0-9]+/,'')    # :back
     else
-      flash[:notice] = "You have been logged out."
+      flash[:notice] = "You have been logged out"
       logout_keeping_session!
     end
   end
