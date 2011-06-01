@@ -359,6 +359,7 @@ h1 {
   min-width: 0;
 	max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
   margin-top: 0;
+  padding: 7px;
 }
 
 #footer {
