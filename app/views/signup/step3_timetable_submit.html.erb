@@ -35,7 +35,7 @@
 <div class="center">
 
   <% if session[:from_facebook_canvas] == true && @finished_button_text.present? %>
-    <%= link_to @finished_button_text, '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
+    <%= leave_facebook_link_to @finished_button_text, Facebook::FANPAGE_URL, :class => "action-button" %>
   <% elsif @finished_button_text.present? %>
     <%= link_to @finished_button_text, { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
