@@ -74,7 +74,9 @@ class CampusInvolvementsController < ApplicationController
     self.current_user = @user
     @me = @my = @person = @user.person
     
-    if @my.primary_campus_involvement
+    graduated_school_year = SchoolYear.first(:conditions => ["#{SchoolYear._(:name)} = 'Graduated'"])
+    
+    if @my.primary_campus_involvement && @my.primary_campus_involvement.school_year != graduated_school_year
       campus_involvement_id = @my.primary_campus_involvement.id
       redirect_to edit_school_year_path(@my.id, campus_involvement_id, :school_year_id => SchoolYear.first(:conditions => ["#{SchoolYear._(:name)} = 'Graduated'"]).id)
       
@@ -82,7 +84,10 @@ class CampusInvolvementsController < ApplicationController
       redirect_to set_initial_campus_person_url(@my.id)
       
     else
-      flash[:notice] = "<big>It looks like you've already graduated, but thanks anyways.</big><br/><br/>You can make sure your profile info is correct below..."
+      campus_involvement_id = @my.primary_campus_involvement.try(:id)
+      flash[:notice] = "<big>It looks like you've already graduated, but thanks anyways!</big>"
+      flash[:notice] += "<br/><br/>If that's wrong <a href='#{edit_school_year_path(@my.id, campus_involvement_id)}'>click here to update your school year</a>." if campus_involvement_id
+      
       redirect_to person_path @my.id
     end
   end
@@ -145,20 +150,25 @@ class CampusInvolvementsController < ApplicationController
     # However, in the intereste of not breaking things, I'll leave it how it is here until I
     # have time to move it and test it thoroughly. -AR June 24, 2010
     #
+    
     @student = true
     @campus_ministry_involvement = @campus_involvement.find_or_create_ministry_involvement
+    
     # restrict students to making ministry involvements of their role or less
     if ministry_role_being_updated = (params[:ministry_involvement] && mr_id = params[:ministry_involvement][:ministry_role_id])
+      
       requested_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
       requested_role ||= MinistryRole.default_student_role
+      
       # note that get_my_role sets @ministry_involvement as a side effect
-      if !(get_my_role.is_a?(StaffRole) && requested_role.is_a?(StudentRole)) && 
-        requested_role.position < get_my_role.position
+      if !(get_my_role.is_a?(StaffRole) && requested_role.is_a?(StudentRole)) && requested_role.position < get_my_role.position
+        
         flash[:notice] = "You can only set ministry roles of less than or equal to your current role"
         ministry_role_being_updated = false
         params[:ministry_involvement][:ministry_role_id] = @campus_ministry_involvement.ministry_role_id.to_s
       end
     end
+
 
     # record history
     record_history = !@campus_involvement.new_record? && 
@@ -169,18 +179,36 @@ class CampusInvolvementsController < ApplicationController
       @history = @campus_involvement.new_student_history
       @history.ministry_role_id = @campus_ministry_involvement.ministry_role_id
     end
+
+    
     # update the records
-    @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id],
-      :campus_id => params[:campus_involvement][:campus_id]
+    
+    graduated_school_year = SchoolYear.first(:conditions => ["#{SchoolYear._(:name)} = 'Graduated'"])
+    if params[:campus_involvement][:school_year_id].to_i == graduated_school_year.id
+      # they are graduating
+      # instead of updating the campus involvement directly we'll update their ministry involvement
+      # this will in turn set all of their campus involvements to 'Graduated'
+      
+      ministry_role_being_updated = false # don't update it again later
+      
+      alumni_ministry_role = MinistryRole.first(:conditions => {:name => "Alumni"})
+      @campus_ministry_involvement.ministry_role = alumni_ministry_role
+      @campus_ministry_involvement.save!
+    else
+      @campus_involvement.update_attributes :school_year_id => params[:campus_involvement][:school_year_id]
+    end
+    @campus_involvement.update_attributes :campus_id => params[:campus_involvement][:campus_id]
 
     if ministry_role_being_updated
       @campus_ministry_involvement.ministry_role = requested_role
       @campus_ministry_involvement.save!
     end
+    
     if record_history && @campus_involvement.errors.empty? && @campus_ministry_involvement.errors.empty?
       @history.save!
       @campus_involvement.update_attributes :last_history_update_date => Date.today
     end
+    
     unless @campus_involvement.errors.empty?
       set_roles
     end
