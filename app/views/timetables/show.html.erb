@@ -3,12 +3,12 @@
 <div id="profiletitle"><h1><%= @person.full_name %></h1></div>
 
 <br />
-
+<%= leave_facebook_link_to "finished_button_text", Facebook::FANPAGE_URL %>
 <%- if @can_edit -%>
   <%- if @printable -%>
 	 <!-- DO *NOT* SHOW LINKS -->
 	<%- elsif -%>
-	  <div style="float:left;">
+	  <div style="float:left; margin-bottom:15px;">
 	    <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable), :class => "action-button") %>
 		  &nbsp;&nbsp;
 		  <%= link_to(image_tag('silk/printer.png'), person_timetable_path(@person, @timetable, :print_it => "true"),
@@ -17,7 +17,7 @@
 	<%- end -%>
 <%- end -%>
 
-<div style="float:right">
+<div style="float:right; margin-bottom:15px;">
   <% if @timetable.updated_at.present? %>
     <span title="at exactly <%=@timetable.updated_at%>">
       Last updated <%= time_ago_in_words(@timetable.updated_at) %> ago<%= ", by #{@timetable.updated_by_person.full_name}" if @timetable.updated_by_person.present? %>
@@ -52,7 +52,7 @@
 		<%- end -%>
 <%- end -%>
 <%- if @can_show -%>
-  <%= render :partial => 'timetable' %>
+  <%= render :partial => 'timetable', :locals => {:editing => false} %>
 <%- else -%>
   Nothing to see here. Please move on.
 <%- end -%>

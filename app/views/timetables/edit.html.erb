@@ -79,10 +79,10 @@
     <br/>
     <%- end %>
 
-    <p>Click on one of the color status boxes below and select time blocks on your schedule to apply that status to:</p>
+    <p>Click on one of the color status buttons below and select time blocks on your schedule to apply that status to:</p>
     
 
-    <div class="statusheadwrap">
+    <div class="statusheadwrap editing">
       <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
       <% if !Cmt::CONFIG[:hide_poor_status_in_scheduler] %>
         <%= link_to_function('', '', :class => 'poorhead', :rel => Timetable::POOR_CLASS) %>
@@ -93,7 +93,7 @@
 
     <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
 
-    <%= render :partial => 'timetable' %>
+    <%= render :partial => 'timetable', :locals => {:editing => true} %>
 
     <br/>
     <% if @signup %>
@@ -110,9 +110,10 @@
       </div>
     <% end %>
     
-  <%- end -%><br/>
+  <%- end -%>
+  <br/>
 <%- else -%>
-  Nothing to see here. Please move on.
+  You can't edit this timetable.
 <%- end -%>
 
 <script type="text/javascript">
