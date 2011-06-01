@@ -19,7 +19,7 @@
                                 'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
     <%= yield :javascripts %>
 
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
