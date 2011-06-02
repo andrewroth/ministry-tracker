@@ -1,4 +1,10 @@
 class GlobalDashboardController < ApplicationController
+  in_place_edit_for :global_country, :total_students
+  in_place_edit_for :global_country, :total_schools
+  in_place_edit_for :global_country, :total_spcs
+  in_place_edit_for :global_country, :names_priority_spcs
+  in_place_edit_for :global_country, :total_spcs_presence
+  in_place_edit_for :global_country, :total_spcs_movement
 
   ALLOWED_GUIDS = [ # TODO: this will be removed once data is imported to GlobalDashboardAccess rows
     "250F5FAB-E473-36D8-D406-DFB1C00DD1F2",
@@ -16,6 +22,7 @@ class GlobalDashboardController < ApplicationController
 
   before_filter :ensure_permission
   before_filter :set_can_edit_stages
+  before_filter :set_can_edit_slm
   skip_before_filter :authorization_filter
 
   def index
@@ -309,7 +316,7 @@ class GlobalDashboardController < ApplicationController
       }.flatten.compact
 
       if area_filters.length == 1 && area_filters.first.is_a?(GlobalCountry)
-        @country = country = area_filters.first
+        @global_country = @country = country = area_filters.first
         @country_name = country.name
         @country_stage = country.stage
         @country_funding = country.locally_funded_FY10
@@ -399,14 +406,14 @@ class GlobalDashboardController < ApplicationController
       end
 
       @whq = ActiveSupport::OrderedHash.new
+      months = Month.find(:all, :conditions => [ "month_desc like ?", "% 2010%" ])
+      month_ids = months.collect(&:id)
       GlobalCountry.all.each do |country|
         if filters_isos.include?(country.iso3)
-          GlobalCountry::WHQ_MCCS.each do |whq_mcc|
-            if mcc_filters.include?(GlobalCountry::WHQ_MCCS_TO_PARAMS[whq_mcc])
-              %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
-                @whq[stat] ||= 0
-                @whq[stat] += country.send("#{whq_mcc}_#{stat}").to_i
-              end
+          country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids).each do |gds|
+            %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
+              @whq[stat] ||= 0
+              @whq[stat] += gds.send(stat).to_i
             end
           end
         end
@@ -517,5 +524,9 @@ class GlobalDashboardController < ApplicationController
 
     def set_can_edit_stages
       @can_edit_stages = ensure_permission_by_person_id
+    end
+
+    def set_can_edit_slm
+      @can_edit_slm = is_ministry_admin || @me.is_global_dashboard_admin
     end
 end

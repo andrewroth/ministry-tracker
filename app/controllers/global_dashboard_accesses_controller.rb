@@ -1,5 +1,6 @@
 class GlobalDashboardAccessesController < ApplicationController
   before_filter :ensure_admin
+  skip_before_filter :authorization_filter
 
   # GET /global_dashboard_accesses
   # GET /global_dashboard_accesses.xml
@@ -88,7 +89,7 @@ class GlobalDashboardAccessesController < ApplicationController
   protected
 
     def ensure_admin
-      access_denied unless is_ministry_admin
+      access_denied unless is_ministry_admin || @me.is_global_dashboard_admin
     end
 
 end
