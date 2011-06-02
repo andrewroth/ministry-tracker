@@ -71,7 +71,7 @@ class CampusInvolvementsController < ApplicationController
   
   def graduated # intended to be used with a user code
     unless session[:code_valid_for_user_id] # just to be sure
-      access_denied
+      access_denied(true)
       return
     end
     
