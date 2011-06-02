@@ -412,7 +412,7 @@ class PeopleController < ApplicationController
   
   def edit_me # intended to be used with a user code
     unless session[:code_valid_for_user_id] # just to be sure
-      access_denied
+      access_denied(true)
       return
     end
     
