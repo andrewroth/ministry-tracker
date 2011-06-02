@@ -61,10 +61,10 @@ module AuthenticatedSystem
     # behavior in case the user is not authorized
     # to access the requested action.  For example, a popup window might
     # simply close itself.
-    def access_denied
+    def access_denied(no_destination = false)
       respond_to do |accepts|
         accepts.html do
-          store_location
+          store_location unless no_destination
           if facebook_session
             redirect_to prompt_for_email_users_path
           else
@@ -74,7 +74,7 @@ module AuthenticatedSystem
         accepts.xml do
           headers["Status"]           = "Unauthorized"
           headers["WWW-Authenticate"] = %(Basic realm="Web Password")
-          render :text => "Could't authenticate you", :status => '401 Unauthorized'
+          render :text => "Couldn't authenticate you", :status => '401 Unauthorized'
         end
       end
       false
