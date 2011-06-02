@@ -5,7 +5,8 @@ class UserCodesController < ApplicationController
   before_filter :set_current_and_next_semester, :only => [:generate, :generate_code_for_involved]
 
   def show
-    uc = UserCode.find_by_code(params[:code])
+    lc = LoginCode.find_by_code(params[:code])
+    uc = UserCode.find_by_login_code_id(lc.id) if lc
     if uc
       session[:code_valid_for_user_id] = uc.user.id
       session[:code_valid_for_person_id] = uc.user.person.id

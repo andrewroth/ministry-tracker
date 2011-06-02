@@ -38,6 +38,7 @@ class Group < ActiveRecord::Base
   has_many :interesteds, :class_name => "Person", :through => :group_involvements
   has_many :requesters, :class_name => 'Person', :through => :group_involvements
   has_many :requests, :class_name => 'GroupInvolvement', :conditions => { :requested => true }
+  has_many :invitations, :class_name => "GroupInvitation"
 
   has_one :campus_ministry_group
 
