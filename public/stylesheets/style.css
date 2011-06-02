@@ -994,6 +994,11 @@ a.action-button img {
 .okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
 .goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
 
+.badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
+.poorhead {background:url(/images/status_poor.png) center 31px #ffC000;}
+.okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
+.goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
+
 .editing .headselected,
 .editing a.badhead:hover,
 .editing a.poorhead:hover,
@@ -3078,7 +3083,7 @@ li.ac_over .autoCompleteName {
   padding:2px 5px;
   border:1px solid #E6E6E6;
   cursor:default;
-  min-height:40px;
+  min-height:60px;
 }
 
 #invitePreview {
