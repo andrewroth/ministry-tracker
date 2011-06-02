@@ -358,6 +358,7 @@ CREATE TABLE `global_dashboard_accesses` (
   `email` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `admin` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1304,6 +1305,10 @@ INSERT INTO schema_migrations (version) VALUES ('20110512184517');
 INSERT INTO schema_migrations (version) VALUES ('20110512212548');
 
 INSERT INTO schema_migrations (version) VALUES ('20110520215405');
+
+INSERT INTO schema_migrations (version) VALUES ('20110602142800');
+
+INSERT INTO schema_migrations (version) VALUES ('20110602175650');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
