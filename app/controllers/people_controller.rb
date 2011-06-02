@@ -373,7 +373,12 @@ class PeopleController < ApplicationController
     show
   end
   
-  def edit_me # intended to be used from a user code
+  def edit_me # intended to be used with a user code
+    unless session[:code_valid_for_user_id] # just to be sure
+      access_denied
+      return
+    end
+    
     @user = User.find session[:code_valid_for_user_id]
     self.current_user = @user
     @me = @my = @person = @user.person
