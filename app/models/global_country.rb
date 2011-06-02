@@ -16,10 +16,10 @@ class GlobalCountry < ActiveRecord::Base
     "student_led" => "student-led"
   }
   WHQ_STRATEGY_TO_MCC = {
-    "campus" => "virtually-led",
-    "internet" => "church-led",
+    "internet" => "virtually-led",
+    "coverage" => "church-led",
     "community" => "leader-led",
-    "coverage" => "student-led"
+    "campus" => "student-led"
   }
 
   def isos
