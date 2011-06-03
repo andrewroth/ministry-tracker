@@ -1,0 +1,25 @@
+<style>
+  label {
+    padding: 0 0 0 0;
+    width: 160px;
+  }
+</style>
+
+<h3>How many times in 2011 did you report?</h3><br/><br/>
+
+<tr>
+<%= label_tag :area %>
+<%= select_tag :area_id, options_for_select([""] + @area_options) %>
+<BR/>
+<BR/>
+
+<%- with_str = "'a='+$('#area_id').val()" %>
+<%= observe_field :area_id,
+      :url => { :controller => :global_dashboard, :action => :submission_area_report },
+      :with => with_str
+ %>
+
+<div id="stats">
+</div>
+
+<br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>

@@ -1,107 +1,157 @@
 <% @site_title = 'Profile' -%>
 <%= stylesheet_link_tag "profile", :media => "all" %>
 
-<div id="profiletitle">
-  <%- if authorized?(:edit, :people) -%>
-    <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
-    <%- if @person == @me && @person.user.guid -%>
-      <div class="butUpdate" ><a href="https://signin.mygcx.org/sso/selfservice/protected/password/changePassword.jsp" target="_blank">Change Password</a></div> 
-    <%- else -%>
-      <div class="butUpdate" ><%= link_to("Change Password", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
-    <%- end -%>
-    <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
-      <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
-        <div class="butUpdate" style="margin-right:5px;"><%= link_to "Import GCX Profile", import_gcx_profile_person_path(@person) %></div>
+
+<!-- credit for two column layout: http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm -->
+<div id="profilewrap" class="colmask leftmenu">
+	<div class="colleft">
+		<div class="col1">
+			<!-- Column 1 start -->
+			
+      <div id="profiletitle">
+        <h1>
+          <%= @person.full_name %>
+          <%- if authorized?(:edit, :people) -%>
+            <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
+            <%- if @person == @me && @person.user.guid -%>
+              <div id="passwordButton" class="profileButton"><a href="https://signin.mygcx.org/cas/selfservice.htm" target="_blank">CHANGE PASSWORD</a></div> 
+            <%- else -%>
+              <div id="passwordButton" class="profileButton"><%= link_to("CHANGE PASSWORD", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+            <%- end -%>
+            
+            <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
+              <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
+                <div class="profileButton"><%= link_to "IMPORT GCX PROFILE", import_gcx_profile_person_path(@person) %></div>
+              <%- end -%>
+            <%- end -%>
+            
+            <div id="editButton" class="profileButton">
+              <%= link_to_remote "EDIT", :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
+            </div>
+            
+            <%= spinner('p') %>
+	        <%- end -%>
+	      </h1>
+      </div>
+			
+
+      <div id="info">
+        <%= render :partial => 'view' %>
+      </div>
+      
+      <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
+      <div id="dialog" style="display:none">
       <%- end -%>
-    <%- end -%>
-    <div class="butUpdate" style="margin-right:5px;">
-      <%= link_to_remote "Edit Information", :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
-    </div>  
-	<%- end -%>
-	<h1><%= @person.full_name %> <%= spinner('p') %></h1> 
-  <div class="divider" style="margin-bottom:0;">&nbsp;</div>
-</div>
-<div class="leftColumn">
-	  <div id="profileImageBox">
-		  <%= render :partial => 'image' %>
-	  </div>
-	<div>
-		<div class="floatLeft"><%= spinner %></div>
-		<div id="progress-bar"></div>
+      <div><div id="edit_info" style="display:none"></div></div>
+      <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
+      </div>
+      <%- end -%>
+			
+			<!-- Column 1 end -->
+		</div>
+		
+		
+			<!-- Column 2 start -->
+		<div class="col2">
+
+      <div id="profileImageBox">
+        <%= render :partial => 'image' %>
+      </div>
+      <div>
+	      <div id="progress-bar"></div>
+      </div>
+      <iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
+      
+      <div id="semesterSelectContainer">
+        <div id="semesterSelectBorder">
+          <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
+          <%= spinner('GroupSemester', 'opaqueWhite') %>
+          <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
+                                                 :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
+                                                 :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').fadeOut(); $('#interestedGroups').fadeOut(); $('#requestedGroups').fadeOut();",
+                                                 :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').fadeIn();  $('#interestedGroups').fadeIn();  $('#requestedGroups').fadeIn();" %>
+
+          <!-- in case of browser refresh keep selection list in sync with groups displayed on the page (some browsers keep the selection list value that the user chose even after refreshing) -->
+          <script type="text/javascript">$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
+        </div>
+      </div>
+
+      <h5>Joined</h5>
+      <div id="involvedGroups" class="involvementType">
+        <%= render :partial => 'group_list', :locals => { :list_title => "", :show_type_titles => true,
+          :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})
+        } %>
+      </div>
+
+      <%- if @staff -%>
+        <div id="ministries_div" class="involvementType">
+          <h4>
+            <%- if authorized?(:edit, :people) -%><%= link_to_remote "", {:url => person_ministry_involvements_url(@person.id), :method => :get,
+                                                                          :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"}, 
+                                                                         {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
+                                                                          :class => "editInvolvementIconLink"} %><%- end -%> Ministries
+            <%= spinner('Ministries') %>
+          </h4>
+          
+          <%- if @person.ministries.size > 0 -%>
+          	<ul id="profile_ministries">
+            	<%- @person.ministries.uniq.each do |ministry| 
+            	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
+                <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
+            	<%- end -%>
+          	</ul>
+          <%- end -%>
+          
+        </div>
+      <%- end -%>
+      
+      <div id="campuses_div" class="involvementType">
+        <%= render :partial => 'campuses' %>
+      </div>
+      <%# = link_to '&raquo; Find a Group', find_groups_url %>
+      <%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
+
+      <div id="interestedGroups" class="involvementType">
+        <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
+          <%= render :partial => 'group_list', :locals => { :list_title => "Interested", :show_type_titles => false,
+            :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
+          } %>
+        <%- end -%>
+      </div>
+
+      <div id="requestedGroups" class="involvementType">
+        <%- if @person.group_involvement_requests(@current_semester).size > 0 -%>
+          <%= render :partial => 'group_list', :locals => { :list_title => "Requested", :show_type_titles => false,
+            :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
+          } %>
+        <%- end -%>
+      </div>
+			
+			<!-- Column 2 end -->
+		</div>
 	</div>
-	<iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
-
-	<h5 class="title">
-    Joined&nbsp;
-    <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
-    <%= spinner('GroupSemester', 'opaqueWhite') %>
-    <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
-                                           :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
-                                           :before =>   "$('#group_semester_id').hide(); $('#spinnerGroupSemester').show(); $('#involvedGroups').fadeOut(); $('#interestedGroups').fadeOut(); $('#requestedGroups').fadeOut();",
-                                           :complete => "$('#group_semester_id').show(); $('#spinnerGroupSemester').hide(); $('#involvedGroups').fadeIn();  $('#interestedGroups').fadeIn();  $('#requestedGroups').fadeIn();" %>
-
-    <!-- in case of browser refresh keep selection list in sync with groups displayed on the page (some browsers keep the selection list value that the user chose even after refreshing) -->
-    <script type="text/javascript">$('#group_semester_id').val('<%= @current_semester.id.to_i %>');</script>
-  </h5>
-  
-  <div id="involvedGroups">
-    <%= render :partial => 'group_list', :locals => { :list_title => "",
-      :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})
-    } %>
-  </div>
-	
-  <%- if @staff -%>
-  <div id="ministries_div">
-  <h4 style='display:inline'>Ministries</h4> <%- if authorized?(:edit, :people) -%><%= link_to_remote image_tag("button_edit_grey_tiny.gif"), :url => person_ministry_involvements_url(@person.id), :method => :get, :success => "show_dialog('Manage Ministries')" %><%- end -%>
-  <%- if @person.ministries.size > 0 -%>
-  	<ul id="profile_ministries">
-  	<%- @person.ministries.uniq.each do |ministry| 
-  	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
-      <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
-  	<%- end -%>
-  	</ul> <br />
-	<%- end -%>
-  </div>
-  <%- end -%>
-	<div id="campuses_div">
-    <%= render :partial => 'campuses' %>
-  </div>
-  <!--<br/>-->
-  <%# = link_to '&raquo; Find a Group', find_groups_url %><br />
-	<%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
-
-	<br />
-
-  <div id="interestedGroups">
-    <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
-      <%= render :partial => 'group_list', :locals => { :list_title => "Interested",
-        :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
-      } %>
-    <%- end -%>
-  </div>
-
-  <div id="requestedGroups">
-    <%- if @person.group_involvement_requests(@current_semester).size > 0 -%>
-      <%= render :partial => 'group_list', :locals => { :list_title => "Requested",
-        :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
-      } %>
-    <%- end -%>
-  </div>
-
 </div>
-<div class="rightColumn">
-	<div class="clearDivider">&nbsp;</div>
 
-  <div id="info">
-    <%= render :partial => 'view' %>
-  </div>
-  <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
-  <div id="dialog" style="display:none">
-  <%- end -%>
-  <div><div id="edit_info" style="display:none"></div></div>
-  <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
-  </div>
-  <%- end -%>
-</div>
 
 <%= render :partial => 'upload_picture', :locals => {:person => @person} %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    strikeParentOnHover($(".removeInvolvementIconLink"));
+    
+    <% if session[:edit_profile] == true %>
+      <% session[:edit_profile] = nil %>
+      $('#spinnerp').show();
+      jQuery.ajax({
+        complete:function(request){$('#spinnerp').hide()},
+        dataType:'script',
+        type:'get',
+        url:'<%= edit_person_path(@person, :format => 'js') %>'
+      });
+    <% end %>
+  });
+</script>
+
+
+

@@ -1,0 +1,4 @@
+page["#whq_message"].html(@whq_message)
+if @gd
+  page["#stats"].html(render(:partial => "stats"))
+end

@@ -6,6 +6,7 @@ class GlobalCountry < ActiveRecord::Base
     :class_name => "GlobalProfile"
   has_many :global_profiles_employed, :foreign_key => "employment_country", :primary_key => "iso3", 
     :class_name => "GlobalProfile"
+  has_many :global_dashboard_whq_stats
 
   WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
   WHQ_MCCS_TO_PARAMS = {

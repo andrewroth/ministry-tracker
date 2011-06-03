@@ -1,0 +1,34 @@
+<%= link_to "Export to CSV", "/global_dashboard/staging_summary.csv" %><BR/>
+<BR/>
+
+<H3>Staging Summary</H3><br/>
+
+<center>
+  <table id='staging_summary' style='max-width: 400px'>
+    <tr align='right'>
+      <th>&nbsp;</th>
+      <th>Stage 1</th>
+      <th>Stage 2</th>
+      <th>Stage 3</th>
+    </tr>
+    <%- @areas.each do |area| %>
+    <tr align='right'>
+      <td><%= area.area %></td>
+      <td><%= @stage_count[area][1] %></td>
+      <td><%= @stage_count[area][2] %></td>
+      <td><%= @stage_count[area][3] %></td>
+    </tr>
+    <%- end -%>
+    <tr align='right'>
+      <td><b>Total</b></td>
+      <td><b><%= @totals[1] %></b></td>
+      <td><b><%= @totals[2] %></b></td>
+      <td><b><%= @totals[3] %></b></td>
+    </tr>
+  </table>
+</center>
+
+<BR/>
+<BR/>
+
+<%= link_to "Back to the Global Dashboard", global_dashboard_path %>

@@ -21,14 +21,15 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.visual_effect :appear, "flash_#{level}"
+    page.delay(0.7) { page.visual_effect :blind_down, "flash_#{level}" }
     #page.visual_effect :highlight, "flash_#{level}"
-    page.delay(5) do
-      page.visual_effect :fade, "flash_#{level}"
-      page.delay(2) do
-        page.replace_html "flash_#{level}", ''
-      end
-    end
+    #page.delay(7) do
+      #page.visual_effect :blind_up, "flash_#{level}"
+      #page.delay(2) do
+        #page.replace_html "flash_#{level}", ''
+      #end
+    #end
+    
     flash[:notice] = flash[:warning] = nil
   end
 
@@ -36,8 +37,8 @@ module ApplicationHelper
     {:include_blank => true, :start_year => year}
   end
   
-  def spinner(id='', optional_class='')
-    image_tag('spinner.gif', :id => 'spinner'+id.to_s, :class => optional_class, :style => 'display:none')
+  def spinner(id='', optional_class='', img_path='spinner.gif')
+    image_tag(img_path, :id => 'spinner'+id.to_s, :class => optional_class, :style => 'display:none')
   end
   
   def hide_spinner(page, id='')

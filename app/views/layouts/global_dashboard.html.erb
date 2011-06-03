@@ -19,7 +19,7 @@
                                 'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
     <%= yield :javascripts %>
 
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
@@ -48,10 +48,6 @@
 
 
         <% if logged_in? && @me && !@custom_userbar_title %>
-
-
-        <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
-        
 
         <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
           <a href="#" class="logoutbutton" onclick="try {
