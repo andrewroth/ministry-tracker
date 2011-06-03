@@ -69,7 +69,12 @@ class CampusInvolvementsController < ApplicationController
     @campus_involvement.school_year_id = params[:school_year_id] if params[:school_year_id]
   end
   
-  def graduated # intended to be used from a user code
+  def graduated # intended to be used with a user code
+    unless session[:code_valid_for_user_id] # just to be sure
+      access_denied(true)
+      return
+    end
+    
     @user = User.find session[:code_valid_for_user_id]
     self.current_user = @user
     @me = @my = @person = @user.person
