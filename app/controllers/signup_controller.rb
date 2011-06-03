@@ -7,7 +7,7 @@ class SignupController < ApplicationController
   before_filter :restrict_everything
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
-  before_filter :get_invitation, :only => [:step2_info, :step2_info_submit]
+  before_filter :get_invitation, :only => [:step1_group, :step2_info, :step2_info_submit]
 
 
   def index
@@ -29,13 +29,19 @@ class SignupController < ApplicationController
     session[:signup_collection_group_semester_id] = nil
     session[:needs_verification] = nil
     session[:joined_collection_group] = nil
-    session[:signup_group_invitation_id] = nil
     session[:sent_timetable_email] = nil
 
     @person = get_person || Person.new
     setup_campuses
+    
+    # if possible prevent the user from having to select a campus    
     session[:signup_campus_id] ||= params[:campus_id] if params[:campus_id]
     session[:signup_campus_id] ||= @primary_campus_involvement.campus_id if @primary_campus_involvement.present?
+    
+    if session[:signup_campus_id].blank? && cookies[:signup_campus_id] && cookies[:signup_campus_id].to_i.to_s == cookies[:signup_campus_id]
+      session[:signup_campus_id] ||= cookies[:signup_campus_id] if Campus.first(:conditions => ["#{Campus._(:id)} = ?", cookies[:signup_campus_id]]).present?
+    end
+    
     @semesters = [] << @current_semester << @next_semester
     @ask_campus = session[:signup_campus_id].blank? ? true : false
   end
@@ -71,6 +77,12 @@ class SignupController < ApplicationController
     @semester = (@semester == @current_semester || @semester == @next_semester) ? @semester : @current_semester
     
     if @campus && @semester
+      # use cookie to help reduce the chance that user needs to select a campus
+      cookies[:signup_campus_id] = {
+        :value => @campus.id,
+        :expires => 1.year.from_now.utc
+      }
+      
       @groups = @campus.groups.find(:all, :conditions => [ "#{Group._(:semester_id)} in (?)", @semester.id ],
                                     :joins => :ministry, :include => { :group_involvements => :person },
                                     :order => "#{Group.__(:name)} ASC")
@@ -102,10 +114,6 @@ class SignupController < ApplicationController
     @campus = Campus.find(session[:signup_campus_id])
     @dorms ||= @campus.try(:dorms)
     @school_year_id = @person.primary_campus_involvement && @person.primary_campus_involvement.school_year_id
-    
-    if @group_invitation.present?
-      @next_button_text = "Join group"
-    end
   end
 
   def get_dorms
@@ -212,7 +220,7 @@ class SignupController < ApplicationController
         #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         
         # join groups here
-        joingroups_from_hash(session[:signup_groups], !@group_invitation.present?) # if group invitation then join group even if it requires approval
+        joingroups_from_hash(session[:signup_groups], @group_invitation)
         if semester_id = session[:signup_collection_group_semester_id]
           join_default_group(session[:signup_campus_id], semester_id)
         end
@@ -327,11 +335,11 @@ class SignupController < ApplicationController
     session[:joined_collection_group] = true
   end
 
-  def joingroups_from_hash(involvement_info, requested = nil)
+  def joingroups_from_hash(involvement_info, invitation = nil)
     (involvement_info || {}).each_pair do |group_id, level|
       if %w(member interested).include?(level)
         group = Group.find group_id
-        requested = (level == "member" ? group.needs_approval : false) if requested.nil?
+        requested = (level == "member" ? group.needs_approval : false) unless invitation && group_id == invitation.group_id
         
         unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => group_id, :level => level, :requested => requested}).present? # make sure we don't notify people twice 
           gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
@@ -360,13 +368,6 @@ class SignupController < ApplicationController
         flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!</big>"
         redirect_to signup_url
         return
-      elsif @group_invitation.has_response?
-        # do nothing...
-      else
-        # setup the group to join
-        session[:signup_groups] ||= {}
-        session[:signup_groups][@group_invitation.group_id] = GroupInvitation::GROUP_INVITE_LEVEL
-        session[:signup_campus_id] = @group_invitation.group.campus.id
       end
     end
   end

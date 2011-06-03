@@ -964,7 +964,7 @@ a.action-button img {
 .editing .ok:hover {background-color:rgba(97,230,203,0.7);}
 .editing .good:hover {background-color:rgba(92,228,10,0.7);}
 .editing .bad:hover, .editing .poor:hover, .editing .ok:hover, .editing .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,0.8); }
-.bad:active, .poor:active, .ok:active, .good:active {-moz-box-shadow: none; }
+.editing .bad:active, .editing .poor:active, .editing .ok:active, .editing .good:active {-moz-box-shadow: none; }
 
 .headselected, .badhead, .poorhead, .okhead, .goodhead, .bad, .poor, .ok, .good { -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s; }
 

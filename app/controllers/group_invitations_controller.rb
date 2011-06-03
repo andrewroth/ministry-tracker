@@ -1,8 +1,8 @@
 class GroupInvitationsController < ApplicationController
   unloadable
   
-  login_code_authentication :only => [:accept, :decline]
-  before_filter :get_and_check_invitation, :only => [:accept, :decline]
+  login_code_authentication :only => [:accept, :decline, :list]
+  before_filter :get_and_check_invitation, :only => [:accept, :decline, :list]
   
   ALREADY_INVOLVED_MSG = "is already involved in this group so the invitation was not sent"
   ALREADY_INVITED_MSG = "has already been invited to this group so the invitation was not sent"
@@ -58,6 +58,8 @@ class GroupInvitationsController < ApplicationController
           invitation = GroupInvitation.new({:group_id => @group.id, :recipient_email => email, :sender_person_id => @my.id})
           invitation.recipient_person_id = recipient_person.id if recipient_person.present?
           invitation.save!
+          invitation.login_code.expires_at = 2.months.from_now
+          invitation.login_code.save!
           invitation.send_later(:send_invite_email, base_url)
           flash[:notice] += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{email} #{INVITATION_SENT_MSG} <br/>"
         end
@@ -84,6 +86,11 @@ class GroupInvitationsController < ApplicationController
     
     # don't actually accept invitation until join a group process is done
     
+    # setup the group to join
+    session[:signup_groups] ||= {}
+    session[:signup_groups][@invitation.group_id] = GroupInvitation::GROUP_INVITE_LEVEL
+    session[:signup_campus_id] = @invitation.group.campus.id
+    
     if logged_in?
       redirect_to :controller => :signup, :action => :step2_info_submit
     else
@@ -102,6 +109,12 @@ class GroupInvitationsController < ApplicationController
     
     redirect_to :controller => :signup, :action => :step1_group, :campus_id => @invitation.group.campus_id
   end
+  
+  
+  def list # take advantage of the login_code to authenticate a user and find their campus, even though signup doesn't require authentication
+    session[:signup_group_invitation_id] = @invitation.id
+    redirect_to :controller => :signup, :action => :step1_group, :campus_id => @invitation.group.campus_id
+  end
 
 
   private
@@ -115,7 +128,7 @@ class GroupInvitationsController < ApplicationController
       else
         flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
       end
-      access_denied
+      access_denied(true)
       return
     end
     
