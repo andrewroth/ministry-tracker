@@ -475,16 +475,19 @@ class PeopleController < ApplicationController
     # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
     @person = Person.find(params[:id], :include => [:ministry_involvements, :campus_involvements])
     ministry_involvements_to_end = @person.ministry_involvements.collect &:id
-    MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
+    MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'",
+                                   "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
     
     campus_involvements_to_end = @person.campus_involvements.collect &:id
-    CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
+    CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'",
+                                 "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
-    flash[:notice] = "#{@person.full_name} has successfully been removed."
+    
+    flash[:notice] = "<big>#{@person.full_name}'s involvements on the Pulse have successfully been removed</big>"
     
     if (params[:logout] == 'true')
-       redirect_to logout_url
+      redirect_to logout_url
     else
       redirect_to :back
     end

@@ -184,7 +184,7 @@ class ApplicationController < ActionController::Base
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
-      :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+      :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
       :profile_pictures => [:new, :edit, :destroy],
@@ -241,14 +241,13 @@ class ApplicationController < ActionController::Base
             return true
           elsif action == 'show_group_involvements' && authorized?(:show, :people)
             return true
+          elsif action == 'destroy' && params[:id] && params[:id] == @my.id.to_s
+            return true
+          elsif params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
+            return true
           end
           
           ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
-          
-          # also return true if person is destroying self-involvements (don't return true for creation of new profile)
-          if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
-            return true
-          end
           
         when :profile_pictures, :timetables
           if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
