@@ -153,8 +153,7 @@ module AuthenticatedSystem
       end
       
       unless you_shall_pass == true
-        # !important - to prevent possible infinite loop don't redirect to session/new
-        redirect_to :controller => 'dashboard', :action => 'index'
+        access_denied(true)
       end
     end
     
