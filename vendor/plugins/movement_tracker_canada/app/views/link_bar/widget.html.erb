@@ -1,15 +1,18 @@
 
-<%=h render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => @page_wrapper_width} %>
+<small style="font-family:monospace;">
 
-<%=h "<script type='text/javascript'>" %>
+  <%=h render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => @page_wrapper_width} %>
 
-  jQuery(document).ready(function() {
-    jQuery("body").prepend("
-      <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff, :active_tab_id => @active_tab_id} %>
-    ");
-  });
+  <%=h "<script type='text/javascript'>" %>
 
-<%=h "</script>" %>
+    jQuery(document).ready(function() {
+      jQuery("body").prepend("
+        <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff, :active_tab_id => @active_tab_id} %>
+      ");
+    });
 
-<%=h render :partial => "/link_bar/link_bar_js" %>
+  <%=h "</script>" %>
 
+  <%=h render :partial => "/link_bar/link_bar_js" %>
+
+</small>
