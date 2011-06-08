@@ -1,0 +1,22 @@
+<script type='text/javascript'>
+
+  jQuery(document).ready(function() {
+
+    jQuery("a.menu_link").click(function(e) {
+      e.preventDefault();
+      box = jQuery("div#" + jQuery(e.target).attr("link_menu_box_id"));
+      box.css('left', jQuery(e.target).offset().left);
+      jQuery(e.target).toggleClass('menu_expanded');
+      box.slideToggle('fast');
+    });
+
+    jQuery(document).mousedown(function(e) {
+      if(!jQuery(e.target).hasClass('menu_expanded') && !jQuery(e.target).parent().hasClass('link_menu_box')) {
+        jQuery("a.ll").removeClass('menu_expanded');
+        jQuery(".link_menu_box").hide();
+      }
+    });
+
+  });
+
+</script>
