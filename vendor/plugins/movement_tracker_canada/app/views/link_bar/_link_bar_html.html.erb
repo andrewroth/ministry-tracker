@@ -1,0 +1,49 @@
+
+<div id='link_bar_wrapper'>
+  <div class='link_bar'>
+
+    <div id='tools'>
+      <div class='active'><strong class='ll tab_left'><a href='http://www.c4c.ca' title='Campus for Christ'>C4C.CA</a></strong><strong class='ll tab_right'>&nbsp;</strong></div>
+
+      <a class='ll' href='<%= url_for :action => :index, :controller => :dashboard %>'>THE PULSE</a>
+
+      <a class='ll' href='http://resources.campusforchrist.org' title='C4C Resources Wiki'>RESOURCES</a>
+      <a class='ll menu_link project' href='' link_menu_box_id='events_box'>EVENTS<span class='menu_link_arrow'></span></a>
+      <a class='ll menu_link more_tools' href='' link_menu_box_id='more_tools_box'>MORE<span class='menu_link_arrow'></span></a>
+      <% if staff %>
+        <a class='ll menu_link staff' href='' link_menu_box_id='staff_box'>STAFF<span class='menu_link_arrow'></span></a>
+      <% end %>
+
+      <a class='ll icon_link facebook' href='<%=Facebook::FANPAGE_URL%>' title='Campus for Christ on Facebook'>&nbsp;</a>
+      <a class='ll icon_link twitter' href='https://twitter.com/campusforchrist' title='Campus for Christ on Twitter'>&nbsp;</a>
+    </div>
+
+  </div>
+</div>
+
+<div id='events_box' class='link_menu_box'>
+  <a href='<%=eventbrite[:c4c_events_link]%>'>SUMMIT</a>
+  <a href='<%=eventbrite[:c4c_events_link]%>'>WINTER CONFERENCE</a>
+  <a href='http://gototheworld.com' title='Go to the world!'>PROJECTS</a>
+</div>
+
+<div id='more_tools_box' class='link_menu_box'>
+  <a href='http://www.mygcx.org' title='Global ConneXion'>GCX</a>
+  <a href='https://pat.powertochange.org' title='Project Application Tool'>PAT</a>
+  <a href='https://mpdtool.powertochange.org' title='Ministry Partner Development Tool'>MPD TOOL</a>
+  <a href='http://www.glclive.com' title='Global Learning Center'>GLC</a>
+</div>
+
+<% if staff %>
+<div id='staff_box' class='link_menu_box'>
+  <a href='https://www.mygcx.org/C4C_Staff_Intranet/screen/home' title='Staff Dashboard'>STASH</a>
+  <a href='http://mail.c4c.ca/' title='Google Mail'>MAIL</a>
+  <a href='http://docs.c4c.ca/' title='Google Documents'>DOCUMENTS</a>
+  <a href='http://calendar.c4c.ca/' title='Google Calendar'>CALENDAR</a>
+  <a href='https://focus.crusade.org'>FOCUS</a>
+  <a href='http://staff.powertochange.org'>THE LOOP</a>
+  <a href='/summer_reports' title='Staff summer schedules'>SUMMER</a>
+</div>
+<% end %>
+
+

@@ -1,0 +1,15 @@
+
+<%=h render :partial => "/link_bar/link_bar_css" %>
+
+<%=h "<script type='text/javascript'>" %>
+
+  jQuery(document).ready(function() {
+    jQuery("body").prepend("
+      <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff} %>
+    ");
+  });
+
+<%=h "</script>" %>
+
+<%=h render :partial => "/link_bar/link_bar_js" %>
+
