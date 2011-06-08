@@ -1,11 +1,11 @@
 
-<%=h render :partial => "/link_bar/link_bar_css" %>
+<%=h render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => @page_wrapper_width} %>
 
 <%=h "<script type='text/javascript'>" %>
 
   jQuery(document).ready(function() {
     jQuery("body").prepend("
-      <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff} %>
+      <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff, :active_tab_id => @active_tab_id} %>
     ");
   });
 

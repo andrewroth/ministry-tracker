@@ -3,19 +3,23 @@
   <div class='link_bar'>
 
     <div id='tools'>
-      <div class='active'><strong class='ll tab_left'><a href='http://www.c4c.ca' title='Campus for Christ'>C4C.CA</a></strong><strong class='ll tab_right'>&nbsp;</strong></div>
-
-      <a class='ll' href='<%= url_for :action => :index, :controller => :dashboard %>'>THE PULSE</a>
-
-      <a class='ll' href='http://resources.campusforchrist.org' title='C4C Resources Wiki'>RESOURCES</a>
-      <a class='ll menu_link project' href='' link_menu_box_id='events_box'>EVENTS<span class='menu_link_arrow'></span></a>
-      <a class='ll menu_link more_tools' href='' link_menu_box_id='more_tools_box'>MORE<span class='menu_link_arrow'></span></a>
+      <%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', 'Campus for Christ', 'C4C.CA', nil, active_tab_id) %>
+      
+      <%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), 'The Pulse', 'THE PULSE', nil, active_tab_id) %>
+      
+      <%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', 'C4C Resources Wiki', 'RESOURCES', nil, active_tab_id) %>
+      
+      <%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', '', "EVENTS<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %>
+      
+      <%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', '', "MORE<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %>
+      
       <% if staff %>
-        <a class='ll menu_link staff' href='' link_menu_box_id='staff_box'>STAFF<span class='menu_link_arrow'></span></a>
+        <%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %>
       <% end %>
 
-      <a class='ll icon_link facebook' href='<%=Facebook::FANPAGE_URL%>' title='Campus for Christ on Facebook'>&nbsp;</a>
-      <a class='ll icon_link twitter' href='https://twitter.com/campusforchrist' title='Campus for Christ on Twitter'>&nbsp;</a>
+      <%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, 'Campus for Christ on Facebook', '&nbsp;', nil, active_tab_id) %>
+      
+      <%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', 'https://twitter.com/campusforchrist', 'Campus for Christ on Twitter', '&nbsp;', nil, active_tab_id) %>
     </div>
 
   </div>
@@ -42,7 +46,7 @@
   <a href='http://calendar.c4c.ca/' title='Google Calendar'>CALENDAR</a>
   <a href='https://focus.crusade.org'>FOCUS</a>
   <a href='http://staff.powertochange.org'>THE LOOP</a>
-  <a href='/summer_reports' title='Staff summer schedules'>SUMMER</a>
+  <a href='<%= url_for(:action => :index, :controller => :summer_reports, :only_path => false) %>' title='Staff summer schedules'>SUMMER</a>
 </div>
 <% end %>
 
