@@ -2,25 +2,25 @@
 <div id='link_bar_wrapper'>
   <div class='link_bar'>
 
-    <div id='tools'>
-      <%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', 'Campus for Christ', 'C4C.CA', nil, active_tab_id) %>
+    <ol id='tools'>
+      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', 'Campus for Christ', 'C4C.CA', nil, active_tab_id) %></li>
       
-      <%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), 'The Pulse', 'THE PULSE', nil, active_tab_id) %>
+      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), '', 'THE PULSE', nil, active_tab_id) %></li>
       
-      <%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', 'C4C Resources Wiki', 'RESOURCES', nil, active_tab_id) %>
+      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', 'C4C Resources Wiki', 'RESOURCES', nil, active_tab_id) %></li>
       
-      <%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', '', "EVENTS<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %>
+      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', '', "EVENTS<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
       
-      <%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', '', "MORE<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %>
+      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', '', "MORE<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
       
       <% if staff %>
-        <%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %>
+        <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>
       <% end %>
 
-      <%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, 'Campus for Christ on Facebook', '&nbsp;', nil, active_tab_id) %>
+      <li><%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, 'Campus for Christ on Facebook', '&nbsp;', nil, active_tab_id) %></li>
       
-      <%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', 'https://twitter.com/campusforchrist', 'Campus for Christ on Twitter', '&nbsp;', nil, active_tab_id) %>
-    </div>
+      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', 'https://twitter.com/campusforchrist', 'Campus for Christ on Twitter', '&nbsp;', nil, active_tab_id) %></li>
+    </ol>
 
   </div>
 </div>
@@ -32,10 +32,11 @@
 </div>
 
 <div id='more_tools_box' class='link_menu_box'>
-  <a href='http://www.mygcx.org' title='Global ConneXion'>GCX</a>
+  <a href='http://www.gcx2.org' title='Global ConneXion'>GCX</a>
   <a href='https://pat.powertochange.org' title='Project Application Tool'>PAT</a>
   <a href='https://mpdtool.powertochange.org' title='Ministry Partner Development Tool'>MPD TOOL</a>
-  <a href='http://www.glclive.com' title='Global Learning Center'>GLC</a>
+  <a href='http://www.glclive.com'>GLOBAL LEARNING CENTER</a>
+  <a href='https://tm.thementorcenter.com'>MENTOR CENTER</a>
 </div>
 
 <% if staff %>
