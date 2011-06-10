@@ -312,6 +312,8 @@ class GlobalDashboardController < ApplicationController
           month_ids = year.months.collect(&:id)
         elsif mmt =~ /m_(.*)/
           month_ids = [ $1 ]
+        elsif mmt == 'All'
+          month_ids = Month.all.collect(&:id)
         end
         @ministry_metric_timeframe = params[:ministry_metric_timeframe]
       else
