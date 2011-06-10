@@ -265,7 +265,9 @@ h3, .sub {
     <%- end -%>
     </td>
     <td width="50%" class="even number_column" width="100px">
-      <%= number_to_percentage(number_with_delimiter(@slm["total_spcs_presence"]).to_f / number_with_delimiter(@schools["total_schools"]).to_f * 100) %>
+      <%- if (d = @schools["total_schools"].to_f) > 0 %>
+        <%= number_to_percentage(@slm["total_spcs_presence"].to_f / d * 100) %>
+      <%- end -%>
     </td>
   </tr><tr>
     <td width="50%">6. # SPCs with movements</td>
@@ -278,7 +280,9 @@ h3, .sub {
     <%- end -%>
     </td>
     <td width="50%" class="number_column" width="100px">
-      <%= number_to_percentage(number_with_delimiter(@slm["total_spcs_movement"]).to_f / @slm["total_spcs_presence"].to_f * 100) %>
+      <%- if (d = @slm["total_spcs_presence"].to_f) > 0 %>
+        <%= number_to_percentage(@slm["total_spcs_movement"].to_f / d * 100) %>
+      <%- end -%>
     </td>
   </tr>
 </table>

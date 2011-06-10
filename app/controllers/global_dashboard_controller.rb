@@ -240,33 +240,45 @@ class GlobalDashboardController < ApplicationController
   end
 
   def submission_status_report
-    if request.xhr?
-      @areas_present = {}
-      @areas_total = {}
-      stage = params[:s]
-      #area_find = params[:a].present? ? params[:a] : :all
-      GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
-        ga.global_countries.each do |gc|
-          @areas_present[ga] ||= 0
-          @areas_total[ga] ||= 0
-          if (stage == "all" || gc.stage.to_s == stage) && 
-            gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
-          #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
+    params[:mcc] ||= 'student-led'
+    params[:m] ||= Semester.current.month.id 
+    params[:s] ||= "all"
+
+    @areas_present = {}
+    @areas_total = {}
+    stage = params[:s]
+    #area_find = params[:a].present? ? params[:a] : :all
+    GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
+      ga.global_countries.each do |gc|
+        @areas_present[ga] ||= 0
+        @areas_total[ga] ||= 0
+        if (stage == "all" || gc.stage.to_s == stage)
+          if gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
+            #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
             @areas_present[ga] += 1
+          else
+            @areas_total[ga] += 1
           end
-          @areas_total[ga] += 1
         end
       end
     end
+
     setup
-    @mcc_options = all_mccs
+    @mcc_options = [ "virtually-led", "capacity-accelerated", "student-led", "leader-led" ]
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
     @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3 ] ]
   end
 
   def submission_area_report
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
-    if request.xhr?
+    @year_options = Year.all.collect(&:year_number)
+    params[:y] = Month.find(params[:m]).month_calendaryear if params[:m]
+    params[:y] ||= Year.current.year_number
+    params[:a] ||= 720
+
+    if request.xhr? || (params[:a].present? && params[:y].present?)
+      render(:inline => "missing params") and return unless params[:a].present? && params[:y]
+
       @month_short = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
       @month_long = %w[January February March April May June July August September October November December]
       @area = GlobalArea.find params[:a]
@@ -274,7 +286,7 @@ class GlobalDashboardController < ApplicationController
       @month_data = {}
       @countries.each do |c|
         @month_long.each_with_index do |ml, i|
-          m = Month.find_by_month_desc "#{ml} 2011"
+          m = Month.find_by_month_desc "#{ml} #{params[:y]}"
           stat = c.global_dashboard_whq_stats.find_by_month_id m.id
           @month_data[c] ||= {}
           @month_data[c][@month_short[i]] = stat.present?
