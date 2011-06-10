@@ -1,0 +1,1 @@
+page["#whq #values"].html(render(:partial => "whq_values_tr"))
