@@ -7,29 +7,41 @@
 
 <h3>Submission Status Report</h3><br/><br/>
 
+<script>
+  function zoom_area(area_id) {
+    location.href = "/global_dashboard/submission_area_report?a="+area_id+"&m="+$("#whq_stat_month_id").val();
+  }
+</script>
+
 <% form_for(:whq_stat) do |f| %>
   <tr>
   <%= f.label :mcc %>
-  <%= f.select :mcc, options_for_select(@mcc_options, "") %>
+  <%= f.select :mcc, options_for_select(@mcc_options, params[:mcc]) %>
   <BR/>
   <%= f.label :month %>
-  <%= f.select :month_id, options_for_select([""] + @month_options, Semester.current.month.id) %>
+  <%= f.select :month_id, options_for_select([""] + @month_options, params[:m]) %>
   <BR/>
   <%= f.label :stage %>
-  <%= f.select :stage_id, options_for_select([""] + @stage_options, "") %>
+  <%= f.select :stage_id, options_for_select([""] + @stage_options, params[:s]) %>
   <BR/>
+
+  <div style="font-style: italic; font-size: 80%"><BR/>The data will take about 3 seconds to refresh after all selections have been made.</div>
+  <div style="float:right"><%= spinner %></div>
 
   <%- with_str = "'s='+$('#whq_stat_stage_id').val()+'&mcc='+$('#whq_stat_mcc').val()+'&m='+$('#whq_stat_month_id').val()" %>
   <%= observe_field :whq_stat_month_id, 
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
+        :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()",
         :with => with_str
    %>
    <%= observe_field :whq_stat_mcc, 
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
+        :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()",
         :with => with_str
    %>
    <%= observe_field :whq_stat_stage_id, 
         :url => { :controller => :global_dashboard, :action => :submission_status_report },
+        :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()",
         :with => with_str
    %>
 
@@ -43,7 +55,7 @@
    </style> 
 
    <div id="stats">
-     Choose an mcc, month and stage to see the country submission stats.
+     <%= render :partial => "submission_status_report" %>
    </div>
 
    <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>
