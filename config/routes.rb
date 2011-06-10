@@ -3,6 +3,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :label_people
   map.resources :labels
 
+  map.connect "/link_bar/widget",
+              :conditions => { :method => :get },
+              :controller => "link_bar",
+              :action => "widget"
+
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -141,6 +146,7 @@ ActionController::Routing::Routes.draw do |map|
     group.create_multiple '/group_invitations/create_multiple', :controller => 'group_invitations', :action => 'create_multiple', :conditions => { :method => :post }
     group.accept '/group_invitations/:id/accept', :controller => 'group_invitations', :action => 'accept', :conditions => { :method => :get }
     group.decline '/group_invitations/:id/decline', :controller => 'group_invitations', :action => 'decline', :conditions => { :method => :get }
+    group.list '/group_invitations/:id/list', :controller => 'group_invitations', :action => 'list', :conditions => { :method => :get }
   end
 
   map.resources :manage

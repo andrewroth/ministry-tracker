@@ -709,9 +709,6 @@ div.right-menu {
 	background-color: #fff;
 width:175px;
 }
-a.cancel {
-	color:red;
-}
 
 .right_list {
 float: none;
@@ -964,7 +961,7 @@ a.action-button img {
 .editing .ok:hover {background-color:rgba(97,230,203,0.7);}
 .editing .good:hover {background-color:rgba(92,228,10,0.7);}
 .editing .bad:hover, .editing .poor:hover, .editing .ok:hover, .editing .good:hover {-moz-box-shadow: 0 1px 10px rgba(102,102,102,0.8); }
-.bad:active, .poor:active, .ok:active, .good:active {-moz-box-shadow: none; }
+.editing .bad:active, .editing .poor:active, .editing .ok:active, .editing .good:active {-moz-box-shadow: none; }
 
 .headselected, .badhead, .poorhead, .okhead, .goodhead, .bad, .poor, .ok, .good { -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s; }
 
@@ -988,6 +985,11 @@ a.action-button img {
 .editing .badhead, .editing .poorhead, .editing .okhead, .editing .goodhead {
   -moz-box-shadow: 0 -3px 10px rgba(102,102,102,1) inset;
 }
+
+.badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
+.poorhead {background:url(/images/status_poor.png) center 31px #ffC000;}
+.okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
+.goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
 
 .badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
 .poorhead {background:url(/images/status_poor.png) center 31px #ffC000;}
@@ -1533,8 +1535,14 @@ padding-bottom:5px;
 }
 
 #profilewrap #removeMe {
-  padding-top:10px;
-  text-align:right;
+  float: right;
+  font-size: 12px;
+  margin: 10px 15px 20px 0;
+  text-align: right;
+  opacity: 0.5;
+}
+#profilewrap #removeMe:hover {
+  opacity: 1;
 }
 
 
@@ -3078,7 +3086,7 @@ li.ac_over .autoCompleteName {
   padding:2px 5px;
   border:1px solid #E6E6E6;
   cursor:default;
-  min-height:40px;
+  min-height:60px;
 }
 
 #invitePreview {

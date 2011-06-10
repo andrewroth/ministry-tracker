@@ -61,10 +61,10 @@ module AuthenticatedSystem
     # behavior in case the user is not authorized
     # to access the requested action.  For example, a popup window might
     # simply close itself.
-    def access_denied
+    def access_denied(no_destination = false)
       respond_to do |accepts|
         accepts.html do
-          store_location
+          store_location unless no_destination
           if facebook_session
             redirect_to prompt_for_email_users_path
           else
@@ -153,8 +153,7 @@ module AuthenticatedSystem
       end
       
       unless you_shall_pass == true
-        # !important - to prevent possible infinite loop don't redirect to session/new
-        redirect_to :controller => 'dashboard', :action => 'index'
+        access_denied(true)
       end
     end
     
