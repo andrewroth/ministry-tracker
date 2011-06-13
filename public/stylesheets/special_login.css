@@ -71,7 +71,7 @@ img {
   padding:10px;
   background:#FFCB05;
   font-size:14px;
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
 }
 
 div.flash big {
@@ -95,6 +95,7 @@ div.flash b, div.flash_notice b  {
 	margin: 30px 0 0 0;
 }
 
-#browser_warning b {
-	color: red;
+#browser_warning b, #browser_warning big {
+	color: FireBrick;
 }
+
