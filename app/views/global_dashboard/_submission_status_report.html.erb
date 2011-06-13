@@ -5,7 +5,7 @@
   <%- count = @areas_total[area] %>
   <tr>
     <td style="width: 200px">
-      <%= area.area %>
+      <%= link_to_function(area.area, "zoom_area(#{area.id})") %>
     </td>
     <td style="width: 100px">
       <%= @areas_present[area] %> of <%= count %><BR/>

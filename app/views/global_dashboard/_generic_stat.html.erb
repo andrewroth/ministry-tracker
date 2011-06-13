@@ -14,7 +14,9 @@
       { legend: [ <%= 
         stat.keys.compact.sort.collect{ |k| 
           str = (k == "" || k.nil?) ? "No value entered" : k
-          val = stat[k].is_a?(Float) ? "(#{number_to_percentage(stat[k])})" : "(#{number_with_delimiter(stat[k])})"
+          total = stat.values.sum
+          val = stat[k].is_a?(Float) ? "(#{number_to_percentage(stat[k])})" : 
+            "(#{number_with_delimiter(stat[k])} :: #{number_to_percentage((stat[k].to_f / total) * 100, :precision => 0)})"
 
           "\"#{str} #{val}\""
         }.join(', ') %> ], legendpos: "west" });

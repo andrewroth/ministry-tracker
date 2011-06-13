@@ -15,6 +15,7 @@ class GlobalDashboardAccess < ActiveRecord::Base
       mi.save!
     end
 
+    debugger
     GlobalDashboardAccess.find_or_create_by_guid_and_fn_and_ln_and_email(guid, fn, ln, email)
   end
 
