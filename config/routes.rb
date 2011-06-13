@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.connect "/link_bar/widget",
+              :conditions => { :method => :get },
+              :controller => "link_bar",
+              :action => "widget"
+
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
