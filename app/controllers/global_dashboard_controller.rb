@@ -256,9 +256,8 @@ class GlobalDashboardController < ApplicationController
           if gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
             #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
             @areas_present[ga] += 1
-          else
-            @areas_total[ga] += 1
           end
+          @areas_total[ga] += 1
         end
       end
     end
