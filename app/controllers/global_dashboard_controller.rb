@@ -273,7 +273,7 @@ class GlobalDashboardController < ApplicationController
     @year_options = Year.all.collect(&:year_number)
     params[:y] = Month.find(params[:m]).month_calendaryear if params[:m]
     params[:y] ||= Year.current.year_number
-    params[:a] ||= 720
+    params[:a] ||= GlobalArea.find_by_name("South East Asia")
 
     if request.xhr? || (params[:a].present? && params[:y].present?)
       render(:inline => "missing params") and return unless params[:a].present? && params[:y]
