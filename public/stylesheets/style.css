@@ -282,6 +282,10 @@ input, textarea {
   border-radius:3px;
 }
 
+input:hover, textarea:hover {
+  border-color:#747474;
+}
+
 input:focus, textarea:focus {
   background:#FFFFCC;
   border-color:#8493D9;
@@ -2466,6 +2470,10 @@ h2.group_type_title {
   -moz-border-radius: 3px; -webkit-border-radius: 3px;
 }
 
+#uberSearchBox:hover {
+  border-color:#666766;
+}
+
 #uberSearchBox.focused, .uberSearchBox.focused, .uberSearchBox:focus {
   background: white;
   color: black;
@@ -3070,6 +3078,10 @@ li.ac_over .autoCompleteName {
   height: 22px;
   border-color: #808080;
   box-shadow: 1px 1px 5px #8B8B8B;
+}
+
+#inviteSearchBox:hover {
+  border-color: #666766;
 }
 
 #inviteSearchBox.focused {
