@@ -118,11 +118,12 @@
 
 <script type="text/javascript">
   
-  var edits = 0;
+  var timetable_edits = 0;
   var down = false;
   var css = '<%= Timetable::BAD_CLASS %>';
-  var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>']
+  var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>'];
   var direction = 'on';
+
 
   function clear_timetable() {
     var answer = confirm("Are you sure you want to set every time on your timetable to 'GOOD'?");
@@ -145,45 +146,42 @@
     css = css_before;
   }
 
-  $(document).ready(function(){
 
-    $(".statusheadwrap a").click(function() {
-      $('.headselected').removeClass('headselected');
-      css = $(this).attr('rel');
-      $(this).addClass('headselected');
-    });
-    
-    $('table#schedule td:not(.time)').mousedown(function() {
-      edits = edits+1;
-      down = true;
+  $(".statusheadwrap a").click(function() {
+    $('.headselected').removeClass('headselected');
+    css = $(this).attr('rel');
+    $(this).addClass('headselected');
+  });
+  
+  $('table#schedule td:not(.time)').mousedown(function() {
+    timetable_edits = timetable_edits+1;
+    down = true;
+    for(i=0; i < possible_classes.length; i++) {
+      $(this).removeClass(possible_classes[i]);
+    }
+    $(this).addClass(css);
+  });
+
+  $('table#schedule td:not(.time)').mouseover(function() {
+    if(down) {
       for(i=0; i < possible_classes.length; i++) {
         $(this).removeClass(possible_classes[i]);
       }
-      $(this).addClass(css)
-    });
-
-    $('table#schedule td:not(.time)').mouseover(function() {
-      if(down) {
-        for(i=0; i < possible_classes.length; i++) {
-          $(this).removeClass(possible_classes[i]);
-        }
-        $(this).addClass(css)
-      }
-    });
-    $('body').mouseup(function() {
-      down = false;
-    });
-    $('table#schedule td').disableTextSelect();
-     
-    $('#timetable_submit.save').click(function(e) {
-      if(edits < 2) {
-        var answer = confirm("We noticed you didn't change much on your timetable, filling in your timetable helps your group find a meeting time that's suitable for everyone.\n\nClick 'Cancel' to continue editing or click 'OK' to save your timetable and finish.");
-        if(answer == false) {
-          return false;
-        }
-      }
-    });
-    
+      $(this).addClass(css);
+    }
   });
+  $('body').mouseup(function() {
+    down = false;
+  });
+  $('table#schedule td').disableTextSelect();
    
+  $('#timetable_submit.save').click(function(e) {
+    if(timetable_edits < 2) {
+      var answer = confirm("We noticed you didn't change much on your timetable, filling in your timetable helps your group find a meeting time that's suitable for everyone.\n\nClick 'Cancel' to continue editing or click 'OK' to save your timetable and finish.");
+      if(answer == false) {
+        return false;
+      }
+    }
+  });
+    
 </script>

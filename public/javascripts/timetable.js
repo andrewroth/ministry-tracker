@@ -47,7 +47,7 @@ function updateHeaderVisibility() {
   } else {
     $("#schedule_header").hide();
   }
-};
+}
 
 $(window).scroll(updateHeaderVisibility);
 
