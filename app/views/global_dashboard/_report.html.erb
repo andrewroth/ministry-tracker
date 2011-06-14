@@ -98,7 +98,7 @@ h3, .sub {
   - Timeframe: <%= select_tag "ministry_metric_timeframe", 
     grouped_options_for_select([[ "All", [ "All" ] ], 
                                [ "Year Totals", Year.all.collect{ |y| [ y.year_desc, "y_#{y.id}" ] } ] ] + 
-                               Month.all_for_grouped_options, @ministry_metric_timeframe)
+                               Month.all_for_grouped_options_by_literal_year, @ministry_metric_timeframe)
     %>
   <%= spinner('_mm') %>
   <%= observe_field :ministry_metric_timeframe, :url => { :controller => :global_dashboard, :action => :update_ministry_metrics },
