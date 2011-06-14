@@ -135,16 +135,6 @@ class GroupInvitationsControllerTest < ActionController::TestCase
     assert_redirected_to :controller => :sessions, :action => :new
   end
   
-  def test_has_login_code_after_creation
-    gi = Factory(:group_invitation_1)
-    
-    assert gi
-    assert gi.login_code_id
-    assert gi.login_code.code
-    assert_equal gi.login_code.acceptable, true
-    assert_equal gi.login_code.times_used, 0
-  end
-  
   def test_existing_user_logged_in_from_login_code
     gi = Factory(:group_invitation_2)
     
