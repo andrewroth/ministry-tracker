@@ -13,7 +13,6 @@ class GroupInvitationsController < ApplicationController
   def new
     @group = Group.find(params[:group_id].to_i)
     @group_invitation = GroupInvitation.new({:group_id => params[:group_id].to_i})
-    @preview_group_invitation = GroupInvitation.new({:group_id => @group.id, :recipient_email => @my.email, :sender_person_id => @my.id})
     
     unless @group && (@group.leaders | @group.co_leaders).include?(@me)
       flash[:notice] = "<big>Sorry but you need to be a leader or co-leader of the group to send invitations.</big>"
