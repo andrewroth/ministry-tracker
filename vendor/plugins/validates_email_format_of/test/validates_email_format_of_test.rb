@@ -1,13 +1,26 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-class ValidatesEmailFormatOfTest < Test::Unit::TestCase
-  fixtures :people, :peoplemx
+class ValidatesEmailFormatOfTest < TEST_CASE
+  fixtures :people
 
   def setup
     @valid_email = 'valid@example.com'
     @invalid_email = 'invalid@example.'
   end
-  
+
+  def test_with_activerecord
+    p = create_person(:email => @valid_email)
+    save_passes(p)
+
+    p = create_person(:email => @invalid_email)
+    save_fails(p)
+  end
+
+  def test_without_activerecord
+    assert_valid(@valid_email)
+    assert_invalid(@invalid_email)
+  end
+
   def test_should_allow_valid_email_addresses
     ['valid@example.com',
      'Valid@test.example.com',
@@ -25,6 +38,11 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
      'valid@example.mobi',
      'valid@example.info',
      'valid-@example.com',
+     'fake@p-t.k12.ok.us',
+  # allow single character domain parts
+     'valid@mail.x.example.com',
+     'valid@x.com',
+     'valid@example.w-dash.sch.uk',
   # from RFC 3696, page 6
      'customer/department=shipping@example.com',
      '$A12345@example.com',
@@ -33,8 +51,7 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
   # apostrophes
      "test'test@example.com",
      ].each do |email|
-      p = create_person(:email => email)
-      save_passes(p, email)
+      assert_valid(email)
     end
   end
 
@@ -46,6 +63,10 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
      'invalid.@example.com', 
   # period can not appear twice consecutively in local part
      'invali..d@example.com',
+  # should not allow underscores in domain names
+     'invalid@ex_mple.com',
+     'invalid@e..example.com',
+     'invalid@p-t..example.com',
      'invalid@example.com.',
      'invalid@example.com_',
      'invalid@example.com-',
@@ -53,24 +74,37 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
      'invalid@example.b#r.com',
      'invalid@example.c',
      'invali d@example.com',
+  # unclosed quote
+     "\"a-17180061943-10618354-1993365053",
+  # too many special chars used to cause the regexp to hang
+     "-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++@foo",
      'invalidexample.com',
+  # should not allow special chars after a period in the domain
+     'local@sub.)domain.com',
+     'local@sub.#domain.com',
+  # one at a time
+     "foo@example.com\nexample@gmail.com",
      'invalid@example.'].each do |email|
-      p = create_person(:email => email)
-      save_fails(p, email)
+      assert_invalid(email)
     end
   end
-
+  
   # from http://www.rfc-editor.org/errata_search.php?rfc=3696
   def test_should_allow_quoted_characters
     ['"Abc\@def"@example.com',     
      '"Fred\ Bloggs"@example.com',
      '"Joe.\\Blow"@example.com',
      ].each do |email|
-      p = create_person(:email => email)
-      save_passes(p, email)
+      assert_valid(email)
     end
   end
-
+  
+  def test_should_required_balanced_quoted_characters
+    assert_valid(%!"example\\\\\\""@example.com!)
+    assert_valid(%!"example\\\\"@example.com!)
+    assert_invalid(%!"example\\\\""example.com!)
+  end
+  
   # from http://tools.ietf.org/html/rfc3696, page 5
   # corrected in http://www.rfc-editor.org/errata_search.php?rfc=3696
   def test_should_not_allow_escaped_characters_without_quotes
@@ -78,8 +112,7 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
      'Abc\@def+@example.com',
      'Joe.\\Blow@example.com'
      ].each do |email|
-      p = create_person(:email => email)
-      save_fails(p, email)
+      assert_invalid(email)
     end
   end
 
@@ -87,9 +120,13 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
     ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com',
      'test@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com'
      ].each do |email|
-      p = create_person(:email => email)
-      save_fails(p, email)
+      assert_invalid(email)
     end
+  end
+  
+  def test_overriding_length_checks
+    assert_not_nil ValidatesEmailFormatOf::validate_email_format('valid@example.com', :local_length => 1)
+    assert_not_nil ValidatesEmailFormatOf::validate_email_format('valid@example.com', :domain_length => 1)
   end
 
   def test_should_respect_validate_on_option
@@ -104,36 +141,80 @@ class ValidatesEmailFormatOfTest < Test::Unit::TestCase
   def test_should_allow_custom_error_message
     p = create_person(:email => @invalid_email)
     save_fails(p)
-    assert_equal 'fails with custom message', p.errors.on(:email)
+    if ActiveRecord::VERSION::MAJOR >= 3
+      assert_equal 'fails with custom message', p.errors[:email].first
+    else
+      assert_equal 'fails with custom message', p.errors.on(:email)
+    end
   end
 
   def test_should_allow_nil
     p = create_person(:email => nil)
     save_passes(p)
+    
+    p = PersonForbidNil.new(:email => nil)
+    save_fails(p)
   end
 
+  # TODO: find a future-proof way to check DNS records
   def test_check_mx
     pmx = MxRecord.new(:email => 'test@dunae.ca')
     save_passes(pmx)
 
-    pmx = MxRecord.new(:email => 'test@example.com')
+    pmx = MxRecord.new(:email => 'test@127.0.0.2')
     save_fails(pmx)
+  end
+
+  # TODO: find a future-proof way to check DNS records
+  def test_check_mx_fallback_to_a
+    pmx = MxRecord.new(:email => 'test@code.dunae.ca')
+    save_passes(pmx)
+  end
+  
+  def test_shorthand
+    if ActiveRecord::VERSION::MAJOR >= 3
+      s = Shorthand.new(:email => 'invalid')
+      assert !s.save
+      assert_equal 2, s.errors[:email].size
+      assert_block do
+        s.errors[:email].any? do |err|
+        err =~ /fails with shorthand message/
+      end
+      end
+    end
   end
 
   protected
     def create_person(params)
       Person.new(params)
     end
+    
+    def assert_valid(email)
+      assert_nil ValidatesEmailFormatOf::validate_email_format(email)
+    end
+    
+    def assert_invalid(email)
+      err = ValidatesEmailFormatOf::validate_email_format(email)
+      assert_equal 1, err.size
+    end
 
     def save_passes(p, email = '')
-      assert p.valid?, " validating #{email}"
+      assert p.valid?, " #{email} should pass"
       assert p.save
-      assert_nil p.errors.on(:email)
+      if ActiveRecord::VERSION::MAJOR >= 3
+        assert p.errors[:email].empty?
+      else
+        assert_nil p.errors.on(:email)
+      end
     end
     
     def save_fails(p, email = '')
-      assert !p.valid?, " validating #{email}"
+      assert !p.valid?, " #{email} should fail"
       assert !p.save
-      assert p.errors.on(:email)
+      if ActiveRecord::VERSION::MAJOR >= 3
+        assert_equal 1, p.errors[:email].size
+      else
+        assert p.errors.on(:email)
+      end
     end
 end

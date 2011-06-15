@@ -21,11 +21,13 @@
   
   <%= render :partial => 'groups/legend' %>
   <%= render :partial => 'timetables/schedule_header' %>
+  
+  <br/>
 
 	<table id="schedule" width="250px" cellspacing="0">
 	  <thead>
 	    <tr>
-	      <th>&nbsp;</th>
+	      <th class="time">&nbsp;</th>
 	    <%- 7.times do |day| -%>
 	      <th><%= Date::DAYNAMES[day] %></th>
 	    <%- end -%>
@@ -39,7 +41,7 @@
 	    <%- while time < stop 
 	        time_in_seconds = time.to_i - midnight.to_i -%>
 	      <tr>
-	        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+	        <td class="time timelineHeader hour<%=time.hour%>"><div class="timeHeader"><%= time.to_s(:time) %></div></td>
 	        <%- 7.times do |day| -%>
 					<%- color = "neutral" %>
 					<% current_time = @comparison_map[day][time_block][time_in_seconds] %>

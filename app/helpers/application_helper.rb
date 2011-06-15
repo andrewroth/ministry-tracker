@@ -135,7 +135,15 @@ module ApplicationHelper
     end
    abs_path
   end
+
+  def message_span(id, classname)
+    " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
+  end
   
+  def leave_facebook_link_to(name, url, classes = "")
+    link_to "#{name}", "#", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{url}'", :class => "#{classes}"
+  end
+    
   def link_bar_tab(id, classes, url, title, inner_html, menu_id = nil, active_tab_id = nil)
     classes = "#{classes} ll" unless id == active_tab_id
     tab = "<a id='#{id}' class='#{classes}' title='#{title}' href='#{url}' #{"link_menu_box_id='#{menu_id}'" if menu_id}>#{inner_html}</a>"
@@ -144,3 +152,5 @@ module ApplicationHelper
   end
   
 end
+
+

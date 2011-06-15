@@ -54,7 +54,7 @@ module SearchHelper
     info
   end
 
-  def ac_info_for_person(person)
+  def ac_info_for_person(person, actions = false)
     info = ""
     if person.staff_role_ids.blank?
       info += "<span class='noSearchHighlight'>#{person.campuses_concat}</span><br/>" if person.campuses_concat.present?
@@ -62,7 +62,11 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
+    if actions
+      info += link_to("<span class='acEmail'>#{person.email.downcase}</span>", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
+    else
+      info += "<span class='acEmail'>#{person.email.downcase}</span>" if person.email.present?
+    end
   end
 
   def info_for_group(group)
