@@ -286,6 +286,9 @@ input, textarea {
 
 input:hover, textarea:hover {
   border-color:#A6A6A6;
+}
+
+input:hover, textarea:hover, select:hover {
   box-shadow: 0px 1px 2px #BFBFBF; -moz-box-shadow: 0px 1px 2px #BFBFBF; -webkit-box-shadow: 0px 1px 2px #BFBFBF;
 }
 
@@ -2418,6 +2421,7 @@ h2.group_type_title {
 #collection_group_link {
   position:fixed;
   font-size:14px;
+  margin-right:20px;
 }
 
 #collection_group_link_title {
