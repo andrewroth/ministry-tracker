@@ -1,10 +1,8 @@
 
-<% if logged_in? && @me  %>
+<%= javascript_include_tag "jquery.js" %>
 
-  <%= render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => "900px"} %>
-  
-  <%= render :partial => "/link_bar/link_bar_js" %>
-  
-  <%= render :partial => "/link_bar/link_bar_html", :locals => {:staff => is_staff_somewhere(@me), :active_tab_id => "link_bar_tab_2"} %>
+<%= render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => page_wrapper_width} %>
 
-<% end %>
+<%= render :partial => "/link_bar/link_bar_js" %>
+
+<%= render :partial => "/link_bar/link_bar_html", :locals => {:staff => staff, :active_tab_id => active_tab_id} %>
