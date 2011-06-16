@@ -150,6 +150,19 @@ module ApplicationHelper
     tab = "<div class='active'><strong class='ll tab_left'>#{tab}</strong><strong class='ll tab_right'>&nbsp;</strong></div>" if id == active_tab_id
     tab
   end
+  
+  def connexion_bar_revealer
+    "
+    #{image_tag "GCXBlueArrow.png", :id => "connexion_bar_revealer", :title => "Toggle the GCX Connexion Bar"}
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $('#connexion_bar_revealer').click(function() {
+          $('div.yui-skin-cnxbar').slideToggle('fast');
+        });
+      });
+    </script>
+    " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
+  end
 end
 
 
