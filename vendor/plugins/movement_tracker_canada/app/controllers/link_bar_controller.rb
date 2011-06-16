@@ -1,7 +1,7 @@
 class LinkBarController < ApplicationController
   unloadable
   
-  skip_standard_login_stack :only => [:link_bar, :widget, :frame]
+  skip_standard_login_stack :only => [:index, :widget, :iframe_widget]
   
   before_filter :setup_vars
   
