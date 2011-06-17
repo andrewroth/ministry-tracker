@@ -37,7 +37,7 @@
             </style>
             
             <div id='link_bar_frame_wrapper'>
-              <iframe id='link_bar_frame' scrolling='no' src='#{url_for(:action => :index, :controller => :link_bar, :only_path => false, :page_wrapper_width => @page_wrapper_width, :active_tab_id => @active_tab_id)}'>
+              <iframe id='link_bar_frame' scrolling='no' allowtransparency='true' src='#{url_for(:action => :index, :controller => :link_bar, :only_path => false, :page_wrapper_width => @page_wrapper_width, :active_tab_id => @active_tab_id)}'>
               </iframe>
             </div>
           " %>
