@@ -6,7 +6,7 @@
     var r = Raphael("<%= id %>");
     r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
 
-    r.g.text(320, 50, "Interactive Pie Chart").attr({"font-size": 20});
+    r.g.text(320, 50, "<%= header %>").attr({"font-size": 20});
 
     var pie = r.g.piechart(320, 200, 100, 
       [ <%= stat.keys.compact.sort.collect{ |k| stat[k] }.join(", ") %> ], 
