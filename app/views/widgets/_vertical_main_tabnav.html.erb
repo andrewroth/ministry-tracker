@@ -32,7 +32,7 @@ render_tabnav :vertical_main,
 
   add_tab do |t|
    t.named "<div id='scheduleTab' class='tab'>SCHEDULE</div>"
-   t.titled "You're schedule"
+   t.titled "Your schedule"
    t.links_to person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id)
    t.highlights_on :controller => "timetables"
   end
