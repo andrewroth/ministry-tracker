@@ -32,7 +32,7 @@
   }
   
   ol#tools li {
-    display: inline-block;  
+    display: inline-block;
     height: 30px;
     position: relative;
     vertical-align: top;
@@ -72,9 +72,9 @@
 
   div.link_bar a.ll {
     display: block;
-    height: 22px;
     border: solid transparent 8px;
     border-bottom:0;
+    float:left;
   }
 
   div.link_bar a:hover, div.link_bar u:hover {
@@ -107,13 +107,17 @@
     -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s; transition: 0.1s ease 0s;
   }
 
+  div.link_bar a.menu_link {
+    padding-right: 10px;
+  }
+
   div.link_bar span.menu_link_arrow {
     background: url("<%=@base_url if @base_url%>/images/Garrowdown_s.png") no-repeat scroll transparent;
     display: inline-block;
     height: 5px;
-    left: 3px;
-    position: relative;
-    top: -2px;
+    position: absolute;
+    top: 4px;
+    right: -2px;
     width: 10px;
   }
 
@@ -174,7 +178,7 @@
   }
 
   div.link_bar a.facebook {
-    background: url("<%=@base_url if @base_url%>/images/debicons/facebooklogo.png") no-repeat scroll center transparent;
+    background: url("<%=@base_url if @base_url%>/images/debicons/facebooklogo.png") no-repeat scroll center top transparent;
     border-width: 0;
   }
   div.link_bar a.facebook:hover {
@@ -182,7 +186,7 @@
   }
 
   div.link_bar a.twitter {
-    background: url("<%=@base_url if @base_url%>/images/debicons/twitterlogo.png") no-repeat scroll center transparent;
+    background: url("<%=@base_url if @base_url%>/images/debicons/twitterlogo.png") no-repeat scroll center top transparent;
     border-width: 0;
     padding-left: 10px;
   }
