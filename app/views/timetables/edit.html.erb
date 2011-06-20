@@ -74,7 +74,7 @@
     :html => {:onsubmit => "set_times_field()"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%- unless @signup -%>
-    <%= f.submit 'Save Timetable', :class => 'action-button' %>
+    <%= f.submit 'Save Timetable', :class => 'save action-button' %>
     <br/>
     <br/>
     <%- end %>
@@ -154,12 +154,12 @@
   });
   
   $('table#schedule td:not(.time)').mousedown(function() {
-    timetable_edits = timetable_edits+1;
     down = true;
     for(i=0; i < possible_classes.length; i++) {
       $(this).removeClass(possible_classes[i]);
     }
     $(this).addClass(css);
+    timetable_edits = timetable_edits+1;
   });
 
   $('table#schedule td:not(.time)').mouseover(function() {
@@ -168,6 +168,7 @@
         $(this).removeClass(possible_classes[i]);
       }
       $(this).addClass(css);
+      timetable_edits = timetable_edits+1;
     }
   });
   $('body').mouseup(function() {

@@ -901,6 +901,7 @@ table#schedule .time, table#schedule_header .time {
   padding-top: 3px;
   text-align: right;
   width: 9%;
+  font-size: 14px;
 }
 
 table#schedule td, table#schedule th, table#schedule_header td, table#schedule_header th {
@@ -991,7 +992,7 @@ a.action-button img {
   margin-right:2px;
   border:4px solid white;
   margin-bottom:10px;
-  opacity: 0.9;
+  opacity: 0.9; filter:alpha(opacity=90);/*for IE*/
 }
 .editing .badhead, .editing .poorhead, .editing .okhead, .editing .goodhead {
   -moz-box-shadow: 0 -3px 15px rgba(102,102,102,1) inset;
@@ -1008,7 +1009,7 @@ a.action-button img {
 .editing a.badhead:hover,
 .editing a.poorhead:hover,
 .editing a.okhead:hover,
-.editing a.goodhead:hover {border:4px solid #4C4D4C; border-radius:7px; opacity:1; -moz-box-shadow: 0 -3px 15px #666666 inset; -webkit-box-shadow: 0 -3px 15px #666666 inset; box-shadow: 0 -3px 15px #666666 inset; }
+.editing a.goodhead:hover {border:4px solid #4C4D4C; border-radius:7px; opacity:1; filter:alpha(opacity=100);/*for IE*/ -moz-box-shadow: 0 -3px 15px #666666 inset; -webkit-box-shadow: 0 -3px 15px #666666 inset; box-shadow: 0 -3px 15px #666666 inset; }
 
 .editing a.badhead:active,
 .editing a.poorhead:active,
@@ -1369,7 +1370,7 @@ padding-bottom:5px;
   left:43%;
   top:38%;
   background-color:white;
-  opacity:0.9;
+  opacity:0.9; 
   -moz-box-shadow: 0 0 30px 40px white; -webkit-box-shadow: 0 0 30px 40px white;
 }
 
@@ -1548,10 +1549,10 @@ padding-bottom:5px;
   font-size: 12px;
   margin: 10px 15px 20px 0;
   text-align: right;
-  opacity: 0.5;
+  opacity: 0.6; filter:alpha(opacity=60);/*for IE*/ 
 }
 #profilewrap #removeMe:hover {
-  opacity: 1;
+  opacity: 1; filter:alpha(opacity=100);/*for IE*/ 
 }
 
 
@@ -3211,13 +3212,14 @@ table.groupInvolvementList th {
 #horizTableCompareContainer { position: relative; padding:0 4em 0 2em;}
 .horizTableCompare .colourLegend { display:inline-block; width:100%; height:50px; }
 .horizTableCompare .namesList { float:left; padding-top:60px; min-height:50px; }
-.horizTableCompare .frame { position: relative; overflow: auto; padding:15px 0; margin-bottom:3em; }
-.horizTableCompare .frameControls { float:right; padding:0em 2em 2em 2em; }
+.horizTableCompare .frame { position: relative; overflow: auto; padding:15px 0; margin-bottom:1em; }
+.horizTableCompare .frameControls { float:right; padding:2em; opacity:0.4; }
+.horizTableCompare .frameControls:hover { opacity:1; }
 .horizTableCompare .tableContainer { width: 13000px; position: relative; -moz-transition: 0.5s ease 0s; -webkit-transition: 0.5s ease 0s; }
 .horizTableCompare .tableContainer .timelineHeaderContainer { height: 100%; }
 .horizTableCompare .tableContainer .rows { padding-top: 45px; }
 
-.horizTableCompare .colourLegend .legendItem { width:75px; float:right; line-height:22px; }
+.horizTableCompare .colourLegend .legendItem { width:75px; float:right; line-height:22px; font-size:11px; font-weight:bold; }
 .horizTableCompare .colourLegend div.personTimeBlock { width:22px; border:1px #666766 solid; margin-right:4px; }
 
 .horizTableCompare .timelineHeader .timesContainer { float: left; height: 100%; }
@@ -3240,7 +3242,7 @@ table.groupInvolvementList th {
 
 .horizTableCompare .hour6.min0 { padding-left:15px; display:none; }
 
-.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.3; }
+.horizTableCompare .line { position: absolute; top:0; bottom:0; border-left: 1px solid; z-index:10; margin-top:45px; opacity:0.3; filter:alpha(opacity=30);/*for IE*/ }
 .horizTableCompare .line.halfHour { border-left: 1px dotted; }
 .horizTableCompare .timeTooltip { position: absolute; top:0; bottom:0; z-index:11; margin-top:45px; }
 .horizTableCompare .meetingTimeSelector { cursor:pointer; z-index:12; }
@@ -3255,11 +3257,11 @@ table.groupInvolvementList th {
 .horizTableCompare .personName.odd  { background-color:#E9E9E9; }
 .horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; text-decoration:underline; }
 .horizTableCompare .personName:active, .horizTableCompare .personName.rowsHidden:active { background:none;}
-.horizTableCompare .personName.rowsHidden { background-color:white; opacity:0.6; }
+.horizTableCompare .personName.rowsHidden { background-color:white; opacity:0.6; filter:alpha(opacity=60);/*for IE*/ }
 .horizTableCompare .personTimetableLink { display:inline; position:absolute; top:1px; right:5px; padding:4px; }
 .horizTableCompare span.outdated { font-weight:bold; font-style: italic; color:white; }
 .horizTableCompare .noTableNote { float:right; }
-.horizTableCompare .noTable, .horizTableCompare .noTableNote { opacity:0.7; }
+.horizTableCompare .noTable, .horizTableCompare .noTableNote { opacity:0.7; filter:alpha(opacity=70);/*for IE*/ }
 .horizTableCompare .noTable .personName, .horizTableCompare .noTable .personName:hover { cursor:default; background-color:white; color:#666766; font-weight:bold; text-decoration:none; }
 .horizTableCompare .personName .removePersonLink { display:inline; position:absolute; top:3px; left:-20px; cursor:pointer; }
 .horizTableCompare .personName .removePersonLink img { display:none; }
@@ -3274,11 +3276,11 @@ table.groupInvolvementList th {
 .horizTableCompare .personTimeBlock.ok   { background-color:#61E6CB; }
 .horizTableCompare .personTimeBlock.good { background:none; }
 
-.horizTableCompare.timeControlsContainer { text-align:center; }
+.horizTableCompare.timeControlsContainer { text-align:center; margin-top:20px; }
 .horizTableCompare .timeControl { display:inline-block; vertical-align:middle; margin:0.5em 1em; }
 
 .horizTableCompare #zoomSlider { width:150px; display:inline-block; margin:0 5px; }
-.horizTableCompare .zoomSliderContainer { float:right; padding-left:3em; }
+.horizTableCompare .zoomSliderContainer { float:right; padding-left:4em; }
 .horizTableCompare .visibleDaysControls { float:right; cursor:default; }
 .horizTableCompare .visibleDaysControls input { position:relative; bottom:-2px; }
 
@@ -3286,10 +3288,10 @@ table.groupInvolvementList th {
 
 .horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
-.horizTableCompare .zoomSliderIn { display:inline; background: url("/images/debicons/Gaddicon.png") no-repeat scroll 0 0 transparent; padding-left:15px; }
-.horizTableCompare .zoomSliderIn:hover { background: url("/images/debicons/Yaddicon.png") no-repeat scroll 0 0 transparent; }
-.horizTableCompare .zoomSliderOut { display:inline; background: url("/images/debicons/Gremoveicon.png") no-repeat scroll 0 0 transparent; padding-left:15px; }
-.horizTableCompare .zoomSliderOut:hover { background: url("/images/debicons/Yremoveicon.png") no-repeat scroll 0 0 transparent; }
+.horizTableCompare .zoomSliderIn { display:inline; background: url("/images/debicons/Gaddicon.png") no-repeat scroll right top transparent; padding-left:20px; }
+.horizTableCompare .zoomSliderIn:hover { background: url("/images/debicons/Yaddicon.png") no-repeat scroll right top transparent; }
+.horizTableCompare .zoomSliderOut { display:inline; background: url("/images/debicons/Gremoveicon.png") no-repeat scroll left top transparent; padding-left:20px; }
+.horizTableCompare .zoomSliderOut:hover { background: url("/images/debicons/Yremoveicon.png") no-repeat scroll left top transparent; }
 
 #tooltip.horizTableCompare, #tooltip {
   position: absolute;
