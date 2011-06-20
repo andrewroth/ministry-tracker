@@ -18,7 +18,7 @@
 
     jQuery(document).mousedown(function(e) {
       target = e.target;
-      if(!jQuery(target).hasClass('menu_link')) {
+      if(jQuery(target).hasClass('menu_link_arrow')) {
         target = jQuery(target).parent('.menu_link');
       }
     
