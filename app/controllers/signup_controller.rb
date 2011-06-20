@@ -139,7 +139,9 @@ class SignupController < ApplicationController
     if email.present?
       email_error = "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
       begin
-        @person.errors.add_to_base(email_error) unless ValidatesEmailFormatOf::validate_email_format(email).nil?
+        if !ValidatesEmailFormatOf::validate_email_format(email).nil? || email.length < 6 || email.length > 40
+          @person.errors.add_to_base(email_error)
+        end
       rescue
         @person.errors.add_to_base(email_error)
       end
@@ -327,7 +329,7 @@ class SignupController < ApplicationController
     gt = GroupType.find_by_group_type GroupType::DG
 
     @group = @campus.find_or_create_ministry_group gt, nil, semester
-    unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => @group.id, :level => 'member'}).present? # make sure we don't notify people twice 
+    unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => @group.id}).present? # make sure we don't notify people twice 
       gi = @group.group_involvements.find_or_create_by_person_id_and_level @person.id, 'member'
       gi.send_later(:join_notifications, base_url)
     end
