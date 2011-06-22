@@ -4,14 +4,25 @@
 
     jQuery("a.menu_link").click(function(e) {
       e.preventDefault();
-      box = jQuery("div#" + jQuery(e.target).attr("link_menu_box_id"));
-      box.css('left', jQuery(e.target).offset().left);
-      jQuery(e.target).toggleClass('menu_expanded');
+      
+      target = e.target;
+      if(!jQuery(target).hasClass('menu_link')) {
+        target = jQuery(target).parent('.menu_link');
+      }
+      
+      box = jQuery("div#" + jQuery(target).attr("link_menu_box_id"));
+      box.css('left', jQuery(target).offset().left);
+      jQuery(target).toggleClass('menu_expanded');
       box.slideToggle('fast');
     });
 
     jQuery(document).mousedown(function(e) {
-      if(!jQuery(e.target).hasClass('menu_expanded') && !jQuery(e.target).parent().hasClass('link_menu_box')) {
+      target = e.target;
+      if(jQuery(target).hasClass('menu_link_arrow')) {
+        target = jQuery(target).parent('.menu_link');
+      }
+    
+      if(!jQuery(target).hasClass('menu_expanded') && !jQuery(target).parent().hasClass('link_menu_box')) {
         jQuery("a.ll").removeClass('menu_expanded');
         jQuery(".link_menu_box").hide();
       }
