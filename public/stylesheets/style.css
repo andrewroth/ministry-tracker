@@ -115,11 +115,11 @@ div.yui-skin-cnxbar {
   left:0;
   z-index:999;
   cursor:pointer;
-  opacity:0.4;
-  filter: alpha(opacity = 40); /* for IE */
-  box-shadow:0 0 10px #0C1C3E; -moz-box-shadow:0 0 10px #0C1C3E; -webkit-box-shadow:0 0 10px #0C1C3E;
+  opacity:0.8;
+  filter: alpha(opacity = 80); /* for IE */
+  box-shadow:0 0 7px #0C1C3E; -moz-box-shadow:0 0 7px #0C1C3E; -webkit-box-shadow:0 0 7px #0C1C3E;
 }
-#connexion_bar_revealer:hover { opacity:1; filter: alpha(opacity = 100); }
+#connexion_bar_revealer:hover { opacity:1; filter: alpha(opacity = 100); box-shadow:0 0 10px #0C1C3E; -moz-box-shadow:0 0 10px #0C1C3E; -webkit-box-shadow:0 0 10px #0C1C3E; }
 #connexion_bar_revealer:active { box-shadow:0 0 3px #0C1C3E; -moz-box-shadow:0 0 3px #0C1C3E; -webkit-box-shadow:0 0 3px #0C1C3E; }
 
 
