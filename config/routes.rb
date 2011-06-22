@@ -26,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
     cim_hrdb_person.resources :cim_hrdb_assignments
     cim_hrdb_person.resources :cim_hrdb_person_years
   end
-  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_countries, :collection => {:compare_with_ccc_service => :get}
   map.resources :cim_hrdb_ministries
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
