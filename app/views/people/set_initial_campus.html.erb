@@ -1,5 +1,5 @@
 <% instruction_block do %>
-<b>Please fill out your info and click Save.</b>
+<big>Please fill out your info and click Save.</big>
 <% end %>
 
 <br/>
@@ -48,7 +48,7 @@
 <div class="center">
   <br/>
   <div><%= spinner('p') %><br/><br/></div>
-  <%= submit_tag 'Save' %>
+  <%= submit_tag 'Save', :class => 'action-button' %>
 </div>
 
 <% end %>

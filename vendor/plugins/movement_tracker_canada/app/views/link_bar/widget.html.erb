@@ -1,0 +1,31 @@
+
+<p>You can use the following code to include the C4C Link Bar in a webpage (it will be prepended to the body).</p>
+
+<p>In the url you may adjust the page_wrapper_width parameter to match your page wrapper width.</p>
+
+<p>
+  You may also set the active tab by setting the active_tab_id parameter to the ID of the tab corresponding to the active tab.<br/>
+  e.g. link_bar_tab_1 or link_bar_tab_2 etc.
+</p>
+
+<strong>Wordpress instructions:</strong> create a new Widget Widget and copy and paste this code into it</p>
+
+<p style="margin:1em; padding:1em; border:solid black 2px;">
+  <small style="font-family:monospace;">
+
+    <%=h render :partial => "/link_bar/link_bar_css", :locals => {:page_wrapper_width => @page_wrapper_width} %>
+
+    <%=h "<script type='text/javascript'>" %>
+
+      jQuery(document).ready(function() {
+        jQuery("body").prepend("
+          <%=h render :partial => "/link_bar/link_bar_html", :locals => {:staff => @show_staff, :active_tab_id => @active_tab_id} %>
+        ");
+      });
+
+    <%=h "</script>" %>
+
+    <%=h render :partial => "/link_bar/link_bar_js" %>
+
+  </small>
+</p>

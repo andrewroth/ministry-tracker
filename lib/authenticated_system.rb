@@ -61,10 +61,10 @@ module AuthenticatedSystem
     # behavior in case the user is not authorized
     # to access the requested action.  For example, a popup window might
     # simply close itself.
-    def access_denied
+    def access_denied(no_destination = false)
       respond_to do |accepts|
         accepts.html do
-          store_location
+          store_location unless no_destination
           if facebook_session
             redirect_to prompt_for_email_users_path
           else
@@ -74,7 +74,7 @@ module AuthenticatedSystem
         accepts.xml do
           headers["Status"]           = "Unauthorized"
           headers["WWW-Authenticate"] = %(Basic realm="Web Password")
-          render :text => "Could't authenticate you", :status => '401 Unauthorized'
+          render :text => "Couldn't authenticate you", :status => '401 Unauthorized'
         end
       end
       false
@@ -136,8 +136,28 @@ module AuthenticatedSystem
       end
     end
 
+    def authenticate_from_login_code # not necessarily logging in
+      you_shall_pass = false
+      
+      if params[:login_code].present?
+        logout_without_redirect! if logged_in? # make sure if there is an existing session that it doesn't conflict
+        
+        lc = LoginCode.first(:conditions => {:code => params[:login_code]})
+        if lc.present? && lc.acceptable?
+          you_shall_pass = true
+          lc.increment_times_used
+          session[:login_code_id] = lc.id
+        else
+          flash[:notice] = "<big>We're sorry, the link you came from has expired!</big>"
+        end
+      end
+      
+      unless you_shall_pass == true
+        access_denied(true)
+      end
+    end
     
-    def logout_keeping_session!(redirect_path_if_no_cas = nil, force_cas_logout = nil)
+    def logout_keeping_session!(redirect_path_if_no_cas = nil, force_cas_logout = nil, redirect = true)
       # Kill server-side auth cookie
       @current_user.forget_me if @current_user.is_a? User
       @current_user = false     # not logged in, and don't do it for me
@@ -148,12 +168,19 @@ module AuthenticatedSystem
         need_cas_logout = true
       end
       clear_session
-      # Log out of SSO if we're in it
-      if need_cas_logout
-        CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
-      else
-        redirect_path_if_no_cas.present? ? redirect_back_or_default(redirect_path_if_no_cas) : redirect_back_or_default(new_session_path)
+      
+      unless redirect == false
+        # Log out of SSO if we're in it
+        if need_cas_logout
+          CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
+        else
+          redirect_path_if_no_cas.present? ? redirect_back_or_default(redirect_path_if_no_cas) : redirect_back_or_default(new_session_path)
+        end
       end
+    end
+    
+    def logout_without_redirect!
+      logout_keeping_session!(nil, nil, false)
     end
   
     def clear_session

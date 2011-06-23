@@ -19,7 +19,7 @@
                                 'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
     <%= yield :javascripts %>
 
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
@@ -29,9 +29,6 @@
   </head>
 
 	<body>
-    <!--
-    <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
-    -->
       
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">

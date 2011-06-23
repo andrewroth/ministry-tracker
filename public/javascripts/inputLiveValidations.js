@@ -1,4 +1,4 @@
-  $(document).ready(function(){
+$(document).ready(function(){
   	
 	function pureInteger(s) {
 		res = "";
@@ -38,25 +38,52 @@
 		if(rVDate.test(sdate)) sdate = sdate.replace(rVDate, "$1/$2/$3");
 		else if(rVDateN.test(sdate)) sdate = sdate.replace(rVDateN, "$1/$2/$3");
 		else valid = false;
-		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/check_green.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/exclamation.gif\" /> Invalid, use yyyy/mm/dd");
+		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> Invalid, use yyyy/mm/dd");
 		inputCtrl.value = sdate;
 	}
 	
 	function validRequired(inputCtrl)
 	{
 		valid = true;
-		if(inputCtrl.value == "") valid = false;
-		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/check_green.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/exclamation.gif\" /> required");
+		if(inputCtrl.value == "" || typeof inputCtrl.value  == "undefined") valid = false;
+		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> required");
+		return valid;
 	}
 
-yyyymmddMessage = "(yyyy/mm/dd)";
-requiredMessage = ""
+  function submitValidateRequired(e)
+  {
+    fail = false;
+    
+    $("input.required, textarea.required, select.required").each(function ()
+    {
+      if(validRequired($(this)[0]) == false)
+      {
+        fail = true;
+      }
+    });
+    
+    if(fail == true)
+    {
+      alert(submitValidateRequiredFailMessage);
+      e.preventDefault();
+      return false;
+    }
+  }
 
-$("input.positiveinteger").change(function (e) { e.currentTarget.value = pureInteger(e.currentTarget.value); });
-$("input.yyyymmdd").blur(function (e) { validDate(e.currentTarget); });
-$("input.required").blur(function (e) { validRequired(e.currentTarget); });
-$("textarea.required").blur(function (e) { validRequired(e.currentTarget); });
-$(".jqueryValidationMessage.yyyymmdd").html(yyyymmddMessage);
-$(".jqueryValidationMessage.required").html(requiredMessage);
 
-	});
+  yyyymmddMessage = "(yyyy/mm/dd)";
+  requiredMessage = "";
+  submitValidateRequiredFailMessage = "Please fill all required fields";
+
+  $("input.positiveinteger").change(function (e) { e.currentTarget.value = pureInteger(e.currentTarget.value); });
+  $("input.yyyymmdd").blur(function (e) { validDate(e.currentTarget); });
+  $("input.required").blur(function (e) { validRequired(e.currentTarget); });
+  $("textarea.required").blur(function (e) { validRequired(e.currentTarget); });
+  $("select.required").change(function (e) { validRequired(e.currentTarget); });
+  $("select.required").blur(function (e) { validRequired(e.currentTarget); });
+  
+  $("input.submit.validateRequiredOnSubmit").click(function (e) { submitValidateRequired(e); });
+  $(".jqueryValidationMessage.yyyymmdd").html(yyyymmddMessage);
+  $(".jqueryValidationMessage.required").html(requiredMessage);
+
+});

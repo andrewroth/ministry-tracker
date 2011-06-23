@@ -1,0 +1,116 @@
+<%
+
+# Use this partial to create an input box that will autocomplete people results.
+#
+# This uses jquery autocomplete plugin: http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/
+# 
+# To make this happen you are required to pass some locals when rendering the partial, they are:
+# 
+#   input_id                id to give the input element that will be created
+#   resultsClass            unique class to give the div which will hold the autocomplete results (the div will be automatically generated) separate multiple classes with a space
+#                           (you probably want to use the ac_results class to apply existing CSS but then to make your results div unique give it another unique class, e.g. "ac_results my_unique_ac_results_class")
+# 
+# There are also additional optional locals listed below...
+
+
+return unless local_assigns[:input_id] && local_assigns[:resultsClass]
+
+
+# Optional locals and their default values:
+
+  formatResultFunction ||= "defaultFormatResult" # javascript function that provides the formatting for the value to be put into the input field
+  resultFunction ||= "defaultResultAction"       # javascript function called when user chooses one of the autocomplete results
+  default_text ||= "search"                      # the text to show in the input before user clicks on it
+  q ||= ""                                       # the search query, which will appear in the input instead of default_text
+  input_class ||= ""                             # class to apply to the input element, separate multiple classes with a space
+                                                 # (you might want to use the uberSearchBox class to apply existing CSS but then use another unique class, e.g. "uberSearchBox mySearchBox")
+  autocomplete_action ||= "/search/autocomplete" # path to autocomplete action called when user types in the input element
+  action_params ||= ""                           # optional parameters to send along with call to autocomplete_action e.g. "param=something&paramTwo=somethingElse"
+  delay ||= 300                                  # the delay in milliseconds the autocompleter waits after a keystroke to activate itself
+  width ||= 275                                  # specify a custom width for the autocomplete results
+  minChars ||= 3                                 # the minimum number of characters a user has to type before the autocompleter activates
+  prepare ||= true              
+  formatMatchFunction ||= formatResultFunction
+
+%>
+
+
+
+<% if authorized?(:index, :search) %>
+  <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
+
+    <% if q.present? && controller.controller_name == "search" %>
+      <input type="text" id="<%=input_id%>" class="<%=input_class%>" name="q" value="<%=q%>"/>
+    <% else %>
+      <input type="text" id="<%=input_id%>" class="<%=input_class%>" name="q" value="<%=default_text%>"/>
+    <% end %>
+
+    <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
+    <script type="text/javascript">
+      $("#<%=input_id%>").autocomplete("<%=autocomplete_action%><%="?#{action_params}" if action_params.present?%>", {
+        resultsClass: "<%=resultsClass%>",
+        minChars: <%=minChars%>,
+        selectFirst: false,
+        matchContains: true,
+        autoFill: false,
+        scroll: false,
+        cacheLength: 10,
+        matchSubset: false,
+        width: <%=width%>,
+        delay: <%=delay%>,
+        formatItem: function(data, i, n, value) {
+          return value;
+        },
+        formatResult: function(data, value) {
+          return <%=formatResultFunction%>(data, value);
+        },
+        formatMatch: function(data, i, n, value) {
+          return <%=formatMatchFunction%>(data, i, n, value);
+        }
+      }).result(function(event, info) {
+        <%=resultFunction%>(event, info);
+      });
+
+      function defaultFormatResult(data, value) {
+        // find the name, it's inside the div with id autoCompleteName
+        indexOfId = value.indexOf('autoCompleteName');
+        return value.substring(value.indexOf('>', indexOfId)+1, value.indexOf('<', indexOfId));
+      }
+      
+      function defaultResultAction(event, info) {
+        // do nothing for now
+      }
+
+
+      <% if (session[:search].nil? || session[:search][:search_prepared].nil?) && prepare %>
+      var prepare = function() {
+        jQuery.ajax({
+          dataType:'script',
+          type:'get',
+          url: '/search/prepare'});
+        $('#<%=input_id%>').unbind('mouseover', prepare);
+        $('#<%=input_id%>').unbind('focus', prepare);
+      };
+
+      $('#<%=input_id%>').bind('mouseover', prepare);
+      $('#<%=input_id%>').bind('focus', prepare);
+      <% end %>
+
+
+      $(document).ready(function() {
+        var fields = jQuery("#<%=input_id%>");
+        for (var i = 0; i < fields.length; i++) {
+          fields[i].onfocus = function() {
+            this.className += ' focused'; // so we can style focused input elements in IE
+            if(this.value=='<%= default_text %>') this.value='';
+          }
+          fields[i].onblur = function() {
+            this.className = this.className.replace('focused', '');
+            if(this.value=='') this.value='<%= default_text %>';
+          }
+        };
+      });
+    </script>
+
+  <% end %>
+<% end %>

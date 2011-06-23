@@ -1,0 +1,40 @@
+<script type='text/javascript'>
+
+  jQuery(document).ready(function() {
+
+    jQuery("a.menu_link").click(function(e) {
+      e.preventDefault();
+      
+      target = e.target;
+      if(!jQuery(target).hasClass('menu_link')) {
+        target = jQuery(target).parent('.menu_link');
+      }
+      
+      box = jQuery("div#" + jQuery(target).attr("link_menu_box_id"));
+      box.css('left', jQuery(target).offset().left);
+      jQuery(target).toggleClass('menu_expanded');
+      box.slideToggle('fast');
+    });
+
+    jQuery(document).mousedown(function(e) {
+      target = e.target;
+      if(jQuery(target).hasClass('menu_link_arrow')) {
+        target = jQuery(target).parent('.menu_link');
+      }
+    
+      if(!jQuery(target).hasClass('menu_expanded') && !jQuery(target).parent().hasClass('link_menu_box')) {
+        jQuery("a.ll").removeClass('menu_expanded');
+        jQuery(".link_menu_box").hide();
+      }
+    });
+
+    jQuery([
+      '<%=@base_url if @base_url%>/images/Yarrowdown_s.png',
+      '<%=@base_url if @base_url%>/images/debicons/Yfacebooklogo.png',
+      '<%=@base_url if @base_url%>/images/debicons/Ytwitterlogo.png'
+    ]).each(function(){
+      jQuery('<img/>')[0].src = this;
+    });
+  });
+
+</script>
