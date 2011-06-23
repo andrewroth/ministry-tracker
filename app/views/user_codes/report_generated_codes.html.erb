@@ -35,7 +35,7 @@ Generated User Codes
       %>
       <td><%= campus.name if campus %></td>
       <td><%= campus.short_name if campus %></td>
-      <td><%= code.code %></td>
+      <td><%= code.login_code.code %></td>
       <%= "<td>#{code.callback_url(@base_url, @code_controller, @code_action)}</td>" if @code_controller.present? && @code_action.present? %>
     </tr>
   <% end %>
