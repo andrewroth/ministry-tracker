@@ -3,6 +3,12 @@
 
 <H3>Staging Summary</H3><br/>
 
+<style>
+  .even {
+    background-color: #eee;
+  }
+</style>
+
 <center>
   <table id='staging_summary' style='max-width: 400px'>
     <tr align='right'>
@@ -11,8 +17,8 @@
       <th>Stage 2</th>
       <th>Stage 3</th>
     </tr>
-    <%- @areas.each do |area| %>
-    <tr align='right'>
+    <%- @areas.each_with_index do |area, i| %>
+    <tr align='right' class="<%= 'even' if i.even? %>">
       <td><%= area.area %></td>
       <td><%= @stage_count[area][1] %></td>
       <td><%= @stage_count[area][2] %></td>

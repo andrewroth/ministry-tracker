@@ -1,5 +1,6 @@
 class GlobalDashboardAccessesController < ApplicationController
   before_filter :ensure_admin
+  skip_before_filter :authorization_filter
 
   # GET /global_dashboard_accesses
   # GET /global_dashboard_accesses.xml
@@ -42,9 +43,10 @@ class GlobalDashboardAccessesController < ApplicationController
   # POST /global_dashboard_accesses
   # POST /global_dashboard_accesses.xml
   def create
-    @global_dashboard_access = GlobalDashboardAccess.new(params[:global_dashboard_access])
-    GlobalDashboardAccess.setup(@global_dashboard_access.guid, @global_dashboard_access.fn,
-                                @global_dashboard_access.ln, @global_dashboard_access.email)
+    @global_dashboard_access = GlobalDashboardAccess.setup(params[:global_dashboard_access][:guid], 
+                                                           params[:global_dashboard_access][:fn], 
+                                                           params[:global_dashboard_access][:ln], 
+                                                           params[:global_dashboard_access][:email]) 
 
     respond_to do |format|
       if @global_dashboard_access.save
@@ -88,7 +90,7 @@ class GlobalDashboardAccessesController < ApplicationController
   protected
 
     def ensure_admin
-      access_denied unless is_ministry_admin
+      access_denied unless is_ministry_admin || @me.is_global_dashboard_admin
     end
 
 end
