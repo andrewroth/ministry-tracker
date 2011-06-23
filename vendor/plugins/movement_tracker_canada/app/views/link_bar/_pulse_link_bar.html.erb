@@ -1,0 +1,6 @@
+
+<% if logged_in? && @me  %>
+
+  <%= render :partial => "/link_bar/link_bar", :locals => {:page_wrapper_width => "900px", :staff => is_staff_somewhere(@me), :active_tab_id => "link_bar_tab_2"} if logged_in? && @me %>
+
+<% end %>

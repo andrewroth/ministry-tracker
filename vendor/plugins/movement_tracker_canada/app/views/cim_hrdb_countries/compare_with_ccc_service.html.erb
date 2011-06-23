@@ -1,0 +1,69 @@
+<h1></h1>
+<p><%= link_to "Back", :controller => :cim_hrdb_countries, :action => :index %></p>
+<p>Only differences are shown, countries not displayed are exact matches.</p>
+<br/>
+<table>
+  <tr>
+    <th><h2>CIM HRDB Countries (<%= Country.all.size %>)</h2></th>
+    <th><h2>CCC Countries Service (<%= @country_elems.size %>)</h2></th>
+  </tr>
+  
+  <%
+  all_ccc_codes = []
+  all_ccc_names = []
+  
+  @country_elems.each do |country_elem|
+    ccc_code = country_elem.get_attribute("ccccode")
+    ccc_name = country_elem.at(:name).inner_html
+    all_ccc_names << ccc_name
+    all_ccc_codes << ccc_code
+    
+    unless Country.all(:conditions => ["#{Country._(:code)} = ? and #{Country._(:name)} = ?", ccc_code, ccc_name]).present? # exact match in our DB
+      
+      # the code matches but the name does not
+      code_matches = Country.all(:conditions => ["#{Country._(:code)} = ?", ccc_code])
+      code_matches.each do |code_match|
+        %>
+        <tr>
+          <td><b><%= code_match.code %></b> has name "<%= code_match.name %>"</td>
+          <td><b><%= ccc_code %></b> has name "<%= ccc_name %>"</td>
+        </tr>
+        <%
+      end
+      
+      # the name matches but the code does not
+      name_matches = Country.all(:conditions => ["#{Country._(:name)} = ?", ccc_name])
+      name_matches.each do |name_match|
+        %>
+        <tr>
+          <td>"<%= name_match.name %>" has code <b><%= name_match.code %></b></td>
+          <td>"<%= ccc_name %>" has code <b><%= ccc_code %></b></td>
+        </tr>
+        <%
+      end
+      
+      # the name and code don't match which means this must be a country we don't have in our DB
+      if code_matches.blank? && name_matches.blank?
+        %>
+        <tr>
+          <td><i>not present</i></td>
+          <td><b><%= ccc_code %></b> "<%= ccc_name %>"</td>
+        </tr>
+        <%
+      end
+    end
+  end
+  
+  # countries that we have in our DB but aren't present in the CCC Country Service
+  our_unmatched_countries = Country.all(:conditions => ["#{Country._(:code)} not in (?) and #{Country._(:name)} not in (?)", all_ccc_codes, all_ccc_names])
+  our_unmatched_countries.each do |c|
+    %>
+    <tr>
+      <td><b><%= c.code %></b> "<%= c.name %>"</td>
+      <td><i>not present</i></td>
+    </tr>
+    <%
+  end
+  
+  %>
+</table>

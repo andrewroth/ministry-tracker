@@ -3,11 +3,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :label_people
   map.resources :labels
 
-  map.connect "/link_bar/widget",
-              :conditions => { :method => :get },
-              :controller => "link_bar",
-              :action => "widget"
-
+  map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
+  map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
+  map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
+              
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -27,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
     cim_hrdb_person.resources :cim_hrdb_assignments
     cim_hrdb_person.resources :cim_hrdb_person_years
   end
-  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_countries, :collection => {:compare_with_ccc_service => :get}
   map.resources :cim_hrdb_ministries
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
