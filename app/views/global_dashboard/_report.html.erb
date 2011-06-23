@@ -58,6 +58,7 @@ h3, .sub {
 </script>
 
 
+
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1">Organizational</a></li>
@@ -70,7 +71,8 @@ h3, .sub {
 
 
 	<div id="tabs-1">
-  	<H2 style="display:inline">Organizational Info</H2>
+    <H2>Organizational Info</H2>
+
     <TABLE class="pb sub">
       <TR VALIGN="top">
         <TD width="50%">
@@ -108,17 +110,19 @@ h3, .sub {
         </TD>
       </TR>
     </TABLE>
+
+    <BR/>
 	</div>
 
 
 
 	<div id="tabs-2">
-	  <H2 style="display:inline">Ministry Metrics</H2> (<%= link_to "definitions", 
+    <H2 style="display:inline">Ministry Metrics</H2> (<%= link_to "definitions", 
                                "https://www.mygcx.org/GMA_Support/file/455/7%20Global%20Measures.pdf" %>)
 
       - Timeframe: <%= select_tag "ministry_metric_timeframe", 
         grouped_options_for_select([[ "All", [ "All" ] ], 
-                                   [ "Year Totals", Year.all.collect{ |y| [ y.year_desc, "y_#{y.id}" ] } ] ] + 
+                                   [ "Year Totals", Year.all.collect{ |y| [ y.year_number, "y_#{y.id}" ] } ] ] + 
                                    Month.all_for_grouped_options_by_literal_year, @ministry_metric_timeframe)
         %>
       <%= spinner('_mm') %>
@@ -169,11 +173,16 @@ h3, .sub {
         <td class="last">Lifetime Labourers</td>
       </tr>
     </table>
+
+    <BR/>
+
+    <BR/>
+    <%- if @area %>
+    <BR/>
 	</div>
 
 
 	
-  <% if @area %>
 	<div id="tabs-3">
     <H2>Area Breakdown</H2>
     <BR/>
@@ -222,8 +231,11 @@ h3, .sub {
     <%- end %>
     </table>
     </DIV>
+
+    <%- end -%>
+
+    <br/>
 	</div>
-  <% end %>
   
   
   
@@ -309,6 +321,8 @@ h3, .sub {
         </td>
       </tr>
     </table>
+
+    <BR/>
   </div>
 	
 	
@@ -383,6 +397,8 @@ h3, .sub {
     </script>
 
     -->
+
+    <BR/>
 	</div>
 	
 	
@@ -512,5 +528,8 @@ h3, .sub {
 	</div>
 	
 </div>
+
+
+
 
 
