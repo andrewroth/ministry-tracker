@@ -5,21 +5,34 @@
   }
 </style>
 
-<h3>How many times in 2011 did you report?</h3><br/><br/>
+<h3>How many months in a year did countries in an area report?</h3><br/><br/>
 
 <tr>
-<%= label_tag :area %>
-<%= select_tag :area_id, options_for_select([""] + @area_options) %>
+Area: <%= select_tag :area_id, options_for_select([""] + @area_options, params[:a].to_i) %>
+Year: <%= select_tag :year_id, options_for_select([""] + @year_options, params[:y].to_i) %>
+<%= spinner %>
 <BR/>
 <BR/>
 
-<%- with_str = "'a='+$('#area_id').val()" %>
+<%- with_str = "'a='+$('#area_id').val()+'&y='+$('#year_id').val()" %>
 <%= observe_field :area_id,
       :url => { :controller => :global_dashboard, :action => :submission_area_report },
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()",
+      :with => with_str
+ %>
+<%= observe_field :year_id,
+      :url => { :controller => :global_dashboard, :action => :submission_area_report },
+      :loading => "$('#spinner').show();", :complete => "$('#spinner').hide()",
       :with => with_str
  %>
 
+<div style="font-size: 80%">
+  <I>The data will take about 3 seconds to refresh after all selections have been made.</I>
+</div>
+<br/>
+
 <div id="stats">
+  <%= render :partial => "submission_area_report" if @month_data.present? %>
 </div>
 
 <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>

@@ -6,6 +6,7 @@
     <th>Fn</th>
     <th>Ln</th>
     <th>Email</th>
+    <th>Admin</th>
   </tr>
 
 <% @global_dashboard_accesses.each do |global_dashboard_access| %>
@@ -18,6 +19,7 @@
     <td><%=h global_dashboard_access.fn %></td>
     <td><%=h global_dashboard_access.ln %></td>
     <td><%=h global_dashboard_access.email %></td>
+    <td><%=h global_dashboard_access.admin %></td>
     <td><%= link_to 'Show', global_dashboard_access %></td>
     <td><%= link_to 'Edit', edit_global_dashboard_access_path(global_dashboard_access) %></td>
     <td><%= link_to 'Destroy', global_dashboard_access, :confirm => 'Are you sure?', :method => :delete %></td>

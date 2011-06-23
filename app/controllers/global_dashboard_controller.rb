@@ -1,4 +1,10 @@
 class GlobalDashboardController < ApplicationController
+  in_place_edit_for :global_country, :total_students
+  in_place_edit_for :global_country, :total_schools
+  in_place_edit_for :global_country, :total_spcs
+  in_place_edit_for :global_country, :names_priority_spcs
+  in_place_edit_for :global_country, :total_spcs_presence
+  in_place_edit_for :global_country, :total_spcs_movement
 
   ALLOWED_GUIDS = [ # TODO: this will be removed once data is imported to GlobalDashboardAccess rows
     "250F5FAB-E473-36D8-D406-DFB1C00DD1F2",
@@ -16,6 +22,7 @@ class GlobalDashboardController < ApplicationController
 
   before_filter :ensure_permission
   before_filter :set_can_edit_stages
+  before_filter :set_can_edit_slm
   skip_before_filter :authorization_filter
 
   def index
@@ -179,28 +186,18 @@ class GlobalDashboardController < ApplicationController
   end
 
   def update_stats
-    case params[:l]
-    when "all"
-      location_filter_arr = GlobalArea.all
-      @area = true
-    when /a_(.*)/
-      location_filter_arr = [ GlobalArea.find $1 ]
-      @area = true
-    when /c_(.*)/
-      location_filter_arr = [ GlobalCountry.find $1 ]
-      @area = false
-    end
-
-    case params[:mcc]
-    when "all"
-      mcc_filters = all_mccs
-    else
-      mcc_filters = [ params[:mcc] ]
-    end
-
+    location_filter_arr, mcc_filters = setup_filters
     @no_filter = location_filter_arr.nil?
     setup
     setup_stats(location_filter_arr, mcc_filters) unless @no_filter
+  end
+
+  def update_ministry_metrics
+    location_filter_arr, mcc_filters = setup_filters
+    filters_isos = location_filter_arr.collect { |f| f.isos }.flatten.compact
+    @no_filter = location_filter_arr.nil?
+    setup
+    setup_mm_stats(filters_isos, mcc_filters)
   end
 
   def submit_whq
@@ -243,33 +240,44 @@ class GlobalDashboardController < ApplicationController
   end
 
   def submission_status_report
-    if request.xhr?
-      @areas_present = {}
-      @areas_total = {}
-      stage = params[:s]
-      #area_find = params[:a].present? ? params[:a] : :all
-      GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
-        ga.global_countries.each do |gc|
-          @areas_present[ga] ||= 0
-          @areas_total[ga] ||= 0
-          if (stage == "all" || gc.stage.to_s == stage) && 
-            gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
-          #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
+    params[:mcc] ||= 'student-led'
+    params[:m] ||= Semester.current.month.id 
+    params[:s] ||= "all"
+
+    @areas_present = {}
+    @areas_total = {}
+    stage = params[:s]
+    #area_find = params[:a].present? ? params[:a] : :all
+    GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
+      ga.global_countries.each do |gc|
+        @areas_present[ga] ||= 0
+        @areas_total[ga] ||= 0
+        if (stage == "all" || gc.stage.to_s == stage)
+          if gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
+            #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
             @areas_present[ga] += 1
           end
           @areas_total[ga] += 1
         end
       end
     end
+
     setup
-    @mcc_options = all_mccs
+    @mcc_options = [ "virtually-led", "capacity-accelerated", "student-led", "leader-led" ]
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
     @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3 ] ]
   end
 
   def submission_area_report
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
-    if request.xhr?
+    @year_options = Year.all.collect(&:year_number)
+    params[:y] = Month.find(params[:m]).month_calendaryear if params[:m]
+    params[:y] ||= Year.current.year_number
+    params[:a] ||= GlobalArea.find_by_area("South East Asia").id
+
+    if request.xhr? || (params[:a].present? && params[:y].present?)
+      render(:inline => "missing params") and return unless params[:a].present? && params[:y]
+
       @month_short = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
       @month_long = %w[January February March April May June July August September October November December]
       @area = GlobalArea.find params[:a]
@@ -277,7 +285,7 @@ class GlobalDashboardController < ApplicationController
       @month_data = {}
       @countries.each do |c|
         @month_long.each_with_index do |ml, i|
-          m = Month.find_by_month_desc "#{ml} 2011"
+          m = Month.find_by_month_desc "#{ml} #{params[:y]}"
           stat = c.global_dashboard_whq_stats.find_by_month_id m.id
           @month_data[c] ||= {}
           @month_data[c][@month_short[i]] = stat.present?
@@ -290,7 +298,7 @@ class GlobalDashboardController < ApplicationController
 
     def setup
       @grouped_options = [ [ "All", [ [ "All", "all" ] ] ] ]
-      @grouped_options << [ "Areas", GlobalArea.all.collect{ |ga| [ ga.area, "a_#{ga.id}" ] } ]
+      @grouped_options << [ "Areas", GlobalArea.all(:order => "area").collect{ |ga| [ ga.area, "a_#{ga.id}" ] } ]
       GlobalArea.all(:order => "area").each do |global_area|
         @grouped_options << [ global_area.area, 
           global_area.global_countries.collect{ |gc| [ 
@@ -303,13 +311,93 @@ class GlobalDashboardController < ApplicationController
       @month_options = Month.all.collect{ |m| [ m.month_desc, m.month_id ] }
     end
 
+    def setup_mm_stats(filters_isos, mcc_filters)
+      @whq = ActiveSupport::OrderedHash.new
+      #months = Month.find(:all, :conditions => [ "month_desc like ?", "% 2010%" ])
+      #month_ids = months.collect(&:id)
+      year = nil
+      month_ids = nil
+      if mmt = params[:ministry_metric_timeframe]
+        if mmt =~ /y_(.*)/
+          year = Year.find $1
+          month_ids = year.months.collect(&:id)
+        elsif mmt =~ /m_(.*)/
+          month_ids = [ $1 ]
+        elsif mmt == 'All'
+          month_ids = Month.all.collect(&:id)
+        end
+        @ministry_metric_timeframe = params[:ministry_metric_timeframe]
+      else
+        @ministry_metric_timeframe = "y_#{Year.current.id}"
+        year = Year.find_by_year_desc("2010 - 2011")
+        month_ids = year.months.collect(&:id)
+      end
+
+      GlobalCountry.all.each do |country|
+        if filters_isos.include?(country.iso3)
+          stats = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
+            :joins => { :month => :year },
+            :order => "year_desc ASC, month_number ASC",
+            :select => "sum(new_grth_mbr) as new_grth_mbr_sum, sum(mvmt_mbr) as mvmt_mbr_sum, sum(mvmt_ldr) as mvmt_ldr_sum"
+          )
+          stats.each do |gd_stat|
+            %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
+              #@whq[stat] ||= 0
+              #@whq[stat] += gd_stat.send("#{stat}_sum").to_i
+
+              if gd_stat.send("#{stat}_sum") && gd_stat.send("#{stat}_sum").to_i != 0
+                @whq[:"#{stat}_total"] ||= 0
+                @whq[:"#{stat}_total"] += gd_stat.send("#{stat}_sum").to_i
+                @whq[:"#{stat}_count"] ||= 0
+                @whq[:"#{stat}_count"] += 1
+                @whq[stat] = (@whq[:"#{stat}_total"].to_f / @whq[:"#{stat}_count"].to_f).to_i
+              end
+            end
+          end
+=begin
+          country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
+            :joins => { :month => :year },
+            :order => "year_desc ASC, month_number ASC").each do |gds|
+            %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat| # averages
+              #@whq[:"#{stat}_total"] ||= 0
+              #@whq[:"#{stat}_total"] += gds.send(stat).to_i
+              #@whq[:"#{stat}_count"] ||= 0
+              #@whq[:"#{stat}_count"] += 1
+              #@whq[stat] = (@whq[:"#{stat}_total"].to_f / @whq[:"#{stat}_count"].to_f).to_i
+              @whq[stat] ||= 0
+              @whq[stat] += gds.send(stat).to_i
+            end
+            %w(live_exp live_dec new_staff lifetime_lab).each do |stat|
+              @whq[stat] = gds.send(stat).to_i
+            end
+          end
+=end
+          gd_stat = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
+            :joins => { :month => :year },
+            :order => "year_desc ASC, month_number ASC",
+            :select => "sum(live_exp) as live_exp_sum, sum(new_staff) as new_staff_sum, " + 
+                       "sum(live_dec) as live_dec_sum, sum(lifetime_lab) as lifetime_lab_sum"
+          ).last
+          if gd_stat
+            %w(live_exp live_dec new_staff lifetime_lab).each do |stat|
+              if gd_stat["#{stat}_sum"]
+                @whq[stat] ||= 0
+                @whq[stat] += gd_stat["#{stat}_sum"].to_i
+              end
+            end
+          end
+        end
+      end
+
+    end
+
     def setup_stats(area_filters, mcc_filters)
       filters_isos = area_filters.collect { |f|
         f.isos
       }.flatten.compact
 
       if area_filters.length == 1 && area_filters.first.is_a?(GlobalCountry)
-        @country = country = area_filters.first
+        @global_country = @country = country = area_filters.first
         @country_name = country.name
         @country_stage = country.stage
         @country_funding = country.locally_funded_FY10
@@ -398,19 +486,7 @@ class GlobalDashboardController < ApplicationController
         end
       end
 
-      @whq = ActiveSupport::OrderedHash.new
-      GlobalCountry.all.each do |country|
-        if filters_isos.include?(country.iso3)
-          GlobalCountry::WHQ_MCCS.each do |whq_mcc|
-            if mcc_filters.include?(GlobalCountry::WHQ_MCCS_TO_PARAMS[whq_mcc])
-              %w(live_exp live_dec new_grth_mbr mvmt_mbr mvmt_ldr new_staff lifetime_lab).each do |stat|
-                @whq[stat] ||= 0
-                @whq[stat] += country.send("#{whq_mcc}_#{stat}").to_i
-              end
-            end
-          end
-        end
-      end
+      setup_mm_stats(filters_isos, mcc_filters)
 
       @demog = ActiveSupport::OrderedHash.new
       @demog_avg_total = ActiveSupport::OrderedHash.new
@@ -517,5 +593,32 @@ class GlobalDashboardController < ApplicationController
 
     def set_can_edit_stages
       @can_edit_stages = ensure_permission_by_person_id
+    end
+
+    def set_can_edit_slm
+      @can_edit_slm = is_ministry_admin || @me.is_global_dashboard_admin
+    end
+
+    def setup_filters
+      case params[:l]
+      when "all"
+        location_filter_arr = GlobalArea.all
+        @area = true
+      when /a_(.*)/
+        location_filter_arr = [ GlobalArea.find $1 ]
+        @area = true
+      when /c_(.*)/
+        location_filter_arr = [ GlobalCountry.find $1 ]
+        @area = false
+      end
+
+      case params[:mcc]
+      when "all"
+        mcc_filters = all_mccs
+      else
+        mcc_filters = [ params[:mcc] ]
+      end
+
+      return [ location_filter_arr, mcc_filters ]
     end
 end

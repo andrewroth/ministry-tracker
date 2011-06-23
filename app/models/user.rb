@@ -6,4 +6,5 @@ class User < ActiveRecord::Base
   include Common::Core::Ca::User
 
   has_many :user_codes
+  has_one :global_dashboard_access, :foreign_key => "guid", :primary_key => "guid"
 end

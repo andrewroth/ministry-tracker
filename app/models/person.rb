@@ -193,4 +193,8 @@ class Person < ActiveRecord::Base
       @training_answer_hash[question_id].update_attributes({_(:completed_at, :training_answer) => date, _(:approved_by, :training_answer) => approver})
     end
   end
+
+  def is_global_dashboard_admin
+    v = self.try(:user).try(:global_dashboard_access).admin
+  end
 end

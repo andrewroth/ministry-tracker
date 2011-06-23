@@ -18,6 +18,11 @@
   <%=h @global_dashboard_access.email %>
 </p>
 
+<p>
+  <b>Admin:</b>
+  <%=h @global_dashboard_access.admin %>
+</p>
+
 
 <%= link_to 'Edit', edit_global_dashboard_access_path(@global_dashboard_access) %> |
 <%= link_to 'Back', global_dashboard_accesses_path %>
