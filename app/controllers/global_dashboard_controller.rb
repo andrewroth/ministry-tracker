@@ -577,7 +577,7 @@ class GlobalDashboardController < ApplicationController
 
     def ensure_permission
       access_denied unless ensure_permission_by_person_id || 
-        GlobalDashboardAccess.find_by_guid(ensure_permission_by_person_id, @person.try(:user).try(:guid))
+        GlobalDashboardAccess.find_by_guid(@person.try(:user).try(:guid))
         #ALLOWED_GUIDS.include?(@person.try(:user).try(:guid))
     end
 
