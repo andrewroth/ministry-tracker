@@ -199,6 +199,6 @@ class Person < ActiveRecord::Base
   end
 
   def is_global_dashboard_admin
-    v = self.try(:user).try(:global_dashboard_access).admin
+    v = self.try(:user).try(:global_dashboard_access).try(:admin)
   end
 end

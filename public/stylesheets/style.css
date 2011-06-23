@@ -364,7 +364,7 @@ a.small:active, a.small:hover {
 }
 /* MORE (S)PACIFIC */
 h1 {
-  color: #1F429B;
+  color: #666766;
   font-weight:normal;
 }
 
@@ -1795,8 +1795,8 @@ div.choose_ministry_tree {
 }
 
 #statsTitle, #reportTitle {
-  color: #1F429B;
-  border-bottom:1px dotted #1F429B;
+  color: #666766;
+  border-bottom:1px dotted #666766;
   margin: 0 0 10px 3px;
 }
 
@@ -2025,11 +2025,8 @@ ul.statsLinkList {
   display: none;
   padding: 3em;
   text-align: center;
-  background-color: #F0F0F7;
-  -moz-border-radius: 17px;
-  -webkit-border-radius: 17px;
-  -moz-box-shadow: 0 0 5em #E1E6F2 inset;
-  /*-webkit-box-shadow: 0 0 5em #E1E6F2 inset;*/
+  background-color: #F7F7F7;
+  -moz-border-radius: 17px; -webkit-border-radius: 17px; border-radius: 17px;
 }
 
 
@@ -2040,7 +2037,7 @@ ul.statsLinkList {
 
 .insightsProgressBar {
 	background-color:#FFFFFF;
-	border: 1px solid #2951AD;
+	border: 1px solid #666766;
 	text-align: left;
 }
 
@@ -2054,13 +2051,11 @@ ul.statsLinkList {
 	width: 205px;
 	float: right;
 	text-align: center;
-	color: #2951AD;
 	font-size: 1.5em;
 	font-weight: bold;
 }
 
 #IndicatedDecisionsVSGoal {
-  color: #2951AD;
   font-size: 2.5em;
 }
 
@@ -2085,7 +2080,7 @@ fieldset {
 }
 
 .statsTitle {
-  color: #1F429B;
+  color: #666766;
   font-size: 160%;
   font-weight: bold;
   margin-bottom: 1em;

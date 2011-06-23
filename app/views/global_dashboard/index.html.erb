@@ -1,10 +1,13 @@
 <h1>Global Snapshot</h1>
+<br/>
+<br/>
 
 <%- form_tag("global_dashboard/export") do |f| %>
 
 Area: <%= select_tag "location", grouped_options_for_select(@grouped_options, "all") %>&nbsp;
 Mission Critical Component (MCC): <%= select_tag "mcc", options_for_select(@mcc_options) %>&nbsp;
 <%= submit_tag "Export" %> <%= spinner %>
+
 <br/>
 
 <%= observe_field :location, :url => { :controller => :global_dashboard, :action => :update_stats },
