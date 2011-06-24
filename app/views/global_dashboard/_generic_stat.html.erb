@@ -1,10 +1,12 @@
-<div id="<%= id %>" class="gcx_stat_wrapper" style="">
-</div>
 
 <script type="text/javascript" charset="utf-8">
-  $(function() {
-    var r = Raphael("<%= id %>");
-    r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
+
+  function init_<%= id %>_chart() {
+    
+    $("#<%= container_id %>").empty();
+    
+    var r = Raphael("<%= container_id %>");
+    r.g.txtattr.font = "12px Helvetica, Arial, Sans-Serif";
 
     r.g.text(320, 50, "<%= header %>").attr({"font-size": 20});
 
@@ -22,6 +24,7 @@
         }.join(', ') %> ], legendpos: "west" });
       //{legend: ["%%.%% – Enterprise Users", "IE Users"], legendpos: "west", 
       //  href: ["http://raphaeljs.com", "http://g.raphaeljs.com"]});
+      
     pie.hover(function () {
       this.sector.stop();
       this.sector.scale(1.1, 1.1, this.cx, this.cy);
@@ -37,5 +40,6 @@
         this.label[1].attr({"font-weight": 400});
       }
     });
-  });
+  }
+  
 </script>
