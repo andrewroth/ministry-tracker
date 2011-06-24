@@ -31,9 +31,7 @@ h3, .sub {
 
 </style>
 
-<script src="/javascripts/raphael.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/g.raphael-min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/g.pie-min.js" type="text/javascript" charset="utf-8"></script>
+<%= javascript_include_tag 'raphael.js', 'g.raphael-min.js', 'g.pie-min.js', 'jquery.cookie.js' %>
 
 <script type="text/javascript">
   function toggle(id) {
@@ -53,70 +51,32 @@ h3, .sub {
   });
   
 	$(function() {
-		$("#tabs").tabs({ selected: 1 });
+	  if( $.cookie('global_dash_tab') === null ) {
+	    $.cookie('global_dash_tab', 0);
+    }
+	  
+		$("#tabs").tabs({
+		  selected: $.cookie('global_dash_tab'),
+		  select: function(event, ui) { $.cookie('global_dash_tab', ui.index); }
+	  });
 	});
+
 </script>
 
 
 
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-1">Organizational</a></li>
-		<li><a href="#tabs-2">Metrics</a></li>
-		<% if @area %><li><a href="#tabs-3">Staging</a></li><% end %>
-		<li><a href="#tabs-4">SLM</a></li>
-		<li><a href="#tabs-5">Demographics</a></li>
-		<li><a href="#tabs-6">GCX Profile</a></li>
+		<li><a href="#tabs-1">Metrics</a></li>
+		<li><a href="#tabs-2">Staging</a></li>
+		<li><a href="#tabs-3">SLM</a></li>
+		<li><a href="#tabs-4">Demographics</a></li>
+		<li><a href="#tabs-5">GCX Profile</a></li>
 	</ul>
 
 
 	<div id="tabs-1">
-    <H2>Organizational Info</H2>
-
-    <TABLE class="pb sub">
-      <TR VALIGN="top">
-        <TD width="50%">
-          <%- unless @area -%>
-          <U>Country:</U> <%= @country_name %><BR/>
-          <%- end -%>
-          <U>Area:</U> <%= @country_area %><BR/>
-        </TD><TD>
-          <%- unless @area -%>
-            <U>Stage:</U> <span id="global_country_stage_show"><%= @country_stage %></span>
-              <%- if @can_edit_stages %>
-              <span id="global_country_stage_change" style="">
-                <%= link_to_function "Edit", "$('#global_country_stage_change').hide(); $('#global_country_stage_edit').show()" %>
-              </span>
-              <span id="global_country_stage_edit" style="display:none">
-                <%= select_tag('global_country_stage', options_for_select(['', 1, 2, 3], @country_stage)) %>
-                <%= link_to_remote "Save", :url => set_global_country_stage_global_country_path(@country.id), 
-                  :class => 'action-button', :with => "'stage='+$('#global_country_stage').val()" %>
-                or <%= link_to_function "Cancel", "$('#global_country_stage_change').show(); $('#global_country_stage_edit').hide()" %>
-              </span>
-              <%- end %>
-            <BR/>
-          <%- else -%>
-            <%= link_to "Staging Summary", "/global_dashboard/staging_summary" %>
-          <%- end %>
-        </TD>
-      </TR>
-      </TR><TR VALIGN="top">
-        <TD width="50%">
-          <BR/>
-          <BR/>
-          <span></span>
-        </TD>
-        <TD>
-        </TD>
-      </TR>
-    </TABLE>
-
-    <BR/>
-	</div>
-
-
-
-	<div id="tabs-2">
+	  <br/>
     <H2 style="display:inline">Ministry Metrics</H2> (<%= link_to "definitions", 
                                "https://www.mygcx.org/GMA_Support/file/455/7%20Global%20Measures.pdf" %>)
 
@@ -175,71 +135,98 @@ h3, .sub {
     </table>
 
     <BR/>
-
-    <BR/>
-    <%- if @area %>
-    <BR/>
 	</div>
 
 
 	
-	<div id="tabs-3">
-    <H2>Area Breakdown</H2>
-    <BR/>
-    <H3>Staging Breakdown</H3>
-    <BR/>
-    <table class="pb sub" style="width:500px">
-      <tr class="pb">
-        <td class="pb"></td>
-        <td class="pb">Stage 1</td>
-        <td class="pb">Stage 2</td>
-        <td class="pb">Stage 3</td>
-      </tr>
-      <tr class="pb">
-        <td class="pb">Total</td>
-        <td class="pb"><%= @stage[1] %></td>
-        <td class="pb"><%= @stage[2] %></td>
-        <td class="pb"><%= @stage[3] %></td>
-      </tr>
-    </table>
-
-    <br/>
-    <br/>
-    <H3>Staging Levels</H3>
-    <br/>
-
-    <table class="pb sub gray_every_second_row" cellspacing="0">
-      <tr class="pb">
-        <td class="pb" width="50%"><b>Country</b></td>
-        <td class="pb" width="50%"><b>Stage</b></td>
-      </tr>
-      <%- @stage["countries_with_stage"].each do |name_to_stage| %>
-      <tr class="pb">
-        <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
-        <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
-      </tr>
-      <%- end -%>
-    </table>
-
-    <br/>
-    <H3>Countries in this area without a staging level</H3>
-    <BR/>
-    <DIV class="sub">
-    <table class="gray_every_second_row">
-    <%- @stage["countries_no_stage"].each do |name| %>
-      <tr><td><%= name %></td></tr>
+	<div id="tabs-2">
+	  <br/>
+    
+    <%- unless @area -%>
+    
+      <U>Stage:</U> <span id="global_country_stage_show"><%= @country_stage %></span>
+      
+      <%- if @can_edit_stages %>
+        &nbsp;
+        <span id="global_country_stage_change" style="">
+          <%= link_to_function "Edit", "$('#global_country_stage_change').hide(); $('#global_country_stage_edit').show()" %>
+        </span>
+        <span id="global_country_stage_edit" style="display:none">
+          <%= select_tag('global_country_stage', options_for_select(['', 1, 2, 3], @country_stage)) %>
+          <%= link_to_remote "Save", :url => set_global_country_stage_global_country_path(@country.id), 
+            :class => 'action-button', :with => "'stage='+$('#global_country_stage').val()" %>
+          or <%= link_to_function "Cancel", "$('#global_country_stage_change').show(); $('#global_country_stage_edit').hide()" %>
+        </span>
+      <%- end %>
+      
+    <%- else -%>
+      <%= link_to "Global Staging Summary", "/global_dashboard/staging_summary" %>
     <%- end %>
-    </table>
-    </DIV>
+    
+    
+    <%- if @area %>
+    
+      <BR/>
+      <BR/>
+      <H2>Area Breakdown</H2>
+      
+      <BR/>
+      <H3>Staging Breakdown</H3>
+      <BR/>
+      <table class="pb sub" style="width:500px">
+        <tr class="pb">
+          <td class="pb"></td>
+          <td class="pb">Stage 1</td>
+          <td class="pb">Stage 2</td>
+          <td class="pb">Stage 3</td>
+        </tr>
+        <tr class="pb">
+          <td class="pb">Total</td>
+          <td class="pb"><%= @stage[1] %></td>
+          <td class="pb"><%= @stage[2] %></td>
+          <td class="pb"><%= @stage[3] %></td>
+        </tr>
+      </table>
+
+      <br/>
+      <br/>
+      <H3>Staging Levels</H3>
+      <br/>
+
+      <table class="pb sub gray_every_second_row" cellspacing="0">
+        <tr class="pb">
+          <td class="pb" width="50%"><b>Country</b></td>
+          <td class="pb" width="50%"><b>Stage</b></td>
+        </tr>
+        <%- @stage["countries_with_stage"].each do |name_to_stage| %>
+        <tr class="pb">
+          <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
+          <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
+        </tr>
+        <%- end -%>
+      </table>
+
+      <br/>
+      <H3>Countries in this area without a staging level</H3>
+      <BR/>
+      <DIV class="sub">
+        <table class="gray_every_second_row">
+        <%- @stage["countries_no_stage"].each do |name| %>
+          <tr><td><%= name %></td></tr>
+        <%- end %>
+        </table>
+      </DIV>
 
     <%- end -%>
 
+    <br/>
     <br/>
 	</div>
   
   
   
-  <div id="tabs-4">
+  <div id="tabs-3">
+    <br/>
     <H2>SLM Critical Measures</H2>
 
     <H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
@@ -327,7 +314,8 @@ h3, .sub {
 	
 	
 	
-	<div id="tabs-5">
+	<div id="tabs-4">
+	  <br/>
     <H2>Country Demographics</H2>
     <table id="" class="pb twocols">
       <tr class="even">
@@ -398,12 +386,12 @@ h3, .sub {
 
     -->
 
-    <BR/>
 	</div>
 	
 	
 	
-	<div id="tabs-6">
+	<div id="tabs-5">
+	  <br/>
     <H2>GCX Profile Data</H2>
 
     <style>
@@ -525,6 +513,8 @@ h3, .sub {
         </table>
       </div>
     <%- end %>
+    
+    <br/>
 	</div>
 	
 </div>
