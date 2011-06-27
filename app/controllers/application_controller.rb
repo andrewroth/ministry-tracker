@@ -183,21 +183,22 @@ class ApplicationController < ActionController::Base
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
-      :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+      :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new, :edit, :index],
+      :campus_involvements => [:new, :edit, :index, :edit_school_year],
       :ministry_involvements => [:new, :edit, :index],
       :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
       :summer_report_reviewers => [:edit, :update],
-      :search => [:web_remote]
+      :search => [:web_remote],
+      :group_invitations => [:new, :create_multiple]
     }
     
-    def authorized?(action = nil, controller = nil, ministry = nil)
+    def authorized?(action = nil, controller = nil, ministry = nil, options = {})
       return true if is_ministry_admin
       ministry ||= get_ministry
       return false unless ministry
@@ -239,14 +240,13 @@ class ApplicationController < ActionController::Base
             return true
           elsif action == 'show_group_involvements' && authorized?(:show, :people)
             return true
+          elsif action == 'destroy' && params[:id] && params[:id] == @my.id.to_s
+            return true
+          elsif params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
+            return true
           end
           
           ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
-          
-          # also return true if person is destroying self-involvements (don't return true for creation of new profile)
-          if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
-            return true
-          end
           
         when :profile_pictures, :timetables
           if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
@@ -317,6 +317,15 @@ class ApplicationController < ActionController::Base
           
         when :search
           return true if action == 'web_remote' && authorized?(:web, :search)
+          
+        when :group_invitations
+          if action == 'new' || action == 'create_multiple'
+            if params[:group_id] || options[:group_id]
+              group = Group.first(:conditions => {:id => params[:group_id] || options[:group_id]})
+              return true if group && (group.leaders | group.co_leaders).include?(@me)
+            end
+          end
+          return false # necessary
           
         end # case
       end # if
@@ -550,6 +559,11 @@ class ApplicationController < ActionController::Base
 
     def self.skip_standard_login_stack(additional_params = {})
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
+    end
+
+    def self.login_code_authentication(additional_params = {})
+      skip_standard_login_stack(additional_params)
+      before_filter :authenticate_from_login_code, additional_params
     end
 
     def redirect_unless_is_active_hrdb_staff

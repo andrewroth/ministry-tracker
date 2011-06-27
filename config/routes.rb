@@ -1,4 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
+  map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
+  map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
+              
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -121,6 +126,8 @@ ActionController::Routing::Routes.draw do |map|
                                                  :transfer => :post,
                                                  :change_level => :post,
                                                  :destroy_own => :delete}
+  map.joingroup_signup '/joingroup_signup', :controller => "group_involvements", :action => "joingroup_signup", :conditions => { :method => :post }
+  map.joingroup '/joingroup', :controller => "group_involvements", :action => "joingroup", :conditions => { :method => :post }
 
   map.resources :groups, :member => {:find_times => :post,
                                      :compare_timetables => :any,
@@ -129,7 +136,13 @@ ActionController::Routing::Routes.draw do |map|
                                      :email => :post,
                                      :clone_pre => :get,
                                      :clone => :post },
-                         :collection => {:join => :get}
+                         :collection => {:join => :get} do |group|
+                           
+    group.resources :group_invitations, :member => {:accept => :get,
+                                                    :decline => :get,
+                                                    :list => :get},
+                                        :collection => {:create_multiple => :post}
+  end
 
   map.resources :manage
   
@@ -174,6 +187,7 @@ ActionController::Routing::Routes.draw do |map|
                                       :show_mentee_profile_summary => :get},
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
+                                          :edit_me                            => :get,
                                           :change_ministry_and_goto_directory => :any,
                                           :change_view                        => :any,
                                           :search                             => :any,
@@ -201,9 +215,15 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :ministry_involvements
 
+  map.edit_school_year '/people/:person_id/campus_involvements/:id/edit_school_year', :controller => :campus_involvements, :action => :edit_school_year
 
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
+  map.show_user_codes '/user_codes/report_generated_codes', :controller => :user_codes, :action => :report_generated_codes
+  map.connect '/user_codes/generate_code_for_involved',
+              :conditions => { :method => :post },
+              :controller => :user_codes,
+              :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
 
   # The priority is based upon order of creation: first created -> highest priority.
