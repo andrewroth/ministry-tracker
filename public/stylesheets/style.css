@@ -1154,6 +1154,9 @@ div#logos.dashboard img { padding-right:20px; }
 #banner_container #banner_img {
   background: url("/images/bannerdashboard.png") no-repeat scroll center transparent;
   height: 172px;
+  width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #banner_container #banner_bg {
@@ -1165,18 +1168,41 @@ div#logos.dashboard img { padding-right:20px; }
   text-align: center;
 }
 
-#banner_container #leftBubble {
+#banner_container #leftBubble, #banner_container #leftBubble:hover {
   position: relative;
   left: -2px;
   top: 38px;
+  text-decoration:none;
 }
 
-#banner_container #rightBubble {
+#banner_container #leftBubbleImg {
+  background:url(/images/bannerleftbubble.png) no-repeat;
+  display:inline-block;
+  width:131px;
+  height:90px;
+}
+
+#banner_container #leftBubbleImg:hover {
+  background:url(/images/bannerleftbubbleY.png) no-repeat;
+}
+
+#banner_container #rightBubble, #banner_container #rightBubble:hover {
   position: relative;
   left: 33px;
-  top: 33px;
+  top: 56px;
+  text-decoration:none;
 }
 
+#banner_container #rightBubbleImg {
+  background:url(/images/bannerrightbubble.png) no-repeat;
+  display:inline-block;
+  width:171px;
+  height:67px;
+}
+
+#banner_container #rightBubbleImg:hover {
+  background:url(/images/bannerrightbubbleY.png) no-repeat;
+}
 
 #gettingstarted {
   margin-bottom:5px;

@@ -3,19 +3,6 @@ $(document).ready(function(){
   // set vertical bracket height
   adjustBracketHeight();
 
-  // change img source on mouseover
-  $(function() {
-    $("img.mouseover")
-      .mouseover(function() {
-        var src = $(this).attr("src").match(/[^\.]+/) + "Y.png";
-        $(this).attr("src", src);
-      })
-      .mouseout(function() {
-        var src = $(this).attr("src").replace("Y", "");
-        $(this).attr("src", src);
-      });
-  });
-
   // add student tab is a remote link
   $("#addStudentTab").click(function(e) {
     e.preventDefault();
