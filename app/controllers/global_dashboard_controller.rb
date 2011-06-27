@@ -263,7 +263,7 @@ class GlobalDashboardController < ApplicationController
     end
 
     setup
-    @mcc_options = [ "virtually-led", "capacity-accelerated", "student-led", "leader-led" ]
+    @mcc_options = [ "virtually-led", "church-led", "student-led", "leader-led" ]
     @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
     @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3 ] ]
   end
