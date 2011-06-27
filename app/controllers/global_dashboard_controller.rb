@@ -320,7 +320,7 @@ class GlobalDashboardController < ApplicationController
       if mmt = params[:ministry_metric_timeframe]
         if mmt =~ /y_(.*)/
           year = Year.find $1
-          month_ids = year.months.collect(&:id)
+          month_ids = year.months_by_literal_year.collect(&:id)
         elsif mmt =~ /m_(.*)/
           month_ids = [ $1 ]
         elsif mmt == 'All'
@@ -330,7 +330,7 @@ class GlobalDashboardController < ApplicationController
       else
         @ministry_metric_timeframe = "y_#{Year.current.id}"
         year = Year.find_by_year_desc("2010 - 2011")
-        month_ids = year.months.collect(&:id)
+        month_ids = year.months_by_literal_year.collect(&:id)
       end
 
       GlobalCountry.all.each do |country|
