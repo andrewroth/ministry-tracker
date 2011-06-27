@@ -1,3 +1,6 @@
+
+<%= stylesheet_link_tag "jquery-ui" %>
+
 <style>
 #dashwrap {padding:0;}
 .dashmodule {border:1px dotted silver; width:100%; margin-bottom:7px; margin-right: 7px;}
@@ -28,9 +31,7 @@ h3, .sub {
 
 </style>
 
-<script src="/javascripts/raphael.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/g.raphael-min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/g.pie-min.js" type="text/javascript" charset="utf-8"></script>
+<%= javascript_include_tag 'raphael.js', 'g.raphael-min.js', 'g.pie-min.js', 'jquery.cookie.js' %>
 
 <script type="text/javascript">
   function toggle(id) {
@@ -48,437 +49,482 @@ h3, .sub {
       $("table.gray_every_second_row").each(function(t, el) { $('tr', el).each(function(u, tr) { 
           if (u % 2 == 0) { $(tr).addClass('even') } }) });
   });
-</script>
-
-<H2>Organizational Info</H2>
-
-<TABLE class="pb sub">
-  <TR VALIGN="top">
-    <TD width="50%">
-      <%- unless @area -%>
-      <U>Country:</U> <%= @country_name %><BR/>
-      <%- end -%>
-      <U>Area:</U> <%= @country_area %><BR/>
-    </TD><TD>
-      <%- unless @area -%>
-        <U>Stage:</U> <span id="global_country_stage_show"><%= @country_stage %></span>
-          <%- if @can_edit_stages %>
-          <span id="global_country_stage_change" style="">
-            <%= link_to_function "Edit", "$('#global_country_stage_change').hide(); $('#global_country_stage_edit').show()" %>
-          </span>
-          <span id="global_country_stage_edit" style="display:none">
-            <%= select_tag('global_country_stage', options_for_select(['', 1, 2, 3], @country_stage)) %>
-            <%= link_to_remote "Save", :url => set_global_country_stage_global_country_path(@country.id), 
-              :class => 'action-button', :with => "'stage='+$('#global_country_stage').val()" %>
-            or <%= link_to_function "Cancel", "$('#global_country_stage_change').show(); $('#global_country_stage_edit').hide()" %>
-          </span>
-          <%- end %>
-        <BR/>
-      <%- else -%>
-        <%= link_to "Staging Summary", "/global_dashboard/staging_summary" %>
-      <%- end %>
-    </TD>
-  </TR>
-  </TR><TR VALIGN="top">
-    <TD width="50%">
-      <BR/>
-      <BR/>
-      <span></span>
-    </TD>
-    <TD>
-    </TD>
-  </TR>
-</TABLE>
-
-<BR/>
-
-<H2 style="display:inline">Ministry Metrics</H2> (<%= link_to "definitions", 
-                           "https://www.mygcx.org/GMA_Support/file/455/7%20Global%20Measures.pdf" %>)
-
-  - Timeframe: <%= select_tag "ministry_metric_timeframe", 
-    grouped_options_for_select([[ "All", [ "All" ] ], 
-                               [ "Year Totals", Year.all.collect{ |y| [ y.year_number, "y_#{y.id}" ] } ] ] + 
-                               Month.all_for_grouped_options_by_literal_year, @ministry_metric_timeframe)
-    %>
-  <%= spinner('_mm') %>
-  <%= observe_field :ministry_metric_timeframe, :url => { :controller => :global_dashboard, :action => :update_ministry_metrics },
-    :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()+'&ministry_metric_timeframe='+$('#ministry_metric_timeframe').val()",
-    :loading => "$('#spinner_mm').show();", :complete => "$('#spinner_mm').hide()" %>
-<BR/>
-<BR/>
-
-<style>
-  tr.stat_numbers td {
-    font-weight: bold;
-    text-align: center;
-    width: 14%;
-    font-size: 120%;
-    border-right: 1px solid gray;
-  }
-  tr.stat_labels td {
-    font-weight: bold;
-    text-align: center;
-    width: 14%;
-    font-size: 80%;
-  }
-  tr.stat_numbers td.last {
-    border-right: 0px;
-  }
-</style>
-
-<table id="whq" class="" style="width:100%">
-  <tr>
-    <td colspan="7">
-      <!--<%= link_to "Submit WHQ Stats", :action => :submit_whq %> |-->
-      <%= link_to "Submission Status Report", :action => :submission_status_report %> |
-      <%= link_to "Submission Area Report", :action => :submission_area_report %><BR/>
-      <br/>
-    </td>
-  </tr>
-  <tr id="values" class="stat_numbers">
-    <%= render :partial => "whq_values_tr" %>
-  </tr>
-  <tr class="stat_labels">
-    <td>Live Exposures</td>
-    <td>Live Decisions</td>
-    <td>New Growth Group Members</td>
-    <td>Movement Members</td>
-    <td>Movement Leaders</td>
-    <td>New Staff</td>
-    <td class="last">Lifetime Labourers</td>
-  </tr>
-</table>
-
-<BR/>
-
-<BR/>
-<%- if @area %>
-<BR/>
-<H2>Area Breakdown</H2>
-<BR/>
-<H3>Staging Breakdown</H3>
-<BR/>
-<table class="pb sub" style="width:500px">
-  <tr class="pb">
-    <td class="pb"></td>
-    <td class="pb">Stage 1</td>
-    <td class="pb">Stage 2</td>
-    <td class="pb">Stage 3</td>
-  </tr>
-  <tr class="pb">
-    <td class="pb">Total</td>
-    <td class="pb"><%= @stage[1] %></td>
-    <td class="pb"><%= @stage[2] %></td>
-    <td class="pb"><%= @stage[3] %></td>
-  </tr>
-</table>
-
-<br/>
-<br/>
-<H3>Staging Levels</H3>
-<br/>
-
-<table class="pb sub gray_every_second_row" cellspacing="0">
-  <tr class="pb">
-    <td class="pb" width="50%"><b>Country</b></td>
-    <td class="pb" width="50%"><b>Stage</b></td>
-  </tr>
-  <%- @stage["countries_with_stage"].each do |name_to_stage| %>
-  <tr class="pb">
-    <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
-    <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
-  </tr>
-  <%- end -%>
-</table>
-
-<br/>
-<H3>Countries in this area without a staging level</H3>
-<BR/>
-<DIV class="sub">
-<table class="gray_every_second_row">
-<%- @stage["countries_no_stage"].each do |name| %>
-  <tr><td><%= name %></td></tr>
-<%- end %>
-</table>
-</DIV>
-
-<%- end -%>
-
-<br/>
-<H2>SLM Critical Measures</H2>
-
-<H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
-
-<table id="whq" class="pb twocols">
-  <tr>
-    <td>1. Total # University and College Students</td>
-    <%- if @area || !@can_edit_slm %>
-      <td><%= number_with_delimiter(@schools["total_students"]) %></td>
-    <%- else -%>
-      <%- @global_country.total_students ||= 0 %>
-      <td><%= in_place_editor_field :global_country, :total_students %></td>
-    <%- end %>
-  </tr><tr class="even">
-    <td>2. Total # Universities and College Institutions</td>
-    <%- if @area || !@can_edit_slm %>
-      <td><%= number_with_delimiter(@schools["total_schools"]) %></td>
-    <%- else -%>
-      <%- @global_country.total_schools ||= 0 %>
-      <td><%= in_place_editor_field :global_country, :total_schools %></td>
-    <%- end -%>
-  </tr><tr>
-    <td>3. # Student Population Centers (SPCs)</td>
-    <%- if @area || !@can_edit_slm %>
-      <td><%= number_with_delimiter(@schools["total_spcs"]) %></td>
-    <%- else -%>
-      <%- @global_country.total_spcs ||= 0 %>
-      <td><%= in_place_editor_field :global_country, :total_spcs %></td>
-    <%- end -%>
-  </tr>
-</table>
-
-<BR/>
-
-<%- unless @area -%>
-  <span class="ul sub" style="">4. Names of Next Priority SPCs:</span>
-  <%- unless @can_edit_slm %>
-    <%= @names_priority_spcs %><BR/><BR/>
-  <%- else -%>
-    <%- @global_country.names_priority_spcs ||= "" %>
-    <%= in_place_editor_field :global_country, :names_priority_spcs, {}, :field_type => 'textarea' %>
-  <%- end -%>
-  <br/><br/>
-<%- end %>
-
-<H3>Evaluating Current Movement Reality</H3>
-<BR/>
-
-<table id="whq" class="pb twocols">
-  <tr>
-    <td width="50%" class="even">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
-    <td width="50%" class="even">
-    <%- if @area || !@can_edit_slm %>
-      <%= number_with_delimiter(@slm["total_spcs_presence"]) %>
-    <%- else -%>
-      <%- @global_country.total_spcs_presence ||= 0 %>
-      <%= in_place_editor_field :global_country, :total_spcs_presence %>
-    <%- end -%>
-    </td>
-    <td width="50%" class="even number_column" width="100px">
-      <%- if (d = @schools["total_schools"].to_f) > 0 %>
-        <%= number_to_percentage(@slm["total_spcs_presence"].to_f / d * 100) %>
-      <%- end -%>
-    </td>
-  </tr><tr>
-    <td width="50%">6. # SPCs with movements</td>
-    <td width="50%">
-    <%- if @area || !@can_edit_slm %>
-      <%= number_with_delimiter(@slm["total_spcs_movement"]) %>
-    <%- else -%>
-      <%- @global_country.total_spcs_movement ||= 0 %>
-      <%= in_place_editor_field :global_country, :total_spcs_movement %>
-    <%- end -%>
-    </td>
-    <td width="50%" class="number_column" width="100px">
-      <%- if (d = @slm["total_spcs_presence"].to_f) > 0 %>
-        <%= number_to_percentage(@slm["total_spcs_movement"].to_f / d * 100) %>
-      <%- end -%>
-    </td>
-  </tr>
-</table>
-
-<BR/>
-
-<H2>Country Demographics</H2>
-<table id="" class="pb twocols">
-  <tr class="even">
-    <td width="50%">
-      <span class=''>2010 Population:</span>
-    </td>
-    <td width="50%"><%= number_with_delimiter(@demog["pop_2010"]) %></td>
-  </tr><tr>
-    <td width="50%">
-      <span class=''>Projected 2015 Population:</span>
-    </td>
-    <td width="50%"><%= number_with_delimiter(@demog["pop_2015"]) %></td>
-  </tr><tr class="even">
-    <td width="50%">
-      <span class=''>Projected 2020 Population:</span>
-    </td>
-    <td width="50%"><%= number_with_delimiter(@demog["pop_2020"]) %></td>
-  </tr><tr>
-    <td width="50%">
-      <span class=''>World Fact Book - GDP per Person (USD):</span>
-    </td>
-    <td width="50%"><%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %></td>
-  </tr><tr class="even">
-    <td width="50%">
-      <span class=''>Percent Christian</span>
-    </td>
-    <td width="50%"><%= number_to_percentage(@demog["perc_christian"]) %></td>
-  </tr><tr>
-    <td width="50%">
-      <span class=''>Percent Evangelical</span>
-    </td>
-    <td width="50%"><%= number_to_percentage(@demog["perc_evangelical"]) %></td>
-  </tr>
-</table>
-<br/>
-<I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
-
-<!--
-<h3>GRAPHING TEST</h3>
-
-<div id="holder"></div>
-
-<script type="text/javascript" charset="utf-8">
-  window.onload = function () {
-    var r = Raphael("holder");
-    r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
-
-    r.g.text(320, 100, "Interactive Pie Chart").attr({"font-size": 20});
-
-    var pie = r.g.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2, 10], {legend: ["%%.%% – Enterprise Users", "IE Users"], legendpos: "west", href: ["http://raphaeljs.com", "http://g.raphaeljs.com"]});
-    pie.hover(function () {
-      this.sector.stop();
-      this.sector.scale(1.1, 1.1, this.cx, this.cy);
-      if (this.label) {
-        this.label[0].stop();
-        this.label[0].scale(1.5);
-        this.label[1].attr({"font-weight": 800});
-      }
-    }, function () {
-      this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
-      if (this.label) {
-        this.label[0].animate({scale: 1}, 500, "bounce");
-        this.label[1].attr({"font-weight": 400});
-      }
-    });
-  };
-</script>
-
--->
-
-<BR/>
-
-<H2>GCX Profile Data</H2>
-
-<style>
- /* 
-  table.pb, table.pb td.pb {
-    border-color: gray;
-    border-style: solid;
-  }
-  table.pb {
-    border-width: 0 0 1px 1px;
-    border-spacing: 0;
-  }
-  table.pb td.pb {
-    margin: 0;
-    padding: 4px;
-    border-width: 1px 1px 0 0;
-    background-color: white;
-  }
-  */
-  table.pb.twocols {
-    width: 500px;
-    border-style: none;
-    padding-left: 50px;
-  }
-
-  table.pb.twocols td:nth-child(1) {
-    width: 437px;
-  }
-
-  table.pb.twocols td:nth-child(2), .number_column {
-    width: 100px;
-    text-align: right;
-  }
   
-  #gcx_stats td {
-    vertical-align: middle;
-  }
-  a.selected {
-    color: black;
-  }
-</style>
+	$(function() {
+	  if( $.cookie('global_dash_tab') === null ) { $.cookie('global_dash_tab', 0); }
+	  if( $.cookie('global_dash_gcx_chart') === null ) { $.cookie('global_dash_gcx_chart', 'genders'); }
+	  
+		$("#tabs").tabs({
+		  selected: $.cookie('global_dash_tab'),
+		  select: function(event, ui) {
+		    $.cookie('global_dash_tab', ui.index);
+		    
+		    if(ui.tab.innerHTML == "GCX Profile") {
+		      setTimeout( function() { $("#" + $.cookie('global_dash_gcx_chart') + "_menu").click(); }, 1 );
+		    }
+	    }
+	  });
+	  
+	  setTimeout( function() { $("#" + $.cookie('global_dash_gcx_chart') + "_menu").click(); }, 1 );
+	  
+	  $("#tabs").show();
+	});
 
-<script>
-  function switch_to_gcx(div_id) {
-    $(".gcx_stat_menu li a").removeClass('selected');
-    $(".gcx_stat_wrapper").fadeOut(200, function() {
-      //$("#'+div_id+'").appear();
-      setTimeout('$("#'+div_id+'").appear()', 200);
-      $("#"+div_id+"_menu").addClass('selected');
-    });
-    //setTimeout('$("#'+div_id+'").appear()', 200);
-  }
-  setTimeout('$(".gcx_stat_wrapper").hide(); switch_to_gcx("genders")', 500);
 </script>
 
-<table id="gcx_stats" style="height: 344px" border="0">
-  <tr>
-    <td width="25%">
-      <ul class="gcx_stat_menu">
-        <li><%= link_to_function "Genders", "switch_to_gcx('genders')", :id => 'genders_menu' %></li>
-        <li><%= link_to_function "MCCs", "switch_to_gcx('mccs')", :id => 'mccs_menu' %></li>
-        <li><%= link_to_function "Funding Source", "switch_to_gcx('funding_source')", :id => 'funding_source_menu' %></li>
-        <li><%= link_to_function "Scope", "switch_to_gcx('scope')", :id => 'scope_menu' %></li>
-        <%- unless @area -%> 
-        <li><%= link_to_function "Employment Country", "switch_to_gcx('employment_country')", :id => 'employment_country_menu' %></li>
-        <%- end -%>
-        <li><%= link_to_function "Marital Status", "switch_to_gcx('marital_status')", 
-          :id => 'marital_status_menu' %></li>
-        <li><%= link_to_function "Staff Status", "switch_to_gcx('staff_status')", :id => 'staff_status_menu' %></li>
-        <li><%= link_to_function "Position", "switch_to_gcx('position')", :id => 'position_menu' %></li>
-        <li><%= link_to_function "Languages", "switch_to_gcx('languages')", :id => 'languages_menu' %></li>
-      </ul>
-    </td>
-    <td width="75%">
-      <%= render :partial => "genders" %>
-      <%= render :partial => "mccs" %>
-      <%= render :partial => "funding_source" %>
-      <%= render :partial => "scope" %>
-      <%- unless @area -%>
-        <%= render :partial => "serving_here_from_elsewhere" %>
-      <%- end -%>
-      <%= render :partial => "marital_status" %>
-      <%= render :partial => "staff_status" %>
-      <%= render :partial => "position" %>
-      <%= render :partial => "languages" %>
-      <%- unless @area -%>
-        <%= render :partial => "employed_here_serving_elsewhere" %>
-      <%- end -%>
-    </td>
-  </tr>
-</table>
 
-<%- unless @area %> 
-  <div style="padding-left: 200px">
-    <table id="" class="pb twocols">
+
+<div id="tabs" style="display:none;">
+	<ul>
+		<li><a href="#tabs-1">Metrics</a></li>
+		<li><a href="#tabs-2">Staging</a></li>
+		<li><a href="#tabs-3">SLM</a></li>
+		<li><a href="#tabs-4">Demographics</a></li>
+		<li><a href="#tabs-5">GCX Profile</a></li>
+	</ul>
+
+
+	<div id="tabs-1">
+	  <br/>
+    <H2 style="display:inline">Ministry Metrics</H2> (<%= link_to "definitions", 
+                               "https://www.mygcx.org/GMA_Support/file/455/7%20Global%20Measures.pdf" %>)
+
+      - Timeframe: <%= select_tag "ministry_metric_timeframe", 
+        grouped_options_for_select([[ "All", [ "All" ] ], 
+                                   [ "Year Totals", Year.all.collect{ |y| [ y.year_number, "y_#{y.id}" ] } ] ] + 
+                                   Month.all_for_grouped_options_by_literal_year, @ministry_metric_timeframe)
+        %>
+      <%= spinner('_mm') %>
+      <%= observe_field :ministry_metric_timeframe, :url => { :controller => :global_dashboard, :action => :update_ministry_metrics },
+        :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()+'&ministry_metric_timeframe='+$('#ministry_metric_timeframe').val()",
+        :loading => "$('#spinner_mm').show();", :complete => "$('#spinner_mm').hide()" %>
+    <BR/>
+    <BR/>
+
+    <style>
+      tr.stat_numbers td {
+        font-weight: bold;
+        text-align: center;
+        width: 14%;
+        font-size: 120%;
+        border-right: 1px solid gray;
+      }
+      tr.stat_labels td {
+        font-weight: bold;
+        text-align: center;
+        width: 14%;
+        font-size: 80%;
+      }
+      tr.stat_numbers td.last {
+        border-right: 0px;
+      }
+    </style>
+
+    <table id="whq" class="" style="width:100%">
       <tr>
-        <td width="50%" class="even">
-          GCX Profile - Serving here<BR/> 
+        <td colspan="7">
+          <!--<%= link_to "Submit WHQ Stats", :action => :submit_whq %> |-->
+          <%= link_to "Submission Status Report", :action => :submission_status_report %> |
+          <%= link_to "Submission Area Report", :action => :submission_area_report %><BR/>
+          <br/>
         </td>
+      </tr>
+      <tr id="values" class="stat_numbers">
+        <%= render :partial => "whq_values_tr" %>
+      </tr>
+      <tr class="stat_labels">
+        <td>Live Exposures</td>
+        <td>Live Decisions</td>
+        <td>New Growth Group Members</td>
+        <td>Movement Members</td>
+        <td>Movement Leaders</td>
+        <td>New Staff</td>
+        <td class="last">Lifetime Labourers</td>
+      </tr>
+    </table>
+
+    <BR/>
+	</div>
+
+
+	
+	<div id="tabs-2">
+	  <br/>
+    
+    <%- unless @area -%>
+    
+      <U>Stage:</U> <span id="global_country_stage_show"><%= @country_stage %></span>
+      
+      <%- if @can_edit_stages %>
+        &nbsp;
+        <span id="global_country_stage_change" style="">
+          <%= link_to_function "Edit", "$('#global_country_stage_change').hide(); $('#global_country_stage_edit').show()" %>
+        </span>
+        <span id="global_country_stage_edit" style="display:none">
+          <%= select_tag('global_country_stage', options_for_select(['', 1, 2, 3], @country_stage)) %>
+          <%= link_to_remote "Save", :url => set_global_country_stage_global_country_path(@country.id), 
+            :class => 'action-button', :with => "'stage='+$('#global_country_stage').val()" %>
+          or <%= link_to_function "Cancel", "$('#global_country_stage_change').show(); $('#global_country_stage_edit').hide()" %>
+        </span>
+      <%- end %>
+      
+    <%- else -%>
+      <%= link_to "Global Staging Summary", "/global_dashboard/staging_summary" %>
+    <%- end %>
+    
+    
+    <%- if @area %>
+    
+      <BR/>
+      <BR/>
+      <H2>Area Breakdown</H2>
+      
+      <BR/>
+      <H3>Staging Breakdown</H3>
+      <BR/>
+      <table class="pb sub" style="width:500px">
+        <tr class="pb">
+          <td class="pb"></td>
+          <td class="pb">Stage 1</td>
+          <td class="pb">Stage 2</td>
+          <td class="pb">Stage 3</td>
+        </tr>
+        <tr class="pb">
+          <td class="pb">Total</td>
+          <td class="pb"><%= @stage[1] %></td>
+          <td class="pb"><%= @stage[2] %></td>
+          <td class="pb"><%= @stage[3] %></td>
+        </tr>
+      </table>
+
+      <br/>
+      <br/>
+      <H3>Staging Levels</H3>
+      <br/>
+
+      <table class="pb sub gray_every_second_row" cellspacing="0">
+        <tr class="pb">
+          <td class="pb" width="50%"><b>Country</b></td>
+          <td class="pb" width="50%"><b>Stage</b></td>
+        </tr>
+        <%- @stage["countries_with_stage"].each do |name_to_stage| %>
+        <tr class="pb">
+          <td class="pb" width="50%"><%= name_to_stage.keys.first %></td>
+          <td class="pb" width="50%"><%= name_to_stage.values.first %></td>
+        </tr>
+        <%- end -%>
+      </table>
+
+      <br/>
+      <H3>Countries in this area without a staging level</H3>
+      <BR/>
+      <DIV class="sub">
+        <table class="gray_every_second_row">
+        <%- @stage["countries_no_stage"].each do |name| %>
+          <tr><td><%= name %></td></tr>
+        <%- end %>
+        </table>
+      </DIV>
+
+    <%- end -%>
+
+    <br/>
+    <br/>
+	</div>
+  
+  
+  
+  <div id="tabs-3">
+    <br/>
+    <H2>SLM Critical Measures</H2>
+
+    <H3>Demographics and Prioritized Growth in Movement Scope</H3><BR/>
+
+    <table id="whq" class="pb twocols">
+      <tr>
+        <td>1. Total # University and College Students</td>
+        <%- if @area || !@can_edit_slm %>
+          <td><%= number_with_delimiter(@schools["total_students"]) %></td>
+        <%- else -%>
+          <%- @global_country.total_students ||= 0 %>
+          <td><%= in_place_editor_field :global_country, :total_students %></td>
+        <%- end %>
+      </tr><tr class="even">
+        <td>2. Total # Universities and College Institutions</td>
+        <%- if @area || !@can_edit_slm %>
+          <td><%= number_with_delimiter(@schools["total_schools"]) %></td>
+        <%- else -%>
+          <%- @global_country.total_schools ||= 0 %>
+          <td><%= in_place_editor_field :global_country, :total_schools %></td>
+        <%- end -%>
+      </tr><tr>
+        <td>3. # Student Population Centers (SPCs)</td>
+        <%- if @area || !@can_edit_slm %>
+          <td><%= number_with_delimiter(@schools["total_spcs"]) %></td>
+        <%- else -%>
+          <%- @global_country.total_spcs ||= 0 %>
+          <td><%= in_place_editor_field :global_country, :total_spcs %></td>
+        <%- end -%>
+      </tr>
+    </table>
+
+    <BR/>
+
+    <%- unless @area -%>
+      <span class="ul sub" style="">4. Names of Next Priority SPCs:</span>
+      <%- unless @can_edit_slm %>
+        <%= @names_priority_spcs %><BR/><BR/>
+      <%- else -%>
+        <%- @global_country.names_priority_spcs ||= "" %>
+        <%= in_place_editor_field :global_country, :names_priority_spcs, {}, :field_type => 'textarea' %>
+      <%- end -%>
+      <br/><br/>
+    <%- end %>
+
+    <H3>Evaluating Current Movement Reality</H3>
+    <BR/>
+
+    <table id="whq" class="pb twocols">
+      <tr>
+        <td width="50%" class="even">5. # SPCs w/ any ministry or movement activity or CCC presence.</td>
         <td width="50%" class="even">
-          <span class=''><%= number_with_delimiter(@gcx_profile_count["serving_here"]) %></span>
+        <%- if @area || !@can_edit_slm %>
+          <%= number_with_delimiter(@slm["total_spcs_presence"]) %>
+        <%- else -%>
+          <%- @global_country.total_spcs_presence ||= 0 %>
+          <%= in_place_editor_field :global_country, :total_spcs_presence %>
+        <%- end -%>
+        </td>
+        <td width="50%" class="even number_column" width="100px">
+          <%- if (d = @schools["total_schools"].to_f) > 0 %>
+            <%= number_to_percentage(@slm["total_spcs_presence"].to_f / d * 100) %>
+          <%- end -%>
         </td>
       </tr><tr>
+        <td width="50%">6. # SPCs with movements</td>
         <td width="50%">
-          GCX Profile - Employed here, serving here<BR/> 
+        <%- if @area || !@can_edit_slm %>
+          <%= number_with_delimiter(@slm["total_spcs_movement"]) %>
+        <%- else -%>
+          <%- @global_country.total_spcs_movement ||= 0 %>
+          <%= in_place_editor_field :global_country, :total_spcs_movement %>
+        <%- end -%>
         </td>
-        <td width="50%">
-          <span class=''><%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %></span>
-        </td>
-      </tr><tr>
-        <td width="50%" class="even">
-          GCX Profile - Employed here, serving elsewhere<BR/> 
-        </td>
-        <td width="50%" class="even">
-          <span class=''><%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %></span>
+        <td width="50%" class="number_column" width="100px">
+          <%- if (d = @slm["total_spcs_presence"].to_f) > 0 %>
+            <%= number_to_percentage(@slm["total_spcs_movement"].to_f / d * 100) %>
+          <%- end -%>
         </td>
       </tr>
     </table>
+
+    <BR/>
   </div>
-<%- end %>
+	
+	
+	
+	<div id="tabs-4">
+	  <br/>
+    <H2>Country Demographics</H2>
+    <table id="" class="pb twocols">
+      <tr class="even">
+        <td width="50%">
+          <span class=''>2010 Population:</span>
+        </td>
+        <td width="50%"><%= number_with_delimiter(@demog["pop_2010"]) %></td>
+      </tr><tr>
+        <td width="50%">
+          <span class=''>Projected 2015 Population:</span>
+        </td>
+        <td width="50%"><%= number_with_delimiter(@demog["pop_2015"]) %></td>
+      </tr><tr class="even">
+        <td width="50%">
+          <span class=''>Projected 2020 Population:</span>
+        </td>
+        <td width="50%"><%= number_with_delimiter(@demog["pop_2020"]) %></td>
+      </tr><tr>
+        <td width="50%">
+          <span class=''>World Fact Book - GDP per Person (USD):</span>
+        </td>
+        <td width="50%"><%= number_with_delimiter(@demog["pop_wfb_gdppp"].to_i) %></td>
+      </tr><tr class="even">
+        <td width="50%">
+          <span class=''>Percent Christian</span>
+        </td>
+        <td width="50%"><%= number_to_percentage(@demog["perc_christian"]) %></td>
+      </tr><tr>
+        <td width="50%">
+          <span class=''>Percent Evangelical</span>
+        </td>
+        <td width="50%"><%= number_to_percentage(@demog["perc_evangelical"]) %></td>
+      </tr>
+    </table>
+    <br/>
+    <I><P>Note: GDP per person, percent Christian and percent evangelical are straight-line averages for area and global reports.</P></I>
+
+    <!--
+    <h3>GRAPHING TEST</h3>
+
+    <div id="holder"></div>
+
+    <script type="text/javascript" charset="utf-8">
+      window.onload = function () {
+        var r = Raphael("holder");
+        r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
+
+        r.g.text(320, 100, "Interactive Pie Chart").attr({"font-size": 20});
+
+        var pie = r.g.piechart(320, 240, 100, [55, 20, 13, 32, 5, 1, 2, 10], {legend: ["%%.%% – Enterprise Users", "IE Users"], legendpos: "west", href: ["http://raphaeljs.com", "http://g.raphaeljs.com"]});
+        pie.hover(function () {
+          this.sector.stop();
+          this.sector.scale(1.1, 1.1, this.cx, this.cy);
+          if (this.label) {
+            this.label[0].stop();
+            this.label[0].scale(1.5);
+            this.label[1].attr({"font-weight": 800});
+          }
+        }, function () {
+          this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
+          if (this.label) {
+            this.label[0].animate({scale: 1}, 500, "bounce");
+            this.label[1].attr({"font-weight": 400});
+          }
+        });
+      };
+    </script>
+
+    -->
+
+	</div>
+	
+	
+	
+	<div id="tabs-5">
+	  <br/>
+    <H2>GCX Profile Data</H2>
+
+    <style>
+     /* 
+      table.pb, table.pb td.pb {
+        border-color: gray;
+        border-style: solid;
+      }
+      table.pb {
+        border-width: 0 0 1px 1px;
+        border-spacing: 0;
+      }
+      table.pb td.pb {
+        margin: 0;
+        padding: 4px;
+        border-width: 1px 1px 0 0;
+        background-color: white;
+      }
+      */
+      table.pb.twocols {
+        width: 500px;
+        border-style: none;
+        padding-left: 50px;
+      }
+
+      table.pb.twocols td:nth-child(1) {
+        width: 437px;
+      }
+
+      table.pb.twocols td:nth-child(2), .number_column {
+        width: 100px;
+        text-align: right;
+      }
+      
+      #gcx_stats td {
+        vertical-align: middle;
+      }
+      a.selected {
+        color: black;
+        text-decoration: underline;
+      }
+    </style>
+
+    <table id="gcx_stats" style="height: 344px" border="0">
+      <tr>
+        <td width="25%">
+          <ul class="gcx_stat_menu">
+            <li><%= link_to_function "Genders", "switch_to_gcx(init_genders_chart, 'genders')", :id => 'genders_menu' %></li>
+            <li><%= link_to_function "MCCs", "switch_to_gcx(init_mccs_chart, 'mccs')", :id => 'mccs_menu' %></li>
+            <li><%= link_to_function "Funding Source", "switch_to_gcx(init_funding_source_chart, 'funding_source')", :id => 'funding_source_menu' %></li>
+            <li><%= link_to_function "Scope", "switch_to_gcx(init_scope_chart, 'scope')", :id => 'scope_menu' %></li>
+            <%- unless @area -%> 
+              <li><%= link_to_function "Employment Country", "switch_to_gcx(init_employment_country_chart, 'employment_country')", :id => 'employment_country_menu' %></li>
+            <%- end -%>
+            <li><%= link_to_function "Marital Status", "switch_to_gcx(init_marital_status_chart, 'marital_status')", :id => 'marital_status_menu' %></li>
+            <li><%= link_to_function "Staff Status", "switch_to_gcx(init_staff_status_chart, 'staff_status')", :id => 'staff_status_menu' %></li>
+            <li><%= link_to_function "Position", "switch_to_gcx(init_position_chart, 'position')", :id => 'position_menu' %></li>
+            <li><%= link_to_function "Languages", "switch_to_gcx(init_languages_chart, 'languages')", :id => 'languages_menu' %></li>
+          </ul>
+        </td>
+        <td width="75%">
+          <div id="gcx_stat_wrapper"></div>
+          <%= render :partial => "genders", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "mccs", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "funding_source", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "scope", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%- unless @area -%>
+            <%= render :partial => "serving_here_from_elsewhere", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%- end -%>
+          <%= render :partial => "marital_status", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "staff_status", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "position", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%= render :partial => "languages", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%- unless @area -%>
+            <%= render :partial => "employed_here_serving_elsewhere", :locals => { :container_id => "gcx_stat_wrapper" } %>
+          <%- end -%>
+        </td>
+      </tr>
+    </table>
+    
+    <script>
+      function switch_to_gcx(init_chart, chart_id) {
+        $(".gcx_stat_menu li a").removeClass('selected');
+        $("#"+chart_id+"_menu").addClass('selected');
+        $.cookie('global_dash_gcx_chart', chart_id);
+        init_chart();
+      }
+    </script>
+    
+    <%- unless @area %> 
+      <div style="padding-left: 200px">
+        <table id="" class="pb twocols">
+          <tr>
+            <td width="50%" class="even">
+              GCX Profile - Serving here<BR/> 
+            </td>
+            <td width="50%" class="even">
+              <span class=''><%= number_with_delimiter(@gcx_profile_count["serving_here"]) %></span>
+            </td>
+          </tr><tr>
+            <td width="50%">
+              GCX Profile - Employed here, serving here<BR/> 
+            </td>
+            <td width="50%">
+              <span class=''><%= number_with_delimiter(@gcx_profile_count["employed_here_serving_here"]) %></span>
+            </td>
+          </tr><tr>
+            <td width="50%" class="even">
+              GCX Profile - Employed here, serving elsewhere<BR/> 
+            </td>
+            <td width="50%" class="even">
+              <span class=''><%= number_with_delimiter(@gcx_profile_count["employed_here_serving_elsewhere"]) %></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    <%- end %>
+    
+    <br/>
+	</div>
+	
+</div>
+
+
+
+
 
