@@ -3,38 +3,39 @@
 
   <div class="groupMinimalInfoContainer">
     <div class="groupNameContainer">
-      <%= image_tag "debicons/Ggroups.png" %> <%= group.name %>
+      <div class="groupNameIcon">&nbsp;</div><%= group.name %>
     </div>
 
-
-    <% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
-    <% if involvements.present? %>
-      led by
-      <%=
-        involvements.map{ |i|
-          if i.person.present? && i.person.email && !group.email.present?
-            mail_to i.person.email, i.person.full_name, :title => i.person.email
-          elsif i.person.present?
-            i.person.full_name
-          end
-        }.join(', ')
-      %>
-      <br/>
-    <% end %>
-
-
-    <% if group.email.present? %>
-      email <%= mail_to group.email %>
-      <br />
-    <% end %>
+    <div class="groupMinimalInfo">
+      <% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
+      <% if involvements.present? %>
+        led by
+        <%=
+          involvements.map{ |i|
+            if i.person.present? && i.person.email && !group.email.present?
+              mail_to i.person.email, i.person.full_name, :title => i.person.email
+            elsif i.person.present?
+              i.person.full_name
+            end
+          }.join(', ')
+        %>
+        <br/>
+      <% end %>
 
 
-    <% midnight = Time.now.beginning_of_day %>
-    <% if group.day %>
-      meets on <%= group.meeting_day_and_time_to_string %>
-    <% else %>
-      meeting time to be decided
-    <% end %>
+      <% if group.email.present? %>
+        email <%= mail_to group.email %>
+        <br />
+      <% end %>
+
+
+      <% midnight = Time.now.beginning_of_day %>
+      <% if group.day %>
+        meets on <%= group.meeting_day_and_time_to_string %>
+      <% else %>
+        meeting time to be decided
+      <% end %>
+    </div>
   </div>
   
   <div class="groupMinimalActionsContainer">
@@ -46,7 +47,7 @@
       <b>You're a <%= gi.level.capitalize %></b>
     <% else %>
       <% if @join %>
-        <% join_group_text = group.needs_approval ? "Request to join group" : "Join goup" %>
+        <% join_group_text = group.needs_approval ? "Request to join" : "Join" %>
         <%= link_to join_group_text, joingroup_signup_path(
                :person_id => @person.id,
                :group_id => group.id,
