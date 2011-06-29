@@ -153,11 +153,12 @@ module ApplicationHelper
   
   def connexion_bar_revealer
     "
-    #{image_tag "GCXBlueArrow.png", :id => "connexion_bar_revealer", :title => "Toggle the GCX Connexion Bar"}
+    <div id='connexion_bar_revealer' title='Toggle the GCX Connexion Bar'>&nbsp;</div>
     <script type='text/javascript'>
       $(document).ready(function() {
         $('#connexion_bar_revealer').click(function() {
           $('div.yui-skin-cnxbar').slideToggle('fast');
+          $('#connexion_bar_revealer').toggleClass('revealed');
         });
       });
     </script>
