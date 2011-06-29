@@ -125,6 +125,7 @@ div.yui-skin-cnxbar {
   opacity:0.9; filter: alpha(opacity = 90); /* for IE */
   box-shadow:-1px -1px 7px #0C1C3E inset; -moz-box-shadow:-1px -1px 7px #0C1C3E inset; -webkit-box-shadow:-1px -1px 7px #0C1C3E inset;
   -moz-border-radius: 0 0 20px 0; -webkit-border-radius: 0 0 20px 0; border-radius: 0 0 20px 0;
+  transition: 0.1s ease 0s; -moz-transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
 }
 
 #connexion_bar_revealer:hover, #connexion_bar_revealer:active, #connexion_bar_revealer.revealed {
