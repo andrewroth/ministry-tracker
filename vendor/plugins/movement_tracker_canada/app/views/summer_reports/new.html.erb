@@ -36,7 +36,7 @@
   </small>
   <p>
     <%= f.label :joined_staff, "Year you joined staff or internship" %>
-    <%= f.text_field :joined_staff, :class => "short" %>
+    <%= f.select :joined_staff, 1951..Time.now.year+1, :selected => @summer_report.joined_staff.to_i, :include_blank => true %>
   </p>
   <p>
     <%= f.label :days_of_holiday, "Number of vacation days you're entitled to" %>

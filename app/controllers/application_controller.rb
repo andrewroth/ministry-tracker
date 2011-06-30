@@ -585,5 +585,23 @@ class ApplicationController < ActionController::Base
       @graph = Koala::Facebook::GraphAPI.new(oauth_token)
       session[:facebook_person] = @graph.get_object("me")
     end
+      
+    def get_summer_report_years_and_weeks
+      @current_year = Year.current
+      
+      summer_report_year_ids = SummerReport.all(:group => :year_id).collect{|sr| sr.year_id} << @current_year.id
+      @summer_report_years = Year.all(:conditions => ["#{Year._(:id)} in (?)", summer_report_year_ids])
+      
+      @selected_year = params[:year_id].present? ? Year.find(params[:year_id]) : @current_year
+      
+      @selected_year = @summer_report_years.include?(@selected_year) ? @selected_year : @current_year
 
+      summer_start_date = Date.new(@selected_year.desc[-4..-1].to_i, SummerReportsController::SUMMER_START_MONTH, SummerReportsController::SUMMER_START_DAY)
+      summer_end_date =   Date.new(@selected_year.desc[-4..-1].to_i, SummerReportsController::SUMMER_END_MONTH, SummerReportsController::SUMMER_END_DAY)
+
+      summer_start_week = Week.find_week_containing_date(summer_start_date)
+      summer_end_week = Week.find_week_containing_date(summer_end_date)
+      
+      @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
+    end
 end

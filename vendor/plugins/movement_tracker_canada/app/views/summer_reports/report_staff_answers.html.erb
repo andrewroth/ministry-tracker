@@ -3,7 +3,7 @@
 <% end %>
 
 
-<h2>Report of Staff Summer Schedules <%= @current_year.desc[-4..-1] %></h2>
+<h2>Report of Staff Summer Schedules <%= render :partial => "select_report_year", :locals => {:years => @summer_report_years, :selected_year_id => @selected_year.id } %></h2>
 
 <br/>
 <br/>
@@ -13,10 +13,14 @@
 <%- if @me.ministries_involved_in_with_children.length > 1 -%>
   <%= link_to_function("Change Ministry", "$(this).hide(); $('#summer_report_ministry').show();", :class => "action-button") %>
   <%= collection_select(:summer_report_ministry, :id, @my.ministries_involved_in_with_children.sort{|a,b| a.name <=> b.name}, "id", "name", {},
-    {:id => "summer_report_ministry", :style => "display:none", :onchange => "document.location = '/summer_reports/report_staff_answers?summer_report_ministry=' + this.value"}) %>
+    {:id => "summer_report_ministry",
+     :style => "display:none",
+     :onchange => "document.location = '/summer_reports/report_staff_answers?summer_report_ministry='+this.value+'&year_id=#{@selected_year.id}'"}) %>
+     
   <%- tooltip do -%>
   Report on a different ministry. Choose <%= @summer_report_ministry.root.children.first.name %> to list all staff.
   <%- end -%>
+  
   &nbsp;&nbsp;
   <%= spinner('_change_ministry') %>
 <%- end -%>
@@ -105,4 +109,5 @@
 <br/>
 <br/>
 
-<%= link_to "Back", :action => :index %>
+<%= link_to "Back", :action => :index, :year_id => @selected_year.id %>
+
