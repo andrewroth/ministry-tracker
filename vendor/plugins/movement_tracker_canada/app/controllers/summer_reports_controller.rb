@@ -125,7 +125,7 @@ class SummerReportsController < ApplicationController
 
     ministry_ids = @summer_report_ministry.myself_and_descendants.collect{|m| m.id}
     @summer_reports = SummerReport.all(:joins => {:person => [:ministry_involvements]},
-                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?) and #{SummerReport.__(:year_id)} = ?", ministry_ids, @current_year.id],
+                                       :conditions => ["#{MinistryInvolvement._(:ministry_id)} in (?) and #{SummerReport.__(:year_id)} = ?", ministry_ids, @selected_year.id],
                                        :group => "#{SummerReport._(:id)}",
                                        :order => "#{Person._(:first_name)}, #{Person._(:last_name)}")
     
@@ -138,7 +138,7 @@ class SummerReportsController < ApplicationController
   def report_compliance
     @summer_report_ministry = Ministry.find(2)
     
-    summer_reports = SummerReport.all(:include => [:summer_report_reviewers], :conditions => {:year_id => @current_year.id})
+    summer_reports = SummerReport.all(:include => [:summer_report_reviewers], :conditions => {:year_id => @selected_year.id})
     
     @approved_reports = []
     @disapproved_reports = []
