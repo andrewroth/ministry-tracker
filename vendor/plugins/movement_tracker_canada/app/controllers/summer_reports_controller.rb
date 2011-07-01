@@ -7,8 +7,10 @@ class SummerReportsController < ApplicationController
   before_filter :get_query, :only => [:search_for_reviewers]
   before_filter :get_contact_person
 
-  before_filter :get_summer_year_and_weeks
+  before_filter :get_summer_report_years_and_weeks
   before_filter :remove_self_from_reviewers, :only => [:create, :update]
+  
+  before_filter :current_year_only, :only => [:new, :create, :update]
 
   SUMMER_START_MONTH = 4 # april
   SUMMER_END_MONTH = 8 # august
@@ -18,14 +20,14 @@ class SummerReportsController < ApplicationController
 
   
   def index
-    @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @current_year.id})
+    @report_for_this_summer = @me.summer_reports.first(:conditions => {:year_id => @selected_year.id})
 
     @reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
-      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ?", @current_year.id, @my.id]).present?
+      :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ?", @selected_year.id, @my.id]).present?
     
     @num_reports_to_review = SummerReportReviewer.all(:joins => :summer_report,
       :conditions => ["#{SummerReport.__(:year_id)} = ? and #{SummerReportReviewer.__(:person_id)} = ? and " +
-          "(#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?)", @current_year.id, @my.id, false]).size
+          "(#{SummerReportReviewer._(:reviewed)} is null or #{SummerReportReviewer._(:reviewed)} = ?)", @selected_year.id, @my.id, false]).size
 
     respond_to do |format|
       format.html # index.html.erb
@@ -59,7 +61,7 @@ class SummerReportsController < ApplicationController
       if @me.summer_reports.all(:conditions => {:year_id => @current_year.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
       else
-        flash[:notice] = "You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved."
+        flash[:notice] = "<big>You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved.</big>"
         format.html { redirect_to(:action => "index") }
       end
     end
@@ -76,7 +78,7 @@ class SummerReportsController < ApplicationController
 
         @summer_report.send_later(:send_submission_email, base_url)
 
-        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
+        flash[:notice] = '<big>Your summer schedule was successfully submitted and your reviewers will be notified by email.</big>'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -96,7 +98,7 @@ class SummerReportsController < ApplicationController
 
         @summer_report.send_later(:send_submission_email, base_url)
 
-        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
+        flash[:notice] = '<big>Your summer schedule was successfully submitted and your reviewers will be notified by email.</big>'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -168,19 +170,6 @@ class SummerReportsController < ApplicationController
 
   private
 
-  # find the weeks that make up summer
-  def get_summer_year_and_weeks
-    @current_year = Year.current
-
-    summer_start_date = Date.new(@current_year.desc[-4..-1].to_i, SUMMER_START_MONTH, SUMMER_START_DAY)
-    summer_end_date =   Date.new(@current_year.desc[-4..-1].to_i, SUMMER_END_MONTH, SUMMER_END_DAY)
-
-    summer_start_week = Week.find_week_containing_date(summer_start_date)
-    summer_end_week = Week.find_week_containing_date(summer_end_date)
-    
-    @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
-  end
-
 
   def get_contact_person # for questions about summer schedules
     begin
@@ -202,5 +191,15 @@ class SummerReportsController < ApplicationController
   end
 
 
-
+  def current_year_only
+    unless @current_year == @selected_year
+      flash[:notice] = "<big>Sorry, you may only submit or modify summer schedules for the current school year summer (#{@current_year.desc[-4..-1]}).</big>"
+      redirect_to(:action => "index")
+      return
+    end
+  end
+  
 end
+
+
+
