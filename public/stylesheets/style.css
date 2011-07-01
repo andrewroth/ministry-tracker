@@ -3611,7 +3611,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #reviewableReports td { vertical-align:middle; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }
 
-#review_report { position:relative; margin:30px; border:3px solid #747474; padding:20px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 10px 20px #BFBFBF; -moz-box-shadow: 0 10px 20px #BFBFBF; box-shadow: 0 10px 20px #BFBFBF; }
+#review_report { background-color: #FAFAFA; position:relative; margin:30px; padding:20px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 7px 20px #BFBFBF; -moz-box-shadow: 0 7px 20px #BFBFBF; box-shadow: 0 7px 20px #BFBFBF; }
 #spinner_review { margin-left:auto; margin-right:auto; display:block; }
 .edit_summer_report_reviewer .action-button { margin:0 50px; }
 .edit_summer_report_reviewer #reviewButtons { text-align:center; }
