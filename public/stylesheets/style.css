@@ -2088,7 +2088,7 @@ ul.statsLinkList {
 }
 
 .statsTabActive {
-  border: solid 2px #666766;
+  border: solid 2px #747474;
   padding: 7px;
 }
 
@@ -2112,8 +2112,8 @@ ul.statsLinkList {
   padding: 40px;
   text-align: center;
   background-color: #EBEBEB;
-  -moz-border-radius: 25px; -webkit-border-radius: 25px; border-radius: 25px;
-  -webkit-box-shadow:0 10px 15px #BFBFBF; -moz-box-shadow:0 10px 15px #BFBFBF; box-shadow:0 10px 15px #BFBFBF;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
+  -webkit-box-shadow:0 10px 20px #BFBFBF; -moz-box-shadow:0 10px 20px #BFBFBF; box-shadow:0 10px 20px #BFBFBF;
 }
 
 
@@ -2148,8 +2148,8 @@ ul.statsLinkList {
 	height:110px;
 	width:200px;
 	display:inline-block;
-	opacity: 0.6;
-	filter: alpha(opacity = 60); /* for IE */
+	opacity: 0.7;
+	filter: alpha(opacity = 70); /* for IE */
 }
 
 #IndicatedDecisionsVSGoal {
