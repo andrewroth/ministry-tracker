@@ -52,8 +52,8 @@
 		<div id="wrapper">
 		  <div id="userbar">
         <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-          <%= link_to image_tag("c4clogo.png"), :controller => 'dashboard', :action => 'index' %>
-          <%= link_to image_tag("pulselogo.png"), :controller => 'dashboard', :action => 'index' %>
+          <%= link_to "<div id='c4c_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
+          <%= link_to "<div id='pulse_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
         </div>
 
 
@@ -75,10 +75,13 @@
           <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
           
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();" %><%- end -%></div>
-            <div id="switch_ministries_list" style="display:none">
-              &nbsp;
+            <div id="switch_ministries">
+              <%- if @ministry -%>
+                &nbsp;&nbsp;
+                <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
+              <%- end -%>
             </div>
+            <div id="switch_ministries_list" style="display:none">&nbsp;</div>
           <%- end -%>
           
           <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
@@ -95,37 +98,6 @@
       <div id="banner_container">
         <%= render :partial => "/dashboard/banner" %>
       <% end %>
-        
-        <script type="text/javascript">
-          $(document).ready(function(){
-            // preload mouseover images
-            $([
-              '/images/debicons/Ydashboard.png',
-              '/images/debicons/Yprofile.png',
-              '/images/debicons/Ygroups.png',
-              '/images/debicons/Yinsights.png',
-              '/images/debicons/Yschicon.png',
-              '/images/debicons/Yaddicon.png',
-              '/images/debicons/Yarroicon.png',
-              '/images/debicons/Yprofile_s.png',
-              '/images/debicons/Yschicon_s.png',
-              '/images/debicons/Yimpicon.png',
-              '/images/debicons/Yarroicon.png',
-              '/images/debicons/Ymanaicon.png',
-              '/images/debicons/GDTicon.png',
-              '/images/debicons/YDTicon.png',
-              '/images/debicons/Ymagniglass.png',
-              '/images/bannerleftbubble.png',
-              '/images/bannerleftbubbleY.png',
-              '/images/bannerrightbubble.png',
-              '/images/bannerrightbubbleY.png',
-              '/images/expand.png',
-              '/images/contract.png'
-            ]).each(function(){
-              $('<img/>')[0].src = this;
-            });
-          });
-        </script>
       </div>
 
 
@@ -192,7 +164,7 @@
     <div id="dialog" style="display:none"></div>
     </div> <!-- Center -->
     <div id="footer">
-      <div id="helpLink"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><%= image_tag "/images/help.gif" %></a></div>
+      <div id="helpLinkContainer"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><div id="helpLink">&nbsp;</div></a></div>
     </div>
     <%= I18n.t :analytics, :default => "" %>
 
