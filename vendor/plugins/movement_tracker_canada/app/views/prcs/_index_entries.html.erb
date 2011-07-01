@@ -33,7 +33,7 @@ end
 	lines.each do | key, input_stat |
 	  if input_stat[:column_type] == :database_column && !do_not_show.include?(key)
 	%>
-	      <td>
+	      <td <%= "class='story'" if input_stat[:label] == "Story" %> >
 	        <%=h show_data(prc, input_stat) %>
 	      </td>
 	<%
