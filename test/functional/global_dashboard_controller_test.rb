@@ -5,10 +5,17 @@ require 'global_dashboard_controller'
 class GlobalDashboardController; def rescue_action(e) raise e end; end
 
 class GlobalDashboardControllerTest < ActionController::TestCase
+  
+  include SemesterSet
+  
   def setup
     setup_default_user
     setup_global_areas
     setup_global_countries
+    setup_years
+    setup_months
+    setup_weeks
+    set_current_and_next_semester(true)
     login
     Factory(:global_dashboard_accesses_1)
   end

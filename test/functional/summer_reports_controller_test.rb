@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class SummerReportsControllerTest < ActionController::TestCase
 
@@ -19,7 +19,7 @@ class SummerReportsControllerTest < ActionController::TestCase
 
   test "should get index" do
     Factory(:summer_report_1)
-    get :index
+    get :index, :year_id => 1
     assert_response :success
     assert_not_nil assigns(:current_year)
     assert_not_nil assigns(:num_reports_to_review)
@@ -95,7 +95,7 @@ class SummerReportsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     sr = Factory(:summer_report_1)
 
-    get :report_staff_answers, :summer_report_ministry => 2
+    get :report_staff_answers, :summer_report_ministry => 2, :year_id => 1
 
     assert_not_nil assigns(:summer_reports)
     assert_equal sr.id, assigns(:summer_reports).first.id
@@ -112,7 +112,7 @@ class SummerReportsControllerTest < ActionController::TestCase
     Factory(:ministryinvolvement_3)
     sr = Factory(:summer_report_1)
 
-    get :report_compliance
+    get :report_compliance, :year_id => 1
 
     assert_equal sr.id, assigns(:approved_reports).first.id
     assert_equal 0, assigns(:disapproved_reports).size

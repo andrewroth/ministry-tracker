@@ -1,51 +1,60 @@
 
-<a id="closeLink" href="">×</a>
+<a id="closeLink" href="" title="Close report">×</a>
 
-<%= render :partial => "summer_reports/show", :locals => { :person => @person, :summer_report => @report, :year => @current_year }  %>
+<%= render :partial => "summer_reports/show", :locals => { :summer_report => @report }  %>
 
-<% form_for @review, :url => {:action => "update"} do |f| %>
-  <h3><br/></h3>
-  <p>
-    <%= f.hidden_field :id %>
-    <%= f.hidden_field :approved %>
+</br></br>
+<hr></hr>
+</br></br>
 
-    <%= f.label :review_notes, "Your review notes:" %>
-    <%= f.text_area :review_notes %>
-    
-  </p>
-  <p id="reviewButtons">
-    <br/>
-    <%= "#{@person.first_name} will recieve an email notification with your review notes." %>
-    <br/>
-    <br/>
-    <%= link_to 'Approve',  "", :id => "summer_report_reviewer_approve",  :class => "action-button" %>
-    <%= link_to 'Disapprove', "", :id => "summer_report_reviewer_disprove", :class => "action-button" %>
-    <br/>
-    <br/>
-    <%= spinner('_review_submit') %>
-  </p>
 
+<% if @selected_year == @current_year %>
+
+  <% form_for @review, :url => {:action => "update"} do |f| %>
+    <p>
+      <%= f.hidden_field :id %>
+      <%= f.hidden_field :approved %>
+
+      <%= f.label :review_notes, "Your review notes:" %>
+      <%= f.text_area :review_notes %>
+      
+    </p>
+    <p id="reviewButtons">
+      <br/>
+      <%= "#{@report.person.first_name} will recieve an email notification with your review notes." %>
+      <br/>
+      <br/>
+      <%= link_to 'Approve',  "", :id => "summer_report_reviewer_approve",  :class => "action-button" %>
+      <%= link_to 'Disapprove', "", :id => "summer_report_reviewer_disprove", :class => "action-button" %>
+      <br/>
+      <br/>
+      <%= spinner('_review_submit') %>
+    </p>
+  <% end %>
+
+<% else %>
+  <p>This schedule is from <%= @report.year.desc[-4..-1] %>, you may only review summer schedules for the current school year (<%= @current_year.desc[-4..-1] %>).</p>
 <% end %>
 
 
 <script type="text/javascript">
-  $("#closeLink").click(function(e) {
+  $($("#closeLink").click(function(e) {
     e.preventDefault();
     $("#review_report").fadeOut();
-  });
+  }));
 
-  $("#summer_report_reviewer_approve").click(function(event){
+  $($("#summer_report_reviewer_approve").click(function(event){
     event.preventDefault();
     $("#summer_report_reviewer_approved").val("true");
     $("#spinner_review_submit").show();
     $(this).parents('form:first').submit();
-  });
-  
-  $("#summer_report_reviewer_disprove").click(function(event){
+  }));
+    
+  $($("#summer_report_reviewer_disprove").click(function(event){
     event.preventDefault();
     $("#summer_report_reviewer_approved").val("false");
     $("#spinner_review_submit").show();
     $(this).parents('form:first').submit();
-  });
+  }));
 </script>
 
