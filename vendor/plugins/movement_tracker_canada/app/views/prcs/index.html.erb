@@ -26,7 +26,7 @@
 <div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
 <div id="results">
 	<div id="indexFields" class="statsContainer">
-	  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+	  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
 	    <div id="prcIndexFields" class="statsReportTabContainer statsTabContainerActive" style="display:block;">
 	    <%= show_index_entries(@prcs) %>     
 	    </div>

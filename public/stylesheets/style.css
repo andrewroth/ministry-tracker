@@ -194,30 +194,30 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
 .butUpdate a, .butDelete a {
   padding:5px 5px 5px 5px;
   padding-left:20px;
-  border:1px solid #ccc;
   height:18px;
 }
 
 .butUpdate a {
-  background: #fff url(/images/edit.png) 3px 5px no-repeat;
+  background: url("/images/sprites/icons.png") no-repeat scroll -3px -433px transparent;
 }
 
 .butDelete a {
-  background: #fff url(/images/delete.png) 3px 5px no-repeat;
+  background-image: url("/images/sprites/icons.png");
+  background-position: -5px -682px;
+  background-repeat: no-repeat;
 }
 
 
 .butUpdate a:hover, .butDelete a:hover {
   text-decoration:none;
-  border:1px solid #1F429B;
 }
 
 .butUpdate a:hover {
-  background: #ffffcc url(/images/edit.png) 3px 5px no-repeat;
+  background-position: -3px -466px;
 }
 
 .butDelete a:hover {
-  background: #ffffcc url(/images/delete.png) 3px 5px no-repeat;
+  background-position: -5px -715px;
 }
 
 .butUpdate, .butDelete {
@@ -1885,8 +1885,6 @@ div.choose_ministry_tree {
 }
 
 #statsTitle, #reportTitle {
-  color: #666766;
-  border-bottom:1px dotted #666766;
   margin: 0 0 10px 3px;
 }
 
@@ -1916,12 +1914,9 @@ div.choose_ministry_tree {
   margin: 0;
   padding: 0.7em;
   text-align: left;
-  background-color: #F7F7F7;
-  border: 2px solid white;
+  background-color: #FAFAFA;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  -moz-box-shadow: 0 0 10em white inset;
-  -webkit-box-shadow: 0 0 10em white inset;
 }
 
 .statsFormBoxTitle {
@@ -1962,7 +1957,7 @@ div .statsSelectContainer {
 
 .statsReportTab label {
   width: auto;
-  color: #1F429B;
+  color: #666766;
   float: left;
 }
 
@@ -2002,10 +1997,6 @@ div .statsRadioButton {
   width: 33em;
   margin: 0.8em auto 0 auto;
   text-align: center;
-}
-
-#statsLinkBox h3 {
-	border-bottom: 1px dotted #1F429B;
 }
 
 ul.statsLinkList {
@@ -2058,8 +2049,8 @@ ul.statsLinkList {
 }
 
 .statsContainer {
-  width: 65em;
-	margin: 10px auto 0 auto;
+  width: 100%;
+	margin: 20px auto 0 auto;
   text-align: center;
 }
 
@@ -2073,10 +2064,14 @@ ul.statsLinkList {
   -webkit-border-radius: 10px;
 }
 
+#reportTypeTitle {
+  font-weight: normal;
+}
+
 .statsReportTab {
   display: inline-block;
-  border: solid 2px #ADC9DB;
-  background-color: #FCFCFC;
+  border: solid 2px #D8D8D8;
+  background-color: #FAFAFA;
   padding: 5px;
   margin: 0 0.5em 0 0.5em;
   -moz-border-radius: 5px;
@@ -2092,7 +2087,7 @@ ul.statsLinkList {
 }
 
 .statsTabActive {
-  border: solid 2px #4C6CBF;
+  border: solid 2px #747474;
   padding: 7px;
 }
 
@@ -2113,10 +2108,11 @@ ul.statsLinkList {
 
 .statsReportTabContainer {
   display: none;
-  padding: 3em;
+  padding: 30px;
   text-align: center;
-  background-color: #F7F7F7;
-  -moz-border-radius: 17px; -webkit-border-radius: 17px; border-radius: 17px;
+  background-color: #FAFAFA;
+  -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
+  -webkit-box-shadow:0 7px 20px #BFBFBF; -moz-box-shadow:0 7px 20px #BFBFBF; box-shadow:0 7px 20px #BFBFBF;
 }
 
 
@@ -2138,15 +2134,29 @@ ul.statsLinkList {
 
 #nationalIndicatedDecisions {
 	display:block;
-	width: 205px;
+	width: 160px;
 	float: right;
 	text-align: center;
 	font-size: 1.5em;
-	font-weight: bold;
+}
+
+#nationalIndicatedDecisionsIcon {
+	background-image:url("/images/sprites/main_elements.png");
+	background-position:10px -135px;
+	background-repeat:no-repeat;
+	height:110px;
+	width:160px;
+	display:inline-block;
+	opacity: 0.5;
+	filter: alpha(opacity = 50); /* for IE */
 }
 
 #IndicatedDecisionsVSGoal {
   font-size: 2.5em;
+}
+
+#IndicatedDecisionsVSGoal, #nationalIndicatedDecisions {
+  color: #CCCCCC;
 }
 
 .center {
@@ -2170,18 +2180,14 @@ fieldset {
 }
 
 .statsTitle {
-  color: #666766;
-  font-size: 160%;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 1em;
+  margin-bottom: 20px;
+  color: #666766;
 }
 
 .bold label {
   width: 270px;
-}
-
-#results .highlight {
-  background-color: #FFE88C;
 }
 
 #statsTotalsTable {
@@ -2199,7 +2205,6 @@ fieldset {
 }
 
 #results .statsTable {
-  /*border: dotted 2px #6C87CC;*/
   border-collapse: collapse;
   font-size: small;
 }
@@ -2209,10 +2214,11 @@ fieldset {
 }
 
 #results .highlight {
-  -moz-box-shadow: 0 0 1em #FFEA99;
-  -webkit-box-shadow: 0 0 1em #FFEA99;
-  
-  background-color: #FFEA99;
+  background-color: #FFECB3;
+}
+
+#results .nohighlight {
+  background-color: #FAFAFA;
 }
 
 #results .statsTableTitleProgressBar {
@@ -2229,6 +2235,11 @@ fieldset {
   color: #474E66;
   vertical-align: middle;
   text-align: center;
+}
+
+#results td.story {
+  text-align:justify;
+  line-height:20px;
 }
 
 table .statsTable {
@@ -2262,41 +2273,8 @@ div .editLink {
   margin: 0.5em 0em 0.5em 0em;
 }
 
-.addLink a {
-  padding-left: 17px;
-  background-image: url(/images/add.png);
-  background-repeat: no-repeat;
-}
-
-.backLink a {
-  padding-left: 20px;
-  background-image: url(/images/silk/arrow_left.png);
-  background-repeat: no-repeat;
-}
-
-.upLink a {
-  padding-left: 17px;
-  background-image: url(/images/silk/arrow_up.png);
-  background-repeat: no-repeat;
-}
-
-.downLink a {
-  padding-left: 17px;
-  background-image: url(/images/silk/arrow_down.png);
-  background-repeat: no-repeat;
-}
-
-.editLink a {
-  padding-left: 20px;
-  background-image: url(/images/edit.png);
-  background-repeat: no-repeat;
-}
-
 .eventLink a {
-  padding-left: 20px;
   padding-top: 2px;
-  background-image: url(/images/silk/date.png);
-  background-repeat: no-repeat;
 }
 
 td.eventIcon {
@@ -2363,7 +2341,7 @@ td.eventAttendees {
 #stats_choose_ministry_link {
   font-size: 110%;
   padding: 0 27px 0 7px;
-  background-image: url(/images/widgets/rarrowdown.gif);
+  background-image: url(/images/widgets/arrowdown.gif);
   background-repeat: no-repeat;
   background-position: right center;
 }
