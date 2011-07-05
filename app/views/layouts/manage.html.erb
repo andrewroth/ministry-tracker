@@ -36,6 +36,11 @@
       <li<%= ' class="highlighted"' if params[:controller] == "user_codes" %>>
       <%= link_to 'User Codes', :controller => :user_codes, :action => :generate %></li>
     <%- end -%>
+    
+    <%- if is_ministry_admin -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "api_keys" %>>
+      <%= link_to 'API Keys', :controller => :api_keys, :action => :index %></li>
+    <%- end -%>
   </ul>
 
 

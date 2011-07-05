@@ -1,0 +1,26 @@
+<h1>New API Key</h1>
+<br/>
+
+<% form_for(@api_key) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :user_id %>
+    <%= f.text_field :user_id %> (user id or user email)
+  </p>
+  
+  <p>
+    <%= f.label :purpose %>
+    <%= f.text_field :purpose %>
+  </p>
+  
+  <br/>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<br/>
+
+<%= link_to 'Back', api_keys_path %>

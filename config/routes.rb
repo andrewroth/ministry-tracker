@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :api_keys
+
 
   map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
   map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
