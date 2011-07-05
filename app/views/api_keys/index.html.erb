@@ -1,0 +1,26 @@
+<h1>Listing API Keys</h1>
+<br/>
+
+<table>
+  <tr>
+    <th><b>User</b></th>
+    <th><b>Key</b></th>
+    <th><b>Purpose</b></th>
+  </tr>
+
+<% @api_keys.each do |api_key| %>
+  <tr>
+    <td><%= api_key.try(:user).try(:username) %></td>
+    <td><%= api_key.try(:login_code).try(:code) %></td>
+    <td><%= api_key.try(:purpose) %></td>
+    <td><%= link_to 'Show', api_key %></td>
+    <td><%= link_to 'Edit', edit_api_key_path(api_key) %></td>
+    <td><%= link_to 'Destroy', api_key, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+
+</table>
+
+<br />
+
+<%= link_to 'New API Key', new_api_key_path %>

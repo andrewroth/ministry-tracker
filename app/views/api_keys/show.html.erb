@@ -1,0 +1,10 @@
+<h1>API Key <%= @api_key.id %></h1>
+<br/>
+
+<p><b>User:</b> <%= @api_key.try(:user).try(:username) %></p> 
+<p><b>Key:</b> <%= @api_key.try(:login_code).try(:code) %></p> 
+<p><b>Purpose:</b> <%= @api_key.try(:purpose) %></p> 
+<br/>
+
+<%= link_to 'Edit', edit_api_key_path(@api_key) %> |
+<%= link_to 'Back', api_keys_path %>
