@@ -26,5 +26,10 @@ module Test
       Factory(:freetime_3)
       Factory(:freetime_4)
     end
+    
+    def setup_api_keys
+      Factory(:login_code_2)
+      Factory(:api_key_1)
+    end
   end
 end
