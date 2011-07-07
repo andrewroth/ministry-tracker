@@ -4,6 +4,9 @@
 <p><b>User:</b> <%= @api_key.try(:user).try(:username) %></p> 
 <p><b>Key:</b> <%= @api_key.try(:login_code).try(:code) %></p> 
 <p><b>Purpose:</b> <%= @api_key.try(:purpose) %></p> 
+<p><b>Created:</b> <%= time_ago_in_words(@api_key.try(:created_at)) %> ago</p> 
+<p><b>Times Used:</b> <%= @api_key.try(:login_code).try(:times_used) %></p> 
+<p><b>Last Used:</b> <%= time_ago_in_words(@api_key.try(:login_code).try(:updated_at)) %> ago</p> 
 <br/>
 
 <%= link_to 'Edit', edit_api_key_path(@api_key) %> |
