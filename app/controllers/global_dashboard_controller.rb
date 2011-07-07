@@ -147,38 +147,38 @@ class GlobalDashboardController < ApplicationController
     columns = [ "name", "iso3", "stage", "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab", "pop_2010", "pop_2015", "pop_2020", "pop_wfb_gdppp", "perc_christian", "perc_evangelical", "locally_funded_FY10", "total_income_FY10", "staff_count_2002", "staff_count_2009", "total_students", "total_schools", "total_spcs", "names_priority_spcs", "total_spcs_presence", "total_spcs_movement", "total_slm_staff", "total_new_slm_staff", "serving_here", "employed_here_serving_here", "employed_here_serving_elsewhere" ]
     instance_vars_to_export = %w(genders marital_status mccs staff_status funding_source position scope)
     #outfile = File.open('csvout', 'wb')
+
     csv_out = ""
     CSV::Writer.generate(csv_out) do |csv|
-=begin
-      csv << [ "Country Name", "Area", "% Local Funding", "Fiscal 2010 Income", "Staff Count 2002", 
-        "Staff Count 2009", "02-09 Difference", "GCX Profile - Serving Here", 
-        "GCX Profile - Employed Here, Serving Here", "GCX Profile - Employed Here, Serving Elsewhere", 
-        "Live Exposures", "Live Decisions", "New Growth Group Members", "Movement Members",
-        "New Staff", "Lifetime Labourers", "Total # Univ & College Students", "Total # Univ & College Inst",
-        "# Student Pop Centers", "SPCs w/ any ministry or movement activity or CCC presence",
-        "SPCs with movements", "Total # SLM Staff (of any nationality serving in the country)",
-        "New National SLM staff joining 2009-2010 academic year", "Pop2010", "Pop2015", "Pop2020",
-        "WFB_GDPPP", "PercChristian", "PercEvangelical" ]
-=end
       setup_stats([ GlobalCountry.first ], mcc_filters) # to get the instance var hashes set
       csv << columns.collect{ |c| country_column_names_to_strings[c] } #+ 
-      #  instance_vars_to_export.collect{ |v|
-      #    h = eval("@#{v}")
-      #    h.keys.collect{ |k| k == nil ? "#{v}_no_value" : "#{v}_#{k}" }
-      #  }.flatten
-      #throw instance_vars_to_export.collect{ |v| h = eval("@#{v}"); h.keys.collect{ |k| k == nil || k == "" ? "#{v}_no_value" : "#{v}_#{k}" }; }.flatten
 
+      metrics = [ "live_exp", "live_dec", "new_grth_mbr", "mvmt_mbr", "mvmt_ldr", "new_staff", "lifetime_lab" ]
       for c in countries
-        #setup_stats([c], mcc_filters)
-        csv << columns.collect{ |col| c.send(col) } #+ 
-#          instance_vars_to_export.collect{ |v|
-#            h = eval("@#{v}")
-#            h.values
-#          }.flatten
+        row = []
+        columns.each do |col|
+          if metrics.include?(col)
+            if col == "live_exp"
+              stat = c.global_dashboard_whq_stats.find(:first, 
+                                                 :select => "sum(live_exp) as live_exp," + 
+                                                        "sum(live_dec) as live_dec," + 
+                                                        "sum(new_grth_mbr) as new_grth_mbr," + 
+                                                        "sum(mvmt_mbr) as mvmt_mbr," + 
+                                                        "sum(mvmt_ldr) as mvmt_ldr," + 
+                                                        "sum(new_staff) as new_staff," + 
+                                                        "sum(lifetime_lab) as lifetime_lab",
+                                                 :conditions => [ "month_id IN (?)", 
+                                                   Year.find_by_year_number(2010).months_by_literal_year.collect(&:id) ])
+              metrics.each do |m| row << stat.send(m).to_s end
+            end
+          else
+            row << c.send(col).to_s
+          end
+        end
+        csv << row
       end
     end
 
-    #outfile.close
     send_data(csv_out,
               :type => 'text/csv; charset=utf-8; header=present',
               :filename => "export.csv")
@@ -329,7 +329,7 @@ class GlobalDashboardController < ApplicationController
         @ministry_metric_timeframe = params[:ministry_metric_timeframe]
       else
         @ministry_metric_timeframe = "y_#{Year.current.id}"
-        year = Year.find_by_year_desc("2010 - 2011")
+        year = Year.find_by_year_desc("2010 - 2011") || Year.find_by_year_desc("2010-2011")
         month_ids = year.months_by_literal_year.collect(&:id)
       end
 
