@@ -15,7 +15,7 @@ class UserCodesControllerTest < ActionController::TestCase
     Factory(:login_code_1)
     Factory(:user_code_1)
     login
-    get :show, :code => '91d76u0f86jjecc25740128eee0b61c7', :send_to_controller => 'c', :send_to_action => 'a'
+    get :show, :code => '5a12855a-aa70-4990-b757-6bf02ec7a30b', :send_to_controller => 'c', :send_to_action => 'a'
     assert_redirected_to '/c/a'
   end
 
