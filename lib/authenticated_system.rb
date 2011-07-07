@@ -136,24 +136,16 @@ module AuthenticatedSystem
       end
     end
 
-    def authenticate_from_login_code # not necessarily logging in
-      you_shall_pass = false
-      
-      if params[:login_code].present?
-        logout_without_redirect! if logged_in? # make sure if there is an existing session that it doesn't conflict
-        
-        lc = LoginCode.first(:conditions => {:code => params[:login_code]})
-        if lc.present? && lc.acceptable?
-          you_shall_pass = true
-          lc.increment_times_used
-          session[:login_code_id] = lc.id
-        else
-          flash[:notice] = "<big>We're sorry, the link you came from has expired!</big>"
-        end
-      end
-      
-      unless you_shall_pass == true
+    def authenticate_from_group_invitation
+      unless check_and_increment_login_code(params[:login_code], GroupInvitation) == true
+        flash[:notice] = "<big>We're sorry, the link you came from is no longer valid</big>"
         access_denied(true)
+      end
+    end
+    
+    def authenticate_from_api_key
+      unless check_and_increment_login_code(params[:api_key], ApiKey) == true
+        render :text => "error"
       end
     end
     
@@ -199,5 +191,26 @@ module AuthenticatedSystem
       auth_key  = @@http_auth_headers.detect { |h| request.env.has_key?(h) }
       auth_data = request.env[auth_key].to_s.split unless auth_key.blank?
       return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil] 
+    end
+        
+        
+    # code - the login code
+    # has_login_code_class - class that has a login_code association (we don't want to access just any login code, but one that is associated with a particular class)
+    def check_and_increment_login_code(code, has_login_code_class)
+      you_shall_pass = false
+      
+      if code.present?
+        logout_without_redirect! if logged_in? # make sure if there is an existing session that it doesn't conflict
+        
+        lc = has_login_code_class.first(:joins => [:login_code], :conditions => {:login_codes => {:code => code}}).try(:login_code)
+        
+        if lc.present? && lc.acceptable?
+          you_shall_pass = true
+          lc.increment_times_used
+          session[:login_code_id] = lc.id
+        end
+      end
+      
+      you_shall_pass
     end
 end

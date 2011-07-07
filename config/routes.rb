@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :api_keys
 
+  map.connect '/api/authorized', :controller => :api, :action => :authorized
+
+  map.resources :api_keys
 
   map.resources :label_people
   map.resources :labels

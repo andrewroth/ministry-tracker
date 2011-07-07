@@ -1,5 +1,6 @@
 class ApiKeysController < ApplicationController
-
+  unloadable
+  
   layout 'manage'
 
   def index
