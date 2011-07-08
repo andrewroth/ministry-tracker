@@ -167,8 +167,8 @@ class GlobalDashboardController < ApplicationController
                                                         "sum(mvmt_ldr) as mvmt_ldr," + 
                                                         "sum(new_staff) as new_staff," + 
                                                         "sum(lifetime_lab) as lifetime_lab",
-                                                 :conditions => [ "month_id IN (?)", 
-                                                   Year.find_by_year_number(2010).months_by_literal_year.collect(&:id) ])
+                                                 :conditions => [ "month_id IN (?) AND mcc in (?)", 
+                                                   Year.find_by_year_number(2010).months_by_literal_year.collect(&:id), mcc_filters ])
               metrics.each do |m| row << stat.send(m).to_s end
             end
           else
