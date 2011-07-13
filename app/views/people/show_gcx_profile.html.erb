@@ -1,0 +1,34 @@
+<br/>
+
+<% if @hpricot %>
+  
+  <div id="profilewrap" class="gcx">
+    <div id="profiletitle">
+      <h1>
+        <%= @person.full_name %>
+        <% if @person == @me %>
+          <div class="profileButton" id="editButton">
+            <%= link_to "EDIT", "#{gcx_profile_report_config[:edit_url]}", :target => '_blank' %>
+          </div>
+        <% end %>
+      </h1>
+    </div>
+
+    <h4>GUID <%= @hpricot.search(:user).first.attributes["guid"] %></h4>
+    </br>
+
+    <table>
+      <% @hpricot.search(:attribute).each do |a| %>
+        <tr>
+          <th>
+            <%= a.attributes["displayname"].present? ? a.attributes["displayname"] : a.attributes["name"] %>
+          </th>
+          <td>
+            <%= a.search(:value).inner_html %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  
+<% end %>

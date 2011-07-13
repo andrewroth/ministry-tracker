@@ -883,8 +883,9 @@ a.subtabs-menu-inactive div:hover {
 }
 
 
-#subtabs #profileSubTab                                                      { background: url("/images/sprites/icons.png"); background-repeat:no-repeat; background-position:-9px -1137px; }
-#subtabs a.subtabs-menu-active #profileSubTab, #subtabs #profileSubTab:hover { background-position:-9px -1169px; }
+#subtabs #profileSubTab, #subtabs #gcxProfileSubTab                                { background: url("/images/sprites/icons.png"); background-repeat:no-repeat; background-position:-9px -1137px; }
+#subtabs a.subtabs-menu-active #profileSubTab, #subtabs #profileSubTab:hover,
+#subtabs a.subtabs-menu-active #gcxProfileSubTab, #subtabs #gcxProfileSubTab:hover { background-position:-9px -1169px; }
 
 #subtabs #timetableSubTab                                                        { background: url("/images/sprites/icons.png"); background-repeat:no-repeat; background-position:-9px -1073px; }
 #subtabs a.subtabs-menu-active #timetableSubTab, #subtabs #timetableSubTab:hover { background-position:-9px -1105px; }
@@ -1591,6 +1592,10 @@ padding-bottom:5px;
   padding:0 0 0 32px;
 }
 
+#profilewrap.gcx .profileButton {
+  float:none;
+}
+
 .profileButton a:hover {
   color:#FFCB05;
   text-decoration:none;
@@ -1629,6 +1634,10 @@ padding-bottom:5px;
 
 #profilewrap table th {
   width:120px;
+}
+
+#profilewrap.gcx table th {
+  width:150px;
 }
 
 #profilewrap table tr, #profilewrap table td.half {

@@ -783,3 +783,12 @@
       :access => "a"
     }
   end
+  
+  
+  def gcx_profile_report_config
+    {
+      :url => "https://www.mygcx.org/system/report/profile/attributes",
+      :edit_url => "https://www.mygcx.org/Public/screen/profile?profile_combinerURL=globalProfile"
+    }
+  end
+  

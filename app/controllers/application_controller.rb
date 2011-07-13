@@ -604,4 +604,38 @@ class ApplicationController < ActionController::Base
       
       @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
     end
+    
+    
+    # url - url of service trying to call, e.g. "https://service.com/action"
+    # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
+    def construct_cas_proxy_authenticated_service_url(url, params = {})
+      
+      # CAS proxy authentication requires that the service url and params stay in the same order
+      # (i.e. the service uri must not change between when the ticket is requested and when the actual request is made or else the proxy ticket validation will fail)
+      # therefore we will manually construct the request in a string
+      
+      service_uri = url
+      params.each do |k,v|
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"
+      end
+
+      begin
+        raise("no proxy granting ticket in the session, expected it to be defined in session[:cas_pgt]") if session[:cas_pgt].blank?
+        
+        proxy_granting_ticket = session[:cas_pgt]
+        proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
+
+        # CAS proxy authentication requires that the ticket be the last param in query string
+        raise("no proxy ticket") if proxy_ticket.ticket.blank?
+        service_uri += "&ticket=#{proxy_ticket.ticket}"
+      rescue => e
+        Rails.logger.error("\nERROR GETTING CAS PROXY TICKET: \n"+e.class.to_s+"\n"+e.message+"\n")
+        return nil
+      end
+
+      service_uri
+    end
+    
 end
+
