@@ -25,11 +25,13 @@ module ApplicationHelper
     #page.visual_effect :highlight, "flash_#{level}"
     #page.delay(7) do
       #page.visual_effect :blind_up, "flash_#{level}"
+    #page.delay(5) do
+      #page.visual_effect :fade, "flash_#{level}"
       #page.delay(2) do
         #page.replace_html "flash_#{level}", ''
       #end
     #end
-    
+
     flash[:notice] = flash[:warning] = nil
   end
 
