@@ -1,4 +1,8 @@
+<%= stylesheet_link_tag "jquery-ui" %>
+
 <%
 percent = goal == 0 ? 0 : (100.0 * (progress.to_f / goal.to_f)).to_i
 %>
-<div class="insightsProgressBar"><div class="insightsProgress" style="width: <%= percent%>%"></div></div>
+<div class="insightsProgressBar"></div>
+
+<script>$("div.insightsProgressBar").progressbar({ value: <%= percent %> });</script>

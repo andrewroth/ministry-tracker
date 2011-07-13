@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Gasohol::ResultSet</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Gasohol::ResultSet</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/gasohol/result_set_rb.html">
+                gasohol/result_set.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<a href="ResultSet.html">ResultSet</a> is the object that is returned when
+you call Gasohol::Search::search. It contains the query terms and path that
+you gave to Gasohol::Search::search as well as info returned by the
+GSA&#8216;s preamble. It is mostly information about how the GSA
+interpreted your search query and a couple other details about the client
+that requested the info:
+</p>
+<pre>
+  &lt;TM&gt;0.190738&lt;/TM&gt;
+  &lt;Q&gt;
+    marathon inmeta:category=activities -inmeta:channel=Shooting inmeta:latitude:32.0217..33.4689 inmeta:longitude:116.2883..118.0089 inmeta:startDate:daterange:2009-01-27..
+  &lt;/Q&gt;
+  &lt;PARAM name=&quot;entsp&quot; value=&quot;a__active_policy&quot; original_value=&quot;a__active_policy&quot;/&gt;
+  &lt;PARAM name=&quot;ip&quot; value=&quot;70.167.183.79&quot; original_value=&quot;70.167.183.79&quot;/&gt;
+  &lt;PARAM name=&quot;num&quot; value=&quot;1&quot; original_value=&quot;1&quot;/&gt;
+  &lt;PARAM name=&quot;q&quot; value=&quot;marathon inmeta:category=activities -inmeta:channel=Shooting inmeta:latitude:32.0217..33.4689 inmeta:longitude:116.2883..118.0089 inmeta:startDate:daterange:2009-01-27..&quot; original_value=&quot;marathon+inmeta%3Acategory%3Dactivities+-inmeta%3Achannel%3DShooting+inmeta%3Alatitude%3A32.0217..33.4689+inmeta%3Alongitude%3A116.2883..118.0089+inmeta%3AstartDate%3Adaterange%3A2009-01-27..&quot;/&gt;
+  ... more params here ...
+</pre>
+<p>
+All of these params are available in ResultSet::params and are accessed by
+their GSA name:
+</p>
+<pre>
+  result_set.params[:num] =&gt; 1
+  result_set.params[:ie] =&gt; UTF-8
+</pre>
+<p>
+Some other ones that may not be as self-evident:
+</p>
+<pre>
+  @google_query =&gt; the keyword query that was sent into Gasohol::Search::search
+  @full_query_path =&gt; the complete URL to the GSA that Gasohol requests
+  @time =&gt;            the GSA's &lt;TM&gt; value
+  @from_num =&gt;        the starting number of the current set of results (GSA's &lt;RES SN=&quot;&quot;&gt; value)
+  @to_num =&gt;          the ending number of the current set of results (GSA's &lt;RES EN=&quot;&quot;&gt; value)
+  @total_results =&gt;   the total number of results that the GSA has for the given search (not the number of results in this set, but ALL results, like Google.com says 1-10 of 1,435,000 results)
+  @featured =&gt;        an array containing featured results (sponsored link results)
+  @results =&gt;         an array containing regular results
+</pre>
+<p>
+<tt><a href="ResultSet.html">ResultSet</a></tt> is compatible with the
+<tt>will_paginate</tt> plugin <a
+href="http://wiki.github.com/mislav/will_paginate">wiki.github.com/mislav/will_paginate</a>
+Just give this entire result set to it and you&#8216;ll get page numbers
+and easy navigation
+</p>
+<pre>
+  rs = search('pizza')
+  will_paginate(rs)
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000005">new</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">current_page</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">featured</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">featured</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">from_num</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">full_query_path</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">google_query</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">location</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">next_page</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">params</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">previous_page</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">results</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">results</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">time</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">to_num</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">total_featured_results</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">total_pages</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">total_results</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="ResultSet.src/M000005.html" target="Code" class="method-signature"
+            onclick="popupCode('ResultSet.src/M000005.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(query,full_query_path,xml,num_per_page)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

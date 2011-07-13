@@ -2,7 +2,7 @@
 
   <div class='searchResultInfo'>
     <div class='searchResultName'>
-      <%=link_to("#{group.name.capitalize}", "/groups/#{group.id}")-%>
+      <%=link_to("#{group.name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"}}", "/groups/#{group.id}")-%>
     </div>
 
     <div class='searchResultExtraInfo'><%="#{info_for_group(group)}"-%></div>
@@ -24,18 +24,18 @@
            :before => "$('#joinGroup#{group.id}').fade();",
            :complete => "$('#joinGroup#{group.id}').replaceWith('#{join_group_response}'); $('#joinGroup#{group.id}').show();"},
 
-          {:id => "joinGroup#{group.id}", :class => "joinGroup"})
+          {:id => "joinGroup#{group.id}", :class => "joinGroup subtle"})
       -%>
     <%- end -%>
     <%- if authorized?(:new, :emails) -%>
-<br/>
+      <br/>
       <nobr>
       Email
       <%- all_leaders = group.leaders + group.co_leaders -%>
-      <%= link_to("leaders", new_email_url(:person => all_leaders), :class => "emailGroupLeaders", :title => "Compose an email to the leaders and co-leaders of this group") -%>
+      <%= link_to("leaders", new_email_url(:person => all_leaders), :class => "emailGroupLeaders subtle", :title => "Compose an email to the leaders and co-leaders of this group") -%>
       or
       <%- all_members = all_leaders + group.members -%>
-      <%= link_to("all members", new_email_url(:person => all_members), :class => "emailGroupMembers", :title => "Compose an email to all members and leaders of this group") -%>
+      <%= link_to("all members", new_email_url(:person => all_members), :class => "emailGroupMembers subtle", :title => "Compose an email to all members and leaders of this group") -%>
       </nobr>
     <%- end -%>
       

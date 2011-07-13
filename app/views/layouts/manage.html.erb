@@ -31,6 +31,11 @@
       <li<%= ' class="highlighted"' if params[:controller] == "notices" %>>
       <%= link_to 'Notices', notices_path() %></li>
     <%- end -%>
+    
+    <%- if is_ministry_admin -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "user_codes" %>>
+      <%= link_to 'User Codes', :controller => :user_codes, :action => :generate %></li>
+    <%- end -%>
   </ul>
 
 
@@ -72,8 +77,14 @@
     <li<%= ' class="highlighted"' if params[:controller] == "titles" %>>
     <%= link_to 'Titles', titles_path %></li>
   </ul>
-  <%- end -%>
 
+  <br/><br/>
+  <h3>Registration</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "cim_reg_events" %>>
+    <%= link_to 'Events', cim_reg_events_path %></li>
+  </ul>
+  <%- end -%>
 
   <%- if authorized?(:edit, :ministry_roles) -%>
   <br/><br/>

@@ -57,7 +57,7 @@
 <table>
 	<tr>
 		<td>
-			  <%= render :partial => 'group_list', :locals => { :list_title => "",
+			  <%= render :partial => 'group_list', :locals => { :list_title => "", :show_type_titles => true,
     :group_types_and_involvements => mentee.group_group_involvements(:involved, {:semester => semester})
   } %>
 		</td>

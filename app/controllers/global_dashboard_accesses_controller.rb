@@ -1,5 +1,6 @@
 class GlobalDashboardAccessesController < ApplicationController
   before_filter :ensure_admin
+  skip_before_filter :authorization_filter
 
   # GET /global_dashboard_accesses
   # GET /global_dashboard_accesses.xml
@@ -42,21 +43,10 @@ class GlobalDashboardAccessesController < ApplicationController
   # POST /global_dashboard_accesses
   # POST /global_dashboard_accesses.xml
   def create
-    @global_dashboard_access = GlobalDashboardAccess.new(params[:global_dashboard_access])
-    # try to find the user already
-    u = User.find_by_guid(@global_dashboard_access.guid)
-    unless u
-      u = Person.create_new_cim_hrdb_account(@global_dashboard_access.guid, 
-                                         @global_dashboard_access.fn, 
-                                         @global_dashboard_access.ln, 
-                                         @global_dashboard_access.email)
-      p = u.person
-      p.timetable
-      mi = p.ministry_involvements.new
-      mi.ministry = Ministry.find_by_name "CCCI Global Team"
-      mi.ministry_role = StaffRole.find_by_name "International Staff"
-      mi.save!
-    end
+    @global_dashboard_access = GlobalDashboardAccess.setup(params[:global_dashboard_access][:guid], 
+                                                           params[:global_dashboard_access][:fn], 
+                                                           params[:global_dashboard_access][:ln], 
+                                                           params[:global_dashboard_access][:email]) 
 
     respond_to do |format|
       if @global_dashboard_access.save
@@ -100,7 +90,7 @@ class GlobalDashboardAccessesController < ApplicationController
   protected
 
     def ensure_admin
-      access_denied unless is_ministry_admin
+      access_denied unless is_ministry_admin || @me.is_global_dashboard_admin
     end
 
 end

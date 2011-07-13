@@ -6,6 +6,7 @@ class GlobalCountry < ActiveRecord::Base
     :class_name => "GlobalProfile"
   has_many :global_profiles_employed, :foreign_key => "employment_country", :primary_key => "iso3", 
     :class_name => "GlobalProfile"
+  has_many :global_dashboard_whq_stats
 
   WHQ_MCCS = %w(virtually_led church_led leader_led student_led)
   WHQ_MCCS_TO_PARAMS = {
@@ -13,6 +14,12 @@ class GlobalCountry < ActiveRecord::Base
     "church_led" => "church-led",
     "leader_led" => "leader-led",
     "student_led" => "student-led"
+  }
+  WHQ_STRATEGY_TO_MCC = {
+    "internet" => "virtually-led",
+    "coverage" => "church-led",
+    "community" => "leader-led",
+    "campus" => "student-led"
   }
 
   def isos
@@ -198,6 +205,43 @@ class GlobalCountry < ActiveRecord::Base
         c.total_slm_staff = strip_commas(values[column('K')])
         c.total_new_slm_staff = strip_commas(values[column('L')])
         c.save!
+      end
+    end
+  end
+
+  def GlobalCountry.import_new_whq_data
+    last_year = nil
+    parse('global_dashboard_data/whq2.csv', 1) do |values|
+      year_num = values[column('A')].to_i
+      if last_year != year_num
+        last_year = year_num
+        puts last_year
+      end 
+
+      month_num = values[column('B')].to_i
+      # the easiest way to find a year object is to go through months
+      month = Month.find_by_month_desc("#{Date::MONTHNAMES[month_num]} #{year_num}")
+      year = month.year
+
+      area_name = values[column('C')]
+      country_name = values[column('D')]
+      country_code = values[column('E')]
+      strategy = values[column('F')].downcase
+
+      gc = GlobalCountry.find_by_iso3(country_code)
+
+      if gc.nil?
+        puts "[new_whq] Coudn't find country by iso code #{country_code}!"
+      else
+        s = GlobalDashboardWhqStat.find_or_create_by_mcc_and_month_id_and_global_country_id(WHQ_STRATEGY_TO_MCC[strategy], month.id, gc.id)
+        s.live_exp = values[column('G')].to_i 
+        s.live_dec = values[column('H')].to_i 
+        s.new_grth_mbr = values[column('I')].to_i 
+        s.mvmt_mbr = values[column('J')].to_i 
+        s.mvmt_ldr = values[column('K')].to_i 
+        s.new_staff = values[column('L')].to_i 
+        s.lifetime_lab = values[column('M')].to_i 
+        s.save!
       end
     end
   end

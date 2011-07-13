@@ -2,6 +2,7 @@
 <%= error_messages_for :person, :current_address, :perm_address, :ci, :mi %>
 <% remote_form_for @person, :url => person_url(@person, :set_campus_requested => params[:set_campus_requested]), :method => :put do |f| %>
 
+  <br/>
   <table width="100%" border="0" cellspacing="0" cellpadding="5" class="address editpad">
 
     <!-- Render the person's basic information -->
@@ -16,20 +17,16 @@
         <%= render :partial => 'extra_person_information',
           :locals => { :f => f, :person => @person, :user => @person.user}
         %>
-			    <%-# Only allow 'remove myself' for your own profile... %>  
-		      <%- if @person == @me -%>
-		      <div class="butUpdate" style="margin-right:42px;">
-		        <%= link_to "Remove Me from the Pulse", person_url(@person.id, :logout => 'true'), :confirm => "You are about to remove yourself from all ministries, campuses, and groups you are a part of. Are you SURE you want to continue? (you will be logged out)", :method => :delete %>
-		      </div>
-					<%- end -%>
       </td>
     </tr>
 
+    <tr><td><br/></td></tr>
+
     <!-- Render the address blocks -->
     <tr>
-      <td><h4 class="title">Current Address</h4></td>
+      <td><h5>Current Address</h5></td>
       <td class="spacer">&nbsp;</td>
-      <td><h4 class="title">Permanent Address</h4></td>
+      <td><h5>Permanent Address</h5></td>
     </tr>
     <tr>
       <td>
@@ -55,5 +52,16 @@
 <br />
 
 <!-- Buttons at the bottom -->
-<%= submit_tag "Save" %> or <% if request.xhr? %><% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
+<%= submit_tag "Save", :class => "action-button" %> &nbsp; or <% if request.xhr? %><% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
+
+
+<%- if @person == @me -%>
+  <div id="removeMe">
+    <%= link_to "Remove me from the Pulse", person_url(@person.id, :logout => 'true'),
+                                            :confirm => "You are about to remove yourself from all ministries, campuses, and groups you are a part of.\n\nAre you SURE you want to continue? (you will be logged out)",
+                                            :title => "Remove yourself from all ministries, campuses, and groups you are a part of (you will be logged out)",
+                                            :method => :delete %>
+  </div>
+<%- end -%>
+
 <% end -%>

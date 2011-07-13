@@ -45,9 +45,9 @@ function updateHeaderVisibility() {
   if (scrollTop() > schedTop) {
     $("#schedule_header").show();
   } else {
-    $("#schedule_header").fade();
+    $("#schedule_header").hide();
   }
-};
+}
 
 $(window).scroll(updateHeaderVisibility);
 

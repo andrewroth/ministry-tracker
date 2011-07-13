@@ -1,4 +1,5 @@
 #require 'person_methods'
+require 'csv'
 
 # Question: Seems to handle the production of a directory view, either for
 # entire campus (or ministry?), or according to search criteria. Does other things?
@@ -20,7 +21,7 @@ class PeopleController < ApplicationController
   before_filter :set_current_and_next_semester
   free_actions = [:set_current_address_states, :set_permanent_address_states,  
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
-                  :set_initial_ministry]
+                  :set_initial_ministry, :edit_me]
   skip_standard_login_stack :only => free_actions
      
   MENTOR_ID_NONE = nil
@@ -48,6 +49,7 @@ class PeopleController < ApplicationController
         redirect_to :back
       else
         flash[:notice] = "No user for person #{params[:id]}"
+        redirect_to :back
       end
     end
   end
@@ -160,6 +162,44 @@ class PeopleController < ApplicationController
         render :action => 'excel', :layout => false
       end
       format.xml  { render :xml => @people.to_xml }
+      format.csv do
+        do_directory_search
+        @people = ActiveRecord::Base.connection.select_all(@sql)
+        fn = "tmp/#{Time.now.to_i}"
+        csv_string = FasterCSV.open(fn, "w") do |csv|
+          csv << @view.columns.collect(&:title)
+          for person in @people
+            csv << @view.columns.collect do |column|
+              value = case column.column_type
+                      when 'date'
+                        format_date(person[column.safe_name])
+                      when 'gender'
+                        @person.human_gender(person[column.safe_name])
+                      else
+                        person[column.safe_name] 
+                      end
+
+            end
+          end
+        end
+
+        #this is required if you want this to work with IE        
+=begin
+        if request.env['HTTP_USER_AGENT'] =~ /msie/i
+          headers['Pragma'] = 'public'
+          headers["Content-type"] = "text/plain" 
+          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
+          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
+          headers['Expires'] = "0" 
+        else
+          headers["Content-Type"] ||= 'text/xml'
+          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
+        end
+=end
+
+        user_fn = @search_for.gsub(';',' -') + ".csv"    
+        send_file fn, :filename => user_fn, :type => "text/csv"
+      end
     end
   end
 
@@ -319,7 +359,6 @@ class PeopleController < ApplicationController
           format.xml  { render :xml => @person.to_xml }
         end
       else
-        flash[:notice] = nil
         respond_to do |format|
           format.html { render :action => :show }# show.rhtml
           format.xml  { render :xml => @person.to_xml }
@@ -332,6 +371,20 @@ class PeopleController < ApplicationController
     params[:id] = @person.id
     @person = current_user.person
     show
+  end
+  
+  def edit_me # intended to be used with a user code
+    unless session[:code_valid_for_user_id] # just to be sure
+      access_denied(true)
+      return
+    end
+    
+    @user = User.find session[:code_valid_for_user_id]
+    self.current_user = @user
+    @me = @my = @person = @user.person
+    session[:edit_profile] = true
+    
+    redirect_to :action => :show, :id => @my.id
   end
   
   def setup_new
@@ -385,16 +438,19 @@ class PeopleController < ApplicationController
     # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
     @person = Person.find(params[:id], :include => [:ministry_involvements, :campus_involvements])
     ministry_involvements_to_end = @person.ministry_involvements.collect &:id
-    MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
+    MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'",
+                                   "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
     
     campus_involvements_to_end = @person.campus_involvements.collect &:id
-    CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
+    CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'",
+                                 "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
-    flash[:notice] = "#{@person.full_name} has successfully been removed."
+    
+    flash[:notice] = "<big>#{@person.full_name}'s involvements on the Pulse have successfully been removed</big>"
     
     if (params[:logout] == 'true')
-       redirect_to logout_url
+      redirect_to logout_url
     else
       redirect_to :back
     end
@@ -510,9 +566,9 @@ class PeopleController < ApplicationController
         @ministry.training_questions.each do |q|
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
-        flash[:notice] = 'Profile was successfully updated.'
+        flash[:notice] = '<big>Your profile has been updated, thanks!</big>'
         if params[:set_campus_requested] == 'true'
-          flash[:notice] += "  Thank you for setting your campus.  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
+          flash[:notice] += "  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
         end
 
         @person = Person.find(params[:id])

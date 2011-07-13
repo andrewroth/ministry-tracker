@@ -22,20 +22,18 @@
 <div class="horizTableCompare timeControlsContainer">
   <% form_for @group do |form| %>
     <div class="timeControl">
-      Day: <%= form.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %>
+      Day <%= form.select :day, Date::DAYNAMES.zip([0,1,2,3,4,5,6]), :include_blank => true %>
     </div>
     <div class="timeControl">
-      Start time: <%= form.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+      Start time <%= form.select :start_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
     </div>
     <div class="timeControl">
-      End time: <%= form.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
+      End time <%= form.select :end_time, times(Timetable::EARLIEST, Timetable::LATEST), :include_blank => true %>
     </div>
     <div class="timeControl"><%= submit_tag 'Save', :class => 'action-button' %></div>
   <% end %>
 </div>
 
-
-<br/>
 
 
 <% day_width = 14.285714  %>
@@ -45,9 +43,9 @@
   <div id="horizTableCompareContainer" class="horizTableCompare">
 
     <div class="colourLegend">
-      <div class="legendItem"><div class="personTimeBlock good"></div> Good </div>
-      <div class="legendItem"><div class="personTimeBlock ok  "></div> Okay </div>
-      <div class="legendItem"><div class="personTimeBlock bad "></div> Busy </div>
+      <div class="legendItem"><div class="personTimeBlock good"></div> GOOD </div>
+      <div class="legendItem"><div class="personTimeBlock ok  "></div> OKAY </div>
+      <div class="legendItem"><div class="personTimeBlock bad "></div> BAD </div>
     </div>
 
     <div class="namesList">
@@ -108,7 +106,9 @@
 
     <div class="frameControls">
       <div class="zoomSliderContainer">
-        <%= image_tag "silk/zoom_out.png", :class => "zoomSliderOut", :title => "Zoom out" %><div id="zoomSlider"></div><%= image_tag "silk/zoom_in.png", :class => "zoomSliderIn", :title => "Zoom in" %>
+        <div class="zoomSliderOut" title="Zoom out"></div>
+        <div id="zoomSlider"></div>
+        <div class="zoomSliderIn" title="Zoom in"></div>
       </div>
       <div class="visibleDaysControls">
         <% Date::ABBR_DAYNAMES.each_with_index do |day, i| %>
@@ -176,7 +176,7 @@
 
   // show tooltip on hover over timetable link
   $(".personTimetableLink").tooltip({
-    track: false,
+    track: true,
     delay: 0,
     showURL: false,
     showBody: " - ",

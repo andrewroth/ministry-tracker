@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
     # cas stuff is not set by this point and so it appears like nobody is logged in even
     # when someone goes through cas login successfully
     login_from_cas if params[:ticket].present? 
-
+    
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
@@ -140,8 +140,17 @@ class SessionsController < ApplicationController
       # (below) clear out any GET '?' parameters from string before navigating back a page
       redirect_to request.env["HTTP_REFERER"].gsub(/\?[\=\&A-z0-9]+/,'')    # :back
     else
-      flash[:notice] = "You have been logged out."
+      flash[:notice] = "You have been logged out"
       logout_keeping_session!
+    end
+  end
+  
+  def recreate
+    if session[:impersonator].present?
+      redirect_to :action => destroy
+    else
+      dest = params[:destination].present? ? "#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI::escape(params[:destination])}&gateway=false" : nil
+      logout_keeping_session!(dest, false)
     end
   end
 

@@ -1,0 +1,23 @@
+<style>
+  td.country { width: 300px; }
+  td.month { width: 100px; }
+  tr, td { border-bottom: 1px solid #cccccc; }
+</style>
+
+<table>
+  <tr>
+    <td class="country"></td>
+    <%- @month_short.each do |m| %>
+      <td class="month"><%= m %></td>
+    <%- end %>
+  </tr>
+  <%- for country in @countries %>
+    <tr>
+      <td class="country"><%= country.name %></td>
+      <%- @month_short.each do |m| %>
+        <!--<td class="month"><%= image_tag @month_data[country][m] ? "check_green.png" : "denied_red.png" %></td>-->
+        <td class="month"><%= @month_data[country][m] ? image_tag("check_green.png") : "" %></td>
+      <%- end %>
+    </tr>
+  <%- end %>
+</table>

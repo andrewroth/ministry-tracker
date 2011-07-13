@@ -1,5 +1,5 @@
 
-<a id="closeLink" href="">×</a>
+<a id="closeLink" href="" title="Close search results">×</a>
 
 <% if @people and @q.present? and @people.size > 0 %>
 
@@ -7,8 +7,6 @@
   
   <br/>
   <br/>
-  <div id='profileCaption'>
-  </div>
   <table cellspacing="0" cellpadding="5" border="0" id="reviewerSearchResults" class="groupInvolvementList">
     <tbody>
       <% @people.each do |person| %>

@@ -1,0 +1,21 @@
+<h2><%= @my.full_name %></h2>
+
+<br/>
+
+<% form_for [@person, @campus_involvement] do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <big>
+      I'm a
+      <%= f.collection_select :school_year_id, SchoolYear.all, :id, :name, {}, {:style => "font-size:14px;"} %>
+      student at <%= @campus_involvement.campus.name %>.
+    </big>
+  </p>
+  <br/>
+  <p>
+    <%= f.hidden_field :campus_id %>
+    <%= f.submit 'Save', :class => 'action-button' %>
+  </p>
+<% end %>
+

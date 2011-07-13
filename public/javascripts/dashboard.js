@@ -1,20 +1,7 @@
 $(document).ready(function(){
 
   // set vertical bracket height
-  $("#verticalTablistContainer").height($(".colmask").height());
-
-  // change img source on mouseover
-  $(function() {
-    $("img.mouseover")
-      .mouseover(function() {
-        var src = $(this).attr("src").match(/[^\.]+/) + "Y.png";
-        $(this).attr("src", src);
-      })
-      .mouseout(function() {
-        var src = $(this).attr("src").replace("Y", "");
-        $(this).attr("src", src);
-      });
-  });
+  adjustBracketHeight();
 
   // add student tab is a remote link
   $("#addStudentTab").click(function(e) {
@@ -31,4 +18,8 @@ function requestMyEvents() {
     dataType:'script',
     type:'post',
     url:'/dashboard/events'})
+}
+
+function adjustBracketHeight() {
+  $("#verticalTablistContainer").height($("#dashwrap .col1").height());
 }

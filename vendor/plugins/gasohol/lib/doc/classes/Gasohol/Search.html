@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Gasohol::Search</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Gasohol::Search</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/gasohol/search_rb.html">
+                gasohol/search.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+The class that does the actual searching.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000003">new</a>&nbsp;&nbsp;
+      <a href="#M000004">search</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">DEFAULT_OPTIONS</td>
+          <td>=</td>
+          <td class="context-item-value">{ :url =&gt; '',                         :num =&gt; 10,                          :start =&gt; 0,                          :filter =&gt; 'p',                          :collection =&gt; 'default_collection',                          :client =&gt; 'default',                          :output =&gt; 'xml_no_dtd',                          :getfields =&gt; '*',                         :sort =&gt; '',                         :requiredfields =&gt; '',                         :partialfields =&gt; '' }</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+default parameters that go to the GSA
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ALLOWED_PARAMS</td>
+          <td>=</td>
+          <td class="context-item-value">DEFAULT_OPTIONS.keys</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+the parameters that google cares about and will respond to
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">config</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+          <a href="Search.src/M000003.html" target="Code" class="method-signature"
+            onclick="popupCode('Search.src/M000003.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(config=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+          <a href="Search.src/M000004.html" target="Code" class="method-signature"
+            onclick="popupCode('Search.src/M000004.html');return false;">
+          <span class="method-name">search</span><span class="method-args">(query,options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This method does the actual searching. It accepts two parameters:
+</p>
+<ul>
+<li><tt>query</tt> is the query string to google (q=)
+
+</li>
+<li><tt>options</tt> is a hash of parameters that could replace or augment
+DEFAULT_OPTIONS
+
+</li>
+</ul>
+<p>
+On most implementations that offer more than straight keyword searches
+you&#8216;re going to want additional parameters, like meta searches, to
+appear in the browser&#8216;s URL so that the <a
+href="Search.html#M000004">search</a> can be uniquely identified and run
+again. These parameters will not be formatted correctly for Google. So
+you&#8216;ll want to extend <a href="../Gasohol.html">Gasohol</a> and write
+your own impementation of this method that at the end will call super and
+pass in a final query string and hash of options.
+</p>
+<h2>Example</h2>
+<p>
+You have an application that searches for pizzas. You want your URL to look
+something like:
+</p>
+<pre>
+  http://pizzafinder.com/search?keyword=deep+dish&amp;size=16&amp;toppings=cheese
+</pre>
+<p>
+The GSA doesn&#8216;t know what to do with &#8216;keyword,&#8217;
+&#8216;size,&#8217; or &#8216;toppings&#8217; so you need to turn those
+into something it does understand. So you might extend this method to look
+like:
+</p>
+<pre>
+  class PizzaFinder &gt; Gasohol::Search
+    def search(parts,options={})
+      super(&quot;#{query} inmeta:panSize=#{parts[:size]} inmeta:toppings~#{parts[:toppings]&quot;)
+    end
+  end
+</pre>
+<p>
+And then use it like so (<tt>params</tt> is the default Ruby on Rails hash
+of URL values):
+</p>
+<pre>
+  the_finder = PizzaFinder.new(config)
+  pizzas = the_finder.search(params)
+</pre>
+<p>
+That string is appeneded to the GSA url and now it knows how to <a
+href="Search.html#M000004">search</a>:
+</p>
+<pre>
+  http://gsa.pizzafinder.com/search?q=deep+dish+inmeta:panSize=16+inmeta:toppings~cheese&amp;collection=etc,etc,etc
+</pre>
+<p>
+The result that comes back is ready to be used in your app (looping through
++pizzas.results+ and displaying them however you like
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

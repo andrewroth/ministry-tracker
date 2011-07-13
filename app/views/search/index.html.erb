@@ -1,4 +1,6 @@
 
+<%= javascript_include_tag "jquery.tooltip.js" %>
+
 <h1 id="reportTitle">Search</h1>
 
 <% if @q.present? %>
@@ -14,87 +16,51 @@
   <br/>
   
   <% if session[:search][:authorized_to_search_people] %>
-    <div class="searchResultsTitle">
-      <%= image_tag("silk/user.png") %> <strong>People</strong> results for <strong><%= @q %></strong>
-
-      <div class="searchResultsSize">
-        <% if @people.total_entries > @people.per_page %>
-          <% onCurPageEnd = @people.current_page * @people.per_page %>
-          <% onCurPageBegin = (onCurPageEnd-@people.per_page)+1 %>
-          <% onCurPageEnd = onCurPageEnd > @people.total_entries ? @people.total_entries : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
-        <% end %>
-        <%= pluralize(@people.total_entries, "person") %>
-      </div>
-
-    </div>
-
-    <ul id="peopleSearchResults">
-      <% if @people.size > 0 %>
-        <%= render :partial => "person", :collection => @people -%>
-
-        <% if @people.total_entries > @num_results_per_page %>
-          <li class="searchResult searchResultMore">
-            <%= link_to("See more results »", :action => "people", :controller => "search", :q => @q, :page => 2) %>
-          </li>
-        <% end %>
-
-      <% else %>
-        <p>
-          No people found for <strong><%= @q %></strong> within your ministry.<br/>
-          Try searching for just their first name, last name or email.
-        </p>
-      <% end %>
-    </ul>
-
+    <%= render :partial => "people", :locals => { :pagination => false } %>
+    <br/>
     <br/>
   <% end %>
 
 
-
   <% if session[:search][:authorized_to_search_groups] %>
-    <div class="searchResultsTitle">
-      <%= image_tag("silk/group.png") %> <strong>Group</strong> results for <strong><%= @q %></strong>
+    <%= render :partial => "groups", :locals => { :pagination => false } %>
+    <br/>
+    <br/>
+  <% end %>
 
-      <div class="searchResultsSize">
-        <% if @groups.total_entries > @groups.per_page %>
-          <% onCurPageEnd = @groups.current_page * @groups.per_page %>
-          <% onCurPageBegin = (onCurPageEnd-@groups.per_page)+1 %>
-          <% onCurPageEnd = onCurPageEnd > @groups.total_entries ? @groups.total_entries : onCurPageEnd %>
-          <%= "#{onCurPageBegin}-#{onCurPageEnd} of" %>
-        <% end %>
-        <%= pluralize(@groups.total_entries, "group") %>
+
+  <% if session[:search][:authorized_to_search_web] %>
+    <div id="webResultsContainer">
+      <div id="webResults">
+        <div class="searchResultsTitle">
+          <%= image_tag("silk/world.png") %> Fetching <strong>Web</strong> results for <strong><%= @q %></strong>
+        </div>
+        <div class="searchResult searchResultWeb">
+          <%= image_tag("default/shared/large-loading.gif", :class => "spinner") %>
+        </div>
       </div>
-
     </div>
-
-    <ul id="GroupSearchResults">
-      <% if @groups.size > 0 %>
-        <%= render :partial => "group", :collection => @groups -%>
-
-        <% if @groups.total_entries > @num_results_per_page %>
-          <li class="searchResult searchResultMore">
-            <%= link_to("See more results »", :action => "groups", :controller => "search", :q => @q, :page => 2) %>
-          </li>
-        <% end %>
-
-      <% else %>
-        <p>
-          No groups found for <strong><%= @q %></strong> within your ministry.<br/>
-          Try searching for part of the group name or the name of someone who's in the group you're looking for.
-        </p>
-      <% end %>
-    </ul>
-
+    
+    <br/>
     <br/>
   <% end %>
 
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    jQuery.ajax({
+      dataType:'script',
+      type:'post',
+      url:'<%= url_for :controller => :search, :action => :web_remote, :q => "#{@q}" %>'});
+  });
+</script>
 
 <% else %>
 
 <br/>
-<big>Don't be shy, search for a person or group by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
+<big>Don't be shy, search for something by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>
 
 <% end %>
+
+

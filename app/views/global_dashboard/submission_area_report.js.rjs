@@ -1,0 +1,1 @@
+page["#stats"].html(render(:partial => "submission_area_report"))

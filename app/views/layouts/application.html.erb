@@ -16,9 +16,10 @@
     </title>
 
     <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
-                            "/javascripts/jscalendar-1.0/skins/aqua/theme.css",
                             :media => "screen",
                             :cache => "cache/all" %>
+
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
 
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
                                'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'application',
@@ -35,26 +36,31 @@
   </head>
 
 
-	<body>
-    <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
+	<body>    
       
     <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
-    <%= connexion_bar if Cmt::CONFIG[:gcx_connexion_bar] %>
+		
+		<% if Cmt::CONFIG[:gcx_connexion_bar] %>
+      <%= connexion_bar %>
+      <%= connexion_bar_revealer %>
+    <% end %>
+    
+    <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
 
 
 		<div id="wrapper">
 		  <div id="userbar">
         <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-          <%= link_to image_tag("c4clogo.png"), :controller => 'dashboard', :action => 'index' %>
-          <%= link_to image_tag("pulselogo.png"), :controller => 'dashboard', :action => 'index' %>
+          <%= link_to "<div id='c4c_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
+          <%= link_to "<div id='pulse_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
         </div>
 
 
         <% if logged_in? && @me && !@custom_userbar_title %>
 
 
-        <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
+        <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } %>
         
 
         <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
@@ -69,10 +75,13 @@
           <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
           
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();" %><%- end -%></div>
-            <div id="switch_ministries_list" style="display:none">
-              &nbsp;
+            <div id="switch_ministries">
+              <%- if @ministry -%>
+                &nbsp;&nbsp;
+                <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
+              <%- end -%>
             </div>
+            <div id="switch_ministries_list" style="display:none">&nbsp;</div>
           <%- end -%>
           
           <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
@@ -89,40 +98,6 @@
       <div id="banner_container">
         <%= render :partial => "/dashboard/banner" %>
       <% end %>
-        
-        <script type="text/javascript">
-          $(document).ready(function(){
-            // preload mouseover images
-            $([
-              '/images/debicons/Ydashboard.png',
-              '/images/debicons/Yprofile.png',
-              '/images/debicons/Ygroups.png',
-              '/images/debicons/Yinsights.png',
-              '/images/debicons/Yschicon.png',
-              '/images/debicons/Yaddicon.png',
-              '/images/debicons/Yarroicon.png',
-              '/images/Yarrowdown_s.png',
-              '/images/debicons/Yfacebooklogo.png',
-              '/images/debicons/Ytwitterlogo.png',
-              '/images/debicons/Yprofile_s.png',
-              '/images/debicons/Yschicon_s.png',
-              '/images/debicons/Yimpicon.png',
-              '/images/debicons/Yarroicon.png',
-              '/images/debicons/Ymanaicon.png',
-              '/images/debicons/GDTicon.png',
-              '/images/debicons/YDTicon.png',
-              '/images/debicons/Ymagniglass.png',
-              '/images/bannerleftbubble.png',
-              '/images/bannerleftbubbleY.png',
-              '/images/bannerrightbubble.png',
-              '/images/bannerrightbubbleY.png',
-              '/images/expand.png',
-              '/images/contract.png'
-            ]).each(function(){
-                $('<img/>')[0].src = this;
-            });
-          });
-        </script>
       </div>
 
 
@@ -143,24 +118,30 @@
       <div class="clear">&nbsp;</div>
 
 
+      <!-- this is a conditional comment, only IE recognizes these -->
       <!--[if lt IE 8]>
         <div id='browser_warning' class='flash_notice warning'>
           <%= image_tag "/images/silk/exclamation.png" %>
-          <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
+          <b><big>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</big></b><br/>
           For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
 
-          <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-          <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-          <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-          <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          <div style='background-color:white; display:inline; padding:5px 5px 0;'>
+            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          </div>
         </div>
       <![endif]-->
+      
 
       <noscript>
         <div class="flash_notice warning">
           <%= image_tag "/images/silk/exclamation.png" %>
-          <b>For full functionality of this site it is necessary to enable JavaScript.</b>
-          <a href="http://www.enable-javascript.com/" target="_blank">Here are the instructions how to enable JavaScript in your web browser.</a>
+          <b><big>For full functionality of this site it is necessary to enable JavaScript.</big></b>
+          <br/>
+          <br/>
+          <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
         </div>
       </noscript>
 
@@ -172,7 +153,7 @@
                           <%- end %>
                         <%- end %>
       <div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
-      <div id="instructions" class="flash_notice notice" style="display:none;"></div>
+      <div id="instructions" style="display:none;"></div>
 
       <div id="content">
         <%= yield %>
@@ -183,7 +164,7 @@
     <div id="dialog" style="display:none"></div>
     </div> <!-- Center -->
     <div id="footer">
-      <div id="helpLink"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><%= image_tag "/images/help.gif" %></a></div>
+      <div id="helpLinkContainer"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><div id="helpLink">&nbsp;</div></a></div>
     </div>
     <%= I18n.t :analytics, :default => "" %>
 

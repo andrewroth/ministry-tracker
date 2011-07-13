@@ -1,28 +1,45 @@
-<%- hide_total ||= false %>
-<div class="dashmodule" id="<%= id %>">
-  <div class="moduletitle">
-    <h2><%= link_to_function "#{header} <span>-</span>", "toggle('#{id}')" %></h2>
-  </div>
-  <div class="modulecontent">
-    <table align="right">
-    <%- stat.keys.compact.sort.each do |k| %>
-      <%- if k != "" -%>
-      <tr align="right">
-        <%- value_str = stat[k].is_a?(Float) ? number_to_percentage(stat[k]) : number_with_delimiter(stat[k]) %>
-        <td style="width: 50%"><%= column_humanize(k) %></td><td style="width: 50px"><%= value_str %><td/>
-      </tr>
-      <%- end -%>
-    <%- end -%>
-    <%- if stat[""].present? %>
-      <tr align="right">
-        <td style="width: 50%">No value entered</td><td style="width: 50px"><%= number_with_delimiter(stat[""]) %></td><br/>
-      </tr>
-    <%- end %>
-    <%- unless hide_total -%>
-      <tr align="right">
-        <td style="width: 50%"><b>Total</b></td><td><b><%= number_with_delimiter(stat.values.sum) %></b></td>
-      </tr>
-    <%- end -%>
-    </table>
-  </div>
-</div>
+
+<script type="text/javascript" charset="utf-8">
+
+  function init_<%= id %>_chart() {
+    
+    $("#<%= container_id %>").empty();
+    
+    var r = Raphael("<%= container_id %>");
+    r.g.txtattr.font = "12px Helvetica, Arial, Sans-Serif";
+
+    r.g.text(320, 50, "<%= header %>").attr({"font-size": 20});
+
+    var pie = r.g.piechart(320, 200, 100, 
+      [ <%= stat.keys.compact.sort.collect{ |k| stat[k] }.join(", ") %> ], 
+      //[55, 20, 13, 32, 5, 1, 2, 10], 
+      { legend: [ <%= 
+        stat.keys.compact.sort.collect{ |k| 
+          str = (k == "" || k.nil?) ? "No value entered" : k
+          total = stat.values.sum
+          val = stat[k].is_a?(Float) ? "(#{number_to_percentage(stat[k])})" : 
+            "(#{number_with_delimiter(stat[k])} :: #{number_to_percentage((stat[k].to_f / total) * 100, :precision => 0)})"
+
+          "\"#{str} #{val}\""
+        }.join(', ') %> ], legendpos: "west" });
+      //{legend: ["%%.%% – Enterprise Users", "IE Users"], legendpos: "west", 
+      //  href: ["http://raphaeljs.com", "http://g.raphaeljs.com"]});
+      
+    pie.hover(function () {
+      this.sector.stop();
+      this.sector.scale(1.1, 1.1, this.cx, this.cy);
+      if (this.label) {
+        this.label[0].stop();
+        this.label[0].scale(1.5);
+        this.label[1].attr({"font-weight": 800});
+      }
+    }, function () {
+      this.sector.animate({scale: [1, 1, this.cx, this.cy]}, 500, "bounce");
+      if (this.label) {
+        this.label[0].animate({scale: 1}, 500, "bounce");
+        this.label[1].attr({"font-weight": 400});
+      }
+    });
+  }
+  
+</script>

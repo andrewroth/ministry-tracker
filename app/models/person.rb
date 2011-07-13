@@ -86,6 +86,10 @@ class Person < ActiveRecord::Base
                       "#{_(:requested, :group_involvement)} = ?",
                       self.id, semester.id, true])
   end
+  
+  def most_recent_group_involvement
+    self.group_involvements.all(:first, :conditions => ["#{Person._(:id)} = ?", self.id], :order => "created_at desc").first
+  end
 
   def custom_value_hash
     if @custom_value_hash.nil?
@@ -188,5 +192,9 @@ class Person < ActiveRecord::Base
       approved_by = approver ? approver : @training_answer_hash[question_id].approved_by
       @training_answer_hash[question_id].update_attributes({_(:completed_at, :training_answer) => date, _(:approved_by, :training_answer) => approver})
     end
+  end
+
+  def is_global_dashboard_admin
+    v = self.try(:user).try(:global_dashboard_access).try(:admin)
   end
 end

@@ -19,117 +19,44 @@
                                 'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
     <%= yield :javascripts %>
 
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
-    <%- if logged_in? -%>
-      <%= stylesheet_link_tag "connexion_default.css" %>
-    <%- end -%>
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
     <%= javascript_include_tag "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => 'calendar' %>
 
-    <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
   </head>
 
 	<body>
-    <!--
-    <%= render :partial => "/link_bar/link_bar" if logged_in? && @me %>
-    -->
       
-    <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 		<div id="outer">
-    <%= connexion_bar if Cmt::CONFIG[:gcx_connexion_bar] %>
-
 
 		<div id="wrapper">
-      <!--
-		  <div id="userbar">
-        <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-          <%= link_to image_tag("c4clogo.png"), :controller => 'dashboard', :action => 'index' %>
-          <%= link_to image_tag("pulselogo.png"), :controller => 'dashboard', :action => 'index' %>
-        </div>
-
-
-        <% if logged_in? && @me && !@custom_userbar_title %>
-
-
-        <%= render :partial => "/search/search_box", :locals => { :q => @q } %>
-        
-
-        <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
-          <a href="#" class="logoutbutton" onclick="try {
-            FB.Connect.logoutAndRedirect('<%= logout_url %>');
-            } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
-        <% end %>
-
-        <div id="userblock" class="link_bar">
-          <%= spinner('_switch_ministries', 'opaqueWhite') %>
-          &nbsp;Hi&nbsp;
-          <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
-          
-          <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries"><%- if @ministry -%>&nbsp;&nbsp;<%= link_to_remote @ministry.name, :url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();" %><%- end -%></div>
-            <div id="switch_ministries_list" style="display:none">
-              &nbsp;
-            </div>
-          <%- end -%>
-          
-          <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
-        </div>
-        
-        <div class="clear"></div>
-
-      </div>
-      -->
-
-      <% unless controller.controller_name == "dashboard" %>
-        <!--
-      <div id="tablist_container">
-        <%= tabnav :main %>
-      <% else %>
-        -->
-      <div id="banner_container">
-        <%= render :partial => "/dashboard/banner" %>
-      <% end %>
-        
-      </div>
-
-
-
-      <%- else -%>
-
-        <div id="userblock">
-        </div>
-        <div class="clear"></div>
-      </div>
-
-      <div id="greenbar">
-        <div id="signin"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
-      </div>
-
-      <%- end -%>
 
       <div class="clear">&nbsp;</div>
 
-
+      <!-- this is a conditional comment, only IE recognizes these -->
       <!--[if lt IE 8]>
         <div id='browser_warning' class='flash_notice warning'>
           <%= image_tag "/images/silk/exclamation.png" %>
-          <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
+          <b><big>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</big></b><br/>
           For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
 
-          <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-          <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-          <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-          <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          <div style='background-color:white; display:inline; padding:5px 5px 0;'>
+            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          </div>
         </div>
       <![endif]-->
 
       <noscript>
         <div class="flash_notice warning">
           <%= image_tag "/images/silk/exclamation.png" %>
-          <b>For full functionality of this site it is necessary to enable JavaScript.</b>
-          <a href="http://www.enable-javascript.com/" target="_blank">Here are the instructions how to enable JavaScript in your web browser.</a>
+          <b><big>For full functionality of this site it is necessary to enable JavaScript.</big></b>
+          <br/>
+          <br/>
+          <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
         </div>
       </noscript>
-
 
       <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
                         <%- if @notices -%>
@@ -148,9 +75,11 @@
 
     <div id="dialog" style="display:none"></div>
     </div> <!-- Center -->
+    
     <div id="footer">
-      <div id="helpLink"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><%= image_tag "/images/help.gif" %></a></div>
+      <div id="helpLinkContainer"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center"><div id="helpLink">&nbsp;</div></a></div>
     </div>
+    
     <%= I18n.t :analytics, :default => "" %>
 
     <% user_agent = request.env['HTTP_USER_AGENT'].downcase %>
@@ -160,3 +89,4 @@
     <% end %>
   </body>
 </html>
+
