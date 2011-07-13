@@ -57,18 +57,5 @@ unless @mobile
 	  <%
 	end
 
-
-unless report_links.empty? && report_type_links_to_show.empty?
-  %>
-  <br/>
-  <h3>Review</h3>
-  <ul class="statsLinkList">
-  <%
-end
-report_links.each do |l|
-  %>
-  <li class="statsListLink"><%= link_to l[:text], url_for(:controller => l[:controller], :action => l[:action]) %></li>
-  <%
-
 end
 %>
