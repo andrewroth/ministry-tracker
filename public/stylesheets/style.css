@@ -2727,6 +2727,7 @@ table.groupInvolvementList th {
   text-align: center;
   position: relative;
   font-weight:bold;
+  min-height:170px;
 }
 
 #dashboardInsightsContainer .insight {
@@ -2870,6 +2871,7 @@ table.groupInvolvementList th {
 #tooltip h3, #tooltip div { margin: 0; }
 #tooltip span.whiteFont { color:white; }
 
+
 /** Discipleship Tree **/
 td.discTree {
 	width:50%;
@@ -2974,7 +2976,6 @@ td.nameTitle {
   display: inline;
 }
 
-
 /* Summer Report */
 
 #submit_summer_report label { width:250px; text-align:right; padding:2px 10px; }
@@ -3030,4 +3031,3 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 .report_waiting { font-weight:bold; color:#DAB627; }
 .report_approved { font-weight:bold; color:#5B9739; }
 .report_disapproved { font-weight:bold; color:#8C4A4B; }
-

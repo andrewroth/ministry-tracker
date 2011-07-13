@@ -10,18 +10,23 @@
           <% if q.present? && controller.controller_name == "search" %>
             <input type="text" id="uberSearchBox" class="search" name="q" value="<%= q %>"/>
           <% else %>
-            <input type="text" id="uberSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
+            <input type="text" id="uberSearchBox" class="search" name="q" value="<%= @mobile ? '' : default_search_box_text %>"/>
           <% end %>
-
+					
+					<% if @mobile %>
+          <button type="submit" value="Search" title="Click to search" />
+					<% else %>
           <button type="submit" id="uberSearchButton" value="" title="Click to search">
             <div></div>
           </button>
+					<% end %>
 
         <% end %>
       </div>
 
-      <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
+      <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) && !@mobile %>
 
+<% unless @mobile %>
       <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
       <script type="text/javascript">
         $("#uberSearchBox").autocomplete("/search/autocomplete", {
@@ -96,6 +101,7 @@
         });
 
       </script>
+<% end %>
     </div>
 
   <% end %>

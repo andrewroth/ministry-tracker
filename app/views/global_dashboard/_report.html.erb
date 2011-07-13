@@ -49,7 +49,19 @@ h3, .sub {
       <U>Area:</U> <%= @country_area %><BR/>
     </TD><TD>
       <%- unless @area -%>
-      <U>Stage:</U> <%= @country_stage %><BR/>
+        <U>Stage:</U> <span id="global_country_stage_show"><%= @country_stage %></span>
+          <%- if @can_edit_stages %>
+          <span id="global_country_stage_change" style="">
+            <%= link_to_function "Edit", "$('#global_country_stage_change').hide(); $('#global_country_stage_edit').show()" %>
+          </span>
+          <span id="global_country_stage_edit" style="display:none">
+            <%= select_tag('global_country_stage', options_for_select(['', 1, 2, 3], @country_stage)) %>
+            <%= link_to_remote "Save", :url => set_global_country_stage_global_country_path(@country.id), 
+              :class => 'action-button', :with => "'stage='+$('#global_country_stage').val()" %>
+            or <%= link_to_function "Cancel", "$('#global_country_stage_change').show(); $('#global_country_stage_edit').hide()" %>
+          </span>
+          <%- end %>
+        <BR/>
       <%- end %>
     </TD>
   </TR>

@@ -123,7 +123,6 @@ module AuthenticatedSystem
     
     def login_from_cas
       cas_user = session[:cas_user]
-      Rails.logger.info "session[:cas_user]=#{session[:cas_user]} session[:cas_pgt]=#{session[:cas_pgt]}"
       u = false
       if cas_user
         u = User.find_or_create_from_cas(session[:cas_last_valid_ticket])

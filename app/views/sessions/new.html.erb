@@ -1,3 +1,7 @@
+<%
+unless @mobile
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
  
@@ -43,11 +47,25 @@
         </map>
       </div>
     </div>
-    
-    <%= image_tag("log_in_c4c_disco_change.png", :id => "disco_change")%>
-    <%= image_tag("log_in_pulse_explanation.png", :id => "pulse_explain")%>
-    <%= link_to image_tag("log_in_create_login.png"), new_gcx_url, :id => "create_logon" %>
-    <%= link_to image_tag("help.gif"), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
-    
+
+    <div id="footer_container">
+      <%= image_tag("log_in_c4c_disco_change.png", :id => "disco_change")%>
+      <%= image_tag("log_in_pulse_explanation.png", :id => "pulse_explain")%>
+      <%= link_to image_tag("log_in_create_login.png"), new_gcx_url, :id => "create_logon" %>
+      <%= link_to image_tag("help.gif"), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
+    </div>
 	</body>
 </html>
+<%
+else
+%>
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
+      <li><a href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css">Sign In</a></li> 
+      <li><%= link_to 'How to Sign Up', new_gcx_url %></li> 
+      <li><%= link_to 'Help', "https://www.mygcx.org/Pulse_Help_Center/screen/home" %></li> 
+    </ul> 
+ 
+ 
+<%
+end
+%>

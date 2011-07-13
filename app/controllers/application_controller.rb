@@ -4,7 +4,8 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-
+  layout :choose_layout
+  
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -570,6 +571,21 @@ class ApplicationController < ActionController::Base
     def load_my_facebook_graph_into_session_from_oauth_token(oauth_token)
       @graph = Koala::Facebook::GraphAPI.new(oauth_token)
       session[:facebook_person] = @graph.get_object("me")
+    end
+
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+      
+      @mobile ? "mobile" : "application" 
     end
 
 end
