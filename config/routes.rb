@@ -192,6 +192,7 @@ ActionController::Routing::Routes.draw do |map|
                                       :discipleship => :any,
                                       :impersonate => :get,
                                       :show_mentee_profile_summary => :get,
+                                      :show_gcx_profile => :get,
                                       :set_label => :post
                                       },
                           :collection => {:directory                          => :any,

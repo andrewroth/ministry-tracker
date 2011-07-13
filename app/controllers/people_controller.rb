@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
   include PersonForm
   include SemesterSet
 
-  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label]
+  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label, :show_gcx_profile]
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
@@ -782,6 +782,31 @@ class PeopleController < ApplicationController
       format.js
     end
   end
+  
+  
+  def show_gcx_profile
+    if !@person.user || !@person.user.guid
+      flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID</big>"
+      redirect_to @person
+      return
+    end
+    
+    begin
+      request_url = construct_cas_proxy_authenticated_service_url(gcx_profile_report_config[:url], {:guid => @person.try(:user).try(:guid)})
+      
+      agent = Mechanize.new
+      Rails.logger.info "\tGCX profile report service call (#{Date.today}) #{request_url}"
+      page = agent.get(request_url)
+      
+      @hpricot = Hpricot(page.body)
+    rescue => e
+      Rails.logger.error("\nERROR WITH GCX PROFILE RESPONSE: \n"+e.class.to_s+"\n"+e.message+"\n")
+      flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>"
+    end
+  end
+  
+  
+  
   
   private
 
