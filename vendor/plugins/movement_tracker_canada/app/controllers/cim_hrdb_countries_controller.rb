@@ -102,7 +102,8 @@ class CimHrdbCountriesController < ApplicationController
       elems = Hpricot(page.body)
       
       @country_elems = elems.search(:country)
-    rescue
+    rescue => e
+      Rails.logger.error("\nERROR WITH CCC COUNTRY SERVICE: \n\t"+CCC_COUNTRY_SERVICE_URL+"\n\t"+e.class.to_s+"\n\t"+e.message+"\n")
       @country_elems = []
       flash[:notice] = "There was an error connecting with the CCC Countries Service at #{CCC_COUNTRY_SERVICE_URL}"
     end
