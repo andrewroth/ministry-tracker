@@ -1,0 +1,20 @@
+<h1>Editing label_person</h1>
+
+<% form_for(@label_person) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :label_id %><br />
+    <%= f.text_field :label_id %>
+  </p>
+  <p>
+    <%= f.label :person_id %><br />
+    <%= f.text_field :person_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @label_person %> |
+<%= link_to 'Back', label_people_path %>

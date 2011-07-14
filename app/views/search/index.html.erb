@@ -2,8 +2,15 @@
 <%= javascript_include_tag "jquery.tooltip.js" %>
 
 <h1 id="reportTitle">Search</h1>
+<%
+  if @mobile
+    %><%= render :partial => "search_box", :locals => { :q => @q } %><%
+  end
+%>
 
 <% if @q.present? %>
+
+
 
 <div id="searchHeaderInfo">
 </div>
@@ -56,7 +63,7 @@
   });
 </script>
 
-<% else %>
+<% elsif !@mobile %>
 
 <br/>
 <big>Don't be shy, search for something by using the search box! <%= image_tag "silk/emoticon_wink.png" %> </big>

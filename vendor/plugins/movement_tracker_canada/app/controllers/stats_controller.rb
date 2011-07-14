@@ -1,6 +1,7 @@
 require "date"
 class StatsController < ApplicationController
   unloadable
+  layout :choose_layout
 
   skip_before_filter :authorization_filter, :only => [:select_report, :ie_warning]
 
