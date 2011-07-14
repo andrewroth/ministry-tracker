@@ -638,6 +638,8 @@ class ApplicationController < ActionController::Base
           @mobile = true
         end
       end  
+      
+      @mobile ? "mobile" : "application" 
     end
     
     
