@@ -763,7 +763,7 @@ class PeopleController < ApplicationController
       
       @hpricot = Hpricot(page.body)
     rescue => e
-      Rails.logger.error("\nERROR WITH GCX PROFILE RESPONSE: \n"+e.class.to_s+"\n"+e.message+"\n")
+      Rails.logger.error("\nERROR WITH GCX PROFILE RESPONSE: \n\t"+request_url+"\n\t"+e.class.to_s+"\n\t"+e.message+"\n")
       flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>"
     end
   end
