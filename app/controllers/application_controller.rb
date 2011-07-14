@@ -627,6 +627,20 @@ class ApplicationController < ActionController::Base
     end
     
     
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+    end
+    
+    
     # url - url of service trying to call, e.g. "https://service.com/action"
     # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
     def construct_cas_proxy_authenticated_service_url(url, params = {})
