@@ -136,9 +136,9 @@ module Searching
     service_uri = config.delete(:url)
     service_uri += "#{service_uri.include?('?') ? '&' : '?'}q=#{CGI::escape(query)}"
     service_uri = construct_cas_proxy_authenticated_service_url(service_uri, config)
-
-    @gsa_results_unauthenticated = true if service_uri.blank?
-      
+    
+    @gsa_results_unauthenticated = true unless service_uri.include?("ticket=")
+    
     g = Gasohol::Search.new(google_search_appliance_config)
     g.search_request_string(service_uri)
   end

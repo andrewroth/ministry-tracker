@@ -1610,7 +1610,7 @@ padding-bottom:5px;
   color:#666766;
   font-weight:bold;
   font-size:12px;
-  padding-left:12px;
+  padding-left:14px;
   font-family:Arial,Helvetica,Sans-Serif;
 }
 
@@ -1626,11 +1626,14 @@ padding-bottom:5px;
 .removeMentorIconLink       { padding:2px 0 0 17px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -886px; }
 .removeMentorIconLink:hover { background-position:-10px -919px; }
 
-#passwordButton a       { background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -953px; }
-#passwordButton a:hover { background-position:-10px -986px; }
+#passwordButton a       { background: url("/images/sprites/icons.png") no-repeat; background-position:-8px -953px; }
+#passwordButton a:hover { background-position:-8px -986px; }
 
-#editButton a       { background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -440px; }
-#editButton a:hover { background-position:-10px -473px; }
+#editButton a       { background: url("/images/sprites/icons.png") no-repeat; background-position:-7px -440px; }
+#editButton a:hover { background-position:-7px -473px; }
+
+#showButton a       { background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -562px; }
+#showButton a:hover { background-position:-10px -594px; }
 
 #profilewrap table {
   padding:0;
@@ -2856,7 +2859,7 @@ h2.group_type_title {
   overflow: hidden;
 }
 
-.searchAuthenticationWarning {
+.casAuthenticationWarning {
   background-color: #FFCB05;
   -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
   color: #666766;

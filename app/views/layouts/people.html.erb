@@ -20,7 +20,7 @@
         <li><%= link_to("<div id='discipleshipSubTab'>DISCIPLESHIP TREE</div>", {:controller => :people, :action => :discipleship, :id => @person.id}, {:class => params[:controller] == 'people' && params[:action] == 'discipleship' ? "subtabs-menu-active" : "subtabs-menu-inactive"}) %></li>
       <%- end -%>
 
-      <% if @person.user && @person.user.guid && is_ministry_admin %>
+      <% if @person.user && @person.user.guid %>
         <li><%= link_to("<div id='gcxProfileSubTab'>GCX PROFILE</div>", show_gcx_profile_person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show_gcx_profile' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
       <% end %>
       
