@@ -339,18 +339,24 @@ class GlobalDashboardController < ApplicationController
       GlobalCountry.all.each do |country|
         if filters_isos.include?(country.iso3)
           %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
-            whq_stat = country.global_dashboard_whq_stats.find_by_mcc_and_month_id(mcc_filters, @month_ids, 
+            whq_stats = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, @month_ids, 
               :joins => { :month => :year },
               :order => "year_desc ASC, month_number ASC",
-              :select => "avg(#{stat}) as #{stat}_avg",
-              :conditions => ("#{stat} != 0" unless params[:include_zeros] == "true")
+              :select => "mcc, avg(#{stat}) as #{stat}_avg",
+              :conditions => ("#{stat} != 0" unless params[:include_zeros] == "true"),
+              :group => "mcc"
             )
 
-            stat_val = whq_stat.send("#{stat}_avg").to_i
+            stat_val = whq_stats.inject(0) do |i,s| s.send("#{stat}_avg").to_f + i end 
 
             if stat_val
               @whq[stat] ||= 0
               @whq[stat] += stat_val
+            end
+            if stat == 'mvmt_ldr' && stat_val != 0
+              whq_stats.each do |s|
+                #logger.info "*** #{country.iso3} #{s.mcc}: #{s.send("#{stat}_avg")}"
+              end
             end
           end
 
@@ -368,6 +374,10 @@ class GlobalDashboardController < ApplicationController
               end
             end
           end
+        end
+
+        %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
+          @whq[stat] = @whq[stat].round if @whq[stat]
         end
       end
 
