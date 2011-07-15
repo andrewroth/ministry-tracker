@@ -101,9 +101,15 @@
                                    [ "Year Totals", Year.all.collect{ |y| [ y.year_number, "y_#{y.id}" ] } ] ] + 
                                    Month.all_for_grouped_options_by_literal_year, @ministry_metric_timeframe)
         %>
+        &nbsp;&nbsp;
+      <%= check_box_tag "include_zeros", "true", session[:include_zeros] %>
+      <%= label_tag "include_zeros", "Include zeros in average", :style => "float: none; display:inline" %>
       <%= spinner('_mm') %>
       <%= observe_field :ministry_metric_timeframe, :url => { :controller => :global_dashboard, :action => :update_ministry_metrics },
-        :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()+'&ministry_metric_timeframe='+$('#ministry_metric_timeframe').val()",
+        :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()+'&ministry_metric_timeframe='+$('#ministry_metric_timeframe').val()+'&include_zeros='+$('#include_zeros').attr('checked')",
+        :loading => "$('#spinner_mm').show();", :complete => "$('#spinner_mm').hide()" %>
+      <%= observe_field :include_zeros, :url => { :controller => :global_dashboard, :action => :update_ministry_metrics },
+        :with => "'l='+$('#location').val()+'&mcc='+$('#mcc').val()+'&ministry_metric_timeframe='+$('#ministry_metric_timeframe').val()+'&include_zeros='+$('#include_zeros').attr('checked')",
         :loading => "$('#spinner_mm').show();", :complete => "$('#spinner_mm').hide()" %>
     <BR/>
     <BR/>
@@ -142,7 +148,7 @@
       <tr class="stat_labels">
         <td>Live Exposures</td>
         <td>Live Decisions</td>
-        <td>New Growth Group Members</td>
+        <td>Growth Group Members</td>
         <td>Movement Members</td>
         <td>Movement Leaders</td>
         <td>New Staff</td>

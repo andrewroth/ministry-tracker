@@ -1,0 +1,2 @@
+<%= f.text_field input_stat[:column], :size => 4, :class => "positiveinteger", :value => stat_data.count %>
+<%= link_to_remote image_tag("silk/magnifier.png"), :url => {:controller => :monthly_reports, :action => :stat_details, :stats => stat_data, :stat_meta_data => input_stat}, :success => "show_dialog('Manage #{input_stat[:label]}')" %>

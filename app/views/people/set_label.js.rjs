@@ -1,0 +1,5 @@
+if @error_notice
+  update_flash(page, @error_notice)
+else
+  page["personLabels"].html(render :partial => "person_labels")
+end

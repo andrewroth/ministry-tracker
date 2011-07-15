@@ -1,0 +1,22 @@
+<h1>Listing label_people</h1>
+
+<table>
+  <tr>
+    <th>Label</th>
+    <th>Person</th>
+  </tr>
+
+<% @label_people.each do |label_person| %>
+  <tr>
+    <td><%=h label_person.label_id %></td>
+    <td><%=h label_person.person_id %></td>
+    <td><%= link_to 'Show', label_person %></td>
+    <td><%= link_to 'Edit', edit_label_person_path(label_person) %></td>
+    <td><%= link_to 'Destroy', label_person, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New label_person', new_label_person_path %>

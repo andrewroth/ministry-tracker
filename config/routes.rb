@@ -8,6 +8,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
   map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
               
+  map.resources :label_people
+  map.resources :labels
+
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -27,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
     cim_hrdb_person.resources :cim_hrdb_assignments
     cim_hrdb_person.resources :cim_hrdb_person_years
   end
-  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_countries, :collection => {:compare_with_ccc_service => :get}
   map.resources :cim_hrdb_ministries
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
@@ -188,7 +191,10 @@ ActionController::Routing::Routes.draw do |map|
                                       :set_initial_ministry => :any,
                                       :discipleship => :any,
                                       :impersonate => :get,
-                                      :show_mentee_profile_summary => :get},
+                                      :show_mentee_profile_summary => :get,
+                                      :show_gcx_profile => :get,
+                                      :set_label => :post
+                                      },
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
                                           :edit_me                            => :get,

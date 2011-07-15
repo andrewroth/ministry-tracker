@@ -22,7 +22,7 @@
   </div>
 
   <% if @gsa_results_unauthenticated.present? %>
-    <div class="searchAuthenticationWarning">
+    <div class="casAuthenticationWarning">
       These are publicly available search results.
       To see the complete set of secure and personalized search results we'll need to check your ID, 
       <%= link_to("click here to login to TheKey.", :controller => :sessions, :action => :recreate, :destination => "#{url_for(:action => :web, :controller => :search, :q => @q,:only_path=> false)}") %>

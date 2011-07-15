@@ -4,7 +4,8 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-
+  layout :choose_layout
+  
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -185,7 +186,7 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements, :show_gcx_profile],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -239,6 +240,8 @@ class ApplicationController < ActionController::Base
           if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
             return true
           elsif action == 'show_group_involvements' && authorized?(:show, :people)
+            return true
+          elsif action == 'show_gcx_profile' && authorized?(:show, :people)
             return true
           elsif action == 'destroy' && params[:id] && params[:id] == @my.id.to_s
             return true
@@ -609,4 +612,54 @@ class ApplicationController < ActionController::Base
       
       @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
     end
+
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+      
+      @mobile ? "mobile" : "application" 
+    end
+
+    
+    # url - url of service trying to call, e.g. "https://service.com/action"
+    # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
+    def construct_cas_proxy_authenticated_service_url(url, params = {})
+      
+      # CAS proxy authentication requires that the service url and params stay in the same order
+      # (i.e. the service uri must not change between when the ticket is requested and when the actual request is made or else the proxy ticket validation will fail)
+      # therefore we will manually construct the request in a string
+      
+      service_uri = url
+      params.each do |k,v|
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"
+      end
+
+      begin
+        raise("no proxy granting ticket in the session, expected it to be defined in session[:cas_pgt]") if session[:cas_pgt].blank?
+        
+        proxy_granting_ticket = session[:cas_pgt]
+        proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
+
+        # CAS proxy authentication requires that the ticket be the last param in query string
+        raise("no proxy ticket") if proxy_ticket.ticket.blank?
+        
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "ticket=#{proxy_ticket.ticket}"
+      rescue => e
+        Rails.logger.error("\nERROR GETTING CAS PROXY TICKET: \n\t#{e.class.to_s}\n\t#{e.message}\n")
+      end
+
+      service_uri
+    end
+    
 end
+

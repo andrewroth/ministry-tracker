@@ -4,6 +4,7 @@
 
 class GroupsController < ApplicationController
   include SemesterSet
+  layout :choose_layout
 
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time, :clone_pre, :clone]
@@ -25,7 +26,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        layout = authorized?(:index, :manage) ? 'application'  : 'application'   # formerly had 'manage' layout for groups too
+        layout = @mobile ? 'mobile' : (authorized?(:index, :manage) ? 'application'  : 'application')   # formerly had 'manage' layout for groups too
         render :layout => layout
       end
       format.js

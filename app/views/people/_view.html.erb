@@ -1,6 +1,17 @@
 
+<% if authorized?(:show_profile_labels, :people) %>
+<div id="personLabels" class="personLabels">
+	<%= render :partial => 'person_labels' %>
+</div>
+  <div class="floatLeft"><%= spinner('lbls') %></div>
+  <%- if authorized?(:set_label, :people) || @person.labels.count > 0 %>
+    <br>
+  <%- end %>
+<% end %>
+
 <h4><%= @person.primary_campus.try(:name) %></h4>
 <br/>
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="address">
 <tr>
 

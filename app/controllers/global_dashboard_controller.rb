@@ -117,7 +117,7 @@ class GlobalDashboardController < ApplicationController
       "stage" => 'Stage',
       "live_exp" => 'Live Exposures',
       "live_dec" => 'Live Decisions',
-      "new_grth_mbr" => 'New Growth Group Members',
+      "new_grth_mbr" => 'Growth Group Members',
       "mvmt_mbr" => 'Movement Members',
       "mvmt_ldr" => 'Movement Leaders',
       "new_staff" => 'New Staff',
@@ -159,17 +159,8 @@ class GlobalDashboardController < ApplicationController
         columns.each do |col|
           if metrics.include?(col)
             if col == "live_exp"
-              stat = c.global_dashboard_whq_stats.find(:first, 
-                                                 :select => "sum(live_exp) as live_exp," + 
-                                                        "sum(live_dec) as live_dec," + 
-                                                        "sum(new_grth_mbr) as new_grth_mbr," + 
-                                                        "sum(mvmt_mbr) as mvmt_mbr," + 
-                                                        "sum(mvmt_ldr) as mvmt_ldr," + 
-                                                        "sum(new_staff) as new_staff," + 
-                                                        "sum(lifetime_lab) as lifetime_lab",
-                                                 :conditions => [ "month_id IN (?)", 
-                                                   Year.find_by_year_number(2010).months_by_literal_year.collect(&:id) ])
-              metrics.each do |m| row << stat.send(m).to_s end
+              setup_mm_stats([c.iso3], mcc_filters)
+              row += metrics.collect{ |m| @whq[m] }
             end
           else
             row << c.send(col).to_s
@@ -297,6 +288,17 @@ class GlobalDashboardController < ApplicationController
   protected
 
     def setup
+      if !params[:include_zeros].present? && session[:include_zeros].present?
+        params[:include_zeros] = session[:include_zeros]
+      elsif params[:include_zeros].present?
+        session[:include_zeros] = params[:include_zeros]
+      end
+      if !params[:l].present? && session[:l].present?
+        params[:l] = session[:l]
+      elsif params[:l].present?
+        session[:l] = params[:l]
+      end
+
       @grouped_options = [ [ "All", [ [ "All", "all" ] ] ] ]
       @grouped_options << [ "Areas", GlobalArea.all(:order => "area").collect{ |ga| [ ga.area, "a_#{ga.id}" ] } ]
       GlobalArea.all(:order => "area").each do |global_area|
@@ -315,64 +317,50 @@ class GlobalDashboardController < ApplicationController
       @whq = ActiveSupport::OrderedHash.new
       #months = Month.find(:all, :conditions => [ "month_desc like ?", "% 2010%" ])
       #month_ids = months.collect(&:id)
-      year = nil
-      month_ids = nil
-      if mmt = params[:ministry_metric_timeframe]
+      @year = nil
+      @month_ids = nil
+      if !@year.present? && !@month_ids.present? && mmt = params[:ministry_metric_timeframe]
         if mmt =~ /y_(.*)/
-          year = Year.find $1
-          month_ids = year.months_by_literal_year.collect(&:id)
+          @year = Year.find $1
+          @month_ids = @year.months_by_literal_year.collect(&:id)
         elsif mmt =~ /m_(.*)/
-          month_ids = [ $1 ]
+          @month_ids = [ $1 ]
         elsif mmt == 'All'
-          month_ids = Month.all.collect(&:id)
+          @month_ids = Month.all.collect(&:id)
         end
-        @ministry_metric_timeframe = params[:ministry_metric_timeframe]
+        @ministry_metric_timeframe = params[:ministry_metric_timeframe] || session[:ministry_metric_timeframe]
+        session[:ministry_metric_timeframe] = @ministry_metric_timeframe
       else
         @ministry_metric_timeframe = "y_#{Year.current.id}"
-        year = Year.find_by_year_desc("2010 - 2011") || Year.find_by_year_desc("2010-2011")
-        month_ids = year.months_by_literal_year.collect(&:id)
+        @year = Year.find_by_year_desc("2010 - 2011") || Year.find_by_year_desc("2010-2011")
+        @month_ids = @year.months_by_literal_year.collect(&:id)
       end
 
       GlobalCountry.all.each do |country|
         if filters_isos.include?(country.iso3)
-          stats = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
-            :joins => { :month => :year },
-            :order => "year_desc ASC, month_number ASC",
-            :select => "sum(new_grth_mbr) as new_grth_mbr_sum, sum(mvmt_mbr) as mvmt_mbr_sum, sum(mvmt_ldr) as mvmt_ldr_sum"
-          )
-          stats.each do |gd_stat|
-            %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
-              #@whq[stat] ||= 0
-              #@whq[stat] += gd_stat.send("#{stat}_sum").to_i
+          %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
+            whq_stats = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, @month_ids, 
+              :joins => { :month => :year },
+              :order => "year_desc ASC, month_number ASC",
+              :select => "mcc, avg(#{stat}) as #{stat}_avg",
+              :conditions => ("#{stat} != 0" unless params[:include_zeros] == "true"),
+              :group => "mcc"
+            )
 
-              if gd_stat.send("#{stat}_sum") && gd_stat.send("#{stat}_sum").to_i != 0
-                @whq[:"#{stat}_total"] ||= 0
-                @whq[:"#{stat}_total"] += gd_stat.send("#{stat}_sum").to_i
-                @whq[:"#{stat}_count"] ||= 0
-                @whq[:"#{stat}_count"] += 1
-                @whq[stat] = (@whq[:"#{stat}_total"].to_f / @whq[:"#{stat}_count"].to_f).to_i
+            stat_val = whq_stats.inject(0) do |i,s| s.send("#{stat}_avg").to_f + i end 
+
+            if stat_val
+              @whq[stat] ||= 0
+              @whq[stat] += stat_val
+            end
+            if stat == 'mvmt_ldr' && stat_val != 0
+              whq_stats.each do |s|
+                #logger.info "*** #{country.iso3} #{s.mcc}: #{s.send("#{stat}_avg")}"
               end
             end
           end
-=begin
-          country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
-            :joins => { :month => :year },
-            :order => "year_desc ASC, month_number ASC").each do |gds|
-            %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat| # averages
-              #@whq[:"#{stat}_total"] ||= 0
-              #@whq[:"#{stat}_total"] += gds.send(stat).to_i
-              #@whq[:"#{stat}_count"] ||= 0
-              #@whq[:"#{stat}_count"] += 1
-              #@whq[stat] = (@whq[:"#{stat}_total"].to_f / @whq[:"#{stat}_count"].to_f).to_i
-              @whq[stat] ||= 0
-              @whq[stat] += gds.send(stat).to_i
-            end
-            %w(live_exp live_dec new_staff lifetime_lab).each do |stat|
-              @whq[stat] = gds.send(stat).to_i
-            end
-          end
-=end
-          gd_stat = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, month_ids, 
+
+          gd_stat = country.global_dashboard_whq_stats.find_all_by_mcc_and_month_id(mcc_filters, @month_ids, 
             :joins => { :month => :year },
             :order => "year_desc ASC, month_number ASC",
             :select => "sum(live_exp) as live_exp_sum, sum(new_staff) as new_staff_sum, " + 
@@ -386,6 +374,10 @@ class GlobalDashboardController < ApplicationController
               end
             end
           end
+        end
+
+        %w(new_grth_mbr mvmt_mbr mvmt_ldr).each do |stat|
+          @whq[stat] = @whq[stat].round if @whq[stat]
         end
       end
 
