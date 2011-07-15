@@ -2,7 +2,7 @@
   <div id="subtabs">
     <ul class="subtabs-menu">
 
-      <li><%= link_to("<div id='profileSubTab'>PROFILE</div>", person_path(@person), :class => params[:controller] == 'people' && params[:action] != 'discipleship' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <li><%= link_to("<div id='profileSubTab'>PROFILE</div>", person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
 
       <%- if authorized?(:index, :involvement) && Cmt::CONFIG[:involvement_questions_enabled] -%>
         <li><%= link_to("<div id='involvementSubTab'>INVOLVEMENT</div>", person_involvement_index_path(@person), :class => params[:controller] == 'involvement' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
@@ -18,8 +18,12 @@
       
       <%- if authorized?(:discipleship, :people) -%>
         <li><%= link_to("<div id='discipleshipSubTab'>DISCIPLESHIP TREE</div>", {:controller => :people, :action => :discipleship, :id => @person.id}, {:class => params[:controller] == 'people' && params[:action] == 'discipleship' ? "subtabs-menu-active" : "subtabs-menu-inactive"}) %></li>
-      <%- end -%>      
+      <%- end -%>
 
+      <% if @person.user && @person.user.guid %>
+        <li><%= link_to("<div id='gcxProfileSubTab'>GCX PROFILE</div>", show_gcx_profile_person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show_gcx_profile' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <% end %>
+      
       <%- if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?) -%>
         <li><%= link_to("<div id='impersonateSubTab'>IMPERSONATE</div>", impersonate_person_path(@person.id), :class => "subtabs-menu-inactive") %></li>
       <%- end -%>
