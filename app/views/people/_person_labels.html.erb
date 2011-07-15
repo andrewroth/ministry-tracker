@@ -1,15 +1,15 @@
-<%- if person.labels.count > 0 %>
-<%= render :partial => 'profile_label_li', :collection => person.labels %>
+<%- if @person.labels.count > 0 %>
+<%= render :partial => 'profile_label_li', :collection => @person.labels %>
 <%- end %>
 
 <% if authorized?(:set_label, :people) %>
-	<%= form_remote_tag(:url => set_label_person_path(person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
+	<%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
 	    <% if Label.count > 0 %>
 	      <div class="personLabelAdd">
 	        <%= select_tag(:label, options_for_select([['Add Label', nil]] + Label.all.collect{|label| [ label.content, label.id ]}, nil)) %>
 	        <%= observe_field(:label, {:function => "performLabelAdd();"}) %>
 	      </div>
 	    <% end %>
-<% elsif person.labels.count > 0 %>
+<% elsif @person.labels.count > 0 %>
 	<br>
 <% end %>
