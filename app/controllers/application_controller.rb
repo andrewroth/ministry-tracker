@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements, :show_gcx_profile],
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -239,6 +239,8 @@ class ApplicationController < ActionController::Base
           if action == 'edit' && @me.is_leading_mentor_priority_group_with?(@person || Person.find(params[:id]))
             return true
           elsif action == 'show_group_involvements' && authorized?(:show, :people)
+            return true
+          elsif action == 'show_gcx_profile' && authorized?(:show, :people)
             return true
           elsif action == 'destroy' && params[:id] && params[:id] == @my.id.to_s
             return true
@@ -628,10 +630,11 @@ class ApplicationController < ActionController::Base
 
         # CAS proxy authentication requires that the ticket be the last param in query string
         raise("no proxy ticket") if proxy_ticket.ticket.blank?
-        service_uri += "&ticket=#{proxy_ticket.ticket}"
+        
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "ticket=#{proxy_ticket.ticket}"
       rescue => e
-        Rails.logger.error("\nERROR GETTING CAS PROXY TICKET: \n"+e.class.to_s+"\n"+e.message+"\n")
-        return nil
+        Rails.logger.error("\nERROR GETTING CAS PROXY TICKET: \n\t#{e.class.to_s}\n\t#{e.message}\n")
       end
 
       service_uri

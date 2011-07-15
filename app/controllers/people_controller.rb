@@ -749,7 +749,7 @@ class PeopleController < ApplicationController
   
   def show_gcx_profile
     if !@person.user || !@person.user.guid
-      flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID</big>"
+      flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID, they might not have a GCX profile</big>"
       redirect_to @person
       return
     end
@@ -757,14 +757,18 @@ class PeopleController < ApplicationController
     begin
       request_url = construct_cas_proxy_authenticated_service_url(gcx_profile_report_config[:url], {:guid => @person.try(:user).try(:guid)})
       
+      @gcx_unauthenticated = true unless request_url.include?("ticket=")
+      
       agent = Mechanize.new
       Rails.logger.info "\tGCX profile report service call (#{Date.today}) #{request_url}"
       page = agent.get(request_url)
       
       @hpricot = Hpricot(page.body)
     rescue => e
-      Rails.logger.error("\nERROR WITH GCX PROFILE RESPONSE: \n\t"+request_url+"\n\t"+e.class.to_s+"\n\t"+e.message+"\n")
-      flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>"
+      error_message = "\nERROR WITH GCX PROFILE RESPONSE: \n\t#{e.class.to_s}\n\t#{e.message}\n"
+      error_message += "\t#{request_url}\n" if request_url
+      Rails.logger.error(error_message)
+      flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>" unless @gcx_unauthenticated
     end
   end
   
