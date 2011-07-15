@@ -1,7 +1,7 @@
 
 <% if authorized?(:show_profile_labels, :people) %>
 <div id="personLabels" class="personLabels">
-  <%= render :partial => 'person_labels' %>
+	<%= render :partial => 'person_labels', :locals => { :person => @person } %>
 </div>
   <div class="floatLeft"><%= spinner('lbls') %></div>
   <%- if authorized?(:set_label, :people) || @person.labels.count > 0 %>
