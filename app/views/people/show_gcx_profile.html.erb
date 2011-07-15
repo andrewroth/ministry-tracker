@@ -1,5 +1,5 @@
 
-<% if @gcx_unauthenticated.present? %>
+<% if @gcx_unauthenticated.present? && @hpricot.search(:user).first.attributes["guid"].blank? %>
   <div class="casAuthenticationWarning">
     <big>
       To see GCX profile info we'll need to check your ID, 
@@ -10,7 +10,7 @@
 
 <br/>
 
-<% if @hpricot %>
+<% if @hpricot && @hpricot.search(:user).first.attributes["guid"] %>
   
   <div id="profilewrap" class="gcx">
     <div id="profiletitle">
