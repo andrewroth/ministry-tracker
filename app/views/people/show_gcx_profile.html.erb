@@ -15,7 +15,7 @@
   <div id="profilewrap" class="gcx">
     <div id="profiletitle">
       <h1>
-        <%= @person.full_name %>
+        <%= @hpricot.search(:user).first.attributes["displayName"].present? ? @hpricot.search(:user).first.attributes["displayName"] : @person.full_name %>
       </h1>
       
       </br>
