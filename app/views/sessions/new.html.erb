@@ -1,3 +1,7 @@
+<%
+unless @mobile
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
  
@@ -54,3 +58,16 @@
     </div>
 	</body>
 </html>
+<%
+else
+%>
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
+      <li><a href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css">Sign In</a></li> 
+      <li><%= link_to 'How to Sign Up', new_gcx_url %></li> 
+      <li><%= link_to 'Help', "https://www.mygcx.org/Pulse_Help_Center/screen/home" %></li> 
+    </ul> 
+ 
+ 
+<%
+end
+%>

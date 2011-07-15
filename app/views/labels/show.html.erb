@@ -1,0 +1,13 @@
+<p>
+  <b>Content:</b>
+  <%=h @label.content %>
+</p>
+
+<p>
+  <b>Priority:</b>
+  <%=h @label.priority %>
+</p>
+
+
+<%= link_to 'Edit', edit_label_path(@label) %> |
+<%= link_to 'Back', labels_path %>

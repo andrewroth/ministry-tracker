@@ -15,7 +15,7 @@ class PeopleController < ApplicationController
   include PersonForm
   include SemesterSet
 
-  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements]
+  before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label]
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
@@ -53,6 +53,43 @@ class PeopleController < ApplicationController
       end
     end
   end
+  
+  # sets label (i.e. "Spiritual Multiplier") for a person and then redirects to the "show" action
+  def set_label
+    if params[:label]
+      # begin
+        
+        @label = Label.find params[:label]
+        
+        unless @person.labels.include?(@label)
+      		# @label_person = LabelPerson.create(:label_id => params[:label], :person_id => params[:id])
+      		@person.labels << @label
+      	else
+      		# potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
+      		# could follow up with same record create code
+      	  
+          @error_notice = "The '#{@label.content}' label has already been applied to #{@person.full_name}"
+      	end
+	        
+      # rescue ActiveRecord::ActiveRecordError
+      # rescue ActiveRecord::RecordNotFound
+      #   # DO NOTHING
+      # end      	
+    end
+    
+    #redirect_back(:action => 'show', :id => params[:id], :error_notice => @error_notice)
+  end
+  
+     # GET /people/remove_label
+  # Removes a label that was previously assigned to the person
+  def remove_label
+    
+    label_record = LabelPerson.find_by_label_id_and_person_id(params[:label_id],params[:person_id])
+    label_record.destroy
+    label_record.save
+    render :nothing => true
+  end
+  
 
   def discipleship
     @p_user = @person
@@ -315,7 +352,7 @@ class PeopleController < ApplicationController
             else
               flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentor already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
             end
-            mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
+            show_error_notice = true;	#mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
             
           rescue ActiveRecord::RecordNotFound
             # DO NOTHING
@@ -324,9 +361,9 @@ class PeopleController < ApplicationController
       end
       
        # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
-      mentorship_cycle_error = false
       if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_to_other, :people))
         if params[:mt]
+          show_error_notice = false 	#mentorship_cycle_error = false
           begin
             mentee_id = params[:mt].to_i
             if mentee_id.is_a?(Numeric) # & mentor_id != MENTOR_ID_NONE
@@ -340,7 +377,7 @@ class PeopleController < ApplicationController
             else
               flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentee already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
             end
-            mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
+            show_error_notice = true	#mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
           rescue ActiveRecord::RecordNotFound 
             # DO NOTHING  
 
@@ -352,7 +389,7 @@ class PeopleController < ApplicationController
       get_people_responsible_for
       setup_vars
       
-     if (mentorship_cycle_error == true)
+     if (show_error_notice == true)
         set_notices   # make sure error notice is displayed
         respond_to do |format|
           format.html { render :action => :show }# show.rhtml
@@ -1189,4 +1226,25 @@ class PeopleController < ApplicationController
         redirect_to :action => :index, :controller => :search
       end
     end
+    
+    
+    # Utility Methods (from http://ethilien.net/archives/better-redirects-in-rails/)
+    
+    # redirect somewhere that will eventually return back to here
+	def redirect_away(*params)
+	  session[:original_uri] = request.request_uri
+	  redirect_to(*params)
+	end
+
+	# returns the person to either the original url from a redirect_away or to a default url
+	def redirect_back(*params)
+	  uri = session[:original_uri]
+	  session[:original_uri] = nil
+	  if uri
+	    redirect_to uri
+	  else
+	    redirect_to(*params)
+	  end
+	end
+
 end

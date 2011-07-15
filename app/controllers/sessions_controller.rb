@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
   filter_parameter_logging :password
   skip_before_filter :cas_filter, :cas_gateway_filter, :only => [:create, :facebook_canvas_new, :facebook_tab_new]
   before_filter :facebook_session, :only => [:new, :new_gcx, :facebook_canvas_new]
+  layout :choose_layout
 
   def crash
     throw("Forced crash.  env: #{RAILS_ENV}")
@@ -54,7 +55,8 @@ class SessionsController < ApplicationController
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     else
       @ie_browser = request.env['HTTP_USER_AGENT'].downcase =~ /msie/i ? true : false
-      render :layout => false
+      choose_layout
+      render :layout => false unless @mobile
     end
     # force a flash warning div to show up, so that invalid password message can be shown
     flash[:warning] = '&nbsp;'

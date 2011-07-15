@@ -4,6 +4,9 @@
 
 <h1 id="statsTitle">Measurements</h1>
 
+<%
+unless @mobile
+%>
 
 <!--[if lt IE 8]>
   <div id='browser_warning' class='flash_notice warning'>
@@ -82,4 +85,11 @@
   <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;"></div>
   <br/>
 </div>
+<%
+else #if the page is viewed from a mobile device
+%>
+  <%= render :partial => 'stats/stats_links' %>
 
+<%
+end
+%>
