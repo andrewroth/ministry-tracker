@@ -785,7 +785,7 @@ class PeopleController < ApplicationController
   
   
   def show_gcx_profile
-    if !@person.user || !@person.user.guid
+    if !@person.user || !@person.user.guid || !@person.user.guid.present?
       flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID, they might not have a GCX profile</big>"
       redirect_to @person
       return
