@@ -145,7 +145,12 @@ module AuthenticatedSystem
     
     def authenticate_from_api_key
       unless check_and_increment_login_code(params[:api_key], ApiKey) == true
-        render :text => "error"
+        respond_to do |format|
+          format.xml { render :xml => "<error><type>Authentication</type><message>API key not valid</message></error>", :status => 401 }
+        end
+        return
+      else
+        @api_key_user = ApiKey.first(:joins => [:login_code], :conditions => {:login_codes => {:code => params[:api_key]}}).try(:user)
       end
     end
     

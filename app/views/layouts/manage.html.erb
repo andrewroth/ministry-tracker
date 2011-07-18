@@ -47,6 +47,13 @@
       <li<%= ' class="highlighted"' if params[:controller] == "api_keys" %>>
       <%= link_to 'API Keys', :controller => :api_keys, :action => :index %></li>
     <%- end -%>
+
+    <%- if authorized?(:new, :labels) # no permission created ==> SUPER_ADMIN only
+    -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "labels" %>>
+      <%= link_to 'Labels', labels_path() %></li>
+    <%- end -%>    
+
   </ul>
 
 
