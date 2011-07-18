@@ -627,8 +627,7 @@ class ApplicationController < ActionController::Base
       
       @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
     end
-    
-    
+
     def choose_layout
       if params['mobile'].present?
         @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
@@ -643,7 +642,6 @@ class ApplicationController < ActionController::Base
       
       @mobile ? "mobile" : "application" 
     end
-    
     
     # url - url of service trying to call, e.g. "https://service.com/action"
     # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
