@@ -6,7 +6,6 @@ class DashboardController < ApplicationController
   include SemesterSet
   include Pat
   before_filter :set_current_and_next_semester
-  layout :choose_layout
   
   def index
     set_notices
