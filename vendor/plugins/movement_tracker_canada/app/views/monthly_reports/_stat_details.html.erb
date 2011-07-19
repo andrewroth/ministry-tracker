@@ -22,11 +22,13 @@
    			<br>   			
   <%- end %>
   <ul id='stat_ppl_list'>
+    <%- if params['stats'] != nil %>
   	<%- params['stats'].each do |person_id| %>
-	<li id='stat_person_li_<%= person_id %>'>
-		<%- stat_person = Person.find(person_id) %>
-		<%= stat_person.person_fname %> <%= stat_person.person_lname %>
-	</li>
+    	<li id='stat_person_li_<%= person_id %>'>
+    		<%- stat_person = Person.find(person_id) %>
+    		<%= stat_person.person_fname %> <%= stat_person.person_lname %>
+    	</li>
+    <%- end %>
 	<%- end %>
   </ul>
   <br/>
