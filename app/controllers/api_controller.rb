@@ -96,13 +96,13 @@ class ApiController < ApplicationController
     
     xml.ministry_involvements(attributes) do
       mis.each do |mi|
-        xml.ministry_involvement do
-          xml.role(:type => mi.ministry_role.type, :name => mi.ministry_role.name) {}
+        xml.ministry_involvement(:ministry_involvement_id => mi.id) do
+          xml.role(:role_id => mi.ministry_role_id, :type => mi.ministry_role.type, :name => mi.ministry_role.name, :position => mi.ministry_role.position) {}
           xml.start_date mi.start_date
           xml.last_history_update_date mi.last_history_update_date
-          xml.ministry(:name => mi.ministry.name) do
+          xml.ministry(:ministry_id => mi.ministry_id, :name => mi.ministry.name) do
             mi.ministry.unique_campuses.each do |c|
-              xml.campus(:name => c.name) {}
+              xml.campus(:campus_id => c.id, :name => c.name) {}
             end
           end
         end
