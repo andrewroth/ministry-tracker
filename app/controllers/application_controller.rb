@@ -186,7 +186,8 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements, :set_label, :show_gcx_profile],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
+
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
