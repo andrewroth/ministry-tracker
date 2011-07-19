@@ -4,7 +4,6 @@
 
 class GroupsController < ApplicationController
   include SemesterSet
-  layout :choose_layout
 
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time, :clone_pre, :clone]
