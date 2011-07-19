@@ -22,7 +22,7 @@ class ApiController < ApplicationController
         result = (authorized?(params[:a], params[:c]) == true)
         
         respond_to do |format|
-          format.xml { render :xml => "<authorization action='#{params[:a]}' controller='#{params[:c]}'><authorized>#{result}</authorized></authorization>" }
+          format.xml { render :xml => "<authorized action='#{params[:a]}' controller='#{params[:c]}'>#{result}</authorized>" }
         end
       else
         raise ERROR[:MISSING_PARAM]
