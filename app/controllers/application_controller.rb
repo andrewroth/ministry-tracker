@@ -4,7 +4,7 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-  layout :choose_layout
+  
   
   ############################################################
   # ERROR HANDLING et Foo
