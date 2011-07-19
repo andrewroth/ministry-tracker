@@ -8,7 +8,11 @@
 		           :confirm => "Are you sure you want to remove #{@person.full_name} from being mentored by #{mentor.full_name} ?", 
 		           :loading => "$('#spinnerm').show()", :complete => "$('#spinnerm').hide()"},
 		           {:class => "removeMentorIconLink", :title => "Remove #{@person.first_name} from being mentored by #{mentor.first_name}"})  if authorized?(:remove_mentor, :people) || @person == @me %>
-         <%= mentor.full_name %>
+         <%- if authorized?(:view_mentor_profile, :people) -%>
+          <%= link_to(mentor.full_name, person_path(mentor.person_id)) %>
+         <%- else -%>
+          <%= mentor.full_name %>
+         <%- end -%>
 			<%- else -%>  <!-- no mentor found, show search box -->
 			   <div>
 			   	 No mentor currently
