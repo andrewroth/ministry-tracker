@@ -33,7 +33,7 @@ class ApiControllerTest < ActionController::TestCase
     get :authorized, :a => 'directory', :c => 'people', :guid => '78ff7247-7b8f-4f42-8117-e03524fd1260', :api_key => '280ab349-bec3-4294-b77e-42045bb32b2e'
     
     assert_response :success
-    assert_equal "<authorization action='directory' controller='people'><authorized>true</authorized></authorization>", @response.body
+    assert_equal "<authorized action='directory' controller='people'>true</authorized>", @response.body
   end
   
   def test_ministry_involvements
