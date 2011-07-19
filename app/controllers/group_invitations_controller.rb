@@ -1,7 +1,7 @@
 class GroupInvitationsController < ApplicationController
   unloadable
   
-  login_code_authentication :only => [:accept, :decline, :list]
+  group_invitation_authentication :only => [:accept, :decline, :list]
   before_filter :get_and_check_invitation, :only => [:accept, :decline, :list]
   
   ALREADY_INVOLVED_MSG = "is already involved in this group so the invitation was not sent"

@@ -564,9 +564,14 @@ class ApplicationController < ActionController::Base
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
     end
 
-    def self.login_code_authentication(additional_params = {})
+    def self.group_invitation_authentication(additional_params = {})
       skip_standard_login_stack(additional_params)
-      before_filter :authenticate_from_login_code, additional_params
+      before_filter :authenticate_from_group_invitation, additional_params
+    end
+
+    def self.api_key_authentication(additional_params = {})
+      skip_standard_login_stack(additional_params)
+      before_filter :authenticate_from_api_key, additional_params
     end
 
     def redirect_unless_is_active_hrdb_staff
