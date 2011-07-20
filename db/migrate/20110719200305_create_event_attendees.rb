@@ -3,6 +3,8 @@ class CreateEventAttendees < ActiveRecord::Migration
     begin
       create_table :event_attendees do |t|
         t.integer :event_id
+        t.integer :ticket_id
+        t.datetime :ticket_updated_at
         t.string :email, :default => nil
         t.string :first_name, :default => nil
         t.string :last_name, :default => nil
@@ -15,6 +17,7 @@ class CreateEventAttendees < ActiveRecord::Migration
         t.timestamps
       end
       add_index EventAttendee.table_name, :event_id
+      add_index EventAttendee.table_name, :ticket_id
     rescue
     end
   end
@@ -22,6 +25,7 @@ class CreateEventAttendees < ActiveRecord::Migration
   def self.down
     begin
       remove_index EventAttendee.table_name, :event_id
+      remove_index EventAttendee.table_name, :ticket_id
       drop_table :event_attendees
     rescue
     end
