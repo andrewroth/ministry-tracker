@@ -757,6 +757,7 @@
   def eventbrite
     # num_days_to_display_event_after_completed : stop advertising events on the dashboard after this many days have elapsed after the event is completed
     # num_days_until_event_closed_after_completed : Eventbrite closes events 5 days after they complete and pay out the money, say 6 just to be safe
+    # num_days_sync_delay : only sync events if they haven't been synced for this many or more days
     {
       :campus_question => "Your Campus",
       :year_question => "Your Year",
@@ -767,7 +768,8 @@
       :first_year => "1st Year (Undergrad)",
       :c4c_events_link => "http://campusforchrist.eventbrite.com/",
       :num_days_to_display_event_after_completed => 10,
-      :num_days_until_event_closed_after_completed => 6 
+      :num_days_until_event_closed_after_completed => 6,
+      :num_days_sync_delay => 1
     }
   end
 
