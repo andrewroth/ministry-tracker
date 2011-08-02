@@ -1,0 +1,44 @@
+test_user_1:
+  first_name: "Jane"
+  last_name: "Tester"
+  email: "jane.tester77@gmail.com"
+  guid: "99AAD185-51E6-2A53-FD46-5AB422AF0797"
+  role: "Team Leader"
+  ministry_id: 20
+  school_year: "Graduated"
+
+test_user_2:
+  first_name: "Canadian1"
+  last_name: "MovementTracker"
+  email: "CanadianMT1@gmail.com"
+  guid: "3F0A11A1-A87A-339A-00DE-A27F706B663A"
+  role: "Team Member"
+  ministry_id: 28
+  school_year: "Graduated"
+
+test_user_3:
+  first_name: "Iam"
+  last_name: "Canadian"
+  email: "iam.canadian77@gmail.com"
+  guid: "928CD0E1-D0E8-7756-4EED-3E56DEF90C5C"
+  role: "Ministry Leader"
+  ministry_id: 25
+  school_year: "1st Year (Grad)"
+
+test_user_4:
+  first_name: "Student"
+  last_name: "Seven"
+  email: "studentseven7@gmail.com"
+  guid: "5E971143-D8C3-41EC-7C69-D091E7F3E9D7"
+  role: "Student Leader"
+  ministry_id: 34
+  school_year: "4th Year (Undergrad)"
+
+test_user_5:
+  first_name: "Joe"
+  last_name: "Tester"
+  email: "joetester73@gmail.com"
+  guid: "D7882AAA-96CB-3F2D-EB67-03B6B340D31B"
+  role: "Student"
+  ministry_id: 17
+  school_year: "1st Year (Undergrad)"

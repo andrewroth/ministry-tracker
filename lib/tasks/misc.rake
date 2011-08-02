@@ -1,4 +1,6 @@
 require 'csv'
+require 'yaml'
+
 namespace :cmt do
   namespace :views do
     desc "rebuilds all views in the CMT"
@@ -273,6 +275,29 @@ end
 namespace :db do
   desc "db:reset and db:seed"
   task :rebuild => [ "db:reset", "db:seed" ]
+  
+  task :seed_test_users => :environment do
+    abort("test users shouldn't be used in production environment") if Rails.env == "production"
+    
+    test_users = YAML.load_file("config/test_users.yml")
+    
+    test_users.each do |key,hash|
+      user = User.find_or_create_from_guid_or_email(hash["guid"], hash["email"], hash["first_name"], hash["last_name"])
+      
+      person = user.person
+      
+      person.campus_involvements.destroy_all
+      person.ministry_involvements.destroy_all
+      
+      ministry = Ministry.find(hash["ministry_id"])
+      campus = ministry.campuses.first
+      ministry_role = MinistryRole.find(:first, :conditions => {:name => hash["role"]})
+      school_year = SchoolYear.find(:first, :conditions => ["#{SchoolYear._(:name)} = ?", hash["school_year"]])
+      
+      person.add_or_update_campus(campus.id, school_year.id, ministry.id, "MT")
+      person.add_or_update_ministry(ministry.id, ministry_role.id)
+    end
+  end
 end
 
 task :people => :environment do
