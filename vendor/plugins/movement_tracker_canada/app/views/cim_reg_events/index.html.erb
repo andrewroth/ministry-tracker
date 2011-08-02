@@ -1,4 +1,30 @@
-<h1>Listing Legacy Registrations</h1>
+<h1>Eventbrite Events</h1>
+<br/>
+
+<table class="directorytable">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Start Date</th>
+      <th>Synced At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @events.each do |e| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="cim_reg_event_row"><%=h e.title %></td>
+        <td class="cim_reg_event_row"><%=h e.start_date %></td>
+        <td class="cim_reg_event_row"><%=h e.synced_at.present? ? "#{time_ago_in_words(e.synced_at)} ago" : "never" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h1>Legacy Events</h1>
 <br/>
 <table class="directorytable">
   <thead>
@@ -24,4 +50,4 @@
 
 <br />
 
-<%= link_to 'New Reg Event', new_cim_reg_event_path %>
+<%= link_to 'New Legacy Reg Event', new_cim_reg_event_path %>

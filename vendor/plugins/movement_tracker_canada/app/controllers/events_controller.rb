@@ -4,7 +4,9 @@ class EventsController < ApplicationController
   require 'ordered_hash_sort.rb'
 
   skip_before_filter :authorization_filter, :only => [:select_report]
-
+  
+  after_filter :sync_event_data_delayed_job, :only => [:attendance]
+  
   
   SELECTED_CAMPUS_EXCEPTION = "Selected campus not relevant to this event."
 
@@ -280,6 +282,7 @@ class EventsController < ApplicationController
 
   def setup_event
     @event = Event.find(params[:id])
+
     begin
       @eventbrite_user ||= EventBright.setup_from_initializer()
       @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
@@ -302,4 +305,12 @@ class EventsController < ApplicationController
     @results_partial = "error"
   end
 
+
+
+  private
+  
+  def sync_event_data_delayed_job
+    ::Event.send_later(:sync_unsynced_events, params[:force_sync_all])
+  end
+  
 end
