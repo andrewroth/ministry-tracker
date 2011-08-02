@@ -6,6 +6,7 @@ class CimRegEventsController < ApplicationController
   # GET /cim_reg_events.xml
   def index
     @cim_reg_events = CimRegEvent.all
+    @events = ::Event.all(:order => "created_at desc")
 
     respond_to do |format|
       format.html # index.html.erb
