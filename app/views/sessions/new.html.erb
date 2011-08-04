@@ -45,7 +45,7 @@ unless @mobile
         <%= image_tag("log_in_main_img.png", :usemap => "#getin")%>
         <map name="getin">
           <area shape="rect" coords="313,67,498,205" href="<%= signup_url %>" alt="Join a Group (No need to login!)" />
-          <area shape="rect" coords="519,120,614,190" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css" alt="Sign In" />
+          <area shape="rect" coords="519,120,614,190" href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css" alt="Sign In" />
         </map>
       </div>
     </div>
@@ -62,7 +62,7 @@ unless @mobile
 else
 %>
     <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-      <li><a href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate.css">Sign In</a></li> 
+      <li><a href="https://signin.mygcx.org/cas/login.htm?template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css">Sign In</a></li> 
       <li><%= link_to 'How to Sign Up', new_gcx_url %></li> 
       <li><%= link_to 'Help', "https://www.mygcx.org/Pulse_Help_Center/screen/home" %></li> 
     </ul> 
