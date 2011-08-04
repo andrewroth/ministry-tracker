@@ -28,10 +28,8 @@ body {
 }
 
 #c4c_logo {
-  position: relative;
-  left: -290px;
-  top: 0px;
   padding: 25px;
+  margin-right: 620px;
 }
 
 #disco_change {
