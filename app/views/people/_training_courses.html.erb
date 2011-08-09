@@ -1,0 +1,12 @@
+
+<ul id='profile_training_courses'>
+  <% if @person.finished_training_courses.present? %>
+    
+    <% @person.finished_training_courses.each do |c| %>
+      <li><%= c.name %></li>
+    <% end %>
+    
+  <% else %>
+    <%= @person == @me ? "You haven't" : "#{@person.first_name} hasn't" %> finished any training yet
+  <% end %>
+</ul>
