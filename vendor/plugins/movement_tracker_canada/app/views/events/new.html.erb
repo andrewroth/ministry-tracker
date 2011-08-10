@@ -6,7 +6,7 @@
   <p>
     <%= f.label :registrar_event_id, "Eventbrite event ID", :style => "width:110px" %>
     <%= f.text_field :registrar_event_id %>
-    &nbsp;(This can't be changed later. <%= link_to "How to find the event ID for an event.", "https://www.eventbrite.com/t/how-to-find-event-ID", :target => '_blank' %>)
+    &nbsp;(<%= link_to "How to find the event ID for an event", "https://www.eventbrite.com/t/how-to-find-event-ID", :target => '_blank' %>)
   </p>
   <br/>
   <p>
@@ -33,3 +33,4 @@
   </p>
 <% end %>
 <br/>
+<%= link_to 'Back', events_path %>

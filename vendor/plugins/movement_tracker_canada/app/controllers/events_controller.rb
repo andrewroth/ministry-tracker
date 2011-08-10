@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   unloadable
-
+  layout 'manage'
+  
   include PersonForm
   
   require 'ordered_hash_sort.rb'
@@ -34,6 +35,15 @@ class EventsController < ApplicationController
       }
     }
 
+
+  def index
+    @cim_reg_events = CimRegEvent.all
+    @events = ::Event.all(:order => "created_at desc")
+
+    respond_to do |format|
+      format.html # index.html.erb
+    end
+  end
 
   def show
     @event = Event.find(params[:id])
@@ -69,7 +79,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if synced && saved
         flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully created</big>"
-        format.html { redirect_to(cim_reg_events_path) }
+        format.html { redirect_to(events_path) }
       else
         flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && saved
         format.html { render :action => "new" }
@@ -107,7 +117,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if synced && updated
         flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully updated</big>"
-        format.html { redirect_to(cim_reg_events_path) }
+        format.html { redirect_to(events_path) }
       else
         flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && updated
         format.html { render :action => "new" }
@@ -127,7 +137,7 @@ class EventsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to(cim_reg_events_path) }
+      format.html { redirect_to(events_path) }
     end
   end
   
