@@ -117,8 +117,8 @@ class EventsController < ApplicationController
   
   def destroy
     @event = Event.find(params[:id])
-    @event.event_attendees.each {|a| a.destroy}
-    @event.event_campuses.each {|c| c.destroy}
+    @event.event_attendees.destroy_all
+    @event.event_campuses.destroy_all
     @event.destroy
 
     unless @event.errors.empty?
