@@ -1,4 +1,7 @@
 class EventGroupsController < ApplicationController
+  unloadable
+  layout 'manage'
+  
   # GET /event_groups
   # GET /event_groups.xml
   def index
@@ -44,7 +47,7 @@ class EventGroupsController < ApplicationController
 
     respond_to do |format|
       if @event_group.save
-        flash[:notice] = 'EventGroup was successfully created.'
+        flash[:notice] = 'Event group was successfully created.'
         format.html { redirect_to(@event_group) }
         format.xml  { render :xml => @event_group, :status => :created, :location => @event_group }
       else
@@ -61,7 +64,7 @@ class EventGroupsController < ApplicationController
 
     respond_to do |format|
       if @event_group.update_attributes(params[:event_group])
-        flash[:notice] = 'EventGroup was successfully updated.'
+        flash[:notice] = 'Event group was successfully updated.'
         format.html { redirect_to(@event_group) }
         format.xml  { head :ok }
       else
@@ -77,6 +80,11 @@ class EventGroupsController < ApplicationController
     @event_group = EventGroup.find(params[:id])
     @event_group.destroy
 
+    unless @event_group.errors.empty?
+      flash[:notice] = "<big>WARNING: Couldn't delete event group because:</big>"
+      @event_group.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+    
     respond_to do |format|
       format.html { redirect_to(event_groups_url) }
       format.xml  { head :ok }
