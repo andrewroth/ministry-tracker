@@ -412,7 +412,7 @@ h1 {
 	max-width:900px;
 	height:100px;
   margin:auto;
-  margin-top:10px;
+  margin-top:70px;
 }
 
 #header {
@@ -621,6 +621,23 @@ h1#title {
   height:17px;
   width:37px;
   display:inline-block;
+}
+
+#ptcLinkContainer {
+  float: left;
+  margin-left: 30px;
+}
+
+#ptcLogoLink {
+  background-image: url("/images/ptc_logo_grey.png"); background-repeat: no-repeat;
+  height:62px;
+  width:145px;
+  display:inline-block;
+  text-decoration:none;
+}
+
+#ptcLinkContainer a:hover {
+  text-decoration:none;
 }
 
 
