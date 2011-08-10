@@ -15,11 +15,18 @@
         <td class="cim_reg_event_row"><%=h e.title %></td>
         <td class="cim_reg_event_row"><%=h e.start_date %></td>
         <td class="cim_reg_event_row"><%=h e.synced_at.present? ? "#{time_ago_in_words(e.synced_at)} ago" : "never" %></td>
+        <td><%= link_to 'Show', event_path(e.id) %></td>
+        <td><%= link_to 'Edit', edit_event_path(e.id) %></td>
+        <td><%= link_to 'Destroy', event_path(e.id), :confirm => 'This will remove the Eventbrite event from the Pulse. Are you sure?', :method => :delete %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<br/>
 
+<%= link_to 'Add Eventbrite Event', new_event_path %>
+
+<br/>
 <br/>
 <br/>
 <br/>

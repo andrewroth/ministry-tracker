@@ -95,6 +95,8 @@
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "cim_reg_events" %>>
     <%= link_to 'Events', cim_reg_events_path %></li>
+    <li<%= ' class="highlighted"' if params[:controller] == "event_groups" %>>
+    <%= link_to 'Event Groups', event_groups_path %></li>
   </ul>
   <%- end -%>
 
