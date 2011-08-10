@@ -1,7 +1,7 @@
 <h1>Eventbrite Events</h1>
 <br/>
 
-<table class="directorytable">
+<table class="directorytable noclick">
   <thead>
     <tr>
       <th>Title</th>
@@ -33,7 +33,7 @@
 
 <h1>Legacy Events</h1>
 <br/>
-<table class="directorytable">
+<table class="directorytable noclick">
   <thead>
     <tr>
       <th>Name</th>
@@ -47,7 +47,7 @@
         <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.event_name %></td>
         <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.event_startDate %></td>
         <td class="cim_reg_event_row" cim_reg_event_link=<%= cim_reg_events_path(reg_event.id) %>><%=h reg_event.hide_from_profile %></td>
-        <td><%= link_to 'Show', cim_reg_events_path(reg_event.id) %></td>
+        <td><%= link_to 'Show', cim_reg_event_path(reg_event.id) %></td>
         <td><%= link_to 'Edit', edit_cim_reg_event_path(reg_event.id) %></td>
         <td><%= link_to 'Destroy', cim_reg_event_path(reg_event.id), :confirm => 'Are you sure?', :method => :delete %></td>
       </tr>

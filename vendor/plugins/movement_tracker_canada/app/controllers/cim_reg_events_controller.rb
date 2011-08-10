@@ -2,18 +2,6 @@ class CimRegEventsController < ApplicationController
   unloadable
   layout 'manage'
 
-  # GET /cim_reg_events
-  # GET /cim_reg_events.xml
-  def index
-    @cim_reg_events = CimRegEvent.all
-    @events = ::Event.all(:order => "created_at desc")
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @cim_reg_events }
-    end
-  end
-
   # GET /cim_reg_events/1
   # GET /cim_reg_events/1.xml
   def show
@@ -49,7 +37,7 @@ class CimRegEventsController < ApplicationController
     respond_to do |format|
       if @cim_reg_event.save
         flash[:notice] = 'cim_reg_event was successfully created.'
-        format.html { redirect_to(cim_hrdb_cim_reg_event_path(@cim_reg_event)) }
+        format.html { redirect_to(cim_reg_event_path(@cim_reg_event)) }
         format.xml  { render :xml => @cim_reg_event, :status => :created, :location => @cim_reg_event }
       else
         format.html { render :action => "new" }
@@ -87,7 +75,7 @@ class CimRegEventsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to(cim_hrdb_cim_reg_events_url) }
+      format.html { redirect_to(events_url) }
       format.xml  { head :ok }
     end
   end
