@@ -1,0 +1,30 @@
+<h1><%= @event.title %></h1>
+<br/>
+<% form_for(@event, :url => event_path(@event), :action => 'update') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :event_group_id, "Event group", :style => "width:70px" %>
+    <%= f.select :event_group_id, EventGroup.all.collect {|g| [ g.title, g.id ] }, { :include_blank => true } %>
+  </p>
+  <br/>
+  <p>
+    <%= label :event_campuses, "Event campuses" %>
+    <br/>
+    <br/>
+    <% @campuses.each do |campus| %>
+      <p>
+        <%= check_box_tag "event_campuses[]", campus.id, EventCampus.all(:first, :conditions => {:event_id => @event.id, :campus_id => campus.id}).present? %>
+        <%= campus.name %>
+      </p>
+    <% end %>
+  </p>
+  <br/>
+  <p>Event details, such as title and start date, will be copied from Eventbrite via the Eventbrite event ID.</p>
+  <br/>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', events_path %>

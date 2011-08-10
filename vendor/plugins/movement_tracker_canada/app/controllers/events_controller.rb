@@ -1,6 +1,9 @@
 class EventsController < ApplicationController
   unloadable
-
+  layout :get_layout
+  
+  include PersonForm
+  
   require 'ordered_hash_sort.rb'
 
   skip_before_filter :authorization_filter, :only => [:select_report]
@@ -9,6 +12,7 @@ class EventsController < ApplicationController
   
   
   SELECTED_CAMPUS_EXCEPTION = "Selected campus not relevant to this event."
+  NO_ATTENDEES_EXCEPTION = "There are no attendees to this event yet."
 
   INDIVIDUALS = 'individuals'
   SUMMARY = 'summary'
@@ -32,6 +36,112 @@ class EventsController < ApplicationController
       }
     }
 
+
+  def index
+    @cim_reg_events = CimRegEvent.all
+    @events = ::Event.all(:order => "created_at desc")
+
+    respond_to do |format|
+      format.html # index.html.erb
+    end
+  end
+
+  def show
+    @event = Event.find(params[:id])
+  end
+
+  def new
+    @event = Event.new
+    
+    setup_campuses
+  end
+
+  def create
+    setup_campuses
+    
+    @event = Event.new(params[:event])
+    
+    saved = @event.save
+    if saved
+      @event.update_details_and_attendees_from_eventbrite
+      synced = !@event.synced_at.nil? && @event.synced_at.present?
+      
+      if synced
+        EventCampus.all(:conditions => {:event_id => @event.id}).each {|campus| campus.destroy}
+        params[:event_campuses].each do |campus_id|
+          if Campus.all(:conditions => ["#{Campus._(:id)} = ?", campus_id.to_i]).present?
+            ec = EventCampus.new(:event_id => @event.id, :campus_id => campus_id.to_i)
+            ec.save
+          end
+        end if params[:event_campuses].present?
+      end
+    end
+
+    respond_to do |format|
+      if synced && saved
+        flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully created</big>"
+        format.html { redirect_to(events_path) }
+      else
+        flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && saved
+        format.html { render :action => "new" }
+      end
+    end
+  end
+  
+  def edit
+    @event = Event.find(params[:id])
+    
+    setup_campuses
+  end
+  
+  def update
+    setup_campuses
+    
+    @event = Event.find(params[:id])
+    
+    updated = @event.update_attributes(params[:event])
+    if updated
+      @event.update_details_and_attendees_from_eventbrite
+      synced = @event.synced_at != nil
+      
+      if synced
+        EventCampus.all(:conditions => {:event_id => @event.id}).each {|campus| campus.destroy}
+        params[:event_campuses].each do |campus_id|
+          if Campus.all(:conditions => ["#{Campus._(:id)} = ?", campus_id.to_i]).present?
+            ec = EventCampus.new(:event_id => @event.id, :campus_id => campus_id.to_i)
+            ec.save
+          end
+        end if params[:event_campuses].present?
+      end
+    end
+
+    respond_to do |format|
+      if synced && updated
+        flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully updated</big>"
+        format.html { redirect_to(events_path) }
+      else
+        flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && updated
+        format.html { render :action => "new" }
+      end
+    end
+  end
+  
+  def destroy
+    @event = Event.find(params[:id])
+    @event.event_attendees.destroy_all
+    @event.event_campuses.destroy_all
+    @event.destroy
+
+    unless @event.errors.empty?
+      flash[:notice] = "<big>WARNING: Couldn't delete event because:</big>"
+      @event.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(events_path) }
+    end
+  end
+  
 
   def attendance
     session[:attendance_campus_id] = nil unless session[:attendance_campus_id].present?
@@ -134,6 +244,7 @@ class EventsController < ApplicationController
       @campus_summaries = ActiveSupport::OrderedHash.new
       @campus_summary_totals = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0}
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
 
@@ -174,7 +285,12 @@ class EventsController < ApplicationController
 
       @results_partial = "attendance_summary"
     rescue Exception => e
-      setup_error_rescue
+      if e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
+      else
+        setup_error_rescue
+      end
     end
   end
 
@@ -185,6 +301,7 @@ class EventsController < ApplicationController
 
     begin
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
@@ -256,7 +373,9 @@ class EventsController < ApplicationController
 
         retries -= 1
         retry unless retries < 0
-        
+      elsif e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
       else
         setup_error_rescue
       end
@@ -300,7 +419,7 @@ class EventsController < ApplicationController
   end
 
   def setup_error_rescue
-    @report_description = "Oh noes..."
+    @report_description = "It looks like #{link_to('Eventbrite', eventbrite[:c4c_events_link])} isn't responding right now, please try again later."
 
     @results_partial = "error"
   end
@@ -311,6 +430,10 @@ class EventsController < ApplicationController
   
   def sync_event_data_delayed_job
     ::Event.send_later(:sync_unsynced_events, params[:force_sync_all])
+  end
+  
+  def get_layout
+    params[:action] == 'index' ? 'manage' : 'application'
   end
   
 end
