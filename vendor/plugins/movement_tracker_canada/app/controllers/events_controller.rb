@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   unloadable
-  layout 'manage'
+  layout :get_layout
   
   include PersonForm
   
@@ -12,6 +12,7 @@ class EventsController < ApplicationController
   
   
   SELECTED_CAMPUS_EXCEPTION = "Selected campus not relevant to this event."
+  NO_ATTENDEES_EXCEPTION = "There are no attendees to this event yet."
 
   INDIVIDUALS = 'individuals'
   SUMMARY = 'summary'
@@ -63,7 +64,7 @@ class EventsController < ApplicationController
     saved = @event.save
     if saved
       @event.update_details_and_attendees_from_eventbrite
-      synced = @event.synced_at != nil
+      synced = !@event.synced_at.nil? && @event.synced_at.present?
       
       if synced
         EventCampus.all(:conditions => {:event_id => @event.id}).each {|campus| campus.destroy}
@@ -243,6 +244,7 @@ class EventsController < ApplicationController
       @campus_summaries = ActiveSupport::OrderedHash.new
       @campus_summary_totals = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0}
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
 
@@ -283,7 +285,12 @@ class EventsController < ApplicationController
 
       @results_partial = "attendance_summary"
     rescue Exception => e
-      setup_error_rescue
+      if e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
+      else
+        setup_error_rescue
+      end
     end
   end
 
@@ -294,6 +301,7 @@ class EventsController < ApplicationController
 
     begin
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
@@ -365,7 +373,9 @@ class EventsController < ApplicationController
 
         retries -= 1
         retry unless retries < 0
-        
+      elsif e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
       else
         setup_error_rescue
       end
@@ -409,7 +419,7 @@ class EventsController < ApplicationController
   end
 
   def setup_error_rescue
-    @report_description = "Oh noes..."
+    @report_description = "It looks like #{link_to('Eventbrite', eventbrite[:c4c_events_link])} isn't responding right now, please try again later."
 
     @results_partial = "error"
   end
@@ -420,6 +430,10 @@ class EventsController < ApplicationController
   
   def sync_event_data_delayed_job
     ::Event.send_later(:sync_unsynced_events, params[:force_sync_all])
+  end
+  
+  def get_layout
+    params[:action] == 'index' ? 'manage' : 'application'
   end
   
 end

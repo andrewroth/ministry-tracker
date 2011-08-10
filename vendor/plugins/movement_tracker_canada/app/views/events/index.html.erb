@@ -6,7 +6,6 @@
     <tr>
       <th>Title</th>
       <th>Start Date</th>
-      <th>Synced At</th>
     </tr>
   </thead>
   <tbody>
@@ -14,7 +13,7 @@
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td class="cim_reg_event_row"><%=h e.title %></td>
         <td class="cim_reg_event_row"><%=h e.start_date %></td>
-        <td class="cim_reg_event_row"><%=h e.synced_at.present? ? "#{time_ago_in_words(e.synced_at)} ago" : "never" %></td>
+        <td><%= link_to 'Report', url_for(:controller => 'events', :action => 'attendance', :id => e.id) %></td>
         <td><%= link_to 'Show', event_path(e.id) %></td>
         <td><%= link_to 'Edit', edit_event_path(e.id) %></td>
         <td><%= link_to 'Destroy', event_path(e.id), :confirm => 'This will remove the Eventbrite event from the Pulse. Are you sure?', :method => :delete %></td>
