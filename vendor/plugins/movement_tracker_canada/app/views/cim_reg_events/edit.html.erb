@@ -4,17 +4,19 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :cim_reg_event_name, "Event Name" %><br />
+    <%= f.label :cim_reg_event_name, "Event Name" %>
     <%= f.text_field :event_name %>
   </p>
   <p>
-    <%= f.label :cim_reg_hide_from_profile, "Hide From Profile" %><br />
+    <%= f.label :cim_reg_hide_from_profile, "Hide From Profile" %>
     <%= f.check_box :hide_from_profile %>
   </p>
+  <br/>
+  <br/>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 <br/>
 <%= link_to 'Show', cim_reg_event_path(@cim_reg_event.id) %> |
-<%= link_to 'Back', cim_reg_events_path %>
+<%= link_to 'Back', events_path %>

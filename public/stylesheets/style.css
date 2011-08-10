@@ -710,6 +710,10 @@ img.opaqueWhite {
 		cursor:default;
 }
 
+.directorytable.noclick tr:hover {
+    cursor:default;
+}
+
 #group_types tr:hover{
 		cursor:default;
 }
