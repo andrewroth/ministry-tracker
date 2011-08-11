@@ -286,8 +286,8 @@ namespace :db do
       
       person = user.person
       
-      person.campus_involvements.destroy_all
-      person.ministry_involvements.destroy_all
+      person.all_campus_involvements.destroy_all
+      person.all_ministry_involvements.destroy_all
       
       ministry = Ministry.find(hash["ministry_id"])
       campus = ministry.campuses.first
