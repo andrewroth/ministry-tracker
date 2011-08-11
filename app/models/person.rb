@@ -53,6 +53,11 @@ class Person < ActiveRecord::Base
   has_one :mentor, :class_name => "Person", :primary_key => "person_mentor_id"
   has_many :mentees, :class_name => "Person", :foreign_key => "person_mentor_id"
 
+  has_many :person_training_courses
+  has_many :training_courses, :through => :person_training_courses
+  has_many :finished_training_courses, :through => :person_training_courses,
+    :source => :training_course,
+    :conditions => ["#{PersonTrainingCourse._(:finished)} = 1"]
 
   def all_group_involvements(semester = nil)
     return self.all_group_involvements_assoc unless semester && semester.id

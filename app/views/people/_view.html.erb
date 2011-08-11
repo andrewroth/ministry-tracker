@@ -198,25 +198,33 @@
 <% end %>
 
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+<table border="0" cellspacing="0" cellpadding="0" class="activity half">
   <tr>
   <td colspan="1"><h5>Events</h5></td>
   </tr>
 
   <tr>
     <td class="half">
-      <table>
-        <tr>
-          <td>
-            <nobr>
-              <%= render :partial => "events" %>
-           </nobr>
-          </td>
-        </tr>
-      </table>
+      <%= render :partial => "events" %>
     </td>
   </tr>
 </table>
+
+<% if is_staff_somewhere(@me) && is_staff_somewhere(@person) %>
+<table border="0" cellspacing="0" cellpadding="0" class="activity half">
+  <tr>
+  <td colspan="1"><h5>Staff Training</h5></td>
+  </tr>
+
+  <tr>
+    <td class="half">
+      <%= render :partial => "training_courses" %>
+    </td>
+  </tr>
+</table>
+<% end %>
+
+<br/>
 <br/>
 
 <% if is_ministry_admin %>
