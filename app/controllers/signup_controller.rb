@@ -1,4 +1,5 @@
 class SignupController < ApplicationController
+  require "geoip"
   include PersonForm
   include SemesterSet
   layout :get_layout
@@ -34,12 +35,20 @@ class SignupController < ApplicationController
     @person = get_person || Person.new
     setup_campuses
     
+    
     # if possible prevent the user from having to select a campus    
     session[:signup_campus_id] ||= params[:campus_id] if params[:campus_id]
     session[:signup_campus_id] ||= @primary_campus_involvement.campus_id if @primary_campus_involvement.present?
     
     if session[:signup_campus_id].blank? && cookies[:signup_campus_id] && cookies[:signup_campus_id].to_i.to_s == cookies[:signup_campus_id]
       session[:signup_campus_id] ||= cookies[:signup_campus_id] if Campus.first(:conditions => ["#{Campus._(:id)} = ?", cookies[:signup_campus_id]]).present?
+    end
+    
+    # try to geolocate the campus if we still can't tell where they are
+    if session[:signup_campus_id].blank?
+      @geo = Autometal::Geoip.new(request.remote_ip)
+      campus = Campus.find_nearest_to(@geo.lat, @geo.lng) unless @geo.lat == 0 && @geo.lng == 0
+      session[:signup_campus_id] = campus.present? ? campus.id : nil
     end
     
     @semesters = [] << @current_semester << @next_semester

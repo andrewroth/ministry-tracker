@@ -52,7 +52,7 @@ CREATE TABLE `campus_involvements` (
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6043 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6053 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campus_ministry_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -198,7 +198,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dismissed_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -274,7 +274,7 @@ CREATE TABLE `event_campuses` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `event_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -283,7 +283,7 @@ CREATE TABLE `event_groups` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -298,7 +298,7 @@ CREATE TABLE `events` (
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `free_times` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -623,7 +623,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10348 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10357 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -703,7 +703,7 @@ CREATE TABLE `person_event_attendees` (
   PRIMARY KEY (`id`),
   KEY `index_c4c_pulse_dev.person_event_attendees_on_person_id` (`person_id`),
   KEY `index_c4c_pulse_dev.person_event_attendees_on_event_attendee_id` (`event_attendee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4544 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4576 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `person_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -738,7 +738,7 @@ CREATE TABLE `person_training_courses` (
   PRIMARY KEY (`id`),
   KEY `index_person_training_courses_on_person_id` (`person_id`),
   KEY `index_person_training_courses_on_training_course_id` (`training_course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17683 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `profile_pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -793,7 +793,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=305266 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=305269 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -898,7 +898,7 @@ CREATE TABLE `training_courses` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=810 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `training_question_activations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1397,6 +1397,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110720155454');
 INSERT INTO schema_migrations (version) VALUES ('20110808200330');
 
 INSERT INTO schema_migrations (version) VALUES ('20110808200700');
+
+INSERT INTO schema_migrations (version) VALUES ('20110811182932');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
