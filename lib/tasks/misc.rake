@@ -298,6 +298,45 @@ namespace :db do
       person.add_or_update_ministry(ministry.id, ministry_role.id)
     end
   end
+  
+  
+  task :import_training_course_data_from_csv => :environment do
+    
+    @parsed_file = CSV::Reader.parse(File.open('tmp/c4c_staff_training_record.csv', 'rb'), ',')
+    courses = []
+    person_count = 0
+    
+    @parsed_file.each_with_index  do |row, i|
+      if i == 0 # header row
+        courses = row
+        courses.delete_at(0)
+        
+        # add a training course for each header
+        courses.each_with_index do |course, j|
+          tc = TrainingCourse.new({:name => course})
+          tc.save!
+          courses[j] = tc
+        end
+      else
+        
+        person = Person.find(row[0].to_i)
+        if person
+          person_count = person_count+1
+          row.delete_at(0)
+          row.each_with_index do |col, j|
+            finished = (col == "TRUE" || col == "100%")
+            percent_complete = col && col.include?("%") ? col : nil
+            if finished || percent_complete
+              ptc = PersonTrainingCourse.new(:person_id => person.id, :training_course_id => courses[j].id, :finished => finished, :percent_complete => percent_complete)
+              ptc.save!
+            end
+          end
+        end
+      end
+    end
+    puts "Imported training data for #{person_count} people"
+  end
+  
 end
 
 task :people => :environment do

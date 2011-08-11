@@ -1664,8 +1664,13 @@ padding-bottom:5px;
   width:150px;
 }
 
-#profilewrap table tr, #profilewrap table td.half {
-  width:50%;
+#profilewrap table tr, #profilewrap table td.half, #profilewrap table.half {
+  width:49%;
+}
+
+#profilewrap table.half {
+  display:inline-block;
+  vertical-align:top;
 }
 
 #profilewrap table th, #profilewrap table tr {
