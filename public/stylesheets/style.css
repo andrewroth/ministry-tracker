@@ -2512,7 +2512,7 @@ h2.group_type_title {
 
 .groupMinimalInfoContainer {
   float:left;
-  width:500px;
+  width:410px;
 }
 
 .groupMinimalInfoContainer a {
@@ -2587,8 +2587,9 @@ h2.group_type_title {
 }
 
 #group_list {
-  width:75%;
+  width:72%;
   float:left;
+  margin-bottom:25px;
 }
 
 #collection_group_list {
