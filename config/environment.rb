@@ -52,6 +52,7 @@ Rails::Initializer.run do |config|
   config.gem 'daemons'
   config.gem 'httparty' # for eventbright
   config.gem 'tzinfo'   # for eventbright
+  config.gem 'autometal-geoip', :lib => 'geoip'
   
   config.time_zone = 'UTC'
 
