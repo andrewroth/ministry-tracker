@@ -595,6 +595,21 @@ class ApplicationController < ActionController::Base
       session[:facebook_person] = @graph.get_object("me")
     end
       
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+      
+      @mobile ? "mobile" : "application" 
+    end
+    
     def get_summer_report_years_and_weeks
       @current_year = Year.current
       
@@ -628,7 +643,6 @@ class ApplicationController < ActionController::Base
       
       @mobile ? "mobile" : "application" 
     end
-
     
     # url - url of service trying to call, e.g. "https://service.com/action"
     # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}

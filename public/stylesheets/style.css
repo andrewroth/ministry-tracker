@@ -1092,6 +1092,11 @@ a.action-button img {
   -moz-transition: .1s ease; -webkit-transition: .1s ease; transition: .1s ease;
 }
 
+.badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
+.poorhead {background:url(/images/status_poor.png) center 31px #ffC000;}
+.okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
+.goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
+
 .editing .headselected,
 .editing a.badhead:hover,
 .editing a.poorhead:hover,

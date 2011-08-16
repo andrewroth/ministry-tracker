@@ -33,6 +33,7 @@ class CampusDiscipleshipController < ApplicationController
 
   # GET /people/remove_mentee
   # Removes a person's mentee via a person_id parameter  
+  # NOTE: currently _discipleship_tree.html.erb just uses 'remove_mentee' directly (may need to use below for Hudson tests, however)
   def remove_disciple
     if params[:id]
       redirect_to :controller => "people", :action => "remove_mentee", :id => params[:id]
