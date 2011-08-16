@@ -201,4 +201,9 @@ class Person < ActiveRecord::Base
   def is_global_dashboard_admin
     v = self.try(:user).try(:global_dashboard_access).try(:admin)
   end
+  
+  def has_mentor?
+    attr = "person_mentor_id"
+    return !(self.send(attr).nil?)
+  end
 end

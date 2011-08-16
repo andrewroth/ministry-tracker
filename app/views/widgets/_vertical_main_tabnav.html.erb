@@ -37,7 +37,6 @@ render_tabnav :vertical_main,
    t.highlights_on :controller => "timetables"
   end
 
-
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
@@ -73,6 +72,14 @@ render_tabnav :vertical_main,
     end
   end
 
+  if authorized?(:show, :campus_discipleship)
+  	add_tab do |t|
+      t.named "<div id='campusDiscTab' class='tab'>DISCIPLESHIP VIEW</div>"
+      t.titled @ministry.name + ' Discipleship View'
+      t.links_to :controller => "campus_discipleship", :action => "show"
+      t.highlights_on :controller => "campus_discipleship", :action => "show"
+    end if session[:ministry_id]
+  end
 
   if authorized?(:new)
     add_tab do |t|
