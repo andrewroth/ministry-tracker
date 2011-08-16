@@ -26,7 +26,7 @@
 					<span><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></span>
 					<%= link_to_remote("", 
 		           	{:update => "disciple_#{o.id}",
-		           	:url => { :action => :remove_disciple, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
+		           	:url => { :action => :remove_mentee, :controller => :people, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
 			        :confirm => "Are you sure you want to remove #{o.full_name} from being mentored by #{Person.find(o.person_mentor_id).full_name} ?", 
 			        :loading => "$('#spinner#{o.id}').show()", :complete => render(:update) {|page| page.redirect_to(url_for :controller => 'campus_discipleship', :action => 'show')}},
 			        {:class => "removeMentorIconLink", :title => "Remove #{o.first_name} from being mentored by #{Person.find(o.person_mentor_id).first_name}"})  
