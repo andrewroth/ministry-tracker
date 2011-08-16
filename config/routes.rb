@@ -186,6 +186,11 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource  :files
 
+  map.connect 'campus_discipleship/',
+              :conditions => { :method => :get },
+              :controller => "campus_discipleship",
+              :action => "show"
+
   map.resources :people,  :member => {:import_gcx_profile => :any,
                                       :set_initial_campus => :any,
                                       :set_initial_ministry => :any,
