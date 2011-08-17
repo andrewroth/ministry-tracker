@@ -58,6 +58,9 @@ class Person < ActiveRecord::Base
   has_many :finished_training_courses, :through => :person_training_courses,
     :source => :training_course,
     :conditions => ["#{PersonTrainingCourse._(:finished)} = 1"]
+    
+  has_many :contract_signatures
+  
 
   def all_group_involvements(semester = nil)
     return self.all_group_involvements_assoc unless semester && semester.id
@@ -205,5 +208,17 @@ class Person < ActiveRecord::Base
 
   def is_global_dashboard_admin
     v = self.try(:user).try(:global_dashboard_access).try(:admin)
+  end
+  
+  def signed_volunteer_contract_this_year?
+    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
+      return false unless ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
+                                                                 #{ContractSignature._(:contract_id)} = ? and 
+                                                                 #{ContractSignature._(:agreement)} = true and 
+                                                                 #{ContractSignature._(:signature)} <> '' and 
+                                                                 #{ContractSignature._(:signed_at)} > ?",
+                                                                 self.id, contract_id, Year.current.start_date]).present?
+    end
+    true
   end
 end

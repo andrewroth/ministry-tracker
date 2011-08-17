@@ -120,6 +120,41 @@ CREATE TABLE `conferences` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `contract_clauses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contract_id` int(11) DEFAULT NULL,
+  `order` int(11) DEFAULT NULL,
+  `heading` varchar(255) DEFAULT NULL,
+  `text` text,
+  `checkbox` tinyint(1) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `contract_signatures` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contract_id` int(11) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `agreement` tinyint(1) DEFAULT NULL,
+  `signature` varchar(255) DEFAULT NULL,
+  `signed_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_contract_signatures_on_contract_id` (`contract_id`),
+  KEY `index_contract_signatures_on_person_id` (`person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `contracts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `agreement_clause` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `correspondence_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
@@ -631,7 +666,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=657 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=756 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -692,7 +727,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_event_attendees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -793,7 +828,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=305269 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=305274 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1399,6 +1434,14 @@ INSERT INTO schema_migrations (version) VALUES ('20110808200330');
 INSERT INTO schema_migrations (version) VALUES ('20110808200700');
 
 INSERT INTO schema_migrations (version) VALUES ('20110811182932');
+
+INSERT INTO schema_migrations (version) VALUES ('20110816152322');
+
+INSERT INTO schema_migrations (version) VALUES ('20110816152843');
+
+INSERT INTO schema_migrations (version) VALUES ('20110816153613');
+
+INSERT INTO schema_migrations (version) VALUES ('20110816163338');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
