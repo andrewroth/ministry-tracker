@@ -130,7 +130,7 @@ CREATE TABLE `contract_clauses` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `contract_signatures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -144,7 +144,7 @@ CREATE TABLE `contract_signatures` (
   PRIMARY KEY (`id`),
   KEY `index_contract_signatures_on_contract_id` (`contract_id`),
   KEY `index_contract_signatures_on_person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `contracts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -153,7 +153,7 @@ CREATE TABLE `contracts` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `correspondence_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -828,7 +828,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=305274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=305277 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1442,6 +1442,8 @@ INSERT INTO schema_migrations (version) VALUES ('20110816152843');
 INSERT INTO schema_migrations (version) VALUES ('20110816153613');
 
 INSERT INTO schema_migrations (version) VALUES ('20110816163338');
+
+INSERT INTO schema_migrations (version) VALUES ('20110822193729');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

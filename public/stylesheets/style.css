@@ -3414,10 +3414,10 @@ table.groupInvolvementList th {
 }
 
 #new_contract_signature div.clause.disabled, #new_contract_signature div.signature_container.disabled {
-  opacity:0.15; filter:alpha(opacity=15);
+  opacity:0.10; filter:alpha(opacity=10);
 }
 
-#new_contract_signature div.clause.disabled input, #new_contract_signature div.signature_container.disabled input {
+#new_contract_signature div.clause.disabled div input, #new_contract_signature div.signature_container.disabled input {
   display:none;
 }
 
@@ -3431,9 +3431,14 @@ table.groupInvolvementList th {
   margin-bottom:10px;
 }
 
-#new_contract_signature div input.clause_checkbox {
+#new_contract_signature div div.clause_checkbox_container {
   position:absolute;
-  top:40%;
+  top:50%;
+}
+
+#new_contract_signature div div.clause_checkbox_container input.clause_checkbox {
+  position:relative;
+  top:-10px;
 }
 
 #new_contract_signature div.signature_container {

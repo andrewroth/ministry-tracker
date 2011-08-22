@@ -7,8 +7,10 @@
 
   <% @contract.clauses.each_with_index do |clause, i| %>
     <div class="clause" position="<%=i%>">
-      <h3><%= clause.heading %></h3>
-      <%= check_box_tag clause.order, clause.order, false, :class => "clause_checkbox", :position => i if clause.checkbox %>
+      <%= "<h3>#{clause.heading}</h3>" if clause.heading %>
+      <div class='clause_checkbox_container'>
+        <%= check_box_tag clause.order, clause.order, false, :class => "clause_checkbox", :position => i if clause.checkbox %>
+      </div>
       <div class='clause_text'><%= clause.text %></div>
     </div>
   <% end %>
@@ -52,7 +54,7 @@
       $("div.clause").addClass("disabled");
       $("div.signature_container").addClass("disabled");
       
-      first_unchecked.parent().removeClass("disabled");
+      first_unchecked.parent().parent().removeClass("disabled");
       $("div.clause").slice(0, first_unchecked.attr("position")).removeClass("disabled");
     }
   }
