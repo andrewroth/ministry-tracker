@@ -11,7 +11,7 @@
 <style>
   td.country { width: 300px; }
   td.month { width: 100px; }
-  td.percent { width: 400px; }
+  td.percent { width: 400px; border-bottom: 2px solid transparent; }
   tr, td { border-bottom: 1px solid #cccccc; vertical-align:middle; height:27px; }
 </style>
 
@@ -27,6 +27,24 @@
       <% total_months = 0 %>
       
       <% for country in @countries %>
+        <% months_with_data = 0 %>
+        <% @month_short.each { |m| months_with_data += 1 if @month_data[country][m] } %>
+        <% total_months_with_data += months_with_data %>
+        <% total_months += 12 %>
+      <% end %>
+      
+      <tr>
+        <td class="country">Total</td>
+        <td><%= ((total_months_with_data.to_f / total_months.to_f)*100).to_i %>%</td>
+        <td class="percent">
+          <div id="percent_total"></div>
+          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= (total_months_with_data.to_f / total_months.to_f)*100 %> });</script>
+        </td>
+      </tr>
+      
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td class="percent">&nbsp;</td></tr>
+      
+      <% for country in @countries %>
         <tr>
           <td class="country"><%= country.name %></td>
           <% months_with_data = 0 %>
@@ -39,19 +57,8 @@
             <script type="text/javascript">$("#percent_<%= country.id %>").progressbar({ value: <%= (months_with_data.to_f / 12.00)*100 %> });</script>
           </td>
         </tr>
-        <% total_months_with_data += months_with_data %>
-        <% total_months += 12 %>
       <% end %>
       
-      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-      <tr>
-        <td class="country">Total</td>
-        <td><%= ((total_months_with_data.to_f / total_months.to_f)*100).to_i %>%</td>
-        <td class="percent">
-          <div id="percent_total"></div>
-          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= (total_months_with_data.to_f / total_months.to_f)*100 %> });</script>
-        </td>
-      </tr>
     </table>
 	</div>
 
