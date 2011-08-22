@@ -36,7 +36,7 @@
           </td>
           <td class="percent">
             <div id="percent_<%= country.id %>"></div>
-            <script type="text/javascript">$("#percent_<%= country.id %>").progressbar({ value: <%= (months_with_data / 12)*100 %> });</script>
+            <script type="text/javascript">$("#percent_<%= country.id %>").progressbar({ value: <%= months_with_data*100 / 12*100 %> });</script>
           </td>
         </tr>
         <% total_months_with_data += months_with_data %>
@@ -46,10 +46,10 @@
       <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
       <tr>
         <td class="country">Total</td>
-        <td><%= (total_months_with_data / total_months)*100 %>%</td>
+        <td><%= total_months_with_data*100 / total_months*100 %>%</td>
         <td class="percent">
           <div id="percent_total"></div>
-          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= (total_months_with_data / total_months)*100 %> });</script>
+          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= total_months_with_data*100 / total_months*100 %> });</script>
         </td>
       </tr>
     </table>
