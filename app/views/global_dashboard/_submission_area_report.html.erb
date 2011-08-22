@@ -1,23 +1,85 @@
+
+<%= stylesheet_link_tag "jquery-ui" %>
+
+<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs();
+	  $("#tabs").show();
+	});
+</script>
+
 <style>
   td.country { width: 300px; }
   td.month { width: 100px; }
-  tr, td { border-bottom: 1px solid #cccccc; }
+  td.percent { width: 400px; border-bottom: 2px solid transparent; }
+  tr, td { border-bottom: 1px solid #cccccc; vertical-align:middle; height:27px; }
 </style>
 
-<table>
-  <tr>
-    <td class="country"></td>
-    <%- @month_short.each do |m| %>
-      <td class="month"><%= m %></td>
-    <%- end %>
-  </tr>
-  <%- for country in @countries %>
-    <tr>
-      <td class="country"><%= country.name %></td>
-      <%- @month_short.each do |m| %>
-        <!--<td class="month"><%= image_tag @month_data[country][m] ? "check_green.png" : "denied_red.png" %></td>-->
-        <td class="month"><%= @month_data[country][m] ? image_tag("check_green.png") : "" %></td>
+<div id="tabs" style="display:none;">
+	<ul>
+		<li><a href="#tabs-1">Overall Percent</a></li>
+		<li><a href="#tabs-2">Monthly</a></li>
+	</ul>
+  
+	<div id="tabs-1">
+	  <table>
+      <% total_months_with_data = 0 %>
+      <% total_months = 0 %>
+      
+      <% for country in @countries %>
+        <% months_with_data = 0 %>
+        <% @month_short.each { |m| months_with_data += 1 if @month_data[country][m] } %>
+        <% total_months_with_data += months_with_data %>
+        <% total_months += 12 %>
+      <% end %>
+      
+      <tr>
+        <td class="country">Total</td>
+        <td><%= ((total_months_with_data.to_f / total_months.to_f)*100).to_i %>%</td>
+        <td class="percent">
+          <div id="percent_total"></div>
+          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= (total_months_with_data.to_f / total_months.to_f)*100 %> });</script>
+        </td>
+      </tr>
+      
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td class="percent">&nbsp;</td></tr>
+      
+      <% for country in @countries %>
+        <tr>
+          <td class="country"><%= country.name %></td>
+          <% months_with_data = 0 %>
+          <% @month_short.each { |m| months_with_data += 1 if @month_data[country][m] } %>
+          <td>
+            <%= months_with_data %> months reported
+          </td>
+          <td class="percent">
+            <div id="percent_<%= country.id %>"></div>
+            <script type="text/javascript">$("#percent_<%= country.id %>").progressbar({ value: <%= (months_with_data.to_f / 12.00)*100 %> });</script>
+          </td>
+        </tr>
+      <% end %>
+      
+    </table>
+	</div>
+
+	<div id="tabs-2">
+    <table>
+      <tr>
+        <td class="country"></td>
+        <%- @month_short.each do |m| %>
+          <td class="month"><%= m %></td>
+        <%- end %>
+      </tr>
+      <%- for country in @countries %>
+        <tr>
+          <td class="country"><%= country.name %></td>
+          <%- @month_short.each do |m| %>
+            <!--<td class="month"><%= image_tag @month_data[country][m] ? "check_green.png" : "denied_red.png" %></td>-->
+            <td class="month"><%= @month_data[country][m] ? image_tag("check_green.png") : "" %></td>
+          <%- end %>
+        </tr>
       <%- end %>
-    </tr>
-  <%- end %>
-</table>
+    </table>
+  </div>
+
+</div>
