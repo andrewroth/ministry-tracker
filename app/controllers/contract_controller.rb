@@ -32,7 +32,7 @@ class ContractController < ApplicationController
       next_contract = find_next_unsigned_volunteer_contract(@my.id)
       
       if next_contract.nil?
-#        flash[:notice] = "<big>You're done, thanks!</big>"
+        flash[:notice] = "<big>Thanks!</big>"
         redirect_to :action => "index", :controller => "dashboard"
       else
         redirect_to :action => "volunteer_agreement"
