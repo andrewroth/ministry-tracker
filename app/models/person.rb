@@ -210,6 +210,11 @@ class Person < ActiveRecord::Base
     v = self.try(:user).try(:global_dashboard_access).try(:admin)
   end
   
+  def has_mentor?
+    attr = "person_mentor_id"
+    return !(self.send(attr).nil?)
+  end
+  
   def signed_volunteer_contract_this_year?
     Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
       return false unless ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 

@@ -4,13 +4,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :api_keys
 
+  map.resources :label_people
+  map.resources :labels
+
   map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
   map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
   map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
               
-  map.resources :label_people
-  map.resources :labels
-
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -185,6 +185,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resource  :session
   
   map.resource  :files
+
+  map.connect 'campus_discipleship/',
+              :conditions => { :method => :get },
+              :controller => "campus_discipleship",
+              :action => "show"
 
   map.resources :people,  :member => {:import_gcx_profile => :any,
                                       :set_initial_campus => :any,

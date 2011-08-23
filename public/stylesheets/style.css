@@ -541,6 +541,11 @@ a.active #groupsTab, #groupsTab:hover { background-position:-10px -329px; }
 .tablist #groupsTab:hover, .tablist a.active #groupsTab { background-position:-10px -333px; padding-left:25px; }
 .tablist #groupsTab { background-position:-10px -298px; padding-left:25px; }
 
+#campusDiscTab                            { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-3px -1310px; }
+a.active #campusDiscTab, #campusDiscTab:hover { background-position:-3px -1343px; }
+.tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position:-9px -1347px; padding-left:25px; }
+.tablist #campusDiscTab { background-position:-9px -1314px; padding-left:25px; }
+
 #insightsTab                              { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-8px -494px; }
 a.active #insightsTab, #insightsTab:hover { background-position:-8px -522px; }
 .tablist #insightsTab:hover, .tablist a.active #insightsTab { background-position:-9px -526px; padding-left:22px; }
@@ -548,6 +553,12 @@ a.active #insightsTab, #insightsTab:hover { background-position:-8px -522px; }
 
 #scheduleTab                              { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-4px -153px; }
 a.active #scheduleTab, #scheduleTab:hover { background-position:-4px -189px; }
+
+#discipleshipTab                            { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-10px -294px; }
+a.active #discipleshipTab, #discipleshipTab:hover { background-position:-10px -329px; }
+.tablist #discipleshipTab:hover, .tablist a.active #discipleshipTab { background-position:-10px -333px; padding-left:25px; }
+.tablist #discipleshipTab { background-position:-10px -298px; padding-left:25px; }
+
 
 #addStudentTab                                { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-2px -746px; }
 a.active #addStudentTab, #addStudentTab:hover { background-position:-2px -779px; }
@@ -1080,6 +1091,11 @@ a.action-button img {
   -moz-box-shadow: 0 -3px 15px #666666 inset; -webkit-box-shadow: 0 -3px 15px #666666 inset; box-shadow: 0 -3px 15px #666666 inset; 
   -moz-transition: .1s ease; -webkit-transition: .1s ease; transition: .1s ease;
 }
+
+.badhead {background:url(/images/status_bad.png) center 31px #bc0a0a;}
+.poorhead {background:url(/images/status_poor.png) center 31px #ffC000;}
+.okhead {background:url(/images/status_okay.png) center 31px #61E6CB;}
+.goodhead {background:url(/images/status_good.png) center 31px #5CE40A;}
 
 .editing .headselected,
 .editing a.badhead:hover,
@@ -3710,3 +3726,30 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 
 #summer_report_year_id { font-size:20px; font-weight:bold; }
 
+td.campusDiscTree {
+	width:33%;
+}
+
+.campusViewTreeNode {
+    color: #FFCB05;	
+}
+
+.campusViewTreeRoot a {
+    color: #FFCB05;	
+}
+
+.campusViewTreeRoot a:hover {
+    color: #1F429B;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.campusViewTreeBranch span {
+    color: #1F429B;
+}
+
+.campusViewTreeBranchLink span:hover {
+    color: #ECAC00;
+    text-decoration: underline;
+    cursor: pointer;
+}

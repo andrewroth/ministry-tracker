@@ -32,6 +32,12 @@
       <%= link_to 'Notices', notices_path() %></li>
     <%- end -%>
 
+    <%- if authorized?(:new, :labels) # no permission created ==> SUPER_ADMIN only
+    -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "labels" %>>
+      <%= link_to 'Labels', labels_path() %></li>
+    <%- end -%>    
+
     <%- if is_ministry_admin -%>
       <li<%= ' class="highlighted"' if params[:controller] == "user_codes" %>>
       <%= link_to 'User Codes', :controller => :user_codes, :action => :generate %></li>
