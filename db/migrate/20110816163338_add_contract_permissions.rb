@@ -2,7 +2,8 @@ class AddContractPermissions < ActiveRecord::Migration
 
   NEW_PERMISSIONS = [{ :description => "Doesn't need to sign volunteer agreement", :controller => "contract", :action => "volunteer_agreement_not_required" },
                      { :description => "Volunteer agreement", :controller => "contract", :action => "volunteer_agreement" },
-                     { :description => "Sign a volunteer contract", :controller => "contract", :action => "sign_volunteer_contract" }]
+                     { :description => "Sign a volunteer contract", :controller => "contract", :action => "sign_volunteer_contract" },
+                     { :description => "Decline volunteer contract", :controller => "contract", :action => "decline_volunteer_contract"}]
 
   NEW_MINISTRY_ROLE_PERMISSIONS = [{ :ministry_role_name => "Team Leader",  :permission_controller => "contract", :permission_action => "volunteer_agreement" },
                                    { :ministry_role_name => "Staff",  :permission_controller => "contract", :permission_action => "volunteer_agreement" },
@@ -28,7 +29,16 @@ class AddContractPermissions < ActiveRecord::Migration
                                    { :ministry_role_name => "Ministry Leader",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Student",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Alumni",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
-                                   { :ministry_role_name => "Team Member",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" }
+                                   { :ministry_role_name => "Team Member",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
+                                   
+                                   { :ministry_role_name => "Team Leader",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Staff",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Staff Alumni",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Ministry Leader",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Student Leader",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Student",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Alumni",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" },
+                                   { :ministry_role_name => "Team Member",  :permission_controller => "contract", :permission_action => "decline_volunteer_contract" }
                                    ]
 
 

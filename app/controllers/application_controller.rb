@@ -547,7 +547,7 @@ class ApplicationController < ActionController::Base
     end
     
     def force_contract_agreement
-      unless authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?
+      if needs_to_sign_volunteer_agreements?
         redirect_to :action => "volunteer_agreement", :controller => "contract"
         return false
       end
@@ -684,5 +684,8 @@ class ApplicationController < ActionController::Base
       service_uri
     end
     
+    def needs_to_sign_volunteer_agreements?
+      !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
+    end
 end
 

@@ -3455,6 +3455,19 @@ table.groupInvolvementList th {
 #new_contract_signature div div.clause_checkbox_container input.clause_checkbox {
   position:relative;
   top:-10px;
+  -moz-box-shadow: 0 1px 3px #FFCB05; -webkit-box-shadow: 0 1px 3px #FFCB05; box-shadow: 0 1px 3px #FFCB05;
+}
+
+#new_contract_signature div div.clause_checkbox_container input.clause_checkbox:hover {
+  -moz-box-shadow: 0 1px 7px #FFCB05; -webkit-box-shadow: 0 1px 7px #FFCB05; box-shadow: 0 1px 7px #FFCB05;
+}
+
+input#contract_signature_agreement {
+  -moz-box-shadow: 0 1px 7px #FFCB05; -webkit-box-shadow: 0 1px 7px #FFCB05; box-shadow: 0 1px 7px #FFCB05;
+}
+
+input#contract_signature_agreement:hover {
+  -moz-box-shadow: 0 1px 14px #FFCB05; -webkit-box-shadow: 0 1px 14px #FFCB05; box-shadow: 0 1px 14px #FFCB05;
 }
 
 #new_contract_signature div.signature_container {
