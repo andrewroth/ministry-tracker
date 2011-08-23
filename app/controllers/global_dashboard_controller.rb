@@ -19,6 +19,9 @@ class GlobalDashboardController < ApplicationController
     "2BAE7844-59E4-39F7-7A4D-B02450289513",
     "999D463E-AC3D-34E8-B18C-45D153DF5545"
   ]
+  
+  MONTH_LONG = %w[January February March April May June July August September October November December]
+  MONTH_SHORT = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
 
   before_filter :ensure_permission
   before_filter :set_can_edit_stages
@@ -175,6 +178,88 @@ class GlobalDashboardController < ApplicationController
               :filename => "export.csv")
 
   end
+  
+  def export_submission_countries
+    csv_out = ""
+    CSV::Writer.generate(csv_out) do |csv|
+    
+      header_row = ["Country", "Overall Percent", "Months Reported"]
+      MONTH_LONG.each { |m| header_row << m }
+      csv << header_row
+
+      GlobalArea.all.each do |area|
+        area.global_countries.each do |country|
+          
+          month_data = {}
+          MONTH_LONG.each_with_index do |ml, i|
+            m = Month.find_by_month_desc "#{ml} #{params[:y]}"
+            stat = country.global_dashboard_whq_stats.find_by_month_id m.id
+            month_data[country] ||= {}
+            month_data[country][MONTH_SHORT[i]] = stat.present?
+          end
+          
+          months_with_data = 0
+          MONTH_SHORT.each { |m| months_with_data += 1 if month_data[country][m] }
+          
+          row = [country.name, "#{(months_with_data.to_f / 12.00)*100}%", months_with_data]
+          MONTH_SHORT.each { |m| row << month_data[country][m] ? "true" : "false" }
+          csv << row
+        end
+      end
+    end
+
+    send_data(csv_out,
+              :type => 'text/csv; charset=utf-8; header=present',
+              :filename => "submission_report_countries_#{params[:y]}.csv")
+  end
+  
+  def export_submission_areas
+    csv_out = ""
+    CSV::Writer.generate(csv_out) do |csv|
+    
+      header_row = ["Area", "Overall Percent"]
+      MONTH_LONG.each { |m| header_row << m }
+      csv << header_row
+
+      GlobalArea.all.each do |area|
+        area_months_with_data = 0
+        area_total_months = 0
+        area_month_data = {}
+        num_countries = 0
+        
+        area.global_countries.each do |country|
+          num_countries += 1
+          
+          month_data = {}
+          MONTH_LONG.each_with_index do |ml, i|
+            m = Month.find_by_month_desc "#{ml} #{params[:y]}"
+            stat = country.global_dashboard_whq_stats.find_by_month_id m.id
+            month_data[country] ||= {}
+            month_data[country][MONTH_SHORT[i]] = stat.present?
+            area_month_data[MONTH_SHORT[i]] = 0
+          end
+          
+          months_with_data = 0
+          MONTH_SHORT.each do |m|
+            if month_data[country][m]
+              months_with_data += 1 
+              area_month_data[m] += 1
+            end
+          end
+          area_months_with_data += months_with_data
+          area_total_months += 12
+        end
+        
+        row = [area.area, "#{(area_months_with_data.to_f / area_total_months.to_f)*100}%"]
+        MONTH_SHORT.each { |m| row << "#{area_month_data[m].to_f / num_countries.to_f}%" }
+        csv << row
+      end
+    end
+
+    send_data(csv_out,
+              :type => 'text/csv; charset=utf-8; header=present',
+              :filename => "submission_report_areas_#{params[:y]}.csv")
+  end
 
   def update_stats
     location_filter_arr, mcc_filters = setup_filters
@@ -269,8 +354,8 @@ class GlobalDashboardController < ApplicationController
     if request.xhr? || (params[:a].present? && params[:y].present?)
       render(:inline => "missing params") and return unless params[:a].present? && params[:y]
 
-      @month_short = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
-      @month_long = %w[January February March April May June July August September October November December]
+      @month_short = MONTH_SHORT
+      @month_long = MONTH_LONG
       @area = GlobalArea.find params[:a]
       @countries = @area.global_countries(:order => :name)
       @month_data = {}

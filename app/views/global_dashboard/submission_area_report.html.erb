@@ -3,16 +3,24 @@
     padding: 0 0 0 0;
     width: 160px;
   }
+  span.export_container form {
+    float: right;
+    margin-left: 10px;
+  }
 </style>
+
 
 <h3>How many months in a year did countries in an area report?</h3><br/><br/>
 
-<tr>
-Area: <%= select_tag :area_id, options_for_select([""] + @area_options, params[:a].to_i) %>
-Year: <%= select_tag :year_id, options_for_select([""] + @year_options, params[:y].to_i) %>
+Area: <%= select_tag :area_id, options_for_select([""] + @area_options, params[:a].to_i) %>&nbsp;&nbsp;&nbsp;&nbsp;
+Year: <%= select_tag :year_id, options_for_select([""] + @year_options, params[:y].to_i) %>&nbsp;&nbsp;&nbsp;&nbsp;
 <%= spinner %>
-<BR/>
-<BR/>
+<span class="export_container">
+  <%= button_to "Export Countries", {:action => "export_submission_countries"}, {:style => "float:left;"} %>
+  <%= button_to "Export Areas", {:action => "export_submission_areas"}, {:style => "float:right;"} %>
+</span>
+<br/>
+<br/>
 
 <%- with_str = "'a='+$('#area_id').val()+'&y='+$('#year_id').val()" %>
 <%= observe_field :area_id,
@@ -36,3 +44,13 @@ Year: <%= select_tag :year_id, options_for_select([""] + @year_options, params[:
 </div>
 
 <br/><%= link_to "Back to the Global Dashboard", global_dashboard_path %><br/>
+
+
+<script type="text/javascript">
+  $($("span.export_container input").click(function(event){
+    event.preventDefault();
+    $("<input id='a' type='hidden' name='a' value='"+$("select#area_id").val()+"'>").appendTo($(this).parents('form:first'));
+    $("<input id='y' type='hidden' name='y' value='"+$("select#year_id").val()+"'>").appendTo($(this).parents('form:first'));
+    $(this).parents('form:first').submit();
+  }));
+</script>
