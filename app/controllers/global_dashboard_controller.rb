@@ -224,11 +224,12 @@ class GlobalDashboardController < ApplicationController
       GlobalArea.all.each do |area|
         area_months_with_data = 0
         area_total_months = 0
+        num_countries_in_area = 0
         area_month_data = {}
-        num_countries = 0
+        MONTH_SHORT.each { |m| area_month_data[m] = 0 }
         
         area.global_countries.each do |country|
-          num_countries += 1
+          num_countries_in_area += 1
           
           month_data = {}
           MONTH_LONG.each_with_index do |ml, i|
@@ -236,7 +237,6 @@ class GlobalDashboardController < ApplicationController
             stat = country.global_dashboard_whq_stats.find_by_month_id m.id
             month_data[country] ||= {}
             month_data[country][MONTH_SHORT[i]] = stat.present?
-            area_month_data[MONTH_SHORT[i]] = 0
           end
           
           months_with_data = 0
@@ -251,7 +251,7 @@ class GlobalDashboardController < ApplicationController
         end
         
         row = [area.area, "#{((area_months_with_data.to_f / area_total_months.to_f)*100).to_i}%"]
-        MONTH_SHORT.each { |m| row << "#{((area_month_data[m].to_f / num_countries.to_f)*100).to_i}%" }
+        MONTH_SHORT.each { |m| row << "#{((area_month_data[m].to_f / num_countries_in_area.to_f)*100).to_i}%" }
         csv << row
       end
     end
