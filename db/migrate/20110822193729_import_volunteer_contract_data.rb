@@ -48,9 +48,11 @@ class ImportVolunteerContractData < ActiveRecord::Migration
                    ]
   
   def self.up
-    NEW_CONTRACTS.each do |contract_hash|
-      if Contract.all(:conditions => {:title => contract_hash[:title]}).blank?
+    NEW_CONTRACTS.each_with_index do |contract_hash, i|
+      if Contract.all(:conditions => {:title => contract_hash[:title]}).blank? && Contract.all(:conditions => {:id => Contract::VOLUNTEER_CONTRACT_IDS[i]}).blank?
+        
         new_contract = Contract.new(:title => contract_hash[:title], :agreement_clause => contract_hash[:agreement_clause])
+        new_contract.id = Contract::VOLUNTEER_CONTRACT_IDS[i]
         new_contract.save!
         
         contract_hash[:clauses].each do |clause_hash|

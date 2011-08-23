@@ -1,4 +1,12 @@
 
+<p>
+  </br>
+  <%= link_to "Click here if you're not volunteering as a Student Leader or you cannot sign this agreement.",
+              {:action => "decline_volunteer_contract"},
+              {:confirm => "This will skip signing the Student Leader agreements.\n\nPlease note that you'll no longer be able to perform any Student Leader functions."} %>
+  </br>
+</p>
+
 <% form_for @contract_signature, :url => url_for(:action => 'sign_volunteer_contract', :controller => 'contract') do |f| %>
   <br/>
   <%= f.error_messages %>
