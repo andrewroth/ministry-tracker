@@ -201,7 +201,7 @@ class GlobalDashboardController < ApplicationController
           months_with_data = 0
           MONTH_SHORT.each { |m| months_with_data += 1 if month_data[country][m] }
           
-          row = [country.name, "#{(months_with_data.to_f / 12.00)*100}%", months_with_data]
+          row = [country.name, "#{((months_with_data.to_f / 12.00)*100).to_i}%", months_with_data]
           MONTH_SHORT.each { |m| row << month_data[country][m] ? "true" : "false" }
           csv << row
         end
@@ -250,8 +250,8 @@ class GlobalDashboardController < ApplicationController
           area_total_months += 12
         end
         
-        row = [area.area, "#{(area_months_with_data.to_f / area_total_months.to_f)*100}%"]
-        MONTH_SHORT.each { |m| row << "#{area_month_data[m].to_f / num_countries.to_f}%" }
+        row = [area.area, "#{((area_months_with_data.to_f / area_total_months.to_f)*100).to_i}%"]
+        MONTH_SHORT.each { |m| row << "#{((area_month_data[m].to_f / num_countries.to_f)*100).to_i}%" }
         csv << row
       end
     end
