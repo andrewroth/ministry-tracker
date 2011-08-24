@@ -14,7 +14,7 @@ class ContractController < ApplicationController
     
     case @contract.id
     when Contract::VOLUNTEER_CONTRACT_IDS.first
-      flash[:notice] = "<p><big>Hi #{@my.first_name}!</big></p><p>We're excited that you're volunteering as a Student Leader with Power to Change this school year.</p><p>As you know, Power to Change seeks to glorify God by making a maximum contribution toward helping to fulfil the Great Commission in Canada and around the world by developing movements of evangelism and discipleship. It's to this end that Volunteers are expected to live a life that is above reproach and consistent with biblical standards.</p><p>As a Volunteer Student Leader for this school year, please take some time to carefully read through the following three agreements and sign each one by typing in your name. The first agreement is #{@contract.title}.</p>"
+      flash[:notice] = "<p><big>Hi #{@my.first_name}!</big></p><p>We're excited that you're volunteering as a Student Leader with Power to Change this school year.</p><p>As you know, Power to Change seeks to glorify God by making a maximum contribution toward helping to fulfil the Great Commission in Canada and around the world by developing movements of evangelism and discipleship. It's to this end that Volunteer leaders are expected to live a life that is above reproach and consistent with biblical standards.</p><p>As a Volunteer Student Leader for this school year, please take some time to carefully read through the following three agreements and sign each one by typing in your name. Volunteer leaders are required to sign this each year. The first agreement is #{@contract.title}.</p>"
     when Contract::VOLUNTEER_CONTRACT_IDS[1]
       flash[:notice] = "<p>The second agreement is #{@contract.title}.</p><p>Please carefully read through it and sign at the bottom by typing in your name.</p>"
     when Contract::VOLUNTEER_CONTRACT_IDS.last
@@ -68,9 +68,14 @@ class ContractController < ApplicationController
     unless is_staff_somewhere
       student_role = StudentRole.find(:first, :conditions => {:name => "Student"})
       @me.add_or_update_ministry(@ministry.id, student_role.id)
-      flash[:notice] = "<big>Okay, you've skipped signing the Student Leader agreements, please note that you'll no longer be able to perform any Student Leader functions.</big>"
+      flash[:notice] = "<big>Okay, you've skipped signing the Volunteer leader agreements, please note that you'll no longer be able to perform any Volunteer leader functions.</big>"
     end
     logout_keeping_session!
+  end
+
+
+  def volunteer_agreement_report
+    
   end
 
 
