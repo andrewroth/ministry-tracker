@@ -26,7 +26,6 @@ class AddContractPermissions < ActiveRecord::Migration
                                    { :ministry_role_name => "Team Leader",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Staff",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Staff Alumni",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
-                                   { :ministry_role_name => "Ministry Leader",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Student",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Alumni",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
                                    { :ministry_role_name => "Team Member",  :permission_controller => "contract", :permission_action => "volunteer_agreement_not_required" },
