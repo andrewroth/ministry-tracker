@@ -511,7 +511,7 @@ h1 {
 }
 
 .tablist a.active {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat; background-position:15px -1022px;
+  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat; background-position:20px -1022px;
 }
 .verticalTablist a.active {
   background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;  background-position:168px -864px;
@@ -543,8 +543,8 @@ a.active #groupsTab, #groupsTab:hover { background-position:-10px -329px; }
 
 #campusDiscTab                            { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-3px -1310px; }
 a.active #campusDiscTab, #campusDiscTab:hover { background-position:-3px -1343px; }
-.tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position:-9px -1347px; padding-left:25px; }
-.tablist #campusDiscTab { background-position:-9px -1314px; padding-left:25px; }
+.tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position:-9px -1347px; padding-left:16px; }
+.tablist #campusDiscTab { background-position:-9px -1314px; padding-left:16px; }
 
 #insightsTab                              { background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;  background-position:-8px -494px; }
 a.active #insightsTab, #insightsTab:hover { background-position:-8px -522px; }
@@ -3694,25 +3694,33 @@ td.campusDiscTree {
 }
 
 .campusViewTreeNode {
-    color: #FFCB05;	
+  color: #FFCB05;	
 }
 
 .campusViewTreeRoot a {
-    color: #FFCB05;	
+  color: #FFCB05;	
 }
 
 .campusViewTreeRoot a:hover {
-    color: #1F429B;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #1F429B;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .campusViewTreeBranch span {
-    color: #1F429B;
+  color: #1F429B;
 }
 
 .campusViewTreeBranchLink span:hover {
-    color: #ECAC00;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #ECAC00;
+  text-decoration: underline;
+  cursor: pointer;
 }
+
+.campusViewTreeBranch a.removeMentorIconLink {
+  margin: 3px;
+  position: relative;
+  top: 2px;
+  vertical-align: middle;
+}
+
