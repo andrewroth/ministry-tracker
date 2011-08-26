@@ -81,7 +81,7 @@ render_tabnav :vertical_main,
     end if session[:ministry_id]
   end
 
-  if authorized?(:new)
+  if authorized?(:new, :people)
     add_tab do |t|
       t.named "<div id='addStudentTab' class='tab'>add a student #{spinner('add_student', 'opaqueWhite')}</div>"
       t.links_to "#"
