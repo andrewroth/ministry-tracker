@@ -3424,6 +3424,56 @@ table.groupInvolvementList th {
 }
 
 
+#new_contract_signature div.clause {
+  margin:30px 0;
+  position:relative;
+}
+
+#new_contract_signature div.clause.disabled, #new_contract_signature div.signature_container.disabled {
+  opacity:0.10; filter:alpha(opacity=10);
+}
+
+#new_contract_signature div.clause.disabled div input, #new_contract_signature div.signature_container.disabled input {
+  display:none;
+}
+
+#new_contract_signature div.clause div.clause_text, #new_contract_signature div.clause h3 {
+  position:relative;
+  left:40px;
+  width:90%;
+}
+
+#new_contract_signature div.clause h3 {
+  margin-bottom:10px;
+}
+
+#new_contract_signature div div.clause_checkbox_container {
+  position:absolute;
+  top:50%;
+}
+
+#new_contract_signature div div.clause_checkbox_container input.clause_checkbox {
+  position:relative;
+  top:-10px;
+  -moz-box-shadow: 0 0 3px #F2B700; -webkit-box-shadow: 0 0 3px #F2B700; box-shadow: 0 0 3px #F2B700;
+}
+
+#new_contract_signature div div.clause_checkbox_container input.clause_checkbox:hover {
+  -moz-box-shadow: 0 0 7px #F2B700; -webkit-box-shadow: 0 0 7px #F2B700; box-shadow: 0 0 7px #F2B700;
+}
+
+input#contract_signature_agreement {
+  -moz-box-shadow: 0 0 7px #F2B700; -webkit-box-shadow: 0 0 7px #F2B700; box-shadow: 0 0 7px #F2B700;
+}
+
+input#contract_signature_agreement:hover {
+  -moz-box-shadow: 0 0 14px #F2B700; -webkit-box-shadow: 0 0 14px #F2B700; box-shadow: 0 0 14px #F2B700;
+}
+
+#new_contract_signature div.signature_container {
+  margin-bottom:40px;
+}
+
 
 /************************************************/
 /*  Fancy Horizontal Timetable Compare section  */

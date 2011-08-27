@@ -524,6 +524,7 @@ class ApplicationController < ActionController::Base
     def force_required_data
       return false unless force_email_set
       return false unless force_campus_set
+      return false unless force_contract_agreement
     end
     
     def force_email_set
@@ -541,6 +542,14 @@ class ApplicationController < ActionController::Base
         return false
       elsif is_staff_somewhere && @my.ministry_involvements.empty?
         redirect_to set_initial_ministry_person_url(@my.id)
+        return false
+      end
+      true
+    end
+    
+    def force_contract_agreement
+      if needs_to_sign_volunteer_agreements?
+        redirect_to :action => "volunteer_agreement", :controller => "contract"
         return false
       end
       true
@@ -676,5 +685,8 @@ class ApplicationController < ActionController::Base
       service_uri
     end
     
+    def needs_to_sign_volunteer_agreements?
+      !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
+    end
 end
 
