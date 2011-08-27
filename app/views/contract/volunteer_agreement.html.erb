@@ -1,0 +1,77 @@
+
+<p>
+  </br>
+  <%= link_to "Click here if you're not volunteering as a leader or if you cannot sign this agreement.",
+              {:action => "decline_volunteer_contract"},
+              {:confirm => "This will skip signing the Volunteer leader agreements.\n\nPlease note that you'll no longer be able to perform any Volunteer leader functions.\n\nYou'll be logged out of the Pulse after which you may sign back in again."} %>
+  </br>
+</p>
+
+<% form_for @contract_signature, :url => url_for(:action => 'sign_volunteer_contract', :controller => 'contract') do |f| %>
+  <br/>
+  <%= f.error_messages %>
+
+  <h2><%= @contract.title %></h2>
+
+  <% @contract.clauses.each_with_index do |clause, i| %>
+    <div class="clause" position="<%=i%>">
+      <%= "<h3>#{clause.heading}</h3>" if clause.heading %>
+      <div class='clause_checkbox_container'>
+        <%= check_box_tag clause.order, clause.order, false, :class => "clause_checkbox", :position => i if clause.checkbox %>
+      </div>
+      <div class='clause_text'><%= clause.text %></div>
+    </div>
+  <% end %>
+
+  <div class="signature_container">
+    <big>
+      <br/>
+      <hr/>
+      <br/>
+      <br/>
+      <%= f.check_box :agreement %>&nbsp;&nbsp;<%= @contract.agreement_clause.present? ? @contract.agreement_clause : "I agree" %>
+      <br/>
+      <br/>
+      <br/>
+      Please type in your name as your signature:<br/>
+      <br/>
+      <%= f.text_field :signature %>&nbsp;&nbsp;
+      
+      <%= f.hidden_field :contract_id %>
+      <%= f.submit 'Sign', :class => 'action-button' %>
+    </big>
+  </div>
+<% end %>
+
+
+<script type="text/javascript">
+
+  $($('input.clause_checkbox').change(function() {
+    set_clauses();
+  }));
+
+  function set_clauses() {
+    num_clauses = $("div.clause").length;
+    first_unchecked = $("input:not(:checked).clause_checkbox:first");
+    
+    if(first_unchecked.length === 0) {
+      $("div.clause").removeClass("disabled");
+      $("div.signature_container").removeClass("disabled");
+    }
+    else {
+      $("div.clause").addClass("disabled");
+      $("div.signature_container").addClass("disabled");
+      
+      first_unchecked.parent().parent().removeClass("disabled");
+      $("div.clause").slice(0, first_unchecked.attr("position")).removeClass("disabled");
+    }
+  }
+  
+  <% if @contract_signature.agreement || @contract_signature.signature.present? %>
+    $($("input.clause_checkbox").attr("checked", true));
+  <% end %>
+
+  $(set_clauses());
+</script>
+
+
