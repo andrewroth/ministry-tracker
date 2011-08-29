@@ -1,0 +1,58 @@
+
+<h1>Volunteer Agreement Report</h1>
+<br/>
+
+<p>
+  <big>
+    Campus: <%= select_tag "campus_id", options_for_select(@my_campuses.collect{ |c| [ c.name, c.id.to_s ] }, @campus.id.to_s), :name => "campus_id" %>
+    <%= observe_field :campus_id, 
+      :function => %|document.location = "#{url_for(:controller => params[:controller], :action => params[:action])}?campus_id="+$('#campus_id')[0].value;|
+    %>
+  </big>
+</p>
+
+<br/>
+
+<p>The following is a list of all volunteers with <%= @roles_requiring_volunteer_agreement.collect{|r| "<b>#{r.name}</b>"}.to_sentence(:last_word_connector => " or ") %> roles at <%= @campus.name %> who've signed/haven't signed the volunteer agreements this school year.</p>
+
+<br/>
+
+<table id="summerReportCompliance">
+  <tr>
+    <th class="borderRight"><h1>Signed</h1></th>
+    <th><h1>Haven't signed</h1></th>
+  </tr>
+  
+  <tr>
+    <td class="borderRight">
+      <% @people_who_signed.sort{|a,b| a.full_name <=> b.full_name}.each do |person| %>
+        <%= link_to person.full_name, person_path(person), :title => "Goto #{person.first_name}'s profile" %><br/>
+      <% end %>
+    </td>
+    <td>
+      <% @people_who_still_need_to_sign.sort{|a,b| a.full_name <=> b.full_name}.each do |person| %>
+        <%= link_to person.full_name, person_path(person), :title => "Goto #{person.first_name}'s profile" %><br/>
+      <% end %>
+    </td>
+  </tr>
+  
+  <tr><td><br/></td></tr>
+  
+  <tr>
+    <td>
+      <%= @people_who_signed.size %> signed
+    </td>
+    <td>
+      <%= @people_who_still_need_to_sign.size %> total haven't signed
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @people_who_signed), :class => "emailLink", :title => "Compose an email to volunteers who have signed the agreements") if @people_who_signed.present? -%>
+    </td>
+    <td>
+      <%= link_to("Email these people", new_email_url(:person => @people_who_still_need_to_sign), :class => "emailLink", :title => "Compose an email to volunteers who haven't signed the agreements") if @people_who_still_need_to_sign.present? -%>
+    </td>
+  </tr>
+</table>
