@@ -2,7 +2,7 @@ class ContractController < ApplicationController
   unloadable
   
   skip_before_filter :force_required_data, :only => [:volunteer_agreement, :sign_volunteer_contract, :decline_volunteer_contract]
-
+  layout :get_layout
   
   def volunteer_agreement
     unless needs_to_sign_volunteer_agreements?
@@ -75,6 +75,34 @@ class ContractController < ApplicationController
 
 
   def volunteer_agreement_report
+    @my_campuses = @my.campuses_under_my_ministries_with_children(MinistryRole.ministry_roles_that_grant_access("contract", "volunteer_agreement_report"))
+    
+    campus_id = params[:campus_id]
+    campus_id = nil unless @my_campuses.detect {|c| c.id == campus_id.to_i }
+    campus_id ||= @my_campuses.first
+    
+    @campus = Campus.find(campus_id)
+    campus_ministry_id = @campus.derive_ministry.id
+    
+    @roles_requiring_volunteer_agreement = MinistryRole.all - MinistryRole.ministry_roles_that_grant_access("contract", "volunteer_agreement_not_required")
+    role_ids_requiring_volunteer_agreement = @roles_requiring_volunteer_agreement.collect {|r| r.id}
+    
+    people_at_campus_ids = Person.all(:joins => [:campus_involvements], :conditions => {:campus_involvements => {:campus_id => @campus.id}}).collect {|p| p.id}
+    
+    # find all people at the selected campus who have a role that requires they sign the volunteer agreements
+    people = Person.all(:joins => [:ministry_involvements], :conditions => ["#{Person.__(:id)} in (?) and #{MinistryInvolvement.__(:ministry_role_id)} in (?) and #{MinistryInvolvement.__(:ministry_id)} = ?",
+      people_at_campus_ids, role_ids_requiring_volunteer_agreement, campus_ministry_id])
+    
+    @people_who_signed = []
+    @people_who_still_need_to_sign = []
+    
+    people.each do |person|
+      if person.signed_volunteer_contract_this_year?
+        @people_who_signed << person
+      else
+        @people_who_still_need_to_sign << person
+      end
+    end
     
   end
 
@@ -96,5 +124,9 @@ class ContractController < ApplicationController
     end
     
     contract
+  end
+  
+  def get_layout
+    params[:action] == "volunteer_agreement_report" ? "manage" : "application"
   end
 end
