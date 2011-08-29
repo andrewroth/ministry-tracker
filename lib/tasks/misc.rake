@@ -320,6 +320,9 @@ namespace :db do
     host     = config.database_configuration[Rails.env]["host"]
     username = config.database_configuration[Rails.env]["username"]
     password = config.database_configuration[Rails.env]["password"]
+    host ||= root_config[:host]
+    username ||= root_config[:username]
+    password ||= root_config[:password]
     abort("Failed to get database config info from Rails::Configuration.new") unless host && username && password
 
     puts "\n\nWARNING: You should configure your MySQL to use UTF-8 by default in your my.cnf file.\n"
