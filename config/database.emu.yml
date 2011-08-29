@@ -3,6 +3,7 @@ defaults: &defaults
   username: root
   password: 
   host: localhost
+  encoding: utf8
 
 development:
   database: c4c_pulse_dev
