@@ -323,7 +323,10 @@ namespace :db do
     host ||= root_config[:host]
     username ||= root_config[:username]
     password ||= root_config[:password]
-    abort("Failed to get database config info from your Rails config, you may need to create a config/database_root.yml file with the contents:\n\n---\n:host: localhost\n:adapter: mysql\n:username: username\n:password: password\n:encoding: utf8\n") unless host && username && password
+    unless host.present? && username.present? && password.present?
+      abort("Failed to get database config info from your Rails config, you may need to create a config/database_root.yml file with the contents:
+        \n\n---\n:host: localhost\n:adapter: mysql\n:username: username\n:password: password\n:encoding: utf8\n")
+    end
 
     puts "\n\nWARNING: You should configure your MySQL to use UTF-8 by default in your my.cnf file.\n"
     puts "\nIf you already did this press enter to continue otherwise Ctrl-c to cancel...\n"
