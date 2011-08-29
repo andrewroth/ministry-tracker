@@ -216,13 +216,21 @@ class Person < ActiveRecord::Base
   end
   
   def signed_volunteer_contract_this_year?
+    # we want to allow signing the contracts one month before the year technically begins
+    
+    if Month.current == Year.current.months.last
+      year = Year.first(:conditions => {:year_number => Year.current.year_number+1})
+    else
+      year = Year.current
+    end
+    
     Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
       return false unless ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
                                                                  #{ContractSignature._(:contract_id)} = ? and 
                                                                  #{ContractSignature._(:agreement)} = true and 
                                                                  #{ContractSignature._(:signature)} <> '' and 
                                                                  #{ContractSignature._(:signed_at)} > ?",
-                                                                 self.id, contract_id, Year.current.start_date]).present?
+                                                                 self.id, contract_id, year.start_date-1.month]).present?
     end
     true
   end
