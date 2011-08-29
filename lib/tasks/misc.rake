@@ -314,7 +314,7 @@ namespace :db do
     end
     
     database = args[:database]
-    abort("You must pass the database name as an argument e.g. rake db:rebuild_with_utf8['database_name']") unless database
+    abort("\nYou must pass the database name as an argument e.g. rake db:rebuild_with_utf8['database_name']") unless database
     
     config   = Rails::Configuration.new
     host     = config.database_configuration[Rails.env]["host"]
@@ -323,28 +323,23 @@ namespace :db do
     host ||= root_config[:host]
     username ||= root_config[:username]
     password ||= root_config[:password]
-    unless host.present? && username.present? && password.present?
-      abort("Failed to get database config info from your Rails config, you may need to create a config/database_root.yml file with the contents:
-        \n\n---\n:host: localhost\n:adapter: mysql\n:username: username\n:password: password\n:encoding: utf8\n")
-    end
+    abort("\nFailed to get database config info from your Rails config, you may need to create a config/database_root.yml") unless host.present? && username.present? && password.present?
 
     puts "\n\nWARNING: You should configure your MySQL to use UTF-8 by default in your my.cnf file.\n"
-    puts "\nIf you already did this press enter to continue otherwise Ctrl-c to cancel...\n"
+    puts "\nThe following database is about to be destroyed and recreated using UTF-8 (a backup dump will be created in tmp/): #{database}\n"
+    puts "\nPress enter to continue otherwise Ctrl-c to cancel...\n"
     response = STDIN.gets
     abort("") unless response.to_s.upcase == "\n"
-    
-    puts "\n\nWARNING: The following database(s) are about to be destroyed and recreated using UTF-8:\n\n"
-    puts "#{database}"
-    puts "\nPress enter to continue or Ctrl-c to cancel...\n"
-    response = STDIN.gets
-    abort("") unless response.to_s.upcase == "\n"
-    
     
     dump_filename = "tmp/dump_#{Time.now.to_i}.sql"
+    backup_dump_filename = "tmp/#{database}_dump_#{Time.now.to_i}.sql"
     sed_filename = "tmp/dump_sed_#{Time.now.to_i}.sql"
     
     puts "# dumping the database"
     execute_shell "mysqldump --host=#{host} --user=#{username} --password=#{password} --skip-set-charset #{database} > #{dump_filename}"
+    
+    puts "\n# copying database dump to backup file #{backup_dump_filename}"
+    execute_shell "cp #{dump_filename} #{backup_dump_filename}"
     
     puts "\n# converting the character set and collation from latin1 to utf8 in the dump"
     execute_shell "sed -e 's/CHARSET=latin1/CHARSET=utf8/g' -e 's/latin1_general_ci/utf8_general_ci/g' -e 's/CHARACTER SET latin1/CHARACTER SET utf8/g' <#{dump_filename} > #{sed_filename}"
@@ -355,7 +350,7 @@ namespace :db do
     puts "\n# rebuilding database with the dump"
     execute_shell "mysql --host=#{host} --user=#{username} --password=#{password} --default-character-set=utf8 #{database} < #{sed_filename}"
     
-    puts "\n# deleting the dump files"
+    puts "\n# deleting tmp files"
     execute_shell "rm #{dump_filename}"
     execute_shell "rm #{sed_filename}"
     
