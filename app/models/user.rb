@@ -10,6 +10,6 @@ class User < ActiveRecord::Base
   has_one :global_dashboard_access, :foreign_key => "guid", :primary_key => "guid"
 
   has_many :profiles, :class_name => "Pat::Profile", :foreign_key => _(:viewer_id, :viewer)
-  has_many :acceptances, :class_name => "Pat::Profile", :foreign_key => _(:viewer_id, :viewer), 
-    :conditions => "#{_(:type)} = 'Acceptance'"
+  has_many :attending_profiles, :class_name => "Pat::Profile", :foreign_key => _(:viewer_id, :viewer), 
+    :conditions => "#{_(:type)} = 'Acceptance' OR #{_(:type)} = 'StaffProfile'"
 end

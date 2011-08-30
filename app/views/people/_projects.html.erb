@@ -1,6 +1,6 @@
 <ul id='profile_projects'>
   <%- if @person.user.present? %>
-    <%- @person.user.acceptances.each do |profile| %>
+    <%- @person.user.attending_profiles.each do |profile| %>
       <li><%= profile.try(:project).try(:pulse_name) || profile.try(:project).try(:title) %></li>
     <%- end %>
   <%- end %>
