@@ -2,7 +2,7 @@ class ContractController < ApplicationController
   unloadable
   
   skip_before_filter :force_required_data, :only => [:volunteer_agreement, :sign_volunteer_contract, :decline_volunteer_contract]
-
+  layout :get_layout
   
   def volunteer_agreement
     unless needs_to_sign_volunteer_agreements?
@@ -10,7 +10,7 @@ class ContractController < ApplicationController
       return
     end
     
-    @contract = find_next_unsigned_volunteer_contract(@my.id)
+    @contract = @me.find_next_unsigned_volunteer_contract
     
     case @contract.id
     when Contract::VOLUNTEER_CONTRACT_IDS.first
@@ -26,6 +26,8 @@ class ContractController < ApplicationController
     else
       @contract_signature = ContractSignature.new(:contract_id => @contract.id)
     end
+    
+    @hide_layout_navigation = true
   end
   
 
@@ -48,7 +50,7 @@ class ContractController < ApplicationController
     @contract_signature.signed_at = Time.now
     
     if @contract_signature.save
-      next_contract = find_next_unsigned_volunteer_contract(@my.id)
+      next_contract = @me.find_next_unsigned_volunteer_contract
       
       if next_contract.nil?
         flash[:notice] = "<big>Great, you're done signing the agreements, thanks!</big>"
@@ -75,26 +77,53 @@ class ContractController < ApplicationController
 
 
   def volunteer_agreement_report
+    @my_campuses = @my.campuses_under_my_ministries_with_children(MinistryRole.ministry_roles_that_grant_access("contract", "volunteer_agreement_report"))
     
+    campus_id = params[:campus_id]
+    campus_id = nil unless @my_campuses.detect {|c| c.id == campus_id.to_i }
+    campus_id ||= @my_campuses.first
+    
+    unless campus_id
+      flash[:notice] = "Couldn't load the report because your campus couldn't be found"
+      redirect_to :action => "index", :controller => "dashboard"
+      return
+    end
+    
+    @campus = Campus.find(campus_id)
+    campus_ministry_id = @campus.derive_ministry.id
+    
+    @roles_requiring_volunteer_agreement = MinistryRole.all - MinistryRole.ministry_roles_that_grant_access("contract", "volunteer_agreement_not_required")
+    role_ids_requiring_volunteer_agreement = @roles_requiring_volunteer_agreement.collect {|r| r.id}
+    
+    people_at_campus_ids = Person.all(:joins => [:campus_involvements], :conditions => {:campus_involvements => {:campus_id => @campus.id}}).collect {|p| p.id}
+    
+    # find all people at the selected campus who have a role that requires they sign the volunteer agreements
+    people = Person.all(:joins => [:ministry_involvements], :conditions => ["#{Person.__(:id)} in (?) and #{MinistryInvolvement.__(:ministry_role_id)} in (?) and #{MinistryInvolvement.__(:ministry_id)} = ?",
+      people_at_campus_ids, role_ids_requiring_volunteer_agreement, campus_ministry_id])
+    
+    @people_who_signed = []
+    @people_who_still_need_to_sign = []
+    
+    people.each do |person|
+      if person.signed_volunteer_contract_this_year?
+        @people_who_signed << person
+      else
+        @people_who_still_need_to_sign << person
+      end
+    end
+    
+    # find year we're reporting on
+    if Month.current == Year.current.months.last
+      @current_year = Year.first(:conditions => {:year_number => Year.current.year_number+1})
+    else
+      @current_year = Year.current
+    end
   end
 
 
   private
   
-  def find_next_unsigned_volunteer_contract(person_id)
-    contract = nil
-    
-    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
-      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
-                                                     #{ContractSignature._(:contract_id)} = ? and 
-                                                     #{ContractSignature._(:agreement)} = true and 
-                                                     #{ContractSignature._(:signature)} <> '' and 
-                                                     #{ContractSignature._(:signed_at)} > ?",
-                                                     person_id, contract_id, Year.current.start_date]).present?
-      contract = Contract.find(contract_id)
-      break
-    end
-    
-    contract
+  def get_layout
+    params[:action] == "volunteer_agreement_report" ? "manage" : "application"
   end
 end
