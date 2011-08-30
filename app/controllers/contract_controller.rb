@@ -26,6 +26,8 @@ class ContractController < ApplicationController
     else
       @contract_signature = ContractSignature.new(:contract_id => @contract.id)
     end
+    
+    @hide_layout_navigation = true
   end
   
 
