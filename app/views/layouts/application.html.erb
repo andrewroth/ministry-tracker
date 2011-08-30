@@ -68,7 +68,7 @@
         <% if logged_in? && @me && !@custom_userbar_title %>
 
 
-        <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } %>
+        <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
         
 
         <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
@@ -101,7 +101,7 @@
 
       <% unless controller.controller_name == "dashboard" %>
       <div id="tablist_container">
-        <%= tabnav :main %>
+        <%= tabnav :main unless @hide_layout_navigation %>
       <% else %>
       <div id="banner_container">
         <%= render :partial => "/dashboard/banner" %>
