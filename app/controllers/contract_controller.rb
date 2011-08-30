@@ -10,7 +10,7 @@ class ContractController < ApplicationController
       return
     end
     
-    @contract = find_next_unsigned_volunteer_contract(@my.id)
+    @contract = @me.find_next_unsigned_volunteer_contract
     
     case @contract.id
     when Contract::VOLUNTEER_CONTRACT_IDS.first
@@ -50,7 +50,7 @@ class ContractController < ApplicationController
     @contract_signature.signed_at = Time.now
     
     if @contract_signature.save
-      next_contract = find_next_unsigned_volunteer_contract(@my.id)
+      next_contract = @me.find_next_unsigned_volunteer_contract
       
       if next_contract.nil?
         flash[:notice] = "<big>Great, you're done signing the agreements, thanks!</big>"
@@ -122,23 +122,6 @@ class ContractController < ApplicationController
 
 
   private
-  
-  def find_next_unsigned_volunteer_contract(person_id)
-    contract = nil
-    
-    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
-      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
-                                                     #{ContractSignature._(:contract_id)} = ? and 
-                                                     #{ContractSignature._(:agreement)} = true and 
-                                                     #{ContractSignature._(:signature)} <> '' and 
-                                                     #{ContractSignature._(:signed_at)} > ?",
-                                                     person_id, contract_id, Year.current.start_date]).present?
-      contract = Contract.find(contract_id)
-      break
-    end
-    
-    contract
-  end
   
   def get_layout
     params[:action] == "volunteer_agreement_report" ? "manage" : "application"
