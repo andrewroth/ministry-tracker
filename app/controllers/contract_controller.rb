@@ -112,7 +112,12 @@ class ContractController < ApplicationController
       end
     end
     
-    @current_year = Year.current
+    # find year we're reporting on
+    if Month.current == Year.current.months.last
+      @current_year = Year.first(:conditions => {:year_number => Year.current.year_number+1})
+    else
+      @current_year = Year.current
+    end
   end
 
 
