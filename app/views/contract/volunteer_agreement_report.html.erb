@@ -1,5 +1,5 @@
 
-<h1>Volunteer Agreement Report</h1>
+<h1>Volunteer Agreement Report for <%= @current_year.desc %></h1>
 <br/>
 
 <p>
@@ -13,7 +13,7 @@
 
 <br/>
 
-<p>The following is a list of all volunteers with <%= @roles_requiring_volunteer_agreement.collect{|r| "<b>#{r.name}</b>"}.to_sentence(:last_word_connector => " or ") %> roles at <%= @campus.name %> who've signed/haven't signed the volunteer agreements this school year.</p>
+<p>The following is a list of all volunteers with <%= @roles_requiring_volunteer_agreement.collect{|r| "<b>#{r.name}</b>"}.to_sentence(:last_word_connector => " or ") %> roles at <%= @campus.name %> who are required to sign the volunteer agreements each school year.</p>
 
 <br/>
 
