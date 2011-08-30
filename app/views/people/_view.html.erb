@@ -198,6 +198,7 @@
 <% end %>
 
 
+<!-- EVENTS -->
 <table border="0" cellspacing="0" cellpadding="0" class="activity half">
   <tr>
   <td colspan="1"><h5>Events</h5></td>
@@ -209,6 +210,21 @@
     </td>
   </tr>
 </table>
+
+<table border="0" cellspacing="0" cellpadding="0" class="activity half">
+  <tr>
+  <td colspan="1"><h5>Projects</h5></td>
+  </tr>
+
+  <tr>
+    <td class="half">
+      <%= render :partial => "projects" %>
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
 
 <% if is_staff_somewhere(@me) && is_staff_somewhere(@person) %>
 <table border="0" cellspacing="0" cellpadding="0" class="activity half">
@@ -224,11 +240,8 @@
 </table>
 <% end %>
 
-<br/>
-<br/>
-
 <% if is_ministry_admin %>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="activity half">
   <tr>
   <td colspan="1"><h5>Recent Activity</h5></td>
     <td class="spacer">&nbsp;</td>
@@ -276,8 +289,6 @@
 </table>
 <% end %>
 
-
-
 <%- if is_ministry_leader && (Cmt::CONFIG[:leadership_notes_enabled] || !@ministry.profile_questions.empty?) -%>
   <%- remote_form_for @person do |f| -%>
   <div id="staffArea">
@@ -303,3 +314,7 @@
   </div>
   <%- end -%>
 <%- end -%>
+
+<br/>
+<br/>
+

@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pat_projects
+
 
   map.connect '/api/authorized', :controller => :api, :action => :authorized
 
