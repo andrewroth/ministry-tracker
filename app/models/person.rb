@@ -216,14 +216,32 @@ class Person < ActiveRecord::Base
   end
   
   def signed_volunteer_contract_this_year?
-    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
-      return false unless ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
-                                                                 #{ContractSignature._(:contract_id)} = ? and 
-                                                                 #{ContractSignature._(:agreement)} = true and 
-                                                                 #{ContractSignature._(:signature)} <> '' and 
-                                                                 #{ContractSignature._(:signed_at)} > ?",
-                                                                 self.id, contract_id, Year.current.start_date]).present?
-    end
+    return false if self.find_next_unsigned_volunteer_contract.present?
     true
+  end
+  
+  def find_next_unsigned_volunteer_contract
+    # we want to allow signing the contracts one month before the year technically begins
+    
+    if Month.current == Year.current.months.last
+      year = Year.first(:conditions => {:year_number => Year.current.year_number+1})
+    else
+      year = Year.current
+    end
+    
+    contract = nil
+    
+    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
+      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
+                                                     #{ContractSignature._(:contract_id)} = ? and 
+                                                     #{ContractSignature._(:agreement)} = true and 
+                                                     #{ContractSignature._(:signature)} <> '' and 
+                                                     #{ContractSignature._(:signed_at)} > ?",
+                                                     self.id, contract_id, year.start_date-1.month]).present?
+      contract = Contract.find(contract_id)
+      break
+    end
+    
+    contract
   end
 end
