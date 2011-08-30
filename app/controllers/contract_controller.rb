@@ -81,6 +81,12 @@ class ContractController < ApplicationController
     campus_id = nil unless @my_campuses.detect {|c| c.id == campus_id.to_i }
     campus_id ||= @my_campuses.first
     
+    unless campus_id
+      flash[:notice] = "Couldn't load the report because your campus couldn't be found"
+      redirect_to :action => "index", :controller => "dashboard"
+      return
+    end
+    
     @campus = Campus.find(campus_id)
     campus_ministry_id = @campus.derive_ministry.id
     
@@ -104,6 +110,7 @@ class ContractController < ApplicationController
       end
     end
     
+    @current_year = Year.current
   end
 
 
