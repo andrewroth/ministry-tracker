@@ -5,9 +5,10 @@ require 'campus_discipleship_controller'
 
 class CampusDiscipleshipControllerTest < ActionController::TestCase
 
-  # def setup
-#     
-  # end
+  def setup
+    setup_years
+    setup_months
+  end
 
   def login_admin_user
     Factory(:user_1)

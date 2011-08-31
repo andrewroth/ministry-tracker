@@ -6,6 +6,8 @@ class ApiKeysControllerTest < ActionController::TestCase
     setup_default_user
     setup_ministry_roles
     setup_api_keys
+    setup_years
+    setup_months
 
     login
   end
