@@ -82,7 +82,7 @@ class DashboardController < ApplicationController
         if live_event_ids.present? then
           #find all event_groups that the live events are in
           event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
-          @event_groups = EventGroup.find(:all, :conditions => "#{EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
+          @event_groups = ::EventGroup.find(:all, :conditions => "#{::EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
 
           #organize eventbrite events by group
           @eventbrite_events_by_group = {}
