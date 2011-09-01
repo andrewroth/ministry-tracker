@@ -9,77 +9,72 @@
 </script>
 
 <style>
-  td.country { width: 300px; }
-  td.month { width: 100px; }
-  td.percent { width: 400px; border-bottom: 2px solid transparent; }
-  tr, td { border-bottom: 1px solid #cccccc; vertical-align:middle; height:27px; }
+  td.percent { min-width: 400px; border-bottom: 2px solid transparent; }
+  tr, td { border-bottom: 1px solid #F2F2F2; vertical-align:middle; height:27px; padding-right:20px; }
 </style>
 
 <div id="tabs" style="display:none;">
-	<ul>
-		<li><a href="#tabs-1">Overall Percent</a></li>
-		<li><a href="#tabs-2">Monthly</a></li>
-	</ul>
+  <% if @countries.present? %>
   
-	<div id="tabs-1">
-	  <table>
-      <% total_months_with_data = 0 %>
-      <% total_months = 0 %>
-      
-      <% for country in @countries %>
-        <% months_with_data = 0 %>
-        <% @month_short.each { |m| months_with_data += 1 if @month_data[country][m] } %>
-        <% total_months_with_data += months_with_data %>
-        <% total_months += 12 %>
-      <% end %>
-      
-      <tr>
-        <td class="country">Total</td>
-        <td><%= ((total_months_with_data.to_f / total_months.to_f)*100).to_i %>%</td>
-        <td class="percent">
-          <div id="percent_total"></div>
-          <script type="text/javascript">$("#percent_total").progressbar({ value: <%= (total_months_with_data.to_f / total_months.to_f)*100 %> });</script>
-        </td>
-      </tr>
-      
-      <tr><td>&nbsp;</td><td>&nbsp;</td><td class="percent">&nbsp;</td></tr>
-      
-      <% for country in @countries %>
+	  <ul>
+		  <li><a href="#tabs-1">Overall Percent</a></li>
+		  <li><a href="#tabs-2">Monthly</a></li>
+	  </ul>
+    
+	  <div id="tabs-1">
+	    <table>
         <tr>
-          <td class="country"><%= country.name %></td>
-          <% months_with_data = 0 %>
-          <% @month_short.each { |m| months_with_data += 1 if @month_data[country][m] } %>
-          <td>
-            <%= months_with_data %> months reported
-          </td>
+          <td class="country">Total</td>
+          <td><%= @total_possible_reports == 0 ? 0 : ((@total_reports.to_f / @total_possible_reports.to_f)*100).to_i %>%</td>
           <td class="percent">
-            <div id="percent_<%= country.id %>"></div>
-            <script type="text/javascript">$("#percent_<%= country.id %>").progressbar({ value: <%= (months_with_data.to_f / 12.00)*100 %> });</script>
+            <div id="percent_total"></div>
+            <script type="text/javascript">
+              $("#percent_total").progressbar({ value: <%= (@total_possible_reports == 0 ? 0 : @total_reports.to_f / @total_possible_reports.to_f) * 100 %> });
+            </script>
           </td>
         </tr>
-      <% end %>
-      
-    </table>
-	</div>
+        
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td class="percent">&nbsp;</td></tr>
+        
+        <% @countries.each do |country| %>
+          <% country_total = 0 %>
+          <% @reports[country].each {|hash| country_total += hash[1]} %>
+          <tr>
+            <td class="country"><%= country.name %></td>
+            <td>
+              <%= country_total %> of <%= @total_possible_reports_per_country %> reports
+            </td>
+            <td class="percent">
+              <div id="percent_<%= country.id %>"></div>
+              <script type="text/javascript">
+                $("#percent_<%= country.id %>").progressbar({ value: <%= (@total_possible_reports_per_country == 0 ? 0 : country_total.to_f / @total_possible_reports_per_country.to_f) * 100 %> });
+              </script>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+	  </div>
 
-	<div id="tabs-2">
-    <table>
-      <tr>
-        <td class="country"></td>
-        <%- @month_short.each do |m| %>
-          <td class="month"><%= m %></td>
-        <%- end %>
-      </tr>
-      <%- for country in @countries %>
+	  <div id="tabs-2">
+      <table style="width:<%= @months.size > 1 ? '100%' : 'auto' %>;">
         <tr>
-          <td class="country"><%= country.name %></td>
-          <%- @month_short.each do |m| %>
-            <!--<td class="month"><%= image_tag @month_data[country][m] ? "check_green.png" : "denied_red.png" %></td>-->
-            <td class="month"><%= @month_data[country][m] ? image_tag("check_green.png") : "" %></td>
-          <%- end %>
+          <td class="country"></td>
+          <% @months.each do |month| %>
+            <td class="month"><%= @month_short[month.number-1] %></td>
+          <% end %>
         </tr>
-      <%- end %>
-    </table>
-  </div>
+        <% for country in @countries %>
+          <tr>
+            <td class="country"><%= country.name %></td>
+            <% @months.each do |month| %>
+              <td class="month"><%= @reports[country][month] %> <%= @reports[country][month] == @total_possible_reports_per_country_per_month ? image_tag("check_green.png") : "" %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </div>
 
+  <% else %>
+    <div style="margin:20px;">No Stage <%= params[:s] %> countries in the selected Area</div>
+  <% end %>
 </div>

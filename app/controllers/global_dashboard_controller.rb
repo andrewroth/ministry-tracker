@@ -315,58 +315,63 @@ class GlobalDashboardController < ApplicationController
     end
   end
 
-  def submission_status_report
-    params[:mcc] ||= 'student-led'
-    params[:m] ||= Semester.current.month.id 
-    params[:s] ||= "all"
-
-    @areas_present = {}
-    @areas_total = {}
-    stage = params[:s]
-    #area_find = params[:a].present? ? params[:a] : :all
-    GlobalArea.find(:all, :include => { :global_countries => :global_dashboard_whq_stats }).each do |ga|
-      ga.global_countries.each do |gc|
-        @areas_present[ga] ||= 0
-        @areas_total[ga] ||= 0
-        if (stage == "all" || gc.stage.to_s == stage)
-          if gc.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], params[:m]).present?
-            #if gc.global_dashboard_whq_stats.find_all_by_mcc(params[:mcc]).present?
-            @areas_present[ga] += 1
-          end
-          @areas_total[ga] += 1
-        end
-      end
-    end
-
-    setup
-    @mcc_options = [ "virtually-led", "church-led", "student-led", "leader-led" ]
-    @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
-    @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3 ] ]
-  end
-
   def submission_area_report
-    @area_options = GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
+    @mcc_options = [ "Any Mcc", "virtually-led", "church-led", "student-led", "leader-led" ]
+    @area_options = [["All Areas", 0]] + GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
+    @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3] ]
+    @month_options = [["All Months", 0]] + MONTH_LONG.each_with_index.collect { |m, i| [m, i+1] }
     @year_options = Year.all.collect(&:year_number)
-    params[:y] = Month.find(params[:m]).month_calendaryear if params[:m]
-    params[:y] ||= Year.current.year_number
+    
+    params[:mcc] ||= @mcc_options.first
     params[:a] ||= GlobalArea.find_by_area("South East Asia").id
+    params[:s] ||= @stage_options.first[1]
+    params[:m] ||= 0
+    params[:y] ||= Year.current.year_number
 
-    if request.xhr? || (params[:a].present? && params[:y].present?)
-      render(:inline => "missing params") and return unless params[:a].present? && params[:y]
+    @month_short = MONTH_SHORT
+    @month_long = MONTH_LONG
+    
+    @areas = params[:a].to_i == @area_options.first[1].to_i ? GlobalArea.all : GlobalArea.all(:conditions => {:id => params[:a]})
 
-      @month_short = MONTH_SHORT
-      @month_long = MONTH_LONG
-      @area = GlobalArea.find params[:a]
-      @countries = @area.global_countries(:order => :name)
-      @month_data = {}
-      @countries.each do |c|
-        @month_long.each_with_index do |ml, i|
-          m = Month.find_by_month_desc "#{ml} #{params[:y]}"
-          stat = c.global_dashboard_whq_stats.find_by_month_id m.id
-          @month_data[c] ||= {}
-          @month_data[c][@month_short[i]] = stat.present?
+    if params[:m].to_i == 0
+      year_month_ids = Year.first(:conditions => ["#{Year._(:year_number)} = ?", params[:y]]).months.collect(&:id)
+      @months = Month.all(:conditions => ["#{Month._(:id)} in (?)", year_month_ids], :order => "#{Month._(:number)}")
+    else
+      @months = Month.all(:conditions => ["#{Month._(:number)} = ? and #{Month._(:calendar_year)} = ?", params[:m], params[:y]], :order => "#{Month._(:number)}")
+    end
+    
+    if params[:s].to_s == @stage_options.first[1].to_s
+      @countries = GlobalCountry.all(:conditions => ["global_area_id in (?)", @areas.collect(&:id)], :order => :name)
+    else
+      @countries = GlobalCountry.all(:conditions => ["global_area_id in (?) and stage = ?", @areas.collect(&:id), params[:s]], :order => :name)
+    end
+    
+    num_months_selected = @months.size
+    num_mccs_selected = params[:mcc] == @mcc_options.first ? @mcc_options.size - 1 : 1
+    @total_possible_reports_per_country = num_months_selected * num_mccs_selected
+    @total_possible_reports_per_country_per_month = num_mccs_selected
+    @total_possible_reports = @total_possible_reports_per_country * @countries.try(:size).to_i
+    
+    @total_reports = 0
+    @reports = {}
+    
+    
+    @countries.each do |country|
+      @reports[country] ||= {}
+      
+      if params[:mcc] == @mcc_options.first
+        @months.each do |month|
+          @reports[country][month] ||= 0
+          @reports[country][month] += country.global_dashboard_whq_stats.all(:conditions => ["month_id = ?", month.id]).try(:size).to_i
+        end
+      else
+        @months.each do |month|
+          @reports[country][month] ||= 0
+          @reports[country][month] += country.global_dashboard_whq_stats.all(:conditions => ["mcc = ? and month_id = ?", params[:mcc], month.id]).try(:size).to_i
         end
       end
+      
+      @reports[country].each {|hash| @total_reports += hash[1]}
     end
   end
 
