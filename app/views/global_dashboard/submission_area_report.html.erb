@@ -8,30 +8,29 @@
   span.export_container form {
     float: right;
     margin-left: 10px;
+    position:relative;
+    top:-30px;
   }
 </style>
 
 
 <h3>Submission Area Report</h3>
 <br/>
-<br/>
 
-<%= label_tag 'Mcc' %>
-<%= select_tag :mcc, options_for_select(@mcc_options, params[:mcc]) %><br/>
-<%= label_tag 'Area' %>
-<%= select_tag :area_id, options_for_select(@area_options, params[:a].to_i) %><br/>
-<%= label_tag 'Stage' %>
-<%= select_tag :stage_id, options_for_select(@stage_options, params[:s].to_i) %><br/>
-<%= label_tag 'Time' %>
+<p><%= label_tag 'Mcc' %>
+<%= select_tag :mcc, options_for_select(@mcc_options, params[:mcc]) %></p>
+<p><%= label_tag 'Area' %>
+<%= select_tag :area_id, options_for_select(@area_options, params[:a].to_i) %></p>
+<p><%= label_tag 'Stage' %>
+<%= select_tag :stage_id, options_for_select(@stage_options, params[:s].to_i) %></p>
+<p><%= label_tag 'Time' %>
 <%= select_tag :month, options_for_select(@month_options, params[:m].to_i) %>
-<%= select_tag :year, options_for_select(@year_options, params[:y].to_i) %>
+<%= select_tag :year, options_for_select(@year_options, params[:y].to_i) %></p>
 
 <span class="export_container">
   <%= button_to "Export all Countries", {:action => "export_submission_countries"}, {:style => "float:left;"} %>
   <%= button_to "Export all Areas", {:action => "export_submission_areas"}, {:style => "float:right;"} %>
 </span>
-<br/>
-<br/>
 
 <%- with_str = "'a='+$('#area_id').val()
                 +'&y='+$('#year').val()
@@ -45,8 +44,7 @@
    %>
 <% end %>
 
-<label><%= spinner %></label>
-<br/>
+<br><label><%= spinner %></label><br>
 
 <div id="stats">
   <%= render :partial => "submission_area_report" %>
