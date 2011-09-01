@@ -334,8 +334,7 @@ class GlobalDashboardController < ApplicationController
     @areas = params[:a].to_i == @area_options.first[1].to_i ? GlobalArea.all : GlobalArea.all(:conditions => {:id => params[:a]})
 
     if params[:m].to_i == 0
-      year_month_ids = Year.first(:conditions => ["#{Year._(:year_number)} = ?", params[:y]]).months.collect(&:id)
-      @months = Month.all(:conditions => ["#{Month._(:id)} in (?)", year_month_ids], :order => "#{Month._(:number)}")
+      @months = Month.all(:conditions => ["#{Month._(:calendar_year)} = ?", params[:y]], :order => "#{Month._(:number)}")
     else
       @months = Month.all(:conditions => ["#{Month._(:number)} = ? and #{Month._(:calendar_year)} = ?", params[:m], params[:y]], :order => "#{Month._(:number)}")
     end
