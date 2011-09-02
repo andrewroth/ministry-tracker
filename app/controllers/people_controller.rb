@@ -497,6 +497,7 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address]) 
+    @permanent_address = PermanentAddress.new(params[:perm_address]) 
     @countries = CmtGeo.all_countries
     @states = CmtGeo.all_states
     
@@ -506,8 +507,11 @@ class PeopleController < ApplicationController
       can_assign_role = true if @my.role(@ministry).compare_class_and_position(MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) >= 0
       
       # If we don't have a valid person and valid address, get out now
-      if @person.valid? && @current_address.valid? && can_assign_role
+      if @person.valid? && @current_address.valid? && @permanent_address.valid? && can_assign_role
+        
         @person, @current_address = add_person(@person, @current_address, params)
+        @person.permanent_address.update_attributes(params[:perm_address])
+        
         # if we don't have a good username, Raise an error
         # Since we require a unique email address, we should never get here. 
         unless @person.user 
