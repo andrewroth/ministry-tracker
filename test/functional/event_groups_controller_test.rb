@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class EventGroupsControllerTest < ActionController::TestCase
   def setup
+    setup_years
+    setup_months
     setup_default_user
     Factory(:event_group_1)
     login

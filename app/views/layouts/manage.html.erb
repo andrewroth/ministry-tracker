@@ -104,6 +104,13 @@
   </ul>
   <%- end -%>
 
+  <br/><br/>
+  <h3>Projects</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "pat_projects" %>>
+    <%= link_to 'Projects', pat_projects_path %></li>
+  </ul>
+
   <%- if authorized?(:edit, :ministry_roles) -%>
   <br/><br/>
   <h3>System Settings</h3>

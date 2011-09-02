@@ -197,7 +197,8 @@ class ApplicationController < ActionController::Base
       :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
       :summer_report_reviewers => [:edit, :update],
       :search => [:web_remote],
-      :group_invitations => [:new, :create_multiple]
+      :group_invitations => [:new, :create_multiple],
+      :monthly_reports => [:stat_details]
     }
     
     def authorized?(action = nil, controller = nil, ministry = nil, options = {})
@@ -331,6 +332,10 @@ class ApplicationController < ActionController::Base
           end
           return false # necessary
           
+        when :monthly_reports
+          if action == 'stat_details'
+            return true if authorized?(:new, :monthly_reports) || authorized?(:edit, :monthly_reports)
+          end
         end # case
       end # if
 

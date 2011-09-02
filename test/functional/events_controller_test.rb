@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class EventsControllerTest < ActionController::TestCase
 
   def setup
+    setup_years
+    setup_months
     Factory(:event_group_1)
     Factory(:event_campus_1)
     Factory(:event_1)

@@ -7,6 +7,8 @@ class DevelopersController; def rescue_action(e) raise e end; end
 class DevelopersControllerTest < ActionController::TestCase
 
   def setup
+    setup_years
+    setup_months
     setup_default_user
     @controller = DevelopersController.new
     @request    = ActionController::TestRequest.new

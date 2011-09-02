@@ -497,13 +497,21 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address]) 
+    @permanent_address = PermanentAddress.new(params[:perm_address]) 
     @countries = CmtGeo.all_countries
     @states = CmtGeo.all_states
-
+    
+    
     respond_to do |format|
+      
+      can_assign_role = true if @my.role(@ministry).compare_class_and_position(MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) >= 0
+      
       # If we don't have a valid person and valid address, get out now
-      if @person.valid? && @current_address.valid?
+      if @person.valid? && @current_address.valid? && @permanent_address.valid? && can_assign_role
+        
         @person, @current_address = add_person(@person, @current_address, params)
+        @person.permanent_address.update_attributes(params[:perm_address])
+        
         # if we don't have a good username, Raise an error
         # Since we require a unique email address, we should never get here. 
         unless @person.user 
@@ -544,6 +552,7 @@ class PeopleController < ApplicationController
           render_new_from_create(format)
         end
       else
+        flash[:notice] = "Sorry, you can't assign that role to a new student." unless can_assign_role
         render_new_from_create(format)
       end
     end
@@ -603,7 +612,7 @@ class PeopleController < ApplicationController
         @ministry.training_questions.each do |q|
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
-        flash[:notice] = '<big>Your profile has been updated, thanks!</big>'
+        
         if params[:set_campus_requested] == 'true'
           flash[:notice] += "  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
         end
