@@ -1,0 +1,23 @@
+<h1>Listing pat_projects</h1>
+
+<table class="directorytable noclick">
+  <tr>
+    <th>Title</th>
+    <th>Event Group</th>
+    <th>Hide From Profile</th>
+    <th>Pulse Title</th>
+  </tr>
+
+<% @pat_projects.each do |pat_project| %>
+  <tr>
+    <td><%= pat_project.title %></td>
+    <td><%= pat_project.try(:event_group).try(:to_s_with_eg_path) %></td>
+    <td><%= pat_project.hide_from_profile %></td>
+    <td><%= pat_project.pulse_name %></td>
+    <td><%= link_to 'Edit', edit_pat_project_path(pat_project) %></td>
+    <td><%= link_to 'Destroy', pat_project, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

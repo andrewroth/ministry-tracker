@@ -94,6 +94,12 @@ unless @mobile
       
       <div class="col3">
 
+        <div class="dashmodule">
+          <div class="modulecontent">
+            <%= link_to image_tag("CRM_ConnectButton.jpg"), "https://connect.powertochange.org/" %>
+          </div>
+        </div>
+
         <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
         <div class="dashmodule">
           <div class="moduletitle">

@@ -7,6 +7,8 @@ class ColumnsController; def rescue_action(e) raise e end; end
 class ColumnsControllerTest < ActionController::TestCase
 
   def setup
+    setup_years
+    setup_months
     setup_default_user
     setup_ministry_roles
     Factory(:column_1)
