@@ -1,3 +1,5 @@
+require "csv"
+
 class GlobalDashboardController < ApplicationController
   in_place_edit_for :global_country, :total_students
   in_place_edit_for :global_country, :total_schools
@@ -22,6 +24,8 @@ class GlobalDashboardController < ApplicationController
   
   MONTH_LONG = %w[January February March April May June July August September October November December]
   MONTH_SHORT = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
+  MCC_OPTIONS = [ "Any Mcc", "virtually-led", "church-led", "student-led", "leader-led" ]
+  STAGE_OPTIONS = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3] ]
 
   before_filter :ensure_permission
   before_filter :set_can_edit_stages
@@ -183,7 +187,7 @@ class GlobalDashboardController < ApplicationController
     csv_out = ""
     CSV::Writer.generate(csv_out) do |csv|
     
-      header_row = ["Country", "Overall Percent", "Months Reported"]
+      header_row = ["Area", "Country", "Stage", "Overall Percent"]
       MONTH_LONG.each { |m| header_row << m }
       csv << header_row
 
@@ -193,16 +197,26 @@ class GlobalDashboardController < ApplicationController
           month_data = {}
           MONTH_LONG.each_with_index do |ml, i|
             m = Month.find_by_month_desc "#{ml} #{params[:y]}"
-            stat = country.global_dashboard_whq_stats.find_by_month_id m.id
             month_data[country] ||= {}
-            month_data[country][MONTH_SHORT[i]] = stat.present?
+            month_data[country][MONTH_SHORT[i]] ||= 0
+            
+            if params[:mcc] == MCC_OPTIONS.first
+              stat = country.global_dashboard_whq_stats.all(:conditions => {:month_id => m.id})
+              month_data[country][MONTH_SHORT[i]] += stat.try(:size)
+            else
+              stat = country.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], m.id)
+              month_data[country][MONTH_SHORT[i]] += stat.present? ? 1 : 0
+            end
           end
           
-          months_with_data = 0
-          MONTH_SHORT.each { |m| months_with_data += 1 if month_data[country][m] }
+          area_total_month_data_possible = params[:mcc] == MCC_OPTIONS.first ? (MCC_OPTIONS.size-1)*12 : 12
           
-          row = [country.name, "#{((months_with_data.to_f / 12.00)*100).to_i}%", months_with_data]
-          MONTH_SHORT.each { |m| row << month_data[country][m] ? "true" : "false" }
+          months_data_total = 0
+          MONTH_SHORT.each { |m| months_data_total += month_data[country][m] }
+          
+          row = [country.global_area.area, country.name, country.stage, "#{((months_data_total.to_f / area_total_month_data_possible.to_f)*100).to_i}%"]
+          MONTH_SHORT.each { |m| row << month_data[country][m] }
+          
           csv << row
         end
       end
@@ -210,7 +224,7 @@ class GlobalDashboardController < ApplicationController
 
     send_data(csv_out,
               :type => 'text/csv; charset=utf-8; header=present',
-              :filename => "submission_report_countries_#{params[:y]}.csv")
+              :filename => "submission_report_countries_mcc-#{params[:mcc] == MCC_OPTIONS.first ? 'any' : params[:mcc]}_#{params[:y]}.csv")
   end
   
   def export_submission_areas
@@ -222,43 +236,59 @@ class GlobalDashboardController < ApplicationController
       csv << header_row
 
       GlobalArea.all.each do |area|
-        area_months_with_data = 0
-        area_total_months = 0
         num_countries_in_area = 0
+        area_months_data_total = 0
+        area_total_month_data_possible = 0
         area_month_data = {}
         MONTH_SHORT.each { |m| area_month_data[m] = 0 }
         
-        area.global_countries.each do |country|
+        if params[:s].to_s == STAGE_OPTIONS.first[1].to_s
+          countries = GlobalCountry.all(:conditions => ["global_area_id = ?", area.id], :order => :name)
+        else
+          countries = GlobalCountry.all(:conditions => ["global_area_id = ? and stage = ?", area.id, params[:s]], :order => :name)
+        end
+        
+        countries.each do |country|
           num_countries_in_area += 1
           
           month_data = {}
           MONTH_LONG.each_with_index do |ml, i|
             m = Month.find_by_month_desc "#{ml} #{params[:y]}"
-            stat = country.global_dashboard_whq_stats.find_by_month_id m.id
             month_data[country] ||= {}
-            month_data[country][MONTH_SHORT[i]] = stat.present?
-          end
-          
-          months_with_data = 0
-          MONTH_SHORT.each do |m|
-            if month_data[country][m]
-              months_with_data += 1 
-              area_month_data[m] += 1
+            month_data[country][MONTH_SHORT[i]] ||= 0
+            
+            if params[:mcc] == MCC_OPTIONS.first
+              stat = country.global_dashboard_whq_stats.all(:conditions => {:month_id => m.id})
+              month_data[country][MONTH_SHORT[i]] += stat.try(:size)
+            else
+              stat = country.global_dashboard_whq_stats.find_by_mcc_and_month_id(params[:mcc], m.id)
+              month_data[country][MONTH_SHORT[i]] += stat.present? ? 1 : 0
             end
           end
-          area_months_with_data += months_with_data
-          area_total_months += 12
+          
+          months_data_total = 0
+          MONTH_SHORT.each do |m|
+            area_month_data[m] ||= 0
+            if month_data[country][m]
+              months_data_total += month_data[country][m]
+              area_month_data[m] += month_data[country][m]
+            end
+          end
+          area_months_data_total += months_data_total
+          area_total_month_data_possible += params[:mcc] == MCC_OPTIONS.first ? (MCC_OPTIONS.size-1)*12 : 12
         end
         
-        row = [area.area, "#{((area_months_with_data.to_f / area_total_months.to_f)*100).to_i}%"]
-        MONTH_SHORT.each { |m| row << "#{((area_month_data[m].to_f / num_countries_in_area.to_f)*100).to_i}%" }
+        area_total_month_data_possible_per_month = num_countries_in_area == 0 ? 0 : area_total_month_data_possible/num_countries_in_area
+        row = [area.area, "#{area_total_month_data_possible == 0 ? 0 : ((area_months_data_total.to_f / area_total_month_data_possible.to_f)*100).to_i}%"]
+        MONTH_SHORT.each { |m| row << "#{area_total_month_data_possible_per_month == 0 ? 0 : ((area_month_data[m].to_f / area_total_month_data_possible_per_month.to_f)*100).to_i}%" }
+        
         csv << row
       end
     end
 
     send_data(csv_out,
               :type => 'text/csv; charset=utf-8; header=present',
-              :filename => "submission_report_areas_#{params[:y]}.csv")
+              :filename => "submission_areas_report_mcc-#{params[:mcc] == MCC_OPTIONS.first ? 'any' : params[:mcc]}_stage-#{params[:s].to_s == STAGE_OPTIONS.first[1].to_s ? 'any' : params[:s]}_#{params[:y]}.csv")
   end
 
   def update_stats
@@ -316,9 +346,9 @@ class GlobalDashboardController < ApplicationController
   end
 
   def submission_area_report
-    @mcc_options = [ "Any Mcc", "virtually-led", "church-led", "student-led", "leader-led" ]
+    @mcc_options = MCC_OPTIONS
     @area_options = [["All Areas", 0]] + GlobalArea.all.collect{ |ga| [ ga.area, ga.id ] }
-    @stage_options = [ [ "Any Stage", "all" ], [ "Stage 1", 1], [ "Stage 2", 2], [ "Stage 3", 3] ]
+    @stage_options = STAGE_OPTIONS
     @month_options = [["All Months", 0]] + MONTH_LONG.each_with_index.collect { |m, i| [m, i+1] }
     @year_options = Year.all.collect(&:year_number)
     
