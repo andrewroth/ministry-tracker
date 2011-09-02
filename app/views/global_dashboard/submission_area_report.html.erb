@@ -56,8 +56,10 @@
 <script type="text/javascript">
   $($("span.export_container input").click(function(event){
     event.preventDefault();
-    $("<input id='a' type='hidden' name='a' value='"+$("select#area_id").val()+"'>").appendTo($(this).parents('form:first'));
-    $("<input id='y' type='hidden' name='y' value='"+$("select#year").val()+"'>").appendTo($(this).parents('form:first'));
+    $("<input id='a'   type='hidden' name='a'   value='"+$("select#area_id").val()+"'>").appendTo($(this).parents('form:first'));
+    $("<input id='y'   type='hidden' name='y'   value='"+$("select#year").val()+"'>").appendTo($(this).parents('form:first'));
+    $("<input id='mcc' type='hidden' name='mcc' value='"+$("select#mcc").val()+"'>").appendTo($(this).parents('form:first'));
+    $("<input id='s'   type='hidden' name='s'   value='"+$("select#stage_id").val()+"'>").appendTo($(this).parents('form:first'));
     $(this).parents('form:first').submit();
   }));
 </script>
