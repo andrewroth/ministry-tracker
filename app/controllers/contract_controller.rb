@@ -5,7 +5,10 @@ class ContractController < ApplicationController
   layout :get_layout
   
   def volunteer_agreement
+    @hide_layout_navigation = true
+    
     unless needs_to_sign_volunteer_agreements?
+      @hide_layout_navigation = false
       redirect_to :action => "index", :controller => "dashboard"
       return
     end
@@ -22,17 +25,19 @@ class ContractController < ApplicationController
     end
     
     if @contract.nil?
+      @hide_layout_navigation = false
       redirect_to :action => "index", :controller => "dashboard"
     else
       @contract_signature = ContractSignature.new(:contract_id => @contract.id)
     end
-    
-    @hide_layout_navigation = true
   end
   
 
   def sign_volunteer_contract
+    @hide_layout_navigation = true
+    
     unless needs_to_sign_volunteer_agreements?
+      @hide_layout_navigation = false
       redirect_to :action => "index", :controller => "dashboard"
       return
     end
@@ -54,7 +59,9 @@ class ContractController < ApplicationController
       
       if next_contract.nil?
         flash[:notice] = "<big>Great, you're done signing the agreements, thanks!</big>"
+        @hide_layout_navigation = false
         redirect_to :action => "index", :controller => "dashboard"
+        return
       else
         redirect_to :action => "volunteer_agreement"
       end
