@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class EmailsControllerTest < ActionController::TestCase
   def setup
+    setup_years
+    setup_months
     setup_default_user
     login
   end

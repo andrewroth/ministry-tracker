@@ -224,7 +224,7 @@ class Person < ActiveRecord::Base
     # we want to allow signing the contracts one month before the year technically begins
     
     if Month.current == Year.current.months.last
-      year = Year.first(:conditions => {:year_number => Year.current.year_number+1})
+      year = Year.first(:conditions => {:year_number => Year.current.year_number+1}) || Year.current
     else
       year = Year.current
     end
@@ -238,7 +238,7 @@ class Person < ActiveRecord::Base
                                                      #{ContractSignature._(:signature)} <> '' and 
                                                      #{ContractSignature._(:signed_at)} > ?",
                                                      self.id, contract_id, year.start_date-1.month]).present?
-      contract = Contract.find(contract_id)
+      contract = Contract.find(:first, :conditions => { :id => contract_id })
       break
     end
     

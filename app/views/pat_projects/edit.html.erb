@@ -1,0 +1,27 @@
+<h1>Editing <%= @pat_project.try(:title) %></h1>
+<h2>Event Group: <%= @pat_project.try(:event_group).try(:title) %></h2>
+
+<% form_for(@pat_project) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+  <%= f.label :pat_projects_from_profile, "Hide From Profile" %>
+  <%= f.check_box :hide_from_profile %>
+  </p>
+
+  <br/>
+
+  <p>
+  <%= f.label :pat_projects_pulse_name, "Pulse Name" %>
+  <%= f.text_field :pulse_name %>
+  </p>
+
+  <br/>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @pat_project %> |
+<%= link_to 'Back', pat_projects_path %>
