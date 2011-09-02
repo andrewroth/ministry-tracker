@@ -380,6 +380,7 @@ class GlobalDashboardController < ApplicationController
     @total_possible_reports_per_country = num_months_selected * num_mccs_selected
     @total_possible_reports_per_country_per_month = num_mccs_selected
     @total_possible_reports = @total_possible_reports_per_country * @countries.try(:size).to_i
+    @total_possible_reports_per_month_all_countries = @total_possible_reports_per_country_per_month * @countries.size
     
     @total_reports = 0
     @reports = {}

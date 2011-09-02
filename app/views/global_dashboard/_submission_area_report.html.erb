@@ -63,6 +63,17 @@
             <td class="month"><%= @month_short[month.number-1] %></td>
           <% end %>
         </tr>
+        <tr>
+          <td class="country">Total Percent</td>
+          <% @months.each do |month| %>
+            <% month_total = 0 %>
+            <% @reports.each {|c| month_total += c[1][month]} %>
+            <td class="month"><%= @total_possible_reports_per_month_all_countries == 0 ? 0 : ((month_total.to_f / @total_possible_reports_per_month_all_countries.to_f)*100).to_i %>%</td>
+          <% end %>
+        </tr>
+        
+        <tr><td>&nbsp;</td><% @months.size.times do %> <%="<td>&nbsp;</td>"%> <% end %></tr>
+        
         <% for country in @countries %>
           <tr>
             <td class="country"><%= country.name %></td>
