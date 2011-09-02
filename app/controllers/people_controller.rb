@@ -495,6 +495,7 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.xml
   def create
+    @modal = request.xhr?
     @person = Person.new(params[:person])
     @current_address = CurrentAddress.new(params[:current_address]) 
     @permanent_address = PermanentAddress.new(params[:perm_address]) 
