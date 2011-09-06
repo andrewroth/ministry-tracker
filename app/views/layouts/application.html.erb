@@ -50,8 +50,12 @@
 		<div id="outer">
 		
 		<% if Cmt::CONFIG[:gcx_connexion_bar] %>
-      <%= connexion_bar %>
-      <%= connexion_bar_revealer %>
+		  <% begin %>
+        <%= connexion_bar %>
+        <%= connexion_bar_revealer %>
+      <% rescue => e %>
+        <% LOGGER.error("\nERROR WITH CONNEXION_BAR: \n"+e.class.to_s+"\n"+e.message+"\n") %>
+      <% end %>
     <% end %>
     
     <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
