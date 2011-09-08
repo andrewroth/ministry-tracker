@@ -53,7 +53,6 @@
 		  <% begin %>
         <%= connexion_bar %>
         <%= connexion_bar_revealer %>
-        <% raise "fail" %>
       <% rescue => e %>
         <% Rails.logger.error("\nERROR WITH CONNEXION_BAR: \n#{e.try(:class)}\n#{e.try(:message)}\n\n") %>
       <% end %>
