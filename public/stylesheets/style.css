@@ -1225,6 +1225,8 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
 
+.dashboard_subtitle { font-size:12px; padding:5px 0; text-transform: uppercase; }
+
 div#logos.dashboard { padding:15px 0 0 40px; position:relative; }
 div#logos.dashboard #pulse_logo { left:187px; }
 
