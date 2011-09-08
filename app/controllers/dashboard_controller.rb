@@ -141,7 +141,8 @@ class DashboardController < ApplicationController
       :conditions => "lft >= #{ministry.lft} AND rgt <= #{ministry.rgt}")
     @num_people = mis.total
 
-    sid = Semester.current.id
+    @current_semester = Semester.current
+    sid = @current_semester.id
     gt_all = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
