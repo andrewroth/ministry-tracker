@@ -352,10 +352,12 @@ class SignupController < ApplicationController
         group = Group.find group_id
         requested = (level == "member" ? group.needs_approval : false) unless invitation && group_id == invitation.group_id
         
-        unless GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => group_id, :level => level, :requested => requested}).present? # make sure we don't notify people twice 
+        gi = GroupInvolvement.first(:conditions => {:person_id => @person.id, :group_id => group_id, :level => level, :requested => requested})
+        unless gi.present? # make sure we don't notify people twice 
           gi = GroupInvolvement.create_group_involvement(@person.id, group_id, level, requested)
           gi.send_later(:join_notifications, base_url)
         end
+        
         session[:signup_joined_group_id] = gi.group_id
         session[:joined_collection_group] = nil
       end
