@@ -183,7 +183,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html { render :layout => 'application' }
       format.xls  do
-        filename = @search_for.gsub(';',' -') + ".xls"    
+        filename = @search_for.present? ? @search_for.gsub(';',' -') + ".xls" : "pulse_directory_search.xls"
 
         #this is required if you want this to work with IE        
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
