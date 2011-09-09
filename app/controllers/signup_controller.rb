@@ -285,6 +285,7 @@ class SignupController < ApplicationController
     session[:sent_timetable_email] = true # make sure we don't notify people twice this session
     
     @group = Group.first(:conditions => {:id => session[:signup_joined_group_id]}) if session[:signup_joined_group_id].present?
+    @group = nil
     @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
