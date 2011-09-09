@@ -93,3 +93,9 @@ function strikeParentOnHover(e) {
   e.hover(function(){$(this).parent().css("text-decoration", "line-through")}, function(){$(this).parent().css("text-decoration", "none")});
 }
 
+function disableInputsOnSubmit(theClass) {
+  $("form.disableOnSubmit").submit(function(){
+    $("input.disableOnSubmit").attr('disabled', 'disabled');
+  });
+}
+
