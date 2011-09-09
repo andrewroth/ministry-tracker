@@ -18,13 +18,13 @@
         end
       }.join(', ')
     %>
-    <% if @group.email.present? %>
+    <% if @group && @group.email.present? %>
       or <%= mail_to @group.email %>
     <% end %>
     <br />
   <% end %>
   
-  <% if @group.campus && @group.campus.campus_website %>
+  <% if @group && @group.campus && @group.campus.campus_website %>
     <br/>
     Visit <%= @group.campus.short_name %>'s website: <%= link_to @group.campus.campus_website, @group.campus.campus_website %>
     <br/>
