@@ -225,13 +225,13 @@ class MinistryInvolvementsController < ApplicationController
     unless params[:role][:id] && params[:involvement_id]
       flash[:notice] = "Could not update roles, no particular roles or people were specified."
       
-      redirect_to :action => "directory", :controller => "people"
+      redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
     if can_set_roles == false
       flash[:notice] = "Sorry, you can't set that role."
       
-      redirect_to :action => "directory", :controller => "people"
+      redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
     
@@ -303,7 +303,7 @@ class MinistryInvolvementsController < ApplicationController
       end
     end
 
-    redirect_to :action => "directory", :controller => "people"
+    redirect_to :action => "directory", :controller => "people", :format => :html
   end
 
   

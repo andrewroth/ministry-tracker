@@ -183,7 +183,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html { render :layout => 'application' }
       format.xls  do
-        filename = @search_for.gsub(';',' -') + ".xls"    
+        filename = @search_for.present? ? @search_for.gsub(';',' -') + ".xls" : "pulse_directory_search.xls"
 
         #this is required if you want this to work with IE        
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
@@ -505,7 +505,7 @@ class PeopleController < ApplicationController
     
     respond_to do |format|
       
-      can_assign_role = true if @my.role(@ministry).compare_class_and_position(MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) >= 0
+      can_assign_role = true if @my.role(@ministry) && @my.role(@ministry).compare_class_and_position(MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) >= 0
       
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid? && @permanent_address.valid? && can_assign_role

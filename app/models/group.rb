@@ -42,7 +42,7 @@ class Group < ActiveRecord::Base
 
   has_one :campus_ministry_group
 
-  after_save :update_collection_groups
+#  after_save :update_collection_groups
 
   named_scope :current_and_next_semester, lambda {
     sid = Semester.current.id

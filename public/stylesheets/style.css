@@ -38,7 +38,7 @@ padding:0px;
 margin:15px 0 10px 0;
 }
 
-table.address td.spacer, table.activity td.spacer {width:5px;}
+table.address td.spacer, table.activity td.spacer, table.profile td.spacer {width:9px;}
 
 #left-body {width:650px; float:left;}
 
@@ -1037,6 +1037,18 @@ a.action-button u {
 a.action-button img {
   vertical-align: middle;
 }
+input.action-button[disabled] {
+  background: #FFFFFF;
+  border: 1px solid #E0E6E0;
+  color: #B4BAB4;
+  cursor: default;
+  
+  -moz-box-shadow:0 4px 4px #F2F4F2 inset; -webkit-box-shadow:0 4px 4px #F2F4F2 inset; box-shadow:0 4px 4px #F2F4F2 inset;
+}
+input.action-button[disabled]:hover {
+  text-decoration: none;
+  cursor: default;
+}
 
 .drag_me {cursor:pointer;}
 
@@ -1224,6 +1236,8 @@ border:1px solid #1F429B;
 div.closebox {padding-top:10px; padding-bottom:10px;}
 
 /* DASHBOARD */
+
+.dashboard_subtitle { font-size:12px; padding:5px 0; text-transform: uppercase; }
 
 div#logos.dashboard { padding:15px 0 0 40px; position:relative; }
 div#logos.dashboard #pulse_logo { left:187px; }
@@ -2567,26 +2581,27 @@ h2.group_type_title {
 }
 
 #display_other_group_types_list_link {
+  font-size:14px;
   display:block;
   padding:10px 10px 10px 20px;
   background-color: #F7F7F7;
   background-image: url("/images/sprites/link_bar.png"); background-repeat: no-repeat;
-  background-position: -3px -92px;
+  background-position: -3px -91px;
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0; box-shadow: 0 0 7px #F0F0F0;
 }
 
 #display_other_group_types_list_link:hover {
-  background-position: -3px -116px;
+  background-position: -3px -115px;
 }
 
 #signup_group_select_container {
   margin-top:30px;
-  font-size:18px;
+  font-size:20px;
 }
 
 #signup_group_select_container select {
   display:inline;
-  font-size:18px;
+  font-size:20px;
 }
 
 #spinner.signup_groups {
@@ -2610,25 +2625,21 @@ h2.group_type_title {
 
 #collection_group_link {
   position:fixed;
-  font-size:14px;
+  font-size:12px;
   margin-right:20px;
   line-height:22px;
 }
 
-#collection_group_link_title {
-  font-weight:bold;
+#collection_group_link a {
   font-size:16px;
 }
 
-#collection_group_link a {
-  padding-left:16px;
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -9px -561px;
+#collection_group_link_title {
+  font-size:18px;
+  color:#666766;
+  font-weight:bold;
 }
 
-#collection_group_link a:hover {
-  background-position: -9px -593px;
-}
 
 /************************************************/
 /* Search section                               */

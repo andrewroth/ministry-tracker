@@ -42,7 +42,7 @@ class Campus < ActiveRecord::Base
       new_group = true if group
     end
     group.ministry = derive_ministry
-    group.derive_name
+    group.derive_name if new_group
     group.semester ||= semester
     group.save!
 
