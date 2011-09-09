@@ -37,7 +37,7 @@
 
 <div id="signup_step1_columns">
 
-<%- form_for @person, :url => { :action => :step2_info_submit, :method => :post } do |f| -%>
+<%- form_for @person, :url => { :action => :step2_info_submit, :method => :post }, :html => {:class => "disableOnSubmit"} do |f| -%>
   <%= f.error_messages %>
   <table id="signup_step2_info">
   <tr>
@@ -100,7 +100,7 @@
 <br/>
 
 <div class="center">
-  <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :id => "submit", :class => 'action-button submit validateRequiredOnSubmit') %>
+  <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :id => "submit", :class => 'action-button submit validateRequiredOnSubmit disableOnSubmit') %>
 </div>
 
 <%- end -%>
@@ -108,4 +108,9 @@
   
 <%= javascript_include_tag "inputLiveValidations.js" %>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    disableInputsOnSubmit("disableOnSubmit");
+  });
+</script>
 

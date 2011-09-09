@@ -44,7 +44,7 @@ render_tabnav :main,
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
-      t.titled 'Groups for ' + @ministry.try(:name)
+      t.titled 'Groups for ' + @ministry.try(:name).to_s
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
     end if session[:ministry_id]
@@ -70,7 +70,7 @@ render_tabnav :main,
   if authorized?(:show, :campus_discipleship)
     add_tab do |t|
       t.named "<div id='campusDiscTab' class='tab'>DISCIPLESHIP</div>"
-      t.titled 'Campus discipleship view for ' + @ministry.try(:name)
+      t.titled 'Campus discipleship view for ' + @ministry.try(:name).to_s
       t.links_to :controller => "campus_discipleship", :action => "show"
       t.highlights_on :controller => "campus_discipleship", :action => "show"
     end if session[:ministry_id]

@@ -71,10 +71,10 @@
 <%- if @can_edit -%>
   <%- form_for [@person, @timetable], 
     :url => (@signup ? update_signup_person_timetable_url(@person, @timetable) : person_timetable_url(@person, @timetable)),
-    :html => {:onsubmit => "set_times_field()"} do |f| -%>
+    :html => {:onsubmit => "set_times_field()", :class => "disableOnSubmit"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%- unless @signup -%>
-    <%= f.submit 'Save Timetable', :class => 'save action-button' %>
+    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit' %>
     <br/>
     <br/>
     <%- end %>
@@ -99,10 +99,10 @@
     <% if @signup %>
       <br/>
       <div style="float:right;">
-        <%= f.submit 'Edit Timetable Later', :class => 'action-button', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page." %>
+        <%= f.submit 'Edit Timetable Later', :class => 'action-button disableOnSubmit', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page." %>
     <% end %>
     
-    <%= f.submit 'Save Timetable', :class => 'save action-button', :style => 'margin: 0 70px' %>
+    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit', :style => 'margin: 0 70px' %>
     <br/>
     <br/>
     
@@ -184,5 +184,6 @@
       }
     }
   });
-    
+  
+  disableInputsOnSubmit("disableOnSubmit");
 </script>
