@@ -1,9 +1,18 @@
 
+<%= javascript_include_tag 'jquery.cookie.js' %>
 <%= stylesheet_link_tag "jquery-ui" %>
 
 <script type="text/javascript">
 	$(function() {
-		$("#tabs").tabs();
+  	if( $.cookie('global_dash_submission_area_report_tab') === null ) { $.cookie('global_dash_submission_area_report_tab', 0); }
+  	
+		$("#tabs").tabs({
+		  selected: $.cookie('global_dash_submission_area_report_tab'),
+		  select: function(event, ui) {
+		    $.cookie('global_dash_submission_area_report_tab', ui.index);
+	    }
+	  });
+	  
 	  $("#tabs").show();
 	});
 </script>
@@ -56,6 +65,7 @@
 	  </div>
 
 	  <div id="tabs-2">
+	    <p><i>Numbers indicate how many reports a country submitted during the month.</br>A checkmark indicates that all reports (relative to your search criteria) were submitted.</i></p>
       <table style="width:<%= @months.size > 1 ? '100%' : 'auto' %>;">
         <tr>
           <td class="country"></td>
