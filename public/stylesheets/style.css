@@ -1037,6 +1037,18 @@ a.action-button u {
 a.action-button img {
   vertical-align: middle;
 }
+input.action-button[disabled] {
+  background: #FFFFFF;
+  border: 1px solid #E0E6E0;
+  color: #B4BAB4;
+  cursor: default;
+  
+  -moz-box-shadow:0 4px 4px #F2F4F2 inset; -webkit-box-shadow:0 4px 4px #F2F4F2 inset; box-shadow:0 4px 4px #F2F4F2 inset;
+}
+input.action-button[disabled]:hover {
+  text-decoration: none;
+  cursor: default;
+}
 
 .drag_me {cursor:pointer;}
 
