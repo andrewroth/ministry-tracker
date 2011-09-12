@@ -8,6 +8,8 @@ class ViewsControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:view_1)
 
     @controller = ViewsController.new

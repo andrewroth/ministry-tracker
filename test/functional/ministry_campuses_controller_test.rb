@@ -8,6 +8,8 @@ class MinistryCampusesControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     @controller = MinistryCampusesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

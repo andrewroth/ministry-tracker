@@ -8,6 +8,8 @@ class GroupInvitationsControllerTest < ActionController::TestCase
     setup_groups
     setup_users
     setup_accesses
+    setup_years
+    setup_months
 
     login
   end
@@ -144,9 +146,3 @@ class GroupInvitationsControllerTest < ActionController::TestCase
     assert_equal assigns(:current_user).person.id, gi.recipient_person_id
   end
 end
-
-
-
-
-
-

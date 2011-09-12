@@ -8,6 +8,8 @@ class ViewColumnsControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:view_1)
     Factory(:column_1)
     Factory(:viewcolumn_1)

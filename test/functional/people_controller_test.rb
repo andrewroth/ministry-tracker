@@ -7,7 +7,8 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-
+    setup_years
+    setup_months
   end
   
   def login_admin_user

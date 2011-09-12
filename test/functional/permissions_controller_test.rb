@@ -8,6 +8,8 @@ class PermissionsControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:permission_1)
     Factory(:permission_2)
 

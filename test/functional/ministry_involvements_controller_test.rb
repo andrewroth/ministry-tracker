@@ -9,6 +9,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   def setup
     setup_ministry_roles
     setup_default_user
+    setup_years
+    setup_months
     
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new

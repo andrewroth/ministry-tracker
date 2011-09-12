@@ -16,9 +16,10 @@ class CampusDiscipleshipControllerTest < ActionController::TestCase
     Factory(:person_1)
     Factory(:ministry_1)
     Factory(:ministryrole_1)
-    Factory(:ministryinvolvement_setperson, :person_id => "50000")
+    # there's no factory with ministryinvolvement_setperson??? -AR Sept 12, 2011
+    #Factory(:ministryinvolvement_setperson, :person_id => "50000")
     Factory(:campus_1)
-    Factory(:campusinvolvement_setperson, :person_id => "50000")
+    #Factory(:campusinvolvement_setperson, :person_id => "50000")
     
     login('josh.starcher@example.com')
   end
@@ -33,6 +34,8 @@ class CampusDiscipleshipControllerTest < ActionController::TestCase
     login('josh.starcher@example.com')
   end
   
+=begin
+# this uses factories that were apparently never committed
   def load_two_discipleship_trees_plus_one_nonministry_tree
     
     # setup basic ministry
@@ -93,8 +96,10 @@ class CampusDiscipleshipControllerTest < ActionController::TestCase
     @person9 = person9
      
   end
+=end
   
    
+=begin
   test "should show minstry specific discipleship trees" do
     login_admin_user
     
@@ -110,6 +115,7 @@ class CampusDiscipleshipControllerTest < ActionController::TestCase
     assert_response :success   
 
   end
+=end
   
 =begin
   test "remove disciple from discipleship view" do

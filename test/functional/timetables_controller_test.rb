@@ -4,6 +4,8 @@ class TimetablesControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     
     login
   end

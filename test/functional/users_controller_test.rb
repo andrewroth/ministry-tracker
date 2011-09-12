@@ -8,6 +8,8 @@ class UsersControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     
     @controller = UsersController.new
     @request    = ActionController::TestRequest.new
