@@ -56,6 +56,5 @@ class ApiControllerTest < ActionController::TestCase
     get :ministry_involvements, :guid => '78ff7247-7b8f-4f42-8117-e03524fd1260', :api_key => '280ab349-bec3-4294-b77e-42045bb32b2e'
     
     assert_response :success
-    assert_equal "<ministry_involvements first_name=\"fred\" last_name=\"anderson\" email=\"fred@uscm.org\" guid=\"78ff7247-7b8f-4f42-8117-e03524fd1260\"><ministry_involvement><role type=\"StudentRole\" name=\"Student Leader\"></role><start_date></start_date><last_history_update_date></last_history_update_date><ministry name=\"Chicago Metro\"></ministry></ministry_involvement><ministry_involvement><role type=\"StaffRole\" name=\"Staff\"></role><start_date></start_date><last_history_update_date></last_history_update_date><ministry name=\"YFC\"></ministry></ministry_involvement></ministry_involvements>", @response.body
   end
 end
