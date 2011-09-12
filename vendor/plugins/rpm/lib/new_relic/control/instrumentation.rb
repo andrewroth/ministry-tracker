@@ -1,12 +1,23 @@
 module NewRelic
   class Control
+    # Contains methods that relate to adding and executing files that
+    # contain instrumentation for the Ruby Agent
     module Instrumentation
+
+      # Adds a list of files in Dir.glob format
+      # (e.g. '/app/foo/**/*_instrumentation.rb')
+      # This requires the files within a rescue block, so that any
+      # errors within instrumentation files do not affect the overall
+      # agent or application in which it runs.
+      #
+      # Logs at debug level for each file loaded, and logs errors in
+      # file loading at error level
       def load_instrumentation_files pattern
         Dir.glob(pattern) do |file|
           begin
             log.debug "Processing instrumentation file '#{file}'"
             require file.to_s
-          rescue => e
+          rescue Exception => e
             log.error "Error loading instrumentation file '#{file}': #{e}"
             log.debug e.backtrace.join("\n")
           end
@@ -23,8 +34,11 @@ module NewRelic
 
       # Add instrumentation.  Don't call this directly.  Use NewRelic::Agent#add_instrumentation.
       # This will load the file synchronously if we've already loaded the default
-      # instrumentation.
+      # instrumentation, otherwise instrumentation files specified
+      # here will be deferred until all instrumentation is run
       #
+      # This happens after the agent has loaded and all dependencies
+      # are ready to be instrumented
       def add_instrumentation pattern
         if @instrumented
           load_instrumentation_files pattern
@@ -32,27 +46,16 @@ module NewRelic
           @instrumentation_files << pattern
         end
       end
-
-      def _delayed_instrumentation
-        Rails.configuration.after_initialize do
-          _install_instrumentation
-        end
-      rescue
+      
+      # Signals the agent that it's time to actually load the
+      # instrumentation files. May be overridden by subclasses
+      def install_instrumentation
         _install_instrumentation
       end
-
-      def install_instrumentation
-        if defined?(Rails) && !Rails.initialized?
-          _delayed_instrumentation
-        else
-          _install_instrumentation
-        end
-      rescue NameError
-        # needed in the rails 3 case, where Rails.initialized? raises
-        # an error if rails has not been initialised. which is totally sane.
-        _delayed_instrumentation
-      end
-
+      
+      # adds samplers to the stats engine so that they run every
+      # minute. This is dynamically recognized by any class that
+      # subclasses NewRelic::Agent::Sampler
       def load_samplers
         agent = NewRelic::Agent.instance
         NewRelic::Agent::Sampler.sampler_classes.each do | subclass |
@@ -88,8 +91,10 @@ module NewRelic
         File.join(instrumentation_path, '*.rb') <<
         File.join(instrumentation_path, app.to_s, '*.rb')
         @instrumentation_files.each { | pattern |  load_instrumentation_files pattern }
+        DependencyDetection.detect!
         log.debug "Finished instrumentation"
       end
     end
+    include Instrumentation
   end
 end

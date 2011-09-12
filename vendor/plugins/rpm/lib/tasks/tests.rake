@@ -1,4 +1,8 @@
 # run unit tests for the NewRelic Agent
+begin
+  require 'rake/test_task'
+rescue LoadError => e
+end
 
 if defined? Rake::TestTask
   namespace :test do
@@ -10,6 +14,6 @@ if defined? Rake::TestTask
       t.verbose = true
     end
     Rake::Task['test:newrelic'].comment = "Run the unit tests for the Agent"
-    task :default => :newrelic
+    task :newrelic => :environment
   end
 end
