@@ -6,6 +6,7 @@ end
 
 task :hudson => [ "test:mh_common:lock" ] do
   begin
+    ENV['skip_utf8_check'] = "true"
     ENV['AGGREGATE'] = "coverage/aggregate.data"
     Rake::Task["db:test:prepare:all"].execute
     Rake::Task["test:coverage"].execute
