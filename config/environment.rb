@@ -101,3 +101,16 @@ Rails::Initializer.run do |config|
   end
 
 end
+
+# make sure we're properly setup to use utf8 character set
+%w(character_set_database character_set_client character_set_connection).each do |v|
+  ActiveRecord::Base.connection.execute("SHOW VARIABLES LIKE '#{v}'").each do |f|
+    unless f[1] == "utf8"
+      puts "ERROR: MySQL database isn't properly encoded! Detected '#{f[1]}' when it shound be 'utf8'."
+      puts "Kindly set your #{f[0]} variable to 'utf8'. You can do this by adding 'encoding: utf8' to your database.yml"
+      puts "(Note: if you haven't done so already, you should rebuild your database(s) to use 'utf8' for character set and collation)"
+      RAILS_DEFAULT_LOGGER.error("MySQL database isn't properly encoded!")
+      exit 1
+    end
+  end
+end
