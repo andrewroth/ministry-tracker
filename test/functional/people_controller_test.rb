@@ -554,7 +554,7 @@ class PeopleControllerTest < ActionController::TestCase
   test "should NOT create person" do
     login_admin_user
     assert_no_difference('Person.count') do
-      post :create, :person => { }, :ministry_involvement = {}
+      post :create, :person => { }, :ministry_involvement => { :ministry_role_id => StaffRole.first.id }
     end
     assert_response :success
     assert_template 'new'
