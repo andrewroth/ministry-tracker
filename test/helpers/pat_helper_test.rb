@@ -33,7 +33,7 @@ class PatHelperTest < ActionView::TestCase
   def test_project_acceptance_totals
     results_by_campus, results_by_project = project_acceptance_totals(Campus.all.collect(&:id), nil)
     assert_equal 1, results_by_campus["UCD"][:total]
-    assert_equal 2, results_by_campus["Wy"]["project 2"]
+    assert_equal 2, results_by_campus["Wy"]["project 2"].to_i
     assert_equal 1, results_by_project["project 1"]["UCD"]
     assert_equal 2, results_by_project["project 1"][:total]
     assert_equal 2, results_by_project["project 2"]["Wy"]
@@ -43,7 +43,7 @@ class PatHelperTest < ActionView::TestCase
   def test_project_applying_totals
     results_by_campus, results_by_project = project_applying_totals(Campus.all.collect(&:id))
     assert results_by_campus["UCD"][:total] == 1
-    assert_equal 1, results_by_campus["Wy"]["project 2"]
+    assert_equal 1, results_by_campus["Wy"]["project 2"].to_i
     assert_equal 1, results_by_project["project 1"]["UCD"]
     assert_equal 2, results_by_project["project 1"][:total]
     assert_equal 1, results_by_project["project 2"]["Wy"]
