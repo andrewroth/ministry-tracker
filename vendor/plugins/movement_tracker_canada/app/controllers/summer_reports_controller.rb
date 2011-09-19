@@ -61,7 +61,7 @@ class SummerReportsController < ApplicationController
       if @me.summer_reports.all(:conditions => {:year_id => @current_year.id}).blank? || @summer_report.disapproved?
         format.html # new.html.erb
       else
-        flash[:notice] = "<big>You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved.</big>"
+        flash[:notice] = "You've already submitted a summer schedule for this year. If you'd like to edit your schedule it must first be disapproved."
         format.html { redirect_to(:action => "index") }
       end
     end
@@ -78,7 +78,7 @@ class SummerReportsController < ApplicationController
 
         @summer_report.send_later(:send_submission_email, base_url)
 
-        flash[:notice] = '<big>Your summer schedule was successfully submitted and your reviewers will be notified by email.</big>'
+        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -98,7 +98,7 @@ class SummerReportsController < ApplicationController
 
         @summer_report.send_later(:send_submission_email, base_url)
 
-        flash[:notice] = '<big>Your summer schedule was successfully submitted and your reviewers will be notified by email.</big>'
+        flash[:notice] = 'Your summer schedule was successfully submitted and your reviewers will be notified by email.'
         format.html { redirect_to(:action => "index") }
       else
         format.html { render :action => "new" }
@@ -193,7 +193,7 @@ class SummerReportsController < ApplicationController
 
   def current_year_only
     unless @current_year == @selected_year
-      flash[:notice] = "<big>Sorry, you may only submit or modify summer schedules for the current school year summer (#{@current_year.desc[-4..-1]}).</big>"
+      flash[:notice] = "Sorry, you may only submit or modify summer schedules for the current school year summer (#{@current_year.desc[-4..-1]})."
       redirect_to(:action => "index")
       return
     end

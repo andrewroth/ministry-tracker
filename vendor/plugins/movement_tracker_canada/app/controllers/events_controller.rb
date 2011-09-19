@@ -79,10 +79,10 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if synced && saved
-        flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully created</big>"
+        flash[:notice] = "Eventbrite event '#{@event.title}' was successfully created"
         format.html { redirect_to(events_path) }
       else
-        flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && saved
+        flash[:notice] = 'Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct' if !synced && saved
         format.html { render :action => "new" }
       end
     end
@@ -117,10 +117,10 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if synced && updated
-        flash[:notice] = "<big>Eventbrite event '#{@event.title}' was successfully updated</big>"
+        flash[:notice] = "Eventbrite event '#{@event.title}' was successfully updated"
         format.html { redirect_to(events_path) }
       else
-        flash[:notice] = '<big>Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct</big>' if !synced && updated
+        flash[:notice] = 'Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct' if !synced && updated
         format.html { render :action => "new" }
       end
     end
@@ -133,7 +133,7 @@ class EventsController < ApplicationController
     @event.destroy
 
     unless @event.errors.empty?
-      flash[:notice] = "<big>WARNING: Couldn't delete event because:</big>"
+      flash[:notice] = "WARNING: Couldn't delete event because:"
       @event.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
     end
 

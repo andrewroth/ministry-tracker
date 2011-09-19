@@ -58,7 +58,7 @@ class ContractController < ApplicationController
       next_contract = @me.find_next_unsigned_volunteer_contract
       
       if next_contract.nil?
-        flash[:notice] = "<big>Great, you're done signing the agreements, thanks!</big>"
+        flash[:notice] = "Great, you're done signing the agreements, thanks!"
         @hide_layout_navigation = false
         redirect_to :action => "index", :controller => "dashboard"
         return
@@ -77,7 +77,7 @@ class ContractController < ApplicationController
     unless is_staff_somewhere
       student_role = StudentRole.find(:first, :conditions => {:name => "Student"})
       @me.add_or_update_ministry(@ministry.id, student_role.id)
-      flash[:notice] = "<big>Okay, you've skipped signing the Volunteer leader agreements, please note that you'll no longer be able to perform any Volunteer leader functions.</big>"
+      flash[:notice] = "Okay, you've skipped signing the Volunteer leader agreements, please note that you'll no longer be able to perform any Volunteer leader functions."
     end
     logout_keeping_session!
   end
