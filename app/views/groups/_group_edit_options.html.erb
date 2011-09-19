@@ -14,7 +14,7 @@
   <%= link_to_remote 'Email', { :url => email_group_url(@group), :method => :post, :with => "#{data}" }, { :class => 'small' } %>
 <%- end -%>
 
-<%- if authorized?(:new, :group_involvements) -%>
+<%- if authorized?(:new, :group_involvements) && !@group.is_collection_group -%>
   <%= link_to_remote 'Remove', {:url => group_involvement_url(@gi.try(:id) || 'auth', :group_id => @group.id), :method => :delete, 
     :with => "#{data}", 
     :confirm => "Are you sure you want to remove these people?",
