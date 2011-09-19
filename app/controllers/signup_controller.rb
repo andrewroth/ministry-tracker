@@ -156,12 +156,14 @@ class SignupController < ApplicationController
       end
     end
 
-    school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
-                     @person.primary_campus_involvement.school_year_id
-    @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
-    [:campus_id, :school_year_id].each do |c|
-      unless @primary_campus_involvement.send(c).present?
-        @person.errors.add(c, :blank)
+    unless @person.is_staff_somewhere?
+      school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
+                       @person.try(:primary_campus_involvement).try(:school_year_id)
+      @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
+      [:campus_id, :school_year_id].each do |c|
+        unless @primary_campus_involvement.send(c).present?
+          @person.errors.add(c, :blank)
+        end
       end
     end
 
@@ -203,7 +205,7 @@ class SignupController < ApplicationController
       session[:signup_person_params] = params[:person]
       session[:signup_primary_campus_involvement_params] = params[:primary_campus_involvement]
       session[:signup_person_id] = @person.id
-      session[:signup_campus_id] = @primary_campus_involvement.campus_id
+      session[:signup_campus_id] = @primary_campus_involvement.campus_id if @primary_campus_involvement
 
       if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created) && !session[:signup_group_invitation_id]
         @email = params[:person][:email]
@@ -211,24 +213,26 @@ class SignupController < ApplicationController
       else
         @person.save!
         
-        ci = @person.campus_involvements.find :first, :conditions => {
-          :campus_id => @primary_campus_involvement.campus_id
-        }
-        if ci
-          ci.update_student_campus_involvement(flash, StudentRole.default_student_role, nil, 
-                                               @primary_campus_involvement.school_year_id,
-                                               @primary_campus_involvement.campus_id)
-        else
-          ci = @person.campus_involvements.new
-          ci.campus_id = @primary_campus_involvement.campus_id
-          ci.school_year_id = @primary_campus_involvement.school_year_id
-          ci.start_date = Date.today
-          ci.last_history_update_date = Date.today
-          ci.ministry_id = ci.derive_ministry.try(:id)
-          ci.save!
+        unless @person.is_staff_somewhere?
+          ci = @person.campus_involvements.find :first, :conditions => {
+            :campus_id => @primary_campus_involvement.campus_id
+          }
+          if ci
+            ci.update_student_campus_involvement(flash, StudentRole.default_student_role, nil, 
+                                                 @primary_campus_involvement.school_year_id,
+                                                 @primary_campus_involvement.campus_id)
+          else
+            ci = @person.campus_involvements.new
+            ci.campus_id = @primary_campus_involvement.campus_id
+            ci.school_year_id = @primary_campus_involvement.school_year_id
+            ci.start_date = Date.today
+            ci.last_history_update_date = Date.today
+            ci.ministry_id = ci.derive_ministry.try(:id)
+            ci.save!
+          end
+          ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
+          #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         end
-        ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
-        #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         
         # join groups here
         joingroups_from_hash(session[:signup_groups], @group_invitation)
