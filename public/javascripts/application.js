@@ -97,5 +97,9 @@ function disableInputsOnSubmit(theClass) {
   $("form.disableOnSubmit").submit(function(){
     $("input.disableOnSubmit").attr('disabled', 'disabled');
   });
+  
+  $(document).ready(function() {
+    $("input.disableOnSubmit").removeAttr('disabled');
+  });
 }
 
