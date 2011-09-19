@@ -47,7 +47,7 @@ class SignupController < ApplicationController
     # try to geolocate the campus if we still can't tell where they are
     if session[:signup_campus_id].blank?
       @geo = Autometal::Geoip.new(request.remote_ip)
-      campus = Campus.find_nearest_to(@geo.lat, @geo.lng) unless @geo.lat == 0 && @geo.lng == 0
+      campus = Campus.find_nearest_to(@geo.lat, @geo.lng) unless @geo.lat.nil? || @geo.lng.nil? || (@geo.lat == 0 && @geo.lng == 0)
       session[:signup_campus_id] = campus.present? ? campus.id : nil
     end
     
