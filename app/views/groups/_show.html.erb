@@ -6,56 +6,66 @@
   To add a member, click the add button by the role you wish to add that member as, fill in the search box that appears, and choose the member you wish to add.<br />
   To remove a member, tick off his or her checkbox and click "remove". 
   To transfer a member to another group, do the same, but after you click transfer button use the dropdown menu to choose what group to switch them into.</p>
-  <%- end -%>
-  <br />
-  <% types = Group::LEVELS %>
-  <% data = data_string(types) %>
+<%- end -%>
 
-  <h2 id="name">
-    <%= @group.name %>
-  </h2>
-  <div id="type"><%= @group.group_type.group_type.humanize %></div>
+<br />
+<% types = Group::LEVELS %>
+<% data = data_string(types) %>
 
-  <%= link_to_remote "edit", { :url => edit_group_url(@group), :method => :get }, 
-    { :class => "small" } if authorized?(:edit, :groups)
-  %>
+<h2 id="name">
+  <%= @group.name %>
+</h2>
+<div id="type"><%= @group.group_type.group_type.humanize %></div>
 
-  <br/>
+<%= link_to_remote "edit", { :url => edit_group_url(@group), :method => :get }, 
+  { :class => "small" } if authorized?(:edit, :groups)
+%>
 
-  <div id="address" class="section">
-    <%= render :partial => 'groups/address' %>
-  </div>
+<br/>
 
-  <div id="address_form" class="section" style="display:none"></div>
-
-  <%- if authorized?(:accept_request, :group_involvements) || 
-         authorized?(:decline_requests, :group_involvements) %>
-  <div id="requests" class="section">
-    <ul class="requesticon">
-      <%= render :partial => 'groups/member_request', :collection => @group.requests, 
-            :locals => { :source => 'groups_show' }
-      %>
-    </ul>
-  </div>
-  <br/>
-  <%- end -%>
-
-  <%- if authorized?(:transfer, :group_involvements) || authorized?(:new, :group_involvements) || 
-         authorized?(:compare_timetables, :groups)
-  -%>
-  <div id="edit_buttons" class="section">
-    <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
-  </div>
-  <%- end -%>
-
-  <div id="members" class="section">
-    <%- types.each do |level| -%>
-      <div id="<%= level %>">
-        <%= render :partial => 'groups/level', :object => level %>
-      </div>
-    <%- end -%>
-  </div>
+<div id="address" class="section">
+  <%= render :partial => 'groups/address' %>
 </div>
+
+<div id="address_form" class="section" style="display:none"></div>
+
+<%- if authorized?(:accept_request, :group_involvements) || 
+       authorized?(:decline_requests, :group_involvements) %>
+<div id="requests" class="section">
+  <ul class="requesticon">
+    <%= render :partial => 'groups/member_request', :collection => @group.requests, 
+          :locals => { :source => 'groups_show' }
+    %>
+  </ul>
+</div>
+<br/>
+<%- end -%>
+
+<% if @group.is_collection_group %>
+  <p class="flash_notice"><small><b>NOTE:</b> This is an automatically-created group.
+  When someone signs up for a <%= @group.group_type.group_type.humanize %> group but doesn't select a specific group to join they'll end up in here.
+  You can then help them find a group that best suits them.
+  <br/>
+  This group cannot be deleted, however you can change it's name.</small></p>
+  <br/>
+<% end %>
+
+<%- if authorized?(:transfer, :group_involvements) || authorized?(:new, :group_involvements) || 
+       authorized?(:compare_timetables, :groups)
+-%>
+<div id="edit_buttons" class="section">
+  <%= render :partial => 'groups/group_edit_options', :locals => { :data => data } %>
+</div>
+<%- end -%>
+
+<div id="members" class="section">
+  <%- types.each do |level| -%>
+    <div id="<%= level %>">
+      <%= render :partial => 'groups/level', :object => level %>
+    </div>
+  <%- end -%>
+</div>
+  
 <br/>
 <div id="compare">
 </div>

@@ -15,7 +15,7 @@ class GroupInvitationsController < ApplicationController
     @group_invitation = GroupInvitation.new({:group_id => params[:group_id].to_i})
     
     unless @group && (@group.leaders | @group.co_leaders).include?(@me)
-      flash[:notice] = "<big>Sorry but you need to be a leader or co-leader of the group to send invitations.</big>"
+      flash[:notice] = "Sorry but you need to be a leader or co-leader of the group to send invitations."
       redirect_to dashboard_url
       return
     end
@@ -81,7 +81,7 @@ class GroupInvitationsController < ApplicationController
   
   def accept
     session[:signup_group_invitation_id] = @invitation.id
-    flash[:notice] = "<big>Great! Welcome to your group, #{@invitation.group.name}</big>"
+    flash[:notice] = "Great! Welcome to your group, #{@invitation.group.name}"
     
     # don't actually accept invitation until join a group process is done
     
@@ -104,7 +104,7 @@ class GroupInvitationsController < ApplicationController
     UserMailer.send_later(:deliver_group_invitation_decline, @invitation, base_url)
     
     session[:signup_group_invitation_id] = @invitation.id
-    flash[:notice] = "<big>Okay, you've declined the invite to join #{@invitation.group.name}</big><br/><br/>Maybe you're looking for a different group? Check out other groups at #{@invitation.group.campus.name} below..."
+    flash[:notice] = "Okay, you've declined the invite to join #{@invitation.group.name}<br/><br/>Maybe you're looking for a different group? Check out other groups at #{@invitation.group.campus.name} below..."
     
     redirect_to :controller => :signup, :action => :step1_group, :campus_id => @invitation.group.campus_id
   end
@@ -123,9 +123,9 @@ class GroupInvitationsController < ApplicationController
     
     if @invitation.blank? || @invitation.has_response?
       if @invitation.present? && @invitation.has_response?
-        flash[:notice] = "<big>This invitation has already been responded to.<br/><br/>If this is a mistake we'd still love you to join, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+        flash[:notice] = "This invitation has already been responded to.<br/><br/>If this is a mistake we'd still love you to join, so go ahead and click JOIN A GROUP below to find your group and join!"
       else
-        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!</big>"
+        flash[:notice] = "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join though, so go ahead and click JOIN A GROUP below to find your group and join!"
       end
       access_denied(true)
       return

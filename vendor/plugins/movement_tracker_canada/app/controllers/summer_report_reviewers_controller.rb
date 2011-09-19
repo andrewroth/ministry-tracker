@@ -37,9 +37,9 @@ class SummerReportReviewersController < ApplicationController
       @review.summer_report.send_later(:send_reviewed_email, base_url)
 
       if @review.approved
-        flash[:notice] = "<big>#{@review.summer_report.person.full_name}'s summer schedule is now approved and they'll be notified by email!</big>"
+        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule is now approved and they'll be notified by email!"
       else
-        flash[:notice] = "<big>#{@review.summer_report.person.full_name}'s summer schedule was disapproved and they'll be notified by email.</big>"
+        flash[:notice] = "#{@review.summer_report.person.full_name}'s summer schedule was disapproved and they'll be notified by email."
       end
     end
 
@@ -53,7 +53,7 @@ class SummerReportReviewersController < ApplicationController
   
   def current_year_only
     unless @current_year == @selected_year
-      flash[:notice] = "<big>Sorry, you may only review summer schedules for the current school year summer (#{@current_year.desc[-4..-1]}).</big>"
+      flash[:notice] = "Sorry, you may only review summer schedules for the current school year summer (#{@current_year.desc[-4..-1]})."
       redirect_to(:action => "index")
       return
     end

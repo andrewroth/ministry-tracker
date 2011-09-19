@@ -81,7 +81,7 @@ class EventGroupsController < ApplicationController
     @event_group.destroy
 
     unless @event_group.errors.empty?
-      flash[:notice] = "<big>WARNING: Couldn't delete event group because:</big>"
+      flash[:notice] = "WARNING: Couldn't delete event group because:"
       @event_group.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
     end
     
