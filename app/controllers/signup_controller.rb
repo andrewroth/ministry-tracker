@@ -62,14 +62,14 @@ class SignupController < ApplicationController
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
-    flash[:notice] = "<big>Great! We'll help you find a group that suits you.</big>"
+    flash[:notice] = "Great! We'll help you find a group that suits you."
     redirect_to :action => :step2_info
   end
 
   def step1_group_from_campus
 
     if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
-      flash[:notice] = "<big>Sorry, we didn't recieve the campus and semester that you chose, please try again.</big>"
+      flash[:notice] = "Sorry, we didn't recieve the campus and semester that you chose, please try again."
       redirect_to :action => :step1_group
       return
     end
@@ -269,7 +269,7 @@ class SignupController < ApplicationController
   def step2_email_verified
     session[:signup_groups] = params[:signup_groups]
     session[:signup_campus_id] = params[:signup_campus_id]
-    flash[:notice] = "<big>Your email has been verified, thanks!</big>"
+    flash[:notice] = "Your email has been verified, thanks!"
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
@@ -379,7 +379,7 @@ class SignupController < ApplicationController
       if logged_in? && current_user.person && current_user.person.id != @group_invitation.recipient_person_id
         @group_invitation = nil
         session[:signup_group_invitation_id] = nil
-        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!</big>"
+        flash[:notice] = "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
         redirect_to signup_url
         return
       end

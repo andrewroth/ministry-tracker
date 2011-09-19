@@ -80,7 +80,7 @@ class TimetablesController < ApplicationController
       return if @signup
 
       respond_to do |format|
-        flash[:notice] = '<big>Timetable was saved!</big>'
+        flash[:notice] = 'Timetable was saved!'
         format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
         format.js
         format.xml  { head :ok }
