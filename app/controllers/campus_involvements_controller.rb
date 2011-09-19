@@ -139,6 +139,43 @@ class CampusInvolvementsController < ApplicationController
     set_student
     yield @student
   end
+  
+  def edit_multiple_school_years
+    if params[:mids] && params[:person]
+      if params[:entire_search].to_i == 1
+        search = Search.find params[:search_id]
+        people_ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      else
+        people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      end
+
+      # where min inv in the params[:ministry]
+      # and campus inv in ...
+
+      conditions = ["#{CampusInvolvement.__(:person_id)} IN (?) AND
+                     #{CampusInvolvement.__(:end_date)} IS NULL",
+                     people_ids]
+
+      if params[:cids] # search is filtered by campus ids
+        conditions[0] += " AND #{CampusInvolvement.__(:campus_id)} IN (?)"
+        conditions << params[:cids]
+      end
+      
+      if params[:syids] # search is filtered by school year ids
+        conditions[0] += " AND #{CampusInvolvement.__(:school_year_id)} IN (?)"
+        conditions << params[:syids]
+      end
+        
+      @involvements = CampusInvolvement.all(:include => [:person],
+                                            :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
+                                            :conditions => conditions)
+      debugger
+      @involvements = @involvements
+      
+      
+      
+    end
+  end
 
   protected
   

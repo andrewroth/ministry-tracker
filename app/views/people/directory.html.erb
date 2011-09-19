@@ -53,6 +53,7 @@
     <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
     <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
     <% action_options_array << ['Change Roles...', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :search_by_ministry_ids => @searched_ministry_ids, :search_by_ministry_role_ids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) %>
+    <% action_options_array << ['Change Year in School...', url_for(:action => "edit_multiple_school_years", :controller => "campus_involvements", :mids => @searched_ministry_ids, :cids => @searched_campus_ids, :syids => @searched_school_year_ids)] if authorized?(:update_multiple_school_years, :campus_involvements) %>
 
     <% if action_options_array.size > 1 %>
       <div class="directoryResultControl">
