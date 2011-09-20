@@ -1669,6 +1669,9 @@ padding-bottom:5px;
 .removeInvolvementIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -1211px; }
 .removeInvolvementIconLink:hover { background-position:-10px -1242px; }
 
+.removeGroupIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -685px; }
+.removeGroupIconLink:hover { background-position:-10px -718px; }
+
 .removeMentorIconLink       { padding:2px 0 0 17px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -886px; }
 .removeMentorIconLink:hover { background-position:-10px -919px; }
 
@@ -1743,7 +1746,7 @@ padding-bottom:5px;
   margin:10px;
   padding:10px;
   background:#FFCB05;
-  font-size:13px;
+  font-size:16px;
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 

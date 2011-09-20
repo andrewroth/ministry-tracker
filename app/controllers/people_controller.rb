@@ -484,7 +484,7 @@ class PeopleController < ApplicationController
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
     
-    flash[:notice] = "<big>#{@person.full_name}'s involvements on the Pulse have successfully been removed</big>"
+    flash[:notice] = "#{@person.full_name}'s involvements on the Pulse have successfully been removed"
     
     if (params[:logout] == 'true')
       redirect_to logout_url
@@ -796,7 +796,7 @@ class PeopleController < ApplicationController
   
   def show_gcx_profile
     if !@person.user || !@person.user.guid || !@person.user.guid.present?
-      flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID, they might not have a GCX profile</big>"
+      flash[:notice] = "#{@person.first_name} doesn't have a GUID, they might not have a GCX profile"
       redirect_to @person
       return
     end
@@ -815,7 +815,7 @@ class PeopleController < ApplicationController
       error_message = "\nERROR WITH GCX PROFILE RESPONSE: \n\t#{e.class.to_s}\n\t#{e.message}\n"
       error_message += "\t#{request_url}\n" if request_url
       Rails.logger.error(error_message)
-      flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>" unless @gcx_unauthenticated
+      flash[:notice] = "There was a problem retrieving #{@person.first_name}'s GCX profile" unless @gcx_unauthenticated
     end
   end
   

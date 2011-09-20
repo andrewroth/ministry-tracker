@@ -262,7 +262,7 @@ class MinistryInvolvementsController < ApplicationController
         end   
       end
       
-      flash[:notice] = "<big> The following changes were made: </big> <br/> <br/> #{people_notice}"
+      flash[:notice] = "The following changes were made: <br/> <br/> #{people_notice}"
       
     else    # if not removing involvements, check for batch role update
     
@@ -299,7 +299,7 @@ class MinistryInvolvementsController < ApplicationController
           end
         end
   
-        flash[:notice] = "<big> The following role changes were made: </big> <br/> <br/> #{people_notice}"
+        flash[:notice] = "The following role changes were made: <br/> <br/> #{people_notice}"
       end
     end
 
