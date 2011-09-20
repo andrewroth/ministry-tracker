@@ -133,6 +133,8 @@ class SignupController < ApplicationController
   def step2_info_submit
     # if no person in params get person from session
     @person = params[:person].present? ? Person.new(params[:person]) : get_person
+    return if redirect_to_beginning_if_no_person
+    
     @person.email = @group_invitation.recipient_email if @group_invitation
     
     # make sure we have all the right info
@@ -248,6 +250,8 @@ class SignupController < ApplicationController
 
   def step2_verify
     @me = @my = @person = Person.find(session[:signup_person_id])
+    return if redirect_to_beginning_if_no_person
+    
     @email = @person.email.downcase
   end
 
@@ -282,7 +286,10 @@ class SignupController < ApplicationController
     flash[:notice] = nil
     @signup = true
     params[:person_id] = session[:signup_person_id]
+    
     @me = @my = @person = Person.find(session[:signup_person_id])
+    return if redirect_to_beginning_if_no_person
+    
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
     UserMailer.send_later(:deliver_signup_finished_email, @person.email, link, session[:joined_collection_group]) unless session[:sent_timetable_email] == true
@@ -290,6 +297,10 @@ class SignupController < ApplicationController
     
     @group = Group.first(:conditions => {:id => session[:signup_joined_group_id]}) if session[:signup_joined_group_id].present?
     @group = nil
+
+    @campus = @group.campus if @group
+    @campus ||= Campus.first(:conditions => {:campus_id => session[:signup_campus_id]})
+    
     @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
@@ -388,6 +399,15 @@ class SignupController < ApplicationController
         return
       end
     end
+  end
+  
+  def redirect_to_beginning_if_no_person
+    unless @person
+      flash[:notice] = "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@c4c.ca"
+      redirect_to :action => :step1_group
+      return true
+    end
+    return false
   end
 end
 
