@@ -24,9 +24,9 @@
     <br />
   <% end %>
   
-  <% if @group && @group.campus && @group.campus.campus_website %>
+  <% if @campus && @campus.campus_website.present? %>
     <br/>
-    Visit <%= @group.campus.short_name %>'s website: <%= link_to @group.campus.campus_website, @group.campus.campus_website %>
+    To find out what's happening at <%= @campus.short_name %> visit <b><%= link_to URI.parse(@campus.campus_website).host, @campus.campus_website %></b>
     <br/>
   <% end %>
   
