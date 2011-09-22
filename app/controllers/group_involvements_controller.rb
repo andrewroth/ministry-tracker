@@ -10,7 +10,7 @@ class GroupInvolvementsController < ApplicationController
 
   def create
     params[:requested] = false
-    create_group_involvement
+    flash[:notice] = "#{@gi.person.full_name} is now a #{@gi.level}" if create_group_involvement
     @group = @gi.group
     @level = @gi.level
   end
