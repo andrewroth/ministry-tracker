@@ -82,7 +82,7 @@
 <% involvements = group.group_involvements.select{|gi| (gi.requested != true) && gi.level == Group::INTERESTED }%>
 <%- unless @signup || @join || involvements.empty? -%>
   &nbsp &nbsp <b>Interested:</b>
-  <%= involvements.map{|i| i.person.full_name}.join(", ") %>
+  <%= involvements.map{|i| i.try(:person).try(:full_name)}.join(", ") %>
   <br />
 <%- end -%>
 &nbsp &nbsp <b>Campus:</b>
