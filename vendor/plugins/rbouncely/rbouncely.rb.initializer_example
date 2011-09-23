@@ -1,0 +1,8 @@
+# rename this file to rbouncely.rb and put it in your config/initializers
+
+require 'rbouncely'
+
+module Rbouncely
+  CONFIG = {:api_key => "YOUR KEY HERE"}
+end
+
