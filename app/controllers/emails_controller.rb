@@ -65,12 +65,16 @@ class EmailsController < ApplicationController
   def bounces
     bouncely = Rbouncely::Bouncely.new(Rbouncely::CONFIG)
     
-    if params[:get_bounces] && params[:get_bounces][:date]
-      @date = Date.parse(params[:get_bounces][:date])
-      @bounces = bouncely.get_bounces(@date)
-    else
-      @todays_bounces = bouncely.get_bounces("today")
-      @yesterdays_bounces = bouncely.get_bounces("yesterday")
+    begin
+      if params[:get_bounces] && params[:get_bounces][:date]
+        @date = Date.parse(params[:get_bounces][:date])
+        @bounces = bouncely.get_bounces(@date)
+      else
+        @todays_bounces = bouncely.get_bounces("today")
+        @yesterdays_bounces = bouncely.get_bounces("yesterday")
+      end
+    rescue => e
+      flash[:notice] = "Failed to connect with Bouncely API: #{e.try(:class).try(:to_s)} #{e.try(:message)}"
     end
   end
   
