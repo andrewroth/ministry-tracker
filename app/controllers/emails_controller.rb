@@ -1,4 +1,8 @@
 class EmailsController < ApplicationController
+  unloadable
+    
+  layout :get_layout
+  
   # GET /emails
   # GET /emails.xml
   def index
@@ -56,5 +60,24 @@ class EmailsController < ApplicationController
         format.xml  { render :xml => @email.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def bounces
+    bouncely = Rbouncely::Bouncely.new(Rbouncely::CONFIG)
+    
+    if params[:get_bounces] && params[:get_bounces][:date]
+      @date = Date.parse(params[:get_bounces][:date])
+      @bounces = bouncely.get_bounces(@date)
+    else
+      @todays_bounces = bouncely.get_bounces("today")
+      @yesterdays_bounces = bouncely.get_bounces("yesterday")
+    end
+  end
+  
+  
+  private
+  
+  def get_layout
+    params[:action] == "bounces" ? "manage" : "application"
   end
 end

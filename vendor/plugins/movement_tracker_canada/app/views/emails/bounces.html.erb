@@ -1,0 +1,86 @@
+<h1>Bouncely Bounces</h1>
+<br/>
+
+<% form_tag :method => :get do %>
+  Get bounces from day:
+  <%= date_select("get_bounces","date") %>
+  &nbsp;&nbsp;
+  <%= submit_tag :Go %>
+<% end %>
+
+<br/>
+<br/>
+
+<% if @todays_bounces && @yesterdays_bounces %>
+
+
+  <h1>Today (<%= @todays_bounces.size %> bounces)</h1>
+  <% if @todays_bounces.size > 0 %>
+    <table>
+      <tr>
+        <th><b>Email</b></th>
+        <th><b>Subject</b></th>
+        <th><b>Bounced At</b></th>
+        <th><b>Type</b></th>
+      </tr>
+      <% @todays_bounces.each do |bounce| -%>
+        <tr>
+          <td><%= bounce.email %></td>
+          <td><%= bounce.subject %></td>
+          <td><%= bounce.bounced_at %></td>
+          <td><%= bounce.type %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  
+  <br/>
+  <br/>
+
+  <h1>Yesterday (<%= @yesterdays_bounces.size %> bounces)</h1>
+  <% if @yesterdays_bounces.size > 0 %>
+    <table>
+      <tr>
+        <th><b>Email</b></th>
+        <th><b>Subject</b></th>
+        <th><b>Bounced At</b></th>
+        <th><b>Type</b></th>
+      </tr>
+      <% @yesterdays_bounces.each do |bounce| -%>
+        <tr>
+          <td><%= bounce.email %></td>
+          <td><%= bounce.subject %></td>
+          <td><%= bounce.bounced_at %></td>
+          <td><%= bounce.type %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+
+<% else %>
+
+  <p><%= link_to "Back to todays bounces", :action => :bounces %></p>
+  <br/>
+
+  <h1><%= @date %> (<%= @bounces.size %> bounces)</h1>
+  <% if @bounces.size > 0 %>
+    <table>
+      <tr>
+        <th><b>Email</b></th>
+        <th><b>Subject</b></th>
+        <th><b>Bounced At</b></th>
+        <th><b>Type</b></th>
+      </tr>
+      <% @bounces.each do |bounce| -%>
+        <tr>
+          <td><%= bounce.email %></td>
+          <td><%= bounce.subject %></td>
+          <td><%= bounce.bounced_at %></td>
+          <td><%= bounce.type %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+<% end %>
