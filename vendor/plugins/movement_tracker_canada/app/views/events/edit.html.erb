@@ -15,7 +15,7 @@
     <% @campuses.each do |campus| %>
       <p>
         <%= check_box_tag "event_campuses[]", campus.id, EventCampus.all(:first, :conditions => {:event_id => @event.id, :campus_id => campus.id}).present? %>
-        <%= campus.name %>
+        <%= "#{campus.name} (#{campus.short_name})" %>
       </p>
     <% end %>
   </p>
