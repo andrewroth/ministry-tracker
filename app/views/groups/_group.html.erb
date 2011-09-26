@@ -7,7 +7,7 @@
     "<b>#{group.name}</b>"
   end
 -%> <%- if !@join && !@signup && !group.is_collection_group && authorized?(:new, :groups) -%>
-  &nbsp <%= link_to_remote("",
+  &nbsp <%= link_to_remote("&nbsp;",
               {:url => {:action => :destroy, :id => group.id},
               :method => :delete,
               :confirm => "Are you sure you want to delete this group?\nOnce you do, it'll be gone, along with the list of who's in it.\n YOU'VE BEEN WARNED!"},
