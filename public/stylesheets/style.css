@@ -2139,6 +2139,11 @@ ul.statsLinkList {
   font-weight: normal;
 }
 
+#reportTypeSubTitle {
+  font-weight: normal;
+  font-style: italic;
+}
+
 .statsReportTab {
   display: inline-block;
   border: solid 2px #D8D8D8;
