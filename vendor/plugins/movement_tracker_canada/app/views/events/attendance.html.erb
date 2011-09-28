@@ -10,7 +10,12 @@
 
 <div id="statsLinkBox" class="statsFormBox">
   <ul class="statsLinkList">
-    <li class="statsLinkList"><div class="eventLink"><%= link_to 'Goto event registration', @eb_event.try(:url) ? @eb_event.try(:url) : eventbrite[:c4c_events_link]  %></div></li>
+    <li class="statsLinkList">
+      <div class="eventLink">
+        <%= link_to 'Event registration', @eb_event.try(:url) ? @eb_event.try(:url) : eventbrite[:c4c_events_link]  %>
+        <%= @eb_event.status == eventbrite[:event_status_live] ? " <span class='eventOpen'>OPEN!</span>" : " <span class='eventClosed'>CLOSED</span>" %>
+      </div>
+    </li>
   </ul>
 </div>
 
@@ -20,7 +25,16 @@
 
     <% form_for :report, :html => { :name => 'reportForm' } do |form| %>
 
-      <div id="formHeading"><h2><div id="reportTypeTitle"><%= @eb_event.try(:title) ? @eb_event.try(:title) : "Event" %></div></h2></div>
+      <div id="formHeading">
+        <h2><div id="reportTypeTitle"><%= @eb_event.try(:title) ? @eb_event.try(:title) : "Event" %></div></h2>
+        <h4>
+          <div id="reportTypeSubTitle">
+            <%= @event.try(:event_group).try(:title) %>,
+            <%= @eb_event.try(:start_date).try(:to_date) %> to
+            <%= @eb_event.try(:end_date).try(:to_date) %>
+          </div>
+        </h4>
+      </div>
 
       <div id="statsRadioButtonContainer" <%= "class='notDisplayed'" if @hide_radios %>>
         <br/>
