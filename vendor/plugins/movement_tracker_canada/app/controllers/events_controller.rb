@@ -209,33 +209,35 @@ class EventsController < ApplicationController
   end
 
   def setup_attendance_report_from_session
-
+    
     setup_my_campus unless @my_campuses.present?
     
     setup_event unless @event.present?
-
+    
     @report_scope = session[:attendance_report_scope]
     @report_sort = session[:attendance_report_sort]
     @selected_campus_id = session[:attendance_campus_id].present? ? session[:attendance_campus_id] : @my_campuses.first.id
     @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
-
+    
     # make sure the selected campus is associated to the chosen event and that's it's within my involvements
-    unless @selected_campus && @event.campuses.include?(@selected_campus) && @my_campuses.include?(@selected_campus)
+    unless @selected_campus && @event.campuses.include?(@selected_campus) && (@my_campuses.include?(@selected_campus) || authorized?(:show_all_campuses_individuals, :events))
       
       my_campuses_at_event = @event.campuses.select { |ec| @my_campuses.include? ec }
       
-      unless my_campuses_at_event.present?
+      if my_campuses_at_event.blank? && !authorized?(:show_all_campuses_individuals, :events)
         flash[:notice] = "Sorry, the event you were viewing isn't associated with any of your campuses"
         access_denied
         return
+      elsif authorized?(:show_all_campuses_individuals, :events)
+        @selected_campus = @event.campuses.first if @selected_campus.desc != "Other"
       else
-        @selected_campus = my_campuses_at_event.first 
-        @selected_campus_id = @selected_campus.id
+        @selected_campus = my_campuses_at_event.first
       end
+      @selected_campus_id = @selected_campus.id
     end
     
     setup_report_scope_radios
-
+    
     if @report_scope == INDIVIDUALS &&
         (authorized?(:show_all_campuses_individuals, :events) ||
           (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
@@ -243,13 +245,13 @@ class EventsController < ApplicationController
     else
       @show_campus_select = false
     end
-
+    
     @attendance_campuses = []
-
+    
     @scope_radio_selected_id = REPORT_SCOPES[:"#{@report_scope}"][:radio_id]
-
+    
     @attendance_summary = @report_scope == SUMMARY ? true : false
-
+    
     @selected_results_div_id = "attendanceResults"
   end
 
