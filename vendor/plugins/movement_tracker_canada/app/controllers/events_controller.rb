@@ -11,8 +11,8 @@ class EventsController < ApplicationController
   after_filter :sync_event_data_delayed_job, :only => [:attendance]
   
   
-  SELECTED_CAMPUS_EXCEPTION = "Selected campus not relevant to this event."
-  NO_ATTENDEES_EXCEPTION = "There are no attendees to this event yet."
+  NO_ATTENDEES_EXCEPTION = "There are no registered attendees to this event yet."
+  NO_ATTENDEES_AT_CAMPUS_EXCEPTION = "There are no registered attendees to this event from the selected campus,"
 
   INDIVIDUALS = 'individuals'
   SUMMARY = 'summary'
@@ -163,11 +163,9 @@ class EventsController < ApplicationController
     session[:attendance_campus_id] = params['attendance_campus_id'] if params['attendance_campus_id'].present? &&
       params['attendance_campus_id'] != "null" && params['attendance_campus_id'] != "undefined" # javascript may return null or undefined
 
-
-    setup_attendance_report_from_session
-
     setup_event
     setup_my_campus
+    setup_attendance_report_from_session
 
     case @report_scope
     when SUMMARY
@@ -211,16 +209,35 @@ class EventsController < ApplicationController
   end
 
   def setup_attendance_report_from_session
-
-    setup_my_campus
-
+    
+    setup_my_campus unless @my_campuses.present?
+    
+    setup_event unless @event.present?
+    
     @report_scope = session[:attendance_report_scope]
     @report_sort = session[:attendance_report_sort]
     @selected_campus_id = session[:attendance_campus_id].present? ? session[:attendance_campus_id] : @my_campuses.first.id
     @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
-
+    
+    # make sure the selected campus is associated to the chosen event and that's it's within my involvements
+    unless @selected_campus && @event.campuses.include?(@selected_campus) && (@my_campuses.include?(@selected_campus) || authorized?(:show_all_campuses_individuals, :events))
+      
+      my_campuses_at_event = @event.campuses.select { |ec| @my_campuses.include? ec }
+      
+      if my_campuses_at_event.blank? && !authorized?(:show_all_campuses_individuals, :events)
+        flash[:notice] = "Sorry, the event you were viewing isn't associated with any of your campuses"
+        access_denied
+        return
+      elsif authorized?(:show_all_campuses_individuals, :events)
+        @selected_campus = @event.campuses.first if @selected_campus.desc != "Other"
+      else
+        @selected_campus = my_campuses_at_event.first
+      end
+      @selected_campus_id = @selected_campus.id
+    end
+    
     setup_report_scope_radios
-
+    
     if @report_scope == INDIVIDUALS &&
         (authorized?(:show_all_campuses_individuals, :events) ||
           (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
@@ -228,13 +245,13 @@ class EventsController < ApplicationController
     else
       @show_campus_select = false
     end
-
+    
     @attendance_campuses = []
-
+    
     @scope_radio_selected_id = REPORT_SCOPES[:"#{@report_scope}"][:radio_id]
-
+    
     @attendance_summary = @report_scope == SUMMARY ? true : false
-
+    
     @selected_results_div_id = "attendanceResults"
   end
 
@@ -297,20 +314,13 @@ class EventsController < ApplicationController
 
   def setup_individuals
 
-    retries = 1 # IMPORTANT, use to prevent infinite loop
-
     begin
+      setup_attendance_report_from_session unless @selected_campus.present?
 
       raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
-      unless(@selected_campus.present?)
-        eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
-        @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
-        @selected_campus_id = @selected_campus.id
-      end
-
 
       @campus_individuals = ActiveSupport::OrderedHash.new
       campuses = {}
@@ -336,17 +346,14 @@ class EventsController < ApplicationController
         end
       end
 
-      # we don't know which campuses are available for selection until we've looped through all attendees
-      # this means it's possible to select a campus which no one attending the event is from
-      # if that happens we need to select a new campus and go through the list of attendees again
-      if campuses.present? && campuses.index(@selected_campus).nil?
-        raise Exception.new(SELECTED_CAMPUS_EXCEPTION)
-      end
 
       # convert campus hash to an array for collection select
       @attendance_campuses = []
       campuses.each { |title, campus| @attendance_campuses << campus }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+
+
+      raise Exception.new(NO_ATTENDEES_AT_CAMPUS_EXCEPTION) if @campus_individuals.blank?
 
 
       if @report_sort.present? && @campus_individuals.size > 1
@@ -365,16 +372,11 @@ class EventsController < ApplicationController
       @results_partial = "attendance_individuals"
 
     rescue Exception => e
-      if e.message == SELECTED_CAMPUS_EXCEPTION && retries > 0
-        
-        eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
-        @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
-        @selected_campus_id = @selected_campus.id
-
-        retries -= 1
-        retry unless retries < 0
-      elsif e.message == NO_ATTENDEES_EXCEPTION
+      if e.message == NO_ATTENDEES_EXCEPTION
         @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
+      elsif e.message == NO_ATTENDEES_AT_CAMPUS_EXCEPTION
+        @report_description = "#{NO_ATTENDEES_AT_CAMPUS_EXCEPTION} #{@selected_campus.desc}."
         @results_partial = "error"
       else
         setup_error_rescue
@@ -419,8 +421,7 @@ class EventsController < ApplicationController
   end
 
   def setup_error_rescue
-    @report_description = "It looks like #{link_to('Eventbrite', eventbrite[:c4c_events_link])} isn't responding right now, please try again later."
-
+    @report_description = "Sorry, we had trouble connecting with <a href='#{eventbrite[:c4c_events_link]}'>Eventbrite</a>, please try again later."
     @results_partial = "error"
   end
 
