@@ -177,7 +177,7 @@ class MinistryInvolvementsController < ApplicationController
   end
 
   def edit_multiple_roles
-    if params[:search_by_ministry_ids] && params[:person]
+    if params[:mids] && params[:person]
       if params[:entire_search].to_i == 1
         search = Search.find params[:search_id]
         people_ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
@@ -185,7 +185,7 @@ class MinistryInvolvementsController < ApplicationController
         people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
       end
 
-      if params[:search_by_ministry_role_ids]
+      if params[:mrids]
         @involvements = MinistryInvolvement.all(:include => [:person],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
@@ -195,7 +195,7 @@ class MinistryInvolvementsController < ApplicationController
 
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
-                                                                 people_ids, params[:search_by_ministry_ids], params[:search_by_ministry_role_ids]])
+                                                                 people_ids, params[:mids], params[:mrids]])
         
       else
         @involvements = MinistryInvolvement.all(:include => [:person],
@@ -204,7 +204,7 @@ class MinistryInvolvementsController < ApplicationController
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
-                                                                 people_ids, params[:search_by_ministry_ids]])
+                                                                 people_ids, params[:mids]])
       end
 
       people_with_involvements_ids = []
@@ -246,10 +246,10 @@ class MinistryInvolvementsController < ApplicationController
         if (authorized?(:destroy, :people) && @me.has_permission_to_update_role(mi, mi.ministry_role)) || is_ministry_admin
                            
             # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
-          ministry_involvements_to_end = person.ministry_involvements.collect &:id
+          ministry_involvements_to_end = person.ministry_involvements.collect(&:id)
           MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
           
-          campus_involvements_to_end = person.campus_involvements.collect &:id
+          campus_involvements_to_end = person.campus_involvements.collect(&:id)
           CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
       
           group_involvements_to_end = person.all_group_involvements.destroy_all

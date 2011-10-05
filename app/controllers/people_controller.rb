@@ -863,7 +863,7 @@ class PeopleController < ApplicationController
         @options = {}
         @tables = {}
         @search_for = []
-        # Check year in school
+        
         # Check year in school
         if params[:school_year].present?
           conditions << database_search_conditions(params)[:school_year]
@@ -998,6 +998,7 @@ class PeopleController < ApplicationController
       end
       @searched_ministry_ids ||= get_ministry_ids
       
+      # pass which campuses were searched for to the view
       if params[:campus]
         campuses = Campus.find :all, :conditions => "#{Campus._(:id)} IN (#{params[:campus].join(",")})"
         @searched_campus_ids = campuses.uniq.collect(&:id).collect(&:to_s)
