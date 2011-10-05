@@ -6,6 +6,8 @@ class GroupsControllerTest < ActionController::TestCase
     setup_default_user
     setup_semesters
     setup_groups
+    setup_years
+    setup_months
 
     login
   end

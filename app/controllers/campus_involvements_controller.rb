@@ -90,7 +90,7 @@ class CampusInvolvementsController < ApplicationController
       
     else
       campus_involvement_id = @my.primary_campus_involvement.try(:id)
-      flash[:notice] = "<big>It looks like you've already graduated, but thanks anyways!</big>"
+      flash[:notice] = "It looks like you've already graduated, but thanks anyways!"
       flash[:notice] += "<br/><br/>If that's wrong <a href='#{edit_school_year_path(@my.id, campus_involvement_id)}'>click here to update your school year</a>." if campus_involvement_id
       
       redirect_to person_path @my.id
@@ -106,7 +106,7 @@ class CampusInvolvementsController < ApplicationController
       format.html {
         msg = "Thanks, your school year has been saved."
         msg += " Congrats on your graduation!" if @campus_involvement.school_year.name == "Graduated"
-        flash[:notice] = "<big>#{msg}</big>"
+        flash[:notice] = "#{msg}"
         redirect_to person_path @campus_involvement.person_id
       }
       format.js { render :template => 'involvements/update' }

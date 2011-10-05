@@ -4,34 +4,46 @@
 <%= hidden_field_tag :leader_ids, @leaders.join(',') if @leaders.present? %>
 <%= hidden_field_tag :co_leader_ids, @co_leaders.join(',') if @co_leaders.present? %>
 <table border="0" cellspacing="5" cellpadding="5">
-  		<tr><th colspan="2" class="title"><%= group.new_record? ? 'Create a New Group' : 'Editing ' + group.name %></th></tr>
+	<tr><th colspan="2" class="title"><%= group.new_record? ? 'Create a New Group' : 'Editing ' + group.name %></th></tr>
   <tr>
     <td style="vertical-align:top;">
-  	<table border="0" cellspacing="5" cellpadding="5">
-  	  <tr class="required_field">
-  	    <td class="label">Type: </td>
-        <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
-  	  </tr>
-  		<tr class="required_field"><td class="label">Name: </td><td><%= f.text_field :name %></td></tr>
-  		<tr class="required_field">
-  			<td class="label">Campus: </td>
-  			<td>
-  				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
-  				<%= spinner('c') %>
-  				<%= observe_field(:group_campus_id, :url => list_dorms_url(), 
-  				                                    :update => 'group_dorm_id', 
-  				                                    :with => "campus_id",
-  				                                    :loading => "$('#spinnerc').show()",
-  				                                    :complete => "$('#spinnerc').hide()") %>
-  			</td>
-  		</tr>
-  		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
-   		<tr><td class="label">Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
-  		<tr><td class="label">Address: </td><td><%= f.text_field :address %></td></tr>
-  		<tr><td class="label">City: </td><td><%= f.text_field :city %></td></tr>
-  		<tr><td class="label"><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
-                <tr><td class="label">Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc, :include_blank => Cmt::CONFIG[:semesterless_groups] %></td></tr>
-  	</table>
+    	<table border="0" cellspacing="5" cellpadding="5">
+    	
+  	    <% unless @group.is_collection_group %>
+      	  <tr class="required_field">
+      	    <td class="label">Type: </td>
+            <td><%= f.select :group_type_id, @ministry.all_group_types.collect {|gt| [gt.group_type, gt.id]}, {:include_blank => :true}, {:style => "width:200px"} %></td>
+      	  </tr>
+        <% end %>
+        
+    		<tr class="required_field"><td class="label">Name: </td><td><%= f.text_field :name %></td></tr>
+    		
+  	    <% unless @group.is_collection_group %>
+      		<tr class="required_field">
+      			<td class="label">Campus: </td>
+      			<td>
+      				<%= f.select :campus_id, @ministry.campuses.collect {|c| [c.name, c.id]}, {:include_blank => :true}, {:style => "width:200px"} %>
+      				<%= spinner('c') %>
+      				<%= observe_field(:group_campus_id, :url => list_dorms_url(), 
+      				                                    :update => 'group_dorm_id', 
+      				                                    :with => "campus_id",
+      				                                    :loading => "$('#spinnerc').show()",
+      				                                    :complete => "$('#spinnerc').hide()") %>
+      			</td>
+      		</tr>
+        <% end %>
+        
+    		<%- dorms = (@campus && !@campus.dorms.empty? ? @campus.dorms.collect {|d| [d.name, d.id] } : []).insert(0, ["", nil]) -%>
+     		<tr><td class="label">Dorm: </td><td><%= f.select :dorm_id, dorms %></td></tr>
+    		<tr><td class="label">Address: </td><td><%= f.text_field :address %></td></tr>
+    		<tr><td class="label">City: </td><td><%= f.text_field :city %></td></tr>
+    		<tr><td class="label"><%= I18n.t :State, :default => 'State' %>: </td><td><%= f.text_field :state %></td></tr>
+    		
+  	    <% unless @group.is_collection_group %>
+          <tr><td class="label">Semester: </td><td><%= f.collection_select :semester_id, Semester.all, :id, :desc, :include_blank => Cmt::CONFIG[:semesterless_groups] %></td></tr>
+        <% end %>
+    	</table>
+      <small><br/><%= image_tag("asterisk_yellow_smaller.png") %> are required fields</small>
 	  </td>
 	  <td style="vertical-align:top;">
 	    <table border="0" cellspacing="5" cellpadding="5">
@@ -47,9 +59,9 @@
 	    </table>
 	  </td>
 	</tr>
-  <br/>
   <tr>
     <td colspan='2'>
+      <br/>
       <%= f.check_box(:needs_approval, {:checked => true}, true, false)%>
       Join requests must be approved
       <br/>
@@ -57,13 +69,12 @@
       Make me the leader of this group
       <%- unless @group.new_record? -%>
         <br/>
+        <br/>
         <%= link_to "Copy this group to another term...", clone_pre_group_url(@group.id) %>
       <%- end -%>
      </td>
    </tr>
 </table>
-<small><br/><%= image_tag("asterisk_yellow_smaller.png") %> are required fields</small>
-<br/>
 <br/>
 <%= yield :before_buttons %>
 <%= submit_tag 'Save', :class => "action-button" %> or

@@ -7,7 +7,8 @@ class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-
+    setup_years
+    setup_months
   end
   
   def login_admin_user
@@ -553,7 +554,7 @@ class PeopleControllerTest < ActionController::TestCase
   test "should NOT create person" do
     login_admin_user
     assert_no_difference('Person.count') do
-      post :create, :person => { }
+      post :create, :person => { }, :ministry_involvement => { :ministry_role_id => StaffRole.first.id }
     end
     assert_response :success
     assert_template 'new'

@@ -12,6 +12,7 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
 
     setup_years
     setup_months
+    setup_school_years
 
     setup_default_user
     Factory(:user_3)

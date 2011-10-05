@@ -7,6 +7,8 @@ class ManageController; def rescue_action(e) raise e end; end
 class ManageControllerTest < ActionController::TestCase
   def setup
     setup_default_user
+    setup_years
+    setup_months
     @controller = ManageController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

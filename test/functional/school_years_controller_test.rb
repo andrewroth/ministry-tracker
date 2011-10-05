@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class SchoolYearsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:schoolyear_1)
     Factory(:schoolyear_2)
     login

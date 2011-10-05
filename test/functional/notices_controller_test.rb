@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class NoticesControllerTest < ActionController::TestCase
   def setup
     setup_default_user
+    setup_years
+    setup_months
     @live_notice = Factory(:live_notice)
     @not_live_notice = Factory(:not_live_notice)
     login

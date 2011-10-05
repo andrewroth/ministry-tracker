@@ -30,7 +30,7 @@ module NewRelic
               end
             end
 
-            perform_action_with_newrelic_trace(:category => :controller, :name => self.action_name, :params => request.filtered_parameters, :class_name => self.class.name)  do
+            perform_action_with_newrelic_trace(:category => :controller, :name => self.action_name, :path => newrelic_metric_path, :params => request.filtered_parameters, :class_name => self.class.name)  do
               super
             end
           end
@@ -41,10 +41,24 @@ module NewRelic
   end
 end
 
-if defined?(ActionController) && defined?(ActionController::Base)
-  class ActionController::Base
-    include NewRelic::Agent::Instrumentation::ControllerInstrumentation
-    include NewRelic::Agent::Instrumentation::Rails3::ActionController
+DependencyDetection.defer do
+  depends_on do
+    defined?(Rails) && Rails::VERSION::MAJOR.to_i == 3
+  end
+
+  depends_on do
+    defined?(ActionController) && defined?(ActionController::Base)
+  end
+
+  executes do
+    NewRelic::Agent.logger.debug 'Installing Rails3 Controller instrumentation'
+  end  
+  
+  executes do
+    class ActionController::Base
+      include NewRelic::Agent::Instrumentation::ControllerInstrumentation
+      include NewRelic::Agent::Instrumentation::Rails3::ActionController
+    end
   end
 end
 

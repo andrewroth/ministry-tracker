@@ -10,7 +10,7 @@ class GroupInvolvementsController < ApplicationController
 
   def create
     params[:requested] = false
-    create_group_involvement
+    flash[:notice] = "#{@gi.person.full_name} is now a #{@gi.level}" if create_group_involvement
     @group = @gi.group
     @level = @gi.level
   end
@@ -28,9 +28,9 @@ class GroupInvolvementsController < ApplicationController
     respond_to do |format|
       format.html {
         if @group.needs_approval && params[:level] == 'member'
-          flash[:notice] = "<big>Great! Your request to join has been sent to #{@group.name}</big>"
+          flash[:notice] = "Great! Your request to join has been sent to #{@group.name}"
         elsif params[:level] == 'member'
-          flash[:notice] = "<big>Great! Welcome to your group, #{@group.name}</big>"
+          flash[:notice] = "Great! Welcome to your group, #{@group.name}"
         end
         if logged_in?
           redirect_to :controller => :signup, :action => :step2_info_submit
