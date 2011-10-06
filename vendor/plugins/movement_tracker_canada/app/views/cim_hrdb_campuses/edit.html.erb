@@ -4,33 +4,44 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :campus_desc, "Description" %><br />
+    <%= f.label :campus_desc, "Description" %>
     <%= f.text_field :campus_desc %>
   </p>
   <p>
-    <%= f.label :campus_shortDesc, "Short description" %><br />
+    <%= f.label :campus_shortDesc, "Short description" %>
     <%= f.text_field :campus_shortDesc %>
   </p>
+  <br/>
   <p>
-    <%= f.label :region_id %><br />
+    <%= f.label :region_id, "Region" %>
     <%= f.collection_select :region_id, Region.all, :id, :desc %>
   </p>
   <p>
-    <%= f.label :campus_website, "Website" %><br />
+    <%= f.label :campus_website, "Website" %>
     <%= f.text_field :campus_website %>
   </p>
   <p>
-    <%= f.label :campus_facebookgroup, "Facebook group" %><br />
+    <%= f.label :campus_facebookgroup, "Facebook group" %>
     <%= f.text_field :campus_facebookgroup %>
   </p>
   <p>
-    <%= f.label :campus_gcxnamespace, "GCX namespace" %><br />
+    <%= f.label :campus_gcxnamespace, "GCX namespace" %>
     <%= f.text_field :campus_gcxnamespace %>
   </p>
+  <br/>
   <p>
-    <%= f.label :state_id, "Province" %><br />
+    <%= f.label :state_id, "Province" %>
     <%= f.collection_select :state_id, State.all, :id, :name, :include_blank => "" %>
   </p>
+  <p>
+    <%= f.label :longitude, "Longitude" %>
+    <%= f.text_field :longitude %>&nbsp;&nbsp;-180.00..180.00
+  </p>
+  <p>
+    <%= f.label :latitude, "Latitude" %>
+    <%= f.text_field :latitude %>&nbsp;&nbsp;-90.00..90.00
+  </p>
+  <br/> 
   <p>
     <%= f.submit 'Update' %>
   </p>
