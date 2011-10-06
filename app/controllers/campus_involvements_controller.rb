@@ -139,6 +139,83 @@ class CampusInvolvementsController < ApplicationController
     set_student
     yield @student
   end
+  
+  def edit_multiple_school_years
+    if params[:mids] && params[:person]
+      if params[:entire_search].to_i == 1
+        search = Search.find params[:search_id]
+        people_ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      else
+        people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      end
+
+      people_with_relevant_ministry_involvement = MinistryInvolvement.all(:conditions => ["#{MinistryInvolvement.__(:person_id)} IN (?) AND 
+                                                                                           #{MinistryInvolvement.__(:ministry_id)} IN (?)",
+                                                                                           people_ids, params[:mids] ])
+      
+      people_with_relevant_ministry_ids = people_with_relevant_ministry_involvement.collect(&:person_id)
+
+      conditions = ["#{CampusInvolvement.__(:person_id)} IN (?) AND 
+                     #{CampusInvolvement.__(:end_date)} IS NULL",
+                     people_with_relevant_ministry_ids]
+      
+      if params[:cids] # search is filtered by campus ids
+        conditions[0] += " AND #{CampusInvolvement.__(:campus_id)} IN (?)"
+        conditions << params[:cids]
+      end
+      
+      if params[:syids] # search is filtered by school year ids
+        conditions[0] += " AND #{CampusInvolvement.__(:school_year_id)} IN (?)"
+        conditions << params[:syids]
+      end
+      
+      @involvements = CampusInvolvement.all(:include => [:person],
+                                            :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
+                                            :conditions => conditions)
+
+      people_with_involvements_ids = []
+      people_with_involvements_ids = @involvements.collect{|involvement| involvement.try(:person_id)} if @involvements
+
+      # find people who do not have an involvement
+      people_without_involvements_ids = []
+      people_ids.each do |id|
+        people_without_involvements_ids << id.to_i if people_with_involvements_ids.index(id.to_i).nil?
+      end
+      @people_without_involvements = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_without_involvements_ids]) unless people_without_involvements_ids.empty?
+    end
+  end
+
+  def update_multiple_school_years
+    unless params[:school_year][:id] && params[:involvement_id]
+      flash[:notice] = "Could not update school year, no particular year or people were specified."
+      
+      redirect_to :action => "directory", :controller => "people", :format => :html
+      return
+    end
+
+    new_school_year = SchoolYear.first(:conditions => ["#{SchoolYear._(:id)} = ?", params[:school_year][:id].to_i])
+
+    if new_school_year.present?
+      people_notice = ""
+
+      involvement_ids = Array.wrap(params[:involvement_id]).collect{|involvement_id| involvement_id}
+
+      involvement_ids.each do |involvement_id|
+        ci = CampusInvolvement.first(:conditions => {:id => involvement_id})
+
+        ci.school_year_id = new_school_year.id
+        ci.save
+
+        ci = CampusInvolvement.first(:conditions => {:id => involvement_id}) # get final involvement status to accurately display to user
+        people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{ci.person.full_name} is now a #{ci.school_year.name} at #{ci.campus.name}<br/>"
+      end
+
+      flash[:notice] = "The following school year changes were made: <br/> <br/> #{people_notice}"
+    end
+
+    redirect_to :action => "directory", :controller => "people", :format => :html
+  end
+
 
   protected
   
@@ -224,7 +301,7 @@ class CampusInvolvementsController < ApplicationController
       @campuses = CmtGeo.campuses_for_country(CmtGeo.lookup_country_code(Cmt::CONFIG[:campus_scope_country]))
     else
       # TODO this should do the proper ajax choose Country -> State -> Campus
-      @campuses = @person.ministries.collect &:campuses
+      @campuses = @person.ministries.collect(&:campuses)
       @campuses.flatten!
       @campuses.uniq!
     end
