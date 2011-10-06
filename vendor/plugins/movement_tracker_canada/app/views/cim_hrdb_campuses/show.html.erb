@@ -36,6 +36,16 @@
   <% end %>
 </p>
 
+<p>
+  <b>Longitude:</b>
+  <%=h @campus.longitude %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%=h @campus.latitude %>
+</p>
+
 <br/>
 <%= link_to 'Edit', edit_cim_hrdb_campus_path(@campus) %> |
 <%= link_to 'Back', cim_hrdb_campuses_path %>
