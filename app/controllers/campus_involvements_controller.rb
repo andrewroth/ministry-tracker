@@ -174,7 +174,7 @@ class CampusInvolvementsController < ApplicationController
                                             :conditions => conditions)
 
       people_with_involvements_ids = []
-      people_with_involvements_ids = @involvements.collect{|involvement| involvement.person.id} if @involvements
+      people_with_involvements_ids = @involvements.collect{|involvement| involvement.try(:person_id)} if @involvements
 
       # find people who do not have an involvement
       people_without_involvements_ids = []
