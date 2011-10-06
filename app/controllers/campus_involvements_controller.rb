@@ -207,7 +207,7 @@ class CampusInvolvementsController < ApplicationController
         ci.save
 
         ci = CampusInvolvement.first(:conditions => {:id => involvement_id}) # get final involvement status to accurately display to user
-        people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{ci.person.full_name} is now a #{ci.school_year.name} at #{ci.campus.name}<br/>"
+        people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{ci.person.full_name} is now #{ci.school_year.name} at #{ci.campus.name}<br/>"
       end
 
       flash[:notice] = "The following school year changes were made: <br/> <br/> #{people_notice}"
