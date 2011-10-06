@@ -49,11 +49,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :assignmentstatuses
 
-  map.connect 'ministry_involvements/edit_multiple_roles',
-              :conditions => { :method => :get },
-              :controller => "ministry_involvements",
-              :action => "edit_multiple_roles"
-
   map.connect 'search/',
               :conditions => { :method => :get },
               :controller => "search",
@@ -227,13 +222,17 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :summer_reports
     person.resources :summer_report_reviewers
   end                             
-                                          
+  
   map.resources :customize
   
-  map.resources :ministry_involvements
-
+  map.resources :ministry_involvements, :collection => {:edit_multiple_roles => :get,
+                                                        :update_multiple_roles => :post}
+  
+  map.resources :campus_involvements, :collection => {:edit_multiple_school_years => :get,
+                                                      :update_multiple_school_years => :post}
+  
   map.edit_school_year '/people/:person_id/campus_involvements/:id/edit_school_year', :controller => :campus_involvements, :action => :edit_school_year
-
+  
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
   map.show_user_codes '/user_codes/report_generated_codes', :controller => :user_codes, :action => :report_generated_codes
@@ -242,7 +241,7 @@ ActionController::Routing::Routes.draw do |map|
               :controller => :user_codes,
               :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:
