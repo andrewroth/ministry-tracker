@@ -5,7 +5,7 @@
 
 
 <div id="submit_summer_report">
-<% form_for [@me, @summer_report] do |f| %>
+<% form_for [@me, @summer_report], :html => { :class => "disableOnSubmit"} do |f| %>
 
   <p>
     <% if @contact_person.present? && @contact_phone.present? %>
@@ -175,7 +175,7 @@
   <br/>
   <br/>
   <p>
-    <%= f.submit 'Submit for review', :class => "action-button" %> &nbsp; <%= spinner('_submit') %>
+    <%= f.submit 'Submit for review', :class => "action-button disableOnSubmit" %> &nbsp; <%= spinner('_submit') %>
   </p>
 <% end %>
 </div>
@@ -208,4 +208,6 @@
   $("#summer_report_submit").click(function(){
     $("#spinner_submit").show();
   });
+
+  disableInputsOnSubmit("disableOnSubmit");
 </script>
