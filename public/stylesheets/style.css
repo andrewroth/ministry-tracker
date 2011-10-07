@@ -3727,7 +3727,6 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 
 #closeLink { font-size:32px; position:absolute; right:4px; top:-2px; height:24px; }
 
-#reviewableReports th { font-weight:bold; }
 #reviewableReports td { vertical-align:middle; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }
 
