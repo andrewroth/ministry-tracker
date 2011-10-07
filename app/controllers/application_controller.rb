@@ -475,7 +475,7 @@ class ApplicationController < ActionController::Base
         if @ministry && !is_staff_somewhere
           @ministry = @person.ministries.find_by_id session[:ministry_id]
         end
-        @ministry ||= @person.most_nested_ministry
+        @ministry ||= get_persons_ministry_from_cookie || @person.most_nested_ministry
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
@@ -496,7 +496,27 @@ class ApplicationController < ActionController::Base
       end
       @ministry
     end
+
+    def get_persons_ministry_from_cookie
+      ministry = nil
+      if cookies[:ministry_id].present?
+        ministry = Ministry.find(:first, :conditions => {:id => cookies[:ministry_id].to_i})
+        ministry = nil unless @person.ministries.include? ministry
+        clear_ministry_cookie unless ministry
+      end
+      ministry
+    end
     
+    def set_ministry_cookie(ministry)
+      clear_ministry_cookie
+      cookies[:ministry_id] = ministry.id if ministry && @person.ministries.include?(ministry)
+    end
+    
+    def clear_ministry_cookie
+      cookies.delete(:ministry_id)
+    end
+    
+
       
     def setup_involvement_vars
       @projects = @person.summer_projects.find(:all, :conditions => "#{_(:status, :summer_project_application)} IN ('accepted_as_participant','accepted_as_intern')")
