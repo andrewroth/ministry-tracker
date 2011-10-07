@@ -102,6 +102,11 @@ class SignupController < ApplicationController
       @signup = true
       @campus.ensure_campus_ministry_groups_created
       @collection_group = @campus.collection_groups
+
+      # include collection groups and have them be at the beginning of the array
+      @groups.delete_if { |g| @collection_group.index(g) }
+      @collection_group.delete_if { |cg| cg.semester_id != @semester.id }
+      @groups = (@collection_group << @groups).flatten
       
       # cache of campus names
       campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
