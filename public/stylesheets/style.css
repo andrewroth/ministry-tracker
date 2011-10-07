@@ -1670,7 +1670,7 @@ padding-bottom:5px;
 .removeInvolvementIconLink:hover { background-position:-10px -1242px; }
 
 .removeGroupIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -685px; }
-.removeGroupIconLink:hover { background-position:-10px -718px; }
+.removeGroupIconLink:hover { background-position:-10px -718px; text-decoration:none; }
 
 .removeMentorIconLink       { padding:2px 0 0 17px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -886px; }
 .removeMentorIconLink:hover { background-position:-10px -919px; }
@@ -2544,7 +2544,7 @@ h2.group_type_title {
 
 .groupMinimalInfoContainer {
   float:left;
-  width:410px;
+  width:75%;
 }
 
 .groupMinimalInfoContainer a {
@@ -2559,6 +2559,7 @@ h2.group_type_title {
   margin:10px 10px 0 0;
   float:right;
   text-align:right;
+  width:20%;
 }
 
 .groupMinimalActionsContainer b {
@@ -2626,14 +2627,14 @@ h2.group_type_title {
 }
 
 #collection_group_list {
-  width:21%;
+  width:25%;
   float:right;
 }
 
 #collection_group_link {
   position:fixed;
   font-size:12px;
-  margin-right:20px;
+  margin:15px 15px 0 0;
   line-height:22px;
 }
 
@@ -3379,7 +3380,7 @@ table.groupInvolvementList td {
 
 table.groupInvolvementList th {
   text-transform:uppercase;
-  font-size:14px;
+  font-size:12px;
   padding: 4px;
 }
 
@@ -3727,7 +3728,6 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 
 #closeLink { font-size:32px; position:absolute; right:4px; top:-2px; height:24px; }
 
-#reviewableReports th { font-weight:bold; }
 #reviewableReports td { vertical-align:middle; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }
 
