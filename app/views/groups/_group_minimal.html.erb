@@ -32,6 +32,8 @@
       <% midnight = Time.now.beginning_of_day %>
       <% if group.day %>
         meets on <%= group.meeting_day_and_time_to_string %>
+      <% elsif @collection_group && @collection_group.include?(group) %>
+        not sure which group to join? Join this group and we'll help you find one
       <% else %>
         meeting time to be decided
       <% end %>
