@@ -102,7 +102,7 @@ class SignupController < ApplicationController
       @signup = true
       @campus.ensure_campus_ministry_groups_created
       @collection_group = @campus.collection_groups
-      @groups.delete_if { |g| @collection_group.index(g) }
+      
       # cache of campus names
       campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
       @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
