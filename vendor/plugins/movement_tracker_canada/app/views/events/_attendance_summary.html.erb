@@ -1,6 +1,13 @@
 <p class="statsTitle"><%= @report_description %></p>
 <table class="statsTable">
 
+  <% if @missing_attendees %>
+    <big>WARNING:</big> There appears to be more attendees that aren't showing up here.<br/>
+    This can happen if certain info is missing in Eventbrite, e.g. an attendee does not have a campus.
+    <br/>
+    <br/>
+  <% end %>
+
   <% if @campus_summaries.present? %>
 
   <tr>

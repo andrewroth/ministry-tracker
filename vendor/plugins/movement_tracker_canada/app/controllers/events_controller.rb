@@ -82,7 +82,7 @@ class EventsController < ApplicationController
         flash[:notice] = "Eventbrite event '#{@event.title}' was successfully created"
         format.html { redirect_to(events_path) }
       else
-        flash[:notice] = 'Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct' if !synced && saved
+        flash[:notice] = 'Something went wrong, please verify that the Eventbrite event ID is correct' if !synced && saved
         format.html { render :action => "new" }
       end
     end
@@ -269,6 +269,8 @@ class EventsController < ApplicationController
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
 
+        next unless eb_campus
+
         matched_campus = @my_campuses.select {|c| c.matches_eventbrite_campus(eb_campus)}[0]
         
         if authorized?(:show_all_campuses_summaries, :events) || matched_campus.present?
@@ -294,6 +296,12 @@ class EventsController < ApplicationController
           end
 
         end
+      end
+
+      if @eb_event.num_attendee_rows != @campus_summary_totals[:males]+@campus_summary_totals[:females] ||
+         @eb_event.num_attendee_rows != @campus_summary_totals[:first_year]+@campus_summary_totals[:upper_year]
+
+         @missing_attendees = true
       end
 
       @campus_summaries = @campus_summaries.sorted_hash { |a,b| a[0].upcase <=> b[0].upcase  }
@@ -327,6 +335,8 @@ class EventsController < ApplicationController
 
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question]) # answer is in the format "campus.desc (campus.short_desc)"
+
+        next unless eb_campus.present?
 
         # if has permission to see info from all campuses
         if authorized?(:show_all_campuses_individuals, :events)
@@ -366,6 +376,9 @@ class EventsController < ApplicationController
         end
       end
 
+      if @eb_event.num_attendee_rows != @campus_individuals
+        @missing_attendees = true
+      end
 
       @report_description = "Individual Attendees from #{@selected_campus.desc}"
 
