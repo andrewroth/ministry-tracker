@@ -22,15 +22,15 @@ class EventsController < ApplicationController
     {
       :summary => {
                     :order => 1,
-                    :label => "Attendance Summary",
-                    :title => "See a summary of all attendees to this event.",
+                    :label => "Summary",
+                    :title => "A summary of all attendees to this event",
                     :radio_id => "report_scope_summary",
                     :show => :yes
       },
       :individuals => {
                     :order => 2,
-                    :label => "Individual Attendees",
-                    :title => "See individual attendees to this event.",
+                    :label => "Individuals",
+                    :title => "Specific individual attendees to this event",
                     :radio_id => "report_scope_individuals",
                     :show => :yes
       }
@@ -360,6 +360,8 @@ class EventsController < ApplicationController
       campuses.each { |title, campus| @attendance_campuses << campus if !campus.nil? && @event.campuses.include?(campus) }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
 
+      @show_campus_select = false if @attendance_campuses.size == 1
+
 
       raise Exception.new(NO_ATTENDEES_AT_CAMPUS_EXCEPTION) if @campus_individuals.blank?
 
@@ -378,7 +380,7 @@ class EventsController < ApplicationController
         @missing_attendees = true
       end
 
-      @report_description = "Individual Attendees from #{@selected_campus.desc}"
+      @report_description = "Attendees from #{@selected_campus.desc}"
 
       @results_partial = "attendance_individuals"
 
