@@ -12,7 +12,7 @@
   <ul class="statsLinkList">
     <li class="statsLinkList">
       <div class="eventLink">
-        <%= link_to 'Event registration', @eb_event.try(:url) ? @eb_event.try(:url) : eventbrite[:c4c_events_link]  %>
+        <%= link_to 'Registration', @eb_event.try(:url) ? @eb_event.try(:url) : eventbrite[:c4c_events_link]  %>
         <%= @eb_event.status == eventbrite[:event_status_live] ? " <span class='eventOpen'>OPEN!</span>" : " <span class='eventClosed'>CLOSED</span>" %>
       </div>
     </li>
@@ -58,7 +58,7 @@
 
 
 <div id="results" class="statsContainer">
-  <div id="attendanceSpinnerContainer">Fetching event information from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>...<br/><br/><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
+  <div id="attendanceSpinnerContainer">Fetching info from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>...<br/><br/><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerAttendanceResults", :alt => "Spinner") %></div>
   <div id="attendanceResults" class="statsReportTabContainer" style="display: none;"></div>
   <br/>
 </div>
