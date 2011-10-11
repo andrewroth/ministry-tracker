@@ -154,7 +154,6 @@ class EventsController < ApplicationController
 
 
   def select_report
-    
     session[:attendance_report_scope] = params['attendance_report_scope'] if params['attendance_report_scope'].present?
 
     session[:attendance_report_sort] = params['attendance_report_sort'] if params['attendance_report_sort'].present? &&
@@ -219,7 +218,7 @@ class EventsController < ApplicationController
     @selected_campus_id = session[:attendance_campus_id].present? ? session[:attendance_campus_id] : @my_campuses.first.id
     @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
     
-    # make sure the selected campus is associated to the chosen event and that's it's within my involvements
+    # make sure the selected campus is associated to the chosen event and that it's within my involvements
     unless @selected_campus && @event.campuses.include?(@selected_campus) && (@my_campuses.include?(@selected_campus) || authorized?(:show_all_campuses_individuals, :events))
       
       my_campuses_at_event = @event.campuses.select { |ec| @my_campuses.include? ec }
@@ -357,9 +356,8 @@ class EventsController < ApplicationController
       end
 
 
-      # convert campus hash to an array for collection select
       @attendance_campuses = []
-      campuses.each { |title, campus| @attendance_campuses << campus }
+      campuses.each { |title, campus| @attendance_campuses << campus if !campus.nil? && @event.campuses.include?(campus) }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
 
 
