@@ -44,6 +44,10 @@
   <br />
 
   <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      $("select#perform_action").val('');
+    });
+
     var total_people = <%= @count %>
   </script>
 
