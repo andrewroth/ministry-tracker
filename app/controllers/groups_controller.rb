@@ -116,6 +116,7 @@ class GroupsController < ApplicationController
       @people = Person.find(ids)
       session[:people_to_add] = @people.collect(&:id)
     elsif params[:person]
+      ids = Array.wrap(params[:person]).collect{|person_id| person_id}
       @people = Person.find(ids)
       session[:people_to_add] = @people.collect(&:id)
     else

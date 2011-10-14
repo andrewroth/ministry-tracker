@@ -867,7 +867,7 @@ class PeopleController < ApplicationController
         # Check year in school
         if params[:school_year].present?
           conditions << database_search_conditions(params)[:school_year]
-          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+          @tables[CampusInvolvement] = "Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
           @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
           @advanced = true
           @searched_school_year_ids = params[:school_year]
@@ -900,7 +900,7 @@ class PeopleController < ApplicationController
 
         if params[:role].present? && params[:role].first.to_i > 0
           conditions << database_search_conditions(params)[:role]
-          @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = #{MinistryInvolvement.table_name}.#{_(:person_id, :ministry_involvement)}"
+          @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
           @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
           @advanced = true
           @searched_ministry_roles = params[:role]
@@ -970,7 +970,7 @@ class PeopleController < ApplicationController
       end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-      tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
+      tables_clause = @view.tables_clause + new_tables.collect {|table| "LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]}" }.join(' ')
       if params[:search_id].blank?
         @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
         if @search
@@ -1198,7 +1198,7 @@ class PeopleController < ApplicationController
           campus_ids = [ 0 ] # so that the query doesn't crash
         end
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
-        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
+        @tables[CampusInvolvement] = "Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
         @advanced = true
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"
