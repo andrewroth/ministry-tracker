@@ -16,7 +16,7 @@
 
   <%- if @me.ministries.length > 1 -%>
     <%- if authorized?(:change_ministry_and_goto_directory) -%>
-        <%= link_to_function("#{image_tag("bullet_go.png")} Change Ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
+        <%= link_to_function("Change ministry", "$(this).hide(); $('#current_ministry').show();", :class => "action-button") %>
         <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none") %>
         <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
         <%- tooltip do -%>
@@ -38,9 +38,8 @@
 <%= form_tag(perform_task_people_path, :name => 'people_form', :id => 'people_form') %>
 <div class="yoursearch">
 <p>
-  Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found
-  <br />
-  <%= will_paginate @people, :class => "searchResultsPagination" %>
+  Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found.
+
   <br />
   <br />
 
@@ -79,7 +78,7 @@
 
     <%- if authorized?(:new) -%>
       <div class="directoryResultControl">
-        <%= link_to_remote("#{image_tag("silk/user_add.png")} Add new student",
+        <%= link_to_remote("#{image_tag("debicons/Gaddicon.png")} Add a student",
                            :url => add_student_people_url,
                            :loading => "$('#spinneradd_student').show();",
                            :complete => "$('#spinneradd_student').hide();
@@ -93,10 +92,10 @@
 
     <%- if authorized?(:advanced) %>
       <div class="directoryResultControl">
-        <%= link_to "#{image_tag("page_white_excel.png")} Excel Download", directory_people_url(:format => 'csv', :search_id => @search.id), :class => "action-button" %>
+        <%= link_to "Excel download", directory_people_url(:format => 'csv', :search_id => @search.id), :class => "action-button" %>
 
         <%- tooltip do -%>
-          You can download an excel spreadsheet with all the information you see in your current view.
+          You can download an Excel spreadsheet with all the information you see in your current view.
         <%- end -%>
       </div>
     <%- end -%>
@@ -110,6 +109,7 @@
 </p>
 </div>
 
+<p><%= will_paginate @people, :class => "searchResultsPagination" %></p>
 
 
 <div id="people">
@@ -210,8 +210,8 @@
   			end %></td>
 	    <%- end -%>
 				<td class="alignright">
-				  <%= link_to(image_tag('delete.png'), person_path(person['person_id']), :title => "student no longer involved", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
-				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']) %></span>
+				  <%= link_to(image_tag('debicons/Gremoveicon_s.png'), person_path(person['person_id']), :title => "Remove person (they're no longer involved)", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
+				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']), :title => "Goto #{person["First_Name"] ? person["First_Name"] : "this person"}'s profile" %></span>
 				</td>
 			</tr>
 			<%- end -%>
