@@ -14,9 +14,9 @@ module PersonMethodsEmu
     elsif
       special_conditions[:gender] = "Person.gender_id IN (#{quote_string(['1', '2'].join(','))})"
     end
-    special_conditions[:school_year] = "#{_(:year_id, :person_year)} IN(#{quote_string(params[:school_year].join(','))})" if params[:school_year].present?   
-    special_conditions[:email] = "Person.person_email = '#{quote_string(params[:email])}'" if params[:email].present?
-    special_conditions[:role] = "#{_(:ministry_role_id, :ministry_involvement)} IN(#{quote_string(params[:role].join(','))})" if params[:role].present?
+    special_conditions[:school_year] = "CampusInvolvement.#{_(:school_year_id, :campus_involvement)} IN(#{quote_string(params[:school_year].join(','))})" if params[:school_year].present?   
+    special_conditions[:email] = "Person.person_email LIKE '%#{quote_string(params[:email])}%'" if params[:email].present?
+    special_conditions[:role] = "MinistryInvolvement.#{_(:ministry_role_id, :ministry_involvement)} IN(#{quote_string(params[:role].join(','))})" if params[:role].present?
     special_conditions
   end
   
