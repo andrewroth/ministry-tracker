@@ -186,7 +186,7 @@ class MinistryInvolvementsController < ApplicationController
       end
 
       if params[:mrids]
-        @involvements = MinistryInvolvement.all(:include => [:person],
+        @involvements = MinistryInvolvement.all(:include => [:person, :ministry, :ministry_role],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
@@ -198,7 +198,7 @@ class MinistryInvolvementsController < ApplicationController
                                                                  people_ids, params[:mids], params[:mrids]])
         
       else
-        @involvements = MinistryInvolvement.all(:include => [:person],
+        @involvements = MinistryInvolvement.all(:include => [:person, :ministry, :ministry_role],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND

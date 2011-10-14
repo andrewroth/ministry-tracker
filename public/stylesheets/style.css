@@ -188,7 +188,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding-left:20px;
   border:0px solid black;
   height:18px;
-  background:url(/images/zoom.png) top left no-repeat;
+  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat; background-position:-5px -233px;
+}
+
+.butProfile a:hover {
+  background-position:-5px -268px;
 }
 
 .butUpdate a, .butDelete a {
@@ -760,6 +764,11 @@ img.opaqueWhite {
   font-size: 11px;
 }
 
+.advanced_search_field_label {
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: normal;
+}
 
 div.uploadStatus {
   margin: 5px;
