@@ -62,14 +62,14 @@ class SignupController < ApplicationController
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
-    flash[:notice] = "<big>Great! We'll help you find a group that suits you.</big>"
+    flash[:notice] = "Great! We'll help you find a group that suits you."
     redirect_to :action => :step2_info
   end
 
   def step1_group_from_campus
 
     if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
-      flash[:notice] = "<big>Sorry, we didn't recieve the campus and semester that you chose, please try again.</big>"
+      flash[:notice] = "Sorry, we didn't recieve the campus and semester that you chose, please try again."
       redirect_to :action => :step1_group
       return
     end
@@ -102,7 +102,12 @@ class SignupController < ApplicationController
       @signup = true
       @campus.ensure_campus_ministry_groups_created
       @collection_group = @campus.collection_groups
+
+      # include collection groups and have them be at the beginning
       @groups.delete_if { |g| @collection_group.index(g) }
+      @collection_group.delete_if { |cg| cg.semester_id != @semester.id }
+      @groups = (@collection_group + @groups).uniq
+      
       # cache of campus names
       campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
       @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
@@ -133,6 +138,8 @@ class SignupController < ApplicationController
   def step2_info_submit
     # if no person in params get person from session
     @person = params[:person].present? ? Person.new(params[:person]) : get_person
+    return if redirect_to_beginning_if_no_person
+    
     @person.email = @group_invitation.recipient_email if @group_invitation
     
     # make sure we have all the right info
@@ -156,12 +163,14 @@ class SignupController < ApplicationController
       end
     end
 
-    school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
-                     @person.primary_campus_involvement.school_year_id
-    @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
-    [:campus_id, :school_year_id].each do |c|
-      unless @primary_campus_involvement.send(c).present?
-        @person.errors.add(c, :blank)
+    unless @person.is_staff_somewhere?
+      school_year_id = (params[:primary_campus_involvement] && params[:primary_campus_involvement][:school_year_id]) ||
+                       @person.try(:primary_campus_involvement).try(:school_year_id)
+      @primary_campus_involvement = CampusInvolvement.new :school_year_id => school_year_id, :campus_id => session[:signup_campus_id]
+      [:campus_id, :school_year_id].each do |c|
+        unless @primary_campus_involvement.send(c).present?
+          @person.errors.add(c, :blank)
+        end
       end
     end
 
@@ -203,7 +212,7 @@ class SignupController < ApplicationController
       session[:signup_person_params] = params[:person]
       session[:signup_primary_campus_involvement_params] = params[:primary_campus_involvement]
       session[:signup_person_id] = @person.id
-      session[:signup_campus_id] = @primary_campus_involvement.campus_id
+      session[:signup_campus_id] = @primary_campus_involvement.campus_id if @primary_campus_involvement
 
       if !logged_in? && !session[:code_valid_for_user_id] && !(@user.just_created && @person.just_created) && !session[:signup_group_invitation_id]
         @email = params[:person][:email]
@@ -211,24 +220,26 @@ class SignupController < ApplicationController
       else
         @person.save!
         
-        ci = @person.campus_involvements.find :first, :conditions => {
-          :campus_id => @primary_campus_involvement.campus_id
-        }
-        if ci
-          ci.update_student_campus_involvement(flash, StudentRole.default_student_role, nil, 
-                                               @primary_campus_involvement.school_year_id,
-                                               @primary_campus_involvement.campus_id)
-        else
-          ci = @person.campus_involvements.new
-          ci.campus_id = @primary_campus_involvement.campus_id
-          ci.school_year_id = @primary_campus_involvement.school_year_id
-          ci.start_date = Date.today
-          ci.last_history_update_date = Date.today
-          ci.ministry_id = ci.derive_ministry.try(:id)
-          ci.save!
+        unless @person.is_staff_somewhere?
+          ci = @person.campus_involvements.find :first, :conditions => {
+            :campus_id => @primary_campus_involvement.campus_id
+          }
+          if ci
+            ci.update_student_campus_involvement(flash, StudentRole.default_student_role, nil, 
+                                                 @primary_campus_involvement.school_year_id,
+                                                 @primary_campus_involvement.campus_id)
+          else
+            ci = @person.campus_involvements.new
+            ci.campus_id = @primary_campus_involvement.campus_id
+            ci.school_year_id = @primary_campus_involvement.school_year_id
+            ci.start_date = Date.today
+            ci.last_history_update_date = Date.today
+            ci.ministry_id = ci.derive_ministry.try(:id)
+            ci.save!
+          end
+          ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
+          #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         end
-        ci.find_or_create_ministry_involvement # ensure a ministry involvement is created
-        #puts "person.#{@person.object_id} '#{@person.try(:just_created)}' user.#{@user.object_id} '#{@user.try(:just_created)}'"
         
         # join groups here
         joingroups_from_hash(session[:signup_groups], @group_invitation)
@@ -244,6 +255,8 @@ class SignupController < ApplicationController
 
   def step2_verify
     @me = @my = @person = Person.find(session[:signup_person_id])
+    return if redirect_to_beginning_if_no_person
+    
     @email = @person.email.downcase
   end
 
@@ -269,7 +282,7 @@ class SignupController < ApplicationController
   def step2_email_verified
     session[:signup_groups] = params[:signup_groups]
     session[:signup_campus_id] = params[:signup_campus_id]
-    flash[:notice] = "<big>Your email has been verified, thanks!</big>"
+    flash[:notice] = "Your email has been verified, thanks!"
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
@@ -278,7 +291,10 @@ class SignupController < ApplicationController
     flash[:notice] = nil
     @signup = true
     params[:person_id] = session[:signup_person_id]
+    
     @me = @my = @person = Person.find(session[:signup_person_id])
+    return if redirect_to_beginning_if_no_person
+    
     @user = @person.user
     link = @user.find_or_create_user_code.callback_url(base_url, "signup", "timetable")
     UserMailer.send_later(:deliver_signup_finished_email, @person.email, link, session[:joined_collection_group]) unless session[:sent_timetable_email] == true
@@ -286,6 +302,10 @@ class SignupController < ApplicationController
     
     @group = Group.first(:conditions => {:id => session[:signup_joined_group_id]}) if session[:signup_joined_group_id].present?
     @group = nil
+
+    @campus = @group.campus if @group
+    @campus ||= Campus.first(:conditions => {:campus_id => session[:signup_campus_id]})
+    
     @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
@@ -379,11 +399,20 @@ class SignupController < ApplicationController
       if logged_in? && current_user.person && current_user.person.id != @group_invitation.recipient_person_id
         @group_invitation = nil
         session[:signup_group_invitation_id] = nil
-        flash[:notice] = "<big>We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!</big>"
+        flash[:notice] = "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
         redirect_to signup_url
         return
       end
     end
+  end
+  
+  def redirect_to_beginning_if_no_person
+    unless @person
+      flash[:notice] = "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@c4c.ca"
+      redirect_to :action => :step1_group
+      return true
+    end
+    return false
   end
 end
 

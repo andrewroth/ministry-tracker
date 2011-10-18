@@ -94,8 +94,12 @@ function strikeParentOnHover(e) {
 }
 
 function disableInputsOnSubmit(theClass) {
-  $("form.disableOnSubmit").submit(function(){
-    $("input.disableOnSubmit").attr('disabled', 'disabled');
+  $("form."+theClass).submit(function(){
+    $("input."+theClass).attr('disabled', 'disabled');
+  });
+  
+  $(document).ready(function() {
+    $("input."+theClass).removeAttr('disabled');
   });
 }
 

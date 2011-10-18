@@ -38,7 +38,7 @@
 <p>
   <b>Campuses (<%= @event.campuses.size %>):</b><br/>
   <% @event.campuses.each do |campus| %>
-    <%= campus.name %><br/>
+    <%= "#{campus.name} (#{campus.short_name})" %><br/>
   <% end %>
 </p>
 <br/>
@@ -51,7 +51,9 @@
 <br/>
 <p>
   <b>Description:</b>
+  <hr/>
   <%= @event.description %>
+  <hr/>
 </p>
 <br/>
 <%= link_to 'Back', events_path %>

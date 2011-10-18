@@ -484,7 +484,7 @@ class PeopleController < ApplicationController
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
     
-    flash[:notice] = "<big>#{@person.full_name}'s involvements on the Pulse have successfully been removed</big>"
+    flash[:notice] = "#{@person.full_name}'s involvements on the Pulse have successfully been removed"
     
     if (params[:logout] == 'true')
       redirect_to logout_url
@@ -796,7 +796,7 @@ class PeopleController < ApplicationController
   
   def show_gcx_profile
     if !@person.user || !@person.user.guid || !@person.user.guid.present?
-      flash[:notice] = "<big>#{@person.first_name} doesn't have a GUID, they might not have a GCX profile</big>"
+      flash[:notice] = "#{@person.first_name} doesn't have a GUID, they might not have a GCX profile"
       redirect_to @person
       return
     end
@@ -815,7 +815,7 @@ class PeopleController < ApplicationController
       error_message = "\nERROR WITH GCX PROFILE RESPONSE: \n\t#{e.class.to_s}\n\t#{e.message}\n"
       error_message += "\t#{request_url}\n" if request_url
       Rails.logger.error(error_message)
-      flash[:notice] = "<big>There was a problem retrieving #{@person.first_name}'s GCX profile</big>" unless @gcx_unauthenticated
+      flash[:notice] = "There was a problem retrieving #{@person.first_name}'s GCX profile" unless @gcx_unauthenticated
     end
   end
   
@@ -863,13 +863,14 @@ class PeopleController < ApplicationController
         @options = {}
         @tables = {}
         @search_for = []
-        # Check year in school
+        
         # Check year in school
         if params[:school_year].present?
           conditions << database_search_conditions(params)[:school_year]
-          @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
+          @tables[CampusInvolvement] = "Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}"
           @search_for << SchoolYear.find(:all, :conditions => "#{_(:id, :school_year)} in(#{quote_string(params[:school_year].join(','))})").collect(&:description).join(', ')
           @advanced = true
+          @searched_school_year_ids = params[:school_year]
         end
       
         # Check gender
@@ -899,7 +900,7 @@ class PeopleController < ApplicationController
 
         if params[:role].present? && params[:role].first.to_i > 0
           conditions << database_search_conditions(params)[:role]
-          @tables[MinistryInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = #{MinistryInvolvement.table_name}.#{_(:person_id, :ministry_involvement)}"
+          @tables[MinistryInvolvement] = "Person.#{_(:id, :person)} = MinistryInvolvement.#{_(:person_id, :ministry_involvement)}"
           @search_for << MinistryRole.find(:all, :conditions => "#{_(:id, :ministry_role)} in(#{quote_string(params[:role].join(','))})").collect(&:name).join(', ')
           @advanced = true
           @searched_ministry_roles = params[:role]
@@ -969,7 +970,7 @@ class PeopleController < ApplicationController
       end
 
       new_tables = @tables.dup.delete_if {|key, value| @view.tables_clause.include?(key.to_s)}
-      tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join('')
+      tables_clause = @view.tables_clause + new_tables.collect {|table| " LEFT JOIN #{table[0].table_name} as #{table[0].to_s} on #{table[1]} " }.join(' ')
       if params[:search_id].blank?
         @search = @my.searches.find(:first, :conditions => {_(:query, :search) => @conditions})
         if @search
@@ -996,6 +997,12 @@ class PeopleController < ApplicationController
         @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
       end
       @searched_ministry_ids ||= get_ministry_ids
+      
+      # pass which campuses were searched for to the view
+      if params[:campus]
+        campuses = Campus.find :all, :conditions => "#{Campus._(:id)} IN (#{params[:campus].join(",")})"
+        @searched_campus_ids = campuses.uniq.collect(&:id).collect(&:to_s)
+      end
     end
 
     
@@ -1191,7 +1198,7 @@ class PeopleController < ApplicationController
           campus_ids = [ 0 ] # so that the query doesn't crash
         end
         @search_for << Campus.find(:all, :conditions => "#{_(:id, :campus)} IN (#{quote_string(campus_ids.join(','))})").collect(&:name).join(', ')
-        @tables[CampusInvolvement] = "#{Person.table_name}.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
+        @tables[CampusInvolvement] = "Person.#{_(:id, :person)} = CampusInvolvement.#{_(:person_id, :campus_involvement)}" if @tables
         @advanced = true
         campus_condition = " (CampusInvolvement.#{_(:end_date, :campus_involvement)} is NULL"
         campus_condition += " AND CampusInvolvement.#{_(:campus_id, :campus_involvement)} IN (#{quote_string(campus_ids.join(','))}))"

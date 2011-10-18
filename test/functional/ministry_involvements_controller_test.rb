@@ -140,7 +140,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:person_2)
     Factory(:person_8)
 
-    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"]
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :mids => ["7"]
  
     assert assigns(:involvements)
     assert_equal 2, assigns(:involvements).size
@@ -160,7 +160,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:person_2)
     Factory(:person_8)
 
-    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"], :search_by_ministry_role_ids => ["7"]
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :mids => ["7"], :mrids => ["7"]
 
     assert assigns(:involvements)
     assert_equal 1, assigns(:involvements).size

@@ -138,7 +138,7 @@ module AuthenticatedSystem
 
     def authenticate_from_group_invitation
       unless check_and_increment_login_code(params[:login_code], GroupInvitation) == true
-        flash[:notice] = "<big>We're sorry, the link you came from is no longer valid</big>"
+        flash[:notice] = "We're sorry, the link you came from is no longer valid"
         access_denied(true)
       end
     end

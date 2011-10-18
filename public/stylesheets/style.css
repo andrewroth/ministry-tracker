@@ -188,7 +188,11 @@ a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
   padding-left:20px;
   border:0px solid black;
   height:18px;
-  background:url(/images/zoom.png) top left no-repeat;
+  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat; background-position:-5px -233px;
+}
+
+.butProfile a:hover {
+  background-position:-5px -268px;
 }
 
 .butUpdate a, .butDelete a {
@@ -760,6 +764,11 @@ img.opaqueWhite {
   font-size: 11px;
 }
 
+.advanced_search_field_label {
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: normal;
+}
 
 div.uploadStatus {
   margin: 5px;
@@ -1669,6 +1678,9 @@ padding-bottom:5px;
 .removeInvolvementIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -1211px; }
 .removeInvolvementIconLink:hover { background-position:-10px -1242px; }
 
+.removeGroupIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -685px; }
+.removeGroupIconLink:hover { background-position:-10px -718px; text-decoration:none; }
+
 .removeMentorIconLink       { padding:2px 0 0 17px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -886px; }
 .removeMentorIconLink:hover { background-position:-10px -919px; }
 
@@ -1743,7 +1755,7 @@ padding-bottom:5px;
   margin:10px;
   padding:10px;
   background:#FFCB05;
-  font-size:13px;
+  font-size:16px;
   -moz-border-radius: 10px; -webkit-border-radius: 10px;
 }
 
@@ -1982,7 +1994,7 @@ div.choose_ministry_tree {
   margin: 0;
   padding: 0.7em;
   text-align: left;
-  background-color: #FAFAFA;
+  background-color: #F7FAF7;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
@@ -2088,10 +2100,15 @@ ul.statsLinkList {
 }
 
 #attendanceCampusSelect label {
-  float: left;
-  width: 15em;
+  display: inline;
+  float: none;
+  width: auto;
   text-align: right;
   color: #1F429B;
+}
+
+#attendanceCampusSelect form {
+  text-align:center;
 }
 
 #newWeeklyReportFormContainer {
@@ -2136,10 +2153,15 @@ ul.statsLinkList {
   font-weight: normal;
 }
 
+#reportTypeSubTitle {
+  font-weight: normal;
+  font-style: italic;
+}
+
 .statsReportTab {
   display: inline-block;
   border: solid 2px #D8D8D8;
-  background-color: #FAFAFA;
+  background-color: #F7FAF7;
   padding: 5px;
   margin: 0 0.5em 0 0.5em;
   -moz-border-radius: 5px;
@@ -2178,7 +2200,7 @@ ul.statsLinkList {
   display: none;
   padding: 30px;
   text-align: center;
-  background-color: #FAFAFA;
+  background-color: #F7FAF7;
   -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
   -webkit-box-shadow:0 7px 20px #BFBFBF; -moz-box-shadow:0 7px 20px #BFBFBF; box-shadow:0 7px 20px #BFBFBF;
 }
@@ -2249,7 +2271,6 @@ fieldset {
 
 .statsTitle {
   font-size: 18px;
-  font-weight: bold;
   margin-bottom: 20px;
   color: #666766;
 }
@@ -2286,7 +2307,7 @@ fieldset {
 }
 
 #results .nohighlight {
-  background-color: #FAFAFA;
+  background-color: #F7FAF7;
 }
 
 #results .statsTableTitleProgressBar {
@@ -2537,7 +2558,7 @@ h2.group_type_title {
 
 .groupMinimalInfoContainer {
   float:left;
-  width:410px;
+  width:75%;
 }
 
 .groupMinimalInfoContainer a {
@@ -2552,6 +2573,7 @@ h2.group_type_title {
   margin:10px 10px 0 0;
   float:right;
   text-align:right;
+  width:20%;
 }
 
 .groupMinimalActionsContainer b {
@@ -2619,14 +2641,14 @@ h2.group_type_title {
 }
 
 #collection_group_list {
-  width:21%;
+  width:25%;
   float:right;
 }
 
 #collection_group_link {
   position:fixed;
   font-size:12px;
-  margin-right:20px;
+  margin:15px 15px 0 0;
   line-height:22px;
 }
 
@@ -3371,7 +3393,8 @@ table.groupInvolvementList td {
 }
 
 table.groupInvolvementList th {
-  font-weight: bold;
+  text-transform:uppercase;
+  font-size:12px;
   padding: 4px;
 }
 
@@ -3719,11 +3742,10 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 
 #closeLink { font-size:32px; position:absolute; right:4px; top:-2px; height:24px; }
 
-#reviewableReports th { font-weight:bold; }
 #reviewableReports td { vertical-align:middle; }
 #reviewableReports td.name { font-weight:bold; padding-left:20px; }
 
-#review_report { background-color: #FAFAFA; position:relative; margin:30px; padding:20px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 7px 20px #BFBFBF; -moz-box-shadow: 0 7px 20px #BFBFBF; box-shadow: 0 7px 20px #BFBFBF; }
+#review_report { background-color: #F7FAF7; position:relative; margin:30px; padding:20px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0 7px 20px #BFBFBF; -moz-box-shadow: 0 7px 20px #BFBFBF; box-shadow: 0 7px 20px #BFBFBF; }
 #spinner_review { margin-left:auto; margin-right:auto; display:block; }
 .edit_summer_report_reviewer .action-button { margin:0 50px; }
 .edit_summer_report_reviewer #reviewButtons { text-align:center; }
