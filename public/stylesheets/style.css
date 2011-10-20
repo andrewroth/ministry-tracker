@@ -2190,10 +2190,9 @@ ul.statsLinkList {
 }
 
 #statsReportTimeTabs {
-  margin: 0.8em auto 0 auto;
+  margin: 0.8em auto;
   text-align: center;
   width: 36em;
-  height: 4em;
 }
 
 .statsReportTabContainer {
@@ -2247,6 +2246,10 @@ ul.statsLinkList {
 
 #IndicatedDecisionsVSGoal, #nationalIndicatedDecisions {
   color: #CCCCCC;
+}
+
+#labelled_people_report_label_id {
+  font-size:18px;
 }
 
 .center {
