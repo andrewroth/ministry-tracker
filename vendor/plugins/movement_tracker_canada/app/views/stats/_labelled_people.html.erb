@@ -1,0 +1,25 @@
+
+<p><span class="statsTitle">
+  <%= pluralize(@label_people.size, "person") %> with label
+  <%= select :labelled_people_report, :label_id, @all_labels.collect{|l| [l.content, l.id]}, {:selected => @selected_label.id} %>
+  at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<ul>
+<% @label_people.each do |person| %>
+  <li>
+    <%= link_to person.full_name, person %> <%= person.is_staff_somewhere? ? "(staff)" : "" %>
+  </li>
+<% end %>
+</ul>
+
+
+<script type="text/javascript">
+  $(
+    $("#labelled_people_report_label_id").change(function() {
+      selectReport("label_id=" + $("#labelled_people_report_label_id").val());
+    })
+  );
+</script>
