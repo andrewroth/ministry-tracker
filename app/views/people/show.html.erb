@@ -14,7 +14,7 @@
           <%- if authorized?(:edit, :people) -%>
             <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
             <%- if @person == @me && @person.user.guid -%>
-              <div id="passwordButton" class="profileButton"><a href="https://signin.mygcx.org/cas/selfservice.htm" target="_blank">CHANGE PASSWORD</a></div> 
+              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank">CHANGE PASSWORD</a></div> 
             <%- else -%>
               <div id="passwordButton" class="profileButton"><%= link_to("CHANGE PASSWORD", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
             <%- end -%>
