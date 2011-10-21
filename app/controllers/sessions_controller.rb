@@ -99,7 +99,7 @@ class SessionsController < ApplicationController
         elsif Cmt::CONFIG[:gcx_direct_logins]
           # If regular auth didn't work, see if they used CAS credentials
           form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
-          cas_url = 'https://signin.mygcx.org/cas/login'
+          cas_url = 'https://thekey.me/cas/login'
           begin
             agent = Mechanize.new
             page = agent.post(cas_url, form_params)
