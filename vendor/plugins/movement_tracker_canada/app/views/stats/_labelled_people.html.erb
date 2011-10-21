@@ -7,7 +7,7 @@
 
 <br/>
 
-<ul>
+<ul id="labelled_people_list">
 <% @label_people.each do |person| %>
   <li>
     <%= link_to person.full_name, person %> <%= person.is_staff_somewhere? ? "(staff)" : "" %>
