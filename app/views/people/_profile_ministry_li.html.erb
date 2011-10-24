@@ -3,7 +3,7 @@
 		<%= link_to_remote("", {:url => person_ministry_involvement_path(@person, mi),
 		      :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?",
 		      :method => :delete,
-		      :before => "$('#spinner').show()"}, {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}", :class => "removeInvolvementIconLink"})  # if @me == @person || authorized?(:new)
+		      :before => "$('#spinner').show()"}, {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}", :class => "removeInvolvementIconLink"})
 		%>
 	<% end %>
 <%= link_to_remote(mi.ministry.name,

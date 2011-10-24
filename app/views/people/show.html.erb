@@ -86,10 +86,12 @@
       <%- if @staff -%>
         <div id="ministries_div" class="involvementType">
           <h4>
-            <%- if authorized?(:edit, :people) -%><%= link_to_remote "", {:url => person_ministry_involvements_url(@person.id), :method => :get,
-                                                                          :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"}, 
-                                                                         {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
-                                                                          :class => "editInvolvementIconLink"} %><%- end -%> Ministries
+            <%- if authorized?(:edit, :people) && @me.is_staff_somewhere? -%>
+              <%= link_to_remote "", {:url => person_ministry_involvements_url(@person.id), :method => :get,
+                                      :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"}, 
+                                     {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
+                                      :class => "editInvolvementIconLink"} %>
+            <%- end -%> Ministries
             <%= spinner('Ministries') %>
           </h4>
           
@@ -108,8 +110,6 @@
       <div id="campuses_div" class="involvementType">
         <%= render :partial => 'campuses' %>
       </div>
-      <%# = link_to '&raquo; Find a Group', find_groups_url %>
-      <%#= link_to '&raquo; Find a Ministry Team', :controller => 'groups', :action => 'list', :id => '2' %>
 
       <div id="interestedGroups" class="involvementType">
         <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
