@@ -52,6 +52,8 @@ class StatsController < ApplicationController
         setup_personal_report
       when ONE_STAT
         setup_one_stat_report
+      when 'labelled_people'
+        setup_labelled_people_report
       else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
@@ -234,6 +236,25 @@ class StatsController < ApplicationController
     @results_partial = "annual_goals"
   end
 
+  def setup_labelled_people_report
+    @results_partial = "labelled_people"
+
+    @all_labels = Label.all
+
+    @selected_label = Label.exists?(params[:label_id]) ? Label.find(params[:label_id]) : @all_labels.first
+
+    all_people_with_selected_label = Person.all(:joins => :label_people, :conditions => {:label_people => {:label_id => @selected_label.id}})
+
+    ci_people = Person.all(:joins => :campus_involvements, :conditions => ["#{_(:campus_id, :campus_involvement)} in (?) and #{Person.__(:id, :person)} in (?)",
+                                                                            @stats_ministry.unique_campuses.collect(&:id), all_people_with_selected_label.collect(&:id)])
+
+    mi_people = Person.all(:joins => :ministry_involvements, :conditions => ["#{_(:ministry_id, :ministry_involvement)} in (?) and #{Person.__(:id, :person)} in (?)",
+                                                                              @stats_ministry.myself_and_descendants.collect(&:id), all_people_with_selected_label.collect(&:id)])
+
+    @label_people = (ci_people + mi_people).uniq
+
+    @label_people.sort!{ |l1, l2| l1.full_name <=> l2.full_name }
+  end
 
   def setup_how_people_came_to_christ_report
 
@@ -705,6 +726,8 @@ class StatsController < ApplicationController
         # no more time tabs to hide
       when ONE_STAT
         hide_time_tabs_for_summary_according_to_stat(one_stat)
+      when 'labelled_people'
+        hide_time_tabs([:week, :month, :semester, :year])
       end
    
   end
