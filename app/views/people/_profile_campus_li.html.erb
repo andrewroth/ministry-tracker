@@ -1,8 +1,7 @@
 <li id="ci_<%= ci.id %>">
   <% ministry = ci.campus.derive_ministry %>
-  <% if @person == @me || (
-          authorized?(:edit, :campus_involvements) &&
-            ( is_ministry_leader(ministry, @me) || ministry.leaders.include?(@me) )
+  <% if @person == @me || ( authorized?(:edit, :campus_involvements) &&
+          ( is_ministry_leader(ministry, @me) || ministry.leaders.include?(@me) || is_ministry_admin )
         )
   %>
     <%= link_to_remote("", 
@@ -11,6 +10,7 @@
           :method => :delete,
           :before => "$('#spinner').show()"}, {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{ci.campus.name}", :class => "removeInvolvementIconLink"}) %>
   <% end %>
+
   <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
   <%= ci.try(:school_year).try(:name) %>
   <%= ci.find_or_create_ministry_involvement.ministry_role.name if @student %>
