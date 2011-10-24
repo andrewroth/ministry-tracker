@@ -126,6 +126,11 @@ module AuthenticatedSystem
       u = false
       if cas_user
         u = User.find_or_create_from_cas(session[:cas_last_valid_ticket])
+        
+        flash[:notice] = "<strong>Sorry, we could not sign you in.</strong><br/>
+                          You may have tried to create a new account with an email that's already in the Pulse.</br>
+                          <a href='https://thekey.me/cas/service/selfservice?target=displayForgotPassword'>Click here if you forgot your password</a>." unless u
+        
         self.current_user = u
       end
     end
