@@ -1,11 +1,18 @@
 $(document).ready(function(){selectReport()});
 
 
-function selectReport() {
+function selectReport(extra_data) {
+  if(extra_data !== undefined) {
+    extra_data = '&' + extra_data;
+  }
+  else {
+    extra_data = '';
+  }
+
   beginLoadingStatsTab();
   jQuery.ajax({
     complete: function(request){ completeLoadingStatsTab() },
-    data: getWithStringForReportForm(),
+    data: getWithStringForReportForm()+extra_data,
     dataType:'script',
     type:'post',
     url:'/stats/select_report'})
