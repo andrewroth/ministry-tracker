@@ -45,7 +45,7 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
       <input type="text" id="<%=input_id%>" class="<%=input_class%>" name="q" value="<%=default_text%>"/>
     <% end %>
 
-    <%= javascript_include_tag "jquery.ajaxQueue.js", "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
+    <%= javascript_include_tag "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
     <script type="text/javascript">
       $("#<%=input_id%>").autocomplete("<%=autocomplete_action%><%="?#{action_params}" if action_params.present?%>", {
         resultsClass: "<%=resultsClass%>",
