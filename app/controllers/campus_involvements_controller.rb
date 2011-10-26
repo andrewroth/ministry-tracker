@@ -101,7 +101,11 @@ class CampusInvolvementsController < ApplicationController
     @campus_involvement = @person.campus_involvements.find params[:id]
 
     mi = @campus_involvement.find_or_create_ministry_involvement
-    role = MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) ? MinistryRole.find(params[:ministry_involvement][:ministry_role_id]) : mi.ministry_role
+    if params[:ministry_involvement] && params[:ministry_involvement][:ministry_role_id] && MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id])
+      role = MinistryRole.find(params[:ministry_involvement][:ministry_role_id])
+    else
+      role = mi.ministry_role
+    end
 
     unless @me.has_permission_to_update_role(mi, role) || is_ministry_leader(mi.ministry, @me) || is_ministry_admin
       flash[:notice] = "Sorry, you can't edit #{mi.try(:person).try(:first_name)}'s campus involvement at the #{mi.try(:ministry).try(:name)} ministry"
