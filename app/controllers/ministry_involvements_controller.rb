@@ -11,12 +11,10 @@ class MinistryInvolvementsController < ApplicationController
   # used to pop up a dialog box
   def index
     @from_profile = true
-    unless is_staff_somewhere(@person)
-      @denied = true
-    else
-      @ministry_involvements = @person.ministry_involvements
-      @involvement_history = @person.involvement_history
-    end
+    
+    @ministry_involvements = @person.ministry_involvements
+    @involvement_history = @person.involvement_history
+  
     render :template => 'involvements/index'
   end
 
@@ -68,12 +66,15 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    # Only staff can create ministry_involvements
-    unless is_staff_somewhere(@me)
-      flash[:notice] = "Only staff can set ministry involvement"
-      redirect_to :back
+    # check if they can create this ministry involvement
+    new_ministry_involvement = MinistryInvolvement.new(params[:ministry_involvement])
+    unless is_staff_somewhere(@me) && 
+           (@me.has_permission_to_update_role(new_ministry_involvement, new_ministry_involvement.ministry_role) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set people to #{new_ministry_involvement.ministry_role.try(:name)} at the #{new_ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
+
     person_id = params[:ministry_involvement] && params[:ministry_involvement][:person_id] ? params[:ministry_involvement][:person_id] : params[:person_id]
     @person = Person.find(person_id)
 
@@ -155,9 +156,11 @@ class MinistryInvolvementsController < ApplicationController
     # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
     params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me || !is_ministry_admin(@ministry, @me)
     
-    # And you can't set any roles higher than yourself
-    unless possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
-      flash[:notice] = "Sorry, you can't set that role"
+    # And you can't set any roles higher than yourself or demote others higher than or equal to you
+    unless MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) &&
+           (@me.has_permission_to_update_role(@ministry_involvement, MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set #{@ministry_involvement.try(:person).try(:first_name)} to #{MinistryRole.find(params[:ministry_involvement][:ministry_role_id]).try(:name)} at the #{@ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
     @person = @ministry_involvement.person 
