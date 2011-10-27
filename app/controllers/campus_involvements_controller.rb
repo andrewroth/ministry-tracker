@@ -135,10 +135,10 @@ class CampusInvolvementsController < ApplicationController
   def update_campus_involvement(ci, my_role)
     handle_campus_involvement do |is_student|
       if is_student
-        ci.update_student_campus_involvement(flash, @me,
-                                             params[:ministry_involvement][:ministry_role_id],
-                                             params[:campus_involvement][:school_year_id],
-                                             params[:campus_involvement][:campus_id])
+        ministry_role_id = params[:ministry_involvement] && params[:ministry_involvement][:ministry_role_id] ? params[:ministry_involvement][:ministry_role_id] : nil
+        school_year_id = params[:campus_involvement] && params[:campus_involvement][:school_year_id] ? params[:campus_involvement][:school_year_id] : nil
+        campus_id = params[:campus_involvement] && params[:campus_involvement][:campus_id] ? params[:campus_involvement][:campus_id] : nil
+        ci.update_student_campus_involvement(flash, @me, ministry_role_id, school_year_id, campus_id)
       else
         update_staff_campus_involvement
       end
