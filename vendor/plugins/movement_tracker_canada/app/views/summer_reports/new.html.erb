@@ -12,7 +12,7 @@
       <small>
         <b>Questions?</b> Contact <%= @contact_person.full_name %>
         (<%= "#{link_to "#{@contact_person.email.downcase}", new_email_url("person[]" => @contact_person.id), :target => "_blank" if @contact_person.email.present?} #{@contact_phone}" %>)
-        or refer to the <%= link_to "policy manual", "https://focus.crusade.org/hr/manual/StaffHandbook.pdf", :target => "_blank" %>.
+        or refer to the <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/10/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %>.
       </small>
     <% end %>
 
@@ -47,7 +47,7 @@
   <h3>MPD</h3>
   <small>
     <b>Guideline:</b> For every $200/monthly support needed, one week will be given for full-time
-    Ministry Partner Development (MPD) to a maximum of 4 weeks. The <%= link_to "policy manual", "https://focus.crusade.org/hr/manual/StaffHandbook.pdf", :target => "_blank" %> also allows
+    Ministry Partner Development (MPD) to a maximum of 4 weeks. The <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/10/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %> also allows
     for 2 weeks Ministry Partner Maintenance (MPM) per year.
     <br/><br/>
     <b>*New:</b>
