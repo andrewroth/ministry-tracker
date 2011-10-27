@@ -108,7 +108,10 @@ class CampusInvolvementsController < ApplicationController
     end
 
     unless @me.has_permission_to_update_role(mi, role) || is_ministry_leader(mi.ministry, @me) || is_ministry_admin
-      flash[:notice] = "Sorry, you can't edit #{mi.try(:person).try(:first_name)}'s campus involvement at the #{mi.try(:ministry).try(:name)} ministry"
+      flash[:notice] = "Sorry, you can't make that change to " +
+                       "#{mi.person == @me ? "your" : "#{mi.person.try(:first_name)}'s"}" +
+                       " campus involvement at the #{mi.try(:ministry).try(:name)} ministry"
+
       @denied = true
       return
     end
