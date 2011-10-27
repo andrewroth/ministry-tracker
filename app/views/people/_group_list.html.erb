@@ -8,11 +8,20 @@
     <% gis.each do |gi| -%>
       <% group = gi.group -%>
       <li id="group_<%= group.id %>">
+
         <% if (authorized?(:destroy_own, :group_involvements)&&(@person == @me)) %>
           <%= link_to_remote("", {:url => destroy_own_group_involvement_url(gi.id),
                            :confirm => "Are you sure you want to leave #{group.name}?",
                            :method => :delete,
                            :before => "$('#spinner').show()"}, {:title => "Leave group #{group.name}", :class => "removeInvolvementIconLink"}) %>
+
+        <% elsif (group.is_leader(@me) || group.is_co_leader(@me)) || is_ministry_leader(gi.group.ministry, @me) || is_ministry_admin %>
+          <%= link_to_remote("", {:url => url_for(:controller => :group_involvements, :action => :destroy, :members => [gi.person_id], :id => gi.id),
+                           :confirm => "Are you sure you want to remove #{gi.person.first_name} from #{group.name}?",
+                           :method => :delete,
+                           :before => "$('#spinner').show()",
+                           :after => "location.reload();"},
+                           {:title => "Remove #{gi.person.first_name} from group #{group.name}", :class => "removeInvolvementIconLink"}) %>
         <% end %>
 
         <%= link_to group.name, group_url(group) %> <%= gi.level.capitalize -%>

@@ -1,0 +1,4 @@
+if @denied && flash[:notice].present?
+  page.call("close_thickbox")
+  update_flash(page)
+end
