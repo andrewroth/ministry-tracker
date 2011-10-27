@@ -26,11 +26,15 @@ class MinistryInvolvementsController < ApplicationController
   # Records the ending of a user's involvement with a particular ministry
   def destroy
     @person = Person.find(params[:person_id])
-    if @me == @person || authorized?(:new, :people)
-      @ministry_involvement = MinistryInvolvement.find(params[:id])
+    @ministry_involvement = MinistryInvolvement.find(params[:id])
+
+    if @me == @person ||
+       (authorized?(:new, :people) && @me.has_permission_to_update_role(@ministry_involvement, @ministry_involvement.ministry_role)) || is_ministry_admin
+       
       if !is_admin? &&
         @ministry_involvement.ministry.name == Cmt::CONFIG[:default_ministry_name] &&
         @ministry_involvement.ministry_role.is_a?(StaffRole)
+
         respond_to do |format|
           format.js   do
             render :update do |page|
@@ -59,6 +63,7 @@ class MinistryInvolvementsController < ApplicationController
         format.js   do 
           render :update do |page|
             page.hide('spinner')
+            page.alert("Sorry, you can't remove #{@person.first_name}'s #{@ministry_involvement.ministry_role.name} involvement at #{@ministry_involvement.ministry.name}")
           end
         end
       end
@@ -159,7 +164,9 @@ class MinistryInvolvementsController < ApplicationController
     # And you can't set any roles higher than yourself or demote others higher than or equal to you
     unless MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) &&
            (@me.has_permission_to_update_role(@ministry_involvement, MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) || is_ministry_admin)
-      flash[:notice] = "Sorry, you can't set #{@ministry_involvement.try(:person).try(:first_name)} to #{MinistryRole.find(params[:ministry_involvement][:ministry_role_id]).try(:name)} at the #{@ministry_involvement.try(:ministry).try(:name)} ministry"
+      flash[:notice] = "Sorry, you can't set " +
+                       "#{@ministry_involvement.person == @me ? "yourself" : @ministry_involvement.person.try(:first_name)}" +
+                       " to #{MinistryRole.find(params[:ministry_involvement][:ministry_role_id]).try(:name)} at the #{@ministry_involvement.try(:ministry).try(:name)} ministry"
       @denied = true
       return
     end
