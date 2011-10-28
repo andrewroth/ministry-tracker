@@ -49,12 +49,13 @@ class DashboardController < ApplicationController
       my_campuses_ids = @my_campuses.collect { |c| c.id }
 
       if my_campuses_ids.present? then
-        my_event_ids = EventCampus.find(:all, :conditions => _(:campus_id, :event_campuses) + " IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
+        my_event_ids = EventCampus.find(:all, :conditions => "#{_(:campus_id, :event_campuses)} IN (#{my_campuses_ids.join(',')})").collect { |ec| ec.event_id }
       end
 
       if my_event_ids.present? && @my_campuses.present? then
 
-        my_events = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{my_event_ids.join(',')})")
+        my_events = Event.find(:all, :conditions => "#{Event.table_name}.#{_(:id, :event)} IN (#{my_event_ids.join(',')}) "+
+                                                    "#{!is_staff_somewhere(@me) ? "AND #{Event.table_name}.visible_to_students = true" : ''}")
 
         @eventbrite_events = []
         live_event_ids = [] # get only the event_ids for live events, right now we get the event status from Eventbrite
@@ -81,8 +82,8 @@ class DashboardController < ApplicationController
 
         if live_event_ids.present? then
           #find all event_groups that the live events are in
-          event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}." + _(:id, :event) + " IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
-          @event_groups = ::EventGroup.find(:all, :conditions => "#{::EventGroup.table_name}." + _(:id, :event_group) + " IN (#{event_group_ids.join(',')})")
+          event_group_ids = Event.find(:all, :conditions => "#{Event.table_name}.#{_(:id, :event)} IN (#{live_event_ids.join(',')})").collect { |e| e.event_group_id }
+          @event_groups = ::EventGroup.find(:all, :conditions => "#{::EventGroup.table_name}.#{_(:id, :event_group)} IN (#{event_group_ids.join(',')})")
 
           #organize eventbrite events by group
           @eventbrite_events_by_group = {}
