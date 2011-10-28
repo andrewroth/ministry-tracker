@@ -9,7 +9,8 @@ class EventsController < ApplicationController
   skip_before_filter :authorization_filter, :only => [:select_report]
   
   after_filter :sync_event_data_delayed_job, :only => [:attendance]
-  
+
+  before_filter :check_student_visibility, :only => [:show, :edit, :update, :destroy, :attendance, :select_report]
   
   NO_ATTENDEES_EXCEPTION = "There are no registered attendees to this event yet."
   NO_ATTENDEES_AT_CAMPUS_EXCEPTION = "There are no registered attendees to this event from the selected campus,"
@@ -179,6 +180,9 @@ class EventsController < ApplicationController
   end
 
 
+  private
+
+
   def setup_report_scope_radios
     @attendance_scope_radios = []
     REPORT_SCOPES.each { |k,v| @attendance_scope_radios << get_initialized_scope_radio(k.to_s ,v) }
@@ -224,8 +228,8 @@ class EventsController < ApplicationController
       my_campuses_at_event = @event.campuses.select { |ec| @my_campuses.include? ec }
       
       if my_campuses_at_event.blank? && !authorized?(:show_all_campuses_individuals, :events)
-        flash[:notice] = "Sorry, the event you were viewing isn't associated with any of your campuses"
-        access_denied
+        flash[:notice] = "Sorry, that event isn't associated with any of your campuses"
+        redirect_to :controller => "dashboard", :action => "index"
         return
       elsif authorized?(:show_all_campuses_individuals, :events)
         @selected_campus = @event.campuses.first if @selected_campus.desc != "Other"
@@ -415,11 +419,11 @@ class EventsController < ApplicationController
 
 
   def setup_event
-    @event = Event.find(params[:id])
+    @event ||= Event.find(params[:id])
 
     begin
       @eventbrite_user ||= EventBright.setup_from_initializer()
-      @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+      @eb_event ||= EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
     rescue Exception => e
       setup_error_rescue
     end
@@ -438,10 +442,6 @@ class EventsController < ApplicationController
     @results_partial = "error"
   end
 
-
-
-  private
-  
   def sync_event_data_delayed_job
     ::Event.send_later(:sync_unsynced_events, params[:force_sync_all])
   end
@@ -450,4 +450,11 @@ class EventsController < ApplicationController
     params[:action] == 'index' ? 'manage' : 'application'
   end
   
+  def check_student_visibility
+    setup_event
+    unless @event.visible_to_students || is_staff_somewhere(@me) || is_ministry_admin
+      flash[:notice] = "Sorry, that event's not for you"
+      redirect_to :controller => "dashboard", :action => "index"
+    end
+  end
 end
