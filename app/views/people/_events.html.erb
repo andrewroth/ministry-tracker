@@ -3,7 +3,9 @@
   <% if @person.events.present? || @person.cim_reg_events.present? %>
     
     <% @person.events.each do |e| %>
-      <li><%= e.title %></li>
+      <% if e.visible_to_students || is_staff_somewhere(@me) %>
+        <li><%= e.title %></li>
+      <% end %>
     <% end %>
   
     <%- @person.cim_reg_events.each do |reg| -%>
