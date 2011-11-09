@@ -1,7 +1,8 @@
 module Pat
   def current_event_group_id
     #58   # 2010 projects
-    75    # 2011 projects
+    #75    # 2011 projects
+    82    # 2012 projects
   end
 
   def project_acceptance_totals(campus_ids, secondary_sort = {}, event_group_id = current_event_group_id)
