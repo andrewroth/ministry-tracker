@@ -26,7 +26,7 @@ class CampusInvolvementsController < ApplicationController
     @updated = !@campus_involvement.new_record?
 
     params[:campus_involvement][:school_year_id] = params[:campus_involvement][:school_year_id]
-    update_campus_involvement
+    update_campus_involvement(@campus_involvement, get_my_role)
     if @campus_involvement.archived?
       @campus_involvement.end_date = nil
       @campus_involvement.last_history_update_date = Date.today
@@ -99,24 +99,46 @@ class CampusInvolvementsController < ApplicationController
   
   def update
     @campus_involvement = @person.campus_involvements.find params[:id]
-    update_campus_involvement
+
+    mi = @campus_involvement.find_or_create_ministry_involvement
+    if params[:ministry_involvement] && params[:ministry_involvement][:ministry_role_id] && MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id])
+      role = MinistryRole.find(params[:ministry_involvement][:ministry_role_id])
+    else
+      role = mi.ministry_role
+    end
+
+    unless @me.has_permission_to_update_role(mi, role) || is_ministry_leader(mi.ministry, @me) || is_ministry_admin
+      flash[:notice] = "Sorry, you can't make that change to " +
+                       "#{mi.person == @me ? "your" : "#{mi.person.try(:first_name)}'s"}" +
+                       " campus involvement at the #{mi.try(:ministry).try(:name)} ministry"
+
+      @denied = true
+      return
+    end
+
+    update_campus_involvement(@campus_involvement, get_my_role)
+
     @campus_involvement = @person.campus_involvements.find params[:id] # it may have changed, e.g. person graduated
     
     respond_to do |format|
       format.html {
-        msg = "Thanks, your school year has been saved."
-        msg += " Congrats on your graduation!" if @campus_involvement.school_year.name == "Graduated"
-        flash[:notice] = "#{msg}"
+        if @campus_involvement.try(:person) == @me
+          flash[:notice] =  "Thanks, your school year has been saved."
+          flash[:notice] += " Congrats on your graduation!" if @campus_involvement.school_year.name == "Graduated"
+        end
         redirect_to person_path @campus_involvement.person_id
       }
       format.js { render :template => 'involvements/update' }
     end
   end
 
-  def update_campus_involvement
+  def update_campus_involvement(ci, my_role)
     handle_campus_involvement do |is_student|
       if is_student
-        update_student_campus_involvement
+        ministry_role_id = params[:ministry_involvement] && params[:ministry_involvement][:ministry_role_id] ? params[:ministry_involvement][:ministry_role_id] : nil
+        school_year_id = params[:campus_involvement] && params[:campus_involvement][:school_year_id] ? params[:campus_involvement][:school_year_id] : nil
+        campus_id = params[:campus_involvement] && params[:campus_involvement][:campus_id] ? params[:campus_involvement][:campus_id] : nil
+        ci.update_student_campus_involvement(flash, @me, ministry_role_id, school_year_id, campus_id)
       else
         update_staff_campus_involvement
       end
@@ -232,6 +254,7 @@ class CampusInvolvementsController < ApplicationController
     # However, in the intereste of not breaking things, I'll leave it how it is here until I
     # have time to move it and test it thoroughly. -AR June 24, 2010
     #
+    logger.warn "WARNING: CampusInvolvementsController#update_student_campus_involvement is deprecated, call CampusInvolvement#update_student_campus_involvement instead"
     
     @student = true
     @campus_ministry_involvement = @campus_involvement.find_or_create_ministry_involvement

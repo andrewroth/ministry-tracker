@@ -11,12 +11,10 @@ class MinistryInvolvementsController < ApplicationController
   # used to pop up a dialog box
   def index
     @from_profile = true
-    unless is_staff_somewhere(@person)
-      @denied = true
-    else
-      @ministry_involvements = @person.ministry_involvements
-      @involvement_history = @person.involvement_history
-    end
+    
+    @ministry_involvements = @person.ministry_involvements
+    @involvement_history = @person.involvement_history
+  
     render :template => 'involvements/index'
   end
 
@@ -28,11 +26,15 @@ class MinistryInvolvementsController < ApplicationController
   # Records the ending of a user's involvement with a particular ministry
   def destroy
     @person = Person.find(params[:person_id])
-    if @me == @person || authorized?(:new, :people)
-      @ministry_involvement = MinistryInvolvement.find(params[:id])
+    @ministry_involvement = MinistryInvolvement.find(params[:id])
+
+    if @me == @person ||
+       (authorized?(:new, :people) && @me.has_permission_to_update_role(@ministry_involvement, @ministry_involvement.ministry_role)) || is_ministry_admin
+       
       if !is_admin? &&
         @ministry_involvement.ministry.name == Cmt::CONFIG[:default_ministry_name] &&
         @ministry_involvement.ministry_role.is_a?(StaffRole)
+
         respond_to do |format|
           format.js   do
             render :update do |page|
@@ -61,6 +63,7 @@ class MinistryInvolvementsController < ApplicationController
         format.js   do 
           render :update do |page|
             page.hide('spinner')
+            page.alert("Sorry, you can't remove #{@person.first_name}'s #{@ministry_involvement.ministry_role.name} involvement at #{@ministry_involvement.ministry.name}")
           end
         end
       end
@@ -68,12 +71,15 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    # Only staff can create ministry_involvements
-    unless is_staff_somewhere(@me)
-      flash[:notice] = "Only staff can set ministry involvement"
-      redirect_to :back
+    # check if they can create this ministry involvement
+    new_ministry_involvement = MinistryInvolvement.new(params[:ministry_involvement])
+    unless is_staff_somewhere(@me) && 
+           (@me.has_permission_to_update_role(new_ministry_involvement, new_ministry_involvement.ministry_role) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set people to #{new_ministry_involvement.ministry_role.try(:name)} at the #{new_ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
+
     person_id = params[:ministry_involvement] && params[:ministry_involvement][:person_id] ? params[:ministry_involvement][:person_id] : params[:person_id]
     @person = Person.find(person_id)
 
@@ -155,9 +161,13 @@ class MinistryInvolvementsController < ApplicationController
     # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
     params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me || !is_ministry_admin(@ministry, @me)
     
-    # And you can't set any roles higher than yourself
-    unless possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
-      flash[:notice] = "Sorry, you can't set that role"
+    # And you can't set any roles higher than yourself or demote others higher than or equal to you
+    unless MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) &&
+           (@me.has_permission_to_update_role(@ministry_involvement, MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set " +
+                       "#{@ministry_involvement.person == @me ? "yourself" : @ministry_involvement.person.try(:first_name)}" +
+                       " to #{MinistryRole.find(params[:ministry_involvement][:ministry_role_id]).try(:name)} at the #{@ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
     @person = @ministry_involvement.person 

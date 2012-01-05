@@ -341,8 +341,15 @@ namespace :db do
   task :set_french_campus_names => :environment do
     # this is a temporary hack to work-around some character encoding issues that result from cloning databases
     
-    french_campus_names = {"62" => "Université de Montreal", "63" => "Université du Quebec", "64" => "Université de Sherbrooke", "65" => "Université Laval",
-                           "144" => "Cégep Ste-Foy", "145" => "Cégep St. Lawrence", "146" => "Cégep François-Xavier-Garneau"}
+    french_campus_names = {"62" => "Université de Montreal",
+                           "63" => "Université du Québec à Québec",
+                           "64" => "Université de Sherbrooke",
+                           "65" => "Université Laval",
+                           "144" => "Cégep Ste-Foy",
+                           "145" => "Cégep St. Lawrence",
+                           "146" => "Cégep François-Xavier-Garneau",
+                           "162" => "Université du Québec à Montréal",
+                           "161" => "Université du Québec à Rimouski"}
     
     french_campus_names.each do |id, name|
       campus = Campus.first(:conditions => ["#{Campus._(:id)} = ?", id.to_i])

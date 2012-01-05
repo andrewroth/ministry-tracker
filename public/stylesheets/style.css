@@ -1975,6 +1975,7 @@ div.choose_ministry_tree {
 
 #statsLinkBox {
   float: left;
+  font-size: 11px;
 }
 
 #formHeading {
@@ -2190,10 +2191,9 @@ ul.statsLinkList {
 }
 
 #statsReportTimeTabs {
-  margin: 0.8em auto 0 auto;
+  margin: 0.8em auto;
   text-align: center;
   width: 36em;
-  height: 4em;
 }
 
 .statsReportTabContainer {
@@ -2237,8 +2237,8 @@ ul.statsLinkList {
 	height:110px;
 	width:160px;
 	display:inline-block;
-	opacity: 0.5;
-	filter: alpha(opacity = 50); /* for IE */
+	opacity: 0.6;
+	filter: alpha(opacity = 60); /* for IE */
 }
 
 #IndicatedDecisionsVSGoal {
@@ -2247,6 +2247,18 @@ ul.statsLinkList {
 
 #IndicatedDecisionsVSGoal, #nationalIndicatedDecisions {
   color: #CCCCCC;
+}
+
+#labelled_people_report_label_id {
+  font-size:18px;
+}
+
+ul#labelled_people_list {
+  column-count:2; -moz-column-count:2; -webkit-column-count:2;
+  column-gap:100px; -moz-column-gap:100px; -webkit-column-gap:100px;
+  text-align:left;
+  margin-left:150px;
+  font-size:13px;
 }
 
 .center {

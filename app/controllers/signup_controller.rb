@@ -225,7 +225,7 @@ class SignupController < ApplicationController
             :campus_id => @primary_campus_involvement.campus_id
           }
           if ci
-            ci.update_student_campus_involvement(flash, StudentRole.default_student_role, nil, 
+            ci.update_student_campus_involvement(flash, @me, nil, 
                                                  @primary_campus_involvement.school_year_id,
                                                  @primary_campus_involvement.campus_id)
           else
