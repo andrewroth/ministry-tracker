@@ -1,4 +1,6 @@
-I18n.default_locale = "en-CA"
+#I18n.default_locale = "en-CA"
+#I18n.default_locale = "lolcat"
+I18n.default_locale = "test"
 I18n.load_path.sort! do |a,b| 
   if a.is_a?(Array) then 0
   elsif b.is_a?(Array) then 0

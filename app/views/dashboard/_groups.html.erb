@@ -27,5 +27,5 @@
       <%- end %>
     <%- end -%>
   </table>
-  <%= link_to has_a_group ? '<br/>Join more groups' : 'Join a group!', :controller => "groups", :action => "join"%>
+  <%= link_to has_a_group ? "<br/>#{I18n.t("dashboard.join_more_txt")}" : I18n.t("dashboard.join_txt"), :controller => "groups", :action => "join"%>
 </div>

@@ -96,7 +96,7 @@ render_tabnav :main,
   #end
   
   add_tab do |t|
-   t.named "<div id='dashboardTab' class='tab'>DASHBOARD</div>"
+   t.named "<div id='dashboardTab' class='tab'>#{I18n.t('layout.left_bar.dashboard')}</div>"
    t.titled 'This is your Dashboard'
    t.links_to :controller => 'dashboard'
   end 
