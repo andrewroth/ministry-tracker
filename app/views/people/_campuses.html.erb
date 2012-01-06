@@ -4,7 +4,7 @@
                              :before => "$('#spinnerCampuses').show()", :success => "$('#spinnerCampuses').hide(); show_dialog('Manage Campuses')"},
                             {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} campus involvements",
                              :class => "editInvolvementIconLink"} %>
-  <% end %> Campuses
+  <% end %> <%= t('profile.left_bar.campuses') %>
   <%= spinner('Campuses') %>
 </h4>
 <ul id='profile_campuses'>

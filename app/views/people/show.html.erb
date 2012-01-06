@@ -14,9 +14,9 @@
           <%- if authorized?(:edit, :people) -%>
             <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
             <%- if @person == @me && @person.user.guid -%>
-              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank">CHANGE PASSWORD</a></div> 
+              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank"><%= t('profile.buttons.change_password') %></a></div> 
             <%- else -%>
-              <div id="passwordButton" class="profileButton"><%= link_to("CHANGE PASSWORD", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+              <div id="passwordButton" class="profileButton"><%= link_to(t('profile.buttons.change_password'), edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
             <%- end -%>
             
             <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
@@ -26,7 +26,7 @@
             <%- end -%>
             
             <div id="editButton" class="profileButton">
-              <%= link_to_remote "EDIT", :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
+              <%= link_to_remote t('profile.buttons.edit'), :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
             </div>
             
             <%= spinner('p') %>
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <h5>Joined</h5>
+      <h5><%= t('profile.left_bar.joined') %></h5>
       <div id="involvedGroups" class="involvementType">
         <%= render :partial => 'group_list', :locals => { :list_title => "", :show_type_titles => true,
           :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})

@@ -14,6 +14,10 @@
     <%- end -%>
     
   <% else %>
-    <%= @person == @me ? "You haven't" : "#{@person.first_name} hasn't" %> attended any events yet
+    <%- if @person == @me -%>
+      <%= t('profile.events.none_self') %>
+    <%- else -%>
+      <%= t('profile.events.none_other', :name => @person.first_name) %>
+    <%- end -%>
   <% end %>
 </ul>

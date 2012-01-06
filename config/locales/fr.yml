@@ -1,0 +1,119 @@
+fr: 
+  "landing_page": 
+    "logos": ""
+    "main": "connexion (j’ai un compte) se joindre à un groupe (pas besoin de compte) créer un compte"
+    "blurb": "Tu peux utiliser Le Pouls pour te connecter à un groupe d'étudiants sur ton campus. Dans les groupes, tu trouvera un espace où tu peux créer des liens, poser des questions, et découvrir Jésus."
+    "tagline": "Decouvrez Jésus. Changez votre monde."
+    "create_login": ""
+  "misc": 
+    "genders": 
+      "male": "Homme"
+      "female": "Femme"
+    "fall": "Automne"
+    "winter": "Hiver"
+    "spring": "Printemps"
+  "layout": 
+    "help": "Au secours !"
+    "top_bar": 
+      "pulse": "LE POULS"
+      "resources": "RESSOURCES"
+      "events_menu": 
+        "title": "EVENEMENTS"
+        "summit": "CONVERGENCE"
+        "winter_conference": "CONGRÈS D'HIVER"
+        "projects": "PROJETS"
+      "more_menu": 
+        "title": "EN PLUS"
+        "gcx": "LE GCX"
+        "pat": "PAT"
+        "mpd_tool": "MPD TOOL"
+        "glc": "GLOBAL LEARNING CENTER"
+        "mt": "MENTOR CENTER"
+        "connect": "CONNECT"
+      "staff_menu": 
+        "title": "ÉQUIPIERS"
+        "stash": "STASH"
+        "mail": "COURRIEL"
+        "documents": "DOCUMENTS"
+        "calendar": "CALENDRIER"
+        "focus": "FOCUS"
+        "the_loop": "THE LOOP"
+        "summer": "ÉTÉ"
+      "greeting": "Salut $name"
+      "logout": "Déconnexion"
+    "left_bar": 
+  "dashboard": 
+    "groups_header": "Mes groupes"
+    "join_txt": "Deviens membre d'un groupe !"
+    "join_more_txt": "Deviens membre de plusieurs groupes"
+    "events_header": "Mes évènements"
+    "projects_header": "Projets"
+    "events": 
+      "attendees": "participants"
+    "projects": 
+      "accepted": "acceptée(s)"
+      "link_txt": "M'inscrire à un projet !"
+  "profile": 
+    "nav": 
+      "dashboard": "TABLEAU DE BORD"
+      "schedule": "HORAIRE"
+      "gcx_profile": "PROFIL GCX"
+    "buttons": 
+      "edit": "ÉDITION"
+      "change_password": "CHANGER MOT DE PASSE"
+      "headings": 
+        "email": "Courriel"
+        "birth_date": "Date de naissance"
+        "gender": "Sexe"
+        "year_in_school": "Année d'étude"
+        "graduation_date": "Année d'obtention du diplôme. "
+        "major": "Majeur"
+        "minor": "Mineur"
+        "phone": "Téléphone"
+        "cell_phone": "Cellulaire"
+        "address": "Adresse"
+        "valid_from": "Valable à partir du"
+        "current_address": "Adresse actuelle"
+        "permanent_address": "Adresse Permanente"
+        "mentor": "Mentor"
+        "events": "Événements"
+        "projects": "Projets"
+      "left_bar": 
+        "change_picture": "Change ta photo"
+        "campuses": "Campus"
+    "left_bar": 
+    "headings": 
+    "manage_campuses": 
+  "groups": 
+    "types": 
+      "discipleship_group": "Groupes de formation de disciples (GFD)"
+      "mda": "Public cible"
+      "prayer": "Groupe de prières"
+      "servant_team": "Équipe serviteur"
+      "other": "Autre"
+    "led_by": "dirigé par"
+    "collection_group_tagline": "pas sûr quelle groupe choisir ? Clique ici et nous t'aiderons dans ton choix."
+    "meets_on": "se réunit tous les"
+    "meets_on_at": "à"
+    "meets_on_to": "jusqu'à"
+    "to_be_decided": "heure du rencontre pas déterminé encore"
+    "help_header": "Besoin d'aide?"
+    "help_tagline": "Quelqu'un de $campus peut vous aider"
+    "help_button": "Aidez-moi à trouver un groupe"
+    "none": "Il n'y pas encore de groupe. "
+    "buttons": 
+      "request": "Je veux joindre ce groupe."
+      "join": "S'inscrire"
+    "older": "Autres groupes"
+  "timetable": 
+    "instructions": "Cliques sur une couleur ci-dessous puis sur la grille."
+    "bad": "Occupé"
+    "okay": "Peut-être"
+    "good": "Disponible"
+    "save": "Sauvegarder mon horaire"
+    "clear_timetable": "Recommencer mon horaire"
+  "terms": 
+  "provinces": 
+  "years": 
+  "roles": 
+  "search": 

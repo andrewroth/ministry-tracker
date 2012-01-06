@@ -77,8 +77,8 @@ render_tabnav :main,
   end
    
   add_tab do |t|
-   t.named "<div id='profileTab' class='tab'>PROFILE</div>"
-   t.titled "You're special"
+   t.named "<div id='profileTab' class='tab'>#{I18n.t('layout.left_bar.profile.named')}</div>"
+   t.titled t('layout.left_bar.profile.titled')
    t.links_to person_path(@me)
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
    t.highlights_on :controller => "people", :action => "discipleship", :id => @me.id
@@ -96,8 +96,8 @@ render_tabnav :main,
   #end
   
   add_tab do |t|
-   t.named "<div id='dashboardTab' class='tab'>#{I18n.t('layout.left_bar.dashboard')}</div>"
-   t.titled 'This is your Dashboard'
+   t.named "<div id='dashboardTab' class='tab'>#{I18n.t('layout.left_bar.dashboard.named')}</div>"
+   t.titled I18n.t('layout.left_bar.dashboard.titled')
    t.links_to :controller => 'dashboard'
   end 
   
