@@ -4,7 +4,7 @@
 class CampusesController < ApplicationController
   before_filter :get_countries
 
-  skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, :only => [:list])
+  skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, :only => [:list, :details_json])
   
   def change_country
     @states = CmtGeo.states_for_country(params[:country])
@@ -24,6 +24,10 @@ class CampusesController < ApplicationController
   end
   
   def list
-    render :json => Campus.all
+    render :json => Campus.find(:all, :order => :campus_desc).to_json(:only => [:campus_id, :campus_desc, :campus_shortDesc])
+  end
+  
+  def details_json
+    render :json => Campus.find(params[:id])    
   end
 end
