@@ -175,7 +175,7 @@ en-CA:
       leader: leader
       co-leader: co-leader
       member: member
-      inerested: interested
+      interested: interested
   timetable:
     instructions: "Click on one of the color buttons below and then click times on your schedule."
     bad: Bad
