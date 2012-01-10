@@ -1,7 +1,7 @@
 class AddTranslationKeyToSchoolYears < ActiveRecord::Migration
   def self.up
     add_column SchoolYear.table_name, :translation_key, :string
-    SchoolYear.reset_columnInformation
+    SchoolYear.reset_column_information
     sy = SchoolYear.find_by_year_desc("1st Year (Undergrad)")
     sy.translation_key = "undergrad_1"
     sy.save!
@@ -31,6 +31,14 @@ class AddTranslationKeyToSchoolYears < ActiveRecord::Migration
     sy.save!
     sy = SchoolYear.find_by_year_desc("graduated")
     sy.translation_key = "graduated"
+    sy.save!
+
+    # add cegep
+    sy = SchoolYear.find_or_create_by_year_desc("Cégep Year 1")
+    sy.translation_key = "cegep_1"
+    sy.save!
+    sy = SchoolYear.find_or_create_by_year_desc("Cégep Year 2")
+    sy.translation_key = "cegep_2"
     sy.save!
   end
 

@@ -160,7 +160,7 @@
 	    <% end %>
 	    <% if authorized?(:show_mentees, :people) %>
         <td class="spacer">&nbsp;</td>
-        <td colspan="1"><h5>Mentoring <%= spinner('m2','opaqueWhite') %></h5></td>
+        <td colspan="1"><h5><%= t('profile.headings.mentoring') %> <%= spinner('m2','opaqueWhite') %></h5></td>
 	    <% end %>
 	  </tr> <!-- added Jan 14, 2011 -->
 	  <tr>

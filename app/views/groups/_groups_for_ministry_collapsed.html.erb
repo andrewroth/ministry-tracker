@@ -10,7 +10,7 @@
 
   <div id="primary_group_type_list" class="group_type_list">
     <% gt = GroupType.first(:conditions => {:group_type => group_type}) %>
-    <h2 class="group_type_title"><%= I18n.t(gt.translation_code) %></h2>
+    <h2 class="group_type_title"><%= I18n.t(gt.translation_key) %></h2>
     <div>
       <%= render :partial => 'groups/group_type_groups_minimal', :locals => {:gt => gt} %>
     </div>

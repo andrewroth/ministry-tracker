@@ -88,8 +88,15 @@ en-CA:
       cancel: cancel
     left_bar:
       change_picture: Change Picture
-      campuses: Campuses
       joined: Joined
+      campuses:
+        header: Campuses
+        confirm: "Are you sure you want to remove %{person_name} from %{campus_name}"
+      groups:
+        confirm_self: "Are you sure you want to leave %{group_name}?"
+        title_self: "Leave group %{group_name}"
+        confirm_other: "Are you sure you want remove %{person_first_name} from %{group_name}?"
+        title_other: "Remove %{person_first_name} from group %{group_name}"
     headings:
       email: Email
       birth_date: Birth Date
@@ -106,6 +113,7 @@ en-CA:
       current_address: Current Address
       permanent_address: Permanent Address
       mentor: Mentor
+      mentoring: Mentoring
       events: Events
       projects: Projects
       first_name: First Name
@@ -134,6 +142,8 @@ en-CA:
       at: at
     mentor:
       none: No mentor currently
+    mentee:
+      none: No mentee(s) currently
     events:
       none_other: "%{name} hasn't attended any events yet"
       none_self: "You haven't attended any events yet"
@@ -161,6 +171,11 @@ en-CA:
       request: Request to join
       join: Join
     older: Other groups
+    roles:
+      leader: leader
+      co-leader: co-leader
+      member: member
+      inerested: interested
   timetable:
     instructions: "Click on one of the color buttons below and then click times on your schedule."
     bad: Bad
@@ -222,6 +237,7 @@ en-CA:
     other: other
     graduated: graduated
     cegep_1: Cégep Year 1
+    cegep_2: Cégep Year 2
   roles:
     ministry_leader: Ministry Leader
     student_leader: Student Leader

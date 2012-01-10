@@ -3,28 +3,30 @@
 <%- end -%>
 
 <%- group_types_and_involvements.each do |group_type, gis| -%>
-  <% if show_type_titles == true %><h4><%= group_type.group_type.pluralize %></h4><% end %>
+  <% if show_type_titles == true %><h4><%= t("groups.types.#{group_type.translation_key}").pluralize %></h4><% end %>
   <ul> 
     <% gis.each do |gi| -%>
       <% group = gi.group -%>
       <li id="group_<%= group.id %>">
 
-        <% if (authorized?(:destroy_own, :group_involvements)&&(@person == @me)) %>
+        <% if (authorized?(:destroy_own, :group_involvements) && (@person == @me)) %>
           <%= link_to_remote("", {:url => destroy_own_group_involvement_url(gi.id),
-                           :confirm => "Are you sure you want to leave #{group.name}?",
+                           :confirm => t('profile.left_bar.groups.confirm_self', :group_name => group.name),
                            :method => :delete,
-                           :before => "$('#spinner').show()"}, {:title => "Leave group #{group.name}", :class => "removeInvolvementIconLink"}) %>
+                           :before => "$('#spinner').show()"}, 
+                           {:title => t('profile.left_bar.groups.title_self', :group_name => group.name), :class => "removeInvolvementIconLink"}) %>
 
         <% elsif (group.is_leader(@me) || group.is_co_leader(@me)) || is_ministry_leader(gi.group.ministry, @me) || is_ministry_admin %>
           <%= link_to_remote("", {:url => url_for(:controller => :group_involvements, :action => :destroy, :members => [gi.person_id], :id => gi.id),
-                           :confirm => "Are you sure you want to remove #{gi.person.first_name} from #{group.name}?",
+                           :confirm => t('profile.left_bar.groups.confirm_other', 
+                                         :person_first_name => gi.person.first_name, :group_name => group.name),
                            :method => :delete,
                            :before => "$('#spinner').show()",
                            :after => "location.reload();"},
-                           {:title => "Remove #{gi.person.first_name} from group #{group.name}", :class => "removeInvolvementIconLink"}) %>
+                           {:title => t('profile.left_bar.groups.title_other', :person_first_name => gi.person.first_name, :group_name => group.name), :class => "removeInvolvementIconLink"}) %>
         <% end %>
 
-        <%= link_to group.name, group_url(group) %> <%= gi.level.capitalize -%>
+        <%= link_to group.name, group_url(group) %> <%= t("groups.roles.#{gi.level}").capitalize %>
       </li>
     <% end -%>
   </ul>
