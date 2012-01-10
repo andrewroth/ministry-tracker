@@ -44,9 +44,9 @@
             <table>
               <tbody>
                 <tr>
-                  <td colspan="2" class="norm">PROJECTS</td>
-                  <td class="small">applying</td>
-                  <td class="small">accepted</td>
+                  <td colspan="2" class="norm"><%= I18n.t("dashboard.projects_header") %></td>
+                  <td class="small"><%= I18n.t("dashboard.projects.applying") %></td>
+                  <td class="small"><%= I18n.t("dashboard.projects.accepted") %></td>
                 </tr>
                 <%- @project_campuses.each_with_index do |campus, i| %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
@@ -58,8 +58,8 @@
                         <tr>
                           <td class="eventIcon"></td>
                           <td class="normal"></td>
-                          <td class="small">applying</td>
-                          <td class="small">accepted</td>
+                          <td class="small"><%= t('dashboard.projects.applying') %></td>
+                          <td class="small"><%= t('dashboard.projects.accepted') %></td>
                         </tr>
                         <%- projects = ((@project_totals_by_campus[campus] && @project_totals_by_campus[campus].keys) || []) | 
                               ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
@@ -110,8 +110,8 @@
                       <tr>
                         <td class="eventIcon"></td>
                         <td class="normal"></td>
-                        <td class="small">applying</td>
-                        <td class="small">accepted</td>
+                        <td class="small"><%= t('dashboard.projects.applying') %></td>
+                        <td class="small"><%= t('dashboard.projects.accepted') %></td>
                       </tr>
                       <%- @project_totals.each_pair do |project, totals| %>
                         <%- next if project == :totals -%>
@@ -138,7 +138,7 @@
                     <%- if @staff -%>
                       <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>-->
                     <%- else -%>
-                      <%= link_to "Apply for project!", "https://pat.powertochange.org", :target => "_blank" %>
+                      <%= link_to I18n.t("dashboard.projects.link_txt"), "https://pat.powertochange.org", :target => "_blank" %>
                     <%- end -%>
                   </td>
                 </tr>

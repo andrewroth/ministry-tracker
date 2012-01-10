@@ -405,7 +405,7 @@ class GroupsController < ApplicationController
       @semester = @current_semester
     end
     session[:group_semester_filter_id] = @semester.id
-    @semester_filter_options = Semester.all.collect{ |s| [ s.desc, s.id ] }
+    @semester_filter_options = Semester.all.collect{ |s| [ I18n.t("terms.#{s.translation_key}"), s.id ] }
   end
 
   def setup_groups

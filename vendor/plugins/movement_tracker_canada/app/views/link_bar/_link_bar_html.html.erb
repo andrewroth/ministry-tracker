@@ -3,31 +3,31 @@
   <div class='link_bar'>
 
     <ol id='tools'>
-      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', 'Campus for Christ', 'C4C.CA', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', t('layout.top_bar.c4c_mouseover'), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), '', 'THE PULSE', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), t('layout.top_bar.pulse_mouseover'), t('layout.top_bar.pulse'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', 'C4C Resources Wiki', 'RESOURCES', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', t('layout.top_bar.resources_mouseover'), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', '', "EVENTS<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', t('layout.top_bar.events_menu.events_mouseover'), "#{t('layout.top_bar.events_menu.events')}<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', '', "MORE<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', t('layout.top_bar.more_menu.more_mouseover'), "#{t('layout.top_bar.more_menu.more')}<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
       
       <% if staff %>
         <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>
       <% end %>
 
-      <li><%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, 'Campus for Christ on Facebook', '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, t('layout.top_bar.icons.facebook'), '&nbsp;', nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', 'https://twitter.com/campusforchrist', 'Campus for Christ on Twitter', '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', 'https://twitter.com/campusforchrist', t('layout.top_bar.icons.twitter'), '&nbsp;', nil, active_tab_id) %></li>
     </ol>
 
   </div>
 </div>
 
 <div id='events_box' class='link_menu_box'>
-  <a href='<%=eventbrite[:c4c_events_link]%>'>SUMMIT</a>
-  <a href='<%=eventbrite[:c4c_events_link]%>'>WINTER CONFERENCE</a>
+  <a href='<%=eventbrite[:c4c_events_link]%>'><%= t('layout.top_bar.events_menu.summit') %></a>
+  <a href='<%=eventbrite[:c4c_events_link]%>'><%= t('layout.top_bar.events_menu.summit') %></a>
   <a href='http://gototheworld.com' title='Go to the world!'>PROJECTS</a>
 </div>
 

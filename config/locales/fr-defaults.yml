@@ -1,0 +1,144 @@
+fr: 
+  "date": 
+    "formats": 
+    "day_names": 
+      "sunday": "Dimanche"
+      "monday": "Lundi"
+      "tuesday": "Mardi"
+      "wednesday": "Mercredi"
+      "thursday": "Jeudi"
+      "friday": "Vendredi"
+      "saturday": "Samedi"
+    "abbr_day_names": 
+      "sun": "Dim"
+      "mon": "Lun"
+      "tue": "Mar"
+      "wed": "Mer"
+      "thu": "Jeu"
+      "fri": "Ven"
+      "sat": "Sam"
+    "month_names": 
+      "january": "Janvier"
+      "february": "Février"
+      "march": "Mars"
+      "april": "Avril"
+      "may": "Mai"
+      "june": "Juin"
+      "july": "Juillet"
+      "august": "Août"
+      "september": "Septembre"
+      "october": "Octobre"
+      "november": "Novembre"
+      "december": "Décembre"
+    "abbr_month_names": 
+      "jan": "Jan"
+      "feb": "Fév"
+      "mar": "Mar"
+      "apr": "Avr"
+      "may": "Mai"
+      "jun": "Jui"
+      "jul": "Jul"
+      "aug": "Aoû"
+      "sep": "Sep"
+      "oct": "Oct"
+      "nov": "Nov"
+      "dec": "Déc"
+  "time": 
+    "formats": 
+  "support": 
+    "array": 
+      "two_words_connector": "et"
+      "last_word_connector": ", et"
+    "select": 
+      "prompt": "Veuillez sélectionner"
+  "number": 
+    "format": 
+    "currency": 
+      "format": 
+    "percentage": 
+      "format": 
+    "precision": 
+      "format": 
+    "human": 
+      "format": 
+      "storage_units": 
+        "units": 
+          "byte": 
+            "one": "Byte"
+            "other": "Bytes"
+          "kb": "KB"
+          "mb": "MB"
+          "gb": "GB"
+          "tb": "TB"
+      "decimal_units": 
+        "units": 
+          "thousand": "Millier(s) "
+          "million": "Million(s)"
+          "billion": "Milliard(s)"
+          "trillion": "Trillions(s)"
+  "datetime": 
+    "distance_in_words": 
+      "half_a_minute": "30 secondes"
+      "less_than_x_seconds": 
+        "one": "Il y a moins d'une seconde"
+        "other": "Il y a moins de %{count} secondes"
+      "x_seconds": 
+        "one": "1 seconde"
+        "other": "%{count} secondes"
+      "less_than_x_minutes": 
+        "one": "il y a moins d'une minute"
+        "other": "il y a moins de %{count} minutes"
+      "x_minutes": 
+        "one": "1 minute"
+        "other": "%{count} minutes"
+      "about_x_hours": 
+        "one": "il y a 1 heure"
+        "other": "il y a %{count} heures"
+      "x_days": 
+        "one": "un jour"
+        "other": "%{count} jours"
+      "about_x_months": 
+        "one": "il y a un mois"
+        "other": "il y a %{count} mois"
+      "x_months": 
+        "one": "un mois"
+        "other": "%{count} mois"
+      "about_x_years": 
+        "one": "il y a un an"
+        "other": "il y a %{count} années"
+      "over_x_years": 
+        "one": "plus d'un an"
+        "other": "plus de %{count} ans"
+      "almost_x_years": 
+        "one": "il y a environ un an"
+        "other": "il y a environ %{count} ans"
+    "prompts": 
+      "year": "Année"
+      "month": "Mois"
+      "day": "Jour"
+      "hour": "Heure"
+      "minute": "Minute"
+      "second": "Secondes"
+  "helpers": 
+    "select": 
+      "prompt": "Veuillez sélectionner"
+    "submit": 
+      "create": "Créez %{model}"
+      "update": "Mettre à jour %{model}"
+      "submit": "Enregistrer %{model}"
+  "errors": 
+    "format": "%{attribute} %{message}"
+    "messages": 
+      "inclusion": "n'est pas inclus dans la liste"
+      "exclusion": ""
+      "empty": "ne peut pas être vide"
+      "too_long": "est trop long (le maximum est de %{count} caractères)"
+      "too_short": "est trop court (le minimum est de %{count} caractères)"
+      "not_a_number": "n'est pas un nombre"
+      "not_an_integer": "doit être un chiffre entier"
+  "activerecord": 
+    "errors": 
+      "template": 
+        "header": 
+      "messages": 
+        "inclusion": "n'est pas inclus dans la liste"

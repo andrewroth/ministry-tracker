@@ -96,7 +96,7 @@ class SignupController < ApplicationController
                                     :joins => :ministry, :include => { :group_involvements => :person },
                                     :order => "#{Group.__(:name)} ASC")
       
-      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
+      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ I18n.t("terms.#{s.translation_key}"), s.id ] }
       @group_types = GroupType.all
       @join = true
       @signup = true

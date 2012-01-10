@@ -22,7 +22,7 @@ unless @mobile
 
         <div class="dashmodule">
           <div class="moduletitle">
-            <h2>My Groups
+            <h2><%= I18n.t("dashboard.groups_header") %>
             <%= spinner('gt') %></h2>
             <div class="modulecontrols">
               <a href="" class="minmodule"></a>
@@ -41,7 +41,7 @@ unless @mobile
         <div class="dashmodule">
           <div class="moduletitle">
             <h2>
-              My Events&nbsp;
+              <%= I18n.t("dashboard.events_header") %>&nbsp;
               <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
             </h2>
             <div class="modulecontrols">
