@@ -799,3 +799,4 @@
     }
   end
   
+  TWITTER_URL = "https://twitter.com/#!/p2cstudents"
