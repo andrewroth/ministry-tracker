@@ -10,7 +10,7 @@ class Mailers::EmailMailer < ActionMailer::Base
 
   def email(person, email)
     recipients   person.primary_email.strip
-    from         "<#{email.sender.primary_email}>"
+    from         "\"#{person.sender.full_name}\" <#{email.sender.primary_email}>"
     content_type "text/html"
     @subject     = email.subject
     @sent_on     = Time.now
