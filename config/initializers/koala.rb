@@ -7,7 +7,7 @@ module Facebook
   APP_ID = CONFIG['app_id']
   SECRET = CONFIG['secret_key']
   CANVAS_URL = CONFIG['canvas_url']
-  FANPAGE_URL = "http://www.facebook.com/campusforchrist"
+  FANPAGE_URL = "https://www.facebook.com/p2c.students"
   SIGNUP_PERMS = "email"
 end
 

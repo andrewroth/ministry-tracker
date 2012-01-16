@@ -1,7 +1,16 @@
 class Mailers::EmailMailer < ActionMailer::Base
+  def email_test(recipients, subject, body)
+    recipients   recipients
+    from         Cmt::CONFIG[:email_from_address]
+    content_type "text/html"
+    @subject     = subject
+    @sent_on     = Time.now
+    @body        = body
+  end
+
   def email(person, email)
     recipients   person.primary_email.strip
-    from         "<#{email.sender.primary_email}>"
+    from         "\"#{email.sender.full_name}\" <#{email.sender.primary_email}>"
     content_type "text/html"
     @subject     = email.subject
     @sent_on     = Time.now
