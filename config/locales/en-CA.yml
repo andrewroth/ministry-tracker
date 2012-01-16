@@ -67,7 +67,9 @@ en-CA:
         titled: Your schedule
     languages:
       english_to_french: FRANÇAIS
+      english_to_french_mouseover: Switch pulse language to French
       french_to_english: ENGLISH
+      french_to_english_mouseover: Switch pulse language to English
   dashboard:
     groups_header: My Groups
     join_txt: Join a group!
