@@ -24,9 +24,9 @@
 
     <!-- Render the address blocks -->
     <tr>
-      <td><h5>Current Address</h5></td>
+      <td><h5><%= t('profile.headings.current_address') %></h5></td>
       <td class="spacer">&nbsp;</td>
-      <td><h5>Permanent Address</h5></td>
+      <td><h5><%= t('profile.headings.permanent_address') %></h5></td>
     </tr>
     <tr>
       <td>
@@ -52,14 +52,14 @@
 <br />
 
 <!-- Buttons at the bottom -->
-<%= submit_tag "Save", :class => "action-button" %> &nbsp; or <% if request.xhr? %><% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function 'cancel', "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
+<%= submit_tag t("profile.buttons.save"), :class => "action-button" %> &nbsp; <%= t('misc.or') %> <% if request.xhr? %><% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function t("misc.cancel"), "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
 
 
 <%- if @person == @me -%>
   <div id="removeMe">
-    <%= link_to "Remove me from the Pulse", person_url(@person.id, :logout => 'true'),
-                                            :confirm => "You are about to remove yourself from all ministries, campuses, and groups you are a part of.\n\nAre you SURE you want to continue? (you will be logged out)",
-                                            :title => "Remove yourself from all ministries, campuses, and groups you are a part of (you will be logged out)",
+    <%= link_to t('profile.buttons.remove_me'), person_url(@person.id, :logout => 'true'),
+                                            :confirm => t('profile.buttons.remove_me_confirm'),
+                                            :title => t('profile.buttons.remove_me_title'),
                                             :method => :delete %>
   </div>
 <%- end -%>

@@ -16,23 +16,22 @@ return if @restrict_all_links
 render_tabnav :vertical_main,
               :html => {:class => 'verticalTablist', :id => 'verticalTablist' } do
 
-
   add_tab do |t|
-   t.named "<div id='dashboardTab' class='tab'>DASHBOARD</div>"
-   t.titled 'This is your Dashboard'
+   t.named "<div id='dashboardTab' class='tab'>#{I18n.t('layout.left_bar.dashboard.named')}</div>"
+   t.titled I18n.t('layout.left_bar.dashboard.titled') # 'This is your Dashboard'
    t.links_to :controller => 'dashboard'
   end
 
   add_tab do |t|
-   t.named "<div id='profileTab' class='tab'>PROFILE</div>"
-   t.titled "You're special"
+   t.named "<div id='profileTab' class='tab'>#{I18n.t('layout.left_bar.profile.named')}</div>"
+   t.titled I18n.t('layout.left_bar.profile.titled') # "You're special"
    t.links_to person_path(@me)
    t.highlights_on :controller => "people", :action => "show", :id => @me.id
   end
 
   add_tab do |t|
-   t.named "<div id='scheduleTab' class='tab'>SCHEDULE</div>"
-   t.titled "Your schedule"
+   t.named "<div id='scheduleTab' class='tab'>#{I18n.t('layout.left_bar.schedule.named')}</div>"
+   t.titled I18n.t('layout.left_bar.schedule.titled') # "Your schedule"
    t.links_to person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id)
    t.highlights_on :controller => "timetables"
   end

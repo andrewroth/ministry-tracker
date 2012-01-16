@@ -9,7 +9,7 @@
     <div class="groupMinimalInfo">
       <% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
       <% if involvements.present? %>
-        led by
+        <%= I18n.t("groups.led_by") %>
         <%=
           involvements.map{ |i|
             if i.person.present? && i.person.email && !group.email.present?
@@ -24,18 +24,18 @@
 
 
       <% if group.email.present? %>
-        email <%= mail_to group.email %>
+        <%= t('groups.email') %> <%= mail_to group.email %>
         <br />
       <% end %>
 
 
       <% midnight = Time.now.beginning_of_day %>
       <% if group.day %>
-        meets on <%= group.meeting_day_and_time_to_string %>
+        <%= I18n.t("groups.meets_on") %> <%= group.meeting_day_and_time_to_string %>
       <% elsif @collection_group && @collection_group.include?(group) %>
-        not sure which group to join? Join this group and we'll help you find one
+        <%= I18n.t("groups.collection_group_tagline") %>
       <% else %>
-        meeting time to be decided
+        <%= I18n.t("groups.to_be_decided") %>
       <% end %>
     </div>
   </div>
@@ -44,12 +44,12 @@
     <% gi = group.group_involvements.detect{ |gi| gi.person == @me } %>
     
     <% if gi && gi.requested %>
-      <b>Join request sent</b>
+      <b><%= t('groups.join_sent') %></b>
     <% elsif gi && gi.level != 'interested' %>
-      <b>You're a <%= gi.level.capitalize %></b>
+      <b><%= t('groups.your', :role => t("groups.roles.#{gi.level}").capitalize) %></b>
     <% else %>
       <% if @join %>
-        <% join_group_text = group.needs_approval ? "Request to join" : "Join" %>
+        <% join_group_text = group.needs_approval ? I18n.t("groups.buttons.request") : I18n.t("groups.buttons.join") %>
         <%= link_to join_group_text, joingroup_signup_path(
                :person_id => @person.id,
                :group_id => group.id,

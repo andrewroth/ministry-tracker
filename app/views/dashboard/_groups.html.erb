@@ -4,7 +4,7 @@
     <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL") + @person.all_groups.current_and_next_semester).group_by(&:semester).each do |semester, groups| %>
       <% has_a_group = true %>
       <tr>
-        <td class="groupSemesterTitle"><%= semester ? semester.desc.upcase : "No Semester Set" %></td>
+        <td class="groupSemesterTitle"><%= semester ? t("terms.#{semester.translation_key}").upcase : "No Semester Set" %></td>
         <% groups.each_with_index do |group, i| %>
         <%= "<tr><td></td>" if i > 0 %>
         <td>
@@ -16,9 +16,9 @@
                 :locals => { :source => 'dashboard' } %>
             </ul>
           <%- elsif group.is_interested(@me) -%>
-            <%= link_to(group.name, group) %>, interested
+            <%= link_to(group.name, group) %>, <%= t('dashboard.groups.interested_message') %>
           <%- elsif group.has_requested(@me) -%>
-            <%= link_to(group.name, group) %>, awaiting join request decision
+            <%= link_to(group.name, group) %>, <%= t('dashboard.groups.requested_message') %>
           <%- else -%>
             <%= link_to(group.name, group) %>
           <%- end -%>
@@ -27,5 +27,5 @@
       <%- end %>
     <%- end -%>
   </table>
-  <%= link_to has_a_group ? '<br/>Join more groups' : 'Join a group!', :controller => "groups", :action => "join"%>
+  <%= link_to has_a_group ? "<br/>#{I18n.t("dashboard.join_more_txt")}" : I18n.t("dashboard.join_txt"), :controller => "groups", :action => "join"%>
 </div>

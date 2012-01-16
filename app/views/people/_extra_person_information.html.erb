@@ -1,16 +1,16 @@
 <table class="halftab">
   <%- if @primary_campus_involvement.present? && !@primary_campus_involvement.new_record? %>
   <tr>
-    <th>Grad Date</th>
+    <th><%= t('profile.headings.grad_date') %></th>
     <td><%= date_select :primary_campus_involvement, :graduation_date %></td>
   </tr>
   <%- end -%>
 	<tr>
-		<th>Major</th>
+    <th><%= t('profile.headings.major') %></th>
 		<td><%= text_field :person, :major %></td>
 	</tr>
 	<tr>
-		<th>Minor</th>
+    <th><%= t('profile.headings.minor') %></th>
 		<td><%= text_field :person, :minor %></td>
 	</tr>
 </table>

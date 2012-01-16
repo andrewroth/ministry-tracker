@@ -4,32 +4,32 @@
 <%- spinner = (address_type == :permanent ? 'spinnerp' : 'spinnera') if local_assigns[:spinner].nil? -%>
 <table class="halftab">
 	<tr>
-		<th>Phone</th>
+    <th><%= t('profile.headings.phone') %></th>
 		<td><%= text_field :"#{prefix}_address", :phone %></td>
 	</tr>
   <%- if address_type == :current %>
 	<tr>
-		<th><%= I18n.t :alternate_phone, :default => "Alt Phone" %></th>
+		<th><%= t('profile.headings.alt_phone') %></th>
 		<td><%= text_field :"#{prefix}_address", :alternate_phone %></td>
 	</tr>
   <%- end -%>
 	<tr>
-  <th>Address<% if @use_address2 %> 1:<% end %></th>
+  <th><%= t('profile.headings.address') %><% if @use_address2 %> 1:<% end %></th>
 		<td><%= text_field :"#{prefix}_address", :address1 %></td>
 	</tr>
 
   <%- if @use_address2 -%>
 	<tr>
-		<th>Address 2</th>
+    <th><%= t('profile.headings.address2') %></th>
 		<td><%= text_field :"#{prefix}_address", :address2 %></td>
 	</tr>
   <%- end -%>
 	<tr>
-		<th>City</th>
+    <th><%= t('profile.headings.city') %></th>
 		<td><%= text_field :"#{prefix}_address", :city %></td>
 	</tr>
 	<tr>
-		<th>Country</th>
+    <th><%= t('profile.headings.country') %></th>
 		<td>
 			<%= select :"#{prefix}_address", :country, countries, :prompt => true %>
       <%= observe_field(:"#{prefix}_address_country", {
@@ -40,29 +40,29 @@
     </td>
   </tr>
 	<tr>
-		<th><%= I18n.t :State, :default => 'State' %></th>
+		<th><%= t('profile.headings.state') %></th>
 		<%= render :partial => "people/#{long_prefix}_address_state_dropdown",
-				:locals => { :states => states || [] }
+           :locals => { :states => states.collect{ |s| t("provinces.#{s.last.downcase}") } || [] }
 		%>
 	</tr>
   <tr>
-    <th><%= I18n.t :Zip, :default => 'Zip' %></th>
+    <th><%= t('profile.headings.zip') %></th>
     <td><%= text_field :"#{prefix}_address", :zip %></td>
   </tr>
 
 <%- if address_type == :current -%>
 <%- dorm_selection = dorms.empty? ? [] : dorms.collect {|d| d.name }.insert(0, '') -%>
 <tr>
-  <th>Dorm</th>
+  <th><%= t('profile.headings.dorm') %></th>
   <td><%= select :"#{prefix}_address", :dorm, dorm_selection %></td>
 </tr>
 
 <tr>
-  <th>Room</th>
+  <th><%= t('profile.headings.room') %></th>
   <td><%= text_field :"#{prefix}_address", :room %></td>
 </tr>
 <tr>
-  <th>Valid from</th>
+  <th><%= t('profile.headings.valid_from') %></th>
   <td class="date">
     <%=
     start_year = Date.today.year - 5
@@ -76,7 +76,7 @@
   </td>
 </tr>
 <tr>
-  <th>Valid until</th>
+  <th><%= t('profile.headings.valid_until') %></th>
   <td class="date">
     <%=
     date_select :"#{prefix}_address", :end_date, {

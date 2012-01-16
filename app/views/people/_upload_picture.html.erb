@@ -3,15 +3,15 @@
   <%- form_for([@person, @profile_picture], :html => {:multipart => true}) do |f|  -%>
     <div class="popupfield">
       <br/>
-      <p>Select an image file on your computer (max 10 MB):</p>
+      <p><%= t('profile.picture.instructions') %>:</p>
     	
 		  <%= f.file_field :uploaded_data, :size => '18px' %>
 		  <%#= f.hidden_field :person_id %>
 		  <br/>
 		  <br/>
-		  <%= f.submit 'Upload selected image', :id => 'upload', :class => "action-button", :onclick => "tb_remove(); $('#spinner').show()" %>
+		  <%= f.submit t('profile.picture.upload_button'), :id => 'upload', :class => "action-button", :onclick => "tb_remove(); $('#spinner').show()" %>
 	  </div>
 	  <br/>
-	  <%= link_to_function("cancel", "tb_remove()") %>
+	  <%= link_to_function(t('misc.cancel'), "tb_remove()") %>
   <%- end -%>
 </div>

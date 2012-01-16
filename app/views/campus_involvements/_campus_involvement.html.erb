@@ -13,7 +13,7 @@
     <%= campus_involvement.find_or_create_ministry_involvement.ministry_role.name %>
   <% end %>
 
-  <%= campus_involvement.campus.name %> <%= campus_involvement.try(:school_year).try(:name) || '&lt;no school year set&gt;'%>
+  <%= campus_involvement.campus.name %> <%= t("years.#{campus_involvement.try(:school_year).try(:translation_key)}") || '&lt;no school year set&gt;'%>
   &nbsp;<%= link_to_remote "", {:url => edit_person_campus_involvement_url(@person.id, campus_involvement.id, :from_manage => true), :method => :get}, {:title => "Edit", :class => "editInvolvementIconLink"} %>
 </div>
 

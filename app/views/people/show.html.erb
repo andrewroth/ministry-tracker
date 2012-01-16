@@ -14,9 +14,9 @@
           <%- if authorized?(:edit, :people) -%>
             <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
             <%- if @person == @me && @person.user.guid -%>
-              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank">CHANGE PASSWORD</a></div> 
+              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank"><%= t('profile.buttons.change_password') %></a></div> 
             <%- else -%>
-              <div id="passwordButton" class="profileButton"><%= link_to("CHANGE PASSWORD", edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+              <div id="passwordButton" class="profileButton"><%= link_to(t('profile.buttons.change_password'), edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
             <%- end -%>
             
             <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
@@ -26,7 +26,7 @@
             <%- end -%>
             
             <div id="editButton" class="profileButton">
-              <%= link_to_remote "EDIT", :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
+              <%= link_to_remote t('profile.buttons.edit'), :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
             </div>
             
             <%= spinner('p') %>
@@ -64,7 +64,7 @@
       
       <div id="semesterSelectContainer">
         <div id="semesterSelectBorder">
-          <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
+          <%= select_tag "group_semester_id", options_for_select(@semesters.collect{ |s| [ t("terms.#{s.translation_key}"), s.id ] }, @current_semester.id), :name => "group_semester[id]" %>
           <%= spinner('GroupSemester', 'opaqueWhite') %>
           <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
                                                  :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <h5>Joined</h5>
+      <h5><%= t('profile.left_bar.joined') %></h5>
       <div id="involvedGroups" class="involvementType">
         <%= render :partial => 'group_list', :locals => { :list_title => "", :show_type_titles => true,
           :group_types_and_involvements => @person.group_group_involvements(:involved, {:semester => @current_semester})
@@ -113,7 +113,7 @@
 
       <div id="interestedGroups" class="involvementType">
         <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
-          <%= render :partial => 'group_list', :locals => { :list_title => "Interested", :show_type_titles => false,
+          <%= render :partial => 'group_list', :locals => { :list_title => t('profile.left_bar.groups.interested'), :show_type_titles => false,
             :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
           } %>
         <%- end -%>
@@ -121,7 +121,7 @@
 
       <div id="requestedGroups" class="involvementType">
         <%- if @person.group_involvement_requests(@current_semester).size > 0 -%>
-          <%= render :partial => 'group_list', :locals => { :list_title => "Requested", :show_type_titles => false,
+          <%= render :partial => 'group_list', :locals => { :list_title => t('profile.left_bar.groups.requested'), :show_type_titles => false,
             :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
           } %>
         <%- end -%>

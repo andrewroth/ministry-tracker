@@ -62,7 +62,7 @@ class SignupController < ApplicationController
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
-    flash[:notice] = "Great! We'll help you find a group that suits you."
+    flash[:notice] = I18n.t('groups.default_notice')
     redirect_to :action => :step2_info
   end
 
@@ -96,7 +96,7 @@ class SignupController < ApplicationController
                                     :joins => :ministry, :include => { :group_involvements => :person },
                                     :order => "#{Group.__(:name)} ASC")
       
-      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
+      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ I18n.t("terms.#{s.translation_key}"), s.id ] }
       @group_types = GroupType.all
       @join = true
       @signup = true
@@ -309,9 +309,9 @@ class SignupController < ApplicationController
     @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
-      @finished_button_text = "Goto Facebook"
+      @finished_button_text = I18n.t('groups.goto_facebook')
     elsif logged_in?
-      @finished_button_text = "Goto the dashboard"
+      @finished_button_text = I18n.t('groups.goto_dashboard')
     else
       @finished_button_text = nil
     end
@@ -346,7 +346,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "Join a Group" unless logged_in? || session[:from_facebook_canvas] == true
+    @custom_userbar_title = I18n.t('groups.userbar_title') unless logged_in? || session[:from_facebook_canvas] == true
   end
 
   def join_default_group(campus_id, semester_id)

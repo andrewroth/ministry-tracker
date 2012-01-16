@@ -15,7 +15,7 @@
          <%- end -%>
 			<%- else -%>  <!-- no mentor found, show search box -->
 			   <div>
-			   	 No mentor currently
+           <%= t('profile.mentor.none') %>
 			   </div>
 			   <div id="search_mentor">		   
            <%= render :partial => "mentor_search_box", :locals => { :person => @person, :q => @q } %>	

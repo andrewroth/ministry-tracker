@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
   
-  
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -49,10 +48,15 @@ class ApplicationController < ActionController::Base
 
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
+  before_filter :set_locale
   
   helper :all
 
   protected
+
+    def set_locale
+      I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+    end
 
     def cas_filter
       return if logged_in?
@@ -414,7 +418,7 @@ class ApplicationController < ActionController::Base
     # ===========
     # = Filters =
     # ===========
-    def set_locale
+    def set_locale_old
       locales = ['en', 'en-AU']
       begin
         # Try to auto-detect it

@@ -83,8 +83,9 @@
 
         <div id="userblock" class="link_bar">
           <%= spinner('_switch_ministries', 'opaqueWhite') %>
-          &nbsp;Hi&nbsp;
-          <div id="username"><%= link_to @my.full_name, person_path(@me), :title => "Goto your profile" %></div>
+          <%= t('layout.top_bar.greeting', :name => %|
+                <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
+                |) %>
           
           <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
             <div id="switch_ministries">
@@ -96,7 +97,7 @@
             <div id="switch_ministries_list" style="display:none">&nbsp;</div>
           <%- end -%>
           
-          <%= link_to("Logout", session_url, :method => :delete, :class => "rl log_out") %>
+          <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
         </div>
         
         <div class="clear"></div>
