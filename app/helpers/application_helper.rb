@@ -187,6 +187,14 @@ module ApplicationHelper
     end
   end
 
+  def switch_languages_mouseover
+    if currently_english
+      t('layout.languages.english_to_french_mouseover', :default => "")
+    elsif currently_french
+      t('layout.languages.french_to_english_mouseover', :default => "")
+    end
+  end
+
   def currently_english
     (I18n.locale.to_s =~ /^en/).present?
   end
