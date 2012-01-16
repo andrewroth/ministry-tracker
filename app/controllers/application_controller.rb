@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
 
     def set_locale
       I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      session[:locale] = I18n.locale
     end
 
     def cas_filter
@@ -717,5 +718,10 @@ class ApplicationController < ActionController::Base
     def needs_to_sign_volunteer_agreements?
       !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
     end
+
+    def default_url_options(options={})
+      I18n.locale == I18n.default_locale ? {} : { :locale => I18n.locale }
+    end
+
 end
 

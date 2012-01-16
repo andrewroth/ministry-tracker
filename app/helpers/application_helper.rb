@@ -166,11 +166,18 @@ module ApplicationHelper
   end
 
   def switch_languages_url
-    new_params = params.merge(:locale => currently_english ? 'fr' : 'en-CA')
+    current_url_with_locale(currently_english ? 'fr' : 'en-CA')
+  end
+
+  def current_url_with_locale(locale)
+    new_params = params.clone
     new_params.delete(:controller)
     new_params.delete(:action)
+    new_params.merge!(:locale => locale)
     "#{request.protocol}#{request.port != 80 ? request.host_with_port : request.host}#{request.path}?#{new_params.collect{ |k,v| "#{k}=#{v}" }.join('&')}"
   end
+
+ 
 
   def switch_languages_text
     if currently_english
@@ -189,10 +196,10 @@ module ApplicationHelper
   end
 
   def currently_english
-    I18n.locale.to_s =~ /^en/
+    (I18n.locale.to_s =~ /^en/).present?
   end
 
   def currently_french
-    I18n.locale.to_s =~ /^fr/
+    (I18n.locale.to_s =~ /^fr/).present?
   end
 end
