@@ -17,9 +17,11 @@
         <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>
       <% end %>
 
-      <li><%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, t('layout.top_bar.icons.facebook'), '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_7', 'language', witch_languages_text, currently_english, '&nbsp;', nil, active_tab_id) %></li>
+
+      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link facebook', Facebook::FANPAGE_URL, t('layout.top_bar.icons.facebook'), '&nbsp;', nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', TWITTER_URL, t('layout.top_bar.icons.twitter'), '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_9', 'icon_link twitter', TWITTER_URL, t('layout.top_bar.icons.twitter'), '&nbsp;', nil, active_tab_id) %></li>
     </ol>
 
   </div>
@@ -51,5 +53,3 @@
     <a href='<%= url_for(:action => :index, :controller => :summer_reports, :only_path => false) %>' title='Staff summer schedules'>SUMMER</a>
   </div>
 <% end %>
-
-
