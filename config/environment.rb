@@ -54,6 +54,7 @@ Rails::Initializer.run do |config|
   config.gem 'tzinfo'   # for eventbright
   config.gem 'autometal-geoip', :lib => 'geoip'
   #config.gem 'mysql2', :version => '0.2.7'
+  config.gem 'http_accept_language', :version => '1.0.0'
   config.gem 'i18n'
   
   config.time_zone = 'UTC'

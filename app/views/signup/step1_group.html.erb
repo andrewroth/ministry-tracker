@@ -14,7 +14,7 @@
         :name => "primary_campus_involvement[campus_id]"
   %>
   <%= select_tag "group_semester_id",
-      options_for_select(@semesters.collect{ |s| [ t("terms.#{s.desc}"), s.id.to_s ] },
+      options_for_select(@semesters.collect{ |s| [ t("terms.#{s.translation_key}"), s.id.to_s ] },
         @current_semester.id.to_s),
         :name => "group[semester_id]",
         :style => "#{'display:none;' if @ask_campus}"
@@ -24,7 +24,7 @@
 <div id="spinner" class="signup_groups" style="display:none;">
   <%= image_tag "default/shared/large-loading.gif" %>
   <br/>
-  getting groups...
+  <%= t('groups.getting') %>
 </div>
 
 <div id="groups">

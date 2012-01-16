@@ -9,7 +9,7 @@
 	 <!-- DO *NOT* SHOW LINKS -->
 	<%- elsif -%>
 	  <div style="float:left; margin-bottom:15px;">
-	    <%= link_to('Edit timetable', edit_person_timetable_path(@person, @timetable), :class => "action-button") %>
+	    <%= link_to(t('timetable.buttons.edit'), edit_person_timetable_path(@person, @timetable), :class => "action-button") %>
 		  &nbsp;&nbsp;
 		  <%= link_to(image_tag('silk/printer.png'), person_timetable_path(@person, @timetable, :print_it => "true"),
 	                :title => "Print timetable", :popup => ['Print_Timetable', 'height=600,width=800,scrollbars=yes']) %>
@@ -20,7 +20,7 @@
 <div style="float:right; margin-bottom:15px;">
   <% if @timetable.updated_at.present? %>
     <span title="at exactly <%=@timetable.updated_at%>">
-      Last updated <%= time_ago_in_words(@timetable.updated_at) %> ago<%= ", by #{@timetable.updated_by_person.full_name}" if @timetable.updated_by_person.present? %>
+      <%= t('misc.last_updated') %> <%= time_ago_in_words(@timetable.updated_at) %> ago<%= ", by #{@timetable.updated_by_person.full_name}" if @timetable.updated_by_person.present? %>
     </span>
   <% else %>
     Timetable never updated

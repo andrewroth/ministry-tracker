@@ -98,7 +98,7 @@
                   <td class="eventIcon">
                     <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
-                  <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function "All Projects", toggle_campus('all_projects'), :id => "all_projects_link" %></td>
+                  <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function t('dashboard.projects.all_projects'), toggle_campus('all_projects'), :id => "all_projects_link" %></td>
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
                   <!--<td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>

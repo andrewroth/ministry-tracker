@@ -64,7 +64,7 @@
       
       <div id="semesterSelectContainer">
         <div id="semesterSelectBorder">
-          <%= collection_select :group_semester, :id, @semesters, :id, :description, {:selected => @current_semester.id.to_i} %>
+          <%= select_tag "group_semester_id", options_for_select(@semesters.collect{ |s| [ t("terms.#{s.translation_key}"), s.id ] }, @current_semester.id), :name => "group_semester[id]" %>
           <%= spinner('GroupSemester', 'opaqueWhite') %>
           <%= observe_field 'group_semester_id', :url => {:action => "show_group_involvements"},
                                                  :with => "'semester_id=' + value + '&id=' + '#{@person.id}'",
@@ -113,7 +113,7 @@
 
       <div id="interestedGroups" class="involvementType">
         <%- if @person.group_involvement_interests(@current_semester).size > 0 -%>
-          <%= render :partial => 'group_list', :locals => { :list_title => "Interested", :show_type_titles => false,
+          <%= render :partial => 'group_list', :locals => { :list_title => t('profile.left_bar.groups.interested'), :show_type_titles => false,
             :group_types_and_involvements => @person.group_group_involvements(:interests, {:semester => @current_semester})
           } %>
         <%- end -%>
@@ -121,7 +121,7 @@
 
       <div id="requestedGroups" class="involvementType">
         <%- if @person.group_involvement_requests(@current_semester).size > 0 -%>
-          <%= render :partial => 'group_list', :locals => { :list_title => "Requested", :show_type_titles => false,
+          <%= render :partial => 'group_list', :locals => { :list_title => t('profile.left_bar.groups.requested'), :show_type_titles => false,
             :group_types_and_involvements => @person.group_group_involvements(:requests, {:semester => @current_semester})
           } %>
         <%- end -%>

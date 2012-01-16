@@ -1,6 +1,6 @@
 <% if @signup %>
   <% instruction_block do %>
-    You're almost done! Enter your timetable to indicate when you're free to meet!
+    <%= t('groups.timetable_message') %>
   <% end %>
 <% else %>
   <div id="profiletitle"><h1><%= @person.full_name %></h1></div>
@@ -74,12 +74,12 @@
     :html => {:onsubmit => "set_times_field()", :class => "disableOnSubmit"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%- unless @signup -%>
-    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit' %>
+    <%= f.submit t('timetable.buttons.save'), :class => 'save action-button disableOnSubmit' %>
     <br/>
     <br/>
     <%- end %>
 
-    <p>Click on one of the color buttons below and then click times on your schedule.</p>
+    <p><%= t('timetable.instructions') %></p>
     
 
     <div class="statusheadwrap editing">
@@ -91,7 +91,7 @@
       <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
     </div>
 
-    <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
+    <%= link_to_function(t("timetable.buttons.clear_timetable"), 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
 
     <%= render :partial => 'timetable', :locals => {:editing => true} %>
 
@@ -99,10 +99,10 @@
     <% if @signup %>
       <br/>
       <div style="float:right;">
-        <%= f.submit 'Edit Timetable Later', :class => 'action-button disableOnSubmit', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page." %>
+        <%= f.submit t('timetable.buttons.edit_later'), :class => 'action-button disableOnSubmit', :confirm => t('timetable.buttons.edit_later_confirm') %>
     <% end %>
     
-    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit', :style => 'margin: 0 70px' %>
+    <%= f.submit t('timetable.buttons.save'), :class => 'save action-button disableOnSubmit', :style => 'margin: 0 70px' %>
     <br/>
     <br/>
     
@@ -178,7 +178,7 @@
    
   $('#timetable_submit.save').click(function(e) {
     if(timetable_edits < 2) {
-      var answer = confirm("We noticed you didn't change much on your timetable, filling in your timetable helps your group find a meeting time that's suitable for everyone.\n\nClick 'Cancel' to continue editing or click 'OK' to save your timetable and finish.");
+      var answer = confirm("<%= escape_javascript(t('timetable.buttons.not_changed_message')) %>");
       if(answer == false) {
         return false;
       }

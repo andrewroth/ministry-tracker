@@ -1,9 +1,11 @@
 <%- instruction_block do %>
 
-  <b>You're done!</b>
+  <b><%= t('groups.done') %></b>
   <% if session[:joined_collection_group] == true %>
+    <%= t('groups.done_contact_collection') %>
     A group leader will contact you with more info soon.
   <% else %>
+    <%= t('groups.done_contact_leader') %>
     Your group leader will contact you with more info.
   <% end %>
   <br/>

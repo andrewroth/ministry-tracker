@@ -338,7 +338,7 @@ class CampusInvolvementsController < ApplicationController
     @plural = 'campuses'
     @singular = 'campus'
     @short = 'ci'
-    @add_title = 'Add Campus'
+    @add_title = t('profile.manage_campuses.add_campus')
   end
 
   def set_roles

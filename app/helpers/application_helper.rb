@@ -164,6 +164,27 @@ module ApplicationHelper
     </script>
     " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
   end
+
+  def switch_languages_url
+    new_params = params.merge(:locale => currently_english ? 'fr' : 'en-CA')
+    new_params.delete(:controller)
+    new_params.delete(:action)
+    "#{request.protocol}#{request.port != 80 ? request.host_with_port : request.host}#{request.path}?#{new_params.collect{ |k,v| "#{k}=#{v}" }.join('&')}"
+  end
+
+  def switch_languages_text
+    if currently_english
+      t('layout.languages.english_to_french')
+    elsif currently_french
+      t('layout.languages.french_to_english')
+    end
+  end
+
+  def currently_english
+    I18n.locale.to_s =~ /^en/
+  end
+
+  def currently_french
+    I18n.locale.to_s =~ /^fr/
+  end
 end
-
-

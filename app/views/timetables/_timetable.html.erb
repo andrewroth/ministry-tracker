@@ -5,7 +5,7 @@
     <tr>
       <th class="time">&nbsp;</th>
       <%- 7.times do |day| -%>
-        <th><%= Date::DAYNAMES[day] %></th>
+        <th><%= t("date.day_names.#{Date::DAYNAMES[day].downcase}") %></th>
       <%- end -%>
   </thead>
   <tbody>
