@@ -86,6 +86,8 @@ en-CA:
     groups:
       requested_message: awaiting join request decision
       interested_message: interested
+    update_schedule_msg: "You haven't filled out your schedule yet."
+    update_schedule_title: "UPDATE MY SCHEDULE"
   profile:
     picture:
       instructions: "Select an image file on your computer (max 10 MB):"
@@ -209,7 +211,9 @@ en-CA:
     done_contact_leader: Your group leader will contact you with more info.
     goto_dashboard: Goto the dashboard
     goto_facebook: Goto Facebook
-    findout: To find out what's happening at %{campus} visit %{url}
+    findout: "To find out what's happening at %{campus} visit %{url}"
+    register: Register for your group!
+    next: Next
   timetable:
     instructions: Click on one of the color buttons below and then click times on your schedule.
     not_allowed_see: You are not allowed to see that timetable.
