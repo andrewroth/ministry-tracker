@@ -169,7 +169,8 @@ ActionController::Routing::Routes.draw do |map|
                                             :change_county => :any,
                                             :change_state => :any,
                                             :list => :any,
-                                            :details_json => :any}
+                                            :details_json => :any,
+                                            :list_groups => :any}
 
   map.resources :ministries, :collection => { :switch_list => :get},
                              :member => { :parent_form => :any,
