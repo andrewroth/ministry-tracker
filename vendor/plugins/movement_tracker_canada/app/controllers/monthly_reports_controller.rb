@@ -10,7 +10,7 @@ class MonthlyReportsController < ReportsController
   end
 
   def input_reports
-    [:monthly_report, :monthly_p2c_special]
+    [:monthly_report_input]#, :monthly_p2c_special]
   end
   
   def stat_details
