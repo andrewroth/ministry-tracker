@@ -146,6 +146,7 @@ class MinistriesController < ApplicationController
   end
 
   def switch_apply
+    clear_ministry_cookie
     @ministry = Ministry.find params[:id]
     # make sure they have a role on this ministry, otherwise bump them to their default ministry
     if get_my_role(@ministry).nil?
@@ -154,6 +155,7 @@ class MinistriesController < ApplicationController
     end
     session[:ministry_id] = @ministry.id
     session[:ministry_role_id] = nil
+    set_ministry_cookie(@ministry)
   end
 
   # Question: What exactly does parent_form and set_parent do?

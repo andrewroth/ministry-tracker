@@ -26,6 +26,9 @@ class EmailsController < ApplicationController
   def new
     if params[:entire_search].to_i == 1
       @email = @my.emails.new(:search_id => params[:search_id])
+      search = @email.search
+      ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      @people = Person.find(ids)
     else
       @email = @my.emails.new(:people_ids => params[:person].to_json)
       @people = Person.find(:all, :conditions => { Person._(:id) => params[:person] })

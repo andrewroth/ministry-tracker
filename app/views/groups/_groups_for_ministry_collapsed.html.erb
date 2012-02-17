@@ -1,0 +1,49 @@
+
+<div id="collection_group_list">
+  <div id="collection_group_link">
+    <p><span id="collection_group_link_title"><%= I18n.t("groups.help_header") %></span> <br/> <%= I18n.t("groups.help_tagline", :campus => @campus.short_name) %><br/></p>
+    <%= link_to I18n.t("groups.help_button"), { :action => "step1_default_group", :semester_id => "#{@semester.id}" }, {:class => "action-button"} %>
+  </div>
+</div>
+
+<div id="group_list">
+
+  <div id="primary_group_type_list" class="group_type_list">
+    <% gt = GroupType.first(:conditions => {:group_type => group_type}) %>
+    <h2 class="group_type_title"><%= I18n.t("groups.types.#{gt.translation_key}") %></h2>
+    <div>
+      <%= render :partial => 'groups/group_type_groups_minimal', :locals => {:gt => gt} %>
+    </div>
+  </div>
+
+  <div id="other_group_types_list" style="display:none;">
+    <% gts = @ministry.all_group_types %>
+    <% gts.delete(gt) %>
+    <% gts.each do |gt| %>
+      <div class="group_type_list">
+        <hr></hr>
+        <h2 class="group_type_title"><%= t("groups.types.#{gt.translation_key}") %></h2>
+        <div>
+          <%= render :partial => 'groups/group_type_groups_minimal', :locals => {:gt => gt} %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="display_other_group_types_list_link_container">
+    <hr></hr>
+    <a id="display_other_group_types_list_link" href="#"><%= I18n.t("groups.older") %></a>
+    <br/>
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+  $("#display_other_group_types_list_link").click(function(e) {
+    e.preventDefault();
+    $("#display_other_group_types_list_link_container").hide();
+    $("#other_group_types_list").visualEffect('blind_down');
+  });
+</script>
+

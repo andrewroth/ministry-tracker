@@ -7,6 +7,8 @@ class DormsController; def rescue_action(e) raise e end; end
 class DormsControllerTest < ActionController::TestCase
 
   def setup
+    setup_years
+    setup_months
     setup_default_user
     Factory(:dorm_1)
     Factory(:dorm_2)

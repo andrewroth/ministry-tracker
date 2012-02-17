@@ -1,0 +1,64 @@
+<h1><%= @event.title %></h1>
+<br/>
+<p>
+  <b>Eventbrite event ID:</b>
+  <%= @event.registrar_event_id %>
+</p>
+<p>
+  <b>Event group:</b>
+  <%= @event.event_group.title %>
+</p>
+<p>
+  <b>Register URL:</b>
+  <%= @event.register_url %>
+</p>
+<br/>
+<p>
+  <b>Start date:</b>
+  <%= @event.start_date %>
+</p>
+<p>
+  <b>End date:</b>
+  <%= @event.end_date %>
+</p>
+<br/>
+<p>
+  <b>Visible to students:</b>
+  <%= @event.visible_to_students %>
+</p>
+<br/>
+<p>
+  <b>Synced at:</b>
+  <%= @event.synced_at %>
+</p>
+<p>
+  <b>Created at:</b>
+  <%= @event.created_at %>
+</p>
+<p>
+  <b>Updated at:</b>
+  <%= @event.updated_at %>
+</p>
+<br/>
+<p>
+  <b>Campuses (<%= @event.campuses.size %>):</b><br/>
+  <% @event.campuses.each do |campus| %>
+    <%= "#{campus.name} (#{campus.short_name})" %><br/>
+  <% end %>
+</p>
+<br/>
+<p>
+  <b>Attendees (<%= @event.event_attendees.size %>):</b><br/>
+  <% @event.event_attendees.each do |event_attendee| %>
+    <%= "#{event_attendee.first_name} #{event_attendee.last_name}" %><br/>
+  <% end %>
+</p>
+<br/>
+<p>
+  <b>Description:</b>
+  <hr/>
+  <%= @event.description %>
+  <hr/>
+</p>
+<br/>
+<%= link_to 'Back', events_path %>

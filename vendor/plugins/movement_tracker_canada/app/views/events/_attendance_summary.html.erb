@@ -1,6 +1,13 @@
 <p class="statsTitle"><%= @report_description %></p>
 <table class="statsTable">
 
+  <% if @missing_attendees %>
+    WARNING: There appears to be <%= @eb_event.num_attendee_rows %> total attendees to this event but some attendees cannot be reported on.<br/>
+    This can happen if certain info is missing within Eventbrite, e.g. an attendee does not have a campus.
+    <br/>
+    <br/>
+  <% end %>
+
   <% if @campus_summaries.present? %>
 
   <tr>
@@ -40,4 +47,6 @@
 
 </table>
 
-<div id="statsReportNote">Note: event information is updated hourly</div>
+<br/>
+<div id="statsReportNote">Updated approximately hourly</div>
+<br/>

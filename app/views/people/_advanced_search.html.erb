@@ -1,6 +1,6 @@
 <% form_tag(directory_people_path(:format => 'html')) do %>
   <div class="adfieldbox">
-    <big>First Name<br /></big>
+    <span class="advanced_search_field_label">First Name<br /></span>
     <%= text_field_tag :first_name,
       @options['first_name'],
       :class => 'wide'
@@ -8,7 +8,7 @@
   </div>
   
   <div class="adfieldbox">
-    <big>Last Name<br /></big>
+    <span class="advanced_search_field_label">Last Name<br /></span>
     <%= text_field_tag :last_name,
       @options['last_name'],
       :class => 'wide'
@@ -16,7 +16,7 @@
   </div>
   
   <div class="adfieldbox">
-    <big>Gender<br /></big>
+    <span class="advanced_search_field_label">Gender<br /></span>
     <% ['1','0'].each do |gender| %>
         <%= check_box_tag "gender[]",
           gender,
@@ -27,7 +27,7 @@
   </div>
   
   <div class="adfieldbox">
-    <big>Email<br /></big>
+    <span class="advanced_search_field_label">Email<br /></span>
     <%= text_field_tag :email,
       @options['email'],
       :class => 'wide'
@@ -37,7 +37,7 @@
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   
   <div class="adfieldbox">
-    <big>Year in School</big>
+    <span class="advanced_search_field_label">Year in School</span>
     <%- tooltip do -%>
       Pressing Ctrl/Command will help selecting and deselecting multiple years.
     <%- end -%>
@@ -51,7 +51,7 @@
   </div>
 
   <div class="adfieldbox">
-    <big>Ministry</big>
+    <span class="advanced_search_field_label">Ministry</span>
     <%- tooltip do -%>
       Pressing Ctrl/Command will help selecting and deselecting multiple ministries.
     <%- end -%>
@@ -69,7 +69,7 @@
   </div>
     
   <div class="adfieldbox">
-    <big>Campus</big>
+    <span class="advanced_search_field_label">Campus</span>
     <%- tooltip do -%>
       Pressing Ctrl/Command will help selecting and deselecting multiple campuses.
     <%- end -%>
@@ -85,7 +85,7 @@
   </div>
 
   <div class="adfieldbox">
-    <big>Role</big>
+    <span class="advanced_search_field_label">Role</span>
     <%- tooltip do -%>
       Pressing Ctrl/Command will help selecting and deselecting multiple roles.
     <%- end -%>
@@ -106,9 +106,34 @@
     %>
   </div>
 
+  <div class="adfieldbox">
+    <span class="advanced_search_field_label">Group</span>
+    <%- tooltip do -%>
+      Search by group involvement for this semester.
+    <%- end -%>
+    <br/>
+    
+    <%
+    involvement_options = [ [ "Not in a group", "not_group" ] ]
+    involvement_options += GroupType.find_all_by_in_directory_search_not_in(true).collect{ |gt|
+      [ "Not in a #{gt.short_name}", (-gt.id).to_s ]
+    }
+    involvement_options += [ [ "In a group", "in_group" ] ]
+    involvement_options += GroupType.find_all_by_in_directory_search_in(true).collect{ |gt|
+      [ "In a #{gt.short_name}", gt.id.to_s ]
+    }
+    %>
+
+    <%= select_tag 'group_involvement[]',
+        options_for_select(involvement_options, @options["group_involvement"]),
+        :multiple => false, :class => "multiSelect", :size => 13
+    %>
+  </div>
+
 
   <div class="clear" style="margin-bottom:15px;"><br/></div>
   
+  <%= hidden_field_tag "force", "true" %>
   <%= submit_tag 'Search', :class => "action-button" %>
   
 <% end %>

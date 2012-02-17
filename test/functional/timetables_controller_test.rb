@@ -4,6 +4,8 @@ class TimetablesControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     
     login
   end
@@ -27,6 +29,7 @@ class TimetablesControllerTest < ActionController::TestCase
   end
   
   test "should search timetables for best matching time" do
+    Factory(:person_6)
     xhr :post, :search, :leader_ids => [Factory(:person_1).id], :member_ids => [Factory(:person_2).id]
     assert_response :success, @response.body
   end

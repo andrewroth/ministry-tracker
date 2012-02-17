@@ -1,6 +1,7 @@
 
+
 <% if session[:from_facebook_canvas] == true %>
-<script>
+<script type="text/javascript">
   function facebook_init_callback() {
   }
 
@@ -12,10 +13,10 @@
       setValueIfNotSetButPresent('person_local_phone', response.mobile_phone);
 
       // don't confuse gender index with the value
-      if(response.gender == "male") {
-        document.getElementById('person_gender').selectedIndex = 0;
-      } else if(response.gender == "female") {
+      if(response.gender == "male" && document.getElementById('person_gender').value == "") {
         document.getElementById('person_gender').selectedIndex = 1;
+      } else if(response.gender == "female" && document.getElementById('person_gender').value == "") {
+        document.getElementById('person_gender').selectedIndex = 2;
       }
     });
   }
@@ -24,51 +25,66 @@
 
 
 <% instruction_block do %>
-<B>Step 2:</B> Please fill out your info and click next. <% if logged_in? %><B>Please note that you’re currently logged into The Pulse as <%= @person.full_name %>.</B> If this is not you please hit the ‘Back’ button and then the ‘Log Out’ button. Thank you!<% end %>
+  <% if logged_in? && session[:from_facebook_canvas] == true %>
+    Hi <b><%= @person.full_name %></b>, if that's not you
+    <%= leave_facebook_link_to "click here to logout", logout_url %>
+    <br/>
+    <br/>
+  <% end %>
+  Register for your group!
 <% end %>
 
-<center>
-  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => 2 } %>
-</center>
 
 <div id="signup_step1_columns">
 
-<%- form_for @person, :url => { :action => :step2_info_submit, :method => :post } do |f| -%>
+<%- form_for @person, :url => { :action => :step2_info_submit, :method => :post }, :html => {:class => "disableOnSubmit"} do |f| -%>
   <%= f.error_messages %>
   <table id="signup_step2_info">
-  <tr class="required_field">
+  <tr>
     <td class="label">First Name </td>
-    <td><%= f.text_field :first_name %> </td>
+    <td>
+      <%= f.text_field :first_name, :class => "required" %>
+      <%= message_span("person[first_name]", "required") %>
+    </td>
   </tr>
-  <tr class="required_field">
+  <tr>
     <td class="label">Last Name </td>
-    <td><%= f.text_field :last_name %> </td>
+    <td>
+      <%= f.text_field :last_name, :class => "required" %>
+      <%= message_span("person[last_name]", "required") %>
+    </td>
   </tr>
   <%- unless logged_in? %>
-  <tr class="required_field">
+  <tr>
     <td class="label">Email </td>
-    <td><%= f.text_field :email %> </td>
+    <td>
+      <%= f.text_field :email, :class => "required" %>
+      <%= message_span("person[email]", "required") %>
+    </td>
   </tr>
   <%- end %>
-  <tr class="required_field">
+  <tr>
     <td class="label">Gender </td>
-    <td><%= f.select :gender, [["Male", "1"], ["Female", "0"]], :selected => @person.gender_us_id, :prompt => "" %> </td>
+    <td>
+      <%= f.select :gender, [["Male", "1"], ["Female", "0"]], {:selected => @person.gender_us_id, :prompt => ""}, {:class => "required"} %>
+      <%= message_span("person[gender]", "required") %>
+    </td>
   </tr>
-  <tr class="required_field">
+  <tr>
     <td class="label">Phone </td>
-    <td><%= f.text_field :local_phone %> </td>
+    <td>
+      <%= f.text_field :local_phone, :class => "required" %>
+      <%= message_span("person[local_phone]", "required") %>
+    </td>
   </tr>
-  <tr class="required_field">
-    <td class="label">Campus </td>
-    <td><%= @campus.name %></td>
-  </tr>
-  <tr class="required_field">
+  <tr>
     <td class="label">School Year </td>
     <td>
       <%= select_tag "primary_campus_involvement_school_year_id", 
-            options_for_select(school_year_options),
-            :name => "primary_campus_involvement[school_year_id]"
+            options_for_select(school_year_options, @primary_campus_involvement.school_year_id.to_i),
+            {:name => "primary_campus_involvement[school_year_id]", :class => "required"}
       %>
+      <%= message_span("primary_campus_involvement[school_year_id]", "required") %>
     </td>
   </tr>
   <tr>
@@ -76,19 +92,25 @@
     <td><%= f.text_field :major %></td>
   </tr>
   <%= render :partial => "dorm_tr" %>
-  <tr>
-    <td> </td>
-    <td><small><br/><%= image_tag("asterisk_yellow_smaller.png") %> are required fields</small></td>
-  </tr>
   </table>
 
 </div>
 
 <br/>
+<br/>
 
 <div class="center">
-  <%= submit_tag "Back", :type => "button", :onClick => "window.location.href = '/signup/step1_group'", :class => "action-button", :style => "margin-right: 10px" %>
-<%= submit_tag "Next", :class => 'action-button' %>
+  <%= submit_tag("#{@next_button_text.present? ? @next_button_text : 'Next'}", :id => "submit", :class => 'action-button submit validateRequiredOnSubmit disableOnSubmit') %>
 </div>
 
 <%- end -%>
+
+  
+<%= javascript_include_tag "inputLiveValidations.js" %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    disableInputsOnSubmit("disableOnSubmit");
+  });
+</script>
+

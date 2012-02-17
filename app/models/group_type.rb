@@ -3,12 +3,18 @@ class GroupType < ActiveRecord::Base
   belongs_to :ministry
   has_many :groups
   validates_presence_of :group_type, :ministry_id
-  after_save :update_collection_groups
+
+  # some collection groups have gotten to a state where there is no ministry
+  # or campus, and I don't have time to go through and delete those groups,
+  # so I will remove this after update for now
+  #after_save :update_collection_groups
+  
+  DG = "Discipleship Group (DG)"
 
   def collection_groups
     groups.find(:all, :joins => :campus_ministry_group, 
                 :conditions => [ "campus_ministry_groups.id is not null" ])
-   end
+  end
 
   def update_collection_groups
     if has_collection_groups

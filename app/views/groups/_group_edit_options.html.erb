@@ -1,9 +1,17 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+<% end %>
+
+<%- if authorized?(:new, :group_invitations, nil, :group_id => @group.id) -%>
+  <%= link_to "Invite Friends to Join", new_group_group_invitation_path(@group), :class => 'small' %>
+<%- end -%>
+
 <%- if authorized?(:transfer, :group_involvements) -%>
   <%= link_to_function 'Transfer', "$('#transfer').fadeIn()", :class => 'small' %>
 <%- end -%>
 
 <%- if authorized?(:new, :emails) -%>
-<%= link_to_remote 'Email', { :url => email_group_url(@group), :method => :post, :with => "#{data}" }, { :class => 'small' } %>
+  <%= link_to_remote 'Email', { :url => email_group_url(@group), :method => :post, :with => "#{data}" }, { :class => 'small' } %>
 <%- end -%>
 
 <%- if authorized?(:new, :group_involvements) -%>
@@ -17,15 +25,29 @@
 <%- end -%>
 
 <%- if authorized?(:compare_timetables, :groups) -%>
-  <%= link_to_remote 'Compare Timetables', {
-    :url => compare_timetables_group_url(:id => @group.id), 
-    :with => "#{data}", :complete => "location.hash = 'compare';"
-  }, {:class => 'small'} 
-  %>
+
+  <!--[if lt IE 8]>
+    <%= link_to_remote 'Compare Timetables', {
+      :url => compare_timetables_group_url(:id => @group.id, :compare_style => 0),
+      :with => "#{data}", :complete => "window.location = '#compare'; $('#spinner_compare_timetables').hide();", :before => "$('#spinner_compare_timetables').show()"
+    }, {:class => 'small'}
+    %>
+  <![endif]-->
+  <![if gte IE 8]>
+    <%= link_to_remote 'Compare Timetables', {
+      :url => compare_timetables_group_url(:id => @group.id),
+      :with => "#{data}", :complete => "window.location = '#compare'; $('#spinner_compare_timetables').hide();", :before => "$('#spinner_compare_timetables').show()"
+    }, {:class => 'small'}
+    %>
+  <![endif]>
+
 
   <%- tooltip do -%>
     <p>Use this option to generate a spreadsheet containing the results of comparing the schedules of selected group members.</p>
   <%- end -%>
+
+  &nbsp;
+  <%= spinner('_compare_timetables') %>
 <%- end -%>
 
 <%- if authorized?(:transfer, :group_involvements) -%>

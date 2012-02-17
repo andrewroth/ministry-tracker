@@ -8,6 +8,8 @@ class TrainingCategoriesControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:trainingcategory_1)
     Factory(:trainingcategory_2)
     

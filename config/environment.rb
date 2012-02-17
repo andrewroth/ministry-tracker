@@ -37,10 +37,10 @@ Rails::Initializer.run do |config|
   # config.gem  'json'
   config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
-  config.gem  'hpricot'
+  config.gem  'hpricot', :version => '0.8.3'
   config.gem  'rubyzip', :lib => 'zip/zip'
   config.gem  'roo', :version => '1.3.11'
-  config.gem  'mechanize'
+  config.gem  'mechanize', :version => '1.0.0'
   config.gem  'erubis'
   config.gem  'aws-s3', :lib => 'aws/s3'
   config.gem  'jrails'
@@ -52,6 +52,10 @@ Rails::Initializer.run do |config|
   config.gem 'daemons'
   config.gem 'httparty' # for eventbright
   config.gem 'tzinfo'   # for eventbright
+  config.gem 'autometal-geoip', :lib => 'geoip'
+  #config.gem 'mysql2', :version => '0.2.7'
+  config.gem 'http_accept_language', :version => '1.0.0'
+  config.gem 'i18n'
   
   config.time_zone = 'UTC'
 

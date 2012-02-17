@@ -1,4 +1,6 @@
 require 'csv'
+require 'yaml'
+
 namespace :cmt do
   namespace :views do
     desc "rebuilds all views in the CMT"
@@ -273,6 +275,91 @@ end
 namespace :db do
   desc "db:reset and db:seed"
   task :rebuild => [ "db:reset", "db:seed" ]
+  
+  task :seed_test_users => :environment do
+    abort("test users shouldn't be used in production environment") if Rails.env == "production"
+    
+    test_users = YAML.load_file("config/test_users.yml")
+    
+    test_users.each do |key,hash|
+      user = User.find_or_create_from_guid_or_email(hash["guid"], hash["email"], hash["first_name"], hash["last_name"])
+      
+      person = user.person
+      
+      person.all_campus_involvements.destroy_all
+      person.all_ministry_involvements.destroy_all
+      
+      ministry = Ministry.find(hash["ministry_id"])
+      campus = ministry.campuses.first
+      ministry_role = MinistryRole.find(:first, :conditions => {:name => hash["role"]})
+      school_year = SchoolYear.find(:first, :conditions => ["#{SchoolYear._(:name)} = ?", hash["school_year"]])
+      
+      person.add_or_update_campus(campus.id, school_year.id, ministry.id, "MT")
+      person.add_or_update_ministry(ministry.id, ministry_role.id)
+    end
+  end
+  
+  
+  task :import_training_course_data_from_csv => :environment do
+    
+    @parsed_file = CSV::Reader.parse(File.open('tmp/c4c_staff_training_record.csv', 'rb'), ',')
+    courses = []
+    person_count = 0
+    
+    @parsed_file.each_with_index  do |row, i|
+      if i == 0 # header row
+        courses = row
+        courses.delete_at(0)
+        
+        # add a training course for each header
+        courses.each_with_index do |course, j|
+          tc = TrainingCourse.new({:name => course})
+          tc.save!
+          courses[j] = tc
+        end
+      else
+        
+        person = Person.find(row[0].to_i)
+        if person
+          person_count = person_count+1
+          row.delete_at(0)
+          row.each_with_index do |col, j|
+            finished = (col == "TRUE" || col == "100%")
+            percent_complete = col && col.include?("%") ? col : nil
+            if finished || percent_complete
+              ptc = PersonTrainingCourse.new(:person_id => person.id, :training_course_id => courses[j].id, :finished => finished, :percent_complete => percent_complete)
+              ptc.save!
+            end
+          end
+        end
+      end
+    end
+    puts "Imported training data for #{person_count} people"
+  end
+  
+  
+  task :set_french_campus_names => :environment do
+    # this is a temporary hack to work-around some character encoding issues that result from cloning databases
+    
+    french_campus_names = {"62" => "Université de Montreal",
+                           "63" => "Université du Québec à Québec",
+                           "64" => "Université de Sherbrooke",
+                           "65" => "Université Laval",
+                           "144" => "Cégep Ste-Foy",
+                           "145" => "Cégep St. Lawrence",
+                           "146" => "Cégep François-Xavier-Garneau",
+                           "162" => "Université du Québec à Montréal",
+                           "161" => "Université du Québec à Rimouski"}
+    
+    french_campus_names.each do |id, name|
+      campus = Campus.first(:conditions => ["#{Campus._(:id)} = ?", id.to_i])
+      if campus.present?
+        campus.name = name
+        campus.save!
+      end
+    end
+  end
+  
 end
 
 task :people => :environment do

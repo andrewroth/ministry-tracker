@@ -6,6 +6,7 @@
     </td>
   <%- end -%>
   <td><%= authorized?(:show, :people) ? link_to(person.full_name, person) : person.full_name %></td>
+  <%- unless @hide_extra_info -%>
   <td><%= person.human_gender %></td>
   <td><%= person.current_address.email %></td>
   <td><%= person.current_address.phone %></td>
@@ -19,4 +20,5 @@
       never
     <% end %>
   </td>
+  <%- end -%>
 </tr>

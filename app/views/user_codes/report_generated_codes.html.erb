@@ -1,0 +1,45 @@
+<h2>
+Generated User Codes
+</h2>
+
+<big>
+  <%= @user_codes.size %> codes, you may bookmark this page or copy and paste the data into a spreadsheet.
+</big>
+
+
+<table style="position:absolute; left:1%; width:98%; margin:10px 0; background-color:white;">
+  <tr>
+    <th><big>Person ID</big></th>
+    <th><big>Email</big></th>
+    <th><big>First Name</big></th>
+    <th><big>Last Name</big></th>
+    <th><big>Primary Campus</big></th>
+    <th><big>Campus Short</big></th>
+    <th><big>Code</big></th>
+    <%= "<th><big>Link</big></th>" if @code_controller.present? && @code_action.present? %>
+  </tr>
+  
+  <% @user_codes.each do |code| %>  
+    <tr>
+      <td><%= code.user.person.id %></td>
+      <td><%= code.user.person.email %></td>
+      <td><%= code.user.person.first_name %></td>
+      <td><%= code.user.person.last_name %></td>
+      
+      <%
+      if code.user.person.primary_campus_involvement
+        campus = code.user.person.primary_campus_involvement.campus
+      elsif code.user.person.most_recent_group_involvement && code.user.person.most_recent_group_involvement.group
+        campus = code.user.person.most_recent_group_involvement.group.campus
+      end
+      %>
+      <td><%= campus.name if campus %></td>
+      <td><%= campus.short_name if campus %></td>
+      <td><%= code.login_code.code %></td>
+      <%= "<td>#{code.callback_url(@base_url, @code_controller, @code_action)}</td>" if @code_controller.present? && @code_action.present? %>
+    </tr>
+  <% end %>
+</table>
+
+<br/>
+<br/>

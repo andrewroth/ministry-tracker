@@ -1,8 +1,15 @@
 class Person < ActiveRecord::Base
+  @@per_page = 500
   load_mappings
+  acts_as_nested_set :parent_column => "person_mentor_id", :left_column => "person_mentees_lft",
+    :right_column => "person_mentees_rgt", :id_column_name => _(:id)
   include Common::Core::Person
   include Common::Core::Ca::Person
   include Legacy::Stats::Core::Person
+  
+  # Labels
+  has_many :label_people, :class_name => "LabelPerson", :foreign_key => _(:person_id, :label_id)
+  has_many :labels, :through => :label_people, :order => "#{Label.table_name}.#{_(:priority)} asc"
 
   # Training Questions
   has_many :training_answers, :class_name => "TrainingAnswer", :foreign_key => _(:person_id, :training_answer)
@@ -42,7 +49,18 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests_assoc,
     :class_name => 'Group', :source => :group
   has_many :dismissed_notices
+   
+  has_one :mentor, :class_name => "Person", :primary_key => "person_mentor_id"
+  has_many :mentees, :class_name => "Person", :foreign_key => "person_mentor_id"
 
+  has_many :person_training_courses
+  has_many :training_courses, :through => :person_training_courses
+  has_many :finished_training_courses, :through => :person_training_courses,
+    :source => :training_course,
+    :conditions => ["#{PersonTrainingCourse._(:finished)} = 1"]
+    
+  has_many :contract_signatures
+  
 
   def all_group_involvements(semester = nil)
     return self.all_group_involvements_assoc unless semester && semester.id
@@ -81,6 +99,9 @@ class Person < ActiveRecord::Base
                       self.id, semester.id, true])
   end
   
+  def most_recent_group_involvement
+    self.group_involvements.all(:first, :conditions => ["#{Person._(:id)} = ?", self.id], :order => "created_at desc").first
+  end
 
   def custom_value_hash
     if @custom_value_hash.nil?
@@ -183,5 +204,44 @@ class Person < ActiveRecord::Base
       approved_by = approver ? approver : @training_answer_hash[question_id].approved_by
       @training_answer_hash[question_id].update_attributes({_(:completed_at, :training_answer) => date, _(:approved_by, :training_answer) => approver})
     end
+  end
+
+  def is_global_dashboard_admin
+    v = self.try(:user).try(:global_dashboard_access).try(:admin)
+  end
+  
+  def has_mentor?
+    attr = "person_mentor_id"
+    return !(self.send(attr).nil?)
+  end
+  
+  def signed_volunteer_contract_this_year?
+    return false if self.find_next_unsigned_volunteer_contract.present?
+    true
+  end
+  
+  def find_next_unsigned_volunteer_contract
+    # we want to allow signing the contracts one month before the year technically begins
+    
+    if Month.current == Year.current.months.last
+      year = Year.first(:conditions => {:year_number => Year.current.year_number+1}) || Year.current
+    else
+      year = Year.current
+    end
+    
+    contract = nil
+    
+    Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
+      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
+                                                     #{ContractSignature._(:contract_id)} = ? and 
+                                                     #{ContractSignature._(:agreement)} = true and 
+                                                     #{ContractSignature._(:signature)} <> '' and 
+                                                     #{ContractSignature._(:signed_at)} > ?",
+                                                     self.id, contract_id, year.start_date-1.month]).present?
+      contract = Contract.find(:first, :conditions => { :id => contract_id })
+      break
+    end
+    
+    contract
   end
 end

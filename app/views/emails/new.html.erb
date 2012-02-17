@@ -1,9 +1,13 @@
-<h1>New email</h1>
+<h1>Compose email</h1>
 
-<% form_for(@email) do |f| %>
+<script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+<% form_for(@email, :html => { :class => "disableOnSubmit"}) do |f| %>
+  <br/>
+  
   <%- if @people -%>
   <p>
-  <label>To</label>
+  <b>To:</b>
   <span><%= @people.collect(&:email).join(", ") %></span>
   </p>
   <%- end -%>
@@ -11,19 +15,25 @@
   <%= f.error_messages %>
   <%= f.hidden_field :search_id %>
   <%= f.hidden_field :people_ids %>
+  <br/>
   <p>
-    <%= f.label :subject %>
-    <%= f.text_field :subject %>
+    <b>Subject:</b>
+    <%= f.text_field :subject, :size => 100 %>
+  </p>
+  <br/>
+  <p>
+    Use {{first_name}} and {{last_name}} to substitute the recipients' first and last names, respectively.
   </p>
   <p>
-    Use {{first_name}} and {{last_name}} in the body to substitute the recipients' first and last names, respectively.
+    <%= f.text_area :body, :cols => 80, :class => "ckeditor" %>
   </p>
+  <br/>
   <p>
-    <%= f.label :body %>
-    <%= f.text_area :body, :cols => 80 %>
-  </p>
-  <p>
-    <%= f.submit 'Send Email' %> or 
+    <%= f.submit 'Send', :class => 'action-button disableOnSubmit' %> or 
     <%= link_to 'cancel', :back, :class => 'cancel' %>
   </p>
 <% end %>
+
+<script type="text/javascript">
+  disableInputsOnSubmit("disableOnSubmit");
+</script>

@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
     # cas stuff is not set by this point and so it appears like nobody is logged in even
     # when someone goes through cas login successfully
     login_from_cas if params[:ticket].present? 
-
+    
     if logged_in?
       if self.current_user.respond_to?(:login_callback) 
         self.current_user.login_callback
@@ -53,8 +53,8 @@ class SessionsController < ApplicationController
       self.current_user.save
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     else
-      @ie_browser = request.env['HTTP_USER_AGENT'].downcase =~ /msie/i ? true : false
-      render :layout => false
+      @ie_browser = request.env['HTTP_USER_AGENT'].try(:downcase) =~ /msie/i ? true : false
+      render :layout => false unless @mobile
     end
     # force a flash warning div to show up, so that invalid password message can be shown
     flash[:warning] = '&nbsp;'
@@ -99,7 +99,7 @@ class SessionsController < ApplicationController
         elsif Cmt::CONFIG[:gcx_direct_logins]
           # If regular auth didn't work, see if they used CAS credentials
           form_params = {:username => params[:username], :password => params[:password], :service => new_session_url }
-          cas_url = 'https://signin.mygcx.org/cas/login'
+          cas_url = 'https://thekey.me/cas/login'
           begin
             agent = Mechanize.new
             page = agent.post(cas_url, form_params)
@@ -140,8 +140,17 @@ class SessionsController < ApplicationController
       # (below) clear out any GET '?' parameters from string before navigating back a page
       redirect_to request.env["HTTP_REFERER"].gsub(/\?[\=\&A-z0-9]+/,'')    # :back
     else
-      flash[:notice] = "You have been logged out."
+      flash[:notice] = "You have been logged out"
       logout_keeping_session!
+    end
+  end
+  
+  def recreate
+    if session[:impersonator].present?
+      redirect_to :action => destroy
+    else
+      dest = params[:destination].present? ? "#{CASClient::Frameworks::Rails::Filter.config[:login_url]}?service=#{CGI::escape(params[:destination])}&gateway=false" : nil
+      logout_keeping_session!(dest, false)
     end
   end
 

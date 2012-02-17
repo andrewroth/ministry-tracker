@@ -60,11 +60,12 @@
       :p2c => {:order => 5, :label => "Power to Change Reports", :controller => :stats, :action => :show_p2c_report, :scopes => [:summary]},
       :ccci => {:order => 6, :label => "CCCI Reports", :controller => :stats, :action => :show_ccci_report, :scopes => [:summary, :campus_drill_down]},
       :comp => {:order => 4, :label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report, :scopes => [:staff_drill_down]},
-      :hpctc => {:order => 2, :label => "How people came to Christ", :controller => :stats, :action => :how_people_came_to_christ, :scopes => [:summary]},
+      :hpctc => {:order => 2, :label => "How People Came to Christ", :controller => :stats, :action => :how_people_came_to_christ, :scopes => [:summary]},
       :story => {:order => 3, :label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses, :scopes => [:summary]},
       :annual_goals => {:order => 3, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]},
-      :perso => {:order => 7, :label => "My personal stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]},
-      :one_stat => {:hidden => true, :order => 0, :label => "Single Stat Report", :controller => :stats, :action => :one_stat, :scopes => [:one_stat]}
+      :perso => {:order => 7, :label => "My Personal Stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]},
+      :one_stat => {:hidden => true, :order => 0, :label => "Single Stat Report", :controller => :stats, :action => :one_stat, :scopes => [:one_stat]},
+      :labelled_people => {:order => 8, :label => "Label Report", :controller => :stats, :action => :labelled_people, :scopes => [:summary]}
     }
   end
   
@@ -755,6 +756,9 @@
 
   
   def eventbrite
+    # num_days_to_display_event_after_completed : stop advertising events on the dashboard after this many days have elapsed after the event is completed
+    # num_days_until_event_closed_after_completed : Eventbrite closes events 5 days after they complete and pay out the money, say 6 just to be safe
+    # num_days_sync_delay : only sync events if they haven't been synced for this many or more days
     {
       :campus_question => "Your Campus",
       :year_question => "Your Year",
@@ -763,7 +767,36 @@
       :male => "Male",
       :female => "Female",
       :first_year => "1st Year (Undergrad)",
-      :c4c_events_link => "http://www.eventbrite.com/org/571076749",
-      :num_days_to_display_event_after_completed => 10
+      :c4c_events_link => "http://campusforchrist.eventbrite.com/",
+      :num_days_to_display_event_after_completed => 10,
+      :num_days_until_event_closed_after_completed => 6,
+      :num_days_sync_delay => 1
     }
   end
+
+
+  def google_search_appliance_config
+    {
+      :url => "https://search.mygcx.org/search",
+      :client => "global",
+      :ud => "0",
+      :output => "xml_no_dtd",
+      :site => "default_collection",
+      :oe => "UTF-8",
+      :ie => "UTF-8",
+      :entqr => "3",
+      :entsp => "a",
+      :access => "a"
+    }
+  end
+  
+  
+  def gcx_profile_report_config
+    {
+      :url => "https://www.mygcx.org/system/report/profile/attributes",
+      :edit_url => "https://www.mygcx.org/Public/screen/profile?profile_combinerURL=globalProfile",
+      :show_url => "https://www.mygcx.org/Public/screen/peopleLocator"
+    }
+  end
+  
+  TWITTER_URL = "https://twitter.com/#!/p2cstudents"

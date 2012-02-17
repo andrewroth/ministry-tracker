@@ -35,7 +35,10 @@ module SearchHelper
       info += person.ministries_concat.present? ? "#{person.ministries_concat}<b> · </b>Staff<br/>" : "Staff<br/>"
     end
 
-    info += "#{person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")}" if person.email.present?
+    if person.email.present?
+      email = person.email.downcase.gsub(@q,"<strong>#{@q}</strong>")
+      info += "#{link_to(email, new_email_url("person[]" => person.id), :class => "sendEmail subtle", :title => "Compose an email to #{person.first_name.capitalize}")}"
+    end
 
     if person.cell_phone.present?
       info += "<b> · </b>" if person.email.present?
@@ -51,7 +54,7 @@ module SearchHelper
     info
   end
 
-  def ac_info_for_person(person)
+  def ac_info_for_person(person, actions = false)
     info = ""
     if person.staff_role_ids.blank?
       info += "<span class='noSearchHighlight'>#{person.campuses_concat}</span><br/>" if person.campuses_concat.present?
@@ -59,7 +62,11 @@ module SearchHelper
       info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
     end
 
-    info += link_to("#{person.email.downcase}", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
+    if actions
+      info += link_to("<span class='acEmail'>#{person.email.downcase}</span>", new_email_url("person[]" => person.id), :class => "autoCompleteEmail", :title => "Compose an email to #{person.first_name.capitalize}") if person.email.present?
+    else
+      info += "<span class='acEmail'>#{person.email.downcase}</span>" if person.email.present?
+    end
   end
 
   def info_for_group(group)
@@ -78,7 +85,7 @@ module SearchHelper
     leaders = group.leaders + group.co_leaders
 
     leaders_array = leaders.collect do |person|
-      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}"
+      "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}", :class => "subtle")}"
     end
 
     info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
@@ -86,13 +93,13 @@ module SearchHelper
 
     # display number of members and any members that matched the search query
 
-    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}") if group.num_members.present?
+    info += link_to("#{pluralize(group.num_members, "member")}", "/groups/#{group.id}", :class => "subtle") if group.num_members.present?
 
     if group.try(:involvements)
       people_ids = group.involvements.split(",")
 
       people_array = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_ids]).collect do |person|
-        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}")}" if leaders.index(person).nil?
+        "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}", :class => "subtle")}" if leaders.index(person).nil?
       end
       people_array = people_array-[""]-[nil]
 
@@ -105,5 +112,15 @@ module SearchHelper
 
     info
   end
+
+  def display_url(url)
+    uri = URI.parse(url)
+    host = uri.host
+    file = File.basename(CGI::unescape(uri.path))
+    path = File.dirname(CGI::unescape(uri.path))
+    path = "#{path}/" unless path == "/"
+    CGI::unescape "#{host}#{truncate(path, :length => 30, :omission => "...#{path[path.length-15,path.length-1]}")}#{file unless file == '/'}"
+  end
+
 end
 

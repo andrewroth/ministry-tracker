@@ -1,28 +1,45 @@
 <%- instruction_block do %>
-  <B>You're done!</B>  You'll receive further information once groups are set up.
-  
-  Click 'Finished' to go
-  <% if session[:from_facebook_canvas] == true %>
-    back to Facebook.
-  <% elsif logged_in? %>
-    back to the dashboard.
-  <% else %>
-    back to the Sign In page.
-  <% end %>
 
+  <b><%= t('groups.done') %></b>
+  <% if session[:joined_collection_group] == true %>
+    <%= t('groups.done_contact_collection') %>
+    A group leader will contact you with more info soon.
+  <% else %>
+    <%= t('groups.done_contact_leader') %>
+    Your group leader will contact you with more info.
+  <% end %>
+  <br/>
+  
+  <% if @leaders.present? %>
+    <br/>
+    Or feel free to email them:
+    <%=
+      @leaders.map{ |i|
+        if i.person.present? && i.person.email
+          mail_to i.person.email, i.person.full_name, :title => i.person.email
+        end
+      }.join(', ')
+    %>
+    <% if @group && @group.email.present? %>
+      or <%= mail_to @group.email %>
+    <% end %>
+    <br />
+  <% end %>
+  
+  <% if @campus && @campus.campus_website.present? %>
+    <br/>
+    To find out what's happening at <%= @campus.short_name %> visit <b><%= link_to URI.parse(@campus.campus_website).host, @campus.campus_website %></b>
+    <br/>
+  <% end %>
+  
 <%- end %>
 
-<center>
-  <%= render :partial => 'jquery_ui_progress', :locals => { :current_step => "done" } %>
-</center>
-
 <div class="center">
-  <%= link_to "Back", { :action => "step3_timetable" }, :class => "action-button" %> &nbsp;&nbsp;
 
-  <% if session[:from_facebook_canvas] == true %>
-    <%= link_to "Finished", '#', :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{Facebook::FANPAGE_URL}'", :class => "action-button" %>
-  <% else %>
-    <%= link_to "Finished", { :controller => :signup, :action => :finished }, :class => "action-button" %>
+  <% if session[:from_facebook_canvas] == true && @finished_button_text.present? %>
+    <%= leave_facebook_link_to @finished_button_text, Facebook::FANPAGE_URL, "action-button" %>
+  <% elsif @finished_button_text.present? %>
+    <%= link_to @finished_button_text, { :controller => :signup, :action => :finished }, :class => "action-button" %>
   <% end %>
 
   <br/><br/>

@@ -1,18 +1,24 @@
 <%
-  result = "<div class='autoCompleteResult' title='Goto #{person_ac.first_name.capitalize}&rsquo;s profile'>" +
+  result = "<div class='autoCompleteResult' title='#{@ac_title}'>" +
            "<div class='acLinkPath' style='display: none;'>/people/#{person_ac.id}</div>" +
            "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
 
-           "<div class='autoCompleteInfo'>" +
+           "<div class='autoCompleteInfo' person_id='#{person_ac.id}' person_fname='#{person_ac.first_name}' person_lname='#{person_ac.last_name}' email='#{person_ac.email.downcase}'>" +
            "<div class='autoCompleteName'>#{person_ac.first_name.capitalize} #{person_ac.last_name.capitalize}</div>"
 
-  if person_ac.timetable_id.present?
-    result += "<div class='autoCompleteTimetable'>" +
-              link_to(image_tag('silk/calendar.png'), "/people/#{person_ac.id}/timetables/#{person_ac.timetable_id}", :title => "Goto #{person_ac.first_name.capitalize}&rsquo;s timetable") +
-              "</div>"
+  if person_ac.timetable_id.present? && @ac_actions
+    result += "<div class='autoCompleteIconLink'>" +
+              link_to("<div class='autoCompleteIconTimetable'>&nbsp;</div>", "/people/#{person_ac.id}/timetables/#{person_ac.timetable_id}", :title => "Goto #{person_ac.first_name.capitalize}&rsquo;s timetable") +
+              "&nbsp;</div>"
   end
 
-  result += "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac)}</div>" +
+  if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?) && @ac_actions
+    result += "<div class='autoCompleteIconLink'>" +
+              link_to("<div class='autoCompleteIconImpersonate'>&nbsp;</div>", impersonate_person_path(person_ac.id), :title => "Impersonate #{person_ac.first_name.capitalize}") +
+              "&nbsp;&nbsp;</div>"
+  end
+
+  result += "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac, @ac_actions)}</div>" +
             "</div>" +
             "</div>"
 %>

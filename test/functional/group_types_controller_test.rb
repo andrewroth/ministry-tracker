@@ -8,6 +8,8 @@ class GroupTypesControllerTest < ActionController::TestCase
     Factory(:grouptype_2)
     Factory(:grouptype_3)
     login
+    setup_years
+    setup_months
   end
 
   test "should GET index with xml" do

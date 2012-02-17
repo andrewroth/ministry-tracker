@@ -1,0 +1,81 @@
+
+<div style="width: 70%; margin-left: auto; margin-right: auto;">
+<% if @involvements %>
+
+  <br/>
+  <big><%= image_tag("silk/error.png") %> You're about to change all of the following people's school year to the year that you select below, regardless of their current year.</big>
+  <br/>
+  <br/>
+  Some people may have different years at different campuses, only the year at the campus specified beside each person below will be changed.
+  <br/>
+  <br/>
+  <br/>
+
+  <table cellspacing="0" cellpadding="5" border="0" class="groupInvolvementList">
+    <tr>
+      <th>Person</th>
+      <th>Campus</th>
+      <th>Current Year in School</th>
+    </tr>
+
+    <% @involvements.each do |involvement| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td><%= link_to("#{involvement.person.full_name}", "/people/#{involvement.person.id}", {:title => "Goto #{involvement.person.first_name.capitalize}'s profile"}) -%></td>
+      <td><%= involvement.campus.name %></td>
+      <td><%= involvement.try(:school_year).try(:name) %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <br/>
+  <br/>
+
+  <% form_tag({:action => "update_multiple_school_years", :controller => "campus_involvements", :method => "post"}, {:class => "disableOnSubmit"}) do %>
+    
+    <big>
+    Change to the new year in school&nbsp;
+		<%= collection_select('school_year', :id, SchoolYear.all, :id, :name, {:prompt => true}) %>
+    </big>
+
+    <% unless @people_without_involvements.blank? || @people_without_involvements.empty? %>
+      <br/>
+      <br/>
+      <br/>
+      <%= image_tag("silk/exclamation.png") %> <big><b> The following people cannot be included, please update them individually: </b></big> <br/>
+      <%= @people_without_involvements.collect{|person| link_to("#{person.full_name}", "/people/#{person.id}", {:title => "Goto #{person.first_name.capitalize}'s profile"}) }.join(', ') %>
+    <% end %>    
+  
+    <% for involvement in @involvements %>
+      <%= hidden_field_tag "involvement_id[]", involvement.id %>
+    <% end %>
+
+    <br/>
+    <br/>
+
+    <br/>
+    <%= submit_tag "Change year in school", :class => "action-button disableOnSubmit", :id => "change_years_submit" %> or <%= link_to("Cancel", :back) %>
+    <br/>
+    
+  <% end %>
+
+<% else %>
+  <br/>
+  Sorry, the campus involvements that you want to edit were not received properly. Please try again!<br/><br/>
+  <%= link_to("Back", :back) %>
+<% end %>
+</div>
+
+
+<script type="text/javascript">
+
+  $('#change_years_submit').click(function(e) {
+    if( $('#school_year_id').val() == '' || $('#school_year_id :selected').text() == '') { 
+      alert('Please select a new year to change to first!');
+      return false;
+    } else {
+      return true; 
+    }
+  });
+
+  disableInputsOnSubmit("disableOnSubmit");
+</script>

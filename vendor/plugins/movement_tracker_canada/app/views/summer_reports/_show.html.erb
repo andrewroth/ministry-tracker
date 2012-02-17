@@ -1,0 +1,102 @@
+<div id="show_summer_report">
+
+  <h2><%= summer_report.person.full_name %>'s schedule for <%= summer_report.year.desc[-4..-1] %> </h2>
+
+  <br/>
+
+  <% if summer_report.approved? %>
+    This schedule has been <span class="report_approved">approved!</span><br/>
+  <% elsif summer_report.disapproved? %>
+    This schedule has been <span class="report_disapproved">disapproved</span>, it's waiting to be amended and resubmit for review.<br/>
+  <% else %>
+    This schedule is <span class="report_waiting">waiting</span> to be reviewed.<br/>
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <p>
+    <b>Year joined staff or internship:</b>&nbsp;
+    <%= summer_report.joined_staff %>
+  </p>
+
+  <p>
+    <b>Number of vacation days entitled to:</b>&nbsp;
+    <%= summer_report.days_of_holiday %>
+  </p>
+
+  <p>
+    <b>MPD monthly goal:</b>&nbsp;
+    <%= number_to_currency(summer_report.monthly_goal.gsub("$",""), :precision => 0) %>
+  </p>
+
+  <p>
+    <b>Current solid monthly support:</b>&nbsp;
+    <%= number_to_currency(summer_report.monthly_have.gsub("$",""), :precision => 0) %>
+  </p>
+
+  <p>
+    <b>Monthly support to raise:</b>&nbsp;
+    <%= number_to_currency(summer_report.monthly_needed.gsub("$",""), :precision => 0) %>
+  </p>
+
+  <p>
+    <b>Weeks of MPD requested:</b>&nbsp;
+    <%= summer_report.num_weeks_of_mpd %>
+  </p>
+
+  <p>
+    <b>Weeks of MPM requested:</b>&nbsp;
+    <%= summer_report.num_weeks_of_mpm %>
+  </p>
+
+  <p>
+    <b>Would like a support coach (if available):</b>&nbsp;
+    <%= summer_report.support_coach == true ? "yes" : "no" %>
+  </p>
+
+  <p>
+    <b>MPD accountability partner:</b>&nbsp;
+    <%= summer_report.num_weeks_of_mpd > 0 || summer_report.accountability_partner.present? ? summer_report.accountability_partner : "requested 0 weeks of MPD" %>
+  </p>
+
+  <br/>
+  <br/>
+
+  <table id="weeklySchedule" class="groupInvolvementList">
+    <tr>
+      <th></th>
+      <th>Main assignment</th>
+      <th>Description</th>
+    </tr>
+
+    <% i = 0 %>
+    <% report_weeks = summer_report.summer_report_weeks %>
+
+    <% report_weeks.each do |week| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="week"><%= "#{Date::MONTHNAMES[(report_weeks[i].week.end_date-6.days).month]} #{(report_weeks[i].week.end_date-6.days).day} - #{report_weeks[i].week.end_date.day}" %></td>
+
+        <td class="assignment"><%= week.summer_report_assignment.assignment %></td>
+        <td class="description"><%= week.description %></td>
+      </tr>
+      <% i += 1 %>
+    <% end %>
+
+    <tr><td><br/></td></tr>
+    <tr>
+      <td class="notes week">
+        <b><%= summer_report.person.first_name %>'s notes:</b>
+      </td>
+      <td colspan="2">
+        <%= summer_report.notes %>
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+  <br/>
+
+  <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => summer_report} %>
+
+</div>

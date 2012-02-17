@@ -10,6 +10,10 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     reset_campus_involvements_sequences
     Factory(:campusinvolvement)
 
+    setup_years
+    setup_months
+    setup_school_years
+
     setup_default_user
     Factory(:user_3)
     Factory(:person_3)
@@ -131,4 +135,48 @@ class CampusInvolvementsControllerTest < ActionController::TestCase
     assert_equal(Date.today, history.end_date)
   end
 
+  test "edit_multiple_school_years" do
+    login
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:person_3)
+
+    get :edit_multiple_school_years, :person => ["2000", "50000"], :mids => ["1"]
+
+    assert assigns(:involvements)
+    assert_equal 3, assigns(:involvements).size
+
+    assert_nil assigns(:people_without_involvements)
+  end
+
+  test "edit_multiple_school_years_with_filters" do
+    login
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:person_3)
+
+    get :edit_multiple_school_years, :person => ["2000", "50000", "1"], :mids => ["1"], :cids => ["1"], :syids => ["1"]
+
+    assert assigns(:involvements)
+    assert_equal 1, assigns(:involvements).size
+
+    assert assigns(:people_without_involvements)
+    assert_equal 1, assigns(:people_without_involvements).size
+  end
+
+  test "update multiple school years" do
+    login
+    setup_people
+    setup_ministry_involvements
+    setup_ministries
+    Factory(:ministryinvolvement_8)
+    Factory(:person_3)
+
+    put :update_multiple_school_years, :involvement_id => ["1003","1004"], :school_year => {:id => "3"}
+    
+    assert_equal 3, CampusInvolvement.find(1003).school_year_id
+    assert_equal 3, CampusInvolvement.find(1004).school_year_id
+  end
 end

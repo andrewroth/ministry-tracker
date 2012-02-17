@@ -1,0 +1,129 @@
+
+<h4 class="title">Compare Timetables&nbsp;&nbsp;
+  <![if gte IE 8]>
+    <% types = Group::LEVELS %>
+    <% data = data_string(types) %>
+    <%= link_to_remote 'Side by Side Compare (NEW)', {
+      :url => compare_timetables_group_url(:id => @group.id, :compare_style => 1),
+      :with => "#{data}", :complete => "window.location = '#compare';", :before => "$('#spinner_change_style').show()"},
+      {:class => 'small'}
+    %>
+    &nbsp;
+    <%= spinner('_change_style', 'opaqueWhite') %>
+  <![endif]>
+</h4>
+
+<div id = "notices">
+	<%= render :partial => 'groups/show_notices' %>
+</div>
+
+<% if @display_compare_table == true %>
+  
+  <%= render :partial => 'groups/legend' %>
+  <%= render :partial => 'timetables/schedule_header' %>
+  
+  <br/>
+
+	<table id="schedule" width="250px" cellspacing="0">
+	  <thead>
+	    <tr>
+	      <th class="time">&nbsp;</th>
+	    <%- 7.times do |day| -%>
+	      <th><%= Date::DAYNAMES[day] %></th>
+	    <%- end -%>
+	  </thead>
+	  <tbody>
+	    <!-- 6 am to 10 pm in 15 minute intervals -->
+	    <%- midnight = Time.now.beginning_of_day
+	        time = midnight + Timetable::EARLIEST 
+	        stop = midnight + Timetable::LATEST 
+	        time_block = 0 -%>
+	    <%- while time < stop 
+	        time_in_seconds = time.to_i - midnight.to_i -%>
+	      <tr>
+	        <td class="time timelineHeader hour<%=time.hour%>"><div class="timeHeader"><%= time.to_s(:time) %></div></td>
+	        <%- 7.times do |day| -%>
+					<%- color = "neutral" %>
+					<% current_time = @comparison_map[day][time_block][time_in_seconds] %>
+					
+          <%- if current_time["goods"].length == 0 && 
+                current_time["okays"].length == 0 && 
+                current_time["bads"].length == 0 -%>
+           <% color = "empty" %>
+					<%- elsif current_time["goods"].length == @people.length -%>
+					 <% color = "allgood" %>
+					<%- elsif current_time["okays"].length > 0 && current_time["bads"].length == 0 -%>
+					 <% color = "moregood" %>
+					<%- elsif current_time["bads"].length <= (@people.length * 0.25) -%>
+					 <% color = "neutral" %>
+					<%- elsif current_time["bads"].length < @people.length -%>
+					 <% color = "morebad" %>
+					<%- else -%>
+					 <% color = "allbad" %>
+					<%- end -%>
+
+
+	        <td width="50px" height="10px" class="day_<%= day %> <%= color %>">
+	          
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["goods"].length%> good(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["goods"].each do |p|%>
+                <%- fname_len = p.first_name.length %>
+                <%- lname_len = p.last_name.length %>
+								<%- if (fname_len+lname_len) <= Timetable::MAX_CELL_WIDTH -%>
+								  <%= 	p.first_name %>&nbsp;<%=   p.last_name %>,<br/>	
+								<%- elsif fname_len < Timetable::MAX_CELL_WIDTH -%>
+								  <%- display_len = Timetable::MAX_CELL_WIDTH - fname_len %>
+                  <%=   p.first_name %>&nbsp;<%= truncate(p.last_name, display_len, "..")  %>,<br/>	
+								<%- else -%>
+								  <%= truncate(p.first_name, Timetable::MAX_CELL_WIDTH, "..")  %>,<br/>	
+								<%- end -%>			
+						<% end %>
+							
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["bads"].length%> bad(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["bads"].each do |p|%>
+                <%- fname_len = p.first_name.length %>
+                <%- lname_len = p.last_name.length %>
+                <%- if (fname_len+lname_len) <= Timetable::MAX_CELL_WIDTH -%>
+                  <%=   p.first_name %>&nbsp;<%=   p.last_name %>,<br/> 
+                <%- elsif fname_len < Timetable::MAX_CELL_WIDTH -%>
+                  <%- display_len = Timetable::MAX_CELL_WIDTH - fname_len %>
+                  <%=   p.first_name %>&nbsp;<%= truncate(p.last_name, display_len, "..")  %>,<br/> 
+                <%- else -%>
+                  <%= truncate(p.first_name, Timetable::MAX_CELL_WIDTH, "..")  %>,<br/> 
+                <%- end -%>     
+            <% end %>
+							
+						<u><%= @comparison_map[day][time_block][time_in_seconds]["okays"].length%> okay(s):<br/></u>
+						<% @comparison_map[day][time_block][time_in_seconds]["okays"].each do |p|%>
+                <%- fname_len = p.first_name.length %>
+                <%- lname_len = p.last_name.length %>
+                <%- if (fname_len+lname_len) <= Timetable::MAX_CELL_WIDTH -%>
+                  <%=   p.first_name %>&nbsp;<%=   p.last_name %>,<br/> 
+                <%- elsif fname_len < Timetable::MAX_CELL_WIDTH -%>
+                  <%- display_len = Timetable::MAX_CELL_WIDTH - fname_len %>
+                  <%=   p.first_name %>&nbsp;<%= truncate(p.last_name, display_len, "..")  %>,<br/> 
+                <%- else -%>
+                  <%= truncate(p.first_name, Timetable::MAX_CELL_WIDTH, "..")  %>,<br/> 
+                <%- end -%>     
+            <% end %>
+						
+						<div class="setLink" >
+						<%=link_to_remote "Set as start time", {:url => {:controller => "groups", :action => "set_start_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
+						</div>
+						<div class="setLink">
+							<%=link_to_remote 'Set as end time', {:url => {:controller => "groups", :action => "set_end_time", :id => @group.id, :day => day, :time => time_in_seconds} , :complete => "location.hash = 'compare';" } %>
+					  </div>
+	        </td>
+	        <%- end -%>
+	      </tr>
+	      <%- time += Timetable::INTERVAL 
+	          time_block += 1 -%>
+	    <%- end -%>
+	  <tbody>
+	</table>    
+<% end %>
+
+<script type="text/javascript">
+  // this is important to keep the footer in the correct spot
+  $("#compare").height("");
+</script>

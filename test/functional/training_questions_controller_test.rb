@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class TrainingQuestionsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
+    setup_years
+    setup_months
     Factory(:trainingquestion_1)
     Factory(:trainingcategory_1)
     

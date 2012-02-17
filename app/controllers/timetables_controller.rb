@@ -28,12 +28,12 @@ class TimetablesController < ApplicationController
         format.xml  { render :xml => @timetable }
       end
     else
-      flash[:notice] = "You are not allowed to see that timetable."
+      flash[:notice] = I18n.t('timetable.instructions')
     end
   end
 
   def edit_signup
-    @custom_userbar_title = "Signup"
+    @custom_userbar_title = I18n.t("groups.userbar_title")
     render :action => "edit"
   end
 
@@ -44,7 +44,7 @@ class TimetablesController < ApplicationController
         format.xml  { render :xml => @timetable }
       end
     else
-      flash[:notice] = "You are not allowed to edit that timetable."
+      flash[:notice] = I18n.t('timetable.now_allowed_edit')
     end
 
   end
@@ -80,13 +80,13 @@ class TimetablesController < ApplicationController
       return if @signup
 
       respond_to do |format|
-        flash[:notice] = 'Timetable was successfully updated.'
+        flash[:notice] = I18n.t('timetable.save_confirm')
         format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
         format.js
         format.xml  { head :ok }
       end
     else
-      flash[:notice] = "You are not allowed to update that timetable."
+      flash[:notice] = I18n.t('timetable.not_allowed_update')
     end
   end
   

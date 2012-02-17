@@ -1,0 +1,10 @@
+<div id="banner_bg">
+  <div id="banner_img" style="background-image: url("<%= I18n.t('layout.banner') %>");">
+    <a id="leftBubble" href="<%= url_for :controller => "groups", :action => "join" %>">
+      <div id="leftBubbleImg">&nbsp;</div>
+    </a>
+    <a id="rightBubble" href="<%= edit_person_timetable_path(@me.id, (@my.timetable || Timetable.create(:person_id => @me.id)).id) %>">
+      <div id="rightBubbleImg">&nbsp;</div>
+    </a>
+  </div>
+</div>

@@ -1,7 +1,20 @@
 <%= javascript_include_tag "stats.js" %>
 
 
+
 <h1 id="statsTitle">Measurements</h1>
+
+<%
+unless @mobile
+%>
+
+<!--[if lt IE 8]>
+  <div id='browser_warning' class='flash_notice warning'>
+    <%= image_tag "/images/silk/exclamation.png" %>
+    <b>Insights is not compatible with your browser.</b>
+    Please note that not everything in Insights will work as intended.
+  </div>
+<![endif]-->
 
 <%
     all_campuses_id = Campus.all.collect {|c| c.campus_id.to_i}
@@ -65,11 +78,18 @@
 
 
 <div id="results" class="statsContainer">
-  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/blue-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
+  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
   <div id="statsYearResults" class="statsReportTabContainer" style="display: none;"></div>
   <div id="statsSemesterResults" class="statsReportTabContainer" style="display: none;"></div>
   <div id="statsMonthResults" class="statsReportTabContainer" style="display: none;"></div>
   <div id="statsWeekResults" class="statsReportTabContainer" style="display: none;"></div>
   <br/>
 </div>
+<%
+else #if the page is viewed from a mobile device
+%>
+  <%= render :partial => 'stats/stats_links' %>
 
+<%
+end
+%>

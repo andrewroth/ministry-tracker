@@ -1,16 +1,28 @@
 require 'new_relic/control/frameworks/rails'
+require 'new_relic/control/frameworks/rails3'
 
-class NewRelic::Control::Frameworks::Test < NewRelic::Control::Frameworks::Rails #:nodoc:
+if defined?(Rails) && Rails.respond_to?(:version) && Rails.version.to_i == 3
+  parent_class = NewRelic::Control::Frameworks::Rails3
+else
+  parent_class = NewRelic::Control::Frameworks::Rails
+end
+
+
+class NewRelic::Control::Frameworks::Test < parent_class
   def env
     'test'
   end
   def app
-    :rails
+    if defined?(Rails) && Rails.respond_to?(:version) && Rails.version.to_i == 3
+      :rails3
+    else
+      :rails
+    end
   end
-  
+
   def initialize *args
     super
-    setup_log 
+    setup_log
   end
   # when running tests, don't write out stderr
   def log!(msg, level=:info)
@@ -25,7 +37,7 @@ class NewRelic::Control::Frameworks::Test < NewRelic::Control::Frameworks::Rails
       def draw_with_test_route
         draw_without_test_route do | map |
           map.connect ':controller/:action/:id'
-          yield map        
+          yield map
         end
       end
       alias_method_chain :draw, :test_route

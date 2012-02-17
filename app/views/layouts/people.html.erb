@@ -1,20 +1,33 @@
 <%- inside_layout 'application' do -%>
   <div id="subtabs">
-  <ul class="subtabs-menu">
-  <li><%= link_to('Profile', person_path(@person), :class => params[:controller] == 'people' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
-  <%- if authorized?(:index, :involvement) && Cmt::CONFIG[:involvement_questions_enabled] -%>
-    <li><%= link_to('Involvement', person_involvement_index_path(@person), :class => params[:controller] == 'involvement' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
-  <%- end -%>
-  <%- if authorized?(:index, :training) && Cmt::CONFIG[:training_enabled] -%>
-    <li><%= link_to('Training', person_training_index_path(@person), :class => params[:controller] == 'training' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
-  <%- end -%>
-  <%- if authorized?(:show, :timetables) -%>
-  <li><%= link_to('Timetable', person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
-  <%- end -%>
-  <%- if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?) -%>
-  <li><%= link_to('Impersonate', impersonate_person_path(@person.id), :class => "subtabs-menu-inactive") %></li>
-  <%- end -%>
-  </ul>
+    <ul class="subtabs-menu">
+
+      <li><%= link_to("<div id='profileSubTab'>#{t('layout.left_bar.profile.named')}</div>", person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+
+      <%- if authorized?(:index, :involvement) && Cmt::CONFIG[:involvement_questions_enabled] -%>
+        <li><%= link_to("<div id='involvementSubTab'>INVOLVEMENT</div>", person_involvement_index_path(@person), :class => params[:controller] == 'involvement' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <%- end -%>
+
+      <%- if authorized?(:index, :training) && Cmt::CONFIG[:training_enabled] -%>
+        <li><%= link_to("<div id='trainingSubTab'>TRAINING</div>", person_training_index_path(@person), :class => params[:controller] == 'training' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <%- end -%>
+
+      <%- if authorized?(:show, :timetables) -%>
+        <li><%= link_to("<div id='timetableSubTab'>#{t('layout.left_bar.schedule.named')}</div>", person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <%- end -%>
+      
+      <%- if authorized?(:discipleship, :people) -%>
+        <li><%= link_to("<div id='discipleshipSubTab'>DISCIPLESHIP TREE</div>", {:controller => :people, :action => :discipleship, :id => @person.id}, {:class => params[:controller] == 'people' && params[:action] == 'discipleship' ? "subtabs-menu-active" : "subtabs-menu-inactive"}) %></li>
+      <%- end -%>
+
+      <% if @person.user && @person.user.guid && @person.user.guid.present? && authorized?(:show_gcx_profile, :people) %>
+        <li><%= link_to("<div id='gcxProfileSubTab'>GCX PROFILE</div>", show_gcx_profile_person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show_gcx_profile' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <% end %>
+      
+      <%- if !currently_impersonating && (Cmt::CONFIG[:allow_impersonate] || is_admin?) -%>
+        <li><%= link_to("<div id='impersonateSubTab'>IMPERSONATE</div>", impersonate_person_path(@person.id), :class => "subtabs-menu-inactive") %></li>
+      <%- end -%>
+    </ul>
   </div>
   <%= yield %>
 <%- end -%>

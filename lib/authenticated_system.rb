@@ -61,10 +61,10 @@ module AuthenticatedSystem
     # behavior in case the user is not authorized
     # to access the requested action.  For example, a popup window might
     # simply close itself.
-    def access_denied
+    def access_denied(no_destination = false)
       respond_to do |accepts|
         accepts.html do
-          store_location
+          store_location unless no_destination
           if facebook_session
             redirect_to prompt_for_email_users_path
           else
@@ -74,7 +74,7 @@ module AuthenticatedSystem
         accepts.xml do
           headers["Status"]           = "Unauthorized"
           headers["WWW-Authenticate"] = %(Basic realm="Web Password")
-          render :text => "Could't authenticate you", :status => '401 Unauthorized'
+          render :text => "Couldn't authenticate you", :status => '401 Unauthorized'
         end
       end
       false
@@ -126,6 +126,11 @@ module AuthenticatedSystem
       u = false
       if cas_user
         u = User.find_or_create_from_cas(session[:cas_last_valid_ticket])
+        
+        flash[:notice] = "<strong>Sorry, we could not sign you in.</strong><br/>
+                          You may have tried to create a new account with an email that's already in the Pulse.</br>
+                          <a href='https://thekey.me/cas/service/selfservice?target=displayForgotPassword'>Click here if you forgot your password</a>." unless u
+        
         self.current_user = u
       end
     end
@@ -136,24 +141,48 @@ module AuthenticatedSystem
       end
     end
 
+    def authenticate_from_group_invitation
+      unless check_and_increment_login_code(params[:login_code], GroupInvitation) == true
+        flash[:notice] = "We're sorry, the link you came from is no longer valid"
+        access_denied(true)
+      end
+    end
     
-    def logout_keeping_session!
+    def authenticate_from_api_key
+      unless check_and_increment_login_code(params[:api_key], ApiKey) == true
+        respond_to do |format|
+          format.xml { render :xml => "<error><type>Authentication</type><message>API key not valid</message></error>", :status => 401 }
+        end
+        return
+      else
+        @api_key_user = ApiKey.first(:joins => [:login_code], :conditions => {:login_codes => {:code => params[:api_key]}}).try(:user)
+      end
+    end
+    
+    def logout_keeping_session!(redirect_path_if_no_cas = nil, force_cas_logout = nil, redirect = true)
       # Kill server-side auth cookie
       @current_user.forget_me if @current_user.is_a? User
       @current_user = false     # not logged in, and don't do it for me
       kill_remember_cookie!     # Kill client-side auth cookie
       # explicitly kill any other session variables you set
       need_cas_logout = false
-      if session[:cas_user]
+      if (session[:cas_user] || force_cas_logout == true) && force_cas_logout != false
         need_cas_logout = true
       end
       clear_session
-      # Log out of SSO if we're in it
-      if need_cas_logout
-        CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
-      else
-        redirect_back_or_default(new_session_path)
+      
+      unless redirect == false
+        # Log out of SSO if we're in it
+        if need_cas_logout
+          CASClient::Frameworks::Rails::Filter.logout(self, new_session_url)
+        else
+          redirect_path_if_no_cas.present? ? redirect_back_or_default(redirect_path_if_no_cas) : redirect_back_or_default(new_session_path)
+        end
       end
+    end
+    
+    def logout_without_redirect!
+      logout_keeping_session!(nil, nil, false)
     end
   
     def clear_session
@@ -172,5 +201,26 @@ module AuthenticatedSystem
       auth_key  = @@http_auth_headers.detect { |h| request.env.has_key?(h) }
       auth_data = request.env[auth_key].to_s.split unless auth_key.blank?
       return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil] 
+    end
+        
+        
+    # code - the login code
+    # has_login_code_class - class that has a login_code association (we don't want to access just any login code, but one that is associated with a particular class)
+    def check_and_increment_login_code(code, has_login_code_class)
+      you_shall_pass = false
+      
+      if code.present?
+        logout_without_redirect! if logged_in? # make sure if there is an existing session that it doesn't conflict
+        
+        lc = has_login_code_class.first(:joins => [:login_code], :conditions => {:login_codes => {:code => code}}).try(:login_code)
+        
+        if lc.present? && lc.acceptable?
+          you_shall_pass = true
+          lc.increment_times_used
+          session[:login_code_id] = lc.id
+        end
+      end
+      
+      you_shall_pass
     end
 end

@@ -16,13 +16,18 @@
       <%= ': ' + @site_title if @site_title -%>
     </title>
     
-		<%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
-		<%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
-		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min', :cache => true %>
-    <%= yield :javascripts %>
+		<%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
+                            :media => "screen",
+                            :cache => "cache/all_fbc" %>
+                            
+    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
 
-		<%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/aqua/theme.css" %>
-    <%= javascript_include_tag "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => 'calendar' %>
+		<%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
+		                            'jquery.disable.text.select.pack', 'jquery.scrollTo-min',
+                                "jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js",
+                                :cache => "cache/all_fbc" %>
+  
+    <%= yield :javascripts %>
 
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
 
@@ -52,7 +57,7 @@
                           <%- end %>
                         <%- end %>
 			<div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
-      <div id="instructions" class="flash_notice notice" style="display:none;"></div>
+      <div id="instructions" style="display:none;"></div>
 
 			<div id="content">
 				<%= yield %>

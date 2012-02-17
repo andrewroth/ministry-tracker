@@ -1,0 +1,15 @@
+<h1>Editing Reg Event</h1>
+<br/>
+<% form_for(@cim_reg_event, :url => cim_reg_events_path, :action => 'create') do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :cim_reg_event_name, "Event Name" %>
+    <%= f.text_field :event_name %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Back', events_path %>

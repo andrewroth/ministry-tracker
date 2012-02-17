@@ -10,6 +10,9 @@ class GroupsController < ApplicationController
   skip_before_filter :authorization_filter, :email_helper
   before_filter :set_current_and_next_semester
 
+
+  TIMETABLE_COMPARE_STYLE = ["VERTICAL_TABLE", "FANCY_HORIZONTAL"]
+
   def index
     if Cmt::CONFIG[:joingroup_from_index]
       @join = true
@@ -22,7 +25,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        layout = authorized?(:index, :manage) ? 'application'  : 'application'   # formerly had 'manage' layout for groups too
+        layout = @mobile ? 'mobile' : (authorized?(:index, :manage) ? 'application'  : 'application')   # formerly had 'manage' layout for groups too
         render :layout => layout
       end
       format.js
@@ -97,6 +100,8 @@ class GroupsController < ApplicationController
 
     #@ministry = @group.ministry
     @gi = @group.group_involvements.find_by_person_id @me.id
+    @is_staff = is_staff_somewhere
+
     respond_to do |format|
       format.html 
       format.js
@@ -105,9 +110,23 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new :country => Cmt::CONFIG[:default_country]
+    if params[:entire_search].to_i == 1
+      search = Search.find params[:search_id]
+      ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      @people = Person.find(ids)
+      session[:people_to_add] = @people.collect(&:id)
+    elsif params[:person]
+      ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      @people = Person.find(ids)
+      session[:people_to_add] = @people.collect(&:id)
+    else
+      session[:people_to_add] = nil
+    end
+
     unless Cmt::CONFIG[:semesterless_groups]
       @group.semester_id = @current_semester.id
     end
+
     respond_to do |format|
       format.html 
       format.js
@@ -124,11 +143,20 @@ class GroupsController < ApplicationController
       @gi.requested = false
       @gi.save!
       @group = @gi.group
+    else
+      if session[:people_to_add].present?
+        # so that the line about people who will be added will work
+        @people = Person.find session[:people_to_add]
+      end
     end
     if group_save
       # If an array of people have been passed in, add them as members
-      Array.wrap(params[:person]).each do |person_id|
-        GroupInvolvement.create!(:person_id => person_id, :group_id => @group.id, :level => "member", :requested => false)
+      if session[:people_to_add].present?
+        session[:people_to_add].each do |person_id|
+          if GroupInvolvement.find_by_person_id_and_group_id(person_id, @group.id).nil?
+            GroupInvolvement.create!(:person_id => person_id, :group_id => @group.id, :level => "member", :requested => false)
+          end
+        end
       end
     end
     @group_type = @group.group_type
@@ -155,9 +183,10 @@ class GroupsController < ApplicationController
 
   def update
     if @group.update_attributes(params[:group])
-      flash[:notice] = 'Group was successfully updated'
+      flash[:notice] = 'Group was successfully updated!'
     end
     respond_to do |format|
+      format.html { redirect_to group_url(@group) }
       format.js
     end
   end
@@ -169,14 +198,15 @@ class GroupsController < ApplicationController
       format.js   { index }
     end
   end
-  
+
   def compare_timetables
-    @display_compare_table = true
     @notices = []
     if (Cmt::CONFIG[:hide_poor_status_in_scheduler] == false)
       @notices << "Poor state is currently enabled in the timetables. The 'Compare timetables' feature will not include the poor states during comparison."
     end
-    @group = Group.find(params[:id], :include => :people)
+
+    @group = Group.find(params[:id], :include => {:people => [:free_times]})
+
     person_ids = params[:members] ? Array.wrap(params[:members]).map(&:to_i) : []
     # if nobody is selected, compare schedules of everyone in group
     if person_ids.present?
@@ -184,30 +214,42 @@ class GroupsController < ApplicationController
     else
       gis = @group.group_involvements
     end
-    
+
     # remove those who haven't submitted timetable (and make sure the group involvement is valid
     # while we're at it, ie. no requests, and valid person)
-    @people = gis.reject { |gi| 
+    @people_without_table = []
+    @people = gis.reject { |gi|
       if gi.person.nil? || gi.requested
         true
       elsif !gi.person.free_times.present?
-        @notices << "<i>" + gi.person.full_name + "</i> has not submitted their timetable. Hence, they will be excluded from comparison."
+        @notices << "<b><i>" + gi.person.full_name + "</i></b> has not submitted their timetable, they are excluded from the comparison."
+        @people_without_table << gi.person
         true
       else
         false
       end
     }.collect(&:person)
+
     
-    @comparison_map = Timetable.generate_compare_table(@people)
-    respond_to do |format|
-      format.js{
-         render :update do |page|
-            page.replace_html("compare", :partial => "groups/compare_timetables")
-         end
-      }
+    if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
+      compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
+    elsif cookies[:timetable_compare_style].present? && TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i].present?
+      compare_style = TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i]
+    else
+      # default style
+      compare_style = TIMETABLE_COMPARE_STYLE[1]
+    end
+
+    case compare_style
+    when TIMETABLE_COMPARE_STYLE[1]
+      cookies[:timetable_compare_style] = 1
+      compare_timetables_fancy_horizontal
+    else
+      cookies[:timetable_compare_style] = 0
+      compare_timetables_vertical_table
     end
   end
-  
+
   def set_start_time
     @notices ||=[]
     stime = params[:time].to_i
@@ -363,7 +405,7 @@ class GroupsController < ApplicationController
       @semester = @current_semester
     end
     session[:group_semester_filter_id] = @semester.id
-    @semester_filter_options = Semester.all.collect{ |s| [ s.desc, s.id ] }
+    @semester_filter_options = Semester.all.collect{ |s| [ I18n.t("terms.#{s.translation_key}"), s.id ] }
   end
 
   def setup_groups
@@ -386,5 +428,33 @@ class GroupsController < ApplicationController
     campuses = Campus.find(:all, :select => "#{Campus._(:id)}, #{Campus._(:name)}", :conditions => [ "#{Campus._(:id)} IN (?)", @groups.collect(&:campus_id).uniq ])
     @campus_id_to_name = Hash[*campuses.collect{ |c| [c.id.to_s, c.name] }.flatten]
   end
+
+
+  private
+  
+  def compare_timetables_vertical_table
+    @display_compare_table = true
+
+    @comparison_map = Timetable.generate_compare_table(@people)
+
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace_html("compare", :partial => "groups/compare_timetables_vertical_table")
+        end
+      }
+    end
+  end
+
+  def compare_timetables_fancy_horizontal
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace_html("compare", :partial => "groups/compare_timetables_fancy_horizontal")
+        end
+      }
+    end
+  end
+
 
 end

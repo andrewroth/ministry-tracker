@@ -1,0 +1,40 @@
+<h2>Summer Schedules to Review <%= render :partial => "summer_reports/select_report_year", :locals => {:years => @summer_report_years, :selected_year_id => @selected_year.id } %></h2>
+<br/>
+<br/>
+
+<% if @reviewable_reports.present? %>
+
+  <table id="reviewableReports" class="groupInvolvementList">
+    <tr>
+      <th></th>
+      <th>Monthly support to raise</th>
+      <th>Weeks of MPD/MPM</th>
+      <th>Days of Vacation</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    <% @reviewable_reports.each do |review| %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <td class="name"><%= review.summer_report.person.full_name %></td>
+      <td><%= number_to_currency(review.summer_report.monthly_needed.gsub("$","")) %></td>
+      <td><%= review.summer_report.num_weeks_of_mpd.to_i + review.summer_report.num_weeks_of_mpm.to_i %></td>
+      <td><%= review.summer_report.days_of_holiday %></td>
+      <td class="<%= review.summer_report.status_style %>"><%= review.summer_report.status %></td>
+      <td><%= link_to_remote "Review", {:url => {:action => "edit"}, :with => "'id='+#{review.id}", :before => "$('#review_report').fadeOut(); $('#spinner_review').show()", :complete => "$('#spinner_review').hide()"}, {:class => "action-button"} %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <br/>
+  
+  <%= image_tag "/images/default/shared/large-loading.gif", :id => "spinner_review", :style => "display:none;" %>
+  <div id="review_report" style="display:none;"></div>
+
+<% else %>
+  You have no schedules to review.
+<% end %>
+
+<br/>
+<br/>
+<%= link_to "Back", :controller => :summer_reports, :action => :index, :year_id => @selected_year.id %>
+<br/>

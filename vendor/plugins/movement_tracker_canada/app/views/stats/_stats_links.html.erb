@@ -16,10 +16,17 @@ submit_links = clean_links(submit_links)
 report_links = clean_links(report_links)
 
 unless submit_links.empty?
-	%>
-	<h3>Update</h3>
-	<ul class="statsLinkList">
-	<%
+  unless @mobile
+		%>
+		<h3>Update</h3>
+		<ul class="statsLinkList">
+		<%
+	else
+		%>
+		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="c">
+		<li data-role="list-divider">Update</li>
+		<%
+  end
 	submit_links.each do |l|
 	  %>
 	  <li class="statsListLink"><%= link_to l[:text], url_for(:controller => l[:controller], :action => l[:action]) %></li>
@@ -28,25 +35,28 @@ unless submit_links.empty?
   %></ul><%
 end
 
+unless @mobile
+	
+	unless report_links.empty? && report_type_links_to_show.empty?
+	  %>
+	  <%= submit_links.present? ? "<br/>" : "" %>
+	  <h3>Review</h3>
+	  <ul class="statsLinkList">
+	  <%
+	end
+	report_links.each do |l|
+	  %>
+	  <li class="statsListLink"><%= link_to l[:text], url_for(:controller => l[:controller], :action => l[:action]) %></li>
+	  <%
+	end
+	%>
+	<%= render :partial => 'stats/report_type_list_links' %>
+	<%
+	unless report_links.empty? && report_type_links_to_show.empty?
+	  %>
+	  </ul>
+	  <%
+	end
 
-unless report_links.empty? && report_type_links_to_show.empty?
-  %>
-  <h3>Review</h3>
-  <ul class="statsLinkList">
-  <%
 end
-report_links.each do |l|
-  %>
-  <li class="statsListLink"><%= link_to l[:text], url_for(:controller => l[:controller], :action => l[:action]) %></li>
-  <%
-end
-%>
-<%= render :partial => 'stats/report_type_list_links' %>
-<%
-unless report_links.empty? && report_type_links_to_show.empty?
-  %>
-  </ul>
-  <%
-end
-
 %>

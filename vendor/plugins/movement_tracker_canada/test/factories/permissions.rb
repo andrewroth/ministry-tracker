@@ -102,3 +102,24 @@ Factory.define :permission_14, :class => Permission do |p|
   p.controller 'people'
   p.description 'Remove involvements' # also located in MinistryInvolvements under 'update roles'
 end
+
+Factory.define :permission_15, :class => Permission do |p|
+  p.id '15'
+  p.action 'advanced'
+  p.controller 'people'
+  p.description 'Advanced Search'
+end
+
+Factory.define :permission_273, :class => Permission do |p|
+  p.id '273'
+  p.action 'discipleship'
+  p.controller 'people'
+  p.description 'View discipleship tree'
+end
+
+Factory.define :permission_274, :class => Permission do |p|
+  p.id '274'
+  p.action 'show_mentee_summary'
+  p.controller 'people'
+  p.description 'Show mentee summary' 
+end

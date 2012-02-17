@@ -1,0 +1,20 @@
+
+<table>
+	<tr>		
+		<td class="discTree" id="mentorship">
+
+				<%= render :partial => 'discipleship_tree', :locals => { :selected => @person } %>
+
+		</td>
+		<td>		
+			<div class="detailsColumn" id="profile_summary">       
+		<%- if (is_ministry_leader == true || @p_user.campus == @person.campus) %>
+          <%= render :partial => 'mentee_summary', :locals => { :mentee => @person, :semester => @semester } %>
+        <%-else %> 
+          <%= render :partial => "mentee_summary_not_permitted", :locals => { :mentee => @person}  %>
+        <%- end %>
+      </div>
+		</td>
+	</tr>
+</table>
+</div>

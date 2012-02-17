@@ -1,6 +1,9 @@
 class CimHrdbCountriesController < ApplicationController
   unloadable
   layout 'manage'
+  
+  CCC_COUNTRY_SERVICE_URL = "http://app2.mygcx.org:8081/cccCountries/"
+  
 
   # GET /countries
   # GET /countries.xml
@@ -90,4 +93,23 @@ class CimHrdbCountriesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  
+  def compare_with_ccc_service
+    begin
+      agent = Mechanize.new
+      page = agent.get(CCC_COUNTRY_SERVICE_URL)
+      elems = Hpricot(page.body)
+      
+      @country_elems = elems.search(:country)
+    rescue => e
+      Rails.logger.error("\nERROR WITH CCC COUNTRY SERVICE: \n\t"+CCC_COUNTRY_SERVICE_URL+"\n\t"+e.class.to_s+"\n\t"+e.message+"\n")
+      @country_elems = []
+      flash[:notice] = "There was an error connecting with the CCC Countries Service at #{CCC_COUNTRY_SERVICE_URL}"
+    end
+  end
+  
 end
+
+
+

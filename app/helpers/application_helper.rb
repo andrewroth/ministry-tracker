@@ -21,14 +21,15 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.visual_effect :appear, "flash_#{level}"
+    page.delay(0.7) { page.visual_effect :blind_down, "flash_#{level}" }
     #page.visual_effect :highlight, "flash_#{level}"
-    page.delay(5) do
-      page.visual_effect :fade, "flash_#{level}"
-      page.delay(2) do
-        page.replace_html "flash_#{level}", ''
-      end
-    end
+    #page.delay(7) do
+      #page.visual_effect :blind_up, "flash_#{level}"
+      #page.delay(2) do
+        #page.replace_html "flash_#{level}", ''
+      #end
+    #end
+
     flash[:notice] = flash[:warning] = nil
   end
 
@@ -36,8 +37,8 @@ module ApplicationHelper
     {:include_blank => true, :start_year => year}
   end
   
-  def spinner(id='')
-    image_tag('spinner.gif', :id => 'spinner'+id.to_s, :style => 'display:none')
+  def spinner(id='', optional_class='', img_path='spinner.gif')
+    image_tag(img_path, :id => 'spinner'+id.to_s, :class => optional_class, :style => 'display:none')
   end
   
   def hide_spinner(page, id='')
@@ -116,7 +117,7 @@ module ApplicationHelper
 
   def instruction_block(html = nil, &proc)
     html ||= capture(&proc) if block_given?
-    render_s = "<script>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
+    render_s = "<script type='text/javascript'>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
 
     if block_given?
       concat(render_s)
@@ -134,5 +135,71 @@ module ApplicationHelper
     end
    abs_path
   end
+
+  def message_span(id, classname)
+    " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
+  end
   
+  def leave_facebook_link_to(name, url, classes = "")
+    link_to "#{name}", "#", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{url}'", :class => "#{classes}"
+  end
+    
+  def link_bar_tab(id, classes, url, title, inner_html, menu_id = nil, active_tab_id = nil)
+    classes = "#{classes} ll" unless id == active_tab_id
+    tab = "<a id='#{id}' class='#{classes}' title='#{title}' href='#{url}' #{"link_menu_box_id='#{menu_id}'" if menu_id}>#{inner_html}</a>"
+    tab = "<div class='active'><strong class='ll tab_left'>#{tab}</strong><strong class='ll tab_right'>&nbsp;</strong></div>" if id == active_tab_id
+    tab
+  end
+  
+  def connexion_bar_revealer
+    "
+    <div id='connexion_bar_revealer' title='Toggle the GCX Connexion Bar'>&nbsp;</div>
+    <script type='text/javascript'>
+      $(document).ready(function() {
+        $('#connexion_bar_revealer').click(function() {
+          $('div.yui-skin-cnxbar').slideToggle('fast');
+          $('#connexion_bar_revealer').toggleClass('revealed');
+        });
+      });
+    </script>
+    " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
+  end
+
+  def switch_languages_url
+    current_url_with_locale(currently_english ? 'fr' : 'en-CA')
+  end
+
+  def current_url_with_locale(locale)
+    new_params = params.clone
+    new_params.delete(:controller)
+    new_params.delete(:action)
+    new_params.merge!(:locale => locale)
+    "#{request.protocol}#{request.port != 80 ? request.host_with_port : request.host}#{request.path}?#{new_params.collect{ |k,v| "#{k}=#{v}" }.join('&')}"
+  end
+
+ 
+
+  def switch_languages_text
+    if currently_english
+      t('layout.languages.english_to_french')
+    elsif currently_french
+      t('layout.languages.french_to_english')
+    end
+  end
+
+  def switch_languages_mouseover
+    if currently_english
+      t('layout.languages.english_to_french_mouseover', :default => "")
+    elsif currently_french
+      t('layout.languages.french_to_english_mouseover', :default => "")
+    end
+  end
+
+  def currently_english
+    (I18n.locale.to_s =~ /^en/).present?
+  end
+
+  def currently_french
+    (I18n.locale.to_s =~ /^fr/).present?
+  end
 end

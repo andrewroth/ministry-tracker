@@ -1,0 +1,37 @@
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "group_invitations_new.js" %>
+<% end %>
+
+<h2>Invite friends to join <%= @group.name %></h2>
+
+<br/>
+<br/>
+
+Search for someone's name or just type their email and press enter:
+<br/>
+<br/>
+<form id="invitationSearchForm" action="">
+  <%= render :partial => "/search/uber_search_box", :locals => { :default_text => "invite",
+                                                                 :input_id => "inviteSearchBox",
+                                                                 :input_class => "invitePersonSearch uberSearchBox",
+                                                                 :resultsClass => "ac_results ac_results_group_invite",
+                                                                 :action_params => "all_results_link=false&actions=false&max_results=7",
+                                                                 :resultFunction => "groupInvitationSearchBoxResultAction",
+                                                                 :width => 356 } %>
+</form>
+
+<br/>
+
+To:
+<div id="invitationsDisplay"></div>
+
+<br/>
+<br/>
+
+<% form_tag 'create_multiple', :id => "invitationsForm" do %>
+  <div id="invitations"></div>
+  <%= submit_tag 'Invite!', :id => 'invitationSubmit', :class => 'action-button' %> &nbsp; <%= spinner('_submit') %>
+<% end %>
+
+

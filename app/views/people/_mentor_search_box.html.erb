@@ -1,24 +1,17 @@
 <% if authorized?(:index, :search) %>
+
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people) && ((authorized?(:add_mentor, :people)&&(person == @me)) || authorized?(:add_mentor_to_other, :people))) %>
 
     <div id="uberMentorSearchContainer">
-      <% default_search_box_text = "search" %>
+      <% default_search_box_text = "Search for mentor" %>
 
       <div id="uberMentorSearchBoxContainer">
-        <% form_tag url_for(:controller => :search), :method => 'get' do %>
-
-          <%  if controller.controller_name == "search" && (controller.action_name == "people") %>
-            <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= q %>"/>
-          <% else %>
-            <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
-          <% end %>
-
-        <% end %>
+        <input type="text" id="uberMentorSearchBox" class="search" name="q" value="<%= default_search_box_text %>"/>
       </div>
 
       <%= javascript_include_tag "jquery.ajaxQueue.js" %>
       <%= javascript_include_tag "jquery.autocomplete.js" %>
-      <script>
+      <script type="text/javascript">
         $("#uberMentorSearchBox").autocomplete("/search/autocomplete_mentors/?p="+<%= person.id %>+"", {
 					resultsClass: "alt_ac_results",
           minChars: 2,
@@ -50,21 +43,6 @@
 					mentor_id = selectedRow.substring(selectedRow.indexOf('>', indexOfId)+1, selectedRow.indexOf('<', indexOfId));
           location.href = "/people/"+<%= person.id %>+"?m="+mentor_id;
         });
-
-
-        <% if session[:search].nil? || session[:search][:search_prepared].nil? %>
-        var prepare = function() {
-          jQuery.ajax({
-            dataType:'script',
-            type:'get',
-            url: 'people/prepare'});
-          $('#uberMentorSearchBox').unbind('mouseover', prepare);
-          $('#uberMentorSearchBox').unbind('focus', prepare);
-        };
-
-        $('#uberMentorSearchBox').bind('mouseover', prepare);
-        $('#uberMentorSearchBox').bind('focus', prepare);
-        <% end %>
 
 
         $(document).ready(function() {

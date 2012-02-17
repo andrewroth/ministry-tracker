@@ -1,61 +1,56 @@
-<div class="modulecontent" style="min-height: 0px">
-  <% if @eventbrite_error.blank? && @event_groups.present? && @eventbrite_events_by_group.present? %>
+<% if @eventbrite_error.blank? && @event_groups.present? && @eventbrite_events_by_group.present? %>
 
-    <% @event_groups.each do |group| %>
-      <% total_group_attendees = 0 %>
-      <div class="lightgray">
-        <table>
+  <% @event_groups.each do |group| %>
+    <% total_group_attendees = 0 %>
+    <div>
+      <table>
+        <tr>
+          <td class="norm"><%= group.title.upcase %></td>
+          <td class="small center">attendees</td>
+        </tr>
+        <tr></tr>
+
+        <% @eventbrite_events_by_group["#{group.id}"].each do |event| %>
+
           <tr>
-            <td></td>
-            <td class="norm"><%= group.title %></td>
-            <td class="small center">attendees</td>
-          </tr>
-          <tr></tr>
-
-          <% @eventbrite_events_by_group["#{group.id}"].each do |event| %>
-
-            <tr>
-              <td class="eventIcon">
-                <%= link_to(image_tag('/images/silk/date.png', :mouseover => image_path('/images/silk/date_edit.png'), :title => "Click to goto registration!"), event.url) %>
-              </td>
+            <td class="normal">
               <% if event.attributes[:link_to_report] %>
-                <td class="normal"><%= link_to(event.title, event.attributes[:link_to_report], {:class => "modulecontent", :title => "Click to see more info"}) %></td>
+                <%= link_to(event.title, event.attributes[:link_to_report], {:title => "Click to see more info"}) %>
               <% else %>
-                <td class="normal"><%= link_to(event.title, event.url, {:class => "modulecontent", :title => "Click to goto registration!"}) %></td>
+                <%= link_to(event.title, event.url, {:title => "Click to goto registration!"}) %>
               <% end %>
-              <td class="center eventAttendees"><b><%= event.num_attendee_rows %></b></td>
-              <% total_group_attendees += event.num_attendee_rows %>
-            </tr>
+              <%= event.status == eventbrite[:event_status_live] ? " <span class='eventOpen'>OPEN!</span>" : " <span class='eventClosed'>CLOSED</span>" %>
+            </td>
+            <td class="center eventAttendees"><b><%= event.num_attendee_rows %></b></td>
+            <% total_group_attendees += event.num_attendee_rows %>
+          </tr>
 
-            <% if event.attributes[:my_campus_num_attendees].present? && @my_campuses.size == 1 %>
-              <tr>
-                <td></td>
-                <td class="small">number of people attending from <%= @my_campuses.first.short_desc %></td>
-                <td class="center"><%= event.attributes[:my_campus_num_attendees] %></td>
-              </tr>
-            <% end %>
-
-          <% end %>
-          <% unless @eventbrite_events_by_group["#{group.id}"].size == 1 %>
+          <% if event.attributes[:my_campus_num_attendees].present? && @my_campuses.size == 1 %>
             <tr>
-              <td></td>
-              <td>Total</td><td class="center"><%= total_group_attendees %></td>
+              <td class="small">people attending from <%= @my_campuses.first.short_desc %></td>
+              <td class="center"><%= event.attributes[:my_campus_num_attendees] %></td>
             </tr>
           <% end %>
-        </table>
-      </div>
-      <br/>
-    <% end %>
 
-  <% elsif @eventbrite_error.blank? && (@eventbrite_events_by_group.blank? || @event_groups.blank?) %>
-
-      <!-- display nothing -->
-    
-  <% else %>
-      <div class="lightgray">
-        It looks like <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> isn't responding right now, please try again later.
-        <br/>
-      </div>
+        <% end %>
+        <% unless @eventbrite_events_by_group["#{group.id}"].size == 1 %>
+          <tr>
+            <td>Total</td><td class="center"><%= total_group_attendees %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <br/>
   <% end %>
 
-</div>
+<% elsif @eventbrite_error.blank? && (@eventbrite_events_by_group.blank? || @event_groups.blank?) %>
+
+    <!-- display nothing -->
+
+<% else %>
+    <div>
+      We couldn't connect with <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %> to find your events, please try again later.
+      <br/>
+      <br/>
+    </div>
+<% end %>

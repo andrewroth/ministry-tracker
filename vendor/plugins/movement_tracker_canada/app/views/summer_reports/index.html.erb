@@ -1,0 +1,54 @@
+<h2>Staff Summer Schedules <%= render :partial => "select_report_year", :locals => {:years => @summer_report_years, :selected_year_id => @selected_year.id } %></h2>
+<br/>
+
+<% if @selected_year == @current_year || (@report_for_this_summer && @report_for_this_summer.approved?) %>
+
+  <% if @report_for_this_summer.blank? %>
+    <br/>
+    <%= link_to "Submit your summer schedule", new_person_summer_report_path(@me), :class => "action-button" %>
+
+  <% elsif @report_for_this_summer.approved? %>
+    You schedule has been <span class="report_approved">approved!</span><br/><br/>
+    <%= link_to "Look at your schedule", person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
+
+  <% elsif @report_for_this_summer.disapproved? %>
+    <%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @report_for_this_summer} if @report_for_this_summer.disapproved? %>
+    Please amend your schedule and resubmit it for review.<br/><br/>
+    <%= link_to "Amend your schedule", new_person_summer_report_path(@me), :class => "action-button" %>
+
+  <% else %>
+    Your schedule is <span class="report_waiting">waiting</span> to be reviewed.<br/><br/>
+    <%= link_to "Look at your schedule", person_summer_report_path(@me, @report_for_this_summer), :class => "action-button" %>
+
+  <% end %>
+
+<% else %>
+
+  No approved schedule found for you this year.
+<% end %>
+
+<br/>
+<br/>
+
+<% if @reports_to_review.present? %>
+  <%= link_to "Review schedules", person_summer_report_reviewers_path(@me, :year_id => @selected_year.id), :class => "action-button" %>
+  <%= "&nbsp;(#{pluralize(@num_reports_to_review, "schedule")} waiting for review)" %>
+<% else %>
+  (you have no schedules to review)
+<% end %>
+
+
+<% if authorized?(:report_staff_answers, :summer_reports) || authorized?(:report_compliance, :summer_reports) %>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <h4>Reports</h4>
+  <small>You can see these reports because you have a National or Zone team ministry involvement.</small>
+  <br/>
+  <br/>
+  <%= link_to "All staff schedules", url_for(:action => :report_staff_answers, :year_id => @selected_year.id), :class => "reportLink" if authorized?(:report_staff_answers, :summer_reports) %>
+  <br/>
+  <br/>
+  <%= link_to "Compliance", url_for(:action => :report_compliance, :year_id => @selected_year.id), :class => "reportLink" if authorized?(:report_compliance, :summer_reports) %>
+<% end %>

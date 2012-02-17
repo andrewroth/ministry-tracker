@@ -1,4 +1,4 @@
-            <script>
+            <script type="text/javascript">
               project_campus_expanded = new Array(); project_campus_expanded['total'] = false;
               function toggle_campus(c) {
                 if (project_campus_expanded[c] == null) {
@@ -19,10 +19,12 @@
                 icon_selector = '.icon.project_campus.'+c;
                 if (project_campus_expanded[c]) {
                   $(selector).show();
-                  $(icon_selector).attr("src", "/images/contract.png");
+                  $(icon_selector).removeClass('expand');
+                  $(icon_selector).addClass('contract');
                 } else {
                   $(selector).hide();
-                  $(icon_selector).attr("src", "/images/expand.png");
+                  $(icon_selector).removeClass('contract');
+                  $(icon_selector).addClass('expand');
                 }
                 if (c == 'total') {
                   /*
@@ -34,28 +36,30 @@
                   */
                 } else if (c == 'all_projects') {
                 }
+
+                // update yellow menu bracket height
+                adjustBracketHeight();
               }
             </script>
-            <table class="lightgray">
+            <table>
               <tbody>
                 <tr>
-                  <td></td>
-                  <td class="norm">Project Participants</td>
-                  <td class="small">applying</td>
-                  <td class="small">accepted</td>
+                  <td colspan="2" class="norm"><%= I18n.t("dashboard.projects_header") %></td>
+                  <td class="small"><%= I18n.t("dashboard.projects.applying") %></td>
+                  <td class="small"><%= I18n.t("dashboard.projects.accepted") %></td>
                 </tr>
                 <%- @project_campuses.each_with_index do |campus, i| %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
                   <%- extra = !interested || i > 5 -%>
                   <tr class='project_campus <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
-                    <td class="eventIcon"><%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{campus}"), toggle_campus(campus)) %></td>
+                    <td class="eventIcon"><%= link_to_function("<div class='expand icon project_campus #{campus}'>&nbsp;</div>", toggle_campus(campus)) %></td>
                     <td class="normal"><%= link_to_function(campus, toggle_campus(campus)) %>
                       <table class="project_campus_stats <%= campus.gsub("'","") %>" style="display:none">
                         <tr>
                           <td class="eventIcon"></td>
                           <td class="normal"></td>
-                          <td class="small">applying</td>
-                          <td class="small">accepted</td>
+                          <td class="small"><%= t('dashboard.projects.applying') %></td>
+                          <td class="small"><%= t('dashboard.projects.accepted') %></td>
                         </tr>
                         <%- projects = ((@project_totals_by_campus[campus] && @project_totals_by_campus[campus].keys) || []) | 
                               ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
@@ -92,9 +96,9 @@
                 <%- end %>
                 <tr class="total">
                   <td class="eventIcon">
-                    <%= link_to_function(image_tag('expand.png', :class => "icon project_campus #{@staff ? 'total' : 'all_projects'}"), toggle_campus(@staff ? 'total' : 'all_projects')) %>
+                    <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
-                  <td class="normal"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function(image_tag('expand.png', :class => "icon project_campus all_projects"), toggle_campus('all_projects')) %><% end %> <%= link_to_function "All Projects", toggle_campus('all_projects'), :id => "all_projects_link" %></td>
+                  <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function t('dashboard.projects.all_projects'), toggle_campus('all_projects'), :id => "all_projects_link" %></td>
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
                   <!--<td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
@@ -106,8 +110,8 @@
                       <tr>
                         <td class="eventIcon"></td>
                         <td class="normal"></td>
-                        <td class="small">applying</td>
-                        <td class="small">accepted</td>
+                        <td class="small"><%= t('dashboard.projects.applying') %></td>
+                        <td class="small"><%= t('dashboard.projects.accepted') %></td>
                       </tr>
                       <%- @project_totals.each_pair do |project, totals| %>
                         <%- next if project == :totals -%>
@@ -129,14 +133,14 @@
                   <td class="center eventAttendees"></td>
                 </tr>
                 <tr>
-                  <td class="eventIcon"></td>
-                  <td>
+                  <td colspan="2">
+                    <br/>
                     <%- if @staff -%>
-                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>--></td>
+                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>-->
                     <%- else -%>
-                      <%= link_to "Apply for project today", "https://pat.powertochange.org", :target => "_blank" %>
+                      <%= link_to I18n.t("dashboard.projects.link_txt"), "https://pat.powertochange.org", :target => "_blank" %>
                     <%- end -%>
-                  <td></td>
+                  </td>
                 </tr>
               </tbody>
             </table>

@@ -5,11 +5,14 @@
   <%- else -%>
   <ul id='<%=@short%>_list'>
     <%= render :collection => instance_variable_get("@#{@singular}_involvements"), :partial => "involvements/involvement_li" %>
-    <li id='new_<%=@singular%>_li'>
-    <%= link_to_remote image_tag('add.png') + ' ' + @add_title, :url => self.send("new_person_#{@singular}_involvement_url", @person.id, :from_profile => true), :method => :get, :with => %|'already=' + $('#new_#{@singular}_involvement').is(':visible')| %>
-    or
-      <a id="TB_closeWindowButton" href="#">close</a>
-    </li>
+
+    <% if authorized?(:new, "#{@singular}_involvements".to_sym) %>
+      <li id='new_<%=@singular%>_li'>
+      <%= link_to_remote "&nbsp;#{@add_title}", {:url => self.send("new_person_#{@singular}_involvement_url", @person.id, :from_profile => true), :method => :get,
+                                      :with => %|'already=' + $('#new_#{@singular}_involvement').is(':visible')|},
+                                     {:class => "addInvolvementIconLink"} %>
+      </li>
+    <% end %>
   </ul>
   <br/>
   <% if @student && is_admin? %>
@@ -22,7 +25,7 @@
     <p id="new_ministry_li" style="display:none"> <!-- new ministry involvement ajax form goes before #new_ministry_li -->
     </p>
   <% end %>
-  <div id='involvement_history'>Involvement History</div>
+  <div id='involvement_history'><%= t('profile.manage_campuses.involvement_history') %>
     <ul id='history'>
       <%= render :collection => @involvement_history, :partial => "involvement_history/involvement_li" %>
     </ul>

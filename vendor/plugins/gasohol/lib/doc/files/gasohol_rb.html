@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: gasohol.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>gasohol.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>gasohol.rb
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Tue Feb 17 10:16:55 -0800 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>Introduction</h1>
+<p>
+<a href="../classes/Gasohol.html">Gasohol</a> lets you query a Google
+Search Appliance and get results back in an easily traversable format.
+</p>
+<h2>Terms</h2>
+<p>
+Let&#8216;s get some nomenclature out of the way. It&#8216;s a little
+confusing when we talk about &#8216;query&#8217; in a couple of different
+ways.
+</p>
+<p>
+There are two parts to a Google GSA request:
+</p>
+<ol>
+<li>query (search terms)
+
+</li>
+<li>options (stuff like &#8216;collection,&#8217; client,&#8217; and
+&#8216;num&#8217;)
+
+</li>
+</ol>
+<p>
+And then there is the actual string that you see in your browser, the
+&quot;query string,&quot; which contains all of the &amp; and = stuff.
+</p>
+<p>
+Think of the query as the keywords to search for. However the query to the
+GSA can actually contain several parts besides just keywords. If you are
+using metadata then the query can contain several &#8216;inmeta:&#8217;
+flags, for example. All of these combined with the keywords become one big
+long string, each part separated by a space:
+</p>
+<pre>
+ pizza inmeta:category=food inmeta:pieSize:12..18
+</pre>
+<p>
+All of that is only the query (comes after ?q=). There are several
+additional options which the GSA requires, like &#8216;collection&#8217;
+and &#8216;client.&#8217; These are the options. The query and all of the
+options are combined into the final query string and sent to the GSA.
+</p>
+<p>
+A sample query string might look like:
+</p>
+<pre>
+ ?q=pizza+inmeta:category=food+inmeta:pieSize:12..18&amp;collection=default_collection&amp;client=my_client&amp;num=10
+</pre>
+<p>
+(Note that spaces in the query are turned into + signs.) This full query
+string is then appended to the URL you provided in the config options when
+you initialized <a href="../classes/Gasohol.html">Gasohol</a> (see
+Search::new) and the request is made to the GSA. The results come back and
+are parsed and converted into a nicer format than XML.
+</p>
+<h2>Using <a href="../classes/Gasohol.html">Gasohol</a></h2>
+<p>
+To get gasohol ready, instantiate a new copy with
+<tt>Gasohol.new(config)</tt> where <tt>config</tt> is a hash of options so
+that we know how/where to access your GSA instance. This information is
+saved and used for every request after initializing your gasohol instance.
+For Google&#8216;s reference of what these options do, check out the Search
+Protocol Reference: <a
+href="http://code.google.com/apis/searchappliance/documentation/50/xml_reference.html">code.google.com/apis/searchappliance/documentation/50/xml_reference.html</a>
+</p>
+<h3>Required config options</h3>
+<dl>
+<dt><tt>url</tt></dt><dd>the URL to the search results page of your GSA. ie: <a
+href="http://127.0.0.1/search">127.0.0.1/search</a>
+
+</dd>
+<dt><tt>collection</tt></dt><dd>the GSA can contain several collections, specify which one to use for this
+search
+
+</dd>
+<dt><tt>client</tt></dt><dd>the GSA can contain several clients, specify which one to use for this
+search
+
+</dd>
+</dl>
+<h3>Optional config options</h3>
+<dl>
+<dt><tt>filter</tt></dt><dd>how to filter the results, defaults to &#8216;p&#8216;
+
+</dd>
+<dt><tt>output</tt></dt><dd>the output format of the results, defaults to &#8216;xml_no_dtd&#8217;
+(leave this setting alone for gasohol to work correctly)
+
+</dd>
+<dt><tt>getfields</tt></dt><dd>which meta tag values to return in the results, defaults to &#8217;*&#8217;
+(all meta tags)
+
+</dd>
+<dt><tt>num</tt></dt><dd>the default number of results to return, defaults to 25
+
+</dd>
+<dt><tt>partialfields</tt></dt><dd>another way to filter results by meta tag values
+
+</dd>
+</dl>
+<p>
+Example config hash:
+</p>
+<pre>
+  config = {  :url =&gt; 'http://127.0.0.1',
+              :collection =&gt; 'default_collection',
+              :client =&gt; 'my_client',
+              :num =&gt; 25 }
+</pre>
+<h3>Example usage</h3>
+<p>
+So the first thing we&#8216;ll need to do is create an instance of the
+search:
+</p>
+<pre>
+  GOOGLE = Gasohol::Search.new(config)
+</pre>
+<p>
+For a simple search now you go:
+</p>
+<pre>
+  @answer = GOOGLE.search('pizza')
+</pre>
+<p>
+<tt>@answer</tt> will now contain some info about the query, what params
+the GSA returned, etc (see <a
+href="../classes/Gasohol/ResultSet.html">Gasohol::ResultSet</a>)
+<tt>@answer.results</tt> is an array of the results (see <a
+href="../classes/Gasohol/Result.html">Gasohol::Result</a>)
+<tt>@answer.featured</tt> returns an array of any featured results (appear
+as &#8216;sponsored links&#8217; at the top of a regular Google.com search)
+(see <a href="../classes/Gasohol/Featured.html">Gasohol::Featured</a>)
+</p>
+<h2>Next Steps</h2>
+<ul>
+<li>Check out Gasohol::DEFAULT_OPTIONS to see what other options you can pass
+in the config hash if you need to further refine those fields.
+
+</li>
+<li>See the documentation for Gasohol::Search.search to see how you can have
+your own custom query term names and convert those into something that the
+GSA will understand.
+
+</li>
+</ul>
+
+    </div>
+
+    <div id="requires-list">
+      <h3 class="section-bar">Required files</h3>
+
+      <div class="name-list">
+      rubygems&nbsp;&nbsp;
+      hpricot&nbsp;&nbsp;
+      open-uri&nbsp;&nbsp;
+      cgi&nbsp;&nbsp;
+      chronic&nbsp;&nbsp;
+      logger&nbsp;&nbsp;
+      <a href="gasohol/search_rb.html">gasohol/search</a>&nbsp;&nbsp;
+      <a href="gasohol/result_set_rb.html">gasohol/result_set</a>&nbsp;&nbsp;
+      <a href="gasohol/result_rb.html">gasohol/result</a>&nbsp;&nbsp;
+      <a href="gasohol/featured_rb.html">gasohol/featured</a>&nbsp;&nbsp;
+      <a href="gasohol/exceptions_rb.html">gasohol/exceptions</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

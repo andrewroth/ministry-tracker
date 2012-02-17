@@ -2,20 +2,30 @@
 		<li id="mi_<%= @person.person_mentor_id %>">
 			<%- if @person.person_mentor_id != nil -%>						
          <%- mentor = Person.find(@person.person_mentor_id) -%>	 
-	       <%= link_to_remote(image_tag('silk/link_break.png'), 
-		        :update => "mi_#{@person.person_mentor_id}",
-		        :url => { :action => :remove_mentor, :params => {:id => "#{@person.id}"}  },
-		        :confirm => "Are you sure you want to remove #{@person.full_name} from being mentored by #{mentor.full_name} ?", 
-		        :loading => "$('#spinnerm').show()", :complete => "$('#spinnerm').hide()")  if authorized?(:remove_mentor, :people) || @person == @me %>
-				 <%= mentor.full_name %>
+	       <%= link_to_remote("", 
+		           {:update => "mi_#{@person.person_mentor_id}",
+		           :url => { :action => :remove_mentor, :params => {:id => "#{@person.id}"}  },
+		           :confirm => "Are you sure you want to remove #{@person.full_name} from being mentored by #{mentor.full_name} ?", 
+		           :loading => "$('#spinnerm').show()", :complete => "$('#spinnerm').hide()"},
+		           {:class => "removeMentorIconLink", :title => "Remove #{@person.first_name} from being mentored by #{mentor.first_name}"})  if authorized?(:remove_mentor, :people) || @person == @me %>
+         <%- if authorized?(:view_mentor_profile, :people) -%>
+          <%= link_to(mentor.full_name, person_path(mentor.person_id)) %>
+         <%- else -%>
+          <%= mentor.full_name %>
+         <%- end -%>
 			<%- else -%>  <!-- no mentor found, show search box -->
 			   <div>
-			   	 No mentor currently
-			   </div>			 
-				 <br>
+           <%= t('profile.mentor.none') %>
+			   </div>
 			   <div id="search_mentor">		   
            <%= render :partial => "mentor_search_box", :locals => { :person => @person, :q => @q } %>	
 				 </div> 
       <%- end -%>  
 		</li>
   </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+      strikeParentOnHover($(".removeMentorIconLink"));
+    });
+  </script>

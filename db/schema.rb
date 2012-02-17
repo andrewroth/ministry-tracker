@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110106155626) do
+ActiveRecord::Schema.define(:version => 20110322200323) do
 
   create_table "addresses", :force => true do |t|
     t.integer "person_id"
@@ -255,6 +255,43 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
 
   add_index "free_times", ["timetable_id"], :name => "free_times_timetable_id"
 
+  create_table "global_areas", :force => true do |t|
+    t.string   "area"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "global_countries", :force => true do |t|
+    t.string   "name"
+    t.integer  "global_area_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "iso3"
+    t.integer  "stage"
+    t.integer  "live_exp"
+    t.integer  "live_dec"
+    t.integer  "new_grth_mbr"
+    t.integer  "mvmt_mbr"
+    t.integer  "mvmt_ldr"
+    t.integer  "new_staff"
+    t.integer  "lifetime_lab"
+  end
+
+  create_table "global_profiles", :force => true do |t|
+    t.string   "gender"
+    t.string   "marital_status"
+    t.string   "language"
+    t.string   "mission_critical_components"
+    t.string   "funding_source"
+    t.string   "staff_status"
+    t.string   "employment_country"
+    t.string   "ministry_location_country"
+    t.string   "position"
+    t.string   "scope"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "group_involvements", :force => true do |t|
     t.integer  "person_id"
     t.integer  "group_id"
@@ -276,8 +313,11 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
     t.integer  "unsuitability_leader"
     t.integer  "unsuitability_coleader"
     t.integer  "unsuitability_participant"
-    t.string   "collection_group_name",     :default => "{{campus}} interested in a {{group_type}}"
-    t.boolean  "has_collection_groups",     :default => false
+    t.string   "collection_group_name",      :default => "{{campus}} interested in a {{group_type}}"
+    t.boolean  "has_collection_groups",      :default => false
+    t.boolean  "in_directory_search_not_in", :default => false
+    t.string   "short_name"
+    t.boolean  "in_directory_search_in",     :default => false
   end
 
   create_table "groups", :force => true do |t|
@@ -330,6 +370,13 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
     t.integer  "ministry_role_id"
     t.integer  "campus_involvement_id"
     t.integer  "ministry_involvement_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locks", :force => true do |t|
+    t.string   "name"
+    t.boolean  "locked"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -551,6 +598,13 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
     t.datetime "updated_at"
   end
 
+  create_table "temp_group_involvements", :id => false, :force => true do |t|
+    t.integer "person_id"
+    t.string  "group_involvements"
+  end
+
+  add_index "temp_group_involvements", ["person_id"], :name => "index_temp_group_involvements_on_person_id"
+
   create_table "timetables", :force => true do |t|
     t.integer  "person_id"
     t.datetime "created_at"
@@ -558,7 +612,7 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
     t.integer  "updated_by_person_id"
   end
 
-  add_index "timetables", ["person_id"], :name => "index_emu.timetables_on_person_id"
+  add_index "timetables", ["person_id"], :name => "index_c4c_pulse_dev.timetables_on_person_id"
 
   create_table "training_answers", :force => true do |t|
     t.integer  "training_question_id"
@@ -596,7 +650,7 @@ ActiveRecord::Schema.define(:version => 20110106155626) do
   create_table "user_codes", :force => true do |t|
     t.integer  "user_id"
     t.string   "code"
-    t.text     "pass"
+    t.binary   "pass"
     t.integer  "click_count", :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"

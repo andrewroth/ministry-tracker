@@ -1,4 +1,20 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pat_projects
+
+
+  map.connect '/api/authorized', :controller => :api, :action => :authorized
+
+  map.resources :api_keys
+
+  map.resources :label_people
+  map.resources :labels
+
+  map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
+  map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
+  map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
+              
+  map.resources :global_dashboard_accesses
+
   map.resources :notices, :member => { :dismiss => :post }
 
   map.resources :annual_goals_reports
@@ -16,11 +32,12 @@ ActionController::Routing::Routes.draw do |map|
     cim_hrdb_person.resources :cim_hrdb_assignments
     cim_hrdb_person.resources :cim_hrdb_person_years
   end
-  map.resources :cim_hrdb_countries
+  map.resources :cim_hrdb_countries, :collection => {:compare_with_ccc_service => :get}
   map.resources :cim_hrdb_ministries
   map.resources :cim_hrdb_campuses
   map.resources :cim_hrdb_states
   map.resources :cim_hrdb_staff
+  map.resources :cim_reg_events
 
   map.resources :titles
 
@@ -31,11 +48,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :genders
 
   map.resources :assignmentstatuses
-
-  map.connect 'ministry_involvements/edit_multiple_roles',
-              :conditions => { :method => :get },
-              :controller => "ministry_involvements",
-              :action => "edit_multiple_roles"
 
   map.connect 'search/',
               :conditions => { :method => :get },
@@ -118,6 +130,8 @@ ActionController::Routing::Routes.draw do |map|
                                                  :transfer => :post,
                                                  :change_level => :post,
                                                  :destroy_own => :delete}
+  map.joingroup_signup '/joingroup_signup', :controller => "group_involvements", :action => "joingroup_signup", :conditions => { :method => :post }
+  map.joingroup '/joingroup', :controller => "group_involvements", :action => "joingroup", :conditions => { :method => :post }
 
   map.resources :groups, :member => {:find_times => :post,
                                      :compare_timetables => :any,
@@ -126,7 +140,13 @@ ActionController::Routing::Routes.draw do |map|
                                      :email => :post,
                                      :clone_pre => :get,
                                      :clone => :post },
-                         :collection => {:join => :get}
+                         :collection => {:join => :get} do |group|
+                           
+    group.resources :group_invitations, :member => {:accept => :get,
+                                                    :decline => :get,
+                                                    :list => :get},
+                                        :collection => {:create_multiple => :post}
+  end
 
   map.resources :manage
   
@@ -163,12 +183,23 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource  :files
 
+  map.connect 'campus_discipleship/',
+              :conditions => { :method => :get },
+              :controller => "campus_discipleship",
+              :action => "show"
+
   map.resources :people,  :member => {:import_gcx_profile => :any,
                                       :set_initial_campus => :any,
                                       :set_initial_ministry => :any,
-                                      :impersonate => :get},
+                                      :discipleship => :any,
+                                      :impersonate => :get,
+                                      :show_mentee_profile_summary => :get,
+                                      :show_gcx_profile => :get,
+                                      :set_label => :post
+                                      },
                           :collection => {:directory                          => :any,
                                           :me                                 => :get,
+                                          :edit_me                            => :get,
                                           :change_ministry_and_goto_directory => :any,
                                           :change_view                        => :any,
                                           :search                             => :any,
@@ -188,17 +219,29 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :involvement
     person.resources :training
     person.resources :profile_pictures
+    person.resources :summer_reports
+    person.resources :summer_report_reviewers
   end                             
-                                          
+  
   map.resources :customize
   
-  map.resources :ministry_involvements
-
-
+  map.resources :ministry_involvements, :collection => {:edit_multiple_roles => :get,
+                                                        :update_multiple_roles => :post}
+  
+  map.resources :campus_involvements, :collection => {:edit_multiple_school_years => :get,
+                                                      :update_multiple_school_years => :post}
+  
+  map.edit_school_year '/people/:person_id/campus_involvements/:id/edit_school_year', :controller => :campus_involvements, :action => :edit_school_year
+  
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
+  map.show_user_codes '/user_codes/report_generated_codes', :controller => :user_codes, :action => :report_generated_codes
+  map.connect '/user_codes/generate_code_for_involved',
+              :conditions => { :method => :post },
+              :controller => :user_codes,
+              :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:
@@ -215,6 +258,10 @@ ActionController::Routing::Routes.draw do |map|
   
   # root to dashboard
   map.dashboard '', :controller => "dashboard"
+  map.global_dashboard '/global_dashboard/:action.:format', :controller => "global_dashboard"
+  map.export_global_dashboard '/global_dashboard/export', :controller => "global_dashboard", :action => "export"
+
+  map.resources :global_countries, :member => { :set_global_country_stage => :post }
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id.:format'

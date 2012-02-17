@@ -8,6 +8,8 @@ class ProfilePicturesControllerTest < ActionController::TestCase
 
   def setup
     setup_default_user
+    setup_years
+    setup_months
     
     @controller = ProfilePicturesController.new
     @request    = ActionController::TestRequest.new

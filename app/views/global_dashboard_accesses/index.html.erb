@@ -1,0 +1,32 @@
+<h1>Listing global_dashboard_accesses</h1>
+
+<table>
+  <tr>
+    <th>Guid</th>
+    <th>Fn</th>
+    <th>Ln</th>
+    <th>Email</th>
+    <th>Admin</th>
+  </tr>
+
+<% @global_dashboard_accesses.each do |global_dashboard_access| %>
+  <tr>
+    <%- if global_dashboard_access.person -%>
+      <td><%=h link_to global_dashboard_access.guid, person_path(global_dashboard_access.person) %></td>
+    <%- else -%>
+      <td><%=h global_dashboard_access.guid %></td>
+    <%- end -%>
+    <td><%=h global_dashboard_access.fn %></td>
+    <td><%=h global_dashboard_access.ln %></td>
+    <td><%=h global_dashboard_access.email %></td>
+    <td><%=h global_dashboard_access.admin %></td>
+    <td><%= link_to 'Show', global_dashboard_access %></td>
+    <td><%= link_to 'Edit', edit_global_dashboard_access_path(global_dashboard_access) %></td>
+    <td><%= link_to 'Destroy', global_dashboard_access, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New global_dashboard_access', new_global_dashboard_access_path %>

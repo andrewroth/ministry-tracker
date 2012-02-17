@@ -1,10 +1,26 @@
 <li id="ci_<%= ci.id %>">
-  <%= link_to_remote(image_tag('delete.png'), 
-        :url => person_campus_involvement_path(@person, ci), 
-        :confirm => "Are you sure you want to remove #{@person.first_name} from #{ci.campus.name}?", 
-        :method => :delete,
-        :before => "$('#spinner').show()")  if is_ministry_leader || @person == @me %>
+  <% ministry = ci.campus.derive_ministry %>
+  <% if @person == @me || ( authorized?(:edit, :campus_involvements) &&
+          ( is_ministry_leader(ministry, @me) || ministry.leaders.include?(@me) || is_ministry_admin )
+        )
+  %>
+    <%= link_to_remote("", 
+          {:url => person_campus_involvement_path(@person, ci), 
+          #:confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
+          #              :campus_name => ci.campus.name),
+          :confirm => "test",
+          :method => :delete,
+          :before => "$('#spinner').show()"}, 
+          {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{ci.campus.name}", :class => "removeInvolvementIconLink"}) %>
+  <% end %>
+
   <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
-  <%= ci.try(:school_year).try(:name) %>
-  <%= ci.find_or_create_ministry_involvement.ministry_role.name if @student %>
+  <%= t("years.#{ci.try(:school_year).try(:translation_key)}") %>
+  <%= t("roles.#{ci.find_or_create_ministry_involvement.ministry_role.translation_key}") if @student %>
 </li>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    strikeParentOnHover($(".removeInvolvementIconLink"));
+  });
+</script>

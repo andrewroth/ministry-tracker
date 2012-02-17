@@ -10,7 +10,7 @@ class GroupInvolvementsController < ApplicationController
 
   def create
     params[:requested] = false
-    create_group_involvement
+    flash[:notice] = "#{@gi.person.full_name} is now a #{@gi.level}" if create_group_involvement
     @group = @gi.group
     @level = @gi.level
   end
@@ -19,14 +19,26 @@ class GroupInvolvementsController < ApplicationController
     get_person
     if @person
       @join = @signup = true
-      joingroup
-      render :action => :joingroup
-    else
-      # anon user is joining groups, need to remember which groups s/he wants to join
-      session[:signup_groups] ||= {}
-      session[:signup_groups][@group.id] = params[:level]
-      @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
-      render :action => :joingroup_signup
+    end
+    
+    session[:signup_groups] ||= {}
+    session[:signup_groups][@group.id] = params[:level]
+    @message = params[:level] == 'interested' ? "Marked as interested" : "Join request pending"
+    
+    respond_to do |format|
+      format.html {
+        if @group.needs_approval && params[:level] == 'member'
+          flash[:notice] = "Great! Your request to join has been sent to #{@group.name}"
+        elsif params[:level] == 'member'
+          flash[:notice] = "Great! Welcome to your group, #{@group.name}"
+        end
+        if logged_in?
+          redirect_to :controller => :signup, :action => :step2_info_submit
+        else
+          redirect_to :controller => :signup, :action => :step2_info
+        end
+      }
+      format.js { render :layout => false }
     end
   end
 

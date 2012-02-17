@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class MinistryRolePermissionsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
+    setup_years
+    setup_months
     login
   end
 

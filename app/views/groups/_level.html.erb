@@ -28,6 +28,11 @@
                     :method => :post
 } ) do 
 -%>
+<%- @hide_extra_info = !@group.show_group_info && !@is_staff && 
+  (level == Group::MEMBER || level == Group::INTERESTED) && 
+  (@gi.nil? || @gi.level == Group::MEMBER || @gi.level == Group::INTERESTED)
+%>
+
 <table width="70%" border="0" cellspacing="0" cellpadding="5" class="groupInvolvementList">
   <tr>
     <%- if authorized?(:transfer, :group_involvements) || authorized?(:change_level, :group_involvements) -%>
@@ -36,11 +41,13 @@
       </th>
     <%- end -%>
     <th width='110px'>Name</th>
+    <%- unless @hide_extra_info -%>
     <th width='50px'>Gender</th>
     <th width='110px'>Email</th>
     <th width='70px'>Phone</th>
     <th width='70px'><%= I18n.t :alternate_phone, :default => "Cell" %></th>
-    <th width='90px'>Timetable Last Updated</th>
+    <th width='90px'>Timetable Updated</th>
+    <%- end -%>
   </tr>
   <%- @group.group_involvements.sorted.each do |gi| 
     if gi.level == level

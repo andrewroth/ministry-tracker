@@ -1,0 +1,64 @@
+
+<div class="groupMinimal">
+
+  <div class="groupMinimalInfoContainer">
+    <div class="groupNameContainer">
+      <div class="groupNameIcon">&nbsp;</div><%= group.name %>
+    </div>
+
+    <div class="groupMinimalInfo">
+      <% involvements = group.group_involvements.select{|gi| gi.requested != true && (gi.level == Group::LEADER) }%>
+      <% if involvements.present? %>
+        <%= I18n.t("groups.led_by") %>
+        <%=
+          involvements.map{ |i|
+            if i.person.present? && i.person.email && !group.email.present?
+              mail_to i.person.email, i.person.full_name, :title => i.person.email
+            elsif i.person.present?
+              i.person.full_name
+            end
+          }.join(', ')
+        %>
+        <br/>
+      <% end %>
+
+
+      <% if group.email.present? %>
+        <%= t('groups.email') %> <%= mail_to group.email %>
+        <br />
+      <% end %>
+
+
+      <% midnight = Time.now.beginning_of_day %>
+      <% if group.day %>
+        <%= I18n.t("groups.meets_on") %> <%= group.meeting_day_and_time_to_string %>
+      <% elsif @collection_group && @collection_group.include?(group) %>
+        <%= I18n.t("groups.collection_group_tagline") %>
+      <% else %>
+        <%= I18n.t("groups.to_be_decided") %>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="groupMinimalActionsContainer">
+    <% gi = group.group_involvements.detect{ |gi| gi.person == @me } %>
+    
+    <% if gi && gi.requested %>
+      <b><%= t('groups.join_sent') %></b>
+    <% elsif gi && gi.level != 'interested' %>
+      <b><%= t('groups.your', :role => t("groups.roles.#{gi.level}").capitalize) %></b>
+    <% else %>
+      <% if @join %>
+        <% join_group_text = group.needs_approval ? I18n.t("groups.buttons.request") : I18n.t("groups.buttons.join") %>
+        <%= link_to join_group_text, joingroup_signup_path(
+               :person_id => @person.id,
+               :group_id => group.id,
+               :level => 'member'),
+               :method => :post,
+               :class => "action-button"
+        %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

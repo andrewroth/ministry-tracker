@@ -1,11 +1,21 @@
 <li id="mi_<%= mi.id %>">
-<%= link_to_remote(image_tag('delete.png'), :url => person_ministry_involvement_path(@person, mi),
-      :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?",
-      :method => :delete,
-      :before => "$('#spinner').show()")  if @me == @person || authorized?(:new)
-%>
+	<% if (authorized?(:new, :people) && @me == @person) ||
+        (authorized?(:new, :people) && @me.has_permission_to_update_role(mi, mi.ministry_role)) || is_ministry_admin %>
+
+    <%= link_to_remote("", {:url => person_ministry_involvement_path(@person, mi),
+		      :confirm => "Are you sure you want to remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}?",
+		      :method => :delete,
+		      :before => "$('#spinner').show()"}, {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{mi.ministry.name}", :class => "removeInvolvementIconLink"})
+		%>
+	<% end %>
 <%= link_to_remote(mi.ministry.name,
       :url => change_ministry_and_goto_directory_people_url(:current_ministry => mi.ministry.id),
       :method => :get)
 %> <%= mi.ministry_role.try(:name) %>
 </li>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    strikeParentOnHover($(".removeInvolvementIconLink"));
+  });
+</script>

@@ -1,0 +1,14 @@
+<%= select :summer_report, :year_id, years.collect{|y| [y.desc[-4..-1], y.id]}, {:selected => selected_year_id} %>
+
+&nbsp;<%= spinner "_summer_report_year_id" %>
+
+<%= javascript_include_tag "jquery.ba-bbq.min" %>
+
+<script type="text/javascript">
+  $(
+    $("#summer_report_year_id").change(function() {
+      $("#spinner_summer_report_year_id").show();
+      document.location = $.param.querystring(window.location.href, "year_id="+$("#summer_report_year_id").val() );
+    })
+  );
+</script>

@@ -5,6 +5,8 @@ class MinistriesControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_ministry_roles
+    setup_years
+    setup_months
     login
   end
 

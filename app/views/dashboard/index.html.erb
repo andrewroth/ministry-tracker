@@ -1,251 +1,127 @@
-<% content_for :javascripts do %>
-  <%= javascript_include_tag "dashboard.js" %>
-<% end if @show_my_events %>
+<% 
+unless @mobile
+%>
 
-<div id="timetable_link">
-</div>
-<% @site_title = 'Dashboard' -%>
-<%- help_block do -%>
-  <h3>The Dashboard. </h3> 
-  <br>
-  The Dashboard gives you quick access point to pretty much everything on the Movement Tracker.
-  <br /><br />
-  <%- if authorized?(:directory, :people) -%>
-  <h4>Search the Directory</h4>
-  Immediately below is your <b>recent searches</b>. Click on them to re-display a previous search.
-  <br /><br />
-  <%- end -%>
-  <h4>Quick Tools</h4>
-    <b>Go to your profile</b> to view your profile (ie. addresses, campuses you're at, etc.), then click the 'Edit Information' button to edit it.
-    <br/>
-    <b>Enter your timetable</b> to mark which times you're free at, which can then be used to schedule group meeting times.
-    <br/>
-    <%- if authorized?(:new, :people) -%>
-    <b>Add a student</b> to ministry you are currently viewing.
-    <br />
-    <%- end -%>
-    <%- if authorized?(:new, :groups) -%>
-    <b>Create a group</b> to track groups of people meeting weekly within your ministry.
-    <br />
-    <%- end -%>
-    <%- if authorized?(:new, :ministries) -%>
-    <b>Create a ministry</b>: Ministries are where the action happens, use this when starting new campus ministries
-    <br />
-    <%- end -%>
-    <%- if authorized?(:new, :groups) -%>
-    Go to your <b>directory</b> to display a list of all people involved in this ministry.
-    <br />
-    <%- end -%>
-    <br />
-   <h4>My Groups</h4>
-   Click any of the groups you are registered for to view its details.
-   <br />
-   <%- if authorized?(:join, :groups) -%>
-   <b>Join a group</b> to see a list of groups available, that you can join or mark as being interested.
-   <br />
-   <%- end -%>
-   <%- if is_ministry_leader -%>
-   <br />
-   <h4>Statistics</h4>
-   This can be a helpful reference to see how many meetings you have each week, new people, etc.
-   <br>
-   <%- end -%>
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "dashboard.js", :cache => 'cache/dashboard' %>
 <% end %>
+
+<% @site_title = 'Dashboard' -%>
 
 <div class="welcome">
 <%- if @ministry -%>
 
-<div class="hidememessage" style="display:none;">
-<p>The "Profile" tab is all about you. It's where you keep your personal information
-up to date. It's also a launching point for managing the different areas of ministry
-you're responsible for.</p>
-<p>This "Dashboard" area will keep you informed of new features we have added to 
-this system, along with any other information we think would be helpful to you.</p>
-<%- if authorized?(:directory, :people) -%>
-<p>The directory tab lists everyone involved on your campus.</p>
-<%- end -%>
-<div class="closebox" style="display:none;">
-  <a href="">Hide this message</a>
-</div>
-</div>
 
-<div id="gettingstarted">
-  <big>getting started → </big>
-  <%= link_to "#{image_tag('silk/group_go.png')} Join a Group", {:controller => "groups", :action => "join"}, {:class => "action-button"} %>
-  <%= link_to "#{image_tag('silk/calendar_edit.png')} Edit Your Timetable", person_timetable_path(@me.id,
-                (@my.timetable || Timetable.create(:person_id => @me.id)).id), {:class => "action-button"} %>
-</div>
-
-<div id="dashwrap">
-
-  <div id="col_1">
-  
-    <%- if authorized?(:directory, :people) -%>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>Search the Directory</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
-        </div>
-      </div>
-      <div class="modulecontent">
-      
-        <div class="modulesearchbox">
-        <% form_tag(directory_people_path(:format => :html)) do %>
-        <input type="text" class="searchdash" name="search" />
-        <input type="submit" class="searchdashsubmit" value="Search"/><br />
-        <%- end -%>
-        <% if authorized?(:advanced, :people) %>
-        <%= link_to('Advanced Search', directory_people_path) %>
-        <% end %>
-        </div>
-
-        <% if @my.searches.first.present? %>
-        <span class="norm">Recent Searches</span>
-        <div class="lightgray">
-          <ul class="searchicon">
-            <% @my.searches.first(3).each do |search| %>
-              <li><%= link_to(search.description, directory_people_path(:search_id => search.id, :format => :html)) %></li>
-            <% end %>
-          </ul>
-        </div>
-        <% end %>
-      
-      </div>
-    </div>
-    <%- end -%>
-    
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>Quick Tools</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
-        </div>
-      </div>
-      <div class="modulecontent">
-        <ul>
-          <li>
-            <%= link_to('Go to your profile', person_url(@me.id)) %>
-          </li>
-          <li>
-            <%= link_to('Enter your timetable', edit_person_timetable_path(@me.id, 
-                  (@my.timetable || Timetable.create(:person_id => @me.id)).id)) %>
-          </li>
-          <%- if authorized?(:new, :people) -%>
-          <li>
-            <%= link_to_remote('Add a student', :url => '/people/add_student',
-		                                             :loading => "$('#spinneradd_student').show();",
-                                                 :complete => "$('#spinneradd_student').hide();
-                                                                show_add_student()",
-                        											 	 :method => :get) %>
-        		<%= spinner('add_student') %>
-          </li>
-          <%- end -%>
-          <%- if authorized?(:new, :groups) -%>
-            <li><%= link_to('Create a group', groups_path) %></li>
-          <%- end -%>
-          <%- if authorized?(:directory, :people) -%>
-            <li><%= link_to('Go to the directory', directory_people_path(:format => :html)) %></li>
-          <%- end -%>
-          <%- if authorized?(:index, :manage) -%>
-            <li><%= link_to('Manage your ministries', '/manage') %></li>
-          <%- end -%>									
-        </ul>
-      </div>
-    </div>
-  
-  <div class="clear"></div>
-  
-  </div><!-- col 1 -->
-  
-  <div id="col_2">
-  
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>My Groups
-				<%= spinner('gt') %></h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
-        </div>
-      </div>
-			
-      <div id = "groups">
-      	<%= render :partial => "dashboard/groups" %>
-      </div>
-    </div>
+<!-- credit for three column layout: http://matthewjamestaylor.com/blog/perfect-3-column.htm -->
+<div id="dashwrap" class="colmask threecol">
+  <div class="colmid">
+    <div class="colleft">
 
 
-    <% if @show_my_events %>
-      <div class="dashmodule">
-        <div class="moduletitle">
-          <h2>My Events</h2>
-          <div class="modulecontrols">
-            <a href="" class="minmodule"></a>
-            <a href="" class="movemodule"></a>
-            <a href="" class="closemodule"></a>
+      <div class="col1">
+
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2><%= I18n.t("dashboard.groups_header") %>
+            <%= spinner('gt') %></h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+
+          <div id = "groups">
+            <%= render :partial => "dashboard/groups" %>
           </div>
         </div>
 
-        <div id="events">
-          <div class="modulecontent" style="min-height: 0px">
-            <%= render :partial => 'projects' %>
-            <div id="eventsSpinnerContainer">
-              <br/>
-              <div class="lightgray">
-                We're fetching your events from <%= link_to('Eventbrite', eventbrite[:c4c_events_link]) %>
-                <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
-              </div>
+
+        <% if @show_my_events %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>
+              <%= t("dashboard.events_header") %>&nbsp;
+              <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
+            </h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+
+          <div id="events">
+            <div class="modulecontent" style="min-height: 0px">
+              <%= render :partial => 'projects' %>
             </div>
           </div>
         </div>
-      </div>
-    <% end %>
+        <% end %>
 
-    <% if !is_staff_somewhere && authorized?(:show_total_indicated_decisions, :stats) && @total_indicated_decisions.present? %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>God at Work</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
+
+        <% if is_ministry_leader %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>Stats</h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+          <div class="modulecontent">
+            <%= render :partial => "stats" %>
+          </div>
         </div>
-      </div>
-      <div class="modulecontent">
-        <%= render :partial => "insights" %>
-      </div>
-    </div>
-    <% end %>
+        <% end %>
 
-    <% if is_ministry_leader %>
-    <div class="dashmodule">
-      <div class="moduletitle">
-        <h2>Statistics</h2>
-        <div class="modulecontrols">
-          <a href="" class="minmodule"></a>
-          <a href="" class="movemodule"></a>
-          <a href="" class="closemodule"></a>
+
+
+        <div class="clear"></div>
+      </div><!-- col1 -->
+
+
+      <div class="col2">
+        <div id="verticalTablistContainer">
+          <div id="verticalBracketTop">&nbsp;</div>
+          <%= tabnav :vertical_main %>
+          <div id="verticalBracketBottom">&nbsp;</div>
         </div>
-      </div>
-      <div class="modulecontent">
-        <%= render :partial => "stats" %>
-      </div>
+        <div class="clear"></div>
+      </div><!-- col2 -->
+
+      
+      <div class="col3">
+
+        <div class="dashmodule">
+          <div class="modulecontent">
+            <%= link_to image_tag("CRM_ConnectButton.jpg"), "https://connect.powertochange.org/" %>
+          </div>
+        </div>
+
+        <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
+        <div class="dashmodule">
+          <div class="moduletitle">
+            <h2>God at Work</h2>
+            <div class="modulecontrols">
+              <a href="" class="minmodule"></a>
+              <a href="" class="movemodule"></a>
+              <a href="" class="closemodule"></a>
+            </div>
+          </div>
+          <div class="modulecontent">
+            <%= render :partial => "insights" %>
+          </div>
+        </div>
+        <% end %>
+
+        <div class="clear"></div>
+      </div><!-- col3 -->
+      
+      
     </div>
-    <% end %>
-
-
-  
-  <div class="clear"></div>
-  
-  </div><!-- col2 -->
-
-<div class="clear"></div>
+  </div>
 </div>
 
 
@@ -258,3 +134,17 @@ this system, along with any other information we think would be helpful to you.<
 
 <%- end -%>
 </div>
+
+<%
+else #(if the website is viewed from a mobile)
+%>
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
+      <li><%= link_to 'Search', url_for(:controller => :search, :action => :index) %></li> 
+      <li><%= link_to 'Profile', "/people/#{@me.id}" %></li> 
+      <li><%= link_to 'Groups', url_for(:controller => :groups, :action => :index) %></li> 
+      <li><%= link_to 'Update Stats', url_for(:controller => :stats, :action => :index) %></li> 
+    </ul> 
+
+<%
+end
+%>

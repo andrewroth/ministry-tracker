@@ -1,12 +1,19 @@
 class EventsController < ApplicationController
   unloadable
-
+  layout :get_layout
+  
+  include PersonForm
+  
   require 'ordered_hash_sort.rb'
 
   skip_before_filter :authorization_filter, :only => [:select_report]
-
   
-  SELECTED_CAMPUS_EXCEPTION = "Selected campus not relevant to this event."
+  after_filter :sync_event_data_delayed_job, :only => [:attendance]
+
+  before_filter :check_student_visibility, :only => [:show, :edit, :update, :destroy, :attendance, :select_report]
+  
+  NO_ATTENDEES_EXCEPTION = "There are no registered attendees to this event yet."
+  NO_ATTENDEES_AT_CAMPUS_EXCEPTION = "There are no registered attendees to this event from the selected campus,"
 
   INDIVIDUALS = 'individuals'
   SUMMARY = 'summary'
@@ -16,20 +23,126 @@ class EventsController < ApplicationController
     {
       :summary => {
                     :order => 1,
-                    :label => "Attendance Summary",
-                    :title => "See a summary of all attendees to this event.",
+                    :label => "Summary",
+                    :title => "A summary of all attendees to this event",
                     :radio_id => "report_scope_summary",
                     :show => :yes
       },
       :individuals => {
                     :order => 2,
-                    :label => "Individual Attendees",
-                    :title => "See individual attendees to this event.",
+                    :label => "Individuals",
+                    :title => "Specific individual attendees to this event",
                     :radio_id => "report_scope_individuals",
                     :show => :yes
       }
     }
 
+
+  def index
+    @cim_reg_events = CimRegEvent.all
+    @events = ::Event.all(:order => "created_at desc")
+
+    respond_to do |format|
+      format.html # index.html.erb
+    end
+  end
+
+  def show
+    @event = Event.find(params[:id])
+  end
+
+  def new
+    @event = Event.new
+    
+    setup_campuses
+  end
+
+  def create
+    setup_campuses
+    
+    @event = Event.new(params[:event])
+    
+    saved = @event.save
+    if saved
+      @event.update_details_and_attendees_from_eventbrite
+      synced = !@event.synced_at.nil? && @event.synced_at.present?
+      
+      if synced
+        EventCampus.all(:conditions => {:event_id => @event.id}).each {|campus| campus.destroy}
+        params[:event_campuses].each do |campus_id|
+          if Campus.all(:conditions => ["#{Campus._(:id)} = ?", campus_id.to_i]).present?
+            ec = EventCampus.new(:event_id => @event.id, :campus_id => campus_id.to_i)
+            ec.save
+          end
+        end if params[:event_campuses].present?
+      end
+    end
+
+    respond_to do |format|
+      if synced && saved
+        flash[:notice] = "Eventbrite event '#{@event.title}' was successfully created"
+        format.html { redirect_to(events_path) }
+      else
+        flash[:notice] = 'Something went wrong, please verify that the Eventbrite event ID is correct' if !synced && saved
+        format.html { render :action => "new" }
+      end
+    end
+  end
+  
+  def edit
+    @event = Event.find(params[:id])
+    
+    setup_campuses
+  end
+  
+  def update
+    setup_campuses
+    
+    @event = Event.find(params[:id])
+    
+    updated = @event.update_attributes(params[:event])
+    if updated
+      @event.update_details_and_attendees_from_eventbrite
+      synced = @event.synced_at != nil
+      
+      if synced
+        EventCampus.all(:conditions => {:event_id => @event.id}).each {|campus| campus.destroy}
+        params[:event_campuses].each do |campus_id|
+          if Campus.all(:conditions => ["#{Campus._(:id)} = ?", campus_id.to_i]).present?
+            ec = EventCampus.new(:event_id => @event.id, :campus_id => campus_id.to_i)
+            ec.save
+          end
+        end if params[:event_campuses].present?
+      end
+    end
+
+    respond_to do |format|
+      if synced && updated
+        flash[:notice] = "Eventbrite event '#{@event.title}' was successfully updated"
+        format.html { redirect_to(events_path) }
+      else
+        flash[:notice] = 'Could not get event info from Eventbrite, verify that the Eventbrite event ID is correct' if !synced && updated
+        format.html { render :action => "new" }
+      end
+    end
+  end
+  
+  def destroy
+    @event = Event.find(params[:id])
+    @event.event_attendees.destroy_all
+    @event.event_campuses.destroy_all
+    @event.destroy
+
+    unless @event.errors.empty?
+      flash[:notice] = "WARNING: Couldn't delete event because:"
+      @event.errors.full_messages.each { |m| flash[:notice] << "<br/>" << m }
+    end
+
+    respond_to do |format|
+      format.html { redirect_to(events_path) }
+    end
+  end
+  
 
   def attendance
     session[:attendance_campus_id] = nil unless session[:attendance_campus_id].present?
@@ -42,7 +155,6 @@ class EventsController < ApplicationController
 
 
   def select_report
-    
     session[:attendance_report_scope] = params['attendance_report_scope'] if params['attendance_report_scope'].present?
 
     session[:attendance_report_sort] = params['attendance_report_sort'] if params['attendance_report_sort'].present? &&
@@ -51,11 +163,9 @@ class EventsController < ApplicationController
     session[:attendance_campus_id] = params['attendance_campus_id'] if params['attendance_campus_id'].present? &&
       params['attendance_campus_id'] != "null" && params['attendance_campus_id'] != "undefined" # javascript may return null or undefined
 
-
-    setup_attendance_report_from_session
-
     setup_event
     setup_my_campus
+    setup_attendance_report_from_session
 
     case @report_scope
     when SUMMARY
@@ -68,6 +178,9 @@ class EventsController < ApplicationController
       format.js
     end
   end
+
+
+  private
 
 
   def setup_report_scope_radios
@@ -99,16 +212,35 @@ class EventsController < ApplicationController
   end
 
   def setup_attendance_report_from_session
-
-    setup_my_campus
-
+    
+    setup_my_campus unless @my_campuses.present?
+    
+    setup_event unless @event.present?
+    
     @report_scope = session[:attendance_report_scope]
     @report_sort = session[:attendance_report_sort]
     @selected_campus_id = session[:attendance_campus_id].present? ? session[:attendance_campus_id] : @my_campuses.first.id
     @selected_campus = @selected_campus_id.present? ? Campus.first(:conditions => {:campus_id => @selected_campus_id}) : nil
-
+    
+    # make sure the selected campus is associated to the chosen event and that it's within my involvements
+    unless @selected_campus && @event.campuses.include?(@selected_campus) && (@my_campuses.include?(@selected_campus) || authorized?(:show_all_campuses_individuals, :events))
+      
+      my_campuses_at_event = @event.campuses.select { |ec| @my_campuses.include? ec }
+      
+      if my_campuses_at_event.blank? && !authorized?(:show_all_campuses_individuals, :events)
+        flash[:notice] = "Sorry, that event isn't associated with any of your campuses"
+        redirect_to :controller => "dashboard", :action => "index"
+        return
+      elsif authorized?(:show_all_campuses_individuals, :events)
+        @selected_campus = @event.campuses.first if @selected_campus.desc != "Other"
+      else
+        @selected_campus = my_campuses_at_event.first
+      end
+      @selected_campus_id = @selected_campus.id
+    end
+    
     setup_report_scope_radios
-
+    
     if @report_scope == INDIVIDUALS &&
         (authorized?(:show_all_campuses_individuals, :events) ||
           (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
@@ -116,13 +248,13 @@ class EventsController < ApplicationController
     else
       @show_campus_select = false
     end
-
+    
     @attendance_campuses = []
-
+    
     @scope_radio_selected_id = REPORT_SCOPES[:"#{@report_scope}"][:radio_id]
-
+    
     @attendance_summary = @report_scope == SUMMARY ? true : false
-
+    
     @selected_results_div_id = "attendanceResults"
   end
 
@@ -132,12 +264,15 @@ class EventsController < ApplicationController
       @campus_summaries = ActiveSupport::OrderedHash.new
       @campus_summary_totals = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0}
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
 
 
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
+
+        next unless eb_campus
 
         matched_campus = @my_campuses.select {|c| c.matches_eventbrite_campus(eb_campus)}[0]
         
@@ -166,38 +301,45 @@ class EventsController < ApplicationController
         end
       end
 
+      if @eb_event.num_attendee_rows != @campus_summary_totals[:males]+@campus_summary_totals[:females] ||
+         @eb_event.num_attendee_rows != @campus_summary_totals[:first_year]+@campus_summary_totals[:upper_year]
+
+         @missing_attendees = true
+      end
+
       @campus_summaries = @campus_summaries.sorted_hash { |a,b| a[0].upcase <=> b[0].upcase  }
 
       @report_description = "Attendance Summary"
 
       @results_partial = "attendance_summary"
     rescue Exception => e
-      setup_error_rescue
+      if e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
+      else
+        setup_error_rescue
+      end
     end
   end
 
 
   def setup_individuals
 
-    retries = 1 # IMPORTANT, use to prevent infinite loop
-
     begin
+      setup_attendance_report_from_session unless @selected_campus.present?
 
+      raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
       
-      unless(@selected_campus.present?)
-        eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
-        @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
-        @selected_campus_id = @selected_campus.id
-      end
-
 
       @campus_individuals = ActiveSupport::OrderedHash.new
       campuses = {}
 
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question]) # answer is in the format "campus.desc (campus.short_desc)"
+
+        next unless eb_campus.present?
 
         # if has permission to see info from all campuses
         if authorized?(:show_all_campuses_individuals, :events)
@@ -217,17 +359,15 @@ class EventsController < ApplicationController
         end
       end
 
-      # we don't know which campuses are available for selection until we've looped through all attendees
-      # this means it's possible to select a campus which no one attending the event is from
-      # if that happens we need to select a new campus and go through the list of attendees again
-      if campuses.present? && campuses.index(@selected_campus).nil?
-        raise Exception.new(SELECTED_CAMPUS_EXCEPTION)
-      end
 
-      # convert campus hash to an array for collection select
       @attendance_campuses = []
-      campuses.each { |title, campus| @attendance_campuses << campus }
+      campuses.each { |title, campus| @attendance_campuses << campus if !campus.nil? && @event.campuses.include?(campus) }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+
+      @show_campus_select = false if @attendance_campuses.size == 1
+
+
+      raise Exception.new(NO_ATTENDEES_AT_CAMPUS_EXCEPTION) if @campus_individuals.blank?
 
 
       if @report_sort.present? && @campus_individuals.size > 1
@@ -240,21 +380,21 @@ class EventsController < ApplicationController
         end
       end
 
+      if @eb_event.num_attendee_rows != @campus_individuals
+        @missing_attendees = true
+      end
 
-      @report_description = "Individual Attendees from #{@selected_campus.desc}"
+      @report_description = "Attendees from #{@selected_campus.desc}"
 
       @results_partial = "attendance_individuals"
 
     rescue Exception => e
-      if e.message == SELECTED_CAMPUS_EXCEPTION && retries > 0
-        
-        eb_campus = attendees.first.answer_to_question(eventbrite[:campus_question])
-        @selected_campus = Campus::find_campus_from_eventbrite(eb_campus)
-        @selected_campus_id = @selected_campus.id
-
-        retries -= 1
-        retry unless retries < 0
-        
+      if e.message == NO_ATTENDEES_EXCEPTION
+        @report_description = NO_ATTENDEES_EXCEPTION
+        @results_partial = "error"
+      elsif e.message == NO_ATTENDEES_AT_CAMPUS_EXCEPTION
+        @report_description = "#{NO_ATTENDEES_AT_CAMPUS_EXCEPTION} #{@selected_campus.desc}."
+        @results_partial = "error"
       else
         setup_error_rescue
       end
@@ -279,10 +419,11 @@ class EventsController < ApplicationController
 
 
   def setup_event
-    @event = Event.find(params[:id])
+    @event ||= Event.find(params[:id])
+
     begin
       @eventbrite_user ||= EventBright.setup_from_initializer()
-      @eb_event = EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
+      @eb_event ||= EventBright::Event.new(@eventbrite_user, {:id => @event.eventbrite_id})
     rescue Exception => e
       setup_error_rescue
     end
@@ -297,9 +438,23 @@ class EventsController < ApplicationController
   end
 
   def setup_error_rescue
-    @report_description = "Oh noes..."
-
+    @report_description = "Sorry, we had trouble connecting with <a href='#{eventbrite[:c4c_events_link]}'>Eventbrite</a>, please try again later."
     @results_partial = "error"
   end
 
+  def sync_event_data_delayed_job
+    ::Event.send_later(:sync_unsynced_events, params[:force_sync_all])
+  end
+  
+  def get_layout
+    params[:action] == 'index' ? 'manage' : 'application'
+  end
+  
+  def check_student_visibility
+    setup_event
+    unless @event.visible_to_students || is_staff_somewhere(@me) || is_ministry_admin
+      flash[:notice] = "Sorry, that event's not for you"
+      redirect_to :controller => "dashboard", :action => "index"
+    end
+  end
 end

@@ -9,6 +9,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   def setup
     setup_ministry_roles
     setup_default_user
+    setup_years
+    setup_months
     
     @controller = MinistryInvolvementsController.new
     @request    = ActionController::TestRequest.new
@@ -24,6 +26,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "try destroying default ministry" do
+  	Factory(:person_6)
     Factory(:person_2)
     Factory(:user_2)
     Factory(:access_2)
@@ -36,6 +39,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "try destroying without access" do
+  	Factory(:person_6)
     Factory(:person_2)
     Factory(:access_2)
     Factory(:user_2)
@@ -59,6 +63,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
   end
 
   test "edit someone else's role" do
+  	Factory(:person_6)
     Factory(:person_2)
     xhr :get, :edit, :person_id => 3000, :ministry_id => 2
     assert_response :success
@@ -130,18 +135,18 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:ministryinvolvement_12)
-    Factory(:person_2)
+    Factory(:ministryinvolvement_13)
     Factory(:person_6)
+    Factory(:person_2)
     Factory(:person_8)
 
-    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"]
-    
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :mids => ["7"]
+ 
     assert assigns(:involvements)
     assert_equal 2, assigns(:involvements).size
 
     assert assigns(:people_without_involvements)
     assert_equal 1, assigns(:people_without_involvements).size
-
   end
 
   test "edit multiple roles with role search" do
@@ -150,11 +155,12 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministries
     Factory(:ministryinvolvement_8)
     Factory(:ministryinvolvement_12)
-    Factory(:person_2)
+    Factory(:ministryinvolvement_13)
     Factory(:person_6)
+    Factory(:person_2)
     Factory(:person_8)
 
-    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :search_by_ministry_ids => ["7"], :search_by_ministry_role_ids => ["7"]
+    get :edit_multiple_roles, :person => ["4001", "4003", "3000"], :mids => ["7"], :mrids => ["7"]
 
     assert assigns(:involvements)
     assert_equal 1, assigns(:involvements).size
@@ -168,8 +174,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
-    Factory(:person_2)
     Factory(:person_6)
+    Factory(:person_2)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
@@ -185,19 +191,20 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:ministryrolepermission_20)
     Factory(:ministryrolepermission_21)
     Factory(:user_2)
+    Factory(:person_6)
     Factory(:person_2)
     Factory(:access_2)
     login "fred@uscm.org"
     setup_ministries
     Factory(:ministryinvolvement_8)
-    Factory(:person_2)
     Factory(:person_6)
+    Factory(:person_2)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "5"}
 
     assert_equal 4, MinistryInvolvement.find(5).ministry_role_id
-    assert_equal 7, MinistryInvolvement.find(8).ministry_role_id
+    assert_equal 5, MinistryInvolvement.find(8).ministry_role_id
   end
 
   test "update multiple roles promote student to staff" do
@@ -205,6 +212,8 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     setup_ministry_involvements
     setup_ministries
     Factory(:ministryinvolvement_8)
+    Factory(:ministryrole_10)
+    Factory(:person_6)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["8"], :role => {:id => "10"}
@@ -234,9 +243,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:campusinvolvement_9)   #1009, tied to mi 8
     Factory(:groupinvolvement_11)   #11 tied to person 4001
     Factory(:groupinvolvement_12)   #12 tied to person 4001
-    
+
+    Factory(:person_6)    
     Factory(:person_2)
-    Factory(:person_6)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["5","8"], :role => {:id => "-1"}
@@ -275,6 +284,7 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:ministryrolepermission_23)
     
     Factory(:user_2)
+    Factory(:person_6)     # add to setup mentorship for person #2
     Factory(:person_2)
     Factory(:access_2)
     login "fred@uscm.org"
@@ -283,9 +293,9 @@ class MinistryInvolvementsControllerTest < ActionController::TestCase
     Factory(:campusinvolvement_8)   #1008, tied to mi 5
     Factory(:campusinvolvement_9)   #1009, tied to mi 8
     Factory(:groupinvolvement_11)   #11 tied to person 4001
-    Factory(:groupinvolvement_12)   #12 tied to person 4001    
+    Factory(:groupinvolvement_12)   #12 tied to person 4001   
+    Factory(:person_6) 
     Factory(:person_2)
-    Factory(:person_6)
     Factory(:person_8)
 
     put :update_multiple_roles, :involvement_id => ["5","12"], :role => {:id => "-1"}

@@ -9,6 +9,8 @@ class GroupInvolvementsControllerTest < ActionController::TestCase
   def setup
     setup_default_user
     setup_groups
+    setup_years
+    setup_months
 
     @controller = GroupInvolvementsController.new
     @request    = ActionController::TestRequest.new

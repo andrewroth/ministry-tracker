@@ -4,7 +4,7 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-
+  
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -48,10 +48,16 @@ class ApplicationController < ActionController::Base
 
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
+  before_filter :set_locale
   
   helper :all
 
   protected
+
+    def set_locale
+      I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      session[:locale] = I18n.locale
+    end
 
     def cas_filter
       return if logged_in?
@@ -159,10 +165,10 @@ class ApplicationController < ActionController::Base
       session[:can_manage]
     end
     
-    def is_involved_somewhere(person = nil)
-      person ||= (@me || get_person)
-      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
-    end
+#    def is_involved_somewhere(person = nil)
+#      person ||= (@me || get_person)
+#      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
+#    end
     
     def is_ministry_admin(ministry = nil, person = nil)
       person ||= (@me || get_person)
@@ -183,18 +189,24 @@ class ApplicationController < ActionController::Base
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
-      :people => [:edit, :update, :show, :import_gcx_profile, :getcampuses,
+      :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
+
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
       :group_involvements => [:accept_request, :decline_request, :transfer, :change_level, :destroy, :create],
-      :campus_involvements => [:new, :edit, :index],
-      :ministry_involvements => [:new, :edit, :index]
+      :campus_involvements => [:new, :edit, :index, :edit_school_year],
+      :ministry_involvements => [:new, :edit, :index],
+      :summer_reports => [:new, :create, :update, :edit, :show, :report_staff_answers, :report_compliance],
+      :summer_report_reviewers => [:edit, :update],
+      :search => [:web_remote],
+      :group_invitations => [:new, :create_multiple],
+      :monthly_reports => [:stat_details]
     }
     
-    def authorized?(action = nil, controller = nil, ministry = nil)
+    def authorized?(action = nil, controller = nil, ministry = nil, options = {})
       return true if is_ministry_admin
       ministry ||= get_ministry
       return false unless ministry
@@ -236,14 +248,15 @@ class ApplicationController < ActionController::Base
             return true
           elsif action == 'show_group_involvements' && authorized?(:show, :people)
             return true
+          elsif action == 'show_gcx_profile' && authorized?(:show, :people)
+            return true
+          elsif action == 'destroy' && params[:id] && params[:id] == @my.id.to_s
+            return true
+          elsif params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
+            return true
           end
           
           ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
-          
-          # also return true if person is destroying self-involvements (don't return true for creation of new profile)
-          if params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
-            return true
-          end
           
         when :profile_pictures, :timetables
           if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
@@ -278,7 +291,56 @@ class ApplicationController < ActionController::Base
           if @person == @me
             return true
           end
+        when :summer_reports
+          if action == 'show' || action == 'report_staff_answers' || action == 'report_compliance'
+
+            if action == 'show'
+              return true if @my.id == params[:person_id].to_i # can always view your own report
+
+              # can view reports that you are chosen to review
+              SummerReport.find(params[:id]).summer_report_reviewers.each do |review|
+                return true if review.person_id == @my.id
+              end
+            end
+
+            # all Team Leaders and Team Members of Campus for Christ and it's immediate children have access
+            # (i.e. national team and regional team, including people that would be HR)
+            summer_report_ministries = [Ministry.find(2)] << Ministry.find(2).children
+            summer_report_ministries = summer_report_ministries.flatten.collect{|m| m.id}
+            summer_report_ministry_roles = StaffRole.all(:conditions => ["#{StaffRole._(:position)} < 3"]).collect{|r| r.id}
+            
+            return MinistryInvolvement.first(
+                :conditions => ["#{MinistryInvolvement._(:person_id)} = ? and " +
+                  "#{MinistryInvolvement._(:ministry_id)} in (?) and " +
+                  "#{MinistryInvolvement._(:ministry_role_id)} in (?)",
+                  @my.id, summer_report_ministries, summer_report_ministry_roles]
+              ).present? ? true : false
+
+          elsif @my.id == params[:person_id].to_i
+            return true
+          end
+        when :summer_report_reviewers
+          if action == 'edit' || action == 'update'
+            # can edit reports that you are chosen to review
+            return true if SummerReportReviewer.first(params[:id]).person_id == @my.id
+          end
           
+        when :search
+          return true if action == 'web_remote' && authorized?(:web, :search)
+          
+        when :group_invitations
+          if action == 'new' || action == 'create_multiple'
+            if params[:group_id] || options[:group_id]
+              group = Group.first(:conditions => {:id => params[:group_id] || options[:group_id]})
+              return true if group && (group.leaders | group.co_leaders).include?(@me)
+            end
+          end
+          return false # necessary
+          
+        when :monthly_reports
+          if action == 'stat_details'
+            return true if authorized?(:new, :monthly_reports) || authorized?(:edit, :monthly_reports)
+          end
         end # case
       end # if
 
@@ -357,7 +419,7 @@ class ApplicationController < ActionController::Base
     # ===========
     # = Filters =
     # ===========
-    def set_locale
+    def set_locale_old
       locales = ['en', 'en-AU']
       begin
         # Try to auto-detect it
@@ -419,7 +481,7 @@ class ApplicationController < ActionController::Base
         if @ministry && !is_staff_somewhere
           @ministry = @person.ministries.find_by_id session[:ministry_id]
         end
-        @ministry ||= @person.most_nested_ministry
+        @ministry ||= get_persons_ministry_from_cookie || @person.most_nested_ministry
 
         # If we didn't get a ministry out of that, check for a ministry through campus
         @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
@@ -440,7 +502,27 @@ class ApplicationController < ActionController::Base
       end
       @ministry
     end
+
+    def get_persons_ministry_from_cookie
+      ministry = nil
+      if cookies[:ministry_id].present?
+        ministry = Ministry.find(:first, :conditions => {:id => cookies[:ministry_id].to_i})
+        ministry = nil unless @person.ministries.include? ministry
+        clear_ministry_cookie unless ministry
+      end
+      ministry
+    end
     
+    def set_ministry_cookie(ministry)
+      clear_ministry_cookie
+      cookies[:ministry_id] = ministry.id if ministry && @person.ministries.include?(ministry)
+    end
+    
+    def clear_ministry_cookie
+      cookies.delete(:ministry_id)
+    end
+    
+
       
     def setup_involvement_vars
       @projects = @person.summer_projects.find(:all, :conditions => "#{_(:status, :summer_project_application)} IN ('accepted_as_participant','accepted_as_intern')")
@@ -472,6 +554,7 @@ class ApplicationController < ActionController::Base
     def force_required_data
       return false unless force_email_set
       return false unless force_campus_set
+      return false unless force_contract_agreement
     end
     
     def force_email_set
@@ -489,6 +572,14 @@ class ApplicationController < ActionController::Base
         return false
       elsif is_staff_somewhere && @my.ministry_involvements.empty?
         redirect_to set_initial_ministry_person_url(@my.id)
+        return false
+      end
+      true
+    end
+    
+    def force_contract_agreement
+      if needs_to_sign_volunteer_agreements?
+        redirect_to :action => "volunteer_agreement", :controller => "contract"
         return false
       end
       true
@@ -513,6 +604,16 @@ class ApplicationController < ActionController::Base
       skip_before_filter(:login_required, :get_person, :get_ministry, :authorization_filter, :force_required_data, :set_initial_campus, :cas_filter, :cas_gateway_filter, additional_params)
     end
 
+    def self.group_invitation_authentication(additional_params = {})
+      skip_standard_login_stack(additional_params)
+      before_filter :authenticate_from_group_invitation, additional_params
+    end
+
+    def self.api_key_authentication(additional_params = {})
+      skip_standard_login_stack(additional_params)
+      before_filter :authenticate_from_api_key, additional_params
+    end
+
     def redirect_unless_is_active_hrdb_staff
       unless @me.cim_hrdb_staff.try(:boolean_is_active)
         flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
@@ -532,5 +633,95 @@ class ApplicationController < ActionController::Base
       @graph = Koala::Facebook::GraphAPI.new(oauth_token)
       session[:facebook_person] = @graph.get_object("me")
     end
+      
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+      
+      @mobile ? "mobile" : "application" 
+    end
+    
+    def get_summer_report_years_and_weeks
+      @current_year = Year.current
+      
+      summer_report_year_ids = SummerReport.all(:group => :year_id).collect{|sr| sr.year_id} << @current_year.id
+      @summer_report_years = Year.all(:conditions => ["#{Year._(:id)} in (?)", summer_report_year_ids])
+      
+      @selected_year = params[:year_id].present? ? Year.find(params[:year_id]) : @current_year
+      
+      @selected_year = @summer_report_years.include?(@selected_year) ? @selected_year : @current_year
+
+      summer_start_date = Date.new(@selected_year.desc[-4..-1].to_i, SummerReportsController::SUMMER_START_MONTH, SummerReportsController::SUMMER_START_DAY)
+      summer_end_date =   Date.new(@selected_year.desc[-4..-1].to_i, SummerReportsController::SUMMER_END_MONTH, SummerReportsController::SUMMER_END_DAY)
+
+      summer_start_week = Week.find_week_containing_date(summer_start_date)
+      summer_end_week = Week.find_week_containing_date(summer_end_date)
+      
+      @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
+    end
+
+    def choose_layout
+      if params['mobile'].present?
+        @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
+      else
+        @mobile = false
+        if session[:mobile].present?
+          @mobile = session[:mobile]
+        elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
+          @mobile = true
+        end
+      end  
+      
+      @mobile ? "mobile" : "application" 
+    end
+    
+    # url - url of service trying to call, e.g. "https://service.com/action"
+    # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
+    def construct_cas_proxy_authenticated_service_url(url, params = {})
+      
+      # CAS proxy authentication requires that the service url and params stay in the same order
+      # (i.e. the service uri must not change between when the ticket is requested and when the actual request is made or else the proxy ticket validation will fail)
+      # therefore we will manually construct the request in a string
+      
+      service_uri = url
+      params.each do |k,v|
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"
+      end
+
+      begin
+        raise("no proxy granting ticket in the session, expected it to be defined in session[:cas_pgt]") if session[:cas_pgt].blank?
+        
+        proxy_granting_ticket = session[:cas_pgt]
+        proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
+
+        # CAS proxy authentication requires that the ticket be the last param in query string
+        raise("no proxy ticket") if proxy_ticket.ticket.blank?
+        
+        service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
+        service_uri += "ticket=#{proxy_ticket.ticket}"
+      rescue => e
+        Rails.logger.error("\nERROR GETTING CAS PROXY TICKET: \n\t#{e.class.to_s}\n\t#{e.message}\n")
+      end
+
+      service_uri
+    end
+    
+    def needs_to_sign_volunteer_agreements?
+      !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
+    end
+
+    def default_url_options(options={})
+      I18n.locale == I18n.default_locale ? {} : { :locale => I18n.locale }
+    end
 
 end
+

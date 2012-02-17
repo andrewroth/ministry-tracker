@@ -1,0 +1,59 @@
+
+<% if @gcx_unauthenticated.present? && @hpricot.search(:user).first.attributes["guid"].blank? %>
+  <div class="casAuthenticationWarning">
+    <big>
+      To see GCX profile info we'll need to check your ID, 
+      <%= link_to("click here to login to TheKey.", :controller => :sessions, :action => :recreate, :destination => "#{url_for(:action => :show_gcx_profile, :controller => :people, :id => @person.id, :only_path=> false)}") %>
+    </big>
+  </div>
+<% end %>
+
+<br/>
+
+<% if @hpricot && @hpricot.search(:user).first.attributes["guid"] %>
+  
+  <div id="profilewrap" class="gcx">
+    <div id="profiletitle">
+      <h1>
+        <%= @hpricot.search(:user).first.attributes["displayName"].present? ? @hpricot.search(:user).first.attributes["displayName"] : @person.full_name %>
+      </h1>
+      
+      </br>
+      This is <%= @person == @me ? "your" : "#{@person.first_name}'s" %> profile for all GCX Communities.
+      
+      <% if @person == @me %>
+        <div class="profileButton" id="editButton">
+          <%= link_to "EDIT", "#{gcx_profile_report_config[:edit_url]}", :target => '_blank' %>
+        </div>
+      <% end %>
+      
+      <div class="profileButton" id="showButton">
+        <%= link_to "VIEW ON GCX", "#{gcx_profile_report_config[:show_url]}?guid=#{@hpricot.search(:user).first.attributes["guid"]}", :target => '_blank' %>
+      </div>
+    </div>
+
+    </br>
+
+    <table>
+      <tr>
+        <th>
+          <h4>Globally Unique ID</br>&nbsp;</h4>
+        </th>
+        <td>
+          <h4><%= @hpricot.search(:user).first.attributes["guid"] %></br>&nbsp;</h4>
+        </td>
+      </tr>
+      <% @hpricot.search(:attribute).each do |a| %>
+        <tr>
+          <th>
+            <%= a.attributes["displayname"].present? ? a.attributes["displayname"] : a.attributes["name"] %>
+          </th>
+          <td>
+            <%= a.search(:value).inner_html %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  
+<% end %>

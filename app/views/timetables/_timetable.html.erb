@@ -1,11 +1,11 @@
 <%= render :partial => 'schedule_header' %>
 
- <table id="schedule" cellspacing="0">
+ <table id="schedule" class="<%= 'editing' if editing %>" cellspacing="0">
   <thead>
     <tr>
-      <th>&nbsp;</th>
+      <th class="time">&nbsp;</th>
       <%- 7.times do |day| -%>
-        <th><%= Date::DAYNAMES[day] %></th>
+        <th><%= t("date.day_names.#{Date::DAYNAMES[day].downcase}") %></th>
       <%- end -%>
   </thead>
   <tbody>
@@ -17,7 +17,7 @@
     <%- while time < stop 
         time_in_seconds = time.to_i - midnight.to_i -%>
       <tr>
-        <td width="10px" class="time"><%= time.to_s(:time) %></td>
+        <td width="10px" class="time timelineHeader hour<%=time.hour%>"><div class="timeHeader"><%= time.to_s(:time) %></div></td>
         <%- 7.times do |day| -%>
         <%- css_class = (@free_times[day] && @free_times[day][time_in_seconds] ? @free_times[day][time_in_seconds] : '') -%>
 				

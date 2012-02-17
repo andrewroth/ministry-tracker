@@ -11,12 +11,10 @@ class MinistryInvolvementsController < ApplicationController
   # used to pop up a dialog box
   def index
     @from_profile = true
-    unless is_staff_somewhere(@person)
-      @denied = true
-    else
-      @ministry_involvements = @person.ministry_involvements
-      @involvement_history = @person.involvement_history
-    end
+    
+    @ministry_involvements = @person.ministry_involvements
+    @involvement_history = @person.involvement_history
+  
     render :template => 'involvements/index'
   end
 
@@ -28,11 +26,15 @@ class MinistryInvolvementsController < ApplicationController
   # Records the ending of a user's involvement with a particular ministry
   def destroy
     @person = Person.find(params[:person_id])
-    if @me == @person || authorized?(:new, :people)
-      @ministry_involvement = MinistryInvolvement.find(params[:id])
+    @ministry_involvement = MinistryInvolvement.find(params[:id])
+
+    if @me == @person ||
+       (authorized?(:new, :people) && @me.has_permission_to_update_role(@ministry_involvement, @ministry_involvement.ministry_role)) || is_ministry_admin
+       
       if !is_admin? &&
         @ministry_involvement.ministry.name == Cmt::CONFIG[:default_ministry_name] &&
         @ministry_involvement.ministry_role.is_a?(StaffRole)
+
         respond_to do |format|
           format.js   do
             render :update do |page|
@@ -61,6 +63,7 @@ class MinistryInvolvementsController < ApplicationController
         format.js   do 
           render :update do |page|
             page.hide('spinner')
+            page.alert("Sorry, you can't remove #{@person.first_name}'s #{@ministry_involvement.ministry_role.name} involvement at #{@ministry_involvement.ministry.name}")
           end
         end
       end
@@ -68,12 +71,15 @@ class MinistryInvolvementsController < ApplicationController
   end
   
   def create
-    # Only staff can create ministry_involvements
-    unless is_staff_somewhere(@me)
-      flash[:notice] = "Only staff can set ministry involvement"
-      redirect_to :back
+    # check if they can create this ministry involvement
+    new_ministry_involvement = MinistryInvolvement.new(params[:ministry_involvement])
+    unless is_staff_somewhere(@me) && 
+           (@me.has_permission_to_update_role(new_ministry_involvement, new_ministry_involvement.ministry_role) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set people to #{new_ministry_involvement.ministry_role.try(:name)} at the #{new_ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
+
     person_id = params[:ministry_involvement] && params[:ministry_involvement][:person_id] ? params[:ministry_involvement][:person_id] : params[:person_id]
     @person = Person.find(person_id)
 
@@ -155,9 +161,13 @@ class MinistryInvolvementsController < ApplicationController
     # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
     params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me || !is_ministry_admin(@ministry, @me)
     
-    # And you can't set any roles higher than yourself
-    unless possible_roles.collect(&:id).include?(params[:ministry_involvement][:ministry_role_id].to_i)
-      flash[:notice] = "Sorry, you can't set that role"
+    # And you can't set any roles higher than yourself or demote others higher than or equal to you
+    unless MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) &&
+           (@me.has_permission_to_update_role(@ministry_involvement, MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) || is_ministry_admin)
+      flash[:notice] = "Sorry, you can't set " +
+                       "#{@ministry_involvement.person == @me ? "yourself" : @ministry_involvement.person.try(:first_name)}" +
+                       " to #{MinistryRole.find(params[:ministry_involvement][:ministry_role_id]).try(:name)} at the #{@ministry_involvement.try(:ministry).try(:name)} ministry"
+      @denied = true
       return
     end
     @person = @ministry_involvement.person 
@@ -177,11 +187,16 @@ class MinistryInvolvementsController < ApplicationController
   end
 
   def edit_multiple_roles
-    if params[:search_by_ministry_ids] && params[:person]
-      people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+    if params[:mids] && params[:person]
+      if params[:entire_search].to_i == 1
+        search = Search.find params[:search_id]
+        people_ids = ActiveRecord::Base.connection.select_values("SELECT distinct(Person.#{_(:id, :person)}) FROM #{Person.table_name} as Person #{search.table_clause} WHERE #{search.query}")
+      else
+        people_ids = Array.wrap(params[:person]).collect{|person_id| person_id}
+      end
 
-      if params[:search_by_ministry_role_ids]
-        @involvements = MinistryInvolvement.all(:include => [:person],
+      if params[:mrids]
+        @involvements = MinistryInvolvement.all(:include => [:person, :ministry, :ministry_role],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
@@ -190,16 +205,16 @@ class MinistryInvolvementsController < ApplicationController
 
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
-                                                                 people_ids, params[:search_by_ministry_ids], params[:search_by_ministry_role_ids]])
+                                                                 people_ids, params[:mids], params[:mrids]])
         
       else
-        @involvements = MinistryInvolvement.all(:include => [:person],
+        @involvements = MinistryInvolvement.all(:include => [:person, :ministry, :ministry_role],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
-                                                                 people_ids, params[:search_by_ministry_ids]])
+                                                                 people_ids, params[:mids]])
       end
 
       people_with_involvements_ids = []
@@ -220,13 +235,13 @@ class MinistryInvolvementsController < ApplicationController
     unless params[:role][:id] && params[:involvement_id]
       flash[:notice] = "Could not update roles, no particular roles or people were specified."
       
-      redirect_to :action => "directory", :controller => "people"
+      redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
     if can_set_roles == false
       flash[:notice] = "Sorry, you can't set that role."
       
-      redirect_to :action => "directory", :controller => "people"
+      redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
     
@@ -241,10 +256,10 @@ class MinistryInvolvementsController < ApplicationController
         if (authorized?(:destroy, :people) && @me.has_permission_to_update_role(mi, mi.ministry_role)) || is_ministry_admin
                            
             # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
-          ministry_involvements_to_end = person.ministry_involvements.collect &:id
+          ministry_involvements_to_end = person.ministry_involvements.collect(&:id)
           MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
           
-          campus_involvements_to_end = person.campus_involvements.collect &:id
+          campus_involvements_to_end = person.campus_involvements.collect(&:id)
           CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
       
           group_involvements_to_end = person.all_group_involvements.destroy_all
@@ -257,7 +272,7 @@ class MinistryInvolvementsController < ApplicationController
         end   
       end
       
-      flash[:notice] = "<big> The following changes were made: </big> <br/> <br/> #{people_notice}"
+      flash[:notice] = "The following changes were made: <br/> <br/> #{people_notice}"
       
     else    # if not removing involvements, check for batch role update
     
@@ -294,11 +309,11 @@ class MinistryInvolvementsController < ApplicationController
           end
         end
   
-        flash[:notice] = "<big> The following role changes were made: </big> <br/> <br/> #{people_notice}"
+        flash[:notice] = "The following role changes were made: <br/> <br/> #{people_notice}"
       end
     end
 
-    redirect_to :action => "directory", :controller => "people"
+    redirect_to :action => "directory", :controller => "people", :format => :html
   end
 
   

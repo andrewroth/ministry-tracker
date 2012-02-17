@@ -6,6 +6,8 @@ class GroupsControllerTest < ActionController::TestCase
     setup_default_user
     setup_semesters
     setup_groups
+    setup_years
+    setup_months
 
     login
   end
@@ -90,10 +92,13 @@ class GroupsControllerTest < ActionController::TestCase
   end
   
   def test_create_with_members
+    Factory(:person_6)
     Factory(:person_2)
     Factory(:person_3)
     login
     old_count = Group.count
+    session[:people_to_add] = [2000,3000]
+
     post :create, :group => {:name => 'CCC', :address => 'here', :city => 'there',
                              :state => 'IL', :country => 'United States',
                              :campus_id => '2', :ministry_id => '1',
@@ -136,50 +141,6 @@ class GroupsControllerTest < ActionController::TestCase
     login
     xhr :delete, :destroy, :id => 2
     assert_response :success
-  end
-
-  def test_compare_timetables
-    login
-    setup_timetables
-    setup_people
-    get :compare_timetables, :id => 3
-
-    assigns["comparison_map"][1].each do |time_slot|
-      sec = time_slot.first.first
-
-      if sec >= 23400 and sec <=75600
-        assert_equal([::Person.find(50000)], time_slot[sec]["bads"])
-      end
-
-      if sec >= 43200 and sec <= 50400
-        assert_equal([::Person.find(2000)], time_slot[sec]["goods"])
-      end
-    end
-
-    get :compare_timetables, :id => 3, :members => [2, 50, 50000, 2000]
-
-    assigns["comparison_map"][1].each do |time_slot|
-      sec = time_slot.first.first
-
-      if sec >= 23400 and sec <=75600
-        assert_equal([::Person.find(50000)], time_slot[sec]["bads"])
-      end
-
-      if sec >= 43200 and sec <= 50400
-        assert_equal([::Person.find(2000)], time_slot[sec]["goods"])
-      end
-    end
-  end
-
-  def test_set_start_time
-    get :set_start_time, :time => 59400, :day => 1, :id => 1
-    assert_equal(59400, ::Group.find(1).start_time)
-    assert_equal(1, ::Group.find(1).day)
-
-    get :set_end_time, :time => 66600, :day => 1, :id => 1
-    get :set_start_time, :time => 72000, :day => 1, :id => 1
-    assert_equal(59400, ::Group.find(1).start_time)
-    assert_equal(1, ::Group.find(1).day)
   end
 
   def test_set_end_time

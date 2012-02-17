@@ -32,3 +32,6 @@
 <%- if @group.day -%>
   Day of Week: <%= Date::DAYNAMES[@group.day] %> <br />
 <%- end -%>
+<%- if @group.semester -%>
+  Semester: <%= @group.semester.semester_desc %> <br />
+<%- end -%>
