@@ -41,7 +41,11 @@ class CampusesController < ApplicationController
                                                                   :fname => l.person_fname, 
                                                                   :lname => l.person_lname}
                                                                }, 
-                            :time => g.meeting_day_and_time_to_string()} 
+                            :time => g.meeting_day_and_time_to_string(),
+                            :link => joingroup_signup_path(
+                                         :group_id => group.id,
+                                         :level => 'member')
+                            } 
                            }.to_json
     
   end
