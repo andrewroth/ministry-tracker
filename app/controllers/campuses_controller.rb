@@ -43,7 +43,7 @@ class CampusesController < ApplicationController
                                                                }, 
                             :time => g.meeting_day_and_time_to_string(),
                             :link => joingroup_signup_path(
-                                         :group_id => group.id,
+                                         :group_id => g.id,
                                          :level => 'member')
                             } 
                            }.to_json
