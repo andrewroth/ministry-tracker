@@ -1,4 +1,4 @@
-<%- if @person.labels.count > 0 %>
+<%- if @person.labels.count > 0 && authorized?(:show_labels, :people) %>
 <%= render :partial => 'profile_label_li', :collection => @person.labels %>
 <%- end %>
 
