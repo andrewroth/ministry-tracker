@@ -1,0 +1,15 @@
+<h1>New global_area</h1>
+
+<% form_for(@global_area) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :area %><br />
+    <%= f.text_field :area %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', global_areas_path %>

@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :global_areas
+
+  map.resources :global_countries
+
   map.resources :pat_projects
 
 
