@@ -12,7 +12,7 @@
       <small>
         <b>Questions?</b> Contact <%= @contact_person.full_name %>
         (<%= "#{link_to "#{@contact_person.email.downcase}", new_email_url("person[]" => @contact_person.id), :target => "_blank" if @contact_person.email.present?} #{@contact_phone}" %>)
-        or refer to the <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/10/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %>.
+        or refer to the <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/12/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %>.
       </small>
     <% end %>
 
@@ -23,21 +23,8 @@
 
   <h3>Vacation Entitlement</h3>
   <small>
-    <b>How to calculate:</b> Year 1 is the year you joined staff.<br/>
-    (Example: If I joined staff sometime in 2009 (Year 1), in 2011 I would be in year 3. I would get 15 working days of vacation.)
-    <br/>
-    <table>
-      <tr><td>1-2 years</td><td>10 working days (in SK, then it is 15 working days by law)</td></tr>
-      <tr><td>3-8 years</td><td>15 working days</td></tr>
-      <tr><td>9-20 years</td><td>20 working days</td></tr>
-      <tr><td>21-34 years</td><td>25 working days</td></tr>
-      <tr><td>35 years +</td><td>30 working days</td></tr>
-    </table>
+    Please consult the <a href="http://absences.powertochange.org" target="blank">Absence Tracker</a> for how many days of vacation you are entitled to. You should explicitly request approval for vacation from your supervisor using the absence tracker.
   </small>
-  <p>
-    <%= f.label :joined_staff, "Year you joined staff or internship" %>
-    <%= f.select :joined_staff, 1951..Time.now.year+1, :selected => @summer_report.joined_staff.to_i, :include_blank => true %>
-  </p>
   <p>
     <%= f.label :days_of_holiday, "Number of vacation days you're entitled to" %>
     <%= f.text_field :days_of_holiday, :class => "short" %>
@@ -47,13 +34,13 @@
   <h3>MPD</h3>
   <small>
     <b>Guideline:</b> For every $200/monthly support needed, one week will be given for full-time
-    Ministry Partner Development (MPD) to a maximum of 4 weeks. The <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/10/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %> also allows
+    Ministry Partner Development (MPD) to a maximum of 4 weeks. The <%= link_to "policy manual", "https://staff.powertochange.org/wp-content/uploads/2011/12/PTC-HR-Policy-Manual-October-1-2011.pdf", :target => "_blank" %> also allows
     for 2 weeks Ministry Partner Maintenance (MPM) per year.
+    <br/>
+    We will be developing an MPD progress template for those using the summer as a concentrated MPD time. 
+    This template can be submitted to your supervisor each week for their reference. Please watch the STASH for this to be posted
     <br/><br/>
-    <b>*New:</b>
-    If you are requesting 2 or more weeks of MPD in the summer, to help you use this time
-    successfully, we are requiring a weekly MPD report to be sent to Campus HR at the end
-    of each week on MPD. (Details will be sent to you.)
+
   </small>
   <p>
     <%= f.label :monthly_goal, "MPD monthly goal" %>
@@ -75,15 +62,6 @@
     <%= f.label :num_weeks_of_mpm, "Weeks of MPM requested" %>
     <%= f.select :num_weeks_of_mpm, SummerReport::WEEKS_OF_MPM, {:prompt => true} %>
   </p>
-  <p>
-    <%= f.label :support_coach, "Would you like a support coach (if available)" %>
-    <%= f.radio_button :support_coach, false, :class => "radio" %>no
-    <%= f.radio_button :support_coach, true, :class => "radio" %>yes
-  </p>
-  <p>
-    <%= f.label :accountability_partner, "The following person will be your MPD accountability partner" %>
-    <%= f.text_field :accountability_partner %>
-  </p>
 
 
   <h3>Summer Schedule</h3>
@@ -93,12 +71,14 @@
     schedule.
     <br/>
     <b>Sabbatical:</b> The earned 30 day leave (20 work days) is available after 8 years on staff and every 4 years
-    after. Please fill out a Change of Information form (found on the <%= link_to "FOCUS site", "https://focus.crusade.org", :target => "_blank" %>) and send it into
+    after. Please fill out a Change of Information form (found on the <%= link_to "Loop", "https://staff.powertochange.org/ministry-services/human-resouces/docs-and-forms/", :target => "_blank" %>) and send it into
     Corporate HR in Langley.
     <br/>
     <b>IBS:</b> You can register and find more information about your courses <%= link_to "here", "http://ibs.campuscrusadeforchrist.com", :target => "_blank" %>.
     It is your responsibility to have support raised to cover tuition, travel, housing, and books. The
     beginning of May to mid-June is a good time to buy your books and prepare for your classes
+    <br/>
+    In addition to identifying your vacation time below, please explicitly request approval for vacation time through the <a href="http://absences.powertochange.org" target="blank">absence tracker</a> from your supervisor.
   </small>
   <table id="weeklySchedule">
     <tr>
@@ -135,11 +115,9 @@
 
   <h3>Approval and Review</h3>
   <small>
-    <b>Ops, NEST, Marketing, and Regional teams:</b> you will need your director(s)’ approval for your summer schedule.<br/>
-    <b>Campus Directors:</b> you will need your Regional Director(s)’ approval for your summer schedule.<br/>
-    <b>Campus staff:</b> you will need your Campus Director(s)’ approval for your summer schedule.<br/>
+    Please specify your supervisor, so they can approve your summer schedule.
     <br/>
-    <b>*</b>If you work on more than one team, please allow both your directors to review your schedule.</br>
+    If you work on more than one team, please allow both your supervisor and appropriate dotted-line reports to review your schedule.</br>
     </br>
     Use the search to find and add at least one person to review your summer schedule. They will each receive an email notification.
   </small>
