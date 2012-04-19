@@ -44,7 +44,7 @@ def get_stat(stat_to_collect)
     involved_in_dg = Person.find(:all,
                                  :select => "#{Person.__(:person_id)} as person_id, #{Person.__(:person_fname)} as First_Name, #{Person.__(:person_lname)} as Last_Name",
     :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id and ci.end_date is NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id and mi.end_date is NULL LEFT JOIN #{GroupInvolvement.table_name} gi ON gi.person_id = #{Person.table_name}.person_id",
-    :conditions => "ci.school_year_id NOT IN (#{ALUMNI_YEAR_ID},#{OTHER_YEAR_ID}) AND ci.campus_id IN(#{campus_id}) and gi.group_id in (SELECT gps.id FROM #{Group.table_name} as gps WHERE gps.campus_id = #{campus_id} AND gps.semester_id = #{sid}) AND gi.level != 'interested'",
+    :conditions => "ci.campus_id IN(#{campus_id}) and gi.group_id in (SELECT gps.id FROM #{Group.table_name} as gps WHERE gps.campus_id = #{campus_id} AND gps.semester_id = #{sid}) AND gi.level != 'interested'",
     :order => 'Last_Name ASC, First_Name ASC',
       :group => "#{Person.__(:person_id)}")		  
 
@@ -75,7 +75,7 @@ def get_stat(stat_to_collect)
     spiritual_multipliers = Person.find(:all,
                                         :select => "#{Person.__(:person_id)} as person_id, #{Person.__(:person_fname)} as First_Name, #{Person.__(:person_lname)} as Last_Name",
     :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id and ci.end_date is NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id and mi.end_date is NULL LEFT JOIN #{LabelPerson.table_name} lbls ON lbls.person_id = #{Person.table_name}.person_id",
-    :conditions => "ci.school_year_id NOT IN (#{ALUMNI_YEAR_ID},#{OTHER_YEAR_ID}) AND ci.campus_id IN(#{campus_id}) AND lbls.label_id = #{SPIRITUAL_MULTIPLIER_LABEL_ID}",
+    :conditions => "ci.campus_id IN(#{campus_id}) AND lbls.label_id = #{SPIRITUAL_MULTIPLIER_LABEL_ID}",
     :order => 'Last_Name ASC, First_Name ASC',
       :group => "#{Person.__(:person_id)}")	
 
