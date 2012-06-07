@@ -437,6 +437,7 @@ en-CA:
         <p>Thank you for using the Pulse!</p>
       </html>
   signup:
+    verify_email: "Verify Email"
     explanation: "We are using TheKey to authenticate users. TheKey is developed by the American Campus Crusade for Christ tech team, and is used by Campus Crusade ministries around the world. Using TheKey means more people can use the project tool, and you only need to remember their Key login rather than separate credentials for each site."
     to_signup: "To signup,"
     click_here: "Click here to create an account"
@@ -446,3 +447,5 @@ en-CA:
     click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
     help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
+    email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
+    verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."

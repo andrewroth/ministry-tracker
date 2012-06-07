@@ -1,0 +1,641 @@
+--- 
+test: 
+  number: 
+    format: 
+      separator: T_.
+      precision: T_3
+      delimiter: T_,
+      significant: T_false
+      strip_insignificant_zeros: T_false
+    human: 
+      format: 
+        precision: T_3
+        delimiter: T_
+        significant: T_true
+        strip_insignificant_zeros: T_true
+      storage_units: 
+        format: T_%n_%u
+        units: 
+          kb: T_KB
+          tb: T_TB
+          gb: T_GB
+          byte: 
+            one: T_Byte
+            other: T_Bytes
+          mb: T_MB
+      decimal_units: 
+        format: T_%n_%u
+        units: 
+          trillion: T_Trillion
+          billion: T_Billion
+          quadrillion: |
+            T_Quadrillion
+
+          million: T_Million
+          unit: T_
+          thousand: T_Thousand
+    percentage: 
+      format: 
+        delimiter: T_
+    currency: 
+      format: 
+        format: T_%u%n
+        unit: T_$
+        separator: T_.
+        precision: T_2
+        delimiter: T_,
+        significant: T_false
+        strip_insignificant_zeros: T_false
+    precision: 
+      format: 
+        delimiter: T_
+  groups: 
+    help_header: T_Stuck?
+    older: T_Other_groups
+    timetable_message: T_You're_almost_done!_Enter_your_timetable_to_indicate_when_you're_free_to_meet!
+    meets_on_to: T_to
+    buttons: 
+      join: T_Join
+      request: T_Request_to_join
+    userbar_title: T_Join_a_Group
+    none: T_No_groups_here_right_now
+    default_notice: T_Great!_We'll_help_you_find_a_group_that_suits_you.
+    goto_facebook: T_Goto_Facebook
+    meets_on_at: T_at
+    to_be_decided: T_meeting_time_to_be_decided
+    done: T_You're_done!
+    help_tagline: T_Let_someone_at_%{campus}_help_you
+    done_contact_leader: T_Your_group_leader_will_contact_you_with_more_info.
+    join_sent: T_Join_request_sent
+    led_by: T_led_by
+    collection_group_tagline: T_not_sure_which_group_to_join?_Join_this_group_and_we'll_help_you_find_one
+    goto_dashboard: T_Goto_the_dashboard
+    types: 
+      servant_team: T_Servant_Team
+      discipleship_group: T_Discipleship_Group_(DG)
+      other: T_Other
+      prayer_group: T_Prayer_Group
+      mda: T_Movement_Development_Area_(MDA)
+    help_button: T_Help_me_find_a_group
+    your: T_You're_a_%{role}
+    getting: T_getting_groups...
+    done_contact_collection: T_A_group_leader_will_contact_you_with_more_info_soon.
+    meets_on: T_meets_on
+    roles: 
+      interested: T_interested
+      leader: T_leader
+      co-leader: T_co-leader
+      member: T_member
+    email: T_email
+    findout: T_To_find_out_what's_happening_at_%{campus}_visit_%{url}
+  activerecord: 
+    errors: 
+      messages: 
+        record_invalid: T_Validation_failed:_%{errors}
+        greater_than_or_equal_to: T_must_be_greater_than_or_equal_to_%{count}
+        confirmation: T_doesn't_match_confirmation
+        less_than_or_equal_to: T_must_be_less_than_or_equal_to_%{count}
+        blank: T_can't_be_blank
+        not_an_integer: T_must_be_an_integer
+        exclusion: T_is_reserved
+        invalid: T_is_invalid
+        odd: T_must_be_odd
+        empty: T_can't_be_empty
+        too_short: T_is_too_short_(minimum_is_%{count}_characters)
+        wrong_length: T_is_the_wrong_length_(should_be_%{count}_characters)
+        even: T_must_be_even
+        less_than: T_must_be_less_than_%{count}
+        greater_than: T_must_be_greater_than_%{count}
+        equal_to: T_must_be_equal_to_%{count}
+        taken: T_has_already_been_taken
+        accepted: T_must_be_accepted
+        too_long: T_is_too_long_(maximum_is_%{count}_characters)
+        inclusion: T_is_not_included_in_the_list
+        not_a_number: T_is_not_a_number
+      template: 
+        body: "T_There_were_problems_with_the_following_fields:"
+        header: 
+          one: T_1_error_prohibited_this_%{model}_from_being_saved
+          other: T_%{count}_errors_prohibited_this_%{model}_from_being_saved
+  timetable: 
+    okay: T_Okay
+    good: T_Good
+    not_allowed_update: T_You_are_not_allowed_to_update_that_timetable.
+    buttons: 
+      edit: T_Edit_timetable
+      edit_later: T_Edit_Timetable_Later
+      edit_later_confirm: |-
+        T_Please_fill_in_your_timetable_to_ensure_your_group_finds_a_meeting_time_that's_suitable_for_everyone.
+        
+        If_you_don't_have_your_timetable_yet_click_OK_and_you'll_receive_an_email_with_a_link_back_to_this_page.
+      not_changed_message: |-
+        T_We_noticed_you_didn't_change_much_on_your_timetable,_filling_in_your_timetable_helps_your_group_find_a_meeting_time_that's_suitable_for_everyone.
+        
+        Click_'Cancel'_to_continue_editing_or_click_'OK'_to_save_your_timetable_and_finish.
+      save: T_Save_Timetable
+      clear_timetable: T_Clear_Timetable
+    bad: T_Bad
+    not_allowed_edit: T_You_are_not_allowed_to_edit_that_timetable.
+    not_allowed_see: T_You_are_not_allowed_to_see_that_timetable.
+    save: T_Save_Timetable
+    instructions: T_Click_on_one_of_the_color_buttons_below_and_then_click_times_on_your_schedule.
+    save_confirm: T_Timetable_was_saved!
+  layout: 
+    ptc_logo: /images/ptc_logo_grey.png
+    help: /images/help.gif
+    top_bar: 
+      resources_mouseover: T_C4C_Resources_Wiki
+      pulse_mouseover: T_
+      logout: T_Logout
+      more_menu: 
+        mpd_tool: T_MPD_TOOL
+        pat: T_PAT
+        connect: T_CONNECT
+        more_mouseover: T_
+        gcx_mouseover: T_Global_ConneXion
+        gcx: T_GCX
+        glc_mouseover: T_
+        connect_mouseover: T_
+        mpd_tool_mouseover: T_Ministry_Partner_Development_Tool
+        mt: T_MENTOR_CENTER
+        mt_mouseover: T_
+        glc: T_GLOBAL_LEARNING_CENTER
+        pat_mouseover: T_Project_Application_Tool
+        more: T_MORE
+      pulse: T_THE_PULSE
+      icons: 
+        facebook: T_Campus_for_Christ_on_Facebook
+        twitter: T_Campus_for_Christ_on_Twitter
+      c4c_mouseover: T_Campus_for_Christ
+      resources: T_RESOURCES
+      c4c: T_C4C.CA
+      greeting: T_Hi_%{name}
+      events_menu: 
+        winter_conference: T_WINTER_CONFERENCE
+        projects_mouseover: T_Go_to_the_world!
+        summit: T_SUMMIT
+        projects: T_PROJECTS
+        events: T_EVENTS
+        summit_mouseover: T_
+        winter_conference_mouseover: T_
+        events_mouseover: T_
+    banner: /images/log_in_main_img.png
+    left_bar: 
+      dashboard: 
+        titled: T_This_is_your_Dashboard
+        named: T_DASHBOARD
+      profile: 
+        titled: T_You're_special
+        named: T_PROFILE
+      schedule: 
+        titled: T_Your_schedule
+        named: T_SCHEDULE
+  misc: 
+    cancel: T_cancel
+    or: T_or
+    spring: T_Spring
+    fall: T_Fall
+    winter: T_Winter
+    last_updated: T_Last_updated
+    genders: 
+      female: T_Female
+      male: T_Male
+  years: 
+    undergrad_1: T_1st_Year_(Undergrad)
+    grad_1: T_1st_year_(grad)
+    cegep_1: "T_C\xC3\xA9gep_Year_1"
+    undergrad_2: T_2nd_Year_(Undergrad)
+    grad_2: T_2nd_year_(grad)
+    graduated: T_graduated
+    cegep_2: "T_C\xC3\xA9gep_Year_2"
+    undergrad_3: T_3rd_year_(undergrad)
+    grad_3: T_3rd_year_(grad)
+    undergrad_4: T_4th_year_(undergrad)
+    grad_phd: T_PhD_(grad)
+    other: T_other
+    undergrad_5: T_5th_year_(undergrad)
+  profile: 
+    buttons: 
+      remove_me_confirm: |-
+        T_You_are_about_to_remove_yourself_from_all_ministries,_campuses,_and_groups_you_are_a_part_of.
+        
+        Are_you_SURE_you_want_to_continue?_(you_will_be_logged_out)
+      edit: T_EDIT
+      change_password: T_CHANGE_PASSWORD
+      remove_me: T_Remove_me_from_the_Pulse
+      cancel: T_cancel
+      remove_me_title: T_Remove_yourself_from_all_ministries,_campuses,_and_groups_you_are_a_part_of_(you_will_be_logged_out)
+      save: T_Save
+    nav: 
+      dashboard: T_DASHBOARD
+      schedule: T_SCHEDULE
+      gcx_profile: T_GCX_PROFILE
+    mentor: 
+      none: T_No_mentor_currently
+    projects: 
+      title: T_Projects
+    events: 
+      none_other: T_%{name}_hasn't_attended_any_events_yet
+      title: T_Events
+      none_self: T_You_haven't_attended_any_events_yet
+    left_bar: 
+      groups: 
+        interested: T_Interested
+        confirm_self: T_Are_you_sure_you_want_to_leave_%{group_name}?
+        requested: T_Requested
+        title_self: T_Leave_group_%{group_name}
+        title_other: T_Remove_%{person_first_name}_from_group_%{group_name}
+        confirm_other: T_Are_you_sure_you_want_remove_%{person_first_name}_from_%{group_name}?
+      joined: T_Joined
+      campuses: 
+        confirm: T_Are_you_sure_you_want_to_remove_%{person_name}_from_%{campus_name}
+        header: T_Campuses
+      change_picture: T_Change_Picture
+    manage_campuses: 
+      title: T_Manage_Campuses
+      close: T_close
+      to: T_to
+      add_campus: T_Add_Campus
+      involvement_history: T_Involvement_History
+      at: T_at
+    picture: 
+      upload_button: T_Upload_selected_image
+      instructions: "T_Select_an_image_file_on_your_computer_(max_10_MB):"
+      browse_button: T_Choose_File
+    headings: 
+      graduation_date: T_Graduation_Date
+      address: T_Address
+      city: T_City
+      zip: T_Zip
+      grad_date: T_Grad_Date
+      country: T_Country
+      year_in_school: T_Year_In_School
+      mentor: T_Mentor
+      mentoring: T_Mentoring
+      projects: T_Projects
+      birth_date: T_Birth_Date
+      gender: T_Gender
+      major: T_Major
+      current_address: T_Current_Address
+      events: T_Events
+      cell_phone: T_Cell_Phone
+      valid_from: T_Valid_from
+      alt_phone: T_Alt_Phone
+      phone: T_Phone
+      last_name: T_Last_Name
+      address_2: T_Address_2
+      valid_until: T_Valid_until
+      date_of_birth: T_Date_of_Birth
+      dorm: T_Dorm
+      permanent_address: T_Permanent_Address
+      room: T_Room
+      email: T_Email
+      minor: T_Minor
+      first_name: T_First_Name
+      state: T_State
+    mentee: 
+      none: T_No_mentee(s)_currently
+  dashboard: 
+    groups: 
+      requested_message: T_awaiting_join_request_decision
+      interested_message: T_interested
+    projects_header: T_Projects
+    groups_header: T_My_Groups
+    projects: 
+      link_txt: T_Apply_for_project!
+      all_projects: T_All_Projects
+      applying: T_applying
+      accepted: T_accepted
+    join_txt: T_Join_a_group!
+    events: 
+      attendees: T_attendees
+    join_more_txt: T_Join_more_groups
+    events_header: T_My_Events
+  provinces: 
+    nwt: T_Northwest_Territories
+    ab: T_Alberta
+    bc: T_British_Columbia
+    sk: T_Saskatchewan
+    nfld: T_Newfoundland
+    ns: T_Nova_Scotia
+    nu: T_Nunavut
+    qc: T_Quebec
+    yk: T_Yukon
+    nb: T_New_Brunswick
+    pei: T_Prince_Edward_Island
+    "on": T_Ontario
+    mb: T_Manitoba
+  landing_page: 
+    tagline: https://pulse.campusforchrist.org/images/log_in_c4c_disco_change.png
+    main: https://pulse.campusforchrist.org/images/log_in_main_img.png
+    logos: https://pulse.campusforchrist.org/images/c4c-ptc-logo.png
+    create_login: https://pulse.campusforchrist.org/images/log_in_create_login.png
+    blurb: https://pulse.campusforchrist.org/images/log_in_pulse_explanation.png
+  errors: 
+    format: T_%{attribute}_%{message}
+    messages: 
+      greater_than_or_equal_to: T_must_be_greater_than_or_equal_to_%{count}
+      confirmation: T_doesn't_match_confirmation
+      less_than_or_equal_to: T_must_be_less_than_or_equal_to_%{count}
+      blank: T_can't_be_blank
+      not_an_integer: T_must_be_an_integer
+      exclusion: T_is_reserved
+      invalid: T_is_invalid
+      odd: T_must_be_odd
+      empty: T_can't_be_empty
+      too_short: T_is_too_short_(minimum_is_%{count}_characters)
+      wrong_length: T_is_the_wrong_length_(should_be_%{count}_characters)
+      even: T_must_be_even
+      less_than: T_must_be_less_than_%{count}
+      greater_than: T_must_be_greater_than_%{count}
+      equal_to: T_must_be_equal_to_%{count}
+      accepted: T_must_be_accepted
+      too_long: T_is_too_long_(maximum_is_%{count}_characters)
+      inclusion: T_is_not_included_in_the_list
+      not_a_number: T_is_not_a_number
+  time: 
+    am: T_am
+    formats: 
+      default: T_%a,_%d_%b_%Y_%H:%M:%S_%z
+      short: T_%d_%b_%H:%M
+      long: T_%B_%d,_%Y_%H:%M
+    pm: T_pm
+  date: 
+    month_names: 
+      june: T_June
+      july: T_July
+      november: T_November
+      january: T_January
+      october: T_October
+      february: T_February
+      may: T_May
+      august: T_August
+      march: T_March
+      december: T_December
+      april: T_April
+      september: T_September
+    abbr_day_names: 
+      wed: T_Wed
+      sun: T_Sun
+      mon: T_Mon
+      thu: T_Thu
+      tue: T_Tue
+      sat: T_Sat
+      fri: T_Fri
+    formats: 
+      default: T_%Y-%m-%d
+      short: T_%b_%d
+      long: T_%B_%d,_%Y
+    day_names: 
+      friday: T_Friday
+      tuesday: T_Tuesday
+      wednesday: T_Wednesday
+      sunday: T_Sunday
+      monday: T_Monday
+      saturday: T_Saturday
+      thursday: T_Thursday
+    abbr_month_names: 
+      oct: T_Oct
+      jan: T_Jan
+      jul: T_Jul
+      dec: T_Dec
+      feb: T_Feb
+      apr: T_Apr
+      jun: T_Jun
+      may: T_May
+      mar: T_Mar
+      aug: T_Aug
+      sep: T_Sep
+      nov: T_Nov
+  support: 
+    array: 
+      words_connector: T_,_
+      last_word_connector: T_,_and_
+      two_words_connector: T__and_
+    select: 
+      prompt: T_Please_select
+  emails: 
+    confirm_email: |
+      T_In_order_to_verify_your_account,_please_following_link.
+      Here_is_your_confirmation_code:_<%=_@code_%>
+
+    group_join_email: "T_<HTML>\n\
+      __<P><%=_@leader_first_name_%>,</P>\n\n\
+      __<P><%=_@member_first_name_%>_<%=_@member_last_name_%>_has_<%=_\n\
+      if_@requested_\n\
+      __\"requested_to_join\"\n\
+      elsif_@interested_\n\
+      __\"marked_interest_in\"\n\
+      else_\n\
+      __\"joined\"\n\
+      end_-%>_<%=_@group_name_%><%_if_@join_time.present?_%>_on_<%=_@join_time_%><%_end_%>.__<%_if_@school_year.present?_%><%=_@member_first_name_%>_is_a_<%=_@school_year_%>_student_and_<%_else_%>Their_<%_end_%>contact_info_is_<%=_@member_email_%><%_if_@member_phone.present?_%>_and_<%=_@member_phone_%><%_end_%>.</P>\n\n\
+      <%-_if_@requested_-%>\n\
+      __<P>You_can_accept_<%=_@member_first_name_%>'s_request_to_<%=_@group_name_%>_<%=_link_to_\"here\",_@group_link_%></P>\n\
+      <%-_elsif_@interested_-%>\n\
+      <P>A_person_who_marks_a_group_\xE2\x80\x98Interested\xE2\x80\x99_usually_means_person_is_not_too_sure_if_this_is_the_right_group_for_them.___If_person_is_right_for_your_group,_you_can_accept_their_request_<%=_link_to_\"here\",_@group_link_%>_and_use_the_\xE2\x80\x98Move\xE2\x80\x99_button_to_move_them_to_be_a_member.__Similarly,_if_person_is_interested_in_the_wrong_group,_you_can_remove_them_from_your_group_by_checking_their_name_and_hitting_the_\xE2\x80\x98Remove\xE2\x80\x99_button.</P>\n\
+      <%-_else_-%>\n\
+      __<P>You_can_view_and_edit_<%=_@group_name_%>_<%=_link_to_\"here\",_@group_link_%>.</P>\n\
+      <%-_end_-%>\n\n\
+      __<P>Thank_you_for_using_the_Pulse!</P>\n\
+      </HTML>\n"
+    summer_report_submitted: |-
+      T__<html>_<p><%=_@reviewer_first_name_%>,</p>
+      <p><%=_@submitter_name_%>_has_submitted_their_summer_schedule_and_it's_now_waiting_for_your_review.</p>
+      <p><%=_link_to_"Click_here_to_go_there_now.",_@review_link_%></p>
+      <p>Thank_you_for_using_the_Pulse!</p>_</html>_
+    signup_confirm_email: |
+      T_<HTML>
+      __<P>Thank_you_for_signing_up_at_the_Pulse.__To_continue_the_signup_process,_please_follow_this_link_to_verify_your_email_to_allow_you_to_join_a_group_and_submit_your_timetable.</P>
+      
+      __<P><A_HREF="<%=_@link_%>"_target="_blank"><%=_@link_%></A></P>
+      
+      __<P>If_you_have_any_problems_verifying_your_email,_please_contact_helpdesk@c4c.ca</P>
+      </HTML>
+
+    signup_finished_email: |
+      T_<HTML>
+      __<P>Thank_you_for_signing_up_for_a_group_in_the_Pulse_and/or_updating_your_timetable.__If_you_need_to_submit_or_update_your_timetable,_please_follow_the_link_below_to_do_so.<%_if_@joined_collection_group_%>__A_group_leader_from_your_campus_will_contact_you_via_email_once_you_are_placed_in_a_group.<%_end_%></P>
+      
+      __<P><A_HREF="<%=_@link_%>"_target="_blank"><%=_@link_%></A></P>
+      </HTML>
+
+    group_invitation: |
+      T_<html>
+      __<p>Hi!</p>
+      
+      __<p><%=_@group_invitation.sender_person.full_name_%>_has_invited_you_to_join_their_Campus_for_Christ_group,_<%=_@group_invitation.group.name_%></p>
+      
+      __<br/>
+      
+      __<p>
+      ____<blockquote>
+      ______<p>
+      ________<%=_"<a_href='#{@accept_link}'>"_if_@accept_link.present?_%>
+      ________<b>JOIN!</b>
+      ________<%=_"</a>"_if_@accept_link.present?_%>
+      ______</p>
+      ______<br/>
+      ______<p>
+      ________<%=_"<a_href='#{@decline_link}'>"_if_@decline_link.present?_%>
+      ________<b>DECLINE</b>
+      ________<%=_"</a>"_if_@decline_link.present?_%>
+      ______</p>
+      ____</blockquote>
+      __</p>
+      
+      __<br/>
+      
+      __<p>
+      ____You_can_get_in_touch_with_<%=_@group_invitation.sender_person.first_name_%>_at_<b><%=_@group_invitation.sender_person.email_%></b>
+      __</p>
+      
+      __<p>
+      ____Looking_for_a_different_group?
+      ____<%=_"<a_href='#{@other_groups_link}'>"_if_@other_groups_link.present?_%>
+      ____Check_out_other_Campus_for_Christ_groups_at_<%=_@group_invitation.group.campus.name_%>
+      ____<%=_"</a>"_if_@other_groups_link.present?_%>
+      __</p>
+      </html>
+
+    summer_report_reviewed: |
+      T_<html>
+      __<p><%=_@submitter_first_name_%>,</p>
+      
+      __<%_if_@summer_report.approved?_%>
+      ____<p>Your_summer_schedule_has_been_<b>approved!</b></p>
+      __<%_else_%>
+      ____<p>Sorry,_your_summer_schedule_was_<b>disapproved</b>,_you'll_need_to_amend_it_and_resubmit_it_for_review.</p>
+      __<%_end_%>
+      
+      __<p><%=_render_:partial_=>_"summer_report_reviewers/show_reviewers",_:locals_=>_{:summer_report_=>_@summer_report}_%></p>
+      
+      __<%_if_@summer_report.approved?_%>
+      ____<p><%=_link_to_"Click_here_to_see_your_summer_schedule.",_@show_report_link_%></p>
+      __<%_else_%>
+      ____<p><%=_link_to_"Click_here_to_amend_your_summer_schedule.",_@edit_report_link_%></p>
+      __<%_end_%>
+      
+      __<p>Thank_you_for_using_the_Pulse!</p>
+      </html>
+
+    created_student: |
+      T_Hi_<%=_@person.first_name_%>,
+      
+      I've_has_just_added_you_to_the_Campus_Movement_Tracker_system_for_the_<%=_@ministry.name_%>_ministry.
+      
+      If_you're_not_familiar_with_this_system,_it's_a_tool_that_helps_us_keep_track_of_the_people_involved_in_our_ministry._If_you_could_take_a_moment_to_log_in_and_fill_out_your_personal_information,_it'd_really_help_me_out.
+      
+      Your_username_is:_<%=_@user.username_%>
+      Your_password_is:_<%=_@password_%>
+      
+      http://www.ministrytrack.org
+      
+      Thanks,_and_have_a_great_day!
+      <%=_@added_by.full_name_%>_at_<%=_@ministry.name_%>
+
+    group_invitation_decline: |
+      T_<html>
+      __<p>Hi_<%=_@group_invitation.sender_person.first_name_%>,</p>
+      
+      __<p><%=_@group_invitation.recipient_email_%>_has_declined_your_invitation_to_join_the_group_<%=_@group_invitation.group.name_%></p>
+      
+      __<p>Thank_you_for_using_the_Pulse!</p>
+      </html>
+
+  helpers: 
+    submit: 
+      submit: T_Save_%{model}
+      create: T_Create_%{model}
+      update: T_Update_%{model}
+    select: 
+      prompt: T_Please_select
+  datetime: 
+    prompts: 
+      minute: T_Minute
+      month: T_Month
+      second: T_Seconds
+      hour: T_Hour
+      day: T_Day
+      year: T_Year
+    distance_in_words: 
+      less_than_x_minutes: 
+        one: T_less_than_a_minute
+        other: T_less_than_%{count}_minutes
+      x_days: 
+        one: T_1_day
+        other: T_%{count}_days
+      almost_x_years: 
+        one: T_almost_1_year
+        other: T_almost_%{count}_years
+      x_seconds: 
+        one: T_1_second
+        other: T_%{count}_seconds
+      less_than_x_seconds: 
+        one: T_less_than_1_second
+        other: T_less_than_%{count}_seconds
+      x_minutes: 
+        one: T_1_minute
+        other: T_%{count}_minutes
+      about_x_hours: 
+        one: T_about_1_hour
+        other: T_about_%{count}_hours
+      x_months: 
+        one: T_1_month
+        other: T_%{count}_months
+      about_x_months: 
+        one: T_about_1_month
+        other: T_about_%{count}_months
+      about_x_years: 
+        one: T_about_1_year
+        other: T_about_%{count}_years
+      over_x_years: 
+        one: T_over_1_year
+        other: T_over_%{count}_years
+      half_a_minute: T_half_a_minute
+  roles: 
+    ministry_leader: T_Ministry_Leader
+    student_leader: T_Student_Leader
+    student: T_Student
+    alumni: T_Alumni
+  years_order: 
+    undergrad_1: T_1
+    grad_1: T_6
+    cegep_1: T_12
+    undergrad_2: T_2
+    grad_2: T_7
+    graduated: T_11
+    cegep_2: T_13
+    undergrad_3: T_3
+    grad_3: T_8
+    undergrad_4: T_4
+    grad_phd: T_9
+    other: T_10
+    undergrad_5: T_5
+  terms: 
+    summer_2008: T_Summer_2008
+    fall_2006: T_Fall_2006
+    summer_2009: T_Summer_2009
+    winter_2007: T_Winter_2007
+    fall_2007: T_Fall_2007
+    summer_2010: T_Summer_2010
+    fall_2008: T_Fall_2008
+    summer_2011: T_Summer_2011
+    winter_2008: T_Winter_2008
+    fall_2009: T_Fall_2009
+    summer_2012: T_Summer_2012
+    winter_2009: T_Winter_2009
+    winter_2010: T_Winter_2010
+    fall_2010: T_Fall_2010
+    summer_2013: T_Summer_2013
+    winter_2011: T_Winter_2011
+    fall_2011: T_Fall_2011
+    summer_2014: T_Summer_2014
+    winter_2012: T_Winter_2012
+    fall_2012: T_Fall_2012
+    summer_2015: T_Summer_2015
+    winter_2013: T_Winter_2013
+    fall_2013: T_Fall_2013
+    winter_2014: T_Winter_2014
+    fall_2014: T_Fall_2014
+    summer_2007: T_Summer_2007
+    winter_2015: T_Winter_2015

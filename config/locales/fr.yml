@@ -154,6 +154,7 @@ fr:
     "projects": 
       "title": "Projets"
   "groups": 
+    "next": "Prochain"
     "types": 
       "discipleship_group": "Groupes de formation de disciples (GFD)"
       "mda": "Groupe de développement d'un mouvement (GDM)\nor\nPublic Cible"
@@ -277,8 +278,8 @@ fr:
     "grad_phd": "9"
     "other": "10"
     "graduated": "11"
-    "cegep_1": "12"
-    "cegep_2": "13"
+    "cegep_1": "-1"
+    "cegep_2": "0"
   "roles": 
     "ministry_leader": "Dirigeant de ministère"
     "student_leader": "Leader étudiant"
