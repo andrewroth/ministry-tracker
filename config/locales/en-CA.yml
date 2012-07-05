@@ -5,6 +5,11 @@ en-CA:
     logos: https://pulse.campusforchrist.org/images/c4c-ptc-logo.png
     create_login: https://pulse.campusforchrist.org/images/log_in_create_login.png
     blurb: https://pulse.campusforchrist.org/images/log_in_pulse_explanation.png
+    tagline_url: https://pulse.campusforchrist.org/images/log_in_c4c_disco_change.png
+    main_url: https://pulse.campusforchrist.org/images/log_in_main_img.png
+    logos_url: https://pulse.campusforchrist.org/images/c4c-ptc-logo.png
+    create_login_url: https://pulse.campusforchrist.org/images/log_in_create_login.png
+    blurb_url: https://pulse.campusforchrist.org/images/log_in_pulse_explanation.png
   misc: 
     genders: 
       male: "Male"
@@ -449,3 +454,4 @@ en-CA:
     help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
     email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
     verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
+    fill_all_fields: "Please fill all required fields"
