@@ -5,6 +5,26 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- override images for translations -->
+    <style>
+      div#logos #c4c_logo {
+        background-image: url("/images/fr/main_elements.gif") ! important;
+      }
+      div#logos #pulse_logo {
+        background-image: url("/images/fr/main_elements.gif") ! important;
+      }
+      #ptcLogoLink {
+        background-image: url("/images/fr/ptc_logo_grey.png") ! important;
+      }
+      #helpLink {
+        background-image: url("/images/fr/main_elements.gif") ! important;
+        width: 60px ! important;
+        position: relative;
+        left: -30px;
+      }
+    </style>
+
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
       <% if Cmt::CONFIG[:web_title] %>
