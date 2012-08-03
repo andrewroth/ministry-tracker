@@ -42,7 +42,7 @@ unless @mobile
     <%= image_tag("c4c-ptc-logo.png", :id => "c4c_logo")%>
     <div id="banner_container">
       <div id="banner_bg">
-        <%= image_tag("log_in_main_img.png", :usemap => "#getin")%>
+        <%= image_tag(I18n.t("layout.images.main_elements"), :usemap => "#getin") %>
         <map name="getin">
           <area shape="rect" coords="313,67,498,205" href="<%= signup_url %>" alt="Join a Group (No need to login!)" />
           <area shape="rect" coords="519,120,614,190" href="https://thekey.me/cas/login.htm?service=<%= new_session_url %>&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css" alt="Sign In" />

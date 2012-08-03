@@ -5,6 +5,12 @@ fr:
     "logos": ""
     "create_login": "Créer un compte"
     "blurb": "Tu peux utiliser Le Pouls pour connecter avec un groupe d'étudiants sur ton campus. Ces groupes sont conçus pour t'aider à créer des liens, à poser des questions, et à découvrir Jésus."
+    "tagline_url": "/images/fr/log_in_c4c_disco_change.png"
+    "https": "/images/fr/log_in_pulse_explanation.png"
+    "create_login_url": "/images/fr/log_in_create_login.png"
+    "main_url": "https://pulse.campusforchrist.org/images/fr/log_in_main_img.png\n"
+    "logos_url": "https://pulse.campusforchrist.org/images/fr/c4c-ptc-logo.png"
+    "blurb_url": "https://pulse.campusforchrist.org/images/fr/log_in_pulse_explanation.png"
   "misc": 
     "genders": 
       "male": "Homme"
@@ -16,9 +22,14 @@ fr:
     "cancel": "annuler"
     "or": "ou"
   "layout": 
-    "ptc_logo": ""
-    "help": "À l'aide!"
-    "banner": "Connexion"
+    "images": 
+      "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
+      "c4c_ptc_logo": "/images/fr/c4c-ptc-logo.png"
+      "help": "/images/fr/help.gif"
+      "log_in_create_login": "/images/fr/log_in_create_login.png"
+      "log_in_c4c_disco_change": "/images/fr/log_in_c4c_disco_change.png"
+      "log_in_pulse_explanation": "/images/fr/log_in_pulse_explanation.png"
+      "main_elements": "/images/fr/main_elements.gif"
     "top_bar": 
       "c4c": "C4C.CA"
       "c4c_mouseover": "Pouvoir de Changer"
@@ -31,7 +42,6 @@ fr:
         "winter_conference": "CONGRÈS D'HIVER"
         "projects": "PROJETS"
         "projects_mouseover": "Rejoindre le monde!"
-        "title": "EVENEMENTS"
       "more_menu": 
         "more": "AUTRES (anglais seulement)"
         "gcx": "GCX"
@@ -43,22 +53,26 @@ fr:
         "glc": "GLOBAL LEARNING CENTER"
         "mt": "MENTOR CENTER"
         "connect": "CONNECT"
-        "title": "EN PLUS"
       "icons": 
         "facebook": "Pouvoir de Changer sur Facebook"
         "twitter": "Pouvoir de Changer sur Twitter"
-      "greeting": "Salut $name"
+      "greeting": "Salut %{name}"
       "logout": "Déconnexion"
       "staff_menu": 
-        "title": "ÉQUIPIERS"
-        "stash": "STASH"
-        "mail": "COURRIEL"
-        "documents": "DOCUMENTS"
-        "calendar": "CALENDRIER"
-        "focus": "FOCUS"
-        "the_loop": "THE LOOP"
-        "summer": "ÉTÉ"
     "left_bar": 
+      "dashboard": 
+        "named": "TABLEAU DE BORD"
+        "titled": "Voici ton tableau de bord"
+      "profile": 
+        "named": "PROFIL"
+        "titled": "T'es unique!"
+      "schedule": 
+        "named": "HORAIRE"
+        "titled": "Mon horaire"
+    "languages": 
+    "ptc_logo": "/images/fr/ptc_logo_grey.png"
+    "help": "À l'aide!"
+    "banner": "Connexion"
   "dashboard": 
     "groups_header": "Mes groupes"
     "join_txt": "Deviens membre d'un groupe !"
@@ -92,30 +106,13 @@ fr:
       "remove_me_title": "Te supprimer de tous les campus, de tous les ministères et de tous les groupes auxquels tu participes. (Déconnexion automatique)"
       "save": "Enregistrer"
       "cancel": "annuler"
-      "or": "ou"
       "headings": 
-        "email": "Courriel"
-        "birth_date": "Date de naissance"
-        "gender": "Sexe"
-        "year_in_school": "Année d'étude"
-        "graduation_date": "Année d'obtention du diplôme. "
-        "major": "Majeur"
-        "minor": "Mineur"
-        "phone": "Téléphone"
-        "cell_phone": "Cellulaire"
-        "address": "Adresse"
-        "valid_from": "Valable à partir du"
-        "current_address": "Adresse actuelle"
-        "permanent_address": "Adresse Permanente"
-        "mentor": "Mentor"
-        "events": "Événements"
-        "projects": "Projets"
-      "left_bar": 
-        "change_picture": "Change ta photo"
-        "campuses": "Campus"
     "left_bar": 
       "change_picture": "Changer ma photo"
       "joined": "Inscrit à"
+      "campuses": 
+        "header": "Campus"
+        "confirm": "Veux-tu vraiment supprimer %{person_name} de %{campus_name}?"
       "groups": 
         "confirm_self": "Veux-tu vraiment quitter %{group_name}?"
         "title_self": "Quitter le groupe %{group_name}"
@@ -178,7 +175,6 @@ fr:
       "prayer_group": "Cellule de prière"
       "servant_team": "Équipe des serviteurs"
       "other": "Autre"
-      "prayer": "Groupe de prières"
     "your": "Je suis un(e) %{role}"
     "join_sent": "Demande d'inscription envoyée"
     "led_by": "dirigé par"
@@ -189,7 +185,7 @@ fr:
     "meets_on_to": "jusqu'à"
     "to_be_decided": "heure à déterminer"
     "help_header": "Besoin d'aide?"
-    "help_tagline": "Quelqu'un de $campus peut t'aider"
+    "help_tagline": "Quelqu'un de %{campus} peut t'aider"
     "help_button": "Aidez-moi à trouver un groupe"
     "none": "Il n'y pas encore de groupe. "
     "buttons": 
@@ -201,11 +197,10 @@ fr:
       "co-leader": "autre responsable"
       "member": "membre"
       "interested": "intéressé"
-      "inerested": "intéressé"
     "default_notice": "Merci! Nous t'aiderons à trouver un groupe qui te convient."
     "timetable_message": "Presque terminé! Inscris ton horaire pour nous donner tes disponibilités!"
     "userbar_title": "S'inscrire à un groupe"
-    "getting": "CONTEXT?"
+    "getting": "en attente de la liste des groupes"
     "done": "Terminé!"
     "done_contact_collection": "Un responsable du groupe communiquera avec toi bientôt."
     "done_contact_leader": "Le responsable de ton groupe te communiquera les infos bientôt."
@@ -229,7 +224,6 @@ fr:
       "save": "Enregistrer mon horaire"
       "not_changed_message": "Ton horaire n'a pas beaucoup changé. Ton horaire permet au responsable du groupe de trouver un temps de rencontre qui convient à tous les membres. \n\nClique sur « Annuler » pour continuer la modification de ton horaire, ou sur OK pour enregistrer ton horaire et terminer. "
     "save_confirm": "Ton horaire est enregistré!"
-    "clear_timetable": "Recommencer mon horaire"
   "terms": 
     "fall_2006": "Automne 2006"
     "winter_2007": "Hiver 2007"
@@ -315,5 +309,4 @@ fr:
     "signup_finished_email": "<HTML><P> Merci pour ton inscription à un groupe et /ou pour la soumission de ton horaire. Pour soumettre ou modifier ton horaire, clique sur le lien ci-dessous. <% if @joined_collection_group %> Lorsqu'on t'ajoute à un groupe, le responsable du groupe à ton campus communiquera avec toi par courriel  <% end %></P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P></HTML>"
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
     "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour visionner l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
-  "timetables": 
-  "search": 
+  "signup": 

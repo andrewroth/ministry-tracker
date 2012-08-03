@@ -16,9 +16,14 @@ en-CA:
     cancel: cancel
     or: or
   layout: 
-    ptc_logo: "/images/ptc_logo_grey.png"
-    help: "/images/help.gif"
-    banner: "/images/log_in_main_img.png"
+    images:
+      ptc_logo_grey: "/images/ptc_logo_grey.png"
+      c4c_ptc_logo: "/images/c4c-ptc-logo.png"
+      help: "/images/help.gif"
+      log_in_create_login: "/images/log_in_create_login.png"
+      log_in_c4c_disco_change: "/images/log_in_c4c_disco_change.png"
+      log_in_pulse_explanation: "/images/log_in_pulse_explanation.png"
+      main_elements: "/images/sprites/main_elements.png"
     top_bar: 
       c4c: "C4C.CA"
       c4c_mouseover: Campus for Christ
@@ -86,6 +91,8 @@ en-CA:
     groups:
       requested_message: awaiting join request decision
       interested_message: interested
+    update_schedule_msg: "You haven't filled out your schedule yet."
+    update_schedule_title: "UPDATE MY SCHEDULE"
   profile:
     picture:
       instructions: "Select an image file on your computer (max 10 MB):"
@@ -209,7 +216,9 @@ en-CA:
     done_contact_leader: Your group leader will contact you with more info.
     goto_dashboard: Goto the dashboard
     goto_facebook: Goto Facebook
-    findout: To find out what's happening at %{campus} visit %{url}
+    findout: "To find out what's happening at %{campus} visit %{url}"
+    register: Register for your group!
+    next: Next
   timetable:
     instructions: Click on one of the color buttons below and then click times on your schedule.
     not_allowed_see: You are not allowed to see that timetable.
@@ -433,6 +442,7 @@ en-CA:
         <p>Thank you for using the Pulse!</p>
       </html>
   signup:
+    verify_email: "Verify Email"
     explanation: "We are using TheKey to authenticate users. TheKey is developed by the American Campus Crusade for Christ tech team, and is used by Campus Crusade ministries around the world. Using TheKey means more people can use the project tool, and you only need to remember their Key login rather than separate credentials for each site."
     to_signup: "To signup,"
     click_here: "Click here to create an account"
@@ -442,3 +452,6 @@ en-CA:
     click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
     help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
+    email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
+    verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
+    fill_all_fields: "Please fill all required fields"

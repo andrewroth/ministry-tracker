@@ -1,0 +1,48 @@
+# US English translations for Ruby on Rails
+#
+# Use this as the base for the locale file of your language.
+
+en-CA:
+  layout:
+    banner: https://pulse.campusforchrist.org/images/log_in_main_img.png
+    top_bar:
+      C4C: C4C.CA
+      pulse: THE PULSE
+      resources: RESOURCES
+      events: EVENTS
+        summit: SUMMIT
+        winter_conference: WINTER CONFERENCE
+        projects: PROJECTS
+      more_menu: MORE
+        gcx: GCX
+        pat: PAT
+        mpd_tool: MPD TOOL
+        glc: GLOBAL LEARNING CENTER
+        mt: MENTOR CENTER
+        connect: CONNECT
+      staff_menu: STAFF
+        stash: STASH
+        mail: MAIL
+        documents: DOCUMENTS
+        calendar: CALENDAR
+        focus: FOCUS
+        the_loop: THE LOOP
+        summer: SUMMER
+      greeting: Hi $name
+      logout: Logout
+    left_bar:
+      dashboard: DASHBOARD
+      profile: PROFILE
+      schedule: SCHEDULE
+  dashboard:
+    groups_header: My Groups
+    link_txt: Join a group!
+    events_header: My Events 
+    projects_header: Projects
+    events:
+      attendees: attendees
+    projects:
+      applying: applying
+      accepted: accepted
+      link_txt: Apply for project!
+      
