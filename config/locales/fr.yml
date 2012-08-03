@@ -5,6 +5,12 @@ fr:
     "logos": ""
     "create_login": "Créer un compte"
     "blurb": "Tu peux utiliser Le Pouls pour connecter avec un groupe d'étudiants sur ton campus. Ces groupes sont conçus pour t'aider à créer des liens, à poser des questions, et à découvrir Jésus."
+    "tagline_url": "/images/fr/log_in_c4c_disco_change.png"
+    "https": "/images/fr/log_in_pulse_explanation.png"
+    "create_login_url": "/images/fr/log_in_create_login.png"
+    "main_url": "https://pulse.campusforchrist.org/images/fr/log_in_main_img.png\n"
+    "logos_url": "https://pulse.campusforchrist.org/images/fr/c4c-ptc-logo.png"
+    "blurb_url": "https://pulse.campusforchrist.org/images/fr/log_in_pulse_explanation.png"
   "misc": 
     "genders": 
       "male": "Homme"
@@ -16,9 +22,14 @@ fr:
     "cancel": "annuler"
     "or": "ou"
   "layout": 
-    "ptc_logo": ""
-    "help": "À l'aide!"
-    "banner": "Connexion"
+    "images": 
+      "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
+      "c4c_ptc_logo": "/images/fr/c4c-ptc-logo.png"
+      "help": "/images/fr/help.gif"
+      "log_in_create_login": "/images/fr/log_in_create_login.png"
+      "log_in_c4c_disco_change": "/images/fr/log_in_c4c_disco_change.png"
+      "log_in_pulse_explanation": "/images/fr/log_in_pulse_explanation.png"
+      "main_elements": "/images/fr/main_elements.gif"
     "top_bar": 
       "c4c": "C4C.CA"
       "c4c_mouseover": "Pouvoir de Changer"
@@ -58,6 +69,10 @@ fr:
       "schedule": 
         "named": "HORAIRE"
         "titled": "Mon horaire"
+    "languages": 
+    "ptc_logo": "/images/fr/ptc_logo_grey.png"
+    "help": "À l'aide!"
+    "banner": "Connexion"
   "dashboard": 
     "groups_header": "Mes groupes"
     "join_txt": "Deviens membre d'un groupe !"
@@ -154,7 +169,6 @@ fr:
     "projects": 
       "title": "Projets"
   "groups": 
-    "next": "Prochain"
     "types": 
       "discipleship_group": "Groupes de formation de disciples (GFD)"
       "mda": "Groupe de développement d'un mouvement (GDM)\nor\nPublic Cible"
@@ -278,8 +292,8 @@ fr:
     "grad_phd": "9"
     "other": "10"
     "graduated": "11"
-    "cegep_1": "-1"
-    "cegep_2": "0"
+    "cegep_1": "12"
+    "cegep_2": "13"
   "roles": 
     "ministry_leader": "Dirigeant de ministère"
     "student_leader": "Leader étudiant"
@@ -295,3 +309,4 @@ fr:
     "signup_finished_email": "<HTML><P> Merci pour ton inscription à un groupe et /ou pour la soumission de ton horaire. Pour soumettre ou modifier ton horaire, clique sur le lien ci-dessous. <% if @joined_collection_group %> Lorsqu'on t'ajoute à un groupe, le responsable du groupe à ton campus communiquera avec toi par courriel  <% end %></P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P></HTML>"
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
     "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour visionner l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
+  "signup": 
