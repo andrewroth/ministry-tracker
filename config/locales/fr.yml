@@ -29,7 +29,8 @@ fr:
       "log_in_create_login": "/images/fr/log_in_create_login.png"
       "log_in_c4c_disco_change": "/images/fr/log_in_c4c_disco_change.png"
       "log_in_pulse_explanation": "/images/fr/log_in_pulse_explanation.png"
-      "main_elements": "/images/fr/main_elements.gif"
+      "main_elements": "/images/fr/main_elements.png"
+      "log_in_main_img": "/images/fr/log_in_main_img.png"
     "top_bar": 
       "c4c": "C4C.CA"
       "c4c_mouseover": "Pouvoir de Changer"
