@@ -81,7 +81,7 @@ class GroupInvitationsController < ApplicationController
   
   def accept
     session[:signup_group_invitation_id] = @invitation.id
-    flash[:notice] = "Great! Welcome to your group, #{@invitation.group.name}"
+    flash[:notice] = t("groups.welcome", :group_name => @invitation.group.name)
     
     # don't actually accept invitation until join a group process is done
     

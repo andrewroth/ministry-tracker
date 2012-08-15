@@ -3,15 +3,15 @@
   <div class='link_bar'>
 
     <ol id='tools'>
-      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', t('layout.top_bar.c4c_mouseover'), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', t('layout.top_bar.c4c_mouseover', :default => ''), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), t('layout.top_bar.pulse_mouseover'), t('layout.top_bar.pulse'), nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), t('layout.top_bar.pulse_mouseover', :default => ''), t('layout.top_bar.pulse'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', t('layout.top_bar.resources_mouseover'), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', t('layout.top_bar.resources_mouseover', :default => ''), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', t('layout.top_bar.events_menu.events_mouseover'), "#{t('layout.top_bar.events_menu.events')}<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', t('layout.top_bar.events_menu.events_mouseover', :default => ''), "#{t('layout.top_bar.events_menu.events')}<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', t('layout.top_bar.more_menu.more_mouseover'), "#{t('layout.top_bar.more_menu.more')}<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', t('layout.top_bar.more_menu.more_mouseover', :default => ''), "#{t('layout.top_bar.more_menu.more')}<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
       
       <% if staff %>
         <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>

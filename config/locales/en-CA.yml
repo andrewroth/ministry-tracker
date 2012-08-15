@@ -15,6 +15,8 @@ en-CA:
     last_updated: Last updated
     cancel: cancel
     or: or
+    required: required
+    validation_failed: Please fill all required fields
   layout: 
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
@@ -220,6 +222,10 @@ en-CA:
     findout: "To find out what's happening at %{campus} visit %{url}"
     register: Register for your group!
     next: Next
+    welcome: "Great!  Welcome to your group, %{group_name}"
+    request_sent: "Great!  Your request to join has been sent to %{group.name}"
+    marked_interested: "Marked as interested"
+    join_request_pending: "Join request pending"
   timetable:
     instructions: Click on one of the color buttons below and then click times on your schedule.
     not_allowed_see: You are not allowed to see that timetable.
