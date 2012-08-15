@@ -99,6 +99,9 @@
 <br/>
 <br/>
 
+<div style="display:none" id="required_text"><%= t("misc.required", :default => "required") %></div>
+<div style="display:none" id="submitValidateRequiredFailMessage"><%= t("misc.validation_failed", :default => "Please fill all required fields") %></div>
+
 <div class="center">
   <%= submit_tag("#{@next_button_text.present? ? @next_button_text : t('groups.next')}", :id => "submit", :class => 'action-button submit validateRequiredOnSubmit disableOnSubmit') %>
 </div>

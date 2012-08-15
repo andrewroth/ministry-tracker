@@ -39,7 +39,7 @@ unless @mobile
 
     <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
 
-    <%= image_tag("c4c-ptc-logo.png", :id => "c4c_logo")%>
+    <%= image_tag(t("layout.images.c4c_ptc_logo"), :id => "c4c_logo")%>
     <div id="banner_container">
       <div id="banner_bg">
         <%= image_tag(I18n.t("layout.images.log_in_main_img"), :usemap => "#getin") %>
