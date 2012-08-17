@@ -21,6 +21,8 @@ fr:
     "last_updated": "Dernière mise à jour"
     "cancel": "annuler"
     "or": "ou"
+    "required": "obligatoire"
+    "validation_failed": "SVP compléter tous les champs obligatoires"
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
@@ -71,6 +73,10 @@ fr:
         "named": "HORAIRE"
         "titled": "Mon horaire"
     "languages": 
+      "english_to_french": "FRANÇAIS"
+      "english_to_french_mouseover": "Changer ta préférence de langue au français"
+      "french_to_english": "ANGLAIS"
+      "french_to_english_mouseover": "Changer ta préférence de langue à l'anglais"
     "ptc_logo": "/images/fr/ptc_logo_grey.png"
     "help": "À l'aide!"
     "banner": "Connexion"
@@ -90,6 +96,8 @@ fr:
     "groups": 
       "requested_message": "en attente d'une réponse à la demande d'inscription"
       "interested_message": "Intéressé"
+    "update_schedule_msg": "Tu n'as pas encore inscrit ton horaire"
+    "update_schedule_title": "METTRE À JOUR MON HORAIRE"
   "profile": 
     "picture": 
       "instructions": "Sélectionner une image à télécharger (max. 10 Mo)"
@@ -160,9 +168,9 @@ fr:
       "to": "jusqu'au"
       "at": "à"
     "mentor": 
-      "none": "N'a pas de mentor actuellement"
+      "none": "N'a pas de mentor "
     "mentee": 
-      "none": "N'est pas un mentor actuellement"
+      "none": "N'est pas un mentor "
     "events": 
       "none_other": "%{name} n'a pas encore participé à un évenément "
       "none_self": "Tu n'as pas encore participé à un évenément "
@@ -208,11 +216,17 @@ fr:
     "goto_dashboard": "Vers le Tableau de bord"
     "goto_facebook": "Vers Facebook"
     "findout": "Pour connaître les activités à %{campus} visite %{url}"
+    "register": "Inscris-toi au groupe!"
+    "next": "Continuer"
+    "welcome": "Parfait! Bienvenue au groupe, %{group_name}"
+    "request_sent": "Parfait! Ta demande d'inscription a été envoyée à %{group.name}"
+    "marked_interested": "Marqué comme intéressé"
+    "join_request_pending": "Demande d'inscription en attente"
   "timetable": 
     "instructions": "Clique sur une couleur ci-dessous, puis sur la grille-horaire."
-    "not_allowed_see": "Tu n'as pas accès à cet horaire."
-    "not_allowed_edit": "Tu ne peux pas modifier cet horaire."
-    "not_allowed_update": "Tu ne peux pas mettre à jour cet horaire."
+    "not_allowed_see": "Tu n'as pas la permission d'accéder à cet horaire."
+    "not_allowed_edit": "Tu n'as pas la permission de modifier cet horaire."
+    "not_allowed_update": "Tu n'as pas la permission de mettre à jour cet horaire."
     "bad": "Occupé"
     "okay": "Peut-être"
     "good": "Disponible"
@@ -225,6 +239,7 @@ fr:
       "save": "Enregistrer mon horaire"
       "not_changed_message": "Ton horaire n'a pas beaucoup changé. Ton horaire permet au responsable du groupe de trouver un temps de rencontre qui convient à tous les membres. \n\nClique sur « Annuler » pour continuer la modification de ton horaire, ou sur OK pour enregistrer ton horaire et terminer. "
     "save_confirm": "Ton horaire est enregistré!"
+    "date_format": "%k:%M"
   "terms": 
     "fall_2006": "Automne 2006"
     "winter_2007": "Hiver 2007"
@@ -311,3 +326,21 @@ fr:
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
     "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour visionner l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
   "signup": 
+    "email_error": "SVP entre une adresse courriel valide. Si l'adresse est déjà dans le Pouls, tu recevras un courriel de vérification."
+    "missing_campus_and_semester": "Désolés, nous n'avons pas reçu ton choix de campus ni de session. SVP réessayer. "
+    "verification_email_error": "Désolés, il n'était pas possible de t'envoyer un courriel de vérification. SVP réessayer ou communiquer avec helpdesk@c4c.ca"
+    "group_invitation_error": "Désolés, il y a eu un problème avec ta demande d'inscription. <br/><br/> Nous voulons toujours que tu te joignes à nous, alors trouve le groupe que tu veux ci-dessous et inscris-toi!"
+    "general_error": "Désolés, il y a eu un problème derrière les scènes. Essaie encore de t'inscrire à un groupe. <br/>Si cela se produit encore, communique avec helpdesk@c4c.ca"
+    "verify_email": "Vérification de l'adresse courriel"
+    "explanation": "Nous utilisons TheKey pour authentifier l'identité des utilisateurs. TheKey est est un logiciel développé par l'équipe technique de Cru, et est utilisé par les ministères de Cru dans le monde entier. En utilisant TheKey, plus de personnes peuvent utiliser l'outil pour les projets, et il est seulement nécessaire de retenir leur identifiant TheKey au lieu d'avoir des infirmations de connexions différentes pour chaque site.  "
+    "to_signup": "Pour s'inscrire,"
+    "click_here": "Cliquer ici pour créér un compte"
+    "new_window": "(s'ouvrira dans une nouvelle fenêtre)"
+    "wait": "Attends 2-3 minutes. Le système TheKey prend quelques minutes pour synchroniser certaines données. "
+    "back": "Pour revenir à <A HREF=\"%{url}\">la page d'ouverture de session du Pouls</A>, retapper %{url} dans le champ url"
+    "click_to_login": "Cliquer sur le logo de TheKey dans le Pouls pour ouvrir une session avec ton nouveau compte"
+    "stuck": "Si tu restes pris sur la page d'accueil de TheKey, retappe http://localhost:3000 dans ta fenêtre url"
+    "help_txt": "Pour avoir de l'aide, tu peux regarder cette <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">courte vidéo</a> qui explique comment créer un compte TheKey, ou visiter notre <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Communauté d'assistance informatique</a>."
+    "email_already_in": "<b>%{email} est déjà dans le Pouls. </b> Si ce courriel t'appartient, clique le bouton \"Vérification de l'adresse courriel\", puis on t'enverra un courriel qui te permettra de terminer ta demande d'inscription à un groupe. Cela nous permet d'assurer que ce courriel est bien à toi. "
+    "verify_email_sent": "Un courriel de vérification a été envoyé à <b>%{email}</b><br/><br/>Clique le lien dans le courriel pour terminer ton inscription."
+    "fill_all_fields": "SVP compléter tous les champs obligatoires"
