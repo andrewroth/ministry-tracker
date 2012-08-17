@@ -53,29 +53,37 @@ fr:
       "prompt": "Veuillez sélectionner"
   "number": 
     "format": 
+      "significant": "faux"
+      "strip_insignificant_zeros": "faux"
     "currency": 
       "format": 
+        "unit": "$"
+        "significant": "faux"
+        "strip_insignificant_zeros": "faux"
     "percentage": 
       "format": 
     "precision": 
       "format": 
     "human": 
       "format": 
+        "significant": "vrai"
+        "strip_insignificant_zeros": "vrai"
       "storage_units": 
         "units": 
           "byte": 
-            "one": "Byte"
-            "other": "Bytes"
-          "kb": "KB"
-          "mb": "MB"
-          "gb": "GB"
-          "tb": "TB"
+            "one": "Octet"
+            "other": "Octets"
+          "kb": "Ko"
+          "mb": "Mo"
+          "gb": "Go"
+          "tb": "To"
       "decimal_units": 
         "units": 
           "thousand": "Millier(s) "
           "million": "Million(s)"
           "billion": "Milliard(s)"
-          "trillion": "Trillions(s)"
+          "trillion": "Billion(s)"
+          "quadrillion": "Trillion(s)"
   "datetime": 
     "distance_in_words": 
       "half_a_minute": "30 secondes"
@@ -123,22 +131,57 @@ fr:
     "select": 
       "prompt": "Veuillez sélectionner"
     "submit": 
-      "create": "Créez %{model}"
+      "create": "Créer %{model}"
       "update": "Mettre à jour %{model}"
       "submit": "Enregistrer %{model}"
   "errors": 
     "format": "%{attribute} %{message}"
     "messages": 
       "inclusion": "n'est pas inclus dans la liste"
-      "exclusion": ""
+      "exclusion": "est réservé"
+      "invalid": "est invalide"
+      "confirmation": "ne correspond pas à la confirmation"
+      "accepted": "doit être approuvé"
       "empty": "ne peut pas être vide"
-      "too_long": "est trop long (le maximum est de %{count} caractères)"
-      "too_short": "est trop court (le minimum est de %{count} caractères)"
+      "blank": "ne peut pas être vide"
+      "too_long": "est trop long (maximum de %{count} caractères)"
+      "too_short": "est trop court (minimum de %{count} caractères)"
+      "wrong_length": "n'est pas de la bonne longueur (devrait compter %{count} caractères)"
       "not_a_number": "n'est pas un nombre"
-      "not_an_integer": "doit être un chiffre entier"
+      "not_an_integer": "doit être un nombre entier"
+      "greater_than": "doit être supérieur à %{count}"
+      "greater_than_or_equal_to": "doit être supérieur ou égal à %{count}"
+      "equal_to": "doit être égal à  %{count}"
+      "less_than": "doit être inférieur à %{count}"
+      "less_than_or_equal_to": "doit être inférieur ou égal à %{count}"
+      "odd": "doit être un nombre impair"
+      "even": "doit être un nombre pair"
   "activerecord": 
     "errors": 
       "template": 
         "header": 
+          "one": "1 erreur a empêché l'enregistrment de %{model}"
+          "other": "%{count} erreurs ont empêché l'enregistrement de %{model}"
+        "body": "Il y a des erreurs dans les champs suivants :"
       "messages": 
+        "taken": "a déjà été choisi"
+        "record_invalid": "La validation a échoué"
         "inclusion": "n'est pas inclus dans la liste"
+        "exclusion": "est réservé"
+        "invalid": "est invalide"
+        "confirmation": "ne correspond pas à la confirmation"
+        "accepted": "doit être approuvé"
+        "empty": "ne peut pas rester vide"
+        "blank": "ne peut pas rester vide"
+        "too_long": "est trop long (maximum de %{count} caractères)"
+        "too_short": "est trop court (minimum de  %{count} caractères)"
+        "wrong_length": "n'est pas de la bonne longueur (doit compter  %{count} caractères)"
+        "not_a_number": "n'est pas un chiffre"
+        "not_an_integer": "n'est pas un nombre entier"
+        "greater_than": "doit être supérieur à  %{count}"
+        "greater_than_or_equal_to": "doit être supérieur ou égal à  %{count}"
+        "equal_to": "doit être égal à  %{count}"
+        "less_than": "doit être inférieur à  %{count}"
+        "less_than_or_equal_to": "doit être inférieur ou égal à  %{count}"
+        "odd": "doit être un nombre impair"
+        "even": "doit être un nombre pair"
