@@ -6,31 +6,6 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <!-- override images for translations -->
-    <style>
-      div#logos #c4c_logo {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-      }
-      div#logos #pulse_logo {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-      }
-      #ptcLogoLink {
-        background-image: url("<%= t("layout.images.ptc_logo_grey") %>") ! important;
-      }
-      #banner_container #leftBubbleImg {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-      }
-      #banner_container #rightBubbleImg {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-      }
-      #helpLink {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-        width: 60px ! important;
-        position: relative;
-        left: -30px;
-      }
-    </style>
-
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
       <% if Cmt::CONFIG[:web_title] %>
@@ -65,6 +40,10 @@
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
+
+    <%= stylesheet_link_tag "connexion_default.css" %>
+
+    <%= locale_stylesheet_link_tag %>
 
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
   </head>
