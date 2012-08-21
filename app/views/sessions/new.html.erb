@@ -39,22 +39,23 @@ unless @mobile
 
     <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
 
-    <%= image_tag(t("layout.images.c4c_ptc_logo"), :id => "c4c_logo")%>
+    <div id="logo_container">
+      <%= image_tag(t("layout.images.p2c_pulse_logo"), :id => "p2c_pulse_logo")%>
+    </div>
+
     <div id="banner_container">
-      <div id="banner_bg">
-        <%= image_tag(I18n.t("layout.images.log_in_main_img"), :usemap => "#getin") %>
-        <map name="getin">
-          <area shape="rect" coords="313,67,498,205" href="<%= signup_url %>" alt="Join a Group (No need to login!)" />
-          <area shape="rect" coords="519,120,614,190" href="https://thekey.me/cas/login.htm?service=<%= new_session_url %>&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css" alt="Sign In" />
-        </map>
-      </div>
+      <a id="leftBubble" href="">
+        <div id="leftBubbleImg">&nbsp;</div>
+      </a>
+      <a id="rightBubble" href="">
+        <div id="rightBubbleImg">&nbsp;</div>
+      </a>
     </div>
 
     <div id="footer_container">
-      <%= image_tag(I18n.t("layout.images.log_in_c4c_disco_change"), :id => "disco_change")%>
-      <%= image_tag(I18n.t("layout.images.log_in_pulse_explanation"), :id => "pulse_explain")%>
-      <%= link_to image_tag(I18n.t("layout.images.log_in_create_login")), new_gcx_url, :id => "create_logon" %>
-      <%= link_to image_tag(I18n.t("layout.images.help")), "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
+      <div id="pulseExplain">&nbsp;</div>
+      <%= link_to '<div id="createLoginImg">&nbsp;</div>', new_gcx_url, :id => "create_logon" %>
+      <%= link_to '<div id="helpImg">&nbsp;</div>', "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
     </div>
 	</body>
 </html>

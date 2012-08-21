@@ -21,6 +21,7 @@ en-CA:
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
       c4c_ptc_logo: "/images/c4c-ptc-logo.png"
+      p2c_pulse_logo: "/images/p2c_pulse_logo.png"
       help: "/images/help.gif"
       log_in_create_login: "/images/log_in_create_login.png"
       log_in_c4c_disco_change: "/images/log_in_c4c_disco_change.png"

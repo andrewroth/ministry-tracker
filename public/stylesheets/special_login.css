@@ -1,35 +1,116 @@
 
-body {
-	margin: 0;
-	padding: 0;
-  text-align: center;
-  font-family: Helvetica, Arial, Sans-Serif;
-}
-
 /******************************/
 /* Login page                 */
 /******************************/
 
-#banner_container {
-  height: 234px;
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: Helvetica, Arial, Sans-Serif;
+  background: url("/images/new_session_background.png");
+  background-repeat: no-repeat;
+  background-position: center 0;
+  background-color: #F4F4F4;
 }
 
-#banner_container #banner_bg {
-  width:100%;
-  background: url("/images/log_in_bkg.png") repeat scroll transparent;
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
+#logo_container {
+  height: 109px;
+  background-color: rgba(255, 255, 255, 0.9);
+  -moz-box-shadow: 0 1px 5px #bcbcbc; -webkit-box-shadow: 0 1px 5px #bcbcbc; box-shadow: 0 1px 5px #bcbcbc;
+}
+
+#banner_container {
+  height: 310px;
+  padding-top: 6px;
+}
+
+#banner_container #leftBubble, #banner_container #leftBubble:hover {
+  position: relative;
+  left: -32px;
+  top: 32px;
+  text-decoration:none;
+}
+
+#banner_container #leftBubbleImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position:-6px -90px;
+  display:inline-block;
+  width:295px;
+  height:245px;
+  
+  zoom:1; *display: inline; /* hack for IE7 */
+}
+
+#banner_container #leftBubbleImg:hover {
+  background-position:-6px -599px;
+  cursor:pointer;
+}
+
+#banner_container #rightBubble, #banner_container #rightBubble:hover {
+  position: relative;
+  left: 32px;
+  top: 33px;
+  text-decoration:none;
+}
+
+#banner_container #rightBubbleImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position:-6px -345px;
+  display:inline-block;
+  width:295px;
+  height:245px;
+  
+  zoom:1; *display: inline; /* hack for IE7 */
+}
+
+#banner_container #rightBubbleImg:hover {
+  background-position:-6px -854px;
+  cursor:pointer;
+}
+
+#pulseExplain {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position:-10px -1111px;
+  display:inline-block;
+  width:230px;
+  height:85px;
+  position:relative;
+  top:17px;
+  left:-94px;
+}
+
+#createLoginImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position:-10px -1252px;
+  display:inline-block;
+  width:125px;
+  height:22px;
+}
+
+#createLoginImg:hover {
+  background-position:-10px -1291px;
+  cursor:pointer;
+}
+
+#helpImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position:-10px -1214px;
+  display:inline-block;
+  width:45px;
+  height:21px;
 }
 
 #footer_container {
-  height: 200px;
+  height: 123px;
+  margin-top: 7px;
+  background-color: rgba(255, 255, 255, 0.9);
+  -moz-box-shadow: 0 1px 5px #bcbcbc; -webkit-box-shadow: 0 1px 5px #bcbcbc; box-shadow: 0 1px 5px #bcbcbc;
 }
 
-#c4c_logo {
-  padding: 25px;
-  margin-right: 620px;
+#p2c_pulse_logo {
+  padding: 29px;
+  margin-right: 492px;
 }
 
 #disco_change {
@@ -38,22 +119,16 @@ body {
   top: 25px;
 }
 
-#pulse_explain {
-  position: relative;
-  left: -38px;
-  top: 60px;
-}
-
 #create_logon {
-  left: 110px;
+  left: 150px;
   position: relative;
-  top: 57px;
+  top: 29px;
 }
 
 #help_link {
   position: relative;
-  left: 130px;
-  top: 60px;
+  left: 101px;
+  top: 66px;
 }
 
 img {
@@ -90,7 +165,8 @@ div.flash b, div.flash_notice b  {
   text-align: center;
 	font-family: Helvetica, Arial, sans-serif;
   color: #666666;
-	margin: 30px 0 0 0;
+	padding: 20px 0 10px 0;
+  background-color: white;
 }
 
 #browser_warning b, #browser_warning big {
