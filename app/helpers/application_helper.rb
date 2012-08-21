@@ -1,6 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
+  def locale_stylesheet_link_tag
+    if File.exists?("#{RAILS_ROOT}/public/stylesheets/#{session[:locale]}.css")
+      stylesheet_link_tag("#{session[:locale]}.css")
+    end
+  end
+
   def times(start_time, end_time)
     midnight = Time.now.beginning_of_day
     # start_time = midnight + start_time.hours

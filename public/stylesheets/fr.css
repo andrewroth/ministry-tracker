@@ -1,0 +1,26 @@
+div#logos #c4c_logo {
+  background-image: url("/images/fr/main_elements.png") ! important;
+}
+div#logos #pulse_logo {
+  background-image: url("/images/fr/main_elements.png") ! important;
+}
+#ptcLogoLink {
+  background-image: url("/images/fr/ptc_logo_grey.png") ! important;
+}
+#banner_container #leftBubbleImg {
+  background-image: url("/images/fr/main_elements.png") ! important;
+}
+#banner_container #rightBubbleImg {
+  background-image: url("/images/fr/main_elements.png") ! important;
+}
+#helpLink {
+  background-image: url("/images/fr/main_elements.png") ! important;
+  width: 60px ! important;
+  position: relative;
+  left: -30px;
+}
+
+.badhead {background:url(/images/fr/status_bad.png) center 31px #bc0a0a;}
+.poorhead {background:url(/images/fr/status_poor.png) center 31px #ffC000;}
+.okhead {background:url(/images/fr/status_okay.png) center 31px #61E6CB;}
+.goodhead {background:url(/images/fr/status_good.png) center 31px #5CE40A;}
