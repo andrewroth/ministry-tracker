@@ -346,7 +346,8 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = I18n.t('groups.userbar_title') unless logged_in? || session[:from_facebook_canvas] == true
+    #@custom_userbar_title = I18n.t('groups.userbar_title') unless logged_in? || session[:from_facebook_canvas] == true
+    @custom_userbar_title = "bob"
   end
 
   def join_default_group(campus_id, semester_id)

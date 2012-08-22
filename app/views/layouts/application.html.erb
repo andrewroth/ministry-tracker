@@ -128,7 +128,7 @@
       </div>
 
       <div id="greenbar">
-        <div id="signin"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
+        <div id="signin"><%= @custom_userbar_title || link_to(t("signup.login"), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
       </div>
 
       <%- end -%>
