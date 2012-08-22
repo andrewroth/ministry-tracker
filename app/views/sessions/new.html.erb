@@ -44,18 +44,18 @@ unless @mobile
     </div>
 
     <div id="banner_container">
-      <a id="leftBubble" href="">
-        <div id="leftBubbleImg">&nbsp;</div>
+      <a id="leftBubble" href="<%= signup_url %>" alt="Join a Group (no need to login!)">
+        <span id="leftBubbleImg">&nbsp;</span>
       </a>
-      <a id="rightBubble" href="">
-        <div id="rightBubbleImg">&nbsp;</div>
+      <a id="rightBubble" href="https://thekey.me/cas/login.htm?service=<%= new_session_url %>&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css" alt="Sign In">
+        <span id="rightBubbleImg">&nbsp;</span>
       </a>
     </div>
 
     <div id="footer_container">
       <div id="pulseExplain">&nbsp;</div>
-      <%= link_to '<div id="createLoginImg">&nbsp;</div>', new_gcx_url, :id => "create_logon" %>
-      <%= link_to '<div id="helpImg">&nbsp;</div>', "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
+      <%= link_to '<span id="createLoginImg">&nbsp;</span>', new_gcx_url, :id => "create_logon" %>
+      <%= link_to '<span id="helpImg">&nbsp;</span>', "https://www.mygcx.org/Pulse_Help_Center/screen/home", :id => "help_link" %>
     </div>
 	</body>
 </html>
