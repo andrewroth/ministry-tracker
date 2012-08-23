@@ -981,7 +981,7 @@ class PeopleController < ApplicationController
         if @search
           @search.update_attribute(:updated_at, Time.now)
         else
-          @search = @my.searches.create(:options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
+          @search = @my.searches.create(:tables_clause => @view.tables_clause, :options => @options.to_json, :query => @conditions, :tables => @tables.to_json, :description => @search_for)
         end
         # Only keep the last 5 searches
         @my.searches.last.destroy if @my.searches.length > 5
