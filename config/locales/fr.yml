@@ -33,6 +33,7 @@ fr:
       "log_in_c4c_disco_change": "/images/fr/log_in_c4c_disco_change.png"
       "log_in_pulse_explanation": "/images/fr/log_in_pulse_explanation.png"
       "main_elements": "/images/fr/main_elements.png"
+      "p2c_main_elements": "/images/sprites/p2c_main_elements.png"
       "log_in_main_img": "/images/fr/log_in_main_img.png"
     "top_bar": 
       "c4c": "C4C.CA"

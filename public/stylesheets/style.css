@@ -394,11 +394,12 @@ h1 {
 
 #wrapper {
   margin: 10px auto 10px auto;
-  width:auto;
   text-align:left;
-	min-width:900px;
-	max-width:900px;
-	background:#FFFFFF;
+  background:#FFFFFF;
+  background: url("/images/layout_background.png");
+  background-repeat: no-repeat;
+  background-position: center -31px;
+  background-color: #F4F4F4;
 }
 
 #wrapper.facebook_canvas {
@@ -429,9 +430,6 @@ h1 {
 
 
 
-#content {
-  margin:10px;
-}
 .leftColumn {
 	max-width: 220px;
 }
@@ -1253,70 +1251,59 @@ div#logos.dashboard #pulse_logo { left:187px; }
 
 #banner_container {
   padding-bottom: 10px;
-  height: 172px;
-}
-
-#banner_container #banner_img {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -258px;
-  height: 172px;
-  width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#banner_container #banner_bg {
-  background-image: url("/images/sprites/main_elements.png");
-  background-repeat: repeat-x;
-  background-position:0 -1080px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 172px;
+  height: 189px;
   text-align: center;
 }
 
-#banner_container #leftBubble, #banner_container #leftBubble:hover {
+#leftBubble, #leftBubble:hover {
   position: relative;
-  left: -2px;
-  top: 38px;
+  left: 6px;
+  top: 46px;
   text-decoration:none;
 }
 
-#banner_container #leftBubbleImg {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -450px;
-  display:inline-block;
-  width:131px;
-  height:90px;
-  
+#leftBubble .image {
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: 4px -1517px;
+  background-repeat: no-repeat;
+  border: 23px solid white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  height: 80px;
+  width: 124px;
+
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
-#banner_container #leftBubbleImg:hover {
-  background-position:-10px -560px;
+#leftBubble .image:hover {
+  background-position: 4px -1610px;
   cursor:pointer;
 }
 
-#banner_container #rightBubble, #banner_container #rightBubble:hover {
+#rightBubble, #rightBubble:hover {
   position: relative;
-  left: 33px;
-  top: 56px;
+  left: 17px;
+  top: 37px;
   text-decoration:none;
 }
 
-#banner_container #rightBubbleImg {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -670px;
-  display:inline-block;
-  width:171px;
-  height:67px;
+#rightBubble .image {
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -8px -1324px;
+  background-repeat: no-repeat;
+  border: 13px solid white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  height: 99px;
+  width: 163px;
   
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
-#banner_container #rightBubbleImg:hover {
-  background-position:-10px -757px;
+#rightBubble .image:hover {
+  background-position: -8px -1417px;
   cursor:pointer;
 }
 
@@ -1415,9 +1402,23 @@ a.modulecontent, .modulecontent ul {font-size:12px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
 ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
 
+#userbar_wrapper, #content_wrapper {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+#content, #userbar {
+  width: auto;
+  min-width: 900px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 div#userbar {
   position: relative;
-  height: 80px;
+  height: 78px;
 }
 
 div#logos { padding:27px 0 0 32px; }

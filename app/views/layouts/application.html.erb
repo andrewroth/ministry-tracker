@@ -18,10 +18,10 @@
         background-image: url("<%= t("layout.images.ptc_logo_grey") %>") ! important;
       }
       #banner_container #leftBubbleImg {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
+        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
       }
       #banner_container #rightBubbleImg {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
+        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
       }
       #helpLink {
         background-image: url("<%= t("layout.images.main_elements") %>") ! important;
@@ -88,46 +88,48 @@
 
 
 		<div id="wrapper">
-		  <div id="userbar">
-        <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-          <%= link_to "<div id='c4c_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
-          <%= link_to "<div id='pulse_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
-        </div>
+      <div id="userbar_wrapper">
+  		  <div id="userbar">
+          <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
+            <%= link_to "<div id='c4c_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
+            <%= link_to "<div id='pulse_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
+          </div>
 
 
-        <% if logged_in? && @me && !@custom_userbar_title %>
+          <% if logged_in? && @me && !@custom_userbar_title %>
 
 
-        <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
-        
-
-        <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
-          <a href="#" class="logoutbutton" onclick="try {
-            FB.Connect.logoutAndRedirect('<%= logout_url %>');
-            } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
-        <% end %>
-
-        <div id="userblock" class="link_bar">
-          <%= spinner('_switch_ministries', 'opaqueWhite') %>
-          <%= t('layout.top_bar.greeting', :name => %|
-                <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
-                |) %>
+          <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
           
-          <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-            <div id="switch_ministries">
-              <%- if @ministry -%>
-                &nbsp;&nbsp;
-                <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
-              <%- end -%>
-            </div>
-            <div id="switch_ministries_list" style="display:none">&nbsp;</div>
-          <%- end -%>
-          
-          <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
-        </div>
-        
-        <div class="clear"></div>
 
+          <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
+            <a href="#" class="logoutbutton" onclick="try {
+              FB.Connect.logoutAndRedirect('<%= logout_url %>');
+              } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
+          <% end %>
+
+          <div id="userblock" class="link_bar">
+            <%= spinner('_switch_ministries', 'opaqueWhite') %>
+            <%= t('layout.top_bar.greeting', :name => %|
+                  <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
+                  |) %>
+            
+            <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
+              <div id="switch_ministries">
+                <%- if @ministry -%>
+                  &nbsp;&nbsp;
+                  <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
+                <%- end -%>
+              </div>
+              <div id="switch_ministries_list" style="display:none">&nbsp;</div>
+            <%- end -%>
+            
+            <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
+          </div>
+          
+          <div class="clear"></div>
+
+        </div>
       </div>
 
       <% unless controller.controller_name == "dashboard" %>
@@ -194,9 +196,11 @@
       <div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
       <div id="instructions" style="display:none;"></div>
 
-      <div id="content">
-        <%= yield %>
-        <div class="clear">&nbsp;</div>
+      <div id="content_wrapper">
+        <div id="content">
+          <%= yield %>
+          <div class="clear">&nbsp;</div>
+        </div>
       </div>
     </div> <!-- Wrapper -->
 
