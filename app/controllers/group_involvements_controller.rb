@@ -21,6 +21,13 @@ class GroupInvolvementsController < ApplicationController
       @join = @signup = true
     end
     
+    if params.include?(:group_id)
+      @group ||= Group.find(params[:group_id]) 
+      unless session.include?(:signup_campus_id)
+        session[:signup_campus_id] = @group.campus_id
+      end
+    end
+    
     session[:signup_groups] ||= {}
     session[:signup_groups][@group.id] = params[:level]
     @message = params[:level] == 'interested' ? t("groups.marked_interested") : t("groups.join_request_pending")

@@ -1,0 +1,40 @@
+<h1>Listing global_countries</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Global area</th>
+    <th>Iso3</th>
+    <th>Stage</th>
+    <th>Live exp</th>
+    <th>Live dec</th>
+    <th>New grth mbr</th>
+    <th>Mvmt mbr</th>
+    <th>Mvmt ldr</th>
+    <th>New staff</th>
+    <th>Lifetime lab</th>
+  </tr>
+
+<% @global_countries.each do |global_country| %>
+  <tr>
+    <td><%=h global_country.name %></td>
+    <td><%=h global_country.global_area.area %></td>
+    <td><%=h global_country.iso3 %></td>
+    <td><%=h global_country.stage %></td>
+    <td><%=h global_country.live_exp %></td>
+    <td><%=h global_country.live_dec %></td>
+    <td><%=h global_country.new_grth_mbr %></td>
+    <td><%=h global_country.mvmt_mbr %></td>
+    <td><%=h global_country.mvmt_ldr %></td>
+    <td><%=h global_country.new_staff %></td>
+    <td><%=h global_country.lifetime_lab %></td>
+    <td><%= link_to 'Show', global_country %></td>
+    <td><%= link_to 'Edit', edit_global_country_path(global_country) %></td>
+    <td><%= link_to 'Destroy', global_country, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New global_country', new_global_country_path %>

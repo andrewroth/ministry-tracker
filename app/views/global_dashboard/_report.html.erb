@@ -131,6 +131,17 @@
       tr.stat_numbers td.last {
         border-right: 0px;
       }
+      
+      .invisible { display:none; }
+      #descriptions { position:relative; }
+      .description {
+      	position:absolute;
+      	top: 20px;
+      	width: 800px;
+      	background-color: #EEEEEE;
+      	border: 1px solid #999999;
+      	padding: 20px;
+      }
     </style>
 
     <table id="whq" class="" style="width:100%">
@@ -145,17 +156,82 @@
         <%= render :partial => "whq_values_tr" %>
       </tr>
       <tr class="stat_labels">
-        <td>Live Exposures</td>
-        <td>Live Decisions</td>
-        <td>Growth Group Members</td>
-        <td>Movement Members</td>
-        <td>Movement Leaders</td>
-        <td>New Staff</td>
-        <td class="last">Lifetime Labourers</td>
+        <td class="showDesc" description="#desc_live_exp">Live Exposures</td>
+        <td class="showDesc" description="#desc_live_dec">Live Decisions</td>
+        <td class="showDesc" description="#desc_growt_group">Growth Group Members</td>
+        <td class="showDesc" description="#desc_mov_memb">Movement Members</td>
+        <td class="showDesc" description="#desc_mov_lead">Movement Leaders</td>
+        <td class="showDesc" description="#desc_new_staff">New Staff</td>
+        <td class="showDesc last" description="#desc_lt_labour">Lifetime Labourers</td>
       </tr>
     </table>
 
     <BR/>
+    	<div id="descriptions">
+	    	<div id="desc_live_exp" class="description invisible">
+	    		<b>Exposures</b><br />Someone who has heard the gospel.<br />
+	    		<b>Defining Points:</b>
+	    		<br />1. The key issue is that someone was exposed to evangelistic content with an opportunity to respond.
+	    		<br />2. Exposures include:<br />a. Live presentation with an opportunity to respond.
+	    		<br />b. Media distribution/presentation with an opportunity to respond.
+	   		</div>
+	    	<div id="desc_live_dec" class="description invisible">
+				<b>Decisions</b>
+				<br />Someone who has heard the gospel and  has initially indicated a decision.
+				<br /><b>Defining Points:</b>
+				<br />1. We count recorded decisions.
+				<br />2. Our desire is to report as accurately as possible how many decisions there were.
+				<br />3. We will count estimated decisions from media and literature distribution if our 
+				estimate is based on reasonable assumptions and is a more accurate reflection of reality 
+				than reporting no decisions. Surveys can be used to measure fruitfulness of exposure strategies 
+				through media and literature. (Survey costs should be built into the funding raised for exposure strategies.)
+	   		</div>
+	    	<div id="desc_growt_group" class="description invisible">
+				<b>Growth Group Members</b>
+				<br />A Christian who has decided to start or continue to follow Christ and His teachings. 
+				Usually he/she will join a growth group.
+				<br /><b>Defining Points:</b>
+				<br />1. Count the total number of believers who are growth group members. Also count people 
+				in individual descipleship relationships provided they are not previously counted as a growth 
+				group member.
+				<br />2. Some ministries might not have two different groups such as growth and movement groups. 
+				In this case, count your disciples in the category that most accurately reflects their involvement.
+	   		</div>
+	    	<div id="desc_mov_memb" class="description invisible">
+	    		<b>Movement (Action) Group Members</b>
+	    		<br />A growing Christian who seeks training and involvement in ministry to others, including 
+	    		evangelism and descipleship.
+	    		<br /><b>Defining Point:</b>
+	    		<br />A growing Christian who is being trained and involved in evangelism and descipleship. 
+	    		The key disinction between growth group member and movement group member is training and 
+	    		involvement in evangelism and discipleship.
+	   		</div>
+	    	<div id="desc_mov_lead" class="description invisible">
+	    		<b>Movement (Action) Group Leaders</b>
+	    		<br />A leader who looks for, mobilizes and mentors others to lead discipleship groups/movements 
+	    		(near and far in terms of distance; same and different in terms of culture and language).
+	    		<br /><b>Defining Points:</b>
+	    		<br />1. A spiritual multiplier who is following up, training and leading others in a spiritual 
+	    		movement. The key distinction betwen movement group leaders and movement group members is becoming 
+	    		a spiritual multiplier.
+	    		<br />2. These are movement leaders who are involved in win-build-send.
+	    		<br />3. These movement group leaders can be leading a movement which has a small scope 
+	    		(a small movement among a certain target audience or location).
+	   		</div>
+	    	<div id="desc_lt_labour" class="description invisible">
+	    		<b>New Life-Time Laborers</b>
+	    		<br />A Christian who commits to love and serve God with his/her whole heart for life, in full-time 
+	    		Christian work or not. (This person may choose to join CCC staff, but regardless, will be encouraged 
+	    		to have a personal strategy to help fulfill the Great Commission.)(Measure once at the point of making 
+	    		this commitment - for example at the end of a Great Commission talk.)
+	   		</div>
+	    	<div id="desc_new_staff" class="description invisible">
+	    		<b>New Staff Members</b><br />A person who becomes a full-time Campus Crusade staff member. (Measured once)
+	    		(Full-time assignments for one year or longer (e.g. Stint) can be counted, but a person should not 
+	    		be counted again when transitioning to a longer-term staff assignment.)
+	   		</div>
+   		</div>
+    
 	</div>
 
 
@@ -536,7 +612,17 @@
 	
 </div>
 
-
+<script>
+$("td.showDesc").hover( 
+	function (){ 
+		$($(this).attr("description")).removeClass("invisible"); 
+		$($(this).attr("description")).fadeIn(500);
+		
+	},	function (){ 
+		$($(this).attr("description")).fadeOut(100);
+	}
+);
+</script>
 
 
 

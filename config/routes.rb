@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :global_areas
+
+  map.resources :global_countries
+
   map.resources :pat_projects
 
 
@@ -167,7 +171,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :campuses, :member => {:details => :any},
                            :collection => { :change_country => :any,
                                             :change_county => :any,
-                                            :change_state => :any}
+                                            :change_state => :any,
+                                            :list => :any,
+                                            :details_json => :any,
+                                            :list_groups => :any}
 
   map.resources :ministries, :collection => { :switch_list => :get},
                              :member => { :parent_form => :any,

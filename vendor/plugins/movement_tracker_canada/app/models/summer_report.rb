@@ -19,14 +19,19 @@ class SummerReport < ActiveRecord::Base
   validates_uniqueness_of :year_id, :scope => [:person_id], :message => "(you've already submitted a summer report for this year, you can't submit another one)"
   validates_presence_of :person_id
   validates_presence_of :year_id
-  validates_presence_of :joined_staff
   validates_presence_of :days_of_holiday
   validates_presence_of :monthly_goal
   validates_presence_of :monthly_have
   validates_presence_of :monthly_needed
   validates_presence_of :num_weeks_of_mpd
   validates_presence_of :num_weeks_of_mpm
-  validate :accountability_partner_if_doing_mpd
+  
+  #-----------------------------------------------------
+  # 2012-03-30 Those fields were removed from the form
+  #-----------------------------------------------------
+  #validates_presence_of :joined_staff
+  #validate :accountability_partner_if_doing_mpd
+  #-----------------------------------------------------
 
   STATUS_WAITING = "waiting for review"
   STATUS_APPROVED = "approved!"

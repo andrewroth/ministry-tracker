@@ -354,6 +354,28 @@
              :order => 7
            }           
       }, 
+        :monthly_report_input => {
+          :students_dg => {:column => :monthlyreport_totalStudentInDG, 
+            :label => "Number of students in DGs",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_totalStudentInDG,
+                                    :annual_report => :annualReport_lnz_totalStudentInDG},
+            :display_type => :text_positive_integer,
+            :order => 3
+          },
+          :spirit_mult => {:column => :monthlyreport_totalSpMult, 
+            :label => "Number of spiritual multipliers",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_totalSpMult,
+                                    :annual_report => :annualReport_lnz_totalSpMult},
+            :display_type => :text_positive_integer,
+            :order => 4
+          }
+      }, 
         :monthly_report => {
           :avg_hours_prayer => {:column => :monthlyreport_avgPrayer, 
             :label => "Average - weekly hours of prayer",

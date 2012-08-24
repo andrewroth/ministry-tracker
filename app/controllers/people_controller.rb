@@ -172,9 +172,14 @@ class PeopleController < ApplicationController
     @options = {}
     
     if params[:page].present?
-      session[:last_options].each_pair do |k,v|
-        next if k == :page || k == "page"
-        params[k] = v  
+      if !session[:last_options].present?
+        flash[:notice] = "Sorry, looks like your search expired.  Please search again."
+        redirect_to :back
+      else
+        session[:last_options].each_pair do |k,v|
+          next if k == :page || k == "page"
+          params[k] = v  
+        end
       end
     end
 
