@@ -441,10 +441,9 @@ h1 {
 
 /* the idea here is the regular horizontal tablist styles are defined first while the verticalTablist are defined later to override */
 
-#verticalTablistContainer { position:relative; background:url("/images/bracket_vertical_bg.png") repeat-y scroll right transparent; min-height:300px; margin-top: 6px; }
+#verticalTablistContainer { position:relative; background:url("/images/p2c_bracket_vertical_bg.png") repeat-y scroll right transparent; min-height:300px; margin-top: 6px; }
 
-#verticalTablistContainer #verticalBracketTop { background:url("/images/sprites/main_elements.png"); background-position:-10px -844px; width:13px; height:9px; display:inline-block; position:absolute; top:0; right:0; }
-#verticalTablistContainer #verticalBracketBottom { background:url("/images/sprites/main_elements.png"); background-position:-10px -906px; width:13px; height:9px; display:inline-block; position:absolute; bottom:0; right:0; }
+#verticalTablistContainer #verticalBracketTop { background:url("/images/p2c_bracket_vertical_bg.png"); background-position: -10px -844px; width:13px; height:9px; display:inline-block; position:absolute; top:-8px; right:3px; }
 
 #verticalTablist { margin-left:20px; }
 #verticalTablistBottom { background:url("/images/bracket_vertical_bottom.png") no-repeat scroll right top transparent; padding-top:7px; }
@@ -498,6 +497,7 @@ h1 {
   font-weight: bold;
   font-size: 14px;
   font-family: Arial, Helvetica, Sans-Serif;
+  letter-spacing: -1px;
   height: 30px;
   padding-left: 18px;
   background-repeat: no-repeat;
@@ -521,7 +521,7 @@ h1 {
   background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat; background-position:20px -1022px;
 }
 .verticalTablist a.active {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;  background-position:168px -864px;
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;  background-position: 168px -1769px;
 }
 
 .tablist a.active div, .verticalTablist a.active span {
@@ -1435,6 +1435,7 @@ div#logos a, div#logos a:hover { text-decoration:none; }
 div#logos #pulse_logo {
   background-position: -9px -1702px;
   background-repeat: no-repeat;
+  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
   bottom: -54px;
   display: inline-block;
   height: 50px;
