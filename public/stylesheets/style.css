@@ -1413,8 +1413,9 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 
 #userbar_wrapper, #content_wrapper {
   width: 100%;
+  background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #content, #userbar {
