@@ -17,7 +17,7 @@ body {
 #logo_container {
   height: 109px;
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #banner_container {
@@ -33,6 +33,7 @@ body {
 }
 
 #banner_container #leftBubbleImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
   background-repeat: no-repeat;
   background-position:-6px -90px;
   display:inline-block;
@@ -55,6 +56,7 @@ body {
 }
 
 #banner_container #rightBubbleImg {
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
   background-repeat: no-repeat;
   background-position:-6px -345px;
   display:inline-block;
@@ -105,7 +107,7 @@ body {
   height: 123px;
   margin-top: 7px;
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 #p2c_pulse_logo {

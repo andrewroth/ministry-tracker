@@ -8,11 +8,8 @@
 
     <!-- override images for translations -->
     <style>
-      div#logos #c4c_logo {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-      }
       div#logos #pulse_logo {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
+        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
       }
       #ptcLogoLink {
         background-image: url("<%= t("layout.images.ptc_logo_grey") %>") ! important;
@@ -91,8 +88,7 @@
       <div id="userbar_wrapper">
   		  <div id="userbar">
           <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-            <%= link_to "<div id='c4c_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
-            <%= link_to "<div id='pulse_logo'>&nbsp;</div>", :controller => 'dashboard', :action => 'index' %>
+            <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => 'dashboard', :action => 'index' %>
           </div>
 
 
