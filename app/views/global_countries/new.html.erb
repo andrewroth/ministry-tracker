@@ -1,0 +1,55 @@
+<h1>New global_country</h1>
+
+<% form_for(@global_country) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :global_area_id %><br />
+    <%= f.text_field :global_area_id %>
+  </p>
+  <p>
+    <%= f.label :iso3 %><br />
+    <%= f.text_field :iso3 %>
+  </p>
+  <p>
+    <%= f.label :stage %><br />
+    <%= f.text_field :stage %>
+  </p>
+  <p>
+    <%= f.label :live_exp %><br />
+    <%= f.text_field :live_exp %>
+  </p>
+  <p>
+    <%= f.label :live_dec %><br />
+    <%= f.text_field :live_dec %>
+  </p>
+  <p>
+    <%= f.label :new_grth_mbr %><br />
+    <%= f.text_field :new_grth_mbr %>
+  </p>
+  <p>
+    <%= f.label :mvmt_mbr %><br />
+    <%= f.text_field :mvmt_mbr %>
+  </p>
+  <p>
+    <%= f.label :mvmt_ldr %><br />
+    <%= f.text_field :mvmt_ldr %>
+  </p>
+  <p>
+    <%= f.label :new_staff %><br />
+    <%= f.text_field :new_staff %>
+  </p>
+  <p>
+    <%= f.label :lifetime_lab %><br />
+    <%= f.text_field :lifetime_lab %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', global_countries_path %>

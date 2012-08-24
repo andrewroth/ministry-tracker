@@ -6,28 +6,6 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <!-- override images for translations -->
-    <style>
-      div#logos #pulse_logo {
-        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
-      }
-      #ptcLogoLink {
-        background-image: url("<%= t("layout.images.ptc_logo_grey") %>") ! important;
-      }
-      #banner_container #leftBubbleImg {
-        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
-      }
-      #banner_container #rightBubbleImg {
-        background-image: url("<%= t("layout.images.p2c_main_elements") %>") ! important;
-      }
-      #helpLink {
-        background-image: url("<%= t("layout.images.main_elements") %>") ! important;
-        width: 60px ! important;
-        position: relative;
-        left: -30px;
-      }
-    </style>
-
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
       <% if Cmt::CONFIG[:web_title] %>
@@ -62,6 +40,10 @@
     <%- if logged_in? -%>
       <%= stylesheet_link_tag "connexion_default.css" %>
     <%- end -%>
+
+    <%= stylesheet_link_tag "connexion_default.css" %>
+
+    <%= locale_stylesheet_link_tag %>
 
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
   </head>
@@ -147,7 +129,7 @@
       </div>
 
       <div id="greenbar">
-        <div id="signin"><%= @custom_userbar_title || link_to(I18n.t(:please_login, :default => 'Please Login'), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
+        <div id="signin"><%= @custom_userbar_title || link_to(t("signup.login"), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
       </div>
 
       <%- end -%>
@@ -204,7 +186,7 @@
     </div> <!-- Center -->
     <div id="footer">
       <div id="ptcLinkContainer"><a href="http://powertochange.com" title="Power to Change" target="_blank"><div id="ptcLogoLink">&nbsp;</div></a></div>
-      <div id="helpLinkContainer"><a href="https://www.mygcx.org/Pulse_Help_Center/screen/home" title="Pulse Help Center" target="_blank"><div id="helpLink">&nbsp;</div></a></div>
+      <div id="helpLinkContainer"><a href="http://getsatisfaction.com/powertochange" title="Pulse Help Center" target="_blank"><div id="helpLink">&nbsp;</div></a></div>
     </div>
     <%= I18n.t :analytics, :default => "" %>
 

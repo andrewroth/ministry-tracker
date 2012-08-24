@@ -215,7 +215,6 @@ class GlobalCountry < ActiveRecord::Base
       year_num = values[column('A')].to_i
       if last_year != year_num
         last_year = year_num
-        puts last_year
       end 
 
       month_num = values[column('B')].to_i
@@ -223,10 +222,10 @@ class GlobalCountry < ActiveRecord::Base
       month = Month.find_by_month_desc("#{Date::MONTHNAMES[month_num]} #{year_num}")
       year = month.year
 
-      area_name = values[column('C')]
+      strategy = values[column('C')].downcase
       country_name = values[column('D')]
       country_code = values[column('E')]
-      strategy = values[column('F')].downcase
+      area_name = values[column('F')]
 
       gc = GlobalCountry.find_by_iso3(country_code)
 

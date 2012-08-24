@@ -62,11 +62,11 @@ render_tabnav :vertical_main,
       t.highlights_on :controller => "semester_reports"
     end
 
-    if authorized?(:new, :weekly_reports)
+    if authorized?(:new, :monthly_reports)
       add_tab do |t|
-        t.named "<span id='weeklyStatsTab' class='tab subtab'>enter weekly stats</span>"
-        t.titled "Enter your weekly stats"
-        t.links_to :controller => :weekly_reports, :action => :new
+        t.named "<span id='weeklyStatsTab' class='tab subtab'>enter monthly stats</span>"
+        t.titled "Enter your monthly stats"
+        t.links_to :controller => :monthly_reports, :action => :new
       end
     end
   end

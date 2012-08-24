@@ -78,7 +78,8 @@
     <% mpd_current_array << summer_report.monthly_have.to_i %>
     <% mpd_mpm_array << summer_report.num_weeks_of_mpd.to_i + summer_report.num_weeks_of_mpm.to_i %>
     <% status_count[summer_report.status] += 1 %>
-    <% coach_count[summer_report.support_coach.to_s] += 1 %>
+    <% coach_count["false"] += 1 #old line: coach_count[summer_report.support_coach.to_s] += 1 #support coach was removed from the input form 
+    %>
   <% end %>
 
 

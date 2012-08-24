@@ -1,5 +1,5 @@
 <div id="dialog" style="display:none;">
-  <a id="TB_closeWindowButton" href="#" style="float:right">close</a>
+  <a id="TB_closeWindowButton" href="#" style="float:right"><%= I18n.t("profile.manage_campuses.close") %></a>
   <%- if @denied -%>
     <p>Students are assigned to campuses, not ministries.  Edit their Campuses instead.</p>
   <%- else -%>

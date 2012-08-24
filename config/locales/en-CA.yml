@@ -413,7 +413,7 @@ en-CA:
 
         <P><A HREF="<%= @link %>" target="_blank"><%= @link %></A></P>
 
-        <P>If you have any problems verifying your email, please contact helpdesk@c4c.ca</P>
+        <P>If you have any problems verifying your email, please contact helpdesk@powertochange.org</P>
       </HTML>
     signup_finished_email: |
       <HTML>
@@ -454,9 +454,9 @@ en-CA:
   signup:
     email_error: "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
     missing_campus_and_semester: "Sorry, we didn't recieve the campus and semester that you chose, please try again."
-    verification_email_error: "Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca"
+    verification_email_error: "Sorry, a verification email could not be sent, please try again or contact helpdesk@powertochange.org"
     group_invitation_error: "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
-    general_error: "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@c4c.ca"
+    general_error: "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@powertochange.org"
     verify_email: "Verify Email"
     explanation: "We are using TheKey to authenticate users. TheKey is developed by the American Campus Crusade for Christ tech team, and is used by Campus Crusade ministries around the world. Using TheKey means more people can use the project tool, and you only need to remember their Key login rather than separate credentials for each site."
     to_signup: "To signup,"
@@ -471,3 +471,4 @@ en-CA:
     verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
     fill_all_fields: "Please fill all required fields"
     verified_success: "Your email has been verified, thanks!"
+    login: "Sign In"
