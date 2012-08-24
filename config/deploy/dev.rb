@@ -16,7 +16,7 @@ set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
 set :keep_releases, 3
 
 set :scm, "git"
-set :repository, "git://github.com/twinge/#{application}.git"
+set :repository, "git://github.com/andrewroth/#{application}.git"
 set :branch, if prod? then 'pulse_cdm' elsif stage? then 'c4c.staging' else 'c4c.dev' end
 set :deploy_via, :checkout
 path = if ma?
