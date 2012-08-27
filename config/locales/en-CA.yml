@@ -97,6 +97,10 @@ en-CA:
     update_schedule_msg: "You haven't filled out your schedule yet."
     update_schedule_title: "UPDATE MY SCHEDULE"
   profile:
+    set_initial_campus:
+      heading: Please fill out your info and click Save.
+      are_required: are required fields
+      already_involvement: There is already a campus involvement for the campus "%{campus}"; you can only be involved once per campus. Arc
     picture:
       instructions: "Select an image file on your computer (max 10 MB):"
       browse_button: Choose File
@@ -164,6 +168,7 @@ en-CA:
       room: Room
       valid_from: Valid from
       valid_until: Valid until
+      campus: Campus
     manage_campuses:
       title: Manage Campuses
       add_campus: Add Campus
@@ -171,6 +176,7 @@ en-CA:
       involvement_history: Involvement History
       to: to
       at: at
+      archive_confirm: Are you sure you want to archive this involvement?
     mentor:
       none: No mentor currently
     mentee:
