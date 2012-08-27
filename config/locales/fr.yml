@@ -99,6 +99,10 @@ fr:
     "update_schedule_msg": "Tu n'as pas encore inscrit ton horaire"
     "update_schedule_title": "METTRE À JOUR MON HORAIRE"
   "profile": 
+    "set_initial_campus": 
+      "heading": "SVP, remplir tes infos et cliquer sur Enregistrer."
+      "are_required": "sont des champs obligatoires"
+      "already_involvement": "Il y a déjà une participation pour le campus \"%{campus}\"; tu ne peux pas participer plus qu'une fois par campus. Archive ta participation courante et essaie de nouveau."
     "picture": 
       "instructions": "Sélectionner une image à télécharger (max. 10 Mo)"
       "browse_button": "Choisir un dossier"
@@ -160,6 +164,8 @@ fr:
       "dorm": "Résidence"
       "room": "No. de chambre"
       "valid_until": "Valide jusqu'au"
+      "campus": "Campus"
+      "role": "Rôle"
     "manage_campuses": 
       "title": "Gérer mes campus"
       "add_campus": "Ajouter un campus"
@@ -321,16 +327,16 @@ fr:
     "group_invitation": "<html><p>Salut!</p>\n<p><%= @group_invitation.sender_person.full_name %> t'a invité à t'inscrire à son groupe  <%= @group_invitation.group.name %> de Pouvoir de Changer.</p>\n<br/>\n<p><blockquote><p><%= \"<a href='#{@accept_link}'>\" if @accept_link.present? %><b>INSCRIS-MOI!</b><%= \"</a>\" if @accept_link.present? %></p><br/><p><%= \"<a href='#{@decline_link}'>\" if @decline_link.present? %><b>NON MERCI</b><%= \"</a>\" if @decline_link.present? %></p></blockquote></p>\n<br/>\n<p>Tu peux communiquer avec <%= @group_invitation.sender_person.first_name %> à <b><%= @group_invitation.sender_person.email %></b></p>\n<p>Tu cherches un autre groupe?<%= \"<a href='#{@other_groups_link}'>\" if @other_groups_link.present? %>Viens découvrir d'autres groupes de Pouvoir de Changer à <%= @group_invitation.group.campus.name %><%= \"</a>\" if @other_groups_link.present? %></p></html>"
     "group_invitation_decline": "<html><p>Allô <%= @group_invitation.sender_person.first_name %>,</p>\n<p><%= @group_invitation.recipient_email %> a refusé ton invitation au groupe <%= @group_invitation.group.name %></p>\n<p>Merci d'avoir utilisé le Pouls!</p></html>"
     "group_join_email": "<HTML><P><%= @leader_first_name %>,</P>\n<P><%= @member_first_name %> <%= @member_last_name %> a <%= if @requested \"aimerait s'inscrire à\"elsif @interested \"est intéressé par\"else \"s'est inscris à\"end -%> <%= @group_name %><% if @join_time.present? %> à <%= @join_time %><% end %>. <% if @school_year.present? %><%= @member_first_name %> est un étudiant en <%= @school_year %> et <% else %> Ses <% end %>coordonnées sont <%= @member_email %><% if @member_phone.present? %> et <%= @member_phone %><% end %>.</P>\n<%- if @requested -%><P>Tu peux accepter la demande de <%= @member_first_name %> de s'inscrire à <%= @group_name %> <%= link_to \"ici\", @group_link %></P><%- elsif @interested -%><P>Une personne qui indique qu'elle est « Intéressée » à un groupe n'est généralement pas certaine si c'est le bon groupe pour elle. Si cette personne correspond à votre groupe, tu peux approuver sa demande <%= link_to \"ici\", @group_link %> et utiliser le bouton Déplacer pour l'ajouter à ton groupe. De même, si une personne s'intéresse au mauvais groupe, tu peux l'enlever de ton groupe en cochant son nom et en cliquant le bouton Enlever. </P><%- else -%><P>Tu peux visionner et modifier les infos <%= @group_name %> <%= link_to \"ici\", @group_link %>.</P><%- end -%>\n<P>Merci d'utiliser le Pouls!</P></HTML>"
-    "signup_confirm_email": "<HTML><P>Merci pour ton inscription au Pouls. Pour continuer ton incription, clique sur le lien ci-dessous. Tu peux vérifier ton courriel, t'inscrire à un groupe et soumettre ton horaire. </P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P>\n<P>Si tu n'arrives pas à vérifier ton courriel, communique avec helpdesk@c4c.ca</P></HTML>"
+    "signup_confirm_email": "<HTML><P>Merci pour ton inscription au Pouls. Pour continuer ton incription, clique sur le lien ci-dessous. Tu peux vérifier ton courriel, t'inscrire à un groupe et soumettre ton horaire. </P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P>\n<P>Si tu n'arrives pas à vérifier ton courriel, communique avec helpdesk@powertochange.org</P></HTML>"
     "signup_finished_email": "<HTML><P> Merci pour ton inscription à un groupe et /ou pour la soumission de ton horaire. Pour soumettre ou modifier ton horaire, clique sur le lien ci-dessous. <% if @joined_collection_group %> Lorsqu'on t'ajoute à un groupe, le responsable du groupe à ton campus communiquera avec toi par courriel  <% end %></P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P></HTML>"
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
-    "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour visionner l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
+    "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour vérifier l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
   "signup": 
     "email_error": "SVP entre une adresse courriel valide. Si l'adresse est déjà dans le Pouls, tu recevras un courriel de vérification."
     "missing_campus_and_semester": "Désolés, nous n'avons pas reçu ton choix de campus ni de session. SVP réessayer. "
-    "verification_email_error": "Désolés, il n'était pas possible de t'envoyer un courriel de vérification. SVP réessayer ou communiquer avec helpdesk@c4c.ca"
+    "verification_email_error": "Désolés, il n'était pas possible de t'envoyer un courriel de vérification. SVP réessayer ou communiquer avec helpdesk@powertochange.org"
     "group_invitation_error": "Désolés, il y a eu un problème avec ta demande d'inscription. <br/><br/> Nous voulons toujours que tu te joignes à nous, alors trouve le groupe que tu veux ci-dessous et inscris-toi!"
-    "general_error": "Désolés, il y a eu un problème derrière les scènes. Essaie encore de t'inscrire à un groupe. <br/>Si cela se produit encore, communique avec helpdesk@c4c.ca"
+    "general_error": "Désolés, il y a eu un problème derrière les scènes. Essaie encore de t'inscrire à un groupe. <br/>Si cela se produit encore, communique avec helpdesk@powertochange.org"
     "verify_email": "Vérification de l'adresse courriel"
     "explanation": "Nous utilisons TheKey pour authentifier l'identité des utilisateurs. TheKey est est un logiciel développé par l'équipe technique de Cru, et est utilisé par les ministères de Cru dans le monde entier. En utilisant TheKey, plus de personnes peuvent utiliser l'outil pour les projets, et il est seulement nécessaire de retenir leur identifiant TheKey au lieu d'avoir des infirmations de connexions différentes pour chaque site.  "
     "to_signup": "Pour s'inscrire,"
@@ -344,3 +350,5 @@ fr:
     "email_already_in": "<b>%{email} est déjà dans le Pouls. </b> Si ce courriel t'appartient, clique le bouton \"Vérification de l'adresse courriel\", puis on t'enverra un courriel qui te permettra de terminer ta demande d'inscription à un groupe. Cela nous permet d'assurer que ce courriel est bien à toi. "
     "verify_email_sent": "Un courriel de vérification a été envoyé à <b>%{email}</b><br/><br/>Clique le lien dans le courriel pour terminer ton inscription."
     "fill_all_fields": "SVP compléter tous les champs obligatoires"
+    "verified_success": "Nous avons vérifié ton addresse courriel. Merci!"
+    "login": "Connexion"
