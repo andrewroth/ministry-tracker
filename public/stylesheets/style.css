@@ -154,9 +154,13 @@ div.yui-skin-cnxbar {
 }
 
 body {
-  font-size:12px;
-  text-align:center;
-  background-color:white;
+  font-size: 12px;
+  text-align: center;
+
+  background: url("/images/layout_background_gradient.png");
+  background-repeat: repeat-y;
+  background-position: center;
+  background-color: #f5f5f5;
 }
 
 body.facebook_canvas {
@@ -395,11 +399,6 @@ h1 {
 #wrapper {
   margin: 10px auto 10px auto;
   text-align:left;
-  background:#FFFFFF;
-  background: url("/images/layout_background.png");
-  background-repeat: no-repeat;
-  background-position: center -31px;
-  background-color: #F4F4F4;
 }
 
 #wrapper.facebook_canvas {
@@ -407,17 +406,23 @@ h1 {
   border-style: solid;
   border-width: 9px 1px 1px;
   min-width: 0;
-	max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
+  max-width: 756px; /* this number is the maximum Facebook iframe width (758px) subtract the wrapper borders */
   margin-top: 0;
   padding: 7px;
 }
 
+#background {
+  background: url("/images/layout_background.png");
+  background-repeat: no-repeat;
+  background-position: center 8px;
+  min-height: 1035px;
+}
+
 #footer {
-	min-width:900px;
-	max-width:900px;
-	height:100px;
-  margin:auto;
-  margin-top:70px;
+	min-width: 900px;
+	max-width: 900px;
+	height: 60px;
+  margin: 30px auto 20px auto;
 }
 
 #header {
@@ -1357,7 +1362,7 @@ div#logos.dashboard #pulse_logo { left: 62px; }
 #dashwrap .col3 {
 	float:left;
 	position:relative;
-	padding:0 0 1em 0;	/* no left and right padding on columns, we just make them narrower instead
+	padding:0 0 3em 0;	/* no left and right padding on columns, we just make them narrower instead
 					only padding top and bottom is included here, make it whatever value you need */
 	overflow:hidden;
 }
@@ -1769,25 +1774,35 @@ padding-bottom:5px;
 
 /* ************* */
 /* Flash Notices */
-#flash_notice, .flash_notice {
-  color: #585958;
-  margin:10px;
-  padding:10px;
-  background:#FFCB05;
-  font-size:16px;
-  -moz-border-radius: 10px; -webkit-border-radius: 10px;
+
+.messages {
+  text-align: center;
 }
 
-div.flash big {
+#flash_notice, .flash_notice, #flash_warning, #instructions {
+  display: inline-block;
+  color: #585958;
+  margin: 0 10px 10px 10px;
+  padding: 10px;
+  background: #f7c55c;
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+  min-width: 900px;
+  border-radius: 10px; -webkit-border-radius: 10px;
+}
+
+.flash big {
   color: #585958;
 }
 
-div.flash b, div.flash_notice b  {
+.flash b, .flash_notice b  {
   color: #585958;
   font-weight: bold;
 }
-div.flash_notice.warning b, div.flash_notice.warning big  {
-	color:FireBrick;
+
+#flash_warning, .flash.warning b, .flash.warning big {
+	color: FireBrick;
 }
 
 .flash {
@@ -1800,12 +1815,10 @@ div.flash_notice.warning b, div.flash_notice.warning big  {
 	color:FireBrick;
 }
 
-div #instructions {
-  color: #585958;
-  margin:20px;
-  font-size:16px;
+#instructions {
+  font-weight: normal;
 }
-div #instructions b {
+#instructions b {
   color: #585958;
 }
 
@@ -3303,7 +3316,7 @@ li.ac_over .autoCompleteName {
 
 .ac_over {
   color: white;
-  background-color: #fdbb30;
+  background-color: #f7c55c;
 }
 
 .autoCompleteName {

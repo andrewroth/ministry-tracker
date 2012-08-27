@@ -1,5 +1,5 @@
 
-div#logos #pulse_logo {
+#logos #pulse_logo {
   background-image: url("/images/sprites/p2c_main_elements.png") ! important;
 }
 #ptcLogoLink {
@@ -12,10 +12,10 @@ div#logos #pulse_logo {
   background-image: url("/images/sprites/p2c_main_elements.png") ! important;
 }
 #helpLink {
-  background-image: url("/images/fr/main_elements.png") ! important;
-  width: 60px ! important;
-  position: relative;
-  left: -30px;
+  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
+}
+.link_bar #tools {
+  letter-spacing: -1px;
 }
 
 .badhead {background:url(/images/fr/status_bad.png) center 31px #bc0a0a;}

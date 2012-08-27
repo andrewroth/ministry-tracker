@@ -50,140 +50,145 @@
 
 
 	<body>    
-      
-    <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
-		<div id="outer">
-		
-		<% if Cmt::CONFIG[:gcx_connexion_bar] %>
-		  <% begin %>
-        <%= connexion_bar %>
-        <%= connexion_bar_revealer %>
-      <% rescue => e %>
-        <% Rails.logger.error("\nERROR WITH CONNEXION_BAR: \n#{e.try(:class)}\n#{e.try(:message)}\n\n") %>
+    <div id="background">
+        
+      <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
+  		<div id="outer">
+  		
+  		<% if Cmt::CONFIG[:gcx_connexion_bar] %>
+  		  <% begin %>
+          <%= connexion_bar %>
+          <%= connexion_bar_revealer %>
+        <% rescue => e %>
+          <% Rails.logger.error("\nERROR WITH CONNEXION_BAR: \n#{e.try(:class)}\n#{e.try(:message)}\n\n") %>
+        <% end %>
       <% end %>
-    <% end %>
-    
-    <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
+      
+      <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
 
 
-		<div id="wrapper">
-      <div id="userbar_wrapper">
-  		  <div id="userbar">
-          <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
-            <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => 'dashboard', :action => 'index' %>
-          </div>
+  		<div id="wrapper">
+        <div id="userbar_wrapper">
+    		  <div id="userbar">
+            <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
+              <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => 'dashboard', :action => 'index' %>
+            </div>
 
 
-          <% if logged_in? && @me && !@custom_userbar_title %>
+            <% if logged_in? && @me && !@custom_userbar_title %>
 
 
-          <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
-          
-
-          <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
-            <a href="#" class="logoutbutton" onclick="try {
-              FB.Connect.logoutAndRedirect('<%= logout_url %>');
-              } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
-          <% end %>
-
-          <div id="userblock" class="link_bar">
-            <%= spinner('_switch_ministries', 'opaqueWhite') %>
-            <%= t('layout.top_bar.greeting', :name => %|
-                  <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
-                  |) %>
+            <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
             
-            <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
-              <div id="switch_ministries">
-                <%- if @ministry -%>
-                  &nbsp;&nbsp;
-                  <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
-                <%- end -%>
-              </div>
-              <div id="switch_ministries_list" style="display:none">&nbsp;</div>
-            <%- end -%>
+
+            <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
+              <a href="#" class="logoutbutton" onclick="try {
+                FB.Connect.logoutAndRedirect('<%= logout_url %>');
+                } catch (e) { alert('RJS error:\n\n' + e.toString()); alert('FB.Connect.logoutAndRedirect(\'<%= logout_url %>\');'); throw e }; return false;">logout</a>
+            <% end %>
+
+            <div id="userblock" class="link_bar">
+              <%= spinner('_switch_ministries', 'opaqueWhite') %>
+              <%= t('layout.top_bar.greeting', :name => %|
+                    <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
+                    |) %>
+              
+              <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
+                <div id="switch_ministries">
+                  <%- if @ministry -%>
+                    &nbsp;&nbsp;
+                    <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
+                  <%- end -%>
+                </div>
+                <div id="switch_ministries_list" style="display:none">&nbsp;</div>
+              <%- end -%>
+              
+              <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
+            </div>
             
-            <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
+            <div class="clear"></div>
+
           </div>
-          
+        </div>
+
+        <% unless controller.controller_name == "dashboard" %>
+        <div id="tablist_container">
+          <%= tabnav :main unless @hide_layout_navigation %>
+        <% else %>
+        <div id="banner_container">
+          <%= render :partial => "/dashboard/banner" %>
+        <% end %>
+        </div>
+
+
+
+        <%- else -%>
+
+          <div id="userblock">
+          </div>
           <div class="clear"></div>
-
         </div>
-      </div>
 
-      <% unless controller.controller_name == "dashboard" %>
-      <div id="tablist_container">
-        <%= tabnav :main unless @hide_layout_navigation %>
-      <% else %>
-      <div id="banner_container">
-        <%= render :partial => "/dashboard/banner" %>
-      <% end %>
-      </div>
-
-
-
-      <%- else -%>
-
-        <div id="userblock">
+        <div id="greenbar">
+          <div id="signin"><%= @custom_userbar_title || link_to(t("signup.login"), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
         </div>
-        <div class="clear"></div>
-      </div>
 
-      <div id="greenbar">
-        <div id="signin"><%= @custom_userbar_title || link_to(t("signup.login"), CASClient::Frameworks::Rails::Filter.login_url(controller)) %></div>
-      </div>
+        <%- end -%>
 
-      <%- end -%>
+        <div class="clear">&nbsp;</div>
 
-      <div class="clear">&nbsp;</div>
+        <div class="messages">
+          <!-- this is a conditional comment, only IE recognizes these -->
+          <!--[if lt IE 8]>
+            <div id='browser_warning' class='flash_notice warning'>
+              <%= image_tag "/images/silk/exclamation.png" %>
+              <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
+              For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
 
+              <div style='display:inline; padding:5px 5px 0;'>
+                <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+                <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+                <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+                <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+              </div>
+            </div>
+          <![endif]-->
+          
+          <noscript>
+            <div class="flash_notice flash warning">
+              <%= image_tag "/images/silk/exclamation.png" %>
+              <b>For full functionality of this site it is necessary to enable JavaScript.</b>
+              <br/>
+              <br/>
+              <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
+            </div>
+          </noscript>
 
-      <!-- this is a conditional comment, only IE recognizes these -->
-      <!--[if lt IE 8]>
-        <div id='browser_warning' class='flash_notice warning'>
-          <%= image_tag "/images/silk/exclamation.png" %>
-          <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
-          For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
+          <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
+                            <%- if @notices -%>
+                              <%- for notice in @notices -%>
+                                <div class="flash_notice" id="notice_<%= notice.id %>"><%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %></div>
+                              <%- end %>
+                            <%- end %>
 
-          <div style='background-color:white; display:inline; padding:5px 5px 0;'>
-            <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-            <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-            <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-            <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+          <div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
+
+          <div id="instructions" style="display:none;"></div>
+        </div>
+
+        <div id="content_wrapper">
+          <div id="content">
+            <%= yield %>
+            <div class="clear">&nbsp;</div>
           </div>
         </div>
-      <![endif]-->
-      
+      </div> <!-- Wrapper -->
 
-      <noscript>
-        <div class="flash_notice warning">
-          <%= image_tag "/images/silk/exclamation.png" %>
-          <b>For full functionality of this site it is necessary to enable JavaScript.</b>
-          <br/>
-          <br/>
-          <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
-        </div>
-      </noscript>
+      <div id="dialog" style="display:none"></div>
+      </div> <!-- Center -->
 
+    </div> <!-- Background -->
 
-      <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
-                        <%- if @notices -%>
-                          <%- for notice in @notices -%>
-                            <div class="flash_notice" id="notice_<%= notice.id %>"><%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %></div>
-                          <%- end %>
-                        <%- end %>
-      <div class="flash warning" id="flash_warning" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:warning] %></div>
-      <div id="instructions" style="display:none;"></div>
-
-      <div id="content_wrapper">
-        <div id="content">
-          <%= yield %>
-          <div class="clear">&nbsp;</div>
-        </div>
-      </div>
-    </div> <!-- Wrapper -->
-
-    <div id="dialog" style="display:none"></div>
-    </div> <!-- Center -->
     <div id="footer">
       <div id="ptcLinkContainer"><a href="http://powertochange.com" title="Power to Change" target="_blank"><div id="ptcLogoLink">&nbsp;</div></a></div>
       <div id="helpLinkContainer"><a href="http://getsatisfaction.com/powertochange" title="Pulse Help Center" target="_blank"><div id="helpLink">&nbsp;</div></a></div>
@@ -194,5 +199,6 @@
       <%= I18n.t :analytics, :default => "" %>
       <!-- BEGIN: SeeVolution --><img width=0 height=0 src="https://c.svlu.net/pixel.aspx"/><script type="text/javascript" src="https://c.svlu.net/JInitScript.js"></script><!-- END: SeeVolution  -->
     <% end %>
+
   </body>
 </html>
