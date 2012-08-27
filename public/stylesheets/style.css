@@ -637,11 +637,11 @@ h1#title {
 }
 
 #helpLink {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -935px;
-  height:17px;
-  width:37px;
-  display:inline-block;
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position: -11px -1214px;
+  height: 20px;
+  width: 45px;
+  display: inline-block;
 }
 
 #ptcLinkContainer {
@@ -2409,28 +2409,28 @@ td.eventIcon a, td.eventIcon a:hover {
   text-decoration: none;
 }
 
-td.eventIcon div.expand {
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -10px -755px;
-  height:13px;
-  width:13px;
-  display:inline-block;
+td.eventIcon .expand {
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
+  background-position: -10px -127px;
+  height: 15px;
+  width: 15px;
+  display: inline-block;
 }
 
-td.eventIcon div.expand:hover {
-  background-position: -10px -788px;
+td.eventIcon .expand:hover {
+  background-position: -10px -571px;
 }
 
-td.eventIcon div.contract {
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -10px -689px;
-  height:13px;
-  width:13px;
-  display:inline-block;
+td.eventIcon .contract {
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
+  background-position: -10px -365px;
+  height: 15px;
+  width: 15px;
+  display: inline-block;
 }
 
-td.eventIcon div.contract:hover {
-  background-position: -10px -722px;
+td.eventIcon .contract:hover {
+  background-position: -10px -809px;
 }
 
 td.eventAttendees {
@@ -2772,14 +2772,14 @@ h2.group_type_title {
 }
 
 #uberSearchButton div {
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -8px -9px;
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
+  background-position: -7px -907px;
   height: 18px;
   width: 18px;
 }
 
 #uberSearchButton:hover div {
-  background-position: -8px -44px;
+  background-position: -7px -941px;
 }
 
 #uberMentorSearchContainer, #uberMenteeSearchContainer {
@@ -3121,10 +3121,10 @@ h2.group_type_title {
 .autoCompleteMorePic {
   float: left;
   margin: 19px 8px 0 35px;
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -10px -10px;
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
+  background-position: -10px -908px;
   height:15px;
-  width:12px;
+  width:14px;
   display:inline-block;
 }
 
@@ -3153,10 +3153,11 @@ li.ac_over .autoCompleteIconLink {
 }
 
 .autoCompleteIconLink .autoCompleteIconTimetable {
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -10px -160px;
-  height:16px;
-  width:13px;
+  background-image: url("/images/sprites/p2c_icons.png");
+  background-position: -10px -223px;
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 19px;
 }
 
 .autoCompleteIconLink .autoCompleteIconImpersonate {
@@ -3302,7 +3303,7 @@ li.ac_over .autoCompleteName {
 
 .ac_over {
   color: white;
-  background-color: #FFCB05;
+  background-color: #fdbb30;
 }
 
 .autoCompleteName {
@@ -3441,8 +3442,8 @@ table.groupInvolvementList th {
 }
 
 #dashboardInsightsContainer #dashboardInsights {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat;
-  background-position: -10px -118px;
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-position: -10px -1815px;
   overflow: visible;
   height: 130px;
 }
