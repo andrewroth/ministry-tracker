@@ -111,15 +111,17 @@
           </div>
         </div>
 
-        <% unless controller.controller_name == "dashboard" %>
-        <div id="tablist_container">
-          <%= tabnav :main unless @hide_layout_navigation %>
+        <% if controller.controller_name == "dashboard" %>
+          <div id="banner_container">
+            <%= render :partial => "/dashboard/banner" %>
+          </div>
         <% else %>
-        <div id="banner_container">
-          <%= render :partial => "/dashboard/banner" %>
+          <% unless @hide_layout_navigation %>
+            <div id="tablist_container">
+              <%= tabnav :main %>
+            </div>
+          <% end %>
         <% end %>
-        </div>
-
 
 
         <%- else -%>
