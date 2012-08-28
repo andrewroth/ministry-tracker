@@ -453,18 +453,23 @@ h1 {
 #verticalTablist { margin-left:20px; }
 #verticalTablistBottom { background:url("/images/bracket_vertical_bottom.png") no-repeat scroll right top transparent; padding-top:7px; }
 
-#tablist_container { position: relative; height: 50px; }
+#tablist_container {
+  position: relative;
+  height: 60px;
+  text-align: center;
+}
 
 #tablist {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat; background-repeat: no-repeat; background-position:-10px -971px;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-repeat: no-repeat;
+  background-position: 0 -1988px;
+  width: 900px;
+  padding: 0 200px;
+  height: 100%;
 }
 
 .tablist {
-  width:100%;
-  float:right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  display: inline-block;
 }
 
 .tablist ul {
@@ -474,6 +479,7 @@ h1 {
 .tablist li {
   float:right;
   margin-left: 27px;
+  margin-top: 0;
 }
 
 .tablist a {
@@ -482,7 +488,9 @@ h1 {
 	text-align: center;
   cursor:pointer;
   overflow:hidden;
+  height: 60px;
 }
+
 .verticalTablist a {
   display:block;
   cursor:pointer;
@@ -504,11 +512,11 @@ h1 {
   font-family: Arial, Helvetica, Sans-Serif;
   letter-spacing: -1px;
   height: 30px;
-  padding-left: 18px;
   background-repeat: no-repeat;
   line-height: 24px;
   display: block;
   margin-bottom:10px;
+  padding-left: 25px;
   transition:color .1s ease; -webkit-transition:color .1s ease; -moz-transition:color .1s ease;
 }
 
@@ -520,11 +528,13 @@ h1 {
 .verticalTablist span {
   height: 32px;
   margin-bottom: 0;
+  padding-left: 18px;
 }
 
 .tablist a.active {
-  background-image: url("/images/sprites/main_elements.png"); background-repeat: no-repeat; background-position:20px -1022px;
+  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat; background-position: 15px -1911px;
 }
+
 .verticalTablist a.active {
   background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;  background-position: 168px -1769px;
 }
@@ -540,28 +550,28 @@ h1 {
 
 #dashboardTab                               { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -4px -18px; }
 a.active #dashboardTab, #dashboardTab:hover { background-position: -4px -462px; }
-.tablist #dashboardTab:hover, .tablist a.active #dashboardTab { background-position:-10px -120px; }
-.tablist #dashboardTab { background-position:-10px -80px; }
+.tablist #dashboardTab:hover, .tablist a.active #dashboardTab { background-position: -10px -462px; }
+.tablist #dashboardTab { background-position: -10px -18px; }
 
 #profileTab                             { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -4px -291px; }
 a.active #profileTab, #profileTab:hover { background-position: -4px -735px; }
-.tablist #profileTab:hover, .tablist a.active #profileTab { background-position:-9px -264px; }
-.tablist #profileTab { background-position:-9px -229px; }
+.tablist #profileTab:hover, .tablist a.active #profileTab { background-position: -10px -735px; }
+.tablist #profileTab { background-position: -10px -291px; }
 
 #groupsTab                            { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -4px -256px; }
 a.active #groupsTab, #groupsTab:hover { background-position: -4px -700px; }
-.tablist #groupsTab:hover, .tablist a.active #groupsTab { background-position:-10px -333px; padding-left:25px; }
-.tablist #groupsTab { background-position:-10px -298px; padding-left:25px; }
+.tablist #groupsTab:hover, .tablist a.active #groupsTab { background-position: -10px -700px; }
+.tablist #groupsTab { background-position: -10px -256px; }
 
 #campusDiscTab                            { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -6px -86px; }
 a.active #campusDiscTab, #campusDiscTab:hover { background-position: -6px -530px; }
-.tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position:-9px -1347px; padding-left:16px; }
-.tablist #campusDiscTab { background-position:-9px -1314px; padding-left:16px; }
+.tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position: -9px -532px; }
+.tablist #campusDiscTab { background-position: -9px -88px; padding-left: 30px; }
 
 #insightsTab                              { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -5px -53px; }
 a.active #insightsTab, #insightsTab:hover { background-position: -5px -497px; }
-.tablist #insightsTab:hover, .tablist a.active #insightsTab { background-position:-9px -526px; padding-left:22px; }
-.tablist #insightsTab { background-position:-9px -498px; padding-left:22px; }
+.tablist #insightsTab:hover, .tablist a.active #insightsTab { background-position: -7px -496px; }
+.tablist #insightsTab { background-position: -7px -52px; padding-left: 30px; }
 
 #scheduleTab                              { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -3px -219px; }
 a.active #scheduleTab, #scheduleTab:hover { background-position: -3px -663px; }
@@ -1259,8 +1269,8 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 
 .dashboard_subtitle { font-size:12px; padding:5px 0; text-transform: uppercase; }
 
-div#logos.dashboard { padding:15px 0 0 40px; position:relative; }
-div#logos.dashboard #pulse_logo { left: 62px; }
+.dashboard #logos { padding:15px 0 0 40px; position:relative; }
+.dashboard #logos #pulse_logo { left: 62px; }
 
 #banner_container {
   padding-bottom: 10px;
@@ -1416,10 +1426,13 @@ a.modulecontent, .modulecontent ul {font-size:12px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
 ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
 
-#userbar_wrapper, #content_wrapper {
+#userbar_wrapper, #content_wrapper, #tablist_container {
   width: 100%;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
+}
+
+#content_wrapper, .dashboard #userbar_wrapper {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -1436,7 +1449,7 @@ div#userbar {
   height: 78px;
 }
 
-div#logos { padding:27px 0 0 32px; }
+div#logos { padding:15px 0 0 40px; position:relative; }
 div#logos a, div#logos a:hover { text-decoration:none; }
 div#logos #pulse_logo {
   background-position: -9px -1702px;
@@ -1447,6 +1460,7 @@ div#logos #pulse_logo {
   height: 50px;
   position: absolute;
   width: 274px;
+  left: 62px;
 }
 
 div#userblock { font-size:11px; font-weight:normal; color:#D8D8D8; width:380px; position:absolute; top:-22px; right:10px; text-align: right; display:inline; }

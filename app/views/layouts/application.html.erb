@@ -67,10 +67,10 @@
       <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
 
 
-  		<div id="wrapper">
+  		<div id="wrapper" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
         <div id="userbar_wrapper">
     		  <div id="userbar">
-            <div id="logos" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
+            <div id="logos">
               <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => 'dashboard', :action => 'index' %>
             </div>
 
