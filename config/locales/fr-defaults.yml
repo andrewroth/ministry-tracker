@@ -45,8 +45,11 @@ fr:
       "dec": "Déc"
   "time": 
     "formats": 
+    "am": "am"
+    "pm": "pm"
   "support": 
     "array": 
+      "words_connector": ","
       "two_words_connector": "et"
       "last_word_connector": ", et"
     "select": 
@@ -58,6 +61,9 @@ fr:
     "currency": 
       "format": 
         "unit": "$"
+        "separator": "."
+        "delimiter": ","
+        "precision": "2"
         "significant": "faux"
         "strip_insignificant_zeros": "faux"
     "percentage": 

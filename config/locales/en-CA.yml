@@ -99,6 +99,10 @@ en-CA:
     update_schedule_msg: "You haven't filled out your schedule yet."
     update_schedule_title: "UPDATE MY SCHEDULE"
   profile:
+    set_initial_campus:
+      heading: Please fill out your info and click Save.
+      are_required: are required fields
+      already_involvement: There is already a campus involvement for the campus "%{campus}"; you can only be involved once per campus. Arc
     picture:
       instructions: "Select an image file on your computer (max 10 MB):"
       browse_button: Choose File
@@ -166,6 +170,7 @@ en-CA:
       room: Room
       valid_from: Valid from
       valid_until: Valid until
+      campus: Campus
     manage_campuses:
       title: Manage Campuses
       add_campus: Add Campus
@@ -173,6 +178,7 @@ en-CA:
       involvement_history: Involvement History
       to: to
       at: at
+      archive_confirm: Are you sure you want to archive this involvement?
     mentor:
       none: No mentor currently
     mentee:
@@ -395,15 +401,15 @@ en-CA:
         "marked interest in"
       else 
         "joined"
-      end -%> <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %><%= @member_first_name %> is a <%= @school_year %> student and <% else %>Their <% end %>contact info is <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
+      end %> <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %><%= @member_first_name %> is a <%= @school_year.name %> student and <% else %>Their <% end %>contact info is <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
 
-      <%- if @requested -%>
+      <% if @requested %>
         <P>You can accept <%= @member_first_name %>'s request to <%= @group_name %> <%= link_to "here", @group_link %></P>
-      <%- elsif @interested -%>
+      <% elsif @interested %>
       <P>A person who marks a group ‘Interested’ usually means person is not too sure if this is the right group for them.   If person is right for your group, you can accept their request <%= link_to "here", @group_link %> and use the ‘Move’ button to move them to be a member.  Similarly, if person is interested in the wrong group, you can remove them from your group by checking their name and hitting the ‘Remove’ button.</P>
-      <%- else -%>
+      <% else %>
         <P>You can view and edit <%= @group_name %> <%= link_to "here", @group_link %>.</P>
-      <%- end -%>
+      <% end %>
 
         <P>Thank you for using the Pulse!</P>
       </HTML>
