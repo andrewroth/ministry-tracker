@@ -153,6 +153,11 @@ class CampusInvolvementsController < ApplicationController
         @campus_involvement.last_history_update_date = Date.today
       end
       @campus_involvement.end_date = Date.today
+      # delete all ministry involvements for this person that have this campus
+      @campus_involvement.person.ministry_involvements.find_all_by_ministry_id(@campus_involvement.campus.ministry_ids).each do |mi|
+        mi.end_date = DateTime.now
+        mi.save(false)
+      end
       @campus_involvement.save(false)
     end
   end
