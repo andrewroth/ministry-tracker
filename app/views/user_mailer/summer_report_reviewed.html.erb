@@ -1,1 +1,19 @@
-<%= ERB.new(t("emails.summer_report_reviewed")).result(binding) %>
+<html>
+  <p><%= @submitter_first_name %>,</p>
+
+  <% if @summer_report.approved? %>
+    <p>Your summer schedule has been <b>approved!</b></p>
+  <% else %>
+    <p>Sorry, your summer schedule was <b>disapproved</b>, you'll need to amend it and resubmit it for review.</p>
+  <% end %>
+
+  <p><%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @summer_report} %></p>
+
+  <% if @summer_report.approved? %>
+    <p><%= link_to "Click here to see your summer schedule.", @show_report_link %></p>
+  <% else %>
+    <p><%= link_to "Click here to amend your summer schedule.", @edit_report_link %></p>
+  <% end %>
+
+  <p>Thank you for using the Pulse!</p>
+</html>
