@@ -5,6 +5,11 @@ fr:
     "logos": ""
     "create_login": "Créer un compte"
     "blurb": "Tu peux utiliser Le Pouls pour connecter avec un groupe d'étudiants sur ton campus. Ces groupes sont conçus pour t'aider à créer des liens, à poser des questions, et à découvrir Jésus."
+    "blurb_text": "Tu peux utiliser Le Pouls pour connecter avec un groupe d'étudiants sur ton campus. Ces groupes sont conçus pour t'aider à créer des liens, à poser des questions, et à découvrir Jésus."
+    "no_need_to_login": "(Pas besoin de compte!)"
+    "login_created": "(Compte créé)"
+    "section": 
+    "test_move": "Block here translated into french"
     "tagline_url": "/images/fr/log_in_c4c_disco_change.png"
     "https": "/images/fr/log_in_pulse_explanation.png"
     "create_login_url": "/images/fr/log_in_create_login.png"
@@ -23,6 +28,9 @@ fr:
     "or": "ou"
     "required": "obligatoire"
     "validation_failed": "SVP compléter tous les champs obligatoires"
+    "help_link_text": "À l'aide!"
+    "email_prefix": "[pouls]"
+    "ago": ""
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
@@ -102,7 +110,7 @@ fr:
     "set_initial_campus": 
       "heading": "SVP, remplir tes infos et cliquer sur Enregistrer."
       "are_required": "sont des champs obligatoires"
-      "already_involvement": "Il y a déjà une participation pour le campus \"%{campus}\"; tu ne peux pas participer plus qu'une fois par campus. Archive ta participation courante et essaie de nouveau."
+      "already_involvement": "Tu participes déjà à \"%{campus}\"; tu ne peux pas participer plus qu'une fois par campus. Archive ta participation actuelle et essaie de nouveau."
     "picture": 
       "instructions": "Sélectionner une image à télécharger (max. 10 Mo)"
       "browse_button": "Choisir un dossier"
@@ -173,6 +181,7 @@ fr:
       "involvement_history": "Historique de participation"
       "to": "jusqu'au"
       "at": "à"
+      "archive_confirm": "Es-tu certain de vouloir archiver cette participation?"
     "mentor": 
       "none": "N'a pas de mentor "
     "mentee": 
@@ -216,6 +225,7 @@ fr:
     "timetable_message": "Presque terminé! Inscris ton horaire pour nous donner tes disponibilités!"
     "userbar_title": "S'inscrire à un groupe"
     "getting": "en attente de la liste des groupes"
+    "email_them": "Ou envoie-leur un courriel :"
     "done": "Terminé!"
     "done_contact_collection": "Un responsable du groupe communiquera avec toi bientôt."
     "done_contact_leader": "Le responsable de ton groupe te communiquera les infos bientôt."
@@ -322,12 +332,21 @@ fr:
     "student": "Étudiant"
     "alumni": "Ancien étudiant"
   "emails": 
+    "confirm_email_subject": "Code de confirmation de l'adresse courriel"
     "confirm_email": "Pour vérifier ton compte, clique sur le lien. Voici le code de confirmation : <%= @code %>"
+    "created_student_subject": "Un compte a été créé pour toi"
     "created_student": "Salut  <%= @person.first_name %>,\nJe viens de t'ajouter au système Campus Movement Tracker pour le ministère suivant : <%= @ministry.name %> .\nCe système nous aide à faire le suivi des étudiants qui participent à notre mouvement. Je te remercie de prendre quelques minutes pour t'y connecter et pour y inscrire tes infos. \nTon nom d'usager :  <%= @user.username %> Ton mot de passe : <%= @password %>\nhttp://www.ministrytrack.org\nMerci, et bonne journée! <%= @added_by.full_name %> de <%= @ministry.name %>"
+    "group_invitation_subject": "%{sender_name} it'invite à te joindre à %{group_name}"
     "group_invitation": "<html><p>Salut!</p>\n<p><%= @group_invitation.sender_person.full_name %> t'a invité à t'inscrire à son groupe  <%= @group_invitation.group.name %> de Pouvoir de Changer.</p>\n<br/>\n<p><blockquote><p><%= \"<a href='#{@accept_link}'>\" if @accept_link.present? %><b>INSCRIS-MOI!</b><%= \"</a>\" if @accept_link.present? %></p><br/><p><%= \"<a href='#{@decline_link}'>\" if @decline_link.present? %><b>NON MERCI</b><%= \"</a>\" if @decline_link.present? %></p></blockquote></p>\n<br/>\n<p>Tu peux communiquer avec <%= @group_invitation.sender_person.first_name %> à <b><%= @group_invitation.sender_person.email %></b></p>\n<p>Tu cherches un autre groupe?<%= \"<a href='#{@other_groups_link}'>\" if @other_groups_link.present? %>Viens découvrir d'autres groupes de Pouvoir de Changer à <%= @group_invitation.group.campus.name %><%= \"</a>\" if @other_groups_link.present? %></p></html>"
+    "group_invitation_decline_subject": "%{subject_name} n'a pas accepté ton invtation à se joindre à %{group_name}"
     "group_invitation_decline": "<html><p>Allô <%= @group_invitation.sender_person.first_name %>,</p>\n<p><%= @group_invitation.recipient_email %> a refusé ton invitation au groupe <%= @group_invitation.group.name %></p>\n<p>Merci d'avoir utilisé le Pouls!</p></html>"
+    "group_join_requested_subject": "Un étudiant veut se joindre à  %{group_name}!"
+    "group_join_interested_subject": "Un étudiant s'intéresse à %{group_name}!"
+    "group_join_subject": "%{group_name} a un nouveau membre!"
     "group_join_email": "<HTML><P><%= @leader_first_name %>,</P>\n<P><%= @member_first_name %> <%= @member_last_name %> a <%= if @requested \"aimerait s'inscrire à\"elsif @interested \"est intéressé par\"else \"s'est inscris à\"end -%> <%= @group_name %><% if @join_time.present? %> à <%= @join_time %><% end %>. <% if @school_year.present? %><%= @member_first_name %> est un étudiant en <%= @school_year %> et <% else %> Ses <% end %>coordonnées sont <%= @member_email %><% if @member_phone.present? %> et <%= @member_phone %><% end %>.</P>\n<%- if @requested -%><P>Tu peux accepter la demande de <%= @member_first_name %> de s'inscrire à <%= @group_name %> <%= link_to \"ici\", @group_link %></P><%- elsif @interested -%><P>Une personne qui indique qu'elle est « Intéressée » à un groupe n'est généralement pas certaine si c'est le bon groupe pour elle. Si cette personne correspond à votre groupe, tu peux approuver sa demande <%= link_to \"ici\", @group_link %> et utiliser le bouton Déplacer pour l'ajouter à ton groupe. De même, si une personne s'intéresse au mauvais groupe, tu peux l'enlever de ton groupe en cochant son nom et en cliquant le bouton Enlever. </P><%- else -%><P>Tu peux visionner et modifier les infos <%= @group_name %> <%= link_to \"ici\", @group_link %>.</P><%- end -%>\n<P>Merci d'utiliser le Pouls!</P></HTML>"
+    "signup_confirm_subject": "Ton courriel de vérification du Pouls"
     "signup_confirm_email": "<HTML><P>Merci pour ton inscription au Pouls. Pour continuer ton incription, clique sur le lien ci-dessous. Tu peux vérifier ton courriel, t'inscrire à un groupe et soumettre ton horaire. </P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P>\n<P>Si tu n'arrives pas à vérifier ton courriel, communique avec helpdesk@powertochange.org</P></HTML>"
+    "signup_finished_subject": "Inscription terminée"
     "signup_finished_email": "<HTML><P> Merci pour ton inscription à un groupe et /ou pour la soumission de ton horaire. Pour soumettre ou modifier ton horaire, clique sur le lien ci-dessous. <% if @joined_collection_group %> Lorsqu'on t'ajoute à un groupe, le responsable du groupe à ton campus communiquera avec toi par courriel  <% end %></P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P></HTML>"
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
     "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour vérifier l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
