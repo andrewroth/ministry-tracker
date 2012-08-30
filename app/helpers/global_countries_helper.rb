@@ -1,0 +1,2 @@
+module GlobalCountriesHelper
+end

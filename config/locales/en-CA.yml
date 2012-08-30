@@ -5,6 +5,10 @@ en-CA:
     logos: https://pulse.campusforchrist.org/images/c4c-ptc-logo.png
     create_login: https://pulse.campusforchrist.org/images/log_in_create_login.png
     blurb: https://pulse.campusforchrist.org/images/log_in_pulse_explanation.png
+    blurb_text: "You can use The Pulse to connect with a group of students on your campus.  In these groups you'll find a place where you can belong, ask questions and discover Jesus"
+    no_need_to_login: "(No need to login!)"
+    login_created: "(Login Created)"
+    create_login: "Create a Login"
   misc: 
     genders: 
       male: "Male"
@@ -15,10 +19,23 @@ en-CA:
     last_updated: Last updated
     cancel: cancel
     or: or
+    required: required
+    validation_failed: Please fill all required fields
+    help_link_text: "Help!"
+    email_prefix: "[pulse] "
+    ago: " ago"
   layout: 
-    ptc_logo: "/images/ptc_logo_grey.png"
-    help: "/images/help.gif"
-    banner: "/images/log_in_main_img.png"
+    images:
+      ptc_logo_grey: "/images/ptc_logo_grey.png"
+      c4c_ptc_logo: "/images/c4c-ptc-logo.png"
+      p2c_pulse_logo: "/images/p2c_pulse_logo.png"
+      help: "/images/help.gif"
+      log_in_create_login: "/images/log_in_create_login.png"
+      log_in_c4c_disco_change: "/images/log_in_c4c_disco_change.png"
+      log_in_pulse_explanation: "/images/log_in_pulse_explanation.png"
+      main_elements: "/images/sprites/main_elements.png"
+      p2c_main_elements: "/images/sprites/p2c_main_elements.png"
+      log_in_main_img: "/images/log_in_main_img.png"
     top_bar: 
       c4c: "C4C.CA"
       c4c_mouseover: Campus for Christ
@@ -86,7 +103,13 @@ en-CA:
     groups:
       requested_message: awaiting join request decision
       interested_message: interested
+    update_schedule_msg: "You haven't filled out your schedule yet."
+    update_schedule_title: "UPDATE MY SCHEDULE"
   profile:
+    set_initial_campus:
+      heading: Please fill out your info and click Save.
+      are_required: are required fields
+      already_involvement: There is already a campus involvement for the campus "%{campus}"; you can only be involved once per campus. Arc
     picture:
       instructions: "Select an image file on your computer (max 10 MB):"
       browse_button: Choose File
@@ -154,6 +177,7 @@ en-CA:
       room: Room
       valid_from: Valid from
       valid_until: Valid until
+      campus: Campus
     manage_campuses:
       title: Manage Campuses
       add_campus: Add Campus
@@ -161,6 +185,7 @@ en-CA:
       involvement_history: Involvement History
       to: to
       at: at
+      archive_confirm: Are you sure you want to archive this involvement?
     mentor:
       none: No mentor currently
     mentee:
@@ -204,12 +229,19 @@ en-CA:
     timetable_message: "You're almost done! Enter your timetable to indicate when you're free to meet!"
     userbar_title: Join a Group
     getting: getting groups...
+    email_them: "Or freel free to email them:"
     done: "You're done!"
     done_contact_collection: A group leader will contact you with more info soon.
     done_contact_leader: Your group leader will contact you with more info.
     goto_dashboard: Goto the dashboard
     goto_facebook: Goto Facebook
-    findout: To find out what's happening at %{campus} visit %{url}
+    findout: "To find out what's happening at %{campus} visit %{url}"
+    register: Register for your group!
+    next: Next
+    welcome: "Great!  Welcome to your group, %{group_name}"
+    request_sent: "Great!  Your request to join has been sent to %{group.name}"
+    marked_interested: "Marked as interested"
+    join_request_pending: "Join request pending"
   timetable:
     instructions: Click on one of the color buttons below and then click times on your schedule.
     not_allowed_see: You are not allowed to see that timetable.
@@ -227,6 +259,7 @@ en-CA:
       save: Save Timetable
       not_changed_message: "We noticed you didn't change much on your timetable, filling in your timetable helps your group find a meeting time that's suitable for everyone.\n\nClick 'Cancel' to continue editing or click 'OK' to save your timetable and finish."
     save_confirm: Timetable was saved!
+    date_format: "%l:%M %p"
   terms:
     fall_2006: Fall 2006
     winter_2007: Winter 2007
@@ -303,9 +336,11 @@ en-CA:
     student: Student
     alumni: Alumni
   emails:
+    confirm_email_subject: "Email confirm code"
     confirm_email: |
       In order to verify your account, please following link.
       Here is your confirmation code: <%= @code %>
+    created_student_subject: "An account has been created for you"
     created_student: |
       Hi <%= @person.first_name %>,
 
@@ -320,6 +355,7 @@ en-CA:
 
       Thanks, and have a great day!
       <%= @added_by.full_name %> at <%= @ministry.name %>
+    group_invitation_subject: "%{sender_name} invites you to join %{group_name}"
     group_invitation: |
       <html>
         <p>Hi!</p>
@@ -357,6 +393,7 @@ en-CA:
           <%= "</a>" if @other_groups_link.present? %>
         </p>
       </html>
+    group_invitation_decline_subject: "%{subject_name} declined your invite to join %{group_name}"
     group_invitation_decline: |
       <html>
         <p>Hi <%= @group_invitation.sender_person.first_name %>,</p>
@@ -365,74 +402,52 @@ en-CA:
         
         <p>Thank you for using the Pulse!</p>
       </html>
+    group_join_requested_subject: "%{group_name} has a student requesting to join!"
+    group_join_interested_subject: "%{group_name} has a student interested in it!"
+    group_join_subject: "%{group_name} has a new member!"
     group_join_email: |
       <HTML>
         <P><%= @leader_first_name %>,</P>
 
-        <P><%= @member_first_name %> <%= @member_last_name %> has <%= 
-      if @requested 
-        "requested to join"
-      elsif @interested 
-        "marked interest in"
-      else 
-        "joined"
-      end -%> <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %><%= @member_first_name %> is a <%= @school_year %> student and <% else %>Their <% end %>contact info is <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
+        <P><%= @member_first_name %> <%= @member_last_name %> has
+      <% if @requested  %>requested to join<% elsif @interested %>marked interest in<% else %>joined<% end %>
+      <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %>
+      <%= @member_first_name %> is a <%= @school_year.name %> student and <% else %>Their <% end %>contact info is 
+      <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
 
-      <%- if @requested -%>
+      <% if @requested %>
         <P>You can accept <%= @member_first_name %>'s request to <%= @group_name %> <%= link_to "here", @group_link %></P>
-      <%- elsif @interested -%>
+      <% elsif @interested %>
       <P>A person who marks a group ‘Interested’ usually means person is not too sure if this is the right group for them.   If person is right for your group, you can accept their request <%= link_to "here", @group_link %> and use the ‘Move’ button to move them to be a member.  Similarly, if person is interested in the wrong group, you can remove them from your group by checking their name and hitting the ‘Remove’ button.</P>
-      <%- else -%>
+      <% else %>
         <P>You can view and edit <%= @group_name %> <%= link_to "here", @group_link %>.</P>
-      <%- end -%>
+      <% end %>
 
         <P>Thank you for using the Pulse!</P>
       </HTML>
+    signup_confirm_subject: "Your Pulse verify email"
     signup_confirm_email: |
       <HTML>
         <P>Thank you for signing up at the Pulse.  To continue the signup process, please follow this link to verify your email to allow you to join a group and submit your timetable.</P>
 
         <P><A HREF="<%= @link %>" target="_blank"><%= @link %></A></P>
 
-        <P>If you have any problems verifying your email, please contact helpdesk@c4c.ca</P>
+        <P>If you have any problems verifying your email, please contact helpdesk@powertochange.org</P>
       </HTML>
+    signup_finished_subject: "Signup completed"
     signup_finished_email: |
       <HTML>
         <P>Thank you for signing up for a group in the Pulse and/or updating your timetable.  If you need to submit or update your timetable, please follow the link below to do so.<% if @joined_collection_group %>  A group leader from your campus will contact you via email once you are placed in a group.<% end %></P>
        
         <P><A HREF="<%= @link %>" target="_blank"><%= @link %></A></P>
       </HTML>
-    summer_report_reviewed: |
-      <html>
-        <p><%= @submitter_first_name %>,</p>
-
-        <% if @summer_report.approved? %>
-          <p>Your summer schedule has been <b>approved!</b></p>
-        <% else %>
-          <p>Sorry, your summer schedule was <b>disapproved</b>, you'll need to amend it and resubmit it for review.</p>
-        <% end %>
-
-        <p><%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @summer_report} %></p>
-
-        <% if @summer_report.approved? %>
-          <p><%= link_to "Click here to see your summer schedule.", @show_report_link %></p>
-        <% else %>
-          <p><%= link_to "Click here to amend your summer schedule.", @edit_report_link %></p>
-        <% end %>
-
-        <p>Thank you for using the Pulse!</p>
-      </html>
-    summer_report_submitted: |
-      <html>
-        <p><%= @reviewer_first_name %>,</p>
-       
-        <p><%= @submitter_name %> has submitted their summer schedule and it's now waiting for your review.</p>
-        
-        <p><%= link_to "Click here to go there now.", @review_link %></p>
-        
-        <p>Thank you for using the Pulse!</p>
-      </html>
   signup:
+    email_error: "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
+    missing_campus_and_semester: "Sorry, we didn't recieve the campus and semester that you chose, please try again."
+    verification_email_error: "Sorry, a verification email could not be sent, please try again or contact helpdesk@powertochange.org"
+    group_invitation_error: "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
+    general_error: "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@powertochange.org"
+    verify_email: "Verify Email"
     explanation: "We are using TheKey to authenticate users. TheKey is developed by the American Campus Crusade for Christ tech team, and is used by Campus Crusade ministries around the world. Using TheKey means more people can use the project tool, and you only need to remember their Key login rather than separate credentials for each site."
     to_signup: "To signup,"
     click_here: "Click here to create an account"
@@ -442,3 +457,8 @@ en-CA:
     click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
     help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
+    email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
+    verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
+    fill_all_fields: "Please fill all required fields"
+    verified_success: "Your email has been verified, thanks!"
+    login: "Sign In"

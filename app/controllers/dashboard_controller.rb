@@ -34,7 +34,7 @@ class DashboardController < ApplicationController
     # update my schedule flash notice
     my_timetable = (@my.timetable || Timetable.create(:person_id => @me.id))
     if my_timetable.updated_at.blank? || my_timetable.updated_at == my_timetable.created_at
-      flash[:notice] = "You haven't filled out your schedule yet. <a href='#{person_timetable_path(@me.id, my_timetable.id)}'>UPDATE MY SCHEDULE</a>"
+      flash[:notice] = "#{t("dashboard.update_schedule_msg")}  <a href='#{person_timetable_path(@me.id, my_timetable.id)}'>#{t("dashboard.update_schedule_title")}</a>"
     end
   end
 

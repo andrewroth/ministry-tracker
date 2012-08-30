@@ -69,7 +69,7 @@ class SignupController < ApplicationController
   def step1_group_from_campus
 
     if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
-      flash[:notice] = "Sorry, we didn't recieve the campus and semester that you chose, please try again."
+      flash[:notice] = t("signup.missing_campus_and_semester")
       redirect_to :action => :step1_group
       return
     end
@@ -153,7 +153,7 @@ class SignupController < ApplicationController
     # verify email
     email = @person && @person.email
     if email.present?
-      email_error = "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
+      email_error = t("signup.email_error")
       begin
         if !ValidatesEmailFormatOf::validate_email_format(email).nil? || email.length < 6 || email.length > 40
           @person.errors.add_to_base(email_error)
@@ -274,7 +274,7 @@ class SignupController < ApplicationController
       link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else
-      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
+      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>#{t("signup.verification_email_error")}</b>"
       redirect_to :action => :step2_info
     end
   end
@@ -282,7 +282,7 @@ class SignupController < ApplicationController
   def step2_email_verified
     session[:signup_groups] = params[:signup_groups]
     session[:signup_campus_id] = params[:signup_campus_id]
-    flash[:notice] = "Your email has been verified, thanks!"
+    flash[:notice] = t("signup.verified_success")
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
@@ -399,7 +399,7 @@ class SignupController < ApplicationController
       if logged_in? && current_user.person && current_user.person.id != @group_invitation.recipient_person_id
         @group_invitation = nil
         session[:signup_group_invitation_id] = nil
-        flash[:notice] = "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
+        flash[:notice] = t("signup.group_invitation_error")
         redirect_to signup_url
         return
       end
@@ -408,7 +408,7 @@ class SignupController < ApplicationController
   
   def redirect_to_beginning_if_no_person
     unless @person
-      flash[:notice] = "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@c4c.ca"
+      flash[:notice] = t("signup.general_error")
       redirect_to :action => :step1_group
       return true
     end

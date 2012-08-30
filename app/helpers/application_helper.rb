@@ -1,6 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
+  def locale_stylesheet_link_tag
+    if File.exists?("#{RAILS_ROOT}/public/stylesheets/#{session[:locale]}.css")
+      stylesheet_link_tag("#{session[:locale]}.css")
+    end
+  end
+
   def times(start_time, end_time)
     midnight = Time.now.beginning_of_day
     # start_time = midnight + start_time.hours
@@ -116,8 +122,8 @@ module ApplicationHelper
   end
 
   def instruction_block(html = nil, &proc)
-    html ||= capture(&proc) if block_given?
-    render_s = "<script type='text/javascript'>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
+    html ||= capture(&proc).gsub(/\s/, '') if block_given?
+    render_s = html.try(:present?) ? %(<script type="text/javascript">$(document).ready(function() { $("#instructions").html("#{escape_javascript(html)}"); $("#instructions").show(); });</script>) : ""
 
     if block_given?
       concat(render_s)

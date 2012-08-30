@@ -1,0 +1,16 @@
+<h1>Editing global_area</h1>
+
+<% form_for(@global_area) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :area %><br />
+    <%= f.text_field :area %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @global_area %> |
+<%= link_to 'Back', global_areas_path %>

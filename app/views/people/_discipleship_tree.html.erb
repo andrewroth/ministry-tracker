@@ -10,7 +10,7 @@
 	}
 	</script>
 
-<div id="bracketTop" style="background: url('/images/bracket_vertical_top.png') no-repeat scroll right bottom transparent;">
+<div id="bracketTop" style="background: url('/images/p2c_bracket_vertical_bg.png') no-repeat scroll right bottom transparent;">
 	&nbsp;
 </div>
 
@@ -21,7 +21,7 @@
 <%- Person.each_with_level(@person.self_and_descendants) do |o, level| %>
   <%- name_font_size = PeopleHelper::MENTEES_BASE_FONTSIZE - level %>
 
-	<div id="<%= "treeBranch"+o.id.to_s %>" class="treeBranch" style="<%- if o == selected %>background: url('/images/bracket_vertical_knotch_plus_line.png') no-repeat scroll right center transparent;<%- end %> padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
+	<div id="<%= "treeBranch"+o.id.to_s %>" class="treeBranch" style="<%- if o == selected %>background: url('/images/sprites/p2c_main_elements.png') no-repeat scroll 419px -2102px transparent;<%- end %> padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> line-height: 100%;">
 		  <%- if o == selected %>
 			  <%= o.full_name %>
 		  <%- else %>				
@@ -34,7 +34,7 @@
 	<%- last_level = level %>
 <%- end -%>
 
-<div id="bracketBottom" style="background: url('/images/bracket_vertical_bottom.png') no-repeat scroll right top transparent;">
+<div id="bracketBottom" style="background: url('/images/p2c_bracket_vertical_bg.png') no-repeat scroll right top transparent;">
 	&nbsp;
 </div>
 
