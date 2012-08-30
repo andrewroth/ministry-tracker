@@ -3,16 +3,14 @@
   <b><%= t('groups.done') %></b>
   <% if session[:joined_collection_group] == true %>
     <%= t('groups.done_contact_collection') %>
-    A group leader will contact you with more info soon.
   <% else %>
     <%= t('groups.done_contact_leader') %>
-    Your group leader will contact you with more info.
   <% end %>
   <br/>
   
   <% if @leaders.present? %>
     <br/>
-    Or feel free to email them:
+    <%= t("groups.email_them") %>
     <%=
       @leaders.map{ |i|
         if i.person.present? && i.person.email
@@ -21,14 +19,14 @@
       }.join(', ')
     %>
     <% if @group && @group.email.present? %>
-      or <%= mail_to @group.email %>
+      <%= t("misc.or") %> <%= mail_to @group.email %>
     <% end %>
     <br />
   <% end %>
   
   <% if @campus && @campus.campus_website.present? %>
     <br/>
-    To find out what's happening at <%= @campus.short_name %> visit <b><%= link_to URI.parse(@campus.campus_website).host, @campus.campus_website %></b>
+    <%= t("groups.findout", :campus => @campus.short_name, :url => "<b>#{link_to(URI.parse(@campus.campus_website).host, @campus.campus_website)}</b>") %>
     <br/>
   <% end %>
   
