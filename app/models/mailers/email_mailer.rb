@@ -22,7 +22,7 @@ class Mailers::EmailMailer < ActionMailer::Base
     recipients   email.sender.primary_email.strip
     from         Cmt::CONFIG[:email_from_address]
     content_type "text/html"
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Email sent on your behalf"
+    @subject     = "#{t("misc.email_prefix")} Email sent on your behalf"
     @sent_on     = Time.now
     @body = {:email => email, :missing => missing, :errors => errors}
   end
@@ -30,7 +30,7 @@ class Mailers::EmailMailer < ActionMailer::Base
   def emails_working(emails)
     recipients   emails
     from         Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} Emails still working"
+    @subject     = "#{t("misc.email_prefix")} Emails still working"
     @sent_on     = Time.now
   end
 end
