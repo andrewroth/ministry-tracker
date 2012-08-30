@@ -61,7 +61,7 @@ module ContactsHelper
       {
         :field => :assigned_to,
         :title => "Assignee",
-        :options => people_available.insert(0, ["All", -1]),
+        :options => people_available_for_search,
         :default => -1
       }
     }
@@ -143,11 +143,17 @@ module ContactsHelper
     unless @campus_id.nil?
       @people_available = [["Unassigned", 0]]
       MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id)}).collect{|mi| mi[:person_id]}.each do |pid|
-        p = Person.find(pid)
-        @people_available.push(["#{p[:person_fname]} #{p[:person_lname]}", pid])
+        if Person.exists?(pid)
+          p = Person.find(pid)
+          @people_available.push(["#{p[:person_fname]} #{p[:person_lname]}", pid])
+        end
       end
     end
     @people_available
+  end
+  
+  def people_available_for_search
+    @people_available_for_search ||= people_available.insert(0, ["All", -1])
   end
   
   def convert_values(a, field)
