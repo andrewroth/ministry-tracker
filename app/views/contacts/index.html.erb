@@ -1,1 +1,80 @@
 <% @site_title = 'Contacts' -%>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "widgets/tooltip.js" %>
+  <%= javascript_include_tag "contacts.js" %>
+<% end %>
+
+
+<div id="timetable_link">
+</div>
+
+<div class="sectionHeader">
+  <h1 id="reportTitle">Contacts for Followup</h1>
+
+
+<%= render :partial => 'search_box' %>
+
+
+<%
+unless @contacts.nil? 
+%>
+
+<div class="yoursearch">
+<p>
+
+
+</p>
+</div>
+
+
+<div id="assign_people">
+<% form_tag('/contacts/multiple_assign', :name => 'contacts_form', :id => 'contacts_form') do %>
+	<%= hidden_field_tag 'contacts_to_assign' %>
+	Assign checked contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Go', :class => "action-button" %>
+<%- end -%>
+</div>
+<div id="people">
+	<table cellpadding="0" cellspacing="0" class="directorytable">
+		<thead class="center">
+		  <tr>
+			<th><%= check_box_tag 'select_all', 0, false %></th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Sex</th>
+			<th>Cellphone</th>
+			<th>Priority</th>
+			<th>Assigned to</th>
+			<th>Status</th>
+			<th>Result</th>
+			<th>&nbsp;</th>
+		</tr>
+		</thead>
+		<tbody>
+		<%- @contacts.each_with_index do |contact, i|  -%>
+			<tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
+				<td width="10px">
+					<%= check_box_tag 'contact[]', contact[:id], false %> 
+				</td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:first_name] %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:cellphone] %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
+				<td class="alignright">
+					<span class="butProfile"><%= link_to 'Edit', "/contacts/edit/#{contact[:id]}", :title => "View the contact's informations" %></span>
+				</td>
+			</tr>
+		<%- end -%>
+			
+		</tbody>
+	</table>
+  
+</div>
+<%- end -%>
+<br />
+<br />
+
