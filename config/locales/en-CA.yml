@@ -5,6 +5,10 @@ en-CA:
     logos: https://pulse.campusforchrist.org/images/c4c-ptc-logo.png
     create_login: https://pulse.campusforchrist.org/images/log_in_create_login.png
     blurb: https://pulse.campusforchrist.org/images/log_in_pulse_explanation.png
+    blurb_text: "You can use The Pulse to connect with a group of students on your campus.  In these groups you'll find a place where you can belong, ask questions and discover Jesus"
+    no_need_to_login: "(No need to login!)"
+    login_created: "(Login Created)"
+    create_login: "Create a Login"
   misc: 
     genders: 
       male: "Male"
@@ -17,6 +21,9 @@ en-CA:
     or: or
     required: required
     validation_failed: Please fill all required fields
+    help_link_text: "Help!"
+    email_prefix: "[pulse] "
+    ago: " ago"
   layout: 
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
@@ -220,6 +227,7 @@ en-CA:
     timetable_message: "You're almost done! Enter your timetable to indicate when you're free to meet!"
     userbar_title: Join a Group
     getting: getting groups...
+    email_them: "Or freel free to email them:"
     done: "You're done!"
     done_contact_collection: A group leader will contact you with more info soon.
     done_contact_leader: Your group leader will contact you with more info.
@@ -326,9 +334,11 @@ en-CA:
     student: Student
     alumni: Alumni
   emails:
+    confirm_email_subject: "Email confirm code"
     confirm_email: |
       In order to verify your account, please following link.
       Here is your confirmation code: <%= @code %>
+    created_student_subject: "An account has been created for you"
     created_student: |
       Hi <%= @person.first_name %>,
 
@@ -343,6 +353,7 @@ en-CA:
 
       Thanks, and have a great day!
       <%= @added_by.full_name %> at <%= @ministry.name %>
+    group_invitation_subject: "%{sender_name} invites you to join %{group_name}"
     group_invitation: |
       <html>
         <p>Hi!</p>
@@ -380,6 +391,7 @@ en-CA:
           <%= "</a>" if @other_groups_link.present? %>
         </p>
       </html>
+    group_invitation_decline_subject: "%{subject_name} declined your invite to join %{group_name}"
     group_invitation_decline: |
       <html>
         <p>Hi <%= @group_invitation.sender_person.first_name %>,</p>
@@ -388,6 +400,9 @@ en-CA:
         
         <p>Thank you for using the Pulse!</p>
       </html>
+    group_join_requested_subject: "%{group_name} has a student requesting to join!"
+    group_join_interested_subject: "%{group_name} has a student interested in it!"
+    group_join_subject: "%{group_name} has a new member!"
     group_join_email: |
       <HTML>
         <P><%= @leader_first_name %>,</P>
@@ -411,6 +426,7 @@ en-CA:
 
         <P>Thank you for using the Pulse!</P>
       </HTML>
+    signup_confirm_subject: "Your Pulse verify email"
     signup_confirm_email: |
       <HTML>
         <P>Thank you for signing up at the Pulse.  To continue the signup process, please follow this link to verify your email to allow you to join a group and submit your timetable.</P>
@@ -419,42 +435,13 @@ en-CA:
 
         <P>If you have any problems verifying your email, please contact helpdesk@powertochange.org</P>
       </HTML>
+    signup_finished_subject: "Signup completed"
     signup_finished_email: |
       <HTML>
         <P>Thank you for signing up for a group in the Pulse and/or updating your timetable.  If you need to submit or update your timetable, please follow the link below to do so.<% if @joined_collection_group %>  A group leader from your campus will contact you via email once you are placed in a group.<% end %></P>
        
         <P><A HREF="<%= @link %>" target="_blank"><%= @link %></A></P>
       </HTML>
-    summer_report_reviewed: |
-      <html>
-        <p><%= @submitter_first_name %>,</p>
-
-        <% if @summer_report.approved? %>
-          <p>Your summer schedule has been <b>approved!</b></p>
-        <% else %>
-          <p>Sorry, your summer schedule was <b>disapproved</b>, you'll need to amend it and resubmit it for review.</p>
-        <% end %>
-
-        <p><%= render :partial => "summer_report_reviewers/show_reviewers", :locals => {:summer_report => @summer_report} %></p>
-
-        <% if @summer_report.approved? %>
-          <p><%= link_to "Click here to see your summer schedule.", @show_report_link %></p>
-        <% else %>
-          <p><%= link_to "Click here to amend your summer schedule.", @edit_report_link %></p>
-        <% end %>
-
-        <p>Thank you for using the Pulse!</p>
-      </html>
-    summer_report_submitted: |
-      <html>
-        <p><%= @reviewer_first_name %>,</p>
-       
-        <p><%= @submitter_name %> has submitted their summer schedule and it's now waiting for your review.</p>
-        
-        <p><%= link_to "Click here to go there now.", @review_link %></p>
-        
-        <p>Thank you for using the Pulse!</p>
-      </html>
   signup:
     email_error: "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
     missing_campus_and_semester: "Sorry, we didn't recieve the campus and semester that you chose, please try again."
