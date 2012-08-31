@@ -957,7 +957,7 @@ a.subtabs-menu-inactive div:hover {
 #subtabs #discipleshipSubTab                                                           { background: url("/images/sprites/p2c_icons.png"); background-repeat:no-repeat; background-position: -1px -321px; }
 #subtabs a.subtabs-menu-active #discipleshipSubTab, #subtabs #discipleshipSubTab:hover { background-position: -1px -765px; }
 
-#subtabs #impersonateSubTab                                                          { background: url("/images/sprites/icons.png"); background-repeat:no-repeat; background-position: -2px -615px; }
+#subtabs #impersonateSubTab                                                          { background: url("/images/sprites/p2c_icons.png"); background-repeat:no-repeat; background-position: 0px -1097px; }
 #subtabs a.subtabs-menu-active #impersonateSubTab, #subtabs #impersonateSubTab:hover { }
 
 
@@ -2832,7 +2832,7 @@ h2.group_type_title {
 }
 
 #uberSearchButton:hover div {
-  background-position: -7px -941px;
+  background-position: -8px -941px;
 }
 
 #uberMentorSearchContainer, #uberMenteeSearchContainer {
@@ -3214,9 +3214,9 @@ li.ac_over .autoCompleteIconLink {
 }
 
 .autoCompleteIconLink .autoCompleteIconImpersonate {
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat;
-  background-position: -10px -626px;
-  height:12px;
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
+  background-position: -10px -1106px;
+  height:16px;
   width:11px;
 }
 

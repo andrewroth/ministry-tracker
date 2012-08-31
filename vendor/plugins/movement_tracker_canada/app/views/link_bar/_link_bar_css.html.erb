@@ -6,7 +6,7 @@
     background-color: #666766;
     font-family: Helvetica, Arial, Sans-Serif;
 
-    box-shadow:0 -5px 10px #575757 inset; -webkit-box-shadow:0 -5px 10px #575757 inset; -o-box-shadow:0 -5px 10px #575757 inset;
+    box-shadow:0 -5px 10px #575757 inset;
   }
 
   .link_bar {
@@ -75,7 +75,7 @@
   .link_bar a.ll {
     display: block;
     border: solid transparent 8px;
-    border-bottom:0;
+    border-width:8px 4px 0;
     float:left;
   }
 
@@ -95,8 +95,8 @@
     font-size: 11px;
     font-family: Helvetica, Arial, Sans-Serif;
 
-    box-shadow: 0 3px 5px #575757; -webkit-box-shadow: 0 3px 5px #575757; -o-box-shadow: 0 3px 5px #575757;
-    border-radius: 0 0 10px 10px; -webkit-border-radius: 0 0 10px 10px; -o-border-radius: 0 0 10px 10px;
+    box-shadow: 0 3px 5px #575757;
+    border-radius: 0 0 10px 10px;
   }
 
   .link_menu_box a {
@@ -147,7 +147,7 @@
   .link_bar a.ll:hover, .link_bar a.ll.menu_expanded {
     background-color:#4c4c4c;
     border-color:#4c4c4c;
-    border-radius: 10px 10px 0 0; -webkit-border-radius: 10px 10px 0 0; -o-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
   }
 
   .link_bar strong.ll a {
@@ -174,7 +174,7 @@
   }
 
   .link_bar .icon_link {
-    padding: 1px 15px;
+    padding: 1px 13px;
   }
 
   .link_bar a.icon_link:hover {
@@ -182,24 +182,24 @@
   }
 
   .link_bar a.facebook {
-    background-image: url("<%=@base_url if @base_url%>/images/sprites/link_bar.png"); background-repeat: no-repeat;
+    background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
     background-position: -6px -244px;
     border-width: 0;
   }
   .link_bar a.facebook:hover {
-    background-image: url("<%=@base_url if @base_url%>/images/sprites/link_bar.png"); background-repeat: no-repeat;
-    background-position: -6px -288px;
+    background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
+    background-position: -6px -289px;
   }
 
   .link_bar a.twitter {
-    background-image: url("<%=@base_url if @base_url%>/images/sprites/link_bar.png"); background-repeat: no-repeat;
-    background-position: -8px -156px;
+    background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
+    background-position: -8px -157px;
     border-width: 0;
     padding-left: 10px;
   }
   .link_bar a.twitter:hover {
-    background-image: url("<%=@base_url if @base_url%>/images/sprites/link_bar.png"); background-repeat: no-repeat;
-    background-position: -8px -200px;
+    background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
+    background-position: -7px -201px;
   }
   
 </style>
