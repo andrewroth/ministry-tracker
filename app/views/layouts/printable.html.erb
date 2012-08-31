@@ -8,12 +8,14 @@
   <link rel="shortcut icon" href="/favicon.ico" />
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
-      <% if Cmt::CONFIG[:web_title] %>
+      <%= @site_title + ' | ' if @site_title -%>
+      <% if t('misc.web_title') %>
+        <%= t('misc.web_title') %>
+      <% elsif Cmt::CONFIG[:web_title] %>
         <%= Cmt::CONFIG[:web_title] %>
       <% else %>
         Campus Movement Tracker
       <% end %>      
-      <%= ': ' + @site_title if @site_title -%>
     </title>
     <%= stylesheet_link_tag "ext/ext-all", "print", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
 

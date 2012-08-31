@@ -31,6 +31,7 @@ fr:
     "help_link_text": "À l'aide!"
     "email_prefix": "[pouls]"
     "ago": ""
+    "web_title": "Pouvoir de Changer - Le Pouls"
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
@@ -44,11 +45,11 @@ fr:
       "p2c_main_elements": "/images/sprites/p2c_main_elements.png"
       "log_in_main_img": "/images/fr/log_in_main_img.png"
     "top_bar": 
-      "c4c": "C4C.CA"
+      "c4c": "P2C"
       "c4c_mouseover": "Pouvoir de Changer"
       "pulse": "LE POULS"
       "resources": "RESSOURCES"
-      "resources_mouseover": "Ressources CPC"
+      "resources_mouseover": "Ressources"
       "events_menu": 
         "events": "ÉVENÉMENTS"
         "summit": "CONVERGENCE"

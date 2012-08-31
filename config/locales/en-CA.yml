@@ -24,6 +24,7 @@ en-CA:
     help_link_text: "Help!"
     email_prefix: "[pulse] "
     ago: " ago"
+    web_title: "Power to Change - The Pulse"
   layout: 
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
@@ -37,12 +38,12 @@ en-CA:
       p2c_main_elements: "/images/sprites/p2c_main_elements.png"
       log_in_main_img: "/images/log_in_main_img.png"
     top_bar: 
-      c4c: "C4C.CA"
-      c4c_mouseover: Campus for Christ
+      c4c: "P2C"
+      c4c_mouseover: Power to Change
       pulse: "THE PULSE"
       pulse_mouseover: 
       resources: "RESOURCES"
-      resources_mouseover: "C4C Resources Wiki"
+      resources_mouseover: "P2C Resources Wiki"
       events_menu:
         events: EVENTS
         events_mouseover:
@@ -68,8 +69,8 @@ en-CA:
         connect: CONNECT
         connect_mouseover:
       icons:
-        facebook: Campus for Christ on Facebook
-        twitter: Campus for Christ on Twitter
+        facebook: Power to Change on Facebook
+        twitter: Power to Change on Twitter
       greeting: Hi %{name}
       logout: Logout
     left_bar:
@@ -360,7 +361,7 @@ en-CA:
       <html>
         <p>Hi!</p>
 
-        <p><%= @group_invitation.sender_person.full_name %> has invited you to join their Campus for Christ group, <%= @group_invitation.group.name %></p>
+        <p><%= @group_invitation.sender_person.full_name %> has invited you to join their Power to Change group, <%= @group_invitation.group.name %></p>
 
         <br/>
 
@@ -389,7 +390,7 @@ en-CA:
         <p>
           Looking for a different group?
           <%= "<a href='#{@other_groups_link}'>" if @other_groups_link.present? %>
-          Check out other Campus for Christ groups at <%= @group_invitation.group.campus.name %>
+          Check out other Power to Change groups at <%= @group_invitation.group.campus.name %>
           <%= "</a>" if @other_groups_link.present? %>
         </p>
       </html>

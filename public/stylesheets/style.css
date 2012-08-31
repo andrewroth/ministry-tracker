@@ -181,7 +181,7 @@ table {width:100%; font-size:1em;}
 }
 strong {font-weight:bold;}
 a:link strong, a:visited strong {color: #1F429B; font-weight:bold;}
-a:hover strong, a:active strong {color: #ECAC00; font-weight:bold;}
+a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 
 
 .directorytable {
@@ -357,7 +357,6 @@ a:link, a:visited {
 
 a:hover, a:active {
   text-decoration:underline;
-  color:#ecac00;
 }
 a.norm {
 	color:#747474;
@@ -845,7 +844,7 @@ div.right-menu {
 }
 
 #right-menu a:hover {
-  color: #ECAC00;
+  text-decoration: underline;
 }
 
 #right-menu li.highlighted a {
@@ -1736,7 +1735,7 @@ padding-bottom:5px;
 .col2 .removeInvolvementIconLink:hover { background-position: -11px -976px; }
 
 .removeGroupIconLink       { padding-left:18px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -8px -360px; }
-.removeGroupIconLink:hover { background-position: -8px -360px; text-decoration:none; }
+.removeGroupIconLink:hover { background-position: -8px -804px; text-decoration:none; }
 
 .removeMentorIconLink       { padding:2px 0 0 20px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -10px -1039px; }
 .removeMentorIconLink:hover { background-position: -10px -1072px; }
@@ -2144,7 +2143,6 @@ div .statsRadioButton {
 }
 
 .statsRadioButton label:hover {
-  color: #ECAC00;
   text-decoration: underline;
 }
 
@@ -2248,7 +2246,7 @@ ul.statsLinkList {
 }
 
 .statsReportTab:hover:not(.statsTabActive) {
-  border: solid 2px #ECAC00;
+  border: solid 2px #0064a2;
 }
 
 .statsTabActive {
@@ -2691,13 +2689,13 @@ h2.group_type_title {
   display:block;
   padding:10px 10px 10px 20px;
   background-color: #F7F7F7;
-  background-image: url("/images/sprites/link_bar.png"); background-repeat: no-repeat;
+  background-image: url("/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
   background-position: -3px -91px;
   -moz-box-shadow: 0 0 7px #F0F0F0; -webkit-box-shadow: 0 0 7px #F0F0F0; box-shadow: 0 0 7px #F0F0F0;
 }
 
 #display_other_group_types_list_link:hover {
-  background-position: -3px -115px;
+  background-position: -3px -314px;
 }
 
 #signup_group_select_container {
@@ -3713,7 +3711,6 @@ td.discTree {
 }
 
 .treeBranchLink span:hover {
-  color: #ECAC00;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -3867,7 +3864,6 @@ td.campusDiscTree {
 }
 
 .campusViewTreeRoot a:hover, .campusViewTreeNode a:hover {
-  color: #ECAC00;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -3876,7 +3872,6 @@ td.campusDiscTree {
 }
 
 .campusViewTreeBranchLink span:hover {
-  color: #ECAC00;
   text-decoration: underline;
   cursor: pointer;
 }
