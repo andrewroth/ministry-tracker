@@ -33,6 +33,7 @@
 <%- end %>
 
 <div class="center">
+  <br/>
 
   <% if session[:from_facebook_canvas] == true && @finished_button_text.present? %>
     <%= leave_facebook_link_to @finished_button_text, Facebook::FANPAGE_URL, "action-button" %>

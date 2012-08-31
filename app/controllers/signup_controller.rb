@@ -9,6 +9,7 @@ class SignupController < ApplicationController
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
   before_filter :get_invitation, :only => [:step1_group, :step2_info, :step2_info_submit]
+  before_filter :hide_layout_navigation, :only => [:step1_group, :step1_group_from_campus, :step2_info, :step2_verify, :step3_timetable, :step3_timetable_submit]
 
 
   def index
@@ -21,6 +22,8 @@ class SignupController < ApplicationController
 
 
   def step1_group
+    @hide_layout_navigation = true
+
     session[:signup_joined_group_id] = nil
     session[:signup_person_params] = nil
     session[:signup_primary_campus_involvement_params] = nil
@@ -53,10 +56,11 @@ class SignupController < ApplicationController
     
     @semesters = [] << @current_semester << @next_semester
     @ask_campus = session[:signup_campus_id].blank? ? true : false
-    @hide_layout_navigation = true
   end
 
   def step1_default_group
+    @hide_layout_navigation = true
+
     get_person
     if @person
       join_default_group(session[:signup_campus_id], params[:semester_id])
@@ -68,6 +72,7 @@ class SignupController < ApplicationController
   end
 
   def step1_group_from_campus
+    @hide_layout_navigation = true
 
     if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
       flash[:notice] = t("signup.missing_campus_and_semester")
@@ -122,6 +127,7 @@ class SignupController < ApplicationController
 
 
   def step2_info
+    @hide_layout_navigation = true
     @person ||= get_person || Person.new
     @person.email = @group_invitation.recipient_email if @group_invitation
     UserCodesController.clear(session)
@@ -391,6 +397,10 @@ class SignupController < ApplicationController
 
   def get_layout
     session[:from_facebook_canvas] == true ? "facebook_canvas" : "application"
+  end
+
+  def hide_layout_navigation 
+    @hide_layout_navigation = true
   end
   
   def get_invitation

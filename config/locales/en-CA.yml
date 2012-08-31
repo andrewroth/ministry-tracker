@@ -457,7 +457,7 @@ en-CA:
     back: To get back to the <A HREF="%{url}">Pulse login page</A>, retype %{url} in your url bar
     click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
-    help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
+    help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"http://getsatisfaction.com/powertochange\">Support Community</a>."
     email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
     verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
     fill_all_fields: "Please fill all required fields"

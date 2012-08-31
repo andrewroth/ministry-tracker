@@ -1070,7 +1070,7 @@ a.action-button img {
 }
 input.action-button[disabled] {
   background: #FAFAFA;
-  border: 1px solid #E0E6E0;
+  border: 2px solid #E0E6E0;
   color: #B4BAB4;
   cursor: default;
   
@@ -1427,7 +1427,7 @@ a.modulecontent, .modulecontent ul {font-size:12px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
 ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
 
-#userbar_wrapper, #content_wrapper, #tablist_container, .messages {
+#userbar_wrapper, #content_wrapper, #tablist_container, .messages, #greenbar {
   width: 100%;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
@@ -1435,6 +1435,10 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 
 #content_wrapper, .dashboard #userbar_wrapper {
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+#greenbar {
+  padding-bottom: 10px;
 }
 
 .dashboard .messages {
