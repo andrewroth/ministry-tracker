@@ -189,14 +189,8 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .butProfile a {
-  padding-left:20px;
   border:0px solid black;
   height:18px;
-  background-image: url("/images/sprites/icons.png"); background-repeat: no-repeat; background-position:-5px -233px;
-}
-
-.butProfile a:hover {
-  background-position:-5px -268px;
 }
 
 .butUpdate a, .butDelete a {
@@ -713,7 +707,7 @@ img.opaqueWhite {
 .directorytable {
     background-color:#f5f5f5;
     padding:8px;
-    border-bottom:1px #FFCB05 solid;
+    border-bottom:1px #0064a2 solid;
 }
 .directorytable th, .directorytable td {
     padding:3px;
@@ -722,7 +716,7 @@ img.opaqueWhite {
 .directorytable th {
     font-weight: normal;
     color: #1F429B;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #0064a2;
 		text-align: left;
 }
 .directorytable .highlight {
@@ -730,7 +724,7 @@ img.opaqueWhite {
 }
 
 .directorytable tr:hover {
-    background-color:#fff193;
+    background-color:#F7C55C;
 		cursor:pointer;
 }
 
