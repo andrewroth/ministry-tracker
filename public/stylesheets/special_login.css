@@ -18,7 +18,7 @@ body {
   height: 109px;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #banner_container {
@@ -28,47 +28,55 @@ body {
 
 #banner_container #leftBubble, #banner_container #leftBubble:hover {
   position: relative;
-  left: -32px;
-  top: 32px;
+  left: -38px;
+  top: 15px;
   text-decoration:none;
 }
 
 #banner_container #leftBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -41px -125px;
   background-repeat: no-repeat;
-  background-position:-6px -90px;
-  display:inline-block;
-  width:295px;
-  height:245px;
+  border: 27px solid white;
+  display: inline-block;
+  height: 175px;
+  padding: 0 29px;
+  width: 169px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
   
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
 #banner_container #leftBubbleImg:hover {
-  background-position:-6px -599px;
+  background-position: -41px -634px;
   cursor:pointer;
 }
 
 #banner_container #rightBubble, #banner_container #rightBubble:hover {
   position: relative;
-  left: 32px;
-  top: 33px;
+  left: 37px;
+  top: 38px;
   text-decoration:none;
 }
 
 #banner_container #rightBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -56px -394px;
   background-repeat: no-repeat;
-  background-position:-6px -345px;
-  display:inline-block;
-  width:295px;
-  height:245px;
+  border: 44px solid white;
+  display: inline-block;
+  height: 130px;
+  padding: 6px 30px;
+  width: 135px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
   
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
 #banner_container #rightBubbleImg:hover {
-  background-position:-6px -854px;
+  background-position: -56px -904px;
   cursor:pointer;
 }
 
@@ -109,7 +117,7 @@ body {
   margin-top: 7px;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #p2c_pulse_logo {

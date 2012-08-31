@@ -53,6 +53,7 @@ class SignupController < ApplicationController
     
     @semesters = [] << @current_semester << @next_semester
     @ask_campus = session[:signup_campus_id].blank? ? true : false
+    @hide_layout_navigation = true
   end
 
   def step1_default_group

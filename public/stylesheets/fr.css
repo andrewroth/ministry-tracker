@@ -1,19 +1,34 @@
 
-#logos #pulse_logo {
-  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
+div#logos #pulse_logo {
+  background-image: url("/images/fr/p2c_main_elements.png") !important;
 }
+
 #ptcLogoLink {
-  background-image: url("/images/fr/ptc_logo_grey.png") ! important;
+  background-image: url("/images/fr/ptc_logo_grey.png") !important;
 }
-#banner_container #leftBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
+
+#banner_container #leftBubble .image {
+  background-image: url("/images/fr/p2c_main_elements.png") !important;
+  background-position: -10px -1517px !important;
 }
-#banner_container #rightBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
+
+#banner_container #leftBubble .image:hover {
+  background-position: -10px -1610px !important;
 }
+
+#banner_container #rightBubble .image {
+  background-image: url("/images/fr/p2c_main_elements.png") !important;
+}
+
+#banner_container #rightBubble .image:hover {
+  background-position: -8px -1418px !important;
+}
+
 #helpLink {
-  background-image: url("/images/sprites/p2c_main_elements.png") ! important;
+  background-image: url("/images/fr/p2c_main_elements.png") !important;
+  background-position: -12px -1214px !important;
 }
+
 .link_bar #tools {
   letter-spacing: -1px;
 }
