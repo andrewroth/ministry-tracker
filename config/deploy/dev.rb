@@ -45,6 +45,7 @@ def link_shared(p, o = {})
   run "ln -s #{shared_path}/#{p} #{release_path}/#{p}"
 end
 
+before :"deploy:create_symlink", :"before_symlink"
 deploy.task :before_symlink do
   # set up tmp dir
   run "mkdir -p -m 770 #{shared_path}/tmp/{cache,sessions,sockets,pids}"
@@ -65,6 +66,7 @@ deploy.task :before_symlink do
   run "cd #{release_path} && git submodule update"
 end
 
+after :"deploy:create_symlink", :"after_symlink"
 deploy.task :after_symlink do
   run "ruby /etc/screen.d/dj_pulse.rb"
 end
