@@ -3203,6 +3203,10 @@ li.ac_over .autoCompleteIconLink {
   display: none;
 }
 
+.autoCompleteIconLink a:hover {
+  text-decoration: none !important;
+}
+
 .autoCompleteIconLink .autoCompleteIconTimetable {
   background-image: url("/images/sprites/p2c_icons.png");
   background-position: -10px -223px;
@@ -3306,7 +3310,7 @@ li.ac_over .autoCompleteName {
   margin: 0 1px;
 
   border-radius: 0 0 10px 10px;
-  box-shadow: 0 4px 10px #C8C8C8;
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
 }
 
 .ac_results ul {
@@ -3640,13 +3644,14 @@ input#contract_signature_agreement:hover {
 .horizTableCompare .personTimes { position: absolute; left: 0px; right: 0px; top: 0px; }
 .horizTableCompare .personNameContainer { position:relative; overflow: hidden; height:26px; text-align: right; padding-left:16px; }
 
-.horizTableCompare .personName { display:inline; position:relative; right:-20px; overflow:visible; cursor:pointer; color:#1F429B; padding:4px 51px 4px 13px; font-weight:bold; white-space:nowrap; line-height:26px; border-radius: 10px 0 0 10px; transition: 0.15s ease 0s; }
-.horizTableCompare .personName.even { background-color:#F0F0F0; }
-.horizTableCompare .personName.odd  { background-color:#E9E9E9; }
-.horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { background-color:#FFCB05; text-decoration:underline; }
+.horizTableCompare .personName { display:inline; position:relative; right:-20px; overflow:visible; cursor:pointer; color:#1F429B; padding:4px 55px 4px 13px; font-weight:bold; white-space:nowrap; line-height:26px; border-radius: 10px 0 0 10px; transition: 0.15s ease 0s; }
+.horizTableCompare .personName.even { background-color:#EBEBEB; }
+.horizTableCompare .personName.odd  { background-color:#D8D8D8; }
+.horizTableCompare .personName:hover, .horizTableCompare .personName.rowsHidden:hover { text-decoration:underline; }
 .horizTableCompare .personName:active, .horizTableCompare .personName.rowsHidden:active { background:none;}
 .horizTableCompare .personName.rowsHidden { background-color:white; opacity:0.6; filter:alpha(opacity=60);/*for IE*/ }
 .horizTableCompare .personTimetableLink { display:inline; position:absolute; top:1px; right:5px; padding:4px; }
+.horizTableCompare .personTimetableIcon { background: url("/images/sprites/p2c_icons.png") no-repeat scroll -10px -223px transparent; height: 15px; width: 18px; }
 .horizTableCompare span.outdated { font-weight:bold; font-style: italic; color:white; }
 .horizTableCompare .noTableNote { float:right; }
 .horizTableCompare .noTable, .horizTableCompare .noTableNote { opacity:0.7; filter:alpha(opacity=70);/*for IE*/ }
@@ -3676,10 +3681,10 @@ input#contract_signature_agreement:hover {
 
 .horizTableCompare .ui-slider .ui-slider-handle, .horizTableCompare .ui-slider, .horizTableCompare .zoomSliderOut, .horizTableCompare .zoomSliderIn { cursor:pointer; }
 
-.horizTableCompare .zoomSliderIn { display:inline-block; background: url("/images/debicons/Gaddicon.png") no-repeat scroll right top transparent; padding-left:20px; height:13px; }
-.horizTableCompare .zoomSliderIn:hover { background: url("/images/debicons/Yaddicon.png") no-repeat scroll right top transparent; }
-.horizTableCompare .zoomSliderOut { display:inline-block; background: url("/images/debicons/Gremoveicon.png") no-repeat scroll left top transparent; padding-left:20px; height:13px; }
-.horizTableCompare .zoomSliderOut:hover { background: url("/images/debicons/Yremoveicon.png") no-repeat scroll left top transparent; }
+.horizTableCompare .zoomSliderIn { display:inline-block; background: url("/images/sprites/p2c_icons.png") no-repeat scroll -7px -127px transparent; padding-left:20px; height:14px; }
+.horizTableCompare .zoomSliderIn:hover { background-position: -7px -571px; }
+.horizTableCompare .zoomSliderOut { display:inline-block; background: url("/images/sprites/p2c_icons.png") no-repeat scroll -7px -365px transparent; padding-left:20px; height:14px; }
+.horizTableCompare .zoomSliderOut:hover { background-position: -7px -809px; }
 
 #tooltip.horizTableCompare, #tooltip {
   position: absolute;
@@ -3687,7 +3692,7 @@ input#contract_signature_agreement:hover {
 	background-color: #666766;
 	padding: 10px;
   border-radius: 10px;
-  box-shadow: 1px 4px 5px #C8C8C8;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
 }
 #tooltip h3, #tooltip div { margin: 0; }
 #tooltip span.whiteFont { color:white; }
