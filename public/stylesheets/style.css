@@ -1289,33 +1289,34 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 #leftBubble .image {
   background-color: white;
   background-image: url("/images/sprites/p2c_main_elements.png");
-  background-position: 4px -1517px;
+  background-position: 10px -1510px;
   background-repeat: no-repeat;
-  border: 23px solid white;
+  border: 16px solid white;
   box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
   display: inline-block;
-  height: 80px;
-  width: 124px;
+  height: 51px;
+  width: 137px;
+  padding: 21px 0;
 
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
 #leftBubble .image:hover {
-  background-position: 4px -1610px;
+  background-position: 10px -1603px;
   cursor:pointer;
 }
 
 #rightBubble, #rightBubble:hover {
   position: relative;
   left: 17px;
-  top: 37px;
+  top: 22px;
   text-decoration:none;
 }
 
 #rightBubble .image {
   background-color: white;
   background-image: url("/images/sprites/p2c_main_elements.png");
-  background-position: -8px -1324px;
+  background-position: -8px -1323px;
   background-repeat: no-repeat;
   border: 13px solid white;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -1327,7 +1328,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 }
 
 #rightBubble .image:hover {
-  background-position: -8px -1417px;
+  background-position: -8px -1416px;
   cursor:pointer;
 }
 
@@ -1466,7 +1467,7 @@ div#userbar {
 div#logos { padding:15px 0 0 40px; position:relative; }
 div#logos a, div#logos a:hover { text-decoration:none; }
 div#logos #pulse_logo {
-  background-position: -9px -1702px;
+  background-position: -10px -2167px;
   background-repeat: no-repeat;
   background-image: url("/images/sprites/p2c_main_elements.png") ! important;
   bottom: -54px;
