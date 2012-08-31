@@ -7,12 +7,14 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
       <title>
-        <% if Cmt::CONFIG[:web_title] %>
+        <%= @site_title + ' | ' if @site_title -%>
+        <% if t('misc.web_title') %>
+          <%= t('misc.web_title') %>
+        <% elsif Cmt::CONFIG[:web_title] %>
           <%= Cmt::CONFIG[:web_title] %>
         <% else %>
           Campus Movement Tracker
         <% end %>
-        <%= ': ' + @site_title if @site_title -%>
       </title>
 
   </head> 

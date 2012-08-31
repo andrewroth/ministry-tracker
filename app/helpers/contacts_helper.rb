@@ -127,33 +127,12 @@ module ContactsHelper
     campuses.collect{|c| [c[:campus_desc], c[:campus_id]]}
   end
 
-  def ministry_leaf_and_over(campus_id)
-    ans = []
-    Campus.find(campus_id).ministries.each do |m|
-      if m[:ministries_count] == 0
-        ans.push(m[:id])
-        ans.push(m.parent[:id])
-      end
-    end
-    ans
-  end
-  
   def people_available
-    @people_available ||= []
-    unless @campus_id.nil?
-      @people_available = [["Unassigned", 0]]
-      MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id)}).collect{|mi| mi[:person_id]}.each do |pid|
-        if Person.exists?(pid)
-          p = Person.find(pid)
-          @people_available.push(["#{p[:person_fname]} #{p[:person_lname]}", pid])
-        end
-      end
-    end
     @people_available
   end
-  
+
   def people_available_for_search
-    @people_available_for_search ||= people_available.insert(0, ["All", -1])
+    @people_available_for_search
   end
   
   def convert_values(a, field)

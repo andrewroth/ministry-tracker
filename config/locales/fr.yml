@@ -31,6 +31,14 @@ fr:
     "help_link_text": "À l'aide!"
     "email_prefix": "[pouls]"
     "ago": ""
+    "web_title": "Pouvoir de Changer &#8211; Le Pouls"
+  "title":
+    "dashboard": "Tableau de bord"
+    "contacts": "Contacts"
+    "group": "Groupe"
+    "advanced_search": "Advanced Search"
+    "profile": "Profil"
+    "team": "Équipe"
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
@@ -44,11 +52,11 @@ fr:
       "p2c_main_elements": "/images/sprites/p2c_main_elements.png"
       "log_in_main_img": "/images/fr/log_in_main_img.png"
     "top_bar": 
-      "c4c": "C4C.CA"
+      "c4c": "P2C"
       "c4c_mouseover": "Pouvoir de Changer"
       "pulse": "LE POULS"
       "resources": "RESSOURCES"
-      "resources_mouseover": "Ressources CPC"
+      "resources_mouseover": "Ressources"
       "events_menu": 
         "events": "ÉVENÉMENTS"
         "summit": "CONVERGENCE"
@@ -85,14 +93,14 @@ fr:
     "languages": 
       "english_to_french": "FRANÇAIS"
       "english_to_french_mouseover": "Changer ta préférence de langue au français"
-      "french_to_english": "ANGLAIS"
-      "french_to_english_mouseover": "Changer ta préférence de langue à l'anglais"
+      "french_to_english": "ENGLISH"
+      "french_to_english_mouseover": "Switch pulse language to English"
     "ptc_logo": "/images/fr/ptc_logo_grey.png"
     "help": "À l'aide!"
     "banner": "Connexion"
   "dashboard": 
     "groups_header": "Mes groupes"
-    "join_txt": "Deviens membre d'un groupe !"
+    "join_txt": "S'inscrire à un groupe !"
     "join_more_txt": "Deviens membre d'autres groupes"
     "events_header": "Mes évènements"
     "projects_header": "Projets"
@@ -367,7 +375,7 @@ fr:
     "back": "Pour revenir à <A HREF=\"%{url}\">la page d'ouverture de session du Pouls</A>, retapper %{url} dans le champ url"
     "click_to_login": "Cliquer sur le logo de TheKey dans le Pouls pour ouvrir une session avec ton nouveau compte"
     "stuck": "Si tu restes pris sur la page d'accueil de TheKey, retappe http://localhost:3000 dans ta fenêtre url"
-    "help_txt": "Pour avoir de l'aide, tu peux regarder cette <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">courte vidéo</a> qui explique comment créer un compte TheKey, ou visiter notre <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Communauté d'assistance informatique</a>."
+    "help_txt": "Pour avoir de l'aide, tu peux regarder cette <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">courte vidéo</a> qui explique comment créer un compte TheKey, ou visiter notre <a href=\"http://getsatisfaction.com/powertochange\">Communauté d'assistance informatique</a>."
     "email_already_in": "<b>%{email} est déjà dans le Pouls. </b> Si ce courriel t'appartient, clique le bouton \"Vérification de l'adresse courriel\", puis on t'enverra un courriel qui te permettra de terminer ta demande d'inscription à un groupe. Cela nous permet d'assurer que ce courriel est bien à toi. "
     "verify_email_sent": "Un courriel de vérification a été envoyé à <b>%{email}</b><br/><br/>Clique le lien dans le courriel pour terminer ton inscription."
     "fill_all_fields": "SVP compléter tous les champs obligatoires"

@@ -8,17 +8,37 @@ body {
   padding: 0;
   text-align: center;
   font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 10px;
   background: url("/images/new_session_background.png");
   background-repeat: no-repeat;
   background-position: center 0;
   background-color: #F4F4F4;
 }
 
+a, a:link, a:visited {
+  color: #0064a2;
+  text-decoration:none;
+}
+
+a:hover, a:active {
+  text-decoration:underline;
+}
+
+#switch_language {
+  display: inline-block;
+  left: 83px;
+  position: relative;
+  text-align: right;
+  top: -46px;
+  width: 100px;
+  font-weight: bold;
+}
+
 #logo_container {
   height: 109px;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #banner_container {
@@ -28,79 +48,89 @@ body {
 
 #banner_container #leftBubble, #banner_container #leftBubble:hover {
   position: relative;
-  left: -32px;
-  top: 32px;
+  left: -38px;
+  top: 10px;
   text-decoration:none;
 }
 
 #banner_container #leftBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -34px -119px;
   background-repeat: no-repeat;
-  background-position:-6px -90px;
-  display:inline-block;
-  width:295px;
-  height:245px;
-  
+  border: 23px solid white;
+  display: inline-block;
+  height: 175px;
+  padding: 4px 0;
+  width: 237px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
 #banner_container #leftBubbleImg:hover {
-  background-position:-6px -599px;
+  background-position: -34px -628px;
   cursor:pointer;
 }
 
 #banner_container #rightBubble, #banner_container #rightBubble:hover {
   position: relative;
-  left: 32px;
-  top: 33px;
+  left: 37px;
+  top: 38px;
   text-decoration:none;
 }
 
 #banner_container #rightBubbleImg {
-  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
+  background-color: white;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -48px -385px;
   background-repeat: no-repeat;
-  background-position:-6px -345px;
-  display:inline-block;
-  width:295px;
-  height:245px;
+  border: 36px solid white;
+  display: inline-block;
+  height: 120px;
+  padding: 19px 0;
+  width: 210px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
   
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
 #banner_container #rightBubbleImg:hover {
-  background-position:-6px -854px;
+  background-position: -48px -895px;
   cursor:pointer;
 }
 
 #pulseExplain {
-  background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -1111px;
-  display:inline-block;
-  width:230px;
-  height:85px;
-  position:relative;
-  top:17px;
-  left:-94px;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: -10px -1111px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 90px;
+  left: -47px;
+  position: relative;
+  top: 17px;
+  width: 280px;
 }
 
 #createLoginImg {
   background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -1252px;
+  background-position: 15px -1252px;
   display:inline-block;
-  width:125px;
+  width:150px;
   height:22px;
 }
 
 #createLoginImg:hover {
-  background-position:-10px -1291px;
+  background-position: 15px -1291px;
   cursor:pointer;
 }
 
 #helpImg {
   background-image: url("/images/sprites/p2c_main_elements.png"); background-repeat: no-repeat;
-  background-position:-10px -1214px;
+  background-position: 6px -1214px;
   display:inline-block;
-  width:45px;
+  width:61px;
   height:21px;
 }
 
@@ -109,12 +139,19 @@ body {
   margin-top: 7px;
   background-color: white; /* fall back for IE8 */
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #p2c_pulse_logo {
-  padding: 29px;
-  margin-right: 492px;
+  background-image: url("/images/sprites/p2c_main_elements.png");
+  background-position: 6px 9px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 90px;
+  left: -201px;
+  padding: 0;
+  position: relative;
+  width: 340px;
 }
 
 #disco_change {
@@ -124,15 +161,15 @@ body {
 }
 
 #create_logon {
-  left: 150px;
+  left: 121px;
   position: relative;
   top: 29px;
 }
 
 #help_link {
   position: relative;
-  left: 101px;
-  top: 66px;
+  left: 56px;
+  top: 65px;
 }
 
 img {
@@ -148,7 +185,7 @@ img {
   padding:10px;
   background:#FFCB05;
   font-size:14px;
-  -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
+  border-radius: 10px;
 }
 
 div.flash big {

@@ -3,11 +3,11 @@
   <div class='link_bar'>
 
     <ol id='tools'>
-      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', t('layout.top_bar.c4c_mouseover', :default => ''), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://p2c.com', t('layout.top_bar.c4c_mouseover', :default => ''), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
       
       <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), t('layout.top_bar.pulse_mouseover', :default => ''), t('layout.top_bar.pulse'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', t('layout.top_bar.resources_mouseover', :default => ''), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://powertochange.com/students/resources/september-launch-vision/', t('layout.top_bar.resources_mouseover', :default => ''), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
       
       <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', t('layout.top_bar.events_menu.events_mouseover', :default => ''), "#{t('layout.top_bar.events_menu.events')}<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
       
@@ -29,7 +29,6 @@
 
 <div id='events_box' class='link_menu_box'>
   <a href='<%=eventbrite[:c4c_events_link]%>' title='<%= t('layout.top_bar.events_menu.summit_mouseover', :default => '') %>'><%= t('layout.top_bar.events_menu.summit') %></a>
-  <a href='<%=eventbrite[:c4c_events_link]%>' title='<%= t('layout.top_bar.events_menu.winter_conference_mouseover', :default => '') %>'><%= t('layout.top_bar.events_menu.winter_conference') %></a>
   <a href='http://gototheworld.com' title='<%= t('layout.top_bar.events_menu.projects_mouseover', :default => '') %>'><%= t('layout.top_bar.events_menu.projects') %></a>
 </div>
 
@@ -37,7 +36,6 @@
   <a href='http://www.gcx2.org' title='<%= t('layout.top_bar.more_menu.gcx_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.gcx') %></a>
   <a href='https://pat.powertochange.org' title='<%= t('layout.top_bar.more_menu.pat_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.pat') %></a>
   <a href='https://mpdtool.powertochange.org' title='<%= t('layout.top_bar.more_menu.mpd_tool_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.mpd_tool') %></a>
-  <a href='http://www.glclive.com' title='<%= t('layout.top_bar.more_menu.glc_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.glc') %></a>
   <a href='https://tm.thementorcenter.com' title='<%= t('layout.top_bar.more_menu.mt_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.mt') %></a>
   <a href='https://connect.powertochange.org/' title='<%= t('layout.top_bar.more_menu.connect_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.connect') %></a>
 </div>
@@ -45,9 +43,9 @@
 <% if staff %>
   <div id='staff_box' class='link_menu_box'>
     <a href='https://www.mygcx.org/C4C_Staff_Intranet/screen/home' title='Staff Dashboard'>STASH</a>
-    <a href='http://mail.c4c.ca/' title='Google Mail'>MAIL</a>
-    <a href='http://docs.c4c.ca/' title='Google Documents'>DOCUMENTS</a>
-    <a href='http://calendar.c4c.ca/' title='Google Calendar'>CALENDAR</a>
+    <a href='http://mail.p2c.com' title='Google Mail'>MAIL</a>
+    <a href='http://docs.p2c.com' title='Google Documents'>DOCUMENTS</a>
+    <a href='http://calendar.p2c.com' title='Google Calendar'>CALENDAR</a>
     <a href='https://focus.crusade.org'>FOCUS</a>
     <a href='http://staff.powertochange.org'>THE LOOP</a>
     <a href='<%= url_for(:action => :index, :controller => :summer_reports, :only_path => false) %>' title='Staff summer schedules'>SUMMER</a>

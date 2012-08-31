@@ -1,6 +1,7 @@
 class GiveContactsPermissions < ActiveRecord::Migration
  NEW_PERMISSIONS = [{ :description => "View Contact List", :controller => "contacts", :action => "index" },
                     { :description => "Edit Contact", :controller => "contacts", :action => "edit" },
+                    { :description => "Save Contact", :controller => "contacts", :action => "save" },
                     { :description => "Batch Edit Contact Assignement", :controller => "contacts", :action => "multiple_assign" },
                     { :description => "Search Contacts", :controller => "contacts", :action => "search" }]
                     
@@ -8,18 +9,22 @@ class GiveContactsPermissions < ActiveRecord::Migration
                                    { :ministry_role_name => "Team Member",  :permission_index => 1 }, 
                                    { :ministry_role_name => "Team Member",  :permission_index => 2 }, 
                                    { :ministry_role_name => "Team Member",  :permission_index => 3 }, 
+                                   { :ministry_role_name => "Team Member",  :permission_index => 4 }, 
                                    { :ministry_role_name => "Team Leader",  :permission_index => 0 }, 
                                    { :ministry_role_name => "Team Leader",  :permission_index => 1 }, 
                                    { :ministry_role_name => "Team Leader",  :permission_index => 2 }, 
                                    { :ministry_role_name => "Team Leader",  :permission_index => 3 }, 
+                                   { :ministry_role_name => "Team Leader",  :permission_index => 4 }, 
                                    { :ministry_role_name => "Ministry Leader",  :permission_index => 0 }, 
                                    { :ministry_role_name => "Ministry Leader",  :permission_index => 1 }, 
                                    { :ministry_role_name => "Ministry Leader",  :permission_index => 2 }, 
                                    { :ministry_role_name => "Ministry Leader",  :permission_index => 3 }, 
+                                   { :ministry_role_name => "Ministry Leader",  :permission_index => 4 }, 
                                    { :ministry_role_name => "Student Leader",  :permission_index => 0 }, 
                                    { :ministry_role_name => "Student Leader",  :permission_index => 1 }, 
                                    { :ministry_role_name => "Student Leader",  :permission_index => 2 }, 
-                                   { :ministry_role_name => "Student Leader",  :permission_index => 3 }]
+                                   { :ministry_role_name => "Student Leader",  :permission_index => 3 }, 
+                                   { :ministry_role_name => "Student Leader",  :permission_index => 4 }]
 
   def self.up
     NEW_MINISTRY_ROLE_PERMISSIONS.each do |mrp|
@@ -33,9 +38,12 @@ class GiveContactsPermissions < ActiveRecord::Migration
   def self.down
     NEW_MINISTRY_ROLE_PERMISSIONS.each do |mrp|
       p = NEW_PERMISSIONS[mrp[:permission_index]]
-      mr_id = MinistryRole.find(:first, :conditions => { :name => mrp[:ministry_role_name] } ).id
-      permission_id = Permission.find(:first, :conditions => { :controller => p[:controller], :action => p[:action] } ).id
-      MinistryRolePermission.find(:first, :conditions => { :permission_id => permission_id, :ministry_role_id => mr_id }).destroy
+      mr = MinistryRole.find(:first, :conditions => { :name => mrp[:ministry_role_name] } )
+      perm = Permission.find(:first, :conditions => { :controller => p[:controller], :action => p[:action] } )
+      unless mr.nil? || perm.nil?
+        mrp = MinistryRolePermission.find(:first, :conditions => { :permission_id => perm.id, :ministry_role_id => mr.id })
+        mrp.destroy unless mrp.nil?
+      end
     end
   end
 end

@@ -1,4 +1,4 @@
-<% @site_title = 'Advanced Search' -%>
+<% @site_title = t('title.advanced_search') -%>
 <% content_for :javascripts do %>
   <%= javascript_include_tag "widgets/tooltip.js" %>
 <% end %>
@@ -82,7 +82,7 @@
 
     <%- if authorized?(:new) -%>
       <div class="directoryResultControl">
-        <%= link_to_remote("#{image_tag("debicons/Gaddicon.png")} Add a student",
+        <%= link_to_remote("Add a student",
                            :url => add_student_people_url,
                            :loading => "$('#spinneradd_student').show();",
                            :complete => "$('#spinneradd_student').hide();
@@ -214,7 +214,7 @@
   			end %></td>
 	    <%- end -%>
 				<td class="alignright">
-				  <%= link_to(image_tag('debicons/Gremoveicon_s.png'), person_path(person['person_id']), :title => "Remove person (they're no longer involved)", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
+				  <%= link_to("Remove", person_path(person['person_id']), :title => "Remove person (they're no longer involved)", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
 				  <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']), :title => "Goto #{person["First_Name"] ? person["First_Name"] : "this person"}'s profile" %></span>
 				</td>
 			</tr>

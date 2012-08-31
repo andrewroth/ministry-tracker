@@ -1,6 +1,7 @@
 class AddContactsPermissions < ActiveRecord::Migration
  NEW_PERMISSIONS = [{ :description => "View Contact List", :controller => "contacts", :action => "index" },
                     { :description => "Edit Contact", :controller => "contacts", :action => "edit" },
+                    { :description => "Save Contact", :controller => "contacts", :action => "save" },
                     { :description => "Batch Edit Contact Assignement", :controller => "contacts", :action => "multiple_assign" },
                     { :description => "Search Contacts", :controller => "contacts", :action => "search" }]
 

@@ -122,7 +122,7 @@ module ApplicationHelper
   end
 
   def instruction_block(html = nil, &proc)
-    html ||= capture(&proc).gsub(/\s/, '') if block_given?
+    html ||= capture(&proc) if block_given?
     render_s = html.try(:present?) ? %(<script type="text/javascript">$(document).ready(function() { $("#instructions").html("#{escape_javascript(html)}"); $("#instructions").show(); });</script>) : ""
 
     if block_given?

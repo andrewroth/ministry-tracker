@@ -6,7 +6,7 @@ unless @mobile
   <%= javascript_include_tag "dashboard.js", :cache => 'cache/dashboard' %>
 <% end %>
 
-<% @site_title = 'Dashboard' -%>
+<% @site_title = t('title.dashboard') -%>
 
 <div class="welcome">
 <%- if @ministry -%>

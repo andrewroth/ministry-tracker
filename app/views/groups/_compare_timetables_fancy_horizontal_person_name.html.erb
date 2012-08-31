@@ -18,12 +18,12 @@
 
   <% elsif has_table %>
     <div class="personTimetableLink" title="<span class='whiteFont'><%=person.first_name%>'s timetable was last updated <%=time_ago_in_words(person.timetable.updated_at)%> ago</span> - <span class='whiteFont'>Click to goto the timetable</span>">
-      <%= link_to(image_tag('debicons/Gschicon.png'), timetable_path) %>
+      <%= link_to('<div class="personTimetableIcon"></div>', timetable_path) %>
     </div>
 
   <% else %>
     <div class="personTimetableLink" title="<span class='whiteFont'><%=person.first_name%> hasn't submitted their timetable</span> - <span class='whiteFont'>Click to goto the timetable</span>">
-      <%= link_to(image_tag('debicons/Gschicon.png'), timetable_path) %>
+      <%= link_to('<div class="personTimetableIcon"></div>', timetable_path) %>
     </div>
   <% end %>
 

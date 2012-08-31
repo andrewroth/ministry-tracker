@@ -24,6 +24,14 @@ en-CA:
     help_link_text: "Help!"
     email_prefix: "[pulse] "
     ago: " ago"
+    web_title: "Power to Change &#8211; The Pulse"
+  title:
+    dashboard: "Dashboard"
+    contacts: "Contacts"
+    group: "Group"
+    advanced_search: "Advanced Search"
+    profile: "Profile"
+    team: "Team"
   layout: 
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
@@ -37,12 +45,12 @@ en-CA:
       p2c_main_elements: "/images/sprites/p2c_main_elements.png"
       log_in_main_img: "/images/log_in_main_img.png"
     top_bar: 
-      c4c: "C4C.CA"
-      c4c_mouseover: Campus for Christ
+      c4c: "P2C"
+      c4c_mouseover: Power to Change
       pulse: "THE PULSE"
       pulse_mouseover: 
       resources: "RESOURCES"
-      resources_mouseover: "C4C Resources Wiki"
+      resources_mouseover: "P2C Resources Wiki"
       events_menu:
         events: EVENTS
         events_mouseover:
@@ -68,8 +76,8 @@ en-CA:
         connect: CONNECT
         connect_mouseover:
       icons:
-        facebook: Campus for Christ on Facebook
-        twitter: Campus for Christ on Twitter
+        facebook: Power to Change on Facebook
+        twitter: Power to Change on Twitter
       greeting: Hi %{name}
       logout: Logout
     left_bar:
@@ -84,7 +92,7 @@ en-CA:
         titled: Your schedule
     languages:
       english_to_french: FRANÇAIS
-      english_to_french_mouseover: Switch pulse language to French
+      english_to_french_mouseover: Changer ta préférence de langue au français
       french_to_english: ENGLISH
       french_to_english_mouseover: Switch pulse language to English
   dashboard:
@@ -360,7 +368,7 @@ en-CA:
       <html>
         <p>Hi!</p>
 
-        <p><%= @group_invitation.sender_person.full_name %> has invited you to join their Campus for Christ group, <%= @group_invitation.group.name %></p>
+        <p><%= @group_invitation.sender_person.full_name %> has invited you to join their Power to Change group, <%= @group_invitation.group.name %></p>
 
         <br/>
 
@@ -389,7 +397,7 @@ en-CA:
         <p>
           Looking for a different group?
           <%= "<a href='#{@other_groups_link}'>" if @other_groups_link.present? %>
-          Check out other Campus for Christ groups at <%= @group_invitation.group.campus.name %>
+          Check out other Power to Change groups at <%= @group_invitation.group.campus.name %>
           <%= "</a>" if @other_groups_link.present? %>
         </p>
       </html>
@@ -456,7 +464,7 @@ en-CA:
     back: To get back to the <A HREF="%{url}">Pulse login page</A>, retype %{url} in your url bar
     click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
-    help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"https://www.mygcx.org/Pulse_Help_Center/screen/home\">Support Community</a>."
+    help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"http://getsatisfaction.com/powertochange\">Support Community</a>."
     email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."
     verify_email_sent: "A verification email has been sent to <b>%{email}</b><br/><br/>Click the link in the email to continue."
     fill_all_fields: "Please fill all required fields"
