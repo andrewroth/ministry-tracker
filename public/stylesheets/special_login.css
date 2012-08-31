@@ -8,10 +8,30 @@ body {
   padding: 0;
   text-align: center;
   font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 10px;
   background: url("/images/new_session_background.png");
   background-repeat: no-repeat;
   background-position: center 0;
   background-color: #F4F4F4;
+}
+
+a, a:link, a:visited {
+  color: #0064a2;
+  text-decoration:none;
+}
+
+a:hover, a:active {
+  text-decoration:underline;
+}
+
+#switch_language {
+  display: inline-block;
+  left: 83px;
+  position: relative;
+  text-align: right;
+  top: -53px;
+  width: 100px;
+  font-weight: bold;
 }
 
 #logo_container {
@@ -46,17 +66,6 @@ body {
   width: 237px;
   box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
 
-  /*background-color: white;
-  background-image: url("/images/sprites/p2c_main_elements.png");
-  background-position: -41px -125px;
-  background-repeat: no-repeat;
-  border: 27px solid white;
-  display: inline-block;
-  height: 175px;
-  padding: 0 29px;
-  width: 169px;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);*/
-  
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
@@ -83,17 +92,6 @@ body {
   padding: 19px 0;
   width: 210px;
   box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
-  
-  /*background-color: white;
-  background-image: url("/images/sprites/p2c_main_elements.png");
-  background-position: -56px -394px;
-  background-repeat: no-repeat;
-  border: 44px solid white;
-  display: inline-block;
-  height: 130px;
-  padding: 6px 30px;
-  width: 135px;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);*/
   
   zoom:1; *display: inline; /* hack for IE7 */
 }
@@ -150,8 +148,9 @@ body {
   background-repeat: no-repeat;
   display: inline-block;
   height: 90px;
-  margin-right: 506px;
+  left: -201px;
   padding: 0;
+  position: relative;
   width: 340px;
 }
 
@@ -186,7 +185,7 @@ img {
   padding:10px;
   background:#FFCB05;
   font-size:14px;
-  -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;
+  border-radius: 10px;
 }
 
 div.flash big {
