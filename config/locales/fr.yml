@@ -32,6 +32,13 @@ fr:
     "email_prefix": "[pouls]"
     "ago": ""
     "web_title": "Pouvoir de Changer - Le Pouls"
+  "title":
+    "dashboard": "Tableau de bord"
+    "contacts": "Contacts"
+    "group": "Groupe"
+    "advanced_search": "Advanced Search"
+    "profile": "Profil"
+    "team": "Équipe"
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"

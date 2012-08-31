@@ -25,6 +25,13 @@ en-CA:
     email_prefix: "[pulse] "
     ago: " ago"
     web_title: "Power to Change - The Pulse"
+  title:
+    dashboard: "Dashboard"
+    contacts: "Contacts"
+    group: "Group"
+    advanced_search: "Advanced Search"
+    profile: "Profile"
+    team: "Team"
   layout: 
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
