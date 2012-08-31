@@ -1447,7 +1447,7 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 
 #content_wrapper {
   padding-bottom: 70px;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 #content, #userbar {
@@ -1734,9 +1734,9 @@ padding-bottom:5px;
 .editInvolvementIconLink:hover { background-position: -10px -1007px; }
 
 .removeInvolvementIconLink       { padding-left:18px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -10px -365px; }
-.col2 .removeInvolvementIconLink  { background-position: -11px -976px; }
+.col2 .removeInvolvementIconLink  { background-position: -10px -975px; padding: 2px 9px; }
 .removeInvolvementIconLink:hover { background-position: -10px -809px; }
-.col2 .removeInvolvementIconLink:hover { background-position: -11px -976px; }
+.col2 .removeInvolvementIconLink:hover { background-position: -10px -975px; }
 
 .removeGroupIconLink       { padding-left:18px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -8px -360px; }
 .removeGroupIconLink:hover { background-position: -8px -804px; text-decoration:none; }
@@ -2821,7 +2821,7 @@ h2.group_type_title {
   background-color: transparent;
   position: absolute;
   top: 6px;
-  right: 100px;
+  right: 101px;
   padding: 5px;
   cursor: pointer;
 }
