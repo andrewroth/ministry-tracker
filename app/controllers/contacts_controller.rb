@@ -1,4 +1,6 @@
 class ContactsController < ApplicationController
+  skip_before_filter :authorization_filter, :only => [:assignees_for_campus]
+
 
   def index
     initialize_globals
@@ -6,6 +8,13 @@ class ContactsController < ApplicationController
   
   def new
     
+  end
+  
+  def assignees_for_campus
+    initialize_people_available_for_search
+    assignees = []
+    @people_available_for_search.each { |e| assignees.push({ :id => e[1], :name => e[0]})}
+    render :json => assignees
   end
   
   def edit
@@ -97,6 +106,8 @@ private
   def initialize_globals
     initialize_search_options
     initialize_campus_id
+    initialize_people_available
+    initialize_people_available_for_search
   end
   
   def initialize_search_options
@@ -109,10 +120,50 @@ private
   end
   
   def initialize_campus_id
+    @campus_id ||= params[:campus_id] if params[:campus_id].present?
     @campus_id ||= @contact[:campus_id] unless @contact.nil?
     @campus_id ||= @search_options[:campus_id] unless @search_options.nil?
+    @campus_id
   end
   
+  def ministry_leaf_and_over(campus_id)
+    ans = []
+    Campus.find(campus_id).ministries.each do |m|
+      if m[:ministries_count] == 0
+        ans.push(m[:id])
+        ans.push(m.parent[:id])
+      end
+    end
+    ans
+  end
+  
+  def initialize_people_available
+    @people_available ||= []
+    unless @people_available.count > 0 || initialize_campus_id.nil?
+      MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id)}).collect{|mi| mi[:person_id]}.each do |pid|
+        if Person.exists?(pid)
+          p = Person.find(pid)
+          @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", pid])
+        end
+      end
+      @people_available = @people_available.uniq if @people_available.count > 0
+      @people_available.sort!{|x,y| x[0] <=> y [0]} if @people_available.count > 0
+      @people_available.insert(0, ["Unassigned", 0])
+    end
+    @people_available
+  end
+  
+  def initialize_people_available_for_search
+    unless @people_available_for_search
+      @people_available_for_search = [["All", -1]]
+      initialize_people_available.each do |p|
+        @people_available_for_search.push(p)
+      end
+    end
+    @people_available_for_search
+  end
+
+
   def search_fields
     [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to]
   end
