@@ -119,6 +119,21 @@ module ContactsHelper
     result
   end
 
+  def search_result_string
+    so = ""
+    [:gender_id, :status, :result].each do |f|
+    if @search_options.has_key?(f)
+      so = "#{so} #{contact_search_options[f][:title].lowercase}: #{@search_options[f].collect{ |o| options_corr(f)[o] }.join(',')}"
+    end
+    end
+    "Contacts matching #{so} in #{campus[:campus_desc]}, #{@contacts.count} result#{ (@contacts.count == 1 ? '' : 's') } found"
+  end
+
+  def campus
+    @campus ||=  Campus.find(@campus_id) unless @campus_id.nil?
+    @campus
+  end
+
   def campuses
     @campuses || @me.campuses_under_my_ministries_with_children()
   end
