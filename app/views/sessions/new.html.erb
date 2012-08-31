@@ -6,10 +6,10 @@ unless @mobile
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
  
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
-<head> 
-  <meta http-equiv="X-UA-Compatible" />
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
-  <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico"> 
+  <head>
+    <meta http-equiv="X-UA-Compatible" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
+    <link rel="Shortcut Icon" href="https://www.campusforchrist.org/images/favicon.ico"> 
     
     <title>
       <% if Cmt::CONFIG[:web_title] %>
@@ -20,7 +20,8 @@ unless @mobile
       <%= ': ' + @site_title if @site_title -%>
     </title>
 		
-  <%= stylesheet_link_tag "special_login", :media => "screen", :cache => "cache/special_login" %>
+    <%= stylesheet_link_tag "special_login", :media => "screen", :cache => "cache/special_login" %>
+    <%= locale_stylesheet_link_tag %>
   </head> 
   <body> 
 
@@ -39,11 +40,11 @@ unless @mobile
 
     <div class="flash notice" id="flash_notice" <%= "style=\"display:none;\"" unless flash[:notice] %>><%= flash[:notice] %></div>
 
-    <div id="logo_container">
-      <%= image_tag(t("layout.images.p2c_pulse_logo"), :id => "p2c_pulse_logo")%>
+    <div id="logo_container" class="signup">
+      <div id="p2c_pulse_logo"></div>
     </div>
 
-    <div id="banner_container">
+    <div id="banner_container" class="signup">
       <a id="leftBubble" href="<%= signup_url %>" alt="Join a Group (no need to login!)">
         <span id="leftBubbleImg">&nbsp;</span>
       </a>
