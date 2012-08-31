@@ -6,9 +6,8 @@
 
 	  <div>
 	    <span class="advanced_search_field_label">Campus</span>
-	    <%= select_tag "campus_id", options_for_select(campuses_options, ["#{@campus_id}"] ) %>
-  		<%#= observe_field 'campus_id', :url => {:action => '/contacts/search'} 
-  		%>
+	    <%= select_tag "campus_id", options_for_select(campuses_options, @campus_id) %>
+  		
 	</div>
 
   
