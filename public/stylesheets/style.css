@@ -455,7 +455,7 @@ a.small:active, a.small:hover {
 #tablist {
   background-image: url("/images/sprites/p2c_main_elements.png");
   background-repeat: no-repeat;
-  background-position: 10px -1988px;
+  background-position: 0px -1988px;
   width: 900px;
   padding: 0 200px;
   height: 100%;
