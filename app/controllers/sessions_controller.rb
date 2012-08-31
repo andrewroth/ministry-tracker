@@ -56,8 +56,6 @@ class SessionsController < ApplicationController
       @ie_browser = request.env['HTTP_USER_AGENT'].try(:downcase) =~ /msie/i ? true : false
       render :layout => false unless @mobile
     end
-    # force a flash warning div to show up, so that invalid password message can be shown
-    flash[:warning] = '&nbsp;'
     if params[:errorKey] == 'BadPassword'
       flash[:warning] = "Invalid username or password"
     end

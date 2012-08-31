@@ -9,6 +9,7 @@ class SignupController < ApplicationController
   before_filter :set_custom_userbar_title
   before_filter :set_current_and_next_semester
   before_filter :get_invitation, :only => [:step1_group, :step2_info, :step2_info_submit]
+  before_filter :hide_layout_navigation, :only => [:step1_group, :step1_group_from_campus, :step2_info, :step2_verify, :step3_timetable, :step3_timetable_submit]
 
 
   def index
@@ -21,6 +22,8 @@ class SignupController < ApplicationController
 
 
   def step1_group
+    @hide_layout_navigation = true
+
     session[:signup_joined_group_id] = nil
     session[:signup_person_params] = nil
     session[:signup_primary_campus_involvement_params] = nil
@@ -56,20 +59,23 @@ class SignupController < ApplicationController
   end
 
   def step1_default_group
+    @hide_layout_navigation = true
+
     get_person
     if @person
       join_default_group(session[:signup_campus_id], params[:semester_id])
     else
       session[:signup_collection_group_semester_id] = params[:semester_id]
     end
-    flash[:notice] = "Great! We'll help you find a group that suits you."
+    flash[:notice] = I18n.t('groups.default_notice')
     redirect_to :action => :step2_info
   end
 
   def step1_group_from_campus
+    @hide_layout_navigation = true
 
     if params[:primary_campus_involvement_campus_id].blank? || params[:group_semester_id].blank?
-      flash[:notice] = "Sorry, we didn't recieve the campus and semester that you chose, please try again."
+      flash[:notice] = t("signup.missing_campus_and_semester")
       redirect_to :action => :step1_group
       return
     end
@@ -96,7 +102,7 @@ class SignupController < ApplicationController
                                     :joins => :ministry, :include => { :group_involvements => :person },
                                     :order => "#{Group.__(:name)} ASC")
       
-      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ s.desc, s.id ] }
+      @semester_filter_options = [ @current_semester, @next_semester ].collect{ |s| [ I18n.t("terms.#{s.translation_key}"), s.id ] }
       @group_types = GroupType.all
       @join = true
       @signup = true
@@ -121,6 +127,7 @@ class SignupController < ApplicationController
 
 
   def step2_info
+    @hide_layout_navigation = true
     @person ||= get_person || Person.new
     @person.email = @group_invitation.recipient_email if @group_invitation
     UserCodesController.clear(session)
@@ -153,7 +160,7 @@ class SignupController < ApplicationController
     # verify email
     email = @person && @person.email
     if email.present?
-      email_error = "Please enter a valid email address. If the email is already in the Pulse, enter it anyways and a verification email will be sent."
+      email_error = t("signup.email_error")
       begin
         if !ValidatesEmailFormatOf::validate_email_format(email).nil? || email.length < 6 || email.length > 40
           @person.errors.add_to_base(email_error)
@@ -274,7 +281,7 @@ class SignupController < ApplicationController
       link = @user.find_or_create_user_code(pass).callback_url(base_url, "signup", "step2_email_verified")
       UserMailer.deliver_signup_confirm_email(@person.email, link)
     else
-      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>Sorry, a verification email could not be sent, please try again or contact helpdesk@c4c.ca</b>"
+      flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> <b>#{t("signup.verification_email_error")}</b>"
       redirect_to :action => :step2_info
     end
   end
@@ -282,7 +289,7 @@ class SignupController < ApplicationController
   def step2_email_verified
     session[:signup_groups] = params[:signup_groups]
     session[:signup_campus_id] = params[:signup_campus_id]
-    flash[:notice] = "Your email has been verified, thanks!"
+    flash[:notice] = t("signup.verified_success")
     redirect_to params.merge(:action => :step2_info_submit)
   end
 
@@ -309,9 +316,9 @@ class SignupController < ApplicationController
     @leaders = @group.group_involvements.select{|gi| gi.requested != true && gi.level == Group::LEADER } if @group.present?
     
     if session[:from_facebook_canvas] == true
-      @finished_button_text = "Goto Facebook"
+      @finished_button_text = I18n.t('groups.goto_facebook')
     elsif logged_in?
-      @finished_button_text = "Goto the dashboard"
+      @finished_button_text = I18n.t('groups.goto_dashboard')
     else
       @finished_button_text = nil
     end
@@ -346,7 +353,7 @@ class SignupController < ApplicationController
   end
 
   def set_custom_userbar_title
-    @custom_userbar_title = "Join a Group" unless logged_in? || session[:from_facebook_canvas] == true
+    @custom_userbar_title = I18n.t('groups.userbar_title') unless logged_in? || session[:from_facebook_canvas] == true
   end
 
   def join_default_group(campus_id, semester_id)
@@ -391,6 +398,10 @@ class SignupController < ApplicationController
   def get_layout
     session[:from_facebook_canvas] == true ? "facebook_canvas" : "application"
   end
+
+  def hide_layout_navigation 
+    @hide_layout_navigation = true
+  end
   
   def get_invitation
     if session[:signup_group_invitation_id]
@@ -399,7 +410,7 @@ class SignupController < ApplicationController
       if logged_in? && current_user.person && current_user.person.id != @group_invitation.recipient_person_id
         @group_invitation = nil
         session[:signup_group_invitation_id] = nil
-        flash[:notice] = "We're sorry, something went wrong with your group invitation.<br/><br/>We'd still love you to join a group though, so go ahead and find the group below and join!"
+        flash[:notice] = t("signup.group_invitation_error")
         redirect_to signup_url
         return
       end
@@ -408,7 +419,7 @@ class SignupController < ApplicationController
   
   def redirect_to_beginning_if_no_person
     unless @person
-      flash[:notice] = "We're sorry, something didn't quite work behind the scenes. Please try joining a group again.<br/>If this keeps happening please contact us at helpdesk@c4c.ca"
+      flash[:notice] = t("signup.general_error")
       redirect_to :action => :step1_group
       return true
     end

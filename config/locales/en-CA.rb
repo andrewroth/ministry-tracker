@@ -17,7 +17,7 @@
     :Bible_Study_short_plural => 'DGs',
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
-    :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
+    :help_link => "http://getsatisfaction.com/powertochange",
     :help_header => "Help",
     :alternate_phone => 'Cell Phone',
     
@@ -36,7 +36,7 @@
 |,
     :GCX_login_info => %|
 <p>What is TheKey login?</p>
-<p>TheKey (formerly GCX) is a single sign-on login that authenticates you to use Campus for Christ web applications including:</p>
+<p>TheKey (formerly GCX) is a single sign-on login that authenticates you to use Power to Change web applications including:</p>
 <p>
 <ul><li><a href="http://pulse.campusforchrist.org">Pulse</a></li>
   <li><a href="http://pat.powertochange.org">Project Application Tool</a></li>

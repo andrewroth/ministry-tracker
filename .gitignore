@@ -25,3 +25,8 @@ public/profile_pictures
 config/initializers/cmt_config.rb
 config/database_root.yml
 config/database/database_header.yml
+public/c4c_pulse_test.imports
+public/c4c_pulse_test.profile_pictures
+public/utopian_common_test.profile_pictures
+public/utopian_pulse_test.imports
+.bundle

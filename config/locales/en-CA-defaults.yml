@@ -2,22 +2,58 @@
 #
 # Use this as the base for the locale file of your language.
 
-"en-CA":
+en-CA-defaults:
   date:
     formats:
       default: "%Y-%m-%d"
       short: "%b %d"
       long: "%B %d, %Y"
-
-    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-    order:
-      - :year
-      - :month
-      - :day
+    day_names:
+      sunday: Sunday
+      monday: Monday
+      tuesday: Tuesday
+      wednesday: Wednesday
+      thursday: Thursday
+      friday: Friday
+      saturday: Saturday
+    abbr_day_names: 
+      sun: Sun
+      mon: Mon
+      tue: Tue
+      wed: Wed
+      thu: Thu
+      fri: Fri
+      sat: Sat
+    month_names:
+      january: January
+      february: February
+      march: March
+      april: April
+      may: May
+      june: June
+      july: July
+      august: August
+      september: September
+      october: October
+      november: November
+      december: December
+    abbr_month_names:
+      jan: Jan
+      feb: Feb
+      mar: Mar
+      apr: Apr
+      may: May
+      jun: Jun
+      jul: Jul
+      aug: Aug
+      sep: Sep
+      oct: Oct
+      nov: Nov
+      dec: Dec
+#    order:
+#      - :year
+#      - :month
+#      - :day
 
   time:
     formats:

@@ -343,7 +343,7 @@ class CampusInvolvementsController < ApplicationController
     @plural = 'campuses'
     @singular = 'campus'
     @short = 'ci'
-    @add_title = 'Add Campus'
+    @add_title = t('profile.manage_campuses.add_campus')
   end
 
   def set_roles
@@ -352,7 +352,7 @@ class CampusInvolvementsController < ApplicationController
     else
       student_roles = StudentRole.all
     end
-    @roles = [ [ 'Student Roles', student_roles.collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @roles = [ [ 'Student Roles', student_roles.collect{ |sr| [ I18n.t("roles.#{sr.translation_key}"), sr.id ] } ] ]
     @default_role_id = MinistryRole.default_student_role.id
   end
 

@@ -18,6 +18,7 @@
     		<tr><th colspan="2"><%= group_type.new_record? ? 'New Group Type' : group_type.group_type %></th></tr>
     		<tr><td><%= f.label :group_type %></td><td><%= f.text_field :group_type %></td></tr>
     		<tr><td><%= f.label :short_name %></td><td><%= f.text_field :short_name %></td></tr>
+    		<tr><td><%= f.label :translation_code %></td><td><%= f.text_field :translation_code %></td></tr>
     		<tr>
     			<td><%= f.label :mentor_priority %><%- tooltip do -%><p>Should the leader of the group have mentor privileges over group members? (eg a prayer group would be No, the leader does not have the right to view and alter details of group members)</p><%- end -%></td>
     			<td>

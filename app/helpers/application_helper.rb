@@ -1,6 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
+  def locale_stylesheet_link_tag
+    if File.exists?("#{RAILS_ROOT}/public/stylesheets/#{session[:locale]}.css")
+      stylesheet_link_tag("#{session[:locale]}.css")
+    end
+  end
+
   def times(start_time, end_time)
     midnight = Time.now.beginning_of_day
     # start_time = midnight + start_time.hours
@@ -117,7 +123,7 @@ module ApplicationHelper
 
   def instruction_block(html = nil, &proc)
     html ||= capture(&proc) if block_given?
-    render_s = "<script type='text/javascript'>$(document).ready(function() { $(\"#instructions\").html(\"#{escape_javascript(html)}\"); $(\"#instructions\").show(); });</script>"
+    render_s = html.try(:present?) ? %(<script type="text/javascript">$(document).ready(function() { $("#instructions").html("#{escape_javascript(html)}"); $("#instructions").show(); });</script>) : ""
 
     if block_given?
       concat(render_s)
@@ -164,6 +170,42 @@ module ApplicationHelper
     </script>
     " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
   end
+
+  def switch_languages_url
+    current_url_with_locale(currently_english ? 'fr' : 'en-CA')
+  end
+
+  def current_url_with_locale(locale)
+    new_params = params.clone
+    new_params.delete(:controller)
+    new_params.delete(:action)
+    new_params.merge!(:locale => locale)
+    "#{request.protocol}#{request.port != 80 ? request.host_with_port : request.host}#{request.path}?#{new_params.collect{ |k,v| "#{k}=#{v}" }.join('&')}"
+  end
+
+ 
+
+  def switch_languages_text
+    if currently_english
+      t('layout.languages.english_to_french')
+    elsif currently_french
+      t('layout.languages.french_to_english')
+    end
+  end
+
+  def switch_languages_mouseover
+    if currently_english
+      t('layout.languages.english_to_french_mouseover', :default => "")
+    elsif currently_french
+      t('layout.languages.french_to_english_mouseover', :default => "")
+    end
+  end
+
+  def currently_english
+    (I18n.locale.to_s =~ /^en/).present?
+  end
+
+  def currently_french
+    (I18n.locale.to_s =~ /^fr/).present?
+  end
 end
-
-

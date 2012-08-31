@@ -3,12 +3,14 @@
 <head> 
   <meta charset="utf-8" /> 
   <title>
-    <% if Cmt::CONFIG[:web_title] %>
+      <%= @site_title + ' | ' if @site_title -%>
+    <% if t('misc.web_title') %>
+      <%= t('misc.web_title') %>
+    <% elsif Cmt::CONFIG[:web_title] %>
       <%= Cmt::CONFIG[:web_title] %>
     <% else %>
       The Pulse :: Mobile
     <% end %>      
-    <%= ': ' + @site_title if @site_title -%>
   </title>
 	<%= stylesheet_link_tag "mobile", :cache => false %>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.5.min.js"></script> 

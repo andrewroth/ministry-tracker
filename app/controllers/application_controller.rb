@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
   
-  
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -49,10 +48,16 @@ class ApplicationController < ActionController::Base
 
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
+  before_filter :set_locale
   
   helper :all
 
   protected
+
+    def set_locale
+      I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      session[:locale] = I18n.locale
+    end
 
     def cas_filter
       return if logged_in?
@@ -186,7 +191,8 @@ class ApplicationController < ActionController::Base
     AUTHORIZE_FOR_OWNER_ACTIONS = {
       :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
                   :get_campus_states, :set_current_address_states,
-                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements, :show_gcx_profile],
+                  :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
+
       :profile_pictures => [:new, :edit, :destroy],
       :timetables => [:show, :edit, :update],
       :groups => [:show, :edit, :update, :destroy, :compare_timetables, :set_start_time, :set_end_time],
@@ -413,7 +419,7 @@ class ApplicationController < ActionController::Base
     # ===========
     # = Filters =
     # ===========
-    def set_locale
+    def set_locale_old
       locales = ['en', 'en-AU']
       begin
         # Try to auto-detect it
@@ -712,5 +718,10 @@ class ApplicationController < ActionController::Base
     def needs_to_sign_volunteer_agreements?
       !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
     end
+
+    def default_url_options(options={})
+      I18n.locale == I18n.default_locale ? {} : { :locale => I18n.locale }
+    end
+
 end
 

@@ -14,7 +14,7 @@
         :name => "primary_campus_involvement[campus_id]"
   %>
   <%= select_tag "group_semester_id",
-        options_for_select(@semesters.collect{ |s| [ s.desc, s.id.to_s ] },
+      options_for_select(@semesters.collect{ |s| [ t("terms.#{s.translation_key}"), s.id.to_s ] },
         @current_semester.id.to_s),
         :name => "group[semester_id]",
         :style => "#{'display:none;' if @ask_campus}"
@@ -24,7 +24,7 @@
 <div id="spinner" class="signup_groups" style="display:none;">
   <%= image_tag "default/shared/large-loading.gif" %>
   <br/>
-  getting groups...
+  <%= t('groups.getting') %>
 </div>
 
 <div id="groups">
@@ -45,7 +45,7 @@
     semester_value = $("#group_semester_id").val();
     
     if ($("#primary_campus_involvement_campus_id").val() != "" && $("#primary_campus_involvement_campus_id").val() != "<%=campus_prompt%>" && $("#group_semester_id").val() != "") {
-      jQuery.ajax({data:'primary_campus_involvement_campus_id='+campus_value+'&group_semester_id='+semester_value,
+      jQuery.ajax({data:'primary_campus_involvement_campus_id='+campus_value+'&group_semester_id='+semester_value+'&locale=<%=params[:locale]%>',
                    dataType:'script', 
                    beforeSend: function() {
                      $("#groups").hide();

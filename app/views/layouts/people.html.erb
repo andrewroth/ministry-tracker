@@ -2,7 +2,7 @@
   <div id="subtabs">
     <ul class="subtabs-menu">
 
-      <li><%= link_to("<div id='profileSubTab'>PROFILE</div>", person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+      <li><%= link_to("<div id='profileSubTab'>#{t('layout.left_bar.profile.named')}</div>", person_path(@person), :class => params[:controller] == 'people' && params[:action] == 'show' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
 
       <%- if authorized?(:index, :involvement) && Cmt::CONFIG[:involvement_questions_enabled] -%>
         <li><%= link_to("<div id='involvementSubTab'>INVOLVEMENT</div>", person_involvement_index_path(@person), :class => params[:controller] == 'involvement' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
@@ -13,7 +13,7 @@
       <%- end -%>
 
       <%- if authorized?(:show, :timetables) -%>
-        <li><%= link_to("<div id='timetableSubTab'>SCHEDULE</div>", person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
+        <li><%= link_to("<div id='timetableSubTab'>#{t('layout.left_bar.schedule.named')}</div>", person_timetable_path(@person.id, (@person.timetable || Timetable.create(:person_id => @person.id)).id), :class => params[:controller] == 'timetables' ? "subtabs-menu-active" : "subtabs-menu-inactive") %></li>
       <%- end -%>
       
       <%- if authorized?(:discipleship, :people) -%>

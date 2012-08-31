@@ -6,7 +6,7 @@ unless @mobile
   <%= javascript_include_tag "dashboard.js", :cache => 'cache/dashboard' %>
 <% end %>
 
-<% @site_title = 'Dashboard' -%>
+<% @site_title = t('title.dashboard') -%>
 
 <div class="welcome">
 <%- if @ministry -%>
@@ -22,7 +22,7 @@ unless @mobile
 
         <div class="dashmodule">
           <div class="moduletitle">
-            <h2>My Groups
+            <h2><%= I18n.t("dashboard.groups_header") %>
             <%= spinner('gt') %></h2>
             <div class="modulecontrols">
               <a href="" class="minmodule"></a>
@@ -41,7 +41,7 @@ unless @mobile
         <div class="dashmodule">
           <div class="moduletitle">
             <h2>
-              My Events&nbsp;
+              <%= t("dashboard.events_header") %>&nbsp;
               <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
             </h2>
             <div class="modulecontrols">
@@ -86,7 +86,6 @@ unless @mobile
         <div id="verticalTablistContainer">
           <div id="verticalBracketTop">&nbsp;</div>
           <%= tabnav :vertical_main %>
-          <div id="verticalBracketBottom">&nbsp;</div>
         </div>
         <div class="clear"></div>
       </div><!-- col2 -->

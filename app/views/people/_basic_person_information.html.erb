@@ -1,18 +1,18 @@
 <table class="halftab">
 	<tr>
-		<th>First Name</th>
+    <th><%= t('profile.headings.first_name') %></th>
 		<td><%= text_field :person, :first_name %></td>
 	</tr>
 	<tr>
-		<th>Last Name</th>
+    <th><%= t('profile.headings.last_name') %></th>
 		<td><%= text_field :person, :last_name %></td>
 	</tr>
 	<tr>
-		<th>Email</th>
+    <th><%= t('profile.headings.email') %></th>
 		<td><%= text_field :current_address, :email %></td>
 	</tr>
 	<tr>
-		<th>Date of Birth</th>
+    <th><%= t('profile.headings.date_of_birth') %></th>
 		<td class="date">
 			<%=
 				start_year = Date.today.year
@@ -26,11 +26,11 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Gender</th>
+    <th><%= t('profile.headings.gender') %></th>
 		<td>
 			<%=
 				f.select :gender,
-					[['Male', '1'],['Female', '0']], :selected => @person.gender_us_id 
+					[[t('misc.genders.male'), '1'],[t('misc.genders.female'), '0']], :selected => @person.gender_us_id 
 			%>
 		</td>
 	</tr>

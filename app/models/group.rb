@@ -63,7 +63,10 @@ class Group < ActiveRecord::Base
   end
 
   def derive_name(line = group_type.try(:collection_group_name))
-    self[:name] = line.gsub("{{campus}}", campus.try(:short_name)).gsub("{{group_type}}", group_type.group_type).gsub("{{semester}}", semester.try(:desc))
+    begin
+      self[:name] = line.gsub("{{campus}}", campus.try(:short_name)).gsub("{{group_type}}", group_type.group_type).gsub("{{semester}}", semester.try(:desc))
+    rescue
+    end
   end
 
   def derive_ministry
@@ -104,9 +107,9 @@ class Group < ActiveRecord::Base
 
     midnight = Time.now.beginning_of_day
     if self.start_time.present?
-      meeting_time += " at " unless meeting_time.blank?
+      meeting_time += " #{I18n.t("groups.meets_on_at")} " unless meeting_time.blank?
       meeting_time += "#{(midnight + self.start_time).to_s(:time)}"
-      meeting_time += " to #{(midnight + self.end_time).to_s(:time)}" if self.end_time
+      meeting_time += " #{I18n.t("groups.meets_on_to")} #{(midnight + self.end_time).to_s(:time)}" if self.end_time
     end
 
     meeting_time

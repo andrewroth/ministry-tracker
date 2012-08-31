@@ -3,53 +3,51 @@
   <div class='link_bar'>
 
     <ol id='tools'>
-      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://www.c4c.ca', 'Campus for Christ', 'C4C.CA', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_1', '', 'http://p2c.com', t('layout.top_bar.c4c_mouseover', :default => ''), t('layout.top_bar.c4c'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), '', 'THE PULSE', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_2', '', url_for(:action => :index, :controller => :dashboard, :only_path => false), t('layout.top_bar.pulse_mouseover', :default => ''), t('layout.top_bar.pulse'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://resources.campusforchrist.org', 'C4C Resources Wiki', 'RESOURCES', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_3', '', 'http://powertochange.com/students/resources/september-launch-vision/', t('layout.top_bar.resources_mouseover', :default => ''), t('layout.top_bar.resources'), nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', '', "EVENTS<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_4', 'menu_link project', '', t('layout.top_bar.events_menu.events_mouseover', :default => ''), "#{t('layout.top_bar.events_menu.events')}<span class='menu_link_arrow'></span>", 'events_box', active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', '', "MORE<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_5', 'menu_link more_tools', '', t('layout.top_bar.more_menu.more_mouseover', :default => ''), "#{t('layout.top_bar.more_menu.more')}<span class='menu_link_arrow'></span>", 'more_tools_box', active_tab_id) %></li>
       
       <% if staff %>
         <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>
       <% end %>
 
-      <li><%= link_bar_tab('link_bar_tab_7', 'icon_link facebook', Facebook::FANPAGE_URL, 'Power to Change on Facebook', '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_7', 'language', switch_languages_url, switch_languages_mouseover, switch_languages_text, nil, active_tab_id) %></li>
+
+      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link facebook', Facebook::FANPAGE_URL, t('layout.top_bar.icons.facebook'), '&nbsp;', nil, active_tab_id) %></li>
       
-      <li><%= link_bar_tab('link_bar_tab_8', 'icon_link twitter', TWITTER_URL, 'Power to Change on Twitter', '&nbsp;', nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_9', 'icon_link twitter', TWITTER_URL, t('layout.top_bar.icons.twitter'), '&nbsp;', nil, active_tab_id) %></li>
     </ol>
 
   </div>
 </div>
 
 <div id='events_box' class='link_menu_box'>
-  <a href='<%=eventbrite[:c4c_events_link]%>'>SUMMIT</a>
-  <a href='<%=eventbrite[:c4c_events_link]%>'>WINTER CONFERENCE</a>
-  <a href='http://gototheworld.com' title='Go to the world!'>PROJECTS</a>
+  <a href='<%=eventbrite[:c4c_events_link]%>' title='<%= t('layout.top_bar.events_menu.summit_mouseover', :default => '') %>'><%= t('layout.top_bar.events_menu.summit') %></a>
+  <a href='http://gototheworld.com' title='<%= t('layout.top_bar.events_menu.projects_mouseover', :default => '') %>'><%= t('layout.top_bar.events_menu.projects') %></a>
 </div>
 
 <div id='more_tools_box' class='link_menu_box'>
-  <a href='http://www.gcx2.org' title='Global ConneXion'>GCX</a>
-  <a href='https://pat.powertochange.org' title='Project Application Tool'>PAT</a>
-  <a href='https://mpdtool.powertochange.org' title='Ministry Partner Development Tool'>MPD TOOL</a>
-  <a href='http://www.glclive.com'>GLOBAL LEARNING CENTER</a>
-  <a href='https://tm.thementorcenter.com'>MENTOR CENTER</a>
-  <a href='https://connect.powertochange.org/'>CONNECT</a>
+  <a href='http://www.gcx2.org' title='<%= t('layout.top_bar.more_menu.gcx_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.gcx') %></a>
+  <a href='https://pat.powertochange.org' title='<%= t('layout.top_bar.more_menu.pat_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.pat') %></a>
+  <a href='https://mpdtool.powertochange.org' title='<%= t('layout.top_bar.more_menu.mpd_tool_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.mpd_tool') %></a>
+  <a href='https://tm.thementorcenter.com' title='<%= t('layout.top_bar.more_menu.mt_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.mt') %></a>
+  <a href='https://connect.powertochange.org/' title='<%= t('layout.top_bar.more_menu.connect_mouseover', :default => '') %>'><%= t('layout.top_bar.more_menu.connect') %></a>
 </div>
 
 <% if staff %>
-<div id='staff_box' class='link_menu_box'>
-  <a href='https://www.mygcx.org/C4C_Staff_Intranet/screen/home' title='Staff Dashboard'>STASH</a>
-  <a href='http://mail.c4c.ca/' title='Google Mail'>MAIL</a>
-  <a href='http://docs.c4c.ca/' title='Google Documents'>DOCUMENTS</a>
-  <a href='http://calendar.c4c.ca/' title='Google Calendar'>CALENDAR</a>
-  <a href='https://focus.crusade.org'>FOCUS</a>
-  <a href='http://staff.powertochange.org'>THE LOOP</a>
-  <a href='<%= url_for(:action => :index, :controller => :summer_reports, :only_path => false) %>' title='Staff summer schedules'>SUMMER</a>
-</div>
+  <div id='staff_box' class='link_menu_box'>
+    <a href='https://www.mygcx.org/C4C_Staff_Intranet/screen/home' title='Staff Dashboard'>STASH</a>
+    <a href='http://mail.p2c.com' title='Google Mail'>MAIL</a>
+    <a href='http://docs.p2c.com' title='Google Documents'>DOCUMENTS</a>
+    <a href='http://calendar.p2c.com' title='Google Calendar'>CALENDAR</a>
+    <a href='https://focus.crusade.org'>FOCUS</a>
+    <a href='http://staff.powertochange.org'>THE LOOP</a>
+    <a href='<%= url_for(:action => :index, :controller => :summer_reports, :only_path => false) %>' title='Staff summer schedules'>SUMMER</a>
+  </div>
 <% end %>
-
-
