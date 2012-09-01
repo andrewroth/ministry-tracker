@@ -9,6 +9,8 @@
   	    <%= select_tag "campus_id", options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), @campus_id.present? ? @campus_id.to_i : nil) %>  		
     	</div>
       
+      <div class="clear" style="margin-bottom:15px;"><br/></div>
+      
       <% contact_search_screen_fields.each do |data| %>
     	  <div class="adfieldbox">
     	    <span class="advanced_search_field_label"><%= data[:title]%></span>

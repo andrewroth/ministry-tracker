@@ -16,7 +16,7 @@ module ContactsHelper
       :gender_id => [["Male", 2], ["Female", 1], ["Not Specified", 0]],
       :status => [["Uncontacted", 0], ["Attempted", 1], ["Completed", 2], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]]
-      }
+    }
   end
 
   #content for search options inputs
@@ -180,5 +180,9 @@ module ContactsHelper
     end
     val 
   end 
+
+  def to_or_sentence(string)
+    string.to_sentence(:last_word_connector => ', or ', :two_words_connector => ' or ')
+  end
 
 end

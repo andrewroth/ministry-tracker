@@ -1,4 +1,6 @@
 class ContactsController < ApplicationController
+  include ContactsHelper
+
   skip_before_filter :authorization_filter, :only => [:assignees_for_campus]
 
 
@@ -62,12 +64,54 @@ class ContactsController < ApplicationController
     search_fields.each do |f|
       session[:search_contact_params][f] = params[f]
     end
+
+    @search_description = search_description(session[:search_contact_params])
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
+
     do_the_search
   end
   
   
 private
+
+  def search_description(params)
+    desc = []
+
+    params.each do |param, value|
+      next if value.blank? || value == 'All' || value.to_s == '-1' || value.include?('All')
+      case param
+      when :campus_id
+        desc << "at campus <strong>#{Campus.find(value).name}</strong>" if Campus.exists?(value)
+
+      when :gender_id
+        genders = contact_options_lists[:gender_id].select{ |g| value.include?(g[1].to_s) }.collect{ |g| g[0] }
+        desc << "with gender <strong>#{to_or_sentence(genders)}</strong>" if genders.present?
+
+      when :priority
+        desc << "with priority <strong>#{to_or_sentence(value)}</strong>" if value.present?
+
+      when :assign
+        desc << "with assign <strong>#{value.join(', ')}</strong>" if value.present?
+
+      when :status
+        statuses = contact_options_lists[:status].select{ |s| value.include?(s[1].to_s) }.collect{ |s| s[0] }
+        desc << "with status <strong>#{to_or_sentence(statuses)}</strong>" if statuses.present?
+
+      when :result
+        results = contact_options_lists[:result].select{ |r| value.include?(r[1].to_s) }.collect{ |r| r[0] }
+        desc << "with result <strong>#{to_or_sentence(results)}</strong>" if results.present?
+
+      when :assigned_to
+        list = []
+        list << 'Unassigned' if value.delete('0')
+        people = Person.find(value) if Person.exists?(value)
+        list << people.collect{|p| "#{p.person_fname} #{p.person_lname}" } if people.present?
+        desc << "assigned to <strong>#{list.join(', ')}</strong>"
+      end
+    end
+
+    "Search results for contacts #{desc.to_sentence}."
+  end
 
   def do_the_search
     initialize_globals
