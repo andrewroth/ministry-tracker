@@ -50,6 +50,7 @@ unless @contacts.nil?
 			<th>Last Name</th>
 			<th>Sex</th>
 			<th>Cellphone</th>
+			<th>Year</th>
 			<th>Priority</th>
 			<th>Assigned to</th>
 			<th>Status</th>
@@ -67,6 +68,7 @@ unless @contacts.nil?
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:cellphone] %></td>
+				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:year] %></td>
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
 				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
