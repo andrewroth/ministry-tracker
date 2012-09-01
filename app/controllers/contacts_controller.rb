@@ -35,9 +35,14 @@ class ContactsController < ApplicationController
   
   def multiple_assign
     assignee = params[:multiple_assign_to]
-    assignee_person = Person.find(assignee) if assignee
+    if assignee.to_i <= 0
+      assignee_person_name = "Unassigned"
+    else
+      assignee_person = Person.find(assignee)
+      assignee_person_name = "#{assignee_person.person_fname} #{assignee_person.person_lname}" if assignee_person
+    end
 
-    if assignee_person && params[:contacts_to_assign]
+    if assignee_person_name && params[:contacts_to_assign]
       contact_ids = params[:contacts_to_assign].split(',')
       contact_ids.delete("0")
       contacts = Contact.find(:all, :conditions => { :id => contact_ids })
@@ -47,7 +52,7 @@ class ContactsController < ApplicationController
         contact.save!
       end
       
-      flash[:notice] = "Assigned contacts to #{assignee_person.person_fname} #{assignee_person.person_lname}"
+      flash[:notice] = "Assigned contacts to #{assignee_person_name}"
     end
   end
   
