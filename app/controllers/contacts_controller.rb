@@ -30,9 +30,8 @@ class ContactsController < ApplicationController
       contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
     contact.save!
-  
-    do_the_search
 
+    render 'index'
   end
   
   def multiple_assign
@@ -65,16 +64,25 @@ class ContactsController < ApplicationController
       session[:search_contact_params][f] = params[f]
     end
 
-    @search_description = search_description(session[:search_contact_params])
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
 
     do_the_search
+
+    @search_description = search_description(session[:search_contact_params], @contacts.total_entries)
+
+    render 'index'
+  end
+
+  def impact_report
+    @campuses = campuses(::MinistryRole::ministry_roles_that_grant_access("contacts", "index"))
+    @campus = Campus.find(params[:campus_id]) if params[:campus_id]
+    @campus = @campuses.first unless @campus || !@campuses.include?(@campus)
   end
   
   
 private
 
-  def search_description(params)
+  def search_description(params, num_results)
     desc = []
 
     params.each do |param, value|
@@ -110,7 +118,7 @@ private
       end
     end
 
-    "Search results for contacts #{desc.to_sentence}."
+    "<strong>#{num_results}</strong> search results for contacts #{desc.to_sentence}."
   end
 
   def do_the_search
@@ -153,7 +161,6 @@ private
     end
 
     @contacts = Contact.find(:all, :conditions => @options.join(" AND ")).paginate(:page => params[:page])
-    render "index"
   end
 
   def initialize_globals

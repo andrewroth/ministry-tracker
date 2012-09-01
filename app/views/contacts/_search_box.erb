@@ -6,7 +6,7 @@
 
   	  <div>
   	    <span class="advanced_search_field_label">Campus</span>
-  	    <%= select_tag "campus_id", options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), @campus_id.present? ? @campus_id.to_i : nil) %>  		
+  	    <%= select_tag "campus_id", contact_campuses_options_for_select(@campus_id) %>
     	</div>
       
       <div class="clear" style="margin-bottom:15px;"><br/></div>

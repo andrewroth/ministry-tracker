@@ -14,7 +14,7 @@ module ContactsHelper
   def contact_options_lists
     {
       :gender_id => [["Male", 2], ["Female", 1], ["Not Specified", 0]],
-      :status => [["Uncontacted", 0], ["Attempted", 1], ["Completed", 2], ["Do Not Contact", 3]],
+      :status => [["Uncontacted", 0], ["Attempted", 1], ["Completed", 2], ["Do Not Contact", 3], ["Contacted", 4]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]]
     }
   end
@@ -183,6 +183,10 @@ module ContactsHelper
 
   def to_or_sentence(string)
     string.to_sentence(:last_word_connector => ', or ', :two_words_connector => ' or ')
+  end
+
+  def contact_campuses_options_for_select(campus_id)
+    options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), campus_id.present? ? campus_id.to_i : nil)
   end
 
 end

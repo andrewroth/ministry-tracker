@@ -761,6 +761,35 @@ img.opaqueWhite {
 .directorytable tr{vertical-align:middle; height:25px;}
 .directorytable td{vertical-align:middle;}
 
+table td.sub {
+  padding-left: 20px;
+}
+
+.contacts_report table {
+  margin-top: 20px;
+  width: 220px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.contacts_report table th {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.contacts_report table td {
+  padding-right: 20px;
+}
+
+.contacts_report table.wide {
+  width: 100%;
+}
+
+h2 select {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 #searchBox {
   margin:10px 0 10px;
   padding: 20px 20px 0px;

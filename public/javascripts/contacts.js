@@ -15,9 +15,12 @@ $(document).ready(function(){
 		});
 	});
 
-	$('#campus_id').change( function(){ adjustToCampus(); });
+	$('#campus_id').change( function() {
+		adjustToCampus();
+		$('a.report_link').attr('href', '/contacts/impact_report?campus_id=' + $('#campus_id').val() );
+	});
+
 	adjustToCampus();
-	
 });
 
 function adjustToCampus() {
