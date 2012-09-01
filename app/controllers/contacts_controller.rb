@@ -100,7 +100,7 @@ private
       @options.push("(#{assigned_to_cond})") unless assigned_to_cond == ""
     end
 
-    @contacts = Contact.find(:all, :conditions => @options.join(" AND "))
+    @contacts = Contact.find(:all, :conditions => @options.join(" AND ")).paginate(:page => params[:page])
     render "index"
   end
 

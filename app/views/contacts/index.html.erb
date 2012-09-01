@@ -35,9 +35,12 @@ unless @contacts.nil?
 <div id="assign_people">
 <% form_tag('/contacts/multiple_assign', :name => 'contacts_form', :id => 'contacts_form') do %>
 	<%= hidden_field_tag 'contacts_to_assign' %>
-	Assign checked contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Go', :class => "action-button" %>
+	Assign checked contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Assign', :class => "action-button" %>
 <%- end -%>
 </div>
+
+<p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
+
 <div id="people">
 	<table cellpadding="0" cellspacing="0" class="directorytable">
 		<thead class="center">
@@ -76,6 +79,8 @@ unless @contacts.nil?
 			
 		</tbody>
 	</table>
+
+	<p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
   
 </div>
 <%- end -%>
