@@ -191,6 +191,12 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 .butProfile a {
   border:0px solid black;
   height:18px;
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -9px -295px;
+  padding-left: 25px;
+}
+
+.butProfile a:hover {
+  background-position: -9px -739px;
 }
 
 .butUpdate a, .butDelete a {
@@ -724,7 +730,7 @@ img.opaqueWhite {
 }
 
 .directorytable tr:hover {
-    background-color:#F7C55C;
+    background-color: #FFECB3;
 		cursor:pointer;
 }
 
