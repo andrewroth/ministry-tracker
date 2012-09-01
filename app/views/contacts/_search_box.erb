@@ -2,32 +2,30 @@
 
 <div id="searchBox" class="searchContacts">
   <div id="advanced_search">
-<% form_tag('/contacts/search') do %>
+    <% form_tag('/contacts/search') do %>
 
-	  <div>
-	    <span class="advanced_search_field_label">Campus</span>
-	    <%= select_tag "campus_id", options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), @campus_id) %>
-  		
-	</div>
+  	  <div>
+  	    <span class="advanced_search_field_label">Campus</span>
+  	    <%= select_tag "campus_id", options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), @campus_id.present? ? @campus_id.to_i : nil) %>  		
+    	</div>
+      
+      <% contact_search_screen_fields.each do |data| %>
+    	  <div class="adfieldbox">
+    	    <span class="advanced_search_field_label"><%= data[:title]%></span>
+    	    <%- tooltip do -%>
+    	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
+    	    <%- end -%>
+    	    <br/>
+    	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => "multiSelect" %>
+    	  </div>
+    	<% end %>
 
-  
-  <% contact_search_screen_fields.each do |data| %>
-	  <div class="adfieldbox">
-	    <span class="advanced_search_field_label"><%= data[:title]%></span>
-	    <%- tooltip do -%>
-	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
-	    <%- end -%>
-	    <br/>
-	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => "multiSelect" %>
-	  </div>
-	<% end %>
-
-  <div class="clear" style="margin-bottom:15px;"><br/></div>
-  
-  <%= hidden_field_tag "force", "true" %>
-  <%= submit_tag 'Search', :class => "action-button" %>
-  
-<% end %>
+      <div class="clear" style="margin-bottom:15px;"><br/></div>
+      
+      <%= hidden_field_tag "force", "true" %>
+      <%= submit_tag 'Search', :class => "action-button" %>
+      
+    <% end %>
 	</div>
 	&nbsp;&nbsp;
 </div>

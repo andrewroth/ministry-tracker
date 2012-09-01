@@ -54,6 +54,7 @@ class ContactsController < ApplicationController
     search_fields.each do |f|
       session[:search_contact_params][f] = params[f]
     end
+    @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
     do_the_search
   end
   
