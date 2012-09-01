@@ -134,12 +134,12 @@ module ContactsHelper
     @campus
   end
 
-  def campuses
-    @campuses || @me.campuses_under_my_ministries_with_children()
+  def campuses(with_ministry_roles = nil)
+    @campuses || @me.campuses_under_my_ministries_with_children(with_ministry_roles)
   end
   
-  def campuses_options
-    campuses.collect{|c| [c[:campus_desc], c[:campus_id]]}
+  def campuses_options(with_ministry_roles = nil)
+    campuses(with_ministry_roles).collect{|c| [c[:campus_desc], c[:campus_id]]}
   end
 
   def people_available
