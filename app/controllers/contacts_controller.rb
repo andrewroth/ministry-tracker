@@ -35,17 +35,20 @@ class ContactsController < ApplicationController
   
   def multiple_assign
     assignee = params[:multiple_assign_to]
-    contact_ids = params[:contacts_to_assign].split(',')
-    contact_ids.delete("0")
-    contacts = Contact.find(:all, :conditions => { :id => contact_ids })
-    
-    contacts.each do |contact|
-      contact[:person_id] = assignee
-      contact.save!
+    assignee_person = Person.find(assignee) if assignee
+
+    if assignee_person && params[:contacts_to_assign]
+      contact_ids = params[:contacts_to_assign].split(',')
+      contact_ids.delete("0")
+      contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+      
+      contacts.each do |contact|
+        contact[:person_id] = assignee
+        contact.save!
+      end
+      
+      flash[:notice] = "Assigned contacts to #{assignee_person.person_fname} #{assignee_person.person_lname}"
     end
-    
-    
-    do_the_search
   end
   
   def search

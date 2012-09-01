@@ -6,6 +6,8 @@ $(document).ready(function(){
 		});
 		$('#contacts_to_assign').val(contact_array.join());
 	});
+
+	$('#assign_people form input[type=submit]').enable();
 	
 	$('#select_all').change( function(){
 		$('input[name="contact[]"]').each(function(index){

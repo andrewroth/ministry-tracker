@@ -1934,6 +1934,10 @@ div.fieldWithErrors{
 
 .searchContacts .adfieldbox select.multiSelect { height: 150px; } 
 
+#assign_people form {
+  display: inline-block;
+}
+
 a.help_block {
   float: right;
 }
