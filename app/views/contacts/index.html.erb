@@ -35,7 +35,7 @@ unless @contacts.nil?
 <div id="assign_people">
 <% form_tag('/contacts/multiple_assign', :name => 'contacts_form', :id => 'contacts_form') do %>
 	<%= hidden_field_tag 'contacts_to_assign' %>
-	Assign checked contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Assign', :class => "action-button" %>
+	Assign selected contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Assign', :class => "action-button" %>
 <%- end -%>
 </div>
 
