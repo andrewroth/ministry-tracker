@@ -1725,14 +1725,16 @@ padding-bottom:5px;
   font-family:Arial,Helvetica,Sans-Serif;
 }
 
-.addInvolvementIconLink       { padding-left:12px; background: url("/images/sprites/icons.png") no-repeat; background-position:-10px -755px; }
-.addInvolvementIconLink:hover { background-position:-10px -788px; }
+.addInvolvementIconLink       { padding-left:15px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position:-10px -127px; }
+.addInvolvementIconLink:hover { background-position: -10px -571px; }
 
-.editInvolvementIconLink       { padding-left:14px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -10px -1007px; }
-.editInvolvementIconLink:hover { background-position: -10px -1007px; }
+.editInvolvementIconLink       { padding-left:14px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -10px -397px; }
+.col2 .editInvolvementIconLink { background-position: -10px -1007px; }
+.editInvolvementIconLink:hover { background-position: -10px -841px; }
+.col2 .editInvolvementIconLink:hover { background-position: -10px -1007px; }
 
 .removeInvolvementIconLink       { padding-left:18px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position: -10px -365px; }
-.col2 .removeInvolvementIconLink  { background-position: -10px -975px; padding: 2px 9px; }
+.col2 .removeInvolvementIconLink { background-position: -10px -975px; padding: 2px 9px; }
 .removeInvolvementIconLink:hover { background-position: -10px -809px; }
 .col2 .removeInvolvementIconLink:hover { background-position: -10px -975px; }
 
