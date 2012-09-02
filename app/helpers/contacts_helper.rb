@@ -165,6 +165,7 @@ module ContactsHelper
     result = nil
     result = contact_search_options[field][:default] if contact_search_options.has_key?(field)
     result = @search_options[field] if @search_options.has_key?(field)
+    result = result.collect{|d| is_number?(d) ? d.to_i : d } if result.is_a?(Array)
     result
   end
     
@@ -187,6 +188,10 @@ module ContactsHelper
 
   def contact_campuses_options_for_select(campus_id)
     options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), campus_id.present? ? campus_id.to_i : nil)
+  end
+
+  def is_number?(object)
+    true if Float(object) rescue false
   end
 
 end

@@ -15,8 +15,20 @@ class ContactsController < ApplicationController
   def assignees_for_campus
     initialize_people_available_for_search
     assignees = []
-    @people_available_for_search.each { |e| assignees.push({ :id => e[1], :name => e[0]})}
+    @people_available_for_search.each do |e|
+      data = {
+        :id => e[1],
+        :name => e[0],
+        :selected => (session[:search_contact_params] && session[:search_contact_params][:assigned_to].present? && session[:search_contact_params][:assigned_to].include?(e[1].to_s)) ? true : false
+      }
+      assignees.push(data)
+    end
+
     render :json => assignees
+  end
+
+  def show
+    redirect_to :action => 'edit'
   end
   
   def edit
@@ -24,14 +36,22 @@ class ContactsController < ApplicationController
     initialize_globals
   end
   
-  def save
-    contact = Contact.find(params[:contact_id])
+  def update
+    @contact = Contact.find(params[:contact_id])
     [[:assign, :person_id], [:status, :status], [:result, :result]].each do |data|
-      contact[data[1]] = params[data[0]] if params[data[0]].present?
+      @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
-    contact.save!
 
-    render 'index'
+    respond_to do |format|
+      if @contact.save
+        flash[:notice] = 'Contact was successfully updated.'
+        format.html { redirect_to :action => 'search' }
+      else
+        flash[:notice] = 'Sorry, there was a problem updating the contact!'
+        initialize_globals
+        format.html { render :action => 'edit' }
+      end
+    end
   end
   
   def multiple_assign
@@ -86,7 +106,7 @@ private
     desc = []
 
     params.each do |param, value|
-      next if value.blank? || value == 'All' || value.to_s == '-1' || value.include?('All')
+      next if value.blank? || value == 'All' || value.to_s == '-1' || value.include?('All') || value.include?('-1')
       case param
       when :campus_id
         desc << "at campus <strong>#{Campus.find(value).name}</strong>" if Campus.exists?(value)
@@ -111,8 +131,9 @@ private
 
       when :assigned_to
         list = []
-        list << 'Unassigned' if value.delete('0')
-        people = Person.find(value) if Person.exists?(value)
+        list << 'Unassigned' if value.include?('0')
+        values_to_find = value.select{|v| v.to_i > 0 }
+        people = Person.find(values_to_find) if Person.exists?(values_to_find)
         list << people.collect{|p| "#{p.person_fname} #{p.person_lname}" } if people.present?
         desc << "assigned to <strong>#{list.join(', ')}</strong>"
       end
@@ -153,8 +174,8 @@ private
         end
         assignees.delete("0")
         unless assignees.count == 0
-         assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond == ""
-         assigned_to_cond = "#{assigned_to_cond}#{fields_info[:assigned_to][:field]} IN ('#{assignees.join("','")}')"
+          assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond == ""
+          assigned_to_cond = "#{assigned_to_cond}#{fields_info[:assigned_to][:field]} IN ('#{assignees.join("','")}')"
         end
       end
       @options.push("(#{assigned_to_cond})") unless assigned_to_cond == ""
@@ -174,7 +195,7 @@ private
     @search_options ||= {}
     if session[:search_contact_params].present?
       search_fields.each do |f|
-        @search_options[f] = session[:search_contact_params][f]
+        @search_options[f] = session[:search_contact_params][f] if session[:search_contact_params][f].present?
       end
     end
   end

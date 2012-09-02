@@ -192,7 +192,8 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   border:0px solid black;
   height:18px;
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -9px -295px;
-  padding-left: 25px;
+  padding-left: 23px;
+  margin-left: 10px;
 }
 
 .butProfile a:hover {
@@ -783,6 +784,10 @@ table td.sub {
 
 .contacts_report table.wide {
   width: 100%;
+}
+
+#spinnerAssignedToSelect {
+  margin: 10px;
 }
 
 h2 select {
@@ -1480,6 +1485,7 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 
 #content_wrapper {
   padding-bottom: 70px;
+  padding-top: 5px;
   min-height: 400px;
 }
 
