@@ -181,7 +181,10 @@ private
       @options.push("(#{assigned_to_cond})") unless assigned_to_cond == ""
     end
 
-    @contacts = Contact.find(:all, :conditions => @options.join(" AND ")).paginate(:page => params[:page])
+    @contacts = Contact.find(:all,
+                             :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
+                             :conditions => @options.join(" AND "), :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
+                             :order => contact_order_by).paginate(:page => params[:page])
   end
 
   def initialize_globals
@@ -246,7 +249,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to]
+    [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to, :sort_col, :sort_dir]
   end
   
   def fields_info
@@ -259,6 +262,22 @@ private
       :result => { :field => :result, :all_value => "9" },
       :assigned_to => { :field => :person_id, :all_value => "-1" }
     }
+  end
+
+  def contact_order_by
+    order_col = @search_options[:sort_col].present? ? @search_options[:sort_col] : Contact::DEFAULT_SORT_COLUMN
+    order_dir = @search_options[:sort_dir].present? ? @search_options[:sort_dir] : Contact::DEFAULT_SORT_DIRECTION
+
+    # sanitize
+    order_dir = ['ASC', 'DESC'].include?(order_dir) ? order_dir : Contact::DEFAULT_SORT_DIRECTION
+    order_col = contact_search_results_columns.collect { |col| col[:fields].join(',') }.include?(order_col) ? order_col : Contact::DEFAULT_SORT_COLUMN
+    params.merge!(:sort_dir => order_dir, :sort_col => order_col)
+    @search_options[:sort_col] = order_col
+    @search_options[:sort_dir] = order_dir
+    session[:search_contact_params][:sort_col] = order_col
+    session[:search_contact_params][:sort_dir] = order_dir
+
+    "#{order_col.gsub(',', " #{order_dir},")} #{order_dir}"
   end
   
 end

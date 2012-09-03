@@ -39,19 +39,13 @@
   <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
 
   <div id="people">
-    <table cellpadding="0" cellspacing="0" class="directorytable">
+    <table cellpadding="0" cellspacing="0" class="directorytable contacts">
       <thead class="center">
         <tr>
         <th><%= check_box_tag 'select_all', 0, false %></th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Sex</th>
-        <th>Cellphone</th>
-        <th>Year</th>
-        <th>Priority</th>
-        <th>Assigned to</th>
-        <th>Status</th>
-        <th>Result</th>
+        <% contact_search_results_columns.each do |col| %>
+          <th><%= link_to_contact_search_column_header(col, params) %></th>
+        <% end %>
         <th>&nbsp;</th>
       </tr>
       </thead>

@@ -77,6 +77,20 @@ module ContactsHelper
       contact_search_options[:assigned_to]
     ]
   end
+
+  def contact_search_results_columns
+    [
+      { :display => "First Name",  :fields => ['first_name'] },
+      { :display => "Last Name",   :fields => ['last_name'] },
+      { :display => "Sex",         :fields => [contact_search_options[:gender_id][:field].to_s] },
+      { :display => "Cellphone",   :fields => ['cellphone'] },
+      { :display => "Year",        :fields => ['year'] },
+      { :display => "Priority",    :fields => ['priority'] },
+      { :display => "Assigned To", :fields => [Person._(:first_name), Person._(:last_name)] },
+      { :display => "Status",      :fields => [contact_search_options[:status][:field].to_s]},
+      { :display => "Result",      :fields => [contact_search_options[:result][:field].to_s] }
+    ]
+  end
   
   
   def interest_to_chat
@@ -112,7 +126,7 @@ module ContactsHelper
       result = select_tag "assign", options_for_select(people_available, @contact[:person_id].nil? ? 0 : @contact[:person_id])
     elsif contact[:person_id].nil? == false
       unless contact[:person_id] == 0
-        volunteer = Person.find(contact[:person_id])
+        volunteer = contact.person
         result = "#{volunteer[:person_fname]} #{volunteer[:person_lname]}" unless volunteer.nil?
       end
     end
@@ -192,6 +206,24 @@ module ContactsHelper
 
   def is_number?(object)
     true if Float(object) rescue false
+  end
+
+  def link_to_contact_search_column_header(column, params)
+    params[:sort_dir] ||= ''
+    col = column[:fields].join(',')
+
+    dir = case params[:sort_dir].upcase
+    when 'ASC'
+      params[:sort_col] == col.to_s ? 'DESC' : Contact::DEFAULT_SORT_DIRECTION
+    when 'DESC'
+      params[:sort_col] == col.to_s ? 'ASC'  : Contact::DEFAULT_SORT_DIRECTION
+    else
+      Contact::DEFAULT_SORT_DIRECTION
+    end
+
+    link_class = params[:sort_col] == col.to_s ? dir.downcase : ''
+
+    link_to column[:display], params.merge(:sort_dir => dir, :sort_col => col), :class => link_class
   end
 
 end

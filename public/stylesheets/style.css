@@ -790,6 +790,20 @@ table td.sub {
   margin: 10px;
 }
 
+.directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
+  padding-left: 10px;
+  background-position: -3px 0px;
+  background-repeat: no-repeat;
+}
+
+.directorytable.contacts th a.asc {
+  background-image: url("/images/silk/bullet_arrow_up.png");
+}
+
+.directorytable.contacts th a.desc {
+  background-image: url("/images/silk/bullet_arrow_down.png");
+}
+
 h2 select {
   font-size: 18px;
   font-weight: bold;
