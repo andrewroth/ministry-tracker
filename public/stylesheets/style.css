@@ -817,6 +817,10 @@ table td.sub {
   font-size: 12px;
 }
 
+.searchContacts input[type=text] {
+  max-width: 120px;
+}
+
 .contacts_container {
   position: absolute;
   left: 0;

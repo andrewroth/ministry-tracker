@@ -116,7 +116,7 @@ class ContactsController < ApplicationController
     #save all the parameters from the search
     session[:search_contact_params] ||= {}
     search_fields.each do |f|
-      session[:search_contact_params][f] = params[f] if params[f].present?
+      session[:search_contact_params][f] = params[f] if params.has_key?(f)
     end
 
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
@@ -174,6 +174,9 @@ private
         country = contact_options_lists[:international].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
         desc << "with country <strong>#{to_or_sentence(country)}</strong>" if country.present?
 
+      when :degree
+        desc << %(with degree/faculty contains <strong>"#{value}"</strong>)
+
       end
     end
 
@@ -189,6 +192,10 @@ private
     [:gender_id, :priority, :status, :result].each do |option|
         @options.push("#{Contact.__(fields_info[option][:field])} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
     end
+
+    if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
+      @options.push("#{Contact.__(fields_info[:degree][:field])} LIKE '%#{@search_options[:degree]}%'")
+    end    
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
       if @search_options[:international] == ["1"]
@@ -303,7 +310,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree]
   end
   
   def fields_info
@@ -314,7 +321,8 @@ private
       :status => { :field => :status, :all_value => "9" },
       :result => { :field => :result, :all_value => "9" },
       :assigned_to => { :field => :person_id, :all_value => "-1" },
-      :international => { :field => :international, :all_value => "9" }
+      :international => { :field => :international, :all_value => "9" },
+      :degree => { :field => :degree, :all_value => "" }
     }
   end
 

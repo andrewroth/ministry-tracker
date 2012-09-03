@@ -28,6 +28,7 @@ module ContactsHelper
         :field => :gender_id,
         :title => "Gender",
         :options => contact_options_lists[:gender_id].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :priority =>
@@ -35,6 +36,7 @@ module ContactsHelper
         :field => :priority,
         :title => "Priority",
         :options =>  ["All", "Hot", "Medium", "Mild", "Not Interested"],
+        :type => :select,
         :default => "All"
       },
       :status =>
@@ -42,6 +44,7 @@ module ContactsHelper
         :field => :status,
         :title => "Status",
         :options =>  contact_options_lists[:status].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :result =>
@@ -49,6 +52,7 @@ module ContactsHelper
         :field => :result,
         :title => "Result",
         :options => contact_options_lists[:result].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :assigned_to =>
@@ -56,6 +60,7 @@ module ContactsHelper
         :field => :assigned_to,
         :title => "Assignee",
         :options => people_available_for_search,
+        :type => :select,
         :default => -1
       },
       :international =>
@@ -63,7 +68,15 @@ module ContactsHelper
         :field => :international,
         :title => "International",
         :options => contact_options_lists[:international].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
+      },
+      :degree =>
+      {
+        :field => :degree,
+        :title => "Degree / Faculty",
+        :type => :text,
+        :default => ""
       }
     }
   end
@@ -75,7 +88,8 @@ module ContactsHelper
       contact_search_options[:status],
       contact_search_options[:result],
       contact_search_options[:assigned_to],
-      contact_search_options[:international]
+      contact_search_options[:international],
+      contact_search_options[:degree]
     ]
   end
 
@@ -239,7 +253,8 @@ module ContactsHelper
   end
 
   def show_more_search_options?
-    @search_options && @search_options[:international] != [contact_search_options[:international][:default].to_s]
+    @search_options &&
+    (@search_options[:international] != [contact_search_options[:international][:default].to_s] || @search_options[:degree].present?)
   end
 
 end

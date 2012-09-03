@@ -12,13 +12,21 @@
       <div class="base_conditions">
         <% contact_search_screen_fields.each do |data| %>
       	  <div class="adfieldbox">
-      	    <span class="advanced_search_field_label"><%= data[:title]%></span>
-      	    <%- tooltip do -%>
-      	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
-      	    <%- end -%>
-      	    <br/>
-      	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
-            <%= spinner('AssignedToSelect') if data[:field] == :assigned_to %>
+            <%- case data[:type] -%>
+            <%- when :select -%>
+        	    <span class="advanced_search_field_label"><%= data[:title]%></span>
+        	    <%- tooltip do -%>
+        	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
+        	    <%- end -%>
+        	    <br/>
+        	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
+              <%= spinner('AssignedToSelect') if data[:field] == :assigned_to %>
+
+            <%- when :text -%>
+              <span class="advanced_search_field_label"><%= data[:title]%>:</span>
+              <br/>
+              <%= text_field_tag data[:field], default_value(data[:field]) %>
+            <%- end -%>
       	  </div>
           <% if data[:field] == :assigned_to %>
             </div>
