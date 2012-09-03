@@ -81,7 +81,7 @@ class ContactsController < ApplicationController
     #save all the parameters from the search
     session[:search_contact_params] ||= {}
     search_fields.each do |f|
-      session[:search_contact_params][f] = params[f]
+      session[:search_contact_params][f] = params[f] if params[f].present?
     end
 
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
