@@ -42,7 +42,7 @@ if Common::STAGE == "prod" && Common::SERVER == "c4c"
     config[:app_name]                 = "[PULSE]"
     config[:subject_prepend]          = "[pulse crash] "
     config[:sender_address]           = "noreply@campusforchrist.org"
-    config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck@gmail.com']
+    config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck+pulse@gmail.com', 'russ.martin@p2c.com']
     # In a local environment only use this gem to render, never email
     #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
     config[:skip_local_notification]  = true
