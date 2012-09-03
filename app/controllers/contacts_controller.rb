@@ -138,7 +138,8 @@ private
         desc << "assigned to <strong>#{list.join(', ')}</strong>"
 
       when :international
-        desc << "with international <strong>#{value.join(', ')}</strong>" if value.present?
+        country = contact_options_lists[:international].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with country <strong>#{to_or_sentence(country)}</strong>" if country.present?
 
       end
     end
