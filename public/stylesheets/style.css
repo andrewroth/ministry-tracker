@@ -790,6 +790,11 @@ table td.sub {
   margin: 10px;
 }
 
+.directorytable.contacts th, .directorytable.contacts td {
+  padding: 8px;
+  padding-right: 10px;
+}
+
 .directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
   padding-left: 10px;
   background-position: -3px 0px;
@@ -810,6 +815,15 @@ table td.sub {
 
 #multiple_contact_update select, .searchContacts select {
   font-size: 12px;
+}
+
+.contacts_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 5px 5% 50px 5%;
+  min-height: 500px;
 }
 
 h2 select {
