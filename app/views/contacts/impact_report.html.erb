@@ -149,12 +149,12 @@
           <% @campus.leaders_with_contacts.each do |person| %>
             <tr>
               <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
-              <td><%= person.contacts_with_status(2).size %></td>
-              <td><%= person.contacts_with_status([0, 1, 4]).size %></td>
-              <td><%= person.contacts_with_status(0).size %></td>
-              <td><%= person.contacts_with_status(1).size %></td>
-              <td><%= person.contacts_with_status(4).size %></td>
-              <td><%= person.contacts_with_status(3).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => [0, 1, 4]}).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 0}).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 1}).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 4}).size %></td>
+              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 3}).size %></td>
             </tr>
           <% end %>
         <% end %>

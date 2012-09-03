@@ -246,8 +246,4 @@ class Person < ActiveRecord::Base
     
     contract
   end
-
-  def contacts_with_status(statuses)
-    self.contacts.all(:conditions => {:status => statuses})
-  end
 end
