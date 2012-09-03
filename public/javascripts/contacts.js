@@ -6,12 +6,11 @@ $(document).ready(function(){
     });
     $('#contacts_to_update').val(contact_array.join());
   });
-
-  $('#multiple_contact_update form input[type=submit]').enable();
   
-  $('#select_all').change( function(){
+  $('#select_all_contacts').change( function(){
     $('input[name="contact[]"]').each(function(index){
-      $(this).attr('checked', $('#select_all').is(':checked'));
+      $(this).attr('checked', $('#select_all_contacts').is(':checked'));
+      $(this).change();
     });
   });
 
@@ -44,6 +43,7 @@ $(document).ready(function(){
   });
 
   $('#multiple_update_action').val('');
+  $('#multiple_contact_update form input[type=submit]').enable();
 
   $('#multiple_contact_update input[type=submit]').click(function(e) {
     if(typeof $('#contacts_to_update').val() === 'undefined' || $('#contacts_to_update').val() == '') {

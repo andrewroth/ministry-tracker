@@ -49,7 +49,7 @@
     <table cellpadding="0" cellspacing="0" class="directorytable contacts">
       <thead class="center">
         <tr>
-        <th><%= check_box_tag 'select_all', 0, false %></th>
+        <th><%= check_box_tag 'select_all_contacts', 0, false %></th>
         <% contact_search_results_columns.each do |col| %>
           <th><%= link_to_contact_search_column_header(col, params) %></th>
         <% end %>
