@@ -859,7 +859,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=43353 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43356 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1515,6 +1515,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120830204327');
 INSERT INTO schema_migrations (version) VALUES ('20120830204328');
 
 INSERT INTO schema_migrations (version) VALUES ('20120830204329');
+
+INSERT INTO schema_migrations (version) VALUES ('20120830204330');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

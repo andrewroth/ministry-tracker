@@ -804,6 +804,14 @@ table td.sub {
   background-image: url("/images/silk/bullet_arrow_down.png");
 }
 
+#multiple_contact_update {
+  min-height: 40px;
+}
+
+#multiple_contact_update select, .searchContacts select {
+  font-size: 12px;
+}
+
 h2 select {
   font-size: 18px;
   font-weight: bold;

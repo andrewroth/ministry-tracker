@@ -28,12 +28,19 @@
     </p>
   </div>
 
-  <div id="assign_people">
-    <% form_remote_tag(:url => '/contacts/multiple_assign', :name => 'contacts_form', :id => 'contacts_form', :before => "$('#assign_people form input[type=submit]').disable(); $('#spinnerAssignMultiple').show();") do %>
-      <%= hidden_field_tag 'contacts_to_assign' %>
-      Assign selected contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available_for_assigning) %> <%= submit_tag 'Assign', :class => "action-button" %>
+  <div id="multiple_contact_update">
+    <% form_remote_tag(:url => '/contacts/multiple_update', :name => 'contacts_form', :id => 'contacts_form', :before => "$('#multiple_contact_update form input[type=submit]').disable(); $('#spinnerAssignMultiple').show();") do %>
+      <%= hidden_field_tag 'contacts_to_update' %>
+
+      <%= select_tag "multiple_update_action", options_for_select([['Perform action on selected contacts...', ''], ['Assign selected contacts to...', 'multiple_assign_to'], ['Change selected contacts Status to...', 'multiple_status'], ['Change selected contacts Result to...', 'multiple_result']]) %>
+
+      <%= select_tag "multiple_assign_to", options_for_select(people_available_for_assigning), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Assign' %>
+      <%= select_tag "multiple_status", options_for_select(contact_options_lists[:status]), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Change Status' %>
+      <%= select_tag "multiple_result", options_for_select(contact_options_lists[:result]), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Change Result' %>
+
+      <%= submit_tag 'Update', :class => "multiple_update action-button", :style => "display:none;" %>
+      &nbsp;<%= spinner('AssignMultiple') %>
     <%- end -%>
-    <%= spinner('AssignMultiple') %>
   </div>
 
   <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>

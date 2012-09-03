@@ -54,26 +54,61 @@ class ContactsController < ApplicationController
     end
   end
   
-  def multiple_assign
-    assignee = params[:multiple_assign_to]
-    if assignee.to_i <= 0
-      assignee_person_name = "Unassigned"
-    else
-      assignee_person = Person.find(assignee)
-      assignee_person_name = "#{assignee_person.person_fname} #{assignee_person.person_lname}" if assignee_person
-    end
+  def multiple_update
+    case params[:multiple_update_action]
+    when 'multiple_assign_to'
+      assignee = params[:multiple_assign_to]
+      if assignee.to_i <= 0
+        assignee_person_name = "Unassigned"
+      else
+        assignee_person = Person.find(assignee)
+        assignee_person_name = "#{assignee_person.person_fname} #{assignee_person.person_lname}" if assignee_person
+      end
 
-    if assignee_person_name && params[:contacts_to_assign]
-      contact_ids = params[:contacts_to_assign].split(',')
-      contact_ids.delete("0")
-      contacts = Contact.find(:all, :conditions => { :id => contact_ids })
-      
-      contacts.each do |contact|
-        contact[:person_id] = assignee
-        contact.save!
+      if assignee_person_name && params[:contacts_to_update].present?
+        contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
+        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        
+        contacts.each do |contact|
+          contact[:person_id] = assignee
+          contact.save!
+        end
+        
+        flash[:notice] = "Assigned selected contacts to #{assignee_person_name}"
       end
       
-      flash[:notice] = "Assigned contacts to #{assignee_person_name}"
+    when 'multiple_status'
+      status = params[:multiple_status].to_i
+      status_option = contact_options_lists[:status].select { |s| s[1] == status }.flatten
+
+      if status_option && params[:contacts_to_update].present?
+        contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
+        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        
+        contacts.each do |contact|
+          contact[:status] = status
+          contact.save!
+        end
+        
+        flash[:notice] = "Updated selected contact's status to #{status_option[0]}"
+      end
+
+    when 'multiple_result'
+      result = params[:multiple_result].to_i
+      result_option = contact_options_lists[:result].select { |r| r[1] == result }.flatten
+
+      if result_option && params[:contacts_to_update].present?
+        contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
+        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        
+        contacts.each do |contact|
+          contact[:result] = result
+          contact.save!
+        end
+        
+        flash[:notice] = "Updated selected contact's result to #{result_option[0]}"
+      end
+
     end
   end
   
