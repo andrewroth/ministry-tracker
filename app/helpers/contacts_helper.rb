@@ -15,7 +15,7 @@ module ContactsHelper
     {
       :gender_id => [["Male", 2], ["Female", 1], ["Not Specified", 0]],
       :international => [["National", 0], ["International", 1]],
-      :status => [["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Completed", 2], ["Do Not Contact", 3]],
+      :status => [["Completed", 2], ["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]]
     }
   end

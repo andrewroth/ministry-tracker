@@ -43,7 +43,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><%= contact_search_options[:status][:options][3][0] %></td>
+          <td>Completed</td>
           <td><%= @campus.contacts.all(:conditions => {:status => [2]}).size %></td>
         </tr>
         <tr>
