@@ -154,14 +154,14 @@ private
     
     
     [:gender_id, :priority, :status, :result].each do |option|
-        @options.push("#{fields_info[option][:field]} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
+        @options.push("#{Contact.__(fields_info[option][:field])} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
     end
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
       if @search_options[:international] == ["1"]
-        @options.push("#{fields_info[:international][:field]} IN ('1')") 
+        @options.push("#{Contact.__(fields_info[:international][:field])} IN ('1')") 
       elsif @search_options[:international] == ["0"]
-        @options.push("#{fields_info[:international][:field]} NOT IN ('1')") 
+        @options.push("#{Contact.__(fields_info[:international][:field])} NOT IN ('1')") 
       else
         @search_options[:international] = [fields_info[:international][:all_value]]
       end
@@ -170,9 +170,9 @@ private
     if @search_options[:assign].present?
       unless @search_options[:assign].include?("All") || (@search_options[:assign].include?("Assigned") && @search_options[:assign].include?("Unassigned"))
         if @search_options[:assign].include?("Unassigned")
-          @options.push("person_id IS NULL")
+          @options.push("#{Contact.__(:person_id)} IS NULL")
         else
-          @options.push("person_id IS NOT NULL")
+          @options.push("#{Contact.__(:person_id)} IS NOT NULL")
         end
       end
     end
@@ -190,7 +190,7 @@ private
         assignees.delete("0")
         unless assignees.count == 0
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond == ""
-          assigned_to_cond = "#{assigned_to_cond}#{fields_info[:assigned_to][:field]} IN ('#{assignees.join("','")}')"
+          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN ('#{assignees.join("','")}')"
         end
       end
       @options.push("(#{assigned_to_cond})") unless assigned_to_cond == ""
@@ -275,7 +275,7 @@ private
       :assign => { :field => :assign, :all_value => "All" },
       :status => { :field => :status, :all_value => "9" },
       :result => { :field => :result, :all_value => "9" },
-      :assigned_to => { :field => Contact.__(:person_id), :all_value => "-1" },
+      :assigned_to => { :field => :person_id, :all_value => "-1" },
       :international => { :field => :international, :all_value => "9" }
     }
   end
