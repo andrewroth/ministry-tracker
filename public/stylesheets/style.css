@@ -717,7 +717,7 @@ img.opaqueWhite {
     border-bottom:1px #0064a2 solid;
 }
 .directorytable th, .directorytable td {
-    padding:3px;
+    padding:4px;
     padding-right:6px;
 }
 .directorytable th {
