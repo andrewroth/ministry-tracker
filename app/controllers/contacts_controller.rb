@@ -183,12 +183,12 @@ private
       assigned_to_cond = ""
       unless assignees.include?("-1") # all
         if assignees.include?("0") # unassigned
-          assigned_to_cond = "#{Contact.__(:person_id)} IS NULL"
+          assigned_to_cond = "(#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} IN (0))"
           assignees.delete("0")
         end
         if assignees.include?("-2") # assigned
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond} #{Contact.__(:person_id)} IS NOT NULL"
+          assigned_to_cond = "#{assigned_to_cond} (#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
           assignees.delete("-2")
         end
         unless assignees.count == 0

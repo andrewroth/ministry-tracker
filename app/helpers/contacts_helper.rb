@@ -173,7 +173,7 @@ module ContactsHelper
   end
 
   def people_available_for_assigning
-    @people_available_for_assigning ||= people_available.select { |p| p[1] > 0 }
+    @people_available_for_assigning ||= people_available.select { |p| p[1] >= 0 }
   end
   
   def convert_values(a, field)
