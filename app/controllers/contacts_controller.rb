@@ -118,9 +118,6 @@ private
       when :priority
         desc << "with priority <strong>#{to_or_sentence(value)}</strong>" if value.present?
 
-      when :assign
-        desc << "with assign <strong>#{value.join(', ')}</strong>" if value.present?
-
       when :status
         statuses = contact_options_lists[:status].select{ |s| value.include?(s[1].to_s) }.collect{ |s| s[0] }
         desc << "with status <strong>#{to_or_sentence(statuses)}</strong>" if statuses.present?
@@ -132,6 +129,7 @@ private
       when :assigned_to
         list = []
         list << 'Unassigned' if value.include?('0')
+        list << 'Assigned' if value.include?('-2')
         values_to_find = value.select{|v| v.to_i > 0 }
         people = Person.find(values_to_find) if Person.exists?(values_to_find)
         list << people.collect{|p| "#{p.person_fname} #{p.person_lname}" } if people.present?
@@ -183,17 +181,22 @@ private
         assignees.push(p)
       end
       assigned_to_cond = ""
-      unless assignees.include?("-1")
-        if assignees.include?("0")
+      unless assignees.include?("-1") # all
+        if assignees.include?("0") # unassigned
           assigned_to_cond = "#{Contact.__(:person_id)} IS NULL"
+          assignees.delete("0")
         end
-        assignees.delete("0")
+        if assignees.include?("-2") # assigned
+          assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
+          assigned_to_cond = "#{assigned_to_cond} #{Contact.__(:person_id)} IS NOT NULL"
+          assignees.delete("-2")
+        end
         unless assignees.count == 0
-          assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond == ""
+          assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
           assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN ('#{assignees.join("','")}')"
         end
       end
-      @options.push("(#{assigned_to_cond})") unless assigned_to_cond == ""
+      @options.push("(#{assigned_to_cond})") unless assigned_to_cond.blank?
     end
 
     @contacts = Contact.find(:all,
@@ -248,6 +251,7 @@ private
       @people_available = @people_available.uniq if @people_available.count > 0
       @people_available.sort!{|x,y| x[0] <=> y [0]} if @people_available.count > 0
       @people_available.insert(0, ["Unassigned", 0])
+      @people_available.insert(0, ["Assigned", -2])
     end
     @people_available
   end
@@ -264,7 +268,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to, :sort_col, :sort_dir, :international]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international]
   end
   
   def fields_info
@@ -272,7 +276,6 @@ private
       :campus_id => { :field => :campus_id, :all_value => nil },
       :gender_id => { :field => :gender_id, :all_value => "9" },
       :priority => { :field => :priority, :all_value => "All" },
-      :assign => { :field => :assign, :all_value => "All" },
       :status => { :field => :status, :all_value => "9" },
       :result => { :field => :result, :all_value => "9" },
       :assigned_to => { :field => :person_id, :all_value => "-1" },

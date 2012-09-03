@@ -37,13 +37,6 @@ module ContactsHelper
         :options =>  ["All", "Hot", "Medium", "Mild", "Not Interested"],
         :default => "All"
       },
-      :assign =>
-      {
-        :field => :assign,
-        :title => "Assign",
-        :options =>  ["All", "Assigned", "Unassigned"],
-        :default => "All"
-      },
       :status =>
       {
         :field => :status,
@@ -79,7 +72,6 @@ module ContactsHelper
     [
       contact_search_options[:gender_id],
       contact_search_options[:priority],
-      contact_search_options[:assign],
       contact_search_options[:status],
       contact_search_options[:result],
       contact_search_options[:assigned_to],
@@ -178,6 +170,10 @@ module ContactsHelper
 
   def people_available_for_search
     @people_available_for_search
+  end
+
+  def people_available_for_assigning
+    @people_available_for_assigning ||= people_available.select { |p| p[1] > 0 }
   end
   
   def convert_values(a, field)
