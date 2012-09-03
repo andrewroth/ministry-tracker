@@ -21,6 +21,12 @@ $(document).ready(function(){
   });
 
   adjustToCampus();
+
+  $("#searchBox .show_more_conditions a").click(function(e) {
+    e.preventDefault();
+    $("#searchBox.searchContacts .more_conditions").show();
+    $("#searchBox .show_more_conditions").hide();
+  });
 });
 
 function adjustToCampus() {
@@ -48,6 +54,10 @@ function fillAssignees(data) {
         opt.attr("selected", "selected");
       }
       $('#assigned_to_').append(opt);
+
+      // if($('#assigned_to_ option:selected').length == 0) {
+      //   $('#assigned_to_ option[value=-1]').attr("selected", "selected");
+      // }
     });
   } catch (e) {
       // not json

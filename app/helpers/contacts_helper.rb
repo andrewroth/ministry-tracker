@@ -14,6 +14,7 @@ module ContactsHelper
   def contact_options_lists
     {
       :gender_id => [["Male", 2], ["Female", 1], ["Not Specified", 0]],
+      :international => [["National", 0], ["International", 1]],
       :status => [["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Completed", 2], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]]
     }
@@ -63,32 +64,41 @@ module ContactsHelper
         :title => "Assignee",
         :options => people_available_for_search,
         :default => -1
+      },
+      :international =>
+      {
+        :field => :international,
+        :title => "International",
+        :options => contact_options_lists[:international].insert(0, ["All", 9]),
+        :default => 9
       }
     }
   end
   
   def contact_search_screen_fields
     [
-      contact_search_options[:gender_id], 
-      contact_search_options[:priority], 
-      contact_search_options[:assign], 
-      contact_search_options[:status], 
-      contact_search_options[:result] , 
-      contact_search_options[:assigned_to]
+      contact_search_options[:gender_id],
+      contact_search_options[:priority],
+      contact_search_options[:assign],
+      contact_search_options[:status],
+      contact_search_options[:result],
+      contact_search_options[:assigned_to],
+      contact_search_options[:international]
     ]
   end
 
   def contact_search_results_columns
     [
-      { :display => "First Name",  :fields => ['first_name'] },
-      { :display => "Last Name",   :fields => ['last_name'] },
-      { :display => "Sex",         :fields => [contact_search_options[:gender_id][:field].to_s] },
-      { :display => "Cellphone",   :fields => ['cellphone'] },
-      { :display => "Year",        :fields => ['year'] },
-      { :display => "Priority",    :fields => ['priority'] },
-      { :display => "Assigned To", :fields => [Person._(:first_name), Person._(:last_name)] },
-      { :display => "Status",      :fields => [contact_search_options[:status][:field].to_s]},
-      { :display => "Result",      :fields => [contact_search_options[:result][:field].to_s] }
+      { :display => "First Name",    :fields => ['first_name'] },
+      { :display => "Last Name",     :fields => ['last_name'] },
+      { :display => "Sex",           :fields => [contact_search_options[:gender_id][:field].to_s] },
+      { :display => "Cellphone",     :fields => ['cellphone'] },
+      { :display => "Year",          :fields => ['year'] },
+      { :display => "Priority",      :fields => ['priority'] },
+      { :display => "Assigned To",   :fields => [Person._(:first_name), Person._(:last_name)] },
+      { :display => "Status",        :fields => [contact_search_options[:status][:field].to_s]},
+      { :display => "Result",        :fields => [contact_search_options[:result][:field].to_s] },
+      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] }
     ]
   end
   
@@ -119,6 +129,12 @@ module ContactsHelper
     contact || contact = @contact
     options_corr(:result)[contact[:result]]
   end 
+
+  def contact_international(contact = nil)
+    contact || contact = @contact
+    contact[:international] = contact[:international].blank? ? 0 : contact[:international]
+    val = options_corr(:international)[contact[:international]]
+  end
  
   def assigned_to(contact = nil)
     result = "Unassigned"
@@ -224,6 +240,10 @@ module ContactsHelper
     link_class = params[:sort_col] == col.to_s ? dir.downcase : ''
 
     link_to column[:display], params.merge(:sort_dir => dir, :sort_col => col), :class => link_class
+  end
+
+  def show_more_search_options?
+    @search_options && @search_options[:international] != [contact_search_options[:international][:default].to_s]
   end
 
 end

@@ -9,17 +9,27 @@
       
       <div class="clear" style="margin-bottom:15px;"><br/></div>
       
-      <% contact_search_screen_fields.each do |data| %>
-    	  <div class="adfieldbox">
-    	    <span class="advanced_search_field_label"><%= data[:title]%></span>
-    	    <%- tooltip do -%>
-    	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
-    	    <%- end -%>
-    	    <br/>
-    	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
-          <%= spinner('AssignedToSelect') if data[:field] == :assigned_to %>
-    	  </div>
-    	<% end %>
+      <div class="base_conditions">
+        <% contact_search_screen_fields.each do |data| %>
+      	  <div class="adfieldbox">
+      	    <span class="advanced_search_field_label"><%= data[:title]%></span>
+      	    <%- tooltip do -%>
+      	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
+      	    <%- end -%>
+      	    <br/>
+      	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
+            <%= spinner('AssignedToSelect') if data[:field] == :assigned_to %>
+      	  </div>
+          <% if data[:field] == :assigned_to %>
+            </div>
+            <div class="clear"></div>
+            <br/>
+            <div class="more_conditions" style="<%= show_more_search_options? ? '' : 'display:none;' %>">
+          <% end %>
+      	<% end %>
+      </div>
+
+      <div class="show_more_conditions" style="<%= show_more_search_options? ? 'display:none;' : '' %>"><%= link_to 'More search options...', '' %></div>
 
       <div class="clear" style="margin-bottom:15px;"><br/></div>
       

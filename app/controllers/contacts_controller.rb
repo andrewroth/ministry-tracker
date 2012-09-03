@@ -136,6 +136,10 @@ private
         people = Person.find(values_to_find) if Person.exists?(values_to_find)
         list << people.collect{|p| "#{p.person_fname} #{p.person_lname}" } if people.present?
         desc << "assigned to <strong>#{list.join(', ')}</strong>"
+
+      when :international
+        desc << "with international <strong>#{value.join(', ')}</strong>" if value.present?
+
       end
     end
 
@@ -150,6 +154,16 @@ private
     
     [:gender_id, :priority, :status, :result].each do |option|
         @options.push("#{fields_info[option][:field]} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
+    end
+
+    if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
+      if @search_options[:international] == ["1"]
+        @options.push("#{fields_info[:international][:field]} IN ('1')") 
+      elsif @search_options[:international] == ["0"]
+        @options.push("#{fields_info[:international][:field]} NOT IN ('1')") 
+      else
+        @search_options[:international] = [fields_info[:international][:all_value]]
+      end
     end
 
     if @search_options[:assign].present?
@@ -170,7 +184,7 @@ private
       assigned_to_cond = ""
       unless assignees.include?("-1")
         if assignees.include?("0")
-          assigned_to_cond = "person_id IS NULL"
+          assigned_to_cond = "#{Contact.__(:person_id)} IS NULL"
         end
         assignees.delete("0")
         unless assignees.count == 0
@@ -249,7 +263,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to, :sort_col, :sort_dir]
+    [:campus_id, :gender_id, :priority, :assign, :status, :result, :assigned_to, :sort_col, :sort_dir, :international]
   end
   
   def fields_info
@@ -260,7 +274,8 @@ private
       :assign => { :field => :assign, :all_value => "All" },
       :status => { :field => :status, :all_value => "9" },
       :result => { :field => :result, :all_value => "9" },
-      :assigned_to => { :field => :person_id, :all_value => "-1" }
+      :assigned_to => { :field => Contact.__(:person_id), :all_value => "-1" },
+      :international => { :field => :international, :all_value => "9" }
     }
   end
 

@@ -64,6 +64,7 @@
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_international(contact) %></td>
           <td class="alignright">
             <span class="butProfile"><%= link_to 'Edit', "/contacts/edit/#{contact[:id]}", :title => "View the contact's informations" %></span>
           </td>
