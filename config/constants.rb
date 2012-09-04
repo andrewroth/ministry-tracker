@@ -789,7 +789,7 @@
       :male => "Male",
       :female => "Female",
       :first_year => "1st Year (Undergrad)",
-      :c4c_events_link => "http://campusforchrist.eventbrite.com/",
+      :c4c_events_link => "http://p2c.eventbrite.com/",
       :num_days_to_display_event_after_completed => 10,
       :num_days_until_event_closed_after_completed => 6,
       :num_days_sync_delay => 1
