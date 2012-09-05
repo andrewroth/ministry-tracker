@@ -133,6 +133,11 @@ class ContactsController < ApplicationController
     @campus = Campus.find(params[:campus_id]) if params[:campus_id]
     @campus = @campuses.first if @campus.blank? || !@campuses.include?(@campus)
   end
+
+  def national_report
+    campus_ids = Contact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
+    @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids])
+  end
   
   
 private
