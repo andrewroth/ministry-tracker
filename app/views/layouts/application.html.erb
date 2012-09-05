@@ -207,7 +207,7 @@
 
     <% unless request.domain =~ /localhost/ %>
       <%= I18n.t :analytics, :default => "" %>
-      <%= render 'seevolution' %>
+      <%= render 'layouts/seevolution' %>
     <% end %>
 
   </body>
