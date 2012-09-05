@@ -38,7 +38,7 @@ class ContactsController < ApplicationController
   
   def update
     @contact = Contact.find(params[:contact_id])
-    [[:assign, :person_id], [:status, :status], [:result, :result]].each do |data|
+    [[:assign, :person_id], [:status, :status], [:result, :result], [:nextStep, :nextStep]].each do |data|
       @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
 
