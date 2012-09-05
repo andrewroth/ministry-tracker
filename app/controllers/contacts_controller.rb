@@ -253,7 +253,7 @@ private
     initialize_people_available
     initialize_people_available_for_search
   end
-  
+
   def initialize_search_options
     @search_options ||= {}
     if session[:search_contact_params].present?
