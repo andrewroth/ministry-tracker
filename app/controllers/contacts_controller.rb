@@ -136,7 +136,7 @@ class ContactsController < ApplicationController
 
   def national_report
     campus_ids = Contact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
-    @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids])
+    @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids], :order => "#{Campus._(:desc)} ASC")
   end
   
   
