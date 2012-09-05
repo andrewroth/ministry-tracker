@@ -1,3 +1,14 @@
+CREATE TABLE `activities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity_type_id` int(11) DEFAULT NULL,
+  `reportable_id` int(11) DEFAULT NULL,
+  `reportable_type` varchar(255) DEFAULT NULL,
+  `reporter_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
@@ -668,7 +679,7 @@ CREATE TABLE `ministry_role_permissions` (
   `ministry_role_id` int(11) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=688 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=704 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -693,7 +704,7 @@ CREATE TABLE `notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -741,7 +752,7 @@ CREATE TABLE `permissions` (
   `controller` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `person_event_attendees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1542,6 +1553,12 @@ INSERT INTO schema_migrations (version) VALUES ('20120905172527');
 INSERT INTO schema_migrations (version) VALUES ('20120905173308');
 
 INSERT INTO schema_migrations (version) VALUES ('20120905173318');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905182321');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905184606');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905184615');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

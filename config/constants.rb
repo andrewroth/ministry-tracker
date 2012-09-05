@@ -776,6 +776,10 @@
     }
   end
 
+  def activity_options
+    [["Interaction", 1], ["Spiritual Conversation", 2], ["Gospel Presentation", 3], ["Indicated Decision", 4]]
+  end
+
   
   def eventbrite
     # num_days_to_display_event_after_completed : stop advertising events on the dashboard after this many days have elapsed after the event is completed
