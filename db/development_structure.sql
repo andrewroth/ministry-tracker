@@ -503,7 +503,8 @@ CREATE TABLE `group_involvements` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`)
+  UNIQUE KEY `person_id_group_id` (`person_id`,`group_id`),
+  KEY `index_group_involvements_on_group_id` (`group_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17506 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `group_types` (
@@ -1563,6 +1564,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120905184615');
 INSERT INTO schema_migrations (version) VALUES ('20120905193730');
 
 INSERT INTO schema_migrations (version) VALUES ('20120905193740');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905223648');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
