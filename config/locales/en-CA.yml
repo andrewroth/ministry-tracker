@@ -420,7 +420,7 @@ en-CA:
         <P><%= @member_first_name %> <%= @member_last_name %> has
       <% if @requested  %>requested to join<% elsif @interested %>marked interest in<% else %>joined<% end %>
       <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %>
-      <%= @member_first_name %> is a <%= @school_year.name %> student and <% else %>Their <% end %>contact info is 
+      <%= @member_first_name %> is a <%= @school_year %> student and <% else %>Their <% end %>contact info is 
       <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
 
       <% if @requested %>
