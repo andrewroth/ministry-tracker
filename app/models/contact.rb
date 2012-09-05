@@ -5,6 +5,7 @@ class Contact < ActiveRecord::Base
 
   belongs_to :campus
   belongs_to :person
+  has_many :notes, :as => :noteable
 
   def self.table_name
     "sept2012_contacts"

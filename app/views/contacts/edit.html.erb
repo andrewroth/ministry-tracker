@@ -30,6 +30,26 @@
 	</table>
 </div>
 
+<div id="contact_notes">
+  <h2>Notes</h2>
+
+  <ul>
+    <% @contact.notes.each do |note| %>
+      <li>"<%= note.content %>" &#8211; <em><%= time_ago_in_words note.created_at %><%= t("misc.ago") %> by <%= link_to note.person.full_name, note.person %></em></li>
+    <% end %>
+  </ul>
+
+  <div class="new_note">
+    <% form_for [@contact, Note.new] do |f| %>
+      <p>
+        <%= f.text_area :content %>
+        <%= f.submit 'Add Note', :class => 'action-button' %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<br>
 <br>
 <br>
 

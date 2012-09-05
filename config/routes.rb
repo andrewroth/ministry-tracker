@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :prcs
 
-  map.resources :contacts, :collection => {:search => :get, :impact_report => :get}
+  map.resources :contacts, :collection => {:search => :get, :impact_report => :get}, :has_many => :notes
 
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },
@@ -220,7 +220,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
                                           #:perform_task => :post},
-                                          :perform_task => :post} do |person|
+                                          :perform_task => :post},
+                          :has_many => :notes do |person|
                          #:has_many => [:timetables] do |person|
     person.resources :timetables, :member => { :update_signup => :put }
     person.resources :campus_involvements
@@ -250,6 +251,8 @@ ActionController::Routing::Routes.draw do |map|
               :controller => :user_codes,
               :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
+
+  map.resources :notes
   
   # The priority is based upon order of creation: first created -> highest priority.
   

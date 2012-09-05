@@ -839,6 +839,21 @@ h2 select {
   font-weight: bold;
 }
 
+#contact_notes {
+  display: inline-block;
+}
+
+#contact_notes textarea {
+  width: 400px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+#contact_notes form input, #contact_notes form textarea {
+  display: inline-block;
+  float: left;
+}
+
 #searchBox {
   margin:10px 0 10px;
   padding: 20px 20px 0px;

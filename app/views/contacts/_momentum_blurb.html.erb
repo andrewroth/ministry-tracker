@@ -1,5 +1,5 @@
 <ul class="momentum">
   <li>Connect currently has <%= number_with_delimiter Contact.all.size %> contacts input.</li>
   <li><%= number_with_delimiter Contact.all(:select => 'DISTINCT person_id', :conditions => 'person_id IS NOT NULL AND person_id > 0').size %> people from <%= number_with_delimiter Contact.all(:select => 'DISTINCT campus_id', :conditions => 'person_id IS NOT NULL AND person_id > 0 AND campus_id IS NOT NULL AND campus_id > 0').size %> campuses are helping with the following up.</li>
-  <li>Nation-wide, we have completed our initial follow-up of <%= number_with_delimiter Contact.all(:conditions => {:status => '2'}).size %> of <%= number_with_delimiter Contact.all(:conditions => ["status NOT IN ('3')"]).size %>.</li>
+  <li>Nation-wide, we have completed our initial follow-up of <%= number_with_delimiter Contact.all(:conditions => {:status => '2'}).size %> of <%= number_with_delimiter Contact.all(:conditions => ["status NOT IN ('3')"]).size %> contacts who have requested further engagement.</li>
 </ul>
