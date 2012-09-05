@@ -58,16 +58,9 @@
 
       <div id="outer">
         
-        <% if Cmt::CONFIG[:gcx_connexion_bar] %>
-          <% begin %>
-            <%= connexion_bar %>
-            <%= connexion_bar_revealer %>
-          <% rescue => e %>
-            <% Rails.logger.error("\nERROR WITH CONNEXION_BAR: \n#{e.try(:class)}\n#{e.try(:message)}\n\n") %>
-          <% end %>
-        <% end %>
+        <%= render '/layouts/gcx_connexion_bar' %>
         
-        <%= render :partial => "/link_bar/pulse_link_bar" if logged_in? && @me %>
+        <%= render '/link_bar/pulse_link_bar' %>
 
         <div id="wrapper" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
           <div id="userbar_wrapper">
