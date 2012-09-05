@@ -14,9 +14,10 @@ module ContactsHelper
   def contact_options_lists
     {
       :gender_id => [["Male", 2], ["Female", 1], ["Not Specified", 0]],
-      :status => [["Uncontacted", 0], ["Attempted", 1], ["Completed", 2], ["Do Not Contact", 3]],
+      :international => [["National", 0], ["International", 1]],
+      :status => [["Completed", 2], ["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]]
-      }
+    }
   end
 
   #content for search options inputs
@@ -27,6 +28,7 @@ module ContactsHelper
         :field => :gender_id,
         :title => "Gender",
         :options => contact_options_lists[:gender_id].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :priority =>
@@ -34,13 +36,7 @@ module ContactsHelper
         :field => :priority,
         :title => "Priority",
         :options =>  ["All", "Hot", "Medium", "Mild", "Not Interested"],
-        :default => "All"
-      },
-      :assign =>
-      {
-        :field => :assign,
-        :title => "Assign",
-        :options =>  ["All", "Assigned", "Unassigned"],
+        :type => :select,
         :default => "All"
       },
       :status =>
@@ -48,6 +44,7 @@ module ContactsHelper
         :field => :status,
         :title => "Status",
         :options =>  contact_options_lists[:status].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :result =>
@@ -55,6 +52,7 @@ module ContactsHelper
         :field => :result,
         :title => "Result",
         :options => contact_options_lists[:result].insert(0, ["All", 9]),
+        :type => :select,
         :default => 9
       },
       :assigned_to =>
@@ -62,19 +60,51 @@ module ContactsHelper
         :field => :assigned_to,
         :title => "Assignee",
         :options => people_available_for_search,
+        :type => :select,
         :default => -1
+      },
+      :international =>
+      {
+        :field => :international,
+        :title => "International",
+        :options => contact_options_lists[:international].insert(0, ["All", 9]),
+        :type => :select,
+        :default => 9
+      },
+      :degree =>
+      {
+        :field => :degree,
+        :title => "Degree / Faculty",
+        :type => :text,
+        :default => ""
       }
     }
   end
   
   def contact_search_screen_fields
     [
-      contact_search_options[:gender_id], 
-      contact_search_options[:priority], 
-      contact_search_options[:assign], 
-      contact_search_options[:status], 
-      contact_search_options[:result] , 
-      contact_search_options[:assigned_to]
+      contact_search_options[:gender_id],
+      contact_search_options[:priority],
+      contact_search_options[:status],
+      contact_search_options[:result],
+      contact_search_options[:assigned_to],
+      contact_search_options[:international],
+      contact_search_options[:degree]
+    ]
+  end
+
+  def contact_search_results_columns
+    [
+      { :display => "First Name",    :fields => ['first_name'] },
+      { :display => "Last Name",     :fields => ['last_name'] },
+      { :display => "Sex",           :fields => [contact_search_options[:gender_id][:field].to_s] },
+      { :display => "Cellphone",     :fields => ['cellphone'] },
+      { :display => "Year",          :fields => ['year'] },
+      { :display => "Priority",      :fields => ['priority'] },
+      { :display => "Assigned To",   :fields => [Person._(:first_name), Person._(:last_name)] },
+      { :display => "Status",        :fields => [contact_search_options[:status][:field].to_s]},
+      { :display => "Result",        :fields => [contact_search_options[:result][:field].to_s] },
+      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] }
     ]
   end
   
@@ -105,6 +135,12 @@ module ContactsHelper
     contact || contact = @contact
     options_corr(:result)[contact[:result]]
   end 
+
+  def contact_international(contact = nil)
+    contact || contact = @contact
+    contact[:international] = contact[:international].blank? ? 0 : contact[:international]
+    val = options_corr(:international)[contact[:international]]
+  end
  
   def assigned_to(contact = nil)
     result = "Unassigned"
@@ -112,7 +148,7 @@ module ContactsHelper
       result = select_tag "assign", options_for_select(people_available, @contact[:person_id].nil? ? 0 : @contact[:person_id])
     elsif contact[:person_id].nil? == false
       unless contact[:person_id] == 0
-        volunteer = Person.find(contact[:person_id])
+        volunteer = contact.person
         result = "#{volunteer[:person_fname]} #{volunteer[:person_lname]}" unless volunteer.nil?
       end
     end
@@ -134,12 +170,12 @@ module ContactsHelper
     @campus
   end
 
-  def campuses
-    @campuses || @me.campuses_under_my_ministries_with_children()
+  def campuses(with_ministry_roles = nil)
+    @campuses || @me.campuses_under_my_ministries_with_children(with_ministry_roles)
   end
   
-  def campuses_options
-    campuses.collect{|c| [c[:campus_desc], c[:campus_id]]}
+  def campuses_options(with_ministry_roles = nil)
+    campuses(with_ministry_roles).collect{|c| [c[:campus_desc], c[:campus_id]]}
   end
 
   def people_available
@@ -148,6 +184,10 @@ module ContactsHelper
 
   def people_available_for_search
     @people_available_for_search
+  end
+
+  def people_available_for_assigning
+    @people_available_for_assigning ||= people_available.select { |p| p[1] >= 0 }
   end
   
   def convert_values(a, field)
@@ -165,6 +205,7 @@ module ContactsHelper
     result = nil
     result = contact_search_options[field][:default] if contact_search_options.has_key?(field)
     result = @search_options[field] if @search_options.has_key?(field)
+    result = result.collect{|d| is_number?(d) ? d.to_i : d } if result.is_a?(Array)
     result
   end
     
@@ -180,5 +221,40 @@ module ContactsHelper
     end
     val 
   end 
+
+  def to_or_sentence(string)
+    string.to_sentence(:last_word_connector => ', or ', :two_words_connector => ' or ')
+  end
+
+  def contact_campuses_options_for_select(campus_id)
+    options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), campus_id.present? ? campus_id.to_i : nil)
+  end
+
+  def is_number?(object)
+    true if Float(object) rescue false
+  end
+
+  def link_to_contact_search_column_header(column, params)
+    params[:sort_dir] ||= ''
+    col = column[:fields].join(',')
+
+    dir = case params[:sort_dir].upcase
+    when 'ASC'
+      params[:sort_col] == col.to_s ? 'DESC' : Contact::DEFAULT_SORT_DIRECTION
+    when 'DESC'
+      params[:sort_col] == col.to_s ? 'ASC'  : Contact::DEFAULT_SORT_DIRECTION
+    else
+      Contact::DEFAULT_SORT_DIRECTION
+    end
+
+    link_class = params[:sort_col] == col.to_s ? dir.downcase : ''
+
+    link_to column[:display], params.merge(:sort_dir => dir, :sort_col => col), :class => link_class
+  end
+
+  def show_more_search_options?
+    @search_options &&
+    (@search_options[:international] != [contact_search_options[:international][:default].to_s] || @search_options[:degree].present?)
+  end
 
 end

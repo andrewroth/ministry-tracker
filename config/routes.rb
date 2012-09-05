@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :prcs
 
-  map.resources :contacts
+  map.resources :contacts, :collection => {:search => :get, :impact_report => :get}
 
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },

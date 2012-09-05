@@ -1,23 +1,33 @@
 <h1 style="float: right"><%= @contact[:priority].upcase %></h1>
+
 <h1><%= @contact[:first_name]%> <%= @contact[:last_name]%></h1>
+
 <div id="followup_data" style="float: right; width: 25%; text-align: right;">
-<% form_tag("/contacts/save/") do %>
-<%= hidden_field_tag :contact_id, @contact[:id] %>
-Assigned to <%= assigned_to %><br/>
-<%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %><br/>
-<%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %><br/>
-  <%= submit_tag 'Save', :class => "action-button" %>
-<% end %>
+  <% form_for(@contact) do |f| %>
+    <%= hidden_field_tag :contact_id, @contact[:id] %>
+    Assigned to <%= assigned_to %><br/>
+    <%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %><br/>
+    <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %><br/>
+    <%= submit_tag 'Save', :class => "action-button" %>
+  <% end %>
 </div>
+
 <%= contact_gender %>, <%= @contact[:degree] %> <%= @contact[:year] %><%= @contact[:international] == 1 ? ", international student" : "" %><br/>
+
 <a href="tel:<%= @contact[:cellphone] %>"><%= @contact[:cellphone] %><br/>
 <a href="mailto:<%= @contact[:email] %>"><%= @contact[:email] %></a><br/>
+
 <div id="survey_answers">
 	<table>
 		<tr><td colspan="2"><h2>Survey Answers</h2></td></tr>
-		<tr><td>The thing I crave the most</td><td><%= @contact[:craving] %></td></tr>
-		<tr><td>I'd like a Magazine to explore...</td><td><%= @contact[:magazine] %></td></tr>
-		<tr><td>Would like to have a chat</td><td><%= interest_to_chat %></td></tr>
-		<tr><td>Would like to </td><td><%= @contact[:journey] %></td></tr>
+		<tr><td>GENERAL - The one thing I crave most is:</td><td><%= @contact[:craving] %></td></tr>
+		<tr><td>FREE MAGAZINE</td><td><%= @contact[:magazine] %></td></tr>
+		<tr><td>Interest in a chat about Jesus Christ?</td><td><%= interest_to_chat %></td></tr>
+		<tr><td>On my spiritual journey I'd like to:</td><td><%= @contact[:journey] %></td></tr>
 	</table>
 </div>
+
+<br>
+<br>
+
+<p><%= link_to "Back to contact search", search_contacts_path %></p>

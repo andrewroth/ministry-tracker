@@ -12,69 +12,77 @@
 <div class="sectionHeader">
   <h1 id="reportTitle">Contacts for Followup</h1>
 
+  <br>
+  <p>This tool is designed to facilitate personal follow-up of contacts by phone. If you require campus-wide data sets of information for your campus, please contact <%= mail_to "colby.warkentin@p2c.com" %>.</p>
+  <p>Note: There is currently a lag of about 12 hours between when a contact is input and when they will be listed for follow-up.</p>
+  <p><%= link_to 'Impact & Progress Snapshot', impact_report_contacts_path(:campus_id => @campus_id), :class => 'report_link' %> | <%= link_to 'Survey Data Input', 'https://connect.powertochange.org/node/2' %> | <%= link_to 'Online Cravings Survey', 'http://cravings.powertochange.com/' %> | <%= link_to 'Training', 'http://powertochange.com/students/resources/september-launch-vision/' %></p>
 
-<%= render :partial => 'search_box' %>
-
-
-<%
-unless @contacts.nil? 
-%>
-
-<div class="yoursearch">
-<p>
-
-
-</p>
+  <%= render :partial => 'search_box' %>
 </div>
 
+<% unless @contacts.nil? %>
 
-<div id="assign_people">
-<% form_tag('/contacts/multiple_assign', :name => 'contacts_form', :id => 'contacts_form') do %>
-	<%= hidden_field_tag 'contacts_to_assign' %>
-	Assign checked contacts to <%= select_tag "multiple_assign_to", options_for_select(people_available) %> <%= submit_tag 'Go', :class => "action-button" %>
+  <div class="yoursearch">
+    <p>
+      <%= @search_description %>
+    </p>
+  </div>
+
+  <div id="multiple_contact_update">
+    <% form_remote_tag(:url => '/contacts/multiple_update', :name => 'contacts_form', :id => 'contacts_form', :before => "$('#multiple_contact_update form input[type=submit]').disable(); $('#spinnerAssignMultiple').show();") do %>
+      <%= hidden_field_tag 'contacts_to_update' %>
+
+      <%= select_tag "multiple_update_action", options_for_select([['Perform action on selected contacts...', ''], ['Assign selected contacts to...', 'multiple_assign_to'], ['Change selected contacts Status to...', 'multiple_status'], ['Change selected contacts Result to...', 'multiple_result']]) %>
+
+      <%= select_tag "multiple_assign_to", options_for_select(people_available_for_assigning), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Assign' %>
+      <%= select_tag "multiple_status", options_for_select(contact_options_lists[:status]), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Change Status' %>
+      <%= select_tag "multiple_result", options_for_select(contact_options_lists[:result]), :class => 'multiple_update_sub_select', :style => "display:none;", :'data-button-text' => 'Change Result' %>
+
+      <%= submit_tag 'Update', :class => "multiple_update action-button", :style => "display:none;" %>
+      &nbsp;<%= spinner('AssignMultiple') %>
+    <%- end -%>
+  </div>
+
+  <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
+
+  <div class="contacts_container">
+    <table cellpadding="0" cellspacing="0" class="directorytable contacts">
+      <thead class="center">
+        <tr>
+        <th><%= check_box_tag 'select_all_contacts', 0, false %></th>
+        <% contact_search_results_columns.each do |col| %>
+          <th><%= link_to_contact_search_column_header(col, params) %></th>
+        <% end %>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%- @contacts.each_with_index do |contact, i|  -%>
+        <tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
+          <td width="10px">
+            <%= check_box_tag 'contact[]', contact[:id], false %> 
+          </td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:first_name] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:cellphone] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:year] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_international(contact) %></td>
+          <td class="alignright">
+            <span class="butProfile"><%= link_to 'Edit', "/contacts/edit/#{contact[:id]}", :title => "View the contact's informations" %></span>
+          </td>
+        </tr>
+      <%- end -%>
+        
+      </tbody>
+    </table>
+
+    <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
+    
+  </div>
+
 <%- end -%>
-</div>
-<div id="people">
-	<table cellpadding="0" cellspacing="0" class="directorytable">
-		<thead class="center">
-		  <tr>
-			<th><%= check_box_tag 'select_all', 0, false %></th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Sex</th>
-			<th>Cellphone</th>
-			<th>Priority</th>
-			<th>Assigned to</th>
-			<th>Status</th>
-			<th>Result</th>
-			<th>&nbsp;</th>
-		</tr>
-		</thead>
-		<tbody>
-		<%- @contacts.each_with_index do |contact, i|  -%>
-			<tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
-				<td width="10px">
-					<%= check_box_tag 'contact[]', contact[:id], false %> 
-				</td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:first_name] %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:cellphone] %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
-				<td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
-				<td class="alignright">
-					<span class="butProfile"><%= link_to 'Edit', "/contacts/edit/#{contact[:id]}", :title => "View the contact's informations" %></span>
-				</td>
-			</tr>
-		<%- end -%>
-			
-		</tbody>
-	</table>
-  
-</div>
-<%- end -%>
-<br />
-<br />
-

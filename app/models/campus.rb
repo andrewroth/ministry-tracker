@@ -7,6 +7,7 @@ class Campus < ActiveRecord::Base
   has_many :groups
   has_many :campus_ministry_groups
   has_many :collection_groups, :through => :campus_ministry_groups, :class_name => "Group", :source => :group
+  has_many :contacts
 
 
   # TODO: if we ever support multiple root ministries in one install, ex. AIA and C4C
@@ -63,6 +64,11 @@ class Campus < ActiveRecord::Base
     cmg ||= campus_ministry_groups.create! :ministry => ministry, :group => group
 
     return group
+  end
+
+  def leaders_with_contacts
+    people_ids = self.contacts.all(:select => ["DISTINCT person_id"]).collect(&:person_id).compact
+    people_ids.present? ? Person.all(:conditions => ["person_id IN (?)", people_ids]) : []
   end
 
 end
