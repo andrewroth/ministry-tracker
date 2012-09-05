@@ -110,7 +110,7 @@ module ContactsHelper
   
   
   def interest_to_chat
-    mapping = { 0 => "No answer", 1 => "Not Interested", 2 => "Maybe Not", 3 => "Maybe", 4 => "Yes", 5 => "Very Interested" }
+    mapping = { 0 => "0 (No answer)", 1 => "1 (Not)", 2 => "2", 3 => "3 (Maybe)", 4 => "4", 5 => "5 (Very)" }
     mapping[@contact[:interest]]
   end
   
