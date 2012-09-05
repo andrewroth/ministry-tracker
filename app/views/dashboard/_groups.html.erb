@@ -1,7 +1,7 @@
 <div class="modulecontent">
   <table class="groupicon">
     <% has_a_group = false %>
-    <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL") + @person.all_groups.current_and_next_semester).group_by(&:semester).each do |semester, groups| %>
+    <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL", :include => :semester) + @person.all_groups.current_and_next_semester.find(:all, :include => :semester)).group_by(&:semester).each do |semester, groups| %>
       <% has_a_group = true %>
       <tr>
         <td class="groupSemesterTitle"><%= semester ? t("terms.#{semester.translation_key}").upcase : "No Semester Set" %></td>
