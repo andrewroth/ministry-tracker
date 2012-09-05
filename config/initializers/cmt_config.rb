@@ -30,7 +30,7 @@ module Cmt
     :hide_poor_status_in_scheduler => true,
     
     # Default ministry name
-    :default_ministry_name => 'Campus for Christ',
+    :default_ministry_name => 'Power to Change - Students',
     
     # Public name for this application. If it is set to 'The Pulse', certain parts of 
     # the application will change according to Campus for Christ's branding in Canada
