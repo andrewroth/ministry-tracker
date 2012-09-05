@@ -1,5 +1,5 @@
 <% if logged_in? && @me %>
-  <%= cache(["/link_bar/pulse_link_bar", is_staff_somewhere(@me)]) do
+  <%= cache(["/link_bar/pulse_link_bar", is_staff_somewhere(@me), I18n.locale]) do
     render :partial => "/link_bar/link_bar", :locals => {:page_wrapper_width => "900px", :staff => is_staff_somewhere(@me), :active_tab_id => "link_bar_tab_2"}
   end %>
 <% end %>
