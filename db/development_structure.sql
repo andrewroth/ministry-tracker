@@ -1,3 +1,14 @@
+CREATE TABLE `activities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity_type_id` int(11) DEFAULT NULL,
+  `reportable_id` int(11) DEFAULT NULL,
+  `reportable_type` varchar(255) DEFAULT NULL,
+  `reporter_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `person_id` int(11) DEFAULT NULL,
@@ -693,7 +704,7 @@ CREATE TABLE `notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1542,6 +1553,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120905172527');
 INSERT INTO schema_migrations (version) VALUES ('20120905173308');
 
 INSERT INTO schema_migrations (version) VALUES ('20120905173318');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905182321');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

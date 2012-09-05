@@ -30,6 +30,9 @@
 	</table>
 </div>
 
+<br>
+<br>
+
 <div id="contact_notes">
   <h2>Notes</h2>
 
@@ -44,6 +47,30 @@
       <p>
         <%= f.text_area :content %>
         <%= f.submit 'Add Note', :class => 'action-button' %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div id="contact_rejoiceables">
+  <h2>Rejoiceables</h2>
+
+  <ul>
+    <% @contact.activities.each do |a| %>
+      <li><strong><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></strong> &#8211; <em><%= time_ago_in_words a.created_at %><%= t("misc.ago") %> by <%= link_to a.reporter.full_name, a.reporter %></em></li>
+    <% end %>
+  </ul>
+
+  <br>
+
+  <div class="new_activity">
+    <% form_for [@contact, Activity.new] do |f| %>
+      <p>
+        Add rejoiceable: <%= f.select :activity_type_id, options_for_select(activity_options) %>
+        <%= f.submit 'Rejoice!', :class => 'action-button' %>
       </p>
     <% end %>
   </div>
