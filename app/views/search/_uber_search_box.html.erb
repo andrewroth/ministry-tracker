@@ -83,17 +83,9 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
 
 
       <% if (session[:search].nil? || session[:search][:search_prepared].nil?) && prepare %>
-      var prepare = function() {
-        jQuery.ajax({
-          dataType:'script',
-          type:'get',
-          url: '/search/prepare'});
-        $('#<%=input_id%>').unbind('mouseover', prepare);
-        $('#<%=input_id%>').unbind('focus', prepare);
-      };
-
-      $('#<%=input_id%>').bind('mouseover', prepare);
-      $('#<%=input_id%>').bind('focus', prepare);
+        $.ajax({dataType:'script',
+                type:'get',
+                url: '/search/prepare'});
       <% end %>
 
 
