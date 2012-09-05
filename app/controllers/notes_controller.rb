@@ -9,7 +9,7 @@ class NotesController < ApplicationController
       flash[:notice] = "Successfully added note."
       redirect_to @noteable
     else
-      render :action => 'new'
+      redirect_to :back
     end
   end
 
