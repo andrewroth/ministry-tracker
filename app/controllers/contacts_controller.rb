@@ -289,12 +289,12 @@ private
   def initialize_people_available
     @people_available ||= []
     unless @people_available.count > 0 || initialize_campus_id.nil?
-      MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id)}).collect{|mi| mi[:person_id]}.each do |pid|
-        if Person.exists?(pid)
-          p = Person.find(pid)
-          @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", pid])
-        end
+      person_ids = MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id), :end_date => nil}).collect(&:person_id)
+
+      Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", person_ids]).each do |p|
+        @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", p.id])
       end
+
       @people_available = @people_available.uniq if @people_available.count > 0
       @people_available.sort!{|x,y| x[0] <=> y [0]} if @people_available.count > 0
       @people_available.insert(0, ["Unassigned", 0])
