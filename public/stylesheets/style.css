@@ -786,6 +786,10 @@ table td.sub {
   width: 100%;
 }
 
+.contacts_report table.statsTable {
+  width: auto;
+}
+
 #spinnerAssignedToSelect {
   margin: 10px;
 }

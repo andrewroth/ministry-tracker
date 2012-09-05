@@ -38,7 +38,7 @@ class ContactsController < ApplicationController
   
   def update
     @contact = Contact.find(params[:contact_id])
-    [[:assign, :person_id], [:status, :status], [:result, :result]].each do |data|
+    [[:assign, :person_id], [:status, :status], [:result, :result], [:nextStep, :nextStep]].each do |data|
       @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
 
@@ -132,6 +132,11 @@ class ContactsController < ApplicationController
     @campuses = campuses(::MinistryRole::ministry_roles_that_grant_access("contacts", "index"))
     @campus = Campus.find(params[:campus_id]) if params[:campus_id]
     @campus = @campuses.first if @campus.blank? || !@campuses.include?(@campus)
+  end
+
+  def national_report
+    campus_ids = Contact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
+    @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids], :order => "#{Campus._(:desc)} ASC")
   end
   
   
