@@ -684,6 +684,17 @@ CREATE TABLE `ministry_roles` (
   KEY `index_ministry_roles_on_ministry_id` (`ministry_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `notes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `noteable_type` varchar(255) DEFAULT NULL,
+  `noteable_id` int(11) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `person_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text,
@@ -859,7 +870,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=43356 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43357 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1517,6 +1528,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120830204328');
 INSERT INTO schema_migrations (version) VALUES ('20120830204329');
 
 INSERT INTO schema_migrations (version) VALUES ('20120830204330');
+
+INSERT INTO schema_migrations (version) VALUES ('20120905151135');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

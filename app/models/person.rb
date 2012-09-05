@@ -62,6 +62,8 @@ class Person < ActiveRecord::Base
   has_many :contract_signatures
 
   has_many :contacts
+
+  has_many :notes
   
 
   def all_group_involvements(semester = nil)
