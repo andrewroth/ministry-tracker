@@ -28,7 +28,7 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
   action_params ||= ""                           # optional parameters to send along with call to autocomplete_action e.g. "param=something&paramTwo=somethingElse"
   delay ||= 300                                  # the delay in milliseconds the autocompleter waits after a keystroke to activate itself
   width ||= 275                                  # specify a custom width for the autocomplete results
-  minChars ||= 3                                 # the minimum number of characters a user has to type before the autocompleter activates
+  minChars ||= 2                                 # the minimum number of characters a user has to type before the autocompleter activates
   prepare ||= true              
   formatMatchFunction ||= formatResultFunction
 

@@ -120,6 +120,7 @@ class SearchController < ApplicationController
         "IF(GROUP_CONCAT(DISTINCT #{Ministry.__(:name)} SEPARATOR ', ') LIKE ?, #{Searching::SEARCH_RANK[:person][:ministry]}, 0) " +
         " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
 
+
     if @filter_out_mentored == true   # i.e. we are searching for a mentee (that is not being mentored)
 
       if person.person_mentor_id == nil
@@ -129,98 +130,95 @@ class SearchController < ApplicationController
       end
 
       people = Person.all(:limit => @max_num_ac_results,
-                 :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
-                           "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
-                           "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
-                           "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
+                          :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
+                                    "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
+                                    "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
+                                    "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
 
-                           # need this to find their staff roles to see if they are in fact a staff
-                           "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
-                           "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
-                           # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
-                           "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
+                                    # need this to find their staff roles to see if they are in fact a staff
+                                    "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
+                                    "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
+                                    # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
+                                    "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
 
-                 :select => select_str,
+                          :select => select_str,
 
+                          :conditions => ["#{session[:search][:person_search_limit_condition]} " +
+                                         "AND #{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
+                                         "AND #{Person.__(:person_id)} #{person_mentor_id_condition} " +
+                                         "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
+                                         "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
+                                         "or #{_(:first_name, :person)} like ? " +
+                                         "or #{_(:last_name, :person)} like ? " +
+                                         "or #{_(:email, :person)} like ? " +
+                                         "or #{Person.table_name}.#{_(:id, :person)} like ? " +
+                                         ")",
+                                         "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
 
-                    :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                   "AND #{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
-                                   "AND #{Person.__(:person_id)} #{person_mentor_id_condition} " +
-                                   "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
-                                   "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
-                                   "or #{_(:first_name, :person)} like ? " +
-                                   "or #{_(:last_name, :person)} like ? " +
-                                   "or #{_(:email, :person)} like ? " +
-                                   "or #{Person.table_name}.#{_(:id, :person)} like ? " +
-                                   ")",
-                                   "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
+                          :order => 'rank DESC',
 
-                   :order => 'rank DESC',
-
-                   :group => "#{Person.__(:id)}")
+                          :group => "#{Person.__(:id)}")
 
    elsif @search_for_mentor == true
 
      people = Person.all(:limit => @max_num_ac_results,
-         :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
-                   "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
-                   "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
-                   "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
+                         :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
+                                   "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
+                                   "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
+                                   "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
 
-                   # need this to find their staff roles to see if they are in fact a staff
-                   "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
-                   "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
-                   # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
-                   "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
+                                   # need this to find their staff roles to see if they are in fact a staff
+                                   "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
+                                   "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
+                                   # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
+                                   "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
 
-         :select => select_str,
+                         :select => select_str,
 
+                         :conditions => ["#{session[:search][:person_search_limit_condition]} " +
+                                         "AND (#{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
+                                         "OR #{Person.__(:person_mentor_id)} <> #{@person_id}) " +
+                                         "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
+                                         "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
+                                         "or #{_(:first_name, :person)} like ? " +
+                                         "or #{_(:last_name, :person)} like ? " +
+                                         "or #{_(:email, :person)} like ? " +
+                                         "or #{Person.table_name}.#{_(:id, :person)} like ? " +
+                                         ")",
+                                         "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
 
-            :conditions => ["#{session[:search][:person_search_limit_condition]} " +
-                                 "AND (#{Person.__(:person_mentor_id)} IS #{FILTER_MENTOR_NONE} " +
-                                 "OR #{Person.__(:person_mentor_id)} <> #{@person_id}) " +
-                                 "AND #{Person.__(:person_id)} <> #{@person_id} AND (" +
-                                 "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
-                                 "or #{_(:first_name, :person)} like ? " +
-                                 "or #{_(:last_name, :person)} like ? " +
-                                 "or #{_(:email, :person)} like ? " +
-                                 "or #{Person.table_name}.#{_(:id, :person)} like ? " +
-                                 ")",
-                                 "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
+                         :order => 'rank DESC',
 
-                 :order => 'rank DESC',
-
-                 :group => "#{Person.__(:id)}")
+                         :group => "#{Person.__(:id)}")
 
     else
 
        people = Person.all(:limit => @max_num_ac_results,
-     :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
-               "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
-               "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
-               "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
+                           :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
+                                     "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
+                                     "LEFT JOIN #{ProfilePicture.table_name} ON #{ProfilePicture.__(:person_id)} = #{Person.__(:person_id)} " +
+                                     "LEFT JOIN #{MinistryInvolvement.table_name} ON #{MinistryInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{MinistryInvolvement.__(:end_date)} IS NULL " +
 
-               # need this to find their staff roles to see if they are in fact a staff
-               "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
-               "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
-               # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
-               "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
+                                     # need this to find their staff roles to see if they are in fact a staff
+                                     "LEFT JOIN #{MinistryRole.table_name} ON #{MinistryRole.__(:id)} = #{MinistryInvolvement.__(:ministry_role_id)} AND #{MinistryRole.__(:type)} = 'StaffRole' " +
+                                     "LEFT JOIN #{Timetable.table_name} ON #{Timetable.__(:person_id)} = #{Person.__(:person_id)} " +
+                                     # need this to find their ministries to display instead of campuses if they're staff, but skip the P2C and C4C ministries
+                                     "LEFT JOIN #{Ministry.table_name} ON #{Ministry.__(:id)} = #{MinistryInvolvement.__(:ministry_id)} AND #{Ministry.__(:id)} > 2 ",
 
-     :select => select_str,
+                           :select => select_str,
 
+                           :conditions => ["#{session[:search][:person_search_limit_condition]} AND (" +
+                                           "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
+                                           "or #{_(:first_name, :person)} like ? " +
+                                           "or #{_(:last_name, :person)} like ? " +
+                                           "or #{_(:email, :person)} like ? " +
+                                           "or #{Person.table_name}.#{_(:id, :person)} like ? " +
+                                           ")",
+                                           "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
 
-        :conditions => ["#{session[:search][:person_search_limit_condition]} AND (" +
-                             "concat(#{_(:first_name, :person)}, \" \", #{_(:last_name, :person)}) like ? " +
-                             "or #{_(:first_name, :person)} like ? " +
-                             "or #{_(:last_name, :person)} like ? " +
-                             "or #{_(:email, :person)} like ? " +
-                             "or #{Person.table_name}.#{_(:id, :person)} like ? " +
-                             ")",
-                             "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"],
+                           :order => 'rank DESC',
 
-             :order => 'rank DESC',
-
-             :group => "#{Person.__(:id)}")
+                           :group => "#{Person.__(:id)}")
 
     end
 
