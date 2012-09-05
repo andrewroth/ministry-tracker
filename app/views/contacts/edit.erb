@@ -5,10 +5,13 @@
 <div id="followup_data" style="float: right; width: 25%; text-align: right;">
   <% form_for(@contact) do |f| %>
     <%= hidden_field_tag :contact_id, @contact[:id] %>
-    Assigned to <%= assigned_to %><br/>
-    <%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %><br/>
-    <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %><br/>
-    <%= submit_tag 'Save', :class => "action-button" %>
+    <p>
+      Assigned to <%= assigned_to %><br/>
+      <%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %><br/>
+      <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %><br/>
+    </p>
+    <p><%= link_to "Terms and Definitions", "https://docs.google.com/a/p2c.com/file/d/0B7OI6_m3EjaKOW11SGtPMG1saU0/edit" %></p>
+    <p><%= submit_tag 'Save', :class => "action-button" %></p>
   <% end %>
 </div>
 

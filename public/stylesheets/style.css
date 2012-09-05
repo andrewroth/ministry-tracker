@@ -830,6 +830,10 @@ table td.sub {
   min-height: 500px;
 }
 
+ul.momentum li {
+  list-style: disc inside;
+}
+
 h2 select {
   font-size: 18px;
   font-weight: bold;
