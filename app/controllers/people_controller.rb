@@ -433,7 +433,6 @@ class PeopleController < ApplicationController
     @person = Person.new
     @current_address = CurrentAddress.new
     @countries = CmtGeo.all_countries
-    @states = CmtGeo.all_states
     @modal = request.xhr?
   end
 
