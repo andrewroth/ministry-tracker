@@ -1,5 +1,7 @@
 <% if @people.present? %>
-  <%= render :partial => "person_ac", :collection => @people %>
+  <% @people.each do |person| %>
+    <%= render 'person_ac', :person_ac => person %>
+  <% end %>
   <% unless @people.size < @max_num_ac_results || !@all_results_link %>
     <%= link_to("<div class='autoCompleteResult'>" +
         "<div class='acLinkPath' style='display: none;'>/search?q=#{@q}</div>" +
