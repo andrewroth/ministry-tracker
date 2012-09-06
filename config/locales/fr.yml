@@ -91,8 +91,8 @@ fr:
     "languages": 
       "english_to_french": "FRANÇAIS"
       "english_to_french_mouseover": "Changer ta préférence de langue au français"
-      "french_to_english": "ANGLAIS"
-      "french_to_english_mouseover": "Changer ta préférence de langue à l'anglais"
+      "french_to_english": "ENGLISH"
+      "french_to_english_mouseover": "Switch pulse language to English"
     "ptc_logo": "/images/fr/ptc_logo_grey.png"
     "help": "À l'aide!"
     "banner": "Connexion"
