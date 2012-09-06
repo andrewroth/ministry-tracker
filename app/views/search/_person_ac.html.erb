@@ -1,4 +1,4 @@
-<%= Rails.cache.fetch([person_ac, person_ac.timetable_id.present?, @ac_actions, @ac_title]) do
+<%= Rails.cache.fetch([person_ac, person_ac.timetable_id.present?, person_ac.ministries_concat, person_ac.campuses_concat, person_ac.email, @ac_actions, @ac_title]) do
   
   result = "<div class='autoCompleteResult' title='#{@ac_title}'>" +
            "<div class='acLinkPath' style='display: none;'>/people/#{person_ac.id}</div>" +
