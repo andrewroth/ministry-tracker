@@ -278,7 +278,7 @@ private
   def ministry_leaf_and_over(campus_id)
     ans = []
     Campus.find(campus_id).ministries.each do |m|
-      if m[:ministries_count] == 0
+      if m.children.size == 0
         ans.push(m[:id])
         ans.push(m.parent[:id])
       end
