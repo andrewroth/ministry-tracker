@@ -31,7 +31,6 @@ fr:
     "help_link_text": "À l'aide!"
     "email_prefix": "[pouls]"
     "ago": ""
-<<<<<<< HEAD
     "web_title": "Pouvoir de Changer &#8211; Le Pouls"
   "title":
     "dashboard": "Tableau de bord"
@@ -40,8 +39,6 @@ fr:
     "advanced_search": "Recherche avancée"
     "profile": "Profil"
     "team": "Équipe"
-=======
->>>>>>> pulse_cdm
   "layout": 
     "images": 
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
