@@ -1549,7 +1549,7 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 #content_wrapper {
   padding-bottom: 70px;
   padding-top: 5px;
-  min-height: 400px;
+  min-height: 500px;
 }
 
 #content, #userbar {
