@@ -171,8 +171,14 @@ module ApplicationHelper
     " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
   end
 
-  def switch_languages_url
-    current_url_with_locale(currently_english ? 'fr' : 'en-CA')
+  def switch_languages_url(url = nil)
+    locale = currently_english ? 'fr' : 'en-CA'
+    
+    if url.present?
+      "#{url}#{url.include?('?') ? '&' : '?'}locale=#{locale}"
+    else
+      current_url_with_locale(locale)
+    end
   end
 
   def current_url_with_locale(locale)
