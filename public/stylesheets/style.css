@@ -870,9 +870,11 @@ h2 select {
 
 #advancedSearchLink {
   position: absolute;
-  right: 9px;
+  right: 2px;
   top: 13px;
   font-size: 11px;
+  width: 106px;
+  text-align: center;
 }
 
 .advanced_search_field_label {
@@ -2861,7 +2863,7 @@ h2.group_type_title {
   right: 0;
   top: 0;
   height: 40px;
-  width: 295px;
+  width: 299px;
   background-color: #D8D8D8;
   z-index: 99;
 
@@ -2907,7 +2909,7 @@ h2.group_type_title {
   background: white;
   color: black;
   border: 1px solid #00268D;
-  width: 266px;
+  width: 262px;
   box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -2925,7 +2927,7 @@ h2.group_type_title {
   background-color: transparent;
   position: absolute;
   top: 6px;
-  right: 101px;
+  right: 104px;
   padding: 5px;
   cursor: pointer;
 }

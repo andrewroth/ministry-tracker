@@ -21,7 +21,7 @@
         <% end %>
       </div>
 
-      <%= link_to("Advanced Search", url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
+      <%= link_to(t('title.advanced_search'), url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
       
       <script type="text/javascript">
         $(document).ready(function() {
