@@ -1,4 +1,5 @@
 <% if @campuses %>
+  <% campus_ids = @campuses.collect(&:id) %>
 
   <h2>
     National Snapshot Report
@@ -31,6 +32,14 @@
             <td><%= campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][4]}).size %></td>
           </tr>
         <% end %>
+        <tr>
+          <td>Totals</td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => [contact_search_options[:priority][:options][1], contact_search_options[:priority][:options][2], contact_search_options[:priority][:options][3], contact_search_options[:priority][:options][4]]}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][1]}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][2]}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][3]}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][4]}).size %></td>
+        </tr>
       </tbody>  
     </table>
 
@@ -65,6 +74,15 @@
             <td><%= campus.contacts.all(:conditions => {:status => 3}).size %></td>
           </tr>
         <% end %>
+        <tr>
+          <td>Totals</td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 2}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => [0, 1, 4]}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 0}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 1}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 4}).size %></td>
+          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 3}).size %></td>
+        </tr>
       </tbody>  
     </table>
 

@@ -167,12 +167,16 @@ module ContactsHelper
   end
 
   def campus
-    @campus ||=  Campus.find(@campus_id) unless @campus_id.nil?
+    @campus ||= Campus.find(@campus_id) unless @campus_id.nil?
     @campus
   end
 
   def campuses(with_ministry_roles = nil)
-    @campuses || @me.campuses_under_my_ministries_with_children(with_ministry_roles)
+    if @me.is_staff_somewhere?
+      @campuses ||= @me.campuses_under_my_ministries_with_children(with_ministry_roles)
+    else
+      @campuses ||= @me.campuses
+    end
   end
   
   def campuses_options(with_ministry_roles = nil)
