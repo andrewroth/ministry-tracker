@@ -1,10 +1,14 @@
+class Contact < ActiveRecord::Base  
 
-class Contact < ActiveRecord::Base
-  def self.table_name() "sept2012_contacts" end
-    
-  # Labels
-  #has_many :label_people, :class_name => "LabelPerson", :foreign_key => _(:person_id, :label_id)
-  #has_many :labels, :through => :label_people, :order => "#{Label.table_name}.#{_(:priority)} asc"
+  DEFAULT_SORT_DIRECTION = 'ASC'
+  DEFAULT_SORT_COLUMN = 'priority'
 
+  belongs_to :campus
+  belongs_to :person
+  has_many :notes, :as => :noteable
+  has_many :activities, :as => :reportable
 
+  def self.table_name
+    "sept2012_contacts"
+  end
 end

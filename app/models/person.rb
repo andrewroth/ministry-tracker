@@ -60,6 +60,12 @@ class Person < ActiveRecord::Base
     :conditions => ["#{PersonTrainingCourse._(:finished)} = 1"]
     
   has_many :contract_signatures
+
+  has_many :contacts
+
+  has_many :notes
+
+  has_many :reported_activities, :foreign_key => :reporter_id
   
 
   def all_group_involvements(semester = nil)

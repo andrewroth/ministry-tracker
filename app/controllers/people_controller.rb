@@ -433,7 +433,6 @@ class PeopleController < ApplicationController
     @person = Person.new
     @current_address = CurrentAddress.new
     @countries = CmtGeo.all_countries
-    @states = CmtGeo.all_states
     @modal = request.xhr?
   end
 
@@ -627,7 +626,7 @@ class PeopleController < ApplicationController
         format.html { redirect_to person_path(@person) }
         format.js do 
           render :update do |page|
-            update_flash(page, flash[:notice])
+            update_flash(page, flash[:notice]) if flash[:notice].present?
             unless params[:no_profile]
               page[:info].replace_html :partial => 'view'
               page[:info].show

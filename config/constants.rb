@@ -776,6 +776,10 @@
     }
   end
 
+  def activity_options
+    [["Interaction", 1], ["Spiritual Conversation", 2], ["Gospel Presentation", 3], ["Indicated Decision", 4]]
+  end
+
   
   def eventbrite
     # num_days_to_display_event_after_completed : stop advertising events on the dashboard after this many days have elapsed after the event is completed
@@ -789,7 +793,7 @@
       :male => "Male",
       :female => "Female",
       :first_year => "1st Year (Undergrad)",
-      :c4c_events_link => "http://campusforchrist.eventbrite.com/",
+      :c4c_events_link => "http://p2c.eventbrite.com/",
       :num_days_to_display_event_after_completed => 10,
       :num_days_until_event_closed_after_completed => 6,
       :num_days_sync_delay => 1
