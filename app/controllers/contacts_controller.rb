@@ -32,13 +32,13 @@ class ContactsController < ApplicationController
   end
   
   def edit
-    @contact = Contact.find(params[:id])
+    @contact = Contact.find(params[:id], :include => {:notes => :person})
     initialize_globals
   end
   
   def update
     @contact = Contact.find(params[:contact_id])
-    [[:assign, :person_id], [:status, :status], [:result, :result]].each do |data|
+    [[:assign, :person_id], [:status, :status], [:result, :result], [:nextStep, :nextStep]].each do |data|
       @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
 
@@ -132,6 +132,11 @@ class ContactsController < ApplicationController
     @campuses = campuses(::MinistryRole::ministry_roles_that_grant_access("contacts", "index"))
     @campus = Campus.find(params[:campus_id]) if params[:campus_id]
     @campus = @campuses.first if @campus.blank? || !@campuses.include?(@campus)
+  end
+
+  def national_report
+    campus_ids = Contact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
+    @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids], :order => "#{Campus._(:desc)} ASC")
   end
   
   
@@ -273,7 +278,7 @@ private
   def ministry_leaf_and_over(campus_id)
     ans = []
     Campus.find(campus_id).ministries.each do |m|
-      if m[:ministries_count] == 0
+      if m.children.size == 0
         ans.push(m[:id])
         ans.push(m.parent[:id])
       end
@@ -284,12 +289,12 @@ private
   def initialize_people_available
     @people_available ||= []
     unless @people_available.count > 0 || initialize_campus_id.nil?
-      MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id)}).collect{|mi| mi[:person_id]}.each do |pid|
-        if Person.exists?(pid)
-          p = Person.find(pid)
-          @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", pid])
-        end
+      person_ids = MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id), :end_date => nil}).collect(&:person_id)
+
+      Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", person_ids]).each do |p|
+        @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", p.id])
       end
+
       @people_available = @people_available.uniq if @people_available.count > 0
       @people_available.sort!{|x,y| x[0] <=> y [0]} if @people_available.count > 0
       @people_available.insert(0, ["Unassigned", 0])

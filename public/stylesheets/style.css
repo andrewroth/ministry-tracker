@@ -786,6 +786,10 @@ table td.sub {
   width: 100%;
 }
 
+.contacts_report table.statsTable {
+  width: auto;
+}
+
 #spinnerAssignedToSelect {
   margin: 10px;
 }
@@ -839,6 +843,21 @@ h2 select {
   font-weight: bold;
 }
 
+#contact_notes {
+  display: inline-block;
+}
+
+#contact_notes textarea {
+  width: 400px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+#contact_notes form input, #contact_notes form textarea {
+  display: inline-block;
+  float: left;
+}
+
 #searchBox {
   margin:10px 0 10px;
   padding: 20px 20px 0px;
@@ -851,9 +870,11 @@ h2 select {
 
 #advancedSearchLink {
   position: absolute;
-  right: 9px;
+  right: 2px;
   top: 13px;
   font-size: 11px;
+  width: 106px;
+  text-align: center;
 }
 
 .advanced_search_field_label {
@@ -1530,7 +1551,7 @@ ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2p
 #content_wrapper {
   padding-bottom: 70px;
   padding-top: 5px;
-  min-height: 400px;
+  min-height: 500px;
 }
 
 #content, #userbar {
@@ -2842,7 +2863,7 @@ h2.group_type_title {
   right: 0;
   top: 0;
   height: 40px;
-  width: 295px;
+  width: 299px;
   background-color: #D8D8D8;
   z-index: 99;
 
@@ -2888,7 +2909,7 @@ h2.group_type_title {
   background: white;
   color: black;
   border: 1px solid #00268D;
-  width: 266px;
+  width: 262px;
   box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -2906,7 +2927,7 @@ h2.group_type_title {
   background-color: transparent;
   position: absolute;
   top: 6px;
-  right: 101px;
+  right: 105px;
   padding: 5px;
   cursor: pointer;
 }
