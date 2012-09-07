@@ -16,10 +16,18 @@
   <% end %>
 </div>
 
-<%= contact_gender %>, <%= @contact[:degree] %> <%= @contact[:year] %><%= @contact[:international] == 1 ? ", international student" : "" %><br/>
-
-<a href="tel:<%= @contact[:cellphone] %>"><%= @contact[:cellphone] %><br/>
-<a href="mailto:<%= @contact[:email] %>"><%= @contact[:email] %></a><br/>
+<p>
+  <%= contact_gender %>, <%= @contact[:degree] %> <%= @contact[:year] %><%= @contact[:international] == 1 ? ", international student" : "" %>
+</p>
+<p>
+  <a href="tel:<%= @contact[:cellphone] %>"><%= @contact[:cellphone] %></a><br/>
+  <a href="mailto:<%= @contact[:email] %>"><%= @contact[:email] %></a>
+</p>
+<% if @contact[:data_input_notes].present? %>
+  <p>
+    Data input notes: <em><%= @contact.data_input_notes %></em>
+  </p>
+<% end %>
 
 <div id="survey_answers">
 	<table>

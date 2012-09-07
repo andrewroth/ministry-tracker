@@ -870,6 +870,7 @@ CREATE TABLE `sept2012_contacts` (
   `journey` varchar(255) DEFAULT NULL,
   `interest` int(11) DEFAULT '0',
   `person_id` int(11) DEFAULT NULL,
+  `data_input_notes` text,
   PRIMARY KEY (`id`),
   KEY `index_sept2012_contacts_on_campus_id` (`campus_id`),
   KEY `index_sept2012_contacts_on_gender_id` (`gender_id`),
@@ -890,7 +891,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=43364 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43365 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1576,6 +1577,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120905193740');
 INSERT INTO schema_migrations (version) VALUES ('20120905223648');
 
 INSERT INTO schema_migrations (version) VALUES ('20120907000422');
+
+INSERT INTO schema_migrations (version) VALUES ('20120907002259');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
