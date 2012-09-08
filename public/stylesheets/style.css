@@ -315,15 +315,15 @@ hr {
   box-shadow: 0 0 3px #BFBFBF;
 }
 
-input, textarea {
+input, textarea, select.multiSelect {
   font-size:1.1em;
   color: #000;
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
   
-  border-radius:3px; border-radius:3px;
-  transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
+  border-radius:3px;
+  transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
 
 input:hover, textarea:hover {
@@ -712,9 +712,10 @@ img.opaqueWhite {
 }
 
 .directorytable {
-    background-color:#f5f5f5;
-    padding:8px;
-    border-bottom:1px #0064a2 solid;
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-bottom: 1px #0064a2 solid;
+    border-radius: 10px;
 }
 .directorytable th, .directorytable td {
     padding:4px;
@@ -832,6 +833,10 @@ table td.sub {
   background-color: white;
   padding: 0px 6% 70px 6%;
   min-height: 500px;
+}
+
+.searchResultsPagination.contacts {
+  margin: 7px; 
 }
 
 ul.momentum li {

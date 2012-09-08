@@ -45,7 +45,8 @@
     <%- end -%>
   </div>
 
-  <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
+
+  <%= will_paginate @contacts, :class => "searchResultsPagination contacts" %>
 
   <div class="contacts_container">
     <table cellpadding="0" cellspacing="0" class="directorytable contacts">
@@ -83,8 +84,7 @@
       </tbody>
     </table>
 
-    <p><%= will_paginate @contacts, :class => "searchResultsPagination" %></p>
-    
+    <%= will_paginate @contacts, :class => "searchResultsPagination contacts" %>
   </div>
 
 <%- end -%>
