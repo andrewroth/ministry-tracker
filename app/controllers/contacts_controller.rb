@@ -43,9 +43,16 @@ class ContactsController < ApplicationController
     end
 
     respond_to do |format|
-      if @contact.save
+      if @contact.save        
         flash[:notice] = 'Contact was successfully updated.'
+
+        if params[:assign] && @contact.person
+          send_assigned_contacts_email([@contact]) 
+          flash[:notice] = "#{flash[:notice]} #{@contact.person.first_name} #{@contact.person.last_name} will be notified by email."
+        end
+
         format.html { redirect_to :action => 'search' }
+        
       else
         flash[:notice] = 'Sorry, there was a problem updating the contact!'
         initialize_globals
@@ -69,12 +76,19 @@ class ContactsController < ApplicationController
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
         contacts = Contact.find(:all, :conditions => { :id => contact_ids })
         
+        saved_successfully = []
+
         contacts.each do |contact|
           contact[:person_id] = assignee
-          contact.save!
+          saved_successfully << contact.save!
         end
         
-        flash[:notice] = "Assigned selected contacts to #{assignee_person_name}"
+        unless saved_successfully.include?(false)
+          flash[:notice] = "Assigned selected contacts to #{assignee_person_name}, they will be notified by email."
+          send_assigned_contacts_email(contacts) if assignee_person
+        else
+          flash[:notice] = "Sorry, there was a problem assigning the selected contacts!"
+        end
       end
       
     when 'multiple_status'
@@ -345,6 +359,15 @@ private
     session[:search_contact_params][:sort_dir] = order_dir
 
     "#{order_col.gsub(',', " #{order_dir},")} #{order_dir}"
+  end
+
+  def send_assigned_contacts_email(contacts)
+    person = contacts.first.person
+    # assume all contacts are assigned to one person
+    if person && contacts.collect(&:person_id).uniq.length == 1 && contacts.first.person_id == person.id
+      contacts.sort! { |a, b| a.priority <=> b.priority }
+      ContactMailer.deliver_assigned_contacts_email(contacts, base_url) if person.present?
+    end
   end
   
 end

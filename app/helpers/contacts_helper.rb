@@ -146,7 +146,7 @@ module ContactsHelper
   def assigned_to(contact = nil)
     result = "Unassigned"
     if contact.nil?
-      result = select_tag "assign", options_for_select(people_available, @contact[:person_id].nil? ? 0 : @contact[:person_id])
+      result = select_tag "assign", options_for_select(people_available_for_assigning, @contact[:person_id].nil? ? 0 : @contact[:person_id])
     elsif contact[:person_id].nil? == false
       unless contact[:person_id] == 0
         volunteer = contact.person
@@ -258,8 +258,10 @@ module ContactsHelper
   end
 
   def show_more_search_options?
-    @search_options &&
-    (@search_options[:international] != [contact_search_options[:international][:default].to_s] || @search_options[:degree].present?)
+    @search_options && (
+      (@search_options[:international].present? && @search_options[:international] != [contact_search_options[:international][:default].to_s]) ||
+      (@search_options[:degree].present?)
+    )
   end
 
 end
