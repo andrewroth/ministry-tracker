@@ -85,7 +85,7 @@ class ContactsController < ApplicationController
         
         unless saved_successfully.include?(false)
           flash[:notice] = "Assigned selected contacts to #{assignee_person_name}, they will be notified by email."
-          send_assigned_contacts_email(contacts, assignee_person) if assignee_person
+          send_assigned_contacts_email(contacts) if assignee_person
         else
           flash[:notice] = "Sorry, there was a problem assigning the selected contacts!"
         end
