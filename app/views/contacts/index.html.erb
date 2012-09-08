@@ -15,7 +15,7 @@
   <%= render 'momentum_blurb' %>
 
   <br>
-  <p>This tool is designed to facilitate personal follow-up of contacts by phone. If you require campus-wide data sets of information for your campus, please contact <%= mail_to "colby.warkentin@p2c.com" %>.</p>
+  <p>This tool is designed to facilitate personal follow-up of contacts by phone. If you require campus-wide data sets of information for your campus, please contact <%= mail_to "russ.martin@p2c.com" %>.</p>
   <p>Note: There is currently a lag of about 12 hours between when a contact is input and when they will be listed for follow-up.</p>
   <p><%= link_to 'Impact & Progress Snapshot', impact_report_contacts_path(:campus_id => @campus_id), :class => 'report_link' %> | <%= link_to 'National Progress Snapshot', national_report_contacts_path, :class => 'report_link' %> | <%= link_to 'Survey Data Input', 'https://connect.powertochange.org/node/2' %> | <%= link_to 'Online Cravings Survey', 'http://cravings.powertochange.com/' %> | <%= link_to 'Training', 'http://powertochange.com/students/resources/september-launch-vision/' %></p>
 
@@ -75,7 +75,7 @@
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_international(contact) %></td>
           <td class="alignright">
-            <span class="butProfile"><%= link_to 'Edit', "/contacts/edit/#{contact[:id]}", :title => "View the contact's informations" %></span>
+            <span class="butProfile"><%= link_to 'Edit', edit_contact_path(contact), :title => "View and edit this contact" %></span>
           </td>
         </tr>
       <%- end -%>
