@@ -1,4 +1,4 @@
-<% if Rails.env.production? && request.domain =~ /pulse.powertochange/ %>
+<% if RAILS_ENV == "production" && Common::STAGE == "prod" %>
 
    <!-- BEGIN: SeeVolution -->
      <script type="text/javascript">
