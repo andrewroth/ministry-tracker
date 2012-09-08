@@ -12,7 +12,7 @@
       <thead>
         <tr>
           <th colspan="2">Contacts:&nbsp;&nbsp;</th>
-          <td><%= number_with_delimiter @campus.contacts.size %></td>
+          <td><big><%= number_with_delimiter @campus.contacts.size %></big></td>
         </tr>
       </thead>
     </table>
@@ -149,7 +149,7 @@
             <td>Contacted</td>
             <td>Do Not Contact</td>
           </tr>
-          <% @campus.leaders_with_contacts.each do |person| %>
+          <% @campus.leaders_with_contacts.sort { |a, b| "#{a.person_fname} #{a.person_lname}" <=> "#{b.person_fname} #{b.person_lname}" }.each do |person| %>
             <tr>
               <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
               <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>
