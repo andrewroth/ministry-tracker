@@ -85,7 +85,7 @@ module Cmt
     :dashboard_big_buttons_enabled => true,
 
     # prefix to preprend to the subject of each email going out
-    :email_subject_prefix => "[pulse] ",
+    :email_subject_prefix => "[The Pulse] ",
 
     # the from address for each outgoing email
     :email_from_address => "No-Reply <noreply@campusforchrist.org>",
