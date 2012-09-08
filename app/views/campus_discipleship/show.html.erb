@@ -39,7 +39,7 @@
 				&nbsp;
 			</td>
 			<td class="campusDiscTree">
-					<%= render :partial => 'discipleship_tree', :locals => { :root_discipler => Person.find(@disc_tree_roots[0]) } %>
+					<%= render :partial => 'discipleship_tree', :locals => { :root_discipler => Person.find(@disc_tree_roots[0]) } if Person.exists?(@disc_tree_roots[0]) %>
 			</td>
 			<td>
 				&nbsp;
@@ -57,7 +57,7 @@
 		<%- end %>
 		
 					<td class="campusDiscTree">			
-						<%= render :partial => 'discipleship_tree', :locals => { :root_discipler => Person.find(root_person_id) } %>
+						<%= render :partial => 'discipleship_tree', :locals => { :root_discipler => Person.find(root_person_id) } if Person.exists?(root_person_id) %>
 					</td>
 				
 		<%- if root_index % 3 == 2 %>
