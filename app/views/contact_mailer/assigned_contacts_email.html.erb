@@ -1,16 +1,16 @@
 <html>
-  <p><%= @person.first_name %>,</p>
+  <p><%= @person[:first_name] %>,</p>
 
-  <p>The following <%= @contacts.length > 1 ? "#{@contacts.length} contacts have" : "contact has" %> been assigned to you for follow-up:</p>
+  <p>The following <%= @contacts_length > 1 ? "#{@contacts_length} contacts have" : "contact has" %> been assigned to you for follow-up:</p>
 
   <ul>
     <% @contacts.each do |contact| %>
       <li>
-        <%= link_to "#{contact.first_name} #{contact.last_name} (#{contact.priority.upcase})", "#{@base_url}/contacts/#{contact.id}/edit" %>
+        <%= link_to "#{contact[:first_name]} #{contact[:last_name]} (#{contact[:priority].upcase})", "#{@base_url}/contacts/#{contact[:id]}/edit" %>
       </li>
     <% end %>
   </ul>
 
   <br>
-  <p><%= link_to "View all your contacts at #{@contacts.first.campus.short_name}", "#{@base_url}/contacts/search?assigned_to[]=#{@person.id}" %></p>
+  <p><%= link_to "View all your contacts at #{@contact_campus}", "#{@base_url}/contacts/search?assigned_to[]=#{@person[:id]}" %></p>
 </html>
