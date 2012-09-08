@@ -5,7 +5,7 @@ class ContactsController < ApplicationController
 
 
   def index
-    redirect_to :action => 'search'
+    initialize_globals
   end
   
   def new
