@@ -9,6 +9,7 @@ class ContactMailer < ActionMailer::Base
     @body[:contact_campus] = contacts.first.campus.short_name
     @body[:base_url] = base_url
 
+    @content_type = "text/html"
     @recipients   = @body[:person][:email]
     @from         = Cmt::CONFIG[:email_from_address]
     @subject      = "#{I18n.t("misc.email_prefix")}You have #{contacts.length > 1 ? "#{contacts.length} new contacts" : 'one new contact'} assigned to you for follow-up!"
