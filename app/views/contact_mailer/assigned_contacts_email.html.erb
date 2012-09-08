@@ -11,6 +11,5 @@
     <% end %>
   </ul>
 
-  <br>
-  <p><%= link_to "View all your contacts at #{@contact_campus}", "#{@base_url}/contacts/search?assigned_to[]=#{@person[:id]}" %></p>
+  <p><%= link_to "View all your follow-up contacts", "#{@base_url}/contacts/search?assigned_to[]=#{@person[:id]}" %></p>
 </html>

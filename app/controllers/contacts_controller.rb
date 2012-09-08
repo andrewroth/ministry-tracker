@@ -366,7 +366,7 @@ private
     # assume all contacts are assigned to one person
     if person && contacts.collect(&:person_id).uniq.length == 1 && contacts.first.person_id == person.id
       contacts.sort! { |a, b| a.priority <=> b.priority }
-      ContactMailer.deliver_assigned_contacts_email(contacts, base_url) if person.present? && person.email == "sheldon.dueck@gmail.com"
+      ContactMailer.deliver_assigned_contacts_email(contacts, base_url) if person.present?
     end
   end
   
