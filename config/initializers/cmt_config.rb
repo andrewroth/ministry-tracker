@@ -88,7 +88,7 @@ module Cmt
     :email_subject_prefix => "[The Pulse] ",
 
     # the from address for each outgoing email
-    :email_from_address => "No-Reply <noreply@campusforchrist.org>",
+    :email_from_address => "The Pulse <pulse@p2c.com>",
 
     # when editing a person profile, use a thickbox instead of in the page
     :person_edit_in_thickbox => false,
