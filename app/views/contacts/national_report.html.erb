@@ -25,20 +25,20 @@
         <% @campuses.each do |campus| %>
           <tr class="<%= cycle('highlight', 'nohighlight') %>">
             <td class="statsTableTitle"><%= campus.desc %></td>
-            <td><%= campus.contacts.all(:conditions => {:priority => [contact_search_options[:priority][:options][1], contact_search_options[:priority][:options][2], contact_search_options[:priority][:options][3], contact_search_options[:priority][:options][4]]}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][1]}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][2]}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][3]}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][4]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:priority => [contact_search_options[:priority][:options][1], contact_search_options[:priority][:options][2], contact_search_options[:priority][:options][3], contact_search_options[:priority][:options][4]]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][1]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][2]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][3]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:priority => contact_search_options[:priority][:options][4]}).size %></td>
           </tr>
         <% end %>
         <tr>
           <td>Totals</td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => [contact_search_options[:priority][:options][1], contact_search_options[:priority][:options][2], contact_search_options[:priority][:options][3], contact_search_options[:priority][:options][4]]}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][1]}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][2]}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][3]}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][4]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :priority => [contact_search_options[:priority][:options][1], contact_search_options[:priority][:options][2], contact_search_options[:priority][:options][3], contact_search_options[:priority][:options][4]]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][1]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][2]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][3]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :priority => contact_search_options[:priority][:options][4]}).size %></td>
         </tr>
       </tbody>  
     </table>
@@ -66,22 +66,22 @@
         <% @campuses.each do |campus| %>
           <tr class="<%= cycle('highlight', 'nohighlight') %>">
             <td class="statsTableTitle"><%= campus.desc %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => 2}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => [0, 1, 4]}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => 0}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => 1}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => 4}).size %></td>
-            <td><%= campus.contacts.all(:conditions => {:status => 3}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => 2}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => [0, 1, 4]}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => 0}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => 1}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => 4}).size %></td>
+            <td><%= number_with_delimiter campus.contacts.all(:conditions => {:status => 3}).size %></td>
           </tr>
         <% end %>
         <tr>
           <td>Totals</td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 2}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => [0, 1, 4]}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 0}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 1}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 4}).size %></td>
-          <td><%= Contact.all(:conditions => {:campus_id => campus_ids, :status => 3}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => 2}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => [0, 1, 4]}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => 0}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => 1}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => 4}).size %></td>
+          <td><%= number_with_delimiter Contact.all(:conditions => {:campus_id => campus_ids, :status => 3}).size %></td>
         </tr>
       </tbody>  
     </table>
@@ -92,7 +92,7 @@
     <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>
     <br>
     <br>
-    <p><%= link_to "Back to contact search", contacts_path %></p>
+    <p><%= link_to "Back to contact search", search_contacts_path %></p>
   </div>
 
 <% end %>

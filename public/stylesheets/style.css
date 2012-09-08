@@ -826,6 +826,12 @@ table td.sub {
   max-width: 120px;
 }
 
+a.piped {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid lightgray; 
+}
+
 .contacts_container {
   position: absolute;
   left: 0;
@@ -839,7 +845,7 @@ table td.sub {
   margin: 7px; 
 }
 
-ul.momentum li {
+ul.contacts.momentum li {
   list-style: disc inside;
 }
 
