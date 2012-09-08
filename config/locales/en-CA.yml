@@ -22,7 +22,7 @@ en-CA:
     required: required
     validation_failed: Please fill all required fields
     help_link_text: "Help!"
-    email_prefix: "[pulse] "
+    email_prefix: "[The Pulse] "
     ago: " ago"
     web_title: "Power to Change &#8211; The Pulse"
   title:
