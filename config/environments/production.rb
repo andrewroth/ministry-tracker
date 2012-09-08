@@ -35,6 +35,7 @@ ActionMailer::Base.delivery_method = :smtp
 if Common::STAGE == "prod" && Common::SERVER == "c4c"
   ActionMailer::Base.smtp_settings = {
     :address   => 'smtp.mandrillapp.com',
+    :domain    => 'mandrillapp.com',
     :port      => 587,
     :user_name => 'p2cs_mailchimp',
     :password  => '6efd4c58-a919-4b82-b790-23dbefb03217'
