@@ -315,15 +315,15 @@ hr {
   box-shadow: 0 0 3px #BFBFBF;
 }
 
-input, textarea {
+input, textarea, select.multiSelect {
   font-size:1.1em;
   color: #000;
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
   
-  border-radius:3px; border-radius:3px;
-  transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
+  border-radius:3px;
+  transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
 
 input:hover, textarea:hover {
@@ -712,9 +712,10 @@ img.opaqueWhite {
 }
 
 .directorytable {
-    background-color:#f5f5f5;
-    padding:8px;
-    border-bottom:1px #0064a2 solid;
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-bottom: 1px #0064a2 solid;
+    border-radius: 10px;
 }
 .directorytable th, .directorytable td {
     padding:4px;
@@ -825,16 +826,26 @@ table td.sub {
   max-width: 120px;
 }
 
+a.piped {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid lightgray; 
+}
+
 .contacts_container {
   position: absolute;
   left: 0;
   right: 0;
   background-color: white;
-  padding: 5px 5% 50px 5%;
+  padding: 0px 6% 70px 6%;
   min-height: 500px;
 }
 
-ul.momentum li {
+.searchResultsPagination.contacts {
+  margin: 7px; 
+}
+
+ul.contacts.momentum li {
   list-style: disc inside;
 }
 

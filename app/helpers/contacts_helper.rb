@@ -258,8 +258,10 @@ module ContactsHelper
   end
 
   def show_more_search_options?
-    @search_options &&
-    (@search_options[:international] != [contact_search_options[:international][:default].to_s] || @search_options[:degree].present?)
+    @search_options && (
+      (@search_options[:international].present? && @search_options[:international] != [contact_search_options[:international][:default].to_s]) ||
+      (@search_options[:degree].present?)
+    )
   end
 
 end
