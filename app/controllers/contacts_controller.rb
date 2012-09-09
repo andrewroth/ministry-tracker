@@ -275,7 +275,7 @@ private
 
     @contacts = Contact.find(:all,
                              :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
-                             :conditions => [condition.join(" AND "), condition_args].flatten,
+                             :conditions => [condition.join(" AND ")] + condition_args,
                              :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
                              :order => contact_order_by).paginate(:page => params[:page])
   end
