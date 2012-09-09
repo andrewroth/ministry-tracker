@@ -1160,6 +1160,10 @@ a.action-button, input.action-button {
   border-radius: 4px;
   box-shadow:0 -7px 7px #3075A5 inset;
 }
+a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
+  padding: 2px 4px;
+  border-width: 1px;
+}
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   border: 2px solid #22A0D2;
@@ -1541,7 +1545,7 @@ input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padd
 a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
-ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
+ul.requesticon li{background:url("/images/sprites/p2c_icons.png") no-repeat -9px -293px; padding-left: 23px; height: 18px;}
 
 #userbar_wrapper, #content_wrapper, #tablist_container, .messages, #greenbar {
   width: 100%;

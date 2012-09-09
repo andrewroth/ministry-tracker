@@ -27,7 +27,7 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.delay(0.7) { page.visual_effect :blind_down, "flash_#{level}" }
+    page.delay(0.7) { page.visual_effect :appear, "flash_#{level}" }
     #page.visual_effect :highlight, "flash_#{level}"
     #page.delay(7) do
       #page.visual_effect :blind_up, "flash_#{level}"
