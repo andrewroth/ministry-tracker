@@ -204,23 +204,31 @@ private
 
   def do_the_search
     initialize_globals
-    @options = []
-    @options.push("campus_id = #{@campus_id}") unless @campus_id.nil?
-    
+    condition = []
+    condition_args = []
+
+    unless @campus_id.nil?
+      condition << "campus_id = ?" 
+      condition_args << @campus_id
+    end
     
     [:gender_id, :priority, :status, :result].each do |option|
-        @options.push("#{Contact.__(fields_info[option][:field])} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
+      if @search_options[option].present? && !@search_options[option].include?(fields_info[option][:all_value])
+        condition << "#{Contact.__(fields_info[option][:field])} IN (?)"
+        condition_args << @search_options[option]
+      end
     end
 
     if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
-      @options.push("#{Contact.__(fields_info[:degree][:field])} LIKE '%#{@search_options[:degree]}%'")
-    end    
+      condition << "#{Contact.__(fields_info[:degree][:field])} LIKE ?"
+      condition_args << "%#{@search_options[:degree]}%"
+    end
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
       if @search_options[:international] == ["1"]
-        @options.push("#{Contact.__(fields_info[:international][:field])} IN ('1')") 
+        condition << "#{Contact.__(fields_info[:international][:field])} IN ('1')"
       elsif @search_options[:international] == ["0"]
-        @options.push("#{Contact.__(fields_info[:international][:field])} NOT IN ('1')") 
+        condition << "#{Contact.__(fields_info[:international][:field])} NOT IN ('1')"
       else
         @search_options[:international] = [fields_info[:international][:all_value]]
       end
@@ -229,9 +237,9 @@ private
     if @search_options[:assign].present?
       unless @search_options[:assign].include?("All") || (@search_options[:assign].include?("Assigned") && @search_options[:assign].include?("Unassigned"))
         if @search_options[:assign].include?("Unassigned")
-          @options.push("#{Contact.__(:person_id)} IS NULL")
+          condition << "#{Contact.__(:person_id)} IS NULL"
         else
-          @options.push("#{Contact.__(:person_id)} IS NOT NULL")
+          condition << "#{Contact.__(:person_id)} IS NOT NULL"
         end
       end
     end
@@ -241,28 +249,34 @@ private
       @search_options[:assigned_to].each do |p|
         assignees.push(p)
       end
+
       assigned_to_cond = ""
       unless assignees.include?("-1") # all
         if assignees.include?("0") # unassigned
           assigned_to_cond = "(#{Contact.__(:person_id)} IS NULL OR #{Contact.__(:person_id)} IN (0))"
           assignees.delete("0")
         end
+
         if assignees.include?("-2") # assigned
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond} (#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
+          assigned_to_cond = "#{assigned_to_cond}(#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
           assignees.delete("-2")
         end
+
         unless assignees.count == 0
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN ('#{assignees.join("','")}')"
+          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN (?)"
+          condition_args << assignees
         end
       end
-      @options.push("(#{assigned_to_cond})") unless assigned_to_cond.blank?
+
+      condition << "(#{assigned_to_cond})" unless assigned_to_cond.blank?
     end
 
     @contacts = Contact.find(:all,
                              :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
-                             :conditions => @options.join(" AND "), :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
+                             :conditions => [condition.join(" AND "), condition_args].flatten,
+                             :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
                              :order => contact_order_by).paginate(:page => params[:page])
   end
 
