@@ -115,6 +115,7 @@ person:
   city: person_local_city
   zip: person_local_pc
   email: person_email
+  mentor_id: person_mentor_id
 
 campus:
   id: campus_id

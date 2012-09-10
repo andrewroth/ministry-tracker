@@ -596,7 +596,7 @@ class ApplicationController < ActionController::Base
     def set_notices
       @dismissed_notice_ids = [0] + @my.dismissed_notices.collect(&:notice_id)
       @notices = Notice.find(:all, :conditions => [ 
-        "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
+        "#{Notice._(:live)} = 1 AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
       ])
     end
 
