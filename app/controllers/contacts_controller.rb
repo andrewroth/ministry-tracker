@@ -38,6 +38,9 @@ class ContactsController < ApplicationController
   
   def update
     @contact = Contact.find(params[:contact_id])
+
+    send_assign_notification = (params[:assign].present? && @contact.person_id.to_i != params[:assign].to_i) ? true : false
+
     [[:assign, :person_id], [:status, :status], [:result, :result], [:nextStep, :nextStep]].each do |data|
       @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
@@ -46,7 +49,7 @@ class ContactsController < ApplicationController
       if @contact.save        
         flash[:notice] = 'Contact was successfully updated.'
 
-        if params[:assign] && @contact.person
+        if send_assign_notification && @contact.person
           send_assigned_contacts_email([@contact]) 
           flash[:notice] = "#{flash[:notice]} #{@contact.person.first_name} #{@contact.person.last_name} will be notified by email."
         end
