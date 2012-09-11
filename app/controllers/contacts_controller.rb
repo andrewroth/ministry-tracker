@@ -198,6 +198,18 @@ private
 
       when :degree
         desc << %(with degree/faculty contains <strong>"#{value}"</strong>)
+        
+      when :interest
+        interests = contact_options_lists[:interest].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with interest <strong>#{to_or_sentence(interests)}</strong>" if interests.present?
+
+      when :magazine
+        magazines = contact_options_lists[:magazine].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with magazine <strong>#{to_or_sentence(magazines)}</strong>" if magazines.present?
+
+      when :journey
+        journies = contact_options_lists[:journey].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with journey <strong>#{to_or_sentence(journies)}</strong>" if journies.present?
 
       end
     end
@@ -215,10 +227,17 @@ private
       condition_args << @campus_id
     end
     
-    [:gender_id, :priority, :status, :result].each do |option|
+    [:gender_id, :priority, :status, :result, :interest, :magazine, :journey].each do |option|
       if @search_options[option].present? && !@search_options[option].include?(fields_info[option][:all_value])
-        condition << "#{Contact.__(fields_info[option][:field])} IN (?)"
-        condition_args << @search_options[option]
+
+        if @search_options[option].include?("") || (fields_info[option].has_key?(:blank_value) && @search_options[option].include?(fields_info[option][:blank_value]))
+          condition << "(#{Contact.__(fields_info[option][:field])} IN (?) OR #{Contact.__(fields_info[option][:field])} IS NULL)"
+          condition_args << [@search_options[option], fields_info[option][:blank_value]].flatten
+          
+        else
+          condition << "#{Contact.__(fields_info[option][:field])} IN (?)"
+          condition_args << @search_options[option]
+        end
       end
     end
 
@@ -346,7 +365,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :interest, :magazine, :journey]
   end
   
   def fields_info
@@ -358,7 +377,10 @@ private
       :result => { :field => :result, :all_value => "9" },
       :assigned_to => { :field => :person_id, :all_value => "-1" },
       :international => { :field => :international, :all_value => "9" },
-      :degree => { :field => :degree, :all_value => "" }
+      :degree => { :field => :degree, :all_value => "" },
+      :interest => { :field => :interest, :all_value => "9", :blank_value => "0" },
+      :magazine => { :field => :magazine, :all_value => "9" },
+      :journey => { :field => :journey, :all_value => "9" }
     }
   end
 

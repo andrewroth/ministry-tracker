@@ -34,6 +34,10 @@
             <br/>
             <div class="more_conditions" style="<%= show_more_search_options? ? '' : 'display:none;' %>">
           <% end %>
+          <% if data[:field] == :journey %>
+            <div class="clear"></div>
+            <br/>
+          <% end %>
       	<% end %>
       </div>
 
