@@ -814,8 +814,26 @@ table td.sub {
   background-image: url("/images/silk/bullet_arrow_down.png");
 }
 
+.search_actions {
+  width: 100%;
+  display: inline-block;
+}
+
+.search_actions > div {
+  float: left;
+}
+
+.search_actions > a {
+  float: right;
+}
+
 #multiple_contact_update {
+  display: inline-block;
   min-height: 40px;
+}
+
+#multiple_contact_update form {
+  display: inline-block;
 }
 
 #multiple_contact_update select, .searchContacts select {

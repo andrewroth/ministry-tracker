@@ -1,3 +1,5 @@
+require 'csv'
+
 class ContactsController < ApplicationController
   include ContactsHelper
 
@@ -138,11 +140,32 @@ class ContactsController < ApplicationController
 
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
 
-    do_the_search
+    respond_to do |format|
+      format.html do
+        do_the_search
+        @search_description = search_description(session[:search_contact_params], @contacts.total_entries)
+        render 'index'
+      end
 
-    @search_description = search_description(session[:search_contact_params], @contacts.total_entries)
+      format.csv do
+        do_the_search(:paginate => false)
 
-    render 'index'
+        filepath = "tmp/#{Time.now.to_i}"
+
+        csv_str = FasterCSV.open(filepath, "w") do |csv|
+          csv << Contact.columns_hash.collect { |column_name, column_hash| column_name }
+
+          @contacts.each do |contact|
+            csv << Contact.columns_hash.collect do |column_name, column_hash|
+              contact[column_name]
+            end
+          end
+        end
+
+        user_filename = Campus.find(@campus_id).try(:short_name) ? "#{@contacts.total_entries} contacts at #{Campus.find(@campus_id).short_name}.csv" : "contacts.csv"
+        send_file filepath, :filename => user_filename, :type => "text/csv"
+      end
+    end
   end
 
   def impact_report
@@ -214,10 +237,19 @@ private
       end
     end
 
-    "<strong>#{num_results}</strong> search results for contacts #{desc.to_sentence}."
+    if @contacts.total_entries > @contacts.size
+      description = "Showing <strong>#{@contacts.total_entries > 0 ? 1 + @contacts.offset : 0}-#{@contacts.offset + @contacts.size}</strong> of <strong>#{@contacts.total_entries}</strong>"
+    else
+      description = "<strong>#{num_results}</strong>"
+    end
+
+    "#{description} search results for contacts #{desc.to_sentence}."
   end
 
-  def do_the_search
+  def do_the_search(options = {})
+    options[:paginate] = true if options[:paginate].nil?
+    per_page = options[:paginate] ? nil : Contact.all.size
+
     initialize_globals
     condition = []
     condition_args = []
@@ -299,7 +331,7 @@ private
                              :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
                              :conditions => [condition.join(" AND ")] + condition_args,
                              :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
-                             :order => contact_order_by).paginate(:page => params[:page])
+                             :order => contact_order_by).paginate(:page => params[:page], :per_page => per_page)
   end
 
   def initialize_globals
