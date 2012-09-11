@@ -89,6 +89,100 @@
       </table>
 
       <br>
+      <div class="clear"></div>
+      <br>
+
+      <table class="statsTable statsReportTabContainer">
+        <thead>
+          <tr>
+            <th colspan="2" class="statsTitle"><p>Rejoiceables</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="nohighlight">
+            <td colspan="2"><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :activity_type_id => [2, 3, 4]}).size %> people across the country</td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Spiritual Conversation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :activity_type_id => [2]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Gospel Presentation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :activity_type_id => [3]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Indicated Decision</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :activity_type_id => [4]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+      <br>
+      <br>
+
+      <table class="statsTable statsReportTabContainer">
+        <thead>
+          <tr>
+            <th colspan="2" class="statsTitle"><p>Results</p></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="nohighlight">
+            <td colspan="2">Reached out but...</td>
+          </tr>
+
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Bad Information</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [1]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">No Response</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [2]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">No Longer Interested</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [3]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Another Digital Sent</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [4]}).size %></td>
+          </tr>
+
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Total</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [1, 2, 3, 4]}).size %></td>
+          </tr>
+
+          <tr class="nohighlight">
+            <td colspan="2">&nbsp;</td>
+          </tr>
+
+          <tr class="nohighlight">
+            <td colspan="2">Met and...</td>
+          </tr>
+
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Magazine Grab 'n' Go</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [5]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Interaction</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [6]}).size %></td>
+          </tr>
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Interaction & Magazine</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [7]}).size %></td>
+          </tr>
+
+          <tr class="<%= cycle('highlight', 'nohighlight') %>">
+            <td class="statsTableTitle">Total</td>
+            <td><%= number_with_delimiter Contact.all(:conditions => {:result => [5, 6, 7]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+
+      <br>
       <br>
       <br>
       <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>

@@ -201,6 +201,33 @@
 
       <br>
       <br>
+
+      <% contact_ids = @campus.contacts.collect(&:id) %>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Rejoiceables for <%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2, 3, 4]}).size %> people:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Spiritual Conversation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2]}).size %></td>
+          </tr>
+          <tr>
+            <td>Gospel Presentation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [3]}).size %></td>
+          </tr>
+          <tr>
+            <td>Indicated Decision</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [4]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+
+      <br>
+      <br>
       <br>
       <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>
       <br>
