@@ -194,6 +194,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -8px -295px;
   padding-left: 23px;
   margin-left: 10px;
+  display: inline-block;
 }
 
 .butProfile a:hover {

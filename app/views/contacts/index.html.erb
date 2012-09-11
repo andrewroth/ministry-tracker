@@ -89,7 +89,7 @@
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_international(contact) %></td>
           <td class="alignright">
-            <span class="butProfile"><%= link_to 'Edit', edit_contact_path(contact), :title => "View and edit this contact" %></span>
+            <div class="butProfile"><%= link_to 'Edit', edit_contact_path(contact), :title => "View and edit this contact" %></div>
           </td>
         </tr>
       <%- end -%>
