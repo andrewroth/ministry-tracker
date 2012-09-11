@@ -162,8 +162,8 @@ class ContactsController < ApplicationController
           end
         end
 
-        user_filename = Campus.find(@campus_id).try(:short_name) ? "#{@contacts.total_entries} contacts at #{Campus.find(@campus_id).short_name}.csv" : "contacts.csv"
-        send_file filepath, :filename => user_filename, :type => "text/csv"
+        user_filename = Campus.find(@campus_id).try(:short_name) ? "#{@contacts.total_entries} contacts at #{Campus.find(@campus_id).short_name}".gsub(/[^0-9A-Za-z ]/, '') : "contacts"
+        send_file filepath, :filename => "#{user_filename}.csv", :type => "text/csv"
       end
     end
   end
