@@ -206,7 +206,7 @@
       <table>
         <thead>
           <tr>
-            <th colspan="2">Rejoiceables for <%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2, 3, 4]}).size %> people:</th>
+            <th colspan="2">Rejoiceables for <%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2, 3, 4]}).size %> people</th>
           </tr>
         </thead>
         <tbody>
@@ -229,7 +229,10 @@
       <br>
       <br>
       <br>
+      <br>
       <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>
+      <br>
+      <p>Information updated hourly.</p>
       <br>
       <br>
       <p><%= link_to "Back to contact search", search_contacts_path %></p>

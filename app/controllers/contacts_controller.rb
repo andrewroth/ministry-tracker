@@ -221,6 +221,9 @@ private
 
       when :degree
         desc << %(with degree/faculty contains <strong>"#{value}"</strong>)
+
+      when :data_input_notes
+        desc << %(with data input notes contains <strong>"#{value}"</strong>)
         
       when :interest
         interests = contact_options_lists[:interest].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
@@ -276,6 +279,11 @@ private
     if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
       condition << "#{Contact.__(fields_info[:degree][:field])} LIKE ?"
       condition_args << "%#{@search_options[:degree]}%"
+    end
+
+    if @search_options[:data_input_notes] && @search_options[:data_input_notes].gsub(/\s/, '').present?
+      condition << "#{Contact.__(fields_info[:data_input_notes][:field])} LIKE ?"
+      condition_args << "%#{@search_options[:data_input_notes]}%"
     end
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
@@ -397,7 +405,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :interest, :magazine, :journey]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :data_input_notes, :interest, :magazine, :journey]
   end
   
   def fields_info
@@ -410,6 +418,7 @@ private
       :assigned_to => { :field => :person_id, :all_value => "-1" },
       :international => { :field => :international, :all_value => "9" },
       :degree => { :field => :degree, :all_value => "" },
+      :data_input_notes => { :field => :data_input_notes, :all_value => "" },
       :interest => { :field => :interest, :all_value => "9", :blank_value => "0" },
       :magazine => { :field => :magazine, :all_value => "9" },
       :journey => { :field => :journey, :all_value => "9" }

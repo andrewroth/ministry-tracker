@@ -105,6 +105,13 @@ module ContactsHelper
         :options => contact_options_lists[:journey].insert(0, ["All", 9]),
         :type => :select,
         :default => 9
+      },
+      :data_input_notes =>
+      {
+        :field => :data_input_notes,
+        :title => "Data Input Notes",
+        :type => :text,
+        :default => ""
       }
     }
   end
@@ -120,7 +127,8 @@ module ContactsHelper
       contact_search_options[:interest],
       contact_search_options[:magazine],
       contact_search_options[:journey],
-      contact_search_options[:degree]
+      contact_search_options[:degree],
+      contact_search_options[:data_input_notes]
     ]
   end
 
@@ -293,7 +301,8 @@ module ContactsHelper
       (@search_options[:interest].present? && @search_options[:interest] != [contact_search_options[:interest][:default].to_s]) ||
       (@search_options[:magazine].present? && @search_options[:magazine] != [contact_search_options[:magazine][:default].to_s]) ||
       (@search_options[:journey].present? && @search_options[:journey] != [contact_search_options[:journey][:default].to_s]) ||
-      (@search_options[:degree].present?) 
+      (@search_options[:degree].present?) ||
+      (@search_options[:data_input_notes].present?)
     )
   end
 
