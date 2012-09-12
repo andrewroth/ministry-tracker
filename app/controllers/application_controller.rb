@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
-  def cache_clear
+  def rails_cache_clear
     if is_admin?
       begin
         Rails.cache.clear

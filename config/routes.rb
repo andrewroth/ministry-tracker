@@ -279,10 +279,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :global_countries, :member => { :set_global_country_stage => :post }
 
 
-  map.connect '/cache/clear',
+  map.connect '/rails/cache/clear',
               :conditions => { :method => :get },
               :controller => "application",
-              :action => "cache_clear"
+              :action => "rails_cache_clear"
 
 
   # Install the default route as the lowest priority.
