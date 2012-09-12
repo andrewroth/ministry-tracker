@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
-		:get_people_responsible_for
+            		:get_people_responsible_for
 		
   case
   when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen_directly]
@@ -51,6 +51,19 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   
   helper :all
+
+  def cache_clear
+    if is_admin?
+      begin
+        Rails.cache.clear
+        Rails.logger.info("Clearing Rails cache! Initiated by person #{get_person.id}")
+        flash[:notice] = "Cleared the Rails cache."
+      rescue
+        flash[:notice] = "Failed to clear the Rails cache."
+      end
+    end
+    redirect_to '/'
+  end
 
   protected
 
