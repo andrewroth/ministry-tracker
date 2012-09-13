@@ -6,9 +6,9 @@
       iReturnValue += oElement.offsetTop;
       oElement = oElement.offsetParent;
     }
-  return iReturnValue;
+    return iReturnValue;
   }
-  </script>
+</script>
 
 <%- first_level = true %>
 <%- last_level = -1 %>
@@ -21,18 +21,20 @@
       <%- if first_level == true %>
         <div class="campusViewTreeRoot"><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></div>
       <%- else %> 
-          <div class="campusViewTreeBranch"><%= spinner(o.id, 'opaqueWhite') %></div>     
+        <div class="campusViewTreeBranch"><%= spinner(o.id, 'opaqueWhite') %></div>     
         <div class="campusViewTreeBranch" id ="disciple_<%=o.id.to_s %>" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=root_discipler.id%>">
           <span><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></span>
-          <% if Person.exists?(o.mentor_id) %>
+          <% if o && o.mentor_id && Person.exists?(o.mentor_id) %>
             <% mentor = Person.find(o.mentor_id) %>
-            <%= link_to_remote("", {
-                  :update => "disciple_#{o.id}",
-                  :url => { :action => :remove_mentee, :controller => :people, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
-                  :confirm => "Are you sure you want to remove #{o.full_name} from being mentored by #{mentor.full_name} ?", 
-                  :loading => "$('#spinner#{o.id}').show()", :complete => render(:update) {|page| page.redirect_to(url_for :controller => 'campus_discipleship', :action => 'show')}
-                  }, { :class => "removeMentorIconLink", :title => "Remove #{o.first_name} from being mentored by #{mentor.first_name}" }) if authorized?(:remove_mentee, :people) || o == @me || mentor == @me
-            %>
+            <% if authorized?(:remove_mentee, :people) || o == @me || mentor == @me %>
+              <%= link_to_remote("", {
+                    :update => "disciple_#{o.id}",
+                    :url => { :action => :remove_mentee, :controller => :people, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
+                    :confirm => "Are you sure you want to remove #{o.full_name} from being mentored by #{mentor.full_name} ?", 
+                    :loading => "$('#spinner#{o.id}').show()", :complete => render(:update) {|page| page.redirect_to(url_for :controller => 'campus_discipleship', :action => 'show')}
+                    }, { :class => "removeMentorIconLink", :title => "Remove #{o.first_name} from being mentored by #{mentor.first_name}" })
+              %>
+            <% end %>
           <% end %>
         </div>
       <%- end %>
@@ -48,5 +50,3 @@
     strikeParentOnHover($(".removeMentorIconLink"));
   });
 </script>
-
-
