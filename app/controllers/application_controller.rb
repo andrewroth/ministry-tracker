@@ -73,10 +73,10 @@ class ApplicationController < ActionController::Base
         session[:locale] = I18n.locale
       elsif session[:locale]
         I18n.locale = session[:locale]
-      elsif request.subdomains.first == 'pouls'
+      elsif request.subdomains.first == 'pouls' || request.subdomains.first == 'lepouls'
         I18n.locale = 'fr'
       else
-        I18n.locale = 'en-CA'
+        I18n.locale = request.compatible_language_from(I18n.available_locales) || I18n.default_locale
       end
     end
 
