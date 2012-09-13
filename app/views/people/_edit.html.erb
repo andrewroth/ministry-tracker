@@ -55,9 +55,9 @@
 <%= submit_tag t("profile.buttons.save"), :class => "action-button" %> &nbsp; <%= t('misc.or') %> <% if request.xhr? %><% unless Cmt::CONFIG[:person_edit_in_thickbox] %><%= link_to_function t("misc.cancel"), "$('#edit_info').hide();$('#info').show()", :class => 'cancel'%><% else %><a id="TB_closeWindowButton" href="#">cancel</a><% end %><% end %>
 
 
-<%- if @person == @me -%>
+<%- if @person == @me || is_admin? -%>
   <div id="removeMe">
-    <%= link_to t('profile.buttons.remove_me'), person_url(@person.id, :logout => 'true'),
+    <%= link_to t('profile.buttons.remove_me'), person_url(@person.id, :logout => "#{!is_admin?}"),
                                             :confirm => t('profile.buttons.remove_me_confirm'),
                                             :title => t('profile.buttons.remove_me_title'),
                                             :method => :delete %>

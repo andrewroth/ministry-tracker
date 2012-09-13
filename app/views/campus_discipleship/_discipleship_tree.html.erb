@@ -1,14 +1,14 @@
 <script type="text/javascript">
-	function getY( oElement )
-	{
-		var iReturnValue = 0;
-		while( oElement != null ) {
-			iReturnValue += oElement.offsetTop;
-			oElement = oElement.offsetParent;
-		}
-	return iReturnValue;
-	}
-	</script>
+  function getY( oElement )
+  {
+    var iReturnValue = 0;
+    while( oElement != null ) {
+      iReturnValue += oElement.offsetTop;
+      oElement = oElement.offsetParent;
+    }
+  return iReturnValue;
+  }
+  </script>
 
 <%- first_level = true %>
 <%- last_level = -1 %>
@@ -17,28 +17,30 @@
 <%- Person.each_with_level(root_discipler.self_and_descendants) do |o, level| %>
   <%- name_font_size = PeopleHelper::MENTEES_BASE_FONTSIZE - level %>
 
-	<div id="<%= "campusViewTreeNode"+o.id.to_s %>" class="campusViewTreeNode" style=" padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
-		  <%- if first_level == true %>
-			  <div class="campusViewTreeRoot"><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></div>
-		  <%- else %>	
-		  		<div class="campusViewTreeBranch"><%= spinner(o.id, 'opaqueWhite') %></div>			
-				<div class="campusViewTreeBranch" id ="disciple_<%=o.id.to_s %>" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=root_discipler.id%>">
-					<span><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></span>
-					<%= link_to_remote("", 
-		           	{:update => "disciple_#{o.id}",
-		           	:url => { :action => :remove_mentee, :controller => :people, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
-			        :confirm => "Are you sure you want to remove #{o.full_name} from being mentored by #{Person.find(o.person_mentor_id).full_name} ?", 
-			        :loading => "$('#spinner#{o.id}').show()", :complete => render(:update) {|page| page.redirect_to(url_for :controller => 'campus_discipleship', :action => 'show')}},
-			        {:class => "removeMentorIconLink", :title => "Remove #{o.first_name} from being mentored by #{Person.find(o.person_mentor_id).first_name}"}) if Person.exists?(o.person_mentor_id)
-			        #if authorized?(:remove_mentee, :people) || @person == @me 
-			        %>       			 		
-				</div>
-	    <%- end %>
-	</div>
-	<%- if first_level == true %>
-		<%- first_level = false %>
-	<%- end %>
-	<%- last_level = level %>
+  <div id="<%= "campusViewTreeNode"+o.id.to_s %>" class="campusViewTreeNode" style=" padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> <%- if level != last_level %> line-height: 150%; <%- else %> line-height: 100%; <%- end %>">
+      <%- if first_level == true %>
+        <div class="campusViewTreeRoot"><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></div>
+      <%- else %> 
+          <div class="campusViewTreeBranch"><%= spinner(o.id, 'opaqueWhite') %></div>     
+        <div class="campusViewTreeBranch" id ="disciple_<%=o.id.to_s %>" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=root_discipler.id%>">
+          <span><%= link_to(o.full_name, person_path(o.id), :target => "_blank") %></span>
+          <% if Person.exists?(o.mentor_id) %>
+            <% mentor = Person.find(o.mentor_id) %>
+            <%= link_to_remote("", {
+                  :update => "disciple_#{o.id}",
+                  :url => { :action => :remove_mentee, :controller => :people, :params => {:id => "#{o.id}", :source => "campus_disc"}  },
+                  :confirm => "Are you sure you want to remove #{o.full_name} from being mentored by #{mentor.full_name} ?", 
+                  :loading => "$('#spinner#{o.id}').show()", :complete => render(:update) {|page| page.redirect_to(url_for :controller => 'campus_discipleship', :action => 'show')}
+                  }, { :class => "removeMentorIconLink", :title => "Remove #{o.first_name} from being mentored by #{mentor.first_name}" }) if authorized?(:remove_mentee, :people) || o == @me || mentor == @me
+            %>
+          <% end %>
+        </div>
+      <%- end %>
+  </div>
+  <%- if first_level == true %>
+    <%- first_level = false %>
+  <%- end %>
+  <%- last_level = level %>
 <%- end -%>
 
 <script type="text/javascript">
