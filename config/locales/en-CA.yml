@@ -247,7 +247,7 @@ en-CA:
     register: Register for your group!
     next: Next
     welcome: "Great!  Welcome to your group, %{group_name}"
-    request_sent: "Great!  Your request to join has been sent to %{group.name}"
+    request_sent: "Great!  Your request to join has been sent to %{group_name}"
     marked_interested: "Marked as interested"
     join_request_pending: "Join request pending"
   timetable:
