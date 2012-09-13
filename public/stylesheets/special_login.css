@@ -59,6 +59,7 @@ a:hover, a:active {
   background-position: -34px -119px;
   background-repeat: no-repeat;
   border: 23px solid white;
+  border-radius: 1px;
   display: inline-block;
   height: 175px;
   padding: 4px 0;
@@ -88,6 +89,7 @@ a:hover, a:active {
   background-position: -48px -385px;
   background-repeat: no-repeat;
   border: 36px solid white;
+  border-radius: 1px;
   display: inline-block;
   height: 120px;
   padding: 19px 0;

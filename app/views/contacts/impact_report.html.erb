@@ -1,145 +1,181 @@
-<% if @campus %>
+<% cache([@campus, Time.now.to_date, Time.now.hour]) do %>
 
-  <h2>
-    Impact & Progress Snapshot at <%= select_tag "report_campus_id", contact_campuses_options_for_select(@campus.id) %>
-  </h2>
+  <% if @campus %>
 
-  <br>
-
-  <div class="contacts_report">
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Contacts:&nbsp;&nbsp;</th>
-          <td><%= @campus.contacts.size %></td>
-        </tr>
-      </thead>
-    </table>
-
-    <div class="clear"></div>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Follow-up Priority</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% contact_search_options[:priority][:options].drop(1).each do |option| %>
-          <tr>
-            <td><%= option %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => option}).size %></td>
-          </tr>
-        <% end %>
-      </tbody>  
-    </table>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Completed</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [2]}).size %></td>
-        </tr>
-        <tr>
-          <td>In Progress</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [0, 1, 4]}).size %></td>
-        </tr>
-        <tr>
-          <td class="sub">uncontacted</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [0]}).size %></td>
-        </tr>
-        <tr>
-          <td class="sub">attempted</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [1]}).size %></td>
-        </tr>
-        <tr>
-          <td class="sub">contacted</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [4]}).size %></td>
-        </tr>
-        <tr>
-          <td>Do Not Contact</td>
-          <td><%= @campus.contacts.all(:conditions => {:status => [3]}).size %></td>
-        </tr>
-      </tbody>  
-    </table>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Reached out but...</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bad Information</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [1]}).size %></td>
-        </tr>
-        <tr>
-          <td>No Response</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [2]}).size %></td>
-        </tr>
-        <tr>
-          <td>No Longer Interested</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [3]}).size %></td>
-        </tr>
-        <tr>
-          <td>Another Digital Sent</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [4]}).size %></td>
-        </tr>
-        <tr>
-          <td>Total</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [1, 2, 3, 4]}).size %></td>
-        </tr>
-      </tbody>  
-    </table>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Met and...</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Magazine Grab 'n' Go</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [5]}).size %></td>
-        </tr>
-        <tr>
-          <td>Interaction</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [6]}).size %></td>
-        </tr>
-        <tr>
-          <td>Interaction & Magazine</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [7]}).size %></td>
-        </tr>
-        <tr>
-          <td>Total</td>
-          <td><%= @campus.contacts.all(:conditions => {:result => [5, 6, 7]}).size %></td>
-        </tr>
-      </tbody>  
-    </table>
+    <h2>
+      Impact & Progress Snapshot at <%= select_tag "report_campus_id", contact_campuses_options_for_select(@campus.id) %>
+    </h2>
 
     <br>
-    <br>
-    
-    <table class="wide">
-      <thead>
-        <tr>
-          <th colspan="7">Follow-up Progress</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @campus.leaders_with_contacts.blank? %>
+
+    <div class="contacts_report">
+
+      <table>
+        <thead>
           <tr>
-            <td>Nobody has contact assigned to them yet.</td>
+            <th colspan="2">Contacts:&nbsp;&nbsp;</th>
+            <td><big><%= number_with_delimiter @campus.contacts.size %></big></td>
           </tr>
-        <% else %>
+        </thead>
+      </table>
+
+      <div class="clear"></div>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Follow-up Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% contact_search_options[:priority][:options].drop(1).each do |option| %>
+            <tr>
+              <td><%= option %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => option}).size %></td>
+            </tr>
+          <% end %>
+        </tbody>  
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Completed</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [2]}).size %></td>
+          </tr>
+          <tr>
+            <td>In Progress</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [0, 1, 4]}).size %></td>
+          </tr>
+          <tr>
+            <td class="sub">uncontacted</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [0]}).size %></td>
+          </tr>
+          <tr>
+            <td class="sub">attempted</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [1]}).size %></td>
+          </tr>
+          <tr>
+            <td class="sub">contacted</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [4]}).size %></td>
+          </tr>
+          <tr>
+            <td>Do Not Contact</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:status => [3]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Reached out but...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bad Information</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [1]}).size %></td>
+          </tr>
+          <tr>
+            <td>No Response</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [2]}).size %></td>
+          </tr>
+          <tr>
+            <td>No Longer Interested</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [3]}).size %></td>
+          </tr>
+          <tr>
+            <td>Another Digital Sent</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [4]}).size %></td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [1, 2, 3, 4]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Met and...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Magazine Grab 'n' Go</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [5]}).size %></td>
+          </tr>
+          <tr>
+            <td>Interaction</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [6]}).size %></td>
+          </tr>
+          <tr>
+            <td>Interaction & Magazine</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [7]}).size %></td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:result => [5, 6, 7]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
+
+      <br>
+      <br>
+      
+      <table class="wide">
+        <thead>
+          <tr>
+            <th colspan="7">Follow-up Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @campus.leaders_with_contacts.blank? %>
+            <tr>
+              <td>Nobody has contact assigned to them yet.</td>
+            </tr>
+          <% else %>
+            <tr>
+              <td>&nbsp;</td>
+              <td>Completed</td>
+              <td>In Progress</td>
+              <td>Uncontacted</td>
+              <td>Attempted</td>
+              <td>Contacted</td>
+              <td>Do Not Contact</td>
+            </tr>
+            <% @campus.leaders_with_contacts.sort { |a, b| "#{a.person_fname} #{a.person_lname}" <=> "#{b.person_fname} #{b.person_lname}" }.each do |person| %>
+              <tr>
+                <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => [0, 1, 4]}).size %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 0}).size %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 1}).size %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 4}).size %></td>
+                <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 3}).size %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>  
+      </table>
+
+      <br>
+      <br>
+
+      <table class="wide">
+        <thead>
+          <tr>
+            <th colspan="7">Drill-down by Priority</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td>&nbsp;</td>
             <td>Completed</td>
@@ -149,70 +185,68 @@
             <td>Contacted</td>
             <td>Do Not Contact</td>
           </tr>
-          <% @campus.leaders_with_contacts.each do |person| %>
+          <% contact_search_options[:priority][:options][1..3].each do |p| %>
             <tr>
-              <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => [0, 1, 4]}).size %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 0}).size %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 1}).size %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 4}).size %></td>
-              <td><%= person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 3}).size %></td>
+              <td><%= p %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => 2}).size %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => [0, 1, 4]}).size %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => 0}).size %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => 1}).size %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => 4}).size %></td>
+              <td><%= number_with_delimiter @campus.contacts.all(:conditions => {:priority => p, :status => 3}).size %></td>
             </tr>
           <% end %>
-        <% end %>
-      </tbody>  
-    </table>
+        </tbody>  
+      </table>
 
-    <br>
-    <br>
+      <br>
+      <br>
 
-    <table class="wide">
-      <thead>
-        <tr>
-          <th colspan="7">Drill-down by Priority</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>&nbsp;</td>
-          <td>Completed</td>
-          <td>In Progress</td>
-          <td>Uncontacted</td>
-          <td>Attempted</td>
-          <td>Contacted</td>
-          <td>Do Not Contact</td>
-        </tr>
-        <% contact_search_options[:priority][:options][1..3].each do |p| %>
+      <% contact_ids = @campus.contacts.collect(&:id) %>
+      <table>
+        <thead>
           <tr>
-            <td><%= p %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => 2}).size %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => [0, 1, 4]}).size %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => 0}).size %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => 1}).size %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => 4}).size %></td>
-            <td><%= @campus.contacts.all(:conditions => {:priority => p, :status => 3}).size %></td>
+            <th colspan="2">Rejoiceables for <%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2, 3, 4]}).size %> people</th>
           </tr>
-        <% end %>
-      </tbody>  
-    </table>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Spiritual Conversation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [2]}).size %></td>
+          </tr>
+          <tr>
+            <td>Gospel Presentation</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [3]}).size %></td>
+          </tr>
+          <tr>
+            <td>Indicated Decision</td>
+            <td><%= number_with_delimiter Activity.all(:conditions => {:reportable_type => 'Contact', :reportable_id => contact_ids, :activity_type_id => [4]}).size %></td>
+          </tr>
+        </tbody>  
+      </table>
 
-    <br>
-    <br>
-    <br>
-    <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>
-    <br>
-    <br>
-    <p><%= link_to "Back to contact search", contacts_path %></p>
-  </div>
 
-  <script type="text/javascript">
-    $(function() {
-      $('#report_campus_id').change(function() {
-        $('.contacts_report').fadeOut();
-        window.location.href = '<%= impact_report_contacts_path %>?campus_id=' + $('#report_campus_id').val();
+      <br>
+      <br>
+      <br>
+      <br>
+      <p>The total number of contacts <em>in progress</em> is the sum of the number of contacts with a status of uncontacted, attempted or contacted.</p>
+      <br>
+      <p>Information updated hourly.</p>
+      <br>
+      <br>
+      <p><%= link_to "Back to contact search", search_contacts_path %></p>
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+        $('#report_campus_id').change(function() {
+          $('.contacts_report').fadeOut();
+          window.location.href = '<%= impact_report_contacts_path %>?campus_id=' + $('#report_campus_id').val();
+        });
       });
-    });
-  </script>
+    </script>
 
+  <% end %>
+  
 <% end %>

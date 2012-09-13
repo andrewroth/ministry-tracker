@@ -473,7 +473,6 @@ class PeopleController < ApplicationController
       page << "show_dialog('Edit Group', 700, 550)" if thickbox
     end
   end
-
     
   def destroy
     # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
@@ -487,7 +486,15 @@ class PeopleController < ApplicationController
                                  "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
 
     group_involvements_to_end = @person.all_group_involvements.destroy_all
-    
+
+    # Remove mentoring relationships
+    Person.find(:all, :conditions => ["#{Person._(:mentor_id)} = ?", @person.id]).each do |person|
+      person.mentor_id = MENTOR_ID_NONE
+      person.save
+    end
+    @person.mentor_id = MENTOR_ID_NONE
+    @person.save
+
     flash[:notice] = "#{@person.full_name}'s involvements on the Pulse have successfully been removed"
     
     if (params[:logout] == 'true')
@@ -496,6 +503,7 @@ class PeopleController < ApplicationController
       redirect_to :back
     end
   end
+
   # POST /people
   # POST /people.xml
   def create

@@ -17,7 +17,10 @@ module ContactsHelper
       :international => [["National", 0], ["International", 1]],
       :status => [["Completed", 2], ["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]],
-      :nextStep => [["Unknown", 0], ["Know and trust a Christian", 1], ["Become curious", 2], ["Become open to change", 3], ["Seek God", 4], ["Make a descision", 5]]
+      :nextStep => [["Unknown", 0], ["Know and trust a Christian", 1], ["Become curious", 2], ["Become open to change", 3], ["Seek God", 4], ["Make a descision", 5]],
+      :interest => [["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["blank", ""]],
+      :magazine => [["a real justice", "a real justice"], ["escape from the dreariness of life", "escape from the dreariness of life"], ["love without conditions", "love without conditions"], ["no thanks", "no thanks"], ["Spiritual connection", "Spiritual connection"], ["blank", ""]],
+      :journey => [["do nothing right now", "do nothing right now"], ["explore the deeper meaning of my cravings", "explore the deeper meaning of my cravings"], ["get connected to online resources about my cravings", "get connected to online resources about my cravings"], ["grow in my relationship with Jesus", "grow in my relationship with Jesus"], ["hear more about Power to Change", "hear more about Power to Change"], ["blank", ""]]
     }
   end
 
@@ -78,6 +81,37 @@ module ContactsHelper
         :title => "Degree / Faculty",
         :type => :text,
         :default => ""
+      },
+      :interest =>
+      {
+        :field => :interest,
+        :title => "Interest",
+        :options => contact_options_lists[:interest].insert(0, ["All", 9]),
+        :type => :select,
+        :default => 9
+      },
+      :magazine =>
+      {
+        :field => :magazine,
+        :title => "Magazine",
+        :options => contact_options_lists[:magazine].insert(0, ["All", 9]),
+        :type => :select,
+        :default => 9
+      },
+      :journey =>
+      {
+        :field => :journey,
+        :title => "Journey",
+        :options => contact_options_lists[:journey].insert(0, ["All", 9]),
+        :type => :select,
+        :default => 9
+      },
+      :data_input_notes =>
+      {
+        :field => :data_input_notes,
+        :title => "Data Input Notes",
+        :type => :text,
+        :default => ""
       }
     }
   end
@@ -90,7 +124,11 @@ module ContactsHelper
       contact_search_options[:result],
       contact_search_options[:assigned_to],
       contact_search_options[:international],
-      contact_search_options[:degree]
+      contact_search_options[:interest],
+      contact_search_options[:magazine],
+      contact_search_options[:journey],
+      contact_search_options[:degree],
+      contact_search_options[:data_input_notes]
     ]
   end
 
@@ -146,7 +184,7 @@ module ContactsHelper
   def assigned_to(contact = nil)
     result = "Unassigned"
     if contact.nil?
-      result = select_tag "assign", options_for_select(people_available, @contact[:person_id].nil? ? 0 : @contact[:person_id])
+      result = select_tag "assign", options_for_select(people_available_for_assigning, @contact[:person_id].nil? ? 0 : @contact[:person_id])
     elsif contact[:person_id].nil? == false
       unless contact[:person_id] == 0
         volunteer = contact.person
@@ -167,12 +205,16 @@ module ContactsHelper
   end
 
   def campus
-    @campus ||=  Campus.find(@campus_id) unless @campus_id.nil?
+    @campus ||= Campus.find(@campus_id) unless @campus_id.nil?
     @campus
   end
 
   def campuses(with_ministry_roles = nil)
-    @campuses || @me.campuses_under_my_ministries_with_children(with_ministry_roles)
+    if @me.is_staff_somewhere?
+      @campuses ||= @me.campuses_under_my_ministries_with_children(with_ministry_roles)
+    else
+      @campuses ||= @me.campuses
+    end
   end
   
   def campuses_options(with_ministry_roles = nil)
@@ -254,8 +296,14 @@ module ContactsHelper
   end
 
   def show_more_search_options?
-    @search_options &&
-    (@search_options[:international] != [contact_search_options[:international][:default].to_s] || @search_options[:degree].present?)
+    @search_options && (
+      (@search_options[:international].present? && @search_options[:international] != [contact_search_options[:international][:default].to_s]) ||
+      (@search_options[:interest].present? && @search_options[:interest] != [contact_search_options[:interest][:default].to_s]) ||
+      (@search_options[:magazine].present? && @search_options[:magazine] != [contact_search_options[:magazine][:default].to_s]) ||
+      (@search_options[:journey].present? && @search_options[:journey] != [contact_search_options[:journey][:default].to_s]) ||
+      (@search_options[:degree].present?) ||
+      (@search_options[:data_input_notes].present?)
+    )
   end
 
 end

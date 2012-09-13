@@ -1,15 +1,15 @@
 <li id="request_<%=member_request.id%>">
-  join request from <%= link_to member_request.person.full_name, person_url(member_request.person_id) %>
-  <b>
-    <%= link_to_remote "[Accept]", {:url => accept_request_group_involvement_url(member_request.id, :source => source),
-      :before => "$('#spinnergt').show();",
-      :method => :post},
-      {:title => "Accept #{member_request.person.full_name} into your group"}
-    %>
-    <%= link_to_remote '[Decline]', {:url => decline_request_group_involvement_url(member_request.id, :source => source),
-      :before => "$('#spinnergt').show();",
-      :method => :post},
-      {:title => "Decline #{member_request.person.full_name}'s join request"}
-    %>
-  </b>
+  join request from <%= link_to member_request.person.full_name, person_url(member_request.person_id) %> 
+  &#8211;
+  <%= link_to_remote "Accept", {:url => accept_request_group_involvement_url(member_request.id, :source => source),
+    :before => "$('#spinnergt').show();",
+    :method => :post},
+    {:title => "Accept #{member_request.person.full_name} into your group", :class => "action-button skinny"}
+  %>
+  &nbsp;
+  <%= link_to_remote 'Decline', {:url => decline_request_group_involvement_url(member_request.id, :source => source),
+    :before => "$('#spinnergt').show();",
+    :method => :post},
+    {:title => "Decline #{member_request.person.full_name}'s join request"}
+  %>
 </li>

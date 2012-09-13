@@ -191,13 +191,14 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 .butProfile a {
   border:0px solid black;
   height:18px;
-  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -9px -295px;
+  background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat; background-position: -8px -295px;
   padding-left: 23px;
   margin-left: 10px;
+  display: inline-block;
 }
 
 .butProfile a:hover {
-  background-position: -9px -739px;
+  background-position: -8px -739px;
 }
 
 .butUpdate a, .butDelete a {
@@ -315,15 +316,15 @@ hr {
   box-shadow: 0 0 3px #BFBFBF;
 }
 
-input, textarea {
+input, textarea, select.multiSelect {
   font-size:1.1em;
   color: #000;
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
   
-  border-radius:3px; border-radius:3px;
-  transition: 0.1s ease 0s; -webkit-transition: 0.1s ease 0s;
+  border-radius:3px;
+  transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
 
 input:hover, textarea:hover {
@@ -712,9 +713,10 @@ img.opaqueWhite {
 }
 
 .directorytable {
-    background-color:#f5f5f5;
-    padding:8px;
-    border-bottom:1px #0064a2 solid;
+    background-color: #f5f5f5;
+    padding: 8px;
+    border-bottom: 1px #0064a2 solid;
+    border-radius: 10px;
 }
 .directorytable th, .directorytable td {
     padding:4px;
@@ -813,16 +815,40 @@ table td.sub {
   background-image: url("/images/silk/bullet_arrow_down.png");
 }
 
+.search_actions {
+  width: 100%;
+  display: inline-block;
+}
+
+.search_actions > div {
+  float: left;
+}
+
+.search_actions > a {
+  float: right;
+}
+
 #multiple_contact_update {
+  display: inline-block;
   min-height: 40px;
 }
 
+#multiple_contact_update form {
+  display: inline-block;
+}
+
 #multiple_contact_update select, .searchContacts select {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .searchContacts input[type=text] {
   max-width: 120px;
+}
+
+a.piped {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid lightgray; 
 }
 
 .contacts_container {
@@ -830,11 +856,15 @@ table td.sub {
   left: 0;
   right: 0;
   background-color: white;
-  padding: 5px 5% 50px 5%;
+  padding: 0px 6% 70px 6%;
   min-height: 500px;
 }
 
-ul.momentum li {
+.searchResultsPagination.contacts {
+  margin: 7px; 
+}
+
+ul.contacts.momentum li {
   list-style: disc inside;
 }
 
@@ -1149,6 +1179,10 @@ a.action-button, input.action-button {
   border-radius: 4px;
   box-shadow:0 -7px 7px #3075A5 inset;
 }
+a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
+  padding: 2px 4px;
+  border-width: 1px;
+}
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
   border: 2px solid #22A0D2;
@@ -1390,6 +1424,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   background-position: 10px -1510px;
   background-repeat: no-repeat;
   border: 16px solid white;
+  border-radius: 1px;
   box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
   display: inline-block;
   height: 51px;
@@ -1419,6 +1454,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   background-position: -8px -1323px;
   background-repeat: no-repeat;
   border: 13px solid white;
+  border-radius: 1px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
   display: inline-block;
   height: 99px;
@@ -1528,7 +1564,7 @@ input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padd
 a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
-ul.requesticon li{background:url(/images/debicons/Gprofile_s.png) no-repeat 0 2px; padding-left:14px;}
+ul.requesticon li{background:url("/images/sprites/p2c_icons.png") no-repeat -9px -293px; padding-left: 23px; height: 18px;}
 
 #userbar_wrapper, #content_wrapper, #tablist_container, .messages, #greenbar {
   width: 100%;
@@ -2029,7 +2065,7 @@ div.fieldWithErrors{
 }
 
 .adfieldbox input.wide {width:185px; padding:3px 0;}
-.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 200px;}
+.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 200px; margin-right:10px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
 .searchContacts .adfieldbox select.multiSelect { height: 150px; } 
@@ -2937,6 +2973,11 @@ h2.group_type_title {
   background-position: -8px -907px;
   height: 18px;
   width: 18px;
+}
+
+#uberSearchButton.submitted div {
+  background: url("/images/spinner.gif") no-repeat 0px 6px;
+  width: 28px;
 }
 
 #uberSearchButton:hover div {

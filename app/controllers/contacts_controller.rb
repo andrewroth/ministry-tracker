@@ -1,3 +1,5 @@
+require 'csv'
+
 class ContactsController < ApplicationController
   include ContactsHelper
 
@@ -38,14 +40,24 @@ class ContactsController < ApplicationController
   
   def update
     @contact = Contact.find(params[:contact_id])
+
+    send_assign_notification = (params[:assign].present? && @contact.person_id.to_i != params[:assign].to_i) ? true : false
+
     [[:assign, :person_id], [:status, :status], [:result, :result], [:nextStep, :nextStep]].each do |data|
       @contact[data[1]] = params[data[0]] if params[data[0]].present?
     end
 
     respond_to do |format|
-      if @contact.save
+      if @contact.save        
         flash[:notice] = 'Contact was successfully updated.'
+
+        if send_assign_notification && @contact.person
+          send_assigned_contacts_email([@contact]) 
+          flash[:notice] = "#{flash[:notice]} #{@contact.person.first_name} #{@contact.person.last_name} will be notified by email."
+        end
+
         format.html { redirect_to :action => 'search' }
+        
       else
         flash[:notice] = 'Sorry, there was a problem updating the contact!'
         initialize_globals
@@ -69,12 +81,19 @@ class ContactsController < ApplicationController
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
         contacts = Contact.find(:all, :conditions => { :id => contact_ids })
         
+        saved_successfully = []
+
         contacts.each do |contact|
           contact[:person_id] = assignee
-          contact.save!
+          saved_successfully << contact.save!
         end
         
-        flash[:notice] = "Assigned selected contacts to #{assignee_person_name}"
+        unless saved_successfully.include?(false)
+          flash[:notice] = "Assigned selected contacts to #{assignee_person_name}, they will be notified by email."
+          send_assigned_contacts_email(contacts) if assignee_person
+        else
+          flash[:notice] = "Sorry, there was a problem assigning the selected contacts!"
+        end
       end
       
     when 'multiple_status'
@@ -121,11 +140,32 @@ class ContactsController < ApplicationController
 
     @campus_id = session[:search_contact_params][:campus_id] if session[:search_contact_params][:campus_id].present?
 
-    do_the_search
+    respond_to do |format|
+      format.html do
+        do_the_search
+        @search_description = search_description(session[:search_contact_params], @contacts.total_entries)
+        render 'index'
+      end
 
-    @search_description = search_description(session[:search_contact_params], @contacts.total_entries)
+      format.csv do
+        do_the_search(:paginate => false)
 
-    render 'index'
+        filepath = "tmp/#{Time.now.to_i}"
+
+        csv_str = FasterCSV.open(filepath, "w") do |csv|
+          csv << Contact.columns_hash.collect { |column_name, column_hash| column_name }
+
+          @contacts.each do |contact|
+            csv << Contact.columns_hash.collect do |column_name, column_hash|
+              contact[column_name]
+            end
+          end
+        end
+
+        user_filename = Campus.find(@campus_id).try(:short_name) ? "#{@contacts.total_entries} contacts at #{Campus.find(@campus_id).short_name}".gsub(/[^0-9A-Za-z ]/, '') : "contacts"
+        send_file filepath, :filename => "#{user_filename}.csv", :type => "text/csv"
+      end
+    end
   end
 
   def impact_report
@@ -182,31 +222,75 @@ private
       when :degree
         desc << %(with degree/faculty contains <strong>"#{value}"</strong>)
 
+      when :data_input_notes
+        desc << %(with data input notes contains <strong>"#{value}"</strong>)
+        
+      when :interest
+        interests = contact_options_lists[:interest].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with interest <strong>#{to_or_sentence(interests)}</strong>" if interests.present?
+
+      when :magazine
+        magazines = contact_options_lists[:magazine].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with magazine <strong>#{to_or_sentence(magazines)}</strong>" if magazines.present?
+
+      when :journey
+        journies = contact_options_lists[:journey].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
+        desc << "with journey <strong>#{to_or_sentence(journies)}</strong>" if journies.present?
+
       end
     end
 
-    "<strong>#{num_results}</strong> search results for contacts #{desc.to_sentence}."
+    if @contacts.total_entries > @contacts.size
+      description = "Showing <strong>#{@contacts.total_entries > 0 ? 1 + @contacts.offset : 0}-#{@contacts.offset + @contacts.size}</strong> of <strong>#{@contacts.total_entries}</strong>"
+    else
+      description = "<strong>#{num_results}</strong>"
+    end
+
+    "#{description} search results for contacts #{desc.to_sentence}."
   end
 
-  def do_the_search
+  def do_the_search(options = {})
+    options[:paginate] = true if options[:paginate].nil?
+    per_page = options[:paginate] ? nil : Contact.all.size
+
     initialize_globals
-    @options = []
-    @options.push("campus_id = #{@campus_id}") unless @campus_id.nil?
+    condition = []
+    condition_args = []
+
+    unless @campus_id.nil?
+      condition << "campus_id = ?" 
+      condition_args << @campus_id
+    end
     
-    
-    [:gender_id, :priority, :status, :result].each do |option|
-        @options.push("#{Contact.__(fields_info[option][:field])} IN ('#{@search_options[option].join("','")}')") unless @search_options[option].include?(fields_info[option][:all_value]) if @search_options[option].present?
+    [:gender_id, :priority, :status, :result, :interest, :magazine, :journey].each do |option|
+      if @search_options[option].present? && !@search_options[option].include?(fields_info[option][:all_value])
+
+        if @search_options[option].include?("") || (fields_info[option].has_key?(:blank_value) && @search_options[option].include?(fields_info[option][:blank_value]))
+          condition << "(#{Contact.__(fields_info[option][:field])} IN (?) OR #{Contact.__(fields_info[option][:field])} IS NULL)"
+          condition_args << [@search_options[option], fields_info[option][:blank_value]].flatten
+          
+        else
+          condition << "#{Contact.__(fields_info[option][:field])} IN (?)"
+          condition_args << @search_options[option]
+        end
+      end
     end
 
     if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
-      @options.push("#{Contact.__(fields_info[:degree][:field])} LIKE '%#{@search_options[:degree]}%'")
-    end    
+      condition << "#{Contact.__(fields_info[:degree][:field])} LIKE ?"
+      condition_args << "%#{@search_options[:degree]}%"
+    end
+
+    if @search_options[:data_input_notes] && @search_options[:data_input_notes].gsub(/\s/, '').present?
+      condition << "#{Contact.__(fields_info[:data_input_notes][:field])} LIKE ?"
+      condition_args << "%#{@search_options[:data_input_notes]}%"
+    end
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
       if @search_options[:international] == ["1"]
-        @options.push("#{Contact.__(fields_info[:international][:field])} IN ('1')") 
+        condition << "#{Contact.__(fields_info[:international][:field])} IN ('1')"
       elsif @search_options[:international] == ["0"]
-        @options.push("#{Contact.__(fields_info[:international][:field])} NOT IN ('1')") 
+        condition << "#{Contact.__(fields_info[:international][:field])} NOT IN ('1')"
       else
         @search_options[:international] = [fields_info[:international][:all_value]]
       end
@@ -215,9 +299,9 @@ private
     if @search_options[:assign].present?
       unless @search_options[:assign].include?("All") || (@search_options[:assign].include?("Assigned") && @search_options[:assign].include?("Unassigned"))
         if @search_options[:assign].include?("Unassigned")
-          @options.push("#{Contact.__(:person_id)} IS NULL")
+          condition << "#{Contact.__(:person_id)} IS NULL"
         else
-          @options.push("#{Contact.__(:person_id)} IS NOT NULL")
+          condition << "#{Contact.__(:person_id)} IS NOT NULL"
         end
       end
     end
@@ -227,29 +311,35 @@ private
       @search_options[:assigned_to].each do |p|
         assignees.push(p)
       end
+
       assigned_to_cond = ""
       unless assignees.include?("-1") # all
         if assignees.include?("0") # unassigned
           assigned_to_cond = "(#{Contact.__(:person_id)} IS NULL OR #{Contact.__(:person_id)} IN (0))"
           assignees.delete("0")
         end
+
         if assignees.include?("-2") # assigned
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond} (#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
+          assigned_to_cond = "#{assigned_to_cond}(#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
           assignees.delete("-2")
         end
+
         unless assignees.count == 0
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN ('#{assignees.join("','")}')"
+          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN (?)"
+          condition_args << assignees
         end
       end
-      @options.push("(#{assigned_to_cond})") unless assigned_to_cond.blank?
+
+      condition << "(#{assigned_to_cond})" unless assigned_to_cond.blank?
     end
 
     @contacts = Contact.find(:all,
                              :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
-                             :conditions => @options.join(" AND "), :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
-                             :order => contact_order_by).paginate(:page => params[:page])
+                             :conditions => [condition.join(" AND ")] + condition_args,
+                             :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
+                             :order => contact_order_by).paginate(:page => params[:page], :per_page => per_page)
   end
 
   def initialize_globals
@@ -315,7 +405,7 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :data_input_notes, :interest, :magazine, :journey]
   end
   
   def fields_info
@@ -327,7 +417,11 @@ private
       :result => { :field => :result, :all_value => "9" },
       :assigned_to => { :field => :person_id, :all_value => "-1" },
       :international => { :field => :international, :all_value => "9" },
-      :degree => { :field => :degree, :all_value => "" }
+      :degree => { :field => :degree, :all_value => "" },
+      :data_input_notes => { :field => :data_input_notes, :all_value => "" },
+      :interest => { :field => :interest, :all_value => "9", :blank_value => "0" },
+      :magazine => { :field => :magazine, :all_value => "9" },
+      :journey => { :field => :journey, :all_value => "9" }
     }
   end
 
@@ -345,6 +439,15 @@ private
     session[:search_contact_params][:sort_dir] = order_dir
 
     "#{order_col.gsub(',', " #{order_dir},")} #{order_dir}"
+  end
+
+  def send_assigned_contacts_email(contacts)
+    person = contacts.first.person
+    # assume all contacts are assigned to one person
+    if person && contacts.collect(&:person_id).uniq.length == 1 && contacts.first.person_id == person.id
+      contacts.sort! { |a, b| a.priority <=> b.priority }
+      ContactMailer.deliver_assigned_contacts_email(contacts, base_url) if person.present?
+    end
   end
   
 end

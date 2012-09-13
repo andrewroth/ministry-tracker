@@ -1,0 +1,3 @@
+<%= Rails.cache.fetch(["/contacts/momentum_blurb", Time.now.to_date, Time.now.hour]) do
+  render 'momentum_blurb'
+end %>

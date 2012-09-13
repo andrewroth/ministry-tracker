@@ -85,10 +85,10 @@ module Cmt
     :dashboard_big_buttons_enabled => true,
 
     # prefix to preprend to the subject of each email going out
-    :email_subject_prefix => "[pulse] ",
+    :email_subject_prefix => "[The Pulse] ",
 
     # the from address for each outgoing email
-    :email_from_address => "No-Reply <noreply@campusforchrist.org>",
+    :email_from_address => "The Pulse <pulse@p2c.com>",
 
     # when editing a person profile, use a thickbox instead of in the page
     :person_edit_in_thickbox => false,
