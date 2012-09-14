@@ -68,8 +68,16 @@ class ApplicationController < ActionController::Base
   protected
 
     def set_locale
-      I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
-      session[:locale] = I18n.locale
+      if params[:locale]
+        I18n.locale = params[:locale]
+        session[:locale] = I18n.locale
+      elsif session[:locale]
+        I18n.locale = session[:locale]
+      elsif request.subdomains.first == 'pouls' || request.subdomains.first == 'lepouls'
+        I18n.locale = 'fr'
+      else
+        I18n.locale = request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      end
     end
 
     def cas_filter

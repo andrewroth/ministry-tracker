@@ -17,7 +17,7 @@
         <li><%= link_bar_tab('link_bar_tab_6', 'menu_link staff', '', '', "STAFF<span class='menu_link_arrow'></span>", 'staff_box', active_tab_id) %></li>
       <% end %>
 
-      <li><%= link_bar_tab('link_bar_tab_7', 'language', switch_languages_url(url_for(:action => :index, :controller => :dashboard, :only_path => false, :locale => nil)), switch_languages_mouseover, switch_languages_text, nil, active_tab_id) %></li>
+      <li><%= link_bar_tab('link_bar_tab_7', 'language', switch_languages_url(:url => url_for(:action => :index, :controller => :dashboard, :only_path => false, :locale => nil)), switch_languages_mouseover, switch_languages_text, nil, active_tab_id) %></li>
 
       <li><%= link_bar_tab('link_bar_tab_8', 'icon_link facebook', Facebook::FANPAGE_URL, t('layout.top_bar.icons.facebook'), '&nbsp;', nil, active_tab_id) %></li>
       
