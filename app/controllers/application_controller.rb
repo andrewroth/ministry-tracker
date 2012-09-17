@@ -68,10 +68,13 @@ class ApplicationController < ActionController::Base
   protected
 
     def set_locale
-      if params[:locale]
+      if params[:locale].present?
         I18n.locale = params[:locale]
         if params[:locale] == I18n.default_locale
           session.delete :locale
+          session[:locale] = nil
+        else
+          session[:locale] = I18n.locale
         end
       elsif session[:locale]
         I18n.locale = session[:locale]
@@ -741,10 +744,5 @@ class ApplicationController < ActionController::Base
     def needs_to_sign_volunteer_agreements?
       !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
     end
-
-    def default_url_options(options={})
-      I18n.locale == I18n.default_locale ? {} : { :locale => I18n.locale }
-    end
-
 end
 
