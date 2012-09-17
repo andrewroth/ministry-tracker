@@ -70,7 +70,9 @@ class ApplicationController < ActionController::Base
     def set_locale
       if params[:locale]
         I18n.locale = params[:locale]
-        session[:locale] = I18n.locale
+        if params[:locale] == I18n.default_locale
+          session.delete :locale
+        end
       elsif session[:locale]
         I18n.locale = session[:locale]
       elsif request.subdomains.first == 'pouls' || request.subdomains.first == 'lepouls'
