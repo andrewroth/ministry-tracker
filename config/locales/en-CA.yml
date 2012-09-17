@@ -186,6 +186,7 @@ en-CA:
       valid_from: Valid from
       valid_until: Valid until
       campus: Campus
+      role: Role
     manage_campuses:
       title: Manage Campuses
       add_campus: Add Campus
