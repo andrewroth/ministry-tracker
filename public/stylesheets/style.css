@@ -2060,12 +2060,12 @@ div.fieldWithErrors{
 
 .adfieldbox {
   float:left;
-  margin-right:15px;
+  margin-right:10px;
   /*min-width:180px;*/
 }
 
 .adfieldbox input.wide {width:185px; padding:3px 0;}
-.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 200px; margin-right:10px;}
+.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 180px; margin-right:10px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
 .searchContacts .adfieldbox select.multiSelect { height: 150px; } 
