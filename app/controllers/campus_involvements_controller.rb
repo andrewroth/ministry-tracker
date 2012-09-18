@@ -348,7 +348,7 @@ class CampusInvolvementsController < ApplicationController
 
   def set_roles
     if !is_staff_somewhere(@me)
-      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", get_my_role.position ])
+      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", (get_my_role || MinistryRole.default_student_role).try(:position) ])
     else
       student_roles = StudentRole.all
     end
