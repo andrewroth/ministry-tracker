@@ -1,7 +1,6 @@
-#page << "jQuery('#events').hide();"
 page["#events .modulecontent"].prepend(render(:partial => "events"))
-page["#eventsSpinner"].hide
-page["events"].visual_effect :fade_in
+page["#eventsSpinner"].fade
+page["events"].blind_down
 
 # update yellow menu bracket height
 page << "adjustBracketHeight();"
