@@ -1,6 +1,3 @@
 page["#events .modulecontent"].prepend(render(:partial => "events"))
 page["#eventsSpinner"].fade
-page["events"].blind_down
-
-# update yellow menu bracket height
-page << "adjustBracketHeight();"
+page << "$('#events').slideDown(function() { adjustBracketHeight(); });"
