@@ -6,7 +6,7 @@
       <tr>
         <td class="groupSemesterTitle"><%= semester ? t("terms.#{semester.translation_key}").upcase : "No Semester Set" %></td>
         <% groups.each_with_index do |group, i| %>
-        <%= "<tr><td></td>" if i > 0 %>
+        <%= "<tr>" if i > 0 %>
         <td>
           <%- if authorized?(:accept_request, :group_involvements) ||
                 authorized?(:decline_requests, :group_involvements) %>

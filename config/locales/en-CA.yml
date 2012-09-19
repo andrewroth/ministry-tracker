@@ -100,7 +100,7 @@ en-CA:
     join_txt: Join a group!
     join_more_txt: Join more groups
     events_header: My Events
-    projects_header: Projects
+    projects_header: PROJECTS
     events:
       attendees: attendees
     projects:
@@ -109,7 +109,7 @@ en-CA:
       link_txt: Apply for project!
       all_projects: All Projects
     groups:
-      requested_message: awaiting join request decision
+      requested_message: join request sent
       interested_message: interested
     update_schedule_msg: "You haven't filled out your schedule yet."
     update_schedule_title: "UPDATE MY SCHEDULE"

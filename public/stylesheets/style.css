@@ -1182,6 +1182,7 @@ a.action-button, input.action-button {
 a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
   padding: 1px 3px;
   border-width: 1px;
+  line-height: 15px;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
@@ -1483,10 +1484,15 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   vertical-align: middle;
 }
 
-.groupSemesterTitle {
-  width: 100px;
+table.groupicon td {
+  display: inline-block;
+  margin-left: 0;
+  margin-bottom: 1px;
 }
 
+table.groupicon td.groupSemesterTitle {
+  width: 100%;
+}
 
 
 
@@ -1564,7 +1570,7 @@ input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padd
 a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
-ul.requesticon li{background:url("/images/sprites/p2c_icons.png") no-repeat -9px -293px; padding-left: 23px; height: 18px;}
+ul.requesticon li{display:inline; background:url("/images/sprites/p2c_icons.png") no-repeat -9px -293px; padding-left: 23px; height: 18px; margin-left: 5px; line-height: 20px; }
 
 #userbar_wrapper, #content_wrapper, #tablist_container, .messages, #greenbar {
   width: 100%;
