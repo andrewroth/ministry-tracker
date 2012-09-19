@@ -873,14 +873,77 @@ h2 select {
   font-weight: bold;
 }
 
+.contact p {
+  margin-bottom: 3px;
+}
+
+.contact h2 {
+  color: #666766;
+}
+
+.contact h2, .contact h1 {
+  margin-bottom: 5px;
+}
+
+.contact .priority {
+  float: right;
+  font-size: 24px;
+}
+
+.contact .gender {
+  text-transform: uppercase;
+}
+
+.contact #followup_data {
+  float: right;
+  min-width: 250px;
+  text-align: right;
+}
+
+.contact #details a {
+  display: inline-block;
+  margin-top: 7px;
+}
+
+.contact select, .contact textarea {
+  font-size: 14px;
+}
+
+#survey_answers {
+  display: inline-block;
+}
+
+#survey_answers td {
+  display: inline-block;
+  padding-right: 7px;
+}
+
+#survey_answers .answer {
+  font-weight: bold;
+}
+
 #contact_notes {
   display: inline-block;
 }
 
+#contact_notes .new_note, #contact_rejoiceables .new_activity {
+  margin-top: 15px;
+}
+
 #contact_notes textarea {
+  width: 170px;
+  height: 20px;
+  margin-right: 5px;
+  -webkit-transition: height 0.2s ease, width 0.2s ease;
+  -moz-transition: height 0.2s ease, width 0.2s ease;
+  -ms-transition: height 0.2s ease, width 0.2s ease;
+  -o-transition: height 0.2s ease, width 0.2s ease;
+  transition: height 0.2s ease, width 0.2s ease;
+}
+
+#contact_notes textarea.activated {
   width: 400px;
-  height: 30px;
-  margin-right: 10px;
+  height: 70px;
 }
 
 #contact_notes form input, #contact_notes form textarea {

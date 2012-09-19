@@ -1,92 +1,117 @@
-<h1 style="float: right"><%= @contact[:priority].upcase %></h1>
-
-<h1><%= @contact[:first_name]%> <%= @contact[:last_name]%></h1>
-
-<div id="followup_data" style="float: right; width: 25%; text-align: right;">
-  <% form_for(@contact) do |f| %>
-    <%= hidden_field_tag :contact_id, @contact[:id] %>
-    <p>
-      Assigned to <%= assigned_to %><br/>
-      Status <%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %><br/>
-      Result <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %><br/>
-      Next step <%= select_tag "nextStep", options_for_select(contact_options_lists[:nextStep], @contact[:nextStep].nil? ? 0 : @contact[:nextStep]) %><br/>
-    </p>
-    <p><%= link_to "Terms and Definitions", "https://docs.google.com/a/p2c.com/file/d/0B7OI6_m3EjaKOW11SGtPMG1saU0/edit" %></p>
-    <p><%= submit_tag 'Save', :class => "action-button" %></p>
-  <% end %>
-</div>
-
-<p>
-  <%= contact_gender %>, <%= @contact[:degree] %> <%= @contact[:year] %><%= @contact[:international] == 1 ? ", international student" : "" %>
-</p>
-<p>
-  <a href="tel:<%= @contact[:cellphone] %>"><%= number_to_phone @contact[:cellphone], :area_code => true %></a><br/>
-  <a href="mailto:<%= @contact[:email] %>"><%= @contact[:email] %></a>
-</p>
-<% if @contact[:data_input_notes].present? %>
-  <p>
-    Data input notes: <em><%= @contact.data_input_notes %></em>
-  </p>
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "contacts_edit.js" %>
 <% end %>
 
-<div id="survey_answers">
-	<table>
-		<tr><td colspan="2"><h2>Survey Answers</h2></td></tr>
-		<tr><td>GENERAL - The one thing I crave most is:</td><td><%= @contact[:craving] %></td></tr>
-		<tr><td>FREE MAGAZINE</td><td><%= @contact[:magazine] %></td></tr>
-		<tr><td>Interest in a chat about Jesus Christ?</td><td><%= interest_to_chat %></td></tr>
-		<tr><td>On my spiritual journey I'd like to:</td><td><%= @contact[:journey] %></td></tr>
-	</table>
-</div>
+<div class="contact">
 
-<br>
-<br>
+  <h2 class="priority"><%= @contact[:priority].upcase %></h2>
 
-<div id="contact_notes">
-  <h2>Notes</h2>
+  <h1><%= @contact[:first_name]%> <%= @contact[:last_name]%></h1>
 
-  <ul>
-    <% @contact.notes.each do |note| %>
-      <li>"<%= note.content %>" &#8211; <em><%= "#{time_ago_in_words(note.created_at)} #{t("misc.ago")}" if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></li>
-    <% end %>
-  </ul>
-
-  <div class="new_note">
-    <% form_for [@contact, Note.new] do |f| %>
-      <p>
-        <%= f.text_area :content %>
-        <%= f.submit 'Add Note', :class => 'action-button' %>
-      </p>
+  <div id="followup_data">
+    <% form_for(@contact) do |f| %>
+      <%= hidden_field_tag :contact_id, @contact[:id] %>
+      <p>Assigned to <%= assigned_to %></p>
+      <p>Status <%= select_tag "status", options_for_select(contact_options_lists[:status], @contact[:status].nil? ? 0 : @contact[:status]) %></p>
+      <p>Result <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %></p>
+      <p>Next step <%= select_tag "nextStep", options_for_select(contact_options_lists[:nextStep], @contact[:nextStep].nil? ? 0 : @contact[:nextStep]) %></p>
+      <p><%= submit_tag 'Save', :class => "action-button" %></p>
+      <p><br/><%= link_to "Terms and Definitions", "https://docs.google.com/a/p2c.com/file/d/0B7OI6_m3EjaKOW11SGtPMG1saU0/edit" %></p>
     <% end %>
   </div>
-</div>
 
-<br>
-<br>
-
-<div id="contact_rejoiceables">
-  <h2>Rejoiceables</h2>
-
-  <ul>
-    <% @contact.activities.each do |a| %>
-      <li><strong><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></strong> &#8211; <em><%= "#{time_ago_in_words(a.created_at)} #{t("misc.ago")}" if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></li>
+  <p id="details">
+    <% if @contact[:data_input_notes].present? %>
+      Data input notes: &nbsp;<em><%= @contact.data_input_notes %></em><br/>
     <% end %>
-  </ul>
+
+    <span class="gender"><%= contact_gender %></span>
+
+    <% if @contact[:international].present? && @contact[:international] == 1 %>
+      <br/><strong>International student</strong>
+    <% end %>
+
+    <% if @contact[:degree].present? %>
+      <br/>Degree: &nbsp;<%= @contact[:degree] %>
+    <% end %>
+
+    <% if @contact[:year].present? %>
+      <br/>Year: &nbsp;<%= @contact[:year] %>
+    <% end %>
+
+    <% if @contact[:cellphone].present? %>
+      <br/><a href="tel:<%= @contact[:cellphone] %>"><%= number_to_phone @contact[:cellphone], :area_code => true %></a>
+    <% end %>
+
+    <% if @contact[:email].present? %>
+      <br/><a href="mailto:<%= @contact[:email] %>"><%= @contact[:email] %></a>
+    <% end %>
+  </p>
 
   <br>
+  <br>
 
-  <div class="new_activity">
-    <% form_for [@contact, Activity.new] do |f| %>
-      <p>
-        Add rejoiceable: <%= f.select :activity_type_id, options_for_select(activity_options[1..4]) %>
-        <%= f.submit 'Rejoice!', :class => 'action-button' %>
-      </p>
-    <% end %>
+  <div id="survey_answers">
+  	<table>
+  		<tr><td colspan="2"><h2>Survey Answers</h2></td></tr>
+  		<tr><td>GENERAL - The one thing I crave most is:</td><td class="answer"><%= @contact[:craving] %></td></tr>
+  		<tr><td>FREE MAGAZINE:</td><td class="answer"><%= @contact[:magazine] %></td></tr>
+  		<tr><td>Interest in a chat about Jesus Christ?</td><td class="answer"><%= interest_to_chat %></td></tr>
+  		<tr><td>On my spiritual journey I'd like to:</td><td class="answer"><%= @contact[:journey] %></td></tr>
+  	</table>
   </div>
+
+  <br>
+  <br>
+  <br>
+
+  <div id="contact_notes">
+    <h2>Notes</h2>
+
+    <ul>
+      <% @contact.notes.each do |note| %>
+        <li>"<%= note.content %>" &#8211; <em><%= %(<span title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></li>
+      <% end %>
+    </ul>
+
+    <div class="new_note">
+      <% form_for [@contact, Note.new] do |f| %>
+        <p>
+          <%= f.text_area :content %>
+          <%= f.submit 'Add Note', :class => 'action-button' %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <div id="contact_rejoiceables">
+    <h2>Rejoiceables</h2>
+
+    <% if @contact.activities.present? %>
+      <ul>
+        <% @contact.activities.each do |a| %>
+          <li><strong><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></strong> &#8211; <em><%= %(<span title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <div class="new_activity">
+      <% form_for [@contact, Activity.new] do |f| %>
+        <p>
+          Add <%= f.select :activity_type_id, options_for_select(activity_options[1..4]) %>
+          <%= f.submit 'Rejoice!', :class => 'action-button' %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <p><%= link_to "Back to contact search", search_contacts_path %></p>
+
 </div>
-
-<br>
-<br>
-<br>
-
-<p><%= link_to "Back to contact search", search_contacts_path %></p>
