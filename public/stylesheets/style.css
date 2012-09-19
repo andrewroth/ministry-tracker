@@ -855,7 +855,7 @@ a.piped {
   position: absolute;
   left: 0;
   right: 0;
-  background-color: white;
+  background-color: #FDFDFD;
   padding: 0px 6% 70px 6%;
   min-height: 500px;
 }
@@ -1122,7 +1122,7 @@ table#schedule, table#schedule_header {
 }
 
 table#schedule_header {
-  background-color: white;
+  background-color: #FDFDFD;
 }
 
 table#schedule u, table#schedule_header u {
@@ -1180,9 +1180,9 @@ a.action-button, input.action-button {
   box-shadow:0 -7px 7px #3075A5 inset;
 }
 a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
-  padding: 1px 3px;
+  padding: 3px;
   border-width: 1px;
-  line-height: 15px;
+  line-height: 10px;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
@@ -1570,7 +1570,8 @@ input.searchdashsubmit {margin:0 0 0 3px; font-size:13px; font-weight:bold; padd
 a.modulecontent, .modulecontent ul {font-size:12px;}
 .modulecontent ul li {margin-bottom:6px;}
 ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding-left:22px; line-height:17px;}
-ul.requesticon li{display:inline; background:url("/images/sprites/p2c_icons.png") no-repeat -9px -295px; padding-left: 23px; height: 18px; margin-left: 5px; line-height: 20px; }
+ul.requesticon li{margin: 0 0 0 10px;}
+ul.requesticon li span{background:url("/images/sprites/p2c_icons.png") no-repeat -9px -294px; height:18px; width:22px; display:inline-block;}
 
 #userbar_wrapper, #content_wrapper, #tablist_container, .messages, #greenbar {
   width: 100%;
