@@ -79,7 +79,7 @@
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:first_name] %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:cellphone] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= number_to_phone contact[:cellphone], :area_code => true %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:year] %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>

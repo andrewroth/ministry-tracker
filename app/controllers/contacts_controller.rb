@@ -251,7 +251,8 @@ private
 
   def do_the_search(options = {})
     options[:paginate] = true if options[:paginate].nil?
-    per_page = options[:paginate] ? nil : Contact.all.size
+    per_page = params[:per_page].present? ? params[:per_page] : nil
+    per_page = options[:paginate] ? per_page : Contact.all.size
 
     initialize_globals
     condition = []

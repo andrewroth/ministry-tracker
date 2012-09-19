@@ -898,6 +898,10 @@ h2 select {
   display: inline-block;
 }
 
+#searchBox.searchContacts {
+  min-width: 710px;
+}
+
 #advancedSearchLink {
   position: absolute;
   right: 2px;

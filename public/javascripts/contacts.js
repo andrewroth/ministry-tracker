@@ -25,8 +25,8 @@ $(document).ready(function(){
   // show more search options
   $("#searchBox .show_more_conditions a").click(function(e) {
     e.preventDefault();
-    $("#searchBox.searchContacts .more_conditions").show();
     $("#searchBox .show_more_conditions").hide();
+    $("#searchBox.searchContacts .more_conditions").slideDown();
   });
 
 
@@ -36,9 +36,9 @@ $(document).ready(function(){
     $('#multiple_contact_update input[type=submit]').hide();
 
     if($('#multiple_update_action').val() !== '') {
-      $('#' + $('#multiple_update_action').val() + '.multiple_update_sub_select').show();
+      $('#' + $('#multiple_update_action').val() + '.multiple_update_sub_select').fadeIn();
       $('#multiple_contact_update input[type=submit]').val($('#multiple_contact_update .multiple_update_sub_select:visible').attr('data-button-text'));
-      $('#multiple_contact_update input[type=submit]').show();
+      $('#multiple_contact_update input[type=submit]').fadeIn();
     }
   });
 
@@ -55,15 +55,17 @@ $(document).ready(function(){
 });
 
 function adjustToCampus() {
-  $('#assigned_to_').hide();
-  $('#assigned_to_').find('option').remove();
-  $('#spinnerAssignedToSelect').show();
+  $('#assigned_to_').fadeOut(function() {
+    $('#assigned_to_').find('option').remove();
+    $('#spinnerAssignedToSelect').fadeIn();
+  });
   
   $.ajax({
       success: function(data) {
         fillAssignees(data);
-        $('#spinnerAssignedToSelect').hide();
-        $('#assigned_to_').show();
+        $('#spinnerAssignedToSelect').fadeOut(function() {
+          $('#assigned_to_').fadeIn();
+        });
       },
       data: 'campus_id=' + $('#campus_id').val(),
       dataType:'script',
@@ -77,13 +79,15 @@ function fillAssignees(data) {
       opt = $("<option></option>").attr("value", value.id).text(value.name);
       if(value.selected === true) {
         opt.attr("selected", "selected");
+      } else {
+        opt.removeAttr("selected");
       }
       $('#assigned_to_').append(opt);
-
-      // if($('#assigned_to_ option:selected').length == 0) {
-      //   $('#assigned_to_ option[value=-1]').attr("selected", "selected");
-      // }
     });
+
+    if($('#assigned_to_').val() == null) {
+      $('#assigned_to_ option[value=-1]').attr("selected", "selected");
+    }
   } catch (e) {
       // not json
   }
