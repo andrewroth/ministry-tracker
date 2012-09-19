@@ -151,7 +151,7 @@
               <td>Contacted</td>
               <td>Do Not Contact</td>
             </tr>
-            <% @campus.leaders_with_contacts.sort { |a, b| "#{a.person_fname} #{a.person_lname}" <=> "#{b.person_fname} #{b.person_lname}" }.each do |person| %>
+            <% @campus.leaders_with_contacts.sort { |a, b| "#{a.person_fname.downcase} #{a.person_lname.downcase}" <=> "#{b.person_fname.downcase} #{b.person_lname.downcase}" }.each do |person| %>
               <tr>
                 <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
                 <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>

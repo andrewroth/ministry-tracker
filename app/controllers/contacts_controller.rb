@@ -382,12 +382,15 @@ private
     unless @people_available.count > 0 || initialize_campus_id.nil?
       person_ids = MinistryInvolvement.find(:all, :conditions => {:ministry_role_id => [1, 5, 6, 13], :ministry_id => ministry_leaf_and_over(@campus_id), :end_date => nil}).collect(&:person_id)
 
-      Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", person_ids]).each do |p|
-        @people_available.push(["#{p[:person_fname].capitalize} #{p[:person_lname].capitalize}", p.id])
+      people = Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", person_ids]) | Campus.find(@campus_id).leaders_with_contacts
+
+      people.each do |p|
+        @people_available.push(["#{p[:person_fname]} #{p[:person_lname]}", p.id])
       end
 
       @people_available = @people_available.uniq if @people_available.count > 0
-      @people_available.sort!{|x,y| x[0] <=> y [0]} if @people_available.count > 0
+      @people_available.sort! { |x,y| x[0].downcase <=> y [0].downcase } if @people_available.count > 0
+      
       @people_available.insert(0, ["Unassigned", 0])
       @people_available.insert(0, ["Assigned", -2])
     end
