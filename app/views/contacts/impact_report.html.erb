@@ -153,7 +153,7 @@
             </tr>
             <% @campus.leaders_with_contacts.sort { |a, b| "#{a.person_fname.downcase} #{a.person_lname.downcase}" <=> "#{b.person_fname.downcase} #{b.person_lname.downcase}" }.each do |person| %>
               <tr>
-                <td><%= "#{person.person_fname} #{person.person_lname}" %></td>
+                <td><%= link_to "#{person.person_fname} #{person.person_lname}", url_for(person) %></td>
                 <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 2}).size %></td>
                 <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => [0, 1, 4]}).size %></td>
                 <td><%= number_with_delimiter person.contacts.all(:conditions => {:campus_id => @campus.id, :status => 0}).size %></td>
