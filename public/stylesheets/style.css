@@ -1180,7 +1180,7 @@ a.action-button, input.action-button {
   box-shadow:0 -7px 7px #3075A5 inset;
 }
 a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
-  padding: 2px 4px;
+  padding: 1px 3px;
   border-width: 1px;
 }
 a.action-button:hover, input.action-button:hover {
