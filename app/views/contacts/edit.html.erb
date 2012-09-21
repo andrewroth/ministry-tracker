@@ -16,7 +16,7 @@
       <p>Result <%= select_tag "result", options_for_select(contact_options_lists[:result], @contact[:result].nil? ? 0 : @contact[:result]) %></p>
       <p>Next step <%= select_tag "nextStep", options_for_select(contact_options_lists[:nextStep], @contact[:nextStep].nil? ? 0 : @contact[:nextStep]) %></p>
       <p><%= submit_tag 'Save', :class => "action-button" %></p>
-      <p><br/><%= link_to "Terms and Definitions", "https://docs.google.com/a/p2c.com/file/d/0B7OI6_m3EjaKOW11SGtPMG1saU0/edit" %></p>
+      <p><br/><%= link_to "Terms and Definitions", "https://docs.google.com/file/d/0B7OI6_m3EjaKOW11SGtPMG1saU0/edit" %></p>
     <% end %>
   </div>
 
