@@ -301,10 +301,10 @@ class EventsController < ApplicationController
         end
       end
 
-      if @eb_event.num_attendee_rows != @campus_summary_totals[:males]+@campus_summary_totals[:females] ||
-         @eb_event.num_attendee_rows != @campus_summary_totals[:first_year]+@campus_summary_totals[:upper_year]
+      if authorized?(:show_all_campuses_summaries, :events) && ( @eb_event.num_attendee_rows != @campus_summary_totals[:males]+@campus_summary_totals[:females] ||
+         @eb_event.num_attendee_rows != @campus_summary_totals[:first_year]+@campus_summary_totals[:upper_year] )
 
-         @missing_attendees = true
+        @missing_attendees = true
       end
 
       @campus_summaries = @campus_summaries.sorted_hash { |a,b| a[0].upcase <=> b[0].upcase  }
@@ -380,7 +380,7 @@ class EventsController < ApplicationController
         end
       end
 
-      if @eb_event.num_attendee_rows != @campus_individuals
+      if authorized?(:show_all_campuses_individuals, :events) && (@eb_event.num_attendee_rows != @campus_individuals)
         @missing_attendees = true
       end
 
