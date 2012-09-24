@@ -432,6 +432,7 @@ class EventsController < ApplicationController
   def setup_my_campus
     if @me.is_staff_somewhere?
       @my_campuses = get_ministry.unique_campuses
+      @my_campuses << Campus.find_by_campus_desc("Other")
     else
       @my_campuses = @my.campuses
     end
