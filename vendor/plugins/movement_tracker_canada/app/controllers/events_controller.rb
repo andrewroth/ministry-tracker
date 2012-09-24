@@ -54,11 +54,11 @@ class EventsController < ApplicationController
   def new
     @event = Event.new
     
-    setup_campuses
+    setup_event_campuses
   end
 
   def create
-    setup_campuses
+    setup_event_campuses
     
     @event = Event.new(params[:event])
     
@@ -92,11 +92,11 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     
-    setup_campuses
+    setup_event_campuses
   end
   
   def update
-    setup_campuses
+    setup_event_campuses
     
     @event = Event.find(params[:id])
     
@@ -456,5 +456,10 @@ class EventsController < ApplicationController
       flash[:notice] = "Sorry, that event's not for you"
       redirect_to :controller => "dashboard", :action => "index"
     end
+  end
+
+  def setup_event_campuses
+    setup_campuses
+    @campuses << Campus.find_by_campus_desc("Other")
   end
 end
