@@ -241,7 +241,9 @@ class EventsController < ApplicationController
     
     setup_report_scope_radios
     
-    if @report_scope == INDIVIDUALS && (authorized?(:show_all_campuses_individuals, :events) || (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
+    if @report_scope == INDIVIDUALS &&
+        (authorized?(:show_all_campuses_individuals, :events) ||
+          (authorized?(:show_my_campus_individuals, :events) && @my_campuses.size > 1))
       @show_campus_select = true
     else
       @show_campus_select = false
@@ -361,6 +363,8 @@ class EventsController < ApplicationController
       @attendance_campuses = []
       campuses.each { |title, campus| @attendance_campuses << campus if !campus.nil? && @event.campuses.include?(campus) }
       @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+
+      @show_campus_select = false if @attendance_campuses.size == 1
 
 
       raise Exception.new(NO_ATTENDEES_AT_CAMPUS_EXCEPTION) if @campus_individuals.blank?
