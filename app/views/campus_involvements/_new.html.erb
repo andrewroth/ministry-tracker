@@ -5,7 +5,7 @@
                    :method => :post) do |f|
 %>
   <%= render :partial => 'form', :locals => { :year_only => false } %>
-  <%= submit_tag 'Save' %>
+  <%= submit_tag 'Save', :onclick => "if( $(this).closest('form').find(\"select:visible:enabled[value='']\").length > 0 ) { alert('#{t("misc.validation_failed")}'); return false; }" %>
   or
   <%= link_to_function 'cancel', '$("#new_campus_involvement_li").replaceWith("");' %>
 <% end %>
