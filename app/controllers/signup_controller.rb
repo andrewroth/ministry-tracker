@@ -140,6 +140,11 @@ class SignupController < ApplicationController
   def get_dorms
     c = Campus.find :first, :conditions => [ "#{Campus._(:id)} = ?", params[:primary_campus_involvement_campus_id] ]
     @dorms = c.try(:dorms)
+
+    respond_to do |format|
+      format.html { render :nothing => true }
+      format.js { render 'get_dorms' }
+    end
   end
 
   def step2_info_submit
