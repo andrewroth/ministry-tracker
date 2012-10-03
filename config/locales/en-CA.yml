@@ -139,7 +139,7 @@ en-CA:
       joined: Joined
       campuses:
         header: Campuses
-        confirm: "Are you sure you want to remove %{person_name} from %{campus_name}"
+        confirm: "Are you sure you want to remove %{person_name} from %{campus_name}?"
       groups:
         confirm_self: "Are you sure you want to leave %{group_name}?"
         title_self: "Leave group %{group_name}"
