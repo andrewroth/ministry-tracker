@@ -2182,8 +2182,12 @@ div.section {
   border-top:none;
   margin-top:6px;
 
-  box-shadow: 0 7px 10px #8B8B8B;
+  box-shadow: 0 10px 20px #8B8B8B;
   border-radius: 0 0 6px 6px;
+}
+
+#spinner_switch_ministries {
+  margin-right: 10px;
 }
 
 div.choose_ministry_tree {

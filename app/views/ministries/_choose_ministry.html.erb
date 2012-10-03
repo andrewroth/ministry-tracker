@@ -14,8 +14,8 @@
       enableDD: false,
       containerScroll: true,
       border: true,
-      width: 250,
-      height: 300,
+      width: 380,
+      height: 500,
       rootVisible: false,
       root: {"text":"root", "id":0, "children":[ <%= @ministries.join(",") %> ] }
     });
@@ -30,8 +30,19 @@
 
     // handle clicks
     tree.on('click', function(node, e) {
-      myurl = "<%= switch_apply_ministry_url(':id') %>".replace(/:id/,node.id);
-      jQuery.ajax({data:'', dataType:'script', type:'post', url:(""+myurl)});
+      myurl = "<%= switch_apply_ministry_url(':id', :format => 'js') %>".replace(/:id/,node.id);
+      jQuery.ajax({
+        data: '',
+        dataType: 'script',
+        type: 'post',
+        url: ('' + myurl),
+        beforeSend: function() {
+          jQuery('#spinner_switch_ministries').show();
+        },
+        success: function() {
+          jQuery('#spinner_switch_ministries').hide();
+        }
+      });
       //jQuery.ajax({data:'', dataType:'script', type:'post', url:'here'})
       //$('#ministry_involvement_ministry_id')[0].value = node.id;
     }, this);

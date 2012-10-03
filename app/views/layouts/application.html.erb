@@ -90,7 +90,7 @@
                     <div id="switch_ministries">
                       <%- if @ministry -%>
                         &nbsp;&nbsp;
-                        <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url, :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
+                        <%= link_to_remote "#{@ministry.name}<span class='menu_link_arrow'>&nbsp;</span>", {:url => switch_list_ministries_url(:format => 'js'), :method => 'get', :before => "$('#spinner_switch_ministries').show();", :success => "$('#spinner_switch_ministries').hide();"}, {:class => "menu_link"} %>
                       <%- end -%>
                     </div>
                     <div id="switch_ministries_list" style="display:none">&nbsp;</div>
