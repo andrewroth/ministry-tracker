@@ -261,13 +261,15 @@ class EventsController < ApplicationController
 
   def setup_summary
     begin
+      @results_partial = "attendance_summary_cached"
+      return if Rails.cache.read([@eb_event.id, "summary", Time.now.to_date, Time.now.hour]).present?
+
       @campus_summaries = ActiveSupport::OrderedHash.new
       @campus_summary_totals = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0}
 
       raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
       raise Exception.new() if attendees.blank?
-
 
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question])
@@ -280,17 +282,17 @@ class EventsController < ApplicationController
 
           @campus_summaries[eb_campus.to_s] = {:males => 0, :females => 0, :first_year => 0, :upper_year => 0} if @campus_summaries[eb_campus].nil?
 
-          case attendee.gender
-          when eventbrite[:female]
+          case attendee.gender.try(:downcase)
+          when eventbrite[:female].downcase
             @campus_summaries[eb_campus][:females] += 1
             @campus_summary_totals[:females] += 1
-          when eventbrite[:male]
+          when eventbrite[:male].downcase
             @campus_summaries[eb_campus][:males] += 1
             @campus_summary_totals[:males] += 1
           end
 
-          case attendee.answer_to_question(eventbrite[:year_question])
-          when eventbrite[:first_year]
+          case attendee.answer_to_question(eventbrite[:year_question]).try(:downcase)
+          when eventbrite[:first_year][:en].downcase, eventbrite[:first_year][:fr].downcase
             @campus_summaries[eb_campus][:first_year] += 1
             @campus_summary_totals[:first_year] += 1
           else
@@ -311,7 +313,6 @@ class EventsController < ApplicationController
 
       @report_description = "Attendance Summary"
 
-      @results_partial = "attendance_summary"
     rescue Exception => e
       if e.message == NO_ATTENDEES_EXCEPTION
         @report_description = NO_ATTENDEES_EXCEPTION
@@ -324,9 +325,16 @@ class EventsController < ApplicationController
 
 
   def setup_individuals
-
     begin
       setup_attendance_report_from_session unless @selected_campus.present?
+
+      @attendance_campuses = @event.campuses
+      @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
+      @show_campus_select = false if @attendance_campuses.size == 1
+
+      @results_partial = "attendance_individuals_cached"
+      return if Rails.cache.read([@eb_event.id, "individuals", @selected_campus.id, @report_sort, Time.now.to_date, Time.now.hour]).present?
+
 
       raise Exception.new(NO_ATTENDEES_EXCEPTION) if @eb_event.num_attendee_rows.blank? || @eb_event.num_attendee_rows == 0
       attendees = @eb_event.attendees if @eb_event.present?
@@ -334,7 +342,6 @@ class EventsController < ApplicationController
       
 
       @campus_individuals = ActiveSupport::OrderedHash.new
-      campuses = {}
 
       attendees.each do |attendee|
         eb_campus = attendee.answer_to_question(eventbrite[:campus_question]) # answer is in the format "campus.desc (campus.short_desc)"
@@ -343,8 +350,6 @@ class EventsController < ApplicationController
 
         # if has permission to see info from all campuses
         if authorized?(:show_all_campuses_individuals, :events)
-          campuses[eb_campus.to_s] = Campus::find_campus_from_eventbrite(eb_campus) # use hash to prevent duplicates
-
           add_attendee_to_hash(@campus_individuals, attendee) if @selected_campus.matches_eventbrite_campus(eb_campus)
 
         # else if only has permission to see info from their own campus
@@ -352,19 +357,10 @@ class EventsController < ApplicationController
           matched_campus = @my_campuses.select {|c| c.matches_eventbrite_campus(eb_campus)}[0]
 
           if matched_campus.present?
-            campuses[eb_campus.to_s] = matched_campus
-
             add_attendee_to_hash(@campus_individuals, attendee) if @selected_campus.matches_eventbrite_campus(eb_campus)
           end
         end
       end
-
-
-      @attendance_campuses = []
-      campuses.each { |title, campus| @attendance_campuses << campus if !campus.nil? && @event.campuses.include?(campus) }
-      @attendance_campuses.sort! {|a,b| a.desc <=> b.desc} if @attendance_campuses.size > 1
-
-      @show_campus_select = false if @attendance_campuses.size == 1
 
 
       raise Exception.new(NO_ATTENDEES_AT_CAMPUS_EXCEPTION) if @campus_individuals.blank?
@@ -386,7 +382,6 @@ class EventsController < ApplicationController
 
       @report_description = "Attendees from #{@selected_campus.desc}"
 
-      @results_partial = "attendance_individuals"
 
     rescue Exception => e
       if e.message == NO_ATTENDEES_EXCEPTION

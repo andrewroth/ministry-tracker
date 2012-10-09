@@ -2605,6 +2605,7 @@ fieldset {
 }
 
 #results .statsTable tr td {
+  text-align: left;
   padding: 5px 5px;
 }
 
