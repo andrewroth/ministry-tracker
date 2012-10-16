@@ -1,4 +1,4 @@
-module ContactsHelper
+module SurveyContactsHelper
 
   def options_corr(option)
     @options_corr || @options_corr = {}
@@ -283,11 +283,11 @@ module ContactsHelper
 
     dir = case params[:sort_dir].upcase
     when 'ASC'
-      params[:sort_col] == col.to_s ? 'DESC' : Contact::DEFAULT_SORT_DIRECTION
+      params[:sort_col] == col.to_s ? 'DESC' : SurveyContact::DEFAULT_SORT_DIRECTION
     when 'DESC'
-      params[:sort_col] == col.to_s ? 'ASC'  : Contact::DEFAULT_SORT_DIRECTION
+      params[:sort_col] == col.to_s ? 'ASC'  : SurveyContact::DEFAULT_SORT_DIRECTION
     else
-      Contact::DEFAULT_SORT_DIRECTION
+      SurveyContact::DEFAULT_SORT_DIRECTION
     end
 
     link_class = params[:sort_col] == col.to_s ? dir.downcase : ''

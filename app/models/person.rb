@@ -61,7 +61,7 @@ class Person < ActiveRecord::Base
     
   has_many :contract_signatures
 
-  has_many :contacts
+  has_many :survey_contacts
 
   has_many :notes
 

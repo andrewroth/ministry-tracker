@@ -29,7 +29,16 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :prcs
 
-  map.resources :contacts, :collection => {:search => :get, :impact_report => :get, :national_report => :get}, :has_many => [:notes, :activities]
+
+  map.resources :survey_contacts, :has_many => [:notes, :activities]
+  map.resources :contacts, :controller => 'survey_contacts', :collection => {
+      :search => :get,
+      :impact_report => :get,
+      :national_report => :get,
+      :assignees_for_campus => :get,
+      :multiple_update => :post
+    }, :has_many => [:notes, :activities]
+    
 
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },

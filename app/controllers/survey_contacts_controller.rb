@@ -1,7 +1,7 @@
 require 'csv'
 
-class ContactsController < ApplicationController
-  include ContactsHelper
+class SurveyContactsController < ApplicationController
+  include SurveyContactsHelper
 
   skip_before_filter :authorization_filter, :only => [:assignees_for_campus]
 
@@ -34,12 +34,12 @@ class ContactsController < ApplicationController
   end
   
   def edit
-    @contact = Contact.find(params[:id], :include => {:notes => :person})
+    @contact = SurveyContact.find(params[:id], :include => {:notes => :person})
     initialize_globals
   end
   
   def update
-    @contact = Contact.find(params[:contact_id])
+    @contact = SurveyContact.find(params[:contact_id])
 
     send_assign_notification = (params[:assign].present? && @contact.person_id.to_i != params[:assign].to_i) ? true : false
 
@@ -79,7 +79,7 @@ class ContactsController < ApplicationController
 
       if assignee_person_name && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
-        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
         
         saved_successfully = []
 
@@ -102,7 +102,7 @@ class ContactsController < ApplicationController
 
       if status_option && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
-        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
         
         contacts.each do |contact|
           contact[:status] = status
@@ -118,7 +118,7 @@ class ContactsController < ApplicationController
 
       if result_option && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
-        contacts = Contact.find(:all, :conditions => { :id => contact_ids })
+        contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
         
         contacts.each do |contact|
           contact[:result] = result
@@ -153,10 +153,10 @@ class ContactsController < ApplicationController
         filepath = "tmp/#{Time.now.to_i}"
 
         csv_str = FasterCSV.open(filepath, "w") do |csv|
-          csv << Contact.columns_hash.collect { |column_name, column_hash| column_name }
+          csv << SurveyContact.columns_hash.collect { |column_name, column_hash| column_name }
 
           @contacts.each do |contact|
-            csv << Contact.columns_hash.collect do |column_name, column_hash|
+            csv << SurveyContact.columns_hash.collect do |column_name, column_hash|
               contact[column_name]
             end
           end
@@ -175,7 +175,7 @@ class ContactsController < ApplicationController
   end
 
   def national_report
-    campus_ids = Contact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
+    campus_ids = SurveyContact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
     @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids], :order => "#{Campus._(:desc)} ASC")
   end
   
@@ -252,7 +252,7 @@ private
   def do_the_search(options = {})
     options[:paginate] = true if options[:paginate].nil?
     per_page = params[:per_page].present? ? params[:per_page] : nil
-    per_page = options[:paginate] ? per_page : Contact.all.size
+    per_page = options[:paginate] ? per_page : SurveyContact.all.size
 
     initialize_globals
     condition = []
@@ -267,31 +267,31 @@ private
       if @search_options[option].present? && !@search_options[option].include?(fields_info[option][:all_value])
 
         if @search_options[option].include?("") || (fields_info[option].has_key?(:blank_value) && @search_options[option].include?(fields_info[option][:blank_value]))
-          condition << "(#{Contact.__(fields_info[option][:field])} IN (?) OR #{Contact.__(fields_info[option][:field])} IS NULL)"
+          condition << "(#{SurveyContact.__(fields_info[option][:field])} IN (?) OR #{SurveyContact.__(fields_info[option][:field])} IS NULL)"
           condition_args << [@search_options[option], fields_info[option][:blank_value]].flatten
           
         else
-          condition << "#{Contact.__(fields_info[option][:field])} IN (?)"
+          condition << "#{SurveyContact.__(fields_info[option][:field])} IN (?)"
           condition_args << @search_options[option]
         end
       end
     end
 
     if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
-      condition << "#{Contact.__(fields_info[:degree][:field])} LIKE ?"
+      condition << "#{SurveyContact.__(fields_info[:degree][:field])} LIKE ?"
       condition_args << "%#{@search_options[:degree]}%"
     end
 
     if @search_options[:data_input_notes] && @search_options[:data_input_notes].gsub(/\s/, '').present?
-      condition << "#{Contact.__(fields_info[:data_input_notes][:field])} LIKE ?"
+      condition << "#{SurveyContact.__(fields_info[:data_input_notes][:field])} LIKE ?"
       condition_args << "%#{@search_options[:data_input_notes]}%"
     end
 
     if @search_options[:international].present? && !@search_options[:international].include?(fields_info[:international][:all_value])
       if @search_options[:international] == ["1"]
-        condition << "#{Contact.__(fields_info[:international][:field])} IN ('1')"
+        condition << "#{SurveyContact.__(fields_info[:international][:field])} IN ('1')"
       elsif @search_options[:international] == ["0"]
-        condition << "#{Contact.__(fields_info[:international][:field])} NOT IN ('1')"
+        condition << "#{SurveyContact.__(fields_info[:international][:field])} NOT IN ('1')"
       else
         @search_options[:international] = [fields_info[:international][:all_value]]
       end
@@ -300,9 +300,9 @@ private
     if @search_options[:assign].present?
       unless @search_options[:assign].include?("All") || (@search_options[:assign].include?("Assigned") && @search_options[:assign].include?("Unassigned"))
         if @search_options[:assign].include?("Unassigned")
-          condition << "#{Contact.__(:person_id)} IS NULL"
+          condition << "#{SurveyContact.__(:person_id)} IS NULL"
         else
-          condition << "#{Contact.__(:person_id)} IS NOT NULL"
+          condition << "#{SurveyContact.__(:person_id)} IS NOT NULL"
         end
       end
     end
@@ -316,19 +316,19 @@ private
       assigned_to_cond = ""
       unless assignees.include?("-1") # all
         if assignees.include?("0") # unassigned
-          assigned_to_cond = "(#{Contact.__(:person_id)} IS NULL OR #{Contact.__(:person_id)} IN (0))"
+          assigned_to_cond = "(#{SurveyContact.__(:person_id)} IS NULL OR #{SurveyContact.__(:person_id)} IN (0))"
           assignees.delete("0")
         end
 
         if assignees.include?("-2") # assigned
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond}(#{Contact.__(:person_id)} IS NOT NULL AND #{Contact.__(:person_id)} NOT IN (0))"
+          assigned_to_cond = "#{assigned_to_cond}(#{SurveyContact.__(:person_id)} IS NOT NULL AND #{SurveyContact.__(:person_id)} NOT IN (0))"
           assignees.delete("-2")
         end
 
         unless assignees.count == 0
           assigned_to_cond = "#{assigned_to_cond} OR " unless assigned_to_cond.blank?
-          assigned_to_cond = "#{assigned_to_cond}#{Contact.__(fields_info[:assigned_to][:field])} IN (?)"
+          assigned_to_cond = "#{assigned_to_cond}#{SurveyContact.__(fields_info[:assigned_to][:field])} IN (?)"
           condition_args << assignees
         end
       end
@@ -336,10 +336,10 @@ private
       condition << "(#{assigned_to_cond})" unless assigned_to_cond.blank?
     end
 
-    @contacts = Contact.find(:all,
-                             :select => "#{Contact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
+    @contacts = SurveyContact.find(:all,
+                             :select => "#{SurveyContact.table_name}.*, #{Person.__(:first_name)}, #{Person.__(:last_name)}",
                              :conditions => [condition.join(" AND ")] + condition_args,
-                             :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{Contact.table_name}.person_id",
+                             :joins => "LEFT JOIN #{Person.table_name} ON #{Person.__(:id)} = #{SurveyContact.table_name}.person_id",
                              :order => contact_order_by).paginate(:page => params[:page], :per_page => per_page)
   end
 
@@ -430,12 +430,12 @@ private
   end
 
   def contact_order_by
-    order_col = @search_options[:sort_col].present? ? @search_options[:sort_col] : Contact::DEFAULT_SORT_COLUMN
-    order_dir = @search_options[:sort_dir].present? ? @search_options[:sort_dir] : Contact::DEFAULT_SORT_DIRECTION
+    order_col = @search_options[:sort_col].present? ? @search_options[:sort_col] : SurveyContact::DEFAULT_SORT_COLUMN
+    order_dir = @search_options[:sort_dir].present? ? @search_options[:sort_dir] : SurveyContact::DEFAULT_SORT_DIRECTION
 
     # sanitize
-    order_dir = ['ASC', 'DESC'].include?(order_dir) ? order_dir : Contact::DEFAULT_SORT_DIRECTION
-    order_col = contact_search_results_columns.collect { |col| col[:fields].join(',') }.include?(order_col) ? order_col : Contact::DEFAULT_SORT_COLUMN
+    order_dir = ['ASC', 'DESC'].include?(order_dir) ? order_dir : SurveyContact::DEFAULT_SORT_DIRECTION
+    order_col = contact_search_results_columns.collect { |col| col[:fields].join(',') }.include?(order_col) ? order_col : SurveyContact::DEFAULT_SORT_COLUMN
     params.merge!(:sort_dir => order_dir, :sort_col => order_col)
     @search_options[:sort_col] = order_col
     @search_options[:sort_dir] = order_dir

@@ -69,7 +69,7 @@ function adjustToCampus() {
       },
       data: 'campus_id=' + $('#campus_id').val(),
       dataType:'script',
-      type:'post',
+      type:'get',
       url:'/contacts/assignees_for_campus'}); 
 }
 
