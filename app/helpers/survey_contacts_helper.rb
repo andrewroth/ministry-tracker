@@ -270,7 +270,7 @@ module SurveyContactsHelper
   end
 
   def contact_campuses_options_for_select(campus_id)
-    options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("contacts", "index")), campus_id.present? ? campus_id.to_i : nil)
+    options_for_select(campuses_options(::MinistryRole::ministry_roles_that_grant_access("survey_contacts", "index")), campus_id.present? ? campus_id.to_i : nil)
   end
 
   def is_number?(object)
