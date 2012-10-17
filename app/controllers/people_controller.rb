@@ -174,7 +174,8 @@ class PeopleController < ApplicationController
     if params[:page].present?
       if !session[:last_options].present?
         flash[:notice] = "Sorry, looks like your search expired.  Please search again."
-        redirect_to :back
+        redirect_to params.merge(:action => 'directory').except(:page, :search_id)
+        return
       else
         session[:last_options].each_pair do |k,v|
           next if k == :page || k == "page"
