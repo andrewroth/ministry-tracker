@@ -11,5 +11,5 @@ elsif involvement.errors.empty?
   page["new_#{@singular}_involvement_li"].replace ''
   page["add_#{@singular}_button"].show
 else
-  page[:"new_#{@singular}_involvement"].replace_html :partial => 'new'
+  page["new_#{@singular}_involvement_li"].replace :partial => 'new'
 end
