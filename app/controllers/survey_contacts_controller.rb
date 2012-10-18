@@ -169,7 +169,7 @@ class SurveyContactsController < ApplicationController
   end
 
   def impact_report
-    @campuses = campuses(::MinistryRole::ministry_roles_that_grant_access("contacts", "index"))
+    @campuses = campuses(::MinistryRole::ministry_roles_that_grant_access("survey_contacts", "index"))
     @campus = Campus.find(params[:campus_id]) if params[:campus_id]
     @campus = @campuses.first if @campus.blank? || !@campuses.include?(@campus)
   end
