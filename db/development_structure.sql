@@ -7,7 +7,7 @@ CREATE TABLE `activities` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -147,6 +147,11 @@ CREATE TABLE `contacts` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `contacts_people` (
+  `person_id` int(11) DEFAULT NULL,
+  `contact_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `contract_clauses` (
@@ -723,7 +728,7 @@ CREATE TABLE `notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2090 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2091 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -911,7 +916,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=110054 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=110055 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1611,6 +1616,8 @@ INSERT INTO schema_migrations (version) VALUES ('20120910134953');
 INSERT INTO schema_migrations (version) VALUES ('20121016135537');
 
 INSERT INTO schema_migrations (version) VALUES ('20121016141026');
+
+INSERT INTO schema_migrations (version) VALUES ('20121017201423');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

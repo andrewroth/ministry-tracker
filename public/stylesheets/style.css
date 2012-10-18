@@ -195,6 +195,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   padding-left: 23px;
   margin-left: 10px;
   display: inline-block;
+  font-size: 12px;
 }
 
 .butProfile a:hover {
@@ -724,7 +725,6 @@ img.opaqueWhite {
 }
 .directorytable th {
     font-weight: normal;
-    color: #1F429B;
     border-bottom: 1px solid #0064a2;
 		text-align: left;
 }
@@ -760,9 +760,9 @@ img.opaqueWhite {
   display: inline;
   margin: 1em;
 }
-
+    
 .directorytable tr{vertical-align:middle; height:25px;}
-.directorytable td{vertical-align:middle;}
+.directorytable td{vertical-align:middle; color: #666766;}
 
 table td.sub {
   padding-left: 20px;
@@ -797,12 +797,10 @@ table td.sub {
 }
 
 .directorytable.contacts th, .directorytable.contacts td {
-  padding: 8px;
-  padding-right: 10px;
+  padding: 10px 8px;
 }
 
 .directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
-  padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
@@ -4118,3 +4116,114 @@ td.campusDiscTree {
   vertical-align: middle;
 }
 
+
+.contact_form label {
+  display: inline-block;
+  float: none;
+  width: 80px;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.contact_form p {
+  padding: 5px;
+}
+
+.contact_form input:not([type=submit]) {
+  font-size: 18px;
+  width: 290px;
+}
+
+.contact_form select {
+  font-size: 16px;
+  max-width: 300px;
+}
+
+.contact_form textarea {
+  width: 380px;
+  height: 90px;
+}
+
+.contact_form .col, .discover_contacts.col {
+  margin: 20px 0;
+  display: inline-block;
+  width: 43%;
+  float: left;
+}
+
+.contact_form .col.wider {
+  width: 50%;
+}
+
+.discover_contacts.col.widest {
+  width: 70%;
+}
+
+.contact_form .col.separator {
+  border-left: 1px dashed lightgray;
+  padding-left: 50px;
+}
+
+.contact_form .submit_container {
+  text-align: right;
+  margin-top: 20px;
+  padding-right: 13%;
+}
+
+.contact_form .submit_container a {
+  margin: 0 20px;
+}
+
+.contact_form .sub_form {
+  margin-bottom: 50px;
+}
+
+.discover_contacts_container {
+}
+
+.discover_contact #contact_notes textarea.activated {
+  width: 280px;
+  height: 90px;
+}
+
+.discover_contacts_container .directorytable, .discover_contacts_container .directorytable th {
+  background-color: rgba(245, 245, 245, 0.6);
+  border: none;
+}
+
+.discover_contacts_container thead th {
+  opacity: 0.6;
+}
+
+.discover_contacts_container tbody tr {
+  font-size: 14px;
+}
+
+.discover_contacts_container tr.highlight {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.discover_contacts_container tbody tr:hover td {
+  background-color: rgba(255, 236, 179, 1);
+  color: #0064A2;
+}
+
+.discover_contacts_container tr .show_on_hover {
+  visibility: hidden;
+}
+
+.discover_contacts_container tr:hover .show_on_hover {
+  visibility: visible;
+}
+
+.discover_contacts_controls select {
+  font-size: 18px;
+}
+
+.discover_contacts_controls a {
+  float: right;
+}
+
+.discover_contacts_controls {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,10 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'discover_contacts.js' %>
+<% end %>
+
+
+<h1>Contact</h1>
+
+<div class="contact discover_contact">
+  <%= render 'form', :discover_contact => @discover_contact, :submit_verb => :Update %>
+</div>

@@ -38,6 +38,8 @@ ActionController::Routing::Routes.draw do |map|
       :assignees_for_campus => :get,
       :multiple_update => :post
     }, :has_many => [:notes, :activities]
+  map.resources :discover_contacts, :controller => :discover_contacts, :has_many => [:notes, :activities]
+  map.connect '/discover', :controller => :discover_contacts, :action => :index
     
 
   map.connect 'cim_hrdb_people/search',

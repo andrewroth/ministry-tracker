@@ -1,0 +1,51 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'discover_contacts.js' %>
+<% end %>
+
+<h1>Discover</h1>
+
+<div class="discover_contacts col widest">
+
+  <div class="discover_contacts_controls">
+    <big>My contacts at </big><%= select_tag :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), @campus.id) %>
+    <%= link_to 'Add', new_discover_contact_path, :class => 'action-button' if @discover_contacts.present? %>
+  </div>
+
+  <div class="discover_contacts_container">
+    <% if @discover_contacts.present? %>
+
+      <table cellpadding="0" cellspacing="0" class="directorytable contacts">
+        <thead class="center">
+          <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Mobile phone</th>
+          <th>Email</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @discover_contacts.each_with_index do |contact, i|  %>
+          <tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>" title="Click to view and edit this contact">
+            <td width="10px">
+              <%#= check_box_tag 'contact[]', contact[:id], false %> 
+            </td>
+            <td style="white-space: nowrap;" class="person_row" person_link="<%= edit_discover_contact_path(contact) %>"><%= contact.full_name %></td>
+            <td style="white-space: nowrap;" class="person_row" person_link="<%= edit_discover_contact_path(contact) %>"><%= number_to_phone contact.mobile_phone, :area_code => true %></td>
+            <td style="white-space: nowrap;" class="person_row" person_link="<%= edit_discover_contact_path(contact) %>"><%= contact.email %></td>
+            <td class="alignright show_on_hover">
+              <div class="butProfile"><%= link_to 'Edit', edit_discover_contact_path(contact), :title => "View and edit this contact" %></div>
+            </td>
+          </tr>
+        <% end %>
+          
+        </tbody>
+      </table>
+
+    <% else %>
+      <br>
+      <big>You have no contacts at <%= @campus.short_name %> yet...</big> &nbsp;&nbsp; <%= link_to 'Add a New Contact', new_discover_contact_path, :class => 'action-button'%>
+    <% end %>
+  </div>
+
+</div>

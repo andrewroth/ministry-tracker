@@ -62,6 +62,8 @@ class Person < ActiveRecord::Base
   has_many :contract_signatures
 
   has_many :survey_contacts
+  has_and_belongs_to_many :discover_contacts, :join_table => 'contacts_people', :association_foreign_key => 'contact_id'
+  has_and_belongs_to_many :contacts
 
   has_many :notes
 

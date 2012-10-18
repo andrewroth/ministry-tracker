@@ -17,7 +17,7 @@ module SurveyContactsHelper
       :international => [["National", 0], ["International", 1]],
       :status => [["Completed", 2], ["Uncontacted", 0], ["Attempted", 1], ["Contacted", 4], ["Do Not Contact", 3]],
       :result => [["No Result Yet", 0], ["Bad Information", 1], ["No Response", 2], ["No Longer Interested", 3], ["Additional Digital Sent", 4], ["Magazine Grab 'n' Go", 5], ["Interaction", 6], ["Interaction & Magazine", 7]],
-      :nextStep => [["Unknown", 0], ["Know and trust a Christian", 1], ["Become curious", 2], ["Become open to change", 3], ["Seek God", 4], ["Make a descision", 5], ["Grow in relationship with God", 6]],
+      :nextStep => Contact::NEXT_STEP_OPTIONS,
       :interest => [["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["blank", ""]],
       :magazine => [["a real justice", "a real justice"], ["escape from the dreariness of life", "escape from the dreariness of life"], ["love without conditions", "love without conditions"], ["no thanks", "no thanks"], ["Spiritual connection", "Spiritual connection"], ["blank", ""]],
       :journey => [["do nothing right now", "do nothing right now"], ["explore the deeper meaning of my cravings", "explore the deeper meaning of my cravings"], ["get connected to online resources about my cravings", "get connected to online resources about my cravings"], ["grow in my relationship with Jesus", "grow in my relationship with Jesus"], ["hear more about Power to Change", "hear more about Power to Change"], ["blank", ""]]
