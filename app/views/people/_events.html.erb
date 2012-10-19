@@ -20,4 +20,8 @@
       <%= t('profile.events.none_other', :name => @person.first_name) %>
     <%- end -%>
   <% end %>
+  <p>
+    <br>
+    <a href="<%=eventbrite[:c4c_events_link]%>" target="_blank" title="<%= t('profile.events.current_events') %>"><%= t('profile.events.current_events') %></a>
+  </p>
 </ul>

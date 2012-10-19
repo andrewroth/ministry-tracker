@@ -1,4 +1,3 @@
 unless params[:already] == 'true'
   page.insert_html :before, :new_ministry_li, :partial => 'new'
-  page[:add_ministry_button].hide
 end

@@ -6,7 +6,7 @@ class NotesController < ApplicationController
     @note.person_id = get_person.try(:id)
     
     if @note.save
-      flash[:notice] = "Successfully added note."
+      flash[:notice] = "Note added!"
       redirect_to @noteable
     else
       redirect_to :back

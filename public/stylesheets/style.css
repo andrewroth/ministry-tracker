@@ -52,7 +52,7 @@ border: 0px dotted #CCCCCC;
 #customizebody {float:left;
 width:675px;}
 
-#custom_attributes_ProfileQuestion, 
+#custom_attributes_ProfileQuestion,
 #instructions_ProfileQuestion,
 #instructions_TrainingQuestion {
 display:block;margin-bottom:30px; }
@@ -68,7 +68,7 @@ padding:0 10px 10px 10px;
 #footer img {border:0;}
 
 h3.lbtitle  {
-font-weight:bold; 
+font-weight:bold;
 font-size:14px;
 padding:5px 0;
 color:#666766;
@@ -121,7 +121,7 @@ div.yui-skin-cnxbar {
   background-position:-10px -1274px;
   height:24px;
   width:22px;
-  
+
   opacity:0.9; filter: alpha(opacity = 90); /* for IE */
   box-shadow:-1px -1px 7px #0C1C3E inset;
   border-radius: 0 0 20px 0;
@@ -195,6 +195,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   padding-left: 23px;
   margin-left: 10px;
   display: inline-block;
+  font-size: 12px;
 }
 
 .butProfile a:hover {
@@ -322,7 +323,7 @@ input, textarea, select.multiSelect {
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
   border:1px solid #ddd;
-  
+
   border-radius:3px;
   transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
@@ -558,6 +559,11 @@ a.active #groupsTab, #groupsTab:hover { background-position: -4px -700px; }
 .tablist #groupsTab:hover, .tablist a.active #groupsTab { background-position: -10px -700px; }
 .tablist #groupsTab { background-position: -10px -256px; }
 
+#discoverTab                              { background-image: none; }
+a.active #discoverTab, #discoverTab:hover {  }
+.tablist #discoverTab:hover, .tablist a.active #discoverTab {  }
+.tablist #discoverTab { padding-left: 10px; }
+
 #campusDiscTab                            { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -6px -86px; }
 a.active #campusDiscTab, #campusDiscTab:hover { background-position: -6px -530px; }
 .tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position: -9px -532px; }
@@ -621,8 +627,8 @@ background:#e9e9e9;
 padding:7px;
 }
 
-h1#title { 
-  float: left; 
+h1#title {
+  float: left;
   padding-left:10px;
   font-size: 1.5em;
 }
@@ -714,7 +720,7 @@ img.opaqueWhite {
 
 .directorytable {
     background-color: #f5f5f5;
-    padding: 8px;
+    padding: 10px;
     border-bottom: 1px #0064a2 solid;
     border-radius: 10px;
 }
@@ -724,7 +730,6 @@ img.opaqueWhite {
 }
 .directorytable th {
     font-weight: normal;
-    color: #1F429B;
     border-bottom: 1px solid #0064a2;
 		text-align: left;
 }
@@ -762,7 +767,7 @@ img.opaqueWhite {
 }
 
 .directorytable tr{vertical-align:middle; height:25px;}
-.directorytable td{vertical-align:middle;}
+.directorytable td{vertical-align:middle; color: #666766;}
 
 table td.sub {
   padding-left: 20px;
@@ -797,12 +802,10 @@ table td.sub {
 }
 
 .directorytable.contacts th, .directorytable.contacts td {
-  padding: 8px;
-  padding-right: 10px;
+  padding: 10px 8px;
 }
 
 .directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
-  padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
@@ -848,7 +851,7 @@ table td.sub {
 a.piped {
   padding-right: 10px;
   margin-right: 10px;
-  border-right: 1px solid lightgray; 
+  border-right: 1px solid lightgray;
 }
 
 .contacts_container {
@@ -861,7 +864,7 @@ a.piped {
 }
 
 .searchResultsPagination.contacts {
-  margin: 7px; 
+  margin: 7px;
 }
 
 ul.contacts.momentum li {
@@ -927,7 +930,7 @@ h2 select {
 }
 
 #contact_notes .new_note, #contact_rejoiceables .new_activity {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #contact_notes textarea {
@@ -1001,7 +1004,7 @@ div.progressBar div.background {
 }
 
 div.right-menu {
-	float:right; 
+	float:right;
 	text-align:left;
 	border: 0px solid grey;
 	padding: 0px;
@@ -1074,9 +1077,9 @@ margin-bottom:10px;
 }
 
 #tree-div {
-	width:80%; 
+	width:80%;
 	float:left;
-	overflow:auto; 
+	overflow:auto;
 	height:300px;
 	border:1px solid #c3daf9;
 }
@@ -1228,8 +1231,18 @@ table#schedule_header {
   left: 10px;
 }
 
-table#schedule_header th { 
+table#schedule_header th {
   border-bottom: 1px solid #666766;
+}
+
+#schedule_header {
+  display: none;
+}
+
+#schedule_header.schedule_header_fixed {
+  position: fixed !important;
+  top: 0 !important;
+  display: inline-block;
 }
 
 a.action-button, input.action-button {
@@ -1273,7 +1286,7 @@ input.action-button[disabled] {
   border: 2px solid #E0E6E0;
   color: #B4BAB4;
   cursor: default;
-  
+
   box-shadow:0 4px 4px #F2F4F2 inset;
 }
 input.action-button[disabled]:hover {
@@ -1331,7 +1344,7 @@ input.action-button[disabled]:hover {
 .editing a.goodhead {
   opacity: 1; filter:alpha(opacity=100);/*for IE*/
   border-radius:7px;
-  box-shadow: 0 -3px 15px #666666 inset; 
+  box-shadow: 0 -3px 15px #666666 inset;
   transition: .1s ease; -webkit-transition: .1s ease;
 }
 
@@ -1352,9 +1365,9 @@ input.action-button[disabled]:hover {
 .editing a.poorhead:active,
 .editing a.okhead:active,
 .editing a.goodhead:active {
-  border-color:#3F403F; 
-  background-position: center 33px; 
-  box-shadow: 0 3px 15px #666666 inset; 
+  border-color:#3F403F;
+  background-position: center 33px;
+  box-shadow: 0 3px 15px #666666 inset;
 }
 
 .statusheadwrap {background:none; display:block;margin:0 0 20px 0; clear:both;}
@@ -1528,7 +1541,7 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
   height: 99px;
   width: 163px;
   transition: box-shadow 0.3s; -webkit-transition: box-shadow 0.3s;
-  
+
   zoom:1; *display: inline; /* hack for IE7 */
 }
 
@@ -1552,9 +1565,9 @@ div.closebox {padding-top:10px; padding-bottom:10px;}
 }
 
 table.groupicon td {
-  display: inline-block;
   margin-left: 0;
   margin-bottom: 1px;
+  line-height: 18px;
 }
 
 table.groupicon td.groupSemesterTitle {
@@ -1795,7 +1808,7 @@ padding-bottom:5px;
   left:43%;
   top:38%;
   background-color:white;
-  opacity:0.9; 
+  opacity:0.9;
   box-shadow: 0 0 30px 40px white;
 }
 
@@ -1907,7 +1920,7 @@ padding-bottom:5px;
   color: #0064a2;
   font-family: Arial,Helvetica,Sans-Serif;
   font-size:18px;
-  font-weight:bold; 
+  font-weight:bold;
 }
 
 #profiletitle #spinnerp {
@@ -2013,10 +2026,10 @@ padding-bottom:5px;
   font-size: 12px;
   margin: 10px 15px 20px 0;
   text-align: right;
-  opacity: 0.6; filter:alpha(opacity=60);/*for IE*/ 
+  opacity: 0.6; filter:alpha(opacity=60);/*for IE*/
 }
 #profilewrap #removeMe:hover {
-  opacity: 1; filter:alpha(opacity=100);/*for IE*/ 
+  opacity: 1; filter:alpha(opacity=100);/*for IE*/
 }
 
 
@@ -2142,7 +2155,7 @@ div.fieldWithErrors{
 .adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 180px; margin-right:10px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
-.searchContacts .adfieldbox select.multiSelect { height: 150px; } 
+.searchContacts .adfieldbox select.multiSelect { height: 150px; }
 
 #assign_people form {
   display: inline-block;
@@ -2193,7 +2206,7 @@ div.section {
 div.choose_ministry_tree {
   position: absolute;
   z-index: 500;
-  
+
   box-shadow: 0 7px 10px #8B8B8B;
 }
 
@@ -2723,7 +2736,7 @@ td.eventAttendees {
   z-index: 500;
   margin-left: 5em;
   border: 4px solid #F5F5FA;
-  
+
   border-radius: 6px;
   box-shadow: 0 7px 10px #8B8B8B;
 }
@@ -3965,7 +3978,7 @@ td.discTree {
 .bracketArrow {
   float: left;
   font-weight: bold;
-  color: #FFCB05; 
+  color: #FFCB05;
 }
 
 .bracketPic {
@@ -3982,12 +3995,12 @@ td.profilePic {
 }
 
 .headerProfilePic {
-  float:left; 
+  float:left;
   padding:0px 15px 15px 0px;
   overflow: hidden;a
   width: 100px;
   height: 100px;
-  text-align: center;    
+  text-align: center;
 }
 
 td.nameTitle {
@@ -3996,7 +4009,7 @@ td.nameTitle {
 
 .headerNameTitle {
     width:auto;
-    float:left;	
+    float:left;
 		margin-left:50px;
 		font-size: 18px;
 		font-weight: bold;
@@ -4005,7 +4018,7 @@ td.nameTitle {
 
 .headerContactInfo {
     width:auto;
-    float:left; 
+    float:left;
     margin-left:50px;
 }
 
@@ -4118,3 +4131,138 @@ td.campusDiscTree {
   vertical-align: middle;
 }
 
+
+.contact_form label {
+  display: inline-block;
+  float: none;
+  width: 80px;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.contact_form p {
+  padding: 5px;
+}
+
+.contact_form input:not([type=submit]) {
+  font-size: 16px;
+  width: 290px;
+}
+
+.contact_form select {
+  font-size: 16px;
+  max-width: 300px;
+}
+
+.contact_form textarea {
+  width: 380px;
+  height: 80px;
+}
+
+.contact_form .col, .discover_contacts.col {
+  margin: 20px 0;
+  display: inline-block;
+  width: 43%;
+  float: left;
+}
+
+.contact_form .col.wider {
+  width: 50%;
+}
+
+.discover_contacts.col.widest {
+  width: 75%;
+}
+
+.contact_form .col.separator {
+  border-left: 1px dashed lightgray;
+  padding-left: 50px;
+}
+
+.contact_form .submit_container {
+  text-align: right;
+  margin-top: 20px;
+  padding-right: 13%;
+}
+
+.contact_form .submit_container a {
+  margin: 0 20px;
+}
+
+.contact_form .sub_form {
+  margin-bottom: 50px;
+}
+
+.discover_contacts_container {
+}
+
+.discover_contact #contact_notes textarea.activated {
+  width: 280px;
+  height: 90px;
+}
+
+.discover_contacts_container .directorytable, .discover_contacts_container .directorytable th {
+  background-color: rgba(245, 245, 245, 0.6);
+  border: none;
+}
+
+.discover_contacts_container thead th {
+  opacity: 0.6;
+}
+
+.discover_contacts big, .discover_contact big {
+  font-size: 16px;
+}
+
+.discover_contacts_container tr.highlight {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.discover_contacts_container tbody tr:hover td {
+  background-color: rgba(255, 236, 179, 1);
+}
+
+.discover_contacts_container tr .show_on_hover {
+  visibility: hidden;
+}
+
+.discover_contacts_container tr:hover .show_on_hover {
+  visibility: visible;
+}
+
+.discover_contacts_container tr:hover {
+  cursor: default;
+}
+
+.discover_contacts_controls select {
+  font-size: 16px;
+}
+
+.discover_contacts_controls a {
+  float: right;
+}
+
+.discover_contacts_controls {
+  margin-bottom: 20px;
+}
+
+#contact_notes .note, #contact_rejoiceables .rejoiceable {
+  background-color: rgba(245, 245, 245, 0.7);
+  border: 1px solid rgba(235, 235, 235, 0.4);
+  border-radius: 5px;
+  padding: 5px;
+  color: #666766;
+}
+
+#contact_notes li, #contact_rejoiceables li {
+  margin: 10px 0 10px 0;
+}
+
+#contact_notes div, #contact_rejoiceables div {
+  display: inline-block;
+}
+
+#involvement_history {
+  margin-top: 20px;
+  opacity: 0.6;
+}

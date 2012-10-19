@@ -2,7 +2,7 @@
 
 <% content_for :javascripts do %>
   <%= javascript_include_tag "widgets/tooltip.js" %>
-  <%= javascript_include_tag "contacts_index.js" %>
+  <%= javascript_include_tag "survey_contacts_index.js" %>
 <% end %>
 
 
@@ -76,16 +76,16 @@
           <td width="10px">
             <%= check_box_tag 'contact[]', contact[:id], false %> 
           </td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:first_name] %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:last_name] %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_gender(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= number_to_phone contact[:cellphone], :area_code => true %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:year] %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact[:priority] %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= assigned_to(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_status(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_result(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/edit/<%= contact[:id] %>"><%= contact_international(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact[:first_name] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact[:last_name] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_gender(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= number_to_phone contact[:cellphone], :area_code => true %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact[:year] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact[:priority] %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= assigned_to(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_status(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_result(contact) %></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_international(contact) %></td>
           <td class="alignright">
             <div class="butProfile"><%= link_to 'Edit', edit_contact_path(contact), :title => "View and edit this contact" %></div>
           </td>

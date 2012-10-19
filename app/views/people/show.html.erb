@@ -92,7 +92,7 @@
                                      {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
                                       :class => "editInvolvementIconLink"} %>
             <%- end -%> Ministries
-            <%= spinner('Ministries') %>
+            <%= spinner('Ministries', 'opaqueWhite') %>
           </h4>
           
           <%- if @person.ministries.size > 0 -%>
