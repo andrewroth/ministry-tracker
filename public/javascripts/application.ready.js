@@ -4,7 +4,7 @@ $(document).ready(function(){
     timeout: null,
     fragment: '.pjax_container'
   }).on('pjax:start', function(){
-    $('.fade_on_pjax:visible').fadeTo(200, 0.1);
+    $('.fade_on_pjax:visible').fadeTo('fast', 0.1);
   }).on('pjax:end', function(){
     $('.fade_on_pjax:visible').css('opacity', 1);
     ready();
@@ -23,7 +23,8 @@ function ready() {
 
   $('.discover_contacts_controls select#campus_id').on('change', function() {
     $.pjax({
-      url: '/discover?campus_id=' + $('.discover_contacts_controls select#campus_id').val(),
+      url: '/discover',
+      data: { campus_id: $('.discover_contacts_controls select#campus_id').val() },
       container: '.pjax_container',
       fragment: '.pjax_container',
       timeout: null
