@@ -4237,13 +4237,17 @@ td.campusDiscTree {
 }
 
 #contact_notes .note, #contact_rejoiceables .rejoiceable {
-  background-color: rgba(245, 245, 245, 1);
-  border: 1px dotted rgba(235, 235, 235, 1);
+  background-color: rgba(245, 245, 245, 0.6);
+  border: 1px solid rgba(235, 235, 235, 0.4);
   border-radius: 5px;
   padding: 5px;
   color: #666766;
 }
 
 #contact_notes li, #contact_rejoiceables li {
-  margin: 15px 0 20px 0;
+  margin: 10px 0 10px 0;
+}
+
+#contact_notes div, #contact_rejoiceables div {
+  display: inline-block;
 }
