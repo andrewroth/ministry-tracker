@@ -930,7 +930,7 @@ h2 select {
 }
 
 #contact_notes .new_note, #contact_rejoiceables .new_activity {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #contact_notes textarea {
