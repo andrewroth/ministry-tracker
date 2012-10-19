@@ -4,7 +4,7 @@
 
   <div class="discover_contacts_controls">
     <big>My contacts at</big>&nbsp;&nbsp;<%= select_tag :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), @campus.id), :title => 'View contacts from your different campus' %>
-    <%= link_to 'Add', new_discover_contact_path, :class => 'action-button pjax', :titel => 'Add a new contact' if @discover_contacts.present? %>
+    <%= link_to 'Add', new_discover_contact_path, :class => 'action-button pjax', :title => 'Add a new contact' if @discover_contacts.present? %>
   </div>
 
   <div class="discover_contacts_container">
@@ -17,6 +17,7 @@
             <th>Name</th>
             <th>Mobile phone</th>
             <th>Email</th>
+            <th>Next step</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -25,9 +26,10 @@
           <% @discover_contacts.each do |contact|  %>
             <tr class="<%= cycle('nohighlight', 'highlight') %>">
               <td><%#= check_box_tag 'contact[]', contact[:id], false %></td>
-              <td><%= link_to contact.full_name, edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></td>
+              <td><big><%= link_to contact.full_name, edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></big></td>
               <td><%= number_to_phone contact.mobile_phone, :area_code => true %></td>
               <td><%= mail_to contact.email %></td>
+              <td><%= contact.next_step %></td>
               <td class="show_on_hover">
                 <div class="butProfile"><%= link_to 'Edit', edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></div>
               </td>

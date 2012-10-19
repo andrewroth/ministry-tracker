@@ -28,7 +28,6 @@ render_tabnav :main,
     #end
   #end
 
-
   if authorized?(:index, :stats)
     add_tab do |t|
       t.named "<div id='insightsTab' class='tab'>INSIGHTS</div>"
@@ -39,12 +38,29 @@ render_tabnav :main,
       t.highlights_on :controller => "semester_reports"
     end
   end
+ 
+  if authorized?(:show, :campus_discipleship)
+    add_tab do |t|
+      t.named "<div id='campusDiscTab' class='tab'>DISCIPLESHIP</div>"
+      t.titled 'Discipleship at ' + @ministry.try(:name).to_s
+      t.links_to :controller => "campus_discipleship", :action => "show"
+      t.highlights_on :controller => "campus_discipleship", :action => "show"
+    end if session[:ministry_id]
+  end
 
+  if authorized?(:index, :discover_contacts)
+    add_tab do |t|
+      t.named "<div id='discoverTab' class='tab'>DISCOVER</div>"
+      t.titled 'Help others Discover God'
+      t.links_to "/discover"
+      t.highlights_on :controller => "discover_contacts"
+    end
+  end
 
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<div id='groupsTab' class='tab'>GROUPS</div>"
-      t.titled 'Groups for ' + @ministry.try(:name).to_s
+      t.titled 'Groups at ' + @ministry.try(:name).to_s
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
     end if session[:ministry_id]
@@ -66,15 +82,6 @@ render_tabnav :main,
   #   t.highlights_on :controller => "groups"
   #   t.titled 'Where you should be right now'
   # end if @groups.size > 0
- 
-  if authorized?(:show, :campus_discipleship)
-    add_tab do |t|
-      t.named "<div id='campusDiscTab' class='tab'>DISCIPLESHIP</div>"
-      t.titled 'Campus discipleship view for ' + @ministry.try(:name).to_s
-      t.links_to :controller => "campus_discipleship", :action => "show"
-      t.highlights_on :controller => "campus_discipleship", :action => "show"
-    end if session[:ministry_id]
-  end
    
   add_tab do |t|
    t.named "<div id='profileTab' class='tab'>#{I18n.t('layout.left_bar.profile.named')}</div>"

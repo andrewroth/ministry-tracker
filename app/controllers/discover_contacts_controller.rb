@@ -18,7 +18,7 @@ class DiscoverContactsController < ApplicationController
   end
 
   def create
-    @discover_contact = DiscoverContact.new(params[:discover_contact].merge({:active => true}))
+    @discover_contact = DiscoverContact.new(params[:discover_contact])
 
     if @discover_contact.save
       respond_to do |format|

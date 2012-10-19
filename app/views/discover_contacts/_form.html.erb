@@ -7,6 +7,7 @@
       <p><label for="discover_contact_campus">Campus</label><%= f.select :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), discover_contact.campus_id || @campus.id) %></p>
       <p><label for="discover_contact_first_name">First name</label><%= f.text_field :first_name %></p>
       <p><label for="discover_contact_last_name">Last name</label><%= f.text_field :last_name %></p>
+      <p><label for="discover_contact_gender_id">Sex</label><%= f.select :gender_id, options_from_collection_for_select(Gender.all, Gender._(:id), Gender._(:desc), discover_contact.new_record? ? @my.gender_id : (discover_contact.gender_id || 0)) %></p>
       <p><label for="discover_contact_mobile_phone">Mobile phone</label><%= f.text_field :mobile_phone %></p>
       <p><label for="discover_contact_email">Email</label><%= f.text_field :email %></p>
       <p><label for="discover_contact_next_step">Next step</label><%= f.select :next_step_id, options_for_select(Contact::NEXT_STEP_OPTIONS, discover_contact[:next_step_id].nil? ? 0 : discover_contact[:next_step_id].to_i) %></p>
@@ -24,7 +25,7 @@
 
         <ul>
           <% discover_contact.notes.each do |note| %>
-            <li>"<%= note.content %>" &#8211; <em><%= %(<span title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></li>
+            <li><div class="note"><%= note.content %></div> &#8211; <em><%= %(<span title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></li>
           <% end %>
         </ul>
 
@@ -44,7 +45,7 @@
         <% if discover_contact.activities.present? %>
           <ul>
             <% discover_contact.activities.each do |a| %>
-              <li><strong><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></strong> &#8211; <em><%= %(<span title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></li>
+              <li><big class="rejoiceable"><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></big> &#8211; <em><%= %(<span title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></li>
             <% end %>
           </ul>
         <% end %>

@@ -559,6 +559,11 @@ a.active #groupsTab, #groupsTab:hover { background-position: -4px -700px; }
 .tablist #groupsTab:hover, .tablist a.active #groupsTab { background-position: -10px -700px; }
 .tablist #groupsTab { background-position: -10px -256px; }
 
+#discoverTab                              { background-image: none; }
+a.active #discoverTab, #discoverTab:hover {  }
+.tablist #discoverTab:hover, .tablist a.active #discoverTab {  }
+.tablist #discoverTab { padding-left: 10px; }
+
 #campusDiscTab                            { background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;  background-position: -6px -86px; }
 a.active #campusDiscTab, #campusDiscTab:hover { background-position: -6px -530px; }
 .tablist #campusDiscTab:hover, .tablist a.active #campusDiscTab { background-position: -9px -532px; }
@@ -715,7 +720,7 @@ img.opaqueWhite {
 
 .directorytable {
     background-color: #f5f5f5;
-    padding: 8px;
+    padding: 10px;
     border-bottom: 1px #0064a2 solid;
     border-radius: 10px;
 }
@@ -4130,7 +4135,7 @@ td.campusDiscTree {
 }
 
 .contact_form input:not([type=submit]) {
-  font-size: 18px;
+  font-size: 16px;
   width: 290px;
 }
 
@@ -4141,7 +4146,7 @@ td.campusDiscTree {
 
 .contact_form textarea {
   width: 380px;
-  height: 90px;
+  height: 80px;
 }
 
 .contact_form .col, .discover_contacts.col {
@@ -4156,7 +4161,7 @@ td.campusDiscTree {
 }
 
 .discover_contacts.col.widest {
-  width: 70%;
+  width: 75%;
 }
 
 .contact_form .col.separator {
@@ -4195,8 +4200,8 @@ td.campusDiscTree {
   opacity: 0.6;
 }
 
-.discover_contacts_container tbody tr {
-  font-size: 14px;
+.discover_contacts big, .discover_contact big {
+  font-size: 16px;
 }
 
 .discover_contacts_container tr.highlight {
@@ -4220,7 +4225,7 @@ td.campusDiscTree {
 }
 
 .discover_contacts_controls select {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .discover_contacts_controls a {
@@ -4229,4 +4234,16 @@ td.campusDiscTree {
 
 .discover_contacts_controls {
   margin-bottom: 20px;
+}
+
+#contact_notes .note, #contact_rejoiceables .rejoiceable {
+  background-color: rgba(245, 245, 245, 1);
+  border: 1px dotted rgba(235, 235, 235, 1);
+  border-radius: 5px;
+  padding: 5px;
+  color: #666766;
+}
+
+#contact_notes li, #contact_rejoiceables li {
+  margin: 15px 0 20px 0;
 }
