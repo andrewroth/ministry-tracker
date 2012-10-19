@@ -18,7 +18,7 @@ $(document).ready(function() {
 
 function initializeSchedHead() {
   $('#schedule_header').width($('#schedule').width() + "px");
-  [ schedLeft, schedTop ] = findPos($('#schedule')[0]);
+  [ schedLeft, schedTop ] = findPos($('#schedule').first());
   $('#schedule_header').css('left', schedLeft);
   updateHeaderVisibility();
 }
