@@ -18,24 +18,25 @@ class DiscoverContactsController < ApplicationController
   end
 
   def create
-    @discover_contact = DiscoverContact.new params[:discover_contact].merge({:active => true})
+    @discover_contact = DiscoverContact.new(params[:discover_contact].merge({:active => true}))
 
-    respond_to do |format|
-      if @discover_contact.save
+    if @discover_contact.save
+      respond_to do |format|
         ContactsPerson.create(:person_id => get_person.id, :contact_id => @discover_contact.id)
-        format.html { redirect_to :action => :index, :notice => 'Contact was successfully added!' }
-      else
-        render :new
+        format.html { redirect_to :action => :index, :notice => 'Contact added!' }
       end
+    else
+      render :new
     end
   end
   
   def update
-    @discover_contact = DiscoverContact.find(params[:contact_id])
+    @discover_contact = DiscoverContact.find(params[:id])
+    @discover_contact.update_attributes(params[:discover_contact])
 
     respond_to do |format|
       if @discover_contact.save        
-        flash[:notice] = 'Contact was successfully updated.'
+        flash[:notice] = 'Contact updated!'
         format.html { redirect_to :action => 'index' }
         
       else

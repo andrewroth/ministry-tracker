@@ -134,52 +134,54 @@
 
           <div class="clear">&nbsp;</div>
 
-          <div class="messages">
-            <!-- this is a conditional comment, only IE recognizes these -->
-            <!--[if lt IE 8]>
-              <div id='browser_warning' class='flash_notice warning'>
-                <%= image_tag "/images/silk/exclamation.png" %>
-                <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
-                For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
+          <div class="pjax_container">
+            <div class="messages">
+              <!-- this is a conditional comment, only IE recognizes these -->
+              <!--[if lt IE 8]>
+                <div id='browser_warning' class='flash_notice warning'>
+                  <%= image_tag "/images/silk/exclamation.png" %>
+                  <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
+                  For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
 
-                <div style='display:inline; padding:5px 5px 0;'>
-                  <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
-                  <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
-                  <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
-                  <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+                  <div style='display:inline; padding:5px 5px 0;'>
+                    <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
+                    <%= link_to image_tag("browser_firefox_small.gif", :alt => "Firefox"), 'http://www.mozilla.com/firefox/', :title => "Firefox" %>
+                    <%= link_to image_tag("browser_safari_small.gif", :alt => "Safari"), 'http://www.apple.com/safari/', :title => "Safari" %>
+                    <%= link_to image_tag("browser_ie_small.gif", :alt => "Internet Explorer"), 'http://www.microsoft.com/windows/internet-explorer/', :title => "Internet Explorer" %>
+                  </div>
                 </div>
-              </div>
-            <![endif]-->
-            
-            <noscript>
-              <div class="flash_notice flash warning">
-                <%= image_tag "/images/silk/exclamation.png" %>
-                <b>For full functionality of this site it is necessary to enable JavaScript.</b>
-                <br/>
-                <br/>
-                <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
-              </div>
-            </noscript>
-
-            <div class="flash notice" id="flash_notice" <%= %(style="display:none;") unless flash[:notice].present? %>><%= flash[:notice] %></div>
-
-            <%- if @notices -%>
-              <%- for notice in @notices -%>
-                <div class="flash_notice" id="notice_<%= notice.id %>">
-                  <%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %>
+              <![endif]-->
+              
+              <noscript>
+                <div class="flash_notice flash warning">
+                  <%= image_tag "/images/silk/exclamation.png" %>
+                  <b>For full functionality of this site it is necessary to enable JavaScript.</b>
+                  <br/>
+                  <br/>
+                  <a href="http://www.enable-javascript.com/" target="_blank">Click here for instructions how to enable JavaScript in your web browser.</a>
                 </div>
+              </noscript>
+
+              <div class="flash notice fade_on_pjax" id="flash_notice" <%= %(style="display:none;") unless flash[:notice].present? %>><%= flash[:notice] %></div>
+
+              <%- if @notices -%>
+                <%- for notice in @notices -%>
+                  <div class="flash_notice fade_on_pjax" id="notice_<%= notice.id %>">
+                    <%= notice.message %> <%= link_to_remote "Hide", :url => dismiss_notice_url(notice.id), :method => :post %>
+                  </div>
+                <%- end %>
               <%- end %>
-            <%- end %>
 
-            <div class="flash warning" id="flash_warning" <%= %(style="display:none;") unless flash[:warning].present? %>><%= flash[:warning] %></div>
+              <div class="flash warning fade_on_pjax" id="flash_warning" <%= %(style="display:none;") unless flash[:warning].present? %>><%= flash[:warning] %></div>
 
-            <div id="instructions" style="display:none;"></div>
-          </div>
+              <div id="instructions" style="display:none;" class="fade_on_pjax"></div>
+            </div>
 
-          <div id="content_wrapper">
-            <div id="content">
-              <%= yield %>
-              <div class="clear">&nbsp;</div>
+            <div id="content_wrapper">
+              <div id="content" class="fade_on_pjax">
+                <%= yield %>
+                <div class="clear">&nbsp;</div>
+              </div>
             </div>
           </div>
         </div> <!-- Wrapper -->

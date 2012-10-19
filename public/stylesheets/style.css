@@ -4205,7 +4205,6 @@ td.campusDiscTree {
 
 .discover_contacts_container tbody tr:hover td {
   background-color: rgba(255, 236, 179, 1);
-  color: #0064A2;
 }
 
 .discover_contacts_container tr .show_on_hover {
@@ -4214,6 +4213,10 @@ td.campusDiscTree {
 
 .discover_contacts_container tr:hover .show_on_hover {
   visibility: visible;
+}
+
+.discover_contacts_container tr:hover {
+  cursor: default;
 }
 
 .discover_contacts_controls select {

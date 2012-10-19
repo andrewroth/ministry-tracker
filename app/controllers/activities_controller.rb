@@ -7,7 +7,7 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       if @activity.save
-        format.html { redirect_to @reportable, :notice => 'Rejoiceable was successfully added!' }
+        format.html { redirect_to @reportable, :notice => 'Rejoiceable added!' }
       else
         redirect_to :back
       end
