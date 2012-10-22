@@ -3,18 +3,18 @@
   <h2>Find common times between users for a group</h2>
   <p>Choose which users would be Leaders, Co-Leaders or Participants for this group.</p>
   <%- before = "$('#spinner').show();"
-      complete = "$('#spinner').hide();$('#search_results:hidden').slideDown()" 
+      complete = "$('#search_results').html(request.responseText); $('#spinner').hide(); $('#search_results:hidden').slideDown()"
   -%>
-  <%- form_remote_tag(:html => {:id => "search_form"}, :before => before, 
-  					          :url => search_people_url, :update => 'search_results', :complete => complete) do -%>
+  <%- form_remote_tag(:html => {:id => "search_form"}, :before => before,
+  					          :url => search_people_url, :complete => complete) do -%>
    	Search for people:&nbsp;&nbsp;
   	<%= text_field_tag :search, '', :id => "search" %> &nbsp;
   	<%= submit_tag('Search') %> &nbsp;<%= spinner() %>
   	<div id="filter_ids"></div>
   	<%= hidden_field_tag :context, 'timetables' %>
-  <%- end -%> 
+  <%- end -%>
   <%#= observe_form("search_form", :before => before,
-          :url => search_people_url, :update => 'search_results', :complete => complete, 
+          :url => search_people_url, :update => 'search_results', :complete => complete,
           :method => :post, :frequency => 0.75,
           :condition => "$('#search').val().length > 3")  %>
   <div id="search_results"></div>
@@ -30,7 +30,7 @@
   <div id="ids"></div>
   <%= link_to_function('More Options', "$('#more_options').toggle();$(this).hide();") %><br/>
   <div id="more_options" style="display:none">
-  
+
     <!-- <table border="1" cellspacing="0" cellpadding="4">
 
       <tr>
@@ -83,8 +83,8 @@
           <option value="1">Poor</option>
           <option value="2">OK</option>
           <option value="3">Good</option></select>
-        </td>  
-      </tr>   
+        </td>
+      </tr>
     </table> -->
     <table border="0" cellspacing="5" cellpadding="5">
       <tr>
