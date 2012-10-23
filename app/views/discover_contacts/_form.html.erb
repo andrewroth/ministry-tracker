@@ -3,7 +3,7 @@
   <div class="col wider">
     <% form_for discover_contact do |f| %>
       <%= f.error_messages %>
-      
+
       <p><label for="discover_contact_campus">Campus</label><%= f.select :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), discover_contact.campus_id || @campus.id) %></p>
       <p><label for="discover_contact_first_name">First name</label><%= f.text_field :first_name %></p>
       <p><label for="discover_contact_last_name">Last name</label><%= f.text_field :last_name %></p>
@@ -16,6 +16,7 @@
 
       <p class="submit_container"><%= link_to 'Back', '/discover', :class => 'pjax' %> <%= f.submit submit_verb, :class => 'action-button' %></p>
     <% end %>
+    <%= render 'disclaimer' %>
   </div>
 
   <% if discover_contact.id.present? %>

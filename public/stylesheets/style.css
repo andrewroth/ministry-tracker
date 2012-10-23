@@ -2108,7 +2108,6 @@ div.fieldWithErrors{
 }
 
 #errorExplanation {
-  width: 97%;
   border: 4px solid FireBrick;
   padding: 7px;
   padding-bottom: 12px;

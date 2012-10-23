@@ -1,4 +1,4 @@
-class Contact < ActiveRecord::Base  
+class Contact < ActiveRecord::Base
   has_and_belongs_to_many :people
   belongs_to :campus
   has_many :notes, :as => :noteable
@@ -7,7 +7,6 @@ class Contact < ActiveRecord::Base
   before_create :set_default_attributes
 
   validates_presence_of :first_name
-  validates_presence_of :last_name
   validates_presence_of :campus_id
   validates_presence_of :gender_id
 
