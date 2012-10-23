@@ -1,4 +1,4 @@
-    <% form_for(report) do |f| 
+    <% form_for(report) do |f|
         @id_fields.each do |id_f|
 %>
          <%= f.hidden_field id_f %>
@@ -15,5 +15,5 @@ lines.each do | key, input_stat |
 end
 %>
     <tr><td></td><td><%= f.submit "Submit" %></td></tr>
-  </table>        
+  </table>
     <% end %>

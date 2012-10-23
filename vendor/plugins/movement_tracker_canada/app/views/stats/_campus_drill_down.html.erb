@@ -4,7 +4,8 @@
   <tr>
       <td class="statsTableTitle"></td>
     <% @reports_to_show.each do |r| %>
-      <% stat_report(r).each do |k, stat| 
+      <% stat_report(r).each do |k, stat|
+           next if stat[:display] && stat[:display] == :false
            if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)%>
              <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
       <%    total_stat[k] = 0
@@ -15,8 +16,8 @@
   <% @campuses.each do |campus|
         show_campus = true
         unless @staff_id.nil?
-          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id) 
-        end 
+          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id)
+        end
 
         if show_campus
 
@@ -24,7 +25,8 @@
     <tr class="<%= cycle('highlight', 'nohighlight') %>">
       <td class="statsTableTitle"><%= campus_link_to_remote(campus, @report_type) %></td>
     <% @reports_to_show.each do |r| %>
-      <% stat_report(r).each do |k, stat| 
+      <% stat_report(r).each do |k, stat|
+           next if stat[:display] && stat[:display] == :false
            if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)
              data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
              <td class="<%= stat[:css_class] %>"><%= data %></td>
@@ -33,7 +35,7 @@
          end %>
     <% end %>
     </tr>
-  <%     
+  <%
        end
      end %>
 
@@ -41,12 +43,13 @@
   <tr class="highlight">
     <td class="statsTableTitle">Totals:</td>
     <% @reports_to_show.each do |r|
-         stat_report(r).each do |k, stat| 
+         stat_report(r).each do |k, stat|
+           next if stat[:display] && stat[:display] == :false
            if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column) %>
              <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
-      <%     
+      <%
            end
-         end 
+         end
        end %>
   </tr>
 

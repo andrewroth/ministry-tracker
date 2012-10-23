@@ -92,7 +92,7 @@ state:
   name: province_desc
   abbreviation: province_shortDesc
   abbrev: province_shortDesc
-  
+
 # Column Mappings
 user:
   id: viewer_id
@@ -100,7 +100,7 @@ user:
   username: viewer_userID
   password: viewer_passWord
   is_active: viewer_isActive
-  
+
 person:
   id: person_id
   created_at: person_id
@@ -125,7 +125,7 @@ campus:
   desc: campus_desc
   short_desc: campus_shortDesc
   short_name: campus_shortDesc
-  
+
 cim_hrdb_current_address:
   id: person_id
   address1: person_local_addr
@@ -135,7 +135,7 @@ cim_hrdb_current_address:
   email: person_email
   alternate_phone: cell_phone
   state_id: province_id
- 
+
 cim_hrdb_permanent_address:
   id: person_id
   address1: person_addr
@@ -144,7 +144,7 @@ cim_hrdb_permanent_address:
   phone: person_phone
   email: person_email
   state_id: province_id
- 
+
 cim_hrdb_admin:
   id: admin_id
 
@@ -244,7 +244,7 @@ weekly_report:
 week:
   id: week_id
   end_date: week_endDate
-  
+
 semester_report:
   id: semesterreport_id
   average_hours_prayer: semesterreport_avgPrayer
@@ -266,7 +266,7 @@ semester_report:
   total_students_to_summit: semesterreport_studentsSummit
   total_students_to_wc: semesterreport_studentsWC
   total_students_to_project: semesterreport_studentsProjects
-  
+
 monthly_report:
   id: monthlyreport_id
   average_hours_prayer: monthlyreport_avgPrayer
@@ -280,7 +280,9 @@ monthly_report:
   total_students_in_dg: monthlyreport_totalStudentInDG
   total_spiritual_multipliers: monthlyreport_totalSpMult
   total_integrated_new_believers: montlyreport_integratedNewBelievers
-  
+  event_exposures: monthlyreport_event_exposures
+  unrecorded_engagements: monthlyreport_unrecorded_engagements
+
 annual_goals_report:
   id: annualGoalsReport_id
   students_in_ministry: annualGoalsReport_studInMin
@@ -294,11 +296,11 @@ annual_goals_report:
   holyspirit_presentations: annualGoalsReport_hsPresTotal
   indicated_decisions: annualGoalsReport_prcTotal
   followup_completed: annualGoalsReport_integBelievers
-  large_event_attendance: annualGoalsReport_lrgEventAttend 
+  large_event_attendance: annualGoalsReport_lrgEventAttend
 
 annual_report:
   id: annualReport_id
-    
+
 staff:
   id: staff_id
 

@@ -302,7 +302,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 
 h1 {font-size:2.0em; color: #0064a2;}
 h2 {font-size:1.5em; color: #0064a2;}
-h3 {font-size:1.25em; color: #0064a2;}
+h3 {font-size:1.25em; color: #666766;}
 h4 {font-size:1.12em;}
 h5, p {font-size:1em;}
 
@@ -2734,11 +2734,20 @@ td.eventAttendees {
   text-align: left;
   position: absolute;
   z-index: 500;
-  margin-left: 5em;
+  margin-left: 3em;
   border: 4px solid #F5F5FA;
 
   border-radius: 6px;
   box-shadow: 0 7px 10px #8B8B8B;
+}
+
+.stats_choose_ministry_tree div.x-panel-body {
+  height: 450px !important;
+  width: 350px !important;
+}
+
+.stats_choose_ministry_tree > div {
+  width: auto !important;
 }
 
 #stats_chosen_ministry {

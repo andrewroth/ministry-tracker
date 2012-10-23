@@ -7,7 +7,7 @@ CREATE TABLE `activities` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -63,7 +63,7 @@ CREATE TABLE `campus_involvements` (
   KEY `index_campus_involvements_on_campus_id` (`campus_id`),
   KEY `index_campus_involvements_on_ministry_id` (`ministry_id`),
   KEY `index_campus_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8541 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8542 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `campus_ministry_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -696,7 +696,7 @@ CREATE TABLE `ministry_involvements` (
   `last_history_update_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_ministry_involvements_on_person_id` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13362 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13365 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `ministry_role_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -729,7 +729,7 @@ CREATE TABLE `notes` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2099 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2102 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -871,7 +871,7 @@ CREATE TABLE `searches` (
   `updated_at` datetime DEFAULT NULL,
   `tables_clause` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11612 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11613 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sept2012_contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -917,7 +917,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=110057 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=110063 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1627,6 +1627,8 @@ INSERT INTO schema_migrations (version) VALUES ('20121019023646');
 INSERT INTO schema_migrations (version) VALUES ('20121019150551');
 
 INSERT INTO schema_migrations (version) VALUES ('20121019154738');
+
+INSERT INTO schema_migrations (version) VALUES ('20121022155249');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
