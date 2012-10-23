@@ -363,7 +363,7 @@
       },
         :monthly_report_input => {
           :students_dg => {:column => :monthlyreport_totalStudentInDG,
-            :label => "Number of students in DGs",
+            :label => "Growing Disciples - default = # in DG",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -373,7 +373,7 @@
             :order => 3
           },
           :spirit_mult => {:column => :monthlyreport_totalSpMult,
-            :label => "Number of spiritual multipliers",
+            :label => "Multiplying Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -397,6 +397,14 @@
             :grouping_method => :none,
             :display_type => :text_positive_integer,
             :order => 6
+          },
+          :unrecorded_engagements => {:column => :monthlyreport_ministering_disciples,
+            :label => "Ministering Disciples - default = # student/ministry leaders",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :grouping_method => :none,
+            :display_type => :text_positive_integer,
+            :order => 7
           }
       },
         :monthly_report => {
@@ -423,7 +431,7 @@
             :display => :false
           },
           :students_dg => {:column => :monthlyreport_totalStudentInDG,
-            :label => "Number of students in DGs",
+            :label => "Growing Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -433,7 +441,7 @@
             :order => 3
           },
           :spirit_mult => {:column => :monthlyreport_totalSpMult,
-            :label => "Number of spiritual multipliers",
+            :label => "Multiplying Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -522,6 +530,14 @@
             :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 13
+          },
+          :ministering_disciples => {:column => :monthlyreport_ministering_disciples,
+            :label => "Ministering Disciples",
+            :collected => :monthly,
+            :column_type => :database_column,
+            :grouping_method => :last_non_zero,
+            :display_type => :text_positive_integer,
+            :order => 14
           }
       },
       :weekly_p2c_special => {

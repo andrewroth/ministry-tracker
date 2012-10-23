@@ -7,7 +7,7 @@ CREATE TABLE `activities` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -148,7 +148,7 @@ CREATE TABLE `contacts` (
   `updated_at` datetime DEFAULT NULL,
   `gender_id` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `contacts_people` (
   `person_id` int(11) DEFAULT NULL,
@@ -1631,6 +1631,8 @@ INSERT INTO schema_migrations (version) VALUES ('20121019154738');
 INSERT INTO schema_migrations (version) VALUES ('20121022155249');
 
 INSERT INTO schema_migrations (version) VALUES ('20121023153757');
+
+INSERT INTO schema_migrations (version) VALUES ('20121023200723');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 

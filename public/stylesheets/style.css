@@ -2444,6 +2444,10 @@ ul.statsLinkList {
   width: 37em;
 }
 
+.statsFormContainer.monthly_report {
+  width: 60em;
+}
+
 .statsContainer {
   width: 100%;
 	margin: 20px auto 0 auto;
@@ -2547,11 +2551,11 @@ ul.statsLinkList {
 	display:inline-block;
 }
 
-#IndicatedDecisionsVSGoal {
+#IndicatedDecisions {
   font-size: 2.5em;
 }
 
-#IndicatedDecisionsVSGoal, #nationalIndicatedDecisions {
+#IndicatedDecisions, #nationalIndicatedDecisions {
   color: #CCCCCC;
 }
 
