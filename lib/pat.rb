@@ -1,8 +1,9 @@
 module Pat
   def current_event_group_id
-    #58   # 2010 projects
-    #75    # 2011 projects
-    82    # 2012 projects
+    # 58    # 2010 projects
+    # 75    # 2011 projects
+    # 82    # 2012 projects
+    94    # 2013 projects
   end
 
   def project_acceptance_totals(campus_ids, secondary_sort = {}, event_group_id = current_event_group_id)
@@ -26,7 +27,7 @@ module Pat
         INNER JOIN #{Person.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:id)}
         INNER JOIN #{Access.table_name} ON #{Person.__(:id)} = #{Access.__(:person_id)}
         INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
-        INNER JOIN #{Profile.table_name} ON #{User.__(:id)} = #{Profile.__(:viewer_id)} AND 
+        INNER JOIN #{Profile.table_name} ON #{User.__(:id)} = #{Profile.__(:viewer_id)} AND
            #{Profile.__(:type)} = '#{type}'
         LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
         INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
@@ -52,7 +53,7 @@ module Pat
     end
     # this can probably be done in sql somehow, but I can code it here way faster
     results_by_campus2 = ActiveSupport::OrderedHash.new
-    results_by_campus.collect{|k,v| [ k, v ]}.sort{ |a, b| 
+    results_by_campus.collect{|k,v| [ k, v ]}.sort{ |a, b|
       k1, v1 = a
       k2, v2 = b
       diff = v2[:total].to_i <=> v1[:total].to_i
