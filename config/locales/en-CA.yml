@@ -1,4 +1,4 @@
-en-CA: 
+en-CA:
   landing_page:
     tagline: https://pulse.campusforchrist.org/images/log_in_c4c_disco_change.png
     main: https://pulse.campusforchrist.org/images/log_in_main_img.png
@@ -9,8 +9,8 @@ en-CA:
     no_need_to_login: "(No need to login!)"
     login_created: "(Login Created)"
     create_login: "Create a Login"
-  misc: 
-    genders: 
+  misc:
+    genders:
       male: "Male"
       female: "Female"
     fall: "Fall"
@@ -22,10 +22,17 @@ en-CA:
     required: required
     validation_failed: Please fill all required fields
     help_link_text: "Help!"
-    email_prefix: "[pulse] "
+    email_prefix: "[The Pulse] "
     ago: " ago"
-    web_title: "Power to Change - The Pulse"
-  layout: 
+    web_title: "Power to Change &#8211; The Pulse"
+  title:
+    dashboard: "Dashboard"
+    contacts: "Contacts"
+    group: "Group"
+    advanced_search: "Advanced Search"
+    profile: "Profile"
+    team: "Team"
+  layout:
     images:
       ptc_logo_grey: "/images/ptc_logo_grey.png"
       c4c_ptc_logo: "/images/c4c-ptc-logo.png"
@@ -37,11 +44,11 @@ en-CA:
       main_elements: "/images/sprites/main_elements.png"
       p2c_main_elements: "/images/sprites/p2c_main_elements.png"
       log_in_main_img: "/images/log_in_main_img.png"
-    top_bar: 
+    top_bar:
       c4c: "P2C"
       c4c_mouseover: Power to Change
       pulse: "THE PULSE"
-      pulse_mouseover: 
+      pulse_mouseover:
       resources: "RESOURCES"
       resources_mouseover: "P2C Resources Wiki"
       events_menu:
@@ -55,7 +62,7 @@ en-CA:
         projects_mouseover: Go to the world!
       more_menu:
         more: MORE
-        more_mouseover: 
+        more_mouseover:
         gcx: GCX
         gcx_mouseover: Global ConneXion
         pat: PAT
@@ -85,7 +92,7 @@ en-CA:
         titled: Your schedule
     languages:
       english_to_french: FRANÇAIS
-      english_to_french_mouseover: Switch pulse language to French
+      english_to_french_mouseover: Changer ta préférence de langue au français
       french_to_english: ENGLISH
       french_to_english_mouseover: Switch pulse language to English
   dashboard:
@@ -93,7 +100,7 @@ en-CA:
     join_txt: Join a group!
     join_more_txt: Join more groups
     events_header: My Events
-    projects_header: Projects
+    projects_header: PROJECTS
     events:
       attendees: attendees
     projects:
@@ -102,7 +109,7 @@ en-CA:
       link_txt: Apply for project!
       all_projects: All Projects
     groups:
-      requested_message: awaiting join request decision
+      requested_message: join request sent
       interested_message: interested
     update_schedule_msg: "You haven't filled out your schedule yet."
     update_schedule_title: "UPDATE MY SCHEDULE"
@@ -132,7 +139,7 @@ en-CA:
       joined: Joined
       campuses:
         header: Campuses
-        confirm: "Are you sure you want to remove %{person_name} from %{campus_name}"
+        confirm: "Are you sure you want to remove %{person_name} from %{campus_name}?"
       groups:
         confirm_self: "Are you sure you want to leave %{group_name}?"
         title_self: "Leave group %{group_name}"
@@ -179,6 +186,7 @@ en-CA:
       valid_from: Valid from
       valid_until: Valid until
       campus: Campus
+      role: Role
     manage_campuses:
       title: Manage Campuses
       add_campus: Add Campus
@@ -195,8 +203,10 @@ en-CA:
       none_other: "%{name} hasn't attended any events yet"
       none_self: "You haven't attended any events yet"
       title: Events
+      current_events: Current events
     projects:
       title: Projects
+      go_to_the_world: Go to the world!
   groups:
     types:
       discipleship_group: Discipleship Group (DG)
@@ -240,7 +250,7 @@ en-CA:
     register: Register for your group!
     next: Next
     welcome: "Great!  Welcome to your group, %{group_name}"
-    request_sent: "Great!  Your request to join has been sent to %{group.name}"
+    request_sent: "Great!  Your request to join has been sent to %{group_name}"
     marked_interested: "Marked as interested"
     join_request_pending: "Join request pending"
   timetable:
@@ -398,9 +408,9 @@ en-CA:
     group_invitation_decline: |
       <html>
         <p>Hi <%= @group_invitation.sender_person.first_name %>,</p>
-        
+
         <p><%= @group_invitation.recipient_email %> has declined your invitation to join the group <%= @group_invitation.group.name %></p>
-        
+
         <p>Thank you for using the Pulse!</p>
       </html>
     group_join_requested_subject: "%{group_name} has a student requesting to join!"
@@ -413,7 +423,7 @@ en-CA:
         <P><%= @member_first_name %> <%= @member_last_name %> has
       <% if @requested  %>requested to join<% elsif @interested %>marked interest in<% else %>joined<% end %>
       <%= @group_name %><% if @join_time.present? %> on <%= @join_time %><% end %>.  <% if @school_year.present? %>
-      <%= @member_first_name %> is a <%= @school_year.name %> student and <% else %>Their <% end %>contact info is 
+      <%= @member_first_name %> is a <%= @school_year %> student and <% else %>Their <% end %>contact info is
       <%= @member_email %><% if @member_phone.present? %> and <%= @member_phone %><% end %>.</P>
 
       <% if @requested %>
@@ -439,7 +449,7 @@ en-CA:
     signup_finished_email: |
       <HTML>
         <P>Thank you for signing up for a group in the Pulse and/or updating your timetable.  If you need to submit or update your timetable, please follow the link below to do so.<% if @joined_collection_group %>  A group leader from your campus will contact you via email once you are placed in a group.<% end %></P>
-       
+
         <P><A HREF="<%= @link %>" target="_blank"><%= @link %></A></P>
       </HTML>
   signup:
@@ -455,7 +465,7 @@ en-CA:
     new_window: (will open in a new window).
     wait: "Wait 2-3 minutes. This is an issue with TheKey where it takes their system a few minutes to synchronize some data under the covers."
     back: To get back to the <A HREF="%{url}">Pulse login page</A>, retype %{url} in your url bar
-    click_to_login: Click TheKey logo on the Pulse to log in with your new account. 
+    click_to_login: Click TheKey logo on the Pulse to log in with your new account.
     stuck: If you ever get stuck at TheKey main page, retype http://localhost:3000 in your URL window.
     help_txt: "If you need help you can watch a <a href=\"http://www.screencast.com/users/ccci/folders/Identity%202.0/media/957dc9a5-f1d2-4ca8-9f8a-806d36286f1b\" target=\"blank\">quick video</a> which will show you how to create a Key account or visit our <a href=\"http://getsatisfaction.com/powertochange\">Support Community</a>."
     email_already_in: "<b>%{email} is already in the Pulse.</b>  If this email is yours, please click the 'Verify Email' button and an email will be sent so that you can finish the joining a group process. This is to ensure that you own this email address."

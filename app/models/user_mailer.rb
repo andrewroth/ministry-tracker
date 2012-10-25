@@ -47,7 +47,7 @@ class UserMailer < ActionMailer::Base
     elsif interested
       @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_interested_subject", :group_name => group_name)}"
     else
-      @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_email", :group_name => group_name)}"
+      @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_subject", :group_name => group_name)}"
     end
     @sent_on     = Time.now
     @body[:requested] = requested

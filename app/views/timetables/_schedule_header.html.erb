@@ -1,9 +1,9 @@
 <%= javascript_include_tag 'timetable' %>
 
-<table id="schedule_header" width="250px" cellspacing="0" style="display:none">
+<table id="schedule_header" width="250px" cellspacing="0">
   <thead>
     <tr>
-      <th class="time">&nbsp;</th>
+      <th class="time" style="background-color: transparent;">&nbsp;</th>
       <%- 7.times do |day| -%>
         <th><%= Date::DAYNAMES[day] %></th>
       <%- end -%>

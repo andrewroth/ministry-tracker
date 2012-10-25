@@ -9,19 +9,20 @@ div#logos #pulse_logo {
 
 #banner_container #leftBubble .image {
   background-image: url("/images/fr/p2c_main_elements.png") !important;
-  background-position: -10px -1517px !important;
+  background-position: -4px -1522px !important;
 }
 
 #banner_container #leftBubble .image:hover {
-  background-position: -10px -1610px !important;
+  background-position: -4px -1615px !important;
 }
 
 #banner_container #rightBubble .image {
   background-image: url("/images/fr/p2c_main_elements.png") !important;
+  background-position: -9px -1321px !important;
 }
 
 #banner_container #rightBubble .image:hover {
-  background-position: -8px -1418px !important;
+  background-position: -9px -1415px !important;
 }
 
 #helpLink {

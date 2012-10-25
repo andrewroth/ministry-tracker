@@ -1,31 +1,35 @@
 <div class="modulecontent">
   <table class="groupicon">
-    <% has_a_group = false %>
-    <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL") + @person.all_groups.current_and_next_semester).group_by(&:semester).each do |semester, groups| %>
-      <% has_a_group = true %>
-      <tr>
-        <td class="groupSemesterTitle"><%= semester ? t("terms.#{semester.translation_key}").upcase : "No Semester Set" %></td>
-        <% groups.each_with_index do |group, i| %>
-        <%= "<tr><td></td>" if i > 0 %>
-        <td>
-          <%- if authorized?(:accept_request, :group_involvements) ||
-                authorized?(:decline_requests, :group_involvements) %>
-            <%= link_to(group.name, group) %>
-            <ul class="requesticon">
-              <%= render :partial => 'groups/member_request', :collection => group.requests,
-                :locals => { :source => 'dashboard' } %>
-            </ul>
-          <%- elsif group.is_interested(@me) -%>
-            <%= link_to(group.name, group) %>, <%= t('dashboard.groups.interested_message') %>
-          <%- elsif group.has_requested(@me) -%>
-            <%= link_to(group.name, group) %>, <%= t('dashboard.groups.requested_message') %>
-          <%- else -%>
-            <%= link_to(group.name, group) %>
-          <%- end -%>
-        </td>
-      </tr>
-      <%- end %>
-    <%- end -%>
+    <tbody>
+      <% has_a_group = false %>
+      <% (@person.all_groups.find(:all, :conditions => "semester_id IS NULL", :include => :semester) + @person.all_groups.current_and_next_semester.find(:all, :include => :semester)).group_by(&:semester).each do |semester, groups| %>
+        <% has_a_group = true %>
+        <tr>
+          <td class="groupSemesterTitle"><%= semester ? t("terms.#{semester.translation_key}").upcase : "" %></td>
+        </tr>
+        <% groups.each do |group| %>
+          <tr>
+            <td>
+              <% if authorized?(:accept_request, :group_involvements) || authorized?(:decline_requests, :group_involvements) %>
+                <%= link_to(group.name, group) %>
+                <ul class="requesticon">
+                  <%= render :partial => 'groups/member_request', :collection => group.requests, :locals => { :source => 'dashboard' } %>
+                </ul>
+
+              <% elsif group.is_interested(@me) %>
+                <%= link_to(group.name, group) %>, <%= t('dashboard.groups.interested_message') %>
+
+              <% elsif group.has_requested(@me) %>
+                <%= link_to(group.name, group) %>, <%= t('dashboard.groups.requested_message') %>
+
+              <% else %>
+                <%= link_to(group.name, group) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
   </table>
   <%= link_to has_a_group ? "<br/>#{I18n.t("dashboard.join_more_txt")}" : I18n.t("dashboard.join_txt"), :controller => "groups", :action => "join"%>
 </div>

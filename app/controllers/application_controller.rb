@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   # Pick a unique cookie name to distinguish our session data from others'
   helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
                 :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
-		:get_people_responsible_for
+            		:get_people_responsible_for
 		
   case
   when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen_directly]
@@ -52,11 +52,37 @@ class ApplicationController < ActionController::Base
   
   helper :all
 
+  def rails_cache_clear
+    if is_admin?
+      begin
+        Rails.cache.clear
+        Rails.logger.info("Clearing Rails cache! Initiated by person #{get_person.id}")
+        flash[:notice] = "Cleared the Rails cache."
+      rescue
+        flash[:notice] = "Failed to clear the Rails cache."
+      end
+    end
+    redirect_to '/'
+  end
+
   protected
 
     def set_locale
-      I18n.locale = params[:locale] || request.compatible_language_from(I18n.available_locales) || I18n.default_locale
-      session[:locale] = I18n.locale
+      if params[:locale].present?
+        I18n.locale = params[:locale]
+        if params[:locale] == I18n.default_locale
+          session.delete :locale
+          session[:locale] = nil
+        else
+          session[:locale] = I18n.locale
+        end
+      elsif session[:locale]
+        I18n.locale = session[:locale]
+      elsif request.subdomains.first == 'pouls' || request.subdomains.first == 'lepouls'
+        session[:locale] = I18n.locale = 'fr'
+      else
+        session[:locale] = I18n.locale = request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      end
     end
 
     def cas_filter
@@ -596,7 +622,7 @@ class ApplicationController < ActionController::Base
     def set_notices
       @dismissed_notice_ids = [0] + @my.dismissed_notices.collect(&:notice_id)
       @notices = Notice.find(:all, :conditions => [ 
-        "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
+        "#{Notice._(:live)} = 1 AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
       ])
     end
 
@@ -616,7 +642,7 @@ class ApplicationController < ActionController::Base
 
     def redirect_unless_is_active_hrdb_staff
       unless @me.cim_hrdb_staff.try(:boolean_is_active)
-        flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
+        flash[:notice] = %(<img src="images/silk/exclamation.png" style="float: left; margin-right: 7px;"> Your account has not been set up properly. Please contact <b><a href="mailto:Helpdesk@powertochange.org">Helpdesk@powertochange.org</a></b> so that we can correct this. Thanks!)
         redirect_to :action => "index", :controller => "stats"
         return false
       end
@@ -718,10 +744,5 @@ class ApplicationController < ActionController::Base
     def needs_to_sign_volunteer_agreements?
       !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
     end
-
-    def default_url_options(options={})
-      I18n.locale == I18n.default_locale ? {} : { :locale => I18n.locale }
-    end
-
 end
 

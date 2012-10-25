@@ -140,6 +140,11 @@ class SignupController < ApplicationController
   def get_dorms
     c = Campus.find :first, :conditions => [ "#{Campus._(:id)} = ?", params[:primary_campus_involvement_campus_id] ]
     @dorms = c.try(:dorms)
+
+    respond_to do |format|
+      format.html { render :nothing => true }
+      format.js { render 'get_dorms' }
+    end
   end
 
   def step2_info_submit
@@ -232,9 +237,11 @@ class SignupController < ApplicationController
             :campus_id => @primary_campus_involvement.campus_id
           }
           if ci
-            ci.update_student_campus_involvement(flash, @me, nil, 
+            Rails.logger.info("Entering update_student_campus_involvement with ('#{flash}', #{@person.try(:id)}, nil, #{@primary_campus_involvement.try(:school_year_id)}, #{@primary_campus_involvement.try(:campus_id)})")
+            ci.update_student_campus_involvement(flash, @person, nil, 
                                                  @primary_campus_involvement.school_year_id,
                                                  @primary_campus_involvement.campus_id)
+            Rails.logger.info("Exited update_student_campus_involvement")
           else
             ci = @person.campus_involvements.new
             ci.campus_id = @primary_campus_involvement.campus_id

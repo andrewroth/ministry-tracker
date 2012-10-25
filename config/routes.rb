@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :global_areas
 
   map.resources :global_countries
@@ -28,7 +29,18 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :prcs
 
-  map.resources :contacts
+
+  map.resources :survey_contacts, :has_many => [:notes, :activities]
+  map.resources :contacts, :controller => 'survey_contacts', :collection => {
+      :search => :get,
+      :impact_report => :get,
+      :national_report => :get,
+      :assignees_for_campus => :get,
+      :multiple_update => :post
+    }, :has_many => [:notes, :activities]
+  map.resources :discover_contacts, :controller => :discover_contacts, :has_many => [:notes, :activities]
+  map.connect '/discover', :controller => :discover_contacts, :action => :index
+    
 
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },
@@ -220,7 +232,8 @@ ActionController::Routing::Routes.draw do |map|
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
                                           #:perform_task => :post},
-                                          :perform_task => :post} do |person|
+                                          :perform_task => :post},
+                          :has_many => [:notes, :activities] do |person|
                          #:has_many => [:timetables] do |person|
     person.resources :timetables, :member => { :update_signup => :put }
     person.resources :campus_involvements
@@ -250,6 +263,10 @@ ActionController::Routing::Routes.draw do |map|
               :controller => :user_codes,
               :action => :generate_code_for_involved
   map.signup_timetable '/signup/step3_timetable', :controller => 'timetables', :action => "edit_signup"
+
+  map.resources :notes
+
+  map.resources :activities
   
   # The priority is based upon order of creation: first created -> highest priority.
   
@@ -271,6 +288,13 @@ ActionController::Routing::Routes.draw do |map|
   map.export_global_dashboard '/global_dashboard/export', :controller => "global_dashboard", :action => "export"
 
   map.resources :global_countries, :member => { :set_global_country_stage => :post }
+
+
+  map.connect '/rails/cache/clear',
+              :conditions => { :method => :get },
+              :controller => "application",
+              :action => "rails_cache_clear"
+
 
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id.:format'

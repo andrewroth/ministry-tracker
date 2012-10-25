@@ -6,9 +6,8 @@
   %>
     <%= link_to_remote("", 
           {:url => person_campus_involvement_path(@person, ci), 
-          #:confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
-          #              :campus_name => ci.campus.name),
-          :confirm => "test",
+          :confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
+                       :campus_name => ci.campus.name),
           :method => :delete,
           :before => "$('#spinner').show()"}, 
           {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{ci.campus.name}", :class => "removeInvolvementIconLink"}) %>

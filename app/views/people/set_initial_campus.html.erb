@@ -27,13 +27,12 @@
     <td><%= f.text_field :local_phone %> </td>
   </tr>
   <%= render :partial => 'primary_campus_involvement', :locals => { 
-       :hide_grad_date => true, :hide_major => true, :hide_minor => true,
-       :no_table => true, :hide_campus => false } %>
+        :hide_grad_date => true, :hide_major => true, :hide_minor => true,
+        :no_table => true, :hide_campus => false } %>
 
   <%= observe_field "primary_campus_involvement_campus_id",
         :url => { :controller => 'signup', :action => 'get_dorms' },
-        :with => "primary_campus_involvement_campus_id"
-  %>
+        :with => "primary_campus_involvement_campus_id" %>
   <tr>
     <td class="label"><%= t("profile.headings.major") %> </td>
     <td><%= f.text_field :major %></td>

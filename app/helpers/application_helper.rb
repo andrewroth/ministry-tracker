@@ -27,7 +27,7 @@ module ApplicationHelper
       end
     end
     page.replace_html "flash_#{level}", msg
-    page.delay(0.7) { page.visual_effect :blind_down, "flash_#{level}" }
+    page.delay(0.7) { page.visual_effect :appear, "flash_#{level}" }
     #page.visual_effect :highlight, "flash_#{level}"
     #page.delay(7) do
       #page.visual_effect :blind_up, "flash_#{level}"
@@ -171,8 +171,22 @@ module ApplicationHelper
     " if Cmt::CONFIG[:gcx_connexion_bar] && session[:connexion_bar]
   end
 
-  def switch_languages_url
-    current_url_with_locale(currently_english ? 'fr' : 'en-CA')
+  def switch_languages_url(opts = {})
+    locale = currently_english ? 'fr' : 'en-CA'
+    url = opts[:url]
+    switch_domains = opts[:switch_domain]
+    
+    if switch_domains && Rails.env.production?
+      if locale == 'fr'
+        'https://pouls.pouvoirdechanger.com'
+      else
+        'https://pulse.powertochange.com'
+      end
+    elsif url.present?
+      "#{url}#{url.include?('?') ? '&' : '?'}locale=#{locale}"
+    else
+      current_url_with_locale(locale)
+    end
   end
 
   def current_url_with_locale(locale)

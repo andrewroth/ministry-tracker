@@ -70,6 +70,7 @@
 
   .link_bar a:hover, .link_menu_box a:hover {
     color: white;
+    text-decoration: underline;
   }
 
   .link_bar a.ll {
@@ -80,7 +81,7 @@
   }
 
   .link_bar a:hover, .link_bar u:hover {
-    text-decoration: none;
+    text-decoration: underline;
   }
 
   .link_menu_box {
@@ -142,6 +143,7 @@
 
   .link_bar a.ll:hover {
     color: white;
+    text-decoration: underline;
   }
 
   .link_bar a.ll:hover, .link_bar a.ll.menu_expanded {
@@ -175,10 +177,12 @@
 
   .link_bar .icon_link {
     padding: 1px 13px;
+    text-decoration: none;
   }
 
   .link_bar a.icon_link:hover {
     background-color:transparent;
+    text-decoration: none;
   }
 
   .link_bar a.facebook {
@@ -186,6 +190,7 @@
     background-position: -6px -244px;
     border-width: 0;
   }
+  
   .link_bar a.facebook:hover {
     background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
     background-position: -6px -289px;
@@ -197,9 +202,14 @@
     border-width: 0;
     padding-left: 10px;
   }
+
   .link_bar a.twitter:hover {
     background-image: url("<%=@base_url if @base_url%>/images/sprites/p2c_link_bar.png"); background-repeat: no-repeat;
     background-position: -7px -201px;
+  }
+
+  .link_bar a.x-tree-node-anchor:hover {
+    text-decoration: none;
   }
   
 </style>

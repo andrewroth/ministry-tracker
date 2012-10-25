@@ -3,8 +3,8 @@ if @denied
   update_flash(page)
 elsif @ministry_involvement.errors.empty?
   page.insert_html :before, :new_ministry_li, :partial => 'ministry_involvement_li', :object => @ministry_involvement
-  page[:new_ministry_involvement_li].hide
-  page[:add_ministry_button].show
+  page << "$('#new_ministry_involvement_li').hide();"
+  page << "$('#new_ministry_li').show();"
 else
   page[:"new_ministry_involvement"].replace_html :partial => 'new'
 end

@@ -45,7 +45,7 @@
   <li><a href="http://mpdtool.powertochange.org">MPD Tool</a></li>
 </ul>
 </p>
-<p>Your username will authenticate you to all these sites using one login via TheKey.  You do not have to create a new one each time!  Contact us at helpdesk@c4c.ca if you have any questions about your username.  Thank you!
+<p>Your username will authenticate you to all these sites using one login via TheKey.  You do not have to create a new one each time!  Contact us at Helpdesk@powertochange.org if you have any questions about your username.  Thank you!
 <br>
 </p>
     |,

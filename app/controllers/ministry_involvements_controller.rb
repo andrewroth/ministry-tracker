@@ -204,7 +204,8 @@ class MinistryInvolvementsController < ApplicationController
                                                                  #{MinistryInvolvement._(:ministry_role_id)} IN (?) AND
 
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
-                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL AND
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_role_id)} IS NOT NULL",
                                                                  people_ids, params[:mids], params[:mrids]])
         
       else
@@ -213,7 +214,8 @@ class MinistryInvolvementsController < ApplicationController
                                                 :conditions => ["#{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:person_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} IN (?) AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_id)} NOT IN (1,2) AND
-                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL",
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL AND
+                                                                 #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_role_id)} IS NOT NULL",
                                                                  people_ids, params[:mids]])
       end
 

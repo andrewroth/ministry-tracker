@@ -449,7 +449,7 @@ test:
       
       __<P><A_HREF="<%=_@link_%>"_target="_blank"><%=_@link_%></A></P>
       
-      __<P>If_you_have_any_problems_verifying_your_email,_please_contact_helpdesk@c4c.ca</P>
+      __<P>If_you_have_any_problems_verifying_your_email,_please_contact_Helpdesk@powertochange.org</P>
       </HTML>
 
     signup_finished_email: |

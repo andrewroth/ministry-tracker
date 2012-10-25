@@ -776,20 +776,24 @@
     }
   end
 
+  def activity_options
+    [["Interaction", 1], ["Spiritual Conversation", 2], ["Gospel Presentation", 3], ["Indicated Decision", 4], ["Shared Spirit-filled life", 5]]
+  end
+  
   
   def eventbrite
     # num_days_to_display_event_after_completed : stop advertising events on the dashboard after this many days have elapsed after the event is completed
     # num_days_until_event_closed_after_completed : Eventbrite closes events 5 days after they complete and pay out the money, say 6 just to be safe
     # num_days_sync_delay : only sync events if they haven't been synced for this many or more days
     {
-      :campus_question => "Your Campus",
-      :year_question => "Your Year",
+      :campus_question => {:en => "Your Campus", :fr => "Votre campus"},
+      :year_question => {:en => "Your Year", :fr => "Votre année scolaire"},
       :event_status_live => "Live",
       :event_status_completed => "Completed",
       :male => "Male",
       :female => "Female",
-      :first_year => "1st Year (Undergrad)",
-      :c4c_events_link => "http://campusforchrist.eventbrite.com/",
+      :first_year => {:en => "1st Year (Undergrad)", :fr => "1ère année (1er cycle)"},
+      :c4c_events_link => "http://p2c.eventbrite.com/",
       :num_days_to_display_event_after_completed => 10,
       :num_days_until_event_closed_after_completed => 6,
       :num_days_sync_delay => 1

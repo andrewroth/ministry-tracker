@@ -1,5 +1,5 @@
-<%- form_remote_tag(:id => 'search_form', :before => "$('#spinner#{type}').show()", 
-					:url => search_people_url, :update => type+'_results', :complete => "$('#spinner#{type}').hide()") do -%>
+<%- form_remote_tag(:id => 'search_form', :before => "$('#spinner#{type}').show()",
+					:url => search_people_url, :complete => "$('#spinner#{type}').hide(); $('##{type+'_results'}').html(request.responseText);") do -%>
  	Search for a person to add:&nbsp;&nbsp;
 	<%= hidden_field_tag :group_id, @group.id %>
 	<%= text_field_tag :search %> &nbsp;
