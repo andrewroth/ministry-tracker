@@ -1,0 +1,19 @@
+<tr class="<%= cycle('highlight', 'nohighlight') %><%= special_css_class %>">
+  <td class="statsTableTitle">
+    <%= title %>
+  </td>
+
+  <% period_model_array.each do |pm| %>
+    <td>
+      <% if stat_hash[:model].constantize.column_names.include? 'created_at' %>
+        <%= stat_hash[:model].constantize.count :all, :conditions => (stat_hash[:conditions] || {}).merge({ :campus_id => campus_ids, :created_at => pm.start_date.to_date..pm.end_date.to_date }) %>
+      <% else %>
+        <span title="This stat cannot be calculated for this time period">?</span>
+      <% end %>
+    </td>
+  <% end %>
+
+  <td>
+    <%= stat_hash[:model].constantize.count :all, :conditions => (stat_hash[:conditions] || {}).merge({ :campus_id => campus_ids }) %>
+  </td>
+</tr>

@@ -134,22 +134,32 @@ module StatsHelper
 
   def show_stat_hash_line(period_model_array, campus_ids, stat_hash, staff_id = nil, alternate_title = nil, single_stat_reference = nil)
     result = ""
+
     title = stat_hash[:label]
     title = alternate_title unless alternate_title.nil?
     title = single_stat_link(stat_hash, single_stat_reference) unless single_stat_reference.nil?
 
     if stat_hash[:column_type] == :blank_line
-      result = render(:partial => 'stats/blank_line')
+      result = render 'stats/blank_line'
+
+    elsif stat_hash[:column_type] == :custom_partial
+      result = render stat_hash[:partial],
+        :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
+        :title => title,
+        :period_model_array => period_model_array,
+        :campus_ids => campus_ids,
+        :stat_hash => stat_hash,
+        :staff_id => staff_id
+
     elsif line_should_show(period_model_array, stat_hash)
-      result = render(:partial => 'stats/stats_line',
-                      :locals => {
-                          :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
-                          :title => title,
-                          :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
-                          :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
-                          :print_total => (stat_hash[:show_total] == false || stat_hash[:grouping_method] == :last_non_zero) ? false : true }
-                      )
+      result = render 'stats/stats_line',
+        :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
+        :title => title,
+        :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
+        :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
+        :print_total => (stat_hash[:show_total] == false || stat_hash[:grouping_method] == :last_non_zero) ? false : true
     end
+
     result
   end
 

@@ -542,6 +542,23 @@
                                     :annual_report => :annualReport_lnz_ministering_disciples},
             :display_type => :text_positive_integer,
             :order => 14
+          },
+          :survey_contacts_engagements => {
+            :label => "September Launch Face-to-Face Engagements",
+            :column_type => :custom_partial,
+            :grouping_method => :none,
+            :partial => 'stats/stat_line_count_model_with_condition',
+            :model => 'SurveyContact',
+            :conditions => { :result => [5, 6, 7] },
+            :order => 15
+          },
+          :discover_contacts_engagements => {
+            :label => "Discover Contact Engagements",
+            :column_type => :custom_partial,
+            :grouping_method => :none,
+            :partial => 'stats/stat_line_count_model_with_condition',
+            :model => 'DiscoverContact',
+            :order => 16
           }
       },
       :weekly_p2c_special => {
