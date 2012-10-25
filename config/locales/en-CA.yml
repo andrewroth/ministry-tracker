@@ -52,6 +52,10 @@ en-CA:
       resources: "RESOURCES"
       resources_mouseover: "P2C Resources Wiki"
       events_menu:
+        p2cplus: P2C+
+        p2cplus_mouseover:
+        registration: REGISTRATION
+        registration_mouseover:
         events: EVENTS
         events_mouseover:
         summit: SUMMIT
