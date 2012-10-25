@@ -16,16 +16,16 @@
   <% @campuses.each do |campus|
         show_campus = true
         unless @staff_id.nil?
-          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id) 
-        end 
+          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id)
+        end
 
         if show_campus
 
-          %><%= show_stat_hash_line(@periods, [campus.id], @one_stat, @staff_id, campus.campus_shortDesc)%><%     
+          %><%= show_stat_hash_line(@periods, [campus.id], @one_stat, @staff_id, campus.campus_shortDesc)%><%
        end
      end %>
 
   <tr><td><br/></td></tr>
-    <%= show_stat_hash_line(@periods, @campus_ids, @one_stat, @staff_id, 'Totals:')%>
+    <%= show_stat_hash_line(@periods, @campus_ids, @one_stat, @staff_id, 'Total')%>
 
 </table>
