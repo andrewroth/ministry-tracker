@@ -363,7 +363,7 @@
       },
         :monthly_report_input => {
           :students_dg => {:column => :monthlyreport_totalStudentInDG,
-            :label => "Growing Disciples - default = # in DG",
+            :label => "Growing Disciples (defaults to # in DG)",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -386,7 +386,7 @@
             :label => "Non-Christians attending outreach events",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :none,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 5
           },
@@ -394,15 +394,17 @@
             :label => "Unrecorded Engagements",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :none,
+            :grouping_method => :sum,
             :display_type => :text_positive_integer,
             :order => 6
           },
           :unrecorded_engagements => {:column => :monthlyreport_ministering_disciples,
-            :label => "Ministering Disciples - default = # student/ministry leaders",
+            :label => "Ministering Disciples (defaults to # student/ministry leaders)",
             :collected => :monthly,
             :column_type => :database_column,
-            :grouping_method => :none,
+            :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_ministering_disciples,
+                                    :annual_report => :annualReport_lnz_ministering_disciples},
             :display_type => :text_positive_integer,
             :order => 7
           }
@@ -536,6 +538,8 @@
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
+            :lnz_correspondance => {:semester_report => :semesterreport_lnz_ministering_disciples,
+                                    :annual_report => :annualReport_lnz_ministering_disciples},
             :display_type => :text_positive_integer,
             :order => 14
           }
