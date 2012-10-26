@@ -3,7 +3,7 @@
  */
 
 function selectInputFields() {
-  jQuery.ajax({
+  $.ajax({
     complete: function(request){ completeLoadingPrcInputTab() },
     data: getRecordInfos(),
     dataType:'script',
@@ -12,7 +12,7 @@ function selectInputFields() {
 }
 
 function refreshIndexFields() {
-  jQuery.ajax({
+  $.ajax({
     complete: function(request){ completeLoadingPrcIndexTab() },
     data: getIndexInfo(),
     dataType:'script',
@@ -23,42 +23,38 @@ function refreshIndexFields() {
 
 function getRecordInfos()
 {
-  semester_id = jQuery("#prc_semester_id")[0].value;
-  campus_id = jQuery("#prc_campus_id")[0].value;
-	date = jQuery("#prc_date")[0].value;
+  semester_id = $("#prc_semester_id")[0].value;
+  campus_id = $("#prc_campus_id")[0].value;
+	date = $("#prc_date")[0].value;
   return "semester_id=" + semester_id + "&campus_id=" + campus_id + "&date=" + date;
 }
 
 function getIndexInfo()
 {
-  semester_id = jQuery("#prc_semester_id")[0].value;
-  campus_id = jQuery("#prc_campus_id")[0].value;
+  semester_id = $("#prc_semester_id")[0].value;
+  campus_id = $("#prc_campus_id")[0].value;
   return "semester_id=" + semester_id + "&campus_id=" + campus_id;
 }
- 
+
  function beginLoadingPrcInputTab() {
-  jQuery('.reportInputContainer').hide();
-  jQuery('.reportInputContainer').visualEffect('fade');
-  jQuery('#statsSpinnerContainer').visualEffect('appear');
+  $('.reportInputContainer, #prcIndexFields').visualEffect('fade');
+  $('#statsSpinnerContainer').visualEffect('appear');
   selectInputFields();
 }
 
 function completeLoadingPrcInputTab() {
-  jQuery('#statsSpinnerContainer').hide();
-  jQuery('.reportInputContainer').show();
-  jQuery('.reportInputContainer').visualEffect('appear');
+  $('#statsSpinnerContainer').hide();
+  $('.reportInputContainer, #prcIndexFields').visualEffect('appear');
 }
 
 function beginLoadingPrcIndexTab() {
-  jQuery('.reportIndexContainer').hide();
-  jQuery('.reportIndexContainer').visualEffect('fade');
-  jQuery('#statsSpinnerContainer').visualEffect('appear');
+  $('.reportIndexContainer, #prcIndexFields').visualEffect('fade');
+  $('#statsSpinnerContainer').visualEffect('appear');
   refreshIndexFields();
 }
 
 function completeLoadingPrcIndexTab() {
-  jQuery('#statsSpinnerContainer').hide();
-  jQuery('.reportIndexContainer').show();
-  jQuery('.reportIndexContainer').visualEffect('appear');
+  $('#statsSpinnerContainer').hide();
+  $('.reportIndexContainer, #prcIndexFields').visualEffect('appear');
 }
 

@@ -19,7 +19,7 @@ lines.each do | key, input_stat |
     required_indicator = input_stat[:required] ? "*" : ""
 %>
       <p class="statsFormField">
-        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator}: " %>
+        <%= f.label input_stat[:column], "#{input_stat[:label]}#{required_indicator} " %>
         <%= if input_stat[:display_type] == :text_area
               required = true
               f.text_area input_stat[:column], :size => "20x4", :class => "required"
@@ -39,7 +39,7 @@ lines.each do | key, input_stat |
               elsif input_stat[:drop_down_data] == :prc_method
                 f.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc
               end
-              
+
             else
               required = true
               f.text_field input_stat[:column], :size => 16, :class => "required"
@@ -56,8 +56,7 @@ lines.each do | key, input_stat |
 end
 %>
       <p>
-        <br/>
-        <div class="center"><%= f.submit "Submit" %></div>
+        <div class="center"><%= f.submit "Submit", :class => "action-button" %></div>
       </p>
       <br/>
     <% end %>

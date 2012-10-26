@@ -209,13 +209,11 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .butUpdate a {
-  background: url("/images/sprites/icons.png") no-repeat scroll -3px -433px transparent;
+  background: url("/images/sprites/p2c_icons.png") no-repeat scroll -5px -391px transparent;
 }
 
 .butDelete a {
-  background-image: url("/images/sprites/icons.png");
-  background-position: -5px -682px;
-  background-repeat: no-repeat;
+  background: url("/images/sprites/p2c_icons.png") no-repeat scroll -7px -359px transparent;
 }
 
 
@@ -224,11 +222,11 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .butUpdate a:hover {
-  background-position: -3px -466px;
+  background-position: -5px -835px;
 }
 
 .butDelete a:hover {
-  background-position: -5px -715px;
+  background-position: -7px -803px;
 }
 
 .butUpdate, .butDelete {
@@ -294,7 +292,9 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   height:18px;
 }
 
-
+.has_title {
+  border-bottom: 1px dotted;
+}
 
 
 
@@ -2444,8 +2444,20 @@ ul.statsLinkList {
   width: 37em;
 }
 
-.statsFormContainer.monthly_report {
+.statsFormContainer.monthly_report, .statsFormContainer.prc_report {
   width: 60em;
+}
+
+.statsFormContainer.prc_report label {
+  width: 200px;
+}
+
+.statsFormContainer.prc_report textarea {
+  width: 300px;
+}
+
+.statsFormContainer.prc_report input[type="text"] {
+  width: 140px;
 }
 
 .statsContainer {
@@ -2527,7 +2539,7 @@ ul.statsLinkList {
   text-align: center;
   background-color: #F7FAF7;
   border-radius: 10px;
-  box-shadow:0 7px 20px #BFBFBF;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2)
 }
 
 
@@ -2651,13 +2663,13 @@ fieldset {
 }
 
 #results .statsTableTitle {
-  color: #474E66;
+  color: #666766;
   vertical-align: middle;
   text-align: left;
 }
 
 #results .statsTableTitleTop {
-  color: #474E66;
+  color: #666766;
   vertical-align: middle;
   text-align: center;
 }
@@ -2677,6 +2689,10 @@ table .statsTable {
   font-size: 1em;
   color: #A1A6B3;
   margin-top: 0.5em;
+}
+
+.statException {
+  font-weight: normal;
 }
 
 div .backLink {

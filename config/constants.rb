@@ -399,7 +399,7 @@
             :display_type => :text_positive_integer,
             :order => 6
           },
-          :unrecorded_engagements => {:column => :monthlyreport_ministering_disciples,
+          :ministering_disciples => {:column => :monthlyreport_ministering_disciples,
             :label => "Ministering Disciples (defaults to # student/ministry leaders)",
             :collected => :monthly,
             :column_type => :database_column,
@@ -546,18 +546,18 @@
           },
           :survey_contacts_engagements => {
             :label => "September Launch Face-to-Face Engagements",
-            :column_type => :custom_partial,
+            :collected => :weekly,
+            :column_type => :count_model_with_condition,
             :grouping_method => :none,
-            :partial => 'stats/stat_line_count_model_with_condition',
             :model => 'SurveyContact',
             :conditions => { :result => [5, 6, 7] },
             :order => 15
           },
           :discover_contacts_engagements => {
             :label => "Discover Contact Engagements",
-            :column_type => :custom_partial,
+            :collected => :weekly,
+            :column_type => :count_model_with_condition,
             :grouping_method => :none,
-            :partial => 'stats/stat_line_count_model_with_condition',
             :model => 'DiscoverContact',
             :order => 16
           }

@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
   #before_filter :authorization_filter, :only => [:create, :update, :destroy, :join]
   before_filter :get_group, :only => [:show, :edit, :destroy, :update, :set_start_time, :set_end_time, :clone_pre, :clone]
   skip_before_filter :authorization_filter, :email_helper
-  before_filter :set_current_and_next_semester
+  before_filter :set_current_and_next_semester, :set_title
 
 
   TIMETABLE_COMPARE_STYLE = ["VERTICAL_TABLE", "FANCY_HORIZONTAL"]
@@ -67,7 +67,7 @@ class GroupsController < ApplicationController
       format.html
     end
   end
-  
+
   def show
     # @groups is the list of groups that show up when transferring someone
     if authorized?(:transfer, :group_involvements)
@@ -103,7 +103,7 @@ class GroupsController < ApplicationController
     @is_staff = is_staff_somewhere
 
     respond_to do |format|
-      format.html 
+      format.html
       format.js
     end
   end
@@ -128,7 +128,7 @@ class GroupsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html 
+      format.html
       format.js
     end
   end
@@ -192,7 +192,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group.destroy 
+    @group.destroy
     flash[:notice] = @group.class.to_s.titleize + ' was successfully DELETED.'
     respond_to do |format|
       format.js   { index }
@@ -230,7 +230,7 @@ class GroupsController < ApplicationController
       end
     }.collect(&:person)
 
-    
+
     if params[:compare_style].present? && TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i].present?
       compare_style = TIMETABLE_COMPARE_STYLE[params[:compare_style].to_i]
     elsif cookies[:timetable_compare_style].present? && TIMETABLE_COMPARE_STYLE[cookies[:timetable_compare_style].to_i].present?
@@ -262,8 +262,8 @@ class GroupsController < ApplicationController
       @group.save!
       @notices << "Group start time set to : " + Date::DAYNAMES[day] + "," + (Time.now.beginning_of_day + stime).to_s(:time)
     end
-    
-    
+
+
     respond_to do |format|
       format.js{
          render :update do |page|
@@ -273,7 +273,7 @@ class GroupsController < ApplicationController
       }
     end
   end
-  
+
   def set_end_time
     @notices ||=[]
     etime = params[:time].to_i
@@ -297,7 +297,7 @@ class GroupsController < ApplicationController
       }
     end
   end
-  
+
   def get_campus
     if params[:campus_id] && !params[:campus_id].blank?
       @campus = Campus.find(params[:campus_id])
@@ -306,7 +306,7 @@ class GroupsController < ApplicationController
       @gt = GroupType.find(params[:gt_id])
     end
   end
-  
+
   def find_times
     # # Map all the group members schedules to find an open time in the range submitted
     # @group = Group.find(params[:id], :include => :people)
@@ -318,17 +318,17 @@ class GroupsController < ApplicationController
     # people = @group.people.reject {|person| person.nil?}
     # possible_times = {}
     # days.collect {|i| possible_times[i] = [] }
-    # 
+    #
     # # initialize the "Free Times" hash of arrays
     # possible_times.each_key do |day|
     #   Timetable::EARLIEST.to_i.step(Timetable::LATEST.to_i, Timetable::INTERVAL) {|i| possible_times[day] << i if range.include?(i) }
     # end
-    # 
+    #
     # # Get each person's busy times
     # total_conflict = []
     # people_hash = {}
     # people.each do |person|
-    #   free_times = person.free_times.find(:all, :conditions => ["day_of_week IN (?) AND (end_time > ? OR start_time < ?)", 
+    #   free_times = person.free_times.find(:all, :conditions => ["day_of_week IN (?) AND (end_time > ? OR start_time < ?)",
     #                                   days, range_start, range_end])
     #   unless free_times.empty?
     #     ft_hash = {}
@@ -351,7 +351,7 @@ class GroupsController < ApplicationController
     #   wants.js
     # end
   end
-  
+
   def clone_pre
     @semesters = Semester.all
   end
@@ -383,7 +383,7 @@ class GroupsController < ApplicationController
     end
 
     if params[:campus_id].present?
-      requested_campus = Campus.find(:first, :conditions => { 
+      requested_campus = Campus.find(:first, :conditions => {
         Campus._(:id) => (params[:campus_id] || session[:group_campus_filter_id])
       }) || @campuses.first
 
@@ -410,7 +410,7 @@ class GroupsController < ApplicationController
 
   def setup_groups
     conditions = "(#{Group.__(:campus_id)} is null"
-    if (!is_staff_somewhere && (@campus || @campuses.present?)) || 
+    if (!is_staff_somewhere && (@campus || @campuses.present?)) ||
       (is_staff_somewhere && @campus.present?)
       conditions += " OR #{Group.__(:campus_id)} in (#{@campus.try(:id) || @campuses.collect(&:id).join(',')})"
     elsif is_staff_somewhere
@@ -431,7 +431,7 @@ class GroupsController < ApplicationController
 
 
   private
-  
+
   def compare_timetables_vertical_table
     @display_compare_table = true
 
@@ -456,5 +456,8 @@ class GroupsController < ApplicationController
     end
   end
 
+  def set_title
+    @site_title = 'Groups'
+  end
 
 end

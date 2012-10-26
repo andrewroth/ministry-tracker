@@ -1,21 +1,21 @@
 
 if @hide_radios
-  page << "jQuery('#statsRadioButtonContainer').addClass('notDisplayed')"
+  page << "$('#statsRadioButtonContainer').addClass('notDisplayed')"
 else
-  page << "jQuery('#statsRadioButtonContainer').removeClass('notDisplayed')"
+  page << "$('#statsRadioButtonContainer').removeClass('notDisplayed')"
 end
 
 if @hide_ministry_treeview
-  page << "jQuery('#stats_chosen_ministry').addClass('notDisplayed')"
+  page << "$('#stats_chosen_ministry').addClass('notDisplayed')"
 else
-  page << "jQuery('#stats_chosen_ministry').removeClass('notDisplayed')"
+  page << "$('#stats_chosen_ministry').removeClass('notDisplayed')"
 end
 
 @scope_radios.each do |radio|
   if radio[:show]
-      page << "jQuery('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
+      page << "$('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
   else
-    page << "jQuery('#stats#{radio[:value].camelize}RadioContainer').addClass('notDisplayed')"
+    page << "$('#stats#{radio[:value].camelize}RadioContainer').addClass('notDisplayed')"
   end
 end
 
@@ -26,18 +26,18 @@ page[@scope_radio_selected_id].attr("checked", true)
 # hide the time tab links accordingly
 @time_tabs.each do |t|
   if @hide_tab[t]
-    page << "jQuery('##{t.to_s}').addClass('notDisplayed')"
+    page << "$('##{t.to_s}').addClass('notDisplayed')"
   else
-    page << "jQuery('##{t.to_s}').removeClass('notDisplayed')"   
+    page << "$('##{t.to_s}').removeClass('notDisplayed')"
   end
 end
 
 # update tab styles to reflect selected tab
-page << "jQuery('.statsReportTab').removeClass('statsTabActive')"
-page << "jQuery('.statsReportTabContainer').removeClass('statsTabContainerActive')"
+page << "$('.statsReportTab').removeClass('statsTabActive')"
+page << "$('.statsReportTabContainer').removeClass('statsTabContainerActive')"
 
-page << "jQuery('##{@selected_time_tab_id}').addClass('statsTabActive')"
-page << "jQuery('##{@selected_results_div_id}').addClass('statsTabContainerActive')"
+page << "$('##{@selected_time_tab_id}').addClass('statsTabActive')"
+page << "$('##{@selected_results_div_id}').addClass('statsTabContainerActive')"
 
 page.replace_html("year", time_tab_link_to_remote("year"))
 page.replace_html("semester", time_tab_link_to_remote("semester"))
@@ -53,7 +53,6 @@ page.replace_html(@selected_time_tab_id, :partial => @tab_select_partial)
 
 page.replace_html(@selected_results_div_id, :partial => @results_partial)
 
-page << "jQuery('.statsReportTabContainer').hide();"
+page << "$('.statsReportTabContainer').hide();"
 
-page[@selected_results_div_id].visual_effect :blind_down
-
+page << "$('##{@selected_results_div_id}').fadeIn('fast');"

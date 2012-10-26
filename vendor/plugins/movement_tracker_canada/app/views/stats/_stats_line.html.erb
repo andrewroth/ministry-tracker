@@ -6,13 +6,13 @@
 
   <% stats_array.each do | stat | %>
     <td>
-      <%= stat %>
-      <% total += stat if special_total.nil? && print_total %>
+      <%= stat.present? ? stat : '<span class="statException has_title" title="This measurement cannot be calculated for this specific time period">?</span>' %>
+      <% total += stat if stat.present? && special_total.nil? && print_total %>
     </td>
   <% end %>
 
-  <td>
-    <%= print_total ? (special_total.nil? ? total : special_total) : '<span title="Not applicable">n/a</span>' %>
+  <td class="statsTableTotal">
+    <%= print_total ? (special_total.nil? ? total : special_total) : '<span class="statException has_title" title="Not applicable">n/a</span>' %>
   </td>
 </tr>
 

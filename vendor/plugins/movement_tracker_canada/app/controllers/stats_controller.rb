@@ -3,6 +3,7 @@ class StatsController < ApplicationController
   unloadable
 
   skip_before_filter :authorization_filter, :only => [:select_report, :ie_warning]
+  before_filter :set_title
 
 
   NO_CAMPUSES_UNDER_MINISTRY = -1
@@ -910,4 +911,7 @@ class StatsController < ApplicationController
     session["#{@report_type}_order_by"] = final_string
   end
 
+  def set_title
+    @site_title = 'Insights'
+  end
 end

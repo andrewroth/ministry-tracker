@@ -77,12 +77,14 @@ module StatsHelper
 
   def evaluate_stat_for_period(period_model, campus_ids, stat_hash, staff_id = nil)
     evaluation = 0
+
     if stat_hash[:column_type] == :database_column
       evaluation = period_model.evaluate_stat(campus_ids, stat_hash, staff_id)
+
     elsif stat_hash[:column_type] == :sum
       stat_hash[:columns_sum].each { |cs| evaluation += evaluate_stat_for_period(period_model, campus_ids, stats_reports[cs[:report]][cs[:line]], staff_id).to_i }
-    elsif stat_hash[:column_type] == :division
 
+    elsif stat_hash[:column_type] == :division
       dividend_stat = stats_reports[stat_hash[:dividend][:report]][stat_hash[:dividend][:line]]
       divisor_stat = stats_reports[stat_hash[:divisor][:report]][stat_hash[:divisor][:line]]
 
@@ -90,7 +92,19 @@ module StatsHelper
       divisor = evaluate_stat_for_period(period_model, campus_ids, divisor_stat, staff_id)
 
       evaluation = give_percentage(dividend, divisor)
+
+    elsif stat_hash[:column_type] == :count_model_with_condition
+      if stat_hash[:model].constantize.column_names.include?('updated_at')
+        merge_in_conditions = {
+          :campus_id => campus_ids,
+          :updated_at => period_model.start_date.to_date..period_model.end_date.to_date
+        }
+        evaluation = stat_hash[:model].constantize.count :all, :conditions => (stat_hash[:conditions] || {}).merge(merge_in_conditions)
+      else
+        evaluation = nil
+      end
     end
+
     evaluation
   end
 
@@ -117,6 +131,7 @@ module StatsHelper
 
   def evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id = nil)
     special_total = nil
+
     if stat_hash[:column_type] == :division
       dividend_stat = stats_reports[stat_hash[:dividend][:report]][stat_hash[:dividend][:line]]
       divisor_stat = stats_reports[stat_hash[:divisor][:report]][stat_hash[:divisor][:line]]
@@ -128,7 +143,14 @@ module StatsHelper
         divisor += evaluate_stat_for_period(pm, campus_ids, divisor_stat, staff_id)
       end
       special_total = give_percentage(dividend, divisor)
+
+    elsif stat_hash[:column_type] == :count_model_with_condition && !stat_hash[:model].constantize.column_names.include?('updated_at')
+      merge_in_conditions = {
+        :campus_id => campus_ids
+      }
+      special_total = stat_hash[:model].constantize.count :all, :conditions => (stat_hash[:conditions] || {}).merge(merge_in_conditions)
     end
+
     special_total
   end
 

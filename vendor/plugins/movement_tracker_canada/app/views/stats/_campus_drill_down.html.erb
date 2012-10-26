@@ -6,7 +6,7 @@
     <% @reports_to_show.each do |r| %>
       <% stat_report(r).each do |k, stat|
         next if stat[:display] && stat[:display] == :false
-        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)%>
+        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
           <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
           <% total_stat[k] = 0
         end
@@ -27,10 +27,10 @@
         <% @reports_to_show.each do |r| %>
         <% stat_report(r).each do |k, stat|
           next if stat[:display] && stat[:display] == :false
-          if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)
+          if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition)
             data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
-            <td class="<%= stat[:css_class] %>"><%= data %></td>
-            <% total_stat[k] += data
+            <td class="<%= stat[:css_class] %>"><%= data if data.present? %></td>
+            <% total_stat[k] += data if data.present?
           end
         end %>
     <% end %>
@@ -40,12 +40,12 @@
   end %>
 
   <tr><td><br/></td></tr>
-  <tr class="highlight">
+  <tr class="highlight statsTableTotal">
     <td class="statsTableTitle">Total</td>
     <% @reports_to_show.each do |r|
       stat_report(r).each do |k, stat|
         next if stat[:display] && stat[:display] == :false
-        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column) %>
+        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
         <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
         <%
         end
