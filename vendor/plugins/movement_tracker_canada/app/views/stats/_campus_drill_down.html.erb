@@ -29,7 +29,13 @@
           next if stat[:display] && stat[:display] == :false
           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition)
             data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
-            <td class="<%= stat[:css_class] %>"><%= data if data.present? %></td>
+            <td class="<%= stat[:css_class] %>">
+              <% if data.present? %>
+                <%= data %>
+              <% else %>
+                <span class="statException has_title" title="This measurement cannot be calculated for this specific time period">?</span>
+              <% end %>
+            </td>
             <% total_stat[k] += data if data.present?
           end
         end %>
