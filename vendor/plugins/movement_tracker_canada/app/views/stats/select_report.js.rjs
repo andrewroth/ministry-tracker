@@ -13,7 +13,7 @@ end
 
 @scope_radios.each do |radio|
   if radio[:show]
-      page << "$('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
+    page << "$('#stats#{radio[:value].camelize}RadioContainer').removeClass('notDisplayed')"
   else
     page << "$('#stats#{radio[:value].camelize}RadioContainer').addClass('notDisplayed')"
   end

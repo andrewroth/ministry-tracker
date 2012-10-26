@@ -41,7 +41,7 @@ module StatsHelper
   end
 
   def order_by_link(text, column)
-    link_to_remote(text, :url => {:action => "select_report"}, :with => "'order_by=#{column}'", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()")
+    link_to_remote(text, :url => {:action => "select_report"}, :with => "'order_by=#{column}'", :before => "beginLoadingStatsTab()", :complete => "completeLoadingStatsTab()", :html => { :title => "Sort by #{text}" })
   end
 
   def single_stat_link(stat_hash, single_stat_reference)
