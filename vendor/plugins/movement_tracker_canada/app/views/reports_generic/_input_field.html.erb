@@ -1,7 +1,7 @@
 <%
 def show_label(input_stat, required_indicator)
   show_label = input_stat[:submit_label] ? input_stat[:submit_label] : input_stat[:label]
-  "#{show_label}#{required_indicator}: "
+  "#{show_label}#{required_indicator}&nbsp;"
 end
 
   required = false
@@ -14,10 +14,10 @@ end
         <%= case input_stat[:display_type]
             when :text_positive_integer
               if !@auto_collected_stats.nil? && @auto_collected_stats[input_stat[:column].to_s]
-              	@template.render :partial => "auto_collect_stat_form_item", :locals => { :stat_data => @auto_collected_stats[input_stat[:column].to_s], :f => f, :input_stat => input_stat }             	             	          	
+              	@template.render :partial => "auto_collect_stat_form_item", :locals => { :stat_data => @auto_collected_stats[input_stat[:column].to_s], :f => f, :input_stat => input_stat }
               else
               	f.text_field input_stat[:column], :size => 4, :class => "positiveinteger"
-              end                	
+              end
 
             when :text_area
               required = true
@@ -38,7 +38,7 @@ end
               elsif input_stat[:drop_down_data] == :prc_method
                 f.collection_select :prcMethod_id, @methods, :prcMethod_id, :prcMethod_desc
               end
-              
+
             else
               required = true
               f.text_field input_stat[:column], :size => 16, :class => "required"

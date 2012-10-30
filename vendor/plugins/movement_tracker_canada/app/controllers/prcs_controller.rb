@@ -1,14 +1,14 @@
 class PrcsController < ApplicationController
   unloadable
 
-  before_filter :redirect_unless_is_active_hrdb_staff
+  before_filter :redirect_unless_is_active_hrdb_staff, :set_title
 
   skip_before_filter :authorization_filter, :only => [:refresh_prc_index]
 
   # GET /prcs
   # GET /prcs.xml
   def index
-   
+
     setup_for_index(active_data(:semester_id), active_data(:campus_id))
 
     respond_to do |format|
@@ -27,22 +27,22 @@ class PrcsController < ApplicationController
       format.xml  { render :xml => @prc }
     end
   end
-  
+
 
   def new_prc
     @prc = Prc.new
-          
+
     @prc.semester_id = active_data(:semester_id)
     @prc.campus_id = active_data(:campus_id)
     @prc.prc_date = default_date
-    
+
   end
 
   # GET /prcs/new
   # GET /prcs/new.xml
   def new
     new_prc
-    
+
     setup_campuses_and_semesters
 
     respond_to do |format|
@@ -62,7 +62,7 @@ class PrcsController < ApplicationController
       format.xml  { render :xml => @prc }
     end
   end
-  
+
   # POST /prcs
   # POST /prcs.xml
   def create
@@ -95,34 +95,34 @@ class PrcsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
 
   def select_prc_report
     setup_for_record(params['semester_id'], params['campus_id'], params['date'])
-  
+
     respond_to do |format|
       format.js
     end
   end
-  
+
   def refresh_prc_index
     setup_for_index(params['semester_id'], params['campus_id'])
-  
+
     respond_to do |format|
       format.js
     end
   end
-  
-  
+
+
   protected
-  
+
   def create_or_update
     @prc = Prc.find(params[:prc][:id]) unless params[:prc][:id].nil? || params[:prc][:id] == ''
     @prc ||= Prc.new
 
-    success_update = false    
+    success_update = false
     success_update = true if @prc.update_attributes(params[:prc])
-  
+
     respond_to do |format|
       if success_update
         @prc.save!
@@ -132,44 +132,44 @@ class PrcsController < ApplicationController
         format.html { redirect_to(url_for(:controller => :prcs, :action => :index)) }
         format.xml  { head :ok }
       else
-        
+
         setup_campuses_and_semesters()
-        
+
         format.html { render :action => "edit" }
         format.xml  { render :xml => @prc.errors, :status => :unprocessable_entity }
       end
     end
   end
-  
+
   def setup_campuses_and_semesters()
-    @semesters = Semester.all(:order => :semester_startDate)  
+    @semesters = Semester.all(:order => :semester_startDate)
     @campuses = user_campuses_with_new_prc_permission
     @methods = Prcmethod.all()
   end
-  
+
   def setup_for_record(semester_id, campus_id, date)
-    
+
     set_active_data(:semester_id, semester_id)
     set_active_data(:campus_id, campus_id)
-    
+
     @prc = Prc.new
-          
+
     @prc.semester_id = semester_id
     @prc.campus_id = campus_id
     @prc.prc_date = date
-    
+
     setup_campuses_and_semesters
-    
-  end 
-  
+
+  end
+
   def setup_for_index(semester_id, campus_id)
     set_active_data(:semester_id, semester_id)
     set_active_data(:campus_id, campus_id)
 
 
-    @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)  
+    @prcs = Prc.find_all_by_semester_id_and_campus_id(semester_id, campus_id)
     if @prcs.empty?
-      prc = Prc.new      
+      prc = Prc.new
       prc.semester_id = active_data(:semester_id)
       prc.campus_id = active_data(:campus_id)
       @prcs = [prc]
@@ -178,7 +178,7 @@ class PrcsController < ApplicationController
       @no_prc = false
     end
     setup_campuses_and_semesters
-  end  
+  end
 
   def user_campuses_with_new_prc_permission
     unless is_ministry_admin
@@ -224,14 +224,14 @@ class PrcsController < ApplicationController
     if Time.now <= active_semester.end_date && Time.now >= active_semester.start_date
       result = Date.today
     end
-    result    
+    result
   end
 
   #default value for the semester_id
   def current_semester_id
     unless @current_semester_id
       cur_month = "#{Date::MONTHNAMES[Time.now.month()]} #{Time.now.year()}"
-      @current_semester_id = Month.find_semester_id(cur_month)   
+      @current_semester_id = Month.find_semester_id(cur_month)
     end
     @current_semester_id
 
@@ -241,7 +241,7 @@ class PrcsController < ApplicationController
     @current_staff_id ||= @person.cim_hrdb_staff.id
   end
 
-  
+
   #default value for the campus_id
   def default_campus_id
     unless @current_campus_id
@@ -252,7 +252,7 @@ class PrcsController < ApplicationController
         campus_count[c] ||= 0
         campus_count[c] += 1
       end
-      
+
       last_3_campuses.each do |cf|
         campus_found = cf if campus_found.nil? || campus_count[cf] >= campus_count[campus_found]
       end
@@ -266,5 +266,10 @@ class PrcsController < ApplicationController
     end
     @current_campus_id
   end
-  
+
+  private
+
+  def set_title
+    @site_title = 'Insights'
+  end
 end

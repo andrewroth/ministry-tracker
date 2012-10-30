@@ -1,39 +1,39 @@
 <%= javascript_include_tag "prcs.js" %>
 
 <h1 id="statsTitle">Measurements</h1>
-<div class="backLink"><%= link_to 'Back to insights home', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Back', url_for(:controller => :stats, :action => :index) %></div>
 
 <br/>
 
 <div class="statsFormContainer">
   <div id="indexPRCsContainer" class="statsFormBox">
-    <h2 class="statsFormBoxTitle">Manage indicated decision reports</h2>
+    <h2 class="statsFormBoxTitle">Indicated Decisions</h2>
     <% form_for(@prcs.first) do |f| %>
-      <%= f.error_messages %>      
+      <%= f.error_messages %>
 	    <table>
 	      <tr class="statsFormField">
-	        <td><%= f.label :campus, "Campus:" %></td>
+	        <td><%= f.label :campus, "Campus " %></td>
 	        <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingPrcIndexTab()"} %></td>
 	      </tr>
 	      <tr class="statsFormField">
-	        <td><%= f.label :semester, "Semester:" %></td>
+	        <td><%= f.label :semester, "Semester " %></td>
 	        <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingPrcIndexTab()"} %></td>
-	      </tr> 
+	      </tr>
 	   </table>
     <% end %>
   </div>
 </div>
-<div class="addLink"><%= link_to 'Report a new indicated decision', url_for(:controller => :prcs, :action => :new) %></div>
+<div class="addLink"><%= link_to 'Report an indicated decision!', url_for(:controller => :prcs, :action => :new), :class => "action-button" %></div>
 <div id="results">
 	<div id="indexFields" class="statsContainer">
 	  <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
 	    <div id="prcIndexFields" class="statsReportTabContainer statsTabContainerActive" style="display:block;">
-	    <%= show_index_entries(@prcs) %>     
+	    <%= show_index_entries(@prcs) %>
 	    </div>
 	</div>
 </div>
 
 <br/>
-<div class="backLink"><%= link_to 'Back to insights home', url_for(:controller => :stats, :action => :index) %></div>
+<div class="backLink"><%= link_to 'Back', url_for(:controller => :stats, :action => :index) %></div>
 
 

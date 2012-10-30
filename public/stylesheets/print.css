@@ -56,7 +56,7 @@ border: 0px dotted #CCCCCC;
 #customizebody {float:left;
 width:675px;}
 
-#custom_attributes_ProfileQuestion, 
+#custom_attributes_ProfileQuestion,
 #instructions_ProfileQuestion,
 #instructions_TrainingQuestion {
 display:block;margin-bottom:30px; }
@@ -72,7 +72,7 @@ padding:0 10px 10px 10px;
 #footer img {border:0;}
 
 h3.lbtitle  {
-font-weight:bold; 
+font-weight:bold;
 font-size:14px;
 background:black;
 padding:5px;
@@ -405,7 +405,7 @@ margin-top:10px;
     background:url("../images/yellowtab.png") no-repeat left top;
     margin-left:4px;
   width: 86px;
-  
+
 }
 
 .tablist a {
@@ -428,7 +428,7 @@ margin-top:10px;
 .tablist li.active {
     background-image:url("../images/whitetab.png");
 }
- 
+
 .tablist li.active a {
   color: #1F429B;
 }
@@ -450,8 +450,8 @@ background:#e9e9e9;
 padding:7px;
 }
 
-h1#title { 
-  float: left; 
+h1#title {
+  float: left;
   padding-left:10px;
   font-size: 1.5em;
 }
@@ -575,7 +575,7 @@ div.progressBar div.background {
 }
 
 div.right-menu {
-  float:right; 
+  float:right;
   text-align:left;
   border: 0px solid grey;
   padding: 0px;
@@ -644,9 +644,9 @@ margin-bottom:10px;
 }
 
 #tree-div {
-  width:80%; 
+  width:80%;
   float:left;
-  overflow:auto; 
+  overflow:auto;
   height:300px;
   border:1px solid #c3daf9;
 }
@@ -975,11 +975,11 @@ ul.searchicon li{background:url(/images/silk/zoom.png) no-repeat 0% 50%; padding
 ul.requesticon li{background:url(/images/bullet_go.png) no-repeat 0% 0%; padding-left:22px;}
 
 div#userbar {
-  background:#e6e6e6; 
-  background-image: url(/images/resized_c4c.png); 
+  background:#e6e6e6;
+  background-image: url(/images/resized_c4c.png);
   background-repeat: no-repeat;
   background-position: 10px 10px;
-  padding: 10px; 
+  padding: 10px;
   height: 50px;
 }
 
@@ -1122,7 +1122,7 @@ div.section {
 }
 
 #switch_ministries_list {
-  position: absolute;  
+  position: absolute;
   z-index: 500;
 }
 
@@ -1242,7 +1242,7 @@ div.choose_ministry_tree {
 .statsFormBoxTitle {
   font-size: 130%;
   margin-bottom: 0.5em;
-  text-align:center;  
+  text-align:center;
 }
 
 .statsFormField label {
@@ -1460,7 +1460,7 @@ ul.statsLinkList {
   font-weight: bold;
 }
 
-#IndicatedDecisionsVSGoal {
+#IndicatedDecisions {
   color: #2951AD;
   font-size: 2.5em;
 }
@@ -1527,7 +1527,7 @@ fieldset {
 #results .highlight {
   -moz-box-shadow: 0 0 1em #FFEA99;
   -webkit-box-shadow: 0 0 1em #FFEA99;
-  
+
   background-color: #FFEA99;
 }
 
@@ -1625,7 +1625,7 @@ td.eventAttendees {
   z-index: 500;
   margin-left: 5em;
   border: 4px solid #F5F5FA;
-  
+
   -moz-border-radius: 6px; -webkit-border-radius: 6px;
   -moz-box-shadow: 0 7px 10px #8B8B8B; -webkit-box-shadow: 0 7px 10px #8B8B8B;
 }

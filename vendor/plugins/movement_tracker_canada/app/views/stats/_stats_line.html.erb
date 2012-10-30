@@ -1,18 +1,18 @@
 <% total = 0 %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %><%= special_css_class %>">
-        <td class="statsTableTitle">
-            <%= title %>
-        </td>
-				
-        <% stats_array.each do | stat | %>
-          <td>
-              <%= stat %>
-              <% total += stat if special_total.nil? && print_total %>
-          </td>
-        <% end %>
+<tr class="<%= cycle('highlight', 'nohighlight') %><%= special_css_class %>">
+  <td class="statsTableTitle">
+    <%= title %>
+  </td>
 
-        <td>
-            <%= print_total ? (special_total.nil? ? total : special_total) : '' %>
-        </td>
-    </tr>
+  <% stats_array.each do | stat | %>
+    <td>
+      <%= stat.present? ? stat : '<span class="statException has_title" title="This measurement cannot be calculated for this specific time period">?</span>' %>
+      <% total += stat if stat.present? && special_total.nil? && print_total %>
+    </td>
+  <% end %>
+
+  <td class="statsTableTotal">
+    <%= print_total ? (special_total.nil? ? total : special_total) : '<span class="statException has_title" title="Not applicable">n/a</span>' %>
+  </td>
+</tr>
 

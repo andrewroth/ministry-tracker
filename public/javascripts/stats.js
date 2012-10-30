@@ -1,4 +1,4 @@
-$(document).ready(function(){selectReport()});
+$(document).ready(function() { selectReport(); });
 
 
 function selectReport(extra_data) {
@@ -10,56 +10,55 @@ function selectReport(extra_data) {
   }
 
   beginLoadingStatsTab();
-  jQuery.ajax({
-    complete: function(request){ completeLoadingStatsTab() },
+  $.ajax({
+    complete: function(request){ completeLoadingStatsTab(); },
     data: getWithStringForReportForm()+extra_data,
     dataType:'script',
     type:'post',
-    url:'/stats/select_report'})
+    url:'/stats/select_report'});
 }
 
 // generate the string for observe_field's :with
 function getWithStringForReportForm(time, ministry, scope, report_type) {
 
-  if(scope == undefined || scope == null) {
+  if(scope === undefined || scope === null) {
 		scope = 'summary';
-    var radios = jQuery(":input[name=report\\[scope\\]]");
+    var radios = $(":input[name=report\\[scope\\]]");
     for(var i = 0; i < radios.length; i++) {
-      if(radios[i].checked) { scope = radios[i].value }
+      if(radios[i].checked) { scope = radios[i].value; }
     }
   }
 
-  if(time == undefined || time == null) {
-    time = jQuery(".statsTabActive")[0].id;
+  if(time === undefined || time === null) {
+    time = $(".statsTabActive")[0].id;
   }
 
-  if(ministry == undefined || ministry == null) {
-    ministry = jQuery("#report_ministry")[0].value;
-//    ministry_select = document.getElementById('report_ministry');
-//    ministry = ministry_select.options[ministry_select.selectedIndex].value;
+  if(ministry === undefined || ministry === null) {
+    ministry = $("#report_ministry")[0].value;
+    // ministry_select = document.getElementById('report_ministry');
+    // ministry = ministry_select.options[ministry_select.selectedIndex].value;
   }
 
-  if(report_type == undefined || report_type == null) {
-    report_type = jQuery("#report_report_type")[0].value;
+  if(report_type === undefined || report_type === null) {
+    report_type = $("#report_report_type")[0].value;
   }
 
-
-  return 'ministry=' + ministry + '&report_scope=' + scope + '&time=' + time + '&report_type=' + report_type
+  return 'ministry=' + ministry + '&report_scope=' + scope + '&time=' + time + '&report_type=' + report_type;
 }
 
 function reportTypeChange(newTitle){
 	beginLoadingStatsTab();
 	// TODO: CHANGE THE PAGE'S TITLE
-	//jQuery("#reportTypeTitle").html = newTitle;
+	//$("#reportTypeTitle").html = newTitle;
 }
 
 function beginLoadingStatsTab() {
-  jQuery('.statsReportTabContainer').hide();
-  jQuery('.statsTabContainerActive').visualEffect('fade');
-  jQuery('#statsSpinnerContainer').visualEffect('appear');
+  $('.statsReportTabContainer, .statsTabContainerActive').fadeOut('fast', function() {
+    $('#statsSpinnerContainer').fadeIn('fast');
+  });
 }
 
 function completeLoadingStatsTab() {
-  jQuery('#statsSpinnerContainer').hide();
+  $('#statsSpinnerContainer').hide();
 }
 

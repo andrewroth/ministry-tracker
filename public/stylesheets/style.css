@@ -209,13 +209,11 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .butUpdate a {
-  background: url("/images/sprites/icons.png") no-repeat scroll -3px -433px transparent;
+  background: url("/images/sprites/p2c_icons.png") no-repeat scroll -5px -391px transparent;
 }
 
 .butDelete a {
-  background-image: url("/images/sprites/icons.png");
-  background-position: -5px -682px;
-  background-repeat: no-repeat;
+  background: url("/images/sprites/p2c_icons.png") no-repeat scroll -7px -359px transparent;
 }
 
 
@@ -224,11 +222,11 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .butUpdate a:hover {
-  background-position: -3px -466px;
+  background-position: -5px -835px;
 }
 
 .butDelete a:hover {
-  background-position: -5px -715px;
+  background-position: -7px -803px;
 }
 
 .butUpdate, .butDelete {
@@ -294,7 +292,10 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
   height:18px;
 }
 
-
+.has_title {
+  border-bottom: 1px dotted;
+  border-color: lightgray;
+}
 
 
 
@@ -302,7 +303,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 
 h1 {font-size:2.0em; color: #0064a2;}
 h2 {font-size:1.5em; color: #0064a2;}
-h3 {font-size:1.25em; color: #0064a2;}
+h3 {font-size:1.25em; color: #666766;}
 h4 {font-size:1.12em;}
 h5, p {font-size:1em;}
 
@@ -1433,7 +1434,7 @@ label {
   width: 90px;
   display: block;
   float: left;
-  padding: 5px 8px 5px 0px;
+  padding: 5px 5px 5px 0px;
 }
 
 #form_div label {
@@ -2108,7 +2109,6 @@ div.fieldWithErrors{
 }
 
 #errorExplanation {
-  width: 97%;
   border: 4px solid FireBrick;
   padding: 7px;
   padding-bottom: 12px;
@@ -2368,7 +2368,7 @@ div .statsRadioButton {
 
 .statsRadioButton input {
   float: left;
-  margin-right: 0.5em;
+  margin-right: 3px;
   cursor: pointer;
 }
 
@@ -2445,6 +2445,22 @@ ul.statsLinkList {
   width: 37em;
 }
 
+.statsFormContainer.monthly_report, .statsFormContainer.prc_report {
+  width: 60em;
+}
+
+.statsFormContainer.prc_report label {
+  width: 200px;
+}
+
+.statsFormContainer.prc_report textarea {
+  width: 300px;
+}
+
+.statsFormContainer.prc_report input[type="text"] {
+  width: 140px;
+}
+
 .statsContainer {
   width: 100%;
 	margin: 20px auto 0 auto;
@@ -2471,23 +2487,36 @@ ul.statsLinkList {
 
 .statsReportTab {
   display: inline-block;
-  border: solid 2px #D8D8D8;
   background-color: #F7FAF7;
-  padding: 5px;
   margin: 0 0.5em 0 0.5em;
-  border-radius: 5px;
+  vertical-align: middle;
 
   /* hacks for IE */
   *display: inherit;
   *float: left;
 }
 
-.statsReportTab:hover:not(.statsTabActive) {
+.statsReportTab form {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.statsReportTab:not(.statsTabActive) a {
+  display: inline-block;
+  padding: 5px;
+  border: solid 2px #D8D8D8;
+  border-radius: 5px;
+}
+
+.statsReportTab:not(.statsTabActive) a:hover {
+  display: inline-block;
   border: solid 2px #0064a2;
 }
 
 .statsTabActive {
+  display: inline-block;
   border: solid 2px #747474;
+  border-radius: 5px;
   padding: 7px;
 }
 
@@ -2511,7 +2540,7 @@ ul.statsLinkList {
   text-align: center;
   background-color: #F7FAF7;
   border-radius: 10px;
-  box-shadow:0 7px 20px #BFBFBF;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2)
 }
 
 
@@ -2548,11 +2577,11 @@ ul.statsLinkList {
 	display:inline-block;
 }
 
-#IndicatedDecisionsVSGoal {
+#IndicatedDecisions {
   font-size: 2.5em;
 }
 
-#IndicatedDecisionsVSGoal, #nationalIndicatedDecisions {
+#IndicatedDecisions, #nationalIndicatedDecisions {
   color: #CCCCCC;
 }
 
@@ -2635,13 +2664,13 @@ fieldset {
 }
 
 #results .statsTableTitle {
-  color: #474E66;
+  color: #666766;
   vertical-align: middle;
   text-align: left;
 }
 
 #results .statsTableTitleTop {
-  color: #474E66;
+  color: #666766;
   vertical-align: middle;
   text-align: center;
 }
@@ -2661,6 +2690,10 @@ table .statsTable {
   font-size: 1em;
   color: #A1A6B3;
   margin-top: 0.5em;
+}
+
+.statException {
+  font-weight: normal;
 }
 
 div .backLink {
@@ -2734,11 +2767,20 @@ td.eventAttendees {
   text-align: left;
   position: absolute;
   z-index: 500;
-  margin-left: 5em;
+  margin-left: 3em;
   border: 4px solid #F5F5FA;
 
   border-radius: 6px;
   box-shadow: 0 7px 10px #8B8B8B;
+}
+
+.stats_choose_ministry_tree div.x-panel-body {
+  height: 450px !important;
+  width: 350px !important;
+}
+
+.stats_choose_ministry_tree > div {
+  width: auto !important;
 }
 
 #stats_chosen_ministry {
@@ -2749,10 +2791,14 @@ td.eventAttendees {
 
 #stats_choose_ministry_link {
   font-size: 110%;
-  padding: 0 27px 0 7px;
+  padding: 0 25px 0 7px;
   background-image: url(/images/widgets/arrowdown.gif);
   background-repeat: no-repeat;
   background-position: right center;
+}
+
+#stats_choose_ministry_link:hover {
+  background-image: url(/images/widgets/darrowdown.gif);
 }
 
 #new_person th {
@@ -4247,8 +4293,8 @@ td.campusDiscTree {
 }
 
 #contact_notes .note, #contact_rejoiceables .rejoiceable {
-  background-color: rgba(245, 245, 245, 0.7);
-  border: 1px solid rgba(235, 235, 235, 0.4);
+  background-color: rgba(245, 245, 245, 1);
+  border: 1px solid rgba(235, 235, 235, 0.5);
   border-radius: 5px;
   padding: 5px;
   color: #666766;

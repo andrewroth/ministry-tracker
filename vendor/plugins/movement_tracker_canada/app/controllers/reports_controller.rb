@@ -1,8 +1,8 @@
 class ReportsController < ApplicationController
   unloadable
 
-  before_filter :redirect_unless_is_active_hrdb_staff
-  
+  before_filter :redirect_unless_is_active_hrdb_staff, :set_title
+
   skip_before_filter :authorization_filter, :only => [:select_report]
 
   def get_db_lines_from_report(report_name)
@@ -28,7 +28,7 @@ class ReportsController < ApplicationController
   def input_reports
     []
   end
-  
+
   # please override this function in any child class
   def identification_fields
     []
@@ -77,7 +77,7 @@ class ReportsController < ApplicationController
   def setup_dropdown_semesters
     @semesters = Semester.all(:order => :semester_startDate)
   end
-  
+
   def setup_dropdown_years
     @years = Year.all()   # order by id, if that's not default
   end
@@ -111,7 +111,7 @@ class ReportsController < ApplicationController
           setup_dropdown_years
       end
     end
-   
+
   end
 
   def get_current_staff_id
@@ -188,13 +188,13 @@ class ReportsController < ApplicationController
     conditions
   end
 
-  def setup_for_record(conditions)    
+  def setup_for_record(conditions)
     @report = report_model.find(:first, :conditions => conditions)
     @report ||= create_report_from_conditions(conditions)
- 
+
     setup_report
   end
-  
+
   def create_report_from_conditions(conditions)
     report = report_model.new
     setup_report_from_conditions(report, conditions)
@@ -203,7 +203,7 @@ class ReportsController < ApplicationController
   # GET /weekly_reports/new
   # GET /weekly_reports/new.xml
   def new
-    
+
     setup_for_record(setup_conditions_for_new)
 
     respond_to do |format|
@@ -217,12 +217,12 @@ class ReportsController < ApplicationController
     @report = report_model.find(params[:id])
 
     setup_report
-    
+
     respond_to do |format|
       format.html # edit.html.erb
       format.xml  { render :xml => @report }
     end
- 
+
   end
 
 
@@ -255,7 +255,7 @@ class ReportsController < ApplicationController
 
     success_update = false
     success_update = true if @report.update_attributes(params[get_params_name])
-  
+
     respond_to do |format|
       if success_update
         @report.save!
@@ -265,7 +265,7 @@ class ReportsController < ApplicationController
         format.xml  { head :ok }
       else
         setup_report
-        
+
         format.html { render :action => "new" }
         format.xml  { render :xml => @report.errors, :status => :unprocessable_entity }
       end
@@ -302,15 +302,18 @@ class ReportsController < ApplicationController
   end
 
   def select_report
-    
+
     setup_for_record(setup_conditions_from_params(params))
-  
+
     respond_to do |format|
       format.js
     end
   end
 
+  private
 
-
+  def set_title
+    @site_title = 'Insights'
+  end
 
 end
