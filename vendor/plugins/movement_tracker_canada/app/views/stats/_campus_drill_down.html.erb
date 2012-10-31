@@ -51,10 +51,18 @@
     <% @reports_to_show.each do |r|
       stat_report(r).each do |k, stat|
         next if stat[:display] && stat[:display] == :false
-        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
-        <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
-        <%
-        end
+        if print_stat_total?(stat)
+          if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
+            <% special_total = evaluate_special_total([@period], @campuses.collect(&:id), stat, @staff_id) %>
+            <% if special_total.present? %>
+              <td class="<%= stat[:css_class] %>"><%= special_total %></td>
+            <% else %>
+              <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
+            <% end %>
+          <% end %>
+        <% else %>
+          <td class="<%= stat[:css_class] %>"><span class="statException has_title" title="Not applicable">n/a</span></td>
+        <% end
       end
     end %>
   </tr>
