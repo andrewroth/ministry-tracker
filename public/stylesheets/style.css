@@ -429,7 +429,14 @@ a.small:active, a.small:hover {
   left:10px;
 }
 
+dt {
+  font-weight: bold;
+}
 
+dd {
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
 
 
 .leftColumn {
