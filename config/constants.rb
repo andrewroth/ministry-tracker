@@ -428,7 +428,7 @@
             :order => 1
           },
           :survey_contacts_engagements => {
-            :label => "September Launch Face-to-Face Engagements",
+            :label => "September 2012 Launch Face-to-Face Engagements",
             :collected => :weekly,
             :column_type => :count_model_with_condition,
             :grouping_method => :none,
