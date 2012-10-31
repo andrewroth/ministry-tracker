@@ -13,12 +13,12 @@ $(function() {
 	$('.person_row').click(function() {
 		document.location = $(this).attr('person_link');
 	});
-	
+
 	// Toggle checkboxes
 	$('#select_all').click(function() {
-		$("form#people_form INPUT:checkbox").attr('checked', $('#select_all').is(':checked'));
+		$("form#people_form input:checkbox").attr('checked', $('#select_all').is(':checked'));
 		if($('#select_all').is(':checked')) {
-			if($("form#people_form INPUT[@name=person[]]:checkbox:checked").length < total_people) {
+			if($('form#people_form input[name="person[]"]:checkbox:checked').length < total_people) {
 				$('#selected_row').show();
 			}
 		}
@@ -28,7 +28,7 @@ $(function() {
 // Submit selected checkboxes and action
 function performAction() {
 	if($('#perform_action').val() != '') {
-		if($("form#people_form INPUT[@name=person[]]:checkbox:checked").length > 0) {
+		if($('form#people_form input[name="person[]"]:checkbox:checked').length > 0) {
       $('#spinner_perform_action').show();
 			$('#people_form').attr('action', $('#perform_action').val());
 			$('#people_form').submit();
@@ -47,7 +47,7 @@ function selectEntireSearch() {
 
 function clearSelection() {
 	$('#entire_search').val(0);
-	$("form#people_form INPUT:checkbox").attr('checked', false);
+	$("form#people_form input:checkbox").attr('checked', false);
 	$('#selected_row').hide();
 	$('#entire_search_row').hide();
 }
@@ -59,8 +59,8 @@ function performLabelAdd() {
       $('#spinnerlbls').show();
 			//$('#label_add_form').attr('action', $('#perform_action').val());
 			//$('#label_add_form').submit();
-	  jQuery.ajax({data:jQuery.param($('#label_add_form').serializeArray()), dataType:'script', type:'post', 
+	  jQuery.ajax({data:jQuery.param($('#label_add_form').serializeArray()), dataType:'script', type:'post',
 	  url:$("#label_add_form").attr('action')});
-	  $('#spinnerlbls').hide();	
+	  $('#spinnerlbls').hide();
 	}
 }
