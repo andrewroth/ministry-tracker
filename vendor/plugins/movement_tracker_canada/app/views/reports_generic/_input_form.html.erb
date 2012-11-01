@@ -17,35 +17,35 @@ end
 %>
       <tr class="statsFormField">
         <td><%= f.label :week, "Week ending on " %></td>
-        <td><%= f.collection_select :week_id, @weeks, :week_id, :week_endDate, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+        <td><%= f.collection_select :week_id, @weeks, :week_id, :week_endDate, {:selected => @current_week_id}, {:onChange => "beginLoadingInputTab()"} %></td>
       </tr>
 <%
       when :month_id
 %>
         <tr class="statsFormField">
           <td><%= f.label :month, "Month " %></td>
-          <td><%= f.collection_select :month_id, @months, :month_id, :month_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+          <td><%= f.collection_select :month_id, @months, :month_id, :month_desc, {:selected => @current_month_id}, {:onChange => "beginLoadingInputTab()"} %></td>
         </tr>
 <%
       when :semester_id
 %>
         <tr class="statsFormField">
           <td><%= f.label :semester, "Semester " %></td>
-          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+          <td><%= f.collection_select :semester_id, @semesters, :semester_id, :semester_desc, {:selected => @current_semester_id}, {:onChange => "beginLoadingInputTab()"} %></td>
         </tr>
 <%
       when :year_id
 %>
         <tr class="statsFormField">
           <td><%= f.label :year, "Year " %></td>
-          <td><%= f.collection_select :year_id, @years, :year_id, :year_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+          <td><%= f.collection_select :year_id, @years, :year_id, :year_desc, {:selected => @current_year_id}, {:onChange => "beginLoadingInputTab()"} %></td>
         </tr>
 <%
       when :campus_id
 %>
       <tr class="statsFormField">
         <td><%= f.label :campus, "Campus " %></td>
-        <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {}, {:onChange => "beginLoadingInputTab()"} %></td>
+        <td><%= f.collection_select :campus_id, @campuses, :campus_id, :campus_desc, {:selected => @current_campus_id}, {:onChange => "beginLoadingInputTab()"} %></td>
       </tr>
 <%
     end
@@ -56,7 +56,16 @@ end
     <% end %>
     <div id="inputFields" class="inputsContainer">
       <div id="statsSpinnerContainer"><%= image_tag("/images/default/shared/large-loading.gif", :id => "spinnerStatsResults", :alt => "Spinner") %></div>
-        <div id="reportInputFields" class="reportInputContainer">
+      <div id="reportInputFields" class="reportInputContainer">
         <%= render :partial => 'reports_generic/input_lines', :locals => { :report => @report } %>
-        </div>
+      </div>
     </div>
+
+
+<script>
+  $(document).ready(function() {
+    $.each($('.statsFormField select'), function(i, e) {
+      $(e).val($(e).find('option[selected]').val());
+    });
+  });
+</script>

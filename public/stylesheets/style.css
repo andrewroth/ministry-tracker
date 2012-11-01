@@ -430,6 +430,7 @@ a.small:active, a.small:hover {
 }
 
 dt {
+  display: inline-block;
   font-weight: bold;
 }
 

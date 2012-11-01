@@ -74,8 +74,9 @@ module MonthlyReportsHelper
     when AUTO_COLLECT_NUM_MIN_DISCS
       ministry_disciples_role_ids = ::StudentRole.find(:all, :conditions => { :involved => true }).collect(&:id)
       campus_ministry_ids = Campus.find(campus_id).ministries.collect(&:id)
-      ministry_disciples = MinistryInvolvement.find(:all, :conditions => { :end_date => nil, :ministry_id => campus_ministry_ids, :ministry_role_id => ministry_disciples_role_ids }, :group => :person_id, :include => :person).collect(&:person)
-      @collected_stat = ministry_disciples
+      ministry_disciples_ids = MinistryInvolvement.find(:all, :conditions => { :end_date => nil, :ministry_id => campus_ministry_ids, :ministry_role_id => ministry_disciples_role_ids }).collect(&:person_id).uniq
+      campus_disciples = CampusInvolvement.find(:all, :conditions => {:campus_id => campus_id, :person_id => ministry_disciples_ids, :end_date => nil}, :include => :person).collect(&:person).uniq
+      @collected_stat = campus_disciples
 
     end	# case statements
 
