@@ -36,7 +36,7 @@
     -%>
       <li<%= ' class="highlighted"' if params[:controller] == "labels" %>>
       <%= link_to 'Labels', labels_path() %></li>
-    <%- end -%>    
+    <%- end -%>
 
     <%- if is_ministry_admin -%>
       <li<%= ' class="highlighted"' if params[:controller] == "api_keys" %>>
@@ -47,7 +47,7 @@
       <li<%= ' class="highlighted"' if params[:controller] == "user_codes" %>>
       <%= link_to 'User Codes', :controller => :user_codes, :action => :generate %></li>
     <%- end -%>
-    
+
     <%- if authorized?(:volunteer_agreement_report, :contract) -%>
       <li<%= ' class="highlighted"' if params[:controller] == "contract" %>>
       <%= link_to 'Volunteer Agreements', :controller => :contract, :action => :volunteer_agreement_report %></li>
@@ -104,12 +104,14 @@
   </ul>
   <%- end -%>
 
+  <%- if authorized?(:index, :pat_projects) -%>
   <br/><br/>
   <h3>Projects</h3>
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "pat_projects" %>>
     <%= link_to 'Projects', pat_projects_path %></li>
   </ul>
+  <%- end -%>
 
   <%- if authorized?(:edit, :ministry_roles) -%>
   <br/><br/>

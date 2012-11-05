@@ -2326,6 +2326,10 @@ div.choose_ministry_tree {
   text-align:center;
 }
 
+.statsFormField .fieldWithErrors {
+  width: 100%;
+}
+
 .statsFormField label {
   line-height: 1em;
   text-align: right;
@@ -3114,11 +3118,12 @@ h2.group_type_title {
   cursor: pointer;
 }
 
-#uberSearchButton div {
+#uberSearchButton div, .magnifier_icon {
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
   background-position: -8px -907px;
   height: 18px;
   width: 18px;
+  display: inline-block;
 }
 
 #uberSearchButton.submitted div {
@@ -3126,7 +3131,7 @@ h2.group_type_title {
   width: 28px;
 }
 
-#uberSearchButton:hover div {
+#uberSearchButton:hover div, .magnifier_icon:hover {
   background-position: -8px -941px;
 }
 
