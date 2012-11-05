@@ -97,7 +97,7 @@ module StatsHelper
       if stat_hash[:model].constantize.column_names.include?('updated_at')
         merge_in_conditions = {
           :campus_id => campus_ids,
-          :updated_at => period_model.start_date.to_date..period_model.end_date.to_date
+          :updated_at => (period_model.start_date.to_date)..(period_model.end_date.to_date + 1.day)
         }
         evaluation = stat_hash[:model].constantize.count :all, :conditions => (stat_hash[:conditions] || {}).merge(merge_in_conditions)
       else
@@ -168,7 +168,7 @@ module StatsHelper
       result = render 'stats/stats_line',
         :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
         :title => title,
-        :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id)},
+        :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id) },
         :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
         :print_total => print_stat_total?(stat_hash)
     end
