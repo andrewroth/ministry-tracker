@@ -1,35 +1,41 @@
 <div id="dialog" style="display:none;">
   <a id="TB_closeWindowButton" href="#" style="float:right">close</a>
-  <div>This is a listing of students affiliated with the <br>
-  	"<%= params['stat_meta_data'][:label].to_s %>" stat.
-  	<br><br>
-  	See someone missing from the list?</div>
-  <%- collected_stat = params['stat_meta_data'][:column]
-  	case collected_stat
-      when MonthlyReportsHelper::AUTO_COLLECT_NUM_IN_DG %>
-   			<div>Go to the "Groups" tab, click on the group you wish to add your missing person to.
-   			Then go to the "Members" section, click on "Add", and use the search-box that appears to add your person to that group.</div>
-   			<br>
-   <% when MonthlyReportsHelper::AUTO_COLLECT_NUM_FROSH %>
-   			<div>Use the Pulse searchbox to find the person. When at their profile page, click on the pencil icon beside their "Campuses" list in sidebar and
-   				then click on the pencil icon in the dialog box beside the school-year you wish to change to "1st year (Undergrad)".
-   				Check their "DGs" sidebar listing to ensure that they are involved in one. If not, go to the "Groups" tab and search
-   				for the DG you wish to add them to.</div>
-   			<br>
-   <% when MonthlyReportsHelper::AUTO_COLLECT_TOTAL_SP_MULT %>
-   			<div>Use the Pulse searchbox to find the person. When at their profile page, click on the "Add Label" drop-box located just below the page header
-   				with their name in it. Use the drop-box to apply the "Spiritual Multiplier" label.</div>
-   			<br>
-   <% when MonthlyReportsHelper::AUTO_COLLECT_NUM_MIN_DISCS %>
-        <div>Use the Pulse searchbox to find the person. When at their profile page, click on the pencil icon beside their "Campuses" list in sidebar, then click the pencil icon in the dialoge box to change their Role to <%= ::StudentRole.find(:all, :conditions => { :involved => true }).collect(&:name).to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ') %>.</div>
-        <br>
-  <%- end %>
+  <div>This is a listing of people associated with the stat<br>
+  	"<%= params['stat_meta_data'][:label].to_s %>"
+  </div>
+	<br>
+	<small>
+    See someone missing from the list?
+    <%- collected_stat = params['stat_meta_data'][:column]
+    	case collected_stat
+        when MonthlyReportsHelper::AUTO_COLLECT_NUM_IN_DG %>
+     			<div>Go to the "Groups" tab, click on the group you wish to add your missing person to.
+     			Then go to the "Members" section, click on "Add", and use the search-box that appears to add your person to that group.</div>
+     			<br>
+     <% when MonthlyReportsHelper::AUTO_COLLECT_NUM_FROSH %>
+     			<div>Use the Pulse searchbox to find the person. When at their profile page, click on the pencil icon beside their "Campuses" list in sidebar and
+     				then click on the pencil icon in the dialog box beside the school-year you wish to change to "1st year (Undergrad)".
+     				Check their "DGs" sidebar listing to ensure that they are involved in one. If not, go to the "Groups" tab and search
+     				for the DG you wish to add them to.</div>
+     			<br>
+     <% when MonthlyReportsHelper::AUTO_COLLECT_TOTAL_SP_MULT %>
+     			<div>Use the Pulse searchbox to find the person. When at their profile page, click on the "Add Label" drop-box located just below the page header
+     				with their name in it. Use the drop-box to apply the "Spiritual Multiplier" label.</div>
+     			<br>
+     <% when MonthlyReportsHelper::AUTO_COLLECT_NUM_MIN_DISCS %>
+          <div>Use the Pulse searchbox to find the person. When at their profile page, click on the pencil icon beside their "Campuses" list in sidebar, then click the pencil icon in the dialoge box to change their Role to <%= ::StudentRole.find(:all, :conditions => { :involved => true }).collect(&:name).to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ') %>.</div>
+          <br>
+    <%- end %>
+  </small>
+
+  <% people = Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", params['stats']], :order => "#{Person._(:first_name)}, #{Person._(:last_name)}") %>
+  <p><%= pluralize(people.size, 'person') %>:<br></p>
   <ul id='stat_ppl_list'>
-    <% Person.find(:all, :conditions => ["#{Person._(:id)} IN (?)", params['stats']], :order => "#{Person._(:first_name)}, #{Person._(:last_name)}").each do |person| %>
+    <% people.each do |person| %>
       <li id='stat_person_li_<%= person.id %>'>
         <%= link_to person.full_name, person_path(person), :target => '_blank' %>
       </li>
     <% end if params['stats'] %>
   </ul>
-  <br/>
+  <br>
 </div>

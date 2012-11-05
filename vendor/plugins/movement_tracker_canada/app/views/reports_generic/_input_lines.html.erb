@@ -10,7 +10,7 @@
 lines = @input_lines
 lines.each do | key, input_stat |
 %>
-    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f } %>
+    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f, :report => report } %>
 <%
 end
 %>
