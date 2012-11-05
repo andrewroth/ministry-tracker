@@ -75,28 +75,28 @@
       :summary => {
                     :order => 1,
                     :label => "Summary",
-                    :title => "See a summary of all the campuses under [MINISTRY_NAME]",
+                    :title => "See a summary of all the campuses under the selected ministry",
                     :radio_id => "report_scope_summary",
                     :show => :yes
       },
       :campus_drill_down => {
                     :order => 2,
                     :label => "Campus drill-down",
-                    :title => "See individual campuses under [MINISTRY_NAME]",
+                    :title => "See individual campuses under the selected ministry",
                     :radio_id => "report_scope_campus_drill_down",
                     :show => :yes
       },
       :staff_drill_down => {
                     :order => 3,
                     :label => "Staff drill-down",
-                    :title => "See individual staff members under [MINISTRY_NAME]",
+                    :title => "See individual staff members under the selected ministry",
                     :radio_id => "report_scope_staff_drill_down",
                     :show => :no
       },
       :one_stat => {
                     :order => 4,
                     :label => "Single Stat",
-                    :title => "See campus drill-down over time for a single stat under [MINISTRY_NAME]",
+                    :title => "See campus drill-down over time for a single stat under the selected ministry",
                     :radio_id => "report_scope_one_stat",
                     :show => :no
       }
