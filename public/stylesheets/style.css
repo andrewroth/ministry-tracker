@@ -4325,3 +4325,7 @@ td.campusDiscTree {
   margin-top: 20px;
   opacity: 0.6;
 }
+
+.monospace {
+  font-family: monospace;
+}

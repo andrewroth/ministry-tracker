@@ -1,10 +1,21 @@
 <h1>Import Discover Contacts from CSV</h1>
 
-<p><br>Use at your own risk!<br></p>
+<p><br>This is an unsupported feature, be careful.<br></p>
+
+<p>
+  Your CSV header should look something like this:
+</p>
+
+<p class="monospace">
+  first_name,last_name,sex,mobile_phone,email,next_step,campus_id,international,person_id
+</p>
+
+<br>
 
 <div>
   <% form_tag(import_csv_discover_contacts_path, {:multipart => true}) do %>
-    <%= file_field_tag :file %>
+    CSV file:&nbsp;<%= file_field_tag :file %>
+    <br>
     <br>
     <%= submit_tag 'Upload and Import', :class => 'action-button' %>
   <% end %>
