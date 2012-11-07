@@ -1,0 +1,11 @@
+<h1>Import Discover Contacts from CSV</h1>
+
+<p><br>Use at your own risk!<br></p>
+
+<div>
+  <% form_tag(import_csv_discover_contacts_path, {:multipart => true}) do %>
+    <%= file_field_tag :file %>
+    <br>
+    <%= submit_tag 'Upload and Import', :class => 'action-button' %>
+  <% end %>
+</div>
