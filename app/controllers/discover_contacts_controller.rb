@@ -3,16 +3,17 @@ class DiscoverContactsController < ApplicationController
 
   def index
     @discover_contacts = get_person.discover_contacts.active.with_campus_id(@campus.id)
+    @discover_contacts.sort! { |a,b| a.full_name <=> b.full_name }
   end
-  
+
   def new
     @discover_contact = DiscoverContact.new
   end
-  
+
   def show
     redirect_to :action => 'edit'
   end
-  
+
   def edit
     @discover_contact = DiscoverContact.find(params[:id], :include => {:notes => :person})
   end
@@ -29,23 +30,66 @@ class DiscoverContactsController < ApplicationController
       render :new
     end
   end
-  
+
   def update
     @discover_contact = DiscoverContact.find(params[:id])
     @discover_contact.update_attributes(params[:discover_contact])
 
     respond_to do |format|
-      if @discover_contact.save        
+      if @discover_contact.save
         flash[:notice] = 'Contact updated!'
         format.html { redirect_to :action => 'index' }
-        
+
       else
         flash[:notice] = 'Sorry, there was a problem updating the contact!'
         format.html { render :action => 'edit' }
       end
     end
   end
-    
+
+  def import_csv
+    require 'faster_csv'
+
+    count = 0
+
+    FasterCSV.foreach(params[:file].path, :headers => true) do |row|
+      row = row.to_hash.with_indifferent_access
+
+
+      if row[:next_step_id].blank? && row[:next_step].present?
+        row[:next_step_id] = Contact::NEXT_STEP_OPTIONS.select { |ns| row[:next_step].downcase == ns[0].downcase }.try(:first).try(:at, 1)
+      end
+      row.delete(:next_step)
+
+
+      if row[:gender_id].blank? && (row[:gender].present? || row[:sex].present?)
+        gender = row[:sex] || row[:gender]
+
+        row[:gender_id] = case gender.downcase
+        when 'male'
+          1
+        when 'female'
+          2
+        else
+          0
+        end
+      end
+      row.delete(:sex)
+      row.delete(:gender)
+
+      person_id = row.delete(:person_id)
+
+      if contact = DiscoverContact.create!(row)
+        count += 1
+        ContactsPerson.create(:person_id => person_id, :contact_id => contact.id) if person_id.present?
+      end
+    end
+
+
+    flash[:notice] = "Imported #{count} Discover Contacts"
+    redirect_to :action => 'upload_csv'
+  end
+
 
   private
 
