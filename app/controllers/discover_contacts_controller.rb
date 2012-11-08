@@ -24,7 +24,8 @@ class DiscoverContactsController < ApplicationController
     if @discover_contact.save
       respond_to do |format|
         ContactsPerson.create(:person_id => get_person.id, :contact_id => @discover_contact.id)
-        format.html { redirect_to :action => :index, :notice => 'Contact added!' }
+        flash[:notice] = 'Contact added!'
+        format.html { redirect_to :action => :index }
       end
     else
       render :new
