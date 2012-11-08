@@ -4199,6 +4199,13 @@ td.campusDiscTree {
   text-align: right;
 }
 
+.contact_form label.radio {
+  width: auto;
+  margin: 0 10px 0 1px;
+  position: relative;
+  top: -2px;
+}
+
 .contact_form p {
   padding: 5px;
 }

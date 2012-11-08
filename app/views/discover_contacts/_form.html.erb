@@ -10,6 +10,11 @@
       <p><label for="discover_contact_gender_id">Sex</label><%= f.select :gender_id, options_from_collection_for_select(Gender.all, Gender._(:id), Gender._(:desc), discover_contact.new_record? ? @my.gender_id : (discover_contact.gender_id || 0)) %></p>
       <p><label for="discover_contact_mobile_phone">Mobile phone</label><%= f.text_field :mobile_phone %></p>
       <p><label for="discover_contact_email">Email</label><%= f.text_field :email %></p>
+      <p><label>International</label>
+        <%= f.radio_button :international, true %>
+        <label for="discover_contact_international_true" class="radio">Yes</label><%= f.radio_button :international, false %>
+        <label for="discover_contact_international_false" class="radio">No</label>
+      </p>
       <p><label for="discover_contact_next_step_id">Next step</label><%= f.select :next_step_id, options_for_select(Contact::NEXT_STEP_OPTIONS, discover_contact[:next_step_id].nil? ? 0 : discover_contact[:next_step_id].to_i) %></p>
       <br>
       <p>What am I trusting God to do with them next?<br><br><%= f.text_area :what_i_am_trusting_god_to_do_next %></p>
