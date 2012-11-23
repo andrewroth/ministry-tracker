@@ -20,7 +20,7 @@
 </div>
 
 <ul id="WebSearchResults">
-  <% if @web.results.size > 0 %>
+  <% if @web && @web.results && @web.results.size > 0 %>
     <%= render :partial => "web_result", :collection => @web.results -%>
 
     <% if pagination == true %>
@@ -38,10 +38,16 @@
       <% end %>
     <% end %>
 
-  <% else %>
+  <% elsif @web && @web.results && @web.results.size == 0 %>
     <p>
       No web results found for <strong><%= @q %></strong>.<br/>
       Try using different or more general search terms.
+    </p>
+
+  <% else %>
+    <p>
+      We're sorry, we couldn't connect to the CCCI search service.<br>
+      For web results visit <strong><%= link_to 'search.mygcx.org', 'https://search.mygcx.org/', :target => '_blank' %></strong>
     </p>
   <% end %>
 </ul>

@@ -1,6 +1,6 @@
 module Searching
 
-  
+
   MAX_NUM_AUTOCOMPLETE_RESULTS = 5
   DEFAULT_NUM_SEARCH_RESULTS = 7
 
@@ -132,13 +132,13 @@ module Searching
     num = params[:per_page].present? ? params[:per_page].to_i : DEFAULT_NUM_SEARCH_RESULTS.to_i
     start = params[:page].present? ? (params[:page].to_i*num)-num : 0
     config = google_search_appliance_config.merge({:num => num, :start => start})
-    
+
     service_uri = config.delete(:url)
     service_uri += "#{service_uri.include?('?') ? '&' : '?'}q=#{CGI::escape(query)}"
     service_uri = construct_cas_proxy_authenticated_service_url(service_uri, config)
-    
+
     @gsa_results_unauthenticated = true unless service_uri.include?("ticket=")
-    
+
     g = Gasohol::Search.new(google_search_appliance_config)
     g.search_request_string(service_uri)
   end
