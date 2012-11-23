@@ -88,9 +88,16 @@ module Gasohol
       all_options = @config.merge(options)    # merge options that were passed directly to this method
       full_query_path = request_string.present? ? request_string : query_path(query,all_options)     # creates the full URL to the GSA
 
-      begin
-        agent = Mechanize.new
+      agent = Mechanize.new
 
+      # this is a (hopefully temporary) hack to fix access to gcx search
+      begin
+        agent.get(full_query_path)
+      rescue
+        agent.get('https://search.mygcx.org')
+      end
+
+      begin
         Rails.logger.info "\tGSA call (#{Date.today}) #{full_query_path}"
         page = agent.get(full_query_path) # call the GSA with our search
 
