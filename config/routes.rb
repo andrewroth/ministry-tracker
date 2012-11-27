@@ -271,6 +271,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :activities
 
+  map.resources :recruitments, :has_many => [:notes, :activities]
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

@@ -19,14 +19,14 @@ class PeopleController < ApplicationController
   before_filter :set_use_address2
   before_filter  :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
-  free_actions = [:set_current_address_states, :set_permanent_address_states,  
+  free_actions = [:set_current_address_states, :set_permanent_address_states,
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
                   :set_initial_ministry, :edit_me]
   skip_standard_login_stack :only => free_actions
-     
+
   MENTOR_ID_NONE = nil
-  
-  
+
+
   #  AUTHORIZE_FOR_OWNER_ACTIONS = [:edit, :update, :show, :import_gcx_profile, :getcampuses,
   #                                 :get_campus_states, :set_current_address_states,
   #                                 :set_permanent_address_states]
@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
   # GET /people.xml
   def index
   end
-  
+
   def impersonate
     if !session[:impersonator].present? && (Cmt::CONFIG[:allow_impersonate] || is_admin?)
       person = Person.find(params[:id])
@@ -53,82 +53,82 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
+
   # sets label (i.e. "Spiritual Multiplier") for a person and then redirects to the "show" action
   def set_label
     if params[:label]
       # begin
-        
+
         @label = Label.find params[:label]
-        
+
         unless @person.labels.include?(@label)
       		# @label_person = LabelPerson.create(:label_id => params[:label], :person_id => params[:id])
       		@person.labels << @label
       	else
       		# potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
       		# could follow up with same record create code
-      	  
+
           @error_notice = "The '#{@label.content}' label has already been applied to #{@person.full_name}"
       	end
-	        
+
       # rescue ActiveRecord::ActiveRecordError
       # rescue ActiveRecord::RecordNotFound
       #   # DO NOTHING
-      # end      	
+      # end
     end
-    
+
     #redirect_back(:action => 'show', :id => params[:id], :error_notice => @error_notice)
   end
-  
+
      # GET /people/remove_label
   # Removes a label that was previously assigned to the person
   def remove_label
-    
+
     label_record = LabelPerson.find_by_label_id_and_person_id(params[:label_id],params[:person_id])
     label_record.destroy
     label_record.save
     render :nothing => true
   end
-  
+
 
   def discipleship
     @p_user = @person
     @semester = @current_semester
     @person = Person.find(params[:id])    # needed so that current Pulse user is not used
   end
-  
-  
+
+
  # provides INITIAL display of summary profile info for mentee in partial beside discipleship tree
  def show_mentee_summary
-   
+
    mentee = nil
    begin
-       mentee = Person.find(params[:mentee_id])     
-   rescue ActiveRecord::RecordNotFound 
+       mentee = Person.find(params[:mentee_id])
+   rescue ActiveRecord::RecordNotFound
     # DO NOTHING IF NO PERSON FOUND FOR MENTEE ID
     # TODO?: post a temporary flash notice (although this error should not ever happen)
-    end  
-  
+    end
+
     if (is_ministry_leader == true || mentee.campus == @person.campus)
       render :partial => "mentee_summary", :locals => { :mentee => mentee, :semester => @current_semester }
     else
       render :partial => "mentee_summary_not_permitted", :locals => { :mentee => mentee}
     end
-    
+
   end
-  
+
   # used for subsequent displays of mentee summary profile info (as above), as accessed by tree-links
   def show_mentee_profile_summary
     begin
-      
-      @selected_mentee = Person.find(params[:mentee_id])     
-      
+
+      @selected_mentee = Person.find(params[:mentee_id])
+
       if (is_ministry_leader == true || @selected_mentee.campus == @person.campus)
       	@mentee_page_to_display = "mentee_summary"
       else
       	@mentee_page_to_display = "mentee_summary_not_permitted"
-      end          
-      
+      end
+
       @person = Person.find(params[:mentor_id])    # needed so that current Pulse user is not used
       @bracket_level = params[:y]
       @is_first_level = params[:is_first_level]
@@ -136,15 +136,15 @@ class PeopleController < ApplicationController
 
       respond_to do |format|
         format.js
-      end     
-        
-    rescue ActiveRecord::RecordNotFound 
+      end
+
+    rescue ActiveRecord::RecordNotFound
     # DO NOTHING IF NO PERSON FOUND FOR MENTEE ID
     # TODO?: post a temporary flash notice (although this error should not ever happen)
-    end  
- 
+    end
+
   end
- 
+
 
   def advanced
     get_campuses
@@ -153,7 +153,7 @@ class PeopleController < ApplicationController
     @options = {}
     render :layout => 'application'
   end
-  
+
   # Presents a list of all people matching the provided search criteria.
   # Capable of outputting as xml, xls, or html
   #
@@ -167,10 +167,10 @@ class PeopleController < ApplicationController
     #my_campuses if get_ministry_involvement(current_ministry).ministry_role.is_a?(StudentRole)
     get_ministries
     get_campuses
-    
+
     @advanced = true # we're now using advanced search by default
     @options = {}
-    
+
     if params[:page].present?
       if !session[:last_options].present?
         flash[:notice] = "Sorry, looks like your search expired.  Please search again."
@@ -179,7 +179,7 @@ class PeopleController < ApplicationController
       else
         session[:last_options].each_pair do |k,v|
           next if k == :page || k == "page"
-          params[k] = v  
+          params[k] = v
         end
       end
     end
@@ -191,16 +191,16 @@ class PeopleController < ApplicationController
       format.xls  do
         filename = @search_for.present? ? @search_for.gsub(';',' -') + ".xls" : "pulse_directory_search.xls"
 
-        #this is required if you want this to work with IE        
+        #this is required if you want this to work with IE
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
           headers['Pragma'] = 'public'
-          headers["Content-type"] = "text/plain" 
+          headers["Content-type"] = "text/plain"
           headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
-          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
-          headers['Expires'] = "0" 
+          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+          headers['Expires'] = "0"
         else
           headers["Content-Type"] ||= 'text/xml'
-          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
+          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
         end
         render :action => 'excel', :layout => false
       end
@@ -219,34 +219,34 @@ class PeopleController < ApplicationController
                       when 'gender'
                         @person.human_gender(person[column.safe_name])
                       else
-                        person[column.safe_name] 
+                        person[column.safe_name]
                       end
 
             end
           end
         end
 
-        #this is required if you want this to work with IE        
+        #this is required if you want this to work with IE
 =begin
         if request.env['HTTP_USER_AGENT'] =~ /msie/i
           headers['Pragma'] = 'public'
-          headers["Content-type"] = "text/plain" 
+          headers["Content-type"] = "text/plain"
           headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
-          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\"" 
-          headers['Expires'] = "0" 
+          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+          headers['Expires'] = "0"
         else
           headers["Content-Type"] ||= 'text/xml'
-          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\"" 
+          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
         end
 =end
 
-        user_fn = @search_for.gsub(';',' -') + ".csv"    
+        user_fn = @search_for.gsub(';',' -') + ".csv"
         send_file fn, :filename => user_fn, :type => "text/csv"
       end
     end
   end
 
-  
+
   # Executes a search according to provided criteria.
   # Guesses if the entry includes a first and last name, splits them out for the search
   # TODO: Check it can handle two word lastnames like mine "Andrew de Jonge"
@@ -267,7 +267,7 @@ class PeopleController < ApplicationController
         name = names.join
         conditions[0] << "(#{_(:last_name, :person)} LIKE ? OR #{_(:first_name, :person)} LIKE ?) "
         conditions[1] << name+'%'
-        conditions[1] << name+'%' 
+        conditions[1] << name+'%'
       end
       if params[:filter_ids].present?
         conditions[0] << "#{Person.table_name}.#{_(:id, :person)} NOT IN(?)"
@@ -277,11 +277,11 @@ class PeopleController < ApplicationController
       # Scope by the user's ministry / campus involvements
       involvement_condition = "("
       unless @person.is_staff_somewhere?
-        involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR " 
+        involvement_condition += "#{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN(?) OR "
         conditions[1] << get_campus_ids
       else
       end
-      involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )" 
+      involvement_condition += "#{MinistryInvolvement.table_name}.#{_(:ministry_id, :ministry_involvement)} IN(?) )"
 
       conditions[0] << involvement_condition
       conditions[1] << current_ministry.self_plus_descendants.collect(&:id)
@@ -301,23 +301,23 @@ class PeopleController < ApplicationController
       render :nothing => true
     end
   end
-  
- 
+
+
    # GET /people/remove_mentor
-  # Updates a person's mentor via a person_id parameter  
+  # Updates a person's mentor via a person_id parameter
   def remove_mentor
     # We don't actually delete people, just set the 'mentor_id' to 0
     #@person = Person.find(params[:id], :include => [:mentor_id])
-    
+
     person = Person.find(params[:id]) # for some reason @person is always the Pulse user
     person.person_mentor_id = MENTOR_ID_NONE
     person.save
     render :partial => "mentor_search_box", :locals => { :person => person, :q => @q }
   end
-  
-  
+
+
   # GET /people/remove_mentee
-  # Removes a person's mentee via a person_id parameter  
+  # Removes a person's mentee via a person_id parameter
   def remove_mentee
     # We don't actually delete people, just find the person_id FOR THE MENTEE
     # then set the 'mentor_id' to 0
@@ -340,14 +340,14 @@ class PeopleController < ApplicationController
         @person.primary_campus_involvement = @person.campus_involvements.last
         @person.save!
       end
-      
+
       # check GET parameters generated from mentor auto-complete search; set new mentor if ID found
       profile_person = Person.find(params[:id]) # for some reason @person is always the Pulse user
       if ((authorized?(:add_mentor, :people)&&(profile_person == @me)) || authorized?(:add_mentor_to_other, :people))
         if params[:m]
           begin
             mentor_id = params[:m].to_i
-            person_exists_check = Person.find(mentor_id)         
+            person_exists_check = Person.find(mentor_id)
             if mentor_id.is_a?(Numeric) # & mentor_id != MENTOR_ID_NONE
               @person.person_mentor_id = params[:m];
               @person.save
@@ -359,13 +359,13 @@ class PeopleController < ApplicationController
               flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentor already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
             end
             show_error_notice = true;	#mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
-            
+
           rescue ActiveRecord::RecordNotFound
             # DO NOTHING
-          end        
-        end     
+          end
+        end
       end
-      
+
        # check GET parameters generated from mentee auto-complete search; set new mentee if ID found
       if ((authorized?(:add_mentee, :people)&&(profile_person == @me)) || authorized?(:add_mentee_to_other, :people))
         if params[:mt]
@@ -375,8 +375,8 @@ class PeopleController < ApplicationController
             if mentee_id.is_a?(Numeric) # & mentor_id != MENTOR_ID_NONE
               person = Person.find(params[:mt])
               person.person_mentor_id = @person.id
-              person.save 
-            end   
+              person.save
+            end
           rescue ActiveRecord::ActiveRecordError
             if person != nil
               flash[:notice] = "<b>WARNING:</b> " + person.full_name + " already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
@@ -384,18 +384,23 @@ class PeopleController < ApplicationController
               flash[:notice] = "<b>WARNING:</b> The person you tried to add as a mentee already exists somewhere in the mentorship tree that " + @person.full_name + " is a part of!"
             end
             show_error_notice = true	#mentorship_cycle_error = true   # redirect to dashboard where notice will provide more information
-          rescue ActiveRecord::RecordNotFound 
-            # DO NOTHING  
+          rescue ActiveRecord::RecordNotFound
+            # DO NOTHING
 
-          end     
+          end
         end
       end
-      
+
       get_ministry_involvement(get_ministry)
       get_people_responsible_for
       setup_vars
-      
-     if (show_error_notice == true)
+
+      if @person.recruitable? && @person.recruitment.blank?
+        @person.recruitment = Recruitment.new
+        @person.recruitment.save
+      end
+
+      if (show_error_notice == true)
         set_notices   # make sure error notice is displayed
         respond_to do |format|
           format.html { render :action => :show }# show.rhtml
@@ -409,27 +414,27 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
+
   def me
     params[:id] = @person.id
     @person = current_user.person
     show
   end
-  
+
   def edit_me # intended to be used with a user code
     unless session[:code_valid_for_user_id] # just to be sure
       access_denied(true)
       return
     end
-    
+
     @user = User.find session[:code_valid_for_user_id]
     self.current_user = @user
     @me = @my = @person = @user.person
     session[:edit_profile] = true
-    
+
     redirect_to :action => :show, :id => @my.id
   end
-  
+
   def setup_new
     @person = Person.new
     @current_address = CurrentAddress.new
@@ -450,7 +455,7 @@ class PeopleController < ApplicationController
   # GET /people/1/edit
   def edit
     countries = get_countries
-    
+
     current_address_states = get_states @person.current_address.try(:country)
     permanent_address_states = get_states @person.permanent_address.try(:country)
     current_address_country = @person.current_address.try(:country)
@@ -474,14 +479,14 @@ class PeopleController < ApplicationController
       page << "show_dialog('Edit Group', 700, 550)" if thickbox
     end
   end
-    
+
   def destroy
     # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
     @person = Person.find(params[:id], :include => [:ministry_involvements, :campus_involvements])
     ministry_involvements_to_end = @person.ministry_involvements.collect &:id
     MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'",
                                    "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
-    
+
     campus_involvements_to_end = @person.campus_involvements.collect &:id
     CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'",
                                  "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
@@ -497,7 +502,7 @@ class PeopleController < ApplicationController
     @person.save
 
     flash[:notice] = "#{@person.full_name}'s involvements on the Pulse have successfully been removed"
-    
+
     if (params[:logout] == 'true')
       redirect_to logout_url
     else
@@ -510,28 +515,28 @@ class PeopleController < ApplicationController
   def create
     @modal = request.xhr?
     @person = Person.new(params[:person])
-    @current_address = CurrentAddress.new(params[:current_address]) 
-    @permanent_address = PermanentAddress.new(params[:perm_address]) 
+    @current_address = CurrentAddress.new(params[:current_address])
+    @permanent_address = PermanentAddress.new(params[:perm_address])
     @countries = CmtGeo.all_countries
     @states = CmtGeo.all_states
-    
-    
+
+
     respond_to do |format|
-      
+
       can_assign_role = true if @my.role(@ministry) && @my.role(@ministry).compare_class_and_position(MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) >= 0
-      
+
       # If we don't have a valid person and valid address, get out now
       if @person.valid? && @current_address.valid? && @permanent_address.valid? && can_assign_role
-        
+
         @person, @current_address = add_person(@person, @current_address, params)
         @person.permanent_address.update_attributes(params[:perm_address])
-        
+
         # if we don't have a good username, Raise an error
-        # Since we require a unique email address, we should never get here. 
-        unless @person.user 
+        # Since we require a unique email address, we should never get here.
+        unless @person.user
           raise "Duplicate email address error. Couldn't create a user for:" + @person.inspect
         end
-        
+
         if @ministry
           ministry_role = MinistryRole.find params[:ministry_involvement][:ministry_role_id]
           @staff_role = ministry_role.is_a?(StaffRole)
@@ -539,12 +544,12 @@ class PeopleController < ApplicationController
 
           # add the person to this ministry if they aren't already
           if @student_role
-            @ci = @person.add_or_update_campus params[:campus_involvement][:campus_id], 
+            @ci = @person.add_or_update_campus params[:campus_involvement][:campus_id],
               params[:campus_involvement][:school_year_id],
               @ministry.id,
               @me
 
-            # If this is an Involved Student record that has plain_password value, 
+            # If this is an Involved Student record that has plain_password value,
             # this is a new user who should be notified of the account creation
 #            if @person.user.plain_password.present? && is_involved_somewhere(@person)
 #              UserMailer.deliver_created_student(@person, @ministry, @me, @person.user.plain_password)
@@ -554,7 +559,7 @@ class PeopleController < ApplicationController
           # create ministry involvement if it doesn't already exist
           @mi = @person.add_or_update_ministry(@ministry.id, params[:ministry_involvement][:ministry_role_id])
         end
-        
+
         # The person MUST have a user record
         if @person.user && @person.user.save && (@staff_role || (@ci && @ci.valid?)) && @mi.valid?
           @success = true
@@ -585,7 +590,7 @@ class PeopleController < ApplicationController
       @most_recent_campus_involvement = @person.most_recent_involvement
       @most_recent_ministry = @most_recent_campus_involvement.ministry
       @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
-      
+
       @most_recent_ministry_involvement.responsible_person = Person.find(params[:responsible_person_id])
       @most_recent_ministry_involvement.save
     end
@@ -594,8 +599,8 @@ class PeopleController < ApplicationController
       @person.current_address.update_attributes(params[:current_address])
     end
     if params[:perm_address]
-      @person.permanent_address ||= PermanentAddress.new(:email => params[:perm_address][:email]) 
-      @person.permanent_address.update_attributes(params[:perm_address]) 
+      @person.permanent_address ||= PermanentAddress.new(:email => params[:perm_address][:email])
+      @person.permanent_address.update_attributes(params[:perm_address])
     end
 
     current_address_states = get_states @person.current_address.try(:country)
@@ -606,18 +611,18 @@ class PeopleController < ApplicationController
     if params[:user] && @person.user
       @person.user.update_attributes(params[:user])
     end
-    
+
     setup_vars
 
     respond_to do |format|
-      if @person.update_attributes(params[:person]) && 
+      if @person.update_attributes(params[:person]) &&
           (params[:current_address].nil? || @current_address.valid?) &&
           (params[:perm_address].nil? || @perm_address.valid?)
-        
+
         if params[:primary_campus_involvement].present? &&  @person.most_recent_involvement
           @person.most_recent_involvement.update_attributes(params[:primary_campus_involvement])
         end
-         
+
         # Save custom attributes
         @ministry.custom_attributes.each do |ca|
           @person.set_value(ca.id, params[ca.safe_name]) if params[ca.safe_name]
@@ -626,14 +631,14 @@ class PeopleController < ApplicationController
         @ministry.training_questions.each do |q|
           @person.set_training_answer(q.id, params[q.safe_name + '_date'], params[q.safe_name + 'approver']) if params[q.safe_name + '_date']
         end
-        
+
         if params[:set_campus_requested] == 'true'
           flash[:notice] += "  You can now <A HREF='#{join_groups_url}'>Join a Group</A>."
         end
 
         @person = Person.find(params[:id])
         format.html { redirect_to person_path(@person) }
-        format.js do 
+        format.js do
           render :update do |page|
             update_flash(page, flash[:notice]) if flash[:notice].present?
             unless params[:no_profile]
@@ -657,7 +662,7 @@ class PeopleController < ApplicationController
         setup_campuses
         # @person.errors.add_to_base('Please select a primary campus.') if params[:primary_campus_id].blank?
         format.html { render :action => "edit" }
-        format.js do 
+        format.js do
           render :update do |page|
             page[:edit_info].replace_html :partial => 'edit',
               :locals => {
@@ -673,7 +678,7 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
+
   def set_initial_ministry
     get_person
   end
@@ -727,7 +732,7 @@ class PeopleController < ApplicationController
   def change_ministry_and_goto_directory
     session[:ministry_id] = params[:current_ministry].to_i
     @ministry = nil; get_ministry # reset the active ministry
-    
+
     respond_to do |wants|
       wants.html { redirect_to(directory_people_path(:campus => params[:campus], :format => :html)) }
       wants.js do
@@ -737,7 +742,7 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
+
   # Question: what does it do? Are there customisable views, and this changes
   # the currently used one? Yes - see the directory
   def change_view
@@ -754,7 +759,7 @@ class PeopleController < ApplicationController
       end
     end
   end
-    
+
   # Renders the add person form but restricts role to students; also assumes an ajax
   # form render.
   def add_student
@@ -768,16 +773,16 @@ class PeopleController < ApplicationController
       end
     end
   end
-  
+
   def import_gcx_profile
     proxy_granting_ticket = session[:cas_pgt]
     unless proxy_granting_ticket.nil?
       begin
         success = @person.import_gcx_profile(proxy_granting_ticket)
         if success
-          flash[:notice] = "Your GCX Profile has been imported successfully." 
+          flash[:notice] = "Your GCX Profile has been imported successfully."
         else
-          flash[:warning] = "There was a problem importing your GCX Profile. Please try again later." 
+          flash[:warning] = "There was a problem importing your GCX Profile. Please try again later."
         end
       rescue Errno::ETIMEDOUT
         flash[:warning] = "There was a problem importing your GCX Profile. Please try again later."
@@ -787,12 +792,12 @@ class PeopleController < ApplicationController
     end
     redirect_to @person
   end
-  
+
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_current_address_states
     @current_address_states = CmtGeo.states_for_country(params[:current_address_country]) || []
   end
-  
+
   # For RJS call for dynamic population of state dropdown (see edit method)
   def set_permanent_address_states
     @permanent_address_states = CmtGeo.states_for_country(params[:perm_address_country]) || []
@@ -805,24 +810,24 @@ class PeopleController < ApplicationController
       format.js
     end
   end
-  
-  
+
+
   def show_gcx_profile
     if !@person.user || !@person.user.guid || !@person.user.guid.present?
       flash[:notice] = "#{@person.first_name} doesn't have a GUID, they might not have a GCX profile"
       redirect_to @person
       return
     end
-    
+
     begin
       request_url = construct_cas_proxy_authenticated_service_url(gcx_profile_report_config[:url], {:guid => @person.try(:user).try(:guid)})
-      
+
       @gcx_unauthenticated = true unless request_url.include?("ticket=")
-      
+
       agent = Mechanize.new
       Rails.logger.info "\tGCX profile report service call (#{Date.today}) #{request_url}"
       page = agent.get(request_url)
-      
+
       @hpricot = Hpricot(page.body)
     rescue => e
       error_message = "\nERROR WITH GCX PROFILE RESPONSE: \n\t#{e.class.to_s}\n\t#{e.message}\n"
@@ -831,10 +836,10 @@ class PeopleController < ApplicationController
       flash[:notice] = "There was a problem retrieving #{@person.first_name}'s GCX profile" unless @gcx_unauthenticated
     end
   end
-  
-  
-  
-  
+
+
+
+
   private
 
     def do_directory_search
@@ -871,12 +876,12 @@ class PeopleController < ApplicationController
           end
         end
 
-      
+
         # Advanced search options
         @options = {}
         @tables = {}
         @search_for = []
-        
+
         # Check year in school
         if params[:school_year].present?
           conditions << database_search_conditions(params)[:school_year]
@@ -885,26 +890,26 @@ class PeopleController < ApplicationController
           @advanced = true
           @searched_school_year_ids = params[:school_year]
         end
-      
+
         # Check gender
         if params[:gender].present?
           conditions << database_search_conditions(params)[:gender]
           @search_for << params[:gender].collect {|gender| Person.human_gender(gender)}.join(', ')
           @advanced = true
         end
-      
+
         if params[:first_name].present?
           conditions << "Person.#{_(:first_name, :person)} LIKE '#{quote_string(params[:first_name])}%'"
           @search_for << "First Name: #{params[:first_name]}"
           @advanced = true
         end
-        
+
         if params[:last_name].present?
           conditions << "Person.#{_(:last_name, :person)} LIKE '#{quote_string(params[:last_name])}%'"
           @search_for << "Last Name: #{params[:last_name]}"
           @advanced = true
         end
-        
+
         if params[:email].present?
           conditions << database_search_conditions(params)[:email]
           @search_for << "Email: #{params[:email]}"
@@ -920,14 +925,14 @@ class PeopleController < ApplicationController
         end
 
         conditions = add_involvement_conditions(conditions, nil)
-      
+
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
         session[:last_options] = @options
-      
+
         @conditions = conditions.join(' AND ')
         @search_for = @search_for.empty? ? (params[:search] || 'Everyone') : @search_for.join("; ")
       end
-      
+
       conditions = ""
 
       if !params[:group_involvement].present?
@@ -945,7 +950,7 @@ class PeopleController < ApplicationController
 
         group_type = GroupType.find(i < 0 ? -i : i)
         @semester = Semester.current
-        conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " + 
+        conditions = "(#{get_ministry.descendants_condition}) AND semester_id = #{@semester.id} " +
           " AND group_type_id = #{group_type.id}"
         @group_type_groups = Group.find(:all, :conditions => conditions, :joins => [ :ministry ])
         @group_ids = [ 0 ] + @group_type_groups.collect(&:id).collect(&:to_s)
@@ -962,7 +967,7 @@ class PeopleController < ApplicationController
         @extra_select = "TempGroupInvolvement.group_involvements as GroupInvolvements"
         @group_ids ||= [ 0 ] + Semester.current.groups.collect(&:id)
 =begin
-        ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ, 
+        ActiveRecord::Base.connection.execute(%|LOCK TABLES #{TempGroupInvolvement.table_name} WRITE, #{Person.table_name} READ, #{GroupInvolvement.table_name} READ,
                                               #{Search.table_name} WRITE, #{Person.table_name} as Person READ, #{Column.table_name} READ, #{ViewColumn.table_name} READ,
                                               #{CampusInvolvement.table_name} as CampusInvolvement READ, #{MinistryInvolvement.table_name} as MinistryInvolvement READ,
                                               #{CurrentAddress.table_name} as CurrentAddress READ, #{Access.table_name} as Access READ,
@@ -972,9 +977,9 @@ class PeopleController < ApplicationController
                                               |)
 =end
         TempGroupInvolvement.delete_all
-        sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id, 
-            GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN 
-            #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')}) 
+        sql = "INSERT INTO #{TempGroupInvolvement.table_name} SELECT #{Person.__(:person_id)} as person_id,
+            GROUP_CONCAT(#{GroupInvolvement._(:group_id)} SEPARATOR ',') as GroupInvolvements FROM #{Person.table_name} LEFT JOIN
+            #{GroupInvolvement.table_name} on #{Person.__(:person_id)} = #{GroupInvolvement.__(:person_id)} AND #{GroupInvolvement._(:group_id)} IN (#{@group_ids.join(',')})
             GROUP BY #{Person.__(:person_id)} ORDER BY #{Person.__(:person_id)}"
         ActiveRecord::Base.connection.execute(sql)
         @temp_group_involvements_locked = true
@@ -994,7 +999,7 @@ class PeopleController < ApplicationController
         # Only keep the last 5 searches
         @my.searches.last.destroy if @my.searches.length > 5
       end
-      
+
       # If these conditions will result in too large a set, use pagination
       @group = Person._(:id)
       build_sql(tables_clause, @extra_select)
@@ -1010,7 +1015,7 @@ class PeopleController < ApplicationController
         @searched_ministry_ids = ministries.collect{ |m| m.self_and_descendants }.flatten.uniq.collect(&:id).collect(&:to_s) & get_ministry_ids
       end
       @searched_ministry_ids ||= get_ministry_ids
-      
+
       # pass which campuses were searched for to the view
       if params[:campus]
         campuses = Campus.find :all, :conditions => "#{Campus._(:id)} IN (#{params[:campus].join(",")})"
@@ -1018,27 +1023,27 @@ class PeopleController < ApplicationController
       end
     end
 
-    
+
     def get_people_responsible_for
       @people_responsible_for = @person.people_responsible_for
     end
 
     def get_possible_responsible_people
       @possible_responsible_people = []
-      
+
       # pull values we'll need, make sure this one exists
       @most_recent_campus_involvement = @person.most_recent_involvement
       return unless @most_recent_campus_involvement
-      
+
       # continue pulling values, can't continue without both of these
       @most_recent_ministry = @most_recent_campus_involvement.ministry
       return unless @most_recent_ministry
       @most_recent_ministry_involvement = @person.ministry_involvements.find_by_ministry_id @most_recent_ministry.id
       return unless @most_recent_ministry_involvement
-      
+
       # find my position
       persons_ministry_involvement_position = @most_recent_ministry_involvement.ministry_role.position
-      
+
       # find everyone in this ministry with a higher access
       higher_mi_array = []
       @most_recent_ministry.ministry_involvements.each do |cur_mi|
@@ -1046,24 +1051,24 @@ class PeopleController < ApplicationController
           higher_mi_array << cur_mi
         end
       end
-      
+
       # only show people in your campus
       higher_mi_array.each do |h_mi|
         person = h_mi.person
-        
+
         if person.campus_involvements.find_by_campus_id @most_recent_campus_involvement.campus.id
           @possible_responsible_people << person
         end
       end
     end
-    
+
     def render_new_from_create(format)
       set_dorms
       format.html { render :action => "new", :layout => 'manage' }
       format.js  {render :action => 'new'}
       format.xml  { render :xml => @person.errors.to_xml }
     end
-    
+
     def setup_vars
       set_dorms
       @profile_picture = @person.profile_picture || ProfilePicture.new
@@ -1080,15 +1085,15 @@ class PeopleController < ApplicationController
       2.times { last_shown_semester = last_shown_semester.next_semester unless last_shown_semester.next_semester.nil? }
       @semesters = Semester.find(:all, :conditions => ["#{_(:id, :semester)} <= ?", last_shown_semester.id])
     end
-    
+
     def set_dorms
       @dorms = @person.primary_campus ? @person.primary_campus.dorms : []
     end
-    
+
     def get_profile_person
       @person = Person.find(:first, :conditions => { Person._(:id) => params[:id] || session[:person_id]})
     end
-   
+
     def get_view
       # first automatically change the view if the user has not chosen their own view
       if params[:view].blank? && session[:user_changed_view].blank? && params[:role].present?
@@ -1131,7 +1136,7 @@ class PeopleController < ApplicationController
       @sql += ' HAVING ' + @having.join(" AND ") if @having.present?
       @sql += ' ORDER BY ' + @order
     end
-  
+
     def setup_order_clause
       # setup a standard order to use for secondary sorting
       standard_order = 'Person.' + _(:last_name, :person) + ', ' +
@@ -1158,15 +1163,15 @@ class PeopleController < ApplicationController
     def set_use_address2
       @use_address2 = !Cmt::CONFIG[:disable_address2]
     end
-    
+
     def get_campuses
       @campuses ||= @my.campus_list(get_ministry_involvement(@ministry), @ministry)
     end
-    
+
     def get_campus_ids
       @campus_ids ||= get_campuses.collect(&:id).collect(&:to_s)
     end
-    
+
     def get_ministries(ministry = nil)
       if is_staff_somewhere
         @ministries = get_ministry.self_and_descendants
@@ -1230,7 +1235,7 @@ class PeopleController < ApplicationController
       return conditions
     end
 
-    
+
     # does some post-processing on the people returned by directory.  I found this way
     # easier than getting the SQL right in some specific cases.  In particular, for people
     # with multiple campus involvements, the directory code is difficult to work with.
@@ -1285,10 +1290,10 @@ class PeopleController < ApplicationController
         redirect_to :action => :index, :controller => :search
       end
     end
-    
-    
+
+
     # Utility Methods (from http://ethilien.net/archives/better-redirects-in-rails/)
-    
+
     # redirect somewhere that will eventually return back to here
 	def redirect_away(*params)
 	  session[:original_uri] = request.request_uri

@@ -17,7 +17,7 @@ $(document).ready(function(){
 
 function ready() {
 
-  $('#contact_notes textarea').on('focus', function() {
+  $('#recruitment_notes textarea, #contact_notes textarea').on('focus', function() {
     $(this).addClass('activated');
   });
 

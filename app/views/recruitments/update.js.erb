@@ -1,0 +1,6 @@
+<% if @recruitment.errors.blank? %>
+  $('#recruitment_spinner_container.<%= params[:submit_time] %> #spinnerrecruitment').hide();
+  $('#recruitment_spinner_container.<%= params[:submit_time] %> .saved').show().effect('highlight');
+<% else %>
+  location.reload();
+<% end %>

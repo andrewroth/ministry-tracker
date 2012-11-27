@@ -938,11 +938,11 @@ h2 select {
   display: inline-block;
 }
 
-#contact_notes .new_note, #contact_rejoiceables .new_activity {
-  margin-top: 10px;
+#contact_notes .new_note, #contact_rejoiceables .new_activity, #recruitment_notes .new_note {
+  margin-top: 15px;
 }
 
-#contact_notes textarea {
+#contact_notes textarea, #recruitment_notes textarea {
   width: 170px;
   height: 20px;
   margin-right: 5px;
@@ -956,6 +956,11 @@ h2 select {
 #contact_notes textarea.activated {
   width: 400px;
   height: 70px;
+}
+
+#recruitment_notes textarea.activated {
+  width: 250px;
+  height: 80px;
 }
 
 #contact_notes form input, #contact_notes form textarea {
@@ -1963,6 +1968,16 @@ padding-bottom:5px;
   font-family:Arial,Helvetica,Sans-Serif;
 }
 
+.profile label {
+  width: 250px;
+  padding: 2px 0;
+}
+
+.profile label input {
+  position: relative;
+  top: 3px;
+}
+
 .addInvolvementIconLink       { padding-left:15px; background: url("/images/sprites/p2c_icons.png") no-repeat; background-position:-10px -127px; }
 .addInvolvementIconLink:hover { background-position: -10px -571px; }
 
@@ -2010,6 +2025,15 @@ padding-bottom:5px;
   vertical-align:top;
 }
 
+#profilewrap table.profile div.half {
+  float: left;
+  width: 45%;
+}
+
+#profilewrap table.profile div.half.margin {
+  margin-right: 40px;
+}
+
 #profilewrap table th, #profilewrap table tr {
   vertical-align:top;
   font-size:11px;
@@ -2039,6 +2063,22 @@ padding-bottom:5px;
 }
 #profilewrap #removeMe:hover {
   opacity: 1; filter:alpha(opacity=100);/*for IE*/
+}
+
+#recruiterSearchBox {
+  max-width: none !important;
+  width: 170px;
+  color: #747474;
+}
+
+#recruiterSearchBox.focused {
+  color: black;
+}
+
+.saved {
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 9px;
 }
 
 
