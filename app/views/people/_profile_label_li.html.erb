@@ -1,12 +1,14 @@
 <%- person_label ||= profile_label_li -%>
-<div class="personLabel"><div class="personLabelText">
-<div id="plabel_<%= person_label.id %>">
-	<%= person_label.content %>
-    <%= link_to_remote(image_tag('cross_tiny.png'), 
-        :update => "plabel_#{person_label.id}",
-        :url => { :action => :remove_label, :params => {:label_id => "#{person_label.id}", :person_id => @person.id}  },
-        :confirm => "Are you sure you want to remove the '#{person_label.content}' label from #{@person.full_name} ?", 
-        :loading => "$('#spinnerlbls').show()", 
-        :complete => "$('#spinnerlbls').hide(); $('#plabel_#{person_label.id}').parent().parent().remove()")  if authorized?(:remove_label, :people) %>       
+<div class="personLabel">
+  <div class="personLabelText">
+    <div id="plabel_<%= person_label.id %>">
+      <%= person_label.content %>
+      <%= link_to_remote(image_tag('cross_tiny.png'),
+          :update => "plabel_#{person_label.id}",
+          :url => { :action => :remove_label, :params => {:label_id => "#{person_label.id}", :person_id => @person.id}  },
+          :confirm => "Are you sure you want to remove the '#{person_label.content}' label from #{@person.full_name} ?",
+          :loading => "$('#spinnerlbls').show()",
+          :complete => "$('#spinnerlbls').hide(); $('#plabel_#{person_label.id}').parent().parent().remove()")  if authorized?(:remove_label, :people) %>
+    </div>
+  </div>
 </div>
-</div></div>

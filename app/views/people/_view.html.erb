@@ -1,12 +1,9 @@
 
 <% if authorized?(:show_profile_labels, :people) %>
-<div id="personLabels" class="personLabels">
-	<%= render :partial => 'person_labels' %>
-</div>
-  <div class="floatLeft"><%= spinner('lbls') %></div>
-  <%- if authorized?(:set_label, :people) || @person.labels.count > 0 %>
-    <br>
-  <%- end %>
+  <div id="personLabels" class="personLabels">
+    <%= render :partial => 'person_labels' %>
+  </div>
+  <%#= "<br>" if authorized?(:set_label, :people) || @person.labels.count > 0 %>
 <% end %>
 
 <h4><%= @person.primary_campus.try(:name) %></h4>
@@ -153,48 +150,48 @@
 
 <!-- MENTORSHIP ----------------------->
 <% if authorized?(:show_mentor, :people) || authorized?(:show_mentees, :people) %>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship profile">
-	  <tr>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mentorship profile">
+    <tr>
       <% if authorized?(:show_mentor, :people) %>
         <td colspan="1"><h5><%= t('profile.headings.mentor') %><%= spinner('m','opaqueWhite') %></h5></td>
-	    <% end %>
-	    <% if authorized?(:show_mentees, :people) %>
+      <% end %>
+      <% if authorized?(:show_mentees, :people) %>
         <td class="spacer">&nbsp;</td>
         <td colspan="1"><h5><%= t('profile.headings.mentoring') %> <%= spinner('m2','opaqueWhite') %></h5></td>
-	    <% end %>
-	  </tr> <!-- added Jan 14, 2011 -->
-	  <tr>
-	    <% if authorized?(:show_mentor, :people) %>
-		    <td class="half">
+      <% end %>
+    </tr> <!-- added Jan 14, 2011 -->
+    <tr>
+      <% if authorized?(:show_mentor, :people) %>
+        <td class="half">
 
-		      <!-- - contains one name only
-		                        - student role has read-only
-		                        - involved student role able to choose name from students on their campus and any staff
-		                        - staff able to choose anybody
-		                        - if no mentor chosen, display AJAX search box -->
-		      <table>
-		        <div id="mentors_div">
-		          <%= render :partial => 'mentors' %>
-		        </div>
-		        <div id="progress-bar"></div>
-		      </table>
+          <!-- - contains one name only
+                            - student role has read-only
+                            - involved student role able to choose name from students on their campus and any staff
+                            - staff able to choose anybody
+                            - if no mentor chosen, display AJAX search box -->
+          <table>
+            <div id="mentors_div">
+              <%= render :partial => 'mentors' %>
+            </div>
+            <div id="progress-bar"></div>
+          </table>
 
-		    </td>
-	    <% end %>
-	    <% if authorized?(:show_mentees, :people) %>
-		    <td class="spacer">&nbsp;</td>
-		    <!-- was </td> here -->
-		    <td class="half">
-		      <table>
-		        <div id="mentees_div">
-		          <%= render :partial => 'mentees' %>
-		        </div>
-		      </table>
-		    </td>
-	    <% end %>
-	  </tr>
-	</table>
-	<br />
+        </td>
+      <% end %>
+      <% if authorized?(:show_mentees, :people) %>
+        <td class="spacer">&nbsp;</td>
+        <!-- was </td> here -->
+        <td class="half">
+          <table>
+            <div id="mentees_div">
+              <%= render :partial => 'mentees' %>
+            </div>
+          </table>
+        </td>
+      <% end %>
+    </tr>
+  </table>
+  <br />
 <% end %>
 
 

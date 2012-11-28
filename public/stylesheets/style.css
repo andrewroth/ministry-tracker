@@ -1757,6 +1757,10 @@ padding-bottom:5px;
 /* PROFILE PAGE */
 
 
+#personLabels {
+  margin-bottom: 20px;
+}
+
 /* column container */
 #profilewrap .colmask {
 	position:relative;	/* This fixes the IE7 overflow hidden bug */
