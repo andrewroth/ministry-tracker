@@ -19,4 +19,6 @@ class Recruitment < ActiveRecord::Base
 
   has_many :notes, :as => :noteable
 
+  validates_presence_of :person_id
+
 end
