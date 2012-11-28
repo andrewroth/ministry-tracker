@@ -38,15 +38,20 @@ function clearSelection() {
 // Used to dynamically add labels to a person's profile
 function performLabelAdd() {
   if($('#label').val() != '') {
-    $('#spinnerlbls').show();
-    //$('#label_add_form').attr('action', $('#perform_action').val());
-    //$('#label_add_form').submit();
+    $('#label').fadeOut(function() {
+      $('#spinnerlbls').fadeIn();
+    });
+
     $.ajax({
       data: jQuery.param($('#label_add_form').serializeArray()),
       dataType: 'script',
       type: 'post',
       url: $("#label_add_form").attr('action'),
-      success: function() { $('#spinnerlbls').hide(); }
+      success: function() {
+        $('#spinnerlbls').fadeOut(function() {
+          $('#label').fadeIn();
+        });
+      }
     });
   }
 }
@@ -79,7 +84,7 @@ $(function() {
     }
   });
 
-  $('#personLabels #label').val(0);
+  $('#personLabels #label').val('');
 
 
 

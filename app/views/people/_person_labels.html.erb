@@ -1,15 +1,19 @@
-<% if @person.labels.count > 0 && authorized?(:show_labels, :people) %>
-  <%= render :partial => 'profile_label_li', :collection => @person.labels %>
-<% end %>
+<ul class="personLabels">
+  <% if @person.labels.count > 0 && authorized?(:show_labels, :people) %>
+    <%= render :partial => 'profile_label_li', :collection => @person.labels %>
+  <% end %>
 
-<% if authorized?(:set_label, :people) %>
-  <%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
-      <% if Label.count > 0 %>
-        <div class="personLabelAdd">
-          <%= select_tag(:label, options_for_select([['Add label...', nil]] + Label.all.collect{|label| [ label.content, label.id ]}, nil)) %>
-          <%= observe_field(:label, {:function => "performLabelAdd();"}) %>
-          &nbsp;<%= spinner('lbls') %>
-        </div>
-      <% end %>
-  </form>
-<% end %>
+  <% if authorized?(:set_label, :people) %>
+    <%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
+        <% if Label.count > 0 %>
+          <li class="personLabel personLabelAdd">
+            <span class="personLabelContent">
+              <%= select_tag(:label, options_for_select([['Add label...', nil]] + Label.all.collect{|label| [ label.content, label.id ]}, nil)) %>
+              <%= observe_field(:label, { :function => "performLabelAdd();" }) %>
+              <%= spinner('lbls', 'opaqueWhite') %>
+            </span>
+          </li>
+        <% end %>
+    </form>
+  <% end %>
+</ul>

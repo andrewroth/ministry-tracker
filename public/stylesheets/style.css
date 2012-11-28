@@ -329,6 +329,10 @@ input, textarea, select.multiSelect {
   transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
 
+input[type="checkbox"] {
+  border: none;
+}
+
 input:hover, textarea:hover {
   border-color:#A6A6A6;
 }
@@ -1756,10 +1760,6 @@ padding-bottom:5px;
 
 /* PROFILE PAGE */
 
-
-#personLabels {
-  margin-bottom: 20px;
-}
 
 /* column container */
 #profilewrap .colmask {
@@ -4125,24 +4125,95 @@ td.nameTitle {
     margin-left:50px;
 }
 
-.personLabel {
-	float:left;
-	padding:0px 8px 0px 0px;
+#personLabels {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.personLabelText {
-	color:#000000;
-	border: 2px silver solid;
-	border-style: outset;
-	font-variant:small-caps;
-	font-family:"Copperplate Gothic Bold";
-	font-size: 12px;
-	font-weight: bold;
+.personLabels {
+  min-height: 30px;
 }
 
-.personLabelAdd {
-  display: inline;
+.personLabels li, .personLabels .personLabelContent {
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  position: relative;
+  font-size: 11px;
 }
+
+.personLabels div, .personLabels span, .personLabels a {
+  color: #fff;
+}
+
+.personLabels .personLabelContent {
+  margin-left: 20px;
+  padding: 0 5px 0 12px;
+  background: #878E99;
+  text-decoration: none;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.personLabels .personLabelRemove {
+  padding: 0 5px;
+  font-weight: bold;
+}
+
+.personLabels .personLabelContent:before {
+  content: "";
+  float: left;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-color: transparent #878E99 transparent transparent;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+}
+
+.personLabels .personLabelContent:after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 0;
+  float: left;
+  width: 4px;
+  height: 4px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #fff;
+  -moz-box-shadow: -1px -1px 2px #0064A2;
+  -webkit-box-shadow: -1px -1px 2px #0064A2;
+  box-shadow: -1px -1px 2px #0064A2;
+}
+
+.personLabelAdd .personLabelContent {
+  background: rgba(135, 142, 153, 0.5);
+  padding: 0 3px 0 12px;
+}
+
+.personLabelAdd .personLabelContent:before {
+  border-color: transparent rgba(135, 142, 153, 0.5) transparent transparent;
+}
+
+.personLabelAdd select {
+  opacity: 1;
+  font-size: 11px;
+}
+
+.personLabelAdd img {
+  position: relative;
+  top: 2px;
+}
+
 
 /* Summer Report */
 
