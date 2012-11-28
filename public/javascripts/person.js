@@ -38,8 +38,8 @@ function clearSelection() {
 // Used to dynamically add labels to a person's profile
 function performLabelAdd() {
   if($('#label').val() != '') {
-    $('#label').fadeOut(function() {
-      $('#spinnerlbls').fadeIn();
+    $('#label').fadeOut('fast', function() {
+      $('#spinnerlbls').fadeIn('fast');
     });
 
     $.ajax({
