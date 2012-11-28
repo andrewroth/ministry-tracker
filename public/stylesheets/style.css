@@ -323,10 +323,11 @@ input, textarea, select.multiSelect {
   color: #000;
   font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
-  border:1px solid #ddd;
+  border:1px solid #ccc;
 
-  border-radius:3px;
+  border-radius:2px;
   transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) inset;
 }
 
 input[type="checkbox"] {
@@ -338,7 +339,12 @@ input:hover, textarea:hover {
 }
 
 input:hover, textarea:hover, select:hover {
-  box-shadow: 0px 1px 2px #BFBFBF;
+  /*box-shadow: 0px 1px 2px #BFBFBF;*/
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) inset;
+}
+
+input[type="checkbox"]:hover, select:hover {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 input:focus, textarea:focus {
@@ -948,7 +954,7 @@ h2 select {
 
 #contact_notes textarea, #recruitment_notes textarea {
   width: 170px;
-  height: 20px;
+  height: 22px;
   margin-right: 5px;
   -webkit-transition: height 0.2s ease, width 0.2s ease;
   -moz-transition: height 0.2s ease, width 0.2s ease;
@@ -965,6 +971,10 @@ h2 select {
 #recruitment_notes textarea.activated {
   width: 250px;
   height: 80px;
+}
+
+#recruitment_notes p, #recruitment_notes li {
+  margin-bottom: 5px;
 }
 
 #contact_notes form input, #contact_notes form textarea {

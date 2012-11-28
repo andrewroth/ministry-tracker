@@ -35,14 +35,14 @@
 
   <ul>
     <% recruitment.notes.each do |note| %>
-      <li><div class="note">"<%= note.content %>"</div><div>&nbsp;&#8211;&nbsp;<em><%= %(<span class="has_title" title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></div></li>
+      <li><div class="note">"<%= note.content %>"</div><div>&nbsp;&#8211;&nbsp;<small><em><%= %(<span class="has_title" title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></small></div></li>
     <% end %>
   </ul>
 
   <div class="new_note">
     <% form_for [recruitment, Note.new] do |f| %>
       <p><%= f.text_area :content %></p>
-      <p><%= f.submit 'Add Note', :class => 'action-button' %></p>
+      <p><%= f.submit 'Add Note', :class => 'action-button skinny' %></p>
     <% end %>
   </div>
 </div>
