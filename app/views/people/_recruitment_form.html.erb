@@ -4,7 +4,9 @@
   <div class="half margin">
     <ul>
       Area of interest (check all that apply):
-      <% Recruitment::INTERESTED_IN_FIELDS.each do |field, label| %>
+      <% Recruitment::INTERESTED_IN_FIELDS.sort_by { |field, label| label }.each do |array| %>
+        <% field = array[0] %>
+        <% label = array[1] %>
         <li><label for="<%= "recruitment_#{field}" %>"><%= f.check_box field, :class => 'recruitment_interest' %> <%= label %></label></li>
       <% end %>
     </ul>
