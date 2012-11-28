@@ -87,7 +87,6 @@ $(function() {
   $('#personLabels #label').val('');
 
 
-
   // Recruitment form
   $('form.edit_recruitment input, form.edit_recruitment select').not('.skip_submit_on_change').on('change', function(e) {
     e.preventDefault();

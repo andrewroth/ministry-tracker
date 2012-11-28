@@ -4158,14 +4158,14 @@ td.nameTitle {
   -moz-border-radius-topright: 4px;
   -webkit-border-top-right-radius: 4px;
   border-top-right-radius: 4px;
-  -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .personLabels .personLabelRemove {
   padding: 0 5px;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .personLabels .personLabelContent:before {
@@ -4198,13 +4198,21 @@ td.nameTitle {
   box-shadow: -1px -1px 2px #0064A2;
 }
 
+.personLabelAdd {
+  opacity: 0.85;
+}
+
+.personLabelAdd:hover {
+  opacity: 1;
+}
+
 .personLabelAdd .personLabelContent {
-  background: rgba(135, 142, 153, 0.5);
+  background: rgba(135, 142, 153, 0.3);
   padding: 0 3px 0 12px;
 }
 
 .personLabelAdd .personLabelContent:before {
-  border-color: transparent rgba(135, 142, 153, 0.5) transparent transparent;
+  border-color: transparent rgba(135, 142, 153, 0.3) transparent transparent;
 }
 
 .personLabelAdd select {
