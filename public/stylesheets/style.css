@@ -318,36 +318,31 @@ hr {
   box-shadow: 0 0 3px #BFBFBF;
 }
 
-input, textarea, select.multiSelect {
+input, textarea, select[multiple="multiple"], select.multiSelect {
   font-size:1.1em;
-  color: #000;
-  font-family: Helvetica, Arial, Sans-Serif;
   padding:2px 5px 2px 5px;
+  color: #000;
   border:1px solid #ccc;
 
   border-radius:2px;
-  transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) inset;
+  transition: all 0.1s ease 0s; -webkit-transition: all 0.1s ease 0s;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
   border: none;
 }
 
-input:hover, textarea:hover {
-  border-color:#A6A6A6;
-}
-
-input:hover, textarea:hover, select:hover {
-  /*box-shadow: 0px 1px 2px #BFBFBF;*/
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) inset;
-}
-
-input[type="checkbox"]:hover, select:hover {
+input[type="checkbox"]:hover, input[type="radio"]:hover, select:hover {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-input:focus, textarea:focus {
+input:hover, textarea:hover, select[multiple="multiple"]:hover, select.multiSelect:hover {
+  border-color:#A6A6A6;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2) inset;
+}
+
+input:focus, textarea:focus, select[multiple="multiple"]:focus, select.multiSelect:focus {
   border-color: #666766;
   box-shadow: 0px 1px 2px #BFBFBF inset;
 }
@@ -737,16 +732,27 @@ img.opaqueWhite {
   background-color:white; border:3px solid white; border-radius: 10px;
 }
 
+select#current_ministry {
+  font-size: 16px;
+}
+
+#people {
+  position: relative;
+  width: 120%;
+  left: -10%;
+}
+
 .directorytable {
     background-color: #f5f5f5;
     padding: 10px;
     border-bottom: 1px #0064a2 solid;
     border-radius: 10px;
 }
+
 .directorytable th, .directorytable td {
-    padding:4px;
-    padding-right:6px;
+    padding: 10px 5px;
 }
+
 .directorytable th {
     font-weight: normal;
     border-bottom: 1px solid #0064a2;
@@ -825,6 +831,7 @@ table td.sub {
 }
 
 .directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
+  padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
@@ -1289,8 +1296,9 @@ a.action-button, input.action-button {
 }
 a.action-button.skinny, input.action-button.skinny, a.action-button.skinny:hover, input.action-button.skinny:hover {
   padding: 3px;
-  border-width: 1px;
-  line-height: 10px;
+  border-width: 2px;
+  line-height: 11px;
+  font-size: 11px;
 }
 a.action-button:hover, input.action-button:hover {
   text-decoration: underline;
@@ -2214,7 +2222,7 @@ div.fieldWithErrors{
 }
 
 .adfieldbox input.wide {width:185px; padding:3px 0;}
-.adfieldbox select.multiSelect {height:200px; padding: 0 5px; font-size: 1em; border:1px solid #ddd; background-color: white; min-width:100px; max-width: 180px; margin-right:10px;}
+.adfieldbox select.multiSelect {height:200px; padding: 0 0 0 5px; font-size: 11px; min-width:100px; max-width: 145px; margin-right:5px;}
 .adfieldbox select.mulitSelect.doublewide {min-width:250px; max-width:400px;}
 
 .searchContacts .adfieldbox select.multiSelect { height: 150px; }
@@ -3126,7 +3134,7 @@ h2.group_type_title {
   top: 9px;
   left: 9px;
   padding-left: 8px;
-  border: 1px solid white;
+  border: 1px solid #BFBFBF;
 }
 
 .uberSearchBox {

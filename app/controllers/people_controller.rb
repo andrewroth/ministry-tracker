@@ -914,6 +914,13 @@ class PeopleController < ApplicationController
           @searched_ministry_roles = params[:role]
         end
 
+        if params[:recruitment].present?
+          conditions << database_search_conditions(params)[:recruitment]
+          @tables[Recruitment] = "Person.#{_(:id, :person)} = Recruitment.person_id"
+          @search_for << params[:recruitment].collect { |field| "interested in #{Recruitment::INTERESTED_IN_FIELDS[field.to_sym]}" }.join(', ')
+          @advanced = true
+        end
+
         conditions = add_involvement_conditions(conditions, nil)
 
         @options = params.dup.delete_if {|key, value| ['action','controller','commit','search','format'].include?(key)}
@@ -1086,9 +1093,15 @@ class PeopleController < ApplicationController
 
     def get_view
       # first automatically change the view if the user has not chosen their own view
-      if params[:view].blank? && session[:user_changed_view].blank? && params[:role].present?
-        # change view to one that actually shows roles because we're searching by role
-        session[:view_id] = View.first(:conditions => {:ministry_id => @ministry.id, :title => "Roles"}).id
+      if params[:view].blank? && session[:user_changed_view].blank?
+
+        # change view to one that's appropriate
+        if params[:recruitment].present?
+          session[:view_id] = View.first(:conditions => {:ministry_id => @ministry.id, :title => "Recruitment"}).id
+        elsif params[:role].present?
+          session[:view_id] = View.first(:conditions => {:ministry_id => @ministry.id, :title => "Roles"}).id
+        end
+
         # Clear session[:order] since this view might not have the same columns
         session[:order_column_id] = nil
       end
@@ -1098,6 +1111,9 @@ class PeopleController < ApplicationController
       if view_id
         @view = @ministry.views.find(:first, :conditions => _(:id, :view) + " = #{view_id}")
       end
+
+      @view = nil if @view && @view.title == "Recruitment" && !authorized?(:show, :recruitments)
+
       # If there's no view in the session, get the default view
       @view ||= @ministry.views.find(:first, :conditions => "default_view = 1", :include => {:view_columns => :column})
       unless @view
