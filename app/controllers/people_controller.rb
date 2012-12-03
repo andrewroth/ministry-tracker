@@ -744,7 +744,7 @@ class PeopleController < ApplicationController
       wants.html { redirect_to(directory_people_path(:format => :html)) }
       wants.js do
         render :update do |page|
-          page.redirect_to(directory_people_path(:format => :html))
+          page << "$('#advanced_search form').submit();"
         end
       end
     end
