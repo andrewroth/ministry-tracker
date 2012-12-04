@@ -17,7 +17,7 @@
   <%- if @me.ministries.length > 1 -%>
     <%- if authorized?(:change_ministry_and_goto_directory) -%>
         <%= link_to_function("Change ministry", "$(this).hide(); $('.directoryMinistryTitle').hide(); $('#current_ministry').show();", :class => "action-button skinny") %>
-        <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.sort{|a,b| a.name <=> b.name}.collect {|m| [m.name, m.id]}, @ministry.id), :style => "display:none;") %>
+        <%= select_tag("current_ministry", options_for_select(@my.ministry_tree.reject { |m| m.parent_id.nil? }.sort { |a,b| a.name <=> b.name }.collect { |m| [m.name, m.id] }, @ministry.id), :style => "display:none;") %>
         <%= observe_field(:current_ministry, {:url => change_ministry_and_goto_directory_people_url, :with => 'current_ministry', :before => "$('#spinner_change_ministry').show();"} ) -%>
         <%- tooltip do -%>
         Search a different ministry that you're involved in.
