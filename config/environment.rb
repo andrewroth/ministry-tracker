@@ -57,6 +57,7 @@ Rails::Initializer.run do |config|
   config.gem 'http_accept_language', :version => '1.0.0'
   config.gem 'i18n'
   config.gem 'mysql2', :version => '0.2.7'
+  config.gem 'newrelic_rpm'
 
   config.time_zone = 'UTC'
 
