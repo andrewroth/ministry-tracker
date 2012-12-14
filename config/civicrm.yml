@@ -1,0 +1,12 @@
+development:
+  rest_api_url: "http://stagingconnect.powertochange.org/sites/all/modules/civicrm/extern/rest.php"
+  api_key: "1"
+  key: "382adce875611f9b75d294b83a77a5f2"
+staging:
+  rest_api_url: "http://stagingconnect.powertochange.org/sites/all/modules/civicrm/extern/rest.php"
+  api_key: "1"
+  key: "382adce875611f9b75d294b83a77a5f2"
+production:
+  rest_api_url: ""
+  api_key: ""
+  key: ""
