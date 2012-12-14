@@ -2,15 +2,13 @@ require 'net/http'
 
 module CiviCRM
   attr_accessor :log_tags
+  attr_writer :logger
 
-  RAILS_ENV = (ENV['RAILS_ENV'] || 'development')
+  CIVICRM_ENV = Rails.respond_to?(:env) ? Rails.env : (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development')
 
   # get config for current rails env
   CONFIG_YML_PATH = 'config/civicrm.yml'
-  CONFIG = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join(CONFIG_YML_PATH))[RAILS_ENV])
-
-  # setup logger
-  LOGGER = Logger.new('log/civicrm_api.log')
+  CONFIG = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join(CONFIG_YML_PATH))[CIVICRM_ENV])
 
 
   def self.log(severity, message, exception = nil)
@@ -19,9 +17,7 @@ module CiviCRM
       message = "Exception"
     end
 
-    if exception.present?
-      message = "#{message}: #{exception.class}: #{exception.message}"
-    end
+    message = "#{message}: #{exception.class}: #{exception.message}" if exception.present?
 
     severity = :info unless [:error, :warn, :info, :debug].include?(severity.to_sym)
 
@@ -33,7 +29,8 @@ module CiviCRM
     message = "#{tags} #{message}"
 
     puts message
-    LOGGER.send(severity, message)
+    @logger ||= Logger.new('log/civicrm_api.log')
+    @logger.send(severity, message)
   end
 
 
@@ -42,7 +39,11 @@ module CiviCRM
 
     def initialize(options = {})
       begin
-        log :info, "Initializing new #{self.class} with #{CONFIG_YML_PATH} in Rails #{RAILS_ENV} environment"
+        # setup logger
+        log_path = options[:log_path] || CONFIG[:log_path]
+        CiviCRM.logger = Logger.new(log_path) if log_path.present?
+
+        log :info, "Initializing new #{self.class} with #{CONFIG_YML_PATH} in #{CIVICRM_ENV} environment."
 
         raise "No config supplied, the config file should be #{CONFIG_YML_PATH}" unless CONFIG.present?
 
@@ -69,7 +70,7 @@ module CiviCRM
         entity, options = *args
         options ||= {}
 
-        params = options[:where]
+        params = options[:with]
         includes = options[:include]
         hashed_by = options[:hashed_by]
 
@@ -115,7 +116,7 @@ module CiviCRM
         end
 
         includes.each_pair do |entity, options|
-          params = options[:where] || {}
+          params = options[:with] || {}
           foreign_key = options[:foreign_key].try(:to_sym) || :entity_id
           hashed_by = options[:hashed_by]
 
@@ -166,7 +167,7 @@ module CiviCRM
         :api_key => CONFIG[:api_key],
         :rowCount => params[:rowCount] || params[:row_count] || @max_row_count,
         :json => params[:json] || 1,
-        :debug => params[:debug] || CiviCRM::RAILS_ENV == 'development' ? 1 : 0
+        :debug => params[:debug] || CIVICRM_ENV == 'development' ? 1 : 0
       })
       params.delete(:row_count)
 
@@ -182,12 +183,16 @@ module CiviCRM
 
         if [:create, :delete, :update].include?(params[:action].to_sym)
           log :debug, "POST #{uri}"
-          # response = Net::HTTP.post_form("#{uri.scheme}://#{uri.host}#{uri.path}", params)
-
+          http = Net::HTTP.new(uri.host, uri.port)
+          request = Net::HTTP::Post.new(uri.request_uri)
+          request.set_form_data(params)
+          response = http.request(request)
         else
           log :debug, "GET #{uri}"
           response = Net::HTTP.get_response(uri)
         end
+
+        raise "Unsuccessful HTTP request: #{response}" unless response.is_a? Net::HTTPOK
       rescue => e
         log :error, e
         return nil
@@ -195,11 +200,12 @@ module CiviCRM
 
       response
     end
-
   end
 
 
   class Entity
+    attr_reader :attributes
+
     def initialize(entity_type, attributes, includes = nil)
       @entity_type = entity_type
 
@@ -217,7 +223,6 @@ module CiviCRM
 
       get_includes(includes) if includes
     end
-    attr_reader :attributes
 
     def attribute(name)
       @attributes[name]
