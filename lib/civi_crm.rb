@@ -1,6 +1,7 @@
 require 'net/http'
 
 module CiviCRM
+  attr_accessor :log_tags
 
   RAILS_ENV = (ENV['RAILS_ENV'] || 'development')
 
@@ -24,7 +25,12 @@ module CiviCRM
 
     severity = :info unless [:error, :warn, :info, :debug].include?(severity.to_sym)
 
-    message = "[#{Time.now}] #{severity == :info ? '' : "[#{severity.to_s.upcase}] "}#{message}"
+    tags = [Time.now]
+    tags += log_tags || []
+    tags << severity.to_s.upcase unless severity == :info
+    tags = tags.collect { |t| "[#{t}]" }.join(' ')
+
+    message = "#{tags} #{message}"
 
     puts message
     LOGGER.send(severity, message)
@@ -46,6 +52,8 @@ module CiviCRM
         end
 
         @max_row_count = options[:max_row_count] || CONFIG[:max_row_count] || 1000
+
+        CiviCRM.log_tags = options[:log_tags] || CONFIG[:log_tags] || []
 
       rescue => e
         log :error, e
@@ -158,7 +166,7 @@ module CiviCRM
         :api_key => CONFIG[:api_key],
         :rowCount => params[:rowCount] || params[:row_count] || @max_row_count,
         :json => params[:json] || 1,
-        :debug => params[:debug] || (RAILS_ENV == 'dev' || RAILS_ENV == 'development') ? 1 : 0
+        :debug => params[:debug] || CiviCRM::RAILS_ENV == 'development' ? 1 : 0
       })
       params.delete(:row_count)
 
