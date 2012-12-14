@@ -115,7 +115,7 @@ module CiviCRM
 
           parsed_json = parsed_json_response(params)
 
-          entity_key = entity.pluralize.underscore.to_sym
+          entity_key = entity.to_s.pluralize.underscore.to_sym
           entity_array = entity_includes[entity_key] = hashed_by.present? ? HashWithIndifferentAccess.new : []
 
           parsed_json['values'].each_pair do |id, attributes|
