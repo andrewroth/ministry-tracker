@@ -40,9 +40,9 @@
 
 <p>
   <% if @crontab_list_output.include?(@crontab_cmd) %>
-    <strong>The command was detected in the crontab.</strong>
+    <strong>The task was detected in the crontab.</strong>
   <% else %>
-    <strong class="error">WARNING: The command was NOT detected in the crontab!</strong>
+    <strong class="error">WARNING: The task was NOT detected in the crontab!</strong>
   <% end %>
   The specific command is:<br>
   <code><%= @crontab_cmd %></code><br>

@@ -33,10 +33,12 @@ module Connect
       fail e.message
     end
 
+    successful_imports = 0
+
     # import the contacts one at a time
     unimported_contacts.each_with_index do |contact, i|
       begin
-        connect.log :info, "Importing contact #{i+1} of #{unimported_contacts.size} with id #{contact.id}..."
+        connect.log :debug, "Importing contact #{i+1} of #{unimported_contacts.size} with id #{contact.id}..."
 
         if SurveyContact.all(:conditions => { :email => contact.email }).present?
           connect.log :warn, "Contact #{contact.id} with email '#{contact.email}' already exists, skipping import of this contact!"
@@ -88,11 +90,13 @@ module Connect
           connect.update :Contact, :with => { :id => survey_contact.connect_id, dbm[:imported_to_pulse][:field] => 1 }
         rescue => e
           connect.log :error, "Failed to update contact #{contact.try(:id)} as imported", e
+        else
+          successful_imports += 1
         end
       end
     end
 
-    connect.log :info, 'Finished import, exiting.'
+    connect.log :info, "Successfully imported #{successful_imports} of #{unimported_contacts.size} contacts. Exiting."
     connect.log :info, ''
   end
 
