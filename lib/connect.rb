@@ -40,8 +40,9 @@ module Connect
       begin
         connect.log :debug, "Importing contact #{i+1} of #{unimported_contacts.size} with id #{contact.id}..."
 
-        if SurveyContact.all(:conditions => { :email => contact.email }).present?
-          connect.log :warn, "Contact #{contact.id} with email '#{contact.email}' already exists, skipping import of this contact!"
+        existing_contact = SurveyContact.all(:conditions => { :email => contact.email })
+        if existing_contact.present?
+          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as SurveyContact with id #{existing_contact.first.id}, skipping import!"
           next
         end
 
