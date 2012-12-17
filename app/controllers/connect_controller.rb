@@ -12,12 +12,11 @@ class ConnectController < ApplicationController
     if File.exists?(@log_path)
       tail_output = `tail -n #{@num_lines} #{@log_path}`
       @unfiltered_log_lines = tail_output.split("\n")
-      @log_lines = @unfiltered_log_lines
 
       @include_log_tag = '[IMPORT CONTACTS]'
       @exclude_log_tag = '[DEBUG]'
 
-      @log_lines = @log_lines.select { |line| line.include?(@include_log_tag) && !line.include?(@exclude_log_tag) }
+      @log_lines = @unfiltered_log_lines.select { |line| line.include?(@include_log_tag) && !line.include?(@exclude_log_tag) }
     end
 
     @crontab_list_output = `crontab -l`

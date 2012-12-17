@@ -92,7 +92,8 @@ module Connect
       end
     end
 
-    connect.log :info, "Finished import, exiting.\n"
+    connect.log :info, 'Finished import, exiting.'
+    connect.log :info, ''
   end
 
 end
