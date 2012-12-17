@@ -18,7 +18,7 @@ module Connect
         connect.log :info, "#{unimported_contacts.size} survey contacts to import. Starting import..."
       else
         connect.log :info, 'No survey contacts to import. Exiting.'
-        next
+        return
       end
 
       # we'll need these options for key/value conversion
