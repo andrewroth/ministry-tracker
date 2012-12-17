@@ -11,11 +11,12 @@ class ConnectController < ApplicationController
 
     if File.exists?(@log_path)
       tail_output = `tail -n #{@num_lines} #{@log_path}`
-      @unfiltered_log_lines = tail_output.split("\n")
+      @unfiltered_log_lines = tail_output.split("\n[").collect { |o| "[#{o}" }
       @include_log_tag = '[IMPORT CONTACTS]'
       @log_lines = @unfiltered_log_lines.select { |line| line.include?(@include_log_tag) }
     end
 
+    # We just use this to check if the command is in the crontab and warn the user if not
     @crontab_list_output = `crontab -l`
     @crontab_cmd = "flock -n tmp/connect_import_contacts_task.lock rake connect:import_contacts"
   end

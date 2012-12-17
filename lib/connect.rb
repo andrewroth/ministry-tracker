@@ -97,8 +97,7 @@ module Connect
       end
     end
 
-    connect.log :info, "Successfully imported #{successful_imports} of #{unimported_contacts.size} contacts. Exiting."
-    connect.log :info, ''
+    connect.log :info, "Successfully imported #{successful_imports} of #{unimported_contacts.size} contacts. Exiting.\n"
   end
 
 end
