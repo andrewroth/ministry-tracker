@@ -24,11 +24,6 @@ module CiviCRM
 
         raise "No config supplied, the config file should be #{yml_config_path}" unless @config.present?
 
-        # make sure we have the required config values
-        [:rest_api_url, :api_key, :key].each do |required_val|
-          raise "'#{required_val}' required config value not supplied, the config file is #{yml_config_path}" unless @config[required_val].present?
-        end
-
         @max_row_count = options[:max_row_count] || @config[:max_row_count] || 1000
 
       rescue => e
