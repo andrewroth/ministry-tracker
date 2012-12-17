@@ -4500,6 +4500,7 @@ td.campusDiscTree {
   width: 100%;
   border: 2px solid #666766;
   background: #666766;
+  padding: 2px;
 }
 
 .log_line, .log_line a, .log_line p {
