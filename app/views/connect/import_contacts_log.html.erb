@@ -39,16 +39,16 @@
 <p><br>Survey contacts are imported from Connect into The Pulse by running the Rake task <code>connect:import_contacts</code> as a Cron job.</p>
 
 <p>
+  <% if @crontab_list_output.include?(@crontab_cmd) %>
+    <strong>The command was detected in the crontab.</strong>
+  <% else %>
+    <strong class="error">WARNING: The command was NOT detected in the crontab!</strong>
+  <% end %>
   The specific command is:<br>
   <code><%= @crontab_cmd %></code><br>
-  <% if @crontab_list_output.include?(@crontab_cmd) %>
-    <strong>This command was detected in the crontab.</strong>
-  <% else %>
-    <strong class="error">WARNING: This command was not detected in the crontab!</strong>
-  <% end %>
 </p>
 
-<p>Output is logged to "<%= @log_path %>" above is the tail of <%= @num_lines %> lines.</p>
+<p>Output is logged to "<%= @log_path %>" above is the tail of the last <%= @num_lines %> lines.</p>
 
 
 <script>

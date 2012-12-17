@@ -39,7 +39,7 @@ module Connect
         connect.log :info, "Importing contact #{i+1} of #{unimported_contacts.size} with id #{contact.id}..."
 
         if SurveyContact.all(:conditions => { :email => contact.email }).present?
-          connect.log :warn, "Contact #{contact.id} with email '#{contact.email}' already exists in the Pulse, skipping the import of this contact!"
+          connect.log :warn, "Contact #{contact.id} with email '#{contact.email}' already exists, skipping import of this contact!"
           next
         end
 
@@ -92,7 +92,7 @@ module Connect
       end
     end
 
-    connect.log :info, "Finished import of #{unimported_contacts.size} contacts, exiting."
+    connect.log :info, "Finished import, exiting.\n"
   end
 
 end
