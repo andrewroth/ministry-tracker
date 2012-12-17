@@ -18,7 +18,7 @@ module CiviCRM
         @log_tags = options[:log_tags] || @config[:log_tags] || []
         @log_path = options[:log_path] || @config[:log_path] || 'log/civicrm_api.log'
         @logger = Logger.new(@log_path, 'monthly')
-        @logger.level = @rails_env == 'development' ? Logger::DEBUG : Logger::INFO
+        @logger.level = Logger::INFO
 
         log :debug, "Initializing new #{self.class} with #{yml_config_path} in #{@rails_env} environment."
 
