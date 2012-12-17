@@ -82,7 +82,7 @@ module CiviCRM
             else
               entities << entity_instance
             end
-          end
+          end if parsed_json['values'].present?
 
           raise "We don't have the same count of entities that CiviCRM returned" if entities.size != parsed_json['count']
         rescue => e
@@ -129,7 +129,7 @@ module CiviCRM
             else
               entity_array << entity_instance
             end
-          end
+          end if parsed_json['values'].present?
         end
       rescue => e
         log :error, e
