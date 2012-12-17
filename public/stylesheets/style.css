@@ -4507,6 +4507,7 @@ td.campusDiscTree {
   color: white;
   width: 100%;
   font-family: monospace;
+  line-height: 12px;
 }
 
 .log_line a {

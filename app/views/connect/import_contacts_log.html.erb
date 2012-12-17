@@ -20,7 +20,7 @@
         <% classes += ' error' %>
       <% end %>
 
-      <div class="log_line<%= classes %>"><%= line.gsub(@include_log_tag, '').gsub("\n", '<br>') %></div>
+      <div class="log_line<%= classes %>"><%= line.gsub(@include_log_tag, '').gsub("\n", '<br>&nbsp;&nbsp;') %></div>
     <% end %>
 
   <% else %>
