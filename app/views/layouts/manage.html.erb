@@ -56,7 +56,7 @@
 
 
   <%- if is_ministry_admin -%>
-  <br/><br/>
+  <br><br>
   <h3>Account Admin</h3>
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "accountadmin_accesscategories" %>>
@@ -73,7 +73,7 @@
     <%= link_to 'Users', accountadmin_users_path %></li>
   </ul>
 
-  <br/><br/>
+  <br><br>
   <h3>HRDB</h3>
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "assignmentstatuses" %>>
@@ -94,7 +94,7 @@
     <%= link_to 'Titles', titles_path %></li>
   </ul>
 
-  <br/><br/>
+  <br><br>
   <h3>Registration</h3>
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "events" %>>
@@ -105,7 +105,7 @@
   <%- end -%>
 
   <%- if authorized?(:index, :pat_projects) -%>
-  <br/><br/>
+  <br><br>
   <h3>Projects</h3>
   <ul class="right-menu-list">
     <li<%= ' class="highlighted"' if params[:controller] == "pat_projects" %>>
@@ -113,8 +113,17 @@
   </ul>
   <%- end -%>
 
+  <% if is_ministry_admin %>
+  <br><br>
+  <h3>Connect</h3>
+  <ul class="right-menu-list">
+    <li<%= ' class="highlighted"' if params[:controller] == "connect" %>>
+    <%= link_to 'Import Survey Contacts Log', '/connect/import_contacts_log' %></li>
+  </ul>
+  <% end %>
+
   <%- if authorized?(:edit, :ministry_roles) -%>
-  <br/><br/>
+  <br><br>
   <h3>System Settings</h3>
   <h5>(These affect all ministries)</h5>
   <ul class="right-menu-list">

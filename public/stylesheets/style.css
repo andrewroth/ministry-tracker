@@ -4217,7 +4217,7 @@ td.nameTitle {
 }
 
 .personLabelAdd {
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 .personLabelAdd:hover {
@@ -4231,6 +4231,14 @@ td.nameTitle {
 
 .personLabelAdd .personLabelContent:before {
   border-color: transparent rgba(135, 142, 153, 0.3) transparent transparent;
+}
+
+.personLabelAdd:hover .personLabelContent {
+  background: rgba(135, 142, 153, 1);
+}
+
+.personLabelAdd:hover .personLabelContent:before {
+  border-color: transparent rgba(135, 142, 153, 1) transparent transparent;
 }
 
 .personLabelAdd select {
@@ -4477,6 +4485,39 @@ td.campusDiscTree {
   opacity: 0.6;
 }
 
-.monospace {
+.monospace, code {
   font-family: monospace;
+}
+
+.log_output_container {
+  height: 500px;
+  overflow: scroll;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5) inset;
+}
+
+.log_output_container, .log_output_status {
+  display: block;
+  width: 100%;
+  border: 2px solid #666766;
+  background: #666766;
+}
+
+.log_line, .log_line a, .log_line p {
+  color: white;
+  width: 100%;
+  font-family: monospace;
+}
+
+.log_line a {
+  text-decoration: underline;
+}
+
+.log_line.error {
+  color: red;
+  font-weight: bold;
+}
+
+.log_line.warn {
+  color: yellow;
+  font-weight: bold;
 }

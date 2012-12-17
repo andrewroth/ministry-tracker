@@ -1,69 +1,62 @@
 require 'net/http'
 
 module CiviCRM
-  attr_accessor :log_tags
-  attr_writer :logger
+  YML_CONFIG_PATH = 'config/civicrm.yml'
 
-  CIVICRM_ENV = Rails.respond_to?(:env) ? Rails.env : (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development')
-
-  # get config for current rails env
-  CONFIG_YML_PATH = 'config/civicrm.yml'
-  CONFIG = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join(CONFIG_YML_PATH))[CIVICRM_ENV])
-
-
-  def self.log(severity, message, exception = nil)
-    if message.is_a?(Exception)
-      exception = message
-      message = "Exception"
-    end
-
-    message = "#{message}: #{exception.class}: #{exception.message}" if exception.present?
-
-    severity = :info unless [:error, :warn, :info, :debug].include?(severity.to_sym)
-
-    tags = [Time.now]
-    tags += log_tags || []
-    tags << severity.to_s.upcase unless severity == :info
-    tags = tags.collect { |t| "[#{t}]" }.join(' ')
-
-    message = "#{tags} #{message}"
-
-    puts message
-    @logger ||= Logger.new('log/civicrm_api.log')
-    @logger.send(severity, message)
-  end
-
-
-  class RestAPI
-    attr_accessor :max_row_count
+  class API
+    attr_accessor :max_row_count, :log_tags
 
     def initialize(options = {})
       begin
+        @rails_env = Rails.respond_to?(:env) ? Rails.env : (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development')
+
+        # get config for current rails env
+        yml_config_path = options[:yml_config_path] || YML_CONFIG_PATH
+        @config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join(yml_config_path))[@rails_env])
+
         # setup logger
-        log_path = options[:log_path] || CONFIG[:log_path]
-        CiviCRM.logger = Logger.new(log_path) if log_path.present?
+        @log_tags = options[:log_tags] || @config[:log_tags] || []
+        @log_path = options[:log_path] || @config[:log_path] || 'log/civicrm_api.log'
+        @logger = Logger.new(@log_path)
 
-        log :info, "Initializing new #{self.class} with #{CONFIG_YML_PATH} in #{CIVICRM_ENV} environment."
+        log :debug, "Initializing new #{self.class} with #{yml_config_path} in #{@rails_env} environment."
 
-        raise "No config supplied, the config file should be #{CONFIG_YML_PATH}" unless CONFIG.present?
+        raise "No config supplied, the config file should be #{yml_config_path}" unless @config.present?
 
         # make sure we have the required config values
         [:rest_api_url, :api_key, :key].each do |required_val|
-          raise "'#{required_val}' required config value not supplied, the config file is #{CONFIG_YML_PATH}" unless CONFIG[required_val].present?
+          raise "'#{required_val}' required config value not supplied, the config file is #{yml_config_path}" unless @config[required_val].present?
         end
 
-        @max_row_count = options[:max_row_count] || CONFIG[:max_row_count] || 1000
-
-        CiviCRM.log_tags = options[:log_tags] || CONFIG[:log_tags] || []
+        @max_row_count = options[:max_row_count] || @config[:max_row_count] || 1000
 
       rescue => e
         log :error, e
       end
     end
 
+
     def log(severity, message, exception = nil)
-      CiviCRM.log(severity, message, exception)
+      if message.is_a?(Exception)
+        exception = message
+        message = "Exception"
+      end
+
+      message = "#{message}: #{exception.class}: #{exception.message}" if exception.present?
+
+      severity = :info unless [:error, :warn, :info, :debug].include?(severity.to_sym)
+
+      tags = [Time.now]
+      tags += @log_tags || []
+      tags << severity.to_s.upcase unless severity == :info
+      tags = tags.collect { |t| "[#{t}]" }.join(' ')
+
+      message = "#{tags} #{message}"
+
+      puts message
+      @logger.send(severity, message)
     end
+
 
     [:get, :create, :delete, :update].each do |action|
       define_method(action) do |*args|
@@ -138,7 +131,7 @@ module CiviCRM
           end
         end
       rescue => e
-        CiviCRM.log :error, e
+        log :error, e
         return nil
       end
 
@@ -163,16 +156,16 @@ module CiviCRM
 
     def call(params = {})
       params = params.merge({
-        :key => CONFIG[:key],
-        :api_key => CONFIG[:api_key],
+        :key => @config[:key],
+        :api_key => @config[:api_key],
         :rowCount => params[:rowCount] || params[:row_count] || @max_row_count,
         :json => params[:json] || 1,
-        :debug => params[:debug] || CIVICRM_ENV == 'development' ? 1 : 0
+        :debug => params[:debug] || @rails_env == 'development' ? 1 : 0
       })
       params.delete(:row_count)
 
       begin
-        uri = URI.parse("#{CONFIG[:rest_api_url]}?#{params.to_query}")
+        uri = URI.parse("#{@config[:rest_api_url]}?#{params.to_query}")
       rescue => e
         log :error, 'Failed to parse URI', e
         return nil
@@ -229,5 +222,4 @@ module CiviCRM
     end
     alias_method :attr, :attribute
   end
-
 end
