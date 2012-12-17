@@ -1,7 +1,9 @@
-<h2>Connect Import Survey Contacts Log</h2><br>
+<%
+warns = 0
+errors = 0
+%>
 
-<% warns = 0 %>
-<% errors = 0 %>
+<h2>Connect Import Survey Contacts Log</h2><br>
 
 <div class="log_output_container">
   <% if @log_lines && @log_lines.present? %>
@@ -20,7 +22,7 @@
         <% classes += ' error' %>
       <% end %>
 
-      <div class="log_line<%= classes %>"><%= line.gsub(@include_log_tag, '').gsub("\n", '<br>&nbsp;&nbsp;') %></div>
+      <div class="log_line<%= classes %>"><%= preprocess_log_line(line).gsub(@include_log_tag, '') %></div>
     <% end %>
 
   <% else %>
@@ -30,8 +32,8 @@
 </div>
 
 <div class="log_output_status">
-  <span class="log_line<%= errors > 0 ? ' error' : '' %>"><%= pluralize errors, 'error' %>.</span>
-  <span class="log_line<%= warns > 0 ? ' warn' : '' %>"><%= pluralize warns, 'warning' %>.</span>
+  <span class="log_line<%= errors > 0 ? ' error' : '' %>"><%= pluralize errors, 'error' %></span> and
+  <span class="log_line<%= warns > 0 ? ' warn' : '' %>"><%= pluralize warns, 'warning' %></span> displayed.
 </div>
 
 <br>

@@ -42,7 +42,7 @@ module Connect
 
         existing_contact = SurveyContact.all(:conditions => { :email => contact.email })
         if existing_contact.present?
-          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as SurveyContact with id #{existing_contact.first.id}, skipping import!"
+          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as survey contact #{survey_contact.id}, skipping import!"
           next
         end
 
@@ -93,6 +93,7 @@ module Connect
           connect.log :error, "Failed to update contact #{contact.try(:id)} as imported", e
         else
           successful_imports += 1
+          connect.log :info, "Imported Connect contact #{contact.id} as Pulse survey contact #{survey_contact.id}."
         end
       end
     end

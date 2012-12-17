@@ -4503,7 +4503,7 @@ td.campusDiscTree {
   padding: 2px;
 }
 
-.log_line, .log_line a, .log_line p {
+.log_line, .log_line a, .log_line p, .log_output_status {
   color: white;
   width: 100%;
   font-family: monospace;
@@ -4512,6 +4512,10 @@ td.campusDiscTree {
 
 .log_line a {
   text-decoration: underline;
+}
+
+.log_line a:hover {
+  text-decoration: none;
 }
 
 .log_line.error {

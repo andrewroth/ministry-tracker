@@ -1,3 +1,5 @@
+require 'uri'
+
 class ConnectController < ApplicationController
 
   def import_contacts_log
