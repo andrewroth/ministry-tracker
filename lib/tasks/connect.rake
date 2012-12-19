@@ -4,20 +4,15 @@ namespace :connect do
     Connect.import_survey_contacts
   end
 
-  # task :undo_import_contacts => :environment do
-  #   include CiviCRM
-  #   dbm = SurveyContactsHelper::CIVICRM_DATABASE_MAP
+  task :unimport_contacts => :environment do
+    include Connect
+    puts "\nStarting from the last SurveyContact this will delete contacts in the Pulse and set their corresponding Connect contact to not imported_to_pulse. Type the number of contacts to unimport or '0' to cancel."
+    response = STDIN.gets
+    num_contacts_to_unimport = response.to_i
 
-  #   connect = CiviCRM::API.new(:log_tags => ['UNDO IMPORT CONTACTS'])
-
-  #   undo_contacts = SurveyContact.find(:all, :order => 'id DESC', :limit => 100)
-  #   undo_contacts.each do |c|
-  #     begin
-  #       connect.update(:Contact, :with => { :id => c.connect_id, dbm[:imported_to_pulse][:field] => 0 }) if c.connect_id
-  #     rescue
-  #     else
-  #       c.delete
-  #     end
-  #   end
-  # end
+    if num_contacts_to_unimport && num_contacts_to_unimport > 0
+      unimport_contacts = SurveyContact.find(:all, :order => 'id DESC', :limit => num_contacts_to_unimport)
+      unimport_contacts.each { |c| Connect.unimport_survey_contact(c) }
+    end
+  end
 end

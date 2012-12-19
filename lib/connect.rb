@@ -60,21 +60,21 @@ module Connect
           :first_name => contact.first_name,
           :last_name => contact.last_name,
           :gender_id => contact.gender_id && contact.gender_id.present? ? contact.gender_id : 0,
-          :email => contact.email && contact.email.include?('no_value_set') ? '' : contact.email,
+          :email => contact.email && contact.email.downcase.include?('no_value_set') ? '' : contact.email,
           :cellphone => contact.phone && contact.phone.length < 7 ? '' : contact.phone,
           :campus_id => school_contact.external_identifier,
 
           # custom values info
-          :year => contact.custom_values[dbm[:year][:id]].attr('0'),
+          :year => year_options[contact.custom_values[dbm[:year][:id]].attr('0')].try(:label) || 'Other',
           :degree => contact.custom_values[dbm[:degree][:id]].try(:attr, '0'),
           :residence => contact.custom_values[dbm[:residence][:id]].try(:attr, '0'),
           :international => contact.custom_values[dbm[:international][:id]].try(:attr, '0').try(:downcase) == 'yes' ? true : false,
 
           # survey info
           :priority => survey.attr(dbm[:priority][:field]).downcase == 'no' ? 'Not interested' : survey.attr(dbm[:priority][:field]),
-          :craving => craving_options[survey.attr(dbm[:craving][:field])].try(:label),
-          :magazine => magazine_options[survey.attr(dbm[:magazine][:field])].try(:label),
-          :journey => journey_options[survey.attr(dbm[:journey][:field])].try(:label),
+          :craving => craving_options[survey.attr(dbm[:craving][:id])].try(:label),
+          :magazine => magazine_options[survey.attr(dbm[:magazine][:id])].try(:label),
+          :journey => journey_options[survey.attr(dbm[:journey][:id])].try(:label),
           :interest => survey.attr(dbm[:interest][:field]).try(:scan, /(\d+)/).try(:flatten).try(:first),
           :data_input_notes => survey.attr(dbm[:data_input_notes][:field]),
 
@@ -99,6 +99,29 @@ module Connect
     end
 
     connect.log :info, "Successfully imported #{successful_imports} of #{unimported_contacts.size} contacts. Exiting.\n"
+  end
+
+
+  def self.unimport_survey_contact(contact)
+    include CiviCRM
+    dbm = SurveyContactsHelper::CIVICRM_DATABASE_MAP
+
+    begin
+      connect = CiviCRM::API.new(:log_tags => ['UNIMPORT CONTACTS'])
+
+      connect.log :debug, "Unimporting contact with id #{contact.id}..."
+      connect.update(:Contact, :with => { :id => contact.connect_id, dbm[:imported_to_pulse][:field] => 0 }) if contact.connect_id
+    rescue => e
+      connect.log :error, e
+    else
+      begin
+        # contact.delete
+      rescue => e
+        connect.log :error, e
+      end
+    end
+
+    contact.delete
   end
 
 end
