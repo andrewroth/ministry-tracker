@@ -115,13 +115,11 @@ module Connect
       connect.log :error, e
     else
       begin
-        # contact.delete
+        contact.delete
       rescue => e
         connect.log :error, e
       end
     end
-
-    contact.delete
   end
 
 end
