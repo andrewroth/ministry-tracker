@@ -46,7 +46,7 @@ errors = 0
   <% else %>
     <strong class="error">WARNING: The task was NOT detected in the crontab!</strong>
     Add something like the following to the crontab:<br>
-    <p><code> * * * * *   cd /var/www/[your site]/current && <%= @crontab_cmd %></code></p>
+    <p><code> * * * * *   cd <%= RAILS_ROOT %> && <%= @crontab_cmd %></code></p>
   <% end %>
 </p>
 
