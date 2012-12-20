@@ -18,8 +18,11 @@ class ConnectController < ApplicationController
       @log_lines = @unfiltered_log_lines.select { |line| line.include?(@include_log_tag) }
     end
 
-    # We just use this to check if the command is in the crontab and warn the user if not
-    @crontab_list_output = `crontab -l`
-    @crontab_cmd = "flock -n tmp/connect_import_contacts_task.lock rake connect:import_contacts"
+    # We just use this to try to check if the import task is in the crontab
+    @crontab_cmd = "flock -n tmp/connect.lock rake connect:import_contacts"
+    crontab_list_output = `crontab -l`
+    # detect a line that includes the cmd and doesn't start with a #
+    @cronjob_installed = crontab_list_output && crontab_list_output.split("\n").detect { |line| line.include?(@crontab_cmd) && line !~ /\A\s*#.*\z/ }.present? ? true : false
   end
+
 end

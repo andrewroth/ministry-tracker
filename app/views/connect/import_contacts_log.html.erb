@@ -41,7 +41,7 @@ errors = 0
 <p><br>Survey contacts are imported from Connect into The Pulse by running the Rake task <code>connect:import_contacts</code> as a cron job.</p>
 
 <p>
-  <% if @crontab_list_output.include?(@crontab_cmd) %>
+  <% if @cronjob_installed %>
     <strong>The task was detected in the crontab.</strong>
   <% else %>
     <strong class="error">WARNING: The task was NOT detected in the crontab!</strong>
