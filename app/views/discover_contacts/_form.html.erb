@@ -16,7 +16,7 @@
       </p>
       <p><label for="discover_contact_next_step_id">Next step</label><%= f.select :next_step_id, options_for_select(Contact::NEXT_STEP_OPTIONS, discover_contact[:next_step_id].nil? ? 0 : discover_contact[:next_step_id].to_i) %></p>
       <br>
-      <p>What am I trusting God to do with them next?<br><br><%= f.text_area :what_i_am_trusting_god_to_do_next %></p>
+      <p>In prayerful dependence on God, my next step with this person is...<br><%= f.text_area :what_i_am_trusting_god_to_do_next %></p>
 
       <p class="submit_container"><%= link_to 'Back', '/discover', :class => 'pjax' %> <%= f.submit submit_verb, :class => 'action-button' %></p>
     <% end %>
@@ -26,7 +26,7 @@
   <% if discover_contact.id.present? %>
     <div class="col separator">
       <div id="contact_notes" class="sub_form">
-        <h2>Notes</h2>
+        <h2>Interaction History</h2>
 
         <ul>
           <% discover_contact.notes.each do |note| %>
@@ -38,7 +38,7 @@
           <% form_for [discover_contact, Note.new] do |f| %>
             <p>
               <%= f.text_area :content %>
-              <%= f.submit 'Add Note', :class => 'action-button' %>
+              <%= f.submit 'Add', :class => 'action-button' %>
             </p>
           <% end %>
         </div>
