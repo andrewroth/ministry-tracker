@@ -4377,6 +4377,10 @@ td.campusDiscTree {
   height: 80px;
 }
 
+.contact_form .edit_discover_contact textarea {
+  margin-top: 5px;
+}
+
 .contact_form .col, .discover_contacts.col {
   margin: 20px 0;
   display: inline-block;

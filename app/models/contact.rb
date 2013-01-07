@@ -10,7 +10,7 @@ class Contact < ActiveRecord::Base
   validates_presence_of :campus_id
   validates_presence_of :gender_id
 
-  NEXT_STEP_OPTIONS = [["Unknown", 0], ["Know and trust a Christian", 1], ["Become curious", 2], ["Become open to change", 3], ["Seek God", 4], ["Make a descision", 5], ["Grow in relationship with God", 6]]
+  NEXT_STEP_OPTIONS = [["Unknown", 0], ["Know and trust a Christian", 1], ["Become curious", 2], ["Become open to change", 3], ["Seek God", 4], ["Make a decision", 5], ["Grow in relationship with God", 6]]
 
   named_scope :active, :conditions => { :active => true }
   named_scope :with_campus_id, lambda { |campus_id| { :conditions => { :campus_id => campus_id } } }
