@@ -42,7 +42,7 @@ module Connect
 
         existing_contact = SurveyContact.all(:conditions => { :email => contact.email })
         if existing_contact.present?
-          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as survey contact #{existing_contact.id}, skipping import!"
+          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as survey contact #{existing_contact.first.id}, skipping import!"
           next
         end
 
@@ -72,9 +72,9 @@ module Connect
 
           # survey info
           :priority => survey.attr(dbm[:priority][:field]).downcase == 'no' ? 'Not interested' : survey.attr(dbm[:priority][:field]),
-          :craving => craving_options[survey.attr(dbm[:craving][:id])].try(:label),
-          :magazine => magazine_options[survey.attr(dbm[:magazine][:id])].try(:label),
-          :journey => journey_options[survey.attr(dbm[:journey][:id])].try(:label),
+          :craving => craving_options[survey.attr(dbm[:craving][:field])].try(:label),
+          :magazine => magazine_options[survey.attr(dbm[:magazine][:field])].try(:label),
+          :journey => journey_options[survey.attr(dbm[:journey][:field])].try(:label),
           :interest => survey.attr(dbm[:interest][:field]).try(:scan, /(\d+)/).try(:flatten).try(:first),
           :data_input_notes => survey.attr(dbm[:data_input_notes][:field]),
 
