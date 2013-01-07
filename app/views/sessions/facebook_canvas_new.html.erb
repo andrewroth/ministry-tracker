@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
- 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -20,7 +20,7 @@
 
     <%= javascript_include_tag "facebook_sdk_helpers.js" %>
 
-  </head> 
+  </head>
   <body style="margin:0;">
     <%= init_facebook_js_sdk_async %>
     <br/>
@@ -44,11 +44,11 @@
 
         <%= image_tag("facebook_log_in_bottom_img.gif", :usemap => "#bottomimg", :id => "loginMainImg", :style => "border:none;")%>
         <map name="bottomimg">
-				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=<%=u "https://thekey.me/cas/login.htm?service=#{new_session_url}&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css" %>'" alt="Sign In" />
+				  <area shape="rect" coords="630,11,723,48" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=<%=u "https://thekey.me/cas/login.htm?service=#{new_session_url}" %>'" alt="Sign In" />
 				  <area shape="rect" coords="691,83,723,94" href="#" onClick="top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=http://getsatisfaction.com/powertochange'" alt="Help!" />
         </map>
 			</div>
 		</div>
-    
+
 	</body>
 </html>
