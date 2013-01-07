@@ -102,7 +102,7 @@ module Connect
   end
 
 
-  def self.unimport_survey_contact(contact)
+  def self.undo_import_survey_contact(contact)
     include CiviCRM
     dbm = SurveyContactsHelper::CIVICRM_DATABASE_MAP
 
