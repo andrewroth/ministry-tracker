@@ -5,14 +5,14 @@ unless @mobile
   <% cache([I18n.locale, flash[:notice]]) do %>
 
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-     
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
         <meta http-equiv="X-UA-Compatible" />
-        <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
-        <link rel="Shortcut Icon" href="/favicon.ico"> 
-        
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <link rel="Shortcut Icon" href="/favicon.ico">
+
         <title>
           <%= @site_title + ' | ' if @site_title -%>
           <% if t('misc.web_title') %>
@@ -21,13 +21,13 @@ unless @mobile
             <%= Cmt::CONFIG[:web_title] %>
           <% else %>
             Campus Movement Tracker
-          <% end %>      
+          <% end %>
         </title>
-    		
+
         <%= stylesheet_link_tag "special_login", :media => "screen", :cache => "cache/special_login" %>
         <%= locale_stylesheet_link_tag %>
-      </head> 
-      <body> 
+      </head>
+      <body>
 
         <div class="messages">
           <!--[if lt IE 8]>
@@ -74,11 +74,11 @@ unless @mobile
 <%
 else
 %>
-    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-      <li><a href="https://thekey.me/cas/login.htm?service=<%= new_session_url %>&template=https://d15ip9v2bx8xzx.cloudfront.net/media/sso/c4ctemplate_cobrand.css">Sign In</a></li> 
-      <li><%= link_to 'How to Sign Up', new_gcx_url %></li> 
-      <li><%= link_to 'Help', "http://getsatisfaction.com/powertochange" %></li> 
-    </ul> 
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+      <li><a href="https://thekey.me/cas/login.htm?service=<%= new_session_url %>">Sign In</a></li>
+      <li><%= link_to 'How to Sign Up', new_gcx_url %></li>
+      <li><%= link_to 'Help', "http://getsatisfaction.com/powertochange" %></li>
+    </ul>
 <%
 end
 %>
