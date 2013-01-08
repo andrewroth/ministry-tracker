@@ -44,7 +44,7 @@ errors = 0
   <% if @cronjob_installed %>
     <strong>The task was detected in the crontab.</strong>
   <% else %>
-    <strong class="error">WARNING: The task was not detected in the crontab (or it's commented-out)!</strong>
+    <strong class="error">WARNING: The task was not detected in the crontab or it's commented-out!</strong>
     Add something like the following to the crontab:<br>
     <p><code> * * * * *   cd <%= RAILS_ROOT.gsub(/\/releases\/\d+/, '/current') %> && <%= @crontab_cmd %></code></p>
   <% end %>
