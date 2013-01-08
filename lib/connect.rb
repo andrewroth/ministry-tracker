@@ -42,7 +42,7 @@ module Connect
 
         existing_contact = SurveyContact.all(:conditions => { :email => contact.email })
         if existing_contact.present?
-          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as survey contact #{existing_contact.first.id}, skipping import!"
+          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as Pulse survey contact #{existing_contact.first.id}, skipping import!"
           next
         end
 
