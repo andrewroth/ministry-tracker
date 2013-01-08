@@ -26,7 +26,7 @@ errors = 0
     <% end %>
 
   <% else %>
-    <div class="log_line error">No log output to display. Check that the log file "<%= @log_path %>" exists, also check your Rails CiviCRM configuration at "<%= @yml_config_path %>"</div>
+    <div class="log_line error">No log output to display. Check that the log file specified in the Rails CiviCRM configuration "<%= @yml_config_path %>" exists.</div>
     <% errors += 1 %>
   <% end %>
 </div>
