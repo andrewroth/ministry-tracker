@@ -4524,12 +4524,12 @@ td.campusDiscTree {
   text-decoration: none;
 }
 
-.log_line.error {
+.log_line.error, .log_line.error a {
   color: red;
   font-weight: bold;
 }
 
-.log_line.warn {
+.log_line.warn, .log_line.warn a {
   color: yellow;
   font-weight: bold;
 }
