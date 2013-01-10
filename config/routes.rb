@@ -273,6 +273,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :recruitments, :has_many => [:notes, :activities]
 
+  map.connect '/connect/import_contacts_log', :controller => :connect, :action => :import_contacts_log
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

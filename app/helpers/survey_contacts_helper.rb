@@ -1,5 +1,24 @@
 module SurveyContactsHelper
 
+  CIVICRM_DATABASE_MAP = {
+    :imported_to_pulse => { :field => :custom_82, :id => '82' },
+    :year => { :field => :custom_57, :id => '57' },
+    :degree => { :field => :custom_59, :id => '59' },
+    :residence => { :field => :custom_60, :id => '60' },
+    :international => { :field => :custom_61, :id => '61' },
+    :sept_2012_survey => { :id => '32' },
+    :craving => { :field => :custom_64, :id => '64' },
+    :magazine => { :field => :custom_65, :id => '65' },
+    :interest => { :field => :custom_66, :id => '66' },
+    :journey => { :field => :custom_67, :id => '67' },
+    :priority => { :field => :custom_75, :id => '75' },
+    :data_input_notes => { :field => :custom_83, :id => '83' },
+    :year_option_group => { :id => 102 },
+    :craving_option_group => { :id => 106 },
+    :magazine_option_group => { :id => 107 },
+    :journey_option_group => { :id => 109 }
+  }
+
   def options_corr(option)
     @options_corr || @options_corr = {}
     unless @options_corr.has_key?(option)
@@ -115,7 +134,7 @@ module SurveyContactsHelper
       }
     }
   end
-  
+
   def contact_search_screen_fields
     [
       contact_search_options[:gender_id],
@@ -146,13 +165,13 @@ module SurveyContactsHelper
       { :display => "International", :fields => [contact_search_options[:international][:field].to_s] }
     ]
   end
-  
-  
+
+
   def interest_to_chat
     mapping = { 0 => "0 (No answer)", 1 => "1 (Not)", 2 => "2", 3 => "3 (Maybe)", 4 => "4", 5 => "5 (Very)" }
     mapping[@contact[:interest]]
   end
-  
+
   def contact_gender(contact = nil)
     if contact.nil?
       #used in edit view
@@ -164,23 +183,23 @@ module SurveyContactsHelper
     end
     contact[:gender_id] ? mapping[contact[:gender_id]] : mapping[0]
   end
- 
+
   def contact_status(contact = nil)
     contact || contact = @contact
     options_corr(:status)[contact[:status]]
-  end 
- 
+  end
+
   def contact_result(contact = nil)
     contact || contact = @contact
     options_corr(:result)[contact[:result]]
-  end 
+  end
 
   def contact_international(contact = nil)
     contact || contact = @contact
     contact[:international] = contact[:international].blank? ? 0 : contact[:international]
     val = options_corr(:international)[contact[:international]]
   end
- 
+
   def assigned_to(contact = nil)
     result = "Unassigned"
     if contact.nil?
@@ -216,7 +235,7 @@ module SurveyContactsHelper
       @campuses ||= @me.campuses
     end
   end
-  
+
   def campuses_options(with_ministry_roles = nil)
     campuses(with_ministry_roles).collect{|c| [c[:campus_desc], c[:campus_id]]}
   end
@@ -232,7 +251,7 @@ module SurveyContactsHelper
   def people_available_for_assigning
     @people_available_for_assigning ||= people_available.select { |p| p[1] >= 0 }
   end
-  
+
   def convert_values(a, field)
     ans = a
     if a.kind_of?(Array) && contact_options_lists.has_key?(field)
@@ -243,7 +262,7 @@ module SurveyContactsHelper
     end
     ans
   end
-  
+
   def default_value(field)
     result = nil
     result = contact_search_options[field][:default] if contact_search_options.has_key?(field)
@@ -251,7 +270,7 @@ module SurveyContactsHelper
     result = result.collect{|d| is_number?(d) ? d.to_i : d } if result.is_a?(Array)
     result
   end
-    
+
   def print_def(d)
     val = d
     if val.nil?
@@ -262,8 +281,8 @@ module SurveyContactsHelper
     else
       val = val.to_s
     end
-    val 
-  end 
+    val
+  end
 
   def to_or_sentence(string)
     string.to_sentence(:last_word_connector => ', or ', :two_words_connector => ' or ')

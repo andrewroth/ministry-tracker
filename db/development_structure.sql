@@ -891,7 +891,7 @@ CREATE TABLE `searches` (
   `updated_at` datetime DEFAULT NULL,
   `tables_clause` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11882 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11889 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sept2012_contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -917,6 +917,8 @@ CREATE TABLE `sept2012_contacts` (
   `interest` int(11) DEFAULT '0',
   `person_id` int(11) DEFAULT NULL,
   `data_input_notes` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_sept2012_contacts_on_campus_id` (`campus_id`),
   KEY `index_sept2012_contacts_on_gender_id` (`gender_id`),
@@ -926,7 +928,7 @@ CREATE TABLE `sept2012_contacts` (
   KEY `index_sept2012_contacts_on_result` (`result`),
   KEY `index_sept2012_contacts_on_degree` (`degree`),
   KEY `index_sept2012_contacts_on_international` (`international`)
-) ENGINE=InnoDB AUTO_INCREMENT=24466 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24711 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -937,7 +939,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=308530 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=308539 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1663,6 +1665,8 @@ INSERT INTO schema_migrations (version) VALUES ('20121126210802');
 INSERT INTO schema_migrations (version) VALUES ('20121127232337');
 
 INSERT INTO schema_migrations (version) VALUES ('20121130205225');
+
+INSERT INTO schema_migrations (version) VALUES ('20121220165950');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
