@@ -830,17 +830,17 @@ table td.sub {
   padding: 10px 8px;
 }
 
-.directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
+.directorytable.contacts th a.asc, .directorytable.contacts th a.desc, .statsTable th a.desc, .statsTable th a.asc {
   padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
 
-.directorytable.contacts th a.asc {
+.directorytable.contacts th a.asc, .statsTable th a.asc {
   background-image: url("/images/silk/bullet_arrow_up.png");
 }
 
-.directorytable.contacts th a.desc {
+.directorytable.contacts th a.desc, .statsTable th a.desc {
   background-image: url("/images/silk/bullet_arrow_down.png");
 }
 
@@ -2737,7 +2737,7 @@ fieldset {
   width: 17em;
 }
 
-#results .statsTableTitle {
+#results .statsTableTitle, #results th {
   color: #666766;
   vertical-align: middle;
   text-align: left;

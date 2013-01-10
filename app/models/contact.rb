@@ -1,4 +1,6 @@
 class Contact < ActiveRecord::Base
+  load_mappings
+
   has_and_belongs_to_many :people
   belongs_to :campus
   has_many :notes, :as => :noteable

@@ -1,0 +1,22 @@
+<p><span class="statsTitle">
+  Discover &#8211; Thresholds Summary View at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<table class="statsTable">
+  <thead>
+    <tr>
+      <th><%= link_to_sort 'Thresholds', 'next_step_id' %></th>
+      <th><%= link_to_sort 'Number of Contacts', 'next_step_count' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @next_step_contacts.each do |c| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td><%= Contact::NEXT_STEP_OPTIONS[c.next_step_id][0] %></td>
+        <td><%= c.next_step_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

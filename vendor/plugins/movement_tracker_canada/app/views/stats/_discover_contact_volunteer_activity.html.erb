@@ -1,0 +1,22 @@
+<p><span class="statsTitle">
+  Discover &#8211; Volunteer Activity View at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<table class="statsTable">
+  <thead>
+    <tr>
+      <th><%= link_to_sort 'Volunteer', 'fullname' %></th>
+      <th><%= link_to_sort 'Number of Contacts', 'discover_contacts_count' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @people.each do |person| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td><%= link_to person.full_name, person %></td>
+        <td><%= person.discover_contacts_count.size %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

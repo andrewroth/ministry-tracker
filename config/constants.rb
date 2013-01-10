@@ -63,6 +63,10 @@
       :story => {:order => 3, :label => "Salvation Story Synopses", :controller => :stats, :action => :salvation_story_synopses, :scopes => [:summary]},
       :labelled_people => {:order => 8, :label => "Label Report", :controller => :stats, :action => :labelled_people, :scopes => [:summary]},
 
+      :discover_contact_volunteer_activity => {:order =>  9, :label => "Discover &#8211; Volunteer Activity", :controller => :stats, :action => :discover_contact_volunteer_activity, :scopes => [:summary]},
+      :discover_contact_thresholds_summary => {:order => 10, :label => "Discover &#8211; Thresholds Summary", :controller => :stats, :action => :discover_contact_thresholds_summary, :scopes => [:summary]},
+      :discover_contacts_summary => {:order => 11, :label => "Discover &#8211; Contacts Summary", :controller => :stats, :action => :discover_contacts_summary, :scopes => [:summary]},
+
       :annual_goals => {:hidden => true, :order => 3, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]},
       :comp => {:hidden => true, :order => 4, :label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report, :scopes => [:staff_drill_down]},
       :perso => {:hidden => true, :order => 7, :label => "My Personal Stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]},
