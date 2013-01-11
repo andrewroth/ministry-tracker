@@ -57,7 +57,7 @@ class TimetablesController < ApplicationController
   # PUT /timetables/1
   # PUT /timetables/1.xml
   def update
-    if @can_edit && params[:times].present?
+    if @can_edit
 
       # Clear out all other blocks
       @timetable.free_times.destroy_all
@@ -83,9 +83,6 @@ class TimetablesController < ApplicationController
 
     elsif !@can_edit
       flash[:notice] = I18n.t('timetable.not_allowed_update')
-
-    else
-      flash[:notice] = I18n.t('misc.error')
     end
 
     respond_to do |format|
