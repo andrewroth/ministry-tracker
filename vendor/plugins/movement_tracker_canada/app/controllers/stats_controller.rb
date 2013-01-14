@@ -269,13 +269,15 @@ class StatsController < ApplicationController
     select = "DISTINCT #{Person.__(:id)}, #{Person.table_name}.*, CONCAT(#{Person.__(:first_name)}, #{Person.__(:last_name)}) as fullname, COUNT(#{DiscoverContact.__(:id)}) as discover_contacts_count"
     group = Person.__(:id)
     order = "#{sort_column(['fullname', 'discover_contacts_count'])} #{sort_direction}"
+    campus_ids = @stats_ministry.unique_campuses.collect(&:id)
+    ministry_ids = @stats_ministry.myself_and_descendants.collect(&:id)
 
     people_ci = Person.all(:joins => [:campus_involvements, :discover_contacts],
-                           :conditions => ["#{CampusInvolvement.__(:campus_id)} in (?)", @stats_ministry.unique_campuses.collect(&:id)],
+                           :conditions => ["#{DiscoverContact.__(:campus_id)} in (?) AND #{CampusInvolvement.__(:campus_id)} in (?)", campus_ids, campus_ids],
                            :select => select, :group => group, :order => order)
 
     people_mi = Person.all(:joins => [:ministry_involvements, :discover_contacts],
-                           :conditions => ["#{MinistryInvolvement.__(:ministry_id)} in (?)", @stats_ministry.myself_and_descendants.collect(&:id)],
+                           :conditions => ["#{DiscoverContact.__(:campus_id)} in (?) AND #{MinistryInvolvement.__(:ministry_id)} in (?)", campus_ids, ministry_ids],
                            :select => select, :group => group, :order => order)
 
     @people = (people_mi + people_ci).uniq

@@ -12,11 +12,17 @@
     </tr>
   </thead>
   <tbody>
+    <% total_contacts = 0 %>
     <% @people.each do |person| %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td><%= link_to person.full_name, person %></td>
-        <td><%= person.discover_contacts_count.size %></td>
+        <td><%= person.discover_contacts_count %></td>
+        <% total_contacts += person.discover_contacts_count.to_i %>
       </tr>
     <% end %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+      <td>Total</td>
+      <td><%= total_contacts %></td>
+    </tr>
   </tbody>
 </table>
