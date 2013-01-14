@@ -8,7 +8,7 @@ errors = 0
 <div class="log_output_container">
   <% if @log_lines && @log_lines.present? %>
     <div class="log_line">
-      <p><br><%= @num_lines > @unfiltered_log_lines.length ? 'End of file.' : link_to('Show more lines...', url_for(params.merge({ :n => @num_lines + 10000 }))) %><br><br></p>
+      <p><br><%= @num_lines >= @log_total_num_lines ? 'End of file.' : link_to('Show more lines...', url_for(params.merge({ :n => @num_lines + 10000 }))) %><br><br></p>
     </div>
 
     <% @log_lines.each do |line| %>
