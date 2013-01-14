@@ -17,6 +17,7 @@ class ConnectController < ApplicationController
       @unfiltered_log_lines = tail_output.split("\n[").collect { |o| "#{o[0] == '[' ? '' : '['}#{o}" }
       @include_log_tag = '[IMPORT CONTACTS]'
       @log_lines = @unfiltered_log_lines.select { |line| line.include?(@include_log_tag) }
+      @log_total_num_lines = `wc -l #{@log_path}`.to_i
     end
 
     # We just use this to try to check if the import task is in the crontab
