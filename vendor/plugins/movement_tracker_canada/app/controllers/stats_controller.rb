@@ -354,16 +354,15 @@ class StatsController < ApplicationController
 
     # find the prc ('indicated decisions') data to display
     case @stats_time
-      when 'year'
-        semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
-        date_start = Date.parse_date( semesters.first.semester_startDate )
-        date_end   = Date.parse_date( Semester.find(semesters.last.id + 1).semester_startDate )
+    when 'year'
+      semesters = Semester.find_semesters_by_year(@year_id) # find all semesters in a year
+      date_start = Date.parse_date(semesters.first.semester_startDate)
+      date_end   = Date.parse_date(Semester.find(semesters.last.id + 1).semester_startDate)
 
-      when 'semester'
-        semester = Semester.find(@semester_id)
-        date_start = semester.start_date
-        date_end   = Date.parse_date( semester.end_date )
-
+    when 'semester'
+      semester = Semester.find(@semester_id)
+      date_start = semester.start_date
+      date_end = semester.end_date
     end
 
     modify_order_by(params['order_by']) if params['order_by'].present?

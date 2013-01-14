@@ -165,12 +165,12 @@ module StatsHelper
       result = render 'stats/blank_line'
 
     elsif line_should_show(period_model_array, stat_hash)
-      result = render 'stats/stats_line',
+      result = campus_ids.blank? ? '' : render('stats/stats_line',
         :special_css_class => stat_hash[:css_class].present? ? stat_hash[:css_class] : "",
         :title => title,
         :stats_array => period_model_array.collect { |pm| evaluate_stat_for_period(pm, campus_ids, stat_hash, staff_id) },
         :special_total => evaluate_special_total(period_model_array, campus_ids, stat_hash, staff_id),
-        :print_total => print_stat_total?(stat_hash)
+        :print_total => print_stat_total?(stat_hash))
     end
 
     result

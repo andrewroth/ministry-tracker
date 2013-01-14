@@ -25,6 +25,7 @@ en-CA:
     email_prefix: "[The Pulse] "
     ago: " ago"
     web_title: "Power to Change &#8211; The Pulse"
+    error: "We're sorry, something went wrong!"
   title:
     dashboard: "Dashboard"
     contacts: "Contacts"

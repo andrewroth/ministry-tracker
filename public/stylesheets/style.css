@@ -4497,10 +4497,10 @@ td.campusDiscTree {
   height: 500px;
   overflow: scroll;
   box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5) inset;
-  width: 130%;
 }
 
 .log_output_container, .log_output_status {
+  width: 130%;
   display: block;
   border: 2px solid #666766;
   background: #666766;
@@ -4511,7 +4511,6 @@ td.campusDiscTree {
 
 .log_line, .log_line a, .log_line p, .log_output_status {
   color: white;
-  width: 130%;
   font-family: monospace;
   line-height: 12px;
 }
