@@ -4532,3 +4532,48 @@ td.campusDiscTree {
   color: yellow;
   font-weight: bold;
 }
+
+.school_report_totals {
+  border-radius: 5px; 
+  background-color: rgba(184, 204, 253, 0.2); 
+  line-height: 25px;
+  padding: 2px; 
+  font-size:15px;
+}
+
+.rounded {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-bottom: 1px #0064a2 solid;
+    border-radius: 10px;
+}
+
+.rounded th {
+  text-align: right;
+  margin-left: 10px;
+}
+
+.rounded td {
+  text-align: left;
+}
+
+.rounded label {
+  float:none;
+  display:inline;
+}
+
+table.enrolment {
+  text-align: center;
+}
+
+.bordered th {
+  border-bottom: 1px dashed grey;
+}
+
+.dataTables_wrapper label {
+  width: inherit;
+}
+
+.dataTables_wrapper th {
+  text-align: left
+}

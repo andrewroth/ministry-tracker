@@ -17,7 +17,7 @@
     </title>
 
 
-    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
+    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", "jquery-ui", "jquery.dataTables_themeroller",
                             :media => "screen",
                             :cache => "cache/all" %>
                               
@@ -31,7 +31,7 @@
     <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
 
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
-                               'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'jquery.pjax',
+                               'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'jquery.pjax', 'jquery.dataTables',
                                'jscalendar-1.0/calendar.js', 'jscalendar-1.0/lang/calendar-en.js', 'jscalendar-1.0/calendar-setup.js',
                                'application', 'application.ready',
                                :cache => "cache/all" %>
@@ -65,7 +65,7 @@
           <div id="userbar_wrapper">
             <div id="userbar">
               <div id="logos">
-                <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => 'dashboard', :action => 'index' %>
+                <%= link_to "<span id='pulse_logo'>&nbsp;</span>", :controller => :dashboard, :action => :index %>
               </div>
 
 
