@@ -1,0 +1,2 @@
+module CivicrmSchoolsHelper
+end

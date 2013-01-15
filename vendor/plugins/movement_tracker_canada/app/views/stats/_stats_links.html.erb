@@ -48,6 +48,7 @@ unless @mobile
 	end
 	%>
 	<%= render :partial => 'stats/report_type_list_links' %>
+	<li><%= link_to "School Report", :controller => "civicrm_schools", :action => :index %></li>
 	<%
 	unless report_links.empty? && report_type_links_to_show.empty?
 	  %>

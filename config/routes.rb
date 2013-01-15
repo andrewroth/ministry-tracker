@@ -275,6 +275,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect '/connect/import_contacts_log', :controller => :connect, :action => :import_contacts_log
 
+  map.resources :civicrm_schools
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
