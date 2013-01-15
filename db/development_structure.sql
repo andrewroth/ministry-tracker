@@ -138,7 +138,7 @@ CREATE TABLE `contacts` (
   `mobile_phone` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `next_step_id` int(11) DEFAULT NULL,
-  `what_i_am_trusting_god_to_do_next` varchar(255) DEFAULT NULL,
+  `what_i_am_trusting_god_to_do_next` text,
   `active` tinyint(1) DEFAULT NULL,
   `private` tinyint(1) DEFAULT '1',
   `campus_id` int(11) DEFAULT NULL,
@@ -269,7 +269,7 @@ CREATE TABLE `delayed_jobs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4829 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `dismissed_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -939,7 +939,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=684326 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=684328 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1667,6 +1667,8 @@ INSERT INTO schema_migrations (version) VALUES ('20121127232337');
 INSERT INTO schema_migrations (version) VALUES ('20121130205225');
 
 INSERT INTO schema_migrations (version) VALUES ('20121220165950');
+
+INSERT INTO schema_migrations (version) VALUES ('20130115190751');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
