@@ -4,4 +4,28 @@
 
 <br/>
 
-test
+<table class="statsTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Action</th>
+      <th>Threshold</th>
+      <th>Volunteer</th>
+      <th>Next Step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @contacts.each do |contact| %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td><%= contact.full_name %></td>
+        <td title="<%= contact.last_touched_at %>"><span class="has_title"><%= time_ago_in_words(contact.last_touched_at) %><%= t("misc.ago") %></span></td>
+        <td><%= contact.next_step %></td>
+        <td><%= link_to contact.person.full_name, contact.person %></td>
+        <td><%= contact.what_i_am_trusting_god_to_do_next %></td>
+      </tr>
+    <% end %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+      <td>Total <%= @contacts.size %></td>
+    </tr>
+  </tbody>
+</table>

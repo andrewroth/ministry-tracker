@@ -23,7 +23,15 @@ class Contact < ActiveRecord::Base
   end
 
   def next_step
-    self.next_step_id ? NEXT_STEP_OPTIONS[self.next_step_id][0] : NEXT_STEP_OPTIONS[0][0]
+    next_step_id ? NEXT_STEP_OPTIONS[next_step_id][0] : NEXT_STEP_OPTIONS[0][0]
+  end
+
+  def person
+    people.first
+  end
+
+  def last_touched_at
+    [activities.try(:collect, &:updated_at).try(:max), notes.try(:collect, &:updated_at).try(:max), updated_at].compact.max
   end
 
 

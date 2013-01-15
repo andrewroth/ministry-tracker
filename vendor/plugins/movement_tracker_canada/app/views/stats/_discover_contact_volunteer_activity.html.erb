@@ -7,17 +7,18 @@
 <table class="statsTable">
   <thead>
     <tr>
-      <th><%= link_to_sort 'Volunteer', 'fullname' %></th>
-      <th><%= link_to_sort 'Number of Contacts', 'discover_contacts_count' %></th>
+      <th>Volunteer</th>
+      <th>Number of Contacts</th>
     </tr>
   </thead>
   <tbody>
     <% total_contacts = 0 %>
-    <% @people.each do |person| %>
+    <% @contacts_grouped_by_people.each do |person, contacts| %>
+      <% next unless person %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
         <td><%= link_to person.full_name, person %></td>
-        <td><%= person.discover_contacts_count %></td>
-        <% total_contacts += person.discover_contacts_count.to_i %>
+        <td><%= contacts.size %></td>
+        <% total_contacts += contacts.size.to_i %>
       </tr>
     <% end %>
     <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">

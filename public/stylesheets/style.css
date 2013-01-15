@@ -2741,6 +2741,7 @@ fieldset {
   color: #666766;
   vertical-align: middle;
   text-align: left;
+  padding: 5px;
 }
 
 #results .statsTableTitleTop {

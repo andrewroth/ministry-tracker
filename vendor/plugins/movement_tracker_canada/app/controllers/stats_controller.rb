@@ -102,10 +102,10 @@ class StatsController < ApplicationController
     @stats_ministry = Ministry.find(@stats_ministry_id)
     @name_for_treeview = @stats_ministry.name
     if ministry_campus_id.length > 1
-      campus = Campus.find(ministry_campus_id[1].to_i)
-      @campus_ids = [campus.id]
-      @ministry_name = campus.campus_desc
-      @name_for_treeview = campus.campus_shortDesc
+      @stats_campus = Campus.find(ministry_campus_id[1].to_i)
+      @campus_ids = [@stats_campus.id]
+      @ministry_name = @stats_campus.campus_desc
+      @name_for_treeview = @stats_campus.campus_shortDesc
     else
       @ministry_name = @stats_ministry.name
     end
@@ -266,53 +266,22 @@ class StatsController < ApplicationController
   def setup_discover_contact_volunteer_activity_report
     @results_partial = "discover_contact_volunteer_activity"
 
-    select = "DISTINCT #{Person.__(:id)}, #{Person.table_name}.*, CONCAT(#{Person.__(:first_name)}, #{Person.__(:last_name)}) as fullname, COUNT(#{DiscoverContact.__(:id)}) as discover_contacts_count"
-    group = Person.__(:id)
-    order = "#{sort_column(['fullname', 'discover_contacts_count'])} #{sort_direction}"
-    campus_ids = @stats_ministry.unique_campuses.collect(&:id)
-    ministry_ids = @stats_ministry.myself_and_descendants.collect(&:id)
-
-    people_ci = Person.all(:joins => [:campus_involvements, :discover_contacts],
-                           :conditions => ["#{DiscoverContact.__(:campus_id)} in (?) AND #{CampusInvolvement.__(:campus_id)} in (?)", campus_ids, campus_ids],
-                           :select => select, :group => group, :order => order)
-
-    people_mi = Person.all(:joins => [:ministry_involvements, :discover_contacts],
-                           :conditions => ["#{DiscoverContact.__(:campus_id)} in (?) AND #{MinistryInvolvement.__(:ministry_id)} in (?)", campus_ids, ministry_ids],
-                           :select => select, :group => group, :order => order)
-
-    @people = (people_mi + people_ci).uniq
+    @contacts_grouped_by_people = DiscoverContact.all(:include => [:people], :conditions => { :campus_id => stats_campus_ids }).group_by { |contact| contact.people.first }
+    @contacts_grouped_by_people.reject! { |person, contacts| person.nil? }
   end
 
   def setup_discover_contact_thresholds_summary_report
     @results_partial = "discover_contact_thresholds_summary"
 
-    people_ci_ids = Person.all(:joins => [:campus_involvements],
-                               :select => "DISTINCT #{Person.__(:id)}",
-                               :conditions => ["#{CampusInvolvement.__(:campus_id)} in (?)", @stats_ministry.unique_campuses.collect(&:id)]).collect(&:id)
-
-    people_mi_ids = Person.all(:joins => [:ministry_involvements],
-                               :select => "DISTINCT #{Person.__(:id)}",
-                               :conditions => ["#{MinistryInvolvement.__(:ministry_id)} in (?)", @stats_ministry.myself_and_descendants.collect(&:id)]).collect(&:id)
-
-    @next_step_contacts = DiscoverContact.all(:joins => [:people],
-                                              :select => "#{DiscoverContact.__(:next_step_id)}, COUNT(#{DiscoverContact.__(:next_step_id)}) as next_step_count",
-                                              :group => DiscoverContact.__(:next_step_id),
-                                              :order => "#{sort_column(['next_step_id', 'next_step_count'])} #{sort_direction}",
-                                              :conditions => ["#{Person.__(:id)} in (?)", (people_ci_ids + people_mi_ids).uniq])
-
-    if params[:sort] == 'next_step_id'
-      @next_step_contacts.sort! do |a, b|
-        if params[:direction] == 'desc'
-          Contact::NEXT_STEP_OPTIONS[a.next_step_id][0] <=> Contact::NEXT_STEP_OPTIONS[b.next_step_id][0]
-        else
-          Contact::NEXT_STEP_OPTIONS[b.next_step_id][0] <=> Contact::NEXT_STEP_OPTIONS[a.next_step_id][0]
-        end
-      end
-    end
+    @contacts_grouped_by_next_step_id = DiscoverContact.all(:include => [:people], :conditions => { :campus_id => stats_campus_ids }).group_by { |contact| contact.next_step_id }
+    @contacts_grouped_by_next_step_id.reject! { |next_step_id, contacts| next_step_id.nil? }
   end
 
   def setup_discover_contacts_summary_report
     @results_partial = "discover_contacts_summary"
+
+    @contacts = DiscoverContact.all(:include => [:people, :notes, :activities], :conditions => { :campus_id => stats_campus_ids })
+    @contacts.reject! { |contact| contact.person.nil? }
   end
 
   def setup_how_people_came_to_christ_report
@@ -972,11 +941,7 @@ class StatsController < ApplicationController
     @site_title = 'Insights'
   end
 
-  def sort_column(column_names)
-    params[:sort] = column_names.include?(params[:sort]) ? params[:sort] : column_names.first
-  end
-
-  def sort_direction
-    params[:direction] = %w[asc desc].include?(params[:direction].try(:downcase)) ? params[:direction] : 'asc'
+  def stats_campus_ids
+    @stats_campus ? @stats_campus.id : @stats_ministry.unique_campuses.collect(&:id)
   end
 end

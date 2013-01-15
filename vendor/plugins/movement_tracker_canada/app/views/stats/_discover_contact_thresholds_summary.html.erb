@@ -7,16 +7,22 @@
 <table class="statsTable">
   <thead>
     <tr>
-      <th><%= link_to_sort 'Thresholds', 'next_step_id' %></th>
-      <th><%= link_to_sort 'Number of Contacts', 'next_step_count' %></th>
+      <th>Thresholds</th>
+      <th>Number of Contacts</th>
     </tr>
   </thead>
   <tbody>
-    <% @next_step_contacts.each do |c| %>
+    <% total_contacts = 0 %>
+    <% @contacts_grouped_by_next_step_id.each do |next_step_id, contacts| %>
       <tr class="<%= cycle('highlight', 'nohighlight') %>">
-        <td><%= Contact::NEXT_STEP_OPTIONS[c.next_step_id][0] %></td>
-        <td><%= c.next_step_count %></td>
+        <td><%= Contact::NEXT_STEP_OPTIONS[next_step_id][0] %></td>
+        <td><%= contacts.size %></td>
+        <% total_contacts += contacts.size.to_i %>
       </tr>
     <% end %>
+    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+      <td>Total</td>
+      <td><%= total_contacts %></td>
+    </tr>
   </tbody>
 </table>
