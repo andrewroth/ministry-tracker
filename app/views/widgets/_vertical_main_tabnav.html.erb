@@ -39,7 +39,7 @@ render_tabnav :vertical_main,
   if authorized?(:new, :groups)
     add_tab do |t|
       t.named "<span id='groupsTab' class='tab'>GROUPS</span>"
-      t.titled 'Groups for ' + @ministry.name
+      t.titled 'Groups at ' + @ministry.name
       t.links_to :controller => "groups"
       t.highlights_on :controller => "groups", :action => "index"
     end if session[:ministry_id]
@@ -51,6 +51,23 @@ render_tabnav :vertical_main,
     end if session[:ministry_id]
   end
 
+  if authorized?(:index, :discover_contacts)
+    add_tab do |t|
+      t.named "<span id='discoverTab' class='tab'>DISCOVER</span>"
+      t.titled 'Help others Discover God'
+      t.links_to "/discover"
+      t.highlights_on :controller => "discover_contacts"
+    end
+  end
+
+  if authorized?(:show, :campus_discipleship)
+  	add_tab do |t|
+      t.named "<span id='campusDiscTab' class='tab'>DISCIPLESHIP</span>"
+      t.titled 'Discipleship at ' + @ministry.try(:name).to_s
+      t.links_to :controller => "campus_discipleship", :action => "show"
+      t.highlights_on :controller => "campus_discipleship", :action => "show"
+    end if session[:ministry_id]
+  end
 
   if authorized?(:index, :stats)
     add_tab do |t|
@@ -71,22 +88,12 @@ render_tabnav :vertical_main,
     end
   end
 
-  if authorized?(:show, :campus_discipleship)
-  	add_tab do |t|
-      t.named "<span id='campusDiscTab' class='tab'>DISCIPLESHIP VIEW</span>"
-      t.titled @ministry.name + ' Discipleship View'
-      t.links_to :controller => "campus_discipleship", :action => "show"
-      t.highlights_on :controller => "campus_discipleship", :action => "show"
-    end if session[:ministry_id]
-  end
-
   if authorized?(:new, :people)
     add_tab do |t|
       t.named "<span id='addStudentTab' class='tab'>add a student #{spinner('add_student', 'opaqueWhite')}</span>"
       t.links_to "#"
     end
   end
-
 
   if authorized?(:index, :manage)
     add_tab do |t|

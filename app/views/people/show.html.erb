@@ -1,4 +1,4 @@
-<% @site_title = t('title.profile') -%>
+<% @site_title = @person.full_name.present? ? @person.full_name : t('title.profile') %>
 <%= stylesheet_link_tag "profile", :media => "all" %>
 
 
@@ -7,38 +7,38 @@
 	<div class="colleft">
 		<div class="col1">
 			<!-- Column 1 start -->
-			
+
       <div id="profiletitle">
         <h1>
           <%= @person.full_name %>
           <%- if authorized?(:edit, :people) -%>
             <%-# If the person has a gcx account, then send them to the gcx page to change their password %>
             <%- if @person == @me && @person.user.guid -%>
-              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank"><%= t('profile.buttons.change_password') %></a></div> 
+              <div id="passwordButton" class="profileButton"><a href="https://thekey.me/cas/service/selfservice?target=displayAccountDetails" target="_blank"><%= t('profile.buttons.change_password') %></a></div>
             <%- else -%>
-              <div id="passwordButton" class="profileButton"><%= link_to(t('profile.buttons.change_password'), edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div> 
+              <div id="passwordButton" class="profileButton"><%= link_to(t('profile.buttons.change_password'), edit_user_path(@person.user, :height => 300, :width => 450), {:class => 'thickbox'}) if @person == @me && @person.user  %></div>
             <%- end -%>
-            
+
             <%- unless Cmt::CONFIG[:gcx_import_disabled] -%>
               <%- if session[:cas_user] &&  session[:cas_pgt].present? -%>
                 <div class="profileButton"><%= link_to "IMPORT GCX PROFILE", import_gcx_profile_person_path(@person) %></div>
               <%- end -%>
             <%- end -%>
-            
+
             <div id="editButton" class="profileButton">
               <%= link_to_remote t('profile.buttons.edit'), :url => edit_person_path(@person, :format => 'js'), :before => "$('#spinnerp').show()", :complete => "$('#spinnerp').hide()", :method => :get %>
             </div>
-            
+
             <%= spinner('p') %>
 	        <%- end -%>
 	      </h1>
       </div>
-			
+
 
       <div id="info">
         <%= render :partial => 'view' %>
       </div>
-      
+
       <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
       <div id="dialog" style="display:none">
       <%- end -%>
@@ -46,11 +46,11 @@
       <%- if Cmt::CONFIG[:person_edit_in_thickbox] -%>
       </div>
       <%- end -%>
-			
+
 			<!-- Column 1 end -->
 		</div>
-		
-		
+
+
 			<!-- Column 2 start -->
 		<div class="col2">
 
@@ -61,7 +61,7 @@
 	      <div id="progress-bar"></div>
       </div>
       <iframe id="upload" name="upload" src="about:blank" style="width:1px;height:1px;border:0px;"></iframe>
-      
+
       <div id="semesterSelectContainer">
         <div id="semesterSelectBorder">
           <%= select_tag "group_semester_id", options_for_select(@semesters.collect{ |s| [ t("terms.#{s.translation_key}"), s.id ] }, @current_semester.id), :name => "group_semester[id]" %>
@@ -88,25 +88,25 @@
           <h4>
             <%- if authorized?(:edit, :people) && @me.is_staff_somewhere? -%>
               <%= link_to_remote "", {:url => person_ministry_involvements_url(@person.id), :method => :get,
-                                      :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"}, 
-                                     {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements", 
+                                      :before => "$('#spinnerMinistries').show()", :success => "$('#spinnerMinistries').hide(); show_dialog('Manage Ministries')"},
+                                     {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} ministry involvements",
                                       :class => "editInvolvementIconLink"} %>
             <%- end -%> Ministries
-            <%= spinner('Ministries') %>
+            <%= spinner('Ministries', 'opaqueWhite') %>
           </h4>
-          
+
           <%- if @person.ministries.size > 0 -%>
           	<ul id="profile_ministries">
-            	<%- @person.ministries.uniq.each do |ministry| 
+            	<%- @person.ministries.uniq.each do |ministry|
             	  mi = @person.ministry_involvements.detect {|ami| ami.ministry_id == ministry.id}-%>
                 <%= render :partial => 'profile_ministry_li', :locals => { :mi => mi } %>
             	<%- end -%>
           	</ul>
           <%- end -%>
-          
+
         </div>
       <%- end -%>
-      
+
       <div id="campuses_div" class="involvementType">
         <%= render :partial => 'campuses' %>
       </div>
@@ -126,7 +126,7 @@
           } %>
         <%- end -%>
       </div>
-			
+
 			<!-- Column 2 end -->
 		</div>
 	</div>
@@ -139,7 +139,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     strikeParentOnHover($(".removeInvolvementIconLink"));
-    
+
     <% if session[:edit_profile] == true %>
       <% session[:edit_profile] = nil %>
       $('#spinnerp').show();

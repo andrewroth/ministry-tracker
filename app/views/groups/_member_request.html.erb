@@ -1,4 +1,5 @@
 <li id="request_<%=member_request.id%>">
+  <span class="requesticon">&nbsp;</span>
   join request from <%= link_to member_request.person.full_name, person_url(member_request.person_id) %> 
   &#8211;
   <%= link_to_remote "Accept", {:url => accept_request_group_involvement_url(member_request.id, :source => source),

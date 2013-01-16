@@ -2,7 +2,7 @@ class CampusInvolvementsController < ApplicationController
   before_filter :set_campuses
   before_filter :set_school_years
   before_filter :set_inv_type
-  before_filter :set_roles, :only => [ :new, :edit ]
+  before_filter :set_roles, :only => [ :new, :edit, :create ]
   before_filter :set_student, :only => [ :index, :new, :edit ]
   
   skip_standard_login_stack :only => [:graduated]
@@ -30,7 +30,7 @@ class CampusInvolvementsController < ApplicationController
     if @campus_involvement.archived?
       @campus_involvement.end_date = nil
       @campus_involvement.last_history_update_date = Date.today
-      @campus_involvement.save!
+      @campus_involvement.save
       @updated = false
     end
 
@@ -348,7 +348,7 @@ class CampusInvolvementsController < ApplicationController
 
   def set_roles
     if !is_staff_somewhere(@me)
-      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", get_my_role.position ])
+      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", (get_my_role || MinistryRole.default_student_role).try(:position) ])
     else
       student_roles = StudentRole.all
     end

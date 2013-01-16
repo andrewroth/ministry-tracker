@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/link_bar/widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "widget"
   map.connect "/link_bar/iframe_widget", :conditions => { :method => :get }, :controller => "link_bar", :action => "iframe_widget"
   map.connect "/link_bar/index", :conditions => { :method => :get }, :controller => "link_bar", :action => "index"
-              
+
   map.resources :global_dashboard_accesses
 
   map.resources :notices, :member => { :dismiss => :post }
@@ -29,7 +29,21 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :prcs
 
-  map.resources :contacts, :collection => {:search => :get, :impact_report => :get, :national_report => :get}, :has_many => [:notes, :activities]
+
+  map.resources :survey_contacts, :has_many => [:notes, :activities]
+  map.resources :contacts, :controller => 'survey_contacts', :collection => {
+      :search => :get,
+      :impact_report => :get,
+      :national_report => :get,
+      :assignees_for_campus => :get,
+      :multiple_update => :post
+    }, :has_many => [:notes, :activities]
+  map.resources :discover_contacts, :controller => :discover_contacts, :has_many => [:notes, :activities], :collection => {
+    :import_csv => :post,
+    :upload_csv => :get
+  }
+  map.connect '/discover', :controller => :discover_contacts, :action => :index
+
 
   map.connect 'cim_hrdb_people/search',
               :conditions => { :method => :get },
@@ -83,7 +97,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :emails
 
   map.resource :facebook, :collection => {:tabs => :post, :install => :post, :remove => :post}, :controller => 'facebook'
-  
+
   map.resources :correspondences, :only => [:index, :show, :destroy], :collection => { :processqueue => :get }, :member => { :rcpt => :get }
 
   map.resources :correspondence_types do |correspondence_types|
@@ -95,11 +109,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :group_types
 
   # map.resources :facebook, :collection => {:profile => :any}
-  
+
   map.resources :ministry_role_permissions
 
   map.resources :timetables, :collection => {:search => :post}
-  
+
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.new_gcx '/new_gcx', :controller => 'sessions', :action => 'new_gcx'
@@ -107,11 +121,11 @@ ActionController::Routing::Routes.draw do |map|
   map.facebook_tab_new '/sessions/facebook_canvas_new/tab', :controller => 'sessions', :action => 'facebook_tab_new'
   map.leave_facebook_and_js_redirect '/leave_facebook_and_js_redirect', :controller => 'sessions', :action => 'leave_facebook_and_js_redirect'
   map.resource :session
-  
+
   map.resources :developers
 
   map.resources :imports
-  
+
   map.resources :profile_pictures
 
   map.resources :training_categories
@@ -148,7 +162,7 @@ ActionController::Routing::Routes.draw do |map|
                                      :clone_pre => :get,
                                      :clone => :post },
                          :collection => {:join => :get} do |group|
-                           
+
     group.resources :group_invitations, :member => {:accept => :get,
                                                     :decline => :get,
                                                     :list => :get},
@@ -156,9 +170,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :manage
-  
+
   map.resources :reports
-  
+
   map.resources :ministry_campuses, :collection => { :list => :any }
 
   map.resources :permissions
@@ -188,9 +202,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :addresses
 
   map.resources :users, :collection => {:link_fb_user => :get, :prompt_for_email => :get}
-  
+
   map.resource  :session
-  
+
   map.resource  :files
 
   map.connect 'campus_discipleship/',
@@ -232,18 +246,18 @@ ActionController::Routing::Routes.draw do |map|
     person.resources :profile_pictures
     person.resources :summer_reports
     person.resources :summer_report_reviewers
-  end                             
-  
+  end
+
   map.resources :customize
-  
+
   map.resources :ministry_involvements, :collection => {:edit_multiple_roles => :get,
                                                         :update_multiple_roles => :post}
-  
+
   map.resources :campus_involvements, :collection => {:edit_multiple_school_years => :get,
                                                       :update_multiple_school_years => :post}
-  
+
   map.edit_school_year '/people/:person_id/campus_involvements/:id/edit_school_year', :controller => :campus_involvements, :action => :edit_school_year
-  
+
   map.signup '/signup', :controller => 'signup', :action => :index
   map.user_codes '/user_codes/:code/:send_to_controller/:send_to_action', :controller => :user_codes, :action => :show
   map.show_user_codes '/user_codes/report_generated_codes', :controller => :user_codes, :action => :report_generated_codes
@@ -256,9 +270,13 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :notes
 
   map.resources :activities
-  
+
+  map.resources :recruitments, :has_many => [:notes, :activities]
+
+  map.connect '/connect/import_contacts_log', :controller => :connect, :action => :import_contacts_log
+
   # The priority is based upon order of creation: first created -> highest priority.
-  
+
   # Sample of regular route:
   # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
@@ -267,10 +285,10 @@ ActionController::Routing::Routes.draw do |map|
   # map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)
 
-  # You can have the root of your site routed by hooking up '' 
+  # You can have the root of your site routed by hooking up ''
   # -- just remember to delete public/index.html.
   map.cas_proxy_callback 'cas_proxy_callback/:action', :controller => 'cas_proxy_callback'
-  
+
   # root to dashboard
   map.dashboard '', :controller => "dashboard"
   map.global_dashboard '/global_dashboard/:action.:format', :controller => "global_dashboard"

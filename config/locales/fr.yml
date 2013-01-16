@@ -1,5 +1,5 @@
-fr: 
-  "landing_page": 
+fr:
+  "landing_page":
     "tagline": "Decouvrez Jésus. Changez votre monde."
     "main": "connexion (j’ai un compte) se joindre à un groupe (pas besoin de compte) créer un compte"
     "logos": ""
@@ -8,7 +8,7 @@ fr:
     "blurb_text": "Tu peux utiliser Le Pouls pour connecter avec un groupe d'étudiants sur ton campus. Ces groupes sont conçus pour t'aider à créer des liens, à poser des questions, et à découvrir Jésus."
     "no_need_to_login": "(Pas besoin de compte!)"
     "login_created": "(Compte créé)"
-    "section": 
+    "section":
     "test_move": "Block here translated into french"
     "tagline_url": "/images/fr/log_in_c4c_disco_change.png"
     "https": "/images/fr/log_in_pulse_explanation.png"
@@ -16,8 +16,8 @@ fr:
     "main_url": "https://pulse.campusforchrist.org/images/fr/log_in_main_img.png\n"
     "logos_url": "https://pulse.campusforchrist.org/images/fr/c4c-ptc-logo.png"
     "blurb_url": "https://pulse.campusforchrist.org/images/fr/log_in_pulse_explanation.png"
-  "misc": 
-    "genders": 
+  "misc":
+    "genders":
       "male": "Homme"
       "female": "Femme"
     "fall": "Automne"
@@ -32,6 +32,7 @@ fr:
     "email_prefix": "[pouls]"
     "ago": ""
     "web_title": "Pouvoir de Changer &#8211; Le Pouls"
+    "error": "We're sorry, something went wrong!"
   "title":
     "dashboard": "Tableau de bord"
     "contacts": "Contacts"
@@ -39,8 +40,8 @@ fr:
     "advanced_search": "Recherche avancée"
     "profile": "Profil"
     "team": "Équipe"
-  "layout": 
-    "images": 
+  "layout":
+    "images":
       "ptc_logo_grey": "/images/fr/ptc_logo_grey.png"
       "c4c_ptc_logo": "/images/fr/c4c-ptc-logo.png"
       "help": "/images/fr/help.gif"
@@ -49,19 +50,21 @@ fr:
       "log_in_pulse_explanation": "/images/fr/log_in_pulse_explanation.png"
       "main_elements": "/images/fr/main_elements.png"
       "log_in_main_img": "/images/fr/log_in_main_img.png"
-    "top_bar": 
+    "top_bar":
       "c4c": "C4C.CA"
       "c4c_mouseover": "Pouvoir de Changer"
       "pulse": "LE POULS"
       "resources": "RESSOURCES"
       "resources_mouseover": "Ressources CPC"
-      "events_menu": 
+      "events_menu":
+        "p2cplus": "P2C+"
+        "registration": "INSCRIPTION"
         "events": "ÉVENÉMENTS"
         "summit": "CONVERGENCE"
         "winter_conference": "CONGRÈS D'HIVER"
         "projects": "PROJETS"
         "projects_mouseover": "Rejoindre le monde!"
-      "more_menu": 
+      "more_menu":
         "more": "AUTRES"
         "gcx": "GCX"
         "gcx_mouseover": "Global ConneXion"
@@ -72,23 +75,23 @@ fr:
         "glc": "GLOBAL LEARNING CENTER"
         "mt": "MENTOR CENTER"
         "connect": "CONNECT"
-      "icons": 
+      "icons":
         "facebook": "Pouvoir de Changer sur Facebook"
         "twitter": "Pouvoir de Changer sur Twitter"
       "greeting": "Salut %{name}"
       "logout": "Déconnexion"
-      "staff_menu": 
-    "left_bar": 
-      "dashboard": 
+      "staff_menu":
+    "left_bar":
+      "dashboard":
         "named": "TABLEAU DE BORD"
         "titled": "Voici ton tableau de bord"
-      "profile": 
+      "profile":
         "named": "PROFIL"
         "titled": "T'es unique!"
-      "schedule": 
+      "schedule":
         "named": "HORAIRE"
         "titled": "Mon horaire"
-    "languages": 
+    "languages":
       "english_to_french": "FRANÇAIS"
       "english_to_french_mouseover": "Changer ta préférence de langue au français"
       "french_to_english": "ENGLISH"
@@ -96,38 +99,38 @@ fr:
     "ptc_logo": "/images/fr/ptc_logo_grey.png"
     "help": "À l'aide!"
     "banner": "Connexion"
-  "dashboard": 
+  "dashboard":
     "groups_header": "Mes groupes"
     "join_txt": "Deviens membre d'un groupe !"
     "join_more_txt": "Deviens membre d'autres groupes"
     "events_header": "Mes évènements"
-    "projects_header": "Projets"
-    "events": 
+    "projects_header": "PROJETS"
+    "events":
       "attendees": "participants"
-    "projects": 
+    "projects":
       "applying": "inscription en cours"
       "accepted": "accepté(s)"
       "link_txt": "M'inscrire à un projet !"
       "all_projects": "Tous les projets"
-    "groups": 
+    "groups":
       "requested_message": "en attente d'une réponse à la demande d'inscription"
       "interested_message": "Intéressé"
     "update_schedule_msg": "Tu n'as pas encore inscrit ton horaire"
     "update_schedule_title": "METTRE À JOUR MON HORAIRE"
-  "profile": 
-    "set_initial_campus": 
+  "profile":
+    "set_initial_campus":
       "heading": "SVP, remplir tes infos et cliquer sur Enregistrer."
       "are_required": "sont des champs obligatoires"
       "already_involvement": "Tu participes déjà à \"%{campus}\"; tu ne peux pas participer plus qu'une fois par campus. Archive ta participation actuelle et essaie de nouveau."
-    "picture": 
+    "picture":
       "instructions": "Sélectionner une image à télécharger (max. 10 Mo)"
       "browse_button": "Choisir un dossier"
       "upload_button": "Télécharger l'image sélectionnée"
-    "nav": 
+    "nav":
       "dashboard": "TABLEAU DE BORD"
       "schedule": "HORAIRE"
       "gcx_profile": "PROFIL GCX"
-    "buttons": 
+    "buttons":
       "edit": "MODIFIER"
       "change_password": "CHANGER MOT DE PASSE"
       "remove_me": "Me supprimer du Pouls"
@@ -135,21 +138,21 @@ fr:
       "remove_me_title": "Te supprimer de tous les campus, de tous les ministères et de tous les groupes auxquels tu participes. (Déconnexion automatique)"
       "save": "Enregistrer"
       "cancel": "annuler"
-      "headings": 
-    "left_bar": 
+      "headings":
+    "left_bar":
       "change_picture": "Changer ma photo"
       "joined": "Inscrit à"
-      "campuses": 
+      "campuses":
         "header": "Campus"
         "confirm": "Veux-tu vraiment supprimer %{person_name} de %{campus_name}?"
-      "groups": 
+      "groups":
         "confirm_self": "Veux-tu vraiment quitter %{group_name}?"
         "title_self": "Quitter le groupe %{group_name}"
         "confirm_other": "Veux-tu vraiment supprimer %{person_first_name} de %{group_name} ?"
         "title_other": "Supprimer %{person_first_name} du groupe %{group_name}"
         "requested": "Demandes d'inscription"
         "interested": "Intéressé"
-    "headings": 
+    "headings":
       "email": "Courriel"
       "birth_date": "Date de naissance"
       "gender": "Sexe"
@@ -182,7 +185,7 @@ fr:
       "valid_until": "Valide jusqu'au"
       "campus": "Campus"
       "role": "Rôle"
-    "manage_campuses": 
+    "manage_campuses":
       "title": "Gérer mes campus"
       "add_campus": "Ajouter un campus"
       "close": "fermer"
@@ -190,18 +193,20 @@ fr:
       "to": "jusqu'au"
       "at": "à"
       "archive_confirm": "Es-tu certain de vouloir archiver cette participation?"
-    "mentor": 
+    "mentor":
       "none": "N'a pas de mentor "
-    "mentee": 
+    "mentee":
       "none": "N'est pas un mentor "
-    "events": 
+    "events":
       "none_other": "%{name} n'a pas encore participé à un évenément "
       "none_self": "Tu n'as pas encore participé à un évenément "
       "title": "Évenéments"
-    "projects": 
+      "current_events": "Évenéments"
+    "projects":
       "title": "Projets"
-  "groups": 
-    "types": 
+      "go_to_the_world": "Rejoindre le monde!"
+  "groups":
+    "types":
       "discipleship_group": "Groupes de formation de disciples (GFD)"
       "mda": "Groupe de développement d'un mouvement (GDM)\nor\nPublic Cible"
       "prayer_group": "Cellule de prière"
@@ -220,11 +225,11 @@ fr:
     "help_tagline": "Quelqu'un de %{campus} peut t'aider"
     "help_button": "Aidez-moi à trouver un groupe"
     "none": "Il n'y pas encore de groupe. "
-    "buttons": 
+    "buttons":
       "request": "Je veux me joindre à ce groupe."
       "join": "M'inscrire"
     "older": "Autres groupes"
-    "roles": 
+    "roles":
       "leader": "responsable"
       "co-leader": "autre responsable"
       "member": "membre"
@@ -246,7 +251,7 @@ fr:
     "request_sent": "Parfait! Ta demande d'inscription a été envoyée à %{group.name}"
     "marked_interested": "Marqué comme intéressé"
     "join_request_pending": "Demande d'inscription en attente"
-  "timetable": 
+  "timetable":
     "instructions": "Clique sur une couleur ci-dessous, puis sur la grille-horaire."
     "not_allowed_see": "Tu n'as pas la permission d'accéder à cet horaire."
     "not_allowed_edit": "Tu n'as pas la permission de modifier cet horaire."
@@ -255,7 +260,7 @@ fr:
     "okay": "Peut-être"
     "good": "Disponible"
     "save": "Enregistrer mon horaire"
-    "buttons": 
+    "buttons":
       "edit": "Modifier mon horaire"
       "clear_timetable": "Recommencer mon horaire"
       "edit_later": "Modifier mon horaire plus tard"
@@ -264,7 +269,7 @@ fr:
       "not_changed_message": "Ton horaire n'a pas beaucoup changé. Ton horaire permet au responsable du groupe de trouver un temps de rencontre qui convient à tous les membres. \n\nClique sur « Annuler » pour continuer la modification de ton horaire, ou sur OK pour enregistrer ton horaire et terminer. "
     "save_confirm": "Ton horaire est enregistré!"
     "date_format": "%k:%M"
-  "terms": 
+  "terms":
     "fall_2006": "Automne 2006"
     "winter_2007": "Hiver 2007"
     "summer_2007": "Été 2007"
@@ -292,7 +297,7 @@ fr:
     "fall_2014": "Automne 2014"
     "winter_2015": "Hiver 2015"
     "summer_2015": "Été 2015"
-  "provinces": 
+  "provinces":
     "ab": "Alberta"
     "bc": "Colombie-Britannique"
     "mb": "Manitoba"
@@ -306,7 +311,7 @@ fr:
     "sk": "Saskatchewan"
     "yk": "Yukon"
     "on": "Ontario"
-  "years": 
+  "years":
     "undergrad_1": "1re Année (1er Cycle)"
     "undergrad_2": "2e Année (1er Cycle)"
     "undergrad_3": "3e Année (1er Cycle)"
@@ -320,7 +325,7 @@ fr:
     "graduated": "dîplomé"
     "cegep_1": "1re Année (Cégep)"
     "cegep_2": "2e Année (Cégep)"
-  "years_order": 
+  "years_order":
     "undergrad_1": "1"
     "undergrad_2": "2"
     "undergrad_3": "3"
@@ -334,12 +339,12 @@ fr:
     "graduated": "11"
     "cegep_1": "12"
     "cegep_2": "13"
-  "roles": 
+  "roles":
     "ministry_leader": "Dirigeant de ministère"
     "student_leader": "Leader étudiant"
     "student": "Étudiant"
     "alumni": "Ancien étudiant"
-  "emails": 
+  "emails":
     "confirm_email_subject": "Code de confirmation de l'adresse courriel"
     "confirm_email": "Pour vérifier ton compte, clique sur le lien. Voici le code de confirmation : <%= @code %>"
     "created_student_subject": "Un compte a été créé pour toi"
@@ -358,7 +363,7 @@ fr:
     "signup_finished_email": "<HTML><P> Merci pour ton inscription à un groupe et /ou pour la soumission de ton horaire. Pour soumettre ou modifier ton horaire, clique sur le lien ci-dessous. <% if @joined_collection_group %> Lorsqu'on t'ajoute à un groupe, le responsable du groupe à ton campus communiquera avec toi par courriel  <% end %></P>\n<P><A HREF=\"<%= @link %>\" target=\"_blank\"><%= @link %></A></P></HTML>"
     "summer_report_reviewed": "<html><p><%= @submitter_first_name %>,</p>\n<% if @summer_report.approved? %><p>Ton horaire d'été est <b>approuvé!</b></p><% else %><p>Désolé, ton horaire d'été est <b>refusé</b>, il faut le modifier et le soumettre à nouveau.</p><% end %>\n<p><%= render :partial => \"summer_report_reviewers/show_reviewers\", :locals => {:summer_report => @summer_report} %></p>\n<% if @summer_report.approved? %><p><%= link_to \"Clique ici pour voir ton horaire d'été.\", @show_report_link %></p><% else %><p><%= link_to \"Clique ici pour modifier ton horaire d'été.\", @edit_report_link %></p><% end %>\n<p>Merci d'utiliser le Pouls!</p></html>"
     "summer_report_submitted": "<html><p><%= @reviewer_first_name %>,</p>\n<p><%= @submitter_name %> a soumis son horaire d'été pour ton évaluation.</p>\n<p><%= link_to \\\"Clique ici pour vérifier l'horaire.\\\", @review_link %></p>\n<p>Merci d'utiliser le Pouls!</p></html>"
-  "signup": 
+  "signup":
     "email_error": "SVP entre une adresse courriel valide. Si l'adresse est déjà dans le Pouls, tu recevras un courriel de vérification."
     "missing_campus_and_semester": "Désolés, nous n'avons pas reçu ton choix de campus ni de session. SVP réessayer. "
     "verification_email_error": "Désolés, il n'était pas possible de t'envoyer un courriel de vérification. SVP réessayer ou communiquer avec helpdesk@powertochange.org"

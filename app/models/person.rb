@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
   include Common::Core::Person
   include Common::Core::Ca::Person
   include Legacy::Stats::Core::Person
-  
+
   # Labels
   has_many :label_people, :class_name => "LabelPerson", :foreign_key => _(:person_id, :label_id)
   has_many :labels, :through => :label_people, :order => "#{Label.table_name}.#{_(:priority)} asc"
@@ -49,7 +49,7 @@ class Person < ActiveRecord::Base
   has_many :group_requests, :through => :group_involvement_requests_assoc,
     :class_name => 'Group', :source => :group
   has_many :dismissed_notices
-   
+
   has_one :mentor, :class_name => "Person", :primary_key => "person_mentor_id"
   has_many :mentees, :class_name => "Person", :foreign_key => "person_mentor_id"
 
@@ -58,15 +58,20 @@ class Person < ActiveRecord::Base
   has_many :finished_training_courses, :through => :person_training_courses,
     :source => :training_course,
     :conditions => ["#{PersonTrainingCourse._(:finished)} = 1"]
-    
+
   has_many :contract_signatures
 
-  has_many :contacts
+  has_many :survey_contacts
+  has_and_belongs_to_many :discover_contacts, :join_table => 'contacts_people', :association_foreign_key => 'contact_id'
+  has_and_belongs_to_many :contacts
 
   has_many :notes
 
   has_many :reported_activities, :foreign_key => :reporter_id
-  
+
+  has_one :recruitment
+  has_many :recruiter_recruitment, :class_name => 'Recruitment', :foreign_key => :recruiter_id
+
 
   def all_group_involvements(semester = nil)
     return self.all_group_involvements_assoc unless semester && semester.id
@@ -104,7 +109,7 @@ class Person < ActiveRecord::Base
                       "#{_(:requested, :group_involvement)} = ?",
                       self.id, semester.id, true])
   end
-  
+
   def most_recent_group_involvement
     self.group_involvements.all(:first, :conditions => ["#{Person._(:id)} = ?", self.id], :order => "created_at desc").first
   end
@@ -138,7 +143,7 @@ class Person < ActiveRecord::Base
     get_training_answer_hash
     return @training_answer_hash[question_id]
   end
-  
+
   def group_group_involvements(filter, options = {})
     case filter
     when :all
@@ -151,7 +156,7 @@ class Person < ActiveRecord::Base
       gis = group_involvement_requests(options[:semester])
     end
     if options[:ministry]
-      gis.delete_if{ |gi| 
+      gis.delete_if{ |gi|
         gi.group.ministry != options[:ministry]
       }
     end
@@ -215,39 +220,43 @@ class Person < ActiveRecord::Base
   def is_global_dashboard_admin
     v = self.try(:user).try(:global_dashboard_access).try(:admin)
   end
-  
+
   def has_mentor?
     attr = "person_mentor_id"
     return !(self.send(attr).nil?)
   end
-  
+
   def signed_volunteer_contract_this_year?
     return false if self.find_next_unsigned_volunteer_contract.present?
     true
   end
-  
+
   def find_next_unsigned_volunteer_contract
     # we want to allow signing the contracts one month before the year technically begins
-    
+
     if Month.current == Year.current.months.last
       year = Year.first(:conditions => {:year_number => Year.current.year_number+1}) || Year.current
     else
       year = Year.current
     end
-    
+
     contract = nil
-    
+
     Contract::VOLUNTEER_CONTRACT_IDS.each do |contract_id|
-      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and 
-                                                     #{ContractSignature._(:contract_id)} = ? and 
-                                                     #{ContractSignature._(:agreement)} = true and 
-                                                     #{ContractSignature._(:signature)} <> '' and 
+      next if ContractSignature.all(:conditions => ["#{ContractSignature._(:person_id)} = ? and
+                                                     #{ContractSignature._(:contract_id)} = ? and
+                                                     #{ContractSignature._(:agreement)} = true and
+                                                     #{ContractSignature._(:signature)} <> '' and
                                                      #{ContractSignature._(:signed_at)} > ?",
                                                      self.id, contract_id, year.start_date-1.month]).present?
       contract = Contract.find(:first, :conditions => { :id => contract_id })
       break
     end
-    
+
     contract
+  end
+
+  def recruitable?
+    self.labels.all(:conditions => { :id => Recruitment::QUALIFIED_FOR_RECRUITMENT_LABEL_ID }).present?
   end
 end

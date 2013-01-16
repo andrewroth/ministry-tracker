@@ -143,6 +143,10 @@ class MinistriesController < ApplicationController
     @ministries = [ Ministry.first.to_hash_with_children.to_json ]
 
     #@ministries = [ Ministry.find(15).to_hash_with_children.to_json, Ministry.find(10).to_hash_with_children.to_json ]
+
+    respond_to do |format|
+      format.js { render 'switch_list.js' }
+    end
   end
 
   def switch_apply
@@ -156,6 +160,10 @@ class MinistriesController < ApplicationController
     session[:ministry_id] = @ministry.id
     session[:ministry_role_id] = nil
     set_ministry_cookie(@ministry)
+
+    respond_to do |format|
+      format.js { render 'switch_apply.js' }
+    end
   end
 
   # Question: What exactly does parent_form and set_parent do?

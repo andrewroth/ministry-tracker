@@ -76,7 +76,7 @@ no_table ||= false
     <%- end %>
     <%- unless hide_school_year -%>
     <tr class='pcd required_field'>
-      <td class="label"><%= t("profile.headings.year") %> </td>
+      <td class="label"><%= t("profile.headings.year_in_school") %> </td>
       <td><%= cif.select :school_year_id, school_year_options %> </td>
     </tr>
     <%- end -%>

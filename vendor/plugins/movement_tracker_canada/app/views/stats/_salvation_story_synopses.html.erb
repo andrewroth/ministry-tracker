@@ -22,7 +22,7 @@
 	            </td>
   <% unless @campus_ids.nil? || @campus_ids.length <= 1 %>
               <td>
-                  <%= @campuses[prc.campus_id].campus_desc %>
+                  <%= @campuses[prc.campus_id].campus_shortDesc %>
               </td>
   <% end %>
 	            <td>
@@ -45,7 +45,7 @@
                   <% else %>
                         Yes
                   <% end %>
-              </td>							
+              </td>
 	        </tr>
         <% end %>
     <% end %>

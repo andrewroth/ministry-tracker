@@ -5,7 +5,7 @@
                             {:title => "Edit #{@person == @me ? 'your' : @person.first_name+"'s"} campus involvements",
                              :class => "editInvolvementIconLink"} %>
   <% end %> <%= t('profile.left_bar.campuses.header') %>
-  <%= spinner('Campuses') %>
+  <%= spinner('Campuses', 'opaqueWhite') %>
 </h4>
 <ul id='profile_campuses'>
   <%- @person.campus_involvements.each do |ci| 

@@ -1,4 +1,4 @@
-    <% form_for(report) do |f| 
+    <% form_for(report) do |f|
         @id_fields.each do |id_f|
 %>
          <%= f.hidden_field id_f %>
@@ -10,10 +10,10 @@
 lines = @input_lines
 lines.each do | key, input_stat |
 %>
-    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f } %>
+    <%= render :partial => 'reports_generic/input_field', :locals => { :input_stat => input_stat, :f => f, :report => report } %>
 <%
 end
 %>
-    <tr><td></td><td><%= f.submit "Submit" %></td></tr>
-  </table>        
+    <tr><td></td><td><br><%= f.submit "Submit", :class => 'action-button' %></td></tr>
+  </table>
     <% end %>

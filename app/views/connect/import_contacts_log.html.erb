@@ -1,0 +1,60 @@
+<%
+warns = 0
+errors = 0
+%>
+
+<h2>Connect Import Survey Contacts Log</h2><br>
+
+<div class="log_output_container">
+  <% if @log_lines && @log_lines.present? %>
+    <div class="log_line">
+      <p><br><%= @num_lines >= @log_total_num_lines ? 'End of file.' : link_to('Show more lines...', url_for(params.merge({ :n => @num_lines + 10000 }))) %><br><br></p>
+    </div>
+
+    <% @log_lines.each do |line| %>
+      <% classes = '' %>
+      <% if line.include? '[WARN]' %>
+        <% warns += 1 %>
+        <% classes += ' warn' %>
+      <% end %>
+      <% if line.include? '[ERROR]' %>
+        <% errors += 1 %>
+        <% classes += ' error' %>
+      <% end %>
+
+      <div class="log_line<%= classes %>"><%= preprocess_log_line(line).gsub(@include_log_tag, '') %></div>
+    <% end %>
+
+  <% else %>
+    <div class="log_line error">No log output to display. Check that the log file specified in the Rails CiviCRM configuration "<%= @yml_config_path %>" exists.</div>
+    <% errors += 1 %>
+  <% end %>
+</div>
+
+<div class="log_output_status">
+  <span class="log_line<%= errors > 0 ? ' error' : '' %>"><%= pluralize errors, 'error' %></span> and
+  <span class="log_line<%= warns > 0 ? ' warn' : '' %>"><%= pluralize warns, 'warning' %></span> displayed.
+</div>
+
+<br>
+
+<p><br>Survey contacts are imported from Connect into The Pulse by running the Rake task <code>connect:import_contacts</code> as a cron job.</p>
+
+<p>
+  <% if @cronjob_installed %>
+    <strong>The task was detected in the crontab.</strong>
+  <% else %>
+    <strong class="error">WARNING: The task was not detected in the crontab or it's commented-out!</strong>
+    Add something like the following to the crontab:<br>
+    <p><code> * * * * *   cd <%= RAILS_ROOT.gsub(/\/releases\/\d+/, '/current') %> && <%= @crontab_cmd %></code></p>
+  <% end %>
+</p>
+
+<p>Output is logged to "<%= @log_path %>", above is the tail of the last <%= @num_lines %> lines.</p>
+
+
+<script>
+  $(function() {
+    $('.log_output_container').animate({ scrollTop: $('.log_output_container')[0].scrollHeight }, 1000);
+  });
+</script>

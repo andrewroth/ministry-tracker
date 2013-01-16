@@ -1,0 +1,54 @@
+<% remote_form_for recruitment do |f| %>
+  <%= hidden_field_tag :submit_time %>
+
+  <div class="half margin">
+    <ul>
+      Area of interest (check all that apply):
+      <% Recruitment::INTERESTED_IN_FIELDS.sort_by { |field, label| label }.each do |array| %>
+        <% field = array[0] %>
+        <% label = array[1] %>
+        <li><label for="<%= "recruitment_#{field}" %>"><%= f.check_box field, :class => 'recruitment_interest' %> <%= label %></label></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div id="recruitment_notes" class="sub_form half">
+    <p>
+      Person assigned to track with this recruit: <%= render :partial => "/search/uber_search_box", :locals => {
+        :default_text => recruitment.recruiter.try(:full_name) || "Search...",
+        :input_id => "recruiterSearchBox",
+        :input_class => "recruiterSearch uberSearchBox skip_submit_on_change",
+        :resultsClass => "ac_results ac_results_recruiter",
+        :action_params => "all_results_link=false&actions=false&max_results=7",
+        :resultFunction => "recruiterSearchBoxResultAction",
+        :width => 250
+      } %>
+      <%= f.hidden_field :recruiter_id %>
+    </p>
+    <br>
+    <p>Has been challenged to join staff via: <%= f.select :status_id, Recruitment::STATUSES %></p>
+
+<% end %>
+
+  <br>
+  <p>Recruitment notes:</p>
+
+  <ul>
+    <% recruitment.notes.each do |note| %>
+      <li><div class="note">"<%= note.content %>"</div><div>&nbsp;&#8211;&nbsp;<small><em><%= %(<span class="has_title" title="#{note.created_at}">#{time_ago_in_words(note.created_at)} #{t("misc.ago")}</span>) if note.created_at %> <%= "by #{link_to note.person.full_name, note.person}" if note.person %></em></small></div></li>
+    <% end %>
+  </ul>
+
+  <div class="new_note">
+    <% form_for [recruitment, Note.new] do |f| %>
+      <p><%= f.text_area :content %></p>
+      <p><%= f.submit 'Add Note', :class => 'action-button skinny' %></p>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $(function() {
+    $('#recruitment_status_id').val('<%= recruitment.status_id %>');
+  });
+</script>

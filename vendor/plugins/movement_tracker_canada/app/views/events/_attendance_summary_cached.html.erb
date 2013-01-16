@@ -1,0 +1,3 @@
+<%= Rails.cache.fetch([@eb_event.id, "summary", Time.now.to_date, Time.now.hour]) do
+  render 'attendance_summary'
+end %>

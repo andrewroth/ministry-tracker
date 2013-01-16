@@ -1,6 +1,6 @@
 <% if authorized?(:index, :search) %>
   <% if (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people)) %>
-  
+
     <div id="uberSearchContainer">
 
       <div id="uberSearchBoxContainer">
@@ -22,28 +22,30 @@
       </div>
 
       <%= link_to(t('title.advanced_search'), url_for(:controller => :people, :action => :directory, :format => :html), :id => "advancedSearchLink") if authorized?(:advanced, :people) %>
-      
+
       <script type="text/javascript">
         $(document).ready(function() {
-          
-          $('#uberSearchBox').focus(function() { $('#uberSearchContainer').addClass('focused'); });
-          $('#uberSearchBox').blur(function() { $('#uberSearchContainer').removeClass('focused'); });
-          
-          $('#uberSearchForm').submit(function() {
-            // don't submit if the search box is empty
-            if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_text %>") {
+
+          $('#uberSearchBox').on('focus', function() { $('#uberSearchContainer').addClass('focused'); });
+
+          $('#uberSearchBox').on('blur', function() { $('#uberSearchContainer').removeClass('focused'); });
+
+          $('#uberSearchForm').on('submit', function() {
+            $('#uberSearchButton').addClass('submitted'); // visual cue that seach has started
+
+            // don't submit on certain conditions
+            if( !$('#uberSearchBox').val() || $('#uberSearchBox').val() == "<%= default_text %>" || $('#uberSearchForm').hasClass('preventSubmit') ) {
               return false;
             }
             else {
-              // visual cue that seach has started
-              $('#uberSearchButton').addClass('submitted');
               $('div.ac_results').hide();
               return true;
             }
           });
         });
-            
+
         function layoutSearchBoxResultAction(event, info) {
+          $('#uberSearchForm').addClass('preventSubmit');
           location.href = $(".acLinkPath", info[0]).html();
         }
       </script>

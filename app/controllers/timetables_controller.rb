@@ -48,7 +48,7 @@ class TimetablesController < ApplicationController
     end
 
   end
-  
+
   def update_signup
     update
     redirect_to :controller => :signup, :action => :step3_timetable_submit, :method => :get
@@ -58,18 +58,18 @@ class TimetablesController < ApplicationController
   # PUT /timetables/1.xml
   def update
     if @can_edit
-      
+
       # Clear out all other blocks
       @timetable.free_times.destroy_all
       times = JSON::Parser.new(params[:times]).parse
-      # raise times.inspect
+
       # There's an array for each day of the week
       times.each_with_index do |day, i|
         # Each day of the week then has a list of blocks
         day.each_with_index do |block, j|
           unless block.empty?
             # Each block has a start time and an end time for a free block
-            @timetable.free_times.create(:start_time => block[0], :end_time => block[1], :day_of_week => i, :weight => block[2], :css_class => block[3]) 
+            @timetable.free_times.create(:start_time => block[0], :end_time => block[1], :day_of_week => i, :weight => block[2], :css_class => block[3])
           end
         end
       end
@@ -79,17 +79,19 @@ class TimetablesController < ApplicationController
       @timetable.touch
       return if @signup
 
-      respond_to do |format|
-        flash[:notice] = I18n.t('timetable.save_confirm')
-        format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
-        format.js
-        format.xml  { head :ok }
-      end
-    else
+      flash[:notice] = I18n.t('timetable.save_confirm')
+
+    elsif !@can_edit
       flash[:notice] = I18n.t('timetable.not_allowed_update')
     end
+
+    respond_to do |format|
+      format.html { redirect_to(person_timetable_path(@timetable.person, @timetable)) }
+      format.js
+      format.xml  { head :ok }
+    end
   end
-  
+
   # Question: searching for a common time once given a selection of group
   # members and leaders
   def search
@@ -102,10 +104,10 @@ class TimetablesController < ApplicationController
       @error = 'You must choose at least one leader to lead this group.'
       raise BadParams
     end
-    
+
     params[:max_groups] = params[:max_groups] && params[:max_groups].to_i > 0 ? params[:max_groups].to_i : params[:leader_ids].length
     params[:groups_per_leader] = params[:groups_per_leader] && params[:groups_per_leader].to_i > 0 ? params[:groups_per_leader].to_i : 1
-    
+
 
     if params[:max_groups] > params[:leader_ids].length * params[:groups_per_leader]
       @error = "You don't have enough leaders to lead #{pluralize(params[:max_groups], 'group')}. Either add more leaders, or increase the number of groups per leader."
@@ -133,13 +135,13 @@ class TimetablesController < ApplicationController
         user_weights = []
         midnight = Time.now.beginning_of_day
         stop_time = midnight + (Timetable::LATEST - (Timetable::INTERVAL * num_blocks))
-    
-    
+
+
         possible_times = []
-        7.times do |day| 
-          time = midnight + Timetable::EARLIEST 
+        7.times do |day|
+          time = midnight + Timetable::EARLIEST
           while time < stop_time
-            time_in_seconds = time.to_i - midnight.to_i 
+            time_in_seconds = time.to_i - midnight.to_i
             possible_times << {:time => time_in_seconds, :score => 0, :day => day}
             time += Timetable::INTERVAL
           end
@@ -149,7 +151,7 @@ class TimetablesController < ApplicationController
         end
 
         # logger.debug "Initial weights: \n#{user_weights.inspect}\n\n"
-  
+
         needed_groups = params[:max_groups]
 
         top_times = Timetable.get_top_times(user_weights, timetables, num_blocks, needed_groups, possible_times, @people, @leader_ids)
@@ -182,7 +184,7 @@ class TimetablesController < ApplicationController
         @groups = groups
       end
     end
-    
+
     respond_to do |wants|
       wants.js  do
         render :update do |page|
@@ -209,7 +211,7 @@ class TimetablesController < ApplicationController
       person.timetable.free_times.destroy_all
     end if @no_timetable
   end
-  
+
   private
 
     # finds the timetable for @person, or creates a blank one for use
@@ -236,14 +238,14 @@ class TimetablesController < ApplicationController
       @can_edit = can_blank_timetable?('edit')
       @can_show = can_blank_timetable?('show')
     end
-    
+
     def can_blank_timetable?(action)
       @me.id == params[:person_id].to_i || authorized?(action, 'timetables') ||
       (@me.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StaffRole &&
       Cmt::CONFIG[:staff_can_edit_student_timetables] &&
       @person.ministry_involvements.find_by_ministry_id(@ministry.id).ministry_role.class == StudentRole)
     end
-    
+
     def person_signup_setup
       @signup = true
       params[:person_id] = session[:signup_person_id]
@@ -256,7 +258,7 @@ class TimetablesController < ApplicationController
       elsif @signup && session[:from_facebook_canvas] == true
         return "facebook_canvas"
       end
-      
+
       @signup ? 'application' : 'people'
     end
 end
