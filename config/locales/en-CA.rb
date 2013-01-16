@@ -56,8 +56,8 @@
         :short => "%e %b",
         :long => "%B %e, %Y",
         :only_day => "%e",
-        :long_ordinal => lambda { |date| "%B #{date.day.ordinalize}, %Y" },
-        :short_ordinal => lambda { |date| "%B #{date.day.ordinalize}" }
+        :long_ordinal => lambda { |date| date.strftime("%B #{date.day.ordinalize}, %Y") },
+        :short_ordinal => lambda { |date| date.strftime("%B #{date.day.ordinalize}") }
       },
       
       :order => [ :year, :month, :day ],
@@ -77,12 +77,12 @@
         :short => "%d %b %H:%M",
         :long => "%B %d, %Y %H:%M",
         :only_second => "%S",
-        :long_ordinal => lambda { |time| "%B #{time.day.ordinalize}, %Y %H:%M" },
-        :short_ordinal => lambda { |time| "%B #{time.day.ordinalize}" }
+        :long_ordinal => lambda { |time| time.strftime("%B #{time.day.ordinalize}, %Y %H:%M") },
+        :short_ordinal => lambda { |time| time.strftime("%B #{time.day.ordinalize}") }
       },
       :time_with_zone => {
         :formats => {
-          :default => lambda { |time| "%Y-%m-%d %H:%M:%S %Z" }
+          :default => lambda { |time| time.strftime("%Y-%m-%d %H:%M:%S %Z") }
         }
       },
       :datetime => {
