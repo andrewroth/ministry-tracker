@@ -178,10 +178,9 @@ en-CA:
       major: Major
       minor: Minor
       phone: Phone
-      alt_phone: Alt Phone
       address: Address
       address_2: Address 2
-      alt_phone: Alt Phone
+      alt_phone: Mobile Phone
       city: City
       country: Country
       state: State
