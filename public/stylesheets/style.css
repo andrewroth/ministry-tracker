@@ -4541,6 +4541,11 @@ td.campusDiscTree {
   font-size:15px;
 }
 
+.school_top {
+  text-align:center;
+  width:100%;
+}
+
 .rounded {
     background-color: #f5f5f5;
     padding: 10px;
@@ -4548,13 +4553,16 @@ td.campusDiscTree {
     border-radius: 10px;
 }
 
-.rounded th {
-  text-align: right;
-  margin-left: 10px;
+.floated {
+  display: inline-block; 
+  text-align:left; 
+  min-width:300px;
 }
 
-.rounded td {
-  text-align: left;
+.school_info th {
+  text-align: right;
+  margin-left: 10px;
+  width: 200px;
 }
 
 .rounded label {
@@ -4562,8 +4570,16 @@ td.campusDiscTree {
   display:inline;
 }
 
-table.enrolment {
+.enrolment th, .enrolment td {
   text-align: center;
+}
+
+.check {
+  color: green;
+}
+
+.uncheck {
+  color: red;
 }
 
 .bordered th {

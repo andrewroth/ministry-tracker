@@ -3,23 +3,23 @@
 <br><br>
 
 <div class="directorytable">
-<h2>Totals</h2>
-<span class="school_report_totals">Number of Schools: <%= @totals[:num_schools] %></span>
-<span class="school_report_totals">SLM Q1 Yes: <%= @totals[:slmq1] %></span>
-<span class="school_report_totals">SLM Q2 Yes: <%= @totals[:slmq2] %></span>
-<span class="school_report_totals">SLM Q3 Yes: <%= @totals[:slmq3] %></span>
-<span class="school_report_totals">Student-Led Movements: <%= @totals[:isslm] %></span><br>
-<span class="school_report_totals">Ministry Presence: <%= @totals[:min_pres] %></span>
-<span class="school_report_totals">Staffed: <%= @totals[:staffed] %></span>
-<span class="school_report_totals">Expansion: <%= @totals[:expansion] %></span>
-<span class="school_report_totals">Launch: <%= @totals[:launch] %></span>
-<span class="school_report_totals">Sponsor: <%= @totals[:sponsor] %></span>
+  <h2>Totals</h2>
+  <span class="school_report_totals">Number of Schools: <%= @totals[:num_schools] %></span>
+  <span class="school_report_totals">SLM Q1 Yes: <%= @totals[:slmq1] %></span>
+  <span class="school_report_totals">SLM Q2 Yes: <%= @totals[:slmq2] %></span>
+  <span class="school_report_totals">SLM Q3 Yes: <%= @totals[:slmq3] %></span>
+  <span class="school_report_totals">Student-Led Movements: <%= @totals[:isslm] %></span><br>
+  <span class="school_report_totals">Ministry Presence: <%= @totals[:min_pres] %></span>
+  <span class="school_report_totals">Staffed: <%= @totals[:staffed] %></span>
+  <span class="school_report_totals">Expansion: <%= @totals[:expansion] %></span>
+  <span class="school_report_totals">Launch: <%= @totals[:launch] %></span>
+  <span class="school_report_totals">Sponsor: <%= @totals[:sponsor] %></span>
 </div><br><br>
 
 <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         $('#sortable').dataTable( {
-          "aaSorting": [[ 1, "asc" ]],
+          "aaSorting": [[ 0, "asc" ]],
           "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 8 ] } ],
           "bJQueryUI": true,
           "sPaginationType": "full_numbers"
@@ -46,7 +46,8 @@
   <tbody>
     <% @schools.each do |school|  %>
       <tr class="<%= cycle('nohighlight', 'highlight') %>">
-        <td><%= link_to school.display_name, civicrm_school_path(:id => school.contact_id), :title => 'View and edit this contact' %></td>
+        <td><%= link_to school.display_name, civicrm_school_path(:id => school.contact_id), 
+          :title => 'View and edit this contact' %></td>
         <td><%= school.custom_73 %></td>
         <td><%= school.custom_68 %></td>
         <td><%= school.custom_69 %></td>
@@ -55,7 +56,8 @@
         <td><%= school.custom_72 %></td>
         <td><%= school.custom_74 %></td>
         <td class="show_on_hover">
-          <div class="butProfile"><%= link_to 'Show', civicrm_school_path(:id => school.contact_id), :title => 'View and edit this contact' %></div>
+          <div class="butProfile"><%= link_to 'Show', civicrm_school_path(:id => school.contact_id), 
+            :title => 'View and edit this contact' %></div>
         </td>
       </tr>
     <% end %>
