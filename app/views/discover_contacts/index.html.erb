@@ -1,6 +1,6 @@
 <h1>Discover</h1>
 
-<div class="discover_contacts col widest pjax">
+<div class="discover_contacts col wide pjax">
 
   <div class="discover_contacts_controls">
     <big>My contacts at</big>&nbsp;&nbsp;<%= select_tag :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), @campus.id), :title => 'View contacts from your different campus' %>
@@ -13,10 +13,8 @@
       <table cellpadding="0" cellspacing="0" class="directorytable contacts">
         <thead class="center">
           <tr>
-            <th></th>
             <th>Name</th>
-            <th>Mobile phone</th>
-            <th>Email</th>
+            <th>Contact</th>
             <th>Next step</th>
             <th>&nbsp;</th>
           </tr>
@@ -25,10 +23,8 @@
         <tbody>
           <% @discover_contacts.each do |contact|  %>
             <tr class="<%= cycle('nohighlight', 'highlight') %>">
-              <td><%#= check_box_tag 'contact[]', contact[:id], false %></td>
               <td><big><%= link_to contact.full_name, edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></big></td>
-              <td><%= number_to_phone contact.mobile_phone, :area_code => true %></td>
-              <td><%= mail_to contact.email %></td>
+              <td><%= [number_to_phone(contact.mobile_phone, :area_code => true), mail_to(contact.email)].compact.join('<br>') %></td>
               <td><%= contact.next_step %></td>
               <td class="show_on_hover">
                 <div class="butProfile"><%= link_to 'Edit', edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></div>
@@ -45,9 +41,11 @@
   </div>
 
   <%= render 'disclaimer' %>
-
 </div>
 
+<div class="discover_feed_container">
+  <%= render 'feed', :ministry => @ministry, :campuses => @my_campuses, :number_of_items => 10 %>
+</div>
 
 <script>
   $(function() {

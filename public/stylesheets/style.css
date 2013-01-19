@@ -844,6 +844,10 @@ table td.sub {
   background-image: url("/images/silk/bullet_arrow_down.png");
 }
 
+.directorytable.contacts big {
+  font-size: 14px;
+}
+
 .search_actions {
   width: 100%;
   display: inline-block;
@@ -4389,12 +4393,12 @@ td.campusDiscTree {
   float: left;
 }
 
-.contact_form .col.wider {
+.contact_form .col.half {
   width: 50%;
 }
 
-.discover_contacts.col.widest {
-  width: 75%;
+.discover_contacts.col.wide {
+  width: 60%;
 }
 
 .contact_form .col.separator {
@@ -4467,6 +4471,19 @@ td.campusDiscTree {
 
 .discover_contacts_controls {
   margin-bottom: 20px;
+}
+
+.discover_feed_container {
+  float: right;
+}
+
+.discover_feed {
+  list-style: none;
+  font-size: 11px;
+}
+
+.discover_feed a {
+  opacity: 0.8;
 }
 
 #contact_notes .note, #contact_rejoiceables .rejoiceable {

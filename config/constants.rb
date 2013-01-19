@@ -875,7 +875,7 @@
   end
 
   def activity_options
-    [["Interaction", 1], ["Spiritual Conversation", 2], ["Gospel Presentation", 3], ["Indicated Decision", 4], ["Shared Spirit-filled life", 5]]
+    Activity::TYPES
   end
 
 
