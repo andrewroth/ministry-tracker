@@ -830,18 +830,22 @@ table td.sub {
   padding: 10px 8px;
 }
 
-.directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
+.directorytable.contacts th a.asc, .directorytable.contacts th a.desc, .statsTable th a.desc, .statsTable th a.asc {
   padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
 
-.directorytable.contacts th a.asc {
+.directorytable.contacts th a.asc, .statsTable th a.asc {
   background-image: url("/images/silk/bullet_arrow_up.png");
 }
 
-.directorytable.contacts th a.desc {
+.directorytable.contacts th a.desc, .statsTable th a.desc {
   background-image: url("/images/silk/bullet_arrow_down.png");
+}
+
+.directorytable.contacts big {
+  font-size: 14px;
 }
 
 .search_actions {
@@ -2737,10 +2741,11 @@ fieldset {
   width: 17em;
 }
 
-#results .statsTableTitle {
+#results .statsTableTitle, #results th {
   color: #666766;
   vertical-align: middle;
   text-align: left;
+  padding: 5px;
 }
 
 #results .statsTableTitleTop {
@@ -4388,12 +4393,12 @@ td.campusDiscTree {
   float: left;
 }
 
-.contact_form .col.wider {
+.contact_form .col.half {
   width: 50%;
 }
 
-.discover_contacts.col.widest {
-  width: 75%;
+.discover_contacts.col.wide {
+  width: 60%;
 }
 
 .contact_form .col.separator {
@@ -4468,6 +4473,19 @@ td.campusDiscTree {
   margin-bottom: 20px;
 }
 
+.discover_feed_container {
+  float: right;
+}
+
+.discover_feed {
+  list-style: none;
+  font-size: 11px;
+}
+
+.discover_feed a {
+  opacity: 0.8;
+}
+
 #contact_notes .note, #contact_rejoiceables .rejoiceable {
   background-color: rgba(245, 245, 245, 1);
   border: 1px solid rgba(235, 235, 235, 0.5);
@@ -4534,10 +4552,10 @@ td.campusDiscTree {
 }
 
 .school_report_totals {
-  border-radius: 5px; 
-  background-color: rgba(184, 204, 253, 0.2); 
+  border-radius: 5px;
+  background-color: rgba(184, 204, 253, 0.2);
   line-height: 25px;
-  padding: 2px; 
+  padding: 2px;
   font-size:15px;
 }
 
@@ -4554,8 +4572,8 @@ td.campusDiscTree {
 }
 
 .floated {
-  display: inline-block; 
-  text-align:left; 
+  display: inline-block;
+  text-align:left;
   min-width:300px;
 }
 
