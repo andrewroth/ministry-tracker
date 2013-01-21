@@ -24,7 +24,7 @@
           <% @discover_contacts.each do |contact|  %>
             <tr class="<%= cycle('nohighlight', 'highlight') %>">
               <td><big><%= link_to contact.full_name, edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></big></td>
-              <td><%= [number_to_phone(contact.mobile_phone, :area_code => true), mail_to(contact.email)].compact.join('<br>') %></td>
+              <td><%= [number_to_phone(contact.mobile_phone, :area_code => true), mail_to(contact.email)].select(&:present?).join('<br>') %></td>
               <td><%= contact.next_step %></td>
               <td class="show_on_hover">
                 <div class="butProfile"><%= link_to 'Edit', edit_discover_contact_path(contact), :title => 'View and edit this contact', :class => 'pjax' %></div>

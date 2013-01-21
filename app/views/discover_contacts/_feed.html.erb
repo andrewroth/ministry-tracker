@@ -1,8 +1,4 @@
-<%
-@feed_items = Rails.cache.fetch([campuses, number_of_items, 'discover_contacts/feed']) do
-  get_discover_feed_items(campuses, number_of_items).sort! { |a, b| b[:created_at] <=> a[:created_at] }
-end
-%>
+<% @feed_items = get_discover_feed_items(campuses, number_of_items).sort! { |a, b| b[:created_at] <=> a[:created_at] } %>
 <h3>Recently At <%= ministry %>...</h3>
 <ul class="discover_feed">
   <% @feed_items.each do |feed_item| %>

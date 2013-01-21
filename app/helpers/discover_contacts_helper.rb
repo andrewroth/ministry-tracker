@@ -77,38 +77,38 @@ module DiscoverContactsHelper
   def feed_item_action(feed_object)
     case feed_object
     when Activity
-      case feed_object.activity_type_id
-      when 1 # spiritual conversation
+      case feed_object.to_s
+      when 'Spiritual Conversation'
         "had a #{feed_object}"
-      when 2 # gospel presentation
+      when 'Gospel Presentation'
         "shared a #{feed_object}!"
-      when 3 # indicated decision
+      when 'Indicated Decision'
         "saw an #{feed_object}!"
-      when 4 # shared spirit-filled life
+      when 'Shared Spirit-filled life'
         "shared #{feed_object}"
-      else   # interaction
+      else
         "had an #{feed_object}"
       end
     when Note
-      "wrote a note"
+      'wrote a note'
     when DiscoverContact
-      "added a new contact"
+      'added a new contact'
     end
   end
 
   def feed_item_priority(feed_object)
     priority_action = case feed_object
     when Activity
-      case feed_object.activity_type_id
-      when 3 # indicated decision
+      case feed_object.to_s
+      when 'Indicated Decision'
         8
-      when 2 # gospel presentation
+      when 'Gospel Presentation'
         6
-      when 4 # shared spirit-filled life
+      when 'Shared Spirit-filled life'
         5
-      when 1 # spiritual conversation
+      when 'Spiritual Conversation'
         4
-      when 0 # interaction
+      when 'Interaction'
         2
       else
         0
@@ -138,7 +138,7 @@ module DiscoverContactsHelper
   end
 
   def feed_item_to_s(feed_item)
-    %(#{link_to feed_item[:object].person, feed_item[:object].person} #{feed_item[:action]}<em title="#{feed_item[:created_at]}"> - #{time_ago_in_words(feed_item[:created_at])} ago</em>)
+    %(#{link_to feed_item[:object].person, feed_item[:object].person} #{feed_item[:action]} &#8211; <em title="#{feed_item[:created_at]}">#{time_ago_in_words(feed_item[:created_at])} ago</em>)
   end
 
 end

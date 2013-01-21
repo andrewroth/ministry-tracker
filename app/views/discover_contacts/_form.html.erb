@@ -50,7 +50,7 @@
         <% if discover_contact.activities.present? %>
           <ul>
             <% discover_contact.activities.each do |a| %>
-              <li><div class="rejoiceable"><big><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></big></div><div>&nbsp;&#8211;&nbsp;<em><%= %(<span class="has_title" title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></div></li>
+              <li><div class="rejoiceable"><big><%= a %></big></div><div>&nbsp;&#8211;&nbsp;<em><%= %(<span class="has_title" title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></div></li>
             <% end %>
           </ul>
         <% end %>
@@ -58,7 +58,7 @@
         <div class="new_activity">
           <% form_for [discover_contact, Activity.new] do |f| %>
             <p>
-              Add <%= f.select :activity_type_id, options_for_select(activity_options[1..4]) %>
+              Add <%= f.select :activity_type_id, options_for_select(Activity.rejoiceable_types) %>
               <%= f.submit 'Rejoice!', :class => 'action-button' %>
             </p>
           <% end %>
