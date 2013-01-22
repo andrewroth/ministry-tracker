@@ -4,7 +4,7 @@
 
 <br/>
 
-<table class="statsTable">
+<table class="dataTable">
   <thead>
     <tr>
       <th>Thresholds</th>
@@ -14,15 +14,17 @@
   <tbody>
     <% total_contacts = 0 %>
     <% @contacts_grouped_by_next_step_id.each do |next_step_id, contacts| %>
-      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <tr>
         <td><%= Contact::NEXT_STEP_OPTIONS[next_step_id][0] %></td>
         <td><%= contacts.size %></td>
         <% total_contacts += contacts.size.to_i %>
       </tr>
     <% end %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
       <td>Total</td>
       <td><%= total_contacts %></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>

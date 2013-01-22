@@ -63,6 +63,13 @@ function beginLoadingStatsTab() {
 function completeLoadingStatsTab() {
   $('#statsSpinnerContainer').hide();
 
+  $('table.dataTable').dataTable({
+    "iDisplayLength" : 100,
+    "bDestroy": true,
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+  });
+
   $('a.select_report_sort').on('click', function(e) {
     e.preventDefault();
     selectReport('sort=' + $(this).data('sort-col') + '&' + 'direction=' + $(this).data('sort-dir'));
