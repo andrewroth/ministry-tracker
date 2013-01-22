@@ -9,11 +9,11 @@ class SurveyContactsController < ApplicationController
   def index
     initialize_globals
   end
-  
+
   def new
-    
+
   end
-  
+
   def assignees_for_campus
     initialize_people_available_for_search
     assignees = []
@@ -32,12 +32,12 @@ class SurveyContactsController < ApplicationController
   def show
     redirect_to :action => 'edit'
   end
-  
+
   def edit
     @contact = SurveyContact.find(params[:id], :include => {:notes => :person})
     initialize_globals
   end
-  
+
   def update
     @contact = SurveyContact.find(params[:contact_id])
 
@@ -48,16 +48,16 @@ class SurveyContactsController < ApplicationController
     end
 
     respond_to do |format|
-      if @contact.save        
+      if @contact.save
         flash[:notice] = 'Contact was successfully updated.'
 
         if send_assign_notification && @contact.person
-          send_assigned_contacts_email([@contact]) 
+          send_assigned_contacts_email([@contact])
           flash[:notice] = "#{flash[:notice]} #{@contact.person.first_name} #{@contact.person.last_name} will be notified by email."
         end
 
         format.html { redirect_to :action => 'search' }
-        
+
       else
         flash[:notice] = 'Sorry, there was a problem updating the contact!'
         initialize_globals
@@ -65,7 +65,7 @@ class SurveyContactsController < ApplicationController
       end
     end
   end
-  
+
   def multiple_update
     case params[:multiple_update_action]
     when 'multiple_assign_to'
@@ -80,14 +80,14 @@ class SurveyContactsController < ApplicationController
       if assignee_person_name && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
         contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
-        
+
         saved_successfully = []
 
         contacts.each do |contact|
           contact[:person_id] = assignee
           saved_successfully << contact.save!
         end
-        
+
         unless saved_successfully.include?(false)
           flash[:notice] = "Assigned selected contacts to #{assignee_person_name}, they will be notified by email."
           send_assigned_contacts_email(contacts) if assignee_person
@@ -95,7 +95,7 @@ class SurveyContactsController < ApplicationController
           flash[:notice] = "Sorry, there was a problem assigning the selected contacts!"
         end
       end
-      
+
     when 'multiple_status'
       status = params[:multiple_status].to_i
       status_option = contact_options_lists[:status].select { |s| s[1] == status }.flatten
@@ -103,12 +103,12 @@ class SurveyContactsController < ApplicationController
       if status_option && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
         contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
-        
+
         contacts.each do |contact|
           contact[:status] = status
           contact.save!
         end
-        
+
         flash[:notice] = "Updated selected contact's status to #{status_option[0]}"
       end
 
@@ -119,18 +119,18 @@ class SurveyContactsController < ApplicationController
       if result_option && params[:contacts_to_update].present?
         contact_ids = params[:contacts_to_update].split(',').select { |id| id.to_i > 0 }
         contacts = SurveyContact.find(:all, :conditions => { :id => contact_ids })
-        
+
         contacts.each do |contact|
           contact[:result] = result
           contact.save!
         end
-        
+
         flash[:notice] = "Updated selected contact's result to #{result_option[0]}"
       end
 
     end
   end
-  
+
   def search
     #save all the parameters from the search
     session[:search_contact_params] ||= {}
@@ -178,13 +178,12 @@ class SurveyContactsController < ApplicationController
     campus_ids = SurveyContact.all(:select => 'DISTINCT campus_id', :conditions => 'campus_id IS NOT NULL AND campus_id > 0').collect(&:campus_id)
     @campuses = Campus.all(:conditions => ["#{Campus._(:id)} IN (?)", campus_ids], :order => "#{Campus._(:desc)} ASC")
   end
-  
-  
+
+
 private
 
   def search_description(params, num_results)
     desc = []
-
     params.each do |param, value|
       next if value.blank? || value == 'All' || value.to_s == '-1' || value.include?('All') || value.include?('-1')
       case param
@@ -224,7 +223,7 @@ private
 
       when :data_input_notes
         desc << %(with data input notes contains <strong>"#{value}"</strong>)
-        
+
       when :interest
         interests = contact_options_lists[:interest].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
         desc << "with interest <strong>#{to_or_sentence(interests)}</strong>" if interests.present?
@@ -236,6 +235,10 @@ private
       when :journey
         journies = contact_options_lists[:journey].select{ |i| value.include?(i[1].to_s) }.collect{ |i| i[0] }
         desc << "with journey <strong>#{to_or_sentence(journies)}</strong>" if journies.present?
+
+      when :created_at
+        days = value.first.to_i / 24
+        desc << "added within the <strong>last #{days <= 1 ? "#{value.first.to_i} hours" : "#{days} days"}</strong>"
 
       end
     end
@@ -259,22 +262,27 @@ private
     condition_args = []
 
     unless @campus_id.nil?
-      condition << "campus_id = ?" 
+      condition << "campus_id = ?"
       condition_args << @campus_id
     end
-    
+
     [:gender_id, :priority, :status, :result, :interest, :magazine, :journey].each do |option|
       if @search_options[option].present? && !@search_options[option].include?(fields_info[option][:all_value])
 
         if @search_options[option].include?("") || (fields_info[option].has_key?(:blank_value) && @search_options[option].include?(fields_info[option][:blank_value]))
           condition << "(#{SurveyContact.__(fields_info[option][:field])} IN (?) OR #{SurveyContact.__(fields_info[option][:field])} IS NULL)"
           condition_args << [@search_options[option], fields_info[option][:blank_value]].flatten
-          
+
         else
           condition << "#{SurveyContact.__(fields_info[option][:field])} IN (?)"
           condition_args << @search_options[option]
         end
       end
+    end
+
+    if @search_options[:created_at] && @search_options[:created_at].first.to_i && !@search_options[:created_at].include?(fields_info[:created_at][:all_value])
+      condition << "#{SurveyContact.__(fields_info[:created_at][:field])} >= ?"
+      condition_args << @search_options[:created_at].first.to_i.hours.ago
     end
 
     if @search_options[:degree] && @search_options[:degree].gsub(/\s/, '').present?
@@ -358,14 +366,14 @@ private
       end
     end
   end
-  
+
   def initialize_campus_id
     @campus_id ||= params[:campus_id] if params[:campus_id].present?
     @campus_id ||= @contact[:campus_id] unless @contact.nil?
     @campus_id ||= @search_options[:campus_id] unless @search_options.nil?
     @campus_id
   end
-  
+
   def ministry_leaf_and_over(campus_id)
     ans = []
     Campus.find(campus_id).ministries.each do |m|
@@ -376,7 +384,7 @@ private
     end
     ans
   end
-  
+
   def initialize_people_available
     @people_available ||= []
     unless @people_available.count > 0 || initialize_campus_id.nil?
@@ -390,13 +398,13 @@ private
 
       @people_available = @people_available.uniq if @people_available.count > 0
       @people_available.sort! { |x,y| x[0].downcase <=> y [0].downcase } if @people_available.count > 0
-      
+
       @people_available.insert(0, ["Unassigned", 0])
       @people_available.insert(0, ["Assigned", -2])
     end
     @people_available
   end
-  
+
   def initialize_people_available_for_search
     unless @people_available_for_search
       @people_available_for_search = [["All", -1]]
@@ -409,9 +417,9 @@ private
 
 
   def search_fields
-    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :data_input_notes, :interest, :magazine, :journey]
+    [:campus_id, :gender_id, :priority, :status, :result, :assigned_to, :sort_col, :sort_dir, :international, :degree, :data_input_notes, :interest, :magazine, :journey, :created_at]
   end
-  
+
   def fields_info
     {
       :campus_id => { :field => :campus_id, :all_value => nil },
@@ -425,7 +433,8 @@ private
       :data_input_notes => { :field => :data_input_notes, :all_value => "" },
       :interest => { :field => :interest, :all_value => "9", :blank_value => "0" },
       :magazine => { :field => :magazine, :all_value => "9" },
-      :journey => { :field => :journey, :all_value => "9" }
+      :journey => { :field => :journey, :all_value => "9" },
+      :created_at => { :field => :created_at, :all_value => "-1" }
     }
   end
 
@@ -453,5 +462,5 @@ private
       ContactMailer.deliver_assigned_contacts_email(contacts, base_url) if person.present?
     end
   end
-  
+
 end
