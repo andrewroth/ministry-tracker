@@ -1765,17 +1765,17 @@ a.logoutbutton {
   margin-top: 20px;
 }
 
-table.datatable th{
-width:40%;
+table.datatable th {
+  width:40%;
 }
 
 table.datatable {
-border-collapse:collapse;
-margin-top:5px;
+  border-collapse:collapse;
+  margin-top:5px;
 }
 
 table.datatable td, table.datatable th {
-padding-bottom:5px;
+  padding-bottom:5px;
 }
 
 
@@ -4608,6 +4608,59 @@ td.campusDiscTree {
   width: inherit;
 }
 
-.dataTables_wrapper th {
+.dataTables_wrapper th, .dataTables_wrapper td {
   text-align: left
+}
+
+table.dataTable th:hover {
+  border-color: #A6A6A6;
+}
+
+table.dataTable th:active {
+  border-color: #666766;
+}
+
+table.dataTable thead th {
+  padding: 5px 0px 5px 10px !important;
+}
+
+table.dataTable tfoot th {
+  padding: 5px 10px !important;
+}
+
+table.dataTable td {
+  padding: 5px 10px !important;
+}
+
+table.dataTable tr:hover {
+  background-color: #FFECB3 !important;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button {
+  color: #1F429B !important;
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+  padding: 3px 7px;
+  font-weight: bold;
+  background: none;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button:hover {
+  text-decoration: underline;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button.ui-state-disabled {
+  color: #747474 !important;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button.ui-state-disabled:hover {
+  text-decoration: none;
+}
+
+.statsContainer table.dataTable tr.odd td.sorting_1 {
+  background-color: rgba(184, 204, 253, 0.2);
+}
+
+.statsContainer table.dataTable tr.even td.sorting_1 {
+  background-color: rgba(245, 245, 255, 0.5);
 }

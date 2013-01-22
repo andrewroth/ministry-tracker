@@ -4,7 +4,7 @@
 
 <br/>
 
-<table class="statsTable">
+<table class="dataTable">
   <thead>
     <tr>
       <th>Volunteer</th>
@@ -15,15 +15,17 @@
     <% total_contacts = 0 %>
     <% @contacts_grouped_by_people.each do |person, contacts| %>
       <% next unless person %>
-      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <tr>
         <td><%= link_to person.full_name, person %></td>
         <td><%= contacts.size %></td>
         <% total_contacts += contacts.size.to_i %>
       </tr>
     <% end %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
       <td>Total</td>
       <td><%= total_contacts %></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>

@@ -4,7 +4,7 @@
 
 <br/>
 
-<table class="statsTable">
+<table class="dataTable">
   <thead>
     <tr>
       <th>Name</th>
@@ -16,7 +16,7 @@
   </thead>
   <tbody>
     <% @contacts.each do |contact| %>
-      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+      <tr>
         <td><%= contact.first_name %></td>
         <td title="<%= contact.last_touched_at %>"><span class="has_title"><%= time_ago_in_words(contact.last_touched_at) %><%= t("misc.ago") %></span></td>
         <td><%= contact.next_step %></td>
@@ -24,8 +24,10 @@
         <td><%= contact.what_i_am_trusting_god_to_do_next %></td>
       </tr>
     <% end %>
-    <tr class="<%= cycle('highlight', 'nohighlight') %> statsTableTotal">
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
       <td>Total <%= @contacts.size %></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>
