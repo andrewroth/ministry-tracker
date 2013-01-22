@@ -173,7 +173,8 @@ module SurveyContactsHelper
       { :display => "Assigned To",   :fields => [Person._(:first_name), Person._(:last_name)] },
       { :display => "Status",        :fields => [contact_search_options[:status][:field].to_s]},
       { :display => "Result",        :fields => [contact_search_options[:result][:field].to_s] },
-      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] }
+      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] },
+      { :display => "Added",         :fields => [contact_search_options[:created_at][:field].to_s] }
     ]
   end
 
