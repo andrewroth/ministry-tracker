@@ -6,9 +6,9 @@
   	    <span class="advanced_search_field_label">Campus</span>
   	    <%= select_tag "campus_id", contact_campuses_options_for_select(@campus_id) %>
     	</div>
-      
+
       <div class="clear" style="margin-bottom:15px;"><br/></div>
-      
+
       <div class="base_conditions">
         <% contact_search_screen_fields.each do |data| %>
       	  <div class="adfieldbox">
@@ -17,9 +17,9 @@
         	    <span class="advanced_search_field_label"><%= data[:title]%></span>
         	    <%- tooltip do -%>
         	      Pressing Ctrl/Command will help selecting and deselecting multiple <%= data[:title].downcase.pluralize %>.
-        	    <%- end -%>
+        	    <%- end unless data[:single_select] -%>
         	    <br/>
-        	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => true, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
+        	    <%= select_tag "#{data[:field]}[]", options_for_select(data[:options], default_value(data[:field])), :multiple => data[:single_select].nil?, :size => 10, :class => 'multiSelect', :style => data[:field] == :assigned_to ? 'display:none;' : '' %>
               <%= spinner('AssignedToSelect') if data[:field] == :assigned_to %>
 
             <%- when :text -%>
@@ -34,7 +34,7 @@
             <br/>
             <div class="more_conditions" style="<%= show_more_search_options? ? '' : 'display:none;' %>">
           <% end %>
-          <% if data[:field] == :journey %>
+          <% if data[:field] == :created_at %>
             <div class="clear"></div>
             <br/>
           <% end %>
@@ -44,10 +44,10 @@
       <div class="show_more_conditions" style="<%= show_more_search_options? ? 'display:none;' : '' %>"><%= link_to 'More search options...', '' %></div>
 
       <div class="clear" style="margin-bottom:15px;"><br/></div>
-      
+
       <%= hidden_field_tag "force", "true" %>
       <%= submit_tag 'Search', :class => "action-button" %>
-      
+
     <% end %>
 	</div>
 	&nbsp;&nbsp;
