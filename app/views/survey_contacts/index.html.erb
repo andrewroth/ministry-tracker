@@ -86,7 +86,7 @@
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_status(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_result(contact) %></td>
           <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><%= contact_international(contact) %></td>
-          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><span title="<%= contact[:created_at] %>"><%= time_ago_in_words(contact[:created_at]) %> ago</span></td>
+          <td style="white-space: nowrap;" class="person_row" person_link="/contacts/<%= contact[:id] %>/edit"><span title="<%= contact[:created_at] if contact[:created_at] %>"><%= time_ago_in_words(contact[:created_at]) if contact[:created_at] %> ago</span></td>
           <td class="alignright">
             <div class="butProfile"><%= link_to 'Edit', edit_contact_path(contact), :title => "View and edit this contact" %></div>
           </td>
