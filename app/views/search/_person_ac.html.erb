@@ -1,6 +1,6 @@
-<%= Rails.cache.fetch([person_ac, person_ac.timetable_id.present?, person_ac.ministries_concat, person_ac.campuses_concat, person_ac.email, @ac_actions, @ac_title]) do
-  
-  result = "<div class='autoCompleteResult' title='#{@ac_title}'>" +
+<%= Rails.cache.fetch([person_ac, person_ac.timetable_id.present?, person_ac.ministries_concat, person_ac.campuses_concat, person_ac.email, @ac_actions]) do
+
+  result = "<div class='autoCompleteResult person'>" +
            "<div class='acLinkPath' style='display: none;'>/people/#{person_ac.id}</div>" +
            "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
 
@@ -16,7 +16,7 @@
   result += "<div class='autoCompleteExtraInfo'>#{ac_info_for_person(person_ac, @ac_actions)}</div>" +
             "</div>" +
             "</div>"
-  
+
   result
-  
+
 end %>

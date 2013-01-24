@@ -1,8 +1,13 @@
-<% if @people.present? %>
+<% if @people.present? || @discover_contacts.present? %>
   <% @people.each do |person| %>
     <%= render 'person_ac', :person_ac => person %>
-  <% end %>
-  <% unless @people.size < @max_num_ac_results || !@all_results_link %>
+  <% end if @people.present? %>
+
+  <% @discover_contacts.each do |dc| %>
+    <%= render 'discover_contact_ac', :discover_contact => dc %>
+  <% end if @discover_contacts.present? %>
+
+  <% unless @people.present? && (@people.size < @max_num_ac_results || !@all_results_link) %>
     <%= link_to("<div class='autoCompleteResult'>" +
         "<div class='acLinkPath' style='display: none;'>/search?q=#{@q}</div>" +
         "<div class='autoCompleteMorePic'>&nbsp;</div>" +
@@ -10,6 +15,7 @@
         "<div class='autoCompleteMoreInfo'>displaying top #{@max_num_ac_results} results</div>" +
         "</div>", "/search?q=#{@q}") %>
   <% end %>
+
 <% elsif !logged_in? %>
   <span class='autoCompleteName' style='display: none;'><%=@q%></span><br/><%= image_tag("silk/exclamation.png") %> <b>You have logged out,<br/>please login and try searching again.</b><br/>&nbsp;
 <% end %>

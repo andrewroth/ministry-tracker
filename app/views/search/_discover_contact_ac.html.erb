@@ -1,0 +1,13 @@
+<%=
+  result = "<div class='autoCompleteResult discoverContact'>" +
+           "<div class='acLinkPath' style='display: none;'>/discover_contacts/#{discover_contact.id}/edit</div>" +
+           # "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
+
+           "<div class='autoCompleteInfo'>" +
+           "<div class='autoCompleteName'>#{discover_contact.first_name.capitalize} #{discover_contact.last_name.capitalize}</div>"
+
+  result += "</div>" +
+            "</div>"
+
+  result
+%>
