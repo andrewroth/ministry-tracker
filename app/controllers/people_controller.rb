@@ -174,30 +174,13 @@ class PeopleController < ApplicationController
       end
     end
 
-    do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
+    params[:page] = 'all' unless params[:format] == 'html'
+    do_directory_search
 
     respond_to do |format|
       format.html { render :layout => 'application' }
-      format.xls  do
-        filename = @search_for.present? ? @search_for.gsub(';',' -') + ".xls" : "pulse_directory_search.xls"
-
-        #this is required if you want this to work with IE
-        if request.env['HTTP_USER_AGENT'] =~ /msie/i
-          headers['Pragma'] = 'public'
-          headers["Content-type"] = "text/plain"
-          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
-          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
-          headers['Expires'] = "0"
-        else
-          headers["Content-Type"] ||= 'text/xml'
-          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
-        end
-        render :action => 'excel', :layout => false
-      end
-      format.xml  { render :xml => @people.to_xml }
+      format.xml { render :xml => @people.to_xml }
       format.csv do
-        do_directory_search
-        @people = ActiveRecord::Base.connection.select_all(@sql)
         fn = "tmp/#{Time.now.to_i}"
         csv_string = FasterCSV.open(fn, "w") do |csv|
           csv << @view.columns.collect(&:title)
@@ -833,6 +816,8 @@ class PeopleController < ApplicationController
   private
 
     def do_directory_search
+      return nil unless @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
+
       @having = []
       if params[:search_id]
         @search = @my.searches.find(params[:search_id])
@@ -1000,11 +985,15 @@ class PeopleController < ApplicationController
       # If these conditions will result in too large a set, use pagination
       @group = Person._(:id)
       build_sql(tables_clause, @extra_select)
-      @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+      if params[:page].try(:downcase) == 'all'
+        @people = ActiveRecord::Base.connection.select_all(@sql)
+      else
+        @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+        @count = @people.total_entries
+      end
       if @temp_group_involvements_locked
         Lock.free_lock("not_in_group")
       end
-      @count = @people.total_entries
 
       # pass which ministries were searched for to the view
       if params[:ministry]
@@ -1283,7 +1272,8 @@ class PeopleController < ApplicationController
          params[:role].present? ||
          params[:ministry].present? ||
          params[:group_involvement].present? ||
-         params[:campus].present?
+         params[:campus].present? ||
+         params[:recruitment].present?
 
         return true
       else
