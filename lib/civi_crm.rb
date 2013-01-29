@@ -10,28 +10,27 @@ module CiviCRM
     attr_accessor :max_row_count, :log_tags
 
     def initialize(options = {})
+      @rails_env = Rails.respond_to?(:env) ? Rails.env : (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development')
+
+      # get config for current rails env
+      yml_config_path = options[:yml_config_path] || YML_CONFIG_PATH
       begin
-        @rails_env = Rails.respond_to?(:env) ? Rails.env : (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development')
-
-        # get config for current rails env
-        yml_config_path = options[:yml_config_path] || YML_CONFIG_PATH
         @config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join(yml_config_path))[@rails_env])
-
-        # setup logger
-        @log_tags = options[:log_tags] || @config[:log_tags] || []
-        @log_path = options[:log_path] || @config[:log_path] || 'log/civicrm_api.log'
-        @logger = Logger.new(@log_path, 'monthly')
-        @logger.level = Logger::INFO
-
-        log :debug, "Initializing new #{self.class} with #{yml_config_path} in #{@rails_env} environment."
-
-        raise "No config supplied, the config file should be #{yml_config_path}" unless @config.present?
-
-        @max_row_count = options[:max_row_count] || @config[:max_row_count] || 1000
-
       rescue => e
         log :error, e
       end
+
+      # setup logger
+      @log_tags = options[:log_tags] || @config[:log_tags] || []
+      @log_path = options[:log_path] || @config[:log_path] || 'log/civicrm_api.log'
+      @logger = Logger.new(@log_path, 'monthly')
+      @logger.level = Logger::INFO
+
+      log :debug, "Initializing new #{self.class} with #{yml_config_path} in #{@rails_env} environment."
+
+      raise "No config supplied, the config file should be #{yml_config_path}" unless @config.present?
+
+      @max_row_count = options[:max_row_count] || @config[:max_row_count] || 1000
     end
 
 
@@ -82,7 +81,7 @@ module CiviCRM
           end
         end if parsed_json['values'].present?
 
-        raise CiviCRM::StandardError.new("We don't have the same count of entities that CiviCRM returned") if entities.size != parsed_json['count']
+        raise CiviCRM::StandardError.new("Did not receive the same number of entities that CiviCRM supposedly returned") if entities.size != parsed_json['count']
 
         entities
       end
@@ -135,8 +134,9 @@ module CiviCRM
     end
 
     def parsed_json_response(params)
+      response = call(params.merge!({ :json => 1 }))
+
       begin
-        response = call(params.merge!({ :json => 1 }))
         parsed_json = JSON::Parser.new(response.body).parse
       rescue => e
         log :error, e
@@ -166,9 +166,11 @@ module CiviCRM
         return nil
       end
 
-      begin
-        [:entity, :action, :api_key, :key].each { |required_param| raise "'#{required_param}' required parameter not supplied for call to CiviCRM" unless params[required_param].present? }
+      [:entity, :action, :api_key, :key].each do |required_param|
+        raise "'#{required_param}' required parameter not supplied for call to CiviCRM" unless params[required_param].present?
+      end
 
+      begin
         if [:create, :delete, :update].include?(params[:action].to_sym)
           log :debug, "POST #{uri}"
           http = Net::HTTP.new(uri.host, uri.port)
