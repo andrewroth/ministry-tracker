@@ -4575,12 +4575,13 @@ td.campusDiscTree {
   display: inline-block;
   text-align:left;
   min-width:300px;
+  vertical-align: bottom;
 }
 
 .school_info th {
   text-align: right;
   margin-left: 10px;
-  width: 200px;
+  width: 150px;
 }
 
 .rounded label {
