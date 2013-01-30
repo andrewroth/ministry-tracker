@@ -1,15 +1,12 @@
 <li id="ci_<%= ci.id %>">
   <% ministry = ci.campus.derive_ministry %>
-  <% if @person == @me || ( authorized?(:edit, :campus_involvements) &&
-          ( is_ministry_leader(ministry, @me) || ministry.leaders.include?(@me) || is_ministry_admin )
-        )
-  %>
-    <%= link_to_remote("", 
-          {:url => person_campus_involvement_path(@person, ci), 
-          :confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
+  <% if @person == @me || (authorized?(:edit, :campus_involvements) && (is_ministry_leader(ministry, @me) || ministry.try(:leaders).try(:include?, @me) || is_ministry_admin)) %>
+    <%= link_to_remote("",
+          {:url => person_campus_involvement_path(@person, ci),
+          :confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name),
                        :campus_name => ci.campus.name),
           :method => :delete,
-          :before => "$('#spinner').show()"}, 
+          :before => "$('#spinner').show()"},
           {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{ci.campus.name}", :class => "removeInvolvementIconLink"}) %>
   <% end %>
 
