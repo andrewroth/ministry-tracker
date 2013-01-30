@@ -52,60 +52,72 @@ class SearchController < ApplicationController
   end
 
   def autocomplete
-    @all_results_link = params[:all_results_link] == "true" ? true : false if params[:all_results_link].present?
+    @all_results_link = params[:all_results_link].present? && params[:all_results_link] == "true" ? true : false
     @ac_actions = params[:actions] == "true" ? true : false if params[:actions].present?
-    @ac_title = params[:title].present? ? params[:title] : ""
     max_results = params[:max_results].present? ? params[:max_results].to_i : Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
-    
-    @people = []
+
     if logged_in? # necessary because we skip standard login stack for performance gain
       @people = autocomplete_people(max_results) if session[:search][:authorized_to_search_people] && @q.present?
+      @discover_contacts = autocomplete_discover_contacts(max_results) #if session[:search][:authorized_to_search_discover_contacts] && @q.present?
     end
+
     render :layout => false
   end
-  
+
   def autocomplete_mentors
     @person_id = params[:p]
     @search_for_mentor = true
 
-    @people = []
     if logged_in? # necessary because we skip standard login stack for performance gain
       @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+    else
+      @people = []
     end
 
     render :layout => false
   end
-  
+
   def autocomplete_mentees
     @person_id = params[:p]
     @filter_out_mentored = true
-    @people = []
+
     if logged_in? # necessary because we skip standard login stack for performance gain
       @people = autocomplete_people if session[:search][:authorized_to_search_people] && @q.present?
+    else
+      @people = []
     end
-    
-    render :layout => false
-  end  
 
-  def prepare
-    # call to prepare search via before filter - hopefully to make auto complete faster
-    render :nothing => true 
+    render :layout => false
+  end
+
+  def prepare # call to prepare search via before filter - hopefully to make auto complete faster
+    render :nothing => true
   end
 
 
   private
 
+  def autocomplete_discover_contacts(max_results = nil)
+    @max_num_ac_results ||= max_results || Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
+
+    contacts = DiscoverContact.all :select => "#{Contact.__(:id)}, #{Contact.__(:first_name)}, #{Contact.__(:last_name)}, #{Contact.__(:email)}, #{Contact.__(:mobile_phone)}, #{Contact.__(:campus_id)}, #{Campus.__(:short_desc)} AS campus_short_desc",
+                                   :limit => @max_num_ac_results,
+                                   :joins => "LEFT JOIN #{ContactsPerson.table_name} ON #{ContactsPerson.__(:contact_id)} = #{Contact.__(:id)} " +
+                                             "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{Contact.__(:campus_id)} ",
+                                   :conditions => ["#{ContactsPerson.__(:person_id)} = ? AND (" +
+                                                   "concat(#{Contact.__(:first_name)}, \" \", #{Contact.__(:last_name)}) like ? " +
+                                                   "OR #{Contact.__(:first_name)} like ? " +
+                                                   "OR #{Contact.__(:last_name)} like ? " +
+                                                   "OR #{Contact.__(:email)} like ? " +
+                                                   "OR #{Contact.__(:id)} like ? " +
+                                                   ")",
+                                                   get_person.id, "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"]
+  end
+
 
   def autocomplete_people(max_results = nil)
+    @max_num_ac_results ||= max_results || Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
 
-    @max_num_ac_results = max_results || Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
-
-    if !@person_id
-      person = get_person           # i don't really like this, since it looks up Pulse user
-      @person_id = person.id        # TODO: replace with something (requires multi-level exception handling, i tried...)
-    end
-
-    person = Person.find(@person_id)  # ensures that the profile person is selected, not the Pulse user
 
     # I don't know a better way to sanitize the select statement...
     select_str = ActiveRecord::Base.__send__(:sanitize_sql,
@@ -121,8 +133,16 @@ class SearchController < ApplicationController
         " AS rank", "#{@q}%", "#{@q}%", session[:search][:search_ministry_name] ], '')
 
 
-    if @filter_out_mentored == true   # i.e. we are searching for a mentee (that is not being mentored)
+    if @search_for_mentor || @filter_out_mentored
+      if !@person_id
+        person = get_person           # i don't really like this, since it looks up Pulse user
+        @person_id = person.id        # TODO: replace with something (requires multi-level exception handling, i tried...)
+      end
+      person = Person.find(@person_id)  # ensures that the profile person is selected, not the Pulse user
+    end
 
+
+    if @filter_out_mentored # i.e. we are searching for a mentee (that is not being mentored)
       if person.person_mentor_id == nil
         person_mentor_id_condition = 'IS NOT NULL'
       else
@@ -159,8 +179,7 @@ class SearchController < ApplicationController
 
                           :group => "#{Person.__(:id)}")
 
-   elsif @search_for_mentor == true
-
+   elsif @search_for_mentor
      people = Person.all(:limit => @max_num_ac_results,
                          :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
                                    "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
@@ -192,7 +211,6 @@ class SearchController < ApplicationController
                          :group => "#{Person.__(:id)}")
 
     else
-
        people = Person.all(:limit => @max_num_ac_results,
                            :joins => "LEFT JOIN #{CampusInvolvement.table_name} ON #{CampusInvolvement.__(:person_id)} = #{Person.__(:person_id)} AND #{CampusInvolvement.__(:end_date)} IS NULL " +
                                      "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{CampusInvolvement.__(:campus_id)} " +
@@ -219,11 +237,9 @@ class SearchController < ApplicationController
                            :order => 'rank DESC',
 
                            :group => "#{Person.__(:id)}")
-
     end
 
     people
-
   end
 
 end
