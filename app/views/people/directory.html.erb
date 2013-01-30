@@ -35,209 +35,222 @@
 <%- if @conditions -%>
 
 
-<%= form_tag(perform_task_people_path, :name => 'people_form', :id => 'people_form') %>
-<div class="yoursearch">
-<p>
-  Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found.
+  <%= form_tag(perform_task_people_path, :name => 'people_form', :id => 'people_form') %>
+  <div class="yoursearch">
+  <p>
+    Search results for <strong><%= @search_for.present? ? @search_for : 'Everybody' %></strong>, <%= @count %> <%= @count != 1 ? 'people' : 'person' %> found.
 
-  <br />
-  <br />
+    <br>
+    <br>
 
-  <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-      $("select#perform_action").val('');
-    });
+    <div>
+      <% action_options_array = [['Perform action on selected people...','']] %>
+      <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
+      <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
+      <% action_options_array << ['Change Roles...', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :mids => @searched_ministry_ids, :mrids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) && authorized?(:edit, :ministry_involvements) %>
+      <% action_options_array << ['Change Year in School...', url_for(:action => "edit_multiple_school_years", :controller => "campus_involvements", :mids => @searched_ministry_ids, :cids => @searched_campus_ids, :syids => @searched_school_year_ids)] if authorized?(:update_multiple_school_years, :campus_involvements) && authorized?(:edit, :campus_involvements) %>
 
-    var total_people = <%= @count %>
-  </script>
+      <% if action_options_array.size > 1 %>
+        <div class="directoryResultControl">
+          <%= select_tag(:perform_action, options_for_select(action_options_array)) %>
+          <%= observe_field(:perform_action, {:function => "performAction();"}) %>
+          <%= spinner('_perform_action') %>
+        </div>
+      <% end %>
 
-  <div>
-    <% action_options_array = [['Perform action on selected people...','']] %>
-    <% action_options_array << ['Send Email...',new_email_path] if authorized?(:email) %>
-    <% action_options_array << ['Create Group...', new_group_path] if authorized?(:new, :groups) %>
-    <% action_options_array << ['Change Roles...', url_for(:action => "edit_multiple_roles", :controller => "ministry_involvements", :mids => @searched_ministry_ids, :mrids => @searched_ministry_roles  )] if authorized?(:update_multiple_roles, :ministry_involvements) && authorized?(:edit, :ministry_involvements) %>
-    <% action_options_array << ['Change Year in School...', url_for(:action => "edit_multiple_school_years", :controller => "campus_involvements", :mids => @searched_ministry_ids, :cids => @searched_campus_ids, :syids => @searched_school_year_ids)] if authorized?(:update_multiple_school_years, :campus_involvements) && authorized?(:edit, :campus_involvements) %>
 
-    <% if action_options_array.size > 1 %>
-      <div class="directoryResultControl">
-        <%= select_tag(:perform_action, options_for_select(action_options_array)) %>
-        <%= observe_field(:perform_action, {:function => "performAction();"}) %>
-        <%= spinner('_perform_action') %>
-      </div>
+      <%- if @ministry.views.length > 1 -%>
+        <div class="directoryResultControl">
+          View <%= select_tag("view", ministry_view_options_for_select(@view, @ministry), :style => 'width:100px') %>
+          <%= observe_field(:view, {:url => change_view_people_url, :with => 'view', :before => "$('#spinner_change_view').show()"} ) -%>
+
+          <%- tooltip do -%>
+            Views are different ways to look at the same search results.<br><br>Each view shows different columns of information.
+          <%- end -%>
+          <%= spinner('_change_view') %>
+        </div>
+      <%- end -%>
+
+
+      <%- if authorized?(:new) -%>
+        <div class="directoryResultControl">
+          <%= link_to_remote("Add a student",
+                             :url => add_student_people_url,
+                             :loading => "$('#spinneradd_student').show();",
+                             :complete => "$('#spinneradd_student').hide();
+                                            show_add_student()",
+                             :method => :get,
+                             :html => {:class => "action-button skinny"}) %>
+          <%= spinner('add_student') %>
+        </div>
+      <%- end -%>
+
+
+      <%- if @advanced && authorized?(:advanced) %>
+        <div class="directoryResultControl">
+          <%= link_to 'Export to CSV file', '', :'data-form-selector' => '#searchBox form:visible',  :'data-alternate-format' => 'csv', :class => 'submit_alternate_format action-button skinny' %>
+
+          <%- tooltip do -%>
+            You can download a CSV file with all the information you see in your current view.<br><br>The CSV file may be imported into Excel, Google Docs, or other spreadsheet software.
+          <%- end -%>
+        </div>
+      <%- end -%>
+    </div>
+
+    <%- unless params[:start].to_s.empty? -%>
+      <br>
+      Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
     <% end %>
 
-
-    <%- if @ministry.views.length > 1 -%>
-      <div class="directoryResultControl">
-        View <%= select_tag("view", ministry_view_options_for_select(@view, @ministry), :style => 'width:100px') %>
-        <%= observe_field(:view, {:url => change_view_people_url, :with => 'view', :before => "$('#spinner_change_view').show()"} ) -%>
-
-        <%- tooltip do -%>
-          Views are different ways to look at the same search results.<br><br>Each view shows different columns of information.
-        <%- end -%>
-        <%= spinner('_change_view') %>
-      </div>
-    <%- end -%>
-
-
-    <%- if authorized?(:new) -%>
-      <div class="directoryResultControl">
-        <%= link_to_remote("Add a student",
-                           :url => add_student_people_url,
-                           :loading => "$('#spinneradd_student').show();",
-                           :complete => "$('#spinneradd_student').hide();
-                                          show_add_student()",
-                           :method => :get,
-                           :html => {:class => "action-button skinny"}) %>
-        <%= spinner('add_student') %>
-      </div>
-    <%- end -%>
-
-
-    <%- if authorized?(:advanced) %>
-      <div class="directoryResultControl">
-        <%= link_to "Excel download", directory_people_url(:format => 'csv', :search_id => @search.id), :class => "action-button skinny" %>
-
-        <%- tooltip do -%>
-          You can download an Excel spreadsheet with all the information you see in your current view.
-        <%- end -%>
-      </div>
-    <%- end -%>
+  </p>
   </div>
 
-  <%- unless params[:start].to_s.empty? -%>
-    <br>
-    Showing: Last name starts with <strong><%= params[:start] %></strong> <%= 'through '+params[:finish] unless params[:finish].to_s.empty? %>
-  <% end %>
-
-</p>
-</div>
-
-<p><%= will_paginate @people, :class => "searchResultsPagination" %></p>
+  <p><%= will_paginate @people, :class => "searchResultsPagination" %></p>
 
 
-<div id="people">
-  <table cellpadding="0" cellspacing="0" class="directorytable">
-    <thead class="center">
-      <tr id="selected_row" style="display:none">
-        <td colspan="<%= @view.columns.length + 2 %>">
-          <%= hidden_field_tag :entire_search, 0 %>
-          <%= hidden_field_tag :search_id, @search.id %>
-          All <strong><%= @people.length %></strong> people on this page are selected.
-          <%= link_to_function("Select all <strong>#{@count}</strong> people from this search.", "selectEntireSearch();") %>
-        </td>
-      </tr>
-      <tr id="entire_search_row" style="display:none">
-        <td colspan="<%= @view.columns.length + 2 %>">All <strong><%= @count %></strong> people from this search are selected.
-          <%= link_to_function("Clear selection.", "clearSelection();") %>
-        </td>
-      </tr>
-      <tr>
-  <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
-      <th>
-        <%= check_box_tag 'select_all', 1, false %>
-      </th>
-  <%- end -%>
-  <%- @view.columns.each do |column| -%>
-      <th>
-        <%- if [nil, 'date'].include?(column.column_type)
-              direction = '' -%>
-          <%- if session[:order_column_id].to_s == column.id.to_s
-                if session[:direction] == 'asc'
-                  direction = 'desc' -%>
-                  <%= image_tag('silk/bullet_arrow_down.png') %>
-            <%- else
-                  direction = 'asc' -%>
-                  <%= image_tag('silk/bullet_arrow_up.png') %>
+  <div id="people">
+    <table cellpadding="0" cellspacing="0" class="directorytable">
+      <thead class="center">
+        <tr id="selected_row" style="display:none">
+          <td colspan="<%= @view.columns.length + 2 %>">
+            <%= hidden_field_tag :entire_search, 0 %>
+            <%= hidden_field_tag :search_id, @search.id %>
+            All <strong><%= @people.length %></strong> people on this page are selected.
+            <%= link_to_function("Select all <strong>#{@count}</strong> people from this search.", "selectEntireSearch();") %>
+          </td>
+        </tr>
+        <tr id="entire_search_row" style="display:none">
+          <td colspan="<%= @view.columns.length + 2 %>">All <strong><%= @count %></strong> people from this search are selected.
+            <%= link_to_function("Clear selection.", "clearSelection();") %>
+          </td>
+        </tr>
+        <tr>
+    <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
+        <th>
+          <%= check_box_tag 'select_all', 1, false %>
+        </th>
+    <%- end -%>
+    <%- @view.columns.each do |column| -%>
+        <th>
+          <%- if [nil, 'date'].include?(column.column_type)
+                direction = '' -%>
+            <%- if session[:order_column_id].to_s == column.id.to_s
+                  if session[:direction] == 'asc'
+                    direction = 'desc' -%>
+                    <%= image_tag('silk/bullet_arrow_down.png') %>
+              <%- else
+                    direction = 'asc' -%>
+                    <%= image_tag('silk/bullet_arrow_up.png') %>
+              <%- end -%>
             <%- end -%>
+            <%= link_to(I18n.t(column.title, :default => column.title),
+                         directory_people_url(:format => "html",
+                                               :order_column_id => column.id,
+                                               :direction => direction,
+                                               :start => params[:start], :finish => params[:finish],
+                                               :search_id => @search.id )) %>
+          <%- else -%>
+            <%= column.title %>
           <%- end -%>
-          <%= link_to(I18n.t(column.title, :default => column.title),
-                       directory_people_url(:format => "html",
-                                             :order_column_id => column.id,
-                                             :direction => direction,
-                                             :start => params[:start], :finish => params[:finish],
-                                             :search_id => @search.id )) %>
-        <%- else -%>
-          <%= column.title %>
-        <%- end -%>
-      </th>
-  <%- end -%>
-      <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @can_delete = authorized?(:new) %>
-    <%- @people.each_with_index do |person, i|  -%>
-      <tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
-  <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
-      <td width="10px">
-        <%= check_box_tag 'person[]', person["person_id"] %>
-      </td>
-  <%- end -%>
-      <%- @view.columns.each do |column| -%>
-        <td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%=
-          case
-          when column.from_clause == "Timetable" && column.title == "Timetable Updated"
-            if person[column.safe_name].present?
-              # CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00') conversion is hard coded in the db, but rails will receive this time and think it's your system time
-              # we need to convert to UTC to properly do the comparison
-              if (t = person[column.safe_name]).class == Time
-                time = t
-              else
-                time = Time.parse(t) # this is the time in PST (-08:00) but rails thinks it's your local system time
-              end
-              time = time + 8.hours # this is the time in UTC but rails still thinks it's your local system time
-              time = Time.utc(time.year, time.month, time.day, time.hour, time.min, time.sec) # this is the time in UTC and now rails thinks it's UTC
-              "#{distance_of_time_in_words(Time.now.utc, time)} ago"
-            else
-              "never"
-            end
-
-          when column.from_clause == "LabelPerson"
-            Person.find(person["person_id"]).labels.collect(&:content).join(',<br>')
-
-          when column.from_clause == "Recruitment" && column.title == "Challenge"
-            Recruitment::STATUSES[person[column.safe_name].to_i][0]
-
-          when column.column_type == 'image'
-            if person[column.safe_name]
-              file_id, filename = person[column.safe_name].split('|')
-              filename = filename.split('.')
-              filename = filename[0] + '_mini.' + filename[1]
-              image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")  if defined?(Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name)
-            end
-
-          when column.column_type == 'date'
-            format_date(person[column.safe_name])
-
-          when column.column_type == 'gender'
-            @person.human_gender(person[column.safe_name])
-
-          when column.column_type == 'url'
-            unless person[column.safe_name].blank?
-              desc, url = parse_url(person[column.safe_name])
-              link_to(desc, url, :target => '_blank')
-            end
-
-          else
-            person[column.safe_name]
-          end
-        %></td>
-      <%- end -%>
-        <td class="alignright">
-          <%= link_to("Remove", person_path(person['person_id']), :title => "Remove person (they're no longer involved)", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
-          <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']), :title => "Goto #{person["First_Name"] ? person["First_Name"] : "this person"}'s profile" %></span>
+        </th>
+    <%- end -%>
+        <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @can_delete = authorized?(:new) %>
+      <%- @people.each_with_index do |person, i|  -%>
+        <tr class="<%= i.even? ? 'highlight' : 'nohighlight' %>">
+    <%- if authorized?(:email) || authorized?(:new, :groups) || authorized?(:update_multiple_roles, :ministry_involvements) -%>
+        <td width="10px">
+          <%= check_box_tag 'person[]', person["person_id"] %>
         </td>
-      </tr>
-      <%- end -%>
+    <%- end -%>
+        <%- @view.columns.each do |column| -%>
+          <td style="white-space: nowrap;" class="person_row" person_link="<%= person_path(person['person_id']) %>"><%=
+            case
+            when column.from_clause == "Timetable" && column.title == "Timetable Updated"
+              if person[column.safe_name].present?
+                # CONVERT_TZ(Timetable.updated_at, '+00:00', '-08:00') conversion is hard coded in the db, but rails will receive this time and think it's your system time
+                # we need to convert to UTC to properly do the comparison
+                if (t = person[column.safe_name]).class == Time
+                  time = t
+                else
+                  time = Time.parse(t) # this is the time in PST (-08:00) but rails thinks it's your local system time
+                end
+                time = time + 8.hours # this is the time in UTC but rails still thinks it's your local system time
+                time = Time.utc(time.year, time.month, time.day, time.hour, time.min, time.sec) # this is the time in UTC and now rails thinks it's UTC
+                "#{distance_of_time_in_words(Time.now.utc, time)} ago"
+              else
+                "never"
+              end
 
-    </tbody>
-  </table>
+            when column.from_clause == "LabelPerson"
+              Person.find(person["person_id"]).labels.collect(&:content).join(',<br>')
 
-</div>
+            when column.from_clause == "Recruitment" && column.title == "Challenge"
+              Recruitment::STATUSES[person[column.safe_name].to_i][0]
 
-<br />
-<%= will_paginate @people, :class => "searchResultsPagination" %>
-<br />
+            when column.column_type == 'image'
+              if person[column.safe_name]
+                file_id, filename = person[column.safe_name].split('|')
+                filename = filename.split('.')
+                filename = filename[0] + '_mini.' + filename[1]
+                image_tag("http://s3.amazonaws.com/#{Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name}/profile_pictures/#{file_id}/#{filename}")  if defined?(Technoweenie::AttachmentFu::Backends::S3Backend.bucket_name)
+              end
+
+            when column.column_type == 'date'
+              format_date(person[column.safe_name])
+
+            when column.column_type == 'gender'
+              @person.human_gender(person[column.safe_name])
+
+            when column.column_type == 'url'
+              unless person[column.safe_name].blank?
+                desc, url = parse_url(person[column.safe_name])
+                link_to(desc, url, :target => '_blank')
+              end
+
+            else
+              person[column.safe_name]
+            end
+          %></td>
+        <%- end -%>
+          <td class="alignright">
+            <%= link_to("Remove", person_path(person['person_id']), :title => "Remove person (they're no longer involved)", :method => :delete, :confirm => "You are about to remove this person from all ministries, campuses, and groups they are a part of. Are you SURE you want to continue?") if @can_delete %>
+            <span class="butProfile"><%= link_to 'Profile', person_path(person['person_id']), :title => "Goto #{person["First_Name"] ? person["First_Name"] : "this person"}'s profile" %></span>
+          </td>
+        </tr>
+        <%- end -%>
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <br>
+  <%= will_paginate @people, :class => "searchResultsPagination" %>
+  <br>
+
+
+  <script type="text/javascript" charset="utf-8">
+    $(function() {
+      var total_people = <%= @count %>
+
+      $('select#perform_action').val('');
+
+      $('a.submit_alternate_format').on('click', function(e) {
+        e.preventDefault();
+        formSubmitAlternateFormat($($(this).data('form-selector')), $(this).data('alternate-format'));
+      });
+    });
+
+    function formSubmitAlternateFormat($form, format) {
+      var originalFormat = $form.find('#format').val();
+      $form.find('#format').val(format);
+      $form.submit();
+      $form.find('#format').val(originalFormat);
+    }
+  </script>
 
 <%- end -%>

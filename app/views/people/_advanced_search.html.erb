@@ -1,4 +1,6 @@
-<% form_tag(directory_people_path(:format => 'html')) do %>
+<% form_tag directory_people_path do %>
+  <%= hidden_field_tag :format, :html %>
+
   <div class="adfieldbox">
     <span class="advanced_search_field_label">First Name<br /></span>
     <%= text_field_tag :first_name,
