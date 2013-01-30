@@ -56,9 +56,9 @@ class SearchController < ApplicationController
     @ac_actions = params[:actions] == "true" ? true : false if params[:actions].present?
     max_results = params[:max_results].present? ? params[:max_results].to_i : Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
 
-    if logged_in? # necessary because we skip standard login stack for performance gain
-      @people = autocomplete_people(max_results) if session[:search][:authorized_to_search_people] && @q.present?
-      @discover_contacts = autocomplete_discover_contacts(max_results) #if session[:search][:authorized_to_search_discover_contacts] && @q.present?
+    if logged_in? && @q.present? # necessary because we skip standard login stack for performance gain
+      @people = autocomplete_people(max_results) if session[:search][:authorized_to_search_people]
+      @discover_contacts = autocomplete_discover_contacts(max_results) if session[:search][:authorized_to_search_discover_contacts]
     end
 
     render :layout => false

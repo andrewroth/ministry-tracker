@@ -207,6 +207,7 @@ module Searching
       end
 
       session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+      session[:search][:authorized_to_search_discover_contacts] ||= (authorized?(:index, :discover_contacts) && authorized?(:edit, :discover_contacts) && authorized?(:show, :discover_contacts))
       session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
       session[:search][:authorized_to_search_web] ||= authorized?(:web, :search)
 
