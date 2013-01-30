@@ -1,4 +1,5 @@
 class DiscoverContactsController < ApplicationController
+  before_filter :require_permission, :only => [:show, :edit, :create, :update]
   before_filter :get_my_campuses, :get_current_campus, :set_title
 
   def index
@@ -94,6 +95,10 @@ class DiscoverContactsController < ApplicationController
 
   private
 
+  def require_permission
+    redirect_to '/' unless is_admin? || @my.discover_contacts.collect(&:id).include?(params[:id].to_i)
+  end
+
   def get_current_campus
     if params[:campus_id].present?
       @campus = Campus.find(params[:campus_id])
@@ -109,8 +114,13 @@ class DiscoverContactsController < ApplicationController
   end
 
   def get_my_campuses
-    @my_campuses = get_person_current_campuses
-    redirect_to :controller => :dashboard, :action => :index unless @my_campuses.present?
+    if @me.is_staff_somewhere?
+      @my_campuses ||= @me.campuses_under_my_ministries_with_children(::MinistryRole::ministry_roles_that_grant_access("discover_contacts", "index"))
+    else
+      @my_campuses ||= @me.campuses
+    end
+
+    redirect_to '/' unless @my_campuses.present?
   end
 
   def set_title
