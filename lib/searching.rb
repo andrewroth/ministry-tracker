@@ -195,7 +195,7 @@ module Searching
     @filter_out_mentored = false
     @search_for_mentor = false
 
-    if logged_in? # necessary because we skip standard login stack for performance gain
+    if (session[:search].nil? || session[:search][:search_prepared].nil?) && logged_in? # necessary because we skip standard login stack for performance gain
       session[:search] ||= {}
 
       session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
