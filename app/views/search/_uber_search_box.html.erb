@@ -31,6 +31,7 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
   minChars ||= 2                                 # the minimum number of characters a user has to type before the autocompleter activates
   prepare ||= true
   formatMatchFunction ||= formatResultFunction
+  max ||= 11
 
 %>
 
@@ -53,6 +54,7 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
           autoFill: false,
           scroll: false,
           cacheLength: 10,
+          max: <%= max %>,
           matchSubset: false,
           width: <%= width %>,
           delay: <%= delay %>,

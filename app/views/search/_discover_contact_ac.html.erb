@@ -1,13 +1,15 @@
 <%=
-  result = "<div class='autoCompleteResult discoverContact'>" +
-           "<div class='acLinkPath' style='display: none;'>/discover_contacts/#{discover_contact.id}/edit</div>" +
-           # "<div class='autoCompletePic'>#{ac_profile_picture_for_person(person_ac)}</div>" +
+  path = "/discover_contacts/#{ discover_contact.id }/edit"
+  result = %(<div class="autoCompleteResult discoverContact#{ index == 0 ? ' first' : '' }">) +
+           %(<div class="acLinkPath" style="display: none;">#{ path }</div>) +
+           %(<div class="autoCompletePic butProfile">#{ link_to '', path }</div>) +
 
-           "<div class='autoCompleteInfo'>" +
-           "<div class='autoCompleteName'>#{discover_contact.first_name.capitalize} #{discover_contact.last_name.capitalize}</div>"
+           %(<div class="autoCompleteInfo">) +
+           %(<div class="autoCompleteName">#{ discover_contact.first_name.capitalize } #{ discover_contact.last_name.capitalize }</div>)
 
-  result += "</div>" +
-            "</div>"
+  result += %(<div class="autoCompleteExtraInfo">#{ ac_info_for_contact(discover_contact) }</div>) +
+            %(</div>) +
+            %(</div>)
 
   result
 %>

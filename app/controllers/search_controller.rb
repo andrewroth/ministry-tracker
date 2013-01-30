@@ -52,7 +52,7 @@ class SearchController < ApplicationController
   end
 
   def autocomplete
-    @all_results_link = params[:all_results_link] == "true" ? true : false if params[:all_results_link].present?
+    @all_results_link = params[:all_results_link].present? && params[:all_results_link] == "true" ? true : false
     @ac_actions = params[:actions] == "true" ? true : false if params[:actions].present?
     max_results = params[:max_results].present? ? params[:max_results].to_i : Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
 
@@ -100,8 +100,10 @@ class SearchController < ApplicationController
   def autocomplete_discover_contacts(max_results = nil)
     @max_num_ac_results ||= max_results || Searching::MAX_NUM_AUTOCOMPLETE_RESULTS
 
-    contacts = DiscoverContact.all(:limit => @max_num_ac_results,
-                                   :joins => "LEFT JOIN #{ContactsPerson.table_name} ON #{ContactsPerson.__(:contact_id)} = #{Contact.__(:id)}",
+    contacts = DiscoverContact.all :select => "#{Contact.__(:id)}, #{Contact.__(:first_name)}, #{Contact.__(:last_name)}, #{Contact.__(:email)}, #{Contact.__(:mobile_phone)}, #{Contact.__(:campus_id)}, #{Campus.__(:short_desc)} AS campus_short_desc",
+                                   :limit => @max_num_ac_results,
+                                   :joins => "LEFT JOIN #{ContactsPerson.table_name} ON #{ContactsPerson.__(:contact_id)} = #{Contact.__(:id)} " +
+                                             "LEFT JOIN #{Campus.table_name} ON #{Campus.__(:campus_id)} = #{Contact.__(:campus_id)} ",
                                    :conditions => ["#{ContactsPerson.__(:person_id)} = ? AND (" +
                                                    "concat(#{Contact.__(:first_name)}, \" \", #{Contact.__(:last_name)}) like ? " +
                                                    "OR #{Contact.__(:first_name)} like ? " +
@@ -110,7 +112,6 @@ class SearchController < ApplicationController
                                                    "OR #{Contact.__(:id)} like ? " +
                                                    ")",
                                                    get_person.id, "#{@q}%", "#{@q}%", "#{@q}%", "%#{@q}%", "%#{@q}%"]
-                                   )
   end
 
 
