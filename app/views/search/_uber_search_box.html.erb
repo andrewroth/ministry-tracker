@@ -44,7 +44,13 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
 
     <%= javascript_include_tag "jquery.autocomplete.js", :cache => "cache/jquery.forSearch" %>
     <script type="text/javascript">
-      $(document).ready(function() {
+      $(function() {
+
+        <% if (session[:search].nil? || session[:search][:search_prepared].nil?) && prepare %>
+          $.ajax({dataType:'script',
+                  type:'get',
+                  url: '/search/prepare'});
+        <% end %>
 
         $("#<%= input_id %>").autocomplete("<%= autocomplete_action %><%= "?#{action_params}" if action_params.present? %>", {
           resultsClass: "<%= resultsClass %>",
@@ -80,14 +86,6 @@ return unless local_assigns[:input_id] && local_assigns[:resultsClass]
         function defaultResultAction(event, info) {
           // do nothing for now
         }
-
-
-        <% if (session[:search].nil? || session[:search][:search_prepared].nil?) && prepare %>
-          $.ajax({dataType:'script',
-                  type:'get',
-                  url: '/search/prepare'});
-        <% end %>
-
 
         var fields = jQuery("#<%= input_id %>");
         for (var i = 0; i < fields.length; i++) {
