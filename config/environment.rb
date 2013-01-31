@@ -84,10 +84,10 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
   session_config = YAML.load_file('config/session.yml')
   config.action_controller.session = {
-    :key    => session_config[RAILS_ENV]['session_key'],
-    :secret => session_config[RAILS_ENV]['secret']
+    :session_key => session_config[RAILS_ENV]['session_key'],
+    :secret      => session_config[RAILS_ENV]['secret']
   }
-  raise "No session secret supplied!" if config.action_controller.session[:secret].to_s.empty? && RAILS_ENV != 'development'
+  raise "No session secret supplied!" if (config.action_controller.session[:secret].to_s.empty? || config.action_controller.session[:session_key].to_s.empty?) && RAILS_ENV != 'development'
 
   # config.active_record.observers = :view_column_observer
   # config.plugins = config.plugin_locators.map do |locator|
