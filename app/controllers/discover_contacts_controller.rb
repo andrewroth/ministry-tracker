@@ -43,7 +43,6 @@ class DiscoverContactsController < ApplicationController
         format.html { redirect_to :action => 'index' }
 
       else
-        flash[:notice] = 'Sorry, there was a problem updating the contact!'
         format.html { render :action => 'edit' }
       end
     end
