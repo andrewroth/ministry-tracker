@@ -8,6 +8,7 @@ config/facebooker.yml
 config/civicrm.yml
 config/session.yml
 config/mailer.yml
+config/koala.yml
 .DS_Store
 doc/api
 coverage
