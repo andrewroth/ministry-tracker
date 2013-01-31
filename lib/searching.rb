@@ -195,7 +195,7 @@ module Searching
     @filter_out_mentored = false
     @search_for_mentor = false
 
-    if logged_in? # necessary because we skip standard login stack for performance gain
+    if (session[:search].nil? || session[:search][:search_prepared].nil?) && logged_in? # necessary because we skip standard login stack for performance gain
       session[:search] ||= {}
 
       session[:search][:person_search_limit_condition] ||= get_involvement_limit_condition_for_person_search
@@ -207,6 +207,7 @@ module Searching
       end
 
       session[:search][:authorized_to_search_people] ||= (authorized?(:people, :search) && authorized?(:show, :people) && authorized?(:search, :people))
+      session[:search][:authorized_to_search_discover_contacts] ||= (authorized?(:index, :discover_contacts) && authorized?(:edit, :discover_contacts) && authorized?(:show, :discover_contacts))
       session[:search][:authorized_to_search_groups] ||= (authorized?(:groups, :search) && authorized?(:show, :groups))
       session[:search][:authorized_to_search_web] ||= authorized?(:web, :search)
 

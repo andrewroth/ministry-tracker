@@ -1,5 +1,5 @@
 class DiscoverContactsController < ApplicationController
-  before_filter :require_permission, :only => [:show, :edit, :create, :update]
+  before_filter :require_permission, :only => [:show, :edit, :update]
   before_filter :get_my_campuses, :get_current_campus, :set_title
 
   def index

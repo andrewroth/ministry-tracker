@@ -3179,7 +3179,7 @@ h2.group_type_title {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 6px;
+  top: 7px;
   right: 105px;
   padding: 5px;
   cursor: pointer;
@@ -3415,12 +3415,12 @@ h2.group_type_title {
 }
 
 .searchResult .subtle, .searchResult .subtle strong, .searchResult .subtle a,
-.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong {
+.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong, .autoCompleteResult .acEmail strong {
   color: #5674BF;
 }
 
 .searchResult:hover .subtle, .searchResult:hover .subtle strong, .searchResult:hover .subtle a,
-.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong {
+.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong, .ac_over .autoCompleteResult .acEmail strong {
   color: #1F429B;
 }
 
@@ -3540,12 +3540,16 @@ h2.group_type_title {
 
 .autoCompleteMorePic {
   float: left;
-  margin: 19px 8px 0 35px;
+  margin: 19px 10px 0 35px;
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
   background-position: -10px -908px;
   height:15px;
   width:14px;
   display:inline-block;
+}
+
+.ac_over .autoCompleteMorePic {
+  background-position: -10px -942px;
 }
 
 .autoCompleteMore a {
@@ -3759,6 +3763,17 @@ li.ac_over .autoCompleteName {
   max-width: 50px;
 }
 
+.autoCompletePic.butProfile a {
+  float: right;
+  margin: 3px 2px 0 0;
+  opacity: 0.5;
+}
+
+.ac_over .autoCompletePic.butProfile a {
+  opacity: 1;
+  background-position: -8px -739px;
+}
+
 .autoCompleteInfo {
   margin: 0 auto auto 57px;
   padding-top: 6px;
@@ -3781,6 +3796,27 @@ li.ac_over .autoCompleteName {
 .autoCompleteResult a :hover {
 /*  color: #1F429B;*/
   text-decoration: none;
+}
+
+.autoCompleteResult.discoverContact.first:before {
+  content: "DISCOVER:";
+  background-color: white;
+  border-top: 1px dashed #EEE;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 10px;
+  height: 18px;
+  padding: 7px 0 0 7px;
+  text-align: left;
+  width: 268px;
+}
+
+.autoCompleteResult.discoverContact.first {
+  height: 81px;
+}
+
+.autoCompleteResult.last {
+  border-top: 1px dashed #EEE;
 }
 
 .noSearchHighlight strong {
@@ -4367,7 +4403,7 @@ td.campusDiscTree {
   padding: 5px;
 }
 
-.contact_form input:not([type=submit]) {
+.contact_form input[type=text] {
   font-size: 16px;
   width: 290px;
 }
