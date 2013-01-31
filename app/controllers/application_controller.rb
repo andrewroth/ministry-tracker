@@ -215,7 +215,7 @@ class ApplicationController < ActionController::Base
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
-      :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses,
+      :people => [:edit, :update, :show, :destroy, :import_gcx_profile, :getcampuses, :show_gcx_profile,
                   :get_campus_states, :set_current_address_states,
                   :set_permanent_address_states, :new, :remove_mentor, :remove_mentee, :show_group_involvements],
 

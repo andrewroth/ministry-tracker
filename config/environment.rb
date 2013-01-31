@@ -82,7 +82,12 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 
   # See Rails::Configuration for more options
-  config.action_controller.session = { :session_key => "_sn_session", :secret => "01855ec2cf5b05f6f66d1f116dd69116" }
+  session_config = YAML.load_file('config/session.yml')
+  config.action_controller.session = {
+    :key    => session_config[RAILS_ENV]['session_key'],
+    :secret => session_config[RAILS_ENV]['secret']
+  }
+  raise "No session secret supplied!" if config.action_controller.session[:secret].blank? && RAILS_ENV != 'development'
 
   # config.active_record.observers = :view_column_observer
   # config.plugins = config.plugin_locators.map do |locator|

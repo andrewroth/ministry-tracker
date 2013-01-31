@@ -6,6 +6,7 @@ config/amazon_s3.yml
 config/memcached.yml
 config/facebooker.yml
 config/civicrm.yml
+config/session.yml
 .DS_Store
 doc/api
 coverage
