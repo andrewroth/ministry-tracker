@@ -3588,6 +3588,10 @@ li.ac_over .autoCompleteIconLink {
   width: 19px;
 }
 
+.autoCompleteIconLink .autoCompleteIconTimetable:hover {
+  background-position: -10px -667px;
+}
+
 .autoCompleteIconLink .autoCompleteIconImpersonate {
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
   background-position: -10px -1106px;
@@ -3679,11 +3683,11 @@ li.ac_over .autoCompleteName {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 1px 2px 5px 2px;
+  border-width: 1px 1px 2px;
   margin: 0 1px;
 
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 .ac_results ul {
@@ -3761,6 +3765,7 @@ li.ac_over .autoCompleteName {
 .autoCompletePic img {
   max-height: 50px;
   max-width: 50px;
+  border-radius: 2px;
 }
 
 .autoCompletePic.butProfile a {
