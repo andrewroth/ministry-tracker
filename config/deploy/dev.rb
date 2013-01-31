@@ -56,6 +56,7 @@ deploy.task :before_symlink do
   link_shared 'log', :overwrite => true
   link_shared 'config/database.yml', :overwrite => true
   link_shared 'config/session.yml', :overwrite => true
+  link_shared 'config/mailer.yml', :overwrite => true
   link_shared 'config/civicrm.yml', :overwrite => true
   link_shared 'config/initializers/eventbright.rb', :overwrite => true
 
