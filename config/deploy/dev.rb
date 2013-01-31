@@ -58,6 +58,7 @@ deploy.task :before_symlink do
   link_shared 'config/session.yml', :overwrite => true
   link_shared 'config/mailer.yml', :overwrite => true
   link_shared 'config/civicrm.yml', :overwrite => true
+  link_shared 'config/koala.yml', :overwrite => true
   link_shared 'config/initializers/eventbright.rb', :overwrite => true
 
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
