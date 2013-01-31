@@ -3,7 +3,7 @@ Codename: Campus Movement Tracker
 Author: David T Sudarma (Follower), Caleb Wright (Follower), Jacques Robitaille (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
-Orange Block:      #FFCB05
+Orange Block:      #f7c55c
 Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
@@ -385,7 +385,7 @@ a.small {
   color:#000;
 	background: #FFFFCC;
 	text-decoration: none;
-	border:1px solid #FFCB05;
+	border:1px solid #f7c55c;
 	line-height:19px;
 	text-transform:uppercase;
 }
@@ -653,7 +653,7 @@ h1#title {
 
 .divider {
     height:1px;
-    background-color:#FFCB05;
+    background-color:#f7c55c;
     margin:2px 0 10px 0px;
 }
 
@@ -960,7 +960,7 @@ h2 select {
 }
 
 #contact_notes .new_note, #contact_rejoiceables .new_activity, #recruitment_notes .new_note {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #contact_notes textarea, #recruitment_notes textarea {
@@ -1757,7 +1757,7 @@ div#userbar small {font-size:11px;}
 a.logoutbutton {
   float:right;
   font-size: 15px;
-  color:#FFCB05;
+  color:#f7c55c;
   text-transform:uppercase;
   margin-top: 0px;
   background: #1F429B;
@@ -3120,7 +3120,7 @@ h2.group_type_title {
   background-color: #D8D8D8;
   z-index: 99;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 0 0 6px 6px;
 }
 
@@ -3149,7 +3149,7 @@ h2.group_type_title {
   background: white;
   color: #DADADA;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 3px;
 }
 
@@ -3231,7 +3231,7 @@ h2.group_type_title {
 #uberMentorSearchBox.focused, #uberMentorSearchBox:focus, #uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
   background: white;
   color: black;
-  border: 1px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D; /* #f7c55c; yellow */
   box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -3382,7 +3382,7 @@ h2.group_type_title {
 }
 
 .casAuthenticationWarning {
-  background-color: #FFCB05;
+  background-color: #f7c55c;
   border-radius: 10px;
   color: #666766;
   font-size: 12px;
@@ -3588,6 +3588,10 @@ li.ac_over .autoCompleteIconLink {
   width: 19px;
 }
 
+.autoCompleteIconLink .autoCompleteIconTimetable:hover {
+  background-position: -10px -667px;
+}
+
 .autoCompleteIconLink .autoCompleteIconImpersonate {
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
   background-position: -10px -1106px;
@@ -3679,11 +3683,11 @@ li.ac_over .autoCompleteName {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 1px 2px 5px 2px;
+  border-width: 1px 1px 2px;
   margin: 0 1px;
 
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 .ac_results ul {
@@ -3761,6 +3765,7 @@ li.ac_over .autoCompleteName {
 .autoCompletePic img {
   max-height: 50px;
   max-width: 50px;
+  border-radius: 2px;
 }
 
 .autoCompletePic.butProfile a {
@@ -4140,7 +4145,7 @@ td.discTree {
 .bracketArrow {
   float: left;
   font-weight: bold;
-  color: #FFCB05;
+  color: #f7c55c;
 }
 
 .bracketPic {
@@ -4383,6 +4388,10 @@ td.campusDiscTree {
   vertical-align: middle;
 }
 
+
+.contact_form .input_container {
+  margin: 0 0 15px 0;
+}
 
 .contact_form label {
   display: inline-block;
