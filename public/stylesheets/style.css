@@ -3120,7 +3120,7 @@ h2.group_type_title {
   background-color: #D8D8D8;
   z-index: 99;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 0 0 6px 6px;
 }
 
@@ -3149,7 +3149,7 @@ h2.group_type_title {
   background: white;
   color: #DADADA;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 3px;
 }
 
