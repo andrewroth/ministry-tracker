@@ -87,7 +87,7 @@ Rails::Initializer.run do |config|
     :key    => session_config[RAILS_ENV]['session_key'],
     :secret => session_config[RAILS_ENV]['secret']
   }
-  raise "No session secret supplied!" if config.action_controller.session[:secret].blank? && RAILS_ENV != 'development'
+  raise "No session secret supplied!" if config.action_controller.session[:secret].to_s.empty? && RAILS_ENV != 'development'
 
   # config.active_record.observers = :view_column_observer
   # config.plugins = config.plugin_locators.map do |locator|
