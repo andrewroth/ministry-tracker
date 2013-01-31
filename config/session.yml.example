@@ -1,0 +1,14 @@
+# Copy this file to config/session.yml and generate a secret key.
+# You can use `rake secret` to generate a secure secret key.
+
+development:
+  key: _ministry_tracker_development_session
+  secret:
+
+staging:
+  key: _ministry_tracker_staging_session
+  secret:
+
+production:
+  key: _ministry_tracker_production_session
+  secret:
