@@ -174,6 +174,7 @@ class PeopleController < ApplicationController
       end
     end
 
+    params[:format] ||= 'html'
     params[:page] = 'all' unless params[:format] == 'html'
     do_directory_search
 
@@ -987,6 +988,7 @@ class PeopleController < ApplicationController
       build_sql(tables_clause, @extra_select)
       if params[:page].try(:downcase) == 'all'
         @people = ActiveRecord::Base.connection.select_all(@sql)
+        @count = @people.size
       else
         @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
         @count = @people.total_entries

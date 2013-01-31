@@ -105,7 +105,7 @@
   </p>
   </div>
 
-  <p><%= will_paginate @people, :class => "searchResultsPagination" %></p>
+  <div><%= will_paginate @people, :class => "searchResultsPagination" if params[:page] != 'all' && @people.respond_to?(:total_entries) %><br></div>
 
 
   <div id="people">
@@ -229,7 +229,7 @@
   </div>
 
   <br>
-  <%= will_paginate @people, :class => "searchResultsPagination" %>
+  <%= will_paginate @people, :class => "searchResultsPagination" if params[:page] != 'all' && @people.respond_to?(:total_entries) %>
   <br>
 
 
