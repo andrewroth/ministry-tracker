@@ -1,31 +1,5 @@
 # Copy this file to config/mailer.yml
 
-development:
-  smtp:
-    address:
-    domain:
-    port:
-    user_name:
-    password:
-  notifier:
-    app_name:
-    subject_prepend:
-    sender_address:
-    exception_recipients:
-
-staging:
-  smtp:
-    address:
-    domain:
-    port:
-    user_name:
-    password:
-  notifier:
-    app_name:
-    subject_prepend:
-    sender_address:
-    exception_recipients:
-
 production:
   smtp:
     address:
