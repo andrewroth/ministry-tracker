@@ -11,8 +11,8 @@ Revised on: 2-16-2009
 
 
 #campus, #person, #training_question, #training_category {
-	border:1px dotted silver;
-	padding:8px;
+  border:1px dotted silver;
+  padding:8px;
 }
 
 .actionbox {
@@ -177,7 +177,7 @@ table {width:100%; font-size:1em;}
 }
 
 .inline {
-	display:inline;
+  display:inline;
 }
 strong {font-weight:bold;}
 a:link strong, a:visited strong {color: #1F429B; font-weight:bold;}
@@ -359,41 +359,41 @@ li {list-style: none; margin-top:3px;}
 p {margin-bottom:10px;}
 
 a:link, a:visited {
-	color: #1F429B;
-	text-decoration:none;
+  color: #1F429B;
+  text-decoration:none;
 }
 
 a:hover, a:active {
   text-decoration:underline;
 }
 a.norm {
-	color:#747474;
-	text-decoration: none;
-	padding: 1px;
+  color:#747474;
+  text-decoration: none;
+  padding: 1px;
 }
 a.norm:active, a.norm:hover {
-	 text-decoration: none;
-	 background: #FFE99B;
-	 padding: 1px;
+   text-decoration: none;
+   background: #FFE99B;
+   padding: 1px;
 }
 .small, a.small {
-	padding: 3px 6px 3px 6px;
-	font-weight:normal;
-	font-size:.75em;
+  padding: 3px 6px 3px 6px;
+  font-weight:normal;
+  font-size:.75em;
 }
 a.small {
   color:#000;
-	background: #FFFFCC;
-	text-decoration: none;
-	border:1px solid #f7c55c;
-	line-height:19px;
-	text-transform:uppercase;
+  background: #FFFFCC;
+  text-decoration: none;
+  border:1px solid #f7c55c;
+  line-height:19px;
+  text-transform:uppercase;
 }
 a.small:active, a.small:hover {
   background:#FFE99B;
-	text-decoration: none;
-	font-weight:normal;
-	font-size:.75em;
+  text-decoration: none;
+  font-weight:normal;
+  font-size:.75em;
 }
 
 /* LAYOUT */
@@ -421,9 +421,9 @@ a.small:active, a.small:hover {
 }
 
 #footer {
-	min-width: 900px;
-	max-width: 900px;
-	height: 60px;
+  min-width: 900px;
+  max-width: 900px;
+  height: 60px;
   margin: 30px auto 20px auto;
 }
 
@@ -446,7 +446,7 @@ dd {
 
 
 .leftColumn {
-	max-width: 220px;
+  max-width: 220px;
 }
 .leftColumn a.norm {
   font-size:1.1em;
@@ -495,7 +495,7 @@ dd {
 .tablist a {
   float:right;
   display:block;
-	text-align: center;
+  text-align: center;
   cursor:pointer;
   overflow:hidden;
   height: 60px;
@@ -695,37 +695,37 @@ h1#title {
 /* LITTLE THINGS */
 
 .clear {
-	clear: both;
-	display: block;
-	height: 0;
-	overflow: hidden;
+  clear: both;
+  display: block;
+  height: 0;
+  overflow: hidden;
 }
 
 .alt {
-	display: none;
+  display: none;
 }
 
 .box {
-	border: 1px solid #747474;
-	margin: 5px;
-	padding: 5px;
+  border: 1px solid #747474;
+  margin: 5px;
+  padding: 5px;
 }
 
 form .label {
-    float:right;
-    width:100px;
-    text-align:right;
-    margin-right:10px;
+  float:right;
+  width:100px;
+  text-align:right;
+  margin-right:10px;
 }
 
 div.sectionHeader h2 {
-	border-bottom: 1px solid #000;
-	padding: 5px  0 2px 0;
-	font-size: 11pt;
-    color: darkslategray;
+  border-bottom: 1px solid #000;
+  padding: 5px  0 2px 0;
+  font-size: 11pt;
+  color: darkslategray;
 }
 .center {
-    text-align:center;
+  text-align:center;
 }
 
 img.opaqueWhite {
@@ -743,46 +743,67 @@ select#current_ministry {
 }
 
 .directorytable {
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-bottom: 1px #0064a2 solid;
-    border-radius: 10px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-bottom: 1px #0064a2 solid;
+  border-radius: 10px;
 }
 
 .directorytable th, .directorytable td {
-    padding: 10px 5px;
+  padding: 10px 5px;
 }
 
 .directorytable th {
-    font-weight: normal;
-    border-bottom: 1px solid #0064a2;
-		text-align: left;
+  font-weight: normal;
+  border-bottom: 1px solid #0064a2;
+  text-align: left;
 }
 .directorytable .highlight {
-    background-color:#fcfcfc;
+  background-color:#fcfcfc;
 }
 
 .directorytable tr:hover {
-    background-color: #FFECB3;
-		cursor:pointer;
+  background-color: #FFECB3;
+  cursor:pointer;
 }
 
 .directorytable thead tr:hover {
-    background-color:#f5f5f5;
-		cursor:default;
+  background-color:#f5f5f5;
+  cursor:default;
 }
 
-.directorytable.noclick tr:hover {
-    cursor:default;
+.directorytable.noclick tr:hover, .directorytable td.noclick:hover {
+  cursor: default;
 }
 
 #group_types tr:hover{
-		cursor:default;
+  cursor: default;
 }
 
 .directoryResultControl {
-  display: inline;
+  display: inline-block;
   margin-right: 1.5em;
+}
+
+#directoryLabelForm {
+  display: inline-block;
+  height: 16px;
+}
+
+#directoryLabelForm .personLabelAdd {
+  opacity: 1;
+}
+
+#spinner_perform_action {
+  margin-left: 5px;
+}
+
+.performActionContainer {
+  min-width: 250px;
+}
+
+.performActionContainer select {
+  font-size: 12px;
 }
 
 .directoryMinistryTitle {
@@ -1043,11 +1064,11 @@ div.progressBar div.background {
 }
 
 div.right-menu {
-	float:right;
-	text-align:left;
-	border: 0px solid grey;
-	padding: 0px;
-	margin: 0 5px 0 5px;
+  float:right;
+  text-align:left;
+  border: 0px solid grey;
+  padding: 0px;
+  margin: 0 5px 0 5px;
   width:175px;
 }
 
@@ -1110,22 +1131,22 @@ margin-bottom:10px;
 }
 
 /*#two_col {
-	width:700px;
-	display:block;
-	margin: 10px 0px;
+  width:700px;
+  display:block;
+  margin: 10px 0px;
 }
 
 #tree-div {
-	width:80%;
-	float:left;
-	overflow:auto;
-	height:300px;
-	border:1px solid #c3daf9;
+  width:80%;
+  float:left;
+  overflow:auto;
+  height:300px;
+  border:1px solid #c3daf9;
 }
 
 #edit-ministry {
-	width:50%;
-	float:right;
+  width:50%;
+  float:right;
 }*/
 
 
@@ -1200,7 +1221,7 @@ a.subtabs-menu-inactive div:hover {
 
 
 #campuses, #campus-details {
-	margin: 5px;
+  margin: 5px;
 }
 
 #outer {
@@ -1422,7 +1443,7 @@ input.action-button[disabled]:hover {
 }
 
 .inputcheck {
-	margin-top:6px;
+  margin-top:6px;
 }
 
 #signin .inputsubmit {
@@ -1619,51 +1640,51 @@ table.groupicon td.groupSemesterTitle {
 
 /* column container */
 #dashwrap .colmask {
-	position:relative;	/* This fixes the IE7 overflow hidden bug */
-	clear:both;
-	float:left;
-	width:100%;			/* width of whole page */
-	overflow:hidden;		/* This chops off any overhanging divs */
+  position:relative;  /* This fixes the IE7 overflow hidden bug */
+  clear:both;
+  float:left;
+  width:100%;     /* width of whole page */
+  overflow:hidden;    /* This chops off any overhanging divs */
 }
 /* common column settings */
 #dashwrap .colright,
 #dashwrap .colmid,
 #dashwrap .colleft {
-	float:left;
-	width:100%;			/* width of page */
-	position:relative;
+  float:left;
+  width:100%;     /* width of page */
+  position:relative;
 }
 #dashwrap .col1,
 #dashwrap .col2,
 #dashwrap .col3 {
-	float:left;
-	position:relative;
-	padding:0 0 3em 0;	/* no left and right padding on columns, we just make them narrower instead
-					only padding top and bottom is included here, make it whatever value you need */
-	overflow:hidden;
+  float:left;
+  position:relative;
+  padding:0 0 3em 0;  /* no left and right padding on columns, we just make them narrower instead
+          only padding top and bottom is included here, make it whatever value you need */
+  overflow:hidden;
 }
 /* 3 Column settings */
 #dashwrap.threecol {
 }
 #dashwrap.threecol .colmid {
   margin-top: 30px;
-	right:25%;			/* width of the right column */
+  right:25%;      /* width of the right column */
 }
 #dashwrap.threecol .colleft {
-	right:50%;			/* width of the middle column */
+  right:50%;      /* width of the middle column */
 }
 #dashwrap.threecol .col1 {
-	width:50%;			/* width of center column content (column width minus padding on either side) */
-	left:103%;			/* 100% plus left padding of center column */
+  width:50%;      /* width of center column content (column width minus padding on either side) */
+  left:103%;      /* 100% plus left padding of center column */
 }
 #dashwrap.threecol .col2 {
-	width:24%;			/* Width of left column content (column width minus padding on either side) */
-	left:25%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+  width:24%;      /* Width of left column content (column width minus padding on either side) */
+  left:25%;     /* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
 #dashwrap.threecol .col3 {
-	width:20%;			/* Width of right column content (column width minus padding on either side) */
-	left:82%;			/* Please make note of the brackets here:
-					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
+  width:20%;      /* Width of right column content (column width minus padding on either side) */
+  left:82%;     /* Please make note of the brackets here:
+          (100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
 
 
@@ -1785,43 +1806,43 @@ table.datatable td, table.datatable th {
 
 /* column container */
 #profilewrap .colmask {
-	position:relative;	/* This fixes the IE7 overflow hidden bug */
-	clear:both;
-	float:left;
-	width:100%;			/* width of whole page */
-	overflow:hidden;		/* This chops off any overhanging divs */
+  position:relative;  /* This fixes the IE7 overflow hidden bug */
+  clear:both;
+  float:left;
+  width:100%;     /* width of whole page */
+  overflow:hidden;    /* This chops off any overhanging divs */
 }
 /* common column settings */
 #profilewrap .colright,
 #profilewrap .colmid,
 #profilewrap .colleft {
-	float:left;
-	width:100%;
-	position:relative;
+  float:left;
+  width:100%;
+  position:relative;
 }
 #profilewrap .col1,
 #profilewrap .col2,
 #profilewrap .col3 {
-	float:left;
-	position:relative;
-	overflow:hidden;
+  float:left;
+  position:relative;
+  overflow:hidden;
 }
 /* 2 Column (left menu) settings */
 #profilewrap.leftmenu {
 }
 #profilewrap.leftmenu .colleft {
-	right:75%;			/* right column width */
+  right:75%;      /* right column width */
 }
 #profilewrap.leftmenu .col1 {
-	width:68%;			/* right column content width */
-	left:106%;			/* 100% plus left column left padding */
-	padding-top:15px;
+  width:68%;      /* right column content width */
+  left:106%;      /* 100% plus left column left padding */
+  padding-top:15px;
 }
 #profilewrap.leftmenu .col2 {
-	width:23%;			/* left column content width (column width minus left and right padding) */
-	left:7%;  			/* (right column left and right padding) plus (left column left padding) */
-	background:#878e99;
-	border:#878e99 solid 15px;
+  width:23%;      /* left column content width (column width minus left and right padding) */
+  left:7%;        /* (right column left and right padding) plus (left column left padding) */
+  background:#878e99;
+  border:#878e99 solid 15px;
   border-radius: 6px;
 }
 
@@ -2149,17 +2170,17 @@ table.datatable td, table.datatable th {
 }
 
 #flash_warning, .flash.warning b, .flash.warning big {
-	color: FireBrick;
+  color: FireBrick;
 }
 
 .flash {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 .notice {
-	color:#585958;
+  color:#585958;
 }
 .warning {
-	color:FireBrick;
+  color:FireBrick;
 }
 
 #instructions {
@@ -2409,7 +2430,7 @@ div.choose_ministry_tree {
 }
 
 .statsFormField td {
-	width: 50%;
+  width: 50%;
 }
 
 .statsFormField select {
@@ -2470,7 +2491,7 @@ div .statsRadioButton {
 }
 
 ul.statsLinkList {
-	margin: 0 0 5px 0;
+  margin: 0 0 5px 0;
 }
 
 .statsSpinner {
@@ -2541,7 +2562,7 @@ ul.statsLinkList {
 
 .statsContainer {
   width: 100%;
-	margin: 20px auto 0 auto;
+  margin: 20px auto 0 auto;
   text-align: center;
 }
 
@@ -2623,36 +2644,36 @@ ul.statsLinkList {
 
 
 .progressBarPercent .insightsProgressBar, .insightsProgress {
-	display:block;
-	height: 0.7em;
+  display:block;
+  height: 0.7em;
 }
 
 .insightsProgressBar {
-	background-color:#FFFFFF;
-	border: 1px solid #666766;
-	text-align: left;
+  background-color:#FFFFFF;
+  border: 1px solid #666766;
+  text-align: left;
 }
 
 .insightsProgress {
-	background-color: #FFDA68;
-	border: 0;
+  background-color: #FFDA68;
+  border: 0;
 }
 
 #nationalIndicatedDecisions {
-	display:block;
-	width: 160px;
-	float: right;
-	text-align: center;
-	font-size: 1.5em;
+  display:block;
+  width: 160px;
+  float: right;
+  text-align: center;
+  font-size: 1.5em;
 }
 
 #nationalIndicatedDecisionsIcon {
-	background-image:url("/images/sprites/p2c_main_elements.png");
-	background-position: 10px -1815px;
-	background-repeat: no-repeat;
-	height:110px;
-	width:160px;
-	display:inline-block;
+  background-image:url("/images/sprites/p2c_main_elements.png");
+  background-position: 10px -1815px;
+  background-repeat: no-repeat;
+  height:110px;
+  width:160px;
+  display:inline-block;
 }
 
 #IndicatedDecisions {
@@ -3874,11 +3895,11 @@ li.ac_over .autoCompleteName {
 
 
 .jqueryValidationInformation {
-	color: green;
+  color: green;
 }
 
 .jqueryValidationError {
-	color: red;
+  color: red;
 }
 
 table.groupInvolvementList .highlight {
@@ -4098,9 +4119,9 @@ input#contract_signature_agreement:hover {
 
 #tooltip.horizTableCompare, #tooltip {
   position: absolute;
-	z-index: 3000;
-	background-color: #666766;
-	padding: 10px;
+  z-index: 3000;
+  background-color: #666766;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
 }
@@ -4110,13 +4131,13 @@ input#contract_signature_agreement:hover {
 
 /** Discipleship Tree **/
 td.discTree {
-	width:50%;
+  width:50%;
 }
 
 .treeColumn {
   width:auto;
   float:left;
-	margin-right:30px;
+  margin-right:30px;
 }
 
 .treeBranch {
@@ -4131,15 +4152,15 @@ td.discTree {
 }
 
 .bracketTop {
-	float: right;
+  float: right;
 }
 
 .bracketBottom {
-	float: right;
+  float: right;
 }
 
 .bracketColumn {
-	float: left;
+  float: left;
 }
 
 .bracketArrow {
@@ -4154,7 +4175,7 @@ td.discTree {
 
 .detailsColumn {
   margin-left:30px;
-	float:none
+  float:none
 }
 
 td.profilePic {
@@ -4177,10 +4198,10 @@ td.nameTitle {
 .headerNameTitle {
     width:auto;
     float:left;
-		margin-left:50px;
-		font-size: 18px;
-		font-weight: bold;
-		padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
+    margin-left:50px;
+    font-size: 18px;
+    font-weight: bold;
+    padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
 }
 
 .headerContactInfo {
@@ -4290,6 +4311,7 @@ td.nameTitle {
 .personLabelAdd select {
   opacity: 1;
   font-size: 11px;
+  max-width: 150px;
 }
 
 .personLabelAdd img {
@@ -4357,7 +4379,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #summer_report_year_id { font-size:20px; font-weight:bold; }
 
 td.campusDiscTree {
-	width:33%;
+  width:33%;
 }
 
 .campusViewTreeNode a {

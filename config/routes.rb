@@ -234,8 +234,9 @@ ActionController::Routing::Routes.draw do |map|
                                           :get_campuses_for_state             => :any,
                                           :set_current_address_states         => :get,
                                           :set_permanent_address_states       => :get,
-                                          #:perform_task => :post},
-                                          :perform_task => :post},
+                                          :set_label_multiple                 => :put,
+                                          :remove_label_multiple              => :delete,
+                                          :perform_task => :post },
                           :has_many => [:notes, :activities] do |person|
                          #:has_many => [:timetables] do |person|
     person.resources :timetables, :member => { :update_signup => :put }
