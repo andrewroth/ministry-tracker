@@ -4210,7 +4210,7 @@ td.nameTitle {
     margin-left:50px;
 }
 
-#personLabels {
+#personLabels ul {
   display: inline-block;
   width: 100%;
   margin-bottom: 10px;
