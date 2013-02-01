@@ -20,12 +20,12 @@
                           <td class="small"><%= t('dashboard.projects.applying') %></td>
                           <td class="small"><%= t('dashboard.projects.total') %></td>
                         </tr>
-                        <%- projects = ((@project_totals_by_campus[campus] && @project_totals_by_campus[campus].keys) || []) | 
+                        <%- projects = ((@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus].keys) || []) | 
                               ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
                         <%- if projects.present? -%>
                           <%- for project in projects -%>
                             <%- next if [ :total, :subtotal ].include?(project) || !project.present? %>
-                            <%- total = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][project]) || 0 -%>
+                            <%- total = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][project]) || 0 -%>
                             <%- applying_total = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][project]) || 0 -%>
                         <tr class=<%= 'pat_no_project_chosen' unless project.present? %>>
                           <td class="eventIcon"></td>
@@ -33,13 +33,12 @@
                           <td class="center eventAttendees"><%= no_zero total %></td>
                           <td class="center eventAttendees"><%= no_zero applying_total %></td>
                           <td class="center eventAttendees"><%= no_zero total + applying_total %></td>
-                          <% debugger if campus == "MAC" %>
                         </tr>
                           <%- end -%>
                         <tr class="total">
                           <td class="eventIcon"></td>
                           <td class="eventAttendees">Sub-Total</td>
-                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][:subtotal]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][:subtotal]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:subtotal]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
                         </tr>
@@ -53,7 +52,7 @@
                          <tr class="total">
                           <td class="eventIcon"></td>
                           <td class="eventAttendees">Total</td>
-                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][:total]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][:total]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:total]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
                         </tr>
@@ -66,7 +65,7 @@
                         <%- end -%>
                       </table>
                     </td>
-                    <td class="center eventAttendees"><%= no_zero total_accepted = (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
+                    <td class="center eventAttendees"><%= no_zero total_accepted = (h = @project_accepted_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                     <td class="center eventAttendees"><%= no_zero total_applying = (h = @project_applying_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                     <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
                   </tr>
