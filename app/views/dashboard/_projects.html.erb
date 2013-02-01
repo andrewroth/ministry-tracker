@@ -24,20 +24,35 @@
                               ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
                         <%- if projects.present? -%>
                           <%- for project in projects -%>
-                            <%- next if project == :total %>
+                            <%- next if [ :total, :subtotal ].include?(project) || !project.present? %>
                             <%- total = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][project]) || 0 -%>
                             <%- applying_total = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][project]) || 0 -%>
                         <tr class=<%= 'pat_no_project_chosen' unless project.present? %>>
                           <td class="eventIcon"></td>
-                          <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
+                          <td class="normal"><%= project %></td>
                           <td class="center eventAttendees"><%= no_zero total %></td>
                           <td class="center eventAttendees"><%= no_zero applying_total %></td>
                           <td class="center eventAttendees"><%= no_zero total + applying_total %></td>
+                          <% debugger if campus == "MAC" %>
                         </tr>
                           <%- end -%>
                         <tr class="total">
                           <td class="eventIcon"></td>
-                          <td class="normal">Total</td>
+                          <td class="eventAttendees">Sub-Total</td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][:subtotal]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:subtotal]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
+                        </tr>
+                        <tr class="pat_no_project_chosen">
+                          <td class="eventIcon"></td>
+                          <td class="eventAttendees">No Project Chosen</td>
+                          <td class="center eventAttendees"></td>
+                          <td class="center eventAttendees"><%= no_zero total_noproject = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][nil]) || 0 %></td>
+                          <td class="center eventAttendees"><%= no_zero total_noproject %></td>
+                        </tr>
+                         <tr class="total">
+                          <td class="eventIcon"></td>
+                          <td class="eventAttendees">Total</td>
                           <td class="center eventAttendees"><%= no_zero total_accepted = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][:total]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:total]) %></td>
                           <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
@@ -74,17 +89,32 @@
                         <td class="normal"></td>
                         <td class="small"><%= t('dashboard.projects.accepted') %></td>
                         <td class="small"><%= t('dashboard.projects.applying') %></td>
+                        <td class="small"><%= t('dashboard.projects.total') %></td>
                       </tr>
                       <%- @project_totals.each_pair do |project, totals| %>
-                        <%- next if project == :totals -%>
-                      <tr class="<%= 'pat_no_project_chosen' unless project.present? %>">
-                        <td class="eventIcon"></td>
-                        <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
-                        <td class="center eventAttendees"><%= no_zero totals[:accepted] %></td>
-                        <td class="center eventAttendees"><%= no_zero totals[:applying] %></td>
-                        <td class="center eventAttendees"><%= no_zero totals[:accepted].to_i + totals[:applying].to_i %></td>
-                      </tr>
+                        <%- next if project == :totals || !project.present?-%>
+                        <tr>
+                          <td class="eventIcon"></td>
+                          <td class="normal"><%= project %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:accepted] %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:applying] %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:accepted].to_i + totals[:applying].to_i %></td>
+                        </tr>
                       <%- end -%>
+                      <tr class="total">
+                        <td class="eventIcon"></td>
+                        <td class="normal">Sub-Total</td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_accepted] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_applying] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_accepted].to_i + @project_totals[:totals][:subtotal_applying].to_i %></td>
+                      </tr>
+                      <tr class="pat_no_project_chosen">
+                        <td class="eventIcon"></td>
+                        <td class="eventAttendees">No Project Chosen</td>
+                        <td class="center eventAttendees"></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:no_project] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:no_project] %></td>
+                      </tr>
                       <tr class="total">
                         <td class="eventIcon"></td>
                         <td class="normal">Total</td>
