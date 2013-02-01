@@ -1,4 +1,5 @@
-class SurveyContact < ActiveRecord::Base  
+class SurveyContact < ActiveRecord::Base
+  load_mappings
 
   DEFAULT_SORT_DIRECTION = 'ASC'
   DEFAULT_SORT_COLUMN = 'priority'

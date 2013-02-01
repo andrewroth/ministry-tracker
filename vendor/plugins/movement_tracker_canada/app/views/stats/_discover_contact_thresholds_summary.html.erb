@@ -1,0 +1,30 @@
+<p><span class="statsTitle">
+  Discover &#8211; Thresholds Summary View at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<table class="dataTable">
+  <thead>
+    <tr>
+      <th>Thresholds</th>
+      <th>Number of Contacts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% total_contacts = 0 %>
+    <% @contacts_grouped_by_next_step_id.each do |next_step_id, contacts| %>
+      <tr>
+        <td><%= Contact::NEXT_STEP_OPTIONS[next_step_id][0] %></td>
+        <td><%= contacts.size %></td>
+        <% total_contacts += contacts.size.to_i %>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
+      <td>Total</td>
+      <td><%= total_contacts %></td>
+    </tr>
+  </tfoot>
+</table>

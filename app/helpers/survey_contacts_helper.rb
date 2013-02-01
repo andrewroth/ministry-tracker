@@ -39,7 +39,8 @@ module SurveyContactsHelper
       :nextStep => Contact::NEXT_STEP_OPTIONS,
       :interest => [["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["blank", ""]],
       :magazine => [["a real justice", "a real justice"], ["escape from the dreariness of life", "escape from the dreariness of life"], ["love without conditions", "love without conditions"], ["no thanks", "no thanks"], ["Spiritual connection", "Spiritual connection"], ["blank", ""]],
-      :journey => [["do nothing right now", "do nothing right now"], ["explore the deeper meaning of my cravings", "explore the deeper meaning of my cravings"], ["get connected to online resources about my cravings", "get connected to online resources about my cravings"], ["grow in my relationship with Jesus", "grow in my relationship with Jesus"], ["hear more about Power to Change", "hear more about Power to Change"], ["blank", ""]]
+      :journey => [["do nothing right now", "do nothing right now"], ["explore the deeper meaning of my cravings", "explore the deeper meaning of my cravings"], ["get connected to online resources about my cravings", "get connected to online resources about my cravings"], ["grow in my relationship with Jesus", "grow in my relationship with Jesus"], ["hear more about Power to Change", "hear more about Power to Change"], ["blank", ""]],
+      :created_at => [['within last 24 hours', 24], ['within last 3 days', 72], ['within last 7 days', 168], ['within last 30 days', 720]]
     }
   end
 
@@ -131,6 +132,15 @@ module SurveyContactsHelper
         :title => "Data Input Notes",
         :type => :text,
         :default => ""
+      },
+      :created_at =>
+      {
+        :field => :created_at,
+        :title => 'Added',
+        :type => :select,
+        :options => contact_options_lists[:created_at].insert(0, ['Any time', -1]),
+        :default => -1,
+        :single_select => true
       }
     }
   end
@@ -146,6 +156,7 @@ module SurveyContactsHelper
       contact_search_options[:interest],
       contact_search_options[:magazine],
       contact_search_options[:journey],
+      contact_search_options[:created_at],
       contact_search_options[:degree],
       contact_search_options[:data_input_notes]
     ]
@@ -162,7 +173,8 @@ module SurveyContactsHelper
       { :display => "Assigned To",   :fields => [Person._(:first_name), Person._(:last_name)] },
       { :display => "Status",        :fields => [contact_search_options[:status][:field].to_s]},
       { :display => "Result",        :fields => [contact_search_options[:result][:field].to_s] },
-      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] }
+      { :display => "International", :fields => [contact_search_options[:international][:field].to_s] },
+      { :display => "Added",         :fields => [contact_search_options[:created_at][:field].to_s] }
     ]
   end
 
@@ -320,6 +332,7 @@ module SurveyContactsHelper
       (@search_options[:interest].present? && @search_options[:interest] != [contact_search_options[:interest][:default].to_s]) ||
       (@search_options[:magazine].present? && @search_options[:magazine] != [contact_search_options[:magazine][:default].to_s]) ||
       (@search_options[:journey].present? && @search_options[:journey] != [contact_search_options[:journey][:default].to_s]) ||
+      (@search_options[:created_at].present? && @search_options[:created_at] != [contact_search_options[:created_at][:default].to_s]) ||
       (@search_options[:degree].present?) ||
       (@search_options[:data_input_notes].present?)
     )

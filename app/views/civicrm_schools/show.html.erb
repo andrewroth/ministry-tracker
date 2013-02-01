@@ -1,0 +1,166 @@
+<h1 class="center"><%= @school.attr(:display_name) %></h1><br>
+
+<div class = "school_top">
+	<div class="rounded floated">
+		<%= @school.attr(:street_address) %><br>
+		<%= @school.attr(:city) %>,&nbsp;
+		<%= @school.attr(:state_province) %>&nbsp;
+		<%= @school.attr(:country) %><br>
+		<%= @school.attr(:postal_code) %><br>
+		<%= @school.attr(:phone) %><br>
+		<label>Latitude: </label><%= @school.attr(:geo_code_1) %><br>
+		<label>Longitude:</label> <%= @school.attr(:geo_code_2) %>
+	</div>
+	
+	<div class="rounded floated">
+		<label>Ministry Presence:</label> <%= @school.attr(:custom_73) %><br>
+		<label>SLM Q1:</label> <%= @school.attr(:custom_68) %>
+		<label>SLM Q2:</label> <%= @school.attr(:custom_69) %>
+		<label>SLM Q3:</label> <%= @school.attr(:custom_70) %>
+		<label>Is it SLM?</label> <%= @school.attr(:custom_71) %> <br>
+		<label>Type:</label> <%= @school.attr(:custom_72) %><br>
+		<label>Fundraising:</label> <%= @school.attr(:custom_74) %>
+	</div>
+</div><br>
+
+<div class="rounded" style="clear:both; ">
+	<table class="school_info">
+		<tr>
+			<th><label>Order from West to East:</label></th>
+			<td><%= @school.attr(:custom_84) %></td>
+		</tr>
+		<tr>
+			<th><label>Student Population Center:</label></th>
+			<td><%= @school.attr(:custom_85) %></td>
+		</tr>
+		<tr>
+			<th><label>Description:</label></th>
+			<td><%= @school.attr(:custom_86) %></td>
+		</tr>
+		<tr>
+			<th><label>Wiki:</label> </th>
+			<td><a href="<%= @school.attr(:custom_88) %>" target="_blank">
+					<%= @school.attr(:custom_88) %></a></td>
+		</tr>
+		<tr>
+			<th><label>Website:</label> </th>
+			<td><a href="<%= @school.attr(:custom_89) %>" target="_blank">
+					<%= @school.attr(:custom_89) %></a></td>
+		</tr>
+		<tr>
+			<th><label>Notes on Sourcing:</label></th>
+			<td><%= @school.attr(:custom_110) %></td>
+		</tr>
+		<tr>
+			<th><label>Other Evangelistic Presence:</label></th>
+			<td><%= @school.attr(:custom_111) %></td>
+		</tr>
+		<tr>
+			<th><label>Sourcing:</label> </th>
+			<td><%= @school.attr(:custom_112) %></td>
+		</tr>
+		<tr>
+			<th><label>P2C Website:</label> </th>
+			<td><a href="<%= @school.attr(:custom_113) %>" target="_blank">
+					<%= @school.attr(:custom_113) %></a></td>
+		</tr>
+		<tr>
+			<th><label>P2C Facebook Group:</label></th>
+			<td><a href="<%= @school.attr(:custom_114) %>" target="_blank">
+					<%= @school.attr(:custom_114) %></a></td>
+		</tr>	
+	</table>
+</div><br>
+
+
+<div class="rounded">
+	<h3>Enrolment</h3>
+	<table class="enrolment">
+		<tr>
+			<th></th>
+			<th colspan="2">Full Time</th>
+			<th colspan="2">Part Time</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr class="bordered">
+			<th>Cegep</th>
+			<th>Undergrad</th>
+			<th>Grad</th>
+			<th>Undergrad</th>
+			<th>Grad</th>
+			<th>International</th>
+			<th>Total</th>
+		</tr>
+		<tr>
+			<td><%= @school.attr(:custom_90) %></td>
+			<td><%= @school.attr(:custom_91) %></td>
+			<td><%= @school.attr(:custom_92) %></td>
+			<td><%= @school.attr(:custom_93) %></td>
+			<td><%= @school.attr(:custom_94) %></td>
+			<td><%= @school.attr(:custom_95) %></td>
+			<td><%= @school.attr(:custom_96) %></td>
+		</tr>
+	</table>
+	<label>Sources:</label><%= @school.attr(:custom_97) %>
+</div><br>
+
+<div class="rounded">
+	<h3>Ministry Presence</h3> 
+	<table class="enrolment">
+		<tr>
+			<th>2007/08</th>
+			<th>2008/09</th>
+			<th>2009/10</th>
+			<th>2010/11</th>
+			<th>2011/12</th>
+			<th>2012/13</th>
+		</tr>
+		<tr>
+			<td><%= @school.attr(:custom_98) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_99) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_100) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_101) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_102) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_103) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+		</tr>
+	</table>
+</div><br>
+
+<div class="rounded">
+	<h3>SLM</h3>
+	<table class="enrolment">
+		<tr>
+			<th>2007/08</th>
+			<th>2008/09</th>
+			<th>2009/10</th>
+			<th>2010/11</th>
+			<th>2011/12</th>
+			<th>2012/13</th>
+		</tr>
+		<tr>
+			<td><%= @school.attr(:custom_104) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_105) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_106) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_107) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_108) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+			<td><%= @school.attr(:custom_109) == "1" ? 
+				"<span class=\"check\">✔</span>" : "<span class=\"uncheck\">✘</span>" %></td>
+		</tr>
+	</table>
+</div><br>
+
+<div><%= link_to('Edit', edit_civicrm_school_path(:id => @school.contact_id), {:class => "action-button"}) %></div>
+<div class="backLink"><%= link_to 'Back', url_for(:controller => :civicrm_schools, :action => :index) %></div>
+

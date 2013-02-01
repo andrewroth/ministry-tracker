@@ -3,6 +3,9 @@ require 'net/http'
 module CiviCRM
   YML_CONFIG_PATH = 'config/civicrm.yml'
 
+  class CiviCRM::StandardError < StandardError
+  end
+
   class API
     attr_accessor :max_row_count, :log_tags
 
@@ -64,26 +67,22 @@ module CiviCRM
         hashed_by = options[:hashed_by]
 
         parsed_json = parsed_json_response(params.merge({ :entity => entity, :action => action, :json => 1 }))
+        raise CiviCRM::StandardError.new(parsed_json['error_message'] || 'CiviCRM returned an error') unless parsed_json['is_error'] == 0
 
-        begin
-          entities = hashed_by.present? ? HashWithIndifferentAccess.new : []
+        entities = hashed_by.present? ? HashWithIndifferentAccess.new : []
 
-          parsed_json['values'].each_pair do |id, attributes|
-            attributes.merge!(get_entity_includes(id, includes)) if includes.present?
-            entity_instance = Entity.new(entity, attributes.merge!({ :id => id }))
+        parsed_json['values'].each_pair do |id, attributes|
+          attributes.merge!(get_entity_includes(id, includes)) if includes.present?
+          entity_instance = Entity.new(entity, attributes.merge!({ :id => id }))
 
-            if hashed_by.present?
-              entities[entity_instance.attribute(hashed_by)] = entity_instance
-            else
-              entities << entity_instance
-            end
-          end if parsed_json['values'].present?
+          if hashed_by.present?
+            entities[entity_instance.attribute(hashed_by)] = entity_instance
+          else
+            entities << entity_instance
+          end
+        end if parsed_json['values'].present?
 
-          raise "We don't have the same count of entities that CiviCRM returned" if entities.size != parsed_json['count']
-        rescue => e
-          log :error, e
-          return nil
-        end
+        raise CiviCRM::StandardError.new("We don't have the same count of entities that CiviCRM returned") if entities.size != parsed_json['count']
 
         entities
       end
@@ -126,6 +125,7 @@ module CiviCRM
             end
           end if parsed_json['values'].present?
         end
+
       rescue => e
         log :error, e
         return nil
@@ -137,15 +137,14 @@ module CiviCRM
     def parsed_json_response(params)
       begin
         response = call(params.merge!({ :json => 1 }))
-
         parsed_json = JSON::Parser.new(response.body).parse
-
-        raise "CiviCRM returned an error: #{parsed_json['error_message']}" unless parsed_json['is_error'] == 0
-        log :warn, "CiviCRM returned the maximum number of results (configured to #{@max_row_count})!" if @max_row_count == parsed_json['count']
       rescue => e
         log :error, e
         return nil
       end
+
+      log :error, "CiviCRM returned an error: #{parsed_json['error_message']}" unless parsed_json['is_error'] == 0
+      log :warn, "CiviCRM returned the maximum number of results (configured to #{@max_row_count})!" if @max_row_count == parsed_json['count']
 
       parsed_json
     end

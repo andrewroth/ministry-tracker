@@ -17,7 +17,7 @@ class PeopleController < ApplicationController
 
   before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label, :show_gcx_profile]
   before_filter :set_use_address2
-  before_filter  :advanced_search_permission, :only => [:directory]
+  before_filter :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
   free_actions = [:set_current_address_states, :set_permanent_address_states,
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
@@ -57,27 +57,51 @@ class PeopleController < ApplicationController
   # sets label (i.e. "Spiritual Multiplier") for a person and then redirects to the "show" action
   def set_label
     if params[:label]
-
       @label = Label.find params[:label]
 
-      unless @person.labels.include?(@label)
-        # @label_person = LabelPerson.create(:label_id => params[:label], :person_id => params[:id])
-        @person.labels << @label
-      else
-        # potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
-        # could follow up with same record create code
-
-        @error_notice = "#{@person.full_name} already has the label '#{@label.content}'!"
+      unless @person.set_label(@label)
+        @error_notice = "#{@person.full_name} already has the label <em>#{@label.content}</em>!"
       end
     end
   end
 
   # Removes a label that was previously assigned to the person
   def remove_label
-    label_record = LabelPerson.find_by_label_id_and_person_id(params[:label_id],params[:person_id])
-    label_record.destroy
-    label_record.save
+    Person.find(params[:person_id]).remove_label_with_id(params[:label_id]) if Person.exists?(params[:person_id])
     render :nothing => true
+  end
+
+  def set_label_multiple
+    @label = Label.find params[:label_id]
+    @people = Person.find :all, :conditions => { Person._(:id) => params[:person] }
+    @set_labels_on_people = []
+
+    @people.each do |person|
+      @set_labels_on_people << person if person.set_label(@label)
+    end if @label && @people
+
+    flash[:notice] = "Added the label <em>#{ @label.content }</em> to #{ @people.size } #{ @people.size > 1 ? 'people' : 'person' }."
+
+    respond_to do |format|
+      format.html { redirect_to '/' }
+      format.js { render 'label_multiple' }
+    end
+  end
+
+  def remove_label_multiple
+    @people = Person.find :all, :conditions => { Person._(:id) => params[:person] }
+    @removed_labels_on_people = []
+
+    @people.each do |person|
+      @removed_labels_on_people << person if person.remove_label_with_id(params[:label_id])
+    end if @people
+
+    flash[:notice] = "Removed label from #{ @people.size } #{ @people.size > 1 ? 'people' : 'person' }."
+
+    respond_to do |format|
+      format.html { redirect_to '/' }
+      format.js { render 'label_multiple' }
+    end
   end
 
 
@@ -174,30 +198,14 @@ class PeopleController < ApplicationController
       end
     end
 
-    do_directory_search if @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
+    params[:format] ||= 'html'
+    params[:page] = 'all' unless params[:format] == 'html'
+    do_directory_search
 
     respond_to do |format|
       format.html { render :layout => 'application' }
-      format.xls  do
-        filename = @search_for.present? ? @search_for.gsub(';',' -') + ".xls" : "pulse_directory_search.xls"
-
-        #this is required if you want this to work with IE
-        if request.env['HTTP_USER_AGENT'] =~ /msie/i
-          headers['Pragma'] = 'public'
-          headers["Content-type"] = "text/plain"
-          headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
-          headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
-          headers['Expires'] = "0"
-        else
-          headers["Content-Type"] ||= 'text/xml'
-          headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
-        end
-        render :action => 'excel', :layout => false
-      end
-      format.xml  { render :xml => @people.to_xml }
+      format.xml { render :xml => @people.to_xml }
       format.csv do
-        do_directory_search
-        @people = ActiveRecord::Base.connection.select_all(@sql)
         fn = "tmp/#{Time.now.to_i}"
         csv_string = FasterCSV.open(fn, "w") do |csv|
           csv << @view.columns.collect(&:title)
@@ -833,6 +841,8 @@ class PeopleController < ApplicationController
   private
 
     def do_directory_search
+      return nil unless @search_params_present = search_params_present? || params[:force] == 'true' || params[:page]
+
       @having = []
       if params[:search_id]
         @search = @my.searches.find(params[:search_id])
@@ -1000,11 +1010,16 @@ class PeopleController < ApplicationController
       # If these conditions will result in too large a set, use pagination
       @group = Person._(:id)
       build_sql(tables_clause, @extra_select)
-      @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+      if params[:page].try(:downcase) == 'all'
+        @people = ActiveRecord::Base.connection.select_all(@sql)
+        @count = @people.size
+      else
+        @people = ActiveRecord::Base.connection.select_all(@sql).paginate(:page => params[:page])
+        @count = @people.total_entries
+      end
       if @temp_group_involvements_locked
         Lock.free_lock("not_in_group")
       end
-      @count = @people.total_entries
 
       # pass which ministries were searched for to the view
       if params[:ministry]
@@ -1283,7 +1298,8 @@ class PeopleController < ApplicationController
          params[:role].present? ||
          params[:ministry].present? ||
          params[:group_involvement].present? ||
-         params[:campus].present?
+         params[:campus].present? ||
+         params[:recruitment].present?
 
         return true
       else
