@@ -17,7 +17,7 @@ class PeopleController < ApplicationController
 
   before_filter :get_profile_person, :only => [:edit, :update, :show, :show_group_involvements, :set_label, :remove_label, :show_gcx_profile]
   before_filter :set_use_address2
-  before_filter  :advanced_search_permission, :only => [:directory]
+  before_filter :advanced_search_permission, :only => [:directory]
   before_filter :set_current_and_next_semester
   free_actions = [:set_current_address_states, :set_permanent_address_states,
                   :get_campus_states, :set_initial_campus, :get_campuses_for_state,
@@ -57,27 +57,51 @@ class PeopleController < ApplicationController
   # sets label (i.e. "Spiritual Multiplier") for a person and then redirects to the "show" action
   def set_label
     if params[:label]
-
       @label = Label.find params[:label]
 
-      unless @person.labels.include?(@label)
-        # @label_person = LabelPerson.create(:label_id => params[:label], :person_id => params[:id])
-        @person.labels << @label
-      else
-        # potentially could put LabelPerson.destroy( //ids of all records found for person-label combo)
-        # could follow up with same record create code
-
-        @error_notice = "#{@person.full_name} already has the label '#{@label.content}'!"
+      unless @person.set_label(@label)
+        @error_notice = "#{@person.full_name} already has the label <em>#{@label.content}</em>!"
       end
     end
   end
 
   # Removes a label that was previously assigned to the person
   def remove_label
-    label_record = LabelPerson.find_by_label_id_and_person_id(params[:label_id],params[:person_id])
-    label_record.destroy
-    label_record.save
+    Person.find(params[:person_id]).remove_label_with_id(params[:label_id]) if Person.exists?(params[:person_id])
     render :nothing => true
+  end
+
+  def set_label_multiple
+    @label = Label.find params[:label_id]
+    @people = Person.find :all, :conditions => { Person._(:id) => params[:person] }
+    @set_labels_on_people = []
+
+    @people.each do |person|
+      @set_labels_on_people << person if person.set_label(@label)
+    end if @label && @people
+
+    flash[:notice] = "Added the label <em>#{ @label.content }</em> to #{ @people.size } #{ @people.size > 1 ? 'people' : 'person' }."
+
+    respond_to do |format|
+      format.html { redirect_to '/' }
+      format.js { render 'label_multiple' }
+    end
+  end
+
+  def remove_label_multiple
+    @people = Person.find :all, :conditions => { Person._(:id) => params[:person] }
+    @removed_labels_on_people = []
+
+    @people.each do |person|
+      @removed_labels_on_people << person if person.remove_label_with_id(params[:label_id])
+    end if @people
+
+    flash[:notice] = "Removed label from #{ @people.size } #{ @people.size > 1 ? 'people' : 'person' }."
+
+    respond_to do |format|
+      format.html { redirect_to '/' }
+      format.js { render 'label_multiple' }
+    end
   end
 
 

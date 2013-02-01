@@ -259,4 +259,22 @@ class Person < ActiveRecord::Base
   def recruitable?
     self.labels.all(:conditions => { :id => Recruitment::QUALIFIED_FOR_RECRUITMENT_LABEL_ID }).present?
   end
+
+  def set_label(label)
+    if labels.include?(label)
+      false
+    else
+      labels << label
+    end
+  end
+
+  def remove_label_with_id(label_id)
+    label_record = LabelPerson.find_by_label_id_and_person_id(label_id, self.id)
+    if label_record
+      label_record.destroy
+      label_record.save
+    else
+      nil
+    end
+  end
 end
