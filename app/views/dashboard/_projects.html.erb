@@ -32,7 +32,7 @@
                           <td class="normal"><%= project %></td>
                           <td class="center eventAttendees"><%= no_zero total %></td>
                           <td class="center eventAttendees"><%= no_zero applying_total %></td>
-                          <td class="center eventAttendees"><%= no_zero total + applying_total %></td>
+                          <td class="center eventAttendees"><%= no_zero total.to_i + applying_total.to_i %></td>
                         </tr>
                           <%- end -%>
                         <tr class="total">
