@@ -1,7 +1,9 @@
 <% @feed_items = get_discover_feed_items(campuses, number_of_items).sort! { |a, b| b[:created_at] <=> a[:created_at] } %>
-<h3>Recently...</h3>
-<ul class="discover_feed">
-  <% @feed_items.each do |feed_item| %>
-    <li><%= feed_item_to_s(feed_item) %></li>
-  <% end %>
-</ul>
+<% if @feed_items.size > 1 %>
+  <h3>Recently...</h3>
+  <ul class="discover_feed">
+    <% @feed_items.each do |feed_item| %>
+      <li><%= feed_item_to_s(feed_item) %></li>
+    <% end %>
+  </ul>
+<% end %>
