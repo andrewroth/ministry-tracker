@@ -7,14 +7,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <%# Check if the web_title config option is set, and if so, use it %>
     <title>
-      <%= @site_title + ' | ' if @site_title -%>
-      <% if t('misc.web_title') %>
-        <%= t('misc.web_title') %>
-      <% elsif Cmt::CONFIG[:web_title] %>
-        <%= Cmt::CONFIG[:web_title] %>
-      <% else %>
-        Campus Movement Tracker
-      <% end %>
+      <%= build_site_title(@site_title) -%>
     </title>
     <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", :media => "screen", :cache => false %>
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
@@ -27,7 +20,7 @@
   </head>
 
 	<body>
-      
+
 		<div id="outer">
 
 		<div id="wrapper">
@@ -39,7 +32,7 @@
         <div id='browser_warning' class='flash_notice warning'>
           <%= image_tag "/images/silk/exclamation.png" %>
           <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
-          For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
+          For a faster, safer browsing experience, upgrade for free to one of these browsers today:
 
           <div style='background-color:white; display:inline; padding:5px 5px 0;'>
             <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
@@ -77,11 +70,11 @@
 
     <div id="dialog" style="display:none"></div>
     </div> <!-- Center -->
-    
+
     <div id="footer">
       <div id="helpLinkContainer"><a href="http://getsatisfaction.com/powertochange" title="Pulse Help Center"><div id="helpLink">&nbsp;</div></a></div>
     </div>
-    
+
     <%= I18n.t :analytics, :default => "" %>
 
     <% user_agent = request.env['HTTP_USER_AGENT'].downcase %>

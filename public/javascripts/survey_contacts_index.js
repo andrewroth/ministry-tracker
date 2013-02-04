@@ -6,7 +6,7 @@ $(document).ready(function(){
     });
     $('#contacts_to_update').val(contact_array.join());
   });
-  
+
   $('#select_all_contacts').change( function(){
     $('input[name="contact[]"]').each(function(index){
       $(this).attr('checked', $('#select_all_contacts').is(':checked'));
@@ -36,9 +36,9 @@ $(document).ready(function(){
     $('#multiple_contact_update input[type=submit]').hide();
 
     if($('#multiple_update_action').val() !== '') {
-      $('#' + $('#multiple_update_action').val() + '.multiple_update_sub_select').fadeIn();
+      $('#' + $('#multiple_update_action').val() + '.multiple_update_sub_select').show();
       $('#multiple_contact_update input[type=submit]').val($('#multiple_contact_update .multiple_update_sub_select:visible').attr('data-button-text'));
-      $('#multiple_contact_update input[type=submit]').fadeIn();
+      $('#multiple_contact_update input[type=submit]').show();
     }
   });
 
@@ -55,22 +55,20 @@ $(document).ready(function(){
 });
 
 function adjustToCampus() {
-  $('#assigned_to_').fadeOut(function() {
-    $('#assigned_to_').find('option').remove();
-    $('#spinnerAssignedToSelect').fadeIn();
-  });
-  
+  $('#assigned_to_').hide();
+  $('#assigned_to_').find('option').remove();
+  $('#spinnerAssignedToSelect').show();
+
   $.ajax({
       success: function(data) {
         fillAssignees(data);
-        $('#spinnerAssignedToSelect').fadeOut(function() {
-          $('#assigned_to_').fadeIn();
-        });
+        $('#spinnerAssignedToSelect').hide();
+        $('#assigned_to_').show();
       },
       data: 'campus_id=' + $('#campus_id').val(),
       dataType:'script',
       type:'get',
-      url:'/contacts/assignees_for_campus'}); 
+      url:'/contacts/assignees_for_campus'});
 }
 
 function fillAssignees(data) {

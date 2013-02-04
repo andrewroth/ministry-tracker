@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.10' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.16' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -37,7 +37,7 @@ Rails::Initializer.run do |config|
   # config.gem  'json'
   config.gem  'json_pure', :lib => 'json'
   config.gem  'fastercsv'
-  config.gem  'hpricot', :version => '0.8.3'
+  # config.gem  'hpricot', :version => '0.8.3'
   config.gem  'rubyzip', :lib => 'zip/zip'
   config.gem  'roo', :version => '1.3.11'
   config.gem  'mechanize', :version => '1.0.0'
@@ -82,7 +82,12 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
 
   # See Rails::Configuration for more options
-  config.action_controller.session = { :session_key => "_sn_session", :secret => "01855ec2cf5b05f6f66d1f116dd69116" }
+  session_config = YAML.load_file('config/session.yml')
+  config.action_controller.session = {
+    :session_key => session_config[RAILS_ENV]['session_key'],
+    :secret      => session_config[RAILS_ENV]['secret']
+  }
+  raise "No session secret supplied!" if (config.action_controller.session[:secret].to_s.empty? || config.action_controller.session[:session_key].to_s.empty?) && RAILS_ENV != 'development'
 
   # config.active_record.observers = :view_column_observer
   # config.plugins = config.plugin_locators.map do |locator|

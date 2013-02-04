@@ -1,0 +1,31 @@
+<p><span class="statsTitle">
+  Discover &#8211; Volunteer Activity View at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<table class="dataTable">
+  <thead>
+    <tr>
+      <th>Volunteer</th>
+      <th>Number of Contacts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% total_contacts = 0 %>
+    <% @contacts_grouped_by_people.each do |person, contacts| %>
+      <% next unless person %>
+      <tr>
+        <td><%= link_to person.full_name, person %></td>
+        <td><%= contacts.size %></td>
+        <% total_contacts += contacts.size.to_i %>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
+      <td>Total</td>
+      <td><%= total_contacts %></td>
+    </tr>
+  </tfoot>
+</table>

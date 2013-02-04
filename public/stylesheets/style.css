@@ -3,7 +3,7 @@ Codename: Campus Movement Tracker
 Author: David T Sudarma (Follower), Caleb Wright (Follower), Jacques Robitaille (Follower), Josh Starcher (Cult Leader)
 Use whatever you want
 COLORS:
-Orange Block:      #FFCB05
+Orange Block:      #f7c55c
 Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
@@ -11,8 +11,8 @@ Revised on: 2-16-2009
 
 
 #campus, #person, #training_question, #training_category {
-	border:1px dotted silver;
-	padding:8px;
+  border:1px dotted silver;
+  padding:8px;
 }
 
 .actionbox {
@@ -177,7 +177,7 @@ table {width:100%; font-size:1em;}
 }
 
 .inline {
-	display:inline;
+  display:inline;
 }
 strong {font-weight:bold;}
 a:link strong, a:visited strong {color: #1F429B; font-weight:bold;}
@@ -359,41 +359,41 @@ li {list-style: none; margin-top:3px;}
 p {margin-bottom:10px;}
 
 a:link, a:visited {
-	color: #1F429B;
-	text-decoration:none;
+  color: #1F429B;
+  text-decoration:none;
 }
 
 a:hover, a:active {
   text-decoration:underline;
 }
 a.norm {
-	color:#747474;
-	text-decoration: none;
-	padding: 1px;
+  color:#747474;
+  text-decoration: none;
+  padding: 1px;
 }
 a.norm:active, a.norm:hover {
-	 text-decoration: none;
-	 background: #FFE99B;
-	 padding: 1px;
+   text-decoration: none;
+   background: #FFE99B;
+   padding: 1px;
 }
 .small, a.small {
-	padding: 3px 6px 3px 6px;
-	font-weight:normal;
-	font-size:.75em;
+  padding: 3px 6px 3px 6px;
+  font-weight:normal;
+  font-size:.75em;
 }
 a.small {
   color:#000;
-	background: #FFFFCC;
-	text-decoration: none;
-	border:1px solid #FFCB05;
-	line-height:19px;
-	text-transform:uppercase;
+  background: #FFFFCC;
+  text-decoration: none;
+  border:1px solid #f7c55c;
+  line-height:19px;
+  text-transform:uppercase;
 }
 a.small:active, a.small:hover {
   background:#FFE99B;
-	text-decoration: none;
-	font-weight:normal;
-	font-size:.75em;
+  text-decoration: none;
+  font-weight:normal;
+  font-size:.75em;
 }
 
 /* LAYOUT */
@@ -421,9 +421,9 @@ a.small:active, a.small:hover {
 }
 
 #footer {
-	min-width: 900px;
-	max-width: 900px;
-	height: 60px;
+  min-width: 900px;
+  max-width: 900px;
+  height: 60px;
   margin: 30px auto 20px auto;
 }
 
@@ -446,7 +446,7 @@ dd {
 
 
 .leftColumn {
-	max-width: 220px;
+  max-width: 220px;
 }
 .leftColumn a.norm {
   font-size:1.1em;
@@ -495,7 +495,7 @@ dd {
 .tablist a {
   float:right;
   display:block;
-	text-align: center;
+  text-align: center;
   cursor:pointer;
   overflow:hidden;
   height: 60px;
@@ -653,7 +653,7 @@ h1#title {
 
 .divider {
     height:1px;
-    background-color:#FFCB05;
+    background-color:#f7c55c;
     margin:2px 0 10px 0px;
 }
 
@@ -695,37 +695,37 @@ h1#title {
 /* LITTLE THINGS */
 
 .clear {
-	clear: both;
-	display: block;
-	height: 0;
-	overflow: hidden;
+  clear: both;
+  display: block;
+  height: 0;
+  overflow: hidden;
 }
 
 .alt {
-	display: none;
+  display: none;
 }
 
 .box {
-	border: 1px solid #747474;
-	margin: 5px;
-	padding: 5px;
+  border: 1px solid #747474;
+  margin: 5px;
+  padding: 5px;
 }
 
 form .label {
-    float:right;
-    width:100px;
-    text-align:right;
-    margin-right:10px;
+  float:right;
+  width:100px;
+  text-align:right;
+  margin-right:10px;
 }
 
 div.sectionHeader h2 {
-	border-bottom: 1px solid #000;
-	padding: 5px  0 2px 0;
-	font-size: 11pt;
-    color: darkslategray;
+  border-bottom: 1px solid #000;
+  padding: 5px  0 2px 0;
+  font-size: 11pt;
+  color: darkslategray;
 }
 .center {
-    text-align:center;
+  text-align:center;
 }
 
 img.opaqueWhite {
@@ -743,46 +743,67 @@ select#current_ministry {
 }
 
 .directorytable {
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-bottom: 1px #0064a2 solid;
-    border-radius: 10px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-bottom: 1px #0064a2 solid;
+  border-radius: 10px;
 }
 
 .directorytable th, .directorytable td {
-    padding: 10px 5px;
+  padding: 10px 5px;
 }
 
 .directorytable th {
-    font-weight: normal;
-    border-bottom: 1px solid #0064a2;
-		text-align: left;
+  font-weight: normal;
+  border-bottom: 1px solid #0064a2;
+  text-align: left;
 }
 .directorytable .highlight {
-    background-color:#fcfcfc;
+  background-color:#fcfcfc;
 }
 
 .directorytable tr:hover {
-    background-color: #FFECB3;
-		cursor:pointer;
+  background-color: #FFECB3;
+  cursor:pointer;
 }
 
 .directorytable thead tr:hover {
-    background-color:#f5f5f5;
-		cursor:default;
+  background-color:#f5f5f5;
+  cursor:default;
 }
 
-.directorytable.noclick tr:hover {
-    cursor:default;
+.directorytable.noclick tr:hover, .directorytable td.noclick:hover {
+  cursor: default;
 }
 
 #group_types tr:hover{
-		cursor:default;
+  cursor: default;
 }
 
 .directoryResultControl {
-  display: inline;
+  display: inline-block;
   margin-right: 1.5em;
+}
+
+#directoryLabelForm {
+  display: inline-block;
+  height: 16px;
+}
+
+#directoryLabelForm .personLabelAdd {
+  opacity: 1;
+}
+
+#spinner_perform_action {
+  margin-left: 5px;
+}
+
+.performActionContainer {
+  min-width: 250px;
+}
+
+.performActionContainer select {
+  font-size: 12px;
 }
 
 .directoryMinistryTitle {
@@ -830,18 +851,22 @@ table td.sub {
   padding: 10px 8px;
 }
 
-.directorytable.contacts th a.asc, .directorytable.contacts th a.desc {
+.directorytable.contacts th a.asc, .directorytable.contacts th a.desc, .statsTable th a.desc, .statsTable th a.asc {
   padding-left: 10px;
   background-position: -3px 0px;
   background-repeat: no-repeat;
 }
 
-.directorytable.contacts th a.asc {
+.directorytable.contacts th a.asc, .statsTable th a.asc {
   background-image: url("/images/silk/bullet_arrow_up.png");
 }
 
-.directorytable.contacts th a.desc {
+.directorytable.contacts th a.desc, .statsTable th a.desc {
   background-image: url("/images/silk/bullet_arrow_down.png");
+}
+
+.directorytable.contacts big {
+  font-size: 14px;
 }
 
 .search_actions {
@@ -956,7 +981,7 @@ h2 select {
 }
 
 #contact_notes .new_note, #contact_rejoiceables .new_activity, #recruitment_notes .new_note {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #contact_notes textarea, #recruitment_notes textarea {
@@ -1039,11 +1064,11 @@ div.progressBar div.background {
 }
 
 div.right-menu {
-	float:right;
-	text-align:left;
-	border: 0px solid grey;
-	padding: 0px;
-	margin: 0 5px 0 5px;
+  float:right;
+  text-align:left;
+  border: 0px solid grey;
+  padding: 0px;
+  margin: 0 5px 0 5px;
   width:175px;
 }
 
@@ -1106,22 +1131,22 @@ margin-bottom:10px;
 }
 
 /*#two_col {
-	width:700px;
-	display:block;
-	margin: 10px 0px;
+  width:700px;
+  display:block;
+  margin: 10px 0px;
 }
 
 #tree-div {
-	width:80%;
-	float:left;
-	overflow:auto;
-	height:300px;
-	border:1px solid #c3daf9;
+  width:80%;
+  float:left;
+  overflow:auto;
+  height:300px;
+  border:1px solid #c3daf9;
 }
 
 #edit-ministry {
-	width:50%;
-	float:right;
+  width:50%;
+  float:right;
 }*/
 
 
@@ -1196,7 +1221,7 @@ a.subtabs-menu-inactive div:hover {
 
 
 #campuses, #campus-details {
-	margin: 5px;
+  margin: 5px;
 }
 
 #outer {
@@ -1418,7 +1443,7 @@ input.action-button[disabled]:hover {
 }
 
 .inputcheck {
-	margin-top:6px;
+  margin-top:6px;
 }
 
 #signin .inputsubmit {
@@ -1615,51 +1640,51 @@ table.groupicon td.groupSemesterTitle {
 
 /* column container */
 #dashwrap .colmask {
-	position:relative;	/* This fixes the IE7 overflow hidden bug */
-	clear:both;
-	float:left;
-	width:100%;			/* width of whole page */
-	overflow:hidden;		/* This chops off any overhanging divs */
+  position:relative;  /* This fixes the IE7 overflow hidden bug */
+  clear:both;
+  float:left;
+  width:100%;     /* width of whole page */
+  overflow:hidden;    /* This chops off any overhanging divs */
 }
 /* common column settings */
 #dashwrap .colright,
 #dashwrap .colmid,
 #dashwrap .colleft {
-	float:left;
-	width:100%;			/* width of page */
-	position:relative;
+  float:left;
+  width:100%;     /* width of page */
+  position:relative;
 }
 #dashwrap .col1,
 #dashwrap .col2,
 #dashwrap .col3 {
-	float:left;
-	position:relative;
-	padding:0 0 3em 0;	/* no left and right padding on columns, we just make them narrower instead
-					only padding top and bottom is included here, make it whatever value you need */
-	overflow:hidden;
+  float:left;
+  position:relative;
+  padding:0 0 3em 0;  /* no left and right padding on columns, we just make them narrower instead
+          only padding top and bottom is included here, make it whatever value you need */
+  overflow:hidden;
 }
 /* 3 Column settings */
 #dashwrap.threecol {
 }
 #dashwrap.threecol .colmid {
   margin-top: 30px;
-	right:25%;			/* width of the right column */
+  right:25%;      /* width of the right column */
 }
 #dashwrap.threecol .colleft {
-	right:50%;			/* width of the middle column */
+  right:50%;      /* width of the middle column */
 }
 #dashwrap.threecol .col1 {
-	width:50%;			/* width of center column content (column width minus padding on either side) */
-	left:103%;			/* 100% plus left padding of center column */
+  width:50%;      /* width of center column content (column width minus padding on either side) */
+  left:103%;      /* 100% plus left padding of center column */
 }
 #dashwrap.threecol .col2 {
-	width:24%;			/* Width of left column content (column width minus padding on either side) */
-	left:25%;			/* width of (right column) plus (center column left and right padding) plus (left column left padding) */
+  width:24%;      /* Width of left column content (column width minus padding on either side) */
+  left:25%;     /* width of (right column) plus (center column left and right padding) plus (left column left padding) */
 }
 #dashwrap.threecol .col3 {
-	width:20%;			/* Width of right column content (column width minus padding on either side) */
-	left:82%;			/* Please make note of the brackets here:
-					(100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
+  width:20%;      /* Width of right column content (column width minus padding on either side) */
+  left:82%;     /* Please make note of the brackets here:
+          (100% - left column width) plus (center column left and right padding) plus (left column left and right padding) plus (right column left padding) */
 }
 
 
@@ -1753,7 +1778,7 @@ div#userbar small {font-size:11px;}
 a.logoutbutton {
   float:right;
   font-size: 15px;
-  color:#FFCB05;
+  color:#f7c55c;
   text-transform:uppercase;
   margin-top: 0px;
   background: #1F429B;
@@ -1761,17 +1786,17 @@ a.logoutbutton {
   margin-top: 20px;
 }
 
-table.datatable th{
-width:40%;
+table.datatable th {
+  width:40%;
 }
 
 table.datatable {
-border-collapse:collapse;
-margin-top:5px;
+  border-collapse:collapse;
+  margin-top:5px;
 }
 
 table.datatable td, table.datatable th {
-padding-bottom:5px;
+  padding-bottom:5px;
 }
 
 
@@ -1781,43 +1806,43 @@ padding-bottom:5px;
 
 /* column container */
 #profilewrap .colmask {
-	position:relative;	/* This fixes the IE7 overflow hidden bug */
-	clear:both;
-	float:left;
-	width:100%;			/* width of whole page */
-	overflow:hidden;		/* This chops off any overhanging divs */
+  position:relative;  /* This fixes the IE7 overflow hidden bug */
+  clear:both;
+  float:left;
+  width:100%;     /* width of whole page */
+  overflow:hidden;    /* This chops off any overhanging divs */
 }
 /* common column settings */
 #profilewrap .colright,
 #profilewrap .colmid,
 #profilewrap .colleft {
-	float:left;
-	width:100%;
-	position:relative;
+  float:left;
+  width:100%;
+  position:relative;
 }
 #profilewrap .col1,
 #profilewrap .col2,
 #profilewrap .col3 {
-	float:left;
-	position:relative;
-	overflow:hidden;
+  float:left;
+  position:relative;
+  overflow:hidden;
 }
 /* 2 Column (left menu) settings */
 #profilewrap.leftmenu {
 }
 #profilewrap.leftmenu .colleft {
-	right:75%;			/* right column width */
+  right:75%;      /* right column width */
 }
 #profilewrap.leftmenu .col1 {
-	width:68%;			/* right column content width */
-	left:106%;			/* 100% plus left column left padding */
-	padding-top:15px;
+  width:68%;      /* right column content width */
+  left:106%;      /* 100% plus left column left padding */
+  padding-top:15px;
 }
 #profilewrap.leftmenu .col2 {
-	width:23%;			/* left column content width (column width minus left and right padding) */
-	left:7%;  			/* (right column left and right padding) plus (left column left padding) */
-	background:#878e99;
-	border:#878e99 solid 15px;
+  width:23%;      /* left column content width (column width minus left and right padding) */
+  left:7%;        /* (right column left and right padding) plus (left column left padding) */
+  background:#878e99;
+  border:#878e99 solid 15px;
   border-radius: 6px;
 }
 
@@ -2145,17 +2170,17 @@ padding-bottom:5px;
 }
 
 #flash_warning, .flash.warning b, .flash.warning big {
-	color: FireBrick;
+  color: FireBrick;
 }
 
 .flash {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 .notice {
-	color:#585958;
+  color:#585958;
 }
 .warning {
-	color:FireBrick;
+  color:FireBrick;
 }
 
 #instructions {
@@ -2405,7 +2430,7 @@ div.choose_ministry_tree {
 }
 
 .statsFormField td {
-	width: 50%;
+  width: 50%;
 }
 
 .statsFormField select {
@@ -2466,7 +2491,7 @@ div .statsRadioButton {
 }
 
 ul.statsLinkList {
-	margin: 0 0 5px 0;
+  margin: 0 0 5px 0;
 }
 
 .statsSpinner {
@@ -2537,7 +2562,7 @@ ul.statsLinkList {
 
 .statsContainer {
   width: 100%;
-	margin: 20px auto 0 auto;
+  margin: 20px auto 0 auto;
   text-align: center;
 }
 
@@ -2619,36 +2644,36 @@ ul.statsLinkList {
 
 
 .progressBarPercent .insightsProgressBar, .insightsProgress {
-	display:block;
-	height: 0.7em;
+  display:block;
+  height: 0.7em;
 }
 
 .insightsProgressBar {
-	background-color:#FFFFFF;
-	border: 1px solid #666766;
-	text-align: left;
+  background-color:#FFFFFF;
+  border: 1px solid #666766;
+  text-align: left;
 }
 
 .insightsProgress {
-	background-color: #FFDA68;
-	border: 0;
+  background-color: #FFDA68;
+  border: 0;
 }
 
 #nationalIndicatedDecisions {
-	display:block;
-	width: 160px;
-	float: right;
-	text-align: center;
-	font-size: 1.5em;
+  display:block;
+  width: 160px;
+  float: right;
+  text-align: center;
+  font-size: 1.5em;
 }
 
 #nationalIndicatedDecisionsIcon {
-	background-image:url("/images/sprites/p2c_main_elements.png");
-	background-position: 10px -1815px;
-	background-repeat: no-repeat;
-	height:110px;
-	width:160px;
-	display:inline-block;
+  background-image:url("/images/sprites/p2c_main_elements.png");
+  background-position: 10px -1815px;
+  background-repeat: no-repeat;
+  height:110px;
+  width:160px;
+  display:inline-block;
 }
 
 #IndicatedDecisions {
@@ -2737,10 +2762,11 @@ fieldset {
   width: 17em;
 }
 
-#results .statsTableTitle {
+#results .statsTableTitle, #results th {
   color: #666766;
   vertical-align: middle;
   text-align: left;
+  padding: 5px;
 }
 
 #results .statsTableTitleTop {
@@ -3115,7 +3141,7 @@ h2.group_type_title {
   background-color: #D8D8D8;
   z-index: 99;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 0 0 6px 6px;
 }
 
@@ -3144,7 +3170,7 @@ h2.group_type_title {
   background: white;
   color: #DADADA;
 
-  transition: 0.15s ease 0s; -webkit-transition: 0.15s ease 0s;
+  transition: width 0.1s; -webkit-transition: width 0.1s;
   border-radius: 3px;
 }
 
@@ -3174,7 +3200,7 @@ h2.group_type_title {
   border: 0px;
   background-color: transparent;
   position: absolute;
-  top: 6px;
+  top: 7px;
   right: 105px;
   padding: 5px;
   cursor: pointer;
@@ -3226,7 +3252,7 @@ h2.group_type_title {
 #uberMentorSearchBox.focused, #uberMentorSearchBox:focus, #uberMenteeSearchBox.focused, #uberMenteeSearchBox:focus {
   background: white;
   color: black;
-  border: 1px solid #00268D; /* #FFCB05; yellow */
+  border: 1px solid #00268D; /* #f7c55c; yellow */
   box-shadow: 1px 1px 3px #8B8B8B inset;
 }
 
@@ -3377,7 +3403,7 @@ h2.group_type_title {
 }
 
 .casAuthenticationWarning {
-  background-color: #FFCB05;
+  background-color: #f7c55c;
   border-radius: 10px;
   color: #666766;
   font-size: 12px;
@@ -3410,12 +3436,12 @@ h2.group_type_title {
 }
 
 .searchResult .subtle, .searchResult .subtle strong, .searchResult .subtle a,
-.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong {
+.autoCompleteResult a.autoCompleteEmail, a.autoCompleteEmail strong, .autoCompleteResult .acEmail strong {
   color: #5674BF;
 }
 
 .searchResult:hover .subtle, .searchResult:hover .subtle strong, .searchResult:hover .subtle a,
-.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong {
+.ac_over .autoCompleteResult a.autoCompleteEmail, .ac_over a.autoCompleteEmail strong, .ac_over .autoCompleteResult .acEmail strong {
   color: #1F429B;
 }
 
@@ -3535,12 +3561,16 @@ h2.group_type_title {
 
 .autoCompleteMorePic {
   float: left;
-  margin: 19px 8px 0 35px;
+  margin: 19px 10px 0 35px;
   background-image: url("/images/sprites/p2c_icons.png"); background-repeat: no-repeat;
   background-position: -10px -908px;
   height:15px;
   width:14px;
   display:inline-block;
+}
+
+.ac_over .autoCompleteMorePic {
+  background-position: -10px -942px;
 }
 
 .autoCompleteMore a {
@@ -3577,6 +3607,10 @@ li.ac_over .autoCompleteIconLink {
   background-repeat: no-repeat;
   height: 16px;
   width: 19px;
+}
+
+.autoCompleteIconLink .autoCompleteIconTimetable:hover {
+  background-position: -10px -667px;
 }
 
 .autoCompleteIconLink .autoCompleteIconImpersonate {
@@ -3670,11 +3704,11 @@ li.ac_over .autoCompleteName {
   overflow: hidden;
   z-index: 98;
   border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 1px 2px 5px 2px;
+  border-width: 1px 1px 2px;
   margin: 0 1px;
 
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 .ac_results ul {
@@ -3752,6 +3786,18 @@ li.ac_over .autoCompleteName {
 .autoCompletePic img {
   max-height: 50px;
   max-width: 50px;
+  border-radius: 2px;
+}
+
+.autoCompletePic.butProfile a {
+  float: right;
+  margin: 3px 2px 0 0;
+  opacity: 0.5;
+}
+
+.ac_over .autoCompletePic.butProfile a {
+  opacity: 1;
+  background-position: -8px -739px;
 }
 
 .autoCompleteInfo {
@@ -3776,6 +3822,27 @@ li.ac_over .autoCompleteName {
 .autoCompleteResult a :hover {
 /*  color: #1F429B;*/
   text-decoration: none;
+}
+
+.autoCompleteResult.discoverContact.first:before {
+  content: "DISCOVER:";
+  background-color: white;
+  border-top: 1px dashed #EEE;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 10px;
+  height: 18px;
+  padding: 7px 0 0 7px;
+  text-align: left;
+  width: 268px;
+}
+
+.autoCompleteResult.discoverContact.first {
+  height: 81px;
+}
+
+.autoCompleteResult.last {
+  border-top: 1px dashed #EEE;
 }
 
 .noSearchHighlight strong {
@@ -3828,11 +3895,11 @@ li.ac_over .autoCompleteName {
 
 
 .jqueryValidationInformation {
-	color: green;
+  color: green;
 }
 
 .jqueryValidationError {
-	color: red;
+  color: red;
 }
 
 table.groupInvolvementList .highlight {
@@ -4052,9 +4119,9 @@ input#contract_signature_agreement:hover {
 
 #tooltip.horizTableCompare, #tooltip {
   position: absolute;
-	z-index: 3000;
-	background-color: #666766;
-	padding: 10px;
+  z-index: 3000;
+  background-color: #666766;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
 }
@@ -4064,13 +4131,13 @@ input#contract_signature_agreement:hover {
 
 /** Discipleship Tree **/
 td.discTree {
-	width:50%;
+  width:50%;
 }
 
 .treeColumn {
   width:auto;
   float:left;
-	margin-right:30px;
+  margin-right:30px;
 }
 
 .treeBranch {
@@ -4085,21 +4152,21 @@ td.discTree {
 }
 
 .bracketTop {
-	float: right;
+  float: right;
 }
 
 .bracketBottom {
-	float: right;
+  float: right;
 }
 
 .bracketColumn {
-	float: left;
+  float: left;
 }
 
 .bracketArrow {
   float: left;
   font-weight: bold;
-  color: #FFCB05;
+  color: #f7c55c;
 }
 
 .bracketPic {
@@ -4108,7 +4175,7 @@ td.discTree {
 
 .detailsColumn {
   margin-left:30px;
-	float:none
+  float:none
 }
 
 td.profilePic {
@@ -4131,10 +4198,10 @@ td.nameTitle {
 .headerNameTitle {
     width:auto;
     float:left;
-		margin-left:50px;
-		font-size: 18px;
-		font-weight: bold;
-		padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
+    margin-left:50px;
+    font-size: 18px;
+    font-weight: bold;
+    padding:0px 50px 0px 0px;  /* pads name to match likely length of campus name */
 }
 
 .headerContactInfo {
@@ -4143,7 +4210,7 @@ td.nameTitle {
     margin-left:50px;
 }
 
-#personLabels {
+#personLabels ul {
   display: inline-block;
   width: 100%;
   margin-bottom: 10px;
@@ -4244,6 +4311,7 @@ td.nameTitle {
 .personLabelAdd select {
   opacity: 1;
   font-size: 11px;
+  max-width: 150px;
 }
 
 .personLabelAdd img {
@@ -4311,7 +4379,7 @@ table#reviewableReports, table#reviewerSearchResults, table#weeklySchedule, tabl
 #summer_report_year_id { font-size:20px; font-weight:bold; }
 
 td.campusDiscTree {
-	width:33%;
+  width:33%;
 }
 
 .campusViewTreeNode a {
@@ -4343,6 +4411,10 @@ td.campusDiscTree {
 }
 
 
+.contact_form .input_container {
+  margin: 0 0 15px 0;
+}
+
 .contact_form label {
   display: inline-block;
   float: none;
@@ -4362,7 +4434,7 @@ td.campusDiscTree {
   padding: 5px;
 }
 
-.contact_form input:not([type=submit]) {
+.contact_form input[type=text] {
   font-size: 16px;
   width: 290px;
 }
@@ -4388,12 +4460,12 @@ td.campusDiscTree {
   float: left;
 }
 
-.contact_form .col.wider {
+.contact_form .col.half {
   width: 50%;
 }
 
-.discover_contacts.col.widest {
-  width: 75%;
+.discover_contacts.col.wide {
+  width: 60%;
 }
 
 .contact_form .col.separator {
@@ -4468,6 +4540,19 @@ td.campusDiscTree {
   margin-bottom: 20px;
 }
 
+.discover_feed_container {
+  float: right;
+}
+
+.discover_feed {
+  list-style: none;
+  font-size: 11px;
+}
+
+.discover_feed a {
+  opacity: 0.8;
+}
+
 #contact_notes .note, #contact_rejoiceables .rejoiceable {
   background-color: rgba(245, 245, 245, 1);
   border: 1px solid rgba(235, 235, 235, 0.5);
@@ -4534,11 +4619,16 @@ td.campusDiscTree {
 }
 
 .school_report_totals {
-  border-radius: 5px; 
-  background-color: rgba(184, 204, 253, 0.2); 
+  border-radius: 5px;
+  background-color: rgba(184, 204, 253, 0.2);
   line-height: 25px;
-  padding: 2px; 
+  padding: 2px;
   font-size:15px;
+}
+
+.school_top {
+  text-align:center;
+  width:100%;
 }
 
 .rounded {
@@ -4548,13 +4638,17 @@ td.campusDiscTree {
     border-radius: 10px;
 }
 
-.rounded th {
-  text-align: right;
-  margin-left: 10px;
+.floated {
+  display: inline-block;
+  text-align:left;
+  min-width:300px;
+  vertical-align: bottom;
 }
 
-.rounded td {
-  text-align: left;
+.school_info th {
+  text-align: right;
+  margin-left: 10px;
+  width: 150px;
 }
 
 .rounded label {
@@ -4562,8 +4656,16 @@ td.campusDiscTree {
   display:inline;
 }
 
-table.enrolment {
+.enrolment th, .enrolment td {
   text-align: center;
+}
+
+.check {
+  color: green;
+}
+
+.uncheck {
+  color: red;
 }
 
 .bordered th {
@@ -4574,6 +4676,59 @@ table.enrolment {
   width: inherit;
 }
 
-.dataTables_wrapper th {
+.dataTables_wrapper th, .dataTables_wrapper td {
   text-align: left
+}
+
+table.dataTable th:hover {
+  border-color: #A6A6A6;
+}
+
+table.dataTable th:active {
+  border-color: #666766;
+}
+
+table.dataTable thead th {
+  padding: 5px 0px 5px 10px !important;
+}
+
+table.dataTable tfoot th {
+  padding: 5px 10px !important;
+}
+
+table.dataTable td {
+  padding: 5px 10px !important;
+}
+
+table.dataTable tr:hover {
+  background-color: #FFECB3 !important;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button {
+  color: #1F429B !important;
+  border: solid #DEDEDE;
+  border-width: 0 1px 0 0;
+  padding: 3px 7px;
+  font-weight: bold;
+  background: none;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button:hover {
+  text-decoration: underline;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button.ui-state-disabled {
+  color: #747474 !important;
+}
+
+.dataTables_wrapper .paging_full_numbers a.ui-button.ui-state-disabled:hover {
+  text-decoration: none;
+}
+
+.statsContainer table.dataTable tr.odd td.sorting_1 {
+  background-color: rgba(184, 204, 253, 0.2);
+}
+
+.statsContainer table.dataTable tr.even td.sorting_1 {
+  background-color: rgba(245, 245, 255, 0.5);
 }

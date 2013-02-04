@@ -1,4 +1,6 @@
 class Activity < ActiveRecord::Base
+  TYPES = [[nil, 0], ['Interaction', 1], ['Spiritual Conversation', 2], ['Gospel Presentation', 3], ['Indicated Decision', 4], ['Shared Spirit-filled life', 5]]
+
   belongs_to :reporter, :class_name => 'Person', :foreign_key => :reporter_id
   belongs_to :reportable, :polymorphic => true
 
@@ -8,6 +10,18 @@ class Activity < ActiveRecord::Base
   validates_presence_of :reportable_id
 
   after_create :create_stats
+
+  def self.rejoiceable_types
+    TYPES[2..5]
+  end
+
+  def to_s
+    activity_type_id && TYPES[activity_type_id] ? TYPES[activity_type_id][0] : ''
+  end
+
+  def person
+    reporter.is_a?(Person) ? reporter : nil
+  end
 
   private
 

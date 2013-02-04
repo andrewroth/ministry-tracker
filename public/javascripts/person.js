@@ -9,16 +9,54 @@ function alternate(elem) {
 
 // Submit selected checkboxes and action
 function performAction() {
-  if($('#perform_action').val() != '') {
-    if($('form#people_form input[name="person[]"]:checkbox:checked').length > 0) {
-      $('#spinner_perform_action').show();
-      $('#people_form').attr('action', $('#perform_action').val());
-      $('#people_form').submit();
-    } else {
-      alert("Please check at least one person to perform that action on.")
-      $('#perform_action').val('');
+  if ($('form#people_form input[name="person[]"]:checkbox:checked').length > 0) {
+
+    var action = $('#perform_action').val();
+    try {
+      var parsedAction = $.parseJSON(action);
+    } catch (e) {
     }
+
+    if (typeof parsedAction !== 'undefined' && typeof parsedAction.jsFunction !== 'undefined') {
+      parsedAction.jsFunction(parsedAction.options);
+
+    } else if (action !== '') {
+      submitPerformActionForm(action);
+    }
+
+  } else {
+    alert("Please check at least one person to perform that action on.")
+    $('#perform_action').val('');
   }
+}
+
+function submitPerformActionForm(action, remote) {
+  $('#spinner_perform_action').show();
+  $('#people_form').attr('action', action);
+
+  if ( remote === true ) {
+    $.ajax({
+      type: 'POST',
+      url: action,
+      data: $("#people_form").serialize(),
+      dataType: 'script'
+    });
+
+  } else {
+    $('#people_form').submit();
+  }
+}
+
+function setupLabelForm(options) {
+  $('#directoryLabelForm').find('select').val('');
+  $('#directoryLabelForm').find('option:first').html(options.prompt);
+  $('#directoryLabelForm').find('select').on('change', function() {
+    submitPerformActionForm(options.action, true);
+  });
+
+  $('select#perform_action').fadeOut(function() {
+    $('#directoryLabelForm').fadeIn();
+  });
 }
 
 function selectEntireSearch() {

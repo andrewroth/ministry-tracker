@@ -62,7 +62,7 @@ class Person < ActiveRecord::Base
   has_many :contract_signatures
 
   has_many :survey_contacts
-  has_and_belongs_to_many :discover_contacts, :join_table => 'contacts_people', :association_foreign_key => 'contact_id'
+  has_and_belongs_to_many :discover_contacts, :join_table => ContactsPerson.table_name, :association_foreign_key => ContactsPerson._(:contact_id)
   has_and_belongs_to_many :contacts
 
   has_many :notes
@@ -258,5 +258,23 @@ class Person < ActiveRecord::Base
 
   def recruitable?
     self.labels.all(:conditions => { :id => Recruitment::QUALIFIED_FOR_RECRUITMENT_LABEL_ID }).present?
+  end
+
+  def set_label(label)
+    if labels.include?(label)
+      false
+    else
+      labels << label
+    end
+  end
+
+  def remove_label_with_id(label_id)
+    label_record = LabelPerson.find_by_label_id_and_person_id(label_id, self.id)
+    if label_record
+      label_record.destroy
+      label_record.save
+    else
+      nil
+    end
   end
 end

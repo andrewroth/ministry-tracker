@@ -55,6 +55,12 @@ class StatsController < ApplicationController
         setup_one_stat_report
       when 'labelled_people'
         setup_labelled_people_report
+      when 'discover_contact_volunteer_activity'
+        setup_discover_contact_volunteer_activity_report
+      when 'discover_contact_thresholds_summary'
+        setup_discover_contact_thresholds_summary_report
+      when 'discover_contacts_summary'
+        setup_discover_contacts_summary_report
       else
         # c4c, p2c and ccci are all handled here:
         select_c4c_report
@@ -96,10 +102,10 @@ class StatsController < ApplicationController
     @stats_ministry = Ministry.find(@stats_ministry_id)
     @name_for_treeview = @stats_ministry.name
     if ministry_campus_id.length > 1
-      campus = Campus.find(ministry_campus_id[1].to_i)
-      @campus_ids = [campus.id]
-      @ministry_name = campus.campus_desc
-      @name_for_treeview = campus.campus_shortDesc
+      @stats_campus = Campus.find(ministry_campus_id[1].to_i)
+      @campus_ids = [@stats_campus.id]
+      @ministry_name = @stats_campus.campus_desc
+      @name_for_treeview = @stats_campus.campus_shortDesc
     else
       @ministry_name = @stats_ministry.name
     end
@@ -255,6 +261,27 @@ class StatsController < ApplicationController
     @label_people = (ci_people + mi_people).uniq
 
     @label_people.sort!{ |l1, l2| l1.full_name <=> l2.full_name }
+  end
+
+  def setup_discover_contact_volunteer_activity_report
+    @results_partial = "discover_contact_volunteer_activity"
+
+    @contacts_grouped_by_people = DiscoverContact.all(:include => [:people], :conditions => { :campus_id => stats_campus_ids }).group_by { |contact| contact.people.first }
+    @contacts_grouped_by_people.reject! { |person, contacts| person.nil? }
+  end
+
+  def setup_discover_contact_thresholds_summary_report
+    @results_partial = "discover_contact_thresholds_summary"
+
+    @contacts_grouped_by_next_step_id = DiscoverContact.all(:include => [:people], :conditions => { :campus_id => stats_campus_ids }).group_by { |contact| contact.next_step_id }
+    @contacts_grouped_by_next_step_id.reject! { |next_step_id, contacts| next_step_id.nil? }
+  end
+
+  def setup_discover_contacts_summary_report
+    @results_partial = "discover_contacts_summary"
+
+    @contacts = DiscoverContact.all(:include => [:people, :notes, :activities], :conditions => { :campus_id => stats_campus_ids })
+    @contacts.reject! { |contact| contact.person.nil? }
   end
 
   def setup_how_people_came_to_christ_report
@@ -726,7 +753,7 @@ class StatsController < ApplicationController
         # no more time tabs to hide
       when ONE_STAT
         hide_time_tabs_for_summary_according_to_stat(one_stat)
-      when 'labelled_people'
+      when 'labelled_people', 'discover_contact_volunteer_activity', 'discover_contact_thresholds_summary', 'discover_contacts_summary'
         hide_time_tabs([:week, :month, :semester, :year])
       end
 
@@ -912,5 +939,9 @@ class StatsController < ApplicationController
 
   def set_title
     @site_title = 'Insights'
+  end
+
+  def stats_campus_ids
+    @stats_campus ? @stats_campus.id : @stats_ministry.unique_campuses.collect(&:id)
   end
 end

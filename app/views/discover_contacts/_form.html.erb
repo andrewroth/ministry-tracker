@@ -1,24 +1,24 @@
 <div class="contact_form">
 
-  <div class="col wider">
+  <div class="col half">
     <% form_for discover_contact do |f| %>
       <%= f.error_messages %>
 
-      <p><label for="discover_contact_campus">Campus</label><%= f.select :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), discover_contact.campus_id || @campus.id) %></p>
-      <p><label for="discover_contact_first_name">First name</label><%= f.text_field :first_name %></p>
-      <p><label for="discover_contact_last_name">Last name</label><%= f.text_field :last_name %></p>
-      <p><label for="discover_contact_gender_id">Sex</label><%= f.select :gender_id, options_from_collection_for_select(Gender.all, Gender._(:id), Gender._(:desc), discover_contact.new_record? ? @my.gender_id : (discover_contact.gender_id || 0)) %></p>
-      <p><label for="discover_contact_mobile_phone">Mobile phone</label><%= f.text_field :mobile_phone %></p>
-      <p><label for="discover_contact_email">Email</label><%= f.text_field :email %></p>
-      <p><label for="discover_contact_international">International</label>
+      <div class="input_container"><label for="discover_contact_campus">Campus</label><%= f.select :campus_id, options_from_collection_for_select(@my_campuses, Campus._(:id), Campus._(:desc), discover_contact.campus_id || @campus.id), :include_blank => true %></div>
+      <div class="input_container"><label for="discover_contact_first_name">First name</label><%= f.text_field :first_name %></div>
+      <div class="input_container"><label for="discover_contact_last_name">Last name</label><%= f.text_field :last_name %></div>
+      <div class="input_container"><label for="discover_contact_gender_id">Sex</label><%= f.select :gender_id, options_from_collection_for_select(Gender.all, Gender._(:id), Gender._(:desc), discover_contact.new_record? ? @my.gender_id : (discover_contact.gender_id || 0)) %></div>
+      <div class="input_container"><label for="discover_contact_mobile_phone">Mobile phone</label><%= f.text_field :mobile_phone %></div>
+      <div class="input_container"><label for="discover_contact_email">Email</label><%= f.text_field :email %></div>
+      <div class="input_container"><label for="discover_contact_international">International</label>
         <%= f.radio_button :international, true %><label for="discover_contact_international_true" class="radio">Yes</label>
         <%= f.radio_button :international, false %><label for="discover_contact_international_false" class="radio">No</label>
-      </p>
-      <p><label for="discover_contact_next_step_id">Next step</label><%= f.select :next_step_id, options_for_select(Contact::NEXT_STEP_OPTIONS, discover_contact[:next_step_id].nil? ? 0 : discover_contact[:next_step_id].to_i) %></p>
+      </div>
+      <div class="input_container"><label for="discover_contact_next_step_id">Next step</label><%= f.select :next_step_id, options_for_select(Contact::NEXT_STEP_OPTIONS, discover_contact[:next_step_id].nil? ? 0 : discover_contact[:next_step_id].to_i) %></div>
       <br>
-      <p>In prayerful dependence on God, my next step with this person is...<br><%= f.text_area :what_i_am_trusting_god_to_do_next %></p>
+      <div class="input_container">In prayerful dependence on God, my next step with this person is...<br><%= f.text_area :what_i_am_trusting_god_to_do_next %></div>
 
-      <p class="submit_container"><%= link_to 'Back', '/discover', :class => 'pjax' %> <%= f.submit submit_verb, :class => 'action-button' %></p>
+      <div class="submit_container"><%= link_to 'Back', '/discover', :class => 'pjax' %> <%= f.submit submit_verb, :class => 'action-button' %></div>
     <% end %>
     <%= render 'disclaimer' %>
   </div>
@@ -36,10 +36,10 @@
 
         <div class="new_note">
           <% form_for [discover_contact, Note.new] do |f| %>
-            <p>
+            <div class="input_container">
               <%= f.text_area :content %>
               <%= f.submit 'Add', :class => 'action-button' %>
-            </p>
+            </div>
           <% end %>
         </div>
       </div>
@@ -50,17 +50,17 @@
         <% if discover_contact.activities.present? %>
           <ul>
             <% discover_contact.activities.each do |a| %>
-              <li><div class="rejoiceable"><big><%= activity_options.select{|o| o[1] == a.activity_type_id.to_i }.first[0] %></big></div><div>&nbsp;&#8211;&nbsp;<em><%= %(<span class="has_title" title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></div></li>
+              <li><div class="rejoiceable"><big><%= a %></big></div><div>&nbsp;&#8211;&nbsp;<em><%= %(<span class="has_title" title="#{a.created_at}">#{time_ago_in_words(a.created_at)} #{t("misc.ago")}</span>) if a.created_at %> <%= "by #{link_to(a.reporter.full_name, a.reporter)}" if a.reporter %></em></div></li>
             <% end %>
           </ul>
         <% end %>
 
         <div class="new_activity">
           <% form_for [discover_contact, Activity.new] do |f| %>
-            <p>
-              Add <%= f.select :activity_type_id, options_for_select(activity_options[1..4]) %>
+            <div class="input_container">
+              Add <%= f.select :activity_type_id, options_for_select(Activity.rejoiceable_types) %>
               <%= f.submit 'Rejoice!', :class => 'action-button' %>
-            </p>
+            </div>
           <% end %>
         </div>
       </div>
