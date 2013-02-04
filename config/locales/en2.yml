@@ -1,0 +1,7 @@
+# US English translations for Ruby on Rails
+#
+# Use this as the base for the locale file of your language.
+
+en-CA:
+  layout:
+    banner: https://pulse.campusforchrist.org/images/log_in_main_img.png

@@ -6,7 +6,7 @@ unless @mobile
   <%= javascript_include_tag "dashboard.js", :cache => 'cache/dashboard' %>
 <% end %>
 
-<% @site_title = 'Dashboard' -%>
+<% @site_title = t('title.dashboard') -%>
 
 <div class="welcome">
 <%- if @ministry -%>
@@ -41,7 +41,7 @@ unless @mobile
         <div class="dashmodule">
           <div class="moduletitle">
             <h2>
-              <%= I18n.t("dashboard.events_header") %>&nbsp;
+              <%= t("dashboard.events_header") %>&nbsp;
               <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
             </h2>
             <div class="modulecontrols">
@@ -86,7 +86,6 @@ unless @mobile
         <div id="verticalTablistContainer">
           <div id="verticalBracketTop">&nbsp;</div>
           <%= tabnav :vertical_main %>
-          <div id="verticalBracketBottom">&nbsp;</div>
         </div>
         <div class="clear"></div>
       </div><!-- col2 -->
@@ -94,26 +93,29 @@ unless @mobile
       
       <div class="col3">
 
-        <div class="dashmodule">
-          <div class="modulecontent">
-            <%= link_to image_tag("CRM_ConnectButton.jpg"), "https://connect.powertochange.org/" %>
-          </div>
-        </div>
-
-        <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
-        <div class="dashmodule">
-          <div class="moduletitle">
-            <h2>God at Work</h2>
-            <div class="modulecontrols">
-              <a href="" class="minmodule"></a>
-              <a href="" class="movemodule"></a>
-              <a href="" class="closemodule"></a>
+        <% if authorized?(:index, :survey_contacts) %>
+          <div class="dashmodule">
+            <div class="modulecontent">
+              <p><%= link_to 'Connect Data Input', 'https://connect.powertochange.org/node/2' %></p>
+              <%= link_to image_tag("CRM_ConnectButton.jpg"), contacts_path %>
             </div>
           </div>
-          <div class="modulecontent">
-            <%= render :partial => "insights" %>
+        <% end %>
+
+        <% if (is_staff_somewhere || authorized?(:show_total_indicated_decisions, :stats)) && @total_indicated_decisions.present? %>
+          <div class="dashmodule">
+            <div class="moduletitle">
+              <h2>God at Work</h2>
+              <div class="modulecontrols">
+                <a href="" class="minmodule"></a>
+                <a href="" class="movemodule"></a>
+                <a href="" class="closemodule"></a>
+              </div>
+            </div>
+            <div class="modulecontent">
+              <%= render :partial => "insights" %>
+            </div>
           </div>
-        </div>
         <% end %>
 
         <div class="clear"></div>

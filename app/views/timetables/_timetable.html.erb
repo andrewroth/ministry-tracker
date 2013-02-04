@@ -1,11 +1,11 @@
-<%= render :partial => 'schedule_header' %>
+<%#= render :partial => 'schedule_header' %>
 
  <table id="schedule" class="<%= 'editing' if editing %>" cellspacing="0">
   <thead>
     <tr>
       <th class="time">&nbsp;</th>
       <%- 7.times do |day| -%>
-        <th><%= Date::DAYNAMES[day] %></th>
+        <th><%= t("date.day_names.#{Date::DAYNAMES[day].downcase}") %></th>
       <%- end -%>
   </thead>
   <tbody>
@@ -17,12 +17,12 @@
     <%- while time < stop 
         time_in_seconds = time.to_i - midnight.to_i -%>
       <tr>
-        <td width="10px" class="time timelineHeader hour<%=time.hour%>"><div class="timeHeader"><%= time.to_s(:time) %></div></td>
+        <td width="10px" class="time timelineHeader hour<%=time.hour%>"><div class="timeHeader"><%= time.strftime(t("timetable.date_format")).downcase %></div></td>
         <%- 7.times do |day| -%>
         <%- css_class = (@free_times[day] && @free_times[day][time_in_seconds] ? @free_times[day][time_in_seconds] : '') -%>
 				
 					<%- if @printable -%>
-					  <td width="50px" height="10px" class="day_<%= day %> <%= css_class.present? ? css_class : 'good' %>">            
+					  <td width="50px" height="10px" class="day_<%= day %> <%= css_class.present? ? css_class : 'good' %>">
 							   <%- case css_class -%>
 								    <%- when 'bad' -%>
 										  <%= image_tag('status_bad_print.png') %>
@@ -30,7 +30,7 @@
 										  <%= image_tag('status_ok_print.png') %>
 										<%- when 'good' -%>
 										  <%= image_tag('status_good_print.png') %>
-								 <%- end -%>	 
+								 <%- end -%>
               <%= hidden_field_tag("time_#{time.to_i}", time_in_seconds) %>
             </td>
 					<%- elsif -%>

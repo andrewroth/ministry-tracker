@@ -2,52 +2,68 @@
 <p class="statsTitle"><%= @report_description %></p>
 <table class="statsTable">
   <tr>
-      <td class="statsTableTitle"></td>
+    <td class="statsTableTitle"></td>
     <% @reports_to_show.each do |r| %>
-      <% stat_report(r).each do |k, stat| 
-           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)%>
-             <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
-      <%    total_stat[k] = 0
-           end
-         end %>
+      <% stat_report(r).each do |k, stat|
+        next if stat[:display] && stat[:display] == :false
+        if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
+          <td class="statsTableTitle<%= stat[:css_class] %>"><%= stat[:label] %></td>
+          <% total_stat[k] = 0
+        end
+      end %>
     <% end %>
   </tr>
+
   <% @campuses.each do |campus|
-        show_campus = true
-        unless @staff_id.nil?
-          show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id) 
-        end 
+    show_campus = true
+    unless @staff_id.nil?
+      show_campus = false if no_weekly_data(@period, @campus_ids, @staff_id)
+    end
 
-        if show_campus
+    if show_campus %>
 
-%>
-    <tr class="<%= cycle('highlight', 'nohighlight') %>">
-      <td class="statsTableTitle"><%= campus_link_to_remote(campus, @report_type) %></td>
-    <% @reports_to_show.each do |r| %>
-      <% stat_report(r).each do |k, stat| 
-           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column)
-             data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
-             <td class="<%= stat[:css_class] %>"><%= data %></td>
-      <%     total_stat[k] += data
-           end
-         end %>
+      <tr class="<%= cycle('highlight', 'nohighlight') %>">
+        <td class="statsTableTitle"><%= campus_link_to_remote(campus, @report_type) %></td>
+        <% @reports_to_show.each do |r| %>
+        <% stat_report(r).each do |k, stat|
+          next if stat[:display] && stat[:display] == :false
+          if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition)
+            data = evaluate_stat_for_period(@period, [campus.id], stat, @staff_id) %>
+            <td class="<%= stat[:css_class] %>">
+              <% if data.present? %>
+                <%= data %>
+              <% else %>
+                <span class="statException has_title" title="This measurement cannot be calculated for this specific time period">?</span>
+              <% end %>
+            </td>
+            <% total_stat[k] += data if data.present?
+          end
+        end %>
     <% end %>
-    </tr>
-  <%     
-       end
-     end %>
+  </tr>
+
+  <% end
+  end %>
 
   <tr><td><br/></td></tr>
-  <tr class="highlight">
-    <td class="statsTableTitle">Totals:</td>
+  <tr class="highlight statsTableTotal">
+    <td class="statsTableTitle">Total</td>
     <% @reports_to_show.each do |r|
-         stat_report(r).each do |k, stat| 
-           if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column) %>
-             <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
-      <%     
-           end
-         end 
-       end %>
+      stat_report(r).each do |k, stat|
+        next if stat[:display] && stat[:display] == :false
+        if print_stat_total?(stat)
+          if @period.stats_available.include?(stat[:collected]) && (@show_non_database || stat[:column_type] == :database_column || stat[:column_type] == :count_model_with_condition) %>
+            <% special_total = evaluate_special_total([@period], @campuses.collect(&:id), stat, @staff_id) %>
+            <% if special_total.present? %>
+              <td class="<%= stat[:css_class] %>"><%= special_total %></td>
+            <% else %>
+              <td class="<%= stat[:css_class] %>"><%= total_stat[k] %></td>
+            <% end %>
+          <% end %>
+        <% else %>
+          <td class="<%= stat[:css_class] %>"><span class="statException has_title" title="Not applicable">n/a</span></td>
+        <% end
+      end
+    end %>
   </tr>
-
 </table>

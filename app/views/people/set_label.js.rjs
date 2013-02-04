@@ -1,5 +1,9 @@
 if @error_notice
   update_flash(page, @error_notice)
 else
-  page["personLabels"].html(render :partial => "person_labels")
+  if @label.id == Recruitment::QUALIFIED_FOR_RECRUITMENT_LABEL_ID
+    page << "window.location.reload()"
+  else
+    page["personLabels"].html(render :partial => "person_labels")
+  end
 end

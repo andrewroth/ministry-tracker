@@ -73,6 +73,7 @@ module CollectiveIdea #:nodoc:
             end
                           
             before_create  :set_default_left_and_right
+            before_save    :set_default_left_and_right, :if => Proc.new { |my| my[left_column_name].blank? && my[right_column_name].blank? } # in case the object was not properly initialized on create
             before_save    :store_new_parent
             after_save     :move_to_new_parent
             before_destroy :destroy_descendants

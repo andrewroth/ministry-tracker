@@ -1,0 +1,8 @@
+<% if Cmt::CONFIG[:gcx_connexion_bar] %>
+  <% begin %>
+    <%= connexion_bar %>
+    <%= connexion_bar_revealer %>
+  <% rescue => e %>
+    <% Rails.logger.error("\nERROR WITH CONNEXION_BAR: \n#{e.try(:class)}\n#{e.try(:message)}\n\n") %>
+  <% end %>
+<% end %>

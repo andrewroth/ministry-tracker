@@ -2,7 +2,7 @@ class CampusInvolvementsController < ApplicationController
   before_filter :set_campuses
   before_filter :set_school_years
   before_filter :set_inv_type
-  before_filter :set_roles, :only => [ :new, :edit ]
+  before_filter :set_roles, :only => [ :new, :edit, :create ]
   before_filter :set_student, :only => [ :index, :new, :edit ]
   
   skip_standard_login_stack :only => [:graduated]
@@ -30,7 +30,7 @@ class CampusInvolvementsController < ApplicationController
     if @campus_involvement.archived?
       @campus_involvement.end_date = nil
       @campus_involvement.last_history_update_date = Date.today
-      @campus_involvement.save!
+      @campus_involvement.save
       @updated = false
     end
 
@@ -153,6 +153,11 @@ class CampusInvolvementsController < ApplicationController
         @campus_involvement.last_history_update_date = Date.today
       end
       @campus_involvement.end_date = Date.today
+      # delete all ministry involvements for this person that have this campus
+      @campus_involvement.person.ministry_involvements.find_all_by_ministry_id(@campus_involvement.campus.ministry_ids).each do |mi|
+        mi.end_date = DateTime.now
+        mi.save(false)
+      end
       @campus_involvement.save(false)
     end
   end
@@ -338,16 +343,16 @@ class CampusInvolvementsController < ApplicationController
     @plural = 'campuses'
     @singular = 'campus'
     @short = 'ci'
-    @add_title = 'Add Campus'
+    @add_title = t('profile.manage_campuses.add_campus')
   end
 
   def set_roles
     if !is_staff_somewhere(@me)
-      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", get_my_role.position ])
+      student_roles = StudentRole.find(:all, :conditions => [ "position >= ?", (get_my_role || MinistryRole.default_student_role).try(:position) ])
     else
       student_roles = StudentRole.all
     end
-    @roles = [ [ 'Student Roles', student_roles.collect{ |sr| [ sr.name, sr.id ] } ] ]
+    @roles = [ [ 'Student Roles', student_roles.collect{ |sr| [ I18n.t("roles.#{sr.translation_key}"), sr.id ] } ] ]
     @default_role_id = MinistryRole.default_student_role.id
   end
 

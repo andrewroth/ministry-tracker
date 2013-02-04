@@ -24,7 +24,7 @@
 
 
       <% if group.email.present? %>
-        email <%= mail_to group.email %>
+        <%= t('groups.email') %> <%= mail_to group.email %>
         <br />
       <% end %>
 
@@ -44,9 +44,9 @@
     <% gi = group.group_involvements.detect{ |gi| gi.person == @me } %>
     
     <% if gi && gi.requested %>
-      <b>Join request sent</b>
+      <b><%= t('groups.join_sent') %></b>
     <% elsif gi && gi.level != 'interested' %>
-      <b>You're a <%= gi.level.capitalize %></b>
+      <b><%= t('groups.your', :role => t("groups.roles.#{gi.level}").capitalize) %></b>
     <% else %>
       <% if @join %>
         <% join_group_text = group.needs_approval ? I18n.t("groups.buttons.request") : I18n.t("groups.buttons.join") %>

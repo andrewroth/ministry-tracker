@@ -1,10 +1,7 @@
 <%
 
 submit_links = [{ :text => "Indicated Decision", :controller => :prcs, :action => :index },
-                { :text => "Weekly Stats", :controller => :weekly_reports, :action => :new },
-                { :text => "Monthly Stats", :controller => :monthly_reports, :action => :new },
-                { :text => "Semester Stats", :controller => :semester_reports, :action => :new },
-                { :text => "Goals", :controller => :annual_goals_reports, :action => :new }]
+                { :text => "Monthly Stats", :controller => :monthly_reports, :action => :new }]
 
 report_links = [] # once contained links to reports but they were all moved into constants.rb
 
@@ -36,7 +33,7 @@ unless submit_links.empty?
 end
 
 unless @mobile
-	
+
 	unless report_links.empty? && report_type_links_to_show.empty?
 	  %>
 	  <%= submit_links.present? ? "<br/>" : "" %>
@@ -51,6 +48,7 @@ unless @mobile
 	end
 	%>
 	<%= render :partial => 'stats/report_type_list_links' %>
+	<li><%= link_to "School Report", :controller => "civicrm_schools", :action => :index %></li>
 	<%
 	unless report_links.empty? && report_type_links_to_show.empty?
 	  %>

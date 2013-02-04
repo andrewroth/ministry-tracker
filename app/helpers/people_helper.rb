@@ -1,5 +1,5 @@
 module PeopleHelper
-  
+
   ARROW_LEFT_INDENT = 11
   BRACKET_LENGTH_INCREMENT_PER_MENTEE = 25
   BRACKET_LENGTH_MIN = 110
@@ -9,7 +9,7 @@ module PeopleHelper
   CAMPUS_NOT_ASSIGNED = "Not associated with a campus"
   MEDIUM_PROFILE_PIC_MAX_DIMENSION = 100
   MEDIUM_PROFILE_PIC_FILLER_DIMENSION = 200
-  
+
   def highlight_if_requested
     if params[:set_campus_requested] == 'true'
       %|class="warning"|
@@ -27,7 +27,7 @@ module PeopleHelper
   end
 
   def parse_url(url)
-    desc = url.split('/') 
+    desc = url.split('/')
     url = 'http://' + url if desc.length == 1
     desc = desc.last.split('.')
     desc = desc.length > 1 ? desc[-2] : url
@@ -59,5 +59,12 @@ module PeopleHelper
     else
       @html += "Next »"
     end
+  end
+
+  def ministry_view_options_for_select(view, ministry)
+    authorized_views = ministry.views.reject do |v|
+      v.title == "Recruitment" && !authorized?(:show, :recruitments)
+    end
+    options_for_select(authorized_views.collect {|v| [v.title, v.id]}, view.id)
   end
 end

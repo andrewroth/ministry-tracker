@@ -46,7 +46,13 @@ $(document).ready(function(){
 	{
 		valid = true;
 		if(inputCtrl.value == "" || typeof inputCtrl.value  == "undefined") valid = false;
-		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> required");
+    /* for translations */
+    if ($("#required_text").length > 0) {
+      required_text = $("#required_text").html();
+    } else {
+      required_text = "required"
+    }
+		valid ? InformativeMessage(inputCtrl, "<img src=\"/images/silk/accept.png\"/>") : ErrorMessage(inputCtrl, "<img src=\"/images/silk/exclamation.png\" /> " + required_text);
 		return valid;
 	}
 
@@ -73,7 +79,11 @@ $(document).ready(function(){
 
   yyyymmddMessage = "(yyyy/mm/dd)";
   requiredMessage = "";
-  submitValidateRequiredFailMessage = "Please fill all required fields";
+  if ($("#validation_failed_message").length > 0) {
+    submitValidateRequiredFailMessage = $("#validation_failed_message").html()
+  } else {
+    submitValidateRequiredFailMessage = "Please fill all required fields";
+  }
 
   $("input.positiveinteger").change(function (e) { e.currentTarget.value = pureInteger(e.currentTarget.value); });
   $("input.yyyymmdd").blur(function (e) { validDate(e.currentTarget); });

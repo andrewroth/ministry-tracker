@@ -452,7 +452,7 @@ class GlobalDashboardController < ApplicationController
         session[:ministry_metric_timeframe] = @ministry_metric_timeframe
       else
         @ministry_metric_timeframe = "y_#{Year.current.id}"
-        @year = Year.find_by_year_desc("2010 - 2011") || Year.find_by_year_desc("2010-2011")
+        @year = Year.find_by_year_desc("2011 - 2012") || Year.find_by_year_desc("2011-2012")
         @month_ids = @year.months_by_literal_year.collect(&:id)
       end
 

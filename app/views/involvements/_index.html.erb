@@ -1,5 +1,5 @@
 <div id="dialog" style="display:none;">
-  <a id="TB_closeWindowButton" href="#" style="float:right">close</a>
+  <a id="TB_closeWindowButton" href="#" style="float:right"><%= I18n.t("profile.manage_campuses.close") %></a>
   <%- if @denied -%>
     <p>Students are assigned to campuses, not ministries.  Edit their Campuses instead.</p>
   <%- else -%>
@@ -25,7 +25,7 @@
     <p id="new_ministry_li" style="display:none"> <!-- new ministry involvement ajax form goes before #new_ministry_li -->
     </p>
   <% end %>
-  <div id='involvement_history'>Involvement History
+  <div id='involvement_history'><%= t('profile.manage_campuses.involvement_history') %>
     <ul id='history'>
       <%= render :collection => @involvement_history, :partial => "involvement_history/involvement_li" %>
     </ul>

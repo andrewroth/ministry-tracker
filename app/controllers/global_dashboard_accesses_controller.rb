@@ -1,6 +1,14 @@
 class GlobalDashboardAccessesController < ApplicationController
-  before_filter :ensure_admin
+  # April 2012 - having trouble with infinite redirects (Russ)
+
+  #before_filter :ensure_admin
+  before_filter :authenticate
+  skip_before_filter :cas_gateway_filter
   skip_before_filter :authorization_filter
+  skip_before_filter :login_required
+  skip_before_filter :force_email_set
+  skip_before_filter :force_required_data
+  skip_before_filter :get_ministry
 
   # GET /global_dashboard_accesses
   # GET /global_dashboard_accesses.xml
@@ -89,8 +97,13 @@ class GlobalDashboardAccessesController < ApplicationController
 
   protected
 
-    def ensure_admin
-      access_denied unless is_ministry_admin || @me.is_global_dashboard_admin
-    end
+    #def ensure_admin
+    #  access_denied unless is_ministry_admin || @me.is_global_dashboard_admin
+    #end
 
+    def authenticate
+      authenticate_or_request_with_http_basic do |id, password| 
+        id == 'admin' && password == 'c4c'
+      end
+    end
 end

@@ -12,7 +12,7 @@ class UserMailer < ActionMailer::Base
   def confirm_email(email)
     @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Email confirmation code"
+    @subject      = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.confirm_email_subject")}"
     @sent_on      = Time.now
     @body[:code]  = User.secure_digest(email)
   end
@@ -20,7 +20,7 @@ class UserMailer < ActionMailer::Base
   def signup_finished_email(email, link, joined_collection_group)
     @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Signup completed"
+    @subject      = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.signup_finished_subject")}"
     @sent_on      = Time.now
     @content_type = "text/html"
     @body[:joined_collection_group] = joined_collection_group
@@ -30,7 +30,7 @@ class UserMailer < ActionMailer::Base
   def signup_confirm_email(email, link)
     @recipients   = "#{email}"
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject      = "#{Cmt::CONFIG[:email_subject_prefix]} Your Pulse verify email"
+    @subject      = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.signup_confirm_subject")}"
     @sent_on      = Time.now
     @content_type = "text/html"
     @body[:link]  = link
@@ -43,11 +43,11 @@ class UserMailer < ActionMailer::Base
     @recipients  = leader_email
     @from        = Cmt::CONFIG[:email_from_address]
     if requested
-      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a student requesting to join!"
+      @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_requested_subject", :group_name => group_name)}"
     elsif interested
-      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a student interested in it!"
+      @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_interested_subject", :group_name => group_name)}"
     else
-      @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_name} has a new member!"
+      @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_join_subject", :group_name => group_name)}"
     end
     @sent_on     = Time.now
     @body[:requested] = requested
@@ -67,7 +67,7 @@ class UserMailer < ActionMailer::Base
     @content_type = "text/html"
     @recipients = review.person.email
     @from = Cmt::CONFIG[:email_from_address]
-    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{review.summer_report.person.full_name} submitted summer schedule"
+    @subject = "#{I18n.t("misc.email_prefix")} #{review.summer_report.person.full_name} submitted summer schedule"
     @sent_on = Time.now
 
     @body[:reviewer_first_name] = review.person.first_name
@@ -82,9 +82,9 @@ class UserMailer < ActionMailer::Base
     @sent_on = Time.now
 
     if summer_report.approved?
-      @subject = "#{Cmt::CONFIG[:email_subject_prefix]} Your summer schedule was approved!"
+      @subject = "#{I18n.t("misc.email_prefix")} Your summer schedule was approved!"
     elsif summer_report.disapproved?
-      @subject = "#{Cmt::CONFIG[:email_subject_prefix]} Your summer schedule was disapproved..."
+      @subject = "#{I18n.t("misc.email_prefix")} Your summer schedule was disapproved..."
     end
 
     @body[:summer_report] = summer_report
@@ -99,7 +99,7 @@ class UserMailer < ActionMailer::Base
     @from = Cmt::CONFIG[:email_from_address]
     @sent_on = Time.now
     
-    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_invitation.sender_person.first_name} invites you to join #{group_invitation.group.name}"
+    @subject = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_invitation_subject", :sender_name => group_invitation.sender_person.first_name, :group_name => group_invitation.group.name)}"
     
     @body[:group_invitation] = group_invitation
     @body[:accept_link] =  "#{base_url}/groups/#{group_invitation.group_id}/group_invitations/#{group_invitation.id}/accept?login_code=#{group_invitation.login_code.code}"
@@ -113,7 +113,7 @@ class UserMailer < ActionMailer::Base
     @from = Cmt::CONFIG[:email_from_address]
     @sent_on = Time.now
     
-    @subject = "#{Cmt::CONFIG[:email_subject_prefix]} #{group_invitation.recipient_email} declined your invite to join #{group_invitation.group.name}"
+    @subject = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.group_invitation_decline_subject", :subject_name => group_invitation.recipient_email, :group_name => group_invitation.group.name)}"
     
     @body[:group_invitation] = group_invitation
   end
@@ -128,7 +128,7 @@ class UserMailer < ActionMailer::Base
   def created(person, ministry, added_by, password)
     @recipients  = person.user.username
     @from         = Cmt::CONFIG[:email_from_address]
-    @subject     = "#{Cmt::CONFIG[:email_subject_prefix]} An account has been created for you"
+    @subject     = "#{I18n.t("misc.email_prefix")} #{I18n.t("emails.created_student_subject")}"
     @sent_on     = Time.now
     @body[:person] = person
     @body[:user] = person.user

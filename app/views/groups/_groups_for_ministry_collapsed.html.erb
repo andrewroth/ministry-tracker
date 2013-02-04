@@ -10,7 +10,7 @@
 
   <div id="primary_group_type_list" class="group_type_list">
     <% gt = GroupType.first(:conditions => {:group_type => group_type}) %>
-    <h2 class="group_type_title"><%= I18n.t(gt.translation_key) %></h2>
+    <h2 class="group_type_title"><%= I18n.t("groups.types.#{gt.translation_key}") %></h2>
     <div>
       <%= render :partial => 'groups/group_type_groups_minimal', :locals => {:gt => gt} %>
     </div>
@@ -22,7 +22,7 @@
     <% gts.each do |gt| %>
       <div class="group_type_list">
         <hr></hr>
-        <h2 class="group_type_title"><%= gt.group_type %></h2>
+        <h2 class="group_type_title"><%= t("groups.types.#{gt.translation_key}") %></h2>
         <div>
           <%= render :partial => 'groups/group_type_groups_minimal', :locals => {:gt => gt} %>
         </div>
@@ -32,7 +32,7 @@
 
   <div id="display_other_group_types_list_link_container">
     <hr></hr>
-    <a id="display_other_group_types_list_link" href="#"><%= I18n.t("groups.other") %></a>
+    <a id="display_other_group_types_list_link" href="#"><%= I18n.t("groups.older") %></a>
     <br/>
   </div>
 

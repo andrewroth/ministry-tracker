@@ -6,17 +6,16 @@
   %>
     <%= link_to_remote("", 
           {:url => person_campus_involvement_path(@person, ci), 
-          #:confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
-          #              :campus_name => ci.campus.name),
-          :confirm => "test",
+          :confirm => t('profile.left_bar.campuses.confirm', :person_name => (@person == @me ? 'yourself' : @person.first_name), 
+                       :campus_name => ci.campus.name),
           :method => :delete,
           :before => "$('#spinner').show()"}, 
           {:title => "Remove #{@person == @me ? 'yourself' : @person.first_name} from #{ci.campus.name}", :class => "removeInvolvementIconLink"}) %>
   <% end %>
 
   <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
-  <%= ci.try(:school_year).try(:name) %>
-  <%= ci.find_or_create_ministry_involvement.ministry_role.name if @student %>
+  <%= t("years.#{ci.try(:school_year).try(:translation_key)}") %>
+  <%= t("roles.#{ci.find_or_create_ministry_involvement.ministry_role.translation_key}") if @student %>
 </li>
 
 <script type="text/javascript">

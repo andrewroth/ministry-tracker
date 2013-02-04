@@ -17,7 +17,7 @@
     :Bible_Study_short_plural => 'DGs',
     :app_name => 'Pulse',
     :slogan => "<img src='/images/conduitbanner.png'></img>",
-    :help_link => "https://www.mygcx.org/Pulse_Help_Center/screen/home",
+    :help_link => "http://getsatisfaction.com/powertochange",
     :help_header => "Help",
     :alternate_phone => 'Cell Phone',
     
@@ -36,7 +36,7 @@
 |,
     :GCX_login_info => %|
 <p>What is TheKey login?</p>
-<p>TheKey (formerly GCX) is a single sign-on login that authenticates you to use Campus for Christ web applications including:</p>
+<p>TheKey (formerly GCX) is a single sign-on login that authenticates you to use Power to Change web applications including:</p>
 <p>
 <ul><li><a href="http://pulse.campusforchrist.org">Pulse</a></li>
   <li><a href="http://pat.powertochange.org">Project Application Tool</a></li>
@@ -45,7 +45,7 @@
   <li><a href="http://mpdtool.powertochange.org">MPD Tool</a></li>
 </ul>
 </p>
-<p>Your username will authenticate you to all these sites using one login via TheKey.  You do not have to create a new one each time!  Contact us at helpdesk@c4c.ca if you have any questions about your username.  Thank you!
+<p>Your username will authenticate you to all these sites using one login via TheKey.  You do not have to create a new one each time!  Contact us at Helpdesk@powertochange.org if you have any questions about your username.  Thank you!
 <br>
 </p>
     |,
@@ -56,8 +56,8 @@
         :short => "%e %b",
         :long => "%B %e, %Y",
         :only_day => "%e",
-        :long_ordinal => lambda { |date| "%B #{date.day.ordinalize}, %Y" },
-        :short_ordinal => lambda { |date| "%B #{date.day.ordinalize}" }
+        :long_ordinal => lambda { |date| date.strftime("%B #{date.day.ordinalize}, %Y") },
+        :short_ordinal => lambda { |date| date.strftime("%B #{date.day.ordinalize}") }
       },
       
       :order => [ :year, :month, :day ],
@@ -77,12 +77,12 @@
         :short => "%d %b %H:%M",
         :long => "%B %d, %Y %H:%M",
         :only_second => "%S",
-        :long_ordinal => lambda { |time| "%B #{time.day.ordinalize}, %Y %H:%M" },
-        :short_ordinal => lambda { |time| "%B #{time.day.ordinalize}" }
+        :long_ordinal => lambda { |time| time.strftime("%B #{time.day.ordinalize}, %Y %H:%M") },
+        :short_ordinal => lambda { |time| time.strftime("%B #{time.day.ordinalize}") }
       },
       :time_with_zone => {
         :formats => {
-          :default => lambda { |time| "%Y-%m-%d %H:%M:%S %Z" }
+          :default => lambda { |time| time.strftime("%Y-%m-%d %H:%M:%S %Z") }
         }
       },
       :datetime => {

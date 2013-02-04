@@ -2,6 +2,31 @@ require 'csv'
 require 'yaml'
 
 namespace :cmt do
+  task :cleanup_student_involvements => :environment do
+    student_role_ids = Ministry.first.student_role_ids
+    staff_role_ids = Ministry.first.staff_role_ids
+    campus_ids_to_ministry_ids = {}
+    Person.find(:all).each do |person|
+      puts "#{person.full_name} (#{person.id}) "
+      if person.ministry_involvements.find_all_by_ministry_role_id(staff_role_ids).present?
+        puts "  found staff involvement(s).  Skipping."
+      else
+        campus_ids = person.campus_involvements.find(:all, :conditions => "end_date IS NULL").collect(&:campus_id)
+        puts "  campus_ids: #{campus_ids.inspect}"
+        ministry_ids = [ 0 ] # need at least one value fro the NOT IN condition below to work
+        campus_ids.each do |cid|
+          campus_ids_to_ministry_ids[cid] ||= MinistryCampus.find_all_by_campus_id(campus_ids).collect(&:ministry_id)
+          ministry_ids += campus_ids_to_ministry_ids[cid]
+        end
+        puts "  valid ministry_ids: #{ministry_ids.inspect}"
+        mis_to_keep = person.ministry_involvements.find_all_by_ministry_id(ministry_ids)
+        mis_to_destroy = person.ministry_involvements.find(:all, :conditions => [ "ministry_id NOT IN (?)", ministry_ids ])
+        puts "  mis to keep: #{mis_to_keep.length}    mis to expire: #{mis_to_destroy.length} on #{mis_to_destroy.collect(&:ministry).collect(&:name)}"
+        mis_to_destroy.each { |mi| mi.end_date = DateTime.now; mi.save(false) }
+      end
+    end
+  end
+
   namespace :views do
     desc "rebuilds all views in the CMT"
     task :rebuild => :environment do

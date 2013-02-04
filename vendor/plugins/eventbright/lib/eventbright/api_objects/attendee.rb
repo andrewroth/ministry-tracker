@@ -41,11 +41,18 @@ module EventBright
     
     def answer_to_question(question)
       answer_text = nil
+
+      # Support multiple forms of the question (e.g. locals)
+      if question.is_a? Hash
+        question = question.collect { |k, v| v.downcase }
+      else
+        question = [] << question.downcase
+      end
     
       if self.answers then
         self.answers.each do |answer|
           answer = answer["answer"]
-          answer_text = answer["answer_text"] if answer["question"].include?(question)
+          answer_text = answer["answer_text"] if answer["question"] && question.include?(answer["question"].downcase)
         end
       end
       

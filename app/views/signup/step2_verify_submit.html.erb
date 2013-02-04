@@ -1,4 +1,3 @@
 <% instruction_block do %>
-  A verification email has been sent to <b><%= @email %></b><br/><br/>
-  Click the link in the email to continue.
+  <%= t('signup.verify_email_sent', :email => @email) %>
 <% end %>

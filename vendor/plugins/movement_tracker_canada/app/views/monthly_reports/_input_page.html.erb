@@ -2,11 +2,8 @@
 <%= javascript_include_tag "monthly_reports.js" %>
 
 <h1 id="statsTitle">Measurements</h1>
-<div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>
 
-<br/>
-
-<div class="statsFormContainer">
+<div class="statsFormContainer monthly_report">
   <div id="newSemesterHighlightsFormContainer" class="statsFormBox">
     <h2 class="statsFormBoxTitle">Submit your monthly highlights</h2>
     <br/>
@@ -16,5 +13,15 @@
   </div>
 </div>
 
-<br/>
+<br>
+<br>
+<br>
+<dl>
+  <dt>Growing disciples</dt><dd>The number of people involved in a local campus movement that are growing in their faith.</dd>
+  <dt>Ministering disciples</dt><dd>The number of people involved in a local campus movement that are growing in their faith and sharing their faith with others.</dd>
+  <dt>Multiplying disciples</dt><dd>The number of people involved in a local campus movement that are growing in their faith, sharing their faith with others and discipling others to do the same.</dd>
+</dl>
+<br>
+<br>
+
 <div class="backLink"><%= link_to 'Cancel and go back', url_for(:controller => :stats, :action => :index) %></div>

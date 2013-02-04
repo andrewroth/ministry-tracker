@@ -30,7 +30,7 @@ module Cmt
     :hide_poor_status_in_scheduler => true,
     
     # Default ministry name
-    :default_ministry_name => 'Campus for Christ',
+    :default_ministry_name => 'Power to Change - Students',
     
     # Public name for this application. If it is set to 'The Pulse', certain parts of 
     # the application will change according to Campus for Christ's branding in Canada
@@ -51,7 +51,7 @@ module Cmt
     :disable_address2 => true,
     
     # Default website title appearing at the top of the browser
-    :web_title => 'Campus for Christ :: The Pulse',
+    :web_title => 'Power to Change - The Pulse',
 
     # When no Permission object is found for a controller/action,
     # does the user have permission
@@ -85,10 +85,10 @@ module Cmt
     :dashboard_big_buttons_enabled => true,
 
     # prefix to preprend to the subject of each email going out
-    :email_subject_prefix => "[pulse] ",
+    :email_subject_prefix => "[The Pulse] ",
 
     # the from address for each outgoing email
-    :email_from_address => "No-Reply <noreply@campusforchrist.org>",
+    :email_from_address => "The Pulse <pulse@p2c.com>",
 
     # when editing a person profile, use a thickbox instead of in the page
     :person_edit_in_thickbox => false,

@@ -16,7 +16,7 @@ set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
 set :keep_releases, 3
 
 set :scm, "git"
-set :repository, "git://github.com/twinge/#{application}.git"
+set :repository, "git://github.com/andrewroth/#{application}.git"
 set :branch, if prod? then 'pulse_cdm' elsif stage? then 'c4c.staging' else 'c4c.dev' end
 set :deploy_via, :checkout
 path = if ma?
@@ -45,6 +45,7 @@ def link_shared(p, o = {})
   run "ln -s #{shared_path}/#{p} #{release_path}/#{p}"
 end
 
+before :"deploy:create_symlink", :"deploy:before_symlink"
 deploy.task :before_symlink do
   # set up tmp dir
   run "mkdir -p -m 770 #{shared_path}/tmp/{cache,sessions,sockets,pids}"
@@ -54,6 +55,7 @@ deploy.task :before_symlink do
   # other shared files / folders
   link_shared 'log', :overwrite => true
   link_shared 'config/database.yml', :overwrite => true
+  link_shared 'config/civicrm.yml', :overwrite => true
   link_shared 'config/initializers/eventbright.rb', :overwrite => true
 
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
@@ -65,6 +67,7 @@ deploy.task :before_symlink do
   run "cd #{release_path} && git submodule update"
 end
 
+after :"deploy:create_symlink", :"deploy:after_symlink"
 deploy.task :after_symlink do
   run "ruby /etc/screen.d/dj_pulse.rb"
 end

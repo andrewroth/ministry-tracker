@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
   include SemesterSet
   include Pat
   before_filter :set_current_and_next_semester
-  
+
   def setup
     setup_years
     setup_months
@@ -16,15 +16,15 @@ class DashboardController < ApplicationController
     set_notices
     @people_in_ministries = MinistryInvolvement.count(:conditions => ["#{_(:ministry_id, :ministry_involvement)} IN(?)", @ministry.id ])
     @movement_count = @my.ministry_involvements.length
-  
+
     @ministry_ids ||= @my.ministry_involvements.collect(&:ministry_id).join(',')
     @group_stats = [ ]
-      
+
     setup_stats
     setup_pat_stats
     setup_insights
 
-    if  @ministry_ids.present? #&& @ministry.campus_ids.present? 
+    if  @ministry_ids.present? #&& @ministry.campus_ids.present?
        @newest_people = Person.find(:all, :conditions => "#{MinistryInvolvement.table_name}." + _(:ministry_id, :ministry_involvement) + " IN (#{@ministry_ids})", # OR #{CampusInvolvement.table_name}.#{_(:campus_id, :campus_involvement)} IN (#{@ministry.campus_ids.join(',')})
                                          :order => "#{Person.table_name}.#{_(:created_at, :person)} desc", :limit => 4, :joins => [:ministry_involvements, :campus_involvements])
     end
@@ -34,7 +34,7 @@ class DashboardController < ApplicationController
     # update my schedule flash notice
     my_timetable = (@my.timetable || Timetable.create(:person_id => @me.id))
     if my_timetable.updated_at.blank? || my_timetable.updated_at == my_timetable.created_at
-      flash[:notice] = "You haven't filled out your schedule yet. <a href='#{person_timetable_path(@me.id, my_timetable.id)}'>UPDATE MY SCHEDULE</a>"
+      flash[:notice] = "#{t("dashboard.update_schedule_msg")}  <a href='#{person_timetable_path(@me.id, my_timetable.id)}'>#{t("dashboard.update_schedule_title")}</a>"
     end
   end
 

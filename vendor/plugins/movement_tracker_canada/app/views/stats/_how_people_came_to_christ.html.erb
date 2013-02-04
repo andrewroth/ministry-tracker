@@ -17,34 +17,26 @@
                     <%= (Prcmethod.find_by_prcMethod_id i).prcMethod_desc %>
                 </td>
                 <td>
-                    <center>
-                        <%= method %>
-                        <% methodTotal += method %>
-                    </center>
+                    <%= method %>
+                    <% methodTotal += method %>
                 </td>
                 <td>
-                    <center>
-                        <%= @total != 0 ? (method*100)/@total : "0" %>%
-                    </center>
+                    <%= @total != 0 ? (method*100)/@total : "0" %>%
                 </td>
                 <td>
-                    <center>
-                        <%= @completed[i] %>
-                        <% completedTotal += @completed[i] %>
-                    </center>
+                    <%= @completed[i] %>
+                    <% completedTotal += @completed[i] %>
                 </td>
                 <td>
-                    <center>
-                        <%= method != 0 ? (@completed[i]*100)/method : "0" %>%
-                    </center>
+                    <%= method != 0 ? (@completed[i]*100)/method : "0" %>%
                 </td>
             </tr>
         <% end %>
     <% end %>
-    <tr>
+    <tr class="statsTableTotal">
       <td>
         <br/>
-        Totals:
+        Total
       </td>
       <td>
         <br/>

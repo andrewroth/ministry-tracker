@@ -1,46 +1,3 @@
-            <script type="text/javascript">
-              project_campus_expanded = new Array(); project_campus_expanded['total'] = false;
-              function toggle_campus(c) {
-                if (project_campus_expanded[c] == null) {
-                  project_campus_expanded[c] = false;
-                }
-                project_campus_expanded[c] = !project_campus_expanded[c];
-
-                switch(c) {
-                  case 'total':
-                    selector = '.project_campus.extra';
-                    break;
-                  case 'all_projects':
-                    selector = '#all_projects';
-                    break;
-                  default:
-                    selector = '.project_campus_stats.'+c;
-                }
-                icon_selector = '.icon.project_campus.'+c;
-                if (project_campus_expanded[c]) {
-                  $(selector).show();
-                  $(icon_selector).removeClass('expand');
-                  $(icon_selector).addClass('contract');
-                } else {
-                  $(selector).hide();
-                  $(icon_selector).removeClass('contract');
-                  $(icon_selector).addClass('expand');
-                }
-                if (c == 'total') {
-                  /*
-                  if (project_campus_expanded[c]) {
-                    $("#all_campuses").html("All Campuses");
-                  } else {
-                    $("#all_campuses").html("All Campuses");
-                  }
-                  */
-                } else if (c == 'all_projects') {
-                }
-
-                // update yellow menu bracket height
-                adjustBracketHeight();
-              }
-            </script>
             <table>
               <tbody>
                 <tr>
@@ -98,9 +55,9 @@
                   <td class="eventIcon">
                     <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
-                  <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function "All Projects", toggle_campus('all_projects'), :id => "all_projects_link" %></td>
+                  <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function t('dashboard.projects.all_projects'), toggle_campus('all_projects'), :id => "all_projects_link" %></td>
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
-                  <!--<td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
+                  <!--<td class="center eventAttendees"><%#= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
                 </tr>
                 <tr id="all_projects" style="display:none">
@@ -136,7 +93,7 @@
                   <td colspan="2">
                     <br/>
                     <%- if @staff -%>
-                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>-->
+                      <%= link_to "View project applications", "https://pat.powertochange.org/main/your_campuses", :target => "_blank" %><!-- or <%#= link_to "Acceptances by project", "https://pat.powertochange.org/reports/project_stats", :target => "_blank" %>-->
                     <%- else -%>
                       <%= link_to I18n.t("dashboard.projects.link_txt"), "https://pat.powertochange.org", :target => "_blank" %>
                     <%- end -%>
@@ -145,3 +102,47 @@
               </tbody>
             </table>
           
+          
+            <script type="text/javascript">
+              project_campus_expanded = new Array(); project_campus_expanded['total'] = false;
+              function toggle_campus(c) {
+                if (project_campus_expanded[c] == null) {
+                  project_campus_expanded[c] = false;
+                }
+                project_campus_expanded[c] = !project_campus_expanded[c];
+
+                switch(c) {
+                  case 'total':
+                    selector = '.project_campus.extra';
+                    break;
+                  case 'all_projects':
+                    selector = '#all_projects';
+                    break;
+                  default:
+                    selector = '.project_campus_stats.'+c;
+                }
+                icon_selector = '.icon.project_campus.'+c;
+                if (project_campus_expanded[c]) {
+                  $(selector).show();
+                  $(icon_selector).removeClass('expand');
+                  $(icon_selector).addClass('contract');
+                } else {
+                  $(selector).hide();
+                  $(icon_selector).removeClass('contract');
+                  $(icon_selector).addClass('expand');
+                }
+                if (c == 'total') {
+                  /*
+                  if (project_campus_expanded[c]) {
+                    $("#all_campuses").html("All Campuses");
+                  } else {
+                    $("#all_campuses").html("All Campuses");
+                  }
+                  */
+                } else if (c == 'all_projects') {
+                }
+
+                // update yellow menu bracket height
+                adjustBracketHeight();
+              }
+            </script>

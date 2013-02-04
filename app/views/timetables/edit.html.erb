@@ -1,6 +1,6 @@
 <% if @signup %>
   <% instruction_block do %>
-    You're almost done! Enter your timetable to indicate when you're free to meet!
+    <%= t('groups.timetable_message') %>
   <% end %>
 <% else %>
   <div id="profiletitle"><h1><%= @person.full_name %></h1></div>
@@ -8,79 +8,19 @@
 
 <br />
 
-<script type="text/javascript" charset="utf-8">
-  // Loop over the table cells and collect the ones that are checked
-  // 61 td cells per column
-  // free_times[0] == Sunday
-  // free_times[0][0][0] = First Start Time on Sunday
-  // free_times[0][0][1] = First End Time on Sunday
-  var weights = new Array();
-  weights['<%= Timetable::BAD_CLASS %>'] = <%= Timetable::BAD_WEIGHT %>;
-  weights['<%= Timetable::POOR_CLASS %>'] = <%= Timetable::POOR_WEIGHT %>;
-  weights['<%= Timetable::OK_CLASS %>'] = <%= Timetable::OK_WEIGHT %>;
-  weights['<%= Timetable::GOOD_CLASS %>'] = <%= Timetable::GOOD_WEIGHT %>;
-  function set_times_field() {
-    var current_class = '';
-    var blocks = 0;
-    var been_free = false;
-    var current_day;
-    free_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
-    for(i = 0; i < 7; i++) {
-        // Go down each column
-      for(c_index = 0; c_index < possible_classes.length; c_index++) {
-        css_class = possible_classes[c_index];
-        $('table#schedule td.day_' + i).each(function(index) {
-          if($(this).hasClass(css_class)) {
-            if(current_class != css_class) {
-              day = i;
-              current_class = css_class;
-              been_free = true;
-              if(day != current_day) {
-                current_day = day;
-                blocks = 0;
-              }
-              free_times[day][blocks] = new Array;
-              free_times[day][blocks][0] = Number($(this).find('input').val());
-
-              // Set End Time *INTERVAL* mins later
-              free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
-              
-              free_times[day][blocks][2] = weights[$('.' + css_class + 'head').attr('rel')];
-              free_times[day][blocks][3] = css_class;
-            } else {
-
-              // Set End Time *INTERVAL* mins later
-              free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
-            }
-          } else {
-            if(been_free) {
-               blocks++;
-               been_free = false;
-            }
-            current_class = '';
-          }
-        });
-      }
-    }
-    $('#times').val($.toJSON(free_times));
-  }
-  
-
-</script>
-
 <%- if @can_edit -%>
-  <%- form_for [@person, @timetable], 
+  <%- form_for [@person, @timetable],
     :url => (@signup ? update_signup_person_timetable_url(@person, @timetable) : person_timetable_url(@person, @timetable)),
-    :html => {:onsubmit => "set_times_field()", :class => "disableOnSubmit"} do |f| -%>
+    :html => {:class => "editTimetable disableOnSubmit"} do |f| -%>
     <%= hidden_field_tag :times %>
     <%- unless @signup -%>
-    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit' %>
+    <%= f.submit t('timetable.buttons.save'), :class => 'save action-button disableOnSubmit' %>
     <br/>
     <br/>
     <%- end %>
 
-    <p>Click on one of the color buttons below and then click times on your schedule.</p>
-    
+    <p><%= t('timetable.instructions') %></p>
+
 
     <div class="statusheadwrap editing">
       <%= link_to_function('', '', :class => 'badhead headselected', :rel => Timetable::BAD_CLASS) %>
@@ -91,7 +31,7 @@
       <%= link_to_function('', '', :class => 'goodhead', :rel => Timetable::GOOD_CLASS) %>
     </div>
 
-    <%= link_to_function('Clear Timetable', 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
+    <%= link_to_function(t("timetable.buttons.clear_timetable"), 'clear_timetable()', :id => 'clear_timetable', :class => 'action-button') %>
 
     <%= render :partial => 'timetable', :locals => {:editing => true} %>
 
@@ -99,91 +39,159 @@
     <% if @signup %>
       <br/>
       <div style="float:right;">
-        <%= f.submit 'Edit Timetable Later', :class => 'action-button disableOnSubmit', :confirm => "Please fill in your timetable to ensure your group finds a meeting time that's suitable for everyone.\n\nIf you don't have your timetable yet click OK and you'll receive an email with a link back to this page." %>
+        <%= f.submit t('timetable.buttons.edit_later'), :class => 'action-button disableOnSubmit', :confirm => t('timetable.buttons.edit_later_confirm') %>
     <% end %>
-    
-    <%= f.submit 'Save Timetable', :class => 'save action-button disableOnSubmit', :style => 'margin: 0 70px' %>
+
+    <%= f.submit t('timetable.buttons.save'), :class => 'save action-button disableOnSubmit', :style => 'margin: 0 70px' %>
     <br/>
     <br/>
-    
+
     <% if @signup %>
       </div>
     <% end %>
-    
+
   <%- end -%>
   <br/>
 <%- else -%>
   You can't edit this timetable.
 <%- end -%>
 
+
 <script type="text/javascript">
-  
-  var timetable_edits = 0;
-  var down = false;
-  var css = '<%= Timetable::BAD_CLASS %>';
-  var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>'];
-  var direction = 'on';
+  $(function() {
 
+    // Loop over the table cells and collect the ones that are checked
+    // 61 td cells per column
+    // free_times[0] == Sunday
+    // free_times[0][0][0] = First Start Time on Sunday
+    // free_times[0][0][1] = First End Time on Sunday
+    var weights = new Array();
+    weights['<%= Timetable::BAD_CLASS %>'] = <%= Timetable::BAD_WEIGHT %>;
+    weights['<%= Timetable::POOR_CLASS %>'] = <%= Timetable::POOR_WEIGHT %>;
+    weights['<%= Timetable::OK_CLASS %>'] = <%= Timetable::OK_WEIGHT %>;
+    weights['<%= Timetable::GOOD_CLASS %>'] = <%= Timetable::GOOD_WEIGHT %>;
 
-  function clear_timetable() {
-    var answer = confirm("Are you sure you want to set every time on your timetable to 'GOOD'?");
-    if (answer == false) {
-      return;
-    }
+    function set_times_field() {
+      var current_class = '';
+      var blocks = 0;
+      var been_free = false;
+      var current_day;
+      var free_times = [[new Array], [new Array], [new Array], [new Array], [new Array], [new Array], [new Array]];
 
-    css_before = css;
-    css = 'good';
-    for (i = 0; i < 7; i++) {
-      // Set all classes to good, and remove all classes that aren't good
-      for (c_index = 0; c_index < possible_classes.length; c_index++) {
-        if (possible_classes[c_index] != '<%= Timetable::GOOD_CLASS %>') {
-          $('.day_'+i).removeClass(possible_classes[c_index]);
-        } else {
-          $('.day_'+i).addClass(possible_classes[c_index]);
+      for(i = 0; i < 7; i++) {
+        // Go down each column
+        for(c_index = 0; c_index < possible_classes.length; c_index++) {
+          css_class = possible_classes[c_index];
+          $('table#schedule td.day_' + i).each(function(index) {
+            if($(this).hasClass(css_class)) {
+              if(current_class != css_class) {
+                day = i;
+                current_class = css_class;
+                been_free = true;
+                if(day != current_day) {
+                  current_day = day;
+                  blocks = 0;
+                }
+                free_times[day][blocks] = new Array;
+                free_times[day][blocks][0] = Number($(this).find('input').val());
+
+                // Set End Time *INTERVAL* mins later
+                free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+
+                free_times[day][blocks][2] = weights[$('.' + css_class + 'head').attr('rel')];
+                free_times[day][blocks][3] = css_class;
+
+              } else {
+                // Set End Time *INTERVAL* mins later
+                free_times[day][blocks][1] = Number($(this).find('input').val()) + (<%= Timetable::INTERVAL %>);
+              }
+            } else {
+              if(been_free) {
+                 blocks++;
+                 been_free = false;
+              }
+              current_class = '';
+            }
+          });
         }
       }
+
+      $('#times').val($.toJSON(free_times));
     }
-    css = css_before;
-  }
+
+    $('form.editTimetable').on('submit', function() {
+      set_times_field();
+    });
 
 
-  $(".statusheadwrap a").click(function() {
-    $('.headselected').removeClass('headselected');
-    css = $(this).attr('rel');
-    $(this).addClass('headselected');
-  });
-  
-  $('table#schedule td:not(.time)').mousedown(function() {
-    down = true;
-    for(i=0; i < possible_classes.length; i++) {
-      $(this).removeClass(possible_classes[i]);
+    var timetable_edits = 0;
+    var down = false;
+    var css = '<%= Timetable::BAD_CLASS %>';
+    var possible_classes = ['<%= Timetable::BAD_CLASS %>', '<%= Timetable::POOR_CLASS %>', '<%= Timetable::OK_CLASS %>', '<%= Timetable::GOOD_CLASS %>'];
+    var direction = 'on';
+
+
+    function clear_timetable() {
+      var answer = confirm("Are you sure you want to set every time on your timetable to 'GOOD'?");
+      if (answer == false) {
+        return;
+      }
+
+      css_before = css;
+      css = 'good';
+      for (i = 0; i < 7; i++) {
+        // Set all classes to good, and remove all classes that aren't good
+        for (c_index = 0; c_index < possible_classes.length; c_index++) {
+          if (possible_classes[c_index] != '<%= Timetable::GOOD_CLASS %>') {
+            $('.day_'+i).removeClass(possible_classes[c_index]);
+          } else {
+            $('.day_'+i).addClass(possible_classes[c_index]);
+          }
+        }
+      }
+      css = css_before;
     }
-    $(this).addClass(css);
-    timetable_edits = timetable_edits+1;
-  });
 
-  $('table#schedule td:not(.time)').mouseover(function() {
-    if(down) {
+
+    $(".statusheadwrap a").click(function() {
+      $('.headselected').removeClass('headselected');
+      css = $(this).attr('rel');
+      $(this).addClass('headselected');
+    });
+
+    $('table#schedule td:not(.time)').mousedown(function() {
+      down = true;
       for(i=0; i < possible_classes.length; i++) {
         $(this).removeClass(possible_classes[i]);
       }
       $(this).addClass(css);
       timetable_edits = timetable_edits+1;
-    }
-  });
-  $('body').mouseup(function() {
-    down = false;
-  });
-  $('table#schedule td').disableTextSelect();
-   
-  $('#timetable_submit.save').click(function(e) {
-    if(timetable_edits < 2) {
-      var answer = confirm("We noticed you didn't change much on your timetable, filling in your timetable helps your group find a meeting time that's suitable for everyone.\n\nClick 'Cancel' to continue editing or click 'OK' to save your timetable and finish.");
-      if(answer == false) {
-        return false;
+    });
+
+    $('table#schedule td:not(.time)').mouseover(function() {
+      if(down) {
+        for(i=0; i < possible_classes.length; i++) {
+          $(this).removeClass(possible_classes[i]);
+        }
+        $(this).addClass(css);
+        timetable_edits = timetable_edits+1;
       }
-    }
+    });
+    $('body').mouseup(function() {
+      down = false;
+    });
+    $('table#schedule td').disableTextSelect();
+
+    $('#timetable_submit.save').click(function(e) {
+      if(timetable_edits < 2) {
+        var answer = confirm("<%= escape_javascript(t('timetable.buttons.not_changed_message')) %>");
+        if(answer == false) {
+          return false;
+        }
+      }
+    });
+
+    disableInputsOnSubmit("disableOnSubmit");
+
   });
-  
-  disableInputsOnSubmit("disableOnSubmit");
 </script>

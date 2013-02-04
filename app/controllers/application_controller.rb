@@ -4,8 +4,7 @@ require 'cgi'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include ActiveRecord::ConnectionAdapters::Quoting
-  
-  
+
   ############################################################
   # ERROR HANDLING et Foo
   include ExceptionNotification::ExceptionNotifiable
@@ -20,7 +19,7 @@ class ApplicationController < ActionController::Base
   # END ERROR HANDLING
   ############################################################
 
-  
+
   if Cmt::CONFIG[:facebook_connectivity_enabled]
     before_filter :set_facebook_session
     helper_method :facebook_session
@@ -28,20 +27,20 @@ class ApplicationController < ActionController::Base
 
   # include ExceptionNotifiable
   # self.error_layout = false
-  
+
   self.allow_forgery_protection = false
 
   # Pick a unique cookie name to distinguish our session data from others'
-  helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin, 
-                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage, 
-		:get_people_responsible_for
-		
+  helper_method :format_date, :_, :receipt, :is_ministry_leader, :is_ministry_leader_somewhere, :team_admin,
+                :get_ministry, :current_user, :is_ministry_admin, :authorized?, :is_group_leader, :can_manage,
+            		:get_people_responsible_for
+
   case
   when !Cmt::CONFIG[:gcx_direct_logins] && Cmt::CONFIG[:gcx_greenscreen_directly]
     #before_filter CASClient::Frameworks::Rails::Filter
     before_filter :cas_filter
   when Cmt::CONFIG[:gcx_direct_logins] || Cmt::CONFIG[:gcx_greenscreen_from_link]
-    #before_filter CASClient::Frameworks::Rails::GatewayFilter 
+    #before_filter CASClient::Frameworks::Rails::GatewayFilter
     before_filter :cas_gateway_filter
   end unless Rails.env.test?
 
@@ -49,10 +48,42 @@ class ApplicationController < ActionController::Base
 
   before_filter :login_required, :get_person, :force_required_data, :get_ministry, :set_locale#, :get_bar
   before_filter :authorization_filter
-  
+  before_filter :set_locale
+
   helper :all
 
+  def rails_cache_clear
+    if is_admin?
+      begin
+        Rails.cache.clear
+        Rails.logger.info("Clearing Rails cache! Initiated by person #{get_person.id}")
+        flash[:notice] = "Cleared the Rails cache."
+      rescue
+        flash[:notice] = "Failed to clear the Rails cache."
+      end
+    end
+    redirect_to '/'
+  end
+
   protected
+
+    def set_locale
+      if params[:locale].present?
+        I18n.locale = params[:locale]
+        if params[:locale] == I18n.default_locale
+          session.delete :locale
+          session[:locale] = nil
+        else
+          session[:locale] = I18n.locale
+        end
+      elsif session[:locale]
+        I18n.locale = session[:locale]
+      elsif request.subdomains.first == 'pouls' || request.subdomains.first == 'lepouls'
+        session[:locale] = I18n.locale = 'fr'
+      else
+        session[:locale] = I18n.locale = request.compatible_language_from(I18n.available_locales) || I18n.default_locale
+      end
+    end
 
     def cas_filter
       return if logged_in?
@@ -73,10 +104,10 @@ class ApplicationController < ActionController::Base
     def _(column, table)
       ActiveRecord::Base._(column, table)
     end
-    
+
     def current_ministry; @ministry; end
     helper_method :current_ministry
-    
+
     def possible_roles
       unless @possible_roles
         @possible_roles = get_ministry.ministry_roles.find(:all, :conditions => "#{_(:type, :ministry_roles)} <> 'OtherRole'")
@@ -89,7 +120,7 @@ class ApplicationController < ActionController::Base
       @possible_roles
     end
     helper_method :possible_roles
-    
+
     def format_date(value, format = :default)
       return '' if value.blank?
       date = value.is_a?(Date) ? value : Date.parse(value.to_s)
@@ -108,13 +139,13 @@ class ApplicationController < ActionController::Base
       # TODO: can do this in one query without using ancestor_ids now
       @ministry_involvement = person.ministry_involvements.find(:first, :conditions => ["#{MinistryInvolvement.table_name + '.' + _(:ministry_id, :ministry_involvement)} IN (?) AND end_date is NULL", force_only_this_ministry ? ministry.id : ministry.ancestor_ids], :joins => :ministry_role, :order => _(:position, :ministry_role))
     end
-    
+
     def setup_ministries
-      @ministry_involvements = @person.ministry_involvements.find(:all, 
+      @ministry_involvements = @person.ministry_involvements.find(:all,
                                                                   :order => Ministry.table_name + '.' + _(:name, 'ministry'),
                                                                   :include => [:ministry])
     end
-    
+
     def get_countries
       @countries = CmtGeo.all_countries
     end
@@ -123,7 +154,7 @@ class ApplicationController < ActionController::Base
       person ||= (@me || get_person)
       return group.leaders.include?(person) || authorized?(:edit, :groups)
     end
-    
+
     def is_ministry_leader( ministry = nil, person = nil)
       return true if is_ministry_admin(ministry, person)
       ministry ||= @ministry || get_ministry
@@ -131,16 +162,16 @@ class ApplicationController < ActionController::Base
       involvement = get_ministry_involvement(ministry, person)
       return (involvement && involvement.try(:ministry_role).is_a?(StaffRole)) || ministry.staff.include?(person) || (involvement && involvement.admin?)
     end
-    
+
     def is_ministry_leader_somewhere(person = nil)
       person ||= (@me || get_person)
       return false unless person
       @is_ministry_leader ||= {}
-      @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions => 
-         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null", 
+      @is_ministry_leader[person.id] ||= !MinistryInvolvement.find(:first, :conditions =>
+         ["#{_(:person_id, :ministry_involvement)} = ? AND (#{_(:ministry_role_id, :ministry_involvement)} IN (?) OR admin = 1) AND #{_(:end_date, :ministry_involvement)} is null",
          person.id, get_ministry.root.leader_role_ids]).nil?
     end
-    
+
     def is_staff_somewhere(person = nil)
       person ||= (@me || get_person)
       return false unless person
@@ -148,7 +179,7 @@ class ApplicationController < ActionController::Base
       @is_staff_somewhere[person.id] ||= person.is_staff_somewhere?
     end
     helper_method :is_staff_somewhere
- 
+
     def can_manage
       unless session[:can_manage]
         session[:can_manage] = authorized?(:new, :ministries) || authorized?(:edit, :ministries) ||
@@ -159,12 +190,12 @@ class ApplicationController < ActionController::Base
       end
       session[:can_manage]
     end
-    
+
 #    def is_involved_somewhere(person = nil)
 #      person ||= (@me || get_person)
 #      return MinistryInvolvement.find(:first, :conditions => ["#{_(:person_id, :ministry_involvement)} = ? AND #{_(:ministry_role_id, :ministry_involvement)} IN (?)", person.id, get_ministry.involved_student_role_ids])
 #    end
-    
+
     def is_ministry_admin(ministry = nil, person = nil)
       person ||= (@me || get_person)
       return false unless person
@@ -180,7 +211,7 @@ class ApplicationController < ActionController::Base
     end
     alias_method :is_admin?, :is_ministry_admin
     helper_method :is_admin?
-    
+
     # These actions all have custom code to check that for the current user
     # being the owner of such groups, and then returning true in that case
     AUTHORIZE_FOR_OWNER_ACTIONS = {
@@ -200,7 +231,7 @@ class ApplicationController < ActionController::Base
       :group_invitations => [:new, :create_multiple],
       :monthly_reports => [:stat_details]
     }
-    
+
     def authorized?(action = nil, controller = nil, ministry = nil, options = {})
       return true if is_ministry_admin
       ministry ||= get_ministry
@@ -222,17 +253,17 @@ class ApplicationController < ActionController::Base
           end
         end
       end
-      
+
       original_action = action || action_name
       action ||= ['create','destroy'].include?(action_name.to_s) ? 'new' : action_name.to_s
       action = action == 'update' ? 'edit' : action
       controller ||= controller_name.to_s
 
-      # Make sure we're always using strings      
+      # Make sure we're always using strings
       action = action.to_s
       controller = controller.to_s
       original_action = original_action.to_s
-      
+
       # Owner Action Checking
       # NOTE: These need to be done after action & controller are set
       if AUTHORIZE_FOR_OWNER_ACTIONS[controller.to_sym] &&
@@ -250,9 +281,9 @@ class ApplicationController < ActionController::Base
           elsif params[:id] && params[:id] == @my.id.to_s && original_action != "new" && original_action != "create"
             return true
           end
-          
+
           ## see '_mentor_search_box' partial for 'add_mentor' & @person == @me logic (vs 'add_mentor_other')
-          
+
         when :profile_pictures, :timetables
           if (params[:person_id] && params[:person_id] == @my.id.to_s) || (@person == @me)
             return true
@@ -280,9 +311,9 @@ class ApplicationController < ActionController::Base
             end
           end
         when :campus_involvements, :ministry_involvements
-          if params[:person_id] == @my.id.to_s 
+          if params[:person_id] == @my.id.to_s
             return true
-          end   
+          end
           if @person == @me
             return true
           end
@@ -303,7 +334,7 @@ class ApplicationController < ActionController::Base
             summer_report_ministries = [Ministry.find(2)] << Ministry.find(2).children
             summer_report_ministries = summer_report_ministries.flatten.collect{|m| m.id}
             summer_report_ministry_roles = StaffRole.all(:conditions => ["#{StaffRole._(:position)} < 3"]).collect{|r| r.id}
-            
+
             return MinistryInvolvement.first(
                 :conditions => ["#{MinistryInvolvement._(:person_id)} = ? and " +
                   "#{MinistryInvolvement._(:ministry_id)} in (?) and " +
@@ -319,10 +350,10 @@ class ApplicationController < ActionController::Base
             # can edit reports that you are chosen to review
             return true if SummerReportReviewer.first(params[:id]).person_id == @my.id
           end
-          
+
         when :search
           return true if action == 'web_remote' && authorized?(:web, :search)
-          
+
         when :group_invitations
           if action == 'new' || action == 'create_multiple'
             if params[:group_id] || options[:group_id]
@@ -331,7 +362,7 @@ class ApplicationController < ActionController::Base
             end
           end
           return false # necessary
-          
+
         when :monthly_reports
           if action == 'stat_details'
             return true if authorized?(:new, :monthly_reports) || authorized?(:edit, :monthly_reports)
@@ -344,7 +375,7 @@ class ApplicationController < ActionController::Base
       if permission
         return @user_permissions[ministry][controller] && @user_permissions[ministry][controller].include?(action)
       end
-      
+
       return Cmt::CONFIG[:permissions_granted_by_default]
     end
 
@@ -383,13 +414,13 @@ class ApplicationController < ActionController::Base
         nil
       end
     end
-    
+
 #    def authorization_allowed_for_owner
 #      unless self.respond_to?(:is_owner) && is_owner
 #        authorization_filter
 #      end
-#    end    
-    
+#    end
+
     def authorization_filter
       unless controller_name == 'dashboard' || authorized?
         respond_to do |wants|
@@ -399,27 +430,33 @@ class ApplicationController < ActionController::Base
         return false
       end
     end
-    
+
     def team_admin
       @team_admin ||= true if get_ministry.staff.include?(@person)
     end
-    
+
     def get_group(group_id = nil)
       group_id ||= params[:id]
-      @group = Group.find(params[:id], :include => {:group_involvements => {:person => :current_address}}, 
-                                       :order => Person.table_name + '.' + _(:last_name, :person) + ',' + 
-                                       Person.table_name + '.' + _(:first_name, :person))
+      begin
+        @group = Group.find(params[:id], :include => {:group_involvements => {:person => :current_address}},
+                                         :order => Person.table_name + '.' + _(:last_name, :person) + ',' +
+                                         Person.table_name + '.' + _(:first_name, :person))
+      rescue ActiveRecord::RecordNotFound
+        flash[:notice] = "<strong>We're sorry, that group doesn't exist anymore.</strong>"
+        redirect_to '/'
+        return
+      end
     end
 
     # ===========
     # = Filters =
     # ===========
-    def set_locale
+    def set_locale_old
       locales = ['en', 'en-AU']
       begin
         # Try to auto-detect it
         if request.headers['Accept-Language']
-          browser_language = request.headers['Accept-Language'].split(',')[0] 
+          browser_language = request.headers['Accept-Language'].split(',')[0]
           browser_language = browser_language.split('-')[0] + '-' + browser_language.split('-')[1].upcase
           session[:locale] = browser_language
         end
@@ -430,7 +467,7 @@ class ApplicationController < ActionController::Base
         I18n.locale = I18n.default_locale
       end
     end
-    
+
     def ministry_admin_filter
       if params[:ministry_id]
         ministry = Ministry.find(params[:ministry_id]) unless @ministry && @ministry.id == params[:ministry_id]
@@ -438,35 +475,35 @@ class ApplicationController < ActionController::Base
         ministry = get_ministry.root
       end
       unless is_ministry_admin(ministry, @me)
-        render :nothing => true 
+        render :nothing => true
         return false
        end
     end
-    
+
     def developer_filter
       return current_user.developer?
     end
-    
+
     def ministry_leader_filter
       unless is_ministry_leader
-        render :nothing => true 
+        render :nothing => true
         return false
        end
     end
-    
+
     def get_person
       @person = params[:person_id] ? Person.find(params[:person_id]) : nil
       # Initialize the logged in person
       @me = @my = current_user.person unless current_user == :false
-      
+
       # if we didn't get a person in the params, set it now
       @person ||= @me
       if @person.nil?
-        return false 
+        return false
       end
       @person
     end
-    
+
     def get_ministry
       @person ||= get_person
       raise "no person" unless @person
@@ -479,10 +516,10 @@ class ApplicationController < ActionController::Base
         @ministry ||= get_persons_ministry_from_cookie || @person.most_nested_ministry
 
         # If we didn't get a ministry out of that, check for a ministry through campus
-        @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty? 
+        @ministry ||= @person.campus_involvements.first.ministry unless @person.campus_involvements.empty?
 
         # If we still don't have a ministry, this person hasn't been assigned a campus.
-        # Looks like we have to give them some dummy information. BUG 1857 
+        # Looks like we have to give them some dummy information. BUG 1857
         #@ministry ||= associate_person_with_default_ministry(@person) if @person.ministries.empty?
         return unless @ministry # at this point we can abort, since it should force them to choose a campus
 
@@ -507,33 +544,33 @@ class ApplicationController < ActionController::Base
       end
       ministry
     end
-    
+
     def set_ministry_cookie(ministry)
       clear_ministry_cookie
       cookies[:ministry_id] = ministry.id if ministry && @person.ministries.include?(ministry)
     end
-    
+
     def clear_ministry_cookie
       cookies.delete(:ministry_id)
     end
-    
 
-      
+
+
     def setup_involvement_vars
       @projects = @person.summer_projects.find(:all, :conditions => "#{_(:status, :summer_project_application)} IN ('accepted_as_participant','accepted_as_intern')")
       @prefs = []
-      @person.summer_project_applications.each do |app| 
-        @prefs << [app.preference1, app.preference2, app.preference3, app.preference4, app.preference5].compact 
+      @person.summer_project_applications.each do |app|
+        @prefs << [app.preference1, app.preference2, app.preference3, app.preference4, app.preference5].compact
       end
       @prefs = @prefs.flatten - @projects
-      @conferences = @person.conferences.uniq 
+      @conferences = @person.conferences.uniq
       @stints = @person.stint_locations
     end
-    
+
     def adjust_format_for_facebook
       request.format = :facebook if iphone_request?
     end
-    
+
     def default_country
       @default_country ||= (Country.find(:first, :conditions => { _(:country, :country) => Cmt::CONFIG[:default_country] }) || Country.new)
     end
@@ -551,7 +588,7 @@ class ApplicationController < ActionController::Base
       return false unless force_campus_set
       return false unless force_contract_agreement
     end
-    
+
     def force_email_set
       if current_user && (current_user.username.nil? || current_user.username == current_user.facebook_hash)
         redirect_to prompt_for_email_users_path
@@ -559,7 +596,7 @@ class ApplicationController < ActionController::Base
       end
       true
     end
-    
+
     def force_campus_set
       return false unless @my
       if !is_staff_somewhere && @my.campus_involvements.empty?
@@ -571,7 +608,7 @@ class ApplicationController < ActionController::Base
       end
       true
     end
-    
+
     def force_contract_agreement
       if needs_to_sign_volunteer_agreements?
         redirect_to :action => "volunteer_agreement", :controller => "contract"
@@ -590,8 +627,8 @@ class ApplicationController < ActionController::Base
 
     def set_notices
       @dismissed_notice_ids = [0] + @my.dismissed_notices.collect(&:notice_id)
-      @notices = Notice.find(:all, :conditions => [ 
-        "#{Notice._(:live)} is true AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
+      @notices = Notice.find(:all, :conditions => [
+        "#{Notice._(:live)} = 1 AND #{Notice._(:id)} NOT IN (?)", @dismissed_notice_ids
       ])
     end
 
@@ -611,7 +648,7 @@ class ApplicationController < ActionController::Base
 
     def redirect_unless_is_active_hrdb_staff
       unless @me.cim_hrdb_staff.try(:boolean_is_active)
-        flash[:notice] = "<img src='images/silk/exclamation.png' style='float: left; margin-right: 7px;'> Your account has not been set up properly by the Operations team. Please contact <b>helpdesk@c4c.ca</b> so that we can correct this. Thanks."
+        flash[:notice] = %(<img src="images/silk/exclamation.png" style="float: left; margin-right: 7px;"> Your account has not been set up properly. Please contact <b><a href="mailto:Helpdesk@powertochange.org">Helpdesk@powertochange.org</a></b> so that we can correct this. Thanks!)
         redirect_to :action => "index", :controller => "stats"
         return false
       end
@@ -628,7 +665,7 @@ class ApplicationController < ActionController::Base
       @graph = Koala::Facebook::GraphAPI.new(oauth_token)
       session[:facebook_person] = @graph.get_object("me")
     end
-      
+
     def choose_layout
       if params['mobile'].present?
         @mobile = session[:mobile] = params['mobile'] == '1' ? true : false
@@ -639,19 +676,19 @@ class ApplicationController < ActionController::Base
         elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
           @mobile = true
         end
-      end  
-      
-      @mobile ? "mobile" : "application" 
+      end
+
+      @mobile ? "mobile" : "application"
     end
-    
+
     def get_summer_report_years_and_weeks
       @current_year = Year.current
-      
+
       summer_report_year_ids = SummerReport.all(:group => :year_id).collect{|sr| sr.year_id} << @current_year.id
       @summer_report_years = Year.all(:conditions => ["#{Year._(:id)} in (?)", summer_report_year_ids])
-      
+
       @selected_year = params[:year_id].present? ? Year.find(params[:year_id]) : @current_year
-      
+
       @selected_year = @summer_report_years.include?(@selected_year) ? @selected_year : @current_year
 
       summer_start_date = Date.new(@selected_year.desc[-4..-1].to_i, SummerReportsController::SUMMER_START_MONTH, SummerReportsController::SUMMER_START_DAY)
@@ -659,7 +696,7 @@ class ApplicationController < ActionController::Base
 
       summer_start_week = Week.find_week_containing_date(summer_start_date)
       summer_end_week = Week.find_week_containing_date(summer_end_date)
-      
+
       @summer_weeks = Week.all(:conditions => ["#{Week._(:end_date)} >= ? AND #{Week._(:end_date)} <= ?", summer_start_week.end_date, summer_end_week.end_date])
     end
 
@@ -673,19 +710,19 @@ class ApplicationController < ActionController::Base
         elsif request.env['HTTP_USER_AGENT'].downcase =~ /mobile/i
           @mobile = true
         end
-      end  
-      
-      @mobile ? "mobile" : "application" 
+      end
+
+      @mobile ? "mobile" : "application"
     end
-    
+
     # url - url of service trying to call, e.g. "https://service.com/action"
     # params - hash of parameters to add to the url, e.g. {:q => "searching", :potatoes => "true"}
     def construct_cas_proxy_authenticated_service_url(url, params = {})
-      
+
       # CAS proxy authentication requires that the service url and params stay in the same order
       # (i.e. the service uri must not change between when the ticket is requested and when the actual request is made or else the proxy ticket validation will fail)
       # therefore we will manually construct the request in a string
-      
+
       service_uri = url
       params.each do |k,v|
         service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
@@ -694,13 +731,13 @@ class ApplicationController < ActionController::Base
 
       begin
         raise("no proxy granting ticket in the session, expected it to be defined in session[:cas_pgt]") if session[:cas_pgt].blank?
-        
+
         proxy_granting_ticket = session[:cas_pgt]
         proxy_ticket = CASClient::Frameworks::Rails::Filter.client.request_proxy_ticket(proxy_granting_ticket, service_uri) unless proxy_granting_ticket.blank?
 
         # CAS proxy authentication requires that the ticket be the last param in query string
         raise("no proxy ticket") if proxy_ticket.ticket.blank?
-        
+
         service_uri += "#{service_uri.include?('?') ? '&' : '?'}"
         service_uri += "ticket=#{proxy_ticket.ticket}"
       rescue => e
@@ -709,7 +746,7 @@ class ApplicationController < ActionController::Base
 
       service_uri
     end
-    
+
     def needs_to_sign_volunteer_agreements?
       !(authorized?(:volunteer_agreement_not_required, :contract) || @me.signed_volunteer_contract_this_year?)
     end

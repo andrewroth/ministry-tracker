@@ -10,47 +10,44 @@
 
   <strong>Web</strong> results for <strong><%= @q %></strong>
 
-  <div class="searchResultsSize">
-    <%= "0 " if @web.total_results == 0 %>
-    web results
-    <% if @web.total_results > @web.per_page %>
-      <% onCurPageEnd = @web.current_page * @web.per_page %>
-      <% onCurPageBegin = (onCurPageEnd-@web.per_page)+1 %>
-      <% onCurPageEnd = onCurPageEnd > @web.total_results ? @web.total_results : onCurPageEnd %>
-      <%= "#{onCurPageBegin}-#{onCurPageEnd}" %>
-    <% end %>
-  </div>
-
   <% if @gsa_results_unauthenticated.present? %>
     <div class="casAuthenticationWarning">
       These are publicly available search results.
-      To see the complete set of secure and personalized search results we'll need to check your ID, 
+      To see the complete set of secure and personalized search results we'll need to check your ID,
       <%= link_to("click here to login to TheKey.", :controller => :sessions, :action => :recreate, :destination => "#{url_for(:action => :web, :controller => :search, :q => @q,:only_path=> false)}") %>
     </div>
   <% end %>
 </div>
 
 <ul id="WebSearchResults">
-  <% if @web.results.size > 0 %>
+  <% if @web && @web.results && @web.results.size > 0 %>
     <%= render :partial => "web_result", :collection => @web.results -%>
 
     <% if pagination == true %>
       <br/>
-      <div class="searchResultsPagination">
-        <%= will_paginate @web, :page_links => false %>
+      <div class="searchResultsPagination pagination">
+        <% params[:page] ||= 1 %>
+        <%= params[:page].to_i > 1 ? link_to("« Previous", url_for(params.merge(:page => params[:page].to_i - 1)), :class => "prev_page") : %(<span class="disabled prev_page">« Previous</span>) %>
+        <%= @web.results.size < @num_results_per_page ? %(<span class="disabled next_page">Next »</span>) : link_to("Next »", url_for(params.merge(:page => params[:page].to_i + 1)), :class => "next_page") %>
       </div>
     <% else %>
-      <% if @web.total_results > @num_results_per_page %>
+      <% unless @web.results.size < @num_results_per_page %>
         <li class="searchResult searchResultMore">
           <%= link_to("See more web results »", :action => "web", :controller => "search", :q => @q, :page => 2) %>
         </li>
       <% end %>
     <% end %>
 
-  <% else %>
+  <% elsif @web && @web.results && @web.results.size == 0 %>
     <p>
       No web results found for <strong><%= @q %></strong>.<br/>
       Try using different or more general search terms.
+    </p>
+
+  <% else %>
+    <p>
+      We're sorry, we couldn't connect to the CCCI search service.<br>
+      For web results visit <strong><%= link_to 'search.mygcx.org', 'https://search.mygcx.org/', :target => '_blank' %></strong>
     </p>
   <% end %>
 </ul>

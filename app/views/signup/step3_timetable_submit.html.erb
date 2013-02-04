@@ -1,16 +1,16 @@
 <%- instruction_block do %>
 
-  <b>You're done!</b>
+  <b><%= t('groups.done') %></b>
   <% if session[:joined_collection_group] == true %>
-    A group leader will contact you with more info soon.
+    <%= t('groups.done_contact_collection') %>
   <% else %>
-    Your group leader will contact you with more info.
+    <%= t('groups.done_contact_leader') %>
   <% end %>
   <br/>
   
   <% if @leaders.present? %>
     <br/>
-    Or feel free to email them:
+    <%= t("groups.email_them") %>
     <%=
       @leaders.map{ |i|
         if i.person.present? && i.person.email
@@ -19,20 +19,21 @@
       }.join(', ')
     %>
     <% if @group && @group.email.present? %>
-      or <%= mail_to @group.email %>
+      <%= t("misc.or") %> <%= mail_to @group.email %>
     <% end %>
     <br />
   <% end %>
   
   <% if @campus && @campus.campus_website.present? %>
     <br/>
-    To find out what's happening at <%= @campus.short_name %> visit <b><%= link_to URI.parse(@campus.campus_website).host, @campus.campus_website %></b>
+    <%= t("groups.findout", :campus => @campus.short_name, :url => "<b>#{link_to(URI.parse(@campus.campus_website).host, @campus.campus_website)}</b>") %>
     <br/>
   <% end %>
   
 <%- end %>
 
 <div class="center">
+  <br/>
 
   <% if session[:from_facebook_canvas] == true && @finished_button_text.present? %>
     <%= leave_facebook_link_to @finished_button_text, Facebook::FANPAGE_URL, "action-button" %>
@@ -41,6 +42,6 @@
   <% end %>
 
   <br/><br/>
-  <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fcampusforchrist&amp;width=407&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=557" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:407px; height:557px;" allowTransparency="true"></iframe>
+  <iframe src="https://www.facebook.com/plugins/likebox.php?href=<%= CGI.escape Facebook::FANPAGE_URL %>&amp;width=407&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=false&amp;height=557" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:407px; height:557px;" allowTransparency="true"></iframe>
 
 </div>

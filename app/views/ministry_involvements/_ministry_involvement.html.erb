@@ -1,6 +1,6 @@
 <div>
 <%= link_to_remote "", {:url => person_ministry_involvement_url(@person.id, ministry_involvement.id, :from_profile => @from_profile), :method => :delete,
-                        :confirm => "Are you sure you want to archive this involvement?"},
+                        :confirm => t("profile.manage_campuses.archive_confirm")},
                        {:title => "Remove", :class => "removeInvolvementIconLink"} %>
 <%= ministry_involvement.ministry.name %>, 
 <%= ministry_involvement.ministry_role.try(:name) %>, 

@@ -1,6 +1,6 @@
 <p>Hi!</p>
 
-<p><%= group_invitation.sender_person.full_name %> has invited you to join their Campus for Christ group, <%= group_invitation.group.name %></p>
+<p><%= group_invitation.sender_person.full_name %> has invited you to join their Power to Change group, <%= group_invitation.group.name %></p>
 
 <br/>
 
@@ -29,6 +29,6 @@
 <p>
   Looking for a different group?
   <%= "<a href='#{other_groups_link}'>" if other_groups_link.present? %>
-  Check out other Campus for Christ groups at <%= group_invitation.group.campus.name %>
+  Check out other Power to Change groups at <%= group_invitation.group.campus.name %>
   <%= "</a>" if other_groups_link.present? %>
 </p>

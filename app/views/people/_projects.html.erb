@@ -1,7 +1,17 @@
 <ul id='profile_projects'>
-  <%- if @person.user.present? %>
-    <%- @person.user.attending_profiles.each do |profile| %>
+  <% if @person.user.present? && @person.user.attending_profiles.present? %>
+    <% @person.user.attending_profiles.each do |profile| %>
       <li><%= profile.try(:project).try(:pulse_name) || profile.try(:project).try(:title) %></li>
-    <%- end %>
-  <%- end %>
+    <% end %>
+  <% else %>
+    <% if @person == @me %>
+      You haven't gone on any projects yet
+    <% else %>
+      <%= @person.first_name %> hasn't gone on any projects yet
+    <% end %>
+  <% end %>
+  <p>
+    <br>
+    <a href="http://gototheworld.com" target="_blank" title="<%= t('profile.projects.go_to_the_world') %>"><%= t('profile.projects.go_to_the_world') %></a>
+  </p>
 </ul>

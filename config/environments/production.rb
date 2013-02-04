@@ -21,7 +21,7 @@ config.action_controller.perform_caching             = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
-# Threadsafe breaks model loading from migrations - see 
+# Threadsafe breaks model loading from migrations - see
 # https://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/2506-models-are-not-loaded-in-migrations-when-configthreadsafe-is-set
 
 # ---
@@ -33,16 +33,25 @@ config.action_controller.perform_caching             = true
 # Mail settings
 ActionMailer::Base.delivery_method = :smtp
 if Common::STAGE == "prod" && Common::SERVER == "c4c"
+
+  # ActionMailer::Base.smtp_settings = {
+  #   :address => 'smtp.powertochange.local',
+  #   :domain => 'powertochange.local'
+  # }
+
   ActionMailer::Base.smtp_settings = {
-    :address => 'smtp.powertochange.local',
-    :domain => 'powertochange.local'
+    :address   => 'smtp.mandrillapp.com',
+    :domain    => 'mandrillapp.com',
+    :port      => 587,
+    :user_name => 'p2cs_mailchimp',
+    :password  => '6efd4c58-a919-4b82-b790-23dbefb03217'
   }
 
   ExceptionNotification::Notifier.configure_exception_notifier do |config|
     config[:app_name]                 = "[PULSE]"
     config[:subject_prepend]          = "[pulse crash] "
     config[:sender_address]           = "noreply@campusforchrist.org"
-    config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck@gmail.com']
+    config[:exception_recipients]     = ['andrewroth@gmail.com', 'jacques.robitaille@c4c.ca', 'sheldon.dueck+pulse@gmail.com', 'russ.martin@p2c.com', 'colby.warkentin@p2c.com']
     # In a local environment only use this gem to render, never email
     #defaults to false - meaning by default it sends email.  Setting true will cause it to only render the error pages, and NOT email.
     config[:skip_local_notification]  = true
