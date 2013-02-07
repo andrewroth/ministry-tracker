@@ -9,14 +9,14 @@
                 <%- @project_campuses.each_with_index do |campus, i| %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
                   <%- extra = !interested || i > 5 -%>
-                  <tr class='project_campus <%= cycle('odd', 'even', :name => 'campus_stats') %> <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
+                  <tr class='project_campus <%= 'extra' if extra %>' data-collapsed_cycle="<%= cycle('odd', 'even', :name => 'campus_stats') unless extra %>" data-expanded_cycle="<%= cycle('odd', 'even', :name => 'campus_stats_expanded') %>" style="<%= 'display:none' if extra %>">
                     <td class="eventIcon"><%= link_to_function("<div class='expand icon project_campus #{campus}'>&nbsp;</div>", toggle_campus(campus)) %></td>
                     <td class="normal"><%= link_to_function(campus, toggle_campus(campus)) %></td>
                     <td class="center eventAttendees"><%= no_zero total_accepted = (h = @project_accepted_totals_by_campus[campus]) ? h[:subtotal] : 0 %></td>
                     <td class="center eventAttendees"><%= no_zero total_applying = (h = @project_applying_totals_by_campus[campus]) ? h[:subtotal] : 0 %></td>
                     <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
                   </tr>
-                  <tr class="project_campus_stats <%= campus.gsub("'", "") %>" style="display:none">
+                  <tr class="<%= 'extra' if extra %> project_campus_stats <%= campus.gsub("'", "") %>" style="display:none">
                     <td colspan="5">
                       <table class="collapse">
                         <tr>
@@ -68,7 +68,7 @@
                     </td>
                   </tr>
                 <%- end %>
-                <tr class="total <%= cycle('odd', 'even', :name => "campus_stats") %>">
+                <tr class="total" data-collapsed_cycle="<%= cycle('odd', 'even', :name => "campus_stats") %>" data-expanded_cycle="<%= cycle('odd', 'even', :name => 'campus_stats_expanded') %>">
                   <td class="eventIcon">
                     <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
@@ -153,23 +153,23 @@
                   $(selector).show();
                   $(icon_selector).removeClass('expand');
                   $(icon_selector).addClass('contract');
+                  if (c == 'total') {
+                    $('[data-expanded_cycle]').each(function(i, el) { val = $(el).attr('data-expanded_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+                  }
                 } else {
                   $(selector).hide();
                   $(icon_selector).removeClass('contract');
                   $(icon_selector).addClass('expand');
-                }
-                if (c == 'total') {
-                  /*
-                  if (project_campus_expanded[c]) {
-                    $("#all_campuses").html("All Campuses");
-                  } else {
-                    $("#all_campuses").html("All Campuses");
+                  if (c == 'total') {
+                    $('[data-collapsed_cycle]').each(function(i, el) { val = $(el).attr('data-collapsed_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+                    $('.project_campus_stats.extra').hide();
                   }
-                  */
-                } else if (c == 'all_projects') {
                 }
 
                 // update yellow menu bracket height
                 adjustBracketHeight();
               }
+              $(function() { 
+                $('[data-collapsed_cycle]').each(function(i, el) { val = $(el).attr('data-collapsed_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+              });
             </script>
