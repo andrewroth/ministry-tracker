@@ -68,7 +68,7 @@
                     </td>
                   </tr>
                 <%- end %>
-                <tr class="total <%= cycle('odd', 'even') %>">
+                <tr class="total <%= cycle('odd', 'even', :name => "campus_stats") %>">
                   <td class="eventIcon">
                     <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
