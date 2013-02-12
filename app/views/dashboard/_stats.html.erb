@@ -7,8 +7,9 @@
     <th class="small center" width='25%'>groups</th>
     <th class="small center" width='25%'>participants</th>
   </tr>
+  <%- reset_cycle -%>
   <%- @group_stats.each do |gt, sem, sem_inv, tot| -%>
-    <tr>
+    <tr class="<%= cycle("odd", "even") %>">
       <td><%= gt.pluralize %></td>
       <td class='center'><b><%= sem %></b></td>
       <td class='center'><b><%= sem_inv %></b></td>

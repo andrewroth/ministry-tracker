@@ -8,8 +8,6 @@ Blue Text:       #1F429B
 Revised on: 2-16-2009
 */
 
-
-
 #campus, #person, #training_question, #training_category {
   border:1px dotted silver;
   padding:8px;
@@ -32,6 +30,28 @@ border:1px dotted orange;
 font-size:14px;
 font-weight:bold;
 padding:0px;
+}
+
+tr.odd td:first-child {
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+}
+
+tr.odd td:last-child {
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+}
+
+tr.odd td {
+  background-color: #f5f5f5;
+}
+
+table.collapse {
+  border-collapse: collapse;
 }
 
 #addStudentLink {
@@ -4636,6 +4656,7 @@ td.campusDiscTree {
     padding: 10px;
     border-bottom: 1px #0064a2 solid;
     border-radius: 10px;
+    -moz-border-radius: 10px;
 }
 
 .floated {
@@ -4731,4 +4752,17 @@ table.dataTable tr:hover {
 
 .statsContainer table.dataTable tr.even td.sorting_1 {
   background-color: rgba(245, 245, 255, 0.5);
+}
+
+.project_campus_stats table, #all_projects table {
+  width: 90%;
+  margin: 20px;
+}
+
+.project_campus_stats table td:first-child, #all_projects table td:first-child {
+  width: 150px;
+}
+
+.pat_inflated_total td, .pat_no_project_chosen td {
+  color: #A3A3A3;
 }
