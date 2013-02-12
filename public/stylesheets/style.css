@@ -3244,7 +3244,7 @@ h2.group_type_title {
 }
 
 #uberMentorSearchContainer, #uberMenteeSearchContainer {
-  z-index: 99;
+  z-index: 98;
   float: left;
   position: relative;
   margin-top: 6px;
@@ -3659,26 +3659,6 @@ li.ac_over .autoCompleteName {
   visibility:hidden;
 }
 
-.alt_ac_results {
-  background-color: white;
-  overflow: hidden;
-  z-index: 98;
-  border: solid #CCCCCC; /*#1F429B;*/
-  border-width: 2px 2px 5px 2px;
-  margin-bottom:100px;
-
-  border-radius: 0 5px 7px 7px;
-  box-shadow: 0 3px 6px #8B8B8B;
-}
-
-.alt_ac_results ul {
-  width: 100%;
-  list-style-position: outside;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .alt_ac_results li {
   margin: 0;
   cursor: default;
@@ -3718,7 +3698,7 @@ li.ac_over .autoCompleteName {
   padding: 8px 0 0 0 !important;
 }
 
-.ac_results {
+.ac_results, .alt_ac_results {
   padding: 0;
   background-color: white;
   overflow: hidden;
@@ -3731,7 +3711,7 @@ li.ac_over .autoCompleteName {
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
-.ac_results ul {
+.ac_results ul, .alt_ac_results ul {
   width: 100%;
   list-style-position: outside;
   list-style: none;
