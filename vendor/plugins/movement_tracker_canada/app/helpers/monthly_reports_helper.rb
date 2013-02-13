@@ -33,15 +33,37 @@ module MonthlyReportsHelper
     case stat_to_collect
     when AUTO_COLLECT_NUM_IN_DG
       sid = Semester.current.id
-      involved_in_dg = Person.find(:all,
-                                   :select => "#{Person.__(:person_id)} as person_id, #{Person.__(:person_fname)} as First_Name, #{Person.__(:person_lname)} as Last_Name",
-      :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id and ci.end_date is NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id and mi.end_date is NULL LEFT JOIN #{GroupInvolvement.table_name} gi ON gi.person_id = #{Person.table_name}.person_id",
-      :conditions => "ci.campus_id IN(#{campus_id}) and gi.group_id in (SELECT gps.id FROM #{Group.table_name} as gps WHERE gps.campus_id = #{campus_id} AND gps.semester_id = #{sid}) AND gi.level != 'interested'",
-      :order => 'Last_Name ASC, First_Name ASC',
-        :group => "#{Person.__(:person_id)}")
 
-      #@collected_stat[STAT_INDEX_COUNT] =  involved_in_dg.count
-      @collected_stat =  involved_in_dg   #[STAT_INDEX_NAMES]
+      is_involved_in_dg = Person.find(
+        :all,
+        :select => "#{Person.__(:person_id)} AS person_id, #{Person.__(:person_fname)} AS First_Name, #{Person.__(:person_lname)} AS Last_Name",
+        :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id AND ci.end_date is NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id AND mi.end_date is NULL  LEFT JOIN #{MinistryRole.table_name} AS mr ON mi.ministry_role_id = mr.id LEFT JOIN #{GroupInvolvement.table_name} gi ON gi.person_id = #{Person.table_name}.person_id",
+        :conditions => "ci.campus_id IN(#{campus_id}) AND gi.group_id IN (SELECT gps.id FROM #{Group.table_name} AS gps WHERE gps.campus_id = #{campus_id} AND gps.semester_id = #{sid}) AND gi.level != 'interested' AND mr.type = 'StudentRole'",
+        :order => 'Last_Name ASC, First_Name ASC',
+        :group => "#{Person.__(:person_id)}"
+        )
+
+      has_role_std_leader = Person.find(
+        :all,
+        :select => "#{Person.__(:person_id)} AS person_id, #{Person.__(:person_fname)} AS First_Name, #{Person.__(:person_lname)} AS Last_Name",
+        :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id AND ci.end_date IS NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id AND mi.end_date IS NULL LEFT JOIN #{MinistryRole.table_name} AS mr ON mi.ministry_role_id = mr.id",
+        :conditions => "ci.campus_id IN(#{campus_id}) AND mr.type = 'StudentRole' AND mr.involved = 1",
+        :order => 'Last_Name ASC, First_Name ASC',
+        :group => "#{Person.__(:person_id)}"
+      )
+
+      has_label_sp_mult = Person.find(
+        :all,
+        :select => "#{Person.__(:person_id)} AS person_id, #{Person.__(:person_fname)} AS First_Name, #{Person.__(:person_lname)} AS Last_Name",
+        :joins => "LEFT JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.table_name}.person_id AND ci.end_date IS NULL LEFT JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.table_name}.person_id AND mi.end_date IS NULL  LEFT JOIN #{MinistryRole.table_name} AS mr ON mi.ministry_role_id = mr.id LEFT JOIN #{LabelPerson.table_name} lbls ON lbls.person_id = #{Person.table_name}.person_id",
+        :conditions => "ci.campus_id IN(#{campus_id}) AND lbls.label_id = #{SPIRITUAL_MULTIPLIER_LABEL_ID} AND mr.type = 'StudentRole'",
+        :order => 'Last_Name ASC, First_Name ASC',
+        :group => "#{Person.__(:person_id)}"
+      )
+
+      subtract_people = (has_role_std_leader + has_label_sp_mult).uniq(&:person_id)
+
+      @collected_stat = (is_involved_in_dg - subtract_people)
 
     when AUTO_COLLECT_NUM_FROSH
       sid = Semester.current.id
