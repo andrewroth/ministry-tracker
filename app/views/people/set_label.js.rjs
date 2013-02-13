@@ -4,6 +4,6 @@ else
   if @label.id == Recruitment::QUALIFIED_FOR_RECRUITMENT_LABEL_ID
     page << "window.location.reload()"
   else
-    page["personLabels"].html(render :partial => "person_labels")
+    page["personLabels"].html(render "person_labels", :person => @person)
   end
 end
