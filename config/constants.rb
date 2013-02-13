@@ -392,7 +392,7 @@
             :order => 4
           },
           :students_dg => {:column => :monthlyreport_totalStudentInDG,
-            :label => "Growing Disciples (defaults to # in DG)",
+            :label => "Growing Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -402,7 +402,7 @@
             :order => 5
           },
           :ministering_disciples => {:column => :monthlyreport_ministering_disciples,
-            :label => "Ministering Disciples (defaults to # student/ministry leaders)",
+            :label => "Ministering Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
