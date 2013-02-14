@@ -1,0 +1,11 @@
+<% if authorized?(:show_labels, :people) %>
+
+	<% labels = labels.collect { |l| person.labels.find_by_content(l) }.compact %>
+
+  <ul class="personLabels mini">
+    <% if labels.present? %>
+      <%= render :partial => 'people/mini_label_li', :collection => labels %>
+    <% end %>
+  </ul>
+
+<% end %>

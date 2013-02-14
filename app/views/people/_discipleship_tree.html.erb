@@ -22,11 +22,15 @@
   <%- name_font_size = PeopleHelper::MENTEES_BASE_FONTSIZE - level %>
 
 	<div id="<%= "treeBranch"+o.id.to_s %>" class="treeBranch" style="<%- if o == selected %>background: url('/images/sprites/p2c_main_elements.png') no-repeat scroll 419px -2102px transparent;<%- end %> padding-left: <%= level*PeopleHelper::MENTEES_VISUAL_INDENT %>px; font-size: <%= name_font_size %>px; <%- if first_level == true %> font-weight: bold; <%- end %> line-height: 100%;">
-		  <%- if o == selected %>
-			  <%= o.full_name %>
-		  <%- else %>				
-				<div class="treeBranchLink" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=@person.id%>"><span><%=o.full_name%></span></div>
-	    <%- end %>
+	  <% if o == selected %>
+		  <%= o.full_name %>
+	    <%= render 'people/mini_labels', :person => o, :labels => 'Spiritual Multiplier' %>
+	  <% else %>
+			<div class="treeBranchLink" name_height ="<%=name_font_size%>" is_first_level="<%=first_level%>" mentee_id="<%=o.id%>" mentor_id="<%=@person.id%>">
+				<span><%=o.full_name%></span>
+		    <%= render 'people/mini_labels', :person => o, :labels => 'Spiritual Multiplier' %>
+			</div>
+    <% end %>
 	</div>
 	<%- if first_level == true %>
 		<%- first_level = false %>
@@ -40,9 +44,9 @@
 
 
 <script type="text/javascript">
-  $(".treeBranchLink").click(function() { 
-  	jQuery.ajax({data:"name_height=" + $(this).attr("name_height") + "&is_first_level=" + $(this).attr("is_first_level") + "&mentee_id=" + $(this).attr("mentee_id") + "&mentor_id=" + $(this).attr("mentor_id") + 
-  	                      "&y=" + getY(this), 
+  $(".treeBranchLink").click(function() {
+  	jQuery.ajax({data:"name_height=" + $(this).attr("name_height") + "&is_first_level=" + $(this).attr("is_first_level") + "&mentee_id=" + $(this).attr("mentee_id") + "&mentor_id=" + $(this).attr("mentor_id") +
+  	                      "&y=" + getY(this),
   	             dataType:'script', type:'get', url:'/people/'+$(this).attr("mentee_id")+'/show_mentee_profile_summary'});
   });
 </script>
