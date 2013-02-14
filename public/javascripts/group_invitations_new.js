@@ -2,6 +2,11 @@
 $(document).ready(function(){
 
   $("#invitationSearchForm").submit(function(e) {
+    if($('#inviteSearchBox').hasClass('preventSubmit')) {
+      $('#inviteSearchBox').removeClass('preventSubmit');
+      return false;
+    }
+
     if (simpleValidateEmail($("#inviteSearchBox").val()) == null) {
       alert("Please type in an email address or choose someone from the list.");
     }
