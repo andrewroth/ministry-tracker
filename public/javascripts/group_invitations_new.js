@@ -12,13 +12,13 @@ $(document).ready(function(){
     }
     return false; // never actually submit this form
   });
-  
-  
+
+
   $("#invitationSubmit").click(function() {
     if (simpleValidateEmail($("#inviteSearchBox").val()) != null) {
       $("#invitationSearchForm").submit();
     }
-  
+
     if($("#invitations input").size() > 0) {
       $("#spinner_submit").show();
     }
@@ -27,15 +27,16 @@ $(document).ready(function(){
       return false;
     }
   });
-  
+
 });
 
 
 function groupInvitationSearchBoxResultAction(event, info) {
-  event.preventDefault();
+  $('#inviteSearchBox').addClass('preventSubmit');
+
   addInviteEmail($(".autoCompleteInfo", info[0]).attr("email"),
                  $(".autoCompleteInfo", info[0]).attr("person_fname") + " " + $(".autoCompleteInfo", info[0]).attr("person_lname"));
-  
+
   $("#inviteSearchBox").val("");
 }
 
@@ -46,16 +47,16 @@ function addInviteEmail(email, pname) {
   $("#invitations > input").each(function() {
     if(email.toLowerCase() == $(this).attr("value").toLowerCase()) { email_already_added = true; }
   });
-  
+
   if(email_already_added == false){
     i = $("#invitations > input").size();
-    
+
     $("#invitations").append("<input type='hidden' value='"+email+"' name='group_invitations["+i+"][email]' id='group_invitations_"+i+"_email'>");
 
     display = ""
     if(pname != null && pname != "") { display += " "+pname+" &lt;"+email+"&gt;" }
     else { display += " "+email }
-    
+
     $("#invitationsDisplay").append("<span id='groupInvitationDisplay"+i+"'>" + display + " <a class='removeInvitationLink' i='"+i+"' href='' title='Remove'>×</a><br/></span>").effect("highlight", {}, 1500);
   }
 
