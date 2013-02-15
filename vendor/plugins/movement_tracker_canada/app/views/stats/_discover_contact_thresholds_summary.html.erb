@@ -7,8 +7,8 @@
 <table class="dataTable">
   <thead>
     <tr>
-      <th style="display: none;">Order</th>
       <th>Threshold</th>
+      <th>Threshold Order</th>
       <th>Number of Contacts</th>
     </tr>
   </thead>
@@ -16,8 +16,8 @@
     <% total_contacts = 0 %>
     <% @contacts_grouped_by_next_step_id.each do |next_step_id, contacts| %>
       <tr>
-        <td style="display: none;"><%= Contact::NEXT_STEP_OPTIONS[next_step_id][1] + 1 %></td>
         <td><%= Contact::NEXT_STEP_OPTIONS[next_step_id][0] %></td>
+        <td><%= Contact::NEXT_STEP_OPTIONS[next_step_id][1] %></td>
         <td><%= contacts.size %></td>
         <% total_contacts += contacts.size.to_i %>
       </tr>
@@ -25,9 +25,22 @@
   </tbody>
   <tfoot>
     <tr class="statsTableTotal">
-      <td style="display: none;"></td>
+      <td></td>
       <td>Total</td>
       <td><%= total_contacts %></td>
     </tr>
   </tfoot>
 </table>
+
+<script>
+  $(function() {
+    extendDataTableOptions = {
+      "aaSorting": [[0, "asc"]],
+      "aoColumns": [
+        { "aDataSort": [ 1 ] },
+        { "bVisible": false },
+        null
+      ]
+    }
+  })
+</script>
