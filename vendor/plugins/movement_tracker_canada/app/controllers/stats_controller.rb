@@ -294,25 +294,26 @@ class StatsController < ApplicationController
     @results_partial = "groups"
 
     ministry = @stats_ministry
+    campus = @stats_campus
 
     @current_semester = Semester.current
     sid = @current_semester.id
     gt_all = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
-      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt}",
+      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} #{ campus ? "AND g.campus_id = #{ campus.id }" : '' }",
       :group => "#{GroupType.__(:id)}")
 
     gt_sem = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(*) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id",
-      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid}",
+      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid} #{ campus ? "AND g.campus_id = #{ campus.id }" : '' }",
       :group => "#{GroupType.__(:id)}")
 
     gt_sem_inv = GroupType.find(:all,
       :select => "#{GroupType.__(:id)} as id, #{GroupType.__(:group_type)} as name, count(distinct(person_id)) as total",
       :joins => "INNER JOIN #{Group.table_name} g ON g.group_type_id = #{GroupType.table_name}.id INNER JOIN #{Ministry.table_name} m2 ON g.ministry_id = m2.id INNER JOIN #{GroupInvolvement.table_name} gi ON gi.group_id = g.id",
-      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid} AND gi.level != 'interested' AND (gi.requested = FALSE OR gi.requested IS NULL)",
+      :conditions => "m2.lft >= #{ministry.lft} AND m2.rgt <= #{ministry.rgt} AND g.semester_id = #{sid} AND gi.level != 'interested' AND (gi.requested = FALSE OR gi.requested IS NULL) #{ campus ? "AND g.campus_id = #{ campus.id }" : '' }",
       :group => "#{GroupType.__(:id)}")
 
     i = -1
@@ -329,25 +330,44 @@ class StatsController < ApplicationController
     @results_partial = "logins"
 
     ministry = @stats_ministry
+    campus = @stats_campus
 
-    logins_week = Person.find(:first,
-      :select => "count(distinct(#{Person.__(:id)})) as total",
-      :joins => "INNER JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.__(:id)} INNER JOIN #{Ministry.table_name} m ON mi.ministry_id = m.id INNER JOIN #{Access.table_name} a ON a.person_id = #{Person.__(:id)} INNER JOIN #{User.table_name} v ON a.viewer_id = v.#{User._(:id)}",
-      :conditions => ["m.lft >= #{ministry.lft} AND m.rgt <= #{ministry.rgt} AND #{User._(:last_login)} > ?", 1.week.ago])
+    select = "count(distinct(#{Person.__(:id)})) as total"
 
-    logins_month = Person.find(:first,
-      :select => "count(distinct(#{Person.__(:id)})) as total",
-      :joins => "INNER JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.__(:id)} INNER JOIN #{Ministry.table_name} m ON mi.ministry_id = m.id INNER JOIN #{Access.table_name} a ON a.person_id = #{Person.__(:id)} INNER JOIN #{User.table_name} v ON a.viewer_id = v.#{User._(:id)}",
-      :conditions => ["m.lft >= #{ministry.lft} AND m.rgt <= #{ministry.rgt} AND #{User._(:last_login)} > ?", 1.month.ago ])
+    unless campus
+      joins = "INNER JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Person.__(:id)} INNER JOIN #{Ministry.table_name} m ON mi.ministry_id = m.id INNER JOIN #{Access.table_name} a ON a.person_id = #{Person.__(:id)} INNER JOIN #{User.table_name} v ON a.viewer_id = v.#{User._(:id)}"
+      condition = "m.lft >= #{ministry.lft} AND m.rgt <= #{ministry.rgt} AND #{User._(:last_login)} > ?"
+      condition_args = []
+    else
+      joins = "INNER JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Person.__(:id)} INNER JOIN #{Access.table_name} a ON a.person_id = #{Person.__(:id)} INNER JOIN #{User.table_name} v ON a.viewer_id = v.#{User._(:id)}"
+      condition = "#{User._(:last_login)} > ? AND ci.campus_id = ?"
+      condition_args = [campus.id]
+    end
 
-    @logins_this_week = logins_week.total
-    @logins_this_month = logins_month.total
+    @logins_past_hour = Person.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.hour.ago] + condition_args).total
+    @logins_past_day = Person.find(:first, :select => select, :joins => joins, :conditions => [condition, 24.hours.ago] + condition_args).total
+    @logins_past_week = Person.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.week.ago] + condition_args).total
+    @logins_past_month = Person.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.month.ago] + condition_args).total
+    @logins_past_year = Person.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.year.ago] + condition_args).total
   end
 
   def setup_timetables_report
     @results_partial = "timetables"
 
     ministry = @stats_ministry
+    campus = @stats_campus
+
+    select = "count(distinct(#{Timetable.__(:person_id)})) as total"
+
+    unless campus
+      joins = "INNER JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Timetable.__(:person_id)} INNER JOIN #{Ministry.table_name} m ON mi.ministry_id = m.id"
+      condition = "m.lft >= #{ministry.lft} AND m.rgt <= #{ministry.rgt} AND #{Timetable.__(:updated_at)} > ?"
+      condition_args = []
+    else
+      joins = "INNER JOIN #{CampusInvolvement.table_name} ci ON ci.person_id = #{Timetable.__(:person_id)}"
+      condition = "#{User._(:last_login)} > ? AND ci.campus_id = ?"
+      condition_args = [campus.id]
+    end
 
     timetables_week = Timetable.find(:first,
       :select => "count(distinct(#{Timetable.__(:person_id)})) as total",
@@ -359,8 +379,11 @@ class StatsController < ApplicationController
       :joins => "INNER JOIN #{MinistryInvolvement.table_name} mi ON mi.person_id = #{Timetable.__(:person_id)} INNER JOIN #{Ministry.table_name} m ON mi.ministry_id = m.id",
       :conditions => ["m.lft >= #{ministry.lft} AND m.rgt <= #{ministry.rgt} AND #{Timetable.__(:updated_at)} > ?", 1.month.ago])
 
-    @tt_last_week = timetables_week.total
-    @tt_last_month = timetables_month.total
+    @tt_past_hour = Timetable.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.hour.ago] + condition_args).total
+    @tt_past_day = Timetable.find(:first, :select => select, :joins => joins, :conditions => [condition, 24.hours.ago] + condition_args).total
+    @tt_past_week = Timetable.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.week.ago] + condition_args).total
+    @tt_past_month = Timetable.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.month.ago] + condition_args).total
+    @tt_past_year = Timetable.find(:first, :select => select, :joins => joins, :conditions => [condition, 1.year.ago] + condition_args).total
   end
 
   def setup_how_people_came_to_christ_report
