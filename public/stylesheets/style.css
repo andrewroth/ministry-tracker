@@ -4743,7 +4743,7 @@ table.dataTable td {
   padding: 5px 10px !important;
 }
 
-table.dataTable tr:hover {
+table.dataTable tr:hover td {
   background-color: #FFECB3 !important;
 }
 
