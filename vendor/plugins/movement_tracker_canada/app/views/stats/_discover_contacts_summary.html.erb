@@ -9,7 +9,9 @@
     <tr>
       <th>Name</th>
       <th>Last Action</th>
+      <th>Last Action Timestamp</th>
       <th>Threshold</th>
+      <th>Threshold Order</th>
       <th>Volunteer</th>
       <th>Next Step</th>
     </tr>
@@ -19,7 +21,9 @@
       <tr>
         <td><%= contact.first_name %></td>
         <td title="<%= contact.last_touched_at %>"><span class="has_title"><%= time_ago_in_words(contact.last_touched_at) %><%= t("misc.ago") %></span></td>
+        <td><%= contact.last_touched_at %></td>
         <td><%= contact.next_step %></td>
+        <td><%= contact.next_step_id %></td>
         <td><%= link_to contact.person.full_name, contact.person %></td>
         <td><%= contact.what_i_am_trusting_god_to_do_next %></td>
       </tr>
@@ -27,7 +31,24 @@
   </tbody>
   <tfoot>
     <tr class="statsTableTotal">
-      <td>Total <%= @contacts.size %></td>
+      <td>Total: <%= @contacts.size %></td>
     </tr>
   </tfoot>
 </table>
+
+<script>
+  $(function() {
+    extendDataTableOptions = {
+      "aaSorting": [[1, "asc"]],
+      "aoColumns": [
+        null,
+        { "aDataSort": [ 2 ] },
+        { "bVisible": false },
+        { "aDataSort": [ 4 ] },
+        { "bVisible": false },
+        null,
+        null
+      ]
+    }
+  })
+</script>
