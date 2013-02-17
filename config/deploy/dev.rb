@@ -22,11 +22,11 @@ set :deploy_via, :checkout
 path = if ma?
          'mt.ministryhacks.com'
        elsif stage?
-         'emu.campusforchrist.org'
+         'emu.powertochange.com'
        elsif dev?
-         'moose.campusforchrist.org'
+         'moose.powertochange.com'
        elsif prod?
-         'pulse.campusforchrist.org'
+         'pulse.powertochange.com'
        end
 set :deploy_to, "/var/www/#{path}"
 set :git_enable_submodules, false
