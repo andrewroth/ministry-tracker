@@ -1,0 +1,29 @@
+<p><span class="statsTitle">
+  <%= @current_semester.present? ? @current_semester.desc : '' %> Groups at <%= @ministry_name %>
+</span></p>
+
+<br>
+
+<% if @group_stats.present? %>
+  <table class="dataTable">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Groups</th>
+        <th>Participants</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @group_stats.each do |gt, sem, sem_inv, tot| %>
+        <tr>
+          <td><%= gt.pluralize %></td>
+          <td><%= sem %></td>
+          <td><%= sem_inv %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <p>No groups</p>
+<% end %>

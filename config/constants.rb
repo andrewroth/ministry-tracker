@@ -67,6 +67,10 @@
       :discover_contact_thresholds_summary => {:order => 10, :label => "Discover &#8211; Thresholds Summary", :controller => :stats, :action => :discover_contact_thresholds_summary, :scopes => [:summary]},
       :discover_contacts_summary => {:order => 11, :label => "Discover &#8211; Contacts Summary", :controller => :stats, :action => :discover_contacts_summary, :scopes => [:summary]},
 
+      :groups => {:order => 12, :label => "Groups", :controller => :stats, :action => :groups, :scopes => [:summary]},
+      :logins => {:order => 13, :label => "Logins", :controller => :stats, :action => :logins, :scopes => [:summary]},
+      :timetables => {:order => 14, :label => "Timetables", :controller => :stats, :action => :timetables, :scopes => [:summary]},
+
       :annual_goals => {:hidden => true, :order => 3, :label => "Goals Progress Report", :controller => :stats, :action => :annual_goals, :scopes => [:summary]},
       :comp => {:hidden => true, :order => 4, :label => "Compliance Reports", :controller => :stats, :action => :show_compliance_report, :scopes => [:staff_drill_down]},
       :perso => {:hidden => true, :order => 7, :label => "My Personal Stats", :controller => :stats, :action => :personal, :scopes => [:summary, :campus_drill_down]},
@@ -392,7 +396,7 @@
             :order => 4
           },
           :students_dg => {:column => :monthlyreport_totalStudentInDG,
-            :label => "Growing Disciples (defaults to # in DG)",
+            :label => "Growing Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,
@@ -402,7 +406,7 @@
             :order => 5
           },
           :ministering_disciples => {:column => :monthlyreport_ministering_disciples,
-            :label => "Ministering Disciples (defaults to # student/ministry leaders)",
+            :label => "Ministering Disciples",
             :collected => :monthly,
             :column_type => :database_column,
             :grouping_method => :last_non_zero,

@@ -21,5 +21,11 @@ function requestMyEvents() {
 }
 
 function adjustBracketHeight() {
-  $("#verticalTablistContainer").height($("#dashwrap .col1").height());
+  var dashContentHeight = $("#dashwrap .col1").height();
+  var dashMenuHeight = $("#verticalTablistContainer #verticalTablist").height();
+  if(dashContentHeight > dashMenuHeight) {
+    $("#verticalTablistContainer").height(dashContentHeight);
+  } else {
+    $("#verticalTablistContainer").height(dashMenuHeight);
+  }
 }

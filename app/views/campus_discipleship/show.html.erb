@@ -1,22 +1,22 @@
-<%- #if authorized?(:edit, :groups) || authorized?(:new, :groups) 
+<%- #if authorized?(:edit, :groups) || authorized?(:new, :groups)
 -%>
 
-  <h2> <%= @ministry.name %> Discipleship Trees </h2>
-  
+  <h1> <%= @ministry.name %> Discipleship Trees </h1>
+
   <div id="instructions">
     <div>This screen serves as a launching area for managing <%= @ministry.name %> discipleship.</div>
   </div><br/>
-  
+
   <%- total_trees = -1
 	if !(@disc_tree_roots.nil?)
-		total_trees = @disc_tree_roots.size 
+		total_trees = @disc_tree_roots.size
 	end
   %>
 
 	<div>
   	<div id="new_group_link">
   		<%- if total_trees < 1 -%>
-  			You have not recorded any discipleship for your ministry yet.<br> 
+  			You have not recorded any discipleship for your ministry yet.<br>
   			<%- if authorized?(:add_mentor_to_other, :people) || authorized?(:add_mentee_to_other, :people)-%>
   		    Please go to the profile page of a discipler to add a mentee (disciple), or add a mentor (discipler) to a disciple's profile page. <br /><br />
   		  <%- else -%>
@@ -27,14 +27,14 @@
   	</div>
 	</div>
 
-<%- #end 
+<%- #end
 -%>
 
 <div id="campusDiscView">
 <%- if total_trees == 1 %>
 
 	<table>
-		<tr>		
+		<tr>
 			<td>
 				&nbsp;
 			</td>
@@ -43,41 +43,41 @@
 			</td>
 			<td>
 				&nbsp;
-			</td>	
+			</td>
 		</tr>
 	</table>
-	
+
 <%- elsif total_trees > 1    # if there's more than 1 tree, don't need to center single tree
 %>
 	<%- root_index = 0 %>
 	<%- @disc_tree_roots.each do |root_person_id|  %>
 		<%- if root_index % 3 == 0 %>
-			<table>	
-				<tr>						
+			<table>
+				<tr>
 		<%- end %>
-		
-					<td class="campusDiscTree">			
+
+					<td class="campusDiscTree">
 						<%= render :partial => 'discipleship_tree', :locals => { :root_discipler => Person.find(root_person_id) } if Person.exists?(root_person_id) %>
 					</td>
-				
+
 		<%- if root_index % 3 == 2 %>
 				</tr>
 			</table>
-			<br><br>			
+			<br><br>
 		<%- elsif root_index == (total_trees - 1)   # this is last iteration
-		%>	
+		%>
 				<%- i = root_index %>
 				<%- until i % 3 == 2 %>
 					<td>
 						&nbsp;
 					</td>
-					<%- i += 1 %>	
+					<%- i += 1 %>
 				<%- end %>
 				</tr>
-			</table>		
+			</table>
 		<%- end %>
 		<%- root_index = root_index + 1 %>
 	<%- end %>
-	
+
 <%- end %>
 </div>
