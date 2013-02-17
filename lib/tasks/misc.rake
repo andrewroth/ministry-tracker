@@ -324,6 +324,63 @@ namespace :db do
     end
   end
   
+  task :rebuild_with_utf8, :database do |t, args|
+    
+    # make sure we're properly setup to use utf8 character set
+    %w(character_set_database character_set_client character_set_connection).each do |v|
+      ActiveRecord::Base.connection.execute("SHOW VARIABLES LIKE '#{v}'").each do |f|
+        unless f[1] == "utf8"
+          puts "ERROR: MySQL database isn't properly encoded! Detected '#{f[1]}' when it shound be 'utf8'."
+          puts "Kindly set your #{f[0]} variable to 'utf8'. You can do this by adding 'encoding: utf8' to your database.yml"
+          RAILS_DEFAULT_LOGGER.error("MySQL database isn't properly encoded!")
+          exit 1
+        end
+      end
+    end
+    
+    database = args[:database]
+    abort("\nYou must pass the database name as an argument e.g. rake db:rebuild_with_utf8['database_name']") unless database
+    
+    config   = Rails::Configuration.new
+    host     = config.database_configuration[Rails.env]["host"]
+    username = config.database_configuration[Rails.env]["username"]
+    password = config.database_configuration[Rails.env]["password"]
+    host ||= root_config[:host]
+    username ||= root_config[:username]
+    password ||= root_config[:password]
+    abort("\nFailed to get database config info from your Rails config, you may need to create a config/database_root.yml") unless host.present? && username.present? && password.present?
+
+    puts "\n\nWARNING: You should configure your MySQL to use UTF-8 by default in your my.cnf file.\n"
+    puts "\nThe following database is about to be destroyed and recreated using UTF-8 (a backup dump will be created in tmp/): #{database}\n"
+    puts "\nPress enter to continue otherwise Ctrl-c to cancel...\n"
+    response = STDIN.gets
+    abort("") unless response.to_s.upcase == "\n"
+    
+    dump_filename = "tmp/dump_#{Time.now.to_i}.sql"
+    backup_dump_filename = "tmp/#{database}_dump_#{Time.now.to_i}.sql"
+    sed_filename = "tmp/dump_sed_#{Time.now.to_i}.sql"
+    
+    puts "# dumping the database"
+    execute_shell "mysqldump --host=#{host} --user=#{username} --password=#{password} --skip-set-charset #{database} > #{dump_filename}"
+    
+    puts "\n# copying database dump to backup file #{backup_dump_filename}"
+    execute_shell "cp #{dump_filename} #{backup_dump_filename}"
+    
+    puts "\n# converting the character set and collation from latin1 to utf8 in the dump"
+    execute_shell "sed -e 's/CHARSET=latin1/CHARSET=utf8/g' -e 's/latin1_general_ci/utf8_general_ci/g' -e 's/CHARACTER SET latin1/CHARACTER SET utf8/g' <#{dump_filename} > #{sed_filename}"
+    
+    puts "\n# destroying and recreating the database"
+    execute_shell "mysql --host=#{host} --user=#{username} --password=#{password} --execute='DROP DATABASE #{database}; CREATE DATABASE #{database} CHARACTER SET utf8 COLLATE utf8_general_ci;'"
+    
+    puts "\n# rebuilding database with the dump"
+    execute_shell "mysql --host=#{host} --user=#{username} --password=#{password} --default-character-set=utf8 #{database} < #{sed_filename}"
+    
+    puts "\n# deleting tmp files"
+    execute_shell "rm #{dump_filename}"
+    execute_shell "rm #{sed_filename}"
+    
+    puts "\n# finished"
+  end
   
   task :import_training_course_data_from_csv => :environment do
     

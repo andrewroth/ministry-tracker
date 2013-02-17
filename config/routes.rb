@@ -94,7 +94,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :involvement_histories
 
-  map.resources :emails
+  map.resources :emails, :collection => {:bounces => :get}
 
   map.resource :facebook, :collection => {:tabs => :post, :install => :post, :remove => :post}, :controller => 'facebook'
 

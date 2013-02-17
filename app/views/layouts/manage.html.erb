@@ -52,6 +52,11 @@
       <li<%= ' class="highlighted"' if params[:controller] == "contract" %>>
       <%= link_to 'Volunteer Agreements', :controller => :contract, :action => :volunteer_agreement_report %></li>
     <%- end -%>
+    
+    <%- if is_ministry_admin -%>
+      <li<%= ' class="highlighted"' if params[:controller] == "emails" %>>
+      <%= link_to 'Bouncely', :controller => :emails, :action => :bounces %></li>
+    <%- end -%>
   </ul>
 
 

@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.16' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.17' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -34,8 +34,8 @@ Rails::Initializer.run do |config|
   # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
-  # config.gem  'json'
-  config.gem  'json_pure', :lib => 'json'
+  # config.gem  'json', :version => '~> 1.7.7'
+  config.gem  'json_pure', :lib => 'json', :version => '~> 1.7.7'
   config.gem  'fastercsv'
   # config.gem  'hpricot', :version => '0.8.3'
   config.gem  'rubyzip', :lib => 'zip/zip'
@@ -58,6 +58,7 @@ Rails::Initializer.run do |config|
   config.gem 'i18n'
   config.gem 'mysql2', :version => '0.2.7'
   config.gem 'newrelic_rpm'
+  config.gem 'rack', :version => '~> 1.1.6'
 
   config.time_zone = 'UTC'
 
@@ -110,4 +111,19 @@ Rails::Initializer.run do |config|
     FileUtils.cp(File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.example'), File.join(RAILS_ROOT, 'config', 'initializers', 'cmt_config.rb'))
   end
 
+end
+
+unless ENV['skip_utf8_check'] == 'true'
+  # make sure we're properly setup to use utf8 character set
+  %w(character_set_database character_set_client character_set_connection).each do |v|
+    ActiveRecord::Base.connection.execute("SHOW VARIABLES LIKE '#{v}'").each do |f|
+      unless f[1] == "utf8"
+        puts "ERROR: MySQL database isn't properly encoded! Detected '#{f[1]}' when it shound be 'utf8'."
+        puts "Kindly set your #{f[0]} variable to 'utf8'. You can do this by adding 'encoding: utf8' to your database.yml"
+        puts "(Note: if you haven't done so already, you should rebuild your database(s) to use 'utf8' for character set and collation)"
+        RAILS_DEFAULT_LOGGER.error("MySQL database isn't properly encoded!")
+        exit 1
+      end
+    end
+  end
 end
