@@ -12,7 +12,7 @@ def prod?() ENV['target'] == 'prod' end
 set :application, "ministry-tracker"
 set :user, 'deploy'
 set :use_sudo, false
-set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
+set :host, stage? || dev? ? 'emu.powertochange.com' : 'pat.powertochange.com'
 set :keep_releases, 3
 
 set :scm, "git"
@@ -72,7 +72,7 @@ end
 
 after :"deploy:create_symlink", :"deploy:after_symlink"
 deploy.task :after_symlink do
-  run "ruby /etc/screen.d/dj_pulse.rb"
+  run "ruby /etc/screen.d/dj_#{if dev? then 'moose' elsif stage? then 'emu' else 'pulse' end}.rb"
 end
 
 namespace :deploy do
