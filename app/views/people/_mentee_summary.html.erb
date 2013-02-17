@@ -1,16 +1,16 @@
 <div id="person_details">
 <table>
-  <tr>    
+  <tr>
     <td>
       <div class="headerProfilePic">
         <%- if mentee.profile_picture.nil? -%>
-        	<%- #Profile pic placeholder scaling function used to fit formatting (below) 
+        	<%- #Profile pic placeholder scaling function used to fit formatting (below)
         	%>
            	<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_FILLER_DIMENSION %>
           	<%- pic_height = pic_width %>
           	<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_height.to_f %>
        		<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
-       		<%- pic_width = pic_width * scale_factor %>         
+       		<%- pic_width = pic_width * scale_factor %>
           <%- if Cmt::CONFIG[:profile_picture_enabled] -%>
             <%= image_tag 'no_photo.png', :width => pic_width, :height => pic_height %>
           <%- else -%>
@@ -21,36 +21,39 @@
         	%>
            <%- pic_width = mentee.profile_picture.width %>
            <%- pic_height = mentee.profile_picture.height %>
-           <%- if pic_height > pic_width %>	
+           <%- if pic_height > pic_width %>
            		<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_height.to_f %>
            		<%- pic_height = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
            		<%- pic_width = pic_width * scale_factor %>
            <%- else %>
            		<%- scale_factor = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION.to_f / pic_width.to_f %>
            		<%- pic_width = PeopleHelper::MEDIUM_PROFILE_PIC_MAX_DIMENSION %>
-           		<%- pic_height = pic_height * scale_factor %>           
+           		<%- pic_height = pic_height * scale_factor %>
            <%- end %>
            <%= image_tag(mentee.profile_picture.public_filename(:medium), :width => pic_width, :height => pic_height) %>
         <%- end -%>
-      </div>     	
+      </div>
 
       <div class="headerNameTitle">
         <%= link_to(mentee.full_name, person_path(mentee.person_id)) %>
       </div>
 			<br>
       <div class="headerContactInfo">
-      	<br>
-        <%- if mentee.primary_campus.nil? %>
-				   <%= PeopleHelper::CAMPUS_NOT_ASSIGNED %>
-				<%- else %>
-				   <%= mentee.primary_campus.try(:name) %>
-				<%- end %>
-				<br>
-				<br>
-				<%= link_to mentee.email, { :action => "new", :controller => "emails", :person => mentee.id } %>
-				<br>
-				<%= mentee.try(:person_local_phone) %>
-      </div>												
+        <%= render 'person_labels', :person => mentee, :read_only => true %>
+        <br>
+        <big>
+          <%- if mentee.primary_campus.nil? %>
+             <%= PeopleHelper::CAMPUS_NOT_ASSIGNED %>
+          <%- else %>
+             <%= mentee.primary_campus.try(:name) %>
+          <%- end %>
+        </big>
+        <br>
+        <br>
+        <%= link_to mentee.email, { :action => "new", :controller => "emails", :person => mentee.id } %>
+        <br>
+        <%= mentee.try(:person_local_phone) %>
+      </div>
     </td>
   </tr>
 </table>

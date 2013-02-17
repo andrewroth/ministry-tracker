@@ -63,12 +63,17 @@ function beginLoadingStatsTab() {
 function completeLoadingStatsTab() {
   $('#statsSpinnerContainer').hide();
 
-  $('table.dataTable').dataTable({
+  var dataTableOptions = {
     "iDisplayLength" : 100,
     "bDestroy": true,
     "bJQueryUI": true,
     "sPaginationType": "full_numbers"
-  });
+  }
+  if(typeof extendDataTableOptions !== 'undefined') {
+    dataTableOptions = $.extend(dataTableOptions, extendDataTableOptions);
+  }
+  $('table.dataTable').dataTable(dataTableOptions);
+  extendDataTableOptions = undefined;
 
   $('a.select_report_sort').on('click', function(e) {
     e.preventDefault();

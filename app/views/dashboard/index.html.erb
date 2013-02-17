@@ -1,4 +1,4 @@
-<% 
+<%
 unless @mobile
 %>
 
@@ -38,44 +38,26 @@ unless @mobile
 
 
         <% if @show_my_events %>
-        <div class="dashmodule">
-          <div class="moduletitle">
-            <h2>
-              <%= t("dashboard.events_header") %>&nbsp;
-              <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
-            </h2>
-            <div class="modulecontrols">
-              <a href="" class="minmodule"></a>
-              <a href="" class="movemodule"></a>
-              <a href="" class="closemodule"></a>
+          <div class="dashmodule">
+            <div class="moduletitle">
+              <h2>
+                <%= t("dashboard.events_header") %>&nbsp;
+                <%= image_tag("/images/spinner.gif", :id => "eventsSpinner", :alt => "Spinner") %>
+              </h2>
+              <div class="modulecontrols">
+                <a href="" class="minmodule"></a>
+                <a href="" class="movemodule"></a>
+                <a href="" class="closemodule"></a>
+              </div>
             </div>
-          </div>
 
-          <div id="events">
-            <div class="modulecontent" style="min-height: 0px">
-              <%= render :partial => 'projects' %>
+            <div id="events">
+              <div class="modulecontent" style="min-height: 0px">
+                <%= render :partial => 'projects' %>
+              </div>
             </div>
           </div>
-        </div>
         <% end %>
-
-
-        <% if is_ministry_leader %>
-        <div class="dashmodule">
-          <div class="moduletitle">
-            <h2>Stats</h2>
-            <div class="modulecontrols">
-              <a href="" class="minmodule"></a>
-              <a href="" class="movemodule"></a>
-              <a href="" class="closemodule"></a>
-            </div>
-          </div>
-          <div class="modulecontent">
-            <%= render :partial => "stats" %>
-          </div>
-        </div>
-        <% end %>
-
 
 
         <div class="clear"></div>
@@ -90,7 +72,7 @@ unless @mobile
         <div class="clear"></div>
       </div><!-- col2 -->
 
-      
+
       <div class="col3">
 
         <% if authorized?(:index, :survey_contacts) %>
@@ -120,8 +102,8 @@ unless @mobile
 
         <div class="clear"></div>
       </div><!-- col3 -->
-      
-      
+
+
     </div>
   </div>
 </div>
@@ -140,12 +122,12 @@ unless @mobile
 <%
 else #(if the website is viewed from a mobile)
 %>
-    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-      <li><%= link_to 'Search', url_for(:controller => :search, :action => :index) %></li> 
-      <li><%= link_to 'Profile', "/people/#{@me.id}" %></li> 
-      <li><%= link_to 'Groups', url_for(:controller => :groups, :action => :index) %></li> 
-      <li><%= link_to 'Update Stats', url_for(:controller => :stats, :action => :index) %></li> 
-    </ul> 
+    <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+      <li><%= link_to 'Search', url_for(:controller => :search, :action => :index) %></li>
+      <li><%= link_to 'Profile', "/people/#{@me.id}" %></li>
+      <li><%= link_to 'Groups', url_for(:controller => :groups, :action => :index) %></li>
+      <li><%= link_to 'Update Stats', url_for(:controller => :stats, :action => :index) %></li>
+    </ul>
 
 <%
 end
