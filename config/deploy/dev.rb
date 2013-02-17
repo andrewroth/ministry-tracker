@@ -5,7 +5,7 @@ end
 ENV['target'] ||= 'moose'
 set :moonshine_apply, false
 
-def stage?() %w(emu stage).include?(ENV['target']) end
+def stage?() %w(emu stage staging).include?(ENV['target']) end
 def dev?() %w(dev moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
 
