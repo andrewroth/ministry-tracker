@@ -28,11 +28,11 @@ module SearchHelper
       # they are a student
       if person.campuses_concat.present?
         info += "#{person.campuses_concat}"
-        info += (person.year_desc.blank? || person.year_desc == "Other") ? "<br/>" : "<b> · </b>#{person.year_desc}<br/>"
+        info += (person.year_desc.blank? || person.year_desc == "Other") ? "<br>" : "<b> · </b>#{person.year_desc}<br>"
       end
     else
       # they are a staff
-      info += person.ministries_concat.present? ? "#{person.ministries_concat}<b> · </b>Staff<br/>" : "Staff<br/>"
+      info += person.ministries_concat.present? ? "#{person.ministries_concat}<b> · </b>Staff<br>" : "Staff<br>"
     end
 
     if person.email.present?
@@ -42,13 +42,13 @@ module SearchHelper
 
     if person.cell_phone.present?
       info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.cell_phone)} (cell)<br/>"
+      info += "#{number_to_phone(person.cell_phone)} (cell)<br>"
     elsif person.person_local_phone.present?
       info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.person_local_phone)}<br/>"
+      info += "#{number_to_phone(person.person_local_phone)}<br>"
     elsif person.person_phone.present?
       info += "<b> · </b>" if person.email.present?
-      info += "#{number_to_phone(person.person_phone)}<br/>"
+      info += "#{number_to_phone(person.person_phone)}<br>"
     end
 
     info
@@ -57,9 +57,9 @@ module SearchHelper
   def ac_info_for_person(person, actions = false)
     info = ""
     if person.staff_role_ids.blank?
-      info += "<span class='noSearchHighlight'>#{person.campuses_concat}</span><br/>" if person.campuses_concat.present?
+      info += "<span class='noSearchHighlight'>#{person.campuses_concat}</span><br>" if person.campuses_concat.present?
     else
-      info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br/>" if person.ministries_concat.present?
+      info += "<span class='noSearchHighlight'>#{person.ministries_concat}</span><br>" if person.ministries_concat.present?
     end
 
     if actions
@@ -67,6 +67,16 @@ module SearchHelper
     else
       info += "<span class='acEmail'>#{person.email.downcase}</span>" if person.email.present?
     end
+
+    info
+  end
+
+  def ac_info_for_contact(contact)
+    info = ''
+    info += %(<span>#{contact.campus_short_desc}</span><br>) if contact.campus_short_desc.present?
+    info += %(<span class="acEmail">#{contact.email.downcase}</span>) if contact.email.present?
+    info += %(#{ contact.email.present? ? ' · ' : '' }<span>#{contact.mobile_phone.downcase}</span>) if contact.mobile_phone.present?
+    info
   end
 
   def info_for_group(group)
@@ -74,10 +84,10 @@ module SearchHelper
 
 
     # display group campus, semester and time
-    
+
     info += (["#{group.try(:campus_desc)}", "#{group.try(:semester_desc)}", "#{group.meeting_day_and_time_to_string}"]-[""]-[nil]).join("<b> · </b>")
 
-    info += "<br/>" unless info.blank?
+    info += "<br>" unless info.blank?
 
 
     # display leaders of the group
@@ -88,7 +98,7 @@ module SearchHelper
       "#{link_to("#{person.full_name.gsub(/#{@q}/i) {|match| "<strong>#{match}</strong>"} }", "/people/#{person.id}", :class => "subtle")}"
     end
 
-    info += "Led by #{leaders_array.join(", ")}<br/>" if leaders_array.first.present?
+    info += "Led by #{leaders_array.join(", ")}<br>" if leaders_array.first.present?
 
 
     # display number of members and any members that matched the search query

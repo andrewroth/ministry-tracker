@@ -1,93 +1,120 @@
-            <table>
+            <table class="collapse">
               <tbody>
                 <tr>
                   <td colspan="2" class="norm"><%= I18n.t("dashboard.projects_header") %></td>
-                  <td class="small"><%= I18n.t("dashboard.projects.applying") %></td>
-                  <td class="small"><%= I18n.t("dashboard.projects.accepted") %></td>
+                  <td class="center small"><%= t("dashboard.projects.accepted") %></td>
+                  <td class="center small"><%= t("dashboard.projects.applying") %></td>
+                  <td class="center small"><%= t('dashboard.projects.total') %></td>
                 </tr>
                 <%- @project_campuses.each_with_index do |campus, i| %>
                   <%- interested = @interested_campuses_abbrvs.include?(campus) -%>
                   <%- extra = !interested || i > 5 -%>
-                  <tr class='project_campus <%= 'extra' if extra %>' style="<%= 'display:none' if extra %>">
+                  <tr class='project_campus <%= 'extra' if extra %>' data-collapsed_cycle="<%= cycle('odd', 'even', :name => 'campus_stats') unless extra %>" data-expanded_cycle="<%= cycle('odd', 'even', :name => 'campus_stats_expanded') %>" style="<%= 'display:none' if extra %>">
                     <td class="eventIcon"><%= link_to_function("<div class='expand icon project_campus #{campus}'>&nbsp;</div>", toggle_campus(campus)) %></td>
-                    <td class="normal"><%= link_to_function(campus, toggle_campus(campus)) %>
-                      <table class="project_campus_stats <%= campus.gsub("'","") %>" style="display:none">
+                    <td class="normal"><%= link_to_function(campus, toggle_campus(campus)) %></td>
+                    <td class="center eventAttendees"><%= no_zero total_accepted = (h = @project_accepted_totals_by_campus[campus]) ? h[:subtotal] : 0 %></td>
+                    <td class="center eventAttendees"><%= no_zero total_applying = (h = @project_applying_totals_by_campus[campus]) ? h[:subtotal] : 0 %></td>
+                    <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
+                  </tr>
+                  <tr class="<%= 'extra' if extra %> project_campus_stats <%= campus.gsub("'", "") %>" style="display:none">
+                    <td colspan="5">
+                      <table class="collapse">
                         <tr>
-                          <td class="eventIcon"></td>
                           <td class="normal"></td>
-                          <td class="small"><%= t('dashboard.projects.applying') %></td>
-                          <td class="small"><%= t('dashboard.projects.accepted') %></td>
+                          <td class="center small"><%= t('dashboard.projects.accepted') %></td>
+                          <td class="center small"><%= t('dashboard.projects.applying') %></td>
+                          <td class="center small"><%= t('dashboard.projects.total') %></td>
                         </tr>
-                        <%- projects = ((@project_totals_by_campus[campus] && @project_totals_by_campus[campus].keys) || []) | 
+                        <%- projects = ((@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus].keys) || []) | 
                               ((@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus].keys) || []) -%>
                         <%- if projects.present? -%>
+                          <%- reset_cycle('campus_project_stats') %>
                           <%- for project in projects -%>
-                            <%- next if project == :total %>
-                            <%- total = (@project_totals_by_campus[campus] && @project_totals_by_campus[campus][project]) || 0 -%>
+                            <%- next if [ :total, :subtotal ].include?(project) || !project.present? %>
+                            <%- total = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][project]) || 0 -%>
                             <%- applying_total = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][project]) || 0 -%>
-                        <tr class=<%= 'pat_no_project_chosen' unless project.present? %>>
-                          <td class="eventIcon"></td>
-                          <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
-                          <td class="center eventAttendees"><%= no_zero applying_total %></td>
+                        <tr class="<%= 'pat_no_project_chosen' unless project.present? %> <%= cycle('odd', 'even', :name => 'campus_project_stats') %>">
+                          <td class="normal"><%= project %></td>
                           <td class="center eventAttendees"><%= no_zero total %></td>
+                          <td class="center eventAttendees"><%= no_zero applying_total %></td>
+                          <td class="center eventAttendees"><%= no_zero total.to_i + applying_total.to_i %></td>
                         </tr>
                           <%- end -%>
-                        <tr class="total">
-                          <td class="eventIcon"></td>
-                          <td class="normal">Total</td>
-                          <td class="center eventAttendees"><%= no_zero @project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:total] %></td>
-                          <td class="center eventAttendees"><%= no_zero @project_totals_by_campus[campus] && @project_totals_by_campus[campus][:total] %></td>
+                        <tr class="total <%= cycle('odd', 'even', :name => 'campus_project_stats') %>">
+                          <td class="eventAttendees">Total</td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][:subtotal]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:subtotal]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
+                        </tr>
+                        <tr class="pat_no_project_chosen <%= cycle('odd', 'even', :name => 'campus_project_stats') %>">
+                          <td class="eventAttendees">No Project Chosen</td>
+                          <td class="center eventAttendees"></td>
+                          <td class="center eventAttendees"><%= no_zero total_noproject = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][nil]) || 0 %></td>
+                          <td class="center eventAttendees"><%= no_zero total_noproject %></td>
+                        </tr>
+                         <tr class="pat_inflated_total <%= cycle('odd', 'even', :name => 'campus_project_stats') %>">
+                          <td class="eventAttendees">Inflated Total</td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted = (@project_accepted_totals_by_campus[campus] && @project_accepted_totals_by_campus[campus][:total]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_applying = (@project_applying_totals_by_campus[campus] && @project_applying_totals_by_campus[campus][:total]) %></td>
+                          <td class="center eventAttendees"><%= no_zero total_accepted.to_i + total_applying.to_i %></td>
                         </tr>
                         <%- else -%>
                         <tr>
-                          <td class="eventIcon"></td>
                           <td class="normal">No project participation (yet!)</td>
                           <td class="center eventAttendees"></td>
                         </tr>
                         <%- end -%>
                       </table>
                     </td>
-                    <td class="center eventAttendees"><%= no_zero (h = @project_applying_totals_by_campus[campus]) ? h[:total] : 0 %></td>
-                    <td class="center eventAttendees"><%= no_zero (h = @project_totals_by_campus[campus]) ? h[:total] : 0 %></td>
                   </tr>
                 <%- end %>
-                <tr class="total">
+                <tr class="total" data-collapsed_cycle="<%= cycle('odd', 'even', :name => "campus_stats") %>" data-expanded_cycle="<%= cycle('odd', 'even', :name => 'campus_stats_expanded') %>">
                   <td class="eventIcon">
                     <%= link_to_function("<div class='expand icon project_campus #{@staff ? 'total' : 'all_projects'}'>&nbsp;</div>", toggle_campus(@staff ? 'total' : 'all_projects')) %>
                   </td>
                   <td class="normal eventIcon"><%- if @staff -%><%= link_to_function "All Campuses", toggle_campus('total'), :id => "all_campuses_link" %> for <%= link_to_function("<div class='expand icon project_campus all_projects'>&nbsp;</div>", toggle_campus('all_projects')) %><% end %> <%= link_to_function t('dashboard.projects.all_projects'), toggle_campus('all_projects'), :id => "all_projects_link" %></td>
-                  <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
-                  <!--<td class="center eventAttendees"><%#= no_zero @project_applying_totals_by_campus.collect{|k,v| v[:total].to_i }.sum %></td>-->
                   <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
+                  <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_applying] %></td>
+                  <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted].to_i + @project_totals[:totals][:subtotal_applying].to_i %></td>
                 </tr>
                 <tr id="all_projects" style="display:none">
-                  <td class="eventIcon"></td>
-                  <td class="normal">
-                    <table>
+                  <td class="normal" colspan="5">
+                    <table class="collapse">
                       <tr>
-                        <td class="eventIcon"></td>
                         <td class="normal"></td>
-                        <td class="small"><%= t('dashboard.projects.applying') %></td>
-                        <td class="small"><%= t('dashboard.projects.accepted') %></td>
+                        <td class="center small"><%= t('dashboard.projects.accepted') %></td>
+                        <td class="center small"><%= t('dashboard.projects.applying') %></td>
+                        <td class="center small"><%= t('dashboard.projects.total') %></td>
                       </tr>
                       <%- @project_totals.each_pair do |project, totals| %>
-                        <%- next if project == :totals -%>
-                      <tr class="<%= 'pat_no_project_chosen' unless project.present? %>">
-                        <td class="eventIcon"></td>
-                        <td class="normal"><% if project.present? %><%= project %><% else %>No project chosen<% end %></td>
-                        <td class="center eventAttendees"><%= no_zero totals[:applying] %></td>
-                        <td class="center eventAttendees"><%= no_zero totals[:accepted] %></td>
-                      </tr>
+                        <%- next if project == :totals || !project.present?-%>
+                        <tr class="<%= cycle('odd', 'even', :name => 'all_projects') %>">
+                          <td class="normal"><%= project %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:accepted] %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:applying] %></td>
+                          <td class="center eventAttendees"><%= no_zero totals[:accepted].to_i + totals[:applying].to_i %></td>
+                        </tr>
                       <%- end -%>
-                      <tr class="total">
-                        <td class="eventIcon"></td>
-                        <td class="normal">Total</td>
-                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
+                      <tr class="total <%= cycle('odd', 'even', :name => 'all_projects') %>">
+                        <td class="eventAttendees normal">Total</td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_accepted] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_applying] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:subtotal_accepted].to_i + @project_totals[:totals][:subtotal_applying].to_i %></td>
+                      </tr>
+                      <tr class="pat_no_project_chosen <%= cycle('odd', 'even', :name => 'all_projects') %>">
+                        <td class="eventAttendees">No Project Chosen</td>
+                        <td class="center eventAttendees"></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:no_project] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:no_project] %></td>
+                      </tr>
+                      <tr class="pat_inflated_total <%= cycle('odd', 'even', :name => 'all_projects') %>">
+                        <td class="normal">Inflated Total</td>
                         <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:applying] %></td>
+                        <td class="center eventAttendees"><%= no_zero @project_totals[:totals][:accepted].to_i + @project_totals[:totals][:applying].to_i %></td>
                       </tr>
                     </table>
                   </td>
-                  <td class="center eventAttendees"></td>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -126,23 +153,23 @@
                   $(selector).show();
                   $(icon_selector).removeClass('expand');
                   $(icon_selector).addClass('contract');
+                  if (c == 'total') {
+                    $('[data-expanded_cycle]').each(function(i, el) { val = $(el).attr('data-expanded_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+                  }
                 } else {
                   $(selector).hide();
                   $(icon_selector).removeClass('contract');
                   $(icon_selector).addClass('expand');
-                }
-                if (c == 'total') {
-                  /*
-                  if (project_campus_expanded[c]) {
-                    $("#all_campuses").html("All Campuses");
-                  } else {
-                    $("#all_campuses").html("All Campuses");
+                  if (c == 'total') {
+                    $('[data-collapsed_cycle]').each(function(i, el) { val = $(el).attr('data-collapsed_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+                    $('.project_campus_stats.extra').hide();
                   }
-                  */
-                } else if (c == 'all_projects') {
                 }
 
                 // update yellow menu bracket height
                 adjustBracketHeight();
               }
+              $(function() { 
+                $('[data-collapsed_cycle]').each(function(i, el) { val = $(el).attr('data-collapsed_cycle'); $(el).removeClass('odd').removeClass('even').addClass(val); });
+              });
             </script>

@@ -1,6 +1,6 @@
 
 <% if authorized?(:show_profile_labels, :people) %>
-  <div id="personLabels" class="personLabels">
+  <div id="personLabels">
     <%= render :partial => 'person_labels' %>
   </div>
   <%#= "<br>" if authorized?(:set_label, :people) || @person.labels.count > 0 %>

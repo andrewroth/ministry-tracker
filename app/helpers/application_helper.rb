@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  
+
   def locale_stylesheet_link_tag
     if File.exists?("#{RAILS_ROOT}/public/stylesheets/#{session[:locale]}.css")
       stylesheet_link_tag("#{session[:locale]}.css")
@@ -17,7 +17,7 @@ module ApplicationHelper
     end
     time_options
   end
-    
+
   def update_flash(page, msg = nil, level='notice')
     unless msg
       msg = flash[:notice]
@@ -42,15 +42,15 @@ module ApplicationHelper
   def date_options(year = Time.now.year - 5)
     {:include_blank => true, :start_year => year}
   end
-  
+
   def spinner(id='', optional_class='', img_path='spinner.gif')
     image_tag(img_path, :id => 'spinner'+id.to_s, :class => optional_class, :style => 'display:none')
   end
-  
+
   def hide_spinner(page, id='')
     page['spinner'+id.to_s].hide
   end
-  
+
   def custom_field(attrib, person)
     case attrib.value_type
     when 'check_box'
@@ -68,8 +68,8 @@ module ApplicationHelper
 
   def fancy_date_field(name, value)
     value = value.is_a?(Date) ? value.to_s : value
-    field = %| 
-          <input type="text" name="#{name}" id="#{name}" 
+    field = %|
+          <input type="text" name="#{name}" id="#{name}"
                   value="#{value}" size="13" />
           <script language="javascript">
               function clear_date(item) {
@@ -97,7 +97,7 @@ module ApplicationHelper
 
 	  select_tag "country", options_for_select(cs)
   end
-  
+
   def states_select_tag(states)
     ss = states.collect {|s| [s.name, s.id]}
 	  ss = ss.insert(0,['-- Choose State --',''])
@@ -145,18 +145,18 @@ module ApplicationHelper
   def message_span(id, classname)
     " <span id=\"message#{id}\" class=\"jqueryValidationMessage #{classname}\"></span> "
   end
-  
+
   def leave_facebook_link_to(name, url, classes = "")
     link_to "#{name}", "#", :onclick => "top.location.href='/leave_facebook_and_js_redirect?js_redirect_url=#{url}'", :class => "#{classes}"
   end
-    
+
   def link_bar_tab(id, classes, url, title, inner_html, menu_id = nil, active_tab_id = nil)
     classes = "#{classes} ll" unless id == active_tab_id
     tab = "<a id='#{id}' class='#{classes}' title='#{title}' href='#{url}' #{"link_menu_box_id='#{menu_id}'" if menu_id}>#{inner_html}</a>"
     tab = "<div class='active'><strong class='ll tab_left'>#{tab}</strong><strong class='ll tab_right'>&nbsp;</strong></div>" if id == active_tab_id
     tab
   end
-  
+
   def connexion_bar_revealer
     "
     <div id='connexion_bar_revealer' title='Toggle the GCX Connexion Bar'>&nbsp;</div>
@@ -175,7 +175,7 @@ module ApplicationHelper
     locale = currently_english ? 'fr' : 'en-CA'
     url = opts[:url]
     switch_domains = opts[:switch_domain]
-    
+
     if switch_domains && Rails.env.production?
       if locale == 'fr'
         'https://pouls.pouvoirdechanger.com'
@@ -197,7 +197,7 @@ module ApplicationHelper
     "#{request.protocol}#{request.port != 80 ? request.host_with_port : request.host}#{request.path}?#{new_params.collect{ |k,v| "#{k}=#{v}" }.join('&')}"
   end
 
- 
+
 
   def switch_languages_text
     if currently_english
@@ -221,5 +221,20 @@ module ApplicationHelper
 
   def currently_french
     (I18n.locale.to_s =~ /^fr/).present?
+  end
+
+  def build_site_title(sub_title, blank_sub_title = nil)
+    title = sub_title.present? ? sub_title : ''
+    title += ' | ' if title.present? || blank_sub_title
+
+    if t('misc.web_title')
+      title += t('misc.web_title')
+    elsif Cmt::CONFIG[:web_title]
+      title += Cmt::CONFIG[:web_title]
+    else
+      title += 'Campus Movement Tracker'
+    end
+
+    title
   end
 end

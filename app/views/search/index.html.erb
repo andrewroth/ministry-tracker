@@ -1,7 +1,7 @@
 
 <%= javascript_include_tag "jquery.tooltip.js" %>
 
-<h1 id="reportTitle">Search</h1>
+<h1 id="reportTitle"><%= t('title.search') %></h1>
 <%
   if @mobile
     %><%= render :partial => "search_box", :locals => { :q => @q } %><%
@@ -21,7 +21,7 @@
 
 <div id="searchResultsContainer">
   <br/>
-  
+
   <% if session[:search][:authorized_to_search_people] %>
     <%= render :partial => "people", :locals => { :pagination => false } %>
     <br/>
@@ -47,7 +47,7 @@
         </div>
       </div>
     </div>
-    
+
     <br/>
     <br/>
   <% end %>

@@ -30,6 +30,7 @@ en-CA:
     dashboard: "Dashboard"
     contacts: "Contacts"
     group: "Group"
+    search: "Search"
     advanced_search: "Advanced Search"
     profile: "Profile"
     team: "Team"
@@ -109,8 +110,9 @@ en-CA:
     events:
       attendees: attendees
     projects:
-      applying: applying
-      accepted: accepted
+      applying: Applying
+      accepted: Accepted
+      total: Total
       link_txt: Apply for project!
       all_projects: All Projects
     groups:

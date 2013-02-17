@@ -1,0 +1,197 @@
+<h1 class="center"><%= @school.attr(:display_name) %></h1><br>
+
+<% form_tag({:controller => :civicrm_schools, :action => :update}, {:method => :put}) do %>
+
+<%= hidden_field(:civicrm_schools, :id, :value => params[:id]) %>
+<%= hidden_field(:phone, :id, :value => @school.attr(:phone_id)) %>
+<%= hidden_field(:address, :id, :value => @school.attr(:address_id)) %>
+
+
+<div class = "school_top">
+	<div class="rounded floated">
+		<table class="school_info">
+			<tr>
+				<th><label>Street Address:</label></th>
+				<td><%= text_field(:address, :street_address, :value => @school.attr(:street_address), :size => "50") %></td>
+			</tr><tr>
+				<th><label>City:</label></th>
+				<td><%= text_field(:address, :city, :value => @school.attr(:city), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Province:</label></th>
+				<td><%= text_field(:address, :state_province, :value => @school.attr(:state_province), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Country:</label></th>
+				<td><%= text_field(:address, :country, :value => @school.attr(:country), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Postal Code:</label></th>
+				<td><%= text_field(:address, :postal_code, :value => @school.attr(:postal_code), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Phone:</label></th>
+				<td><%= text_field(:phone, :phone, :value => @school.attr(:phone), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Latitude: </label></th>
+				<td><%= text_field(:address, :geo_code_1, :value => @school.attr(:geo_code_1), :size => "50") %></td>
+			</tr><tr>
+				<th><label>Longitude:</label></th>
+				<td><%= text_field(:address, :geo_code_2, :value => @school.attr(:geo_code_2), :size => "50") %></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="rounded floated">
+		<label>Ministry Presence:</label> 
+			<%= radio_button(:civicrm_schools, :custom_73, "Yes", :checked => @school.attr(:custom_73) == "Yes") %>Yes
+			<%= radio_button(:civicrm_schools, :custom_73, "No", :checked => @school.attr(:custom_73) != "Yes") %>No
+		<br>
+		<label>SLM Q1:</label>
+			<%= radio_button(:civicrm_schools, :custom_68, "Yes", :checked => @school.attr(:custom_68) == "Yes") %>Yes
+			<%= radio_button(:civicrm_schools, :custom_68, "No", :checked => @school.attr(:custom_68) != "Yes") %>No
+		<br>
+		<label>SLM Q2:</label>
+			<%= radio_button(:civicrm_schools, :custom_69, "Yes", :checked => @school.attr(:custom_69) == "Yes") %>Yes
+			<%= radio_button(:civicrm_schools, :custom_69, "No", :checked => @school.attr(:custom_69) != "Yes") %>No
+		<br>
+		<label>SLM Q3:</label>
+			<%= radio_button(:civicrm_schools, :custom_70, "Yes", :checked => @school.attr(:custom_70) == "Yes") %>Yes
+			<%= radio_button(:civicrm_schools, :custom_70, "No", :checked => @school.attr(:custom_70) != "Yes") %>No
+		<br>
+		<label>Is it SLM?</label>
+			<%= radio_button(:civicrm_schools, :custom_71, "Yes", :checked => @school.attr(:custom_71) == "Yes") %>Yes
+			<%= radio_button(:civicrm_schools, :custom_71, "No", :checked => @school.attr(:custom_71) != "Yes") %>No
+		<br>
+		<label>Type:</label>
+			<%= radio_button(:civicrm_schools, :custom_72, "Staffed", :checked => @school.attr(:custom_72) == "Staffed") %>Staffed
+			<%= radio_button(:civicrm_schools, :custom_72, "Expansion", :checked => @school.attr(:custom_72) != "Staffed") %>Expansion
+		<br>
+		<label>Fundraising:</label>
+			<%= radio_button(:civicrm_schools, :custom_74, "Sponsor", :checked => @school.attr(:custom_74) == "Sponsor") %>Sponsor
+			<%= radio_button(:civicrm_schools, :custom_74, "Launch", :checked => @school.attr(:custom_74) != "Sponsor") %>Launch
+	</div>
+</div><br>
+
+<div class="rounded" style="clear:both; ">
+	<table class="school_info">
+		<tr>
+			<th><label>Order from West to East:</label></th>
+			<td><%= text_field(:civicrm_schools, :custom_84, :value => @school.attr(:custom_84), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>Student Population Center:</label></th>
+			<td><%= text_field(:civicrm_schools, :custom_85, :value => @school.attr(:custom_85), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>Description:</label></th>
+			<td><%= text_area(:civicrm_schools, :custom_86, :value => @school.attr(:custom_86), :size => "49x4") %></td>
+		</tr>
+		<tr>
+			<th><label>Wiki:</label> </th>
+			<td><%= text_field(:civicrm_schools, :custom_88, :value => @school.attr(:custom_88), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>Website:</label> </th>
+			<td><%= text_field(:civicrm_schools, :custom_89, :value => @school.attr(:custom_89), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>Notes on Sourcing:</label></th>
+			<td><%= text_area(:civicrm_schools, :custom_110, :value => @school.attr(:custom_110), :size => "49x4") %></td>
+		</tr>
+		<tr>
+			<th><label>Other Evangelistic Presence:</label></th>
+			<td><%= check_box(:civicrm_schools, :custom_111, :checked => @school.attr(:custom_111) == "1") %></td>
+		</tr>
+		<tr>
+			<th><label>Sourcing:</label> </th>
+			<td><%= text_field(:civicrm_schools, :custom_112, :value => @school.attr(:custom_112), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>P2C Website:</label> </th>
+			<td><%= text_field(:civicrm_schools, :custom_113, :value => @school.attr(:custom_113), :size => "50") %></td>
+		</tr>
+		<tr>
+			<th><label>P2C Facebook Group:</label></th>
+			<td><%= text_field(:civicrm_schools, :custom_114, :value => @school.attr(:custom_114), :size => "50") %></td>
+		</tr>	
+	</table>
+</div><br>
+
+
+<div class="rounded">
+	<h3>Enrolment</h3>
+	<table class="enrolment">
+		<tr>
+			<th></th>
+			<th colspan="2">Full Time</th>
+			<th colspan="2">Part Time</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<tr class="bordered">
+			<th>Cegep</th>
+			<th>Undergrad</th>
+			<th>Grad</th>
+			<th>Undergrad</th>
+			<th>Grad</th>
+			<th>International</th>
+			<th>Total</th>
+		</tr>
+		<tr>
+			<td><%= text_field(:civicrm_schools, :custom_90, :value => @school.attr(:custom_90), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_91, :value => @school.attr(:custom_91), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_92, :value => @school.attr(:custom_92), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_93, :value => @school.attr(:custom_93), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_94, :value => @school.attr(:custom_94), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_95, :value => @school.attr(:custom_95), :size => "8") %></td>
+			<td><%= text_field(:civicrm_schools, :custom_96, :value => @school.attr(:custom_96), :size => "8") %></td>
+		</tr>
+	</table>
+	<label>Sources:</label><%= text_field(:civicrm_schools, :custom_97, :value => @school.attr(:custom_97), :size => "50") %>
+</div><br>
+
+<div class="rounded">
+	<h3>Ministry Presence</h3> 
+	<table class="enrolment">
+		<tr>
+			<th>2007/08</th>
+			<th>2008/09</th>
+			<th>2009/10</th>
+			<th>2010/11</th>
+			<th>2011/12</th>
+			<th>2012/13</th>
+		</tr>
+		<tr>
+			<td><%= check_box(:civicrm_schools, :custom_98, :checked => @school.attr(:custom_98) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_99, :checked => @school.attr(:custom_99) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_100, :checked => @school.attr(:custom_100) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_101, :checked => @school.attr(:custom_101) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_102, :checked => @school.attr(:custom_102) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_103, :checked => @school.attr(:custom_103) == "1") %></td>
+		</tr>
+	</table>
+</div><br>
+
+<div class="rounded">
+	<h3>SLM</h3>
+	<table class="enrolment">
+		<tr>
+			<th>2007/08</th>
+			<th>2008/09</th>
+			<th>2009/10</th>
+			<th>2010/11</th>
+			<th>2011/12</th>
+			<th>2012/13</th>
+		</tr>
+		<tr>
+			<td><%= check_box(:civicrm_schools, :custom_104, :checked => @school.attr(:custom_104) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_105, :checked => @school.attr(:custom_105) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_106, :checked => @school.attr(:custom_106) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_107, :checked => @school.attr(:custom_107) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_108, :checked => @school.attr(:custom_108) == "1") %></td>
+			<td><%= check_box(:civicrm_schools, :custom_109, :checked => @school.attr(:custom_109) == "1") %></td>
+		</tr>
+	</table>
+</div><br>
+
+<%= submit_tag "Submit", :id => 'schoolSubmit', :class => 'action-button' %>
+<% end %>
+
+<div class="backLink"><%= link_to 'Back', url_for(:controller => :civicrm_schools, :action => :show) %></div>
