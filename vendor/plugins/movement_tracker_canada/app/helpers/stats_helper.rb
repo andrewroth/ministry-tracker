@@ -229,7 +229,7 @@ module StatsHelper
     }
   end
 
-   def show_summary_by_week_stat(title, stat, weeks, ministry_id)
+  def show_summary_by_week_stat(title, stat, weeks, ministry_id)
     render :partial => 'stats/stats_line',
     :locals => {
         :special_css_class => "",
@@ -238,4 +238,15 @@ module StatsHelper
     }
   end
 
+  def sort_direction
+    params[:direction].try(:downcase) == 'desc' ? 'asc' : 'desc'
+  end
+
+  def link_to_sort(body, column, options = {})
+    options[:class] = options[:class].present? ? "#{options[:class]} #{sort_direction}" : "#{sort_direction}" if column == params[:sort]
+    options[:class] = options[:class].present? ? "#{options[:class]} select_report_sort" : 'select_report_sort'
+    options.merge!(:'data-sort-dir' => sort_direction, :'data-sort-col' => column)
+    options.merge!(:title => "Click to sort") unless options[:title].present?
+    link_to(body, '', options)
+  end
 end

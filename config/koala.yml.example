@@ -1,0 +1,14 @@
+# Copy this to config/koala.yml
+
+dev:
+  app_id:
+  secret_key:
+  canvas_url:
+staging:
+  app_id:
+  secret_key:
+  canvas_url:
+prod:
+  app_id:
+  secret_key:
+  canvas_url:

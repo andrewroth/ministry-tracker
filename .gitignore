@@ -6,6 +6,9 @@ config/amazon_s3.yml
 config/memcached.yml
 config/facebooker.yml
 config/civicrm.yml
+config/session.yml
+config/mailer.yml
+config/koala.yml
 .DS_Store
 doc/api
 coverage
@@ -31,3 +34,6 @@ public/c4c_pulse_test.profile_pictures
 public/utopian_common_test.profile_pictures
 public/utopian_pulse_test.imports
 .bundle
+public/stylesheets/cache/*
+tmp/*
+.rvmrc

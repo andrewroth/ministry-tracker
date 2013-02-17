@@ -4,61 +4,42 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <%# Check if the web_title config option is set, and if so, use it %>
     <title>
-      <%= @site_title + ' | ' if @site_title -%>
-      <% if t('misc.web_title') %>
-        <%= t('misc.web_title') %>
-      <% elsif Cmt::CONFIG[:web_title] %>
-        <%= Cmt::CONFIG[:web_title] %>
-      <% else %>
-        Campus Movement Tracker
-      <% end %>
+      <%= build_site_title(@site_title) -%>
     </title>
 
+    <%= stylesheet_link_tag 'ext/ext-all', 'style', 'thickbox', 'ext/xtheme-gray', 'jquery.dataTables_themeroller', 'connexion_default.css', :cache => 'cache/all' %>
+    <%= stylesheet_link_tag '/javascripts/jscalendar-1.0/skins/white/calendar-white.css' %>
+    <%= stylesheet_link_tag 'jquery-ui' %>
+    <%= locale_stylesheet_link_tag %>
 
-    <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray", "jquery-ui", "jquery.dataTables_themeroller",
-                            :media => "screen",
-                            :cache => "cache/all" %>
-                              
     <!-- this is a conditional comment, only IE recognizes these -->
     <!--[if lt IE 8]>
-      <%= stylesheet_link_tag "ext/ext-all", "style", "thickbox", "ext/xtheme-gray",
-                              :media => "screen" %>
+      <%= stylesheet_link_tag 'ext/ext-all', 'style', 'thickbox', 'ext/xtheme-gray',
+                              :media => 'screen' %>
     <![endif]-->
-
-    
-    <%= stylesheet_link_tag "/javascripts/jscalendar-1.0/skins/white/calendar-white.css", :media => "screen" %>
 
     <%= javascript_include_tag :defaults, 'person', 'thickbox-compressed', 'alternate', 'ext-jquery-adapter', 'ext-all', 'json',
                                'jquery.disable.text.select.pack', 'jquery.scrollTo-min', 'jquery.pjax', 'jquery.dataTables',
                                'jscalendar-1.0/calendar.js', 'jscalendar-1.0/lang/calendar-en.js', 'jscalendar-1.0/calendar-setup.js',
                                'application', 'application.ready',
-                               :cache => "cache/all" %>
+                               :cache => 'cache/all' %>
 
     <%= yield :javascripts %>
-
-    <%- if logged_in? -%>
-      <%= stylesheet_link_tag "connexion_default.css" %>
-    <%- end -%>
-
-    <%= stylesheet_link_tag "connexion_default.css" %>
-
-    <%= locale_stylesheet_link_tag %>
 
     <%= fb_connect_javascript_tag if Cmt::CONFIG[:facebook_connectivity_enabled] %>
   </head>
 
 
-  <body>    
+  <body>
     <div id="background">
-        
+
       <%= init_fb_connect('XFBML', :js => :jquery) if Cmt::CONFIG[:facebook_connectivity_enabled]%>
 
       <div id="outer">
-        
+
         <%= render '/layouts/gcx_connexion_bar' %>
-        
+
         <%= render '/link_bar/pulse_link_bar' %>
 
         <div id="wrapper" class="<%= 'dashboard' if controller.controller_name == 'dashboard' %>">
@@ -71,7 +52,7 @@
 
               <% if logged_in? && @me && !@custom_userbar_title %>
 
-                <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => "Search the Pulse" } unless @hide_layout_navigation %>
+                <%= render :partial => "layouts/search_box", :locals => { :q => @q, :default_text => t('title.search') } unless @hide_layout_navigation %>
 
                 <% if Cmt::CONFIG[:facebook_connectivity_enabled] && facebook_session %>
                   <a href="#" class="logoutbutton" onclick="try {
@@ -84,7 +65,7 @@
                   <%= t('layout.top_bar.greeting', :name => %|
                         <div id="username">#{link_to(@my.full_name, person_path(@me), :title => "Goto your profile")}</div>
                         |) %>
-                  
+
                   <%- if authorized?(:switch_list, :ministries) && authorized?(:switch_apply, :ministries) %>
                     <div id="switch_ministries">
                       <%- if @ministry -%>
@@ -94,10 +75,10 @@
                     </div>
                     <div id="switch_ministries_list" style="display:none">&nbsp;</div>
                   <%- end -%>
-                  
+
                   <%= link_to(t('layout.top_bar.logout'), session_url, :method => :delete, :class => "rl log_out") %>
                 </div>
-                
+
                 <div class="clear"></div>
               </div>
             </div>
@@ -141,7 +122,7 @@
                 <div id='browser_warning' class='flash_notice warning'>
                   <%= image_tag "/images/silk/exclamation.png" %>
                   <b>You are using an outdated browser (<%= link_to "what's a browser?", "http://www.whatbrowser.org/", :target => "_blank" %>)</b><br/>
-                  For a faster, safer browsing experience, upgrade for free to one of these browsers today: 
+                  For a faster, safer browsing experience, upgrade for free to one of these browsers today:
 
                   <div style='display:inline; padding:5px 5px 0;'>
                     <%= link_to image_tag("browser_chrome_small.gif", :alt => "Google Chrome"), 'http://www.google.com/chrome', :title => "Google Chrome" %>
@@ -151,7 +132,7 @@
                   </div>
                 </div>
               <![endif]-->
-              
+
               <noscript>
                 <div class="flash_notice flash warning">
                   <%= image_tag "/images/silk/exclamation.png" %>

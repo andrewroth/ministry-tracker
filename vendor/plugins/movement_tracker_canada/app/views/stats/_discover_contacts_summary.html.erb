@@ -1,0 +1,33 @@
+<p><span class="statsTitle">
+  Discover &#8211; Contacts Summary View at <%= @ministry_name %>
+</span></p>
+
+<br/>
+
+<table class="dataTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Action</th>
+      <th>Threshold</th>
+      <th>Volunteer</th>
+      <th>Next Step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @contacts.each do |contact| %>
+      <tr>
+        <td><%= contact.first_name %></td>
+        <td title="<%= contact.last_touched_at %>"><span class="has_title"><%= time_ago_in_words(contact.last_touched_at) %><%= t("misc.ago") %></span></td>
+        <td><%= contact.next_step %></td>
+        <td><%= link_to contact.person.full_name, contact.person %></td>
+        <td><%= contact.what_i_am_trusting_god_to_do_next %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr class="statsTableTotal">
+      <td>Total <%= @contacts.size %></td>
+    </tr>
+  </tfoot>
+</table>

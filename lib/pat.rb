@@ -49,6 +49,8 @@ module Pat
       results_by_campus[campus.abbrv] ||= ActiveSupport::OrderedHash.new
       results_by_campus[campus.abbrv][campus.project] = campus.send(count_name)
       results_by_campus[campus.abbrv][:total] ||= 0
+      results_by_campus[campus.abbrv][:subtotal] ||= 0
+      results_by_campus[campus.abbrv][:subtotal] += campus.project.present? ? campus.send(count_name).to_i : 0
       results_by_campus[campus.abbrv][:total] += campus.send(count_name).to_i
     end
     # this can probably be done in sql somehow, but I can code it here way faster
@@ -100,14 +102,19 @@ module Pat
     )
 
     results = ActiveSupport::OrderedHash.new
-    totals = { :accepted => 0, :applying => 0 }
+    totals = { :accepted => 0, :applying => 0, :subtotal_accepted => 0, :subtotal_applying => 0, :no_project => 0 }
     projects_accepted.each do |project|
       totals[:accepted] += project.accepted_count.to_i
+      totals[:subtotal_accepted] += project.title.present? ? project.accepted_count.to_i : 0
       results[project.title] ||= {}
       results[project.title][:accepted] = project.accepted_count
     end
     projects_applying.each do |project|
       totals[:applying] += project.applying_count.to_i
+      totals[:subtotal_applying] += project.title.present? ? project.applying_count.to_i : 0
+      if !project.title.present?
+        totals[:no_project] = project.applying_count
+      end
       results[project.title] ||= {}
       results[project.title][:applying] = project.applying_count
     end

@@ -12,7 +12,7 @@ def prod?() ENV['target'] == 'prod' end
 set :application, "ministry-tracker"
 set :user, 'deploy'
 set :use_sudo, false
-set :host, ma? ? "ministryapp.com" : "pat.powertochange.org"
+set :host, stage? || dev? ? 'emu.powertochange.com' : 'pat.powertochange.com'
 set :keep_releases, 3
 
 set :scm, "git"
@@ -22,11 +22,11 @@ set :deploy_via, :checkout
 path = if ma?
          'mt.ministryhacks.com'
        elsif stage?
-         'emu.campusforchrist.org'
+         'emu.powertochange.com'
        elsif dev?
-         'moose.campusforchrist.org'
+         'moose.powertochange.com'
        elsif prod?
-         'pulse.campusforchrist.org'
+         'pulse.powertochange.com'
        end
 set :deploy_to, "/var/www/#{path}"
 set :git_enable_submodules, false
@@ -55,7 +55,10 @@ deploy.task :before_symlink do
   # other shared files / folders
   link_shared 'log', :overwrite => true
   link_shared 'config/database.yml', :overwrite => true
+  link_shared 'config/session.yml', :overwrite => true
+  link_shared 'config/mailer.yml', :overwrite => true
   link_shared 'config/civicrm.yml', :overwrite => true
+  link_shared 'config/koala.yml', :overwrite => true
   link_shared 'config/initializers/eventbright.rb', :overwrite => true
 
   profile_pic_prefix = if stage? then 'emu_stage' elsif dev? then 'emu_dev' elsif prod? then 'emu' end
@@ -69,7 +72,7 @@ end
 
 after :"deploy:create_symlink", :"deploy:after_symlink"
 deploy.task :after_symlink do
-  run "ruby /etc/screen.d/dj_pulse.rb"
+  run "ruby /etc/screen.d/dj_#{if dev? then 'moose' elsif stage? then 'emu' else 'pulse' end}.rb"
 end
 
 namespace :deploy do
