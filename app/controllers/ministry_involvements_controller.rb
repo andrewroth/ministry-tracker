@@ -5,16 +5,16 @@ class MinistryInvolvementsController < ApplicationController
   #before_filter :ministry_leader_filter, :except => :destroy
   before_filter :set_inv_type
   before_filter :set_ministries_and_roles, :only => [ :new, :create, :edit, :update ]
-  
-  
+
+
 
   # used to pop up a dialog box
   def index
     @from_profile = true
-    
+
     @ministry_involvements = @person.ministry_involvements
     @involvement_history = @person.involvement_history
-  
+
     render :template => 'involvements/index'
   end
 
@@ -30,7 +30,7 @@ class MinistryInvolvementsController < ApplicationController
 
     if @me == @person ||
        (authorized?(:new, :people) && @me.has_permission_to_update_role(@ministry_involvement, @ministry_involvement.ministry_role)) || is_ministry_admin
-       
+
       if !is_admin? &&
         @ministry_involvement.ministry.name == Cmt::CONFIG[:default_ministry_name] &&
         @ministry_involvement.ministry_role.is_a?(StaffRole)
@@ -60,7 +60,7 @@ class MinistryInvolvementsController < ApplicationController
     else
       respond_to do |format|
         format.xml  { head :ok }
-        format.js   do 
+        format.js   do
           render :update do |page|
             page.hide('spinner')
             page.alert("Sorry, you can't remove #{@person.first_name}'s #{@ministry_involvement.ministry_role.name} involvement at #{@ministry_involvement.ministry.name}")
@@ -69,11 +69,11 @@ class MinistryInvolvementsController < ApplicationController
       end
     end
   end
-  
+
   def create
     # check if they can create this ministry involvement
     new_ministry_involvement = MinistryInvolvement.new(params[:ministry_involvement])
-    unless is_staff_somewhere(@me) && 
+    unless is_staff_somewhere(@me) &&
            (@me.has_permission_to_update_role(new_ministry_involvement, new_ministry_involvement.ministry_role) || is_ministry_admin)
       flash[:notice] = "Sorry, you can't set people to #{new_ministry_involvement.ministry_role.try(:name)} at the #{new_ministry_involvement.try(:ministry).try(:name)} ministry"
       @denied = true
@@ -101,7 +101,10 @@ class MinistryInvolvementsController < ApplicationController
 
     # update the mi
     if mi
+      save_history = mi.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id].to_s
+
       mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
+
       mi.start_date ||= Date.today
       if mi.archived? || (@student_before && mi.ministry_role.is_a?(StaffRole))
         mi.end_date = nil
@@ -109,22 +112,23 @@ class MinistryInvolvementsController < ApplicationController
       else
         @updated = true
       end
-      save_history = mi.ministry_role_id.to_s != params[:ministry_involvement][:ministry_role_id]
-      @history = mi.new_history if save_history
-      mi.ministry_role_id = params[:ministry_involvement][:ministry_role_id]
+
       if mi.save
-        @history.save if save_history
+        mi.new_history.save if save_history
       end
     else
       mi = MinistryInvolvement.create!(params[:ministry_involvement].merge({
         :person_id => @person.id, :start_date => Date.today
       }))
     end
+
     @ministry_involvement = mi
+
     @promoted = @student_before && mi.ministry_role.is_a?(StaffRole)
     if @promoted
       @person.archive_all_student_ministry_involvements
     end
+
     unless request.xhr?
       redirect_to '/staff'
     else
@@ -132,7 +136,7 @@ class MinistryInvolvementsController < ApplicationController
       render :template => 'involvements/create'
     end
   end
-  
+
   # A staff is defined as a anyone with a StaffRole.  But what really matters
   # is what their role gives them permission to do.
   # Staff are admin if they're marked admin in the ministry involvement.  The
@@ -155,12 +159,12 @@ class MinistryInvolvementsController < ApplicationController
       raise "Missing parameters"
     end
   end
-  
+
   def update
     @ministry_involvement = MinistryInvolvement.find(params[:id])
     # We don't want someone accidentally removing their own admin privs, and only admins can set other admins
     params[:ministry_involvement][:admin] = @ministry_involvement.admin? if @ministry_involvement.person == @me || !is_ministry_admin(@ministry, @me)
-    
+
     # And you can't set any roles higher than yourself or demote others higher than or equal to you
     unless MinistryRole.exists?(params[:ministry_involvement][:ministry_role_id]) &&
            (@me.has_permission_to_update_role(@ministry_involvement, MinistryRole.find(params[:ministry_involvement][:ministry_role_id])) || is_ministry_admin)
@@ -170,7 +174,7 @@ class MinistryInvolvementsController < ApplicationController
       @denied = true
       return
     end
-    @person = @ministry_involvement.person 
+    @person = @ministry_involvement.person
 
     @history = @ministry_involvement.update_ministry_role_and_history(params[:ministry_involvement][:ministry_role_id])
 
@@ -207,7 +211,7 @@ class MinistryInvolvementsController < ApplicationController
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:end_date)} IS NULL AND
                                                                  #{MinistryInvolvement.table_name}.#{MinistryInvolvement._(:ministry_role_id)} IS NOT NULL",
                                                                  people_ids, params[:mids], params[:mrids]])
-        
+
       else
         @involvements = MinistryInvolvement.all(:include => [:person, :ministry, :ministry_role],
                                                 :order => "#{Person.table_name}.#{Person._(:first_name)} ASC, #{Person.table_name}.#{Person._(:last_name)} ASC",
@@ -228,89 +232,89 @@ class MinistryInvolvementsController < ApplicationController
         people_without_involvements_ids << id.to_i if people_with_involvements_ids.index(id.to_i).nil?
       end
       @people_without_involvements = Person.all(:conditions => ["#{Person._(:id)} IN (?)", people_without_involvements_ids]) unless people_without_involvements_ids.empty?
-      
+
     end
   end
 
   def update_multiple_roles
-    
+
     unless params[:role][:id] && params[:involvement_id]
       flash[:notice] = "Could not update roles, no particular roles or people were specified."
-      
+
       redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
     if can_set_roles == false
       flash[:notice] = "Sorry, you can't set that role."
-      
+
       redirect_to :action => "directory", :controller => "people", :format => :html
       return
     end
-    
-    if params[:role][:id].to_i == MinistryInvolvementsHelper::NOT_INVOLVED_ROLE  # a.k.a. remove involvements   
-      
+
+    if params[:role][:id].to_i == MinistryInvolvementsHelper::NOT_INVOLVED_ROLE  # a.k.a. remove involvements
+
       people_notice = ""
       involvement_ids = Array.wrap(params[:involvement_id]).collect{|involvement_id| involvement_id}
       involvement_ids.each do |involvement_id|
-        mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})  
-        person = Person.find(mi.person_id)     
-          
+        mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})
+        person = Person.find(mi.person_id)
+
         if (authorized?(:destroy, :people) && @me.has_permission_to_update_role(mi, mi.ministry_role)) || is_ministry_admin
-                           
+
             # We don't actually delete people, just set an end date on whatever ministries and campuses they are involved in under this user's permission tree
           ministry_involvements_to_end = person.ministry_involvements.collect(&:id)
           MinistryInvolvement.update_all("#{_(:end_date, :ministry_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :ministry_involvement)} IN(#{ministry_involvements_to_end.join(',')})") unless ministry_involvements_to_end.empty?
-          
+
           campus_involvements_to_end = person.campus_involvements.collect(&:id)
           CampusInvolvement.update_all("#{_(:end_date, :campus_involvement)} = '#{Time.now.to_s(:db)}'", "#{_(:id, :campus_involvement)} IN(#{campus_involvements_to_end.join(',')})") unless campus_involvements_to_end.empty?
-      
+
           group_involvements_to_end = person.all_group_involvements.destroy_all
           people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{mi.person.full_name} has had all involvements removed. <br/>"
-  
+
         else
           # failed to get permission to remove involvements for this person
           mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
           people_notice += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> <b> #{mi.person.full_name} is currently a #{mi.ministry_role.name} at #{mi.ministry.name}, sorry you can't remove their involvements </b><br/>"
-        end   
+        end
       end
-      
+
       flash[:notice] = "The following changes were made: <br/> <br/> #{people_notice}"
-      
+
     else    # if not removing involvements, check for batch role update
-    
+
       new_role = MinistryRole.first(:conditions => {:id => params[:role][:id].to_i})
       if new_role.present?
         people_notice = ""
-  
+
         involvement_ids = Array.wrap(params[:involvement_id]).collect{|involvement_id| involvement_id}
-  
+
         involvement_ids.each do |involvement_id|
           mi = MinistryInvolvement.first(:conditions => {:id => involvement_id})
           if @me.has_permission_to_update_role(mi, new_role) || is_ministry_admin
-  
+
             # current role is type staff but demoting to student
             if mi.ministry_role.class == StaffRole && new_role.class == StudentRole
               mi.demote_staff_to_student(new_role.id)
-  
+
             # current role is type student but promoting to staff
             elsif mi.ministry_role.class == StudentRole && new_role.class == StaffRole
               mi.promote_student_to_staff(new_role.id)
-  
+
             # current role type is the same as new role type
             else
               mi.update_ministry_role_and_history(new_role.id) unless new_role.id == mi.ministry_role.id
             end
-  
+
             mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
             people_notice += "<img src='/images/silk/accept.png' style='vertical-align:middle;'> #{mi.person.full_name} is now a #{mi.ministry_role.name} at #{mi.ministry.name}<br/>"
-  
+
           else
             # failed to get permission to update this person
             mi = MinistryInvolvement.first(:conditions => {:id => involvement_id}) # get final min involvement status to accurately display to user
             people_notice += "<img src='/images/silk/exclamation.png' style='vertical-align:middle;'> <b> #{mi.person.full_name} is currently a #{mi.ministry_role.name} at #{mi.ministry.name}, sorry you can't set them to #{new_role.name} </b><br/>"
           end
         end
-  
+
         flash[:notice] = "The following role changes were made: <br/> <br/> #{people_notice}"
       end
     end
@@ -318,7 +322,7 @@ class MinistryInvolvementsController < ApplicationController
     redirect_to :action => "directory", :controller => "people", :format => :html
   end
 
-  
+
   protected
 
   def set_inv_type
@@ -334,11 +338,11 @@ class MinistryInvolvementsController < ApplicationController
     @roles += [ [ 'Student Roles', StudentRole.all(:order => :position).collect{ |sr| [ sr.name, sr.id ] } ] ] unless is_staff_somewhere(@person) || params[:staff_roles_only] == 'true'
     @default_role_id = MinistryRole.default_staff_role.id
   end
-  
+
   def can_set_roles
     is_valid_role = possible_roles.collect(&:id).include?(params[:role][:id].to_i)
     is_remove_involvements_trigger = (params[:role][:id].to_i == MinistryInvolvementsHelper::NOT_INVOLVED_ROLE)
-     
+
     return is_valid_role || is_remove_involvements_trigger
   end
 
