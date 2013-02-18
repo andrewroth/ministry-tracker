@@ -313,6 +313,7 @@ a:hover strong, a:active strong {font-weight:bold; text-decoration: underline;}
 }
 
 .has_title {
+  cursor: help;
   border-bottom: 1px dotted;
   border-color: lightgray;
 }
@@ -4213,11 +4214,16 @@ td.nameTitle {
 #personLabels ul {
   display: inline-block;
   width: 100%;
-  margin-bottom: 10px;
 }
 
-.personLabels {
+#profilewrap .personLabels {
   min-height: 30px;
+}
+
+.personLabels.mini {
+  min-height: 0;
+  display: inline-block;
+  margin-right: 3px;
 }
 
 .personLabels li, .personLabels .personLabelContent {
@@ -4226,6 +4232,14 @@ td.nameTitle {
   line-height: 24px;
   position: relative;
   font-size: 11px;
+  margin: 3px 0 7px 0;
+}
+
+.personLabels.mini li, .personLabels.mini .personLabelContent {
+  height: 14px;
+  font-size: 9px;
+  margin: 0;
+  line-height: 14px;
 }
 
 .personLabels div, .personLabels span, .personLabels a {
@@ -4248,6 +4262,22 @@ td.nameTitle {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+.personLabels.mini .personLabelContent {
+  padding: 0 3px 0 5px;
+  margin-left: 7px;
+  -moz-border-radius-bottomright: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  -moz-border-radius-topright: 2px;
+  -webkit-border-top-right-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.personLabels.mini .personLabelContent > span:first-child {
+  height: 11px;
+  display: inline-block;
+}
+
 .personLabels .personLabelRemove {
   padding: 0 5px;
   font-weight: bolder;
@@ -4266,6 +4296,11 @@ td.nameTitle {
   border-width: 12px 12px 12px 0;
 }
 
+.personLabels.mini .personLabelContent:before {
+  left: -7px;
+  border-width: 7px 7px 7px 0;
+}
+
 .personLabels .personLabelContent:after {
   content: "";
   position: absolute;
@@ -4281,6 +4316,13 @@ td.nameTitle {
   -moz-box-shadow: -1px -1px 2px #0064A2;
   -webkit-box-shadow: -1px -1px 2px #0064A2;
   box-shadow: -1px -1px 2px #0064A2;
+}
+
+.personLabels.mini .personLabelContent:after {
+  left: -1px;
+  top: 6px;
+  height: 2px;
+  width: 2px;
 }
 
 .personLabelAdd {
@@ -4701,7 +4743,7 @@ table.dataTable td {
   padding: 5px 10px !important;
 }
 
-table.dataTable tr:hover {
+table.dataTable tr:hover td {
   background-color: #FFECB3 !important;
 }
 

@@ -1,12 +1,12 @@
 <% if authorized?(:show_labels, :people) || authorized?(:set_label, :people) %>
 
   <ul class="personLabels">
-    <% if @person.labels.count > 0 && authorized?(:show_labels, :people) %>
-      <%= render :partial => 'profile_label_li', :collection => @person.labels %>
+    <% if person.labels.count > 0 && authorized?(:show_labels, :people) %>
+      <%= render :partial => 'profile_label_li', :collection => person.labels, :locals => { :person => person, :read_only => local_assigns[:read_only].nil? ? false : true } %>
     <% end %>
 
-    <% if authorized?(:set_label, :people) %>
-      <%= form_remote_tag(:url => set_label_person_path(@person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
+    <% if authorized?(:set_label, :people) && local_assigns[:read_only].nil? %>
+      <%= form_remote_tag(:url => set_label_person_path(person.id), :html => { :name => "label_add_form", :id => "label_add_form"}) %>
           <% if Label.count > 0 %>
             <li class="personLabel personLabelAdd">
               <span class="personLabelContent">
