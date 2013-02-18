@@ -6,14 +6,15 @@
         ( is_ministry_leader(ministry, @me) || ministry.leaders.include?(@me) || is_ministry_admin )
       )
   %>
-    <%= link_to_remote "", {:url => person_campus_involvement_url(@person.id, campus_involvement.id, :from_profile => @from_profile), :method => :delete, :confirm => (archived ? "Are you sure you want to delete this archived involvement?  Please delete this archived involvement only if it's inaccurate, so that we can collect accurate statistics." : t("profile.manage_campuses.archive_confirm"))}, {:title => "Remove", :class => "removeInvolvementIconLink"} %> 
+    <%= link_to_remote "", {:url => person_campus_involvement_url(@person.id, campus_involvement.id, :from_profile => @from_profile), :method => :delete, :confirm => (archived ? "Are you sure you want to delete this archived involvement?  Please delete this archived involvement only if it's inaccurate, so that we can collect accurate statistics." : t("profile.manage_campuses.archive_confirm"))}, {:title => "Remove", :class => "removeInvolvementIconLink"} %>
   <% end %>
-  
+
   <% if @student %>
     <%= campus_involvement.find_or_create_ministry_involvement.ministry_role.name %>
   <% end %>
 
-  <%= campus_involvement.campus.name %> <%= t("years.#{campus_involvement.try(:school_year).try(:translation_key)}") || '&lt;no school year set&gt;'%>
+  <%= campus_involvement.campus.name %> <%= campus_involvement.school_year_translation_key ? t("years.#{ campus_involvement.school_year_translation_key }") : '&lt;no school year set&gt;' %>
+
   &nbsp;<%= link_to_remote "", {:url => edit_person_campus_involvement_url(@person.id, campus_involvement.id, :from_manage => true), :method => :get}, {:title => "Edit", :class => "editInvolvementIconLink"} %>
 </div>
 
