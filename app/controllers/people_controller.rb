@@ -499,12 +499,17 @@ class PeopleController < ApplicationController
     @person.mentor_id = MENTOR_ID_NONE
     @person.save
 
-    flash[:notice] = "#{@person.full_name}'s involvements on the Pulse have successfully been removed"
+    flash[:notice] = "#{ @person.full_name.try(:strip) }'s involvements on the Pulse have successfully been removed"
 
-    if (params[:logout] == 'true')
-      redirect_to logout_url
-    else
-      redirect_to :back
+    respond_to do |format|
+      format.html do
+        if (params[:logout] == 'true')
+          redirect_to logout_url
+        else
+          redirect_to :back
+        end
+      end
+      format.js { render 'destroy' }
     end
   end
 
