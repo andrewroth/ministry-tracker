@@ -277,4 +277,22 @@ class Person < ActiveRecord::Base
       nil
     end
   end
+
+  def self.setup_merge_testers
+    setup_merge_tester(1)
+    setup_merge_tester(2)
+  end
+
+  def self.setup_merge_tester(id)
+    p = Person.find_or_create_by_person_email "testmerge#{id}@tester.com", 
+      :person_fname => "merge#{id}_fname", 
+      :person_lname => "merge#{id}_lname", 
+      :person_legal_fname => "merge#{id}_legal_fname",
+      :person_legal_lname => "merge#{id}_legal_lname"
+    p.user.destroy if p.user.present?
+    p.access.destroy if p.access.present?
+    u = User.find_by_viewer_userID("testmerge#{id}@tester.com")
+    u.destroy if u
+    p.create_user_and_access_only("testmerge#{id}", "testmerge#{id}@tester.com")
+  end
 end
