@@ -6,17 +6,26 @@ module Pat
     94    # 2013 projects
   end
 
-  def project_acceptance_totals(campus_ids, secondary_sort = {}, event_group_id = current_event_group_id)
-    project_totals(campus_ids, "Acceptance", "accepted_count", event_group_id, secondary_sort)
+  def current_project_ids
+    Pat::EventGroup.find(current_event_group_id).projects.collect(&:id) + [
+      345, # Gain 2013 Haiti Spring Break
+      365, # Gain 2013 Mukti Mission
+      349, # Gain 2013 Benin
+    ]
   end
 
-  def project_applying_totals(campus_ids, event_group_id = current_event_group_id)
-    project_totals(campus_ids, "Applying", "applying_count", event_group_id)
+  def project_acceptance_totals(campus_ids, secondary_sort = {}, project_ids = current_project_ids)
+    project_totals(campus_ids, "Acceptance", "accepted_count", project_ids, secondary_sort)
   end
 
-  def project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", event_group_id = current_event_group_id, secondary_sort = {})
+  def project_applying_totals(campus_ids, project_ids = current_project_ids)
+    project_totals(campus_ids, "Applying", "applying_count", project_ids)
+  end
+
+  def project_totals(campus_ids, type = "Acceptance", count_name = "accepted_count", project_ids = current_project_ids, secondary_sort = {})
     return [{}, {}] unless campus_ids.present?
     campus_ids << 0 unless campus_ids.include?(0)
+    project_ids << 0 # so that we don't get a syntax error if no projects are passed in
 
     campuses = Campus.find(:all,
       :select => "#{Project.__(:title)} as project, #{Campus.__(:name)}, #{Campus.__(:abbrv)}, count(distinct(#{Profile.__(:id)})) as #{count_name}",
@@ -29,10 +38,8 @@ module Pat
         INNER JOIN #{User.table_name} ON #{Access.__(:viewer_id)} = #{User.__(:id)}
         INNER JOIN #{Profile.table_name} ON #{User.__(:id)} = #{Profile.__(:viewer_id)} AND
            #{Profile.__(:type)} = '#{type}'
-        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
-        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
-        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)} AND
-           #{Form.__(:event_group_id)} = #{event_group_id}
+        INNER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)} AND
+           #{Project.__(:id)} IN (#{project_ids.join(',')})
       |,
       :group => "#{Project.__(:id)}, #{Campus.__(:id)}",
       :order => "#{Campus.__(:name)} ASC, #{count_name} DESC"
@@ -49,8 +56,6 @@ module Pat
       results_by_campus[campus.abbrv] ||= ActiveSupport::OrderedHash.new
       results_by_campus[campus.abbrv][campus.project] = campus.send(count_name)
       results_by_campus[campus.abbrv][:total] ||= 0
-      results_by_campus[campus.abbrv][:subtotal] ||= 0
-      results_by_campus[campus.abbrv][:subtotal] += campus.project.present? ? campus.send(count_name).to_i : 0
       results_by_campus[campus.abbrv][:total] += campus.send(count_name).to_i
     end
     # this can probably be done in sql somehow, but I can code it here way faster
@@ -77,44 +82,38 @@ module Pat
     [ results_by_campus2, results_by_project ]
   end
 
-  def projects_count_hash(event_group_id = current_event_group_id)
+  def projects_count_hash(project_ids = current_project_ids)
+    project_ids << 0 # so that we don't get a syntax error if no projects are passed in
     projects_accepted = Profile.find(:all,
       :select => "#{Project.__(:title)} as title, count(#{Profile.__(:id)}) as accepted_count",
       :joins => %|
-        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
-        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
-        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)}
+        INNER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)} AND
+          #{Project.__(:id)} IN (#{project_ids.join(',')})
       |,
-      :conditions => "#{Profile.__(:type)} = 'Acceptance' AND #{Form.__(:event_group_id)} = #{event_group_id}",
+      :conditions => "#{Profile.__(:type)} = 'Acceptance'",
       :group => "#{Project.__(:id)}",
       :order => "accepted_count DESC"
     )
     projects_applying = Profile.find(:all,
       :select => "#{Project.__(:title)} as title, count(#{Profile.__(:id)}) as applying_count",
       :joins => %|
-        LEFT OUTER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)}
-        INNER JOIN #{Appln.table_name} ON #{Profile.__(:appln_id)} = #{Appln.__(:id)}
-        INNER JOIN #{Form.table_name} ON #{Appln.__(:form_id)} = #{Form.__(:id)}
+        INNER JOIN #{Project.table_name} ON #{Profile.__(:project_id)} = #{Project.__(:id)} AND
+          #{Project.__(:id)} IN (#{project_ids.join(',')})
       |,
-      :conditions => "#{Profile.__(:type)} = 'Applying' AND #{Form.__(:event_group_id)} = #{event_group_id}",
+      :conditions => "#{Profile.__(:type)} = 'Applying'",
       :group => "#{Project.__(:id)}",
       :order => "applying_count DESC"
     )
 
     results = ActiveSupport::OrderedHash.new
-    totals = { :accepted => 0, :applying => 0, :subtotal_accepted => 0, :subtotal_applying => 0, :no_project => 0 }
+    totals = { :accepted => 0, :applying => 0 }
     projects_accepted.each do |project|
       totals[:accepted] += project.accepted_count.to_i
-      totals[:subtotal_accepted] += project.title.present? ? project.accepted_count.to_i : 0
       results[project.title] ||= {}
       results[project.title][:accepted] = project.accepted_count
     end
     projects_applying.each do |project|
       totals[:applying] += project.applying_count.to_i
-      totals[:subtotal_applying] += project.title.present? ? project.applying_count.to_i : 0
-      if !project.title.present?
-        totals[:no_project] = project.applying_count
-      end
       results[project.title] ||= {}
       results[project.title][:applying] = project.applying_count
     end

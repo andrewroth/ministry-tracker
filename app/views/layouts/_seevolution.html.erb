@@ -1,16 +1,15 @@
 <% if RAILS_ENV == "production" && Common::STAGE == "prod" %>
 
-   <!-- BEGIN: SeeVolution -->
-     <script type="text/javascript">
-     (function()
-       {
-         var ms = document.createElement("script");
-         var site = ("https:" == document.location.protocol) ? "https://c.svlu.net/cjs.aspx" : "http://c.svlu.net/cjs.aspx";
-         ms.src = site;
-         ms.setAttribute("async", "true");
-         document.documentElement.firstChild.appendChild(ms);
-       })();
-     </script>
-   <!-- END: SeeVolution -->
+  <!-- BEGIN: SeeVolution -->
+    <script type="text/javascript">
+      (function () {
+        var ms = document.createElement("script");
+        ms.src = "https://assets.seevolution.com/cjs.aspx";
+        ms.setAttribute("async", "true");
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ms, s);
+      })();
+    </script>
+  <!-- END: SeeVolution -->
 
 <% end %>

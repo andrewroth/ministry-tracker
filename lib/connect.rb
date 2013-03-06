@@ -40,11 +40,6 @@ module Connect
       begin
         connect.log :debug, "Importing contact #{i+1} of #{unimported_contacts.size} with id #{contact.id}..."
 
-        existing_contact = SurveyContact.all(:conditions => { :email => contact.email })
-        if existing_contact.present?
-          connect.log :warn, "Connect contact #{contact.id} with email '#{contact.email}' already exists as Pulse survey contact #{existing_contact.first.id}, skipping import!"
-          next
-        end
 
         # get the contact's school to get the campus_id
         school_contact_id = contact.relationships['Student Currently Attending'].contact_id_b # the school is a Contact in CiviCRM, get the school's id

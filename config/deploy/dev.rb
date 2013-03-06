@@ -5,14 +5,14 @@ end
 ENV['target'] ||= 'moose'
 set :moonshine_apply, false
 
-def stage?() %w(emu stage).include?(ENV['target']) end
+def stage?() %w(emu stage staging).include?(ENV['target']) end
 def dev?() %w(dev moose).include?(ENV['target']) end
 def prod?() ENV['target'] == 'prod' end
 
 set :application, "ministry-tracker"
 set :user, 'deploy'
 set :use_sudo, false
-set :host, stage? || dev? ? 'emu.powertochange.com' : 'pat.powertochange.com'
+set :host, stage? || dev? ? 'emu.powertochange.com' : 'pat.powertochange.org'
 set :keep_releases, 3
 
 set :scm, "git"
