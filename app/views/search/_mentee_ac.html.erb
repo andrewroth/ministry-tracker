@@ -1,12 +1,1 @@
-<%
-  result = "<div class='autoCompletePic'>#{ac_profile_picture_for_person(mentee_ac)}</div>" +
-
-           "<div class='autoCompleteName'>#{mentee_ac.first_name.capitalize} #{mentee_ac.last_name.capitalize}</div>" +
-
-           "<div class='autoCompleteInfo'>#{mentee_ac.staff_role_ids.blank? ? mentee_ac.campuses_concat : mentee_ac.ministries_concat }</div>" +
-
-           "<div class='hiddenMenteeID'>#{mentee_ac.person_id}</div>"
-
-%>
-
-<%= result %>
+<div class='autoCompletePic'><%= ac_profile_picture_for_person(mentee_ac) %></div><div class='autoCompleteName'><%= mentee_ac.full_name %></div><div class='autoCompleteInfo'><%= mentee_ac.staff_role_ids.blank? ? mentee_ac.campuses_concat : mentee_ac.ministries_concat %></div><div class='hiddenMenteeID'><%= mentee_ac.person_id %></div>

@@ -11,8 +11,11 @@
   <% end %>
 
   <%= link_to(ci.campus.short_name, directory_people_url(:campus => ci.campus.id, :format => :html)) %>
-  <%= t("years.#{ci.try(:school_year).try(:translation_key)}") %>
-  <%= t("roles.#{ci.find_or_create_ministry_involvement.ministry_role.translation_key}") if @student %>
+  <%= t("years.#{ ci.school_year_translation_key }") if ci.school_year_translation_key %>
+  <% if @student %>
+    <% mi = ci.find_or_create_ministry_involvement %>
+    <%= t("roles.#{ mi.ministry_role_translation_key }") if mi %>
+  <% end %>
 </li>
 
 <script type="text/javascript">
