@@ -1,0 +1,3 @@
+$("[data-model=<%= params[:model] %>][data-column=<%= params[:column] %>] [data-id=<%= params[:dest_id] %>]")
+  .html("<%= @value %>")
+  .effect("highlight");
