@@ -1,9 +1,9 @@
 module Pat
   def current_event_group_id
     # 58    # 2010 projects
-    # 75    # 2011 projects
+    75    # 2011 projects
     # 82    # 2012 projects
-    94    # 2013 projects
+    # 94    # 2013 projects
   end
 
   def current_project_ids

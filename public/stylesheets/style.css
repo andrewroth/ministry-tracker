@@ -4790,6 +4790,8 @@ table.dataTable tr:hover td {
 }
 
 #merge_table td { margin: 1px; }
+#merge_table .value { min-width: 220px; max-width: 220px; width: 220px; }
+#merge_table .copy { min-width: 15px; max-width: 15px; width: 15px; text-align: center; }
 #merge_table td.middle { text-align: center; }
 #merge_table tr.model_header td { padding-top: 0.5em; font-weight: bold; }
 #merge_table tr.model_row td:not(.middle) { font-weight: 300; }
