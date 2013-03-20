@@ -1,5 +1,5 @@
 <tr class="model_header">
-  <td colspan="3" class="middle"><%= model.name %></td>
+  <td colspan="5" class="middle"><%= model.name %></td>
 </tr>
 <% model.columns.each do |c| %>
   <% val1 = model1.try(:send, c.name) %>
@@ -7,9 +7,11 @@
   <% next if (!model1 && !model2) || 
     (model1 && !model2 && !val1.present?) || 
     (model1 && model2 && !val1.present? && !val2.present?) %>
-  <tr class="model_row <%= cycle('odd', 'even', :name => model.name) %>">
-    <td><%= val1 %></td>
+  <tr class="model_row <%= cycle('odd', 'even', :name => model.name) %>" data-model="<%= model.name %>" data-column="<%= c.name %>">
+    <td class="value value1" data-id="<%= model1.try(:id) %>"><%= val1 %></td>
+    <td class="copy"><% if model1 && model2 && !ManageController::UNCOPYABLE[model].to_a.include?(c.name) %><%= link_to_function image_tag("bullet_go.png"), "copy_to_right('#{model.name}', '#{c.name}')" %><% end %></td>
     <td class="middle"><%= c.name %></td>
-    <td><%= val2 %></td>
+    <td class="copy"><% if model1 && model2 && !ManageController::UNCOPYABLE[model].to_a.include?(c.name) %><%= link_to_function image_tag("bullet_go_left.png"), "copy_to_left('#{model.name}', '#{c.name}')" %><% end %></td>
+    <td class="value value2" data-id="<%= model2.try(:id) %>"><%= val2 %></td>
   </tr>
 <% end %>

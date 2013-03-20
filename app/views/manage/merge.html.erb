@@ -12,6 +12,21 @@
 </table>
 
 <script>
+  function copy_to_left(model, column) {
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      source_id = $("[data-model="+model+"][data-column="+column+"]").find(".value2").attr("data-id");
+      dest_id = $("[data-model="+model+"][data-column="+column+"]").find(".value1").attr("data-id");
+      $.post('/manage/copy_value_over', { model: model, column: column, source_id: source_id, dest_id: dest_id });
+    }
+  }
+  function copy_to_right(model, column) {
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      dest_id = $("[data-model="+model+"][data-column="+column+"]").find(".value2").attr("data-id");
+      source_id = $("[data-model="+model+"][data-column="+column+"]").find(".value1").attr("data-id");
+      $.post('/manage/copy_value_over', { model: model, column: column, source_id: source_id, dest_id: dest_id });
+    }
+  }
+
   $("#search_merge_1").autocomplete("/manage/autocomplete_merge?field=1", {
     minChars: 2,
     selectFirst: false,
