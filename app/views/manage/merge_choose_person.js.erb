@@ -1,7 +1,7 @@
 $("#merge_table tr:not(.keep)").remove();
 $("#merge_table tr:not(.keep)").remove();
 <% if @person1 && @person2 %>
-$("#merge_table").append("<tr><td class='middle'><input type='submit' id='keep_left' value='Merge Keeping This Person'/></td><td></td><td class='middle'><input type='submit' id='keep_right' value='Merge Keeping This Person'/></td></tr>");
+$("#merge_table").append("<tr><td class='middle'><input type='submit' id='keep_left' value='Merge Keeping This Person' onClick='merge_keep_left()'/></td><td></td><td></td><td></td><td class='middle'><input type='submit' id='keep_right' value='Merge Keeping This Person' onClick='merge_keep_right()'/></td></tr>");
 <% end %>
 $("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => Person, :model1 => @person1, :model2 => @person2 })) %>");
 $("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => User, :model1 => @person1.try(:user), :model2 => @person2.try(:user) })) %>");
