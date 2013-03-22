@@ -1,0 +1,110 @@
+<div>
+  <%= link_to "Create merge test users", "/manage/create_testers", :method => :post %>
+</div>
+<br/>
+
+<table id="merge_table">
+  <tr class="keep">
+    <td class='center'>
+      Search People: <%= text_field_tag "search_merge_1" %>
+    </td>
+    <td></td>
+    <td class='middle'>
+    </td>
+    <td></td>
+    <td class='center'>
+      Search People: <%= text_field_tag "search_merge_2" %>
+    </td>
+  </tr>
+</table>
+
+<script>
+  function merge_keep_left() {
+    left_id = $(".value1").attr("data-id");
+    right_id = $(".value2").attr("data-id");
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      $.post("/manage/perform_merge", { keep_id: left_id, other_id: right_id })
+    }
+  }
+
+  function merge_keep_right() {
+    left_id = $(".value1").attr("data-id");
+    right_id = $(".value2").attr("data-id");
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      $.post("/manage/perform_merge", { keep_id: right_id, other_id: left_id })
+    }
+  }
+
+  function copy_to_left(model, column) {
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      source_id = $("[data-model="+model+"][data-column="+column+"]").find(".value2").attr("data-id");
+      dest_id = $("[data-model="+model+"][data-column="+column+"]").find(".value1").attr("data-id");
+      $.post('/manage/copy_value_over', { model: model, column: column, source_id: source_id, dest_id: dest_id });
+    }
+  }
+  function copy_to_right(model, column) {
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      dest_id = $("[data-model="+model+"][data-column="+column+"]").find(".value2").attr("data-id");
+      source_id = $("[data-model="+model+"][data-column="+column+"]").find(".value1").attr("data-id");
+      $.post('/manage/copy_value_over', { model: model, column: column, source_id: source_id, dest_id: dest_id });
+    }
+  }
+
+  $("#search_merge_1").autocomplete("/manage/autocomplete_merge?field=1", {
+    minChars: 2,
+    selectFirst: false,
+    matchContains: true,
+    autoFill: false,
+    scroll: false,
+    cacheLength: 10,
+    matchSubset: false,
+    formatItem: function(data, i, n, value) {
+      if (value.indexOf("Sorry, no search") != -1) {
+        return value;
+      } else {
+        $values = $(value);
+        name = $values.attr("data-name");
+        id = $values.attr("data-id");
+        email = $values.attr("data-email");
+        return "<div>"+name+"</div><div>Person ID: " + id + "</div><div>" + email + "</div>";
+      }
+    },
+    formatResult: function(data, value) {
+      return $(value).attr("data-name");
+    }
+  }).result(function(event, info) {
+    id1 = $(info[0]).attr("data-id");
+    $("#search_merge_1").attr('data-id', id1);
+    id2 = $("#search_merge_2").attr('data-id');
+    $.ajax("/manage/merge_choose_person.js", { data: { field: 1, person1_id: id1, person2_id: id2 } });
+  });
+  $("#search_merge_2").autocomplete("/manage/autocomplete_merge?field=2", {
+    minChars: 2,
+    selectFirst: false,
+    matchContains: true,
+    autoFill: false,
+    scroll: false,
+    cacheLength: 10,
+    matchSubset: false,
+    formatItem: function(data, i, n, value) {
+      if (value.indexOf("Sorry, no search") != -1) {
+        return value;
+      } else {
+        $values = $(value);
+        name = $values.attr("data-id");
+        id = $values.attr("data-id");
+        email = $values.attr("data-email");
+        return "<div>"+name+"</div><div>Person ID: " + id + "</div><div>" + email + "</div>";
+      }
+    },
+    formatResult: function(data, value) {
+      console.log($(value).attr("data-name"));
+      return $(value).attr("data-name");
+    }
+  }).result(function(event, info) {
+    id1 = $("#search_merge_1").attr('data-id');
+    id2 = $(info[0]).attr("data-id");
+    $("#search_merge_2").attr('data-id', id2);
+    $.ajax("/manage/merge_choose_person.js", { data: { field: 1, person1_id: id1, person2_id: id2 } });
+  });
+</script>
