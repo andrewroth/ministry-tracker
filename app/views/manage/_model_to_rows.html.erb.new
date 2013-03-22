@@ -1,0 +1,24 @@
+<script>
+  function copy_to_left(name) {
+    $.ajax('/manage/copy_value_over', data: source: 'a');
+  }
+  function copy_to_right(name) {
+    $.ajax('/manage/copy_value_over', data: source: 'a');
+  }
+</script>
+
+<tr class="model_header">
+  <td colspan="3" class="middle"><%= model.name %></td>
+</tr>
+<% model.columns.each do |c| %>
+  <% val1 = model1.try(:send, c.name) %>
+  <% val2 = model2.try(:send, c.name) %>
+  <% next if (!model1 && !model2) || 
+    (model1 && !model2 && !val1.present?) || 
+    (model1 && model2 && !val1.present? && !val2.present?) %>
+  <tr class="model_row <%= cycle('odd', 'even', :name => model.name) %>">
+    <td data-accessor1="<%= model1 %>.<%= c.name %>"><%= link_to_function "->", "copy_to_right('#{c.name}')" %><%= val1 %></td>
+    <td class="middle"><%= c.name %></td>
+    <td data-accessor2="<%= model2 %>.<%= c.name %>"><%= link_to_function "<-", "copy_to_left('#{c.name}')" %><%= val2 %></td>
+  </tr>
+<% end %>

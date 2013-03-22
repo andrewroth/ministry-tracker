@@ -1,17 +1,40 @@
+<div>
+  <%= link_to "Create merge test users", "/manage/create_testers", :method => :post %>
+</div>
+<br/>
+
 <table id="merge_table">
   <tr class="keep">
-    <td>
+    <td class='center'>
       Search People: <%= text_field_tag "search_merge_1" %>
     </td>
+    <td></td>
     <td class='middle'>
     </td>
-    <td>
+    <td></td>
+    <td class='center'>
       Search People: <%= text_field_tag "search_merge_2" %>
     </td>
   </tr>
 </table>
 
 <script>
+  function merge_keep_left() {
+    left_id = $(".value1").attr("data-id");
+    right_id = $(".value2").attr("data-id");
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      $.post("/manage/perform_merge", { keep_id: left_id, other_id: right_id })
+    }
+  }
+
+  function merge_keep_right() {
+    left_id = $(".value1").attr("data-id");
+    right_id = $(".value2").attr("data-id");
+    if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
+      $.post("/manage/perform_merge", { keep_id: right_id, other_id: left_id })
+    }
+  }
+
   function copy_to_left(model, column) {
     if (confirm("Are you sure?  This change will take effect immediately and can not be undone")) {
       source_id = $("[data-model="+model+"][data-column="+column+"]").find(".value2").attr("data-id");

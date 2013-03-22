@@ -7,10 +7,16 @@ class ManageController < ApplicationController
   layout 'manage'
   
   UNCOPYABLE = {
-    Person => %w(person_id),
+    Person => %w(person_id person_mentees_lft person_mentees_rgt),
     User => %w(viewer_id),
     Emerg => %w(emerg_id)
   }
+
+  def create_testers
+    p1, p2 = Person.setup_merge_testers
+    flash[:notice] = "Created tester #{p1.full_name} and #{p2.full_name}"
+    redirect_to :action => :merge
+  end
 
   def index
     setup_ministries
@@ -30,6 +36,12 @@ class ManageController < ApplicationController
   end
 
   def perform_merge
+    keep = Person.find params[:keep_id]
+    other = Person.find params[:other_id]
+    other_name = other.full_name
+    other_id = other.id
+    keep.merge(other)
+    flash[:notice] = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
   end
 
   def copy_value_over

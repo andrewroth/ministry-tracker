@@ -279,8 +279,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.setup_merge_testers
-    setup_merge_tester(1)
-    setup_merge_tester(2)
+    return [ setup_merge_tester(1), setup_merge_tester(2) ]
   end
 
   def self.setup_merge_tester(id)
@@ -294,5 +293,6 @@ class Person < ActiveRecord::Base
     u = User.find_by_viewer_userID("testmerge#{id}@tester.com")
     u.destroy if u
     p.create_user_and_access_only("testmerge#{id}", "testmerge#{id}@tester.com")
+    return p
   end
 end
