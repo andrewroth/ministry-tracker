@@ -71,7 +71,7 @@ class Person < ActiveRecord::Base
 
   has_one :recruitment
   has_many :recruiter_recruitment, :class_name => 'Recruitment', :foreign_key => :recruiter_id
-
+  has_many :merges
 
   def all_group_involvements(semester = nil)
     return self.all_group_involvements_assoc unless semester && semester.id

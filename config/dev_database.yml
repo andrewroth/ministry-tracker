@@ -1,0 +1,37 @@
+<<: *defaults
+
+common_development:
+  database: c4c_pulse_prod
+  <<: *defaults
+
+common_production:
+  database: c4c_pulse_prod
+  <<: *defaults
+
+common_test:
+  database: c4c_pulse_test
+  <<: *defaults
+
+pat_development:
+  database: p2c_pat_prod
+  <<: *defaults
+
+pat_production:
+  database: p2c_pat_prod
+  <<: *defaults
+
+pat_test:
+  database: p2c_pat_test
+  <<: *defaults
+
+pulse_development:
+  database: c4c_pulse_prod
+  <<: *defaults
+
+pulse_production:
+  database: c4c_pulse_prod
+  <<: *defaults
+
+pulse_test:
+  database: c4c_pulse_test
+  <<: *defaults

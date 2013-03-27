@@ -1,4 +1,5 @@
 class Recruitment < ActiveRecord::Base
+  load_mappings
 
   QUALIFIED_FOR_RECRUITMENT_LABEL_ID = 2
   INTERESTED_IN_FIELDS = {
