@@ -6,3 +6,9 @@ $("#merge_table").append("<tr><td class='middle'><input type='submit' id='keep_l
 $("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => Person, :model1 => @person1, :model2 => @person2 })) %>");
 $("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => User, :model1 => @person1.try(:user), :model2 => @person2.try(:user) })) %>");
 $("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => Emerg, :model1 => @person1.try(:emerg), :model2 => @person2.try(:emerg) })) %>");
+$("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => PersonExtra, :model1 => @person1.try(:person_extra), :model2 => @person2.try(:person_extra) })) %>");
+<%= render "multiassoc_to_rows", :name => "all_group_involvements" %>
+<%= render "multiassoc_to_rows", :name => "groups" %>
+<%= render "multiassoc_to_rows", :name => "all_ministry_involvements" %>
+<%= render "multiassoc_to_rows", :name => "all_campus_involvements" %>
+<%= render "multiassoc_to_rows", :name => "involvement_history" %>

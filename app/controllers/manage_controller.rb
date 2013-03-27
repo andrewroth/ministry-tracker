@@ -9,7 +9,9 @@ class ManageController < ApplicationController
   UNCOPYABLE = {
     Person => %w(person_id person_mentees_lft person_mentees_rgt),
     User => %w(viewer_id),
-    Emerg => %w(emerg_id)
+    Emerg => %w(emerg_id),
+    GroupInvolvement => :all,
+    Group => :all
   }
 
   def create_testers
