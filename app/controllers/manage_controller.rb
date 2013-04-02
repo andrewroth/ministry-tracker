@@ -49,7 +49,7 @@ class ManageController < ApplicationController
       merge_log.save!
       flash[:notice] = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
     rescue => e
-      flash[:notice] = "There was an error merging.  See the merge log id #{merge_log.id} for details."
+      flash[:warning] = "There was an error merging: '#{e.message}'  See the merge log id #{merge_log.id} for the stack trace."
       merge_log.success = false
       merge_log.error_message = e.message + "\n" + e.backtrace.join("\n")
       merge_log.save!
