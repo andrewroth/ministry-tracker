@@ -673,8 +673,9 @@ CREATE TABLE `merges` (
   `error_message` text,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `sql_error` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ministries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -966,7 +967,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=1006599 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1006600 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1716,6 +1717,8 @@ INSERT INTO schema_migrations (version) VALUES ('20130213194724');
 INSERT INTO schema_migrations (version) VALUES ('20130214230240');
 
 INSERT INTO schema_migrations (version) VALUES ('20130327192956');
+
+INSERT INTO schema_migrations (version) VALUES ('20130403183206');
 
 INSERT INTO schema_migrations (version) VALUES ('21');
 
