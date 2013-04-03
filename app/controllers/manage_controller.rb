@@ -9,7 +9,9 @@ class ManageController < ApplicationController
   UNCOPYABLE = {
     Person => %w(person_id person_mentees_lft person_mentees_rgt),
     User => %w(viewer_id),
-    Emerg => %w(emerg_id)
+    Emerg => %w(emerg_id),
+    GroupInvolvement => :all,
+    Group => :all
   }
 
   def create_testers
@@ -40,8 +42,18 @@ class ManageController < ApplicationController
     other = Person.find params[:other_id]
     other_name = other.full_name
     other_id = other.id
-    keep.merge(other)
-    flash[:notice] = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
+    merge_log = get_person.merges.create :keep_person_id => keep.id, :keep_viewer_id => keep.try(:user).try(:id), :other_person_id => other.id, :other_viewer_id => other.try(:user).try(:id)
+    begin
+      keep.merge(other)
+      merge_log.success = true
+      merge_log.save!
+      flash[:notice] = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
+    rescue => e
+      flash[:warning] = "There was an error merging: '#{e.message}'  See the merge log id #{merge_log.id} for the stack trace."
+      merge_log.success = false
+      merge_log.error_message = e.message + "\n" + e.backtrace.join("\n")
+      merge_log.save!
+    end
   end
 
   def copy_value_over

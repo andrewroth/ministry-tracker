@@ -1,0 +1,10 @@
+<% arr_1 = @person1 ? @person1.send(name) : [] %>
+<% arr_2 = @person2 ? @person2.send(name) : [] %>
+<% total_length = arr_1.length > arr_2.length ? arr_1.length : arr_2.length %>
+<% (1..total_length).each do |i| %>
+  <% model1 = arr_1[i]; model2 = arr_2[i] %>
+  <% if model1 || model2 %>
+    <% klass = (model1 || model2).class %>
+$("#merge_table").append("<%= escape_javascript(render(:partial => "model_to_rows", :locals => { :model => klass, :model1 => model1, :model2 => model2 })) %>"); 
+  <% end %>
+<% end %>
