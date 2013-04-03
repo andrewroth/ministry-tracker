@@ -46,7 +46,8 @@ class ManageController < ApplicationController
     merge_log = get_person.merges.create :keep_person_id => keep.id, :keep_viewer_id => keep.try(:user).try(:id), :other_person_id => other.id, :other_viewer_id => other.try(:user).try(:id)
     begin
       errors = keep.merge(other)
-      merge_log.success = errors.empty?
+      merge_log.success = true
+      merge_log.sql_error = errors.present?
       merge_log.error_message = errors.join("\n")
       merge_log.save!
       message = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
