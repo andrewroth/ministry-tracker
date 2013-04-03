@@ -29,6 +29,7 @@ class ManageController < ApplicationController
 
   def autocomplete_merge
     @people = Person.search params[:q], 1, 20
+    @people.sort!{ |p1, p2| p1.last_name == p2.last_name ? p1.first_name <=> p2.first_name : p1.last_name <=> p2.last_name }
     render :layout => false
   end
 
@@ -44,10 +45,13 @@ class ManageController < ApplicationController
     other_id = other.id
     merge_log = get_person.merges.create :keep_person_id => keep.id, :keep_viewer_id => keep.try(:user).try(:id), :other_person_id => other.id, :other_viewer_id => other.try(:user).try(:id)
     begin
-      keep.merge(other)
-      merge_log.success = true
+      errors = keep.merge(other)
+      merge_log.success = errors.empty?
+      merge_log.error_message = errors.join("\n")
       merge_log.save!
-      flash[:notice] = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
+      message = "Merged #{other_name} (person id #{other_id}) into #{keep.full_name} (person id #{keep.id})."
+      message += "  However, there were errors encountered during the merge.  SQL statements that caused an error were skipped, and the rest of the merge was performed successfully.<br/><br/>#{errors.join("<br/>")}<br/><br/>Merge log id #{merge_log.id}" if errors.present?
+      flash[:notice] = message
     rescue => e
       flash[:warning] = "There was an error merging: '#{e.message}'  See the merge log id #{merge_log.id} for the stack trace."
       merge_log.success = false
