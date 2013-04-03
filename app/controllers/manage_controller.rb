@@ -36,6 +36,9 @@ class ManageController < ApplicationController
   def merge_choose_person
     @person1 = Person.find_by_person_id params[:person1_id]
     @person2 = Person.find_by_person_id params[:person2_id]
+    # get_emerg will create Emerg if it doesn't exist
+    @person1.try(:get_emerg)
+    @person2.try(:get_emerg)
   end
 
   def perform_merge
