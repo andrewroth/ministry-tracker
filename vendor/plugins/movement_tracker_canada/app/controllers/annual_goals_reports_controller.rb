@@ -13,7 +13,7 @@ class AnnualGoalsReportsController < ReportsController
   end
 
   def input_reports
-    [:annual_goals_report]
+    []#:annual_goals_report]
   end
 #
 #  skip_before_filter :authorization_filter, :only => [:select_annual_goals_report]    
