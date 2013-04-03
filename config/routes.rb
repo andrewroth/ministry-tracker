@@ -169,7 +169,7 @@ ActionController::Routing::Routes.draw do |map|
                                         :collection => {:create_multiple => :post}
   end
 
-  map.resources :manage
+  map.resources :manage, :collection => { :merge => :get, :autocomplete_merge => :get, :merge_choose_person => :get, :copy_value_over => :post, :create_testers => :post }
 
   map.resources :reports
 

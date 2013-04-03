@@ -10,8 +10,13 @@
 
 	<ul class="right-menu-list">
 	  <%- if authorized?(:new, :ministries) || authorized?(:edit, :ministries) -%>
-  		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) %>>
+  		<li<%= ' class="highlighted"' if ["ministries", "manage"].include?(params[:controller]) && params[:action] == "index" %>>
   		<%= link_to 'Ministries', ministries_path %></li>
+		<%- end -%>
+
+	  <%- if authorized?(:merge, :manage) -%>
+  		<li<%= ' class="highlighted"' if params[:controller] == "manage" && params[:action] == "merge" %>>
+  		<%= link_to 'Merge People', merge_manage_path %></li>
 		<%- end -%>
 
     <%- if authorized?(:index, :staff) -%>
