@@ -642,9 +642,7 @@
           :label => "1. WIN - EXPOSURES",
           :collected => :monthly,
           :column_type => :sum,
-          :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
-                           {:report => :weekly_report, :line => :gospel_pres_total},
-                           {:report => :monthly_report, :line => :evt_gos_pres},
+          :columns_sum => [{:report => :monthly_report, :line => :evt_gos_pres},
                            {:report => :monthly_report, :line => :med_gos_pres}],
           :order => 1
         },
@@ -705,9 +703,7 @@
           :label => "1. Number of people exposed to the gospel",
           :collected => :monthly,
           :column_type => :sum,
-          :columns_sum => [{:report => :weekly_report, :line => :spirit_conversations_total},
-                           {:report => :weekly_report, :line => :gospel_pres_total},
-                           {:report => :monthly_report, :line => :evt_gos_pres},
+          :columns_sum => [{:report => :monthly_report, :line => :evt_gos_pres},
                            {:report => :monthly_report, :line => :med_gos_pres}],
           :order => 1
         },
@@ -740,13 +736,6 @@
           :columns_sum => [{:report => :monthly_report, :line => :students_dg}],
           :show_total => false,
           :order => 5
-        },
-        :commit_filled_hs => {
-          :label => "6. Number of commitments to be filled with Holy Spirit or Lordship commitments",
-          :collected => :weekly,
-          :column_type => :sum,
-          :columns_sum => [{:report => :weekly_p2c_special, :line => :commit_filled_hs}],
-          :order => 6
         },
         :sharing_in => {
           :label => "7. Number of people who are sharing their faith a. with P2C",

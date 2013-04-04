@@ -35,7 +35,7 @@ namespace :cmt do
     end
   end
 
-  desc "refresh data into the cim_stats_monthlyreport table from the data into cim_stats_semesterreport table" 
+  desc "refresh data into the cim_stats_monthlyreport table from the data into cim_stats_semesterreport table"
   task :update_monthly_report => :environment do
     hsh_month_for_semester ||= Hash.new
 
@@ -43,7 +43,7 @@ namespace :cmt do
       #Find the right month_id for the current semester record
       if !(hsh_month_for_semester.has_key?(sr[:semester_id]))
         hsh_month_for_semester[sr[:semester_id]] = Month.find(:all, :conditions => { :semester_id => sr[:semester_id] }, :order => :month_number).last.id
-      end      
+      end
       month_id = hsh_month_for_semester[sr[:semester_id]]
 
       #try to find a record for the current month_id, campus_id
@@ -52,16 +52,16 @@ namespace :cmt do
       monthly_report ||= MonthlyReport.new
       monthly_report.campus_id = sr[:campus_id]
       monthly_report.month_id = month_id
-      
+
       #update the data
       monthly_report[:monthlyreport_avgPrayer] = sr[:semesterreport_avgPrayer] if monthly_report[:monthlyreport_avgPrayer] == 0
       monthly_report[:monthlyreport_numFrosh] = sr[:semesterreport_numFrosh] if monthly_report[:monthlyreport_numFrosh] == 0
       monthly_report[:monthlyreport_totalStudentInDG] = sr[:semesterreport_numInStaffDG] + sr[:semesterreport_numInStudentDG] if monthly_report[:monthlyreport_totalStudentInDG] == 0
       monthly_report[:monthlyreport_totalSpMult] = sr[:semesterreport_numSpMultStaffDG] + sr[:semesterreport_numSpMultStdDG] if monthly_report[:monthlyreport_totalSpMult] == 0
-      
+
       monthly_report.save!
     end
-    
+
 
   end
 
@@ -174,7 +174,7 @@ namespace :cmt do
 
         week_counter_date += 7
       end
-      
+
     end
   end
 
@@ -189,7 +189,7 @@ namespace :cmt do
       puts "Searching through '#{Prc.table_name}'..."
 
       count = 0
-      
+
       Prc.all.each do |prc|
         proper_semester = ::Semester.find_semester_from_date(prc.date)
         unless prc.semester_id == proper_semester.id
@@ -260,7 +260,7 @@ namespace :cmt do
       # find all people that have a ministry involvement of type StudentRole and are EITHER not present in the cim_hrdb_staff table OR are present in cim_hrdb_staff table but is_active = 0
       students = Person.all(:include => {:cim_hrdb_staff => [], :ministry_involvements => :ministry_role},
                             :conditions => [ "(#{CimHrdbStaff.table_name}.staff_id IS NULL OR #{CimHrdbStaff.table_name}.is_active = 0) AND #{MinistryRole.table_name}.type = ? AND #{MinistryInvolvement.table_name}.end_date IS NULL", "StudentRole" ])
-                          
+
       msg = " people have student ministry involvements AND staff ministry involvements AND are EITHER not in the cim_hrdb_staff table OR are in the cim_hrdb_staff table but is_active is false:\n\n"
     end
 
@@ -300,42 +300,42 @@ end
 namespace :db do
   desc "db:reset and db:seed"
   task :rebuild => [ "db:reset", "db:seed" ]
-  
+
   task :seed_test_users => :environment do
     abort("test users shouldn't be used in production environment") if Rails.env == "production"
-    
+
     test_users = YAML.load_file("config/test_users.yml")
-    
+
     test_users.each do |key,hash|
       user = User.find_or_create_from_guid_or_email(hash["guid"], hash["email"], hash["first_name"], hash["last_name"])
-      
+
       person = user.person
-      
+
       person.all_campus_involvements.destroy_all
       person.all_ministry_involvements.destroy_all
-      
+
       ministry = Ministry.find(hash["ministry_id"])
       campus = ministry.campuses.first
       ministry_role = MinistryRole.find(:first, :conditions => {:name => hash["role"]})
       school_year = SchoolYear.find(:first, :conditions => ["#{SchoolYear._(:name)} = ?", hash["school_year"]])
-      
+
       person.add_or_update_campus(campus.id, school_year.id, ministry.id, "MT")
       person.add_or_update_ministry(ministry.id, ministry_role.id)
     end
   end
-  
-  
+
+
   task :import_training_course_data_from_csv => :environment do
-    
+
     @parsed_file = CSV::Reader.parse(File.open('tmp/c4c_staff_training_record.csv', 'rb'), ',')
     courses = []
     person_count = 0
-    
+
     @parsed_file.each_with_index  do |row, i|
       if i == 0 # header row
         courses = row
         courses.delete_at(0)
-        
+
         # add a training course for each header
         courses.each_with_index do |course, j|
           tc = TrainingCourse.new({:name => course})
@@ -343,7 +343,7 @@ namespace :db do
           courses[j] = tc
         end
       else
-        
+
         person = Person.find(row[0].to_i)
         if person
           person_count = person_count+1
@@ -361,30 +361,7 @@ namespace :db do
     end
     puts "Imported training data for #{person_count} people"
   end
-  
-  
-  task :set_french_campus_names => :environment do
-    # this is a temporary hack to work-around some character encoding issues that result from cloning databases
-    
-    french_campus_names = {"62" => "Université de Montreal",
-                           "63" => "Université du Québec à Québec",
-                           "64" => "Université de Sherbrooke",
-                           "65" => "Université Laval",
-                           "144" => "Cégep Ste-Foy",
-                           "145" => "Cégep St. Lawrence",
-                           "146" => "Cégep François-Xavier-Garneau",
-                           "162" => "Université du Québec à Montréal",
-                           "161" => "Université du Québec à Rimouski"}
-    
-    french_campus_names.each do |id, name|
-      campus = Campus.first(:conditions => ["#{Campus._(:id)} = ?", id.to_i])
-      if campus.present?
-        campus.name = name
-        campus.save!
-      end
-    end
-  end
-  
+
 end
 
 task :people => :environment do
@@ -403,7 +380,7 @@ task :people => :environment do
         user = User.create!(:username => array[1],
                             :password => array[2],
                             :person_id => person.id)
-              
+
         current = CurrentAddress.create!(:email => array[5],
                                         :address1 => array[6],
                                         :city => array[7],
@@ -412,14 +389,14 @@ task :people => :environment do
                                         :phone => array[10],
                                         :alternate_phone => array[11],
                                         :person_id => person.id)
-                                      
+
         perm = PermanentAddress.create!(:address1 => array[12],
                                         :city => array[13],
                                         :state => array[14],
                                         :zip => array[15],
                                         :phone => array[16],
                                         :person_id => person.id)
-      end                                    
+      end
     end
   end
 end
@@ -478,7 +455,7 @@ task :schools => :environment do
   Campus.delete_all
   File.open('lib/tasks/schools.csv') do |f|
     # header = f.gets
-    # Campus.transaction do 
+    # Campus.transaction do
       f.each_line do |line|
         line.chomp!
         array = line.slice(1..-2).split('","').map {|s| s.strip }
