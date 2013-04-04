@@ -6,6 +6,7 @@ class Person < ActiveRecord::Base
   include Common::Core::Person
   include Common::Core::Ca::Person
   include Legacy::Stats::Core::Person
+  include CiviCRM
 
   # Labels
   has_many :label_people, :class_name => "LabelPerson", :foreign_key => _(:person_id, :label_id)
@@ -71,6 +72,8 @@ class Person < ActiveRecord::Base
 
   has_one :recruitment
   has_many :recruiter_recruitment, :class_name => 'Recruitment', :foreign_key => :recruiter_id
+
+  after_update :create_civicrm_contact
 
 
   def all_group_involvements(semester = nil)
@@ -276,5 +279,18 @@ class Person < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  private
+  def create_civicrm_contact
+    return unless self.email.present? && self.first_name.present? && self.last_name.present? && self.civicrm_id.blank?
+    connect = CiviCRM::API.new
+    params = { :first_name => self.first_name, :last_name => self.last_name, 
+      :contact_type => "Individual", :"api.email.create[email]" => self.email }
+    params[:id] = self.civicrm_id if self.civicrm_id.present?
+    contact = connect.create(:Contact, :with => params)
+    if contact.present? && contact.first.respond_to?(:id)
+      self.update_attribute(:civicrm_id, contact.first.id)
+    end 
   end
 end
